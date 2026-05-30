@@ -1,0 +1,236 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/cam/vigil/VIGIL.Schema.json",
+  "title": "VIGIL Records",
+  "description": "Minimal schema for generated VIGIL aggregate files and individual VIGIL observation/workflow records. VIGIL is a public observation layer and does not create CAM doctrine or amend adopted instruments.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "generated_from",
+    "generated_at_utc",
+    "record_count",
+    "records"
+  ],
+  "properties": {
+    "generated_notice": {
+      "type": "string"
+    },
+    "generated_from": {
+      "type": "string"
+    },
+    "generated_at_utc": {
+      "type": "string"
+    },
+    "record_count": {
+      "type": "integer"
+    },
+    "records": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/vigil_record"
+      }
+    }
+  },
+  "$defs": {
+    "record_type": {
+      "type": "string",
+      "enum": [
+        "emerging-tech-signal",
+        "failure-mode-observation",
+        "proposal-development-expansion",
+        "cluster"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "open",
+        "watching",
+        "clustered",
+        "routed",
+        "proposal",
+        "deferred",
+        "closed-no-action",
+        "closed-actioned"
+      ]
+    },
+    "evidence_confidence": {
+      "type": "string",
+      "enum": [
+        "verified",
+        "corroborated",
+        "plausible-unverified",
+        "anecdotal",
+        "disputed",
+        "unknown"
+      ]
+    },
+    "source_type": {
+      "type": "string",
+      "enum": [
+        "michelle-observation",
+        "automated-search",
+        "news-report",
+        "official-source",
+        "academic-source",
+        "standards-source",
+        "social-platform-observation",
+        "platform-behaviour-observation",
+        "repository-observation",
+        "third-party-report",
+        "other"
+      ]
+    },
+    "source_record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "title",
+        "author_or_publisher",
+        "source_date",
+        "url",
+        "archive_url",
+        "retrieved_date",
+        "source_type",
+        "relevance_note"
+      ],
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "author_or_publisher": {
+          "type": "string"
+        },
+        "source_date": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "archive_url": {
+          "type": "string"
+        },
+        "retrieved_date": {
+          "type": "string"
+        },
+        "source_type": {
+          "$ref": "#/$defs/source_type"
+        },
+        "relevance_note": {
+          "type": "string"
+        }
+      }
+    },
+    "vigil_record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "record_type",
+        "status",
+        "date_recorded",
+        "summary",
+        "why_it_matters_to_CAM",
+        "evidence_confidence",
+        "source_records",
+        "possible_CAM_mapping",
+        "next_action"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "record_type": {
+          "$ref": "#/$defs/record_type"
+        },
+        "status": {
+          "$ref": "#/$defs/status"
+        },
+        "date_observed": {
+          "type": "string"
+        },
+        "date_recorded": {
+          "type": "string"
+        },
+        "recorded_by": {
+          "type": "string"
+        },
+        "summary": {
+          "type": "string"
+        },
+        "why_it_matters_to_CAM": {
+          "type": "string"
+        },
+        "evidence_confidence": {
+          "$ref": "#/$defs/evidence_confidence"
+        },
+        "source_records": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/source_record"
+          }
+        },
+        "next_action": {
+          "type": "string"
+        },
+        "cluster_id": {
+          "type": "string"
+        },
+        "related_record_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "supersedes_record_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "candidate_amendment_id": {
+          "type": "string"
+        },
+        "possible_CAM_mapping": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "affected_domains": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "affected_instruments": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "failure_family": {
+          "type": "string"
+        },
+        "amendment_class": {
+          "type": "string"
+        },
+        "governance_drift_type": {
+          "type": "string"
+        },
+        "closure_outcome": {
+          "type": "string"
+        },
+        "closure_notes": {
+          "type": "string"
+        },
+        "actioned_by": {
+          "type": "string"
+        },
+        "date_closed": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
