@@ -81,85 +81,184 @@ def system_summary(record: dict[str, Any]) -> dict[str, Any]:
     )
 
 
+def pick_keys(section: dict[str, Any], keys: list[str]) -> dict[str, Any]:
+    return {key: section.get(key, "") for key in keys}
+
+
 def jurisdiction_summary(record: dict[str, Any]) -> dict[str, Any]:
-    return dict_summary(record, "jurisdictional_context")
+    return dict_summary(
+        record,
+        "jurisdictional_context",
+        [
+            "primary_jurisdiction",
+            "secondary_jurisdictions",
+            "regulatory_surface",
+            "sector",
+            "cross_border_relevance",
+            "public_interest_relevance",
+        ],
+    )
 
 
 def classification_summary(record: dict[str, Any]) -> dict[str, Any]:
-    return dict_summary(record, "failure_classification")
+    return dict_summary(
+        record,
+        "failure_classification",
+        [
+            "failure_family",
+            "failure_subtype",
+            "harm_vectors",
+            "severity",
+            "likelihood",
+            "confidence",
+            "affected_rights_or_interests",
+            "failure_scope",
+            "recurrence_pattern",
+        ],
+    )
 
 
 def triage_summary(record: dict[str, Any]) -> dict[str, Any]:
-    return dict_summary(record, "triage")
+    return dict_summary(
+        record,
+        "triage",
+        [
+            "triage_priority",
+            "triage_status",
+            "mitigation_status",
+            "escalation_required",
+            "recommended_next_step",
+        ],
+    )
 
 
 def proposal_summary(record: dict[str, Any]) -> dict[str, Any]:
-    summary = {
-        "proposal_rationale": record.get("proposal_rationale", ""),
+    proposal_scope = record.get("proposal_scope")
+    scope = proposal_scope if isinstance(proposal_scope, dict) else {}
+    return {
         "proposal_type": record.get("proposal_type", []),
-        "proposal_scope": (
-            record.get("proposal_scope", {})
-            if isinstance(record.get("proposal_scope"), dict)
-            else {}
-        ),
-        "implementation_notes": (
-            record.get("implementation_notes", {})
-            if isinstance(record.get("implementation_notes"), dict)
-            else {}
-        ),
-        "external_relevance": (
-            record.get("external_relevance", {})
-            if isinstance(record.get("external_relevance"), dict)
-            else {}
-        ),
+        "scope_summary": scope.get("scope_summary", ""),
+        "cam_domains": scope.get("cam_domains", []),
+        "registry_components": scope.get("registry_components", []),
+        "automation_components": scope.get("automation_components", []),
+        "interface_components": scope.get("interface_components", []),
         "next_action": record.get("next_action", ""),
     }
-    return prune_empty(summary)
 
 
-def patch_summary(record: dict[str, Any]) -> dict[str, Any]:
-    summary = {
+def external_relevance_summary(record: dict[str, Any]) -> dict[str, Any]:
+    return dict_summary(record, "external_relevance")
+
+
+def change_summary(record: dict[str, Any]) -> dict[str, Any]:
+    classification = record.get("change_classification")
+    change_classification = classification if isinstance(classification, dict) else {}
+    details = record.get("change_details")
+    change_details = details if isinstance(details, dict) else {}
+    return {
+        "patch_type": change_classification.get("patch_type") or change_classification.get("change_type", []),
+        "change_scope": change_classification.get("change_scope", ""),
+        "implementation_mode": change_classification.get("implementation_mode")
+        or change_classification.get("implementation_status", ""),
         "date_implemented": record.get("date_implemented", ""),
-        "change_classification": (
-            record.get("change_classification", {})
-            if isinstance(record.get("change_classification"), dict)
-            else {}
-        ),
-        "change_details": (
-            record.get("change_details", {})
-            if isinstance(record.get("change_details"), dict)
-            else {}
-        ),
-        "implementation_verification": (
-            record.get("implementation_verification", {})
-            if isinstance(record.get("implementation_verification"), dict)
-            else {}
-        ),
-        "impact_summary": (
-            record.get("impact_summary", {})
-            if isinstance(record.get("impact_summary"), dict)
-            else {}
-        ),
-        "remaining_work": record.get("remaining_work", []),
+        "files_changed": change_details.get("files_changed")
+        or change_details.get("changed_files_or_instruments", []),
+        "records_changed": change_details.get("records_changed", []),
+        "schemas_changed": change_details.get("schemas_changed", []),
+        "templates_changed": change_details.get("templates_changed", []),
+        "scripts_changed": change_details.get("scripts_changed", []),
+        "workflows_changed": change_details.get("workflows_changed", []),
+        "interface_components_changed": change_details.get("interface_components_changed", []),
     }
-    return prune_empty(summary)
 
 
-def cam_summary(record: dict[str, Any]) -> dict[str, Any]:
-    return dict_summary(record, "cam_internal")
+def verification_summary(record: dict[str, Any]) -> dict[str, Any]:
+    return dict_summary(record, "implementation_verification")
+
+
+def impact_summary(record: dict[str, Any]) -> dict[str, Any]:
+    return dict_summary(record, "impact_summary")
+
+
+def proposal_cam_summary(record: dict[str, Any]) -> dict[str, Any]:
+    cam = record.get("cam_internal")
+    if not isinstance(cam, dict):
+        return {}
+    return pick_keys(
+        cam,
+        [
+            "target_instruments",
+            "target_annexes",
+            "target_domains",
+            "governance_layer",
+            "drafting_status",
+            "validator_or_automation_impact",
+            "interface_impact",
+            "registry_impact",
+        ],
+    )
+
+
+def patch_cam_summary(record: dict[str, Any]) -> dict[str, Any]:
+    cam = record.get("cam_internal")
+    if not isinstance(cam, dict):
+        return {}
+    return pick_keys(
+        cam,
+        [
+            "changed_instruments",
+            "changed_annexes",
+            "changed_domains",
+            "changed_registry_components",
+            "changed_templates",
+            "changed_schemas",
+            "changed_validators",
+            "changed_automations",
+            "changed_interface_components",
+            "governance_layer",
+        ],
+    )
 
 
 def generated_summaries(record: dict[str, Any]) -> dict[str, Any]:
-    return {
-        "source_summary": source_summary(record),
-        "system_summary": system_summary(record),
-        "jurisdiction_summary": jurisdiction_summary(record),
-        "classification_summary": classification_summary(record),
-        "triage_summary": triage_summary(record),
-        "proposal_summary": proposal_summary(record),
-        "patch_summary": patch_summary(record),
-        "cam_summary": cam_summary(record),
-    }
+    record_type = record.get("record_type", "")
+    summaries: dict[str, Any] = {"source_summary": source_summary(record)}
+
+    if record_type == "observation":
+        summaries.update(
+            {
+                "system_summary": system_summary(record),
+                "jurisdiction_summary": jurisdiction_summary(record),
+            }
+        )
+    elif record_type == "failure_mode":
+        summaries.update(
+            {
+                "system_summary": system_summary(record),
+                "jurisdiction_summary": jurisdiction_summary(record),
+                "classification_summary": classification_summary(record),
+                "triage_summary": triage_summary(record),
+            }
+        )
+    elif record_type == "proposal":
+        summaries.update(
+            {
+                "proposal_summary": proposal_summary(record),
+                "external_relevance_summary": external_relevance_summary(record),
+                "cam_summary": proposal_cam_summary(record),
+            }
+        )
+    elif record_type in {"patch", "patch_note"}:
+        summaries.update(
+            {
+                "change_summary": change_summary(record),
+                "verification_summary": verification_summary(record),
+                "impact_summary": impact_summary(record),
+                "cam_summary": patch_cam_summary(record),
+            }
+        )
+
+    return prune_empty(summaries)
 
 
 def write_json(path: Path, data: Any) -> None:
@@ -217,7 +316,6 @@ def index_record(record: dict[str, Any]) -> dict[str, Any]:
         "source_types": source_types(record),
         **generated_summaries(record),
         "linked_records": record.get("linked_records", {}) if isinstance(record.get("linked_records"), dict) else {},
-        "cam_internal": record.get("cam_internal", {}) if isinstance(record.get("cam_internal"), dict) else {},
         "path": record_path(record),
     }
 
