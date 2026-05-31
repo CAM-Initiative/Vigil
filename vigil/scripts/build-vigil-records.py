@@ -70,6 +70,20 @@ def record_path(record: dict[str, Any]) -> str:
     return ""
 
 
+def source_types(record: dict[str, Any]) -> list[str]:
+    types = {
+        source.get("source_type")
+        for source in record.get("source_records", [])
+        if isinstance(source, dict) and source.get("source_type")
+    }
+    return sorted(types)
+
+
+def add_if_present(entry: dict[str, Any], record: dict[str, Any], field: str) -> None:
+    if field in record:
+        entry[field] = record.get(field)
+
+
 def index_record(record: dict[str, Any]) -> dict[str, Any]:
     entry: dict[str, Any] = {
         "id": record.get("id", ""),
@@ -78,7 +92,19 @@ def index_record(record: dict[str, Any]) -> dict[str, Any]:
         "date_recorded": record.get("date_recorded", ""),
         "affected_domains": record.get("affected_domains", []),
         "affected_instruments": record.get("affected_instruments", []),
+        "evidence_confidence": record.get("evidence_confidence", ""),
+        "source_types": source_types(record),
     }
+    for field in (
+        "platform",
+        "system_or_product",
+        "model_or_algorithm",
+        "deployment_context",
+        "ecosystem_area",
+        "failure_mode",
+        "failure_family",
+    ):
+        add_if_present(entry, record, field)
     if "candidate_amendment_id" in record:
         entry["candidate_amendment_id"] = record.get("candidate_amendment_id")
     entry["path"] = record_path(record)
