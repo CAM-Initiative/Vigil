@@ -1,0 +1,391 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/cam/vigil/VIGIL.Schema.v2.json",
+  "title": "VIGIL Registry Record Schema v2",
+  "description": "Source-data-first VIGIL record schema for observations, reusable failure modes, proposals, patch queue records, and crosswalks. Robotics context is optional.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "record_identity"
+  ],
+  "properties": {
+    "record_identity": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "record_id": {
+          "$ref": "#/$defs/record_id"
+        },
+        "record_type": {
+          "$ref": "#/$defs/record_type"
+        },
+        "title": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "created": {
+          "type": "string"
+        },
+        "updated": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "record_id",
+        "record_type",
+        "title",
+        "status"
+      ],
+      "description": "Stable public record identity."
+    },
+    "source_data": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "source_type": {
+          "type": "string"
+        },
+        "source_url": {
+          "type": "string"
+        },
+        "source_platform": {
+          "type": "string"
+        },
+        "source_author_or_account": {
+          "type": "string"
+        },
+        "date_observed": {
+          "type": "string"
+        },
+        "date_published": {
+          "type": "string"
+        },
+        "archive_status": {
+          "type": "string"
+        },
+        "evidence_availability": {
+          "type": "string"
+        },
+        "evidence_confidence": {
+          "type": "string"
+        },
+        "reproducibility": {
+          "type": "string"
+        }
+      },
+      "description": "External source evidence. Required in substance for observations; may be minimal or not applicable for reusable classifications and proposals."
+    },
+    "system_context": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "system_type": {
+          "type": "string"
+        },
+        "platform_or_vendor": {
+          "type": "string"
+        },
+        "model_or_product": {
+          "type": "string"
+        },
+        "interaction_mode": {
+          "type": "string"
+        },
+        "embodiment_status": {
+          "type": "string"
+        },
+        "deployment_context": {
+          "type": "string"
+        },
+        "user_role": {
+          "type": "string"
+        },
+        "affected_population": {
+          "type": "string"
+        }
+      }
+    },
+    "jurisdictional_context": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "primary_jurisdiction": {
+          "type": "string"
+        },
+        "secondary_jurisdictions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "regulatory_surface": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "sector": {
+          "type": "string"
+        },
+        "cross_border_relevance": {
+          "type": "string"
+        },
+        "public_interest_relevance": {
+          "type": "string"
+        }
+      }
+    },
+    "failure_classification": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "failure_mode_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "failure_family": {
+          "type": "string"
+        },
+        "harm_vectors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "severity": {
+          "type": "string"
+        },
+        "likelihood": {
+          "type": "string"
+        },
+        "confidence": {
+          "type": "string"
+        },
+        "affected_rights_or_interests": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "linked_records": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "observations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "failure_modes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "proposals": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "patches": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "external_references": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/external_reference"
+          }
+        }
+      }
+    },
+    "cam_internal": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "affected_instruments": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "affected_annexes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "affected_domains": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "governance_layer": {
+          "type": "string"
+        },
+        "patch_status": {
+          "type": "string"
+        },
+        "validator_or_automation_impact": {
+          "type": "string"
+        }
+      },
+      "description": "CAM internal routing metadata; not the public primary classification layer."
+    },
+    "robotics_context": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "robot_class": {
+          "type": "string"
+        },
+        "mobility_type": {
+          "type": "string"
+        },
+        "actuation_capability": {
+          "type": "string"
+        },
+        "physical_environment": {
+          "type": "string"
+        },
+        "proximity_to_humans": {
+          "type": "string"
+        },
+        "safety_boundary": {
+          "type": "string"
+        },
+        "human_override_available": {
+          "type": "string"
+        },
+        "emergency_stop_available": {
+          "type": "string"
+        },
+        "operator_present": {
+          "type": "string"
+        },
+        "physical_harm_potential": {
+          "type": "string"
+        },
+        "property_harm_potential": {
+          "type": "string"
+        }
+      },
+      "description": "Optional extension for robotics or embodied-system observations."
+    },
+    "failure_mode_details": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "failure_mode_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "definition": {
+          "type": "string"
+        },
+        "applicable_system_types": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "known_observations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "known_proposals": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "harm_vectors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "mitigation_pathways": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "jurisdictional_or_sector_relevance": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "description": "Reusable classification details for record_identity.record_type=failure_mode."
+    },
+    "migration_notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "legacy_record_type": {
+      "type": "string"
+    }
+  },
+  "$defs": {
+    "record_type": {
+      "type": "string",
+      "enum": [
+        "observation",
+        "failure_mode",
+        "proposal",
+        "patch",
+        "crosswalk"
+      ]
+    },
+    "record_id": {
+      "type": "string",
+      "pattern": "^(VIGIL-)?\\d{4}-(OBS|FM|PROP|PATCH|XWALK)-\\d{4}$|^(OBS|FM|PROP|PATCH|XWALK)-\\d{4}$"
+    },
+    "string_array": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "external_reference": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "reference_type": {
+          "type": "string"
+        },
+        "note": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

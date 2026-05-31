@@ -42,7 +42,7 @@ def load_records(directories: list[Path]) -> list[dict[str, Any]]:
         if not isinstance(record, dict):
             raise TypeError(f"{path} must contain one JSON object")
         records.append(record)
-    return sorted(records, key=lambda record: record.get("id", ""))
+    return sorted(records, key=lambda record: record.get("id") or record.get("record_identity", {}).get("record_id", ""))
 
 
 def aggregate(records: list[dict[str, Any]], generated_from: str) -> dict[str, Any]:
@@ -75,6 +75,9 @@ def source_types(record: dict[str, Any]) -> list[str]:
         for source in record.get("source_records", [])
         if isinstance(source, dict) and source.get("source_type")
     }
+    source_data = record.get("source_data", {})
+    if isinstance(source_data, dict) and source_data.get("source_type"):
+        types.add(source_data["source_type"])
     return sorted(types)
 
 
@@ -83,16 +86,33 @@ def add_if_present(entry: dict[str, Any], record: dict[str, Any], field: str) ->
         entry[field] = record.get(field)
 
 
+def add_nested_if_present(
+    entry: dict[str, Any], record: dict[str, Any], group: str, field: str, alias: str | None = None
+) -> None:
+    value = record.get(group, {})
+    if isinstance(value, dict) and field in value:
+        entry[alias or field] = value.get(field)
+
+
 def index_record(record: dict[str, Any]) -> dict[str, Any]:
+    record_identity = record.get("record_identity", {})
+    failure_classification = record.get("failure_classification", {})
+    linked_records = record.get("linked_records", {})
+    cam_internal = record.get("cam_internal", {})
     entry: dict[str, Any] = {
         "id": record.get("id", ""),
         "record_type": record.get("record_type", ""),
+        "legacy_record_type": record.get("legacy_record_type", ""),
         "status": record.get("status", ""),
         "date_recorded": record.get("date_recorded", ""),
+        "record_identity": record_identity if isinstance(record_identity, dict) else {},
         "affected_domains": record.get("affected_domains", []),
         "affected_instruments": record.get("affected_instruments", []),
         "evidence_confidence": record.get("evidence_confidence", ""),
         "source_types": source_types(record),
+        "failure_mode_ids": failure_classification.get("failure_mode_ids", []) if isinstance(failure_classification, dict) else [],
+        "linked_records": linked_records if isinstance(linked_records, dict) else {},
+        "cam_internal": cam_internal if isinstance(cam_internal, dict) else {},
     }
     for field in (
         "platform",
@@ -106,6 +126,15 @@ def index_record(record: dict[str, Any]) -> dict[str, Any]:
         add_if_present(entry, record, field)
     if "candidate_amendment_id" in record:
         entry["candidate_amendment_id"] = record.get("candidate_amendment_id")
+    for group, field, alias in (
+        ("source_data", "source_platform", "source_platform"),
+        ("system_context", "platform_or_vendor", "platform_or_vendor"),
+        ("system_context", "model_or_product", "model_or_product"),
+        ("jurisdictional_context", "primary_jurisdiction", "primary_jurisdiction"),
+        ("failure_classification", "severity", "severity"),
+        ("failure_classification", "likelihood", "likelihood"),
+    ):
+        add_nested_if_present(entry, record, group, field, alias)
     entry["path"] = record_path(record)
     entry["summary"] = record.get("summary", "")
     return entry
