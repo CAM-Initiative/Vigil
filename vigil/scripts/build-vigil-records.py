@@ -69,16 +69,54 @@ def record_path(record: dict[str, Any]) -> str:
     return ""
 
 
+def canonical_sources(record: dict[str, Any]) -> list[dict[str, Any]]:
+    source_data = record.get("source_data", {})
+    if isinstance(source_data, dict):
+        sources = source_data.get("sources", [])
+        if isinstance(sources, list):
+            return [source for source in sources if isinstance(source, dict)]
+    source_records = record.get("source_records", [])
+    if isinstance(source_records, list):
+        return [source for source in source_records if isinstance(source, dict)]
+    return []
+
+
 def source_types(record: dict[str, Any]) -> list[str]:
     types = {
         source.get("source_type")
-        for source in record.get("source_records", [])
-        if isinstance(source, dict) and source.get("source_type")
+        for source in canonical_sources(record)
+        if source.get("source_type")
     }
     source_data = record.get("source_data", {})
     if isinstance(source_data, dict) and source_data.get("source_type"):
         types.add(source_data["source_type"])
     return sorted(types)
+
+
+def source_summary(record: dict[str, Any]) -> dict[str, Any]:
+    source_data = record.get("source_data", {})
+    sources = canonical_sources(record)
+    primary = sources[0] if sources else {}
+    if not isinstance(source_data, dict):
+        source_data = {}
+    return {
+        "primary_title": primary.get("title", ""),
+        "primary_author_or_publisher": primary.get("author_or_publisher", ""),
+        "primary_url": (
+            primary.get("url")
+            or source_data.get("primary_source_url")
+            or source_data.get("source_url", "")
+        ),
+        "primary_platform": (
+            primary.get("platform")
+            or source_data.get("primary_source_platform")
+            or source_data.get("source_platform", "")
+        ),
+        "primary_source_type": primary.get("source_type") or source_data.get("source_type", ""),
+        "source_url_status": primary.get("source_url_status", ""),
+        "evidence_confidence": source_data.get("evidence_confidence") or record.get("evidence_confidence", ""),
+        "source_count": len(sources),
+    }
 
 
 def add_if_present(entry: dict[str, Any], record: dict[str, Any], field: str) -> None:
@@ -110,6 +148,7 @@ def index_record(record: dict[str, Any]) -> dict[str, Any]:
         "affected_instruments": record.get("affected_instruments", []),
         "evidence_confidence": record.get("evidence_confidence", ""),
         "source_types": source_types(record),
+        "source_summary": source_summary(record),
         "failure_mode_ids": failure_classification.get("failure_mode_ids", []) if isinstance(failure_classification, dict) else [],
         "linked_records": linked_records if isinstance(linked_records, dict) else {},
         "cam_internal": cam_internal if isinstance(cam_internal, dict) else {},

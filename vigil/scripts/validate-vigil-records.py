@@ -156,6 +156,49 @@ def validate() -> int:
                         f"{source.get('source_type')!r}"
                     )
 
+            source_data = record.get("source_data")
+            if not isinstance(source_data, dict):
+                errors.append(
+                    f"{path}: source_data must be an object when source_records is present"
+                )
+            else:
+                migrated_sources = source_data.get("sources")
+                if not isinstance(migrated_sources, list):
+                    errors.append(
+                        f"{path}: source_data.sources must be an array preserving source_records"
+                    )
+                elif len(migrated_sources) != len(source_records):
+                    errors.append(
+                        f"{path}: source_data.sources length {len(migrated_sources)} does not match "
+                        f"source_records length {len(source_records)}"
+                    )
+                else:
+                    for index, (legacy_source, migrated_source) in enumerate(
+                        zip(source_records, migrated_sources, strict=True)
+                    ):
+                        if not isinstance(legacy_source, dict):
+                            continue
+                        if not isinstance(migrated_source, dict):
+                            errors.append(f"{path}: source_data.sources[{index}] must be an object")
+                            continue
+                        missing_keys = sorted(
+                            key for key in legacy_source if key not in migrated_source
+                        )
+                        if missing_keys:
+                            errors.append(
+                                f"{path}: source_data.sources[{index}] missing legacy source_records keys: "
+                                + ", ".join(missing_keys)
+                            )
+                        changed_values = sorted(
+                            key for key, value in legacy_source.items()
+                            if key in migrated_source and migrated_source.get(key) != value
+                        )
+                        if changed_values:
+                            errors.append(
+                                f"{path}: source_data.sources[{index}] changed legacy source_records values for: "
+                                + ", ".join(changed_values)
+                            )
+
         for array_field in (
             "possible_CAM_mapping",
             "affected_domains",
