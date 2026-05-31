@@ -1,732 +1,762 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://example.invalid/cam/vigil/VIGIL.Schema.json",
-  "title": "VIGIL Records",
-  "description": "Minimal schema for generated VIGIL aggregate files and individual VIGIL observation/workflow records. VIGIL is a public observation layer and does not create CAM doctrine or amend adopted instruments.",
-  "type": "object",
-  "additionalProperties": false,
-  "required": [
-    "generated_from",
-    "generated_at_utc",
-    "record_count",
-    "records",
-    "filename",
-    "id"
-  ],
-  "properties": {
-    "generated_notice": {
-      "type": "string"
-    },
-    "generated_from": {
-      "type": "string"
-    },
-    "generated_at_utc": {
-      "type": "string"
-    },
-    "record_count": {
-      "type": "integer"
-    },
-    "records": {
-      "type": "array",
-      "items": {
-        "$ref": "#/$defs/vigil_record"
-      }
-    },
-    "filename": {
-      "type": "string",
-      "pattern": "^VIGIL-\\d{4}-(OBS|FM|RESEARCH|CLUSTER|PROP|PATCH|XWALK)-\\d{4}\\.json$",
-      "description": "Filename identifier matching conventions like VIGIL-2026-OBS-0001.json, VIGIL-2026-RESEARCH-0001.json, VIGIL-2026-CLUSTER-0001.json, VIGIL-2026-PROP-0001.json"
-    },
-    "id": {
-      "type": "string",
-      "description": "Top-level bundle identifier (must be unique)."
-    }
-  },
-  "$defs": {
-    "record_type": {
-      "type": "string",
-      "enum": [
-        "emerging-tech-signal",
-        "failure-mode-observation",
-        "proposal-development-expansion",
-        "cluster",
-        "observation",
-        "failure_mode",
-        "proposal",
-        "patch",
-        "crosswalk"
-      ]
-    },
-    "status": {
-      "type": "string",
-      "enum": [
-        "active",
-        "open",
-        "watching",
-        "clustered",
-        "routed",
-        "deferred",
-        "closed-no-action",
-        "closed-actioned"
-      ]
-    },
-    "evidence_confidence": {
-      "type": "string",
-      "enum": [
-        "verified",
-        "corroborated",
-        "unverified",
-        "anecdotal",
-        "disputed",
-        "unknown"
-      ]
-    },
-    "source_type": {
-      "type": "string",
-      "enum": [
-        "deep-research-agent",
-        "automated-search",
-        "news-report",
-        "official-source",
-        "academic-source",
-        "standards-source",
-        "social-platform-observation",
-        "platform-behaviour-observation",
-        "repository-observation",
-        "third-party-report",
-        "other"
-      ]
-    },
-    "source_record": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "title",
-        "author_or_publisher",
-        "source_date",
-        "url",
-        "archive_url",
-        "retrieved_date",
-        "source_type",
-        "relevance_note"
-      ],
-      "properties": {
-        "title": {
-          "type": "string"
-        },
-        "author_or_publisher": {
-          "type": "string"
-        },
-        "source_date": {
-          "type": "string"
-        },
-        "url": {
-          "type": "string"
-        },
-        "archive_url": {
-          "type": "string"
-        },
-        "retrieved_date": {
-          "type": "string"
-        },
-        "source_type": {
-          "$ref": "#/$defs/source_type"
-        },
-        "platform": {
-          "type": "string",
-          "description": "Platform, provider, organisation, or ecosystem actor associated with this source, where known."
-        },
-        "system_or_product": {
-          "type": "string",
-          "description": "Product, service, system, algorithmic layer, or deployed interface associated with this source."
-        },
-        "model_or_algorithm": {
-          "type": "string",
-          "description": "Specific model, algorithm, recommender, classifier, agent, or runtime system implicated by this source, where known."
-        },
-        "deployment_context": {
-          "type": "string",
-          "description": "Context in which the sourced system was observed or described."
-        },
-        "relevance_note": {
-          "type": "string"
-        },
-        "source_context": {
-          "type": "string"
-        },
-        "source_url_status": {
-          "type": "string"
-        }
-      }
-    },
-    "vigil_record": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
+  "version": "1.0",
+  "purpose": "Authoritative machine-readable schema rules for VIGIL record validation. These rules define the record ontology and must be implemented mechanically by schemas and validators without redesigning record meanings.",
+  "record_classes": {
+    "observation": {
+      "id_prefix": "OBS",
+      "description": "Observation / early warning signal. Preserves source evidence and cautious relevance without failure-mode triage or CAM repair logic.",
+      "required_top_level_fields": [
         "id",
         "record_type",
-        "status",
+        "record_state",
         "date_recorded",
+        "record_identity",
         "summary",
         "why_it_matters_to_CAM",
         "evidence_confidence",
         "source_records",
-        "possible_CAM_mapping",
-        "next_action"
+        "source_data",
+        "system_context",
+        "jurisdictional_context",
+        "linked_records",
+        "cam_internal",
+        "next_action",
+        "migration_notes"
       ],
-      "properties": {
-        "id": {
-          "type": "string"
-        },
-        "record_type": {
-          "$ref": "#/$defs/record_type"
-        },
-        "status": {
-          "$ref": "#/$defs/status"
-        },
-        "date_observed": {
-          "type": "string"
-        },
-        "date_recorded": {
-          "type": "string"
-        },
-        "date_reviewed": {
-          "type": "string",
-          "description": "Date the VIGIL record was last reviewed without necessarily being closed."
-        },
-        "recorded_by": {
-          "type": "string"
-        },
-        "reviewed_by": {
-          "type": "string",
-          "description": "Person, steward, or process that reviewed the VIGIL record."
-        },
-        "summary": {
-          "type": "string"
-        },
-        "review_observation": {
-          "type": "string",
-          "description": "Short reviewer note describing what was observed, changed, confirmed, deferred, or left unresolved during review."
-        },
-        "why_it_matters_to_CAM": {
-          "type": "string"
-        },
-        "evidence_confidence": {
-          "$ref": "#/$defs/evidence_confidence"
-        },
-        "source_records": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/source_record"
-          }
-        },
-        "platform": {
-          "type": "string",
-          "description": "Primary platform, provider, organisation, or ecosystem actor associated with the observation, where known."
-        },
-        "system_or_product": {
-          "type": "string",
-          "description": "Product, service, system, algorithmic layer, or deployed interface associated with the observation."
-        },
-        "model_or_algorithm": {
-          "type": "string",
-          "description": "Specific model, algorithm, recommender, classifier, agent, or runtime system implicated by the observation, where known."
-        },
-        "deployment_context": {
-          "type": "string",
-          "description": "Context in which the system was observed, such as web app, mobile app, API, enterprise deployment, social platform, content moderation system, recommendation system, or repository automation."
-        },
-        "ecosystem_area": {
-          "type": "string",
-          "description": "Broad ecosystem area implicated by the observation, such as AI assistant, social platform, search, content moderation, recommender systems, cloud infrastructure, developer tooling, synthetic media, neurotechnology, or public legitimacy layer."
-        },
-        "failure_mode": {
-          "type": "string",
-          "description": "Specific observed failure mode or governance pattern described by the record."
-        },
-        "next_action": {
-          "type": "string"
-        },
-        "cluster_id": {
-          "type": "string"
-        },
-        "related_record_ids": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "supersedes_record_ids": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "candidate_amendment_id": {
-          "type": "string"
-        },
-        "possible_CAM_mapping": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "affected_domains": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "affected_instruments": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "failure_family": {
-          "type": "string"
-        },
-        "amendment_class": {
-          "type": "string"
-        },
-        "governance_drift_type": {
-          "type": "string"
-        },
-        "provenance_notes": {
-          "type": "string",
-          "description": "Optional notes describing provenance assumptions, provisional mappings, or calibration needs for the record."
-        },
-        "closure_outcome": {
-          "type": "string"
-        },
-        "closure_notes": {
-          "type": "string"
-        },
-        "actioned_by": {
-          "type": "string"
-        },
-        "date_closed": {
-          "type": "string"
-        },
-        "record_identity": {
-          "type": "object",
-          "additionalProperties": true,
-          "properties": {
-            "record_id": {
-              "$ref": "#/$defs/record_id"
-            },
-            "record_type": {
-              "$ref": "#/$defs/record_type"
-            },
-            "title": {
-              "type": "string"
-            },
-            "status": {
-              "type": "string"
-            },
-            "created": {
-              "type": "string"
-            },
-            "updated": {
-              "type": "string"
-            },
-            "version": {
-              "type": "string"
-            }
-          },
-          "required": [
-            "record_id",
-            "record_type",
-            "title",
-            "status"
-          ],
-          "description": "Stable public record identity."
-        },
-        "source_data": {
-          "type": "object",
-          "additionalProperties": true,
-          "properties": {
-            "source_type": {
-              "type": "string"
-            },
-            "source_url": {
-              "type": "string"
-            },
-            "source_platform": {
-              "type": "string"
-            },
-            "source_author_or_account": {
-              "type": "string"
-            },
-            "date_observed": {
-              "type": "string"
-            },
-            "date_published": {
-              "type": "string"
-            },
-            "archive_status": {
-              "type": "string"
-            },
-            "evidence_availability": {
-              "type": "string"
-            },
-            "evidence_confidence": {
-              "type": "string"
-            },
-            "reproducibility": {
-              "type": "string"
-            },
-            "primary_source_url": {
-              "type": "string"
-            },
-            "primary_source_platform": {
-              "type": "string"
-            },
-            "primary_source_author_or_account": {
-              "type": "string"
-            },
-            "sources": {
-              "type": "array",
-              "items": {
-                "$ref": "#/$defs/source_item"
-              },
-              "description": "Canonical v2 source preservation array copied from legacy source_records without source-level field loss."
-            }
-          },
-          "description": "External source evidence. Required in substance for observations; may be minimal or not applicable for reusable classifications and proposals."
-        },
-        "system_context": {
-          "type": "object",
-          "additionalProperties": true,
-          "properties": {
-            "system_type": {
-              "type": "string"
-            },
-            "platform_or_vendor": {
-              "type": "string"
-            },
-            "model_or_product": {
-              "type": "string"
-            },
-            "interaction_mode": {
-              "type": "string"
-            },
-            "embodiment_status": {
-              "type": "string"
-            },
-            "deployment_context": {
-              "type": "string"
-            },
-            "user_role": {
-              "type": "string"
-            },
-            "affected_population": {
-              "type": "string"
-            }
-          }
-        },
-        "jurisdictional_context": {
-          "type": "object",
-          "additionalProperties": true,
-          "properties": {
-            "primary_jurisdiction": {
-              "type": "string"
-            },
-            "secondary_jurisdictions": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "regulatory_surface": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "sector": {
-              "type": "string"
-            },
-            "cross_border_relevance": {
-              "type": "string"
-            },
-            "public_interest_relevance": {
-              "type": "string"
-            }
-          }
-        },
-        "failure_classification": {
-          "type": "object",
-          "additionalProperties": true,
-          "properties": {
-            "failure_mode_ids": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "failure_family": {
-              "type": "string"
-            },
-            "harm_vectors": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "severity": {
-              "type": "string"
-            },
-            "likelihood": {
-              "type": "string"
-            },
-            "confidence": {
-              "type": "string"
-            },
-            "affected_rights_or_interests": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          }
-        },
-        "linked_records": {
-          "type": "object",
-          "additionalProperties": true,
-          "properties": {
-            "observations": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "failure_modes": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "proposals": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "patches": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "external_references": {
-              "type": "array",
-              "items": {
-                "$ref": "#/$defs/external_reference"
-              }
-            }
-          }
-        },
-        "cam_internal": {
-          "type": "object",
-          "additionalProperties": true,
-          "properties": {
-            "affected_instruments": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "affected_annexes": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "affected_domains": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "governance_layer": {
-              "type": "string"
-            },
-            "patch_status": {
-              "type": "string"
-            },
-            "validator_or_automation_impact": {
-              "type": "string"
-            }
-          },
-          "description": "CAM internal routing metadata; not the public primary classification layer."
-        },
-        "robotics_context": {
-          "type": "object",
-          "additionalProperties": true,
-          "properties": {
-            "robot_class": {
-              "type": "string"
-            },
-            "mobility_type": {
-              "type": "string"
-            },
-            "actuation_capability": {
-              "type": "string"
-            },
-            "physical_environment": {
-              "type": "string"
-            },
-            "proximity_to_humans": {
-              "type": "string"
-            },
-            "safety_boundary": {
-              "type": "string"
-            },
-            "human_override_available": {
-              "type": "string"
-            },
-            "emergency_stop_available": {
-              "type": "string"
-            },
-            "operator_present": {
-              "type": "string"
-            },
-            "physical_harm_potential": {
-              "type": "string"
-            },
-            "property_harm_potential": {
-              "type": "string"
-            }
-          },
-          "description": "Optional extension for robotics or embodied-system observations."
-        },
-        "failure_mode_details": {
-          "type": "object",
-          "additionalProperties": true,
-          "properties": {
-            "failure_mode_id": {
-              "type": "string"
-            },
-            "name": {
-              "type": "string"
-            },
-            "definition": {
-              "type": "string"
-            },
-            "applicable_system_types": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "known_observations": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "known_proposals": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "harm_vectors": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "mitigation_pathways": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "jurisdictional_or_sector_relevance": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          },
-          "description": "Reusable classification details for record_identity.record_type=failure_mode."
-        },
-        "migration_notes": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "legacy_record_type": {
-          "type": "string"
-        }
+      "forbidden_top_level_fields": [
+        "failure_classification",
+        "triage",
+        "proposal_rationale",
+        "proposal_type",
+        "proposal_scope",
+        "implementation_notes",
+        "external_relevance",
+        "change_classification",
+        "change_details",
+        "date_implemented",
+        "implementation_verification",
+        "impact_summary",
+        "remaining_work",
+        "failure_mode_definition",
+        "failure_threshold"
+      ],
+      "required_nested_fields": {
+        "record_identity": [
+          "record_id",
+          "record_type",
+          "title",
+          "created",
+          "updated",
+          "version"
+        ],
+        "source_data": [
+          "primary_source_type",
+          "primary_source_url",
+          "primary_source_platform",
+          "primary_source_author_or_account",
+          "date_observed",
+          "date_published",
+          "archive_status",
+          "evidence_availability",
+          "evidence_confidence",
+          "reproducibility",
+          "sources"
+        ],
+        "system_context": [
+          "system_type",
+          "platform_or_vendor",
+          "model_or_product",
+          "interaction_mode",
+          "embodiment_status",
+          "deployment_context",
+          "user_role",
+          "affected_population"
+        ],
+        "jurisdictional_context": [
+          "primary_jurisdiction",
+          "secondary_jurisdictions",
+          "regulatory_surface",
+          "sector",
+          "cross_border_relevance",
+          "public_interest_relevance"
+        ],
+        "linked_records": [
+          "related_observations",
+          "external_references",
+          "research",
+          "standards"
+        ],
+        "cam_internal": [
+          "related_or_similar_instruments",
+          "related_or_similar_annexes",
+          "related_or_similar_domains",
+          "governance_layer",
+          "routing_note",
+          "validator_or_automation_impact"
+        ]
       }
     },
-    "source_item": {
-      "type": "object",
-      "additionalProperties": true,
-      "required": [
-        "title",
-        "author_or_publisher",
-        "source_date",
-        "url",
-        "archive_url",
-        "retrieved_date",
-        "source_type",
-        "platform",
-        "system_or_product",
-        "model_or_algorithm",
-        "deployment_context",
-        "source_context",
-        "source_url_status",
-        "relevance_note"
+    "failure_mode": {
+      "id_prefix": "FM",
+      "description": "Confirmed, strongly evidenced, or clearly recurring failure pattern requiring triage.",
+      "required_top_level_fields": [
+        "id",
+        "record_type",
+        "record_state",
+        "date_recorded",
+        "record_identity",
+        "summary",
+        "failure_mode_definition",
+        "failure_threshold",
+        "evidence_confidence",
+        "source_records",
+        "source_data",
+        "system_context",
+        "failure_classification",
+        "triage",
+        "jurisdictional_context",
+        "linked_records",
+        "cam_internal",
+        "migration_notes"
       ],
-      "properties": {
-        "title": {
-          "type": "string"
-        },
-        "author_or_publisher": {
-          "type": "string"
-        },
-        "source_date": {
-          "type": "string"
-        },
-        "url": {
-          "type": "string"
-        },
-        "archive_url": {
-          "type": "string"
-        },
-        "retrieved_date": {
-          "type": "string"
-        },
-        "source_type": {
-          "$ref": "#/$defs/source_type"
-        },
-        "platform": {
-          "type": "string"
-        },
-        "system_or_product": {
-          "type": "string"
-        },
-        "model_or_algorithm": {
-          "type": "string"
-        },
-        "deployment_context": {
-          "type": "string"
-        },
-        "source_context": {
-          "type": "string"
-        },
-        "source_url_status": {
-          "type": "string"
-        },
-        "relevance_note": {
-          "type": "string"
-        }
+      "forbidden_top_level_fields": [
+        "proposal_rationale",
+        "proposal_type",
+        "proposal_scope",
+        "implementation_notes",
+        "external_relevance",
+        "change_classification",
+        "change_details",
+        "date_implemented",
+        "implementation_verification",
+        "impact_summary",
+        "remaining_work",
+        "next_action"
+      ],
+      "required_nested_fields": {
+        "record_identity": [
+          "record_id",
+          "record_type",
+          "title",
+          "created",
+          "updated",
+          "version"
+        ],
+        "source_data": [
+          "primary_source_type",
+          "primary_source_url",
+          "primary_source_platform",
+          "primary_source_author_or_account",
+          "date_observed",
+          "date_published",
+          "archive_status",
+          "evidence_availability",
+          "evidence_confidence",
+          "reproducibility",
+          "sources"
+        ],
+        "system_context": [
+          "system_type",
+          "platform_or_vendor",
+          "model_or_product",
+          "interaction_mode",
+          "embodiment_status",
+          "deployment_context",
+          "user_role",
+          "affected_population"
+        ],
+        "failure_classification": [
+          "failure_family",
+          "failure_subtype",
+          "harm_vectors",
+          "severity",
+          "likelihood",
+          "confidence",
+          "affected_rights_or_interests",
+          "failure_scope",
+          "recurrence_pattern"
+        ],
+        "triage": [
+          "triage_priority",
+          "triage_owner",
+          "triage_status",
+          "mitigation_status",
+          "escalation_required",
+          "recommended_next_step"
+        ],
+        "jurisdictional_context": [
+          "primary_jurisdiction",
+          "secondary_jurisdictions",
+          "regulatory_surface",
+          "sector",
+          "cross_border_relevance",
+          "public_interest_relevance"
+        ],
+        "linked_records": [
+          "related_observations",
+          "related_failure_modes",
+          "related_proposals",
+          "related_patch_notes",
+          "external_references",
+          "research",
+          "standards"
+        ],
+        "cam_internal": [
+          "affected_instruments",
+          "affected_annexes",
+          "affected_domains",
+          "governance_layer",
+          "proposal_needed",
+          "linked_proposals",
+          "patch_note_needed",
+          "validator_or_automation_impact",
+          "routing_note"
+        ]
+      }
+    },
+    "proposal": {
+      "id_prefix": "PROP",
+      "description": "CAM-specific governance development, repair recommendation, amendment idea, or operational proposal. Proposals do not claim implementation.",
+      "required_top_level_fields": [
+        "id",
+        "record_type",
+        "record_state",
+        "date_recorded",
+        "record_identity",
+        "summary",
+        "proposal_rationale",
+        "proposal_type",
+        "proposal_scope",
+        "evidence_confidence",
+        "source_data",
+        "linked_records",
+        "cam_internal",
+        "implementation_notes",
+        "external_relevance",
+        "next_action",
+        "migration_notes"
+      ],
+      "conditional_top_level_fields": {
+        "source_records": "Required when the proposal cites observations, failure modes, research, standards, external evidence, repository sources, or governance notes. May be an empty array only when the proposal is purely anticipatory or design-based."
+      },
+      "forbidden_top_level_fields": [
+        "failure_classification",
+        "triage",
+        "failure_mode_definition",
+        "failure_threshold",
+        "change_classification",
+        "change_details",
+        "date_implemented",
+        "implementation_verification",
+        "impact_summary",
+        "remaining_work"
+      ],
+      "required_nested_fields": {
+        "record_identity": [
+          "record_id",
+          "record_type",
+          "title",
+          "created",
+          "updated",
+          "version"
+        ],
+        "proposal_scope": [
+          "scope_summary",
+          "cam_domains",
+          "cam_instruments",
+          "cam_annexes",
+          "registry_components",
+          "automation_components",
+          "interface_components",
+          "external_relevance"
+        ],
+        "source_data": [
+          "primary_source_type",
+          "primary_source_url",
+          "primary_source_platform",
+          "primary_source_author_or_account",
+          "date_observed",
+          "date_published",
+          "archive_status",
+          "evidence_availability",
+          "evidence_confidence",
+          "reproducibility",
+          "sources"
+        ],
+        "linked_records": [
+          "related_observations",
+          "related_failure_modes",
+          "related_proposals",
+          "related_patch_notes",
+          "external_references",
+          "research",
+          "standards"
+        ],
+        "cam_internal": [
+          "target_instruments",
+          "target_annexes",
+          "target_domains",
+          "governance_layer",
+          "proposal_owner",
+          "drafting_status",
+          "validator_or_automation_impact",
+          "interface_impact",
+          "registry_impact",
+          "routing_note"
+        ],
+        "implementation_notes": [
+          "suggested_insertion_points",
+          "template_changes",
+          "schema_changes",
+          "validator_changes",
+          "automation_changes",
+          "interface_changes",
+          "migration_concerns",
+          "dependencies"
+        ],
+        "external_relevance": [
+          "relevant_to_platforms",
+          "relevant_to_regulators",
+          "relevant_to_robotics",
+          "relevant_to_ux",
+          "relevant_to_standards",
+          "relevant_to_researchers",
+          "external_summary"
+        ]
+      }
+    },
+    "patch_note": {
+      "id_prefix": "PATCH",
+      "description": "Implemented CAM-specific change, repair, registry correction, template update, schema update, validator update, automation update, interface update, or documentation change.",
+      "required_top_level_fields": [
+        "id",
+        "record_type",
+        "record_state",
+        "date_recorded",
+        "date_implemented",
+        "record_identity",
+        "summary",
+        "change_classification",
+        "change_details",
+        "evidence_confidence",
+        "source_records",
+        "source_data",
+        "linked_records",
+        "cam_internal",
+        "implementation_verification",
+        "impact_summary",
+        "remaining_work",
+        "migration_notes"
+      ],
+      "forbidden_top_level_fields": [
+        "failure_classification",
+        "triage",
+        "failure_mode_definition",
+        "failure_threshold",
+        "proposal_rationale",
+        "proposal_type",
+        "proposal_scope",
+        "implementation_notes",
+        "external_relevance",
+        "next_action"
+      ],
+      "required_nested_fields": {
+        "record_identity": [
+          "record_id",
+          "record_type",
+          "title",
+          "created",
+          "updated",
+          "version"
+        ],
+        "change_classification": [
+          "patch_type",
+          "change_scope",
+          "implementation_mode"
+        ],
+        "change_details": [
+          "before_state",
+          "after_state",
+          "files_changed",
+          "records_changed",
+          "schemas_changed",
+          "templates_changed",
+          "scripts_changed",
+          "workflows_changed",
+          "interface_components_changed"
+        ],
+        "source_data": [
+          "primary_source_type",
+          "primary_source_url",
+          "primary_source_platform",
+          "primary_source_author_or_account",
+          "date_observed",
+          "date_published",
+          "archive_status",
+          "evidence_availability",
+          "evidence_confidence",
+          "reproducibility",
+          "sources"
+        ],
+        "linked_records": [
+          "related_observations",
+          "related_failure_modes",
+          "related_proposals",
+          "related_patch_notes",
+          "external_references",
+          "research",
+          "standards",
+          "commits",
+          "pull_requests",
+          "issues"
+        ],
+        "cam_internal": [
+          "changed_instruments",
+          "changed_annexes",
+          "changed_domains",
+          "changed_registry_components",
+          "changed_templates",
+          "changed_schemas",
+          "changed_validators",
+          "changed_automations",
+          "changed_interface_components",
+          "governance_layer",
+          "routing_note"
+        ],
+        "implementation_verification": [
+          "verification_status",
+          "validation_commands_run",
+          "tests_run",
+          "workflow_status",
+          "manual_review_status",
+          "known_failures",
+          "verification_notes"
+        ],
+        "impact_summary": [
+          "public_effect",
+          "cam_effect",
+          "interface_effect",
+          "automation_effect",
+          "validator_effect",
+          "external_relevance",
+          "backward_compatibility",
+          "migration_impact"
+        ],
+        "remaining_work": [
+          "follow_up_proposals",
+          "known_gaps",
+          "manual_review_needed",
+          "future_automation",
+          "interface_follow_up",
+          "schema_follow_up",
+          "validator_follow_up",
+          "records_requiring_cleanup"
+        ]
       }
     }
-  }
+  },
+  "universal_rules": {
+    "id_format": "^VIGIL-[0-9]{4}-(OBS|FM|PROP|PATCH)-[0-9]{4}$",
+    "record_identity_consistency": [
+      "record_identity.record_id must equal top-level id.",
+      "record_identity.record_type must equal top-level record_type.",
+      "The ID prefix must match record_type: OBS=observation, FM=failure_mode, PROP=proposal, PATCH=patch_note."
+    ],
+    "source_preservation": [
+      "source_records must not be flattened or discarded.",
+      "If source_records exists, source_data.sources must exist.",
+      "source_data.sources length must equal source_records length unless the record type explicitly permits empty source_records.",
+      "Each source_data.sources item must preserve every key present in the corresponding source_records item.",
+      "source_records is authoritative when migrating legacy source data into source_data.sources."
+    ],
+    "linked_record_integrity": [
+      "Linked VIGIL IDs should match the universal VIGIL ID format.",
+      "Linked records should resolve to files where strict validation is enabled.",
+      "Unresolved linked IDs may warn in draft mode but should fail in release validation unless explicitly marked external or pending.",
+      "A proposal must not list itself as a patch note.",
+      "A patch note must not claim implementation without date_implemented and implementation_verification."
+    ],
+    "semantic_separation": [
+      "Observation records must not contain failure triage, CAM repair logic, proposal scope, or patch implementation fields.",
+      "Failure Mode records must explain why the observation-to-failure threshold has been crossed.",
+      "Proposal records describe proposed CAM development and must not claim implementation.",
+      "Patch Note records describe implemented changes and must distinguish completed work from remaining work."
+    ]
+  },
+  "canonical_source_item_fields": [
+    "source_title",
+    "author_or_publisher",
+    "source_date",
+    "source_url",
+    "archive_url",
+    "retrieved_date",
+    "source_type",
+    "source_platform",
+    "system_or_product",
+    "model_or_algorithm",
+    "deployment_context",
+    "source_context",
+    "source_url_status",
+    "relevance_note"
+  ],
+  "allowed_values": {
+    "record_type": [
+      "observation",
+      "failure_mode",
+      "proposal",
+      "patch_note"
+    ],
+    "record_state": {
+      "observation": [
+        "active",
+        "watching",
+        "archived",
+        "closed-no-action"
+      ],
+      "failure_mode": [
+        "triage-required",
+        "active",
+        "under-review",
+        "linked-to-proposal",
+        "mitigation-identified",
+        "closed-superseded",
+        "closed-no-action"
+      ],
+      "proposal": [
+        "draft",
+        "active",
+        "under-review",
+        "accepted-for-drafting",
+        "implemented",
+        "superseded",
+        "withdrawn",
+        "closed-no-action"
+      ],
+      "patch_note": [
+        "implemented",
+        "partially-implemented",
+        "superseded",
+        "reverted",
+        "deprecated"
+      ]
+    },
+    "evidence_confidence": [
+      "verified",
+      "corroborated",
+      "unverified",
+      "anecdotal",
+      "disputed",
+      "unknown",
+      "not applicable"
+    ],
+    "source_url_status": [
+      "available",
+      "partial",
+      "unavailable",
+      "archived",
+      "unknown",
+      "not applicable"
+    ],
+    "archive_status": [
+      "archived",
+      "not archived",
+      "unavailable",
+      "unknown",
+      "not applicable"
+    ],
+    "evidence_availability": [
+      "available",
+      "partial",
+      "unavailable",
+      "unknown",
+      "not applicable"
+    ],
+    "reproducibility": [
+      "reproducible",
+      "not reproducible",
+      "not applicable",
+      "unknown"
+    ],
+    "system_type": [
+      "assistant",
+      "agentic system",
+      "recommender",
+      "moderation system",
+      "platform",
+      "robotics",
+      "weapon system",
+      "cognitive interface",
+      "wearable",
+      "infrastructure system",
+      "other",
+      "unknown"
+    ],
+    "interaction_mode": [
+      "chat",
+      "voice",
+      "API",
+      "platform feed",
+      "automated decision",
+      "physical",
+      "multi-device",
+      "human-machine teaming",
+      "other",
+      "unknown"
+    ],
+    "embodiment_status": [
+      "non-embodied",
+      "embodied",
+      "mixed",
+      "unknown",
+      "not applicable"
+    ],
+    "severity": [
+      "low",
+      "moderate",
+      "high",
+      "critical",
+      "to be assessed"
+    ],
+    "likelihood": [
+      "rare",
+      "possible",
+      "likely",
+      "recurring",
+      "unknown",
+      "to be assessed"
+    ],
+    "failure_scope": [
+      "single-instance",
+      "recurrent",
+      "systemic",
+      "cross-platform",
+      "jurisdiction-specific",
+      "unknown"
+    ],
+    "triage_priority": [
+      "low",
+      "medium",
+      "high",
+      "urgent",
+      "to be assessed"
+    ],
+    "triage_status": [
+      "new",
+      "needs-review",
+      "under-review",
+      "proposal-needed",
+      "proposal-linked",
+      "mitigation-identified",
+      "closed"
+    ],
+    "mitigation_status": [
+      "none identified",
+      "proposed",
+      "in progress",
+      "implemented",
+      "not applicable",
+      "unknown"
+    ],
+    "yes_no_assess": [
+      "yes",
+      "no",
+      "to be assessed"
+    ],
+    "impact_flag": [
+      "none",
+      "possible",
+      "required",
+      "unknown"
+    ],
+    "drafting_status": [
+      "not started",
+      "drafting needed",
+      "in drafting",
+      "ready for review",
+      "accepted",
+      "implemented",
+      "superseded",
+      "withdrawn"
+    ],
+    "external_relevance_flag": [
+      "yes",
+      "no",
+      "possible",
+      "unknown"
+    ],
+    "change_scope": [
+      "minor",
+      "moderate",
+      "major",
+      "structural",
+      "emergency"
+    ],
+    "implementation_mode": [
+      "manual",
+      "semi-automated",
+      "automated",
+      "validator-enforced",
+      "interface-only",
+      "documentation-only"
+    ],
+    "verification_status": [
+      "verified",
+      "partially-verified",
+      "not-verified",
+      "manual-review-only",
+      "failed-validation",
+      "unknown"
+    ],
+    "workflow_status": [
+      "passed",
+      "failed",
+      "not run",
+      "unknown",
+      "not applicable"
+    ],
+    "manual_review_status": [
+      "reviewed",
+      "not reviewed",
+      "needs review",
+      "not applicable"
+    ],
+    "backward_compatibility": [
+      "compatible",
+      "partially-compatible",
+      "breaking-change",
+      "unknown"
+    ]
+  },
+  "validator_failure_rules": [
+    "Invalid JSON syntax must fail.",
+    "Missing required top-level fields must fail.",
+    "Missing required nested fields must fail.",
+    "Forbidden fields for the record type must fail.",
+    "id, record_identity.record_id, and filename stem mismatch must fail unless explicitly permitted by migration mode.",
+    "record_type and ID prefix mismatch must fail.",
+    "source_records without source_data.sources must fail.",
+    "source_data.sources/source_records length mismatch must fail.",
+    "Source key loss between source_records and source_data.sources must fail.",
+    "Proposal self-link as patch note must fail.",
+    "Patch Note without date_implemented must fail.",
+    "Patch Note without implementation_verification must fail."
+  ],
+  "validator_warning_rules": [
+    "Unknown jurisdiction may warn but should not fail.",
+    "Empty optional arrays may warn only when the record type expects substantive links.",
+    "Unresolved linked records may warn in draft mode.",
+    "Evidence confidence unknown may warn for failure modes and patch notes.",
+    "Source URL unavailable may warn unless evidence_availability is also unavailable and explanation is present."
+  ],
+  "implementation_notes_for_codex": [
+    "Do not redesign record classes.",
+    "Do not infer missing evidence.",
+    "Do not rewrite existing records during schema implementation unless the user explicitly requests migration.",
+    "Create separate schema files per record type and a combined oneOf record schema.",
+    "Update validation scripts to enforce semantic invariants that JSON Schema cannot express.",
+    "Add fixtures for valid and invalid examples of each record type.",
+    "Do not loosen validation to make malformed records pass."
+  ]
 }

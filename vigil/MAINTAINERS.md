@@ -2,151 +2,405 @@
 
 ## Purpose
 
-VIGIL is the public workflow, observation, classification, and proposal registry for tracking AI governance failures and repair work before they become CAM amendments or implementation changes. It relates to CAM governance by preserving externally legible source data, reusable failure-mode classification, and proposal/patch routing metadata without itself creating CAM doctrine or amending adopted instruments.
+VIGIL is a public workflow, observation, failure-mode, proposal, and patch-note registry for preserving AI governance signals, triaging failure patterns, developing CAM-specific repair proposals, and recording implemented CAM changes.
 
-VIGIL is source-data-first so public observations can be understood by external researchers, platform operators, UX reviewers, robotics and embodied-AI reviewers, and regulators without needing to understand CAM instrument numbering. CAM affected instruments remain important, but they are internal routing metadata rather than the primary public classification layer.
+VIGIL is subordinate to CAM's constitutional and operational order. VIGIL does not create doctrine, amend adopted instruments, determine liability, or verify final factual truth.
 
-VIGIL supports external ingestion by keeping source data, system context, jurisdictional context, failure modes, harm vectors, severity, linked proposals, and patch status in machine-readable fields. This makes the registry suitable for UX, platform, robotics, embodied AI, regulator-facing, and third-party records.
+A VIGIL record may inform CAM governance work, but it is not itself a CAM amendment.
 
-## Registry philosophy
+## Registry Philosophy
 
-```text
-Observation records are source-data-first.
-Failure mode records are reusable classification objects.
-Proposal records are governance repair notes.
-CAM affected instruments are internal routing metadata.
-```
-
-Source evidence belongs in an observation. Reusable classification belongs in a failure mode. Repair logic belongs in a proposal. CAM patch routing belongs in `cam_internal`.
-
-## Canonical chain
-
-The canonical VIGIL chain is:
+VIGIL separates four different activities that must not be collapsed:
 
 ```text
-OBS → FM → PROP → CAM Patch Queue
+OBS   preserves observed signals and source evidence.
+FM    records and triages confirmed or strongly evidenced failure modes.
+PROP  develops CAM-specific governance repair logic.
+PATCH records implemented CAM changes.
 ```
 
-The chain may be partial. Valid examples include:
+The registry is source-data-first and record-class-specific.
+
+External users should be able to understand a VIGIL record from its source data, system context, jurisdictional context, and record type without needing to understand CAM instrument numbering.
+
+CAM routing remains important, but it is internal maintainer metadata.
+
+## Current Record Classes
+
+### OBS — Observation Record
+
+An Observation Record captures an observed signal, event, report, source item, public development, platform behaviour, system behaviour, jurisdictional development, or early warning input that may be relevant to AI governance, robotics governance, platform governance, UX safety, public legitimacy, or CAM.
+
+Observation records are not automatically failure modes.
+
+Use OBS when:
+
+* something relevant has been observed;
+* evidence may be incomplete, emerging, disputed, or provisional;
+* the record should preserve source evidence before governance meaning is fully known;
+* the record may later inform a Failure Mode or Proposal record.
+
+OBS records must not include failure-mode triage or CAM repair logic.
+
+### FM — Failure Mode Record
+
+A Failure Mode Record captures a confirmed, strongly evidenced, recurring, or clearly triage-worthy failure pattern.
+
+Use FM when:
+
+* a system behaviour has failed in a recognizable way;
+* harm, risk, procedural breakdown, safety degradation, or governance instability is evident;
+* the same pattern may recur across systems, platforms, contexts, or jurisdictions;
+* the issue requires triage, mitigation, classification, escalation, or CAM proposal development.
+
+FM records must include failure definition, failure threshold, classification, triage, evidence, and routing implications.
+
+### PROP — Proposal Record
+
+A Proposal Record captures CAM-specific governance development, repair recommendation, amendment logic, template improvement, registry change, interface update, validator change, automation improvement, doctrinal clarification, or operational design proposal.
+
+Use PROP when:
+
+* CAM governance development is being proposed;
+* an observation or failure mode suggests CAM may need repair, expansion, or clarification;
+* a registry, template, validator, automation, interface, or instrument should be updated;
+* a governance idea needs to be preserved before implementation.
+
+PROP records must not claim implementation.
+
+### PATCH — Patch Note Record
+
+A Patch Note Record captures an implemented CAM-specific change, repair, update, amendment, registry correction, template update, schema update, validator update, automation update, interface update, crosswalk update, or documentation change.
+
+Use PATCH only when:
+
+* a change has actually been implemented;
+* maintainers need a public and machine-readable record of what changed and why;
+* a proposal has been adopted or partially implemented;
+* a failure mode has resulted in a concrete repair.
+
+PATCH records must distinguish completed work from remaining work.
+
+## Template Files
+
+Approved record templates are stored under `vigil/templates/`.
 
 ```text
-OBS only
-OBS → FM
-OBS → FM → PROP
-PROP only
-PROP → CAM Patch Queue
-OBS → FM → PROP → CAM Patch Queue
+observation-record-template.md
+observation-record-template.json
+
+failure-mode-record-template.md
+failure-mode-record-template.json
+
+proposal-record-tempate.md
+proposal-record-tempate.json
+
+patch-note-record-template.md
+patch-note-record-template.json
 ```
 
-Use `linked_records.observations`, `linked_records.failure_modes`, `linked_records.proposals`, and `linked_records.patches` to connect the chain. Link records rather than duplicating long descriptions.
+The Markdown templates define the human-readable meaning of each record type.
 
-## Decision model
+The JSON templates define the machine-readable skeletons.
 
-Create an **observation** when there is source evidence of a public, platform, product, system, governance, UX, robotics, or embodied-agent event or pattern. Do not add repair logic beyond immediate next-action notes.
+If a filename typo exists in the repository, preserve the existing filename until a deliberate rename patch updates all references.
 
-Create a **failure mode** when several observations or proposals need a reusable classification object, or when a single well-defined failure pattern should be available for future records. Failure modes are not tags; they have IDs, names, definitions, applicable system types, known observations, known proposals, harm vectors, mitigation pathways, and jurisdictional or sector relevance where known.
+## Schema Rules
 
-Create a **proposal** when VIGIL has repair logic, governance amendments, validator changes, templates, or design recommendations. Proposals may exist without observations, but they should link observations or failure modes where continuity matters.
+The canonical schema-rules contract is:
 
-Create a **patch queue item** when a proposal or observation has been routed to a concrete CAM instrument, validator, automation, template, or governance-interface update.
+```text
+vigil/VIGIL.Schema.json
+```
 
-Create a **crosswalk** when the purpose is to map VIGIL classifications to external taxonomies, laws, standards, regulator categories, platform taxonomies, or CAM-internal structures.
+This file replaces the previous schema file as the authoritative rules contract for record-class validation and schema generation.
 
-Maintainers should distinguish observation from proposal, distinguish failure mode from tag, distinguish external-facing source data from CAM-internal routing, classify jurisdictional relevance cautiously, preserve uncertainty rather than overstate evidence, and link records rather than duplicate descriptions.
+Maintainers should treat it as a source of implementation requirements for JSON Schema files, validation scripts, test fixtures, and index generation.
 
-## Field guidance
+Do not use schema work to redesign record ontology.
 
-### `record_identity`
+## Decision Model
 
-Stable identity for all VIGIL v2 records. Use `record_id`, first-class `record_type` (`observation`, `failure_mode`, `proposal`, `patch`, or `crosswalk`), title, status, created date, updated date, and version. Preserve stable IDs.
+### Use OBS when the record is a signal.
 
-### `source_data`
+Examples:
 
-External evidence and provenance. Observations should carry source URL, platform, author/account, observed/published dates, archive status, evidence availability, confidence, and reproducibility. For reusable failure modes or internal proposals, use conservative values such as `not applicable`, `to be confirmed`, or classification provenance rather than inventing evidence.
+* a news report about agentic AI deployment;
+* a public platform behaviour that may matter later;
+* a jurisdictional development;
+* an unverified social media observation;
+* an early warning source item;
+* a relevant but not-yet-triaged system behaviour.
 
-### `system_context`
+### Use FM when the record is a failure.
 
-Describes the system being observed or repaired: system type, vendor/platform, model/product, interaction mode, embodiment status, deployment context, user role, and affected population. Use this for external-facing context rather than CAM instrument numbers.
+Examples:
 
-### `jurisdictional_context`
+* a confirmed or strongly evidenced system failure;
+* a recurring failure pattern;
+* a safety breakdown;
+* a procedural or governance collapse;
+* a failure that requires triage;
+* an operational harm pattern.
 
-Captures primary jurisdiction, secondary jurisdictions, regulatory surface, sector, cross-border relevance, and public-interest relevance. Treat unclear jurisdictional mapping as `to be confirmed` or `unknown` rather than overstating legal relevance.
+### Use PROP when the record is a CAM proposal.
 
-### `failure_classification`
+Examples:
 
-Machine-readable failure classification. Use `failure_mode_ids` for reusable failure-mode records and keep `failure_family`, harm vectors, severity, likelihood, confidence, and affected rights/interests cautious and evidence-aligned.
+* proposed instrument amendment;
+* proposed template repair;
+* proposed schema repair;
+* proposed validator repair;
+* proposed interface update;
+* proposed automation update;
+* proposed doctrinal clarification.
 
-### `linked_records`
+### Use PATCH when the record is an implemented change.
 
-Connects OBS, FM, PROP, and Patch Queue records. Observations may link one or more failure modes. Proposals may link observations and/or failure modes. Patch queue items should link proposals or observations that justify routing. External references may point to non-VIGIL sources.
+Examples:
 
-### `cam_internal`
+* implemented schema update;
+* implemented template update;
+* implemented validator update;
+* implemented interface update;
+* implemented CAM instrument repair;
+* implemented registry correction;
+* implemented automation change.
 
-CAM routing metadata only. Use affected instruments, affected annexes, affected domains, governance layer, patch status, and validator/automation impact to help CAM maintainers route work. Do not make these fields the primary public taxonomy.
+## Source Preservation Rules
 
-### `robotics_context`
+Source evidence is load-bearing.
 
-Optional extension for robotics or embodied-system observations. Non-robotics records do not need this block. Use it when physical embodiment, actuation, proximity to humans, safety boundaries, override, emergency stop, operator presence, physical harm, or property harm is relevant.
+Maintainers must:
 
-## Maintenance rules
+* preserve rich source records in `source_records`;
+* preserve machine-readable source mirrors in `source_data.sources` where required;
+* keep source title, author/publisher/account, date, URL, archive URL, retrieved date, source type, source platform, system/product, model/algorithm, deployment context, source context, URL status, and relevance note where available;
+* never flatten rich source data into a single URL field;
+* never replace known source values with placeholders;
+* never invent missing source values.
+
+If source data is unknown, use explicit placeholder values such as:
+
+```text
+unknown
+to be assessed
+to be confirmed
+not applicable
+TODO
+```
+
+depending on the template.
+
+## CAM Internal Routing
+
+CAM routing fields are internal maintainer metadata.
+
+Use different routing language by record class:
+
+```text
+OBS   → related_or_similar_* fields
+FM    → affected_* fields
+PROP  → target_* fields
+PATCH → changed_* fields
+```
+
+This distinction matters.
+
+An observation may be relevant to CAM without affecting a CAM instrument.
+
+A failure mode may affect or implicate CAM governance areas.
+
+A proposal may target CAM instruments or infrastructure.
+
+A patch note records what actually changed.
+
+## Field-Boundary Rules
+
+Maintainers must preserve field boundaries.
+
+OBS records must not contain:
+
+```text
+failure_classification
+triage
+proposal_scope
+proposal_rationale
+implementation_notes
+change_classification
+change_details
+implementation_verification
+impact_summary
+remaining_work
+date_implemented
+```
+
+FM records must contain:
+
+```text
+failure_mode_definition
+failure_threshold
+failure_classification
+triage
+```
+
+PROP records must contain:
+
+```text
+proposal_rationale
+proposal_type
+proposal_scope
+implementation_notes
+external_relevance
+next_action
+```
+
+PATCH records must contain:
+
+```text
+date_implemented
+change_classification
+change_details
+implementation_verification
+impact_summary
+remaining_work
+```
+
+## Linked Records
+
+VIGIL records may link to related records, but linking must not invent a lifecycle.
+
+OBS records may link to:
+
+```text
+related observations
+external references
+research
+standards
+```
+
+FM records may link to:
+
+```text
+related observations
+related failure modes
+related proposals
+related patch notes
+external references
+research
+standards
+```
+
+PROP records may link to:
+
+```text
+related observations
+related failure modes
+related proposals
+related patch notes
+external references
+research
+standards
+```
+
+PATCH records may link to:
+
+```text
+related observations
+related failure modes
+related proposals
+related patch notes
+external references
+research
+standards
+commits
+pull requests
+issues
+```
+
+A proposal must not list itself as a patch note.
+
+A patch note must not claim to implement a proposal unless implementation actually occurred.
+
+## External Ingestion
+
+Third parties should be able to consume VIGIL records without knowing CAM.
+
+Public-facing fields should prioritise:
+
+```text
+record identity
+record type
+source records
+source data
+system context
+jurisdictional context
+evidence confidence
+failure classification, for FM only
+triage, for FM only
+proposal scope, for PROP only
+change details, for PATCH only
+linked records
+```
+
+CAM-specific fields are available for maintainers but should not be required to understand the public meaning of a record.
+
+## Automation Notes
+
+* Individual record files under `vigil/records/` are the source of truth.
+* `python vigil/scripts/route-vigil-records.py` routes records into open, cluster, or closed folders.
+* `python vigil/scripts/validate-vigil-records.py` validates individual records.
+* `python vigil/scripts/build-vigil-records.py` generates aggregate JSON outputs.
+* `vigil/VIGIL.ActiveRecords.json` is the canonical active/live aggregate for interface ingestion.
+* `vigil/VIGIL.ClosedRecords.json` is the archival aggregate for closed records.
+* `vigil/VIGIL.Records.Index.json` is the canonical lightweight global registry index.
+* `vigil/VIGIL.Schema.json` is the canonical schema-rules contract.
+* `.github/workflows/vigil-records.yml` runs VIGIL validation/build automation in GitHub Actions, if present.
+
+## Generated JSON Outputs
+
+Do not manually edit generated aggregates:
+
+```text
+vigil/VIGIL.ActiveRecords.json
+vigil/VIGIL.ClosedRecords.json
+vigil/VIGIL.Records.Index.json
+```
+
+Generated outputs must be rebuilt from individual record files.
+
+No `VIGIL.Records.json` legacy aggregate should be reintroduced unless explicitly required for downstream compatibility.
+
+## Maintenance Rules
 
 ```text
 Do not delete source evidence.
 Do not overwrite uncertainty with certainty.
+Do not flatten source records.
 Do not make CAM instruments the primary public classification layer.
+Do not create a failure mode from a weak signal.
 Do not create a proposal when only an observation exists.
-Do not create a new failure mode if an existing one already fits.
-Do create linked records where continuity matters.
-Keep legacy compatibility until migration is complete.
-Update generated indexes after record changes.
+Do not create a patch note unless implementation occurred.
+Do not claim validation passed unless it was run.
+Do not mutate adopted CAM instruments from a VIGIL pass unless separately instructed.
 Preserve stable IDs.
 Prefer additive migrations over destructive rewrites.
+Prefer small, inspectable changes.
 ```
 
-## External ingestion
+## Safe Change Sequence
 
-Third parties should be able to consume VIGIL without understanding CAM. Prefer these fields for external ingestion:
+When changing VIGIL infrastructure:
 
-- `record_identity`
-- `source_data`
-- `system_context`
-- `jurisdictional_context`
-- `failure_classification.failure_mode_ids`
-- `failure_classification.harm_vectors`
-- `failure_classification.severity`
-- `linked_records.proposals`
-- `cam_internal.patch_status`
+```text
+1. Update templates manually.
+2. Update schema rules.
+3. Update validators and tests.
+4. Validate with fixtures.
+5. Migrate one record of each class.
+6. Rebuild indexes.
+7. Review generated outputs.
+8. Only then consider broader migration.
+```
 
-CAM-specific fields are available for maintainers but should not be required for a regulator, platform, UX reviewer, or robotics reviewer to understand the record.
-
-## CAM internal routing
-
-CAM maintainers should use `cam_internal.affected_instruments`, `cam_internal.affected_annexes`, `cam_internal.affected_domains`, `cam_internal.governance_layer`, `cam_internal.validator_or_automation_impact`, and `cam_internal.patch_status` to decide whether a VIGIL record should route to a doctrine patch, validator update, automation change, template revision, or downstream governance-interface update.
-
-## Robotics compatibility
-
-For robotics or embodied-agent records, set `system_context.embodiment_status` to `embodied` or a similarly precise value and add `robotics_context`. Capture robot class, mobility, actuation, physical environment, proximity to humans, safety boundary, human override availability, emergency stop availability, operator presence, physical harm potential, property harm potential, deployment environment, jurisdiction, and regulatory surface. Leave unknown values explicit rather than inferred.
-
-## Automation notes
-
-- Individual record files under `vigil/records/` are the source of truth.
-- `python vigil/scripts/route-vigil-records.py` routes records into open, cluster, or closed folders.
-- `python vigil/scripts/validate-vigil-records.py` validates individual records, v2 identity/link structure, and linked VIGIL IDs.
-- `python vigil/scripts/build-vigil-records.py` generates aggregate JSON outputs.
-- `vigil/VIGIL.ActiveRecords.json` is the canonical active/live aggregate for interface ingestion.
-- `vigil/VIGIL.ClosedRecords.json` is the archival aggregate for closed records.
-- `vigil/VIGIL.Records.Index.json` is the canonical lightweight global registry index.
-- `vigil/VIGIL.Schema.v2.json` is the v2 source-data-first record schema.
-- `vigil/VIGIL.Schema.json` remains a legacy-compatible schema used by the current validation script.
-- `.github/workflows/vigil-records.yml` runs VIGIL validation/build automation in GitHub Actions.
-- GitHub Pages or downstream interface publication beyond these generated files is to be confirmed.
-
-## Duplicate or near-duplicate JSON outputs
-
-This repository currently keeps multiple generated JSON outputs for compatibility:
-
-- `VIGIL.ActiveRecords.json`: full active/open record aggregate, canonical for live/interface ingestion.
-- `VIGIL.ClosedRecords.json`: full closed-record archive aggregate.
-- `VIGIL.Records.Index.json`: lightweight global registry index, canonical for discovery and public indexing.
-
-No `VIGIL.Records.json` legacy aggregate should exist; validation treats it as deprecated if reintroduced.
+Do not redesign schema, migrate records, and update the interface in the same pass.
