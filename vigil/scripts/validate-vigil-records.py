@@ -15,6 +15,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[2]
 VIGIL_DIR = ROOT / "vigil"
 SCHEMA_PATH = VIGIL_DIR / "VIGIL.Schema.json"
+LEGACY_OUTPUT_PATH = VIGIL_DIR / "VIGIL.Records.json"
 OPEN_DIR = VIGIL_DIR / "records" / "open"
 CLUSTERS_DIR = VIGIL_DIR / "records" / "clusters"
 CLOSED_DIR = VIGIL_DIR / "records" / "closed"
@@ -63,6 +64,12 @@ def validate() -> int:
     status_enum = enum_values(defs, "status")
     evidence_enum = enum_values(defs, "evidence_confidence")
     source_type_enum = enum_values(defs, "source_type")
+
+    if LEGACY_OUTPUT_PATH.exists():
+        errors.append(
+            f"{LEGACY_OUTPUT_PATH}: deprecated generated legacy aggregate must not exist; "
+            "use vigil/VIGIL.Records.Index.json for public ingestion"
+        )
 
     records: dict[str, dict[str, Any]] = {}
     cluster_paths: list[Path] = []
