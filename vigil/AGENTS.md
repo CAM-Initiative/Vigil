@@ -89,7 +89,8 @@ When working in `vigil/`:
 
 * Preserve date, source, retrieval path, source state, evidence confidence, CAM relevance, and next action or implementation explanation for every VIGIL record.
 * Preserve rich source packages in `source_records`.
-* Preserve machine-readable source mirrors in `source_data.sources` where the template requires them.
+* `source_records` is the only canonical source-evidence block in individual records.
+* Do not add `source_data` or `source_data.sources` to individual records.
 * Do not flatten rich source records into a single URL field.
 * Mark public reports, social media observations, automated search results, and third-party claims provisional unless corroborated.
 * Do not invent sources, URLs, citations, dates, legal claims, jurisdictions, severity, or harm outcomes.
