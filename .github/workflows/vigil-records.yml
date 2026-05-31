@@ -1,0 +1,48 @@
+name: VIGIL records
+
+on:
+  push:
+    paths:
+      - "vigil/**"
+      - ".github/workflows/vigil-records.yml"
+  pull_request:
+    paths:
+      - "vigil/**"
+      - ".github/workflows/vigil-records.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  validate-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Route VIGIL records
+        run: python vigil/scripts/route-vigil-records.py
+
+      - name: Validate VIGIL records
+        run: python vigil/scripts/validate-vigil-records.py
+
+      - name: Build VIGIL generated records
+        run: python vigil/scripts/build-vigil-records.py
+
+      - name: Commit generated VIGIL JSON
+        if: github.event_name == 'push'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add vigil/VIGIL.ActiveRecords.json vigil/VIGIL.ClosedRecords.json vigil/VIGIL.Records.Index.json vigil/VIGIL.Records.json
+          if git diff --cached --quiet; then
+            echo "No generated VIGIL JSON changes to commit."
+          else
+            git commit -m "Build VIGIL record aggregates"
+            git push
+          fi

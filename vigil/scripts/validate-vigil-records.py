@@ -15,11 +15,11 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[2]
 VIGIL_DIR = ROOT / "vigil"
 SCHEMA_PATH = VIGIL_DIR / "VIGIL.Schema.json"
-RECORD_DIRS = [
-    VIGIL_DIR / "records" / "open",
-    VIGIL_DIR / "records" / "clusters",
-    VIGIL_DIR / "records" / "closed",
-]
+OPEN_DIR = VIGIL_DIR / "records" / "open"
+CLUSTERS_DIR = VIGIL_DIR / "records" / "clusters"
+CLOSED_DIR = VIGIL_DIR / "records" / "closed"
+RECORD_DIRS = [OPEN_DIR, CLUSTERS_DIR, CLOSED_DIR]
+CLOSED_STATUSES = {"closed-no-action", "closed-actioned"}
 
 
 def load_json(path: Path) -> Any:
@@ -82,6 +82,21 @@ def validate() -> int:
             errors.append(f"{path}: individual record file must contain one JSON object")
             continue
 
+        if "records" in record or any(
+            field in record
+            for field in (
+                "generated_notice",
+                "generated_from",
+                "generated_at_utc",
+                "record_count",
+                "filename",
+            )
+        ):
+            errors.append(
+                f"{path}: individual record file must contain one record object, "
+                "not a generated aggregate wrapper"
+            )
+
         record_id = record.get("id")
         if not record_id:
             errors.append(f"{path}: missing required id")
@@ -101,6 +116,14 @@ def validate() -> int:
             errors.append(f"{path}: invalid record_type {record.get('record_type')!r}")
         if record.get("status") not in status_enum:
             errors.append(f"{path}: invalid status {record.get('status')!r}")
+
+        status = record.get("status")
+        if status in CLOSED_STATUSES and path.parent != CLOSED_DIR:
+            errors.append(f"{path}: closed records must live under {CLOSED_DIR}")
+        if status not in CLOSED_STATUSES and path.parent == CLOSED_DIR:
+            errors.append(f"{path}: non-closed records must not live under {CLOSED_DIR}")
+        if record.get("record_type") == "cluster" and path.parent != CLUSTERS_DIR:
+            errors.append(f"{path}: cluster records should live under {CLUSTERS_DIR}")
         if record.get("evidence_confidence") not in evidence_enum:
             errors.append(
                 f"{path}: invalid evidence_confidence {record.get('evidence_confidence')!r}"

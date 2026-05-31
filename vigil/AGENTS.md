@@ -22,8 +22,11 @@ When working in `vigil/`:
 
 Record automation rules:
 
-- Do not manually edit `vigil/VIGIL.Records.json` when adding normal records.
-- Add or modify individual record files under `vigil/records/`.
+- The source of truth is the individual JSON record files under `vigil/records/`.
+- Do not manually edit generated aggregates: `vigil/VIGIL.ActiveRecords.json`, `vigil/VIGIL.ClosedRecords.json`, `vigil/VIGIL.Records.Index.json`, or the backwards-compatible `vigil/VIGIL.Records.json`.
+- Add or modify individual record files under `vigil/records/`. Each file must contain one record object, not an aggregate wrapper.
+- Run `python vigil/scripts/route-vigil-records.py` to move records to the correct open, cluster, or closed folder; closed records are routed to `vigil/records/closed/`.
 - Run `python vigil/scripts/validate-vigil-records.py` before rebuilding.
-- Rebuild `vigil/VIGIL.Records.json` with `python vigil/scripts/build-vigil-records.py` after changing records.
+- Rebuild generated aggregates with `python vigil/scripts/build-vigil-records.py` after changing records.
+- Use `vigil/VIGIL.ActiveRecords.json` for interface/live ingestion, `vigil/VIGIL.ClosedRecords.json` for archival records, and `vigil/VIGIL.Records.Index.json` as the lightweight global registry.
 - Keep placeholder/example records out of production aggregate records.
