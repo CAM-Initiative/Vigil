@@ -16,7 +16,7 @@ CLUSTERS_DIR = RECORDS_ROOT / "clusters"
 CLOSED_DIR = RECORDS_ROOT / "closed"
 RECORD_DIRS = [OPEN_DIR, CLUSTERS_DIR, CLOSED_DIR]
 CLOSED_STATUSES = {"closed-no-action", "closed-actioned"}
-OPEN_STATUSES = {"active", "proposal", "deferred", "watching", "routed", "open", "clustered"}
+OPEN_STATUSES = {"active", "deferred", "watching", "routed", "open", "clustered"}
 
 
 def record_files() -> list[Path]:
