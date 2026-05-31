@@ -166,6 +166,32 @@ def validate() -> int:
             if array_field in record and not isinstance(record[array_field], list):
                 errors.append(f"{path}: {array_field} must be an array when present")
 
+        record_identity = record.get("record_identity")
+        if record_identity is not None:
+            if not isinstance(record_identity, dict):
+                errors.append(f"{path}: record_identity must be an object when present")
+            else:
+                if record_identity.get("record_id") != record_id:
+                    errors.append(f"{path}: record_identity.record_id must match id")
+                if record_identity.get("record_type") not in {"observation", "failure_mode", "proposal", "patch", "crosswalk"}:
+                    errors.append(
+                        f"{path}: record_identity.record_type must be a VIGIL v2 first-class type"
+                    )
+
+        linked_records = record.get("linked_records")
+        if linked_records is not None:
+            if not isinstance(linked_records, dict):
+                errors.append(f"{path}: linked_records must be an object when present")
+            else:
+                for link_field in ("observations", "failure_modes", "proposals", "patches"):
+                    value = linked_records.get(link_field, [])
+                    if not isinstance(value, list) or not all(isinstance(item, str) for item in value):
+                        errors.append(f"{path}: linked_records.{link_field} must be an array of strings")
+
+        robotics_context = record.get("robotics_context")
+        if robotics_context is not None and not isinstance(robotics_context, dict):
+            errors.append(f"{path}: robotics_context must be an object when present")
+
         if record.get("record_type") == "cluster":
             cluster_paths.append(path)
 
@@ -177,6 +203,18 @@ def validate() -> int:
         for related_id in related:
             if related_id not in records:
                 errors.append(f"{path}: related_record_ids references missing id {related_id!r}")
+
+    for path in files:
+        record = records.get(path.stem, {})
+        linked_records = record.get("linked_records", {})
+        if not isinstance(linked_records, dict):
+            continue
+        for link_field in ("observations", "failure_modes", "proposals"):
+            for linked_id in linked_records.get(link_field, []):
+                if linked_id not in records:
+                    errors.append(
+                        f"{path}: linked_records.{link_field} references missing id {linked_id!r}"
+                    )
 
     if errors:
         print("VIGIL record validation failed:", file=sys.stderr)
