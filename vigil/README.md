@@ -1,6 +1,6 @@
 # VIGIL
 
-VIGIL is a minimal public observation and workflow visibility layer for CAM-adjacent review activity. It records:
+VIGIL is a minimal public observatory layer for CAM-adjacent review activity. It records:
 
 1. emerging technology / industry signals;
 2. failure-mode observations;
@@ -55,8 +55,8 @@ Generated outputs:
 
 - `vigil/VIGIL.ActiveRecords.json` is generated from open and cluster records for interface/live ingestion.
 - `vigil/VIGIL.ClosedRecords.json` is generated from closed records for archival use.
-- `vigil/VIGIL.Records.Index.json` is the lightweight global registry across all records.
-- `vigil/VIGIL.Records.json` remains a temporary backwards-compatible aggregate of all records.
+- `vigil/VIGIL.Records.Index.json` is the global registry across all records.
+
 
 ## Foundation Files
 
@@ -65,9 +65,6 @@ Generated outputs:
 - `VIGIL.ActiveRecords.json` is a generated active-record aggregate for interface/live ingestion.
 - `VIGIL.ClosedRecords.json` is a generated archival aggregate for closed records.
 - `VIGIL.Records.Index.json` is a generated lightweight global registry.
-- `VIGIL.Records.json` is a temporary backwards-compatible generated aggregate; edit individual record files instead.
 - `examples/VIGIL.Record.Template.md` provides a copy/paste Markdown template for new observations.
 - `templates/` contains specialised Markdown templates for each supported record type.
 - `AGENTS.md` gives local instructions for agents working inside the VIGIL layer.
-
-TODO: Add VIGIL as a public catalogue/workflow layer in the CAM governance interface once the catalogue ingestion path is confirmed.
