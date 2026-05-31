@@ -42,8 +42,128 @@ def load_records(directories: list[Path]) -> list[dict[str, Any]]:
     return sorted(records, key=lambda record: record.get("id", ""))
 
 
+def prune_empty(value: Any) -> Any:
+    """Recursively remove empty generated-output values while preserving uncertainty text."""
+    if isinstance(value, dict):
+        pruned = {key: prune_empty(item) for key, item in value.items()}
+        return {key: item for key, item in pruned.items() if item not in (None, "", [], {})}
+    if isinstance(value, list):
+        pruned_items = [prune_empty(item) for item in value]
+        return [item for item in pruned_items if item not in (None, "", [], {})]
+    return value
+
+
+def dict_summary(
+    record: dict[str, Any], field: str, keys: list[str] | None = None
+) -> dict[str, Any]:
+    section = record.get(field)
+    if not isinstance(section, dict):
+        return {}
+    if keys is None:
+        return dict(section)
+    return {key: section.get(key, "") for key in keys}
+
+
+def system_summary(record: dict[str, Any]) -> dict[str, Any]:
+    return dict_summary(
+        record,
+        "system_context",
+        [
+            "system_type",
+            "platform_or_vendor",
+            "model_or_product",
+            "interaction_mode",
+            "embodiment_status",
+            "deployment_context",
+            "user_role",
+            "affected_population",
+        ],
+    )
+
+
+def jurisdiction_summary(record: dict[str, Any]) -> dict[str, Any]:
+    return dict_summary(record, "jurisdictional_context")
+
+
+def classification_summary(record: dict[str, Any]) -> dict[str, Any]:
+    return dict_summary(record, "failure_classification")
+
+
+def triage_summary(record: dict[str, Any]) -> dict[str, Any]:
+    return dict_summary(record, "triage")
+
+
+def proposal_summary(record: dict[str, Any]) -> dict[str, Any]:
+    summary = {
+        "proposal_rationale": record.get("proposal_rationale", ""),
+        "proposal_type": record.get("proposal_type", []),
+        "proposal_scope": (
+            record.get("proposal_scope", {})
+            if isinstance(record.get("proposal_scope"), dict)
+            else {}
+        ),
+        "implementation_notes": (
+            record.get("implementation_notes", {})
+            if isinstance(record.get("implementation_notes"), dict)
+            else {}
+        ),
+        "external_relevance": (
+            record.get("external_relevance", {})
+            if isinstance(record.get("external_relevance"), dict)
+            else {}
+        ),
+        "next_action": record.get("next_action", ""),
+    }
+    return prune_empty(summary)
+
+
+def patch_summary(record: dict[str, Any]) -> dict[str, Any]:
+    summary = {
+        "date_implemented": record.get("date_implemented", ""),
+        "change_classification": (
+            record.get("change_classification", {})
+            if isinstance(record.get("change_classification"), dict)
+            else {}
+        ),
+        "change_details": (
+            record.get("change_details", {})
+            if isinstance(record.get("change_details"), dict)
+            else {}
+        ),
+        "implementation_verification": (
+            record.get("implementation_verification", {})
+            if isinstance(record.get("implementation_verification"), dict)
+            else {}
+        ),
+        "impact_summary": (
+            record.get("impact_summary", {})
+            if isinstance(record.get("impact_summary"), dict)
+            else {}
+        ),
+        "remaining_work": record.get("remaining_work", []),
+    }
+    return prune_empty(summary)
+
+
+def cam_summary(record: dict[str, Any]) -> dict[str, Any]:
+    return dict_summary(record, "cam_internal")
+
+
+def generated_summaries(record: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "source_summary": source_summary(record),
+        "system_summary": system_summary(record),
+        "jurisdiction_summary": jurisdiction_summary(record),
+        "classification_summary": classification_summary(record),
+        "triage_summary": triage_summary(record),
+        "proposal_summary": proposal_summary(record),
+        "patch_summary": patch_summary(record),
+        "cam_summary": cam_summary(record),
+    }
+
+
 def write_json(path: Path, data: Any) -> None:
-    path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    path.write_text(json.dumps(prune_empty(data), indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
 
 def canonical_sources(record: dict[str, Any]) -> list[dict[str, Any]]:
@@ -81,7 +201,7 @@ def record_path(record: dict[str, Any]) -> str:
 
 def aggregate_record(record: dict[str, Any]) -> dict[str, Any]:
     entry = dict(record)
-    entry["source_summary"] = source_summary(record)
+    entry.update(generated_summaries(record))
     return entry
 
 
@@ -95,7 +215,7 @@ def index_record(record: dict[str, Any]) -> dict[str, Any]:
         "summary": record.get("summary", ""),
         "evidence_confidence": record.get("evidence_confidence", ""),
         "source_types": source_types(record),
-        "source_summary": source_summary(record),
+        **generated_summaries(record),
         "linked_records": record.get("linked_records", {}) if isinstance(record.get("linked_records"), dict) else {},
         "cam_internal": record.get("cam_internal", {}) if isinstance(record.get("cam_internal"), dict) else {},
         "path": record_path(record),
@@ -117,7 +237,15 @@ def build() -> None:
     all_records = sorted([*active_records, *closed_records], key=lambda record: record.get("id", ""))
     write_json(ACTIVE_OUTPUT_PATH, aggregate(active_records, "vigil/records/open/ and vigil/records/clusters/"))
     write_json(CLOSED_OUTPUT_PATH, aggregate(closed_records, "vigil/records/closed/"))
-    write_json(INDEX_OUTPUT_PATH, {"generated_notice": NOTICE, "generated_from": "vigil/records/", "record_count": len(all_records), "records": [index_record(record) for record in all_records]})
+    write_json(
+        INDEX_OUTPUT_PATH,
+        {
+            "generated_notice": NOTICE,
+            "generated_from": "vigil/records/",
+            "record_count": len(all_records),
+            "records": [index_record(record) for record in all_records],
+        },
+    )
     print(f"Wrote {ACTIVE_OUTPUT_PATH} with {len(active_records)} records.")
     print(f"Wrote {CLOSED_OUTPUT_PATH} with {len(closed_records)} records.")
     print(f"Wrote {INDEX_OUTPUT_PATH} with {len(all_records)} records.")
