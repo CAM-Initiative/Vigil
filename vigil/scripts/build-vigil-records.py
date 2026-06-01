@@ -66,7 +66,10 @@ PRESERVE_EMPTY_KEYS = {
     "title",
     "source_types",
     "source_summary",
+    "system_summary",
+    "jurisdiction_summary",
     "linked_records",
+    "cam_summary",
     "path",
     "github_blob_url",
     "raw_url",
@@ -341,32 +344,34 @@ def patch_cam_summary(record: dict[str, Any]) -> dict[str, Any]:
 
 def generated_summaries(record: dict[str, Any]) -> dict[str, Any]:
     record_type = record.get("record_type", "")
-    summaries: dict[str, Any] = {"source_summary": source_summary(record)}
+    summaries: dict[str, Any] = {
+        "source_summary": source_summary(record),
+        "system_summary": system_summary(record),
+        "jurisdiction_summary": jurisdiction_summary(record),
+    }
 
     if record_type == "observation":
         summaries.update(
             {
-                "system_summary": system_summary(record),
-                "jurisdiction_summary": jurisdiction_summary(record),
                 "possible_taxonomy_mapping_summary": possible_taxonomy_mapping_summary(record),
                 "cam_summary": observation_cam_summary(record),
                 "next_action": record.get("next_action", ""),
+                "review_observation": record.get("review_observation", ""),
             }
         )
     elif record_type == "failure_mode":
         summaries.update(
             {
-                "system_summary": system_summary(record),
-                "jurisdiction_summary": jurisdiction_summary(record),
                 "classification_summary": classification_summary(record),
                 "triage_summary": triage_summary(record),
+                "failure_mode_definition_summary": record.get("failure_mode_definition", ""),
+                "failure_threshold_summary": record.get("failure_threshold", ""),
                 "cam_summary": failure_cam_summary(record),
             }
         )
     elif record_type == "proposal":
         summaries.update(
             {
-                "system_summary": system_summary(record),
                 "proposal_summary": proposal_summary(record),
                 "external_relevance_summary": external_relevance_summary(record),
                 "cam_summary": proposal_cam_summary(record),
@@ -377,7 +382,6 @@ def generated_summaries(record: dict[str, Any]) -> dict[str, Any]:
     elif record_type in {"patch", "patch_note"}:
         summaries.update(
             {
-                "system_summary": system_summary(record),
                 "change_summary": change_summary(record),
                 "verification_summary": verification_summary(record),
                 "impact_summary": impact_summary(record),
@@ -404,14 +408,21 @@ def canonical_sources(record: dict[str, Any]) -> list[dict[str, Any]]:
 def source_summary(record: dict[str, Any]) -> dict[str, Any]:
     sources = canonical_sources(record)
     primary = sources[0] if sources else {}
+    types = source_types(record)
+    platforms = sorted(
+        {source.get("source_platform") for source in sources if source.get("source_platform")}
+    )
     return {
+        "source_count": len(sources),
         "primary_source_title": primary.get("source_title", ""),
         "primary_source_type": primary.get("source_type", ""),
-        "primary_source_url": primary.get("source_url", ""),
-        "primary_archive_url": primary.get("archive_url", ""),
         "primary_source_platform": primary.get("source_platform", ""),
         "primary_source_author_or_publisher": primary.get("author_or_publisher", ""),
-        "source_count": len(sources),
+        "primary_source_date": primary.get("source_date", ""),
+        "primary_source_url": primary.get("source_url", ""),
+        "primary_archive_url": primary.get("archive_url", ""),
+        "source_types": types,
+        "source_platforms": platforms,
         "source_url_status": primary.get("source_url_status", ""),
         "evidence_confidence": record.get("evidence_confidence", ""),
     }
@@ -441,6 +452,19 @@ def aggregate_record(record: dict[str, Any]) -> dict[str, Any]:
     return entry
 
 
+def record_title(record: dict[str, Any]) -> str:
+    identity = record.get("record_identity", {}) if isinstance(record.get("record_identity"), dict) else {}
+    for value in (
+        record.get("title"),
+        identity.get("title"),
+        record.get("summary"),
+        record.get("id"),
+    ):
+        if value:
+            return str(value)
+    return ""
+
+
 def index_record(record: dict[str, Any]) -> dict[str, Any]:
     path = record_path(record)
     identity = record.get("record_identity", {}) if isinstance(record.get("record_identity"), dict) else {}
@@ -449,8 +473,9 @@ def index_record(record: dict[str, Any]) -> dict[str, Any]:
         "record_type": record.get("record_type", ""),
         "record_state": record.get("record_state", ""),
         "date_recorded": record.get("date_recorded", ""),
+        "date_implemented": record.get("date_implemented", ""),
         "record_identity": identity,
-        "title": identity.get("title", ""),
+        "title": record_title(record),
         "summary": record.get("summary", ""),
         "evidence_confidence": record.get("evidence_confidence", ""),
         "source_types": source_types(record),
@@ -464,16 +489,40 @@ def index_record(record: dict[str, Any]) -> dict[str, Any]:
 
 
 def master_record(index_entry: dict[str, Any]) -> dict[str, Any]:
-    return {
-        "id": index_entry.get("id", ""),
-        "record_type": index_entry.get("record_type", ""),
-        "record_state": index_entry.get("record_state", ""),
-        "date_recorded": index_entry.get("date_recorded", ""),
-        "summary": index_entry.get("summary", ""),
-        "path": index_entry.get("path", ""),
-        "github_blob_url": index_entry.get("github_blob_url", ""),
-        "raw_url": index_entry.get("raw_url", ""),
-    }
+    keys = [
+        "id",
+        "record_type",
+        "record_state",
+        "date_recorded",
+        "date_implemented",
+        "title",
+        "summary",
+        "evidence_confidence",
+        "source_types",
+        "source_summary",
+        "system_summary",
+        "jurisdiction_summary",
+        "linked_records",
+        "cam_summary",
+        "classification_summary",
+        "triage_summary",
+        "failure_mode_definition_summary",
+        "failure_threshold_summary",
+        "next_action",
+        "review_observation",
+        "possible_taxonomy_mapping_summary",
+        "proposal_summary",
+        "external_relevance_summary",
+        "implementation_notes_summary",
+        "change_summary",
+        "verification_summary",
+        "impact_summary",
+        "remaining_work",
+        "path",
+        "github_blob_url",
+        "raw_url",
+    ]
+    return {key: index_entry.get(key, "") for key in keys if key in index_entry or key in PRESERVE_EMPTY_KEYS}
 
 
 def type_registry(registry_type: str, records: list[dict[str, Any]]) -> dict[str, Any]:

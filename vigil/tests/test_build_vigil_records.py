@@ -65,6 +65,8 @@ class BuildVigilRecordsTest(unittest.TestCase):
         self.assertNotIn("cam_internal", summaries)
         self.assertIn("affected_instruments", summaries["cam_summary"])
         self.assertEqual(summaries["classification_summary"]["canonical_failure_group"], "arbitration")
+        self.assertIn("failure_mode_definition_summary", summaries)
+        self.assertIn("failure_threshold_summary", summaries)
 
     def test_proposal_generated_summary_may_include_cam_summary(self):
         record = self.load_valid_fixture("VIGIL-2026-PROP-0001")
@@ -84,6 +86,7 @@ class BuildVigilRecordsTest(unittest.TestCase):
 
         self.assertIn("source_summary", summaries)
         self.assertIn("system_summary", summaries)
+        self.assertIn("jurisdiction_summary", summaries)
         self.assertIn("change_summary", summaries)
         self.assertIn("verification_summary", summaries)
         self.assertIn("impact_summary", summaries)
@@ -100,6 +103,9 @@ class BuildVigilRecordsTest(unittest.TestCase):
         self.assertEqual(
             aggregate["source_summary"]["primary_source_author_or_publisher"], "@Huskistaken"
         )
+        self.assertEqual(aggregate["source_summary"]["primary_source_date"], "2026-05-31")
+        self.assertEqual(aggregate["source_summary"]["source_types"], ["social-platform-observation"])
+        self.assertEqual(aggregate["source_summary"]["source_platforms"], ["TikTok"])
         self.assertEqual(aggregate["system_summary"]["platform_or_vendor"], "OpenAI")
         self.assertEqual(
             aggregate["system_summary"]["product_or_service"], "ChatGPT Advanced Voice Mode"
@@ -153,6 +159,61 @@ class BuildVigilRecordsTest(unittest.TestCase):
         )
         self.assertNotIn("vigil/records/observations/VIGIL-2026-OBS-0001.json", json.dumps(entry))
 
+    def test_title_fallback_order_is_never_omitted_from_index_entries(self):
+        record = {
+            "id": "VIGIL-2026-OBS-9999",
+            "record_type": "observation",
+            "record_state": "open",
+            "date_recorded": "2026-06-01",
+            "title": "Top-level title",
+            "record_identity": {"title": "Identity title"},
+            "summary": "Summary title",
+            "source_records": [],
+        }
+        self.assertEqual(builder.index_record(record)["title"], "Top-level title")
+        record.pop("title")
+        self.assertEqual(builder.index_record(record)["title"], "Identity title")
+        record["record_identity"].pop("title")
+        self.assertEqual(builder.index_record(record)["title"], "Summary title")
+        record.pop("summary")
+        self.assertEqual(builder.index_record(record)["title"], "VIGIL-2026-OBS-9999")
+
+    def test_generated_index_entries_include_required_interface_fields(self):
+        records = builder.load_records()
+        grouped = builder.records_by_registry(records)
+        required = {
+            "id",
+            "record_type",
+            "record_state",
+            "date_recorded",
+            "title",
+            "summary",
+            "evidence_confidence",
+            "source_types",
+            "source_summary",
+            "system_summary",
+            "jurisdiction_summary",
+            "linked_records",
+            "cam_summary",
+            "path",
+            "github_blob_url",
+            "raw_url",
+        }
+        for registry_type, registry_records in grouped.items():
+            with self.subTest(registry_type=registry_type):
+                registry = builder.type_registry(registry_type, registry_records)
+                for entry in registry["records"]:
+                    self.assertTrue(required.issubset(entry), entry["id"])
+                    self.assertTrue(entry["title"], entry["id"])
+                    self.assertTrue(entry["path"].startswith("vigil/records/"), entry["id"])
+                    self.assertEqual(entry["github_blob_url"], builder.github_blob_url(entry["path"]))
+                    self.assertEqual(entry["raw_url"], builder.raw_url(entry["path"]))
+                    self.assertIn("/vigil/records/", entry["raw_url"])
+                    self.assertTrue(entry["raw_url"].endswith(f"/{entry['id']}.json"))
+                patch = next((entry for entry in registry["records"] if entry["record_type"] == "patch"), None)
+                if patch:
+                    self.assertIn("date_implemented", patch)
+
     def test_master_registry_is_composed_from_generated_type_indexes(self):
         with tempfile.TemporaryDirectory() as temp_dir:
             temp = Path(temp_dir)
@@ -178,6 +239,10 @@ class BuildVigilRecordsTest(unittest.TestCase):
             self.assertEqual(master["record_count"]["total"], 16)
             patch = next(record for record in master["records"] if record["id"] == "VIGIL-2026-PATCH-0001")
             self.assertEqual(patch["path"], "vigil/records/patches/2026/VIGIL-2026-PATCH-0001.json")
+            self.assertIn("title", patch)
+            self.assertIn("source_summary", patch)
+            self.assertIn("system_summary", patch)
+            self.assertIn("jurisdiction_summary", patch)
             self.assertIn("github_blob_url", patch)
             self.assertIn("raw_url", patch)
 
