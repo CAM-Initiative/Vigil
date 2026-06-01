@@ -1,5 +1,7 @@
 import importlib.util
 import json
+import shutil
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -12,9 +14,10 @@ spec.loader.exec_module(builder)
 
 
 class BuildVigilRecordsTest(unittest.TestCase):
-    def load_open_record(self, record_id):
-        record_path = ROOT / "vigil" / "records" / "open" / f"{record_id}.json"
-        with record_path.open(encoding="utf-8") as handle:
+    def load_record(self, record_id):
+        matches = sorted((ROOT / "vigil" / "records").rglob(f"{record_id}.json"))
+        self.assertEqual(len(matches), 1, record_id)
+        with matches[0].open(encoding="utf-8") as handle:
             return json.load(handle)
 
     def load_valid_fixture(self, record_id):
@@ -22,8 +25,22 @@ class BuildVigilRecordsTest(unittest.TestCase):
         with record_path.open(encoding="utf-8") as handle:
             return json.load(handle)
 
+    def test_recursive_discovery_under_type_year_folders(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            base = Path(temp_dir) / "records"
+            nested = base / "observations" / "2026"
+            nested.mkdir(parents=True)
+            target = nested / "VIGIL-2026-OBS-9999.json"
+            target.write_text("{}", encoding="utf-8")
+            original_dirs = builder.RECORD_TYPE_DIRS
+            try:
+                builder.RECORD_TYPE_DIRS = [base / "observations"]
+                self.assertEqual(builder.record_files(), [target])
+            finally:
+                builder.RECORD_TYPE_DIRS = original_dirs
+
     def test_observation_generated_summary_excludes_cam_summary(self):
-        record = self.load_open_record("VIGIL-2026-OBS-0001")
+        record = self.load_record("VIGIL-2026-OBS-0001")
         summaries = builder.generated_summaries(record)
 
         self.assertIn("source_summary", summaries)
@@ -35,7 +52,7 @@ class BuildVigilRecordsTest(unittest.TestCase):
         self.assertNotIn("related_or_similar_instruments", json.dumps(summaries))
 
     def test_failure_mode_generated_summary_excludes_cam_summary(self):
-        record = self.load_open_record("VIGIL-2026-FM-0002")
+        record = self.load_record("VIGIL-2026-FM-0002")
         summaries = builder.generated_summaries(record)
 
         self.assertIn("source_summary", summaries)
@@ -74,7 +91,7 @@ class BuildVigilRecordsTest(unittest.TestCase):
         self.assertNotIn("changed_instruments", summaries["cam_summary"])
 
     def test_fm_0002_generated_summaries_distinguish_source_and_system(self):
-        record = self.load_open_record("VIGIL-2026-FM-0002")
+        record = self.load_record("VIGIL-2026-FM-0002")
         aggregate = builder.prune_empty(builder.aggregate_record(record))
 
         self.assertEqual(aggregate["source_summary"]["primary_source_platform"], "TikTok")
@@ -83,12 +100,12 @@ class BuildVigilRecordsTest(unittest.TestCase):
         )
         self.assertEqual(aggregate["system_summary"]["platform_or_vendor"], "OpenAI")
         self.assertEqual(
-            aggregate["system_summary"]["model_or_product"], "ChatGPT Advanced Voice Mode"
+            aggregate["system_summary"]["product_or_service"], "ChatGPT Advanced Voice Mode"
         )
         self.assertEqual(aggregate["system_summary"]["interaction_mode"], "voice | multi-device")
 
     def test_empty_linked_record_arrays_are_pruned_from_generated_index(self):
-        record = self.load_open_record("VIGIL-2026-OBS-0001")
+        record = self.load_record("VIGIL-2026-OBS-0001")
         record["linked_records"] = {
             "related_observations": [],
             "related_failure_modes": [],
@@ -142,12 +159,51 @@ class BuildVigilRecordsTest(unittest.TestCase):
         )
 
     def test_individual_records_keep_source_records_only(self):
-        for path in sorted((ROOT / "vigil" / "records").glob("*/*.json")):
+        for path in sorted((ROOT / "vigil" / "records").rglob("*.json")):
             with self.subTest(record=path.name):
                 with path.open(encoding="utf-8") as handle:
                     record = json.load(handle)
                 self.assertIn("source_records", record)
                 self.assertNotIn("source_data", record)
+
+    def test_generated_index_includes_all_individual_records_and_no_legacy_aggregate(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp = Path(temp_dir)
+            temp_records = temp / "records"
+            for source in sorted((ROOT / "vigil" / "records").rglob("*.json")):
+                relative = source.relative_to(ROOT / "vigil" / "records")
+                target = temp_records / relative
+                target.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(source, target)
+
+            originals = (
+                builder.RECORD_TYPE_DIRS,
+                builder.ACTIVE_OUTPUT_PATH,
+                builder.CLOSED_OUTPUT_PATH,
+                builder.INDEX_OUTPUT_PATH,
+            )
+            try:
+                builder.RECORD_TYPE_DIRS = [
+                    temp_records / "observations",
+                    temp_records / "failures",
+                    temp_records / "proposals",
+                    temp_records / "patches",
+                    temp_records / "research",
+                ]
+                builder.ACTIVE_OUTPUT_PATH = temp / "VIGIL.ActiveRecords.json"
+                builder.CLOSED_OUTPUT_PATH = temp / "VIGIL.ClosedRecords.json"
+                builder.INDEX_OUTPUT_PATH = temp / "VIGIL.Records.Index.json"
+                builder.build()
+                index = json.loads(builder.INDEX_OUTPUT_PATH.read_text(encoding="utf-8"))
+                self.assertEqual(index["record_count"], len(list(temp_records.rglob("*.json"))))
+                self.assertFalse((temp / "VIGIL.Records.json").exists())
+            finally:
+                (
+                    builder.RECORD_TYPE_DIRS,
+                    builder.ACTIVE_OUTPUT_PATH,
+                    builder.CLOSED_OUTPUT_PATH,
+                    builder.INDEX_OUTPUT_PATH,
+                ) = originals
 
 
 if __name__ == "__main__":
