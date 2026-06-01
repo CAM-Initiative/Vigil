@@ -32,13 +32,16 @@ jobs:
         run: python vigil/scripts/validate-vigil-records.py
 
       - name: Build VIGIL generated records
-        run: python vigil/scripts/build-vigil-records.py
+        run: |
+          python vigil/scripts/build-vigil-records.py
+          rm -f vigil/VIGIL.Records.json
 
       - name: Commit generated VIGIL JSON
         if: github.event_name == 'push'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm --ignore-unmatch vigil/VIGIL.Records.json 2>/dev/null || true
           git add vigil/VIGIL.ActiveRecords.json vigil/VIGIL.ClosedRecords.json vigil/VIGIL.Records.Index.json
           if git diff --cached --quiet; then
             echo "No generated VIGIL JSON changes to commit."

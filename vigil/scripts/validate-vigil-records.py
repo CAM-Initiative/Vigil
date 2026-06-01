@@ -14,10 +14,13 @@ VIGIL_DIR = ROOT / "vigil"
 RECORDS_ROOT = VIGIL_DIR / "records"
 SCHEMA_PATH = VIGIL_DIR / "VIGIL.Schema.json"
 LEGACY_OUTPUT_PATH = VIGIL_DIR / "VIGIL.Records.json"
-OPEN_DIR = RECORDS_ROOT / "open"
-CLUSTERS_DIR = RECORDS_ROOT / "clusters"
-CLOSED_DIR = RECORDS_ROOT / "closed"
-RECORD_DIRS = [OPEN_DIR, CLUSTERS_DIR, CLOSED_DIR]
+RECORD_TYPE_DIRS = [
+    RECORDS_ROOT / "observations",
+    RECORDS_ROOT / "failures",
+    RECORDS_ROOT / "proposals",
+    RECORDS_ROOT / "patches",
+    RECORDS_ROOT / "research",
+]
 
 RECORD_TYPES = {"observation", "failure_mode", "proposal", "patch"}
 ALLOWED_CANONICAL_FAILURE_GROUPS = {
@@ -44,6 +47,12 @@ ID_PREFIX = {
     "failure_mode": "FM",
     "proposal": "PROP",
     "patch": "PATCH",
+}
+TYPE_DIR = {
+    "observation": "observations",
+    "failure_mode": "failures",
+    "proposal": "proposals",
+    "patch": "patches",
 }
 REQUIRED_COMMON = {
     "id",
@@ -98,9 +107,9 @@ def record_files(root: Path | None = None) -> list[Path]:
             return [root]
         return sorted(root.rglob("*.json"), key=lambda path: path.as_posix())
     files: list[Path] = []
-    for directory in RECORD_DIRS:
+    for directory in RECORD_TYPE_DIRS:
         if directory.exists():
-            files.extend(directory.glob("*.json"))
+            files.extend(directory.rglob("*.json"))
     return sorted(files, key=lambda path: path.as_posix())
 
 
@@ -126,10 +135,26 @@ def source_urls(record: dict[str, Any]) -> set[str]:
     urls: set[str] = set()
     for source in record.get("source_records", []):
         if isinstance(source, dict):
-            for key in ("source_url", "archive_url", "url"):
+            for key in ("source_url", "archive_url"):
                 if source.get(key):
                     urls.add(source[key])
     return urls
+
+
+def validate_canonical_path(path: Path, record_id: Any, record_type: Any, errors: list[str]) -> None:
+    """Validate canonical repository paths while allowing standalone fixture files."""
+    try:
+        relative = path.resolve().relative_to(RECORDS_ROOT.resolve())
+    except ValueError:
+        return
+    if not isinstance(record_id, str) or record_type not in TYPE_DIR:
+        return
+    parts = record_id.split("-")
+    if len(parts) < 4:
+        return
+    expected = Path(TYPE_DIR[record_type]) / parts[1] / f"{record_id}.json"
+    if relative != expected:
+        errors.append(f"{path}: record path must be vigil/records/{expected.as_posix()} for id/type")
 
 
 def validate_record(path: Path, record: dict[str, Any], known_ids: set[str], errors: list[str], warnings: list[str]) -> None:
@@ -147,6 +172,7 @@ def validate_record(path: Path, record: dict[str, Any], known_ids: set[str], err
         errors.append(f"{path}: missing required id")
     elif path.stem != record_id:
         errors.append(f"{path}: filename stem does not match id {record_id!r}")
+    validate_canonical_path(path, record_id, record_type, errors)
 
     if record_type not in RECORD_TYPES:
         errors.append(f"{path}: invalid record_type {record_type!r}")
@@ -165,6 +191,8 @@ def validate_record(path: Path, record: dict[str, Any], known_ids: set[str], err
             errors.append(f"{path}: record_identity.record_id does not match id")
         if identity.get("record_type") != record_type:
             errors.append(f"{path}: record_identity.record_type does not match record_type")
+        if "status" in identity:
+            errors.append(f"{path}: record_identity.status is deprecated; use top-level record_state only")
 
     sources = record.get("source_records")
     if not isinstance(sources, list):
@@ -174,6 +202,11 @@ def validate_record(path: Path, record: dict[str, Any], known_ids: set[str], err
             if not isinstance(source, dict):
                 errors.append(f"{path}: source_records[{index}] must be an object")
                 continue
+            legacy_keys = sorted({key for key in ("title", "url", "platform") if key in source})
+            if legacy_keys:
+                mapping = {"title": "source_title", "url": "source_url", "platform": "source_platform"}
+                replacements = ", ".join(f"{key}->{mapping[key]}" for key in legacy_keys)
+                errors.append(f"{path}: source_records[{index}] uses legacy source key(s): {replacements}")
             if not source.get("source_url") and source.get("archive_url"):
                 warnings.append(f"{path}: source_records[{index}] source_url is blank but archive_url is present")
 
@@ -216,6 +249,8 @@ def validate_record(path: Path, record: dict[str, Any], known_ids: set[str], err
         present = sorted(field for field in OBS_FORBIDDEN if field in record)
         if present:
             errors.append(f"{path}: OBS contains forbidden record-class fields: {', '.join(present)}")
+        if contains_key(record, "patch_status"):
+            errors.append(f"{path}: OBS contains forbidden patch_status; patch state belongs in PATCH records")
     elif record_type == "failure_mode":
         add_missing(errors, path, record, FM_REQUIRED)
         classification = record.get("failure_classification")

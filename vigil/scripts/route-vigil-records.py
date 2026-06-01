@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Route individual VIGIL record files into their status/type folders."""
+"""Route misplaced individual VIGIL record files into canonical type/year folders."""
 
 from __future__ import annotations
 
@@ -11,20 +11,19 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[2]
 VIGIL_DIR = ROOT / "vigil"
 RECORDS_ROOT = VIGIL_DIR / "records"
-OPEN_DIR = RECORDS_ROOT / "open"
-CLUSTERS_DIR = RECORDS_ROOT / "clusters"
-CLOSED_DIR = RECORDS_ROOT / "closed"
-RECORD_DIRS = [OPEN_DIR, CLUSTERS_DIR, CLOSED_DIR]
-CLOSED_STATUSES = {"closed-no-action", "closed-actioned"}
-OPEN_STATUSES = {"active", "deferred", "watching", "routed", "open", "clustered"}
+TYPE_DIR = {
+    "observation": "observations",
+    "failure_mode": "failures",
+    "proposal": "proposals",
+    "patch": "patches",
+}
 
 
 def record_files() -> list[Path]:
-    files: list[Path] = []
-    for directory in RECORD_DIRS:
-        if directory.exists():
-            files.extend(directory.glob("*.json"))
-    return sorted(files, key=lambda path: path.as_posix())
+    """Recursively scan individual VIGIL record JSON files under vigil/records/."""
+    if not RECORDS_ROOT.exists():
+        return []
+    return sorted(RECORDS_ROOT.rglob("*.json"), key=lambda path: path.as_posix())
 
 
 def load_record(path: Path) -> dict[str, Any]:
@@ -35,15 +34,27 @@ def load_record(path: Path) -> dict[str, Any]:
     return record
 
 
+def id_year(record: dict[str, Any]) -> str | None:
+    record_id = record.get("id")
+    if not isinstance(record_id, str):
+        return None
+    parts = record_id.split("-")
+    if len(parts) < 4 or parts[0] != "VIGIL":
+        return None
+    return parts[1]
+
+
 def target_directory(record: dict[str, Any]) -> Path | None:
-    status = record.get("status")
-    if status in CLOSED_STATUSES:
-        return CLOSED_DIR
-    if record.get("record_type") == "cluster":
-        return CLUSTERS_DIR
-    if status in OPEN_STATUSES:
-        return OPEN_DIR
-    return None
+    """Return canonical type/year directory; record_state never controls the path."""
+    record_state = record.get("record_state")
+    if record_state is None:
+        print(f"Skipped record without record_state: {record.get('id')!r}")
+        return None
+    folder = TYPE_DIR.get(str(record.get("record_type", "")))
+    year = id_year(record)
+    if folder is None or year is None:
+        return None
+    return RECORDS_ROOT / folder / year
 
 
 def route() -> int:
@@ -52,11 +63,11 @@ def route() -> int:
         record = load_record(path)
         target_dir = target_directory(record)
         if target_dir is None:
-            print(f"Skipped {path}: unrecognised status {record.get('status')!r}")
+            print(f"Skipped {path}: unable to derive canonical type/year path")
             continue
         target_dir.mkdir(parents=True, exist_ok=True)
         target_path = target_dir / path.name
-        if path == target_path:
+        if path.resolve() == target_path.resolve():
             continue
         if target_path.exists():
             raise FileExistsError(f"Refusing to overwrite {target_path}")

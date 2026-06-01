@@ -133,8 +133,8 @@ Do not make CAM affected instruments the primary public classification layer.
   * `vigil/VIGIL.Records.Index.json`
 * Add or modify individual record files under `vigil/records/`.
 * Each individual record file must contain one record object, not an aggregate wrapper.
-* Run `python vigil/scripts/route-vigil-records.py` to move records to the correct open, cluster, or closed folder.
-* Closed records are routed to `vigil/records/closed/`.
+* Run `python vigil/scripts/route-vigil-records.py` to move misplaced records to the correct canonical type/year folder.
+* Record files belong under `vigil/records/<record_type>/<year>/`; record state belongs inside `record_state`, not in the filesystem path.
 * Run `python vigil/scripts/validate-vigil-records.py` before rebuilding.
 * Rebuild generated aggregates with `python vigil/scripts/build-vigil-records.py` after changing records.
 * Use `vigil/VIGIL.ActiveRecords.json` for interface/live ingestion.
