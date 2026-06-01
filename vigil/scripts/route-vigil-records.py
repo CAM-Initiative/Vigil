@@ -16,6 +16,7 @@ TYPE_DIR = {
     "failure_mode": "failures",
     "proposal": "proposals",
     "patch": "patches",
+    "patch_note": "patches",
 }
 
 
