@@ -5,10 +5,10 @@ Observation records preserve observed source evidence, early warning signals, pu
 ## Boundary rules
 
 * Use `record_type: "observation"` and IDs like `VIGIL-YYYY-OBS-0000`.
-* Maintain source evidence only in `source_records`.
+* Maintain source evidence only in `source_records`; `source_data` is forbidden anywhere in an individual record.
 * Do **not** add `source_data`.
 * Do **not** duplicate the primary source in `linked_records.external_references`; use that array only for genuinely additional references.
-* Do **not** include failure classification, triage, proposal scope, change classification, implemented dates, or patch logic.
-* CAM routing must use `cam_internal.related_or_similar_*` fields, not `affected_*`, `target_*`, or `changed_*`.
+* Do **not** include `failure_classification`, `triage`, proposal scope, change classification, implemented dates, or patch logic. OBS may include `possible_taxonomy_mapping` only when taxonomy mapping remains unconfirmed.
+* CAM routing must use related-or-similar CAM routing only: `cam_internal.related_or_similar_*`, not `affected_*`, `target_*`, or `changed_*`.
 
-Required OBS sections are identity, summary, CAM relevance, evidence confidence, `source_records`, system context, jurisdictional context, linked records, OBS CAM routing, next action, and migration notes where applicable.
+Required OBS sections are identity, summary, CAM relevance, evidence confidence, `source_records`, system context (including `product_family`, `product_or_service`, `specific_model`, and `interface_surface`), jurisdictional context, linked records, OBS CAM routing, next action, and migration notes where applicable.

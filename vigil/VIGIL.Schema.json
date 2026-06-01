@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://example.invalid/cam/vigil/VIGIL.Schema.json",
-  "version": "2.0-clean-design",
-  "purpose": "Authoritative schema-rules contract for VIGIL individual records and generated registers. It states the record-class boundaries implemented by vigil/scripts/validate-vigil-records.py without redesigning the ontology.",
+  "version": "2.1-cam-eq2026-operations-003-sup-01",
+  "purpose": "Authoritative schema-rules contract for VIGIL individual records and generated registers aligned to CAM-EQ2026-OPERATIONS-003-SUP-01 Appendix B without redesigning VIGIL record classes.",
   "source_evidence_rules": {
     "individual_records": [
       "source_records is the only canonical source-evidence block in individual records.",
@@ -19,37 +19,314 @@
     "observation": {
       "id_prefix": "OBS",
       "description": "Observation / early warning / source preservation record.",
-      "required_top_level_fields": ["id", "record_type", "record_state", "date_recorded", "record_identity", "summary", "evidence_confidence", "source_records", "system_context", "jurisdictional_context", "linked_records", "cam_internal", "next_action"],
-      "forbidden_top_level_fields": ["source_data", "failure_classification", "triage", "proposal_scope", "change_classification", "date_implemented", "proposal_rationale", "implementation_notes", "external_relevance", "change_details", "implementation_verification", "impact_summary", "remaining_work", "failure_mode_definition", "failure_threshold"],
-      "cam_routing": "Use related_or_similar_* fields only. OBS does not contain failure classification, proposal logic, or patch logic."
+      "required_top_level_fields": [
+        "id",
+        "record_type",
+        "record_state",
+        "date_recorded",
+        "record_identity",
+        "summary",
+        "evidence_confidence",
+        "source_records",
+        "system_context",
+        "jurisdictional_context",
+        "linked_records",
+        "cam_internal",
+        "next_action"
+      ],
+      "forbidden_top_level_fields": [
+        "change_classification",
+        "change_details",
+        "date_implemented",
+        "external_relevance",
+        "failure_classification",
+        "failure_mode_definition",
+        "failure_threshold",
+        "impact_summary",
+        "implementation_notes",
+        "implementation_verification",
+        "proposal_rationale",
+        "proposal_scope",
+        "remaining_work",
+        "source_data",
+        "triage"
+      ],
+      "cam_routing": "Use related_or_similar_* fields only. OBS does not contain failure classification, proposal logic, or patch logic.",
+      "allowed_taxonomy_field": "possible_taxonomy_mapping"
     },
     "failure_mode": {
       "id_prefix": "FM",
       "description": "Failure Mode / triage record.",
-      "required_top_level_fields": ["id", "record_type", "record_state", "date_recorded", "record_identity", "summary", "failure_mode_definition", "failure_threshold", "evidence_confidence", "source_records", "system_context", "failure_classification", "triage", "jurisdictional_context", "linked_records", "cam_internal"],
-      "forbidden_top_level_fields": ["source_data", "proposal_rationale", "proposal_scope", "change_classification", "date_implemented", "change_details", "implementation_verification", "impact_summary", "remaining_work"],
-      "cam_routing": "Use affected_* fields for triage-relevant CAM routing."
+      "required_top_level_fields": [
+        "id",
+        "record_type",
+        "record_state",
+        "date_recorded",
+        "record_identity",
+        "summary",
+        "failure_mode_definition",
+        "failure_threshold",
+        "evidence_confidence",
+        "source_records",
+        "system_context",
+        "failure_classification",
+        "triage",
+        "jurisdictional_context",
+        "linked_records",
+        "cam_internal"
+      ],
+      "forbidden_top_level_fields": [
+        "source_data",
+        "proposal_rationale",
+        "proposal_scope",
+        "change_classification",
+        "date_implemented",
+        "change_details",
+        "implementation_verification",
+        "impact_summary",
+        "remaining_work"
+      ],
+      "cam_routing": "Use affected_* fields for triage-relevant CAM routing.",
+      "failure_classification_required_fields": [
+        "failure_family",
+        "canonical_failure_group",
+        "taxonomy_reference",
+        "related_failure_groups",
+        "persistence",
+        "reproducibility",
+        "visibility"
+      ],
+      "allowed_canonical_failure_group_values": [
+        "execution",
+        "arbitration",
+        "epistemic",
+        "relational",
+        "security-integrity",
+        "state-context",
+        "ux-representation",
+        "governance",
+        "infrastructure-continuity",
+        "classification",
+        "provisional"
+      ]
     },
     "proposal": {
       "id_prefix": "PROP",
       "description": "CAM-specific proposal record.",
-      "required_top_level_fields": ["id", "record_type", "record_state", "date_recorded", "record_identity", "summary", "proposal_rationale", "proposal_scope", "implementation_notes", "external_relevance", "next_action", "evidence_confidence", "source_records", "linked_records", "cam_internal"],
-      "forbidden_top_level_fields": ["source_data", "change_classification", "date_implemented", "change_details", "implementation_verification", "impact_summary", "remaining_work", "failure_mode_definition", "failure_threshold", "triage", "failure_classification"],
+      "required_top_level_fields": [
+        "id",
+        "record_type",
+        "record_state",
+        "date_recorded",
+        "record_identity",
+        "summary",
+        "proposal_rationale",
+        "proposal_scope",
+        "implementation_notes",
+        "external_relevance",
+        "next_action",
+        "evidence_confidence",
+        "source_records",
+        "linked_records",
+        "cam_internal",
+        "proposal_type"
+      ],
+      "forbidden_top_level_fields": [
+        "change_classification",
+        "change_details",
+        "date_implemented",
+        "failure_classification",
+        "failure_mode_definition",
+        "failure_threshold",
+        "impact_summary",
+        "implementation_verification",
+        "patch_status",
+        "remaining_work",
+        "source_data",
+        "triage"
+      ],
       "cam_routing": "Use target_* fields. A PROP must not claim implementation as a completed patch."
     },
     "patch": {
       "id_prefix": "PATCH",
       "description": "Implemented CAM patch note.",
-      "required_top_level_fields": ["id", "record_type", "record_state", "date_recorded", "record_identity", "summary", "date_implemented", "change_classification", "change_details", "implementation_verification", "impact_summary", "remaining_work", "evidence_confidence", "source_records", "linked_records", "cam_internal"],
-      "forbidden_top_level_fields": ["source_data", "proposal_rationale", "proposal_scope", "external_relevance", "failure_mode_definition", "failure_threshold", "triage", "failure_classification"],
+      "required_top_level_fields": [
+        "id",
+        "record_type",
+        "record_state",
+        "date_recorded",
+        "record_identity",
+        "summary",
+        "date_implemented",
+        "change_classification",
+        "change_details",
+        "implementation_verification",
+        "impact_summary",
+        "remaining_work",
+        "evidence_confidence",
+        "source_records",
+        "system_context",
+        "linked_records",
+        "cam_internal"
+      ],
+      "forbidden_top_level_fields": [
+        "source_data",
+        "proposal_rationale",
+        "proposal_scope",
+        "external_relevance",
+        "failure_mode_definition",
+        "failure_threshold",
+        "triage",
+        "failure_classification"
+      ],
       "cam_routing": "Use changed_* fields. PATCH records require implemented-change evidence."
     }
   },
   "$defs": {
-    "record_type": {"enum": ["observation", "failure_mode", "proposal", "patch"]},
-    "evidence_confidence": {"enum": ["verified", "corroborated", "unverified", "anecdotal", "disputed", "unknown", "not applicable", "to be assessed"]},
-    "source_type": {"enum": ["linked-observation", "linked-failure-mode", "news-report", "official-source", "social-platform-observation", "platform-behaviour-observation", "third-party-report", "research-source", "standards-source", "repository-source", "governance-note", "deep-research-agent", "other", "not applicable"]},
-    "source_record": {"required": ["source_title", "author_or_publisher", "source_date", "source_url", "archive_url", "retrieved_date", "source_type", "source_platform", "system_or_product", "model_or_algorithm", "deployment_context", "source_context", "source_url_status", "relevance_note"]},
-    "vigil_record": {"required": ["id", "record_type", "record_state", "date_recorded", "record_identity", "summary", "evidence_confidence", "source_records", "linked_records", "cam_internal"]}
+    "record_type": {
+      "enum": [
+        "observation",
+        "failure_mode",
+        "proposal",
+        "patch"
+      ]
+    },
+    "evidence_confidence": {
+      "enum": [
+        "verified",
+        "corroborated",
+        "unverified",
+        "anecdotal",
+        "disputed",
+        "unknown",
+        "not applicable",
+        "to be assessed"
+      ]
+    },
+    "source_type": {
+      "enum": [
+        "linked-observation",
+        "linked-failure-mode",
+        "news-report",
+        "official-source",
+        "social-platform-observation",
+        "platform-behaviour-observation",
+        "third-party-report",
+        "research-source",
+        "standards-source",
+        "repository-source",
+        "linked-proposal",
+        "repository-observation",
+        "governance-note",
+        "deep-research-agent",
+        "other",
+        "not applicable"
+      ]
+    },
+    "source_record": {
+      "required": [
+        "source_title",
+        "author_or_publisher",
+        "source_date",
+        "source_url",
+        "archive_url",
+        "retrieved_date",
+        "source_type",
+        "source_platform",
+        "system_or_product",
+        "model_or_algorithm",
+        "deployment_context",
+        "source_context",
+        "source_url_status",
+        "relevance_note"
+      ]
+    },
+    "vigil_record": {
+      "required": [
+        "id",
+        "record_type",
+        "record_state",
+        "date_recorded",
+        "record_identity",
+        "summary",
+        "evidence_confidence",
+        "source_records",
+        "linked_records",
+        "cam_internal"
+      ]
+    }
+  },
+  "system_context_rules": {
+    "description": "system_context describes the observed/proposed external system, product, service, interface, or deployment.",
+    "required_fields": [
+      "product_family",
+      "product_or_service",
+      "specific_model",
+      "interface_surface"
+    ]
+  },
+  "cam_internal_rules": {
+    "description": "cam_internal describes CAM routing, targets, affected areas, or changed components.",
+    "observation": "related_or_similar CAM routing only",
+    "failure_mode": "affected CAM routing only",
+    "proposal": "target CAM routing only",
+    "patch": "changed CAM routing only"
+  },
+  "cam_failure_taxonomy": {
+    "taxonomy_reference": "CAM-EQ2026-OPERATIONS-003-SUP-01 Appendix B: Runtime & Governance Failure Taxonomy",
+    "allowed_canonical_failure_group_values": [
+      "execution",
+      "arbitration",
+      "epistemic",
+      "relational",
+      "security-integrity",
+      "state-context",
+      "ux-representation",
+      "governance",
+      "infrastructure-continuity",
+      "classification",
+      "provisional"
+    ],
+    "failure_classification_required_fields": [
+      "failure_family",
+      "canonical_failure_group",
+      "taxonomy_reference",
+      "related_failure_groups",
+      "persistence",
+      "reproducibility",
+      "visibility"
+    ]
+  },
+  "generated_register_rules": {
+    "pruning": "Generated summaries prune empty arrays, empty strings, empty objects, and nulls while preserving meaningful uncertainty values.",
+    "observation_summaries": [
+      "source_summary",
+      "system_summary",
+      "jurisdiction_summary",
+      "possible_taxonomy_mapping_summary when present"
+    ],
+    "failure_mode_summaries": [
+      "source_summary",
+      "system_summary",
+      "jurisdiction_summary",
+      "classification_summary",
+      "triage_summary"
+    ],
+    "proposal_summaries": [
+      "source_summary",
+      "system_summary",
+      "proposal_summary",
+      "external_relevance_summary",
+      "cam_summary"
+    ],
+    "patch_summaries": [
+      "source_summary",
+      "system_summary",
+      "change_summary",
+      "verification_summary",
+      "impact_summary",
+      "cam_summary"
+    ],
+    "cam_routing_defaults": "OBS/FM summaries do not include CAM routing by default; PROP/PATCH summaries may include CAM target/changed routing."
   }
 }

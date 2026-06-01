@@ -20,6 +20,25 @@ CLOSED_DIR = RECORDS_ROOT / "closed"
 RECORD_DIRS = [OPEN_DIR, CLUSTERS_DIR, CLOSED_DIR]
 
 RECORD_TYPES = {"observation", "failure_mode", "proposal", "patch"}
+ALLOWED_CANONICAL_FAILURE_GROUPS = {
+    "execution",
+    "arbitration",
+    "epistemic",
+    "relational",
+    "security-integrity",
+    "state-context",
+    "ux-representation",
+    "governance",
+    "infrastructure-continuity",
+    "classification",
+    "provisional",
+}
+SYSTEM_CONTEXT_REQUIRED = {
+    "product_family",
+    "product_or_service",
+    "specific_model",
+    "interface_surface",
+}
 ID_PREFIX = {
     "observation": "OBS",
     "failure_mode": "FM",
@@ -57,7 +76,7 @@ OBS_FORBIDDEN = {
     "failure_threshold",
 }
 FM_REQUIRED = {"failure_mode_definition", "failure_threshold", "failure_classification", "triage"}
-PROP_REQUIRED = {"proposal_rationale", "proposal_scope", "implementation_notes", "external_relevance", "next_action"}
+PROP_REQUIRED = {"proposal_rationale", "proposal_type", "proposal_scope", "implementation_notes", "external_relevance", "next_action"}
 PATCH_REQUIRED = {
     "date_implemented",
     "change_classification",
@@ -89,6 +108,14 @@ def is_blank(value: Any) -> bool:
     return value is None or value == "" or value == [] or value == {}
 
 
+
+def contains_key(value: Any, key: str) -> bool:
+    if isinstance(value, dict):
+        return key in value or any(contains_key(item, key) for item in value.values())
+    if isinstance(value, list):
+        return any(contains_key(item, key) for item in value)
+    return False
+
 def add_missing(errors: list[str], path: Path, record: dict[str, Any], fields: set[str]) -> None:
     missing = sorted(field for field in fields if is_blank(record.get(field)))
     if missing:
@@ -111,8 +138,8 @@ def validate_record(path: Path, record: dict[str, Any], known_ids: set[str], err
 
     add_missing(errors, path, record, REQUIRED_COMMON)
 
-    if "source_data" in record:
-        errors.append(f"{path}: source_data is forbidden in individual records; use source_records only")
+    if contains_key(record, "source_data"):
+        errors.append(f"{path}: source_data is forbidden anywhere in individual records; use source_records only")
         if isinstance(record.get("source_data"), dict) and "sources" in record["source_data"]:
             errors.append(f"{path}: source_data.sources is forbidden in individual records; use source_records only")
 
@@ -169,6 +196,12 @@ def validate_record(path: Path, record: dict[str, Any], known_ids: set[str], err
         if record_type == "proposal" and not linked.get("standards"):
             warnings.append(f"{path}: external standards are absent from proposal linked_records.standards")
 
+    system_context = record.get("system_context")
+    if not isinstance(system_context, dict):
+        errors.append(f"{path}: system_context must be an object")
+    else:
+        add_missing(errors, path, system_context, SYSTEM_CONTEXT_REQUIRED)
+
     jurisdiction = record.get("jurisdictional_context")
     if isinstance(jurisdiction, dict):
         if str(jurisdiction.get("primary_jurisdiction", "")).lower() in {"unknown", "to be assessed"}:
@@ -185,14 +218,40 @@ def validate_record(path: Path, record: dict[str, Any], known_ids: set[str], err
             errors.append(f"{path}: OBS contains forbidden record-class fields: {', '.join(present)}")
     elif record_type == "failure_mode":
         add_missing(errors, path, record, FM_REQUIRED)
+        classification = record.get("failure_classification")
+        if isinstance(classification, dict):
+            if is_blank(classification.get("failure_family")):
+                errors.append(f"{path}: FM failure_classification.failure_family is required")
+            canonical_group = classification.get("canonical_failure_group")
+            if is_blank(canonical_group):
+                errors.append(f"{path}: FM failure_classification.canonical_failure_group is required")
+            elif canonical_group not in ALLOWED_CANONICAL_FAILURE_GROUPS:
+                allowed = ", ".join(sorted(ALLOWED_CANONICAL_FAILURE_GROUPS))
+                errors.append(
+                    f"{path}: FM failure_classification.canonical_failure_group {canonical_group!r} "
+                    f"is not in allowed CAM taxonomy groups: {allowed}"
+                )
+            add_missing(
+                errors,
+                path,
+                classification,
+                {"taxonomy_reference", "related_failure_groups", "persistence", "reproducibility", "visibility"},
+            )
     elif record_type == "proposal":
         add_missing(errors, path, record, PROP_REQUIRED)
         state = str(record.get("record_state", "")).lower()
-        patch_status = str(record.get("patch_status", "")).lower()
-        if state in {"implemented", "completed", "closed-actioned"} or "implemented" in patch_status or "completed" in patch_status:
+        if contains_key(record, "patch_status"):
+            errors.append(f"{path}: PROP contains forbidden patch_status; implemented work belongs in PATCH records")
+        if is_blank(record.get("proposal_scope")):
+            errors.append(f"{path}: PROP proposal_scope must not be empty")
+        if state in {"implemented", "completed", "closed-actioned"}:
             errors.append(f"{path}: PROP claims implementation as completed patch")
     elif record_type == "patch":
         add_missing(errors, path, record, PATCH_REQUIRED)
+        if is_blank(record.get("date_implemented")):
+            errors.append(f"{path}: PATCH date_implemented is required")
+        if is_blank(record.get("change_details")) or is_blank(record.get("implementation_verification")):
+            errors.append(f"{path}: PATCH changed/implementation fields are required")
         verification = record.get("implementation_verification")
         evidence = verification.get("evidence") if isinstance(verification, dict) else ""
         if not record.get("source_records") and not evidence:

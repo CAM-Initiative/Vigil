@@ -46,12 +46,14 @@ class BuildVigilRecordsTest(unittest.TestCase):
         self.assertNotIn("cam_summary", summaries)
         self.assertNotIn("cam_internal", summaries)
         self.assertNotIn("affected_instruments", json.dumps(summaries))
+        self.assertEqual(summaries["classification_summary"]["canonical_failure_group"], "arbitration")
 
     def test_proposal_generated_summary_may_include_cam_summary(self):
         record = self.load_valid_fixture("VIGIL-2026-PROP-0001")
         summaries = builder.generated_summaries(record)
 
         self.assertIn("source_summary", summaries)
+        self.assertIn("system_summary", summaries)
         self.assertIn("proposal_summary", summaries)
         self.assertIn("external_relevance_summary", summaries)
         self.assertIn("cam_summary", summaries)
@@ -63,6 +65,7 @@ class BuildVigilRecordsTest(unittest.TestCase):
         summaries = builder.generated_summaries(record)
 
         self.assertIn("source_summary", summaries)
+        self.assertIn("system_summary", summaries)
         self.assertIn("change_summary", summaries)
         self.assertIn("verification_summary", summaries)
         self.assertIn("impact_summary", summaries)

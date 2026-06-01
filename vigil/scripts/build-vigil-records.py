@@ -29,6 +29,14 @@ def record_files(directories: list[Path]) -> list[Path]:
     return sorted(files, key=lambda path: path.as_posix())
 
 
+def contains_key(value: Any, key: str) -> bool:
+    if isinstance(value, dict):
+        return key in value or any(contains_key(item, key) for item in value.values())
+    if isinstance(value, list):
+        return any(contains_key(item, key) for item in value)
+    return False
+
+
 def load_records(directories: list[Path]) -> list[dict[str, Any]]:
     records: list[dict[str, Any]] = []
     for path in record_files(directories):
@@ -36,7 +44,7 @@ def load_records(directories: list[Path]) -> list[dict[str, Any]]:
             record = json.load(handle)
         if not isinstance(record, dict):
             raise TypeError(f"{path} must contain one JSON object")
-        if "source_data" in record:
+        if contains_key(record, "source_data"):
             raise ValueError(f"{path} contains forbidden source_data")
         records.append(record)
     return sorted(records, key=lambda record: record.get("id", ""))
@@ -71,8 +79,12 @@ def system_summary(record: dict[str, Any]) -> dict[str, Any]:
         [
             "system_type",
             "platform_or_vendor",
+            "product_family",
+            "product_or_service",
             "model_or_product",
+            "specific_model",
             "interaction_mode",
+            "interface_surface",
             "embodiment_status",
             "deployment_context",
             "user_role",
@@ -100,13 +112,20 @@ def jurisdiction_summary(record: dict[str, Any]) -> dict[str, Any]:
     )
 
 
+def possible_taxonomy_mapping_summary(record: dict[str, Any]) -> dict[str, Any]:
+    return dict_summary(record, "possible_taxonomy_mapping")
+
+
 def classification_summary(record: dict[str, Any]) -> dict[str, Any]:
     return dict_summary(
         record,
         "failure_classification",
         [
+            "canonical_failure_group",
             "failure_family",
             "failure_subtype",
+            "taxonomy_reference",
+            "related_failure_groups",
             "harm_vectors",
             "severity",
             "likelihood",
@@ -114,6 +133,9 @@ def classification_summary(record: dict[str, Any]) -> dict[str, Any]:
             "affected_rights_or_interests",
             "failure_scope",
             "recurrence_pattern",
+            "persistence",
+            "reproducibility",
+            "visibility",
         ],
     )
 
@@ -229,6 +251,7 @@ def generated_summaries(record: dict[str, Any]) -> dict[str, Any]:
             {
                 "system_summary": system_summary(record),
                 "jurisdiction_summary": jurisdiction_summary(record),
+                "possible_taxonomy_mapping_summary": possible_taxonomy_mapping_summary(record),
             }
         )
     elif record_type == "failure_mode":
@@ -243,6 +266,7 @@ def generated_summaries(record: dict[str, Any]) -> dict[str, Any]:
     elif record_type == "proposal":
         summaries.update(
             {
+                "system_summary": system_summary(record),
                 "proposal_summary": proposal_summary(record),
                 "external_relevance_summary": external_relevance_summary(record),
                 "cam_summary": proposal_cam_summary(record),
@@ -251,6 +275,7 @@ def generated_summaries(record: dict[str, Any]) -> dict[str, Any]:
     elif record_type in {"patch", "patch_note"}:
         summaries.update(
             {
+                "system_summary": system_summary(record),
                 "change_summary": change_summary(record),
                 "verification_summary": verification_summary(record),
                 "impact_summary": impact_summary(record),

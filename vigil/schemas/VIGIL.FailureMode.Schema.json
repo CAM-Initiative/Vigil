@@ -1,1 +1,85 @@
-{"$schema":"https://json-schema.org/draft/2020-12/schema","$id":"VIGIL.FailureMode.Schema.json","description":"Failure Mode records require failure definition, threshold, classification, and triage.","allOf":[{"$ref":"VIGIL.Base.Schema.json"}],"properties":{"record_type":{"const":"failure_mode"}},"required":["failure_mode_definition","failure_threshold","failure_classification","triage"],"not":{"required":["source_data"]}}
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "VIGIL.FailureMode.Schema.json",
+  "description": "Failure Mode records require failure definition, threshold, CAM taxonomy-aligned failure classification, and triage.",
+  "allOf": [
+    {
+      "$ref": "VIGIL.Base.Schema.json"
+    }
+  ],
+  "properties": {
+    "record_type": {
+      "const": "failure_mode"
+    },
+    "failure_classification": {
+      "type": "object",
+      "required": [
+        "failure_family",
+        "canonical_failure_group",
+        "taxonomy_reference",
+        "related_failure_groups",
+        "persistence",
+        "reproducibility",
+        "visibility"
+      ],
+      "properties": {
+        "canonical_failure_group": {
+          "enum": [
+            "execution",
+            "arbitration",
+            "epistemic",
+            "relational",
+            "security-integrity",
+            "state-context",
+            "ux-representation",
+            "governance",
+            "infrastructure-continuity",
+            "classification",
+            "provisional"
+          ]
+        },
+        "taxonomy_reference": {
+          "type": "string"
+        },
+        "related_failure_groups": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "execution",
+              "arbitration",
+              "epistemic",
+              "relational",
+              "security-integrity",
+              "state-context",
+              "ux-representation",
+              "governance",
+              "infrastructure-continuity",
+              "classification",
+              "provisional"
+            ]
+          }
+        },
+        "persistence": {
+          "type": "string"
+        },
+        "reproducibility": {
+          "type": "string"
+        },
+        "visibility": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "required": [
+    "failure_mode_definition",
+    "failure_threshold",
+    "failure_classification",
+    "triage"
+  ],
+  "not": {
+    "required": [
+      "source_data"
+    ]
+  }
+}
