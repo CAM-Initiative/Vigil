@@ -1,1 +1,58 @@
-{"$schema":"https://json-schema.org/draft/2020-12/schema","$id":"VIGIL.Base.Schema.json","description":"Base rules for individual VIGIL records. source_records is the only canonical source-evidence block; source_data is forbidden.","type":"object","required":["id","record_type","record_state","date_recorded","record_identity","summary","evidence_confidence","source_records","linked_records","cam_internal"],"not":{"required":["source_data"]},"properties":{"source_records":{"type":"array"},"source_data":false}}
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "VIGIL.Base.Schema.json",
+  "description": "Base rules for individual VIGIL records. source_records is the only canonical source-evidence block; source_data is forbidden anywhere in an individual record.",
+  "type": "object",
+  "required": [
+    "id",
+    "record_type",
+    "record_state",
+    "date_recorded",
+    "record_identity",
+    "summary",
+    "evidence_confidence",
+    "source_records",
+    "system_context",
+    "linked_records",
+    "cam_internal"
+  ],
+  "not": {
+    "required": [
+      "source_data"
+    ]
+  },
+  "properties": {
+    "source_records": {
+      "type": "array"
+    },
+    "source_data": false,
+    "system_context": {
+      "type": "object",
+      "required": [
+        "product_family",
+        "product_or_service",
+        "specific_model",
+        "interface_surface"
+      ],
+      "description": "Observed/proposed external system, product, service, interface, or deployment.",
+      "properties": {
+        "product_family": {
+          "type": "string"
+        },
+        "product_or_service": {
+          "type": "string"
+        },
+        "specific_model": {
+          "type": "string"
+        },
+        "interface_surface": {
+          "type": "string"
+        }
+      }
+    },
+    "cam_internal": {
+      "type": "object",
+      "description": "CAM routing, targets, affected areas, or changed components."
+    }
+  }
+}
