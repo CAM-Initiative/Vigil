@@ -126,21 +126,28 @@ Do not make CAM affected instruments the primary public classification layer.
 ## Record Automation Rules
 
 * The source of truth is the individual JSON record files under `vigil/records/`.
-* Do not manually edit generated aggregates:
+* Do not manually edit generated registry indexes:
+
+  * `vigil/VIGIL.Failures.Index.json`
+  * `vigil/VIGIL.Observations.Index.json`
+  * `vigil/VIGIL.Proposals.Index.json`
+  * `vigil/VIGIL.PatchNotes.Index.json`
+  * `vigil/VIGIL.Registry.Index.json`
+* Do not recreate deprecated generated aggregate files:
 
   * `vigil/VIGIL.ActiveRecords.json`
   * `vigil/VIGIL.ClosedRecords.json`
   * `vigil/VIGIL.Records.Index.json`
+  * `vigil/VIGIL.Records.json`
 * Add or modify individual record files under `vigil/records/`.
 * Each individual record file must contain one record object, not an aggregate wrapper.
 * Run `python vigil/scripts/route-vigil-records.py` to move misplaced records to the correct canonical type/year folder.
 * Record files belong under `vigil/records/<record_type>/<year>/`; record state belongs inside `record_state`, not in the filesystem path.
 * Run `python vigil/scripts/validate-vigil-records.py` before rebuilding.
-* Rebuild generated aggregates with `python vigil/scripts/build-vigil-records.py` after changing records.
-* Use `vigil/VIGIL.ActiveRecords.json` for interface/live ingestion.
-* Use `vigil/VIGIL.ClosedRecords.json` for archival records.
-* Use `vigil/VIGIL.Records.Index.json` as the lightweight global registry.
-* Keep placeholder/example records out of production aggregate records.
+* Rebuild generated registry indexes with `python vigil/scripts/build-vigil-records.py` after changing records.
+* Use the type-specific registry indexes for interface/live ingestion.
+* Use `vigil/VIGIL.Registry.Index.json` as the master registry composed from the generated type indexes.
+* Keep placeholder/example records clearly marked as scaffolding in generated registry records.
 
 ## Implementation Discipline
 

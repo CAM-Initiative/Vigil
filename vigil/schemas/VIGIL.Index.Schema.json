@@ -1,55 +1,208 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "VIGIL.Index.Schema.json",
-  "description": "Generated VIGIL register/index schema. Generated registers may contain derived summaries from source_records, system_context, jurisdictional_context, classification, proposal, change, verification, impact, and CAM routing fields according to record class.",
-  "type": "object",
-  "required": [
-    "generated_notice",
-    "generated_from",
-    "record_count",
-    "records"
+  "description": "Generated VIGIL type registry and master registry index schema. Type registries are generated from canonical record type/year folders; the master registry is composed from the generated type registries.",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/type_registry"
+    },
+    {
+      "$ref": "#/$defs/master_registry"
+    }
   ],
-  "properties": {
-    "records": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "source_summary": {
-            "type": "object"
-          },
-          "system_summary": {
-            "type": "object"
-          },
-          "jurisdiction_summary": {
-            "type": "object"
-          },
-          "possible_taxonomy_mapping_summary": {
-            "type": "object"
-          },
-          "classification_summary": {
-            "type": "object"
-          },
-          "triage_summary": {
-            "type": "object"
-          },
-          "proposal_summary": {
-            "type": "object"
-          },
-          "external_relevance_summary": {
-            "type": "object"
-          },
-          "change_summary": {
-            "type": "object"
-          },
-          "verification_summary": {
-            "type": "object"
-          },
-          "impact_summary": {
-            "type": "object"
-          },
-          "cam_summary": {
-            "type": "object"
+  "$defs": {
+    "url": {
+      "type": "string",
+      "format": "uri"
+    },
+    "record_entry": {
+      "type": "object",
+      "required": [
+        "id",
+        "record_type",
+        "record_state",
+        "date_recorded",
+        "summary",
+        "path",
+        "github_blob_url",
+        "raw_url"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "record_type": {
+          "type": "string"
+        },
+        "record_state": {
+          "type": "string"
+        },
+        "date_recorded": {
+          "type": "string"
+        },
+        "record_identity": {
+          "type": "object"
+        },
+        "title": {
+          "type": "string"
+        },
+        "summary": {
+          "type": "string"
+        },
+        "evidence_confidence": {
+          "type": "string"
+        },
+        "source_types": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "source_summary": {
+          "type": "object"
+        },
+        "system_summary": {
+          "type": "object"
+        },
+        "jurisdiction_summary": {
+          "type": "object"
+        },
+        "possible_taxonomy_mapping_summary": {
+          "type": "object"
+        },
+        "classification_summary": {
+          "type": "object"
+        },
+        "triage_summary": {
+          "type": "object"
+        },
+        "proposal_summary": {
+          "type": "object"
+        },
+        "external_relevance_summary": {
+          "type": "object"
+        },
+        "implementation_notes_summary": {
+          "type": "object"
+        },
+        "change_summary": {
+          "type": "object"
+        },
+        "verification_summary": {
+          "type": "object"
+        },
+        "impact_summary": {
+          "type": "object"
+        },
+        "cam_summary": {
+          "type": "object"
+        },
+        "next_action": {
+          "type": "string"
+        },
+        "remaining_work": {
+          "type": "array"
+        },
+        "linked_records": {
+          "type": "object"
+        },
+        "path": {
+          "type": "string",
+          "pattern": "^vigil/records/(failures|observations|proposals|patches)/[0-9]{4}/VIGIL-[0-9]{4}-(FM|OBS|PROP|PATCH)-[0-9]+\\.json$"
+        },
+        "github_blob_url": {
+          "$ref": "#/$defs/url"
+        },
+        "raw_url": {
+          "$ref": "#/$defs/url"
+        }
+      }
+    },
+    "type_registry": {
+      "type": "object",
+      "required": [
+        "generated_notice",
+        "registry_type",
+        "generated_from",
+        "record_count",
+        "records"
+      ],
+      "properties": {
+        "generated_notice": {
+          "type": "string"
+        },
+        "registry_type": {
+          "enum": [
+            "failure_modes",
+            "observations",
+            "proposals",
+            "patch_notes"
+          ]
+        },
+        "generated_from": {
+          "enum": [
+            "vigil/records/failures/",
+            "vigil/records/observations/",
+            "vigil/records/proposals/",
+            "vigil/records/patches/"
+          ]
+        },
+        "record_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "records": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/record_entry"
+          }
+        }
+      }
+    },
+    "master_registry": {
+      "type": "object",
+      "required": [
+        "generated_notice",
+        "registry_type",
+        "generated_from",
+        "registry_count",
+        "record_count",
+        "registries",
+        "records"
+      ],
+      "properties": {
+        "generated_notice": {
+          "type": "string"
+        },
+        "registry_type": {
+          "const": "vigil_registry_master"
+        },
+        "generated_from": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "registry_count": {
+          "const": 4
+        },
+        "record_count": {
+          "type": "object",
+          "required": [
+            "failure_modes",
+            "observations",
+            "proposals",
+            "patch_notes",
+            "total"
+          ]
+        },
+        "registries": {
+          "type": "object"
+        },
+        "records": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/record_entry"
           }
         }
       }

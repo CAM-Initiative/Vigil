@@ -53,7 +53,6 @@ class ValidateVigilRecordsTest(unittest.TestCase):
                     temp_records / "failures",
                     temp_records / "proposals",
                     temp_records / "patches",
-                    temp_records / "research",
                 ]
                 self.assertNotEqual(validator.validate(), 0)
             finally:
@@ -70,6 +69,29 @@ class ValidateVigilRecordsTest(unittest.TestCase):
         for path in sorted(proposal_dir.glob("VIGIL-2026-PROP-*.json")):
             with self.subTest(record=path.name):
                 self.assertEqual(validator.validate(path), 0)
+
+    def test_patch_seed_record_validates(self):
+        seed = ROOT / "vigil" / "records" / "patches" / "2026" / "VIGIL-2026-PATCH-0001.json"
+        self.assertEqual(validator.validate(seed), 0)
+
+    def test_patch_note_record_type_uses_patch_prefix_and_patches_path(self):
+        fixture = ROOT / "vigil" / "records" / "patches" / "2026" / "VIGIL-2026-PATCH-0001.json"
+        with fixture.open(encoding="utf-8") as handle:
+            record = json.load(handle)
+        record["record_type"] = "patch_note"
+        record["record_identity"]["record_type"] = "patch_note"
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_records = Path(temp_dir) / "records"
+            path = temp_records / "patches" / "2026" / "VIGIL-2026-PATCH-0001.json"
+            path.parent.mkdir(parents=True)
+            path.write_text(json.dumps(record), encoding="utf-8")
+            originals = (validator.RECORDS_ROOT, validator.RECORD_TYPE_DIRS)
+            try:
+                validator.RECORDS_ROOT = temp_records
+                validator.RECORD_TYPE_DIRS = [temp_records / "patches"]
+                self.assertEqual(validator.validate(), 0)
+            finally:
+                validator.RECORDS_ROOT, validator.RECORD_TYPE_DIRS = originals
 
     def test_fm_requires_canonical_failure_group(self):
         def mutate(record):

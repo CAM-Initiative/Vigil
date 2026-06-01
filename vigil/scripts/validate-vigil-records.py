@@ -13,16 +13,20 @@ ROOT = Path(__file__).resolve().parents[2]
 VIGIL_DIR = ROOT / "vigil"
 RECORDS_ROOT = VIGIL_DIR / "records"
 SCHEMA_PATH = VIGIL_DIR / "VIGIL.Schema.json"
-LEGACY_OUTPUT_PATH = VIGIL_DIR / "VIGIL.Records.json"
+DEPRECATED_OUTPUT_PATHS = [
+    VIGIL_DIR / "VIGIL.ActiveRecords.json",
+    VIGIL_DIR / "VIGIL.ClosedRecords.json",
+    VIGIL_DIR / "VIGIL.Records.Index.json",
+    VIGIL_DIR / "VIGIL.Records.json",
+]
 RECORD_TYPE_DIRS = [
     RECORDS_ROOT / "observations",
     RECORDS_ROOT / "failures",
     RECORDS_ROOT / "proposals",
     RECORDS_ROOT / "patches",
-    RECORDS_ROOT / "research",
 ]
 
-RECORD_TYPES = {"observation", "failure_mode", "proposal", "patch"}
+RECORD_TYPES = {"observation", "failure_mode", "proposal", "patch", "patch_note"}
 ALLOWED_CANONICAL_FAILURE_GROUPS = {
     "execution",
     "arbitration",
@@ -47,12 +51,14 @@ ID_PREFIX = {
     "failure_mode": "FM",
     "proposal": "PROP",
     "patch": "PATCH",
+    "patch_note": "PATCH",
 }
 TYPE_DIR = {
     "observation": "observations",
     "failure_mode": "failures",
     "proposal": "proposals",
     "patch": "patches",
+    "patch_note": "patches",
 }
 REQUIRED_COMMON = {
     "id",
@@ -161,7 +167,12 @@ def validate_record(path: Path, record: dict[str, Any], known_ids: set[str], err
     record_id = record.get("id")
     record_type = record.get("record_type")
 
-    add_missing(errors, path, record, REQUIRED_COMMON)
+    common_required = set(REQUIRED_COMMON)
+    # Temporary patch scaffolds may intentionally carry an empty source_records array;
+    # source_records still must be present and typed as an array below.
+    if record_type in {"patch", "patch_note"} and str(record.get("record_state", "")).lower() == "scaffolding":
+        common_required.discard("source_records")
+    add_missing(errors, path, record, common_required)
 
     if contains_key(record, "source_data"):
         errors.append(f"{path}: source_data is forbidden anywhere in individual records; use source_records only")
@@ -281,7 +292,7 @@ def validate_record(path: Path, record: dict[str, Any], known_ids: set[str], err
             errors.append(f"{path}: PROP proposal_scope must not be empty")
         if state in {"implemented", "completed", "closed-actioned"}:
             errors.append(f"{path}: PROP claims implementation as completed patch")
-    elif record_type == "patch":
+    elif record_type in {"patch", "patch_note"}:
         add_missing(errors, path, record, PATCH_REQUIRED)
         if is_blank(record.get("date_implemented")):
             errors.append(f"{path}: PATCH date_implemented is required")
@@ -297,8 +308,10 @@ def validate(root: Path | None = None) -> int:
     errors: list[str] = []
     warnings: list[str] = []
 
-    if root is None and LEGACY_OUTPUT_PATH.exists():
-        errors.append(f"{LEGACY_OUTPUT_PATH}: deprecated legacy aggregate must not exist")
+    if root is None:
+        for deprecated_path in DEPRECATED_OUTPUT_PATHS:
+            if deprecated_path.exists():
+                errors.append(f"{deprecated_path}: deprecated generated file must not exist")
 
     files = record_files(root)
     records_by_path: dict[Path, dict[str, Any]] = {}

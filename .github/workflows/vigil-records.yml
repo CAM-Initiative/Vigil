@@ -31,21 +31,21 @@ jobs:
       - name: Validate VIGIL records
         run: python vigil/scripts/validate-vigil-records.py
 
-      - name: Build VIGIL generated records
+      - name: Build VIGIL registry indexes
         run: |
           python vigil/scripts/build-vigil-records.py
-          rm -f vigil/VIGIL.Records.json
+          rm -f vigil/VIGIL.ActiveRecords.json vigil/VIGIL.ClosedRecords.json vigil/VIGIL.Records.Index.json vigil/VIGIL.Records.json
 
       - name: Commit generated VIGIL JSON
         if: github.event_name == 'push'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git rm --ignore-unmatch vigil/VIGIL.Records.json 2>/dev/null || true
-          git add vigil/VIGIL.ActiveRecords.json vigil/VIGIL.ClosedRecords.json vigil/VIGIL.Records.Index.json
+          git rm --ignore-unmatch vigil/VIGIL.ActiveRecords.json vigil/VIGIL.ClosedRecords.json vigil/VIGIL.Records.Index.json vigil/VIGIL.Records.json 2>/dev/null || true
+          git add vigil/VIGIL.Failures.Index.json vigil/VIGIL.Observations.Index.json vigil/VIGIL.Proposals.Index.json vigil/VIGIL.PatchNotes.Index.json vigil/VIGIL.Registry.Index.json
           if git diff --cached --quiet; then
             echo "No generated VIGIL JSON changes to commit."
           else
-            git commit -m "Build VIGIL record aggregates"
+            git commit -m "Build VIGIL registry indexes"
             git push
           fi
