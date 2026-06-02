@@ -27,7 +27,7 @@ RECORD_TYPE_DIRS = [
 ]
 
 RECORD_TYPES = {"observation", "failure_mode", "proposal", "patch", "patch_note"}
-CAM_INSTRUMENT_PREFIXES = ("CAM-BS", "CAM-EQ")
+CAM_INTERNAL_REFERENCE_PREFIXES = ("CAM-BS", "CAM-EQ", "VIGIL-")
 FALLBACK_ALLOWED_CANONICAL_FAILURE_GROUPS = {
     # Fallback only. The primary VIGIL taxonomy source is
     # VIGIL.Schema.json / cam_failure_taxonomy.allowed_canonical_failure_group_values,
@@ -45,10 +45,68 @@ FALLBACK_ALLOWED_CANONICAL_FAILURE_GROUPS = {
     "economic-legitimacy",
     "provisional",
 }
+CANONICAL_PLATFORM_OR_VENDOR_VALUES = {
+    "OpenAI",
+    "xAI",
+    "X",
+    "Anthropic",
+    "Meta",
+    "Google",
+    "DeepSeek",
+    "Cohere",
+    "Perplexity",
+    "Mistral",
+    "Microsoft",
+    "GitHub",
+    "TikTok",
+    "Apple",
+    "Amazon",
+    "Nvidia",
+    "Hugging Face",
+    "Stability AI",
+    "Runway",
+    "Midjourney",
+    "Adobe",
+    "Character.AI",
+    "Replit",
+    "Notion",
+    "Cursor",
+    "CAM Initiative",
+    "Other",
+    "Unknown",
+    "Not applicable",
+}
+CANONICAL_PRODUCT_OR_SERVICE_VALUES = {
+    "ChatGPT",
+    "Claude",
+    "Gemini",
+    "Grok",
+    "Copilot",
+    "Codex",
+    "Claude Code",
+    "Deep Research",
+    "Perplexity Assistant",
+    "Llama",
+    "Le Chat",
+    "GitHub Copilot",
+    "TikTok",
+    "X",
+    "Replit Agent",
+    "Cursor",
+    "Midjourney",
+    "Runway",
+    "Firefly",
+    "Character.AI",
+    "Caelestis Architecture Model",
+    "VIGIL",
+    "Other",
+    "Unknown",
+    "Not applicable",
+}
 SYSTEM_CONTEXT_REQUIRED = {
-    "product_family",
+    "platform_or_vendor",
     "product_or_service",
-    "specific_model",
+    "specific_model_or_runtime",
     "interface_surface",
 }
 ID_PREFIX = {
@@ -179,7 +237,7 @@ def standards_reference_text(value: Any) -> str:
 
 
 def is_cam_instrument_reference(value: Any) -> bool:
-    return standards_reference_text(value).startswith(CAM_INSTRUMENT_PREFIXES)
+    return standards_reference_text(value).startswith(CAM_INTERNAL_REFERENCE_PREFIXES)
 
 
 def validate_canonical_path(path: Path, record_id: Any, record_type: Any, errors: list[str]) -> None:
@@ -284,9 +342,11 @@ def validate_record(
             for index, standard in enumerate(standards):
                 if is_cam_instrument_reference(standard):
                     errors.append(
-                        f"{path}: linked_records.standards[{index}] contains a CAM instrument ID; "
-                        "CAM instrument IDs belong in cam_internal routing fields, not linked_records.standards."
+                        f"{path}: linked_records.standards[{index}] contains a CAM/VIGIL internal reference; "
+                        "CAM and VIGIL internal IDs belong in cam_internal routing fields, not linked_records.standards."
                     )
+        elif standards:
+            errors.append(f"{path}: linked_records.standards must be an array when present")
         if record_type == "proposal" and record.get("external_standards_required") is True and not linked.get("standards"):
             warnings.append(f"{path}: external standards are marked required but absent from proposal linked_records.standards")
 
@@ -295,6 +355,33 @@ def validate_record(
         errors.append(f"{path}: system_context must be an object")
     else:
         add_missing(errors, path, system_context, SYSTEM_CONTEXT_REQUIRED)
+        if "product_family" in system_context:
+            errors.append(f"{path}: system_context.product_family is deprecated; use platform_or_vendor")
+        if "specific_model" in system_context:
+            errors.append(f"{path}: system_context.specific_model is deprecated; use specific_model_or_runtime")
+        platform_or_vendor = system_context.get("platform_or_vendor")
+        if isinstance(platform_or_vendor, str) and platform_or_vendor and platform_or_vendor not in CANONICAL_PLATFORM_OR_VENDOR_VALUES:
+            allowed = ", ".join(sorted(CANONICAL_PLATFORM_OR_VENDOR_VALUES))
+            errors.append(
+                f"{path}: system_context.platform_or_vendor {platform_or_vendor!r} is not canonical; "
+                f"allowed values: {allowed}"
+            )
+        product_or_service = system_context.get("product_or_service")
+        if isinstance(product_or_service, str) and product_or_service and product_or_service not in CANONICAL_PRODUCT_OR_SERVICE_VALUES:
+            allowed = ", ".join(sorted(CANONICAL_PRODUCT_OR_SERVICE_VALUES))
+            errors.append(
+                f"{path}: system_context.product_or_service {product_or_service!r} is not canonical; "
+                f"allowed values: {allowed}"
+            )
+        runtime = system_context.get("specific_model_or_runtime")
+        if not isinstance(runtime, str) or not runtime.strip():
+            errors.append(f"{path}: system_context.specific_model_or_runtime must be a non-empty string")
+        interface = system_context.get("interface_surface")
+        if isinstance(interface, list):
+            if not interface or any(not isinstance(item, str) or not item.strip() for item in interface):
+                errors.append(f"{path}: system_context.interface_surface array must contain non-empty strings")
+        elif not isinstance(interface, str) or not interface.strip():
+            errors.append(f"{path}: system_context.interface_surface must be a non-empty string or array of non-empty strings")
 
     jurisdiction = record.get("jurisdictional_context")
     if isinstance(jurisdiction, dict):
@@ -302,9 +389,28 @@ def validate_record(
             warnings.append(f"{path}: jurisdictional_context.primary_jurisdiction uses unknown/to be assessed")
     cam = record.get("cam_internal")
     if isinstance(cam, dict):
-        # Empty CAM routing arrays are schema-valid optional routing fields. Do not warn
-        # merely because an optional affected/target/changed route has no current value.
-        pass
+        preferred_route = {
+            "observation": "related_or_similar_instruments",
+            "failure_mode": "affected_instruments",
+            "proposal": "target_instruments",
+            "patch": "changed_instruments",
+            "patch_note": "changed_instruments",
+        }.get(record_type)
+        if preferred_route is not None and preferred_route in cam and not isinstance(cam.get(preferred_route), list):
+            errors.append(f"{path}: cam_internal.{preferred_route} must be an array when present")
+        deprecated_routes = {
+            "observation": ("affected_instruments", "target_instruments", "changed_instruments"),
+            "failure_mode": ("target_instruments", "changed_instruments"),
+            "proposal": ("affected_instruments", "changed_instruments"),
+            "patch": ("affected_instruments", "target_instruments"),
+            "patch_note": ("affected_instruments", "target_instruments"),
+        }.get(record_type, ())
+        for route in deprecated_routes:
+            if route in cam:
+                warnings.append(
+                    f"{path}: cam_internal.{route} is non-preferred for record_type {record_type!r}; "
+                    f"prefer cam_internal.{preferred_route}"
+                )
 
     if record_type == "observation":
         present = sorted(field for field in OBS_FORBIDDEN if field in record)

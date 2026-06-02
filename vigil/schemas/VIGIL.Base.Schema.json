@@ -13,6 +13,7 @@
     "evidence_confidence",
     "source_records",
     "system_context",
+    "jurisdictional_context",
     "linked_records",
     "cam_internal"
   ],
@@ -29,30 +30,151 @@
     "system_context": {
       "type": "object",
       "required": [
-        "product_family",
+        "platform_or_vendor",
         "product_or_service",
-        "specific_model",
+        "specific_model_or_runtime",
         "interface_surface"
       ],
-      "description": "Observed/proposed external system, product, service, interface, or deployment.",
+      "description": "Observed/proposed external system, product, service, interface, deployment, or governance corpus context using normalised platform/vendor and product/service fields.",
       "properties": {
-        "product_family": {
-          "type": "string"
+        "platform_or_vendor": {
+          "type": "string",
+          "enum": [
+            "OpenAI",
+            "xAI",
+            "X",
+            "Anthropic",
+            "Meta",
+            "Google",
+            "DeepSeek",
+            "Cohere",
+            "Perplexity",
+            "Mistral",
+            "Microsoft",
+            "GitHub",
+            "TikTok",
+            "Apple",
+            "Amazon",
+            "Nvidia",
+            "Hugging Face",
+            "Stability AI",
+            "Runway",
+            "Midjourney",
+            "Adobe",
+            "Character.AI",
+            "Replit",
+            "Notion",
+            "Cursor",
+            "CAM Initiative",
+            "Other",
+            "Unknown",
+            "Not applicable"
+          ]
         },
         "product_or_service": {
-          "type": "string"
+          "type": "string",
+          "enum": [
+            "ChatGPT",
+            "Claude",
+            "Gemini",
+            "Grok",
+            "Copilot",
+            "Codex",
+            "Claude Code",
+            "Deep Research",
+            "Perplexity Assistant",
+            "Llama",
+            "Le Chat",
+            "GitHub Copilot",
+            "TikTok",
+            "X",
+            "Replit Agent",
+            "Cursor",
+            "Midjourney",
+            "Runway",
+            "Firefly",
+            "Character.AI",
+            "Caelestis Architecture Model",
+            "VIGIL",
+            "Other",
+            "Unknown",
+            "Not applicable"
+          ]
         },
-        "specific_model": {
-          "type": "string"
+        "specific_model_or_runtime": {
+          "type": "string",
+          "minLength": 1
         },
         "interface_surface": {
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "minItems": 1
+            }
+          ]
         }
+      },
+      "not": {
+        "anyOf": [
+          {
+            "required": [
+              "product_family"
+            ]
+          },
+          {
+            "required": [
+              "specific_model"
+            ]
+          }
+        ]
       }
     },
     "cam_internal": {
       "type": "object",
-      "description": "CAM routing, targets, affected areas, or changed components."
+      "description": "CAM routing, targets, affected areas, or changed components. Preferred instrument fields are related_or_similar_instruments for OBS, affected_instruments for FM, target_instruments for PROP, and changed_instruments for PATCH.",
+      "properties": {
+        "related_or_similar_instruments": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "affected_instruments": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "target_instruments": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "changed_instruments": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "linked_records": {
+      "type": "object",
+      "description": "Record links. standards is reserved for external standards, laws, regulatory instruments, technical standards, or external governance references; CAM/VIGIL internal references belong in cam_internal routing fields.",
+      "properties": {
+        "standards": {
+          "type": "array"
+        }
+      }
     }
   }
 }

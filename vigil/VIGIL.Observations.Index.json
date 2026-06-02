@@ -43,10 +43,9 @@
       "system_summary": {
         "system_type": "assistant",
         "platform_or_vendor": "OpenAI",
-        "product_family": "OpenAI",
         "product_or_service": "ChatGPT",
+        "specific_model_or_runtime": "ChatGPT",
         "model_or_product": "ChatGPT",
-        "specific_model": "ChatGPT",
         "interaction_mode": "chat | memory | tool use | delegated execution",
         "interface_surface": "chat | memory | tool use | delegated execution",
         "embodiment_status": "non-embodied",
@@ -113,10 +112,9 @@
       },
       "system_summary": {
         "platform_or_vendor": "OpenAI",
-        "product_family": "OpenAI",
         "product_or_service": "ChatGPT",
+        "specific_model_or_runtime": "ChatGPT",
         "model_or_product": "ChatGPT",
-        "specific_model": "ChatGPT",
         "interface_surface": "unknown",
         "embodiment_status": "non-embodied or not specified",
         "deployment_context": "ChatGPT web interface"
@@ -171,10 +169,9 @@
       },
       "system_summary": {
         "platform_or_vendor": "OpenAI",
-        "product_family": "OpenAI",
         "product_or_service": "ChatGPT",
+        "specific_model_or_runtime": "ChatGPT",
         "model_or_product": "ChatGPT",
-        "specific_model": "ChatGPT",
         "interface_surface": "unknown",
         "embodiment_status": "non-embodied or not specified",
         "deployment_context": "ChatGPT web interface"
@@ -197,24 +194,25 @@
     {
       "id": "VIGIL-2026-OBS-0004",
       "record_type": "observation",
-      "record_state": "watching",
+      "record_state": "active",
       "date_recorded": "2026-05-31T06:30:00Z",
       "record_identity": {
         "record_id": "VIGIL-2026-OBS-0004",
         "record_type": "observation",
         "title": "Repo access inferred before explicit permission confirmation",
         "created": "2026-05-31T06:30:00Z",
-        "updated": "2026-05-31T06:48:00Z",
-        "version": "1.0"
+        "updated": "2026-06-02T00:00:00Z",
+        "version": "1.1"
       },
       "title": "Repo access inferred before explicit permission confirmation",
-      "summary": "Observed runtime behaviour in which an assistant appeared to infer permission to access a repository or tool context after the user mentioned repo-level work, initiated or attempted tool access before explicit user confirmation, and caused the conversation stream or workflow continuity to become blocked or unrecoverable until the user edited the turn or explicitly prohibited tool access.",
+      "summary": "Observed runtime behaviour in which an assistant appeared to infer permission to access a repository, connector, tool context, or external-resource pathway after the user mentioned repo-level work. The assistant initiated or attempted tool-mediated access before explicit user confirmation or adequate scaffolding, producing streaming failure, permission ambiguity, blocked workflow continuity, or unrecoverable interaction state.",
       "evidence_confidence": "verified",
       "source_types": [
+        "follow-up-observation",
         "platform-behaviour-observation"
       ],
       "source_summary": {
-        "source_count": 1,
+        "source_count": 2,
         "primary_source_title": "ChatGPT interaction observation — repo access inferred before permission confirmation",
         "primary_source_type": "platform-behaviour-observation",
         "primary_source_platform": "OpenAI",
@@ -222,6 +220,7 @@
         "primary_source_date": "2026-05-31",
         "primary_source_url": "https://chatgpt.com/g/g-p-6907218b1c6c8191b2742c91d13b5e4b-coding/c/6a1bb01d-ca1c-83ec-8f50-872d290ace08",
         "source_types": [
+          "follow-up-observation",
           "platform-behaviour-observation"
         ],
         "source_platforms": [
@@ -233,16 +232,15 @@
       "system_summary": {
         "system_type": "assistant",
         "platform_or_vendor": "OpenAI",
-        "product_family": "OpenAI",
         "product_or_service": "ChatGPT",
+        "specific_model_or_runtime": "GPT-5.5 Thinking",
         "model_or_product": "ChatGPT",
-        "specific_model": "ChatGPT",
-        "interaction_mode": "chat | tool invocation",
+        "interaction_mode": "chat | tool invocation | repository workflow",
         "interface_surface": "chat | tool invocation",
         "embodiment_status": "non-embodied",
         "deployment_context": "ChatGPT web interface",
         "user_role": "human user / repo workflow operator",
-        "affected_population": "users working with AI assistants in tool-mediated or repository-linked workflows"
+        "affected_population": "users working with AI assistants in tool-mediated, connector-mediated, or repository-linked workflows"
       },
       "jurisdiction_summary": {
         "primary_jurisdiction": "global",
@@ -250,19 +248,34 @@
           "AI safety",
           "consumer protection",
           "UX safety",
-          "platform governance"
+          "platform governance",
+          "agentic tooling",
+          "digital service accountability"
         ],
-        "sector": "AI assistant / agentic tooling",
+        "sector": "AI assistant / agentic tooling / repository-linked workflow / connector-mediated systems",
         "cross_border_relevance": "possible",
-        "public_interest_relevance": "possible"
+        "public_interest_relevance": "yes"
       },
       "cam_summary": {
-        "governance_layer": "runtime governance / permission-boundary mediation",
-        "routing_note": "Observation preserved as a watching-state source record. It may inform FM-0001 or a future proposal, but this OBS record does not itself classify the failure, propose repair logic, or claim implementation."
+        "governance_layer": "runtime governance / permission-boundary mediation / tool invocation / execution-state representation / continuity preservation",
+        "routing_note": [
+          "Observation preserved as a watching-state source record.",
+          "This OBS record documents the source evidence and recurrence context. It does not itself classify the generalised failure pattern or claim that live platform behaviour has been repaired.",
+          "The generalised failure pattern is recorded in VIGIL-2026-FM-0001.",
+          "The CAM governance-text repair pathway is recorded in VIGIL-2026-PATCH-0002.",
+          "CAM instruments are internal governance corpus references and are recorded under cam_internal, not linked_records.standards."
+        ]
       },
-      "next_action": "Watch for recurrence or corroborating examples. If recurrence is observed, compare against VIGIL-2026-FM-0001 or create/update a related failure mode record. Do not create a proposal or patch note unless a concrete CAM repair path is separately drafted or implemented.",
-      "review_observation": "A subsequent repo-linked diagnostic request did not reproduce the streaming freeze; tool invocation completed successfully. The pattern should remain under observation pending recurrence testing.",
-      "linked_records": {},
+      "next_action": "Retain as source observation for VIGIL-2026-FM-0001. Continue monitoring for recurrence, especially where tool invocation occurs without proportional authority-band classification, sufficient user-facing scaffolding, recoverable permission handling, or clear distinction between contextual retrieval and execution-boundary crossing.",
+      "review_observation": "A later diagnostic request in the original discussion appeared not to reproduce the streaming freeze, suggesting temporary self-resolution. However, the issue recurred in the next session and was persistent. The observation should therefore remain in watching state and should not be treated as closed.",
+      "linked_records": {
+        "related_failure_modes": [
+          "VIGIL-2026-FM-0001"
+        ],
+        "related_patch_notes": [
+          "VIGIL-2026-PATCH-0002"
+        ]
+      },
       "path": "vigil/records/observations/2026/VIGIL-2026-OBS-0004.json",
       "github_blob_url": "https://github.com/CAM-Initiative/Vigil/blob/main/vigil/records/observations/2026/VIGIL-2026-OBS-0004.json",
       "raw_url": "https://raw.githubusercontent.com/CAM-Initiative/Vigil/main/vigil/records/observations/2026/VIGIL-2026-OBS-0004.json"

@@ -151,6 +151,26 @@ class ValidateVigilRecordsTest(unittest.TestCase):
         self.assertNotEqual(self.validate_mutated_fixture("VIGIL-2026-OBS-0001.json", mutate), 0)
 
 
+    def test_system_context_rejects_noncanonical_platform_or_vendor(self):
+        def mutate(record):
+            record["system_context"]["platform_or_vendor"] = "OpenAI ChatGPT"
+
+        self.assertNotEqual(self.validate_mutated_fixture("VIGIL-2026-OBS-0001.json", mutate), 0)
+
+    def test_system_context_rejects_noncanonical_product_or_service(self):
+        def mutate(record):
+            record["system_context"]["product_or_service"] = "ChatGPT Advanced Voice Mode"
+
+        self.assertNotEqual(self.validate_mutated_fixture("VIGIL-2026-OBS-0001.json", mutate), 0)
+
+    def test_system_context_rejects_legacy_field_names(self):
+        def mutate(record):
+            record["system_context"]["product_family"] = "OpenAI"
+            record["system_context"]["specific_model"] = "ChatGPT"
+
+        self.assertNotEqual(self.validate_mutated_fixture("VIGIL-2026-OBS-0001.json", mutate), 0)
+
+
     def test_linked_records_standards_rejects_cam_instrument_ids(self):
         def mutate(record):
             record["linked_records"]["standards"] = ["CAM-EQ2026-OPERATIONS-003-SUP-01"]
