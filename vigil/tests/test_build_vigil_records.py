@@ -127,6 +127,18 @@ class BuildVigilRecordsTest(unittest.TestCase):
 
         self.assertIn("linked_records", index_entry)
 
+
+    def test_patch_change_summary_includes_taxonomy_routing(self):
+        record = self.load_valid_fixture("VIGIL-2026-PATCH-0001")
+        record["change_classification"]["canonical_failure_group"] = "economic-legitimacy"
+        record["change_classification"]["change_family"] = "economic-legitimacy"
+        record["change_classification"]["change_subtype"] = "paid-public-square-legitimacy-gating"
+        summary = builder.change_summary(record)
+
+        self.assertEqual(summary["canonical_failure_group"], "economic-legitimacy")
+        self.assertEqual(summary["change_family"], "economic-legitimacy")
+        self.assertEqual(summary["change_subtype"], "paid-public-square-legitimacy-gating")
+
     def test_empty_cam_arrays_are_pruned_from_generated_summaries(self):
         record = self.load_valid_fixture("VIGIL-2026-PATCH-0001")
         summaries = builder.generated_summaries(record)
@@ -141,9 +153,9 @@ class BuildVigilRecordsTest(unittest.TestCase):
         grouped = builder.records_by_registry(records)
 
         self.assertEqual(set(grouped), {"failure_modes", "observations", "proposals", "patch_notes"})
-        self.assertEqual(len(grouped["failure_modes"]), 4)
+        self.assertEqual(len(grouped["failure_modes"]), 6)
         self.assertEqual(len(grouped["observations"]), 4)
-        self.assertEqual(len(grouped["proposals"]), 7)
+        self.assertEqual(len(grouped["proposals"]), 8)
         self.assertEqual(len(grouped["patch_notes"]), 1)
 
         observations = builder.type_registry("observations", grouped["observations"])
@@ -232,11 +244,11 @@ class BuildVigilRecordsTest(unittest.TestCase):
             master = builder.build_master_from_type_indexes(index_paths)
             self.assertEqual(master["registry_type"], "vigil_registry_master")
             self.assertEqual(master["registry_count"], 4)
-            self.assertEqual(master["record_count"]["failure_modes"], 4)
+            self.assertEqual(master["record_count"]["failure_modes"], 6)
             self.assertEqual(master["record_count"]["observations"], 4)
-            self.assertEqual(master["record_count"]["proposals"], 7)
+            self.assertEqual(master["record_count"]["proposals"], 8)
             self.assertEqual(master["record_count"]["patch_notes"], 1)
-            self.assertEqual(master["record_count"]["total"], 16)
+            self.assertEqual(master["record_count"]["total"], 19)
             patch = next(record for record in master["records"] if record["id"] == "VIGIL-2026-PATCH-0001")
             self.assertEqual(patch["path"], "vigil/records/patches/2026/VIGIL-2026-PATCH-0001.json")
             self.assertIn("title", patch)

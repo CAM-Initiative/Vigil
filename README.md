@@ -22,6 +22,8 @@ VIGIL exists to support a public evidence-to-repair workflow:
 
 VIGIL is designed to make governance maintenance visible, reviewable, and traceable.
 
+For the detailed conditional lifecycle/routing model and OBS/FM/PROP/PATCH record-class boundaries, see [`vigil/docs/VIGIL.RecordLifecycle.md`](vigil/docs/VIGIL.RecordLifecycle.md).
+
 ---
 
 ## What VIGIL Records

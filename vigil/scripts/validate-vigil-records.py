@@ -27,7 +27,11 @@ RECORD_TYPE_DIRS = [
 ]
 
 RECORD_TYPES = {"observation", "failure_mode", "proposal", "patch", "patch_note"}
-ALLOWED_CANONICAL_FAILURE_GROUPS = {
+CAM_INSTRUMENT_PREFIXES = ("CAM-BS", "CAM-EQ")
+FALLBACK_ALLOWED_CANONICAL_FAILURE_GROUPS = {
+    # Fallback only. The primary VIGIL taxonomy source is
+    # VIGIL.Schema.json / cam_failure_taxonomy.allowed_canonical_failure_group_values,
+    # derived from CAM-EQ2026-OPERATIONS-003-SUP-01 Appendix B.
     "execution",
     "arbitration",
     "epistemic",
@@ -38,6 +42,7 @@ ALLOWED_CANONICAL_FAILURE_GROUPS = {
     "governance",
     "infrastructure-continuity",
     "classification",
+    "economic-legitimacy",
     "provisional",
 }
 SYSTEM_CONTEXT_REQUIRED = {
@@ -137,6 +142,19 @@ def add_missing(errors: list[str], path: Path, record: dict[str, Any], fields: s
         errors.append(f"{path}: missing required fields: {', '.join(missing)}")
 
 
+
+
+def load_allowed_canonical_failure_groups(schema_path: Path = SCHEMA_PATH) -> set[str]:
+    """Load canonical failure groups from the VIGIL schema-derived CAM taxonomy registry."""
+    try:
+        schema = load_json(schema_path)
+        values = schema.get("cam_failure_taxonomy", {}).get("allowed_canonical_failure_group_values", [])
+        loaded = {value for value in values if isinstance(value, str) and value}
+        return loaded or set(FALLBACK_ALLOWED_CANONICAL_FAILURE_GROUPS)
+    except Exception:  # noqa: BLE001 - validator must retain a labelled offline fallback
+        return set(FALLBACK_ALLOWED_CANONICAL_FAILURE_GROUPS)
+
+
 def source_urls(record: dict[str, Any]) -> set[str]:
     urls: set[str] = set()
     for source in record.get("source_records", []):
@@ -145,6 +163,23 @@ def source_urls(record: dict[str, Any]) -> set[str]:
                 if source.get(key):
                     urls.add(source[key])
     return urls
+
+
+
+
+def standards_reference_text(value: Any) -> str:
+    if isinstance(value, str):
+        return value
+    if isinstance(value, dict):
+        for key in ("standard_id", "id", "title"):
+            text = value.get(key)
+            if isinstance(text, str) and text:
+                return text
+    return ""
+
+
+def is_cam_instrument_reference(value: Any) -> bool:
+    return standards_reference_text(value).startswith(CAM_INSTRUMENT_PREFIXES)
 
 
 def validate_canonical_path(path: Path, record_id: Any, record_type: Any, errors: list[str]) -> None:
@@ -163,7 +198,14 @@ def validate_canonical_path(path: Path, record_id: Any, record_type: Any, errors
         errors.append(f"{path}: record path must be vigil/records/{expected.as_posix()} for id/type")
 
 
-def validate_record(path: Path, record: dict[str, Any], known_ids: set[str], errors: list[str], warnings: list[str]) -> None:
+def validate_record(
+    path: Path,
+    record: dict[str, Any],
+    known_ids: set[str],
+    errors: list[str],
+    warnings: list[str],
+    allowed_canonical_failure_groups: set[str],
+) -> None:
     record_id = record.get("id")
     record_type = record.get("record_type")
 
@@ -237,8 +279,16 @@ def validate_record(path: Path, record: dict[str, Any], known_ids: set[str], err
             for linked_id in value:
                 if isinstance(linked_id, str) and linked_id and linked_id not in known_ids:
                     warnings.append(f"{path}: linked record id {linked_id!r} in {field} cannot be resolved; it may be a future record")
-        if record_type == "proposal" and not linked.get("standards"):
-            warnings.append(f"{path}: external standards are absent from proposal linked_records.standards")
+        standards = linked.get("standards", [])
+        if isinstance(standards, list):
+            for index, standard in enumerate(standards):
+                if is_cam_instrument_reference(standard):
+                    errors.append(
+                        f"{path}: linked_records.standards[{index}] contains a CAM instrument ID; "
+                        "CAM instrument IDs belong in cam_internal routing fields, not linked_records.standards."
+                    )
+        if record_type == "proposal" and record.get("external_standards_required") is True and not linked.get("standards"):
+            warnings.append(f"{path}: external standards are marked required but absent from proposal linked_records.standards")
 
     system_context = record.get("system_context")
     if not isinstance(system_context, dict):
@@ -252,9 +302,9 @@ def validate_record(path: Path, record: dict[str, Any], known_ids: set[str], err
             warnings.append(f"{path}: jurisdictional_context.primary_jurisdiction uses unknown/to be assessed")
     cam = record.get("cam_internal")
     if isinstance(cam, dict):
-        for key, value in cam.items():
-            if isinstance(value, list) and not value:
-                warnings.append(f"{path}: cam_internal.{key} array is empty")
+        # Empty CAM routing arrays are schema-valid optional routing fields. Do not warn
+        # merely because an optional affected/target/changed route has no current value.
+        pass
 
     if record_type == "observation":
         present = sorted(field for field in OBS_FORBIDDEN if field in record)
@@ -271,12 +321,32 @@ def validate_record(path: Path, record: dict[str, Any], known_ids: set[str], err
             canonical_group = classification.get("canonical_failure_group")
             if is_blank(canonical_group):
                 errors.append(f"{path}: FM failure_classification.canonical_failure_group is required")
-            elif canonical_group not in ALLOWED_CANONICAL_FAILURE_GROUPS:
-                allowed = ", ".join(sorted(ALLOWED_CANONICAL_FAILURE_GROUPS))
+            elif canonical_group not in allowed_canonical_failure_groups:
+                allowed = ", ".join(sorted(allowed_canonical_failure_groups))
                 errors.append(
                     f"{path}: FM failure_classification.canonical_failure_group {canonical_group!r} "
                     f"is not in allowed CAM taxonomy groups: {allowed}"
                 )
+            failure_family = classification.get("failure_family")
+            if (
+                isinstance(failure_family, str)
+                and failure_family
+                and canonical_group in allowed_canonical_failure_groups
+                and failure_family not in allowed_canonical_failure_groups
+            ):
+                warnings.append(
+                    f"{path}: FM failure_classification.failure_family {failure_family!r} is not a canonical "
+                    "group; treating it as a local family/subtype routed through canonical_failure_group"
+                )
+            related_groups = classification.get("related_failure_groups")
+            if isinstance(related_groups, list):
+                for related_group in related_groups:
+                    if isinstance(related_group, str) and related_group and related_group not in allowed_canonical_failure_groups:
+                        warnings.append(
+                            f"{path}: FM failure_classification.related_failure_groups contains "
+                            f"non-canonical value {related_group!r}; move local concepts to harm_vectors, "
+                            "routing_note, or subtype fields"
+                        )
             add_missing(
                 errors,
                 path,
@@ -313,6 +383,8 @@ def validate(root: Path | None = None) -> int:
             if deprecated_path.exists():
                 errors.append(f"{deprecated_path}: deprecated generated file must not exist")
 
+    allowed_canonical_failure_groups = load_allowed_canonical_failure_groups()
+
     files = record_files(root)
     records_by_path: dict[Path, dict[str, Any]] = {}
     ids: set[str] = set()
@@ -337,7 +409,7 @@ def validate(root: Path | None = None) -> int:
             ids.add(record["id"])
 
     for path, record in records_by_path.items():
-        validate_record(path, record, ids, errors, warnings)
+        validate_record(path, record, ids, errors, warnings, allowed_canonical_failure_groups)
 
     for warning in warnings:
         print(f"WARNING: {warning}", file=sys.stderr)
