@@ -130,7 +130,9 @@
         "source_records",
         "linked_records",
         "cam_internal",
-        "proposal_type"
+        "proposal_type",
+        "system_context",
+        "jurisdictional_context"
       ],
       "forbidden_top_level_fields": [
         "change_classification",
@@ -168,7 +170,8 @@
         "source_records",
         "system_context",
         "linked_records",
-        "cam_internal"
+        "cam_internal",
+        "jurisdictional_context"
       ],
       "forbidden_top_level_fields": [
         "source_data",
@@ -258,20 +261,87 @@
     }
   },
   "system_context_rules": {
-    "description": "system_context describes the observed/proposed external system, product, service, interface, or deployment.",
+    "description": "system_context describes the observed/proposed system, platform, product, service, runtime, interface, deployment, or governance corpus using normalised field names.",
     "required_fields": [
-      "product_family",
+      "platform_or_vendor",
       "product_or_service",
-      "specific_model",
+      "specific_model_or_runtime",
       "interface_surface"
-    ]
+    ],
+    "deprecated_fields": [
+      "product_family",
+      "specific_model"
+    ],
+    "allowed_platform_or_vendor_values": [
+      "OpenAI",
+      "xAI",
+      "X",
+      "Anthropic",
+      "Meta",
+      "Google",
+      "DeepSeek",
+      "Cohere",
+      "Perplexity",
+      "Mistral",
+      "Microsoft",
+      "GitHub",
+      "TikTok",
+      "Apple",
+      "Amazon",
+      "Nvidia",
+      "Hugging Face",
+      "Stability AI",
+      "Runway",
+      "Midjourney",
+      "Adobe",
+      "Character.AI",
+      "Replit",
+      "Notion",
+      "Cursor",
+      "CAM Initiative",
+      "Other",
+      "Unknown",
+      "Not applicable"
+    ],
+    "allowed_product_or_service_values": [
+      "ChatGPT",
+      "Claude",
+      "Gemini",
+      "Grok",
+      "Copilot",
+      "Codex",
+      "Claude Code",
+      "Deep Research",
+      "Perplexity Assistant",
+      "Llama",
+      "Le Chat",
+      "GitHub Copilot",
+      "TikTok",
+      "X",
+      "Replit Agent",
+      "Cursor",
+      "Midjourney",
+      "Runway",
+      "Firefly",
+      "Character.AI",
+      "Caelestis Architecture Model",
+      "VIGIL",
+      "Other",
+      "Unknown",
+      "Not applicable"
+    ],
+    "specific_model_or_runtime_rule": "Non-empty string; intentionally not an enum because runtime names and tool-augmented modes drift frequently.",
+    "interface_surface_rule": "Non-empty string or array of non-empty strings describing where or how behaviour appears."
   },
   "cam_internal_rules": {
     "description": "cam_internal describes CAM routing, targets, affected areas, or changed components.",
-    "observation": "related_or_similar CAM routing only",
-    "failure_mode": "affected CAM routing only",
-    "proposal": "target CAM routing only",
-    "patch": "changed CAM routing only"
+    "record_type_preferred_instrument_fields": {
+      "observation": "related_or_similar_instruments",
+      "failure_mode": "affected_instruments",
+      "proposal": "target_instruments",
+      "patch": "changed_instruments",
+      "patch_note": "changed_instruments"
+    }
   },
   "cam_failure_taxonomy": {
     "taxonomy_reference": "CAM-EQ2026-OPERATIONS-003-SUP-01 Appendix B: Runtime & Governance Failure Taxonomy",
@@ -298,7 +368,7 @@
       "reproducibility",
       "visibility"
     ],
-    "derived_from": "CAM-EQ2026-OPERATIONS-003-SUP-01 Appendix B: Runtime & Governance Failure Taxonomy, including §3.11 Economic & Legitimacy Failures as economic-legitimacy."
+    "derived_from": "CAM-EQ2026-OPERATIONS-003-SUP-01 Appendix B: Runtime & Governance Failure Taxonomy, including \u00a73.11 Economic & Legitimacy Failures as economic-legitimacy."
   },
   "generated_register_rules": {
     "pruning": "Generated summaries prune empty arrays, empty strings, empty objects, and nulls while preserving meaningful uncertainty values.",
@@ -333,6 +403,6 @@
     "cam_routing_defaults": "OBS/FM summaries do not include CAM routing by default; PROP/PATCH summaries may include CAM target/changed routing."
   },
   "linked_records_rules": {
-    "standards": "linked_records.standards is reserved for external standards, regulatory instruments, formal standards-body materials, and widely recognised external governance references. CAM instrument IDs such as CAM-BS* and CAM-EQ* belong in cam_internal routing fields, using related/similar for observations, affected for failure modes, target for proposals, and changed for patches."
+    "standards": "linked_records.standards is reserved for external standards, laws, regulatory instruments, technical standards, and external governance references. CAM instrument IDs such as CAM-BS* and CAM-EQ* and VIGIL record IDs such as VIGIL-* belong in cam_internal routing fields, using related/similar for observations, affected for failure modes, target for proposals, and changed for patches."
   }
 }

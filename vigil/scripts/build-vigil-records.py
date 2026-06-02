@@ -159,10 +159,9 @@ def system_summary(record: dict[str, Any]) -> dict[str, Any]:
         [
             "system_type",
             "platform_or_vendor",
-            "product_family",
             "product_or_service",
+            "specific_model_or_runtime",
             "model_or_product",
-            "specific_model",
             "interaction_mode",
             "interface_surface",
             "embodiment_status",

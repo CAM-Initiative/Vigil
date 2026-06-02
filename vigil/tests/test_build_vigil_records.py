@@ -108,8 +108,9 @@ class BuildVigilRecordsTest(unittest.TestCase):
         self.assertEqual(aggregate["source_summary"]["source_platforms"], ["TikTok"])
         self.assertEqual(aggregate["system_summary"]["platform_or_vendor"], "OpenAI")
         self.assertEqual(
-            aggregate["system_summary"]["product_or_service"], "ChatGPT Advanced Voice Mode"
+            aggregate["system_summary"]["product_or_service"], "ChatGPT"
         )
+        self.assertEqual(aggregate["system_summary"]["specific_model_or_runtime"], "ChatGPT Advanced Voice Mode")
         self.assertEqual(aggregate["system_summary"]["interaction_mode"], "voice | multi-device")
 
     def test_empty_linked_records_key_is_preserved_for_interface_metadata(self):
@@ -156,7 +157,7 @@ class BuildVigilRecordsTest(unittest.TestCase):
         self.assertEqual(len(grouped["failure_modes"]), 6)
         self.assertEqual(len(grouped["observations"]), 4)
         self.assertEqual(len(grouped["proposals"]), 8)
-        self.assertEqual(len(grouped["patch_notes"]), 1)
+        self.assertEqual(len(grouped["patch_notes"]), 2)
 
         observations = builder.type_registry("observations", grouped["observations"])
         entry = next(record for record in observations["records"] if record["id"] == "VIGIL-2026-OBS-0001")
@@ -247,8 +248,8 @@ class BuildVigilRecordsTest(unittest.TestCase):
             self.assertEqual(master["record_count"]["failure_modes"], 6)
             self.assertEqual(master["record_count"]["observations"], 4)
             self.assertEqual(master["record_count"]["proposals"], 8)
-            self.assertEqual(master["record_count"]["patch_notes"], 1)
-            self.assertEqual(master["record_count"]["total"], 19)
+            self.assertEqual(master["record_count"]["patch_notes"], 2)
+            self.assertEqual(master["record_count"]["total"], 20)
             patch = next(record for record in master["records"] if record["id"] == "VIGIL-2026-PATCH-0001")
             self.assertEqual(patch["path"], "vigil/records/patches/2026/VIGIL-2026-PATCH-0001.json")
             self.assertIn("title", patch)
