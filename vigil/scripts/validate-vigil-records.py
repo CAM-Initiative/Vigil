@@ -27,6 +27,7 @@ RECORD_TYPE_DIRS = [
 ]
 
 RECORD_TYPES = {"observation", "failure_mode", "proposal", "patch", "patch_note"}
+CAM_INSTRUMENT_PREFIXES = ("CAM-BS", "CAM-EQ")
 FALLBACK_ALLOWED_CANONICAL_FAILURE_GROUPS = {
     # Fallback only. The primary VIGIL taxonomy source is
     # VIGIL.Schema.json / cam_failure_taxonomy.allowed_canonical_failure_group_values,
@@ -164,6 +165,23 @@ def source_urls(record: dict[str, Any]) -> set[str]:
     return urls
 
 
+
+
+def standards_reference_text(value: Any) -> str:
+    if isinstance(value, str):
+        return value
+    if isinstance(value, dict):
+        for key in ("standard_id", "id", "title"):
+            text = value.get(key)
+            if isinstance(text, str) and text:
+                return text
+    return ""
+
+
+def is_cam_instrument_reference(value: Any) -> bool:
+    return standards_reference_text(value).startswith(CAM_INSTRUMENT_PREFIXES)
+
+
 def validate_canonical_path(path: Path, record_id: Any, record_type: Any, errors: list[str]) -> None:
     """Validate canonical repository paths while allowing standalone fixture files."""
     try:
@@ -261,6 +279,14 @@ def validate_record(
             for linked_id in value:
                 if isinstance(linked_id, str) and linked_id and linked_id not in known_ids:
                     warnings.append(f"{path}: linked record id {linked_id!r} in {field} cannot be resolved; it may be a future record")
+        standards = linked.get("standards", [])
+        if isinstance(standards, list):
+            for index, standard in enumerate(standards):
+                if is_cam_instrument_reference(standard):
+                    errors.append(
+                        f"{path}: linked_records.standards[{index}] contains a CAM instrument ID; "
+                        "CAM instrument IDs belong in cam_internal routing fields, not linked_records.standards."
+                    )
         if record_type == "proposal" and record.get("external_standards_required") is True and not linked.get("standards"):
             warnings.append(f"{path}: external standards are marked required but absent from proposal linked_records.standards")
 

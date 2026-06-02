@@ -105,6 +105,13 @@ Observation → Monitoring / Closed No Action
 
 These examples are routing patterns. They do not require every observation to become a failure mode, every failure mode to become a proposal, or every proposal to become a patch.
 
+
+## Linked standards and CAM routing
+
+`linked_records.standards` is reserved for external standards, regulatory instruments, formal standards-body materials, and widely recognised external governance references such as ISO, IEEE, NIST, OECD, the EU AI Act, the Digital Services Act, W3C, or C2PA.
+
+CAM instruments are internal CAM governance instruments, not external standards references. CAM instrument identifiers such as `CAM-BS...` or `CAM-EQ...` belong in `cam_internal` routing fields: related/similar routing for observations, affected routing for failure modes, target routing for proposals, and changed routing for patches.
+
 ## Registry and source-of-truth rule
 
 Individual JSON files under `vigil/records/` are the source of truth. The generated registry indexes are derived outputs and should be rebuilt with the VIGIL build script after record changes. Do not manually edit generated registry files.

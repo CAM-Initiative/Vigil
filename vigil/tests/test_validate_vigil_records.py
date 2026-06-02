@@ -150,6 +150,19 @@ class ValidateVigilRecordsTest(unittest.TestCase):
 
         self.assertNotEqual(self.validate_mutated_fixture("VIGIL-2026-OBS-0001.json", mutate), 0)
 
+
+    def test_linked_records_standards_rejects_cam_instrument_ids(self):
+        def mutate(record):
+            record["linked_records"]["standards"] = ["CAM-EQ2026-OPERATIONS-003-SUP-01"]
+
+        self.assertNotEqual(self.validate_mutated_fixture("VIGIL-2026-PROP-0001.json", mutate), 0)
+
+    def test_linked_records_standards_rejects_cam_instrument_dict_ids(self):
+        def mutate(record):
+            record["linked_records"]["standards"] = [{"standard_id": "CAM-BS2026-AEON-013-PLATINUM"}]
+
+        self.assertNotEqual(self.validate_mutated_fixture("VIGIL-2026-PROP-0001.json", mutate), 0)
+
     def test_prop_rejects_patch_status_and_empty_scope(self):
         def mutate(record):
             record["patch_status"] = "implemented"
