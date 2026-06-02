@@ -105,6 +105,31 @@ class ValidateVigilRecordsTest(unittest.TestCase):
 
         self.assertNotEqual(self.validate_mutated_fixture("VIGIL-2026-FM-0001.json", mutate), 0)
 
+
+    def test_economic_legitimacy_is_accepted_as_canonical_failure_group(self):
+        def mutate(record):
+            record["failure_classification"]["canonical_failure_group"] = "economic-legitimacy"
+            record["failure_classification"]["failure_family"] = "economic-legitimacy"
+            record["failure_classification"]["failure_subtype"] = "paid-public-square-legitimacy-gating"
+            record["failure_classification"]["taxonomy_reference"] = "CAM-EQ2026-OPERATIONS-003-SUP-01 Appendix B §3.11"
+
+        self.assertEqual(self.validate_mutated_fixture("VIGIL-2026-FM-0001.json", mutate), 0)
+
+    def test_platform_legitimacy_is_rejected_as_canonical_failure_group(self):
+        def mutate(record):
+            record["failure_classification"]["canonical_failure_group"] = "platform-legitimacy"
+
+        self.assertNotEqual(self.validate_mutated_fixture("VIGIL-2026-FM-0001.json", mutate), 0)
+
+    def test_platform_legitimacy_can_be_local_subtype_under_economic_legitimacy(self):
+        def mutate(record):
+            record["failure_classification"]["canonical_failure_group"] = "economic-legitimacy"
+            record["failure_classification"]["failure_family"] = "economic-legitimacy"
+            record["failure_classification"]["failure_subtype"] = "platform-legitimacy"
+            record["failure_classification"]["taxonomy_reference"] = "CAM-EQ2026-OPERATIONS-003-SUP-01 Appendix B §3.11"
+
+        self.assertEqual(self.validate_mutated_fixture("VIGIL-2026-FM-0001.json", mutate), 0)
+
     def test_fm_requires_failure_family(self):
         def mutate(record):
             record["failure_classification"].pop("failure_family", None)
@@ -137,6 +162,23 @@ class ValidateVigilRecordsTest(unittest.TestCase):
             record["cam_internal"]["patch_status"] = "open"
 
         self.assertNotEqual(self.validate_mutated_fixture("VIGIL-2026-OBS-0001.json", mutate), 0)
+
+
+    def test_patch_rejects_missing_required_implementation_fields(self):
+        def mutate(record):
+            for field in (
+                "change_classification",
+                "change_details",
+                "implementation_verification",
+                "impact_summary",
+                "remaining_work",
+            ):
+                record.pop(field, None)
+
+        self.assertNotEqual(self.validate_mutated_fixture("VIGIL-2026-PATCH-0001.json", mutate), 0)
+
+    def test_patch_accepts_required_implementation_fields(self):
+        self.assertEqual(self.validate_mutated_fixture("VIGIL-2026-PATCH-0001.json", lambda record: None), 0)
 
     def test_patch_rejects_empty_changed_implementation_fields(self):
         def mutate(record):

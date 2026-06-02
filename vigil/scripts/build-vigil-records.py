@@ -262,6 +262,12 @@ def change_summary(record: dict[str, Any]) -> dict[str, Any]:
     change_details = details if isinstance(details, dict) else {}
     return {
         "patch_type": change_classification.get("patch_type") or change_classification.get("change_type", []),
+        "change_family": change_classification.get("change_family", ""),
+        "change_subtype": change_classification.get("change_subtype", ""),
+        "canonical_failure_group": change_classification.get("canonical_failure_group", ""),
+        "taxonomy_reference": change_classification.get("taxonomy_reference", ""),
+        "target_failure_record": change_classification.get("target_failure_record", ""),
+        "repair_vectors": change_classification.get("repair_vectors", []),
         "change_scope": change_classification.get("change_scope", ""),
         "implementation_mode": change_classification.get("implementation_mode")
         or change_classification.get("implementation_status", ""),
