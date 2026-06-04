@@ -27,9 +27,21 @@ def record_files() -> list[Path]:
     return sorted(RECORDS_ROOT.rglob("*.json"), key=lambda path: path.as_posix())
 
 
+def display_path(path: Path) -> Path:
+    try:
+        return path.resolve().relative_to(ROOT)
+    except ValueError:
+        return path
+
+
 def load_record(path: Path) -> dict[str, Any]:
     with path.open("r", encoding="utf-8") as handle:
-        record = json.load(handle)
+        try:
+            record = json.load(handle)
+        except json.JSONDecodeError as exc:
+            raise SystemExit(
+                f"Invalid JSON in {display_path(path)}: {exc.msg} at line {exc.lineno} column {exc.colno}."
+            ) from exc
     if not isinstance(record, dict):
         raise TypeError(f"{path} must contain one JSON object")
     return record
