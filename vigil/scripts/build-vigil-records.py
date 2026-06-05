@@ -159,6 +159,9 @@ def system_summary(record: dict[str, Any]) -> dict[str, Any]:
         [
             "system_type",
             "platform_or_vendor",
+            "vendor_cluster",
+            "primary_evidenced_vendors",
+            "comparative_vendor_notes",
             "product_or_service",
             "specific_model_or_runtime",
             "model_or_product",
