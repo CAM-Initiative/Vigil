@@ -72,6 +72,7 @@ CANONICAL_PLATFORM_OR_VENDOR_VALUES = {
     "Notion",
     "Cursor",
     "CAM Initiative",
+    "Multi Vendor",
     "Other",
     "Unknown",
     "Not applicable",
@@ -366,6 +367,31 @@ def validate_record(
                 f"{path}: system_context.platform_or_vendor {platform_or_vendor!r} is not canonical; "
                 f"allowed values: {allowed}"
             )
+        if platform_or_vendor == "Multi Vendor":
+            vendor_cluster = system_context.get("vendor_cluster")
+            if not isinstance(vendor_cluster, list) or not vendor_cluster or any(
+                not isinstance(item, str) or not item.strip() for item in vendor_cluster
+            ):
+                errors.append(
+                    f"{path}: system_context.vendor_cluster must be a non-empty array of non-empty strings "
+                    "when platform_or_vendor is 'Multi Vendor'"
+                )
+            primary_evidenced_vendors = system_context.get("primary_evidenced_vendors")
+            if not isinstance(primary_evidenced_vendors, list) or not primary_evidenced_vendors or any(
+                not isinstance(item, str) or not item.strip() for item in primary_evidenced_vendors
+            ):
+                errors.append(
+                    f"{path}: system_context.primary_evidenced_vendors must be a non-empty array of "
+                    "non-empty strings when platform_or_vendor is 'Multi Vendor'"
+                )
+            comparative_vendor_notes = system_context.get("comparative_vendor_notes")
+            if comparative_vendor_notes is not None:
+                if not isinstance(comparative_vendor_notes, dict) or any(
+                    not isinstance(item, str) for item in comparative_vendor_notes.values()
+                ):
+                    errors.append(
+                        f"{path}: system_context.comparative_vendor_notes must be an object with string values"
+                    )
         product_or_service = system_context.get("product_or_service")
         if isinstance(product_or_service, str) and product_or_service and product_or_service not in CANONICAL_PRODUCT_OR_SERVICE_VALUES:
             allowed = ", ".join(sorted(CANONICAL_PRODUCT_OR_SERVICE_VALUES))
