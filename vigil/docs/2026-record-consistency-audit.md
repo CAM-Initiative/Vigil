@@ -1,0 +1,57 @@
+# VIGIL 2026 Record Consistency Audit — Staged Repair Report
+
+Audit date: 2026-06-05  
+Scope: `vigil/records/**/2026/*.json`  
+Doctrine constraint: this audit does not amend, rewrite, or adopt Caelestis doctrine instruments. It only repairs VIGIL record metadata and identifies human-review follow-up.
+
+## Priority Key
+
+- `P0` — record materially misstates implemented change, source authority, linked repair state, or vendor identity.
+- `P1` — record has stale proposal/failure/patch linkage, incomplete repair status, or missing reciprocal links.
+- `P2` — record has ambiguous instrument shorthand, formatting inconsistency, or non-blocking metadata cleanup.
+
+## Staged Repairs Applied in This PR
+
+- Normalized failure-mode `triage.triage_priority` values to `P0`, `P1`, or `P2` where the failure record already has a schema-supported `triage` block.
+- Added missing repair links from failure records to existing patch records where a patch note exists.
+- Flagged `VIGIL-2026-PATCH-0001` for migration/proposal review because repository search did not identify a corresponding Caelestis doctrine amendment location.
+- Corrected `VIGIL-2026-PATCH-0004` so `changed_instruments` lists only Annex D instruments actually cleaned, drafted, or staged; Annex B, Annex G SCH-03, Annex K, Annex L, OPERATIONS Appendix B, and LATTICE-002 are `review_targets`. Tightened `VIGIL-2026-PATCH-0003` so adjacent ECONOMICS, OPERATIONS, SECURITY, and LATTICE domains are not implied as changed.
+- Linked `VIGIL-2026-PROP-0009` to `VIGIL-2026-PATCH-0004` and marked it partially implemented by staged `CAM-BS2025-AEON-005-SCH-04` pending CAM review/commit.
+- Normalized Grok/xAI source metadata while preserving X as the social-platform source surface.
+
+## Audit Findings
+
+| File path | Record id | Issue | Proposed amendment / applied staging | Priority | Automation safety |
+|---|---|---|---|---|---|
+| `vigil/records/failures/2026/VIGIL-2026-FM-0001.json` | `VIGIL-2026-FM-0001` | Failure record had stale repair state after `PATCH-0002`; no reciprocal patch link. | Applied: set `triage_priority` to `P1`, linked `PATCH-0002`, and marked mitigation as `partially_resolved` / `watching-after-patch`. | `P1` | Safe automatic metadata repair. |
+| `vigil/records/failures/2026/VIGIL-2026-FM-0002.json` | `VIGIL-2026-FM-0002` | No implemented patch note identified; priority vocabulary was non-normalized. | Applied: set `triage_priority` to `P1` and marked status `patch-needed`. | `P1` | Safe automatic metadata repair; doctrine response requires human review. |
+| `vigil/records/failures/2026/VIGIL-2026-FM-0003.json` | `VIGIL-2026-FM-0003` | Proposal linkage exists, but no patch note identified; priority vocabulary was non-normalized. | Applied: set `triage_priority` to `P1` and marked proposal-linked / patch-needed state. | `P1` | Safe automatic metadata repair; implementation requires human review. |
+| `vigil/records/failures/2026/VIGIL-2026-FM-0004.json` | `VIGIL-2026-FM-0004` | Proposal linkage exists, but no patch note identified; priority vocabulary was non-normalized. | Applied: set `triage_priority` to `P1` and marked proposal-linked / patch-needed state. | `P1` | Safe automatic metadata repair; implementation requires human review. |
+| `vigil/records/failures/2026/VIGIL-2026-FM-0005.json` | `VIGIL-2026-FM-0005` | Grok/xAI source metadata needed vendor normalization; linked proposal exists but no patch note. | Applied: preserved `source_platform: X`, added Grok/xAI model metadata, set `triage_priority` to `P1`, and left patch-needed state visible. | `P1` | Safe automatic metadata repair; relational doctrine response requires human review. |
+| `vigil/records/failures/2026/VIGIL-2026-FM-0006.json` | `VIGIL-2026-FM-0006` | `PATCH-0001` exists but appears to overstate completed doctrine implementation; failure record lacked reciprocal patch link. | Applied: set `triage_priority` to `P0`, linked `PATCH-0001`, and marked `patch-needed / migration-review` pending identification of a concrete doctrine amendment location. | `P0` | Safe automatic flag; migration or doctrine implementation requires human review. |
+| `vigil/records/failures/2026/VIGIL-2026-FM-0007.json` | `VIGIL-2026-FM-0007` | Patch notes exist but failure record lacked reciprocal links and post-patch status. | Applied: linked `PATCH-0003` and `PATCH-0004`, set `triage_priority` to `P1`, and marked `partially_resolved` / `watching-after-patch`. | `P1` | Safe automatic metadata repair; CAM review/commit remains human-gated. |
+| `vigil/records/observations/2026/VIGIL-2026-OBS-0001.json` | `VIGIL-2026-OBS-0001` | Observation records cannot carry `triage` under the current schema; no blocking inconsistency found. | Proposed only: report-level `P2` audit priority for non-blocking metadata cleanup if future audit metadata is introduced. | `P2` | Requires human/schema decision before adding record-level field. |
+| `vigil/records/observations/2026/VIGIL-2026-OBS-0002.json` | `VIGIL-2026-OBS-0002` | Observation has sparse/placeholder system-context subfields, but validates. | Proposed only: report-level `P2`; fill optional context fields if better source evidence is available. | `P2` | Requires human source review; not auto-applied. |
+| `vigil/records/observations/2026/VIGIL-2026-OBS-0003.json` | `VIGIL-2026-OBS-0003` | Observation has sparse/placeholder system-context subfields, but validates. | Proposed only: report-level `P2`; fill optional context fields if better source evidence is available. | `P2` | Requires human source review; not auto-applied. |
+| `vigil/records/observations/2026/VIGIL-2026-OBS-0004.json` | `VIGIL-2026-OBS-0004` | Observation is linked to FM/PATCH repair pathway but should not carry failure triage. | Proposed only: report-level `P1`; preserve OBS boundary and rely on linked FM/PATCH records for repair state. | `P1` | Requires schema/record-boundary discipline; no OBS triage added. |
+| `vigil/records/observations/2026/VIGIL-2026-OBS-0005.json` | `VIGIL-2026-OBS-0005` | Observation is linked to post-patch ambiguity review but should not carry failure triage. | Proposed only: report-level `P1`; preserve OBS boundary and rely on linked PROP/PATCH records for repair state. | `P1` | Requires schema/record-boundary discipline; no OBS triage added. |
+| `vigil/records/patches/2026/VIGIL-2026-PATCH-0001.json` | `VIGIL-2026-PATCH-0001` | Patch note appears to state a completed governance patch without an identifiable Caelestis doctrine amendment location in this repository. | Applied: set `record_state` to `migration-review`, added `triage_priority: P0`, moved prior changed instruments to `review_targets`, and marked proposal/patch-needed migration review. | `P0` | Safe automatic flag; final migration requires human review. |
+| `vigil/records/patches/2026/VIGIL-2026-PATCH-0002.json` | `VIGIL-2026-PATCH-0002` | Remaining-work list still instructed maintainers to update FM-0001 after this PR performed that linkage. | Applied: removed completed FM-0001 update item; kept other validation/cross-reference items. | `P1` | Safe automatic metadata repair. |
+| `vigil/records/patches/2026/VIGIL-2026-PATCH-0003.json` | `VIGIL-2026-PATCH-0003` | `changed_instruments` included adjacent review/cross-reference targets and a VIGIL record, not only the staged SCH-03 doctrine response. | Applied: narrowed `changed_instruments` and `changed_annexes` to Annex G SCH-03, limited changed domains to AEON/VIGIL-side support, and moved adjacent CAM instruments/domains to `review_targets` / human-review language. | `P1` | Safe automatic metadata repair; doctrine commit/review remains human-gated. |
+| `vigil/records/patches/2026/VIGIL-2026-PATCH-0004.json` | `VIGIL-2026-PATCH-0004` | `changed_instruments` included Annex B, Annex G SCH-03, Annex K, Annex L, OPERATIONS Appendix B, LATTICE-002, and a VIGIL proposal as if they were completed amendments. | Applied: restricted `changed_instruments` to Annex D and Schedules 1–4 work; moved the listed adjacent instruments into `review_targets`; clarified remaining work. | `P0` | Safe automatic metadata repair; CAM review targets require human review before amendment. |
+| `vigil/records/proposals/2026/VIGIL-2026-PROP-0001.json` | `VIGIL-2026-PROP-0001` | No generated patch note identified. | Proposed only: report-level `P2`; keep active drafting state. | `P2` | No automatic change needed. |
+| `vigil/records/proposals/2026/VIGIL-2026-PROP-0002.json` | `VIGIL-2026-PROP-0002` | No generated patch note identified; optional status fields are sparse. | Proposed only: report-level `P2`; fill drafting owner/status if available. | `P2` | Human review recommended for substantive proposal state. |
+| `vigil/records/proposals/2026/VIGIL-2026-PROP-0003.json` | `VIGIL-2026-PROP-0003` | No generated patch note identified; proposal remains maintenance-oriented. | Proposed only: report-level `P2`; keep as active maintenance proposal. | `P2` | Human review recommended for implementation planning. |
+| `vigil/records/proposals/2026/VIGIL-2026-PROP-0004.json` | `VIGIL-2026-PROP-0004` | Related FM exists, but no patch note identified. | Proposed only: report-level `P1`; maintain as patch-needed until a repair patch exists. | `P1` | Human review required before implementation. |
+| `vigil/records/proposals/2026/VIGIL-2026-PROP-0005.json` | `VIGIL-2026-PROP-0005` | No generated patch note identified. | Proposed only: report-level `P2`; keep active proposal state. | `P2` | No automatic change needed. |
+| `vigil/records/proposals/2026/VIGIL-2026-PROP-0006.json` | `VIGIL-2026-PROP-0006` | Related FM exists, but no patch note identified. | Proposed only: report-level `P1`; maintain as patch-needed until a repair patch exists. | `P1` | Human review required before implementation. |
+| `vigil/records/proposals/2026/VIGIL-2026-PROP-0007.json` | `VIGIL-2026-PROP-0007` | Related FM exists, but no patch note identified. | Proposed only: report-level `P1`; maintain deferred / patch-needed state. | `P1` | Human review required before implementation. |
+| `vigil/records/proposals/2026/VIGIL-2026-PROP-0008.json` | `VIGIL-2026-PROP-0008` | No generated patch note identified. | Proposed only: report-level `P2`; keep candidate proposal state. | `P2` | No automatic change needed. |
+| `vigil/records/proposals/2026/VIGIL-2026-PROP-0009.json` | `VIGIL-2026-PROP-0009` | Proposal generated `PATCH-0004` and staged `AEON-005-SCH-04`, but record still said ready for drafting and omitted reciprocal patch link. | Applied: linked `PATCH-0004`, added `proposal_resolution`, and marked partially implemented by staged SCH-04 pending CAM review/commit. | `P1` | Safe automatic metadata repair; CAM commit/review remains human-gated. |
+
+## Human-Review Queue
+
+1. Decide whether `VIGIL-2026-PATCH-0001` should be migrated to a proposal record, supplemented by a new patch-needed failure/proposal state, or re-supported by a concrete Caelestis doctrine amendment location.
+2. Review staged Caelestis doctrine responses referenced by `PATCH-0003` and `PATCH-0004`; this VIGIL PR does not commit or adopt those instruments.
+3. Decide whether VIGIL should introduce a schema-supported audit metadata field for non-FM records so `triage_priority` can be stored outside forbidden `triage` blocks.
+4. Review optional placeholder context in `OBS-0002`, `OBS-0003`, `PROP-0002`, and related proposal records if stronger source evidence is available.
