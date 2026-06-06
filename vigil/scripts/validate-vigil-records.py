@@ -367,6 +367,9 @@ def validate_record(
                 f"{path}: system_context.platform_or_vendor {platform_or_vendor!r} is not canonical; "
                 f"allowed values: {allowed}"
             )
+        # Multi Vendor is an evidentiary routing value, not a product-list escape hatch.
+        # Authors must provide separated vendor evidence arrays and keep product_or_service
+        # to one canonical value (usually "Other" for genuinely multi-product records).
         if platform_or_vendor == "Multi Vendor":
             vendor_cluster = system_context.get("vendor_cluster")
             if not isinstance(vendor_cluster, list) or not vendor_cluster or any(

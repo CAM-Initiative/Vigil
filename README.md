@@ -24,6 +24,15 @@ VIGIL is designed to make governance maintenance visible, reviewable, and tracea
 
 For the detailed conditional lifecycle/routing model and OBS/FM/PROP/PATCH record-class boundaries, see [`vigil/docs/VIGIL.RecordLifecycle.md`](vigil/docs/VIGIL.RecordLifecycle.md).
 
+For contributor, security, agent, and evidence-authoring guidance, see:
+
+* [`AGENTS.md`](AGENTS.md)
+* [`CONTRIBUTING.md`](CONTRIBUTING.md)
+* [`SECURITY.md`](SECURITY.md)
+* [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md)
+* [`vigil/docs/evidence-authoring-guidance.md`](vigil/docs/evidence-authoring-guidance.md)
+* [`vigil/docs/2026-evidence-integrity-audit.md`](vigil/docs/2026-evidence-integrity-audit.md)
+
 ---
 
 ## What VIGIL Records
@@ -277,7 +286,13 @@ Key repository files include:
 * `templates/` — specialised templates for supported record types.
 * `examples/` — example records or copy/paste templates.
 * `vigil/scripts/` — routing, validation, and registry-generation scripts.
-* `AGENTS.md` — local instructions for agents working inside the VIGIL layer.
+* `AGENTS.md` — repository-root instructions for AI/code agents.
+* `vigil/AGENTS.md` — additional local instructions for agents working inside the VIGIL layer.
+* `CONTRIBUTING.md` — contribution workflow and evidence requirements.
+* `SECURITY.md` — security and sensitive-evidence handling.
+* `CODE_OF_CONDUCT.md` — participation and privacy expectations.
+* `vigil/docs/evidence-authoring-guidance.md` — source metadata, evidence recovery, internal evidence, and Multi Vendor evidence guidance.
+* `vigil/docs/2026-evidence-integrity-audit.md` — 2026 OBS/FM evidence-integrity audit and recovery outcomes.
 
 ---
 
