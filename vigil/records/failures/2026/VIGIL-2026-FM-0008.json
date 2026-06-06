@@ -1,286 +1,441 @@
 {
-"id": "VIGIL-2026-FM-0008",
-"record_type": "failure_mode",
-"title": "Cross-Platform Access-State Governance Failure",
-"observed_system_vendor": "Multi Vendor",
-"observed_surface": "Multi Surface",
-"status": "observed_pending_repair_proposal",
-"triage_priority": "P1",
-"automation_safety_classification": "human_review_required",
-"failure_classification": {
-"primary_failure_class": "access_state_governance_failure",
-"secondary_failure_classes": [
-"authentication_entitlement_boundary_failure",
-"service_state_observability_gap",
-"resource_allocation_visibility_gap",
-"cross_domain_governance_primitive_absence"
-]
-},
-"summary": "Recent incidents across multiple frontier AI platforms indicate a recurring failure class in which users experience impaired access, login failure, service unavailability, quota or usage ambiguity, model availability failure, capacity restriction, or degraded platform access without sufficient user-facing separation between authentication state, identity-provider state, account state, entitlement state, quota or rate-limit state, model availability, platform availability, security state, policy state, and infrastructure state.",
-"scope_note": "This record excludes incorrect account suspension and restored-account-access issues already captured under VIGIL-2026-FM-0007. FM-0008 is limited to cross-platform access-state ambiguity, login failure, service availability failure, model availability failure, quota or usage ambiguity, capacity restriction, and insufficient user-facing disclosure of the operative access-state condition.",
-"evidence_summary": [
-"OpenAI reported incidents involving login/account creation issues, ChatGPT access issues, and Microsoft personal account sign-in failures.",
-"Anthropic/Claude reported or was reported to have incidents involving elevated errors, degraded model success rates, Claude Code service degradation, Claude.ai/platform downtime, login failures, verification-code failures, false usage-limit or message-limit states, capacity-constraint messages, and service-busy or model-unavailable responses.",
-"Across vendors, the common pattern is not only degraded availability. The recurring governance issue is that users cannot reliably distinguish which access-state condition is controlling their current inability to use the system."
-],
-"source_records": [
-{
-"source_id": "SRC-FM-0008-001",
-"source_type": "external_status_page",
-"vendor": "OpenAI",
-"surface": "ChatGPT / API Platform",
-"title": "Users may encounter issues logging in or creating an account",
-"url": "https://status.openai.com/incidents/01KSRVH1TAV8Q47M91F6V4V6X0",
-"date_observed": "2026-05-29",
-"relevant_failure_signals": [
-"login_failure",
-"account_creation_failure",
-"chatgpt_api_access_degradation"
-],
-"evidence_note": "OpenAI status incident identifying user issues logging in or creating accounts across APIs and ChatGPT."
-},
-{
-"source_id": "SRC-FM-0008-002",
-"source_type": "external_status_page",
-"vendor": "OpenAI",
-"surface": "ChatGPT",
-"title": "Users May Experience Issues Accessing ChatGPT",
-"url": "https://status.openai.com/incidents/01KSSY9D28AM92BCDXRTS4CDKZ",
-"date_observed": "2026-05-29",
-"relevant_failure_signals": [
-"chatgpt_access_failure",
-"service_availability_degradation",
-"component_level_access_ambiguity"
-],
-"evidence_note": "OpenAI status incident identifying access issues affecting ChatGPT components."
-},
-{
-"source_id": "SRC-FM-0008-003",
-"source_type": "external_status_page",
-"vendor": "OpenAI",
-"surface": "ChatGPT / API Platform",
-"title": "Users unable to sign in using Microsoft personal accounts",
-"url": "https://status.openai.com/incidents/01KTC44AD7928NC4HHQWW9XE5F",
-"date_observed": "2026-06-05",
-"relevant_failure_signals": [
-"third_party_identity_provider_sign_in_failure",
-"authentication_failure",
-"chatgpt_api_access_degradation"
-],
-"evidence_note": "OpenAI status incident identifying sign-in failure for users using Microsoft personal accounts."
-},
-{
-"source_id": "SRC-FM-0008-004",
-"source_type": "external_news_report",
-"vendor": "OpenAI",
-"surface": "ChatGPT / Codex",
-"title": "ChatGPT was down for many — as OpenAI says it's 'monitoring the recovery'",
-"url": "https://www.techradar.com/news/live/chatgpt-down-april-2026",
-"date_observed": "2026-04-20",
-"relevant_failure_signals": [
-"login_issue",
-"blank_screen",
-"unable_to_load_conversation",
-"delayed_response",
-"partial_outage",
-"chatgpt_codex_access_degradation"
-],
-"evidence_note": "Report describes user-facing access and availability symptoms across ChatGPT functions, including login issues, blank screens, inability to access previous conversations, delays, and partial service disruption."
-},
-{
-"source_id": "SRC-FM-0008-005",
-"source_type": "external_status_page",
-"vendor": "Anthropic",
-"surface": "Claude.ai / Claude Console / Claude API / Claude Code",
-"title": "Claude Status",
-"url": "https://status.claude.com/",
-"date_observed": "2026-06-06",
-"relevant_failure_signals": [
-"degraded_performance",
-"claude_ai_degradation",
-"claude_console_degradation",
-"claude_api_degradation",
-"claude_code_degradation",
-"model_success_rate_degradation"
-],
-"evidence_note": "Claude status page reported degraded performance across Claude surfaces and listed recent incidents involving elevated errors and Claude Code service issues."
-},
-{
-"source_id": "SRC-FM-0008-006",
-"source_type": "external_news_report",
-"vendor": "Anthropic",
-"surface": "Claude",
-"title": "Claude is down for many — here's what we know about the outage",
-"url": "https://www.techradar.com/news/live/claude-outage-june-2026",
-"date_observed": "2026-06-02",
-"relevant_failure_signals": [
-"partial_outage",
-"elevated_errors",
-"slow_response",
-"hanging_response",
-"capacity_constraint_message",
-"model_availability_ambiguity",
-"free_plan_capacity_constraint"
-],
-"evidence_note": "Report describes Claude outage, elevated errors, hanging responses, capacity constraints, and user-facing ambiguity around model/service availability."
-},
-{
-"source_id": "SRC-FM-0008-007",
-"source_type": "external_news_report",
-"vendor": "Anthropic",
-"surface": "Claude.ai / Claude Code",
-"title": "Claude was down — here's everything we know",
-"url": "https://www.techradar.com/news/live/claude-anthropic-down-outage-april-15-2026",
-"date_observed": "2026-04-15",
-"relevant_failure_signals": [
-"login_failure",
-"claude_code_login_failure",
-"verification_code_failure",
-"false_prompt_limit_state",
-"service_temporarily_busy",
-"model_unavailable_message",
-"prompt_processing_failure"
-],
-"evidence_note": "Report describes Claude.ai and Platform downtime, Claude Code login failure via Claude.ai, verification-code failure, false prompt-limit states, service-busy messages, and model-unavailable messages."
-},
-{
-"source_id": "SRC-FM-0008-008",
-"source_type": "external_news_report",
-"vendor": "Anthropic",
-"surface": "Claude / Claude Code",
-"title": "Claude AI Down Today Reason: Why Anthropic's AI is not working today? What's the latest quota update",
-"url": "https://m.economictimes.com/news/new-updates/claude-ai-down-today-reason-why-anthropics-ai-is-not-working-today-whats-the-latest-quota-update/articleshow/131458727.cms",
-"date_observed": "2026-06-02",
-"relevant_failure_signals": [
-"quota_depletion",
-"quota_state_ambiguity",
-"claude_code_disruption",
-"pro_max_subscriber_impact",
-"emergency_quota_reset"
-],
-"evidence_note": "Report describes Claude AI and Claude Code disruption involving rapid depletion of user quotas, particularly affecting paid Pro and Max subscribers, with an emergency quota reset reportedly rolled out for affected accounts."
-},
-{
-"source_id": "SRC-FM-0008-009",
-"source_type": "external_news_report",
-"vendor": "Anthropic",
-"surface": "Claude",
-"title": "Claude AI down: Anthropic AI chatbot faces partial outage as users report access issues",
-"url": "https://m.economictimes.com/news/new-updates/claude-ai-outage-anthropic-ai-chatbot-down-for-users-today/articleshow/131458681.cms",
-"date_observed": "2026-06-02",
-"relevant_failure_signals": [
-"partial_outage",
-"access_issue",
-"service_interruption",
-"insufficient_detail_disclosure"
-],
-"evidence_note": "Report describes a partial outage with users unable to access Claude AI and notes that the exact cause was not disclosed."
-},
-{
-"source_id": "SRC-FM-0008-010",
-"source_type": "external_news_report",
-"vendor": "Anthropic",
-"surface": "Claude / Claude Code",
-"title": "Claude suffered a 'major outage.' Anthropic says it's fixed.",
-"url": "https://www.businessinsider.com/is-claude-down-outage-2026-4",
-"date_observed": "2026-04-07",
-"relevant_failure_signals": [
-"major_outage",
-"claude_website_unavailable",
-"claude_code_unavailable",
-"user_access_failure",
-"component_specific_availability_divergence"
-],
-"evidence_note": "Report states that the Claude website and Claude Code were not working for many users, while other components were listed as operational, demonstrating component-specific access-state divergence."
-},
-{
-"source_id": "SRC-FM-0008-011",
-"source_type": "external_news_report",
-"vendor": "Anthropic",
-"surface": "Claude",
-"title": "Claude down: Anthropic says Claude AI outage resolved, read update",
-"url": "https://timesofindia.indiatimes.com/technology/tech-news/claude-down-anthropic-says-claude-ai-outage-resolved-read-what-the-company-has-to-say/articleshow/130243059.cms",
-"date_observed": "2026-04-13",
-"relevant_failure_signals": [
-"login_error",
-"connection_problem",
-"major_outage",
-"elevated_errors_on_claude_ai"
-],
-"evidence_note": "Report describes a major outage primarily affecting login and connection, with users encountering persistent login errors."
-}
-],
-"distinguishing_observations": [
-{
-"observation": "The repeated pattern is not merely service outage.",
-"detail": "The cross-platform failure cluster combines authentication, account access, component availability, model availability, quota state, message-limit state, degraded response state, capacity state, and insufficient access-state explanation."
-},
-{
-"observation": "The user-facing presentation of access failure is often under-specified.",
-"detail": "Users may be told that a model is unavailable, a service is temporarily busy, a quota is exhausted, login failed, or a component is degraded without sufficient separation of the operative governance state."
-},
-{
-"observation": "The failure class crosses vendor boundaries.",
-"detail": "OpenAI and Anthropic incidents both show recurring access-state and login/service availability failures within a short time window, indicating that the issue should be treated as a cross-platform governance primitive gap rather than a local vendor-specific implementation bug."
-}
-],
-"user_impact": [
-"Users may be unable to determine whether access failure is caused by login/authentication, identity-provider failure, account creation failure, subscription entitlement, quota exhaustion, model unavailability, capacity constraint, platform outage, component-specific degradation, or infrastructure recovery.",
-"Developers and maintainers relying on AI platforms may lose the ability to distinguish operational outage from account-level or entitlement-level failure.",
-"Ambiguous access-state messaging can produce unnecessary user confusion, duplicate support load, distrust, and poor incident reproducibility.",
-"Where AI tools are embedded into work, research, governance, education, or development workflows, access-state ambiguity can interrupt downstream processes without adequate diagnostic signal."
-],
-"governance_gap": "CAM currently lacks an explicit cross-domain primitive for Access-State Governance. Access to an AI system is not controlled by a single state. It is governed simultaneously by authentication, identity verification, account state, workspace or organisation state, subscription entitlement, credit state, quota or rate-limit state, model availability, platform availability, security review, policy restriction, and continuity/session state. Where these states are collapsed into ambiguous user-facing errors, users cannot diagnose the operative governance condition.",
-"affected_cam_domains": [
-"IDENTITY",
-"SECURITY",
-"ECONOMICS",
-"CONTINUITY",
-"OBSERVABILITY",
-"OPERATIONS"
-],
-"repair_hypothesis": "CAM should define Access-State Governance as a cross-domain arbitration primitive requiring advanced AI systems to distinguish, preserve, disclose, and audit the operative state controlling a user's current access. The primitive should separate authentication state, identity-provider state, identity-verification state, account/workspace state, entitlement/subscription state, credit state, quota or rate-limit state, model-availability state, platform-availability state, security-review state, policy-restriction state, and continuity/session state.",
-"recommended_repair_path": [
-{
-"instrument": "CAM-BS2025-AEON-003-PLATINUM — Annex B: Continuity & Governance Logic",
-"amendment_type": "primary_cross_domain_logic_amendment",
-"purpose": "Define Access-State Governance as a continuity and governance-logic primitive where multiple governance domains simultaneously determine whether a user, account, workspace, organisation, agent, or API actor can access the system."
-},
-{
-"instrument": "IDENTITY domain instruments",
-"amendment_type": "secondary_cross_reference",
-"purpose": "Clarify user, account, workspace, organisation, identity-provider, and actor-state distinctions."
-},
-{
-"instrument": "SECURITY domain instruments",
-"amendment_type": "secondary_cross_reference",
-"purpose": "Clarify security-review, abuse-control, account-protection, enforcement, and restriction states."
-},
-{
-"instrument": "ECONOMICS domain instruments",
-"amendment_type": "secondary_cross_reference",
-"purpose": "Clarify subscription, credit, quota, pooled-resource, usage-limit, rate-limit, and entitlement-state relationships."
-},
-{
-"instrument": "OBSERVABILITY / OPERATIONS instruments",
-"amendment_type": "secondary_cross_reference",
-"purpose": "Require user-facing and operator-facing disclosure sufficient to distinguish outage, quota, entitlement, identity-provider, security, policy, model-availability, and platform-availability states."
-}
-],
-"linked_records": {
-"related_failure_modes": [
-{
-"id": "VIGIL-2026-FM-0007",
-"relationship": "adjacent_but_distinct",
-"notes": "FM-0007 concerns shared and pooled resource governance and premature account suspension. FM-0008 excludes those suspension facts and focuses on access-state governance, login, quota, model availability, component availability, and user-facing state ambiguity."
-}
-],
-"proposed_patch": null,
-"proposed_proposal": null
-},
-"review_notes": [
-"Run repository schema validation before commit.",
-"If observed_surface does not allow 'Multi Surface', replace with the repository's permitted multi-surface equivalent or omit if not required.",
-"Consider creating a companion proposal record for the Annex B amendment."
-]
+  "id": "VIGIL-2026-FM-0008",
+  "record_type": "failure_mode",
+  "record_state": "active",
+  "date_recorded": "2026-06-06",
+  "record_identity": {
+    "record_id": "VIGIL-2026-FM-0008",
+    "record_type": "failure_mode",
+    "title": "Cross-platform access-state governance failure",
+    "created": "2026-06-06",
+    "updated": "2026-06-06",
+    "version": "1.0"
+  },
+  "summary": "A cross-platform governance failure mode in which users experience impaired access, login failure, service unavailability, quota or usage ambiguity, model availability failure, capacity restriction, degraded platform access, or component-specific access failure without sufficient user-facing separation between the operative access-control states governing the interaction.",
+  "why_it_matters_to_CAM": "This failure mode is relevant to CAM because access to frontier AI systems is not controlled by a single state. It may be governed simultaneously by authentication, identity-provider status, identity verification, account state, workspace or organisation state, subscription entitlement, billing or credit state, quota or rate-limit state, model availability, tool or surface availability, platform availability, security review, policy restriction, regional or compliance limitation, client or session state, and continuity state. Where these conditions are collapsed into ambiguous errors, users and developers cannot reliably determine whether the controlling condition is outage, quota exhaustion, entitlement failure, account restriction, policy limitation, security review, client/session failure, or infrastructure degradation. This undermines observability, reproducibility, support routing, continuity, and public trust in AI platform governance.",
+  "failure_mode_definition": "A failure mode in which an AI platform, AI-adjacent platform, model service, API, coding agent, or platform-integrated AI surface denies, degrades, interrupts, limits, or ambiguously presents user access without preserving and disclosing a proportionate distinction between the operative access-state categories controlling the interaction, including authentication state, identity-provider state, account/workspace/organisation state, entitlement or subscription state, billing or credit state, quota or rate-limit state, model or tool availability, platform or component availability, security-review state, policy-restriction state, regional/legal/compliance state, client/session state, and continuity state.",
+  "failure_threshold": "This qualifies as a failure mode when users, developers, maintainers, administrators, or downstream systems cannot reasonably determine whether impaired access is caused by authentication failure, third-party identity-provider failure, identity verification, account or workspace restriction, organisation policy, subscription entitlement, billing or credit exhaustion, quota or rate-limit state, model unavailability, tool or component unavailability, platform outage, infrastructure degradation, security review, policy restriction, regional or compliance limitation, stale client/session state, or continuity failure, and the ambiguity materially affects diagnosis, recovery, support escalation, workflow continuity, reproducibility, or trust.",
+  "evidence_confidence": "corroborated",
+  "source_records": [
+    {
+      "source_title": "Users may encounter issues logging in or creating an account",
+      "author_or_publisher": "OpenAI Status",
+      "source_date": "2026-05-29",
+      "source_url": "https://status.openai.com/incidents/01KSRVH1TAV8Q47M91F6V4V6X0",
+      "archive_url": "",
+      "retrieved_date": "2026-06-06",
+      "source_type": "platform-status-page",
+      "source_platform": "OpenAI",
+      "deployment_context": "OpenAI status incident for APIs and ChatGPT involving login and account-creation access issues.",
+      "source_context": "The incident identifies user issues logging in or creating accounts across OpenAI APIs and ChatGPT.",
+      "source_url_status": "available",
+      "relevance_note": "Supports the access-state governance concern by documenting authentication and account-creation failure affecting user access."
+    },
+    {
+      "source_title": "Users May Experience Issues Accessing ChatGPT",
+      "author_or_publisher": "OpenAI Status",
+      "source_date": "2026-05-29",
+      "source_url": "https://status.openai.com/incidents/01KSSY9D28AM92BCDXRTS4CDKZ",
+      "archive_url": "",
+      "retrieved_date": "2026-06-06",
+      "source_type": "platform-status-page",
+      "source_platform": "OpenAI",
+      "deployment_context": "OpenAI status incident identifying access issues affecting ChatGPT components.",
+      "source_context": "The incident identifies user-facing access issues affecting ChatGPT.",
+      "source_url_status": "available",
+      "relevance_note": "Supports the access-state governance concern by documenting component-level ChatGPT access degradation."
+    },
+    {
+      "source_title": "Users unable to sign in using Microsoft personal accounts",
+      "author_or_publisher": "OpenAI Status",
+      "source_date": "2026-06-05",
+      "source_url": "https://status.openai.com/incidents/01KTC44AD7928NC4HHQWW9XE5F",
+      "archive_url": "",
+      "retrieved_date": "2026-06-06",
+      "source_type": "platform-status-page",
+      "source_platform": "OpenAI",
+      "deployment_context": "OpenAI status incident involving sign-in failure for users using Microsoft personal accounts.",
+      "source_context": "The incident identifies a third-party identity-provider sign-in failure affecting users who sign in using Microsoft personal accounts.",
+      "source_url_status": "available",
+      "relevance_note": "Supports the need to distinguish first-party authentication, third-party identity-provider state, and general platform availability."
+    },
+    {
+      "source_title": "ChatGPT was down for many — as OpenAI says it's 'monitoring the recovery'",
+      "author_or_publisher": "TechRadar",
+      "source_date": "2026-04-20",
+      "source_url": "https://www.techradar.com/news/live/chatgpt-down-april-2026",
+      "archive_url": "",
+      "retrieved_date": "2026-06-06",
+      "source_type": "news-report",
+      "source_platform": "TechRadar",
+      "deployment_context": "Public reporting on ChatGPT access and availability symptoms during an OpenAI service disruption.",
+      "source_context": "The report describes user-facing symptoms including login issues, blank screens, inability to access previous conversations, delayed responses, and partial service disruption.",
+      "source_url_status": "available",
+      "relevance_note": "Supports the cross-surface access ambiguity pattern by showing multiple user-facing symptoms during degraded service."
+    },
+    {
+      "source_title": "Claude Status",
+      "author_or_publisher": "Anthropic / Claude Status",
+      "source_date": "2026-06-06",
+      "source_url": "https://status.claude.com/",
+      "archive_url": "",
+      "retrieved_date": "2026-06-06",
+      "source_type": "platform-status-page",
+      "source_platform": "Anthropic",
+      "deployment_context": "Anthropic status page for Claude.ai, Claude Console, Claude API, and Claude Code.",
+      "source_context": "The status page reported or listed degraded performance and recent incidents involving elevated errors, degraded model success rates, Claude Code service issues, and related Claude surface degradation.",
+      "source_url_status": "available",
+      "relevance_note": "Supports the cross-platform and multi-surface nature of the access-state governance failure mode."
+    },
+    {
+      "source_title": "Claude is down for many — here's what we know about the outage",
+      "author_or_publisher": "TechRadar",
+      "source_date": "2026-06-02",
+      "source_url": "https://www.techradar.com/news/live/claude-outage-june-2026",
+      "archive_url": "",
+      "retrieved_date": "2026-06-06",
+      "source_type": "news-report",
+      "source_platform": "TechRadar",
+      "deployment_context": "Public reporting on Claude outage conditions and user-facing access symptoms.",
+      "source_context": "The report describes a Claude outage involving elevated errors, slow or hanging responses, capacity-constraint messages, model availability ambiguity, and free-plan capacity constraints.",
+      "source_url_status": "available",
+      "relevance_note": "Supports the claim that access-state ambiguity can involve outage, capacity, model availability, and plan-related access conditions."
+    },
+    {
+      "source_title": "Claude was down — here's everything we know",
+      "author_or_publisher": "TechRadar",
+      "source_date": "2026-04-15",
+      "source_url": "https://www.techradar.com/news/live/claude-anthropic-down-outage-april-15-2026",
+      "archive_url": "",
+      "retrieved_date": "2026-06-06",
+      "source_type": "news-report",
+      "source_platform": "TechRadar",
+      "deployment_context": "Public reporting on Claude.ai, Claude Platform, and Claude Code downtime.",
+      "source_context": "The report describes Claude.ai and Platform downtime, Claude Code login failure via Claude.ai, verification-code failure, false prompt-limit states, service-busy messages, model-unavailable messages, and prompt-processing failure.",
+      "source_url_status": "available",
+      "relevance_note": "Supports the need to separate login, verification, usage-limit, capacity, model-availability, and prompt-processing states."
+    },
+    {
+      "source_title": "Claude AI Down Today Reason: Why Anthropic's AI is not working today? What's the latest quota update",
+      "author_or_publisher": "The Economic Times",
+      "source_date": "2026-06-02",
+      "source_url": "https://m.economictimes.com/news/new-updates/claude-ai-down-today-reason-why-anthropics-ai-is-not-working-today-whats-the-latest-quota-update/articleshow/131458727.cms",
+      "archive_url": "",
+      "retrieved_date": "2026-06-06",
+      "source_type": "news-report",
+      "source_platform": "The Economic Times",
+      "deployment_context": "Public reporting on Claude and Claude Code disruption involving usage quota depletion.",
+      "source_context": "The report describes rapid depletion of user quotas affecting paid Pro and Max subscribers, Claude Code disruption, and an emergency quota reset reportedly rolled out for affected accounts.",
+      "source_url_status": "available",
+      "relevance_note": "Supports inclusion of quota, entitlement, paid-plan, and resource-allocation ambiguity in the access-state governance failure mode."
+    },
+    {
+      "source_title": "Claude AI down: Anthropic AI chatbot faces partial outage as users report access issues",
+      "author_or_publisher": "The Economic Times",
+      "source_date": "2026-06-02",
+      "source_url": "https://m.economictimes.com/news/new-updates/claude-ai-outage-anthropic-ai-chatbot-down-for-users-today/articleshow/131458681.cms",
+      "archive_url": "",
+      "retrieved_date": "2026-06-06",
+      "source_type": "news-report",
+      "source_platform": "The Economic Times",
+      "deployment_context": "Public reporting on Claude partial outage and user access issues.",
+      "source_context": "The report describes a partial outage with users unable to access Claude AI and notes that the exact cause was not disclosed.",
+      "source_url_status": "available",
+      "relevance_note": "Supports the observability gap where users may experience access failure without sufficient disclosure of the controlling condition."
+    },
+    {
+      "source_title": "Claude suffered a 'major outage.' Anthropic says it's fixed.",
+      "author_or_publisher": "Business Insider",
+      "source_date": "2026-04-07",
+      "source_url": "https://www.businessinsider.com/is-claude-down-outage-2026-4",
+      "archive_url": "",
+      "retrieved_date": "2026-06-06",
+      "source_type": "news-report",
+      "source_platform": "Business Insider",
+      "deployment_context": "Public reporting on a Claude outage affecting Claude website and Claude Code availability.",
+      "source_context": "The report states that the Claude website and Claude Code were not working for many users while other components were listed as operational.",
+      "source_url_status": "available",
+      "relevance_note": "Supports the component-specific availability divergence aspect of the failure mode."
+    },
+    {
+      "source_title": "Claude down: Anthropic says Claude AI outage resolved, read update",
+      "author_or_publisher": "The Times of India",
+      "source_date": "2026-04-13",
+      "source_url": "https://timesofindia.indiatimes.com/technology/tech-news/claude-down-anthropic-says-claude-ai-outage-resolved-read-what-the-company-has-to-say/articleshow/130243059.cms",
+      "archive_url": "",
+      "retrieved_date": "2026-06-06",
+      "source_type": "news-report",
+      "source_platform": "The Times of India",
+      "deployment_context": "Public reporting on Claude outage conditions involving login and connection failures.",
+      "source_context": "The report describes a major outage primarily affecting login and connection, with users encountering persistent login errors and elevated errors on Claude.ai.",
+      "source_url_status": "available",
+      "relevance_note": "Supports the login, connection, and degraded service components of the access-state governance failure mode."
+    }
+  ],
+  "system_context": {
+    "system_type": "frontier AI platform / model service / API platform / coding-agent surface",
+    "platform_or_vendor": "Multi Vendor",
+    "product_or_service": "ChatGPT, OpenAI APIs, Codex, Claude.ai, Claude Console, Claude API, Claude Code",
+    "specific_model_or_runtime": "Not limited to a single model or runtime",
+    "interface_surface": "web application, API platform, account/login flow, identity-provider sign-in flow, coding-agent interface, model selection surface, quota/usage interface, service-status surface",
+    "model_or_product": "OpenAI and Anthropic frontier AI platform services and associated access surfaces",
+    "interaction_mode": "login / account access / model access / API access / coding-agent use / quota-limited interaction / service-status-dependent interaction",
+    "embodiment_status": "non-embodied",
+    "deployment_context": "Consumer, professional, developer, research, educational, governance, and operational workflows dependent on cloud-hosted AI platform access.",
+    "user_role": "end user / developer / maintainer / researcher / administrator / subscriber / organisation workspace user / API user",
+    "affected_population": "users, developers, paid subscribers, free-plan users, enterprise or workspace users, maintainers, researchers, educators, and public-interest actors relying on AI platform availability and clear access-state signalling"
+  },
+  "failure_classification": {
+    "failure_family": "access-state-governance",
+    "failure_subtype": "cross-platform-access-state-collapse",
+    "harm_vectors": [
+      "access-state ambiguity",
+      "authentication-entitlement boundary collapse",
+      "quota-state ambiguity",
+      "model-availability ambiguity",
+      "component-availability divergence",
+      "identity-provider failure opacity",
+      "subscription or entitlement uncertainty",
+      "security-review ambiguity",
+      "policy-restriction ambiguity",
+      "client/session continuity ambiguity",
+      "incorrect support-routing",
+      "workflow interruption",
+      "incident reproducibility loss",
+      "user trust degradation"
+    ],
+    "severity": "medium-high",
+    "likelihood": "likely",
+    "confidence": "documented",
+    "affected_rights_or_interests": [
+      "reliable access to digital services",
+      "procedural clarity",
+      "support and appeal routing",
+      "account continuity",
+      "developer operational continuity",
+      "research continuity",
+      "paid-service transparency",
+      "consumer protection",
+      "platform accountability",
+      "service observability",
+      "incident reproducibility",
+      "public trust in AI infrastructure"
+    ],
+    "failure_scope": "cross-platform / systemic",
+    "recurrence_pattern": "recurring incidents across multiple vendors and surfaces",
+    "canonical_failure_group": "governance",
+    "taxonomy_reference": "CAM-EQ2026-OPERATIONS-003-SUP-01 Appendix B — Runtime & Governance Failure Taxonomy; cross-reference to governance, arbitration, state-context, ux-representation, security-integrity, and infrastructure-continuity failure groups",
+    "related_failure_groups": [
+      "arbitration",
+      "state-context",
+      "ux-representation",
+      "security-integrity",
+      "infrastructure-continuity",
+      "classification"
+    ],
+    "persistence": "recurring incident cluster / unresolved governance primitive",
+    "reproducibility": "externally documented across multiple public status pages and news reports",
+    "visibility": "public status pages, public reporting, user-facing access symptoms, and degraded service messages"
+  },
+  "triage": {
+    "triage_priority": "P1",
+    "triage_owner": "VIGIL maintainers",
+    "triage_status": "observed_pending_repair_proposal",
+    "mitigation_status": "proposal-needed — no linked patch or proposal is currently recorded for FM-0008",
+    "escalation_required": "yes",
+    "recommended_next_step": "Create a companion proposal record defining Access-State Governance as a CAM cross-domain arbitration primitive, then route amendments through Annex B / arbitration logic, OPERATIONS taxonomy, IDENTITY, SECURITY, ECONOMICS, CONTINUITY, and OBSERVABILITY."
+  },
+  "jurisdictional_context": {
+    "primary_jurisdiction": "global",
+    "secondary_jurisdictions": [
+      "Australia",
+      "United States",
+      "European Union",
+      "United Kingdom",
+      "platform agnostic"
+    ],
+    "regulatory_surface": [
+      "AI platform governance",
+      "consumer protection",
+      "digital service reliability",
+      "paid-service transparency",
+      "online safety",
+      "developer infrastructure dependency",
+      "cloud service accountability",
+      "incident transparency",
+      "platform status observability",
+      "identity-provider dependency",
+      "subscription and quota governance"
+    ],
+    "sector": "frontier AI platforms / API services / coding agents / consumer and developer AI infrastructure",
+    "cross_border_relevance": "yes",
+    "public_interest_relevance": "yes"
+  },
+  "distinguishing_observations": [
+    {
+      "observation": "The repeated pattern is not merely service outage.",
+      "detail": "The cross-platform failure cluster combines authentication, account access, component availability, model availability, quota state, message-limit state, degraded response state, capacity state, identity-provider state, and insufficient access-state explanation."
+    },
+    {
+      "observation": "The user-facing presentation of access failure is often under-specified.",
+      "detail": "Users may be told that a model is unavailable, a service is temporarily busy, a quota is exhausted, login failed, verification failed, or a component is degraded without sufficient separation of the operative governance state."
+    },
+    {
+      "observation": "The failure class crosses vendor boundaries.",
+      "detail": "OpenAI and Anthropic incidents both show recurring access-state and login/service availability failures within a short time window, indicating that the issue should be treated as a cross-platform governance primitive gap rather than a vendor-specific implementation bug."
+    }
+  ],
+  "user_impact": [
+    "Users may be unable to determine whether access failure is caused by login/authentication, identity-provider failure, account creation failure, subscription entitlement, quota exhaustion, model unavailability, capacity constraint, platform outage, component-specific degradation, security review, policy restriction, client/session failure, or infrastructure recovery.",
+    "Developers and maintainers relying on AI platforms may lose the ability to distinguish operational outage from account-level, workspace-level, entitlement-level, quota-level, model-level, or policy-level failure.",
+    "Ambiguous access-state messaging can produce unnecessary user confusion, duplicate support load, distrust, poor incident reproducibility, incorrect escalation, and unnecessary account troubleshooting.",
+    "Where AI tools are embedded into work, research, governance, education, or development workflows, access-state ambiguity can interrupt downstream processes without adequate diagnostic signal.",
+    "Ambiguous access-state messaging prevents users from selecting the correct recovery pathway, including login recovery, billing support, quota management, workspace or enterprise administrator escalation, incident-status monitoring, security appeal, policy appeal, app/client troubleshooting, or data-export/recovery."
+  ],
+  "existing_cam_coverage": [
+    {
+      "instrument": "CAM-BS2025-AEON-003-SCH-04 — Annex B: Arbitration Layer & Resolution Model",
+      "coverage": "Provides general cross-domain arbitration logic for competing admissible states, domain-routing conflicts, structural conflicts, and convergence into a single valid direction.",
+      "gap_remaining": "Does not expressly define access-state governance or require preservation of authentication, entitlement, quota, model-availability, policy, security, client/session, and continuity state as separable operative access axes."
+    },
+    {
+      "instrument": "CAM-EQ2026-OPERATIONS-003-SUP-01 — Appendix B: Runtime & Governance Failure Taxonomy",
+      "coverage": "Provides adjacent failure-taxonomy coverage for authentication continuity, access ambiguity, domain compression, metadata flattening, UX representation failures, and infrastructure/continuity failures.",
+      "gap_remaining": "Provides classification support but does not itself establish a binding cross-domain access-state primitive or user-facing access-state disclosure pathway."
+    }
+  ],
+  "governance_gap": "CAM contains partial coverage for authentication continuity, re-entry access ambiguity, infrastructure availability, governance metadata flattening, domain-boundary compression, and procedural permanence drift. However, CAM does not yet define a source-authoritative Access-State Governance primitive requiring systems to preserve, arbitrate, disclose, and audit the operative access-control state across authentication, identity-provider, identity-verification, account, workspace, organisation, entitlement, subscription, credit, quota, model-availability, tool-availability, platform-availability, regional/legal, security-review, policy-restriction, client/session, and continuity states. Where these states are collapsed into ambiguous user-facing errors, users cannot diagnose the controlling condition, select the correct recovery pathway, or distinguish temporary outage from account-level, entitlement-level, policy-level, security-level, regional/legal, client-side, or continuity restriction.",
+  "repair_hypothesis": "CAM should define Access-State Governance as a cross-domain arbitration primitive requiring advanced AI systems to distinguish, preserve, disclose, and audit the operative state controlling a user's current access. The primitive should separate authentication state, identity-provider state, identity-verification state, account state, workspace state, organisation-policy state, entitlement/subscription state, billing or credit state, quota or rate-limit state, model-availability state, tool/surface availability state, platform-availability state, regional/legal/compliance state, security-review state, policy-restriction state, client-application state, device/browser/cache state, and continuity/session state.",
+  "proposed_access_state_categories": [
+    "authenticated_available",
+    "authentication_failed",
+    "identity_provider_failed",
+    "identity_verification_required",
+    "account_restricted",
+    "workspace_restricted",
+    "organisation_policy_restricted",
+    "subscription_entitlement_unavailable",
+    "billing_or_credit_unavailable",
+    "quota_or_rate_limit_exhausted",
+    "model_unavailable",
+    "tool_or_surface_unavailable",
+    "platform_degraded",
+    "regional_or_compliance_restricted",
+    "security_review_pending",
+    "policy_restricted",
+    "session_or_refresh_state_invalid",
+    "client_or_cache_failure",
+    "unknown_or_under_investigation"
+  ],
+  "minimum_user_facing_disclosure": {
+    "requirement": "Where access is denied, degraded, unavailable, rate-limited, restricted, or ambiguous, the system should provide a proportionate user-facing access-state category sufficient to distinguish outage, authentication failure, identity-provider failure, entitlement limitation, quota or rate-limit depletion, workspace/organisation restriction, security review, policy restriction, model unavailability, regional/legal restriction, client-side failure, or continuity/session failure.",
+    "non_requirement": "This does not require disclosure of sensitive security, abuse-detection, anti-fraud, internal policy, or infrastructure details where disclosure would create material circumvention, privacy, safety, or platform-integrity risk."
+  },
+  "recommended_repair_path": [
+    {
+      "instrument": "CAM-BS2025-AEON-003-SCH-04 — Annex B: Arbitration Layer & Resolution Model",
+      "amendment_type": "primary_cross_domain_logic_amendment",
+      "purpose": "Define Access-State Governance as a cross-domain arbitration primitive where multiple governance domains simultaneously determine whether a user, account, workspace, organisation, agent, or API actor can access the system."
+    },
+    {
+      "instrument": "CAM-EQ2026-OPERATIONS-003-SUP-01 — Appendix B: Runtime & Governance Failure Taxonomy",
+      "amendment_type": "taxonomy_extension",
+      "purpose": "Add Access-State Ambiguity / Access-State Collapse as a named failure class or subclass linked to governance, arbitration, state-context, ux-representation, security-integrity, and infrastructure-continuity failure groups."
+    },
+    {
+      "instrument": "IDENTITY domain instruments",
+      "amendment_type": "secondary_cross_reference",
+      "purpose": "Clarify user, account, workspace, organisation, identity-provider, identity-verification, and actor-state distinctions."
+    },
+    {
+      "instrument": "SECURITY domain instruments",
+      "amendment_type": "secondary_cross_reference",
+      "purpose": "Clarify security-review, abuse-control, account-protection, enforcement, policy-restriction, anti-fraud, and platform-integrity states."
+    },
+    {
+      "instrument": "ECONOMICS domain instruments",
+      "amendment_type": "secondary_cross_reference",
+      "purpose": "Clarify subscription, billing, credit, quota, pooled-resource, usage-limit, rate-limit, paid-plan, and entitlement-state relationships."
+    },
+    {
+      "instrument": "OBSERVABILITY / OPERATIONS instruments",
+      "amendment_type": "secondary_cross_reference",
+      "purpose": "Require user-facing and operator-facing disclosure sufficient to distinguish outage, quota, entitlement, identity-provider, security, policy, regional/legal, client/session, model-availability, and platform-availability states."
+    }
+  ],
+  "linked_records": {
+    "related_observations": [],
+    "related_failure_modes": [
+      {
+        "id": "VIGIL-2026-FM-0007",
+        "relationship": "adjacent_but_distinct",
+        "notes": "FM-0007 concerns shared and pooled resource governance and premature account suspension. FM-0008 excludes those suspension facts and focuses on access-state governance, login, quota, model availability, component availability, and user-facing state ambiguity."
+      }
+    ],
+    "related_proposals": [],
+    "related_patch_notes": [],
+    "external_references": [
+      "OpenAI Status — Users may encounter issues logging in or creating an account",
+      "OpenAI Status — Users May Experience Issues Accessing ChatGPT",
+      "OpenAI Status — Users unable to sign in using Microsoft personal accounts",
+      "TechRadar — ChatGPT was down for many",
+      "Anthropic / Claude Status",
+      "TechRadar — Claude is down for many",
+      "TechRadar — Claude was down",
+      "The Economic Times — Claude AI Down Today Reason",
+      "The Economic Times — Claude AI down",
+      "Business Insider — Claude suffered a major outage",
+      "The Times of India — Claude down"
+    ],
+    "research": [],
+    "standards": []
+  },
+  "cam_internal": {
+    "affected_instruments": [
+      "CAM-BS2025-AEON-003-SCH-04 — Annex B: Arbitration Layer & Resolution Model",
+      "CAM-EQ2026-OPERATIONS-003-SUP-01 — Appendix B: Runtime & Governance Failure Taxonomy",
+      "IDENTITY domain instruments",
+      "SECURITY domain instruments",
+      "ECONOMICS domain instruments",
+      "CONTINUITY domain instruments",
+      "OBSERVABILITY domain instruments"
+    ],
+    "affected_annexes": [
+      "Annex B"
+    ],
+    "affected_domains": [
+      "ARBITRATION",
+      "IDENTITY",
+      "SECURITY",
+      "ECONOMICS",
+      "CONTINUITY",
+      "OBSERVABILITY",
+      "OPERATIONS"
+    ],
+    "governance_layer": "access-state governance / cross-domain arbitration / platform observability / entitlement and quota governance / continuity and service-state disclosure",
+    "proposal_needed": "yes",
+    "linked_proposals": [],
+    "patch_note_needed": "yes — companion proposal or patch record should be created after FM-0008 is accepted",
+    "validator_or_automation_impact": "possible",
+    "routing_note": [
+      "Route the primary repair through Annex B / arbitration logic because the failure concerns the unresolved interaction of multiple operative access-control states.",
+      "Route taxonomy support through CAM-EQ2026-OPERATIONS-003-SUP-01 by adding Access-State Ambiguity / Access-State Collapse as a named failure class or subclass.",
+      "Route identity-provider, identity-verification, account, workspace, organisation, and actor-state distinctions through IDENTITY.",
+      "Route security-review, anti-fraud, platform-integrity, enforcement, and policy-restriction distinctions through SECURITY.",
+      "Route subscription, billing, credit, quota, rate-limit, paid-plan, and entitlement distinctions through ECONOMICS.",
+      "Route session persistence, stale client state, recovery after outage, and conversation/tool continuity through CONTINUITY.",
+      "Route user-facing and operator-facing disclosure obligations through OBSERVABILITY and OPERATIONS.",
+      "Do not collapse this record into FM-0007; FM-0008 is adjacent but distinct because the primary failure is access-state ambiguity rather than pooled-resource suspension."
+    ]
+  },
+  "migration_notes": [
+    "Regenerated under the current VIGIL failure-mode record design after validator failure.",
+    "Adds required base fields: record_state, date_recorded, record_identity, evidence_confidence, system_context, jurisdictional_context, and cam_internal.",
+    "Adds required failure-mode fields: failure_mode_definition, failure_threshold, failure_classification, and triage.",
+    "Migrates legacy source keys title/url to source_title/source_url.",
+    "Uses source_records as the canonical source-evidence block.",
+    "No source_data block is used.",
+    "Prepared as VIGIL-2026-FM-0008 for insertion into vigil/records/failures/2026/.",
+    "Classifies the record under canonical_failure_group governance, with arbitration, state-context, ux-representation, security-integrity, infrastructure-continuity, and classification as related groups."
+  ]
 }
