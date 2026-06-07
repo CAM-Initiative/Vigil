@@ -113,20 +113,34 @@ class BuildVigilRecordsTest(unittest.TestCase):
         self.assertEqual(aggregate["system_summary"]["specific_model_or_runtime"], "ChatGPT Advanced Voice Mode")
         self.assertEqual(aggregate["system_summary"]["interaction_mode"], "voice | multi-device")
 
-    def test_empty_linked_records_key_is_preserved_for_interface_metadata(self):
-        record = self.load_record("VIGIL-2026-OBS-0001")
-        record["linked_records"] = {
-            "related_observations": [],
-            "related_failure_modes": [],
-            "related_proposals": [],
-            "related_patch_notes": [],
-            "external_references": [],
-            "research": [],
-            "standards": [],
+    def test_generated_index_entries_exclude_detail_only_structures(self):
+        detail_only_fields = {
+            "source_summary",
+            "system_summary",
+            "jurisdiction_summary",
+            "classification_summary",
+            "triage_summary",
+            "proposal_summary",
+            "external_relevance_summary",
+            "implementation_notes_summary",
+            "change_summary",
+            "verification_summary",
+            "impact_summary",
+            "cam_summary",
+            "linked_records",
+            "failure_mode_definition_summary",
+            "failure_threshold_summary",
+            "remaining_work",
+            "review_observation",
         }
-        index_entry = builder.prune_empty(builder.index_record(record))
+        records = builder.load_records()
+        grouped = builder.records_by_registry(records)
 
-        self.assertIn("linked_records", index_entry)
+        for registry_type, registry_records in grouped.items():
+            registry = builder.type_registry(registry_type, registry_records)
+            for entry in registry["records"]:
+                with self.subTest(registry_type=registry_type, record=entry["id"]):
+                    self.assertFalse(detail_only_fields.intersection(entry), entry["id"])
 
 
     def test_patch_change_summary_includes_taxonomy_routing(self):
@@ -154,10 +168,10 @@ class BuildVigilRecordsTest(unittest.TestCase):
         grouped = builder.records_by_registry(records)
 
         self.assertEqual(set(grouped), {"failure_modes", "observations", "proposals", "patch_notes"})
-        self.assertEqual(len(grouped["failure_modes"]), 7)
+        self.assertEqual(len(grouped["failure_modes"]), 9)
         self.assertEqual(len(grouped["observations"]), 5)
         self.assertEqual(len(grouped["proposals"]), 9)
-        self.assertEqual(len(grouped["patch_notes"]), 4)
+        self.assertEqual(len(grouped["patch_notes"]), 5)
 
         observations = builder.type_registry("observations", grouped["observations"])
         entry = next(record for record in observations["records"] if record["id"] == "VIGIL-2026-OBS-0001")
@@ -203,11 +217,14 @@ class BuildVigilRecordsTest(unittest.TestCase):
             "summary",
             "evidence_confidence",
             "source_types",
-            "source_summary",
-            "system_summary",
-            "jurisdiction_summary",
-            "linked_records",
-            "cam_summary",
+            "source_count",
+            "primary_source_title",
+            "primary_source_type",
+            "primary_source_platform",
+            "source_platforms",
+            "platform_or_vendor",
+            "product_or_service",
+            "interface_surface",
             "path",
             "github_blob_url",
             "raw_url",
@@ -245,19 +262,22 @@ class BuildVigilRecordsTest(unittest.TestCase):
             master = builder.build_master_from_type_indexes(index_paths)
             self.assertEqual(master["registry_type"], "vigil_registry_master")
             self.assertEqual(master["registry_count"], 4)
-            self.assertEqual(master["record_count"]["failure_modes"], 7)
+            self.assertEqual(master["record_count"]["failure_modes"], 9)
             self.assertEqual(master["record_count"]["observations"], 5)
             self.assertEqual(master["record_count"]["proposals"], 9)
-            self.assertEqual(master["record_count"]["patch_notes"], 4)
-            self.assertEqual(master["record_count"]["total"], 25)
+            self.assertEqual(master["record_count"]["patch_notes"], 5)
+            self.assertEqual(master["record_count"]["total"], 28)
             patch = next(record for record in master["records"] if record["id"] == "VIGIL-2026-PATCH-0001")
             self.assertEqual(patch["path"], "vigil/records/patches/2026/VIGIL-2026-PATCH-0001.json")
             self.assertIn("title", patch)
-            self.assertIn("source_summary", patch)
-            self.assertIn("system_summary", patch)
-            self.assertIn("jurisdiction_summary", patch)
             self.assertIn("github_blob_url", patch)
             self.assertIn("raw_url", patch)
+            self.assertIn("primary_source_platform", patch)
+            self.assertIn("platform_or_vendor", patch)
+            self.assertIn("change_type", patch)
+            self.assertNotIn("source_summary", patch)
+            self.assertNotIn("system_summary", patch)
+            self.assertNotIn("jurisdiction_summary", patch)
 
     def test_uncertainty_values_survive_generated_pruning(self):
         pruned = builder.prune_empty(
@@ -296,6 +316,27 @@ class BuildVigilRecordsTest(unittest.TestCase):
                     record = json.load(handle)
                 self.assertIn("source_records", record)
                 self.assertNotIn("source_data", record)
+
+
+    def test_generated_index_entries_match_lean_schema_contract(self):
+        schema_path = ROOT / "vigil" / "schemas" / "VIGIL.Index.Schema.json"
+        with schema_path.open(encoding="utf-8") as handle:
+            schema = json.load(handle)
+        record_schema = schema["$defs"]["record_entry"]
+        allowed = set(record_schema["properties"])
+        required = set(record_schema["required"])
+        records = builder.load_records()
+        grouped = builder.records_by_registry(records)
+        registries = [builder.type_registry(registry_type, grouped[registry_type]) for registry_type in grouped]
+
+        for registry in registries:
+            self.assertEqual(registry["record_count"], len(registry["records"]))
+            for entry in registry["records"]:
+                with self.subTest(registry_type=registry["registry_type"], record=entry["id"]):
+                    self.assertTrue(required.issubset(entry), entry["id"])
+                    self.assertTrue(set(entry).issubset(allowed), sorted(set(entry) - allowed))
+                    self.assertTrue(entry["path"].startswith("vigil/records/"))
+                    self.assertTrue(entry["raw_url"].endswith(f"/{entry['id']}.json"))
 
     def test_generated_index_includes_all_individual_records_and_no_legacy_aggregate(self):
         with tempfile.TemporaryDirectory() as temp_dir:
