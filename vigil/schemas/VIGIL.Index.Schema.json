@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "VIGIL.Index.Schema.json",
-  "description": "Generated VIGIL type registry and master registry index schema. Type registries are generated from canonical record type/year folders; the master registry is composed from the generated type registries.",
+  "description": "Generated VIGIL type registry and master registry index schema. Index records are lean collapsed-list manifests with canonical record location data; detailed record data remains in individual canonical record JSON files.",
   "oneOf": [
     {
       "$ref": "#/$defs/type_registry"
@@ -15,14 +15,34 @@
       "type": "string",
       "format": "uri"
     },
+    "string_array": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "string_or_string_array": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "$ref": "#/$defs/string_array"
+        }
+      ]
+    },
     "record_entry": {
       "type": "object",
+      "additionalProperties": false,
       "required": [
         "id",
         "record_type",
         "record_state",
         "date_recorded",
+        "title",
         "summary",
+        "evidence_confidence",
+        "source_types",
         "path",
         "github_blob_url",
         "raw_url"
@@ -40,8 +60,8 @@
         "date_recorded": {
           "type": "string"
         },
-        "record_identity": {
-          "type": "object"
+        "date_implemented": {
+          "type": "string"
         },
         "title": {
           "type": "string"
@@ -53,58 +73,119 @@
           "type": "string"
         },
         "source_types": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
+          "$ref": "#/$defs/string_array"
         },
-        "source_summary": {
-          "type": "object"
+        "source_count": {
+          "type": "integer",
+          "minimum": 0
         },
-        "system_summary": {
-          "type": "object"
-        },
-        "jurisdiction_summary": {
-          "type": "object"
-        },
-        "possible_taxonomy_mapping_summary": {
-          "type": "object"
-        },
-        "classification_summary": {
-          "type": "object"
-        },
-        "triage_summary": {
-          "type": "object"
-        },
-        "proposal_summary": {
-          "type": "object"
-        },
-        "external_relevance_summary": {
-          "type": "object"
-        },
-        "implementation_notes_summary": {
-          "type": "object"
-        },
-        "change_summary": {
-          "type": "object"
-        },
-        "verification_summary": {
-          "type": "object"
-        },
-        "impact_summary": {
-          "type": "object"
-        },
-        "cam_summary": {
-          "type": "object"
-        },
-        "next_action": {
+        "primary_source_title": {
           "type": "string"
         },
-        "remaining_work": {
-          "type": "array"
+        "primary_source_type": {
+          "type": "string"
         },
-        "linked_records": {
-          "type": "object"
+        "primary_source_platform": {
+          "type": "string"
+        },
+        "source_platforms": {
+          "$ref": "#/$defs/string_array"
+        },
+        "source_url_status": {
+          "type": "string"
+        },
+        "system_type": {
+          "type": "string"
+        },
+        "platform_or_vendor": {
+          "type": "string"
+        },
+        "vendor_cluster": {
+          "$ref": "#/$defs/string_array"
+        },
+        "primary_evidenced_vendors": {
+          "$ref": "#/$defs/string_array"
+        },
+        "product_or_service": {
+          "type": "string"
+        },
+        "specific_model_or_runtime": {
+          "type": "string"
+        },
+        "model_or_product": {
+          "type": "string"
+        },
+        "interface_surface": {
+          "type": "string"
+        },
+        "deployment_context": {
+          "type": "string"
+        },
+        "primary_jurisdiction": {
+          "type": "string"
+        },
+        "regulatory_surface": {
+          "$ref": "#/$defs/string_array"
+        },
+        "sector": {
+          "type": "string"
+        },
+        "canonical_failure_group": {
+          "type": "string"
+        },
+        "failure_family": {
+          "type": "string"
+        },
+        "failure_subtype": {
+          "type": "string"
+        },
+        "severity": {
+          "type": "string"
+        },
+        "likelihood": {
+          "type": "string"
+        },
+        "triage_priority": {
+          "type": "string"
+        },
+        "triage_status": {
+          "type": "string"
+        },
+        "mitigation_status": {
+          "type": "string"
+        },
+        "escalation_required": {
+          "type": "string"
+        },
+        "proposal_type": {
+          "$ref": "#/$defs/string_or_string_array"
+        },
+        "proposal_status": {
+          "type": "string"
+        },
+        "proposal_scope_summary": {
+          "type": "string"
+        },
+        "patch_type": {
+          "$ref": "#/$defs/string_or_string_array"
+        },
+        "change_type": {
+          "$ref": "#/$defs/string_or_string_array"
+        },
+        "change_family": {
+          "type": "string"
+        },
+        "change_subtype": {
+          "type": "string"
+        },
+        "change_status": {
+          "type": "string"
+        },
+        "implementation_state": {
+          "type": "string"
+        },
+        "verification_status": {
+          "type": "string"
         },
         "path": {
           "type": "string",

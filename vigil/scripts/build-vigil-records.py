@@ -62,14 +62,8 @@ NOTICE = (
     "vigil/records/<type>/<year>/; edit source records only."
 )
 PRESERVE_EMPTY_KEYS = {
-    "record_identity",
     "title",
     "source_types",
-    "source_summary",
-    "system_summary",
-    "jurisdiction_summary",
-    "linked_records",
-    "cam_summary",
     "path",
     "github_blob_url",
     "raw_url",
@@ -473,22 +467,102 @@ def record_title(record: dict[str, Any]) -> str:
     return ""
 
 
+def list_metadata(record: dict[str, Any]) -> dict[str, Any]:
+    """Return the lean collapsed-list metadata used by generated index entries.
+
+    Detailed summaries remain available in the canonical record JSON and in legacy
+    aggregate helpers, but generated indexes intentionally expose only list,
+    search, filter, sort, and canonical-location fields.
+    """
+    sources = canonical_sources(record)
+    primary_source = sources[0] if sources else {}
+    system = record.get("system_context") if isinstance(record.get("system_context"), dict) else {}
+    jurisdiction = (
+        record.get("jurisdictional_context")
+        if isinstance(record.get("jurisdictional_context"), dict)
+        else {}
+    )
+    classification = (
+        record.get("failure_classification")
+        if isinstance(record.get("failure_classification"), dict)
+        else {}
+    )
+    triage = record.get("triage") if isinstance(record.get("triage"), dict) else {}
+    proposal_scope = (
+        record.get("proposal_scope") if isinstance(record.get("proposal_scope"), dict) else {}
+    )
+    change_classification = (
+        record.get("change_classification")
+        if isinstance(record.get("change_classification"), dict)
+        else {}
+    )
+    verification = (
+        record.get("implementation_verification")
+        if isinstance(record.get("implementation_verification"), dict)
+        else {}
+    )
+
+    return {
+        "source_count": len(sources),
+        "primary_source_title": primary_source.get("source_title", ""),
+        "primary_source_type": primary_source.get("source_type", ""),
+        "primary_source_platform": primary_source.get("source_platform", ""),
+        "source_platforms": sorted(
+            {source.get("source_platform") for source in sources if source.get("source_platform")}
+        ),
+        "source_url_status": primary_source.get("source_url_status", ""),
+        "system_type": system.get("system_type", ""),
+        "platform_or_vendor": system.get("platform_or_vendor", ""),
+        "vendor_cluster": system.get("vendor_cluster", []),
+        "primary_evidenced_vendors": system.get("primary_evidenced_vendors", []),
+        "product_or_service": system.get("product_or_service", ""),
+        "specific_model_or_runtime": system.get("specific_model_or_runtime", ""),
+        "model_or_product": system.get("model_or_product", ""),
+        "interface_surface": system.get("interface_surface", ""),
+        "deployment_context": system.get("deployment_context", ""),
+        "primary_jurisdiction": jurisdiction.get("primary_jurisdiction", ""),
+        "regulatory_surface": jurisdiction.get("regulatory_surface", []),
+        "sector": jurisdiction.get("sector", ""),
+        "canonical_failure_group": classification.get("canonical_failure_group")
+        or change_classification.get("canonical_failure_group", ""),
+        "failure_family": classification.get("failure_family", ""),
+        "failure_subtype": classification.get("failure_subtype", ""),
+        "severity": classification.get("severity", ""),
+        "likelihood": classification.get("likelihood", ""),
+        "triage_priority": triage.get("triage_priority", ""),
+        "triage_status": triage.get("triage_status", ""),
+        "mitigation_status": triage.get("mitigation_status", ""),
+        "escalation_required": triage.get("escalation_required", ""),
+        "proposal_type": record.get("proposal_type", []),
+        "proposal_status": record.get("proposal_status", ""),
+        "proposal_scope_summary": proposal_scope.get("scope_summary", ""),
+        "patch_type": change_classification.get("patch_type")
+        or change_classification.get("change_type", ""),
+        "change_type": change_classification.get("change_type", ""),
+        "change_family": change_classification.get("change_family")
+        or change_classification.get("patch_family", ""),
+        "change_subtype": change_classification.get("change_subtype", ""),
+        "change_status": change_classification.get("change_status", ""),
+        "implementation_state": verification.get("implementation_state")
+        or verification.get("status", ""),
+        "verification_status": verification.get("verification_status")
+        or verification.get("status", ""),
+    }
+
+
 def index_record(record: dict[str, Any]) -> dict[str, Any]:
     path = record_path(record)
-    identity = record.get("record_identity", {}) if isinstance(record.get("record_identity"), dict) else {}
     entry = {
         "id": record.get("id", ""),
         "record_type": record.get("record_type", ""),
         "record_state": record.get("record_state", ""),
         "date_recorded": record.get("date_recorded", ""),
         "date_implemented": record.get("date_implemented", ""),
-        "record_identity": identity,
         "title": record_title(record),
         "summary": record.get("summary", ""),
         "evidence_confidence": record.get("evidence_confidence", ""),
         "source_types": source_types(record),
-        **generated_summaries(record),
-        "linked_records": record.get("linked_records", {}) if isinstance(record.get("linked_records"), dict) else {},
+        **list_metadata(record),
         "path": path,
         "github_blob_url": github_blob_url(path) if path else "",
         "raw_url": raw_url(path) if path else "",
@@ -497,40 +571,7 @@ def index_record(record: dict[str, Any]) -> dict[str, Any]:
 
 
 def master_record(index_entry: dict[str, Any]) -> dict[str, Any]:
-    keys = [
-        "id",
-        "record_type",
-        "record_state",
-        "date_recorded",
-        "date_implemented",
-        "title",
-        "summary",
-        "evidence_confidence",
-        "source_types",
-        "source_summary",
-        "system_summary",
-        "jurisdiction_summary",
-        "linked_records",
-        "cam_summary",
-        "classification_summary",
-        "triage_summary",
-        "failure_mode_definition_summary",
-        "failure_threshold_summary",
-        "next_action",
-        "review_observation",
-        "possible_taxonomy_mapping_summary",
-        "proposal_summary",
-        "external_relevance_summary",
-        "implementation_notes_summary",
-        "change_summary",
-        "verification_summary",
-        "impact_summary",
-        "remaining_work",
-        "path",
-        "github_blob_url",
-        "raw_url",
-    ]
-    return {key: index_entry.get(key, "") for key in keys if key in index_entry or key in PRESERVE_EMPTY_KEYS}
+    return index_entry
 
 
 def type_registry(registry_type: str, records: list[dict[str, Any]]) -> dict[str, Any]:
