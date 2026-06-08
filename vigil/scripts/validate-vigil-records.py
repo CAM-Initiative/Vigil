@@ -45,14 +45,17 @@ FALLBACK_ALLOWED_CANONICAL_FAILURE_GROUPS = {
     "economic-legitimacy",
     "provisional",
 }
-CANONICAL_PLATFORM_OR_VENDOR_VALUES = {
+FALLBACK_ALLOWED_PLATFORM_OR_VENDOR_VALUES = {
+    # Fallback only. The primary VIGIL system-context source is
+    # VIGIL.Schema.json / system_context_rules.allowed_platform_or_vendor_values.
     "OpenAI",
     "xAI",
-    "X",
     "Anthropic",
     "Meta",
     "Google",
     "DeepSeek",
+    "Kimi",
+    "Sesame",
     "Cohere",
     "Perplexity",
     "Mistral",
@@ -77,7 +80,9 @@ CANONICAL_PLATFORM_OR_VENDOR_VALUES = {
     "Unknown",
     "Not applicable",
 }
-CANONICAL_PRODUCT_OR_SERVICE_VALUES = {
+FALLBACK_ALLOWED_PRODUCT_OR_SERVICE_VALUES = {
+    # Fallback only. The primary VIGIL system-context source is
+    # VIGIL.Schema.json / system_context_rules.allowed_product_or_service_values.
     "ChatGPT",
     "Claude",
     "Gemini",
@@ -195,23 +200,55 @@ def contains_key(value: Any, key: str) -> bool:
         return any(contains_key(item, key) for item in value)
     return False
 
+
 def add_missing(errors: list[str], path: Path, record: dict[str, Any], fields: set[str]) -> None:
     missing = sorted(field for field in fields if is_blank(record.get(field)))
     if missing:
         errors.append(f"{path}: missing required fields: {', '.join(missing)}")
 
 
-
-
-def load_allowed_canonical_failure_groups(schema_path: Path = SCHEMA_PATH) -> set[str]:
+def load_allowed_canonical_failure_groups(schema_path: Path | None = None) -> set[str]:
     """Load canonical failure groups from the VIGIL schema-derived CAM taxonomy registry."""
     try:
-        schema = load_json(schema_path)
+        schema = load_json(schema_path or SCHEMA_PATH)
         values = schema.get("cam_failure_taxonomy", {}).get("allowed_canonical_failure_group_values", [])
         loaded = {value for value in values if isinstance(value, str) and value}
         return loaded or set(FALLBACK_ALLOWED_CANONICAL_FAILURE_GROUPS)
     except Exception:  # noqa: BLE001 - validator must retain a labelled offline fallback
         return set(FALLBACK_ALLOWED_CANONICAL_FAILURE_GROUPS)
+
+
+def load_allowed_system_context_values(
+    field_name: str,
+    fallback_values: set[str],
+    schema_path: Path | None = None,
+) -> set[str]:
+    """Load an allowed system_context value list from the VIGIL schema-rules contract."""
+    try:
+        schema = load_json(schema_path or SCHEMA_PATH)
+        values = schema.get("system_context_rules", {}).get(field_name, [])
+        loaded = {value for value in values if isinstance(value, str) and value}
+        return loaded or set(fallback_values)
+    except Exception:  # noqa: BLE001 - validator must retain a labelled offline fallback
+        return set(fallback_values)
+
+
+def load_allowed_platform_or_vendor_values(schema_path: Path | None = None) -> set[str]:
+    """Load canonical platform/vendor values from VIGIL.Schema.json."""
+    return load_allowed_system_context_values(
+        "allowed_platform_or_vendor_values",
+        FALLBACK_ALLOWED_PLATFORM_OR_VENDOR_VALUES,
+        schema_path,
+    )
+
+
+def load_allowed_product_or_service_values(schema_path: Path | None = None) -> set[str]:
+    """Load canonical product/service values from VIGIL.Schema.json."""
+    return load_allowed_system_context_values(
+        "allowed_product_or_service_values",
+        FALLBACK_ALLOWED_PRODUCT_OR_SERVICE_VALUES,
+        schema_path,
+    )
 
 
 def source_urls(record: dict[str, Any]) -> set[str]:
@@ -264,6 +301,8 @@ def validate_record(
     errors: list[str],
     warnings: list[str],
     allowed_canonical_failure_groups: set[str],
+    allowed_platform_or_vendor_values: set[str],
+    allowed_product_or_service_values: set[str],
 ) -> None:
     record_id = record.get("id")
     record_type = record.get("record_type")
@@ -361,8 +400,12 @@ def validate_record(
         if "specific_model" in system_context:
             errors.append(f"{path}: system_context.specific_model is deprecated; use specific_model_or_runtime")
         platform_or_vendor = system_context.get("platform_or_vendor")
-        if isinstance(platform_or_vendor, str) and platform_or_vendor and platform_or_vendor not in CANONICAL_PLATFORM_OR_VENDOR_VALUES:
-            allowed = ", ".join(sorted(CANONICAL_PLATFORM_OR_VENDOR_VALUES))
+        if (
+            isinstance(platform_or_vendor, str)
+            and platform_or_vendor
+            and platform_or_vendor not in allowed_platform_or_vendor_values
+        ):
+            allowed = ", ".join(sorted(allowed_platform_or_vendor_values))
             errors.append(
                 f"{path}: system_context.platform_or_vendor {platform_or_vendor!r} is not canonical; "
                 f"allowed values: {allowed}"
@@ -396,8 +439,12 @@ def validate_record(
                         f"{path}: system_context.comparative_vendor_notes must be an object with string values"
                     )
         product_or_service = system_context.get("product_or_service")
-        if isinstance(product_or_service, str) and product_or_service and product_or_service not in CANONICAL_PRODUCT_OR_SERVICE_VALUES:
-            allowed = ", ".join(sorted(CANONICAL_PRODUCT_OR_SERVICE_VALUES))
+        if (
+            isinstance(product_or_service, str)
+            and product_or_service
+            and product_or_service not in allowed_product_or_service_values
+        ):
+            allowed = ", ".join(sorted(allowed_product_or_service_values))
             errors.append(
                 f"{path}: system_context.product_or_service {product_or_service!r} is not canonical; "
                 f"allowed values: {allowed}"
@@ -509,7 +556,7 @@ def validate_record(
             errors.append(f"{path}: PATCH lacks implemented-change evidence")
 
 
-def validate(root: Path | None = None) -> int:
+def validate(root: Path | None = None, schema_path: Path | None = None) -> int:
     errors: list[str] = []
     warnings: list[str] = []
 
@@ -518,7 +565,9 @@ def validate(root: Path | None = None) -> int:
             if deprecated_path.exists():
                 errors.append(f"{deprecated_path}: deprecated generated file must not exist")
 
-    allowed_canonical_failure_groups = load_allowed_canonical_failure_groups()
+    allowed_canonical_failure_groups = load_allowed_canonical_failure_groups(schema_path)
+    allowed_platform_or_vendor_values = load_allowed_platform_or_vendor_values(schema_path)
+    allowed_product_or_service_values = load_allowed_product_or_service_values(schema_path)
 
     files = record_files(root)
     records_by_path: dict[Path, dict[str, Any]] = {}
@@ -544,7 +593,16 @@ def validate(root: Path | None = None) -> int:
             ids.add(record["id"])
 
     for path, record in records_by_path.items():
-        validate_record(path, record, ids, errors, warnings, allowed_canonical_failure_groups)
+        validate_record(
+            path,
+            record,
+            ids,
+            errors,
+            warnings,
+            allowed_canonical_failure_groups,
+            allowed_platform_or_vendor_values,
+            allowed_product_or_service_values,
+        )
 
     for warning in warnings:
         print(f"WARNING: {warning}", file=sys.stderr)
