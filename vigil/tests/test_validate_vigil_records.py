@@ -27,7 +27,7 @@ class ValidateVigilRecordsTest(unittest.TestCase):
         fixture = ROOT / "vigil" / "tests" / "fixtures" / "invalid" / "invalid-obs-source-data.json"
         self.assertNotEqual(validator.validate(fixture), 0)
 
-    def validate_mutated_fixture(self, fixture_name, mutate):
+    def validate_mutated_fixture(self, fixture_name, mutate, schema_path=None):
         fixture = ROOT / "vigil" / "tests" / "fixtures" / "valid" / fixture_name
         with fixture.open(encoding="utf-8") as handle:
             record = json.load(handle)
@@ -35,7 +35,7 @@ class ValidateVigilRecordsTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp_dir:
             path = Path(temp_dir) / f"{record['id']}.json"
             path.write_text(json.dumps(record), encoding="utf-8")
-            return validator.validate(path)
+            return validator.validate(path, schema_path=schema_path)
 
     def test_canonical_path_validation_by_record_type_and_year(self):
         with tempfile.TemporaryDirectory() as temp_dir:
@@ -150,6 +150,73 @@ class ValidateVigilRecordsTest(unittest.TestCase):
 
         self.assertNotEqual(self.validate_mutated_fixture("VIGIL-2026-OBS-0001.json", mutate), 0)
 
+
+    def test_system_context_allowed_values_are_loaded_from_schema(self):
+        schema_path = ROOT / "vigil" / "VIGIL.Schema.json"
+        with schema_path.open(encoding="utf-8") as handle:
+            schema = json.load(handle)
+        schema["system_context_rules"]["allowed_platform_or_vendor_values"].append("SchemaOnlyVendor")
+        schema["system_context_rules"]["allowed_product_or_service_values"].append("SchemaOnlyProduct")
+
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_schema = Path(temp_dir) / "VIGIL.Schema.json"
+            temp_schema.write_text(json.dumps(schema), encoding="utf-8")
+
+            def mutate(record):
+                record["system_context"]["platform_or_vendor"] = "SchemaOnlyVendor"
+                record["system_context"]["product_or_service"] = "SchemaOnlyProduct"
+
+            self.assertEqual(
+                self.validate_mutated_fixture("VIGIL-2026-OBS-0001.json", mutate, schema_path=temp_schema),
+                0,
+            )
+
+    def test_system_context_allowed_lists_match_schema_contract(self):
+        schema_path = ROOT / "vigil" / "VIGIL.Schema.json"
+        base_schema_path = ROOT / "vigil" / "schemas" / "VIGIL.Base.Schema.json"
+        with schema_path.open(encoding="utf-8") as handle:
+            schema = json.load(handle)
+        with base_schema_path.open(encoding="utf-8") as handle:
+            base_schema = json.load(handle)
+
+        schema_platforms = schema["system_context_rules"]["allowed_platform_or_vendor_values"]
+        schema_products = schema["system_context_rules"]["allowed_product_or_service_values"]
+        base_system_context = base_schema["properties"]["system_context"]["properties"]
+
+        self.assertEqual(validator.load_allowed_platform_or_vendor_values(), set(schema_platforms))
+        self.assertEqual(validator.load_allowed_product_or_service_values(), set(schema_products))
+        self.assertEqual(base_system_context["platform_or_vendor"]["enum"], schema_platforms)
+        self.assertEqual(base_system_context["product_or_service"]["enum"], schema_products)
+
+    def test_xai_is_accepted_as_canonical_platform_or_vendor(self):
+        def mutate(record):
+            record["system_context"]["platform_or_vendor"] = "xAI"
+            record["system_context"]["product_or_service"] = "Grok"
+
+        self.assertEqual(self.validate_mutated_fixture("VIGIL-2026-OBS-0001.json", mutate), 0)
+
+    def test_x_is_rejected_as_platform_or_vendor(self):
+        def mutate(record):
+            record["system_context"]["platform_or_vendor"] = "X"
+            record["system_context"]["product_or_service"] = "X"
+
+        self.assertNotEqual(self.validate_mutated_fixture("VIGIL-2026-OBS-0001.json", mutate), 0)
+
+    def test_x_and_grok_are_accepted_as_products(self):
+        for product_or_service in ("X", "Grok"):
+            with self.subTest(product_or_service=product_or_service):
+                def mutate(record, product_or_service=product_or_service):
+                    record["system_context"]["platform_or_vendor"] = "xAI"
+                    record["system_context"]["product_or_service"] = product_or_service
+
+                self.assertEqual(self.validate_mutated_fixture("VIGIL-2026-OBS-0001.json", mutate), 0)
+
+    def test_xai_is_rejected_as_product_or_service(self):
+        def mutate(record):
+            record["system_context"]["platform_or_vendor"] = "xAI"
+            record["system_context"]["product_or_service"] = "xAI"
+
+        self.assertNotEqual(self.validate_mutated_fixture("VIGIL-2026-OBS-0001.json", mutate), 0)
 
     def test_system_context_rejects_noncanonical_platform_or_vendor(self):
         def mutate(record):
