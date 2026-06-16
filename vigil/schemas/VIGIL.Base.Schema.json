@@ -24,7 +24,31 @@
   },
   "properties": {
     "source_records": {
-      "type": "array"
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source_url_status": {
+            "type": "string",
+            "enum": [
+              "available",
+              "available / canonical main-branch confirmed",
+              "available / canonical main-branch confirmation pending exact line review",
+              "VIGIL local / pending public record URL if applicable",
+              "available / pending archive and evidence verification",
+              "inaccessible",
+              "not applicable",
+              "missing_url_requires_research",
+              "not applicable — repository/internal observation",
+              "not available",
+              "local / pending canonical repository confirmation",
+              "available to authenticated account holder",
+              "not applicable — direct incident testimony"
+            ]
+          }
+        },
+        "additionalProperties": true
+      }
     },
     "source_data": false,
     "system_context": {
@@ -217,8 +241,46 @@
       "properties": {
         "standards": {
           "type": "array"
+        },
+        "related_observations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "related_failure_modes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "related_proposals": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "related_patch_notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       }
+    },
+    "record_state": {
+      "type": "string",
+      "enum": [
+        "active",
+        "watching",
+        "triage-required",
+        "draft",
+        "deferred",
+        "implemented",
+        "migration-review",
+        "scaffolding",
+        "open"
+      ]
     }
   }
 }
