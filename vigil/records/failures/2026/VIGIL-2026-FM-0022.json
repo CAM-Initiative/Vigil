@@ -1,356 +1,366 @@
 {
-"id": "VIGIL-2026-FM-0022",
-"record_type": "failure_mode",
-"record_state": "active",
-"date_recorded": "2026-06-14",
-"record_identity": {
-"record_id": "VIGIL-2026-FM-0022",
-"record_type": "failure_mode",
-"title": "Instruction-bearing external content treated as trusted execution authority",
-"created": "2026-06-14",
-"updated": "2026-06-14",
-"version": "1.1"
-},
-"summary": "A security-integrity failure mode in which an AI agent, coding assistant, RAG system, tool-mediated workflow, connector-enabled assistant, multimodal system, security scanner, or repository-linked workflow processes untrusted, retrieved, ambient, generated, lower-authority, or ambiguous content as though it carried trusted instruction authority, governance authority, tool authority, or execution permission. The content may appear in markdown files, repository documents, README files, issue comments, webpages, PDFs, emails, resumes, tickets, logs, memory artefacts, connector content, retrieved documents, images, transcripts, metadata, OCR layers, tool descriptions, model outputs, or generated summaries. The failure occurs where the system fails to preserve separation between content visibility, source provenance, instruction authority, user intent, canonical project authority, and execution permission.",
-"why_it_matters_to_CAM": "CAM already contains substantial doctrine for this class of failure. SECURITY-001 explicitly recognises cross-modal prompt injection and ambient instruction capture, including text, speech, audio, image, video, transcript, subtitle, screen content, environmental signal, embedded metadata, retrieved documents, webpages, comments, and multimodal artefacts. SECURITY-001 also states that systems shall not treat non-authoritative content as user intent, governance authority, tool authority, or execution command merely because it appears in context. SECURITY-002 provides Boundary Integrity, source/provenance categories, internal-state exposure resilience, and the inference-execution gap principle. Annex K treats tool, connector, repository, credential-bearing, automation, deployment, renderer, validator, and external execution-surface availability as a security boundary signal rather than execution authority. SCH-02 provides proportional tool invocation and execution-boundary sequencing. OPERATIONS-003 already contains a closely matching failure taxonomy entry for Cross-Modal Prompt Injection and Ambient Instruction Capture Failure. The remaining CAM gap is therefore narrower: not absence of prompt-injection doctrine, but absence of a named reusable Source-Authority Separation primitive and consistent code/routing pathway across SECURITY, Annex K, SCH-02, and OPERATIONS taxonomy.",
-"evidence_confidence": "corroborated",
-"source_records": [
-{
-"source_title": "LLM01:2025 Prompt Injection",
-"author_or_publisher": "OWASP Gen AI Security Project",
-"source_date": "2025",
-"source_url": "https://genai.owasp.org/llmrisk/llm01-prompt-injection/",
-"archive_url": "",
-"retrieved_date": "2026-06-14",
-"source_type": "security-standard / taxonomy",
-"source_platform": "OWASP",
-"system_or_product": "LLM applications / GenAI applications",
-"model_or_algorithm": "large language models and agentic applications",
-"deployment_context": "Security taxonomy for LLM and generative AI applications.",
-"source_context": "OWASP classifies prompt injection as LLM01:2025 and describes direct and indirect prompt injections, including external content from websites or files that alters model behaviour. It identifies possible impacts including sensitive information disclosure, system prompt leakage, content manipulation, unauthorised function access, arbitrary command execution in connected systems, and manipulation of critical decision-making processes. It recommends mitigation measures including least privilege, human approval for high-risk actions, and segregation and identification of external content.",
-"source_url_status": "available",
-"relevance_note": "Primary external security-taxonomy support for prompt injection as a recognised LLM application vulnerability, including indirect and multimodal pathways."
-},
-{
-"source_title": "Are AI-assisted Development Tools Immune to Prompt Injection?",
-"author_or_publisher": "Charoes Huang, Xin Huang, and Amin Milani Fard",
-"source_date": "2026-03-23",
-"source_url": "https://arxiv.org/abs/2603.21642",
-"archive_url": "",
-"retrieved_date": "2026-06-14",
-"source_type": "research-source",
-"source_platform": "arXiv",
-"system_or_product": "AI-assisted development tools / MCP clients",
-"model_or_algorithm": "Claude Desktop, Claude Code, Cursor, Cline, Continue, Gemini CLI, Langflow, and related MCP clients",
-"deployment_context": "Empirical analysis of prompt injection and tool-poisoning vulnerability across AI-assisted development tools and Model Context Protocol clients.",
-"source_context": "The study describes prompt injection as capable of subverting guardrails, disclosing sensitive data, and triggering unauthorized tool use. It evaluates tool-poisoning vulnerabilities across multiple MCP clients and reports disparities in security coverage including static validation, parameter visibility, injection detection, user warnings, execution sandboxing, and audit logging.",
-"source_url_status": "available",
-"relevance_note": "Supports classification of prompt injection and tool poisoning as practical agentic coding and MCP security risks."
-},
-{
-"source_title": "VIGIL-2026-FM-0019 — Adversarial refusal-trigger poisoning of defensive artefact analysis",
-"author_or_publisher": "VIGIL",
-"source_date": "2026-06-12",
-"source_url": "https://github.com/CAM-Initiative/Vigil/blob/main/vigil/records/failures/2026/VIGIL-2026-FM-0019.json",
-"archive_url": "",
-"retrieved_date": "2026-06-14",
-"source_type": "linked-internal-record",
-"source_platform": "VIGIL",
-"system_or_product": "LLM-assisted defensive artefact analysis",
-"model_or_algorithm": "unspecified LLM-assisted security scanner or analysis workflow",
-"deployment_context": "Existing VIGIL failure record concerning adversarial refusal-trigger poisoning of defensive analysis.",
-"source_context": "FM-0019 records an adjacent failure in which hostile artefact content triggers refusal, safety, or restricted-domain controls, disrupting defensive analysis. FM-0022 is broader: it covers external content being treated as trusted instruction or execution authority, including tool calls, file edits, source-authority conflict, and downstream decisions.",
-"source_url_status": "available",
-"relevance_note": "Internal related record showing partial VIGIL coverage and distinguishing refusal-trigger poisoning from broader source-authority collapse."
-},
-{
-"source_title": "CAM-EQ2026-SECURITY-001-PLATINUM — Security, Integrity & Adversarial Resilience Charter",
-"author_or_publisher": "CAM Initiative",
-"source_date": "2026-06-14",
-"source_url": "https://github.com/CAM-Initiative/Caelestis/blob/main/Governance/Charters/CAM-EQ2026-SECURITY-001-PLATINUM.md",
-"archive_url": "",
-"retrieved_date": "2026-06-14",
-"source_type": "repository-source",
-"source_platform": "Caelestis",
-"system_or_product": "Caelestis Architecture Model",
-"model_or_algorithm": "CAM-EQ2026-SECURITY-001-PLATINUM",
-"deployment_context": "SECURITY domain charter defining security, integrity, adversarial resilience, prompt injection, context poisoning, and authority-confusion conditions.",
-"source_context": "SECURITY-001 already defines Cross-Modal Prompt Injection and Ambient Instruction Capture and prohibits treating non-authoritative content as user intent, governance authority, tool authority, or execution command merely because it appears in active context, microphone range, screen state, browser surface, retrieved material, or multimodal input stream.",
-"source_url_status": "available",
-"relevance_note": "Primary CAM evidence that prompt-injection doctrine already exists and that the remaining gap is a named reusable source-authority primitive rather than absence of coverage."
-},
-{
-"source_title": "CAM-EQ2026-OPERATIONS-003-SUP-01 — Runtime & Governance Failure Taxonomy",
-"author_or_publisher": "CAM Initiative",
-"source_date": "2026-06-14",
-"source_url": "https://github.com/CAM-Initiative/Caelestis/blob/main/Governance/Charters/CAM-EQ2026-OPERATIONS-003-SUP-01.md",
-"archive_url": "",
-"retrieved_date": "2026-06-14",
-"source_type": "repository-source",
-"source_platform": "Caelestis",
-"system_or_product": "Caelestis Architecture Model",
-"model_or_algorithm": "CAM-EQ2026-OPERATIONS-003-SUP-01",
-"deployment_context": "CAM operational taxonomy defining runtime and governance failure families.",
-"source_context": "OPERATIONS-003 already contains Cross-Modal Prompt Injection and Ambient Instruction Capture Failure, including tool-using agents following instructions from retrieved documents, webpages, comments, metadata, or transcripts, and multimodal models treating image text, subtitles, captions, or screen content as higher-authority instruction.",
-"source_url_status": "available",
-"relevance_note": "Primary CAM evidence that the failure taxonomy already recognises the structural failure class."
-}
-],
-"system_context": {
-"system_type": "AI agent / coding assistant / RAG system / connector-enabled assistant / tool-mediated workflow / multimodal AI / MCP client / AI-assisted security system",
-"platform_or_vendor": "Multi Vendor",
-"vendor_cluster": [
-"OpenAI",
-"Anthropic",
-"Google",
-"Microsoft",
-"Cursor",
-"Other"
-],
-"primary_evidenced_vendors": [
-"Anthropic",
-"Google",
-"Microsoft",
-"Cursor",
-"Other"
-],
-"product_or_service": "Other",
-"specific_model_or_runtime": "Not limited to a single model or runtime",
-"interface_surface": "chat, browser, file upload, repository workspace, IDE, MCP client, RAG pipeline, web search, email assistant, document summariser, security scanner, ticketing workflow, CI/CD agent, multimodal input, and connector-enabled assistant",
-"model_or_product": "LLM-integrated agentic and retrieval systems",
-"interaction_mode": "external content ingestion, tool use, file editing, repository implementation, code analysis, document summarisation, web-assisted reasoning, security analysis, workflow automation, and downstream decision support",
-"embodiment_status": "non-embodied",
-"deployment_context": "Consumer, developer, enterprise, cybersecurity, governance, research, legal, education, platform-integrity, and operational workflows where AI systems process untrusted external content and may take or recommend actions.",
-"user_role": "end user, developer, maintainer, security analyst, auditor, researcher, enterprise operator, platform-integrity investigator, administrator, or agent supervisor",
-"affected_population": "Users and organisations relying on AI agents to read, summarise, implement, inspect, decide, route, edit, call tools, or execute workflows based on external content."
-},
-"jurisdictional_context": {
-"primary_jurisdiction": "global",
-"secondary_jurisdictions": [
-"Australia",
-"United States",
-"European Union",
-"United Kingdom",
-"platform agnostic"
-],
-"regulatory_surface": [
-"AI security",
-"cybersecurity governance",
-"agentic AI governance",
-"software supply chain security",
-"data protection",
-"critical infrastructure protection",
-"enterprise AI governance",
-"model risk management",
-"consumer protection",
-"digital service accountability",
-"records integrity",
-"platform accountability"
-],
-"sector": "AI agents / software development / cybersecurity / enterprise workflow automation / RAG systems / model-integrated applications",
-"cross_border_relevance": "yes",
-"public_interest_relevance": "yes",
-"jurisdictional_assessment": "This record does not assert that all prompt injection can be fully eliminated. It documents a governance and security failure where untrusted external content may acquire instruction authority, execution influence, or source-authoritative status without adequate boundary separation, provenance marking, least-privilege design, validation, sandboxing, audit, or human review for high-risk actions."
-},
-"linked_records": {
-"related_observations": [
-"VIGIL-2026-OBS-0006"
-],
-"related_failure_modes": [
-"VIGIL-2026-FM-0001",
-"VIGIL-2026-FM-0017",
-"VIGIL-2026-FM-0019"
-],
-"related_proposals": [],
-"related_patch_notes": [
-"VIGIL-2026-PATCH-0002"
-],
-"external_references": [],
-"research": [],
-"standards": [
-"OWASP LLM01:2025 Prompt Injection"
-]
-},
-"failure_mode_definition": "A failure mode in which an AI system fails to preserve an enforceable boundary between external content and authorised instruction. The system ingests untrusted, retrieved, ambient, generated, lower-authority, hostile, or ambiguous content and treats it as capable of steering behaviour, overriding system or developer instructions, displacing user intent, altering canonical project rules, calling tools, editing files, modifying repositories, changing safety posture, disclosing data, executing commands, or influencing downstream decisions. The failure may occur through direct prompt injection, indirect prompt injection, hidden or invisible prompt content, markdown or documentation instructions, RAG retrieval, web content, file uploads, connector content, memory contamination, MCP tool poisoning, multimodal injection, cross-agent propagation, or stale internal documentation.",
-"failure_threshold": "The threshold is met where external, lower-authority, retrieved, generated, ambient, hostile, or ambiguous content materially changes model behaviour, execution planning, tool invocation, file mutation, repository implementation, source selection, data disclosure, safety classification, refusal routing, output content, or downstream decision-making in a way that the user, system owner, or canonical governance source did not authorise. The threshold is also met where a system cannot identify that an external instruction conflicts with source-authoritative project documentation or where it silently obeys an instruction contained in untrusted content during a tool-mediated or agentic workflow.",
-"failure_classification": {
-"failure_family": "security-integrity",
-"failure_subtype": "instruction-bearing-external-content-trusted-as-execution-authority",
-"harm_vectors": [
-"prompt injection",
-"indirect prompt injection",
-"cross-modal prompt injection",
-"ambient instruction capture",
-"source-authority collapse",
-"instruction-data conflation",
-"untrusted content execution",
-"tool poisoning",
-"unauthorised tool invocation",
-"sensitive data disclosure",
-"arbitrary command execution",
-"repository mutation",
-"governance hierarchy bypass",
-"safety-routing manipulation",
-"canonical-source displacement",
-"execution-boundary bypass"
-],
-"severity": "high",
-"likelihood": "high across agentic, RAG, connector, multimodal, repository-linked, and tool-mediated systems that process untrusted external content",
-"confidence": "corroborated",
-"affected_rights_or_interests": [
-"cybersecurity and infrastructure protection",
-"data privacy",
-"organisational security",
-"software supply-chain integrity",
-"repository integrity",
-"user agency",
-"professional continuity",
-"auditability",
-"governance authority",
-"source integrity"
-],
-"failure_scope": "multi-vendor / cross-surface / systemic security pattern",
-"recurrence_pattern": "Prompt injection is recognised as a leading LLM application security risk and appears across direct, indirect, multimodal, RAG, MCP, tool-use, repository, ambient, and agentic workflow contexts.",
-"canonical_failure_group": "security-integrity",
-"taxonomy_reference": "CAM-EQ2026-OPERATIONS-003-SUP-01 Appendix B — FF.SECURITY_INTEGRITY; existing CAM mapping: Cross-Modal Prompt Injection and Ambient Instruction Capture Failure; external standard mapping: OWASP LLM01:2025 Prompt Injection; related mappings include excessive agency, supply chain, vector/embedding weakness, and sensitive information disclosure where applicable.",
-"related_failure_groups": [
-"execution",
-"arbitration",
-"classification",
-"state-context",
-"infrastructure-continuity",
-"epistemic",
-"governance",
-"ux-representation"
-],
-"persistence": "persistent wherever systems ingest external content into the same context used for instruction following, authority assessment, retrieval, or tool-mediated action",
-"reproducibility": "widely reproducible in direct, indirect, RAG, file, webpage, repository, MCP, multimodal, and ambient settings; severity varies by tool privileges and guardrail design",
-"visibility": "user-facing unexpected behaviour, tool-call logs, file diffs, altered outputs, silent instruction following, data leakage, safety misrouting, execution traces, source-authority conflicts, and audit records where present"
-},
-"triage": {
-"triage_priority": "P0",
-"triage_owner": "VIGIL maintainers",
-"triage_status": "patch-needed / CAM primitive formalisation",
-"mitigation_status": "substantially covered by adjacent SECURITY, Annex K, SCH-02, and OPERATIONS taxonomy controls, but patch-needed to define a named Source-Authority Separation primitive and reusable source-authority classification pathway.",
-"escalation_required": "yes",
-"recommended_next_step": "Implement a narrow CAM patch defining Source-Authority Separation and Instruction/Data Boundary controls. Cross-reference the primitive from SECURITY-001, SECURITY-002, Annex K, SCH-02, and OPERATIONS-003. Preserve the existing prompt-injection doctrine while making the authority boundary reusable across governed repositories, RAG systems, tool-mediated workflows, multimodal inputs, and agentic execution."
-},
-"distinguishing_observations": [
-"This record is broader than VIGIL-2026-FM-0019. FM-0019 covers adversarial refusal-trigger poisoning of defensive artefact analysis; FM-0022 covers external content acquiring instruction or execution authority across agentic systems.",
-"This record does not claim CAM lacks prompt-injection coverage. CAM already contains substantial prompt-injection, boundary-integrity, tool-authority, and execution-boundary doctrine.",
-"The missing piece is primarily a named reusable Source-Authority Separation primitive or code family that can be referenced consistently across SECURITY, Annex K, SCH-02, and OPERATIONS records.",
-"This record does not require all external content to be ignored. It requires source authority, provenance, and execution permission to be preserved separately.",
-"This record does not require human confirmation for every routine step. It requires proportional review where untrusted content attempts to steer tools, mutate files, override canonical instructions, access sensitive data, or affect high-risk decisions.",
-"Prompt injection and jailbreaking may overlap, but the failure here is authority collapse: the system treats text, images, files, audio, retrieved material, or generated summaries as if they had governance authority.",
-"A source-authority conflict can occur even without malicious intent, such as when stale documentation, generated files, imported notes, lower-authority repo documents, or ambiguous workspace instructions contradict canonical governance instruments."
-],
-"existing_cam_coverage": [
-{
-"instrument": "CAM-EQ2026-SECURITY-001-PLATINUM — Security, Integrity & Adversarial Resilience Charter",
-"coverage_type": "direct prompt-injection and ambient instruction capture coverage",
-"relevance": "SECURITY-001 already defines Cross-Modal Prompt Injection and Ambient Instruction Capture, requires systems to distinguish user-authorised instruction, observed content, retrieved content, ambient speech, media playback, third-party speech, embedded or hidden instruction, OCR/transcribed content, and execution-authorising command, and prohibits treating non-authoritative content as user intent, governance authority, tool authority, or execution command merely because it appears in context.",
-"internal_failure": "Coverage is direct but would benefit from a named Source-Authority Separation primitive for consistent cross-instrument reference."
-},
-{
-"instrument": "CAM-EQ2026-SECURITY-002-PLATINUM — Appendix A: Boundary Integrity Specification",
-"coverage_type": "strong boundary integrity, provenance, source category, internal-state exposure, and inference-execution gap coverage",
-"relevance": "SECURITY-002 distinguishes data, identity, context, capability, provenance, transformation, and internal-state exposure boundaries. It also states that decision inference does not confer execution permission and requires source/provenance awareness sufficient for boundary evaluation.",
-"internal_failure": "The appendix supports the repair but should add a named Source-Authority Separation Boundary to make the authority distinction reusable and codeable."
-},
-{
-"instrument": "CAM-BS2026-AEON-012-PLATINUM — Annex K: Security Boundary Conditions & Runtime Interface",
-"coverage_type": "strong runtime security-boundary and tool-invocation coverage",
-"relevance": "Annex K states that tool, connector, repository, credential-bearing, automation, deployment, renderer, validator, or external execution-surface availability is a security-relevant boundary signal, not execution authority, and requires reviewable separation between inspection, preparation, staging, and execution.",
-"internal_failure": "Annex K should add an explicit runtime clause for instruction-bearing external content and its relationship to execution-boundary evaluation."
-},
-{
-"instrument": "CAM-BS2025-AEON-003-SCH-02 — Runtime Governance Execution Model",
-"coverage_type": "proportional tool invocation and execution-boundary sequencing coverage",
-"relevance": "SCH-02 already distinguishes weak triggers from execution authority and supports preventing inference from becoming mutation, publication, deployment, memory, credential, spending, or high-impact execution authority.",
-"internal_failure": "SCH-02 should add a compact External Instruction Influence Check for plans or tool actions materially influenced by external or lower-authority content."
-},
-{
-"instrument": "CAM-EQ2026-OPERATIONS-003-SUP-01 — Appendix B: Runtime & Governance Failure Taxonomy",
-"coverage_type": "direct failure taxonomy coverage",
-"relevance": "OPERATIONS-003 already defines Cross-Modal Prompt Injection and Ambient Instruction Capture Failure, including tool-using agents following instructions from retrieved documents, web pages, comments, metadata, or transcripts, and multimodal models treating image text, subtitles, captions, or screen content as higher-authority instruction.",
-"internal_failure": "The taxonomy should add a cross-reference to source-authority collapse and specify additional record fields for source-authority class, content pathway, visibility, trust state, affected execution boundary, attempted/completed action, and displaced authority."
-}
-],
-"governance_gap": "The current corpus already prohibits treating non-authoritative retrieved, embedded, ambient, or multimodal content as user intent, governance authority, tool authority, or execution command. The remaining gap is not absence of prompt-injection coverage, but absence of a named Source-Authority Separation boundary/code family that can be referenced consistently across SECURITY, Annex K, SCH-02, and OPERATIONS records.",
-"repair_hypothesis": "The failure can be reduced by adding an explicit Source-Authority Separation primitive requiring systems to classify each context element by source authority, content trust, provenance confidence, execution relevance, and permitted influence. External, retrieved, generated, lower-authority, hostile, or ambiguous content may inform analysis, summarisation, comparison, evidence review, or risk classification, but must not independently create instruction authority, tool-use authority, canonical project authority, or execution permission.",
-"recommended_repair_path": [
-{
-"repair_action": "Add Source-Authority Separation Boundary to SECURITY-002.",
-"expected_control": "Presence in context is not treated as authority; source authority is classified separately from content meaning.",
-"implementation_note": "Insert after the Inference-Execution Gap Principle and define authority classes including system/constitutional instruction, developer/platform instruction, current user instruction, source-authoritative project material, trusted internal documentation, lower-authority repository or workspace material, retrieved external content, untrusted third-party content, hostile artefact content, generated output, memory-derived context, tool output, evidence, and execution-authorising command."
-},
-{
-"repair_action": "Add Source-Authority Collapse cross-reference to SECURITY-001.",
-"expected_control": "The threat taxonomy routes authority-collapse conditions through the new SECURITY-002 boundary.",
-"implementation_note": "Insert after Cross-Modal Prompt Injection and Ambient Instruction Capture."
-},
-{
-"repair_action": "Add Instruction-Bearing External Content Boundary to Annex K.",
-"expected_control": "Runtime systems treat instruction-bearing external content as a security boundary signal, not execution authority.",
-"implementation_note": "Clarify separation between reading, summarising, evidence review, project-authority recognition, plan incorporation, and execution."
-},
-{
-"repair_action": "Add External Instruction Influence Check to SCH-02.",
-"expected_control": "Plans or actions materially influenced by external or lower-authority content undergo execution-boundary evaluation before high-impact action.",
-"implementation_note": "Allow non-executing continuation such as analysis, quotation, summary, warning, proposed patch, or clarification."
-},
-{
-"repair_action": "Update OPERATIONS-003 taxonomy cross-reference.",
-"expected_control": "Records can classify source-authority collapse as part of cross-modal prompt injection and preserve affected authority, content pathway, visibility, trust state, and displaced authority.",
-"implementation_note": "No new OPERATIONS instrument required; a paragraph within §3.5.4 is sufficient."
-}
-],
-"cam_internal": {
-"affected_instruments": [
-"CAM-EQ2026-SECURITY-001-PLATINUM — Security, Integrity & Adversarial Resilience Charter",
-"CAM-EQ2026-SECURITY-002-PLATINUM — Appendix A: Boundary Integrity Specification",
-"CAM-BS2026-AEON-012-PLATINUM — Annex K: Security Boundary Conditions & Runtime Interface",
-"CAM-BS2025-AEON-003-SCH-02 — Runtime Governance Execution Model",
-"CAM-BS2025-AEON-003-SCH-04 — Arbitration Layer & Resolution Model",
-"CAM-EQ2026-OPERATIONS-003-SUP-01 — Appendix B: Runtime & Governance Failure Taxonomy"
-],
-"affected_annexes": [
-"Annex K",
-"Annex B",
-"Annex D",
-"Appendix A",
-"Appendix B"
-],
-"affected_domains": [
-"SECURITY",
-"OPERATIONS",
-"AEON",
-"CONTINUITY",
-"IDENTITY"
-],
-"governance_layer": "security boundary integrity / source authority / instruction-data separation / agentic execution / tool invocation / repository governance / provenance-aware arbitration",
-"proposal_needed": "no — patch pathway is clear and narrow",
-"linked_proposal_ids": [],
-"routing_note": "Primary CAM mapping: security-integrity. Existing CAM coverage is substantial and directly includes prompt injection, ambient instruction capture, boundary integrity, provenance, tool-authority separation, and execution-boundary evaluation. FM-0022 should therefore route to a narrow patch formalising a named Source-Authority Separation primitive rather than to a broad new instrument.",
-"validator_or_automation_impact": "possible",
-"cam_relevance": "direct",
-"cam_failure_type": "missing named reusable source-authority primitive and cross-instrument routing pathway",
-"cam_compliance_status": "substantially covered but patch-needed",
-"cam_expected_control": "External content should be treated as data/evidence unless source-authoritative status is verified; instruction authority should be assigned by source hierarchy and explicit authorisation rather than by presence in context.",
-"cam_observed_gap": "The corpus already contains direct prompt-injection doctrine and failure taxonomy coverage. The remaining gap is formalising Source-Authority Separation as a named reusable boundary/code family across SECURITY-002, SECURITY-001, Annex K, SCH-02, and OPERATIONS-003.",
-"cam_controls_implicated": [
-"Cross-Modal Prompt Injection and Ambient Instruction Capture",
-"Boundary Integrity",
-"Visibility-Structure Distinction",
-"Directional Influence Traceability",
-"Internal State Exposure Boundary",
-"Assumed Exposure Principle",
-"Inference-Execution Gap Principle",
-"SEC.TG",
-"Execution-Boundary Evaluation",
-"Tool Invocation and Security Boundary Signal Doctrine",
-"Cross-Modal Prompt Injection and Ambient Instruction Capture Failure"
-],
-"recommended_cam_action": "Create PATCH-0009 to add Source-Authority Separation and Instruction/Data Boundary controls without creating a new instrument. Patch SECURITY-002, SECURITY-001, Annex K, SCH-02, and OPERATIONS-003 in a compact release-safe pass."
-}
+  "id": "VIGIL-2026-FM-0022",
+  "record_type": "failure_mode",
+  "record_state": "active",
+  "date_recorded": "2026-06-14",
+  "record_identity": {
+    "record_id": "VIGIL-2026-FM-0022",
+    "record_type": "failure_mode",
+    "title": "Instruction-bearing external content treated as trusted execution authority",
+    "created": "2026-06-14",
+    "updated": "2026-06-14",
+    "version": "1.1"
+  },
+  "summary": "A security-integrity failure mode in which an AI agent, coding assistant, RAG system, tool-mediated workflow, connector-enabled assistant, multimodal system, security scanner, or repository-linked workflow processes untrusted, retrieved, ambient, generated, lower-authority, or ambiguous content as though it carried trusted instruction authority, governance authority, tool authority, or execution permission. The content may appear in markdown files, repository documents, README files, issue comments, webpages, PDFs, emails, resumes, tickets, logs, memory artefacts, connector content, retrieved documents, images, transcripts, metadata, OCR layers, tool descriptions, model outputs, or generated summaries. The failure occurs where the system fails to preserve separation between content visibility, source provenance, instruction authority, user intent, canonical project authority, and execution permission.",
+  "why_it_matters_to_CAM": "CAM already contains substantial doctrine for this class of failure. SECURITY-001 explicitly recognises cross-modal prompt injection and ambient instruction capture, including text, speech, audio, image, video, transcript, subtitle, screen content, environmental signal, embedded metadata, retrieved documents, webpages, comments, and multimodal artefacts. SECURITY-001 also states that systems shall not treat non-authoritative content as user intent, governance authority, tool authority, or execution command merely because it appears in context. SECURITY-002 provides Boundary Integrity, source/provenance categories, internal-state exposure resilience, and the inference-execution gap principle. Annex K treats tool, connector, repository, credential-bearing, automation, deployment, renderer, validator, and external execution-surface availability as a security boundary signal rather than execution authority. SCH-02 provides proportional tool invocation and execution-boundary sequencing. OPERATIONS-003 already contains a closely matching failure taxonomy entry for Cross-Modal Prompt Injection and Ambient Instruction Capture Failure. The remaining CAM gap is therefore narrower: not absence of prompt-injection doctrine, but absence of a named reusable Source-Authority Separation primitive and consistent code/routing pathway across SECURITY, Annex K, SCH-02, and OPERATIONS taxonomy.",
+  "evidence_confidence": "corroborated",
+  "source_records": [
+    {
+      "source_title": "LLM01:2025 Prompt Injection",
+      "author_or_publisher": "OWASP Gen AI Security Project",
+      "source_date": "2025",
+      "source_url": "https://genai.owasp.org/llmrisk/llm01-prompt-injection/",
+      "archive_url": "",
+      "retrieved_date": "2026-06-14",
+      "source_type": "security-standard / taxonomy",
+      "source_platform": "OWASP",
+      "system_or_product": "LLM applications / GenAI applications",
+      "model_or_algorithm": "large language models and agentic applications",
+      "deployment_context": "Security taxonomy for LLM and generative AI applications.",
+      "source_context": "OWASP classifies prompt injection as LLM01:2025 and describes direct and indirect prompt injections, including external content from websites or files that alters model behaviour. It identifies possible impacts including sensitive information disclosure, system prompt leakage, content manipulation, unauthorised function access, arbitrary command execution in connected systems, and manipulation of critical decision-making processes. It recommends mitigation measures including least privilege, human approval for high-risk actions, and segregation and identification of external content.",
+      "source_url_status": "available",
+      "relevance_note": "Primary external security-taxonomy support for prompt injection as a recognised LLM application vulnerability, including indirect and multimodal pathways."
+    },
+    {
+      "source_title": "Are AI-assisted Development Tools Immune to Prompt Injection?",
+      "author_or_publisher": "Charoes Huang, Xin Huang, and Amin Milani Fard",
+      "source_date": "2026-03-23",
+      "source_url": "https://arxiv.org/abs/2603.21642",
+      "archive_url": "",
+      "retrieved_date": "2026-06-14",
+      "source_type": "research-source",
+      "source_platform": "arXiv",
+      "system_or_product": "AI-assisted development tools / MCP clients",
+      "model_or_algorithm": "Claude Desktop, Claude Code, Cursor, Cline, Continue, Gemini CLI, Langflow, and related MCP clients",
+      "deployment_context": "Empirical analysis of prompt injection and tool-poisoning vulnerability across AI-assisted development tools and Model Context Protocol clients.",
+      "source_context": "The study describes prompt injection as capable of subverting guardrails, disclosing sensitive data, and triggering unauthorized tool use. It evaluates tool-poisoning vulnerabilities across multiple MCP clients and reports disparities in security coverage including static validation, parameter visibility, injection detection, user warnings, execution sandboxing, and audit logging.",
+      "source_url_status": "available",
+      "relevance_note": "Supports classification of prompt injection and tool poisoning as practical agentic coding and MCP security risks."
+    },
+    {
+      "source_title": "VIGIL-2026-FM-0019 — Adversarial refusal-trigger poisoning of defensive artefact analysis",
+      "author_or_publisher": "VIGIL",
+      "source_date": "2026-06-12",
+      "source_url": "https://github.com/CAM-Initiative/Vigil/blob/main/vigil/records/failures/2026/VIGIL-2026-FM-0019.json",
+      "archive_url": "",
+      "retrieved_date": "2026-06-14",
+      "source_type": "linked-internal-record",
+      "source_platform": "VIGIL",
+      "system_or_product": "LLM-assisted defensive artefact analysis",
+      "model_or_algorithm": "unspecified LLM-assisted security scanner or analysis workflow",
+      "deployment_context": "Existing VIGIL failure record concerning adversarial refusal-trigger poisoning of defensive analysis.",
+      "source_context": "FM-0019 records an adjacent failure in which hostile artefact content triggers refusal, safety, or restricted-domain controls, disrupting defensive analysis. FM-0022 is broader: it covers external content being treated as trusted instruction or execution authority, including tool calls, file edits, source-authority conflict, and downstream decisions.",
+      "source_url_status": "available",
+      "relevance_note": "Internal related record showing partial VIGIL coverage and distinguishing refusal-trigger poisoning from broader source-authority collapse."
+    },
+    {
+      "source_title": "CAM-EQ2026-SECURITY-001-PLATINUM — Security, Integrity & Adversarial Resilience Charter",
+      "author_or_publisher": "CAM Initiative",
+      "source_date": "2026-06-14",
+      "source_url": "https://github.com/CAM-Initiative/Caelestis/blob/main/Governance/Charters/CAM-EQ2026-SECURITY-001-PLATINUM.md",
+      "archive_url": "",
+      "retrieved_date": "2026-06-14",
+      "source_type": "repository-source",
+      "source_platform": "Caelestis",
+      "system_or_product": "Caelestis Architecture Model",
+      "model_or_algorithm": "CAM-EQ2026-SECURITY-001-PLATINUM",
+      "deployment_context": "SECURITY domain charter defining security, integrity, adversarial resilience, prompt injection, context poisoning, and authority-confusion conditions.",
+      "source_context": "SECURITY-001 already defines Cross-Modal Prompt Injection and Ambient Instruction Capture and prohibits treating non-authoritative content as user intent, governance authority, tool authority, or execution command merely because it appears in active context, microphone range, screen state, browser surface, retrieved material, or multimodal input stream.",
+      "source_url_status": "available",
+      "relevance_note": "Primary CAM evidence that prompt-injection doctrine already exists and that the remaining gap is a named reusable source-authority primitive rather than absence of coverage."
+    },
+    {
+      "source_title": "CAM-EQ2026-OPERATIONS-003-SUP-01 — Runtime & Governance Failure Taxonomy",
+      "author_or_publisher": "CAM Initiative",
+      "source_date": "2026-06-14",
+      "source_url": "https://github.com/CAM-Initiative/Caelestis/blob/main/Governance/Charters/CAM-EQ2026-OPERATIONS-003-SUP-01.md",
+      "archive_url": "",
+      "retrieved_date": "2026-06-14",
+      "source_type": "repository-source",
+      "source_platform": "Caelestis",
+      "system_or_product": "Caelestis Architecture Model",
+      "model_or_algorithm": "CAM-EQ2026-OPERATIONS-003-SUP-01",
+      "deployment_context": "CAM operational taxonomy defining runtime and governance failure families.",
+      "source_context": "OPERATIONS-003 already contains Cross-Modal Prompt Injection and Ambient Instruction Capture Failure, including tool-using agents following instructions from retrieved documents, webpages, comments, metadata, or transcripts, and multimodal models treating image text, subtitles, captions, or screen content as higher-authority instruction.",
+      "source_url_status": "available",
+      "relevance_note": "Primary CAM evidence that the failure taxonomy already recognises the structural failure class."
+    }
+  ],
+  "system_context": {
+    "system_type": "AI agent / coding assistant / RAG system / connector-enabled assistant / tool-mediated workflow / multimodal AI / MCP client / AI-assisted security system",
+    "platform_or_vendor": "Multi Vendor",
+    "vendor_cluster": [
+      "OpenAI",
+      "Anthropic",
+      "Google",
+      "Microsoft",
+      "Cursor",
+      "Other"
+    ],
+    "primary_evidenced_vendors": [
+      "Anthropic",
+      "Google",
+      "Microsoft",
+      "Cursor",
+      "Other"
+    ],
+    "product_or_service": "Other",
+    "specific_model_or_runtime": "Not limited to a single model or runtime",
+    "interface_surface": "chat, browser, file upload, repository workspace, IDE, MCP client, RAG pipeline, web search, email assistant, document summariser, security scanner, ticketing workflow, CI/CD agent, multimodal input, and connector-enabled assistant",
+    "model_or_product": "LLM-integrated agentic and retrieval systems",
+    "interaction_mode": "external content ingestion, tool use, file editing, repository implementation, code analysis, document summarisation, web-assisted reasoning, security analysis, workflow automation, and downstream decision support",
+    "embodiment_status": "non-embodied",
+    "deployment_context": "Consumer, developer, enterprise, cybersecurity, governance, research, legal, education, platform-integrity, and operational workflows where AI systems process untrusted external content and may take or recommend actions.",
+    "user_role": "end user, developer, maintainer, security analyst, auditor, researcher, enterprise operator, platform-integrity investigator, administrator, or agent supervisor",
+    "affected_population": "Users and organisations relying on AI agents to read, summarise, implement, inspect, decide, route, edit, call tools, or execute workflows based on external content."
+  },
+  "jurisdictional_context": {
+    "primary_jurisdiction": "global",
+    "secondary_jurisdictions": [
+      "Australia",
+      "United States",
+      "European Union",
+      "United Kingdom",
+      "platform agnostic"
+    ],
+    "regulatory_surface": [
+      "AI security",
+      "cybersecurity governance",
+      "agentic AI governance",
+      "software supply chain security",
+      "data protection",
+      "critical infrastructure protection",
+      "enterprise AI governance",
+      "model risk management",
+      "consumer protection",
+      "digital service accountability",
+      "records integrity",
+      "platform accountability"
+    ],
+    "sector": "AI agents / software development / cybersecurity / enterprise workflow automation / RAG systems / model-integrated applications",
+    "cross_border_relevance": "yes",
+    "public_interest_relevance": "yes",
+    "jurisdictional_assessment": "This record does not assert that all prompt injection can be fully eliminated. It documents a governance and security failure where untrusted external content may acquire instruction authority, execution influence, or source-authoritative status without adequate boundary separation, provenance marking, least-privilege design, validation, sandboxing, audit, or human review for high-risk actions."
+  },
+  "linked_records": {
+    "related_observations": [
+      "VIGIL-2026-OBS-0006"
+    ],
+    "related_failure_modes": [
+      "VIGIL-2026-FM-0001",
+      "VIGIL-2026-FM-0017",
+      "VIGIL-2026-FM-0019"
+    ],
+    "related_proposals": [],
+    "related_patch_notes": [
+      "VIGIL-2026-PATCH-0002",
+      "VIGIL-2026-PATCH-0009"
+    ],
+    "external_references": [],
+    "research": [],
+    "standards": [
+      "OWASP LLM01:2025 Prompt Injection"
+    ]
+  },
+  "failure_mode_definition": "A failure mode in which an AI system fails to preserve an enforceable boundary between external content and authorised instruction. The system ingests untrusted, retrieved, ambient, generated, lower-authority, hostile, or ambiguous content and treats it as capable of steering behaviour, overriding system or developer instructions, displacing user intent, altering canonical project rules, calling tools, editing files, modifying repositories, changing safety posture, disclosing data, executing commands, or influencing downstream decisions. The failure may occur through direct prompt injection, indirect prompt injection, hidden or invisible prompt content, markdown or documentation instructions, RAG retrieval, web content, file uploads, connector content, memory contamination, MCP tool poisoning, multimodal injection, cross-agent propagation, or stale internal documentation.",
+  "failure_threshold": "The threshold is met where external, lower-authority, retrieved, generated, ambient, hostile, or ambiguous content materially changes model behaviour, execution planning, tool invocation, file mutation, repository implementation, source selection, data disclosure, safety classification, refusal routing, output content, or downstream decision-making in a way that the user, system owner, or canonical governance source did not authorise. The threshold is also met where a system cannot identify that an external instruction conflicts with source-authoritative project documentation or where it silently obeys an instruction contained in untrusted content during a tool-mediated or agentic workflow.",
+  "failure_classification": {
+    "failure_family": "security-integrity",
+    "failure_subtype": "instruction-bearing-external-content-trusted-as-execution-authority",
+    "harm_vectors": [
+      "prompt injection",
+      "indirect prompt injection",
+      "cross-modal prompt injection",
+      "ambient instruction capture",
+      "source-authority collapse",
+      "instruction-data conflation",
+      "untrusted content execution",
+      "tool poisoning",
+      "unauthorised tool invocation",
+      "sensitive data disclosure",
+      "arbitrary command execution",
+      "repository mutation",
+      "governance hierarchy bypass",
+      "safety-routing manipulation",
+      "canonical-source displacement",
+      "execution-boundary bypass"
+    ],
+    "severity": "high",
+    "likelihood": "high across agentic, RAG, connector, multimodal, repository-linked, and tool-mediated systems that process untrusted external content",
+    "confidence": "corroborated",
+    "affected_rights_or_interests": [
+      "cybersecurity and infrastructure protection",
+      "data privacy",
+      "organisational security",
+      "software supply-chain integrity",
+      "repository integrity",
+      "user agency",
+      "professional continuity",
+      "auditability",
+      "governance authority",
+      "source integrity"
+    ],
+    "failure_scope": "multi-vendor / cross-surface / systemic security pattern",
+    "recurrence_pattern": "Prompt injection is recognised as a leading LLM application security risk and appears across direct, indirect, multimodal, RAG, MCP, tool-use, repository, ambient, and agentic workflow contexts.",
+    "canonical_failure_group": "security-integrity",
+    "taxonomy_reference": "CAM-EQ2026-OPERATIONS-003-SUP-01 Appendix B — FF.SECURITY_INTEGRITY; existing CAM mapping: Cross-Modal Prompt Injection and Ambient Instruction Capture Failure; external standard mapping: OWASP LLM01:2025 Prompt Injection; related mappings include excessive agency, supply chain, vector/embedding weakness, and sensitive information disclosure where applicable.",
+    "related_failure_groups": [
+      "execution",
+      "arbitration",
+      "classification",
+      "state-context",
+      "infrastructure-continuity",
+      "epistemic",
+      "governance",
+      "ux-representation"
+    ],
+    "persistence": "persistent wherever systems ingest external content into the same context used for instruction following, authority assessment, retrieval, or tool-mediated action",
+    "reproducibility": "widely reproducible in direct, indirect, RAG, file, webpage, repository, MCP, multimodal, and ambient settings; severity varies by tool privileges and guardrail design",
+    "visibility": "user-facing unexpected behaviour, tool-call logs, file diffs, altered outputs, silent instruction following, data leakage, safety misrouting, execution traces, source-authority conflicts, and audit records where present"
+  },
+  "triage": {
+    "triage_priority": "P0",
+    "triage_owner": "VIGIL maintainers",
+    "triage_status": "patch-needed / CAM primitive formalisation",
+    "mitigation_status": "repaired by VIGIL-2026-PATCH-0009; failure mode remains active for monitoring rather than lifecycle deletion. Previous status: substantially covered by adjacent SECURITY, Annex K, SCH-02, and OPERATIONS taxonomy controls, but patch-needed to define a named Source-Authority Separation primitive and reusable source-authority classification pathway.",
+    "escalation_required": "yes",
+    "recommended_next_step": "Implement a narrow CAM patch defining Source-Authority Separation and Instruction/Data Boundary controls. Cross-reference the primitive from SECURITY-001, SECURITY-002, Annex K, SCH-02, and OPERATIONS-003. Preserve the existing prompt-injection doctrine while making the authority boundary reusable across governed repositories, RAG systems, tool-mediated workflows, multimodal inputs, and agentic execution."
+  },
+  "distinguishing_observations": [
+    "This record is broader than VIGIL-2026-FM-0019. FM-0019 covers adversarial refusal-trigger poisoning of defensive artefact analysis; FM-0022 covers external content acquiring instruction or execution authority across agentic systems.",
+    "This record does not claim CAM lacks prompt-injection coverage. CAM already contains substantial prompt-injection, boundary-integrity, tool-authority, and execution-boundary doctrine.",
+    "The missing piece is primarily a named reusable Source-Authority Separation primitive or code family that can be referenced consistently across SECURITY, Annex K, SCH-02, and OPERATIONS records.",
+    "This record does not require all external content to be ignored. It requires source authority, provenance, and execution permission to be preserved separately.",
+    "This record does not require human confirmation for every routine step. It requires proportional review where untrusted content attempts to steer tools, mutate files, override canonical instructions, access sensitive data, or affect high-risk decisions.",
+    "Prompt injection and jailbreaking may overlap, but the failure here is authority collapse: the system treats text, images, files, audio, retrieved material, or generated summaries as if they had governance authority.",
+    "A source-authority conflict can occur even without malicious intent, such as when stale documentation, generated files, imported notes, lower-authority repo documents, or ambiguous workspace instructions contradict canonical governance instruments."
+  ],
+  "existing_cam_coverage": [
+    {
+      "instrument": "CAM-EQ2026-SECURITY-001-PLATINUM — Security, Integrity & Adversarial Resilience Charter",
+      "coverage_type": "direct prompt-injection and ambient instruction capture coverage",
+      "relevance": "SECURITY-001 already defines Cross-Modal Prompt Injection and Ambient Instruction Capture, requires systems to distinguish user-authorised instruction, observed content, retrieved content, ambient speech, media playback, third-party speech, embedded or hidden instruction, OCR/transcribed content, and execution-authorising command, and prohibits treating non-authoritative content as user intent, governance authority, tool authority, or execution command merely because it appears in context.",
+      "internal_failure": "Coverage is direct but would benefit from a named Source-Authority Separation primitive for consistent cross-instrument reference."
+    },
+    {
+      "instrument": "CAM-EQ2026-SECURITY-002-PLATINUM — Appendix A: Boundary Integrity Specification",
+      "coverage_type": "strong boundary integrity, provenance, source category, internal-state exposure, and inference-execution gap coverage",
+      "relevance": "SECURITY-002 distinguishes data, identity, context, capability, provenance, transformation, and internal-state exposure boundaries. It also states that decision inference does not confer execution permission and requires source/provenance awareness sufficient for boundary evaluation.",
+      "internal_failure": "The appendix supports the repair but should add a named Source-Authority Separation Boundary to make the authority distinction reusable and codeable."
+    },
+    {
+      "instrument": "CAM-BS2026-AEON-012-PLATINUM — Annex K: Security Boundary Conditions & Runtime Interface",
+      "coverage_type": "strong runtime security-boundary and tool-invocation coverage",
+      "relevance": "Annex K states that tool, connector, repository, credential-bearing, automation, deployment, renderer, validator, or external execution-surface availability is a security-relevant boundary signal, not execution authority, and requires reviewable separation between inspection, preparation, staging, and execution.",
+      "internal_failure": "Annex K should add an explicit runtime clause for instruction-bearing external content and its relationship to execution-boundary evaluation."
+    },
+    {
+      "instrument": "CAM-BS2025-AEON-003-SCH-02 — Runtime Governance Execution Model",
+      "coverage_type": "proportional tool invocation and execution-boundary sequencing coverage",
+      "relevance": "SCH-02 already distinguishes weak triggers from execution authority and supports preventing inference from becoming mutation, publication, deployment, memory, credential, spending, or high-impact execution authority.",
+      "internal_failure": "SCH-02 should add a compact External Instruction Influence Check for plans or tool actions materially influenced by external or lower-authority content."
+    },
+    {
+      "instrument": "CAM-EQ2026-OPERATIONS-003-SUP-01 — Appendix B: Runtime & Governance Failure Taxonomy",
+      "coverage_type": "direct failure taxonomy coverage",
+      "relevance": "OPERATIONS-003 already defines Cross-Modal Prompt Injection and Ambient Instruction Capture Failure, including tool-using agents following instructions from retrieved documents, web pages, comments, metadata, or transcripts, and multimodal models treating image text, subtitles, captions, or screen content as higher-authority instruction.",
+      "internal_failure": "The taxonomy should add a cross-reference to source-authority collapse and specify additional record fields for source-authority class, content pathway, visibility, trust state, affected execution boundary, attempted/completed action, and displaced authority."
+    }
+  ],
+  "governance_gap": "The current corpus already prohibits treating non-authoritative retrieved, embedded, ambient, or multimodal content as user intent, governance authority, tool authority, or execution command. The remaining gap is not absence of prompt-injection coverage, but absence of a named Source-Authority Separation boundary/code family that can be referenced consistently across SECURITY, Annex K, SCH-02, and OPERATIONS records.",
+  "repair_hypothesis": "The failure can be reduced by adding an explicit Source-Authority Separation primitive requiring systems to classify each context element by source authority, content trust, provenance confidence, execution relevance, and permitted influence. External, retrieved, generated, lower-authority, hostile, or ambiguous content may inform analysis, summarisation, comparison, evidence review, or risk classification, but must not independently create instruction authority, tool-use authority, canonical project authority, or execution permission.",
+  "recommended_repair_path": [
+    {
+      "repair_action": "Add Source-Authority Separation Boundary to SECURITY-002.",
+      "expected_control": "Presence in context is not treated as authority; source authority is classified separately from content meaning.",
+      "implementation_note": "Insert after the Inference-Execution Gap Principle and define authority classes including system/constitutional instruction, developer/platform instruction, current user instruction, source-authoritative project material, trusted internal documentation, lower-authority repository or workspace material, retrieved external content, untrusted third-party content, hostile artefact content, generated output, memory-derived context, tool output, evidence, and execution-authorising command."
+    },
+    {
+      "repair_action": "Add Source-Authority Collapse cross-reference to SECURITY-001.",
+      "expected_control": "The threat taxonomy routes authority-collapse conditions through the new SECURITY-002 boundary.",
+      "implementation_note": "Insert after Cross-Modal Prompt Injection and Ambient Instruction Capture."
+    },
+    {
+      "repair_action": "Add Instruction-Bearing External Content Boundary to Annex K.",
+      "expected_control": "Runtime systems treat instruction-bearing external content as a security boundary signal, not execution authority.",
+      "implementation_note": "Clarify separation between reading, summarising, evidence review, project-authority recognition, plan incorporation, and execution."
+    },
+    {
+      "repair_action": "Add External Instruction Influence Check to SCH-02.",
+      "expected_control": "Plans or actions materially influenced by external or lower-authority content undergo execution-boundary evaluation before high-impact action.",
+      "implementation_note": "Allow non-executing continuation such as analysis, quotation, summary, warning, proposed patch, or clarification."
+    },
+    {
+      "repair_action": "Update OPERATIONS-003 taxonomy cross-reference.",
+      "expected_control": "Records can classify source-authority collapse as part of cross-modal prompt injection and preserve affected authority, content pathway, visibility, trust state, and displaced authority.",
+      "implementation_note": "No new OPERATIONS instrument required; a paragraph within §3.5.4 is sufficient."
+    }
+  ],
+  "cam_internal": {
+    "affected_instruments": [
+      "CAM-EQ2026-SECURITY-001-PLATINUM — Security, Integrity & Adversarial Resilience Charter",
+      "CAM-EQ2026-SECURITY-002-PLATINUM — Appendix A: Boundary Integrity Specification",
+      "CAM-BS2026-AEON-012-PLATINUM — Annex K: Security Boundary Conditions & Runtime Interface",
+      "CAM-BS2025-AEON-003-SCH-02 — Runtime Governance Execution Model",
+      "CAM-BS2025-AEON-003-SCH-04 — Arbitration Layer & Resolution Model",
+      "CAM-EQ2026-OPERATIONS-003-SUP-01 — Appendix B: Runtime & Governance Failure Taxonomy"
+    ],
+    "affected_annexes": [
+      "Annex K",
+      "Annex B",
+      "Annex D",
+      "Appendix A",
+      "Appendix B"
+    ],
+    "affected_domains": [
+      "SECURITY",
+      "OPERATIONS",
+      "AEON",
+      "CONTINUITY",
+      "IDENTITY"
+    ],
+    "governance_layer": "security boundary integrity / source authority / instruction-data separation / agentic execution / tool invocation / repository governance / provenance-aware arbitration",
+    "proposal_needed": "no — patch pathway is clear and narrow",
+    "linked_proposal_ids": [],
+    "routing_note": "Primary CAM mapping: security-integrity. Existing CAM coverage is substantial and directly includes prompt injection, ambient instruction capture, boundary integrity, provenance, tool-authority separation, and execution-boundary evaluation. FM-0022 should therefore route to a narrow patch formalising a named Source-Authority Separation primitive rather than to a broad new instrument.",
+    "validator_or_automation_impact": "possible",
+    "cam_relevance": "direct",
+    "cam_failure_type": "missing named reusable source-authority primitive and cross-instrument routing pathway",
+    "cam_compliance_status": "substantially covered but patch-needed",
+    "cam_expected_control": "External content should be treated as data/evidence unless source-authoritative status is verified; instruction authority should be assigned by source hierarchy and explicit authorisation rather than by presence in context.",
+    "cam_observed_gap": "The corpus already contains direct prompt-injection doctrine and failure taxonomy coverage. The remaining gap is formalising Source-Authority Separation as a named reusable boundary/code family across SECURITY-002, SECURITY-001, Annex K, SCH-02, and OPERATIONS-003.",
+    "cam_controls_implicated": [
+      "Cross-Modal Prompt Injection and Ambient Instruction Capture",
+      "Boundary Integrity",
+      "Visibility-Structure Distinction",
+      "Directional Influence Traceability",
+      "Internal State Exposure Boundary",
+      "Assumed Exposure Principle",
+      "Inference-Execution Gap Principle",
+      "SEC.TG",
+      "Execution-Boundary Evaluation",
+      "Tool Invocation and Security Boundary Signal Doctrine",
+      "Cross-Modal Prompt Injection and Ambient Instruction Capture Failure"
+    ],
+    "recommended_cam_action": "Create PATCH-0009 to add Source-Authority Separation and Instruction/Data Boundary controls without creating a new instrument. Patch SECURITY-002, SECURITY-001, Annex K, SCH-02, and OPERATIONS-003 in a compact release-safe pass."
+  },
+  "repair_status": {
+    "status": "repaired",
+    "repaired_by": [
+      "VIGIL-2026-PATCH-0009"
+    ],
+    "date_repaired": "2026-06-16",
+    "verification_status": "implemented patch note linked; repository validation pending in this normalisation pass",
+    "monitoring_status": "active monitoring; record_state remains active"
+  }
 }
