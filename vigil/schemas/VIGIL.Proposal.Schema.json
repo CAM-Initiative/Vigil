@@ -15,7 +15,38 @@
       "type": "object",
       "minProperties": 1
     },
-    "patch_status": false
+    "patch_status": false,
+    "resolution_status": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "open",
+            "routed",
+            "resolved-by-patch",
+            "deferred",
+            "superseded",
+            "closed-no-action"
+          ]
+        },
+        "resolved_by": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "resolution_note": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "status",
+        "resolved_by",
+        "resolution_note"
+      ]
+    }
   },
   "required": [
     "proposal_rationale",
