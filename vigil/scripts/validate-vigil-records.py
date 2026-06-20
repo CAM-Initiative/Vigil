@@ -179,7 +179,7 @@ OBS_FORBIDDEN = {
     "failure_mode_definition",
     "failure_threshold",
 }
-FM_REQUIRED = {"failure_mode_definition", "failure_threshold", "failure_classification", "triage"}
+FM_REQUIRED = {"failure_mode_definition", "failure_threshold", "failure_classification", "triage", "repair_status"}
 PROP_REQUIRED = {"proposal_rationale", "proposal_type", "proposal_scope", "implementation_notes", "external_relevance", "next_action"}
 PATCH_REQUIRED = {
     "date_implemented",
@@ -188,6 +188,16 @@ PATCH_REQUIRED = {
     "implementation_verification",
     "impact_summary",
     "remaining_work",
+}
+REPAIR_STATUS_ALLOWED = {"unrepaired", "partially-repaired", "repaired", "superseded", "not-actionable"}
+REPAIR_STATUS_REQUIRED = {"status", "repaired_by", "date_repaired", "verification_status", "monitoring_status"}
+RESOLUTION_STATUS_ALLOWED = {"open", "routed", "resolved-by-patch", "deferred", "superseded", "closed-no-action"}
+RESOLUTION_STATUS_REQUIRED = {"status", "resolved_by", "resolution_note"}
+PROPOSAL_PATCH_IMPLEMENTATION_FIELDS = {
+    "patch_status",
+    "date_implemented",
+    "change_classification",
+    "implementation_verification",
 }
 
 
@@ -280,6 +290,75 @@ def source_urls(record: dict[str, Any]) -> set[str]:
                     urls.add(source[key])
     return urls
 
+
+def related_patch_notes(record: dict[str, Any]) -> list[str]:
+    linked = record.get("linked_records")
+    if not isinstance(linked, dict):
+        return []
+    patches = linked.get("related_patch_notes", [])
+    if not isinstance(patches, list):
+        return []
+    return [patch for patch in patches if isinstance(patch, str) and patch]
+
+
+def validate_repair_status(
+    path: Path,
+    record: dict[str, Any],
+    errors: list[str],
+    warnings: list[str],
+) -> None:
+    repair_status = record.get("repair_status")
+    if not isinstance(repair_status, dict):
+        errors.append(f"{path}: FM repair_status must be an object")
+        return
+    missing = sorted(field for field in REPAIR_STATUS_REQUIRED if field not in repair_status)
+    if missing:
+        errors.append(f"{path}: FM repair_status missing required keys: {', '.join(missing)}")
+    status = repair_status.get("status")
+    if status not in REPAIR_STATUS_ALLOWED:
+        allowed = ", ".join(sorted(REPAIR_STATUS_ALLOWED))
+        errors.append(f"{path}: FM repair_status.status {status!r} is not allowed; allowed values: {allowed}")
+    repaired_by = repair_status.get("repaired_by")
+    if not isinstance(repaired_by, list):
+        errors.append(f"{path}: FM repair_status.repaired_by must be an array")
+        repaired_by = []
+    elif any(not isinstance(item, str) or not item for item in repaired_by):
+        errors.append(f"{path}: FM repair_status.repaired_by must contain only non-empty strings")
+    if status in {"repaired", "superseded"} and not repaired_by:
+        warnings.append(f"{path}: FM repair_status.status {status!r} should include repaired_by when a patch or successor record exists")
+    if status == "repaired" and not repair_status.get("date_repaired"):
+        warnings.append(f"{path}: FM repair_status.date_repaired should be populated for repaired records")
+    if status == "repaired" and not (repaired_by or related_patch_notes(record)):
+        errors.append(
+            f"{path}: FM repair_status.status is 'repaired' but no linked patch record appears in "
+            "repair_status.repaired_by or linked_records.related_patch_notes"
+        )
+    if status == "repaired" and str(record.get("record_state", "")).lower() == "active":
+        warnings.append(f"{path}: FM record_state is active while repair_status.status is repaired; prefer monitoring")
+
+
+def validate_resolution_status(path: Path, record: dict[str, Any], errors: list[str], warnings: list[str]) -> None:
+    resolution_status = record.get("resolution_status")
+    if resolution_status is None:
+        return
+    if not isinstance(resolution_status, dict):
+        errors.append(f"{path}: PROP resolution_status must be an object")
+        return
+    missing = sorted(field for field in RESOLUTION_STATUS_REQUIRED if field not in resolution_status)
+    if missing:
+        errors.append(f"{path}: PROP resolution_status missing required keys: {', '.join(missing)}")
+    status = resolution_status.get("status")
+    if status not in RESOLUTION_STATUS_ALLOWED:
+        allowed = ", ".join(sorted(RESOLUTION_STATUS_ALLOWED))
+        errors.append(f"{path}: PROP resolution_status.status {status!r} is not allowed; allowed values: {allowed}")
+    resolved_by = resolution_status.get("resolved_by")
+    if not isinstance(resolved_by, list):
+        errors.append(f"{path}: PROP resolution_status.resolved_by must be an array")
+        resolved_by = []
+    elif any(not isinstance(item, str) or not item for item in resolved_by):
+        errors.append(f"{path}: PROP resolution_status.resolved_by must contain only non-empty strings")
+    if status == "resolved-by-patch" and not (resolved_by or related_patch_notes(record)):
+        warnings.append(f"{path}: PROP resolution_status is resolved-by-patch but no linked patch record is present")
 
 
 
@@ -516,6 +595,7 @@ def validate_record(
             errors.append(f"{path}: OBS contains forbidden patch_status; patch state belongs in PATCH records")
     elif record_type == "failure_mode":
         add_missing(errors, path, record, FM_REQUIRED)
+        validate_repair_status(path, record, errors, warnings)
         classification = record.get("failure_classification")
         if isinstance(classification, dict):
             if is_blank(classification.get("failure_family")):
@@ -558,12 +638,29 @@ def validate_record(
     elif record_type == "proposal":
         add_missing(errors, path, record, PROP_REQUIRED)
         state = str(record.get("record_state", "")).lower()
-        if contains_key(record, "patch_status"):
-            errors.append(f"{path}: PROP contains forbidden patch_status; implemented work belongs in PATCH records")
+        forbidden_patch_fields = sorted(field for field in PROPOSAL_PATCH_IMPLEMENTATION_FIELDS if contains_key(record, field))
+        if forbidden_patch_fields:
+            errors.append(
+                f"{path}: PROP contains forbidden patch implementation field(s): "
+                f"{', '.join(forbidden_patch_fields)}; implemented work belongs in PATCH records"
+            )
         if is_blank(record.get("proposal_scope")):
             errors.append(f"{path}: PROP proposal_scope must not be empty")
-        if state in {"implemented", "completed", "closed-actioned"}:
-            errors.append(f"{path}: PROP claims implementation as completed patch")
+        validate_resolution_status(path, record, errors, warnings)
+        if state in {"implemented", "completed"}:
+            errors.append(f"{path}: PROP record_state {state!r} is an implementation claim; use PATCH records for implementation")
+        if state == "closed-actioned":
+            resolution_status = record.get("resolution_status")
+            resolution_state = resolution_status.get("status") if isinstance(resolution_status, dict) else None
+            if resolution_state != "resolved-by-patch":
+                errors.append(
+                    f"{path}: PROP record_state 'closed-actioned' requires resolution_status.status "
+                    "'resolved-by-patch'"
+                )
+            if not related_patch_notes(record) and not (
+                isinstance(resolution_status, dict) and resolution_status.get("resolved_by")
+            ):
+                errors.append(f"{path}: PROP record_state 'closed-actioned' requires a linked patch record")
     elif record_type in {"patch", "patch_note"}:
         add_missing(errors, path, record, PATCH_REQUIRED)
         if is_blank(record.get("date_implemented")):
