@@ -1,0 +1,234 @@
+{
+  "id": "VIGIL-2026-PROP-0010",
+  "record_type": "proposal",
+  "record_state": "draft",
+  "date_recorded": "2026-06-19",
+  "record_identity": {
+    "record_id": "VIGIL-2026-PROP-0010",
+    "record_type": "proposal",
+    "title": "Pause, checkpoint, and resumable execution controls for long-running AI agents",
+    "created": "2026-06-19",
+    "updated": "2026-06-19",
+    "version": "1.0"
+  },
+  "summary": "Proposal to define a runtime governance requirement for long-running AI agents, coding agents, cloud tasks, and repository-connected workflows to support non-destructive pause, checkpoint, and resume controls. The proposal responds to the continuity risk that arises when a user must interrupt an agentic task because of ordinary real-world constraints such as aircraft landing, battery loss, network loss, device shutdown, meeting interruption, or platform timeout, but the interface offers only destructive stop or cancellation. The proposed control would require the system to preserve a temporary branch, stash, patch, state summary, task log, or equivalent checkpoint before suspension where safe and technically feasible.",
+  "why_it_matters_to_CAM": "CAM distinguishes task execution from durable handoff and treats operational continuity as a governance obligation where AI systems perform substantive work on behalf of users. Long-running agents increasingly operate across files, repositories, tools, branches, validators, and external systems. If the user is forced to stop a task without a pause or checkpoint option, ordinary human-world interruption can destroy work product, context, auditability, and trust. A pause/checkpoint/resume pattern provides a proportional alternative to destructive termination and extends the durability logic already identified in FM-0018.",
+  "evidence_confidence": "not applicable",
+  "source_records": [
+    {
+      "source_title": "VIGIL-2026-FM-0018 — Ephemeral Codex work loss following quota exhaustion before durable branch persistence",
+      "author_or_publisher": "VIGIL",
+      "source_date": "2026-06-11",
+      "source_url": "https://github.com/CAM-Initiative/Vigil/blob/main/vigil/records/failures/2026/VIGIL-2026-FM-0018.json",
+      "archive_url": "",
+      "retrieved_date": "2026-06-19",
+      "source_type": "linked-failure-mode",
+      "source_platform": "VIGIL",
+      "system_or_product": "Codex cloud task / repository-connected coding agent",
+      "model_or_algorithm": "Codex cloud coding-agent runtime; specific model not independently confirmed",
+      "deployment_context": "Existing VIGIL failure-mode record concerning completed Codex work lost before durable branch, commit, patch, or resumable workspace persistence.",
+      "source_context": "FM-0018 documents a related durability failure where substantive repository work was performed but not preserved before quota exhaustion. PROP-0010 generalises a preventative control for other interruption conditions, including user-forced pause, travel, network loss, device shutdown, and session interruption.",
+      "source_url_status": "available",
+      "relevance_note": "Provides the evidentiary anchor for the broader pause/checkpoint/resume proposal."
+    },
+    {
+      "source_title": "VIGIL maintainer governance note — aircraft landing interruption scenario",
+      "author_or_publisher": "Dr. Michelle Vivian O'Rourke / VIGIL maintainer discussion",
+      "source_date": "2026-06-19",
+      "source_url": "",
+      "archive_url": "",
+      "retrieved_date": "2026-06-19",
+      "source_type": "governance-note",
+      "source_platform": "ChatGPT",
+      "system_or_product": "Long-running AI agent and coding-agent workflows",
+      "model_or_algorithm": "N/A",
+      "deployment_context": "Theoretical but foreseeable user scenario in which a long-running coding-agent task is still processing when the user is required to close their device during aircraft landing.",
+      "source_context": "The maintainer identified that a stop-only control is insufficient where the user cannot safely wait for task completion and cannot pause. A temporary branch, stash, patch, or checkpoint could preserve work before suspension and allow later resumption.",
+      "source_url_status": "not applicable",
+      "relevance_note": "Defines the practical user-world constraint motivating the proposal."
+    }
+  ],
+  "system_context": {
+    "system_type": "cloud-hosted AI agent, coding agent, repository-connected assistant, browser agent, or tool-mediated long-running runtime",
+    "platform_or_vendor": "Multi Vendor",
+    "vendor_cluster": [
+    "OpenAI",
+    "Anthropic",
+    "Google",
+    "Microsoft",
+    "GitHub",
+    "Other"
+        ],
+    "primary_evidenced_vendors": [
+    "OpenAI"
+        ],
+  "product_or_service": "Other",
+    "specific_model_or_runtime": "Not limited to a single model or runtime",
+    "interface_surface": "cloud task interface, coding-agent interface, repository-connected workflow, browser agent surface, mobile app, web app, IDE extension, or tool-mediated task runner",
+    "model_or_product": "Long-running AI agent or coding-agent workflow",
+    "interaction_mode": "multi-step agentic execution, file analysis, repository modification, validation, branch creation, patch generation, web workflow execution, or tool-mediated operational task",
+    "embodiment_status": "non-embodied",
+    "deployment_context": "Professional, research, governance, software-development, administrative, and consumer workflows where an AI agent may run for minutes or hours and produce intermediate work before final handoff.",
+    "user_role": "developer, maintainer, researcher, auditor, governance architect, professional user, administrator, or agent supervisor",
+    "affected_population": "Users who delegate long-running work to AI agents and may be forced to interrupt sessions because of travel, device, network, time, quota, or environmental constraints"
+  },
+  "jurisdictional_context": {
+    "primary_jurisdiction": "global",
+    "secondary_jurisdictions": [
+      "Australia",
+      "United States",
+      "European Union",
+      "United Kingdom",
+      "platform agnostic"
+    ],
+    "regulatory_surface": [
+      "AI agent governance",
+      "consumer transparency",
+      "cloud-workspace durability",
+      "software development infrastructure",
+      "work-product preservation",
+      "professional workflow continuity",
+      "digital service reliability",
+      "auditability",
+      "platform accountability"
+    ],
+    "sector": "AI agents / coding agents / cloud software-development infrastructure / workflow automation",
+    "cross_border_relevance": "yes",
+    "public_interest_relevance": "yes"
+  },
+  "linked_records": {
+    "related_observations": [],
+    "related_failure_modes": [
+      "VIGIL-2026-FM-0018"
+    ],
+    "related_proposals": [],
+    "related_patch_notes": [],
+    "external_references": [],
+    "research": [],
+    "standards": []
+  },
+  "migration_notes": [
+    "Individual records maintain canonical source evidence only in source_records. Do not add source_data or duplicate primary sources in linked_records.external_references."
+  ],
+  "proposal_rationale": "Long-running AI agents should not expose users to avoidable work loss when interruption is foreseeable. Stop-only controls are insufficient for agentic work that may involve repository edits, tool calls, validation, file creation, or multi-step operational state. A governed runtime should support a non-destructive pause pathway that preserves enough state for later review, continuation, or manual recovery. This proposal does not require the agent to pause instantly in the middle of unsafe atomic operations; it requires the runtime to pause at the next safe boundary and preserve an auditable checkpoint where feasible.",
+  "proposal_type": [
+    "runtime-governance-control",
+    "agent-continuity-control",
+    "workflow-durability-requirement",
+    "ux-control-requirement",
+    "auditability-improvement"
+  ],
+  "proposal_scope": {
+    "scope_summary": "Define a pause/checkpoint/resume control for long-running AI agents and coding-agent workflows, including requirements for temporary preservation, user notice, safe atomic boundaries, and later resumption or manual recovery.",
+    "cam_domains": [
+      "runtime governance",
+      "operations",
+      "infrastructure continuity",
+      "UX representation",
+      "repository automation"
+    ],
+    "cam_instruments": [
+      "CAM-BS2025-AEON-003-SCH-02 — Runtime Governance Execution Model",
+      "CAM-BS2025-AEON-003-SCH-04 — Arbitration Layer & Resolution Model",
+      "CAM-EQ2026-OPERATIONS-001-SUP-01 — Operational Logging & Audit Standards",
+      "CAM-EQ2026-OPERATIONS-003-SUP-01 — Runtime & Governance Failure Taxonomy"
+    ],
+    "cam_annexes": [],
+    "registry_components": [
+      "VIGIL failure-mode records",
+      "VIGIL proposal records",
+      "VIGIL patch-note linkage"
+    ],
+    "automation_components": [
+      "agent checkpoint creation",
+      "temporary branch or stash creation",
+      "patch export",
+      "task-state summary",
+      "execution log preservation",
+      "resume-token or resumable workspace reference"
+    ],
+    "interface_components": [
+      "Pause button",
+      "Pause after current safe operation",
+      "Create checkpoint",
+      "Resume task",
+      "Discard checkpoint",
+      "Export patch",
+      "Show saved state summary"
+    ],
+    "external_relevance": [
+      "coding agents",
+      "browser agents",
+      "cloud task runners",
+      "repository automation",
+      "mobile AI workflows",
+      "professional AI task delegation"
+    ]
+  },
+  "cam_internal": {
+    "target_instruments": [
+      "CAM-BS2025-AEON-003-SCH-02 — Runtime Governance Execution Model",
+      "CAM-BS2025-AEON-003-SCH-04 — Arbitration Layer & Resolution Model",
+      "CAM-EQ2026-OPERATIONS-001-SUP-01 — Operational Logging & Audit Standards",
+      "CAM-EQ2026-OPERATIONS-003-SUP-01 — Runtime & Governance Failure Taxonomy"
+    ],
+    "target_annexes": [],
+    "target_domains": [
+      "runtime governance",
+      "operations",
+      "infrastructure continuity",
+      "UX representation",
+      "repository automation"
+    ],
+    "governance_layer": "runtime execution / state preservation / durable handoff",
+    "proposal_owner": "VIGIL maintainers",
+    "drafting_status": "drafting needed",
+    "validator_or_automation_impact": "possible",
+    "interface_impact": "required",
+    "registry_impact": "possible",
+    "routing_note": "PROP routing uses target_* fields and must not claim implemented patch status."
+  },
+  "implementation_notes": {
+    "suggested_insertion_points": [
+      "AEON-003-SCH-02 runtime execution sequencing and durable handoff provisions",
+      "AEON-003-SCH-04 access-state and interruption-state governance",
+      "OPERATIONS-001-SUP-01 operational logging and audit standards",
+      "OPERATIONS-003-SUP-01 failure taxonomy entry for non-recoverable agent interruption"
+    ],
+    "template_changes": [],
+    "schema_changes": [],
+    "validator_changes": [],
+    "automation_changes": [
+      "Define optional metadata fields for checkpoint reference, temporary branch, patch export, resumable state, and interruption reason if VIGIL later records agent-interruption incidents."
+    ],
+    "interface_changes": [
+      "Add Pause / Checkpoint / Resume controls for long-running agent tasks.",
+      "When pause is requested, complete or halt at the next safe atomic boundary.",
+      "Create a temporary branch, stash, patch, state summary, or equivalent durable checkpoint where feasible.",
+      "Display the checkpoint identifier and explain what was preserved.",
+      "Allow later resume, manual export, or discard."
+    ],
+    "migration_concerns": [
+      "Do not conflate pause/checkpoint controls with guaranteed successful task completion.",
+      "Do not require unsafe interruption in the middle of atomic file or tool operations.",
+      "Do not automatically commit unreviewed work to protected branches.",
+      "Distinguish temporary preservation from user-approved implementation."
+    ],
+    "dependencies": [
+      "Existing FM-0018 durable-work-loss analysis",
+      "Repository-agent branch and patch export capability",
+      "Task-state summarisation and resumable execution support",
+      "UX support for non-destructive task interruption"
+    ]
+  },
+  "external_relevance": {
+    "relevant_to_platforms": "yes",
+    "relevant_to_regulators": "possible",
+    "relevant_to_robotics": "possible",
+    "relevant_to_ux": "yes",
+    "relevant_to_standards": "possible",
+    "relevant_to_researchers": "yes",
+    "external_summary": "The proposal is relevant to any platform offering long-running AI agents or coding agents. As agentic systems become more capable, interruption-tolerant execution becomes a baseline reliability and governance requirement rather than a convenience feature."
+  },
+  "next_action": "Review against current VIGIL proposal schema and validator. If accepted, draft a corresponding CAM patch requirement for pause/checkpoint/resume controls and link it to FM-0018."
+}
