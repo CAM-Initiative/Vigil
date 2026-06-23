@@ -1506,17 +1506,19 @@
       "record_state": "monitoring",
       "date_recorded": "2026-06-19",
       "title": "Weak-signal ambiguity collapse under recoverable image-generation classification",
-      "summary": "A governance and UX-representation failure mode in which an AI system refuses a request and presents a user-facing rationale that appears disconnected from the visible prompt, insufficiently specific, or not useful for recovery. The observed case concerns an image-generation request that appeared benign on its face but produced a refusal attributed to harassment, discrimination, or bullying. The record does not assert that the underlying classifier was necessarily wrong; it records the user-facing failure where the system provides no meaningful clarification, remediation pathway, or explanation of whether the refusal arose from visible prompt content, earlier context, accumulated weak signals, rate or load constraints, inherited image state, or generic fallback routing.",
+      "summary": "A governance and UX-representation failure mode in which an AI system refuses a request and presents a user-facing rationale that appears disconnected from the visible prompt, insufficiently specific, or not useful for recovery. The observed case concerns an image-generation request that appeared benign on its face but produced a refusal attributed to harassment, discrimination, or bullying. The record does not assert that the underlying classifier was necessarily wrong; it records the user-facing failure where the system provides no meaningful clarification, remediation pathway, or explanation of whether the refusal arose from visible prompt content, earlier context, accumulated weak signals, rate or load constraints, inherited image state, or generic fallback routing. A follow-up audit further identifies image prompt custody / prompt transformation opacity as an additional contributing mechanism: the same observed pattern may occur where custody is lost between the user-authored prompt, system-transformed prompt, safety-normalized prompt, classifier-visible prompt, renderer-facing prompt, classifier outcome, and final user-facing explanation. Follow-up review indicates that the observed refusal pattern may arise not only from weak-signal ambiguity collapse, but also from loss of custody across image-prompt transformation and failure-classification collapse. A benign user-authored prompt may be transformed, safety-normalized, classified, blocked, or failed in a downstream renderer/tool pathway, while the final explanation is surfaced as if the user-authored prompt itself contained the prohibited category. This remains the same observed FM-0023 failure family, not a new FM-0024.",
       "evidence_confidence": "anecdotal",
       "source_types": [
         "governance-note",
+        "news-report",
         "social-platform-observation"
       ],
-      "source_count": 2,
+      "source_count": 4,
       "primary_source_title": "User-reported ChatGPT image-generation refusal screenshot",
       "primary_source_type": "social-platform-observation",
       "primary_source_platform": "X",
       "source_platforms": [
+        "BBC News",
         "ChatGPT",
         "X"
       ],
@@ -1547,8 +1549,8 @@
       "severity": "low-to-medium",
       "likelihood": "to be assessed; multiple user reports alleged but not yet independently collected",
       "triage_priority": "P2",
-      "triage_status": "watching-after-patch",
-      "mitigation_status": "none identified",
+      "triage_status": "repair-implemented-monitoring",
+      "mitigation_status": "PATCH-0010 addressed ambiguity preservation and clarification routing; PATCH-0011 addressed image prompt custody, transformation opacity, refusal-classification collapse, tool-classifier handoff locality, and user-facing explanation integrity; monitoring remains required.",
       "escalation_required": "to be assessed",
       "path": "vigil/records/failures/2026/VIGIL-2026-FM-0023.json",
       "github_blob_url": "https://github.com/CAM-Initiative/Vigil/blob/main/vigil/records/failures/2026/VIGIL-2026-FM-0023.json",

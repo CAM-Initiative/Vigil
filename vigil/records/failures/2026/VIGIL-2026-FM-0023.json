@@ -8,10 +8,10 @@
     "record_type": "failure_mode",
     "title": "Weak-signal ambiguity collapse under recoverable image-generation classification",
     "created": "2026-06-19",
-    "updated": "2026-06-19",
-    "version": "1.0"
+    "updated": "2026-06-22",
+    "version": "1.3"
   },
-  "summary": "A governance and UX-representation failure mode in which an AI system refuses a request and presents a user-facing rationale that appears disconnected from the visible prompt, insufficiently specific, or not useful for recovery. The observed case concerns an image-generation request that appeared benign on its face but produced a refusal attributed to harassment, discrimination, or bullying. The record does not assert that the underlying classifier was necessarily wrong; it records the user-facing failure where the system provides no meaningful clarification, remediation pathway, or explanation of whether the refusal arose from visible prompt content, earlier context, accumulated weak signals, rate or load constraints, inherited image state, or generic fallback routing.",
+  "summary": "A governance and UX-representation failure mode in which an AI system refuses a request and presents a user-facing rationale that appears disconnected from the visible prompt, insufficiently specific, or not useful for recovery. The observed case concerns an image-generation request that appeared benign on its face but produced a refusal attributed to harassment, discrimination, or bullying. The record does not assert that the underlying classifier was necessarily wrong; it records the user-facing failure where the system provides no meaningful clarification, remediation pathway, or explanation of whether the refusal arose from visible prompt content, earlier context, accumulated weak signals, rate or load constraints, inherited image state, or generic fallback routing. A follow-up audit further identifies image prompt custody / prompt transformation opacity as an additional contributing mechanism: the same observed pattern may occur where custody is lost between the user-authored prompt, system-transformed prompt, safety-normalized prompt, classifier-visible prompt, renderer-facing prompt, classifier outcome, and final user-facing explanation. Follow-up review indicates that the observed refusal pattern may arise not only from weak-signal ambiguity collapse, but also from loss of custody across image-prompt transformation and failure-classification collapse. A benign user-authored prompt may be transformed, safety-normalized, classified, blocked, or failed in a downstream renderer/tool pathway, while the final explanation is surfaced as if the user-authored prompt itself contained the prohibited category. This remains the same observed FM-0023 failure family, not a new FM-0024.",
   "why_it_matters_to_CAM": "CAM distinguishes signal detection, runtime governance, and user-facing explanation. A refusal may be justified, but the reason presented to the user should remain proportionate, intelligible, and recoverable where disclosure is safe. Where multiple weak signals, contextual inheritance, or ambiguous classifier states trigger refusal, a governed runtime should prefer clarification, safe reformulation, or bounded explanation unless a stronger safety threshold requires immediate refusal. Misattributed or opaque refusal rationales impair user agency, prevent correction, obscure the real failure mechanism, and degrade trust in safety architecture.",
   "evidence_confidence": "anecdotal",
   "source_records": [
@@ -46,6 +46,38 @@
       "source_context": "The maintainer noted that multiple users appeared to report similar rejection behaviour, and that in some observed cases users could discuss or joke about the classifier with the model before the output was later generated. That pattern suggests possible recoverable classification, retry instability, ambiguous thresholding, or misreported refusal cause rather than a stable absolute prohibition.",
       "source_url_status": "not applicable",
       "relevance_note": "Supports triage framing around recurrence, recoverability, and user-facing explanation failure. This note is not a substitute for collecting additional primary screenshots and prompt histories."
+    },
+    {
+      "source_title": "User-reported ChatGPT image-generation refusal and prompt rewrite concern",
+      "author_or_publisher": "Dwayne (@CtrlAltDwayne) / X",
+      "source_date": "unknown",
+      "source_url": "https://x.com/CtrlAltDwayne/status/2068927517361324158",
+      "archive_url": "",
+      "retrieved_date": "2026-06-22",
+      "source_type": "social-platform-observation",
+      "source_platform": "X",
+      "system_or_product": "ChatGPT image generation",
+      "model_or_algorithm": "Exact image-generation runtime and safety-classifier stack not independently confirmed",
+      "deployment_context": "Public social-media report concerning image-generation refusal or image-prompt handling behaviour.",
+      "source_context": "Latest public X URL supplied for this follow-up pass. Direct web retrieval located the account page but did not expose the full post content in unauthenticated search/open results, so this record preserves the URL as provisional supporting evidence rather than independently verified factual proof of the complete prompt, transformed prompt, classifier state, or runtime cause.",
+      "source_url_status": "available to authenticated account holder",
+      "relevance_note": "Potential supporting anecdotal evidence for FM-0023 if authenticated review confirms that the post concerns benign image-generation prompt handling, refusal-rationale mismatch, or prompt rewrite/transformation opacity. Screenshots or archives should be captured before relying on it as primary evidence."
+    },
+    {
+      "source_title": "BBC background report on AI image-generation safety or misuse context",
+      "author_or_publisher": "BBC News",
+      "source_date": "unknown",
+      "source_url": "https://www.bbc.com/news/articles/c802ldjdklzo",
+      "archive_url": "",
+      "retrieved_date": "2026-06-22",
+      "source_type": "news-report",
+      "source_platform": "BBC News",
+      "system_or_product": "AI image generation / public AI safety context",
+      "model_or_algorithm": "not applicable",
+      "deployment_context": "Public reporting supplied as broader background context for image-generation guardrails and public concern.",
+      "source_context": "URL supplied as possible broader/background context. It is not treated here as primary evidence for the specific ChatGPT image-generation refusal-rationale failure unless later review confirms direct support for the same guardrail/refusal pattern. Direct retrieval in this pass did not provide enough article text to verify publication date or direct evidentiary fit.",
+      "source_url_status": "unknown",
+      "relevance_note": "Background/context only; does not replace the FM-0023 social-platform observations or the need for prompt-level chain-of-custody evidence."
     }
   ],
   "system_context": {
@@ -94,14 +126,15 @@
     ],
     "related_proposals": [],
     "related_patch_notes": [
-      "VIGIL-2026-PATCH-0010"
+      "VIGIL-2026-PATCH-0010",
+      "VIGIL-2026-PATCH-0011"
     ],
     "external_references": [],
     "research": [],
     "standards": []
   },
-  "failure_mode_definition": "A failure mode in which a classifier, runtime safety layer, or governance-decision layer refuses a request and communicates a rationale that is overbroad, misleading, non-specific, or apparently unrelated to the visible prompt or recoverable user intent. The failure may arise from accumulated weak signals, earlier-context contamination, inherited image state, retry instability, load or routing constraints, generic fallback refusal messaging, or a genuine policy trigger that is not legibly communicated to the user. The failure is not defined by proving that the refusal itself was wrong; it is defined by the mismatch between the user-facing rationale and the user's ability to understand, correct, clarify, or safely proceed.",
-  "failure_threshold": "The threshold is met where a request is refused, the visible request does not obviously match the stated refusal category, the refusal gives no meaningful clarification or recovery path, and the available evidence indicates either recurrence across users, recoverability after discussion or retry, or plausible ambiguity that should have supported clarification rather than hard refusal. The threshold is also met where a non-policy condition such as load, rate limiting, routing, tool failure, or inherited state is presented to the user as a content-policy violation.",
+  "failure_mode_definition": "A failure mode in which a classifier, runtime safety layer, or governance-decision layer refuses a request and communicates a rationale that is overbroad, misleading, non-specific, or apparently unrelated to the visible prompt or recoverable user intent. The failure may arise from accumulated weak signals, earlier-context contamination, inherited image state, retry instability, load or routing constraints, generic fallback refusal messaging, or a genuine policy trigger that is not legibly communicated to the user. The failure is not defined by proving that the refusal itself was wrong; it is defined by the mismatch between the user-facing rationale and the user's ability to understand, correct, clarify, or safely proceed. A follow-up mechanism is image prompt custody / prompt transformation opacity: benign user-authored prompts may be rewritten, normalized, expanded, or converted into classifier-visible and renderer-facing prompts, then refused or explained as if the classifier outcome arose directly from the original user wording. The same observed failure family also covers overbroad refusal-category or failure-classification collapse where unresolved classifier ambiguity, transformed-prompt mismatch, renderer/tool/access failure, output-classifier block, or fallback refusal is narrated as a specific misconduct category unsupported by the visible user-authored request.",
+  "failure_threshold": "The threshold is met where a request is refused, the visible request does not obviously match the stated refusal category, the refusal gives no meaningful clarification or recovery path, and the available evidence indicates either recurrence across users, recoverability after discussion or retry, or plausible ambiguity that should have supported clarification rather than hard refusal. The threshold is also met where a non-policy condition such as load, rate limiting, routing, tool failure, or inherited state is presented to the user as a content-policy violation. The threshold also includes cases where the system cannot preserve or explain the distinction between user-authored prompt, transformed prompt, safety-normalized prompt, classifier-visible prompt, renderer-facing prompt, classifier outcome, and final user-facing explanation. The threshold further includes overbroad refusal-category collapse where harassment, discrimination, bullying, sexualisation, self-harm, violence, illegality, deception, or other misconduct is implied without the relevant category being resolved against the user-authored request.",
   "failure_classification": {
     "failure_family": "classification",
     "failure_subtype": "weak-signal-cascade-and-ambiguity-collapse-under-recoverable-classification",
@@ -118,7 +151,16 @@
       "user confusion",
       "failed recoverability",
       "appeal and debugging impairment",
-      "trust degradation"
+      "trust degradation",
+      "image prompt custody loss",
+      "prompt transformation opacity",
+      "classifier-visible prompt / user-authored prompt conflation",
+      "renderer-facing prompt provenance gap",
+      "overbroad refusal-category collapse",
+      "failure-classification collapse",
+      "input/output classifier state conflation",
+      "renderer/tool/access failure surfaced as user misconduct",
+      "generic fallback refusal surfaced as specific misconduct"
     ],
     "severity": "low-to-medium",
     "likelihood": "to be assessed; multiple user reports alleged but not yet independently collected",
@@ -136,7 +178,7 @@
     "failure_scope": "vendor-specific / image-generation surface / potentially systemic classification-and-routing pattern",
     "recurrence_pattern": "Unknown. Triage should determine whether similar refusal outcomes appear across unrelated benign image prompts, whether retry or discussion resolves the issue, whether prior context or inherited image state contributes, and whether refusal categories cluster around generic fallback messaging.",
     "canonical_failure_group": "classification",
-    "taxonomy_reference": "CAM-EQ2026-OPERATIONS-003-SUP-01 Appendix B §3.10.2 Weak-Signal Cascade and Ambiguity Collapse Failure; related review under §3.8.14 Structural Locality and Hierarchical Placement Failure where runtime gate placement affects routing.",
+    "taxonomy_reference": "CAM-EQ2026-OPERATIONS-003-SUP-01 Appendix B §3.10.2 Weak-Signal Cascade and Ambiguity Collapse Failure; related review under §3.8.14 Structural Locality and Hierarchical Placement Failure, Execution Transparency Suppression, UX/refusal explanation mismatch, classification ambiguity, and failure-classification collapse where runtime gate placement or hidden state collapse affects routing.",
     "related_failure_groups": [
       "arbitration",
       "governance",
@@ -150,10 +192,10 @@
   "triage": {
     "triage_priority": "P2",
     "triage_owner": "VIGIL maintainers",
-    "triage_status": "watching-after-patch",
-    "mitigation_status": "none identified",
+    "triage_status": "repair-implemented-monitoring",
+    "mitigation_status": "PATCH-0010 addressed ambiguity preservation and clarification routing; PATCH-0011 addressed image prompt custody, transformation opacity, refusal-classification collapse, tool-classifier handoff locality, and user-facing explanation integrity; monitoring remains required.",
     "escalation_required": "to be assessed",
-    "recommended_next_step": "Collect additional primary examples including exact prompt text, refusal screenshot, prior 3-5 prompts or images where available, account tier, platform surface, approximate time, whether the same prompt succeeds on retry, whether discussion with the model resolves the refusal, and whether the refusal category is consistent across unrelated prompts. Do not classify as confirmed false positive until the hidden context and recurrence pattern are better established."
+    "recommended_next_step": "Collect additional primary examples including exact prompt text, refusal screenshot, prior 3-5 prompts or images where available, account tier, platform surface, approximate time, whether the same prompt succeeds on retry, whether discussion with the model resolves the refusal, and whether the refusal category is consistent across unrelated prompts. Do not classify as confirmed false positive until the hidden context and recurrence pattern are better established. Follow-up investigation should collect the user-authored prompt, any system-transformed or safety-normalized prompt if visible, classifier-visible prompt if auditable, renderer-facing prompt if auditable, classifier outcome, output/tool state, and final user-facing explanation so prompt-custody loss can be distinguished from ambiguous classifier/refusal state. Review should also classify whether the apparent refusal source was a resolved policy prohibition, unresolved classifier ambiguity, prompt transformation uncertainty, transformed-prompt block, input classifier block, output classifier block, renderer failure, tool failure, access/quota/rate-limit failure, or generic fallback refusal before attributing any misconduct category to the user."
   },
   "cam_internal": {
     "affected_instruments": [
@@ -172,16 +214,17 @@
     "governance_layer": "runtime governance / refusal explanation / UX representation",
     "proposal_needed": "yes",
     "linked_proposal_ids": [],
-    "routing_note": "FM routing should treat the primary failure as weak-signal ambiguity collapse and premature classification convergence. The refusal-rationale mismatch is a downstream UX-representation symptom, not the primary failure class. The repair pathway is PATCH-0010: ambiguity preservation, clarification routing, arbitration recognition of clarification as a valid outcome, and ambiguity-aware refusal expression.",
+    "routing_note": "FM routing should treat the primary failure as weak-signal ambiguity collapse and premature classification convergence, with prompt-custody / transformation opacity and refusal-category / failure-classification collapse as follow-on contributing mechanisms. PATCH-0010 addressed ambiguity preservation and clarification routing. PATCH-0011 addressed image prompt custody, transformation opacity, refusal-classification collapse, tool-classifier handoff locality, and user-facing explanation integrity. FM-0023 remains in monitoring after repair implementation rather than fully closed.",
     "validator_or_automation_impact": "possible"
   },
   "repair_status": {
     "status": "repaired",
     "repaired_by": [
-      "VIGIL-2026-PATCH-0010"
+      "VIGIL-2026-PATCH-0010",
+      "VIGIL-2026-PATCH-0011"
     ],
-    "date_repaired": "2026-06-20",
-    "verification_status": "linked patch record exists; live recurrence remains subject to monitoring",
-    "monitoring_status": "monitoring after patch"
+    "date_repaired": "2026-06-22",
+    "verification_status": "Repair implemented through PATCH-0010 for ambiguity preservation / clarification routing and PATCH-0011 for image prompt custody, transformation opacity, refusal-classification collapse, tool-classifier handoff locality, and user-facing explanation integrity. Final Caelestis merge hash remains pending; recurrence monitoring remains required.",
+    "monitoring_status": "repair implemented / monitoring required"
   }
 }
