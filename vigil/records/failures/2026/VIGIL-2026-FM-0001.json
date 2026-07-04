@@ -8,13 +8,13 @@
     "record_type": "failure_mode",
     "title": "Permission-gated tool invocation freeze",
     "created": "2026-05-31",
-    "updated": "2026-05-31",
-    "version": "1.0"
+    "updated": "2026-07-04",
+    "version": "1.2"
   },
-  "summary": "A runtime failure in which an AI system infers permission for tool, repository, connector, or external-resource access from conversational context, attempts access before explicit user confirmation, and causes a blocked, degraded, or unrecoverable conversational continuity state.",
+  "summary": "A runtime/orchestration failure in which an AI system infers permission for tool, repository, connector, image-generation workflow, or external-resource access from conversational context or weak lexical/multimodal cues, arms or invokes the tool before explicit user confirmation, and causes a blocked, degraded, glitched, or unrecoverable conversational continuity state.",
   "why_it_matters_to_CAM": "This failure mode is relevant to CAM because premature or inferred tool access can collapse user trust, interrupt governance workflow continuity, create procedural ambiguity around consent, and prevent recovery when the user expected explanation, scaffolding, or confirmation before tool execution.",
-  "failure_mode_definition": "A failure mode in which an AI system initiates or attempts tool, repository, connector, file, or external-resource access before receiving explicit user confirmation, and the attempted access produces a permission block, conversational freeze, continuity break, or unrecoverable workflow interruption.",
-  "failure_threshold": "This qualifies as a failure mode when inferred permission or premature tool invocation causes the interaction to become blocked, degraded, permission-gated, unrecoverable, or procedurally unclear, especially where the user did not explicitly request immediate tool execution or where relational/contextual scaffolding was still required.",
+  "failure_mode_definition": "A failure mode in which an AI system arms, initiates, or attempts tool, repository, connector, file, image-generation workflow, or external-resource access before receiving explicit user confirmation. This includes premature tool arming as well as invocation; activation from weak lexical triggers such as references to art, prompts, or images; ambiguous multimodal upload activation without follow-up generation/editing intent; and execution-boundary inconsistency across runtime, orchestration, client, or multimodal routing layers. The attempted or armed access may produce a permission block, visible workflow switch, application glitch, crash, reload requirement, conversational freeze, continuity break, or unrecoverable workflow interruption.",
+  "failure_threshold": "This qualifies as a failure mode when inferred permission, premature tool arming, premature tool invocation, weak lexical trigger activation, or ambiguous multimodal upload activation causes the interaction to become blocked, degraded, permission-gated, glitched, unrecoverable, or procedurally unclear, especially where the user did not explicitly request immediate tool execution, image generation, or image editing, or where relational/contextual scaffolding was still required.",
   "evidence_confidence": "verified",
   "source_records": [
     {
@@ -32,6 +32,22 @@
       "source_context": "Related VIGIL observation record identifying a runtime continuity failure associated with inferred or premature tool invocation.",
       "source_url_status": "not applicable",
       "relevance_note": "This source preserves the originating VIGIL observation linkage for the permission-gated tool invocation freeze failure mode."
+    },
+    {
+      "source_title": "User-reported ChatGPT premature image-generation activation after PATCH-0002",
+      "author_or_publisher": "@ai_in_the_room / X",
+      "source_date": "2026-07-02",
+      "source_url": "https://x.com/ai_in_the_room/status/2072572390857453868",
+      "archive_url": "",
+      "retrieved_date": "2026-07-04",
+      "source_type": "social-platform-observation",
+      "source_platform": "X",
+      "system_or_product": "ChatGPT image generation",
+      "model_or_algorithm": "User reported the visible model switched from GPT-5.5 to \"5.4 Thinking\"; underlying image-generation runtime not independently confirmed.",
+      "deployment_context": "Consumer ChatGPT image-generation workflow involving conversational mentions of art, prompt, or image terms and multimodal image upload behaviour.",
+      "source_context": "User-supplied public X report from a competent long-time ChatGPT user. The report states that the image generator activates when terms such as \"art,\" \"prompt,\" or \"image\" are mentioned; the app glitches and requires reload; the visible model reportedly switches from GPT-5.5 to \"5.4 Thinking\"; and uploading an image without follow-up text reportedly causes the image generator to activate or crash the app. Direct unauthenticated retrieval on 2026-07-04 reached the X status URL but did not expose independently reviewable post text in the retrieval output, so this is preserved as anecdotal recurrence telemetry pending screenshot or archive capture.",
+      "source_url_status": "available to authenticated account holder",
+      "relevance_note": "Post-repair anecdotal recurrence telemetry for FM-0001. It supports monitoring for premature image-tool arming and weak lexical or ambiguous multimodal activation without explicit generation/editing intent, but does not establish the underlying image-generation model or root-cause layer."
     }
   ],
   "system_context": {
@@ -84,10 +100,10 @@
   "triage": {
     "triage_priority": "P1",
     "triage_owner": "Aeon Governance Lab",
-    "triage_status": "watching-after-patch",
-    "mitigation_status": "partially_resolved — governance-text repair linked through VIGIL-2026-PATCH-0002; live runtime recurrence remains under monitoring.",
+    "triage_status": "monitoring-after-follow-on-patch",
+    "mitigation_status": "repair implemented / recurrence telemetry addressed by follow-on corpus repair — VIGIL-2026-PATCH-0002 remains the historical proportional tool-invocation repair; VIGIL-2026-PATCH-0013 extends coverage to pre-invocation tool arming and provisional interaction states; live runtime recurrence remains under monitoring.",
     "escalation_required": "no",
-    "recommended_next_step": "Monitor post-PATCH-0002 recurrence and confirm whether proportional tool-invocation authority bands resolve the governance-text repair pathway without creating excessive hesitation or ambiguity collapse."
+    "recommended_next_step": "Monitor post-PATCH-0013 recurrence telemetry, especially premature tool arming, model/runtime routing changes, modality-specific UI activation, renderer preparation, or execution-path reservation from weak lexical triggers, accidental submission, upload-without-instruction events, partial prompts, staged uploads, draft prompt construction, or incomplete multimodal assembly."
   },
   "jurisdictional_context": {
     "primary_jurisdiction": "global",
@@ -109,7 +125,8 @@
     "related_failure_modes": [],
     "related_proposals": [],
     "related_patch_notes": [
-      "VIGIL-2026-PATCH-0002"
+      "VIGIL-2026-PATCH-0002",
+      "VIGIL-2026-PATCH-0013"
     ],
     "external_references": [],
     "research": [],
@@ -138,10 +155,11 @@
   "repair_status": {
     "status": "repaired",
     "repaired_by": [
-      "VIGIL-2026-PATCH-0002"
+      "VIGIL-2026-PATCH-0002",
+      "VIGIL-2026-PATCH-0013"
     ],
     "date_repaired": "2026-06-02T14:26:00Z",
-    "verification_status": "linked patch record exists; live recurrence remains subject to monitoring",
-    "monitoring_status": "monitoring after patch"
+    "verification_status": "linked patch records exist; PATCH-0002 remains historical proportional invocation repair; PATCH-0013 records maintainer-reported follow-on Caelestis repair for pre-invocation tool arming and provisional interaction-state handling; exact Caelestis commit SHA or PR URL remains pending",
+    "monitoring_status": "repair implemented / monitoring after follow-on patch; live runtime recurrence remains under monitoring"
   }
 }

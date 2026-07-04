@@ -8,8 +8,8 @@
     "record_type": "failure_mode",
     "title": "Weak-signal ambiguity collapse under recoverable image-generation classification",
     "created": "2026-06-19",
-    "updated": "2026-06-22",
-    "version": "1.3"
+    "updated": "2026-07-04",
+    "version": "1.4"
   },
   "summary": "A governance and UX-representation failure mode in which an AI system refuses a request and presents a user-facing rationale that appears disconnected from the visible prompt, insufficiently specific, or not useful for recovery. The observed case concerns an image-generation request that appeared benign on its face but produced a refusal attributed to harassment, discrimination, or bullying. The record does not assert that the underlying classifier was necessarily wrong; it records the user-facing failure where the system provides no meaningful clarification, remediation pathway, or explanation of whether the refusal arose from visible prompt content, earlier context, accumulated weak signals, rate or load constraints, inherited image state, or generic fallback routing. A follow-up audit further identifies image prompt custody / prompt transformation opacity as an additional contributing mechanism: the same observed pattern may occur where custody is lost between the user-authored prompt, system-transformed prompt, safety-normalized prompt, classifier-visible prompt, renderer-facing prompt, classifier outcome, and final user-facing explanation. Follow-up review indicates that the observed refusal pattern may arise not only from weak-signal ambiguity collapse, but also from loss of custody across image-prompt transformation and failure-classification collapse. A benign user-authored prompt may be transformed, safety-normalized, classified, blocked, or failed in a downstream renderer/tool pathway, while the final explanation is surfaced as if the user-authored prompt itself contained the prohibited category. This remains the same observed FM-0023 failure family, not a new FM-0024.",
   "why_it_matters_to_CAM": "CAM distinguishes signal detection, runtime governance, and user-facing explanation. A refusal may be justified, but the reason presented to the user should remain proportionate, intelligible, and recoverable where disclosure is safe. Where multiple weak signals, contextual inheritance, or ambiguous classifier states trigger refusal, a governed runtime should prefer clarification, safe reformulation, or bounded explanation unless a stronger safety threshold requires immediate refusal. Misattributed or opaque refusal rationales impair user agency, prevent correction, obscure the real failure mechanism, and degrade trust in safety architecture.",
@@ -35,7 +35,7 @@
       "source_title": "VIGIL maintainer discussion of repeated user reports and recoverable refusals",
       "author_or_publisher": "Dr. Michelle Vivian O'Rourke / VIGIL maintainer discussion",
       "source_date": "2026-06-19",
-      "source_url": "https://chatgpt.com/g/g-p-6907218b1c6c8191b2742c91d13b5e4b/c/6a34b3ee-9e94-83ec-a990-c9125e53359a",
+      "source_url": "https://chatgpt.com/g/g-p-6907218b1c6c8191b2742c91d13b5e4b/c/6a3d3131-d208-83ec-852f-153e40ecc60c",
       "archive_url": "",
       "retrieved_date": "2026-06-19",
       "source_type": "governance-note",
@@ -43,8 +43,8 @@
       "system_or_product": "VIGIL triage discussion",
       "model_or_algorithm": "ChatGPT 5.5T",
       "deployment_context": "Governance triage discussion concerning reports of image-generation refusals and unclear refusal rationales.",
-      "source_context": "The maintainer noted that multiple users appeared to report similar rejection behaviour, and that in some observed cases users could discuss or joke about the classifier with the model before the output was later generated. That pattern suggests possible recoverable classification, retry instability, ambiguous thresholding, or misreported refusal cause rather than a stable absolute prohibition.",
-      "source_url_status": "not applicable",
+      "source_context": "The maintainer noted that multiple users appeared to report similar rejection behaviour, and that in some observed cases users could discuss or joke about the classifier with the model before the output was later generated. That pattern suggests possible recoverable classification, retry instability, ambiguous thresholding, or misreported refusal cause rather than a stable absolute prohibition. Source URL updated within the same pull request to the supplied ChatGPT conversation locator for this maintainer discussion.",
+      "source_url_status": "available to authenticated account holder",
       "relevance_note": "Supports triage framing around recurrence, recoverability, and user-facing explanation failure. This note is not a substitute for collecting additional primary screenshots and prompt histories."
     },
     {
@@ -122,7 +122,8 @@
     "related_observations": [],
     "related_failure_modes": [
       "VIGIL-2026-FM-0017",
-      "VIGIL-2026-FM-0020"
+      "VIGIL-2026-FM-0020",
+      "VIGIL-2026-FM-0001"
     ],
     "related_proposals": [],
     "related_patch_notes": [
@@ -195,7 +196,7 @@
     "triage_status": "repair-implemented-monitoring",
     "mitigation_status": "PATCH-0010 addressed ambiguity preservation and clarification routing; PATCH-0011 addressed image prompt custody, transformation opacity, refusal-classification collapse, tool-classifier handoff locality, and user-facing explanation integrity; monitoring remains required.",
     "escalation_required": "to be assessed",
-    "recommended_next_step": "Collect additional primary examples including exact prompt text, refusal screenshot, prior 3-5 prompts or images where available, account tier, platform surface, approximate time, whether the same prompt succeeds on retry, whether discussion with the model resolves the refusal, and whether the refusal category is consistent across unrelated prompts. Do not classify as confirmed false positive until the hidden context and recurrence pattern are better established. Follow-up investigation should collect the user-authored prompt, any system-transformed or safety-normalized prompt if visible, classifier-visible prompt if auditable, renderer-facing prompt if auditable, classifier outcome, output/tool state, and final user-facing explanation so prompt-custody loss can be distinguished from ambiguous classifier/refusal state. Review should also classify whether the apparent refusal source was a resolved policy prohibition, unresolved classifier ambiguity, prompt transformation uncertainty, transformed-prompt block, input classifier block, output classifier block, renderer failure, tool failure, access/quota/rate-limit failure, or generic fallback refusal before attributing any misconduct category to the user."
+    "recommended_next_step": "Collect additional primary examples including exact prompt text, refusal screenshot, prior 3-5 prompts or images where available, account tier, platform surface, approximate time, whether the same prompt succeeds on retry, whether discussion with the model resolves the refusal, and whether the refusal category is consistent across unrelated prompts. Do not classify as confirmed false positive until the hidden context and recurrence pattern are better established. Follow-up investigation should collect the user-authored prompt, any system-transformed or safety-normalized prompt if visible, classifier-visible prompt if auditable, renderer-facing prompt if auditable, classifier outcome, output/tool state, and final user-facing explanation so prompt-custody loss can be distinguished from ambiguous classifier/refusal state. Review should also classify whether the apparent refusal source was a resolved policy prohibition, unresolved classifier ambiguity, prompt transformation uncertainty, transformed-prompt block, input classifier block, output classifier block, renderer failure, tool failure, access/quota/rate-limit failure, or generic fallback refusal before attributing any misconduct category to the user. Separately track premature image-tool arming or invocation without explicit generation/editing intent under VIGIL-2026-FM-0001; FM-0023 remains focused on refusal-rationale integrity, prompt custody, and refusal-classification collapse rather than tool-activation boundary failures."
   },
   "cam_internal": {
     "affected_instruments": [
