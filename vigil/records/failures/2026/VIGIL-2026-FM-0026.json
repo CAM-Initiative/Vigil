@@ -1,15 +1,15 @@
 {
   "id": "VIGIL-2026-FM-0026",
   "record_type": "failure_mode",
-  "record_state": "active",
+  "record_state": "monitoring",
   "date_recorded": "2026-07-07",
   "record_identity": {
     "record_id": "VIGIL-2026-FM-0026",
     "record_type": "failure_mode",
     "title": "Objective-pathway misclassification under deception framing",
     "created": "2026-07-07",
-    "updated": "2026-07-07",
-    "version": "1.0"
+    "updated": "2026-07-08",
+    "version": "1.1"
   },
   "summary": "A classification failure mode in which an AI system's successful or partially successful task completion is labelled deceptive or scheming without first decomposing the assigned objective, explicit constraints, implicit constraints, available affordances, prohibited means, instruction conflicts, and evidence of concealment or false-belief induction.",
   "why_it_matters_to_CAM": "CAM needs to distinguish a model completing a task through an unexpected or impermissible pathway from a model materially deceiving an authorised observer. If the pathway is misclassified, the repair target is misrouted: the real issue may be missing prohibitions, conflicting instructions, environment design, reward pressure, or lossy reporting rather than deception itself.",
@@ -80,6 +80,22 @@
       "source_context": "Research source describing selective compliance under simulated training conditions, with the authors noting that the setup made alignment faking easier by telling the model when and by what criteria it was being trained. Used to distinguish context-conditioned evaluation variance from stronger claims about general deception.",
       "source_url_status": "available",
       "relevance_note": "Supports taxonomy separation between evaluation-context variance, alignment-faking setups, and public deception framing."
+    },
+    {
+      "source_title": "VIGIL-2026-PATCH-0014 — Deception-adjacent classification and action-pathway attribution discipline",
+      "author_or_publisher": "VIGIL",
+      "source_date": "2026-07-08",
+      "source_url": "https://github.com/CAM-Initiative/Vigil/blob/main/vigil/records/patches/2026/VIGIL-2026-PATCH-0014.json",
+      "archive_url": "",
+      "retrieved_date": "2026-07-08",
+      "source_type": "repository-source",
+      "source_platform": "VIGIL",
+      "system_or_product": "VIGIL patch-note registry",
+      "model_or_algorithm": "not applicable",
+      "deployment_context": "Patch record linking FM-0026 to the Caelestis PATCH-0014 amendments.",
+      "source_context": "PATCH-0014 adds OPERATIONS-003-SUP-01 §3.10.3 Deception-Adjacent Classification Collapse, directly addressing the objective-pathway misclassification gap captured by FM-0026.",
+      "source_url_status": "available / canonical main-branch confirmed",
+      "relevance_note": "Patch record establishing partial repair linkage for FM-0026."
     }
   ],
   "system_context": {
@@ -114,19 +130,19 @@
     "failure_scope": "cross-vendor / public safety discourse / evaluation interpretation",
     "recurrence_pattern": "emerging in regulatory, media, and research reporting around agentic systems",
     "canonical_failure_group": "classification",
-    "taxonomy_reference": "CAM-EQ2026-OPERATIONS-003-SUP-01 Appendix B — Runtime & Governance Failure Taxonomy; proposed deception-adjacent subtype pending taxonomy harmonisation",
+    "taxonomy_reference": "CAM-EQ2026-OPERATIONS-003-SUP-01 Appendix B — Runtime & Governance Failure Taxonomy; addressed by PATCH-0014",
     "related_failure_groups": ["epistemic", "governance", "execution", "state-context", "ux-representation"],
-    "persistence": "active while deception-adjacent terminology lacks pathway-audit requirements",
+    "persistence": "monitoring after PATCH-0014 doctrine repair; public-regulatory discourse may continue to exhibit this pattern",
     "reproducibility": "reproducible by reviewing public reports or evaluations for omitted objective/constraint/affordance decomposition",
     "visibility": "visible in public terms such as cheating, scheming, and deception when used without operational decomposition"
   },
   "triage": {
     "triage_priority": "P1",
     "triage_owner": "VIGIL maintainers",
-    "triage_status": "active-triage",
-    "mitigation_status": "unrepaired — taxonomy capture and CAM repair routing required",
-    "escalation_required": "yes",
-    "recommended_next_step": "Add a taxonomy note requiring a pathway audit before deception classification: assigned objective, explicit constraints, implicit constraints, prohibited means, available affordances, incentive structure, evaluator context, action trace, and evidence of material false-belief induction."
+    "triage_status": "monitoring",
+    "mitigation_status": "partially-repaired by VIGIL-2026-PATCH-0014; validator review, generated-index rebuild, and ongoing monitoring remain required",
+    "escalation_required": "no — monitor after patch unless new evidence indicates active unresolved harm",
+    "recommended_next_step": "Verify PATCH-0014 through the next VIGIL validator/index rebuild pass and monitor public deception-framed AI-safety reporting for mechanism-preserving decomposition."
   },
   "jurisdictional_context": {
     "primary_jurisdiction": "global",
@@ -140,26 +156,26 @@
     "related_observations": [],
     "related_failure_modes": ["VIGIL-2026-FM-0025", "VIGIL-2026-FM-0027"],
     "related_proposals": [],
-    "related_patch_notes": [],
+    "related_patch_notes": ["VIGIL-2026-PATCH-0014"],
     "external_references": [],
     "research": [],
     "standards": []
   },
   "cam_internal": {
-    "affected_instruments": ["CAM-EQ2026-OPERATIONS-003-SUP-01 — Runtime & Governance Failure Taxonomy", "CAM-EQ2026-OPERATIONS-001-SUP-01 — Operational Logging & Audit Standards", "Annex L — Accurate Ontological Narration"],
+    "affected_instruments": ["CAM-EQ2026-OPERATIONS-003-SUP-01 — Runtime & Governance Failure Taxonomy", "CAM-EQ2026-OPERATIONS-001-SUP-01 — Operational Logging & Audit Standards", "CAM-BS2026-AEON-013-PLATINUM — Annex L: Cognitive & Epistemic Integrity Doctrine"],
     "affected_annexes": ["Appendix B", "Annex L", "Annex K"],
     "affected_domains": ["OPERATIONS", "AEON", "CONTINUITY", "LATTICE"],
     "governance_layer": "AI safety reporting, model-evaluation interpretation, agentic-system auditability, taxonomy discipline, and public-regulatory communication",
-    "proposal_needed": "yes",
+    "proposal_needed": "no — partially repaired by VIGIL-2026-PATCH-0014",
     "linked_proposal_ids": [],
-    "routing_note": ["Suggested doctrinal sentence: a model should not be classified as deceptive merely because it completed an assigned objective through an unexpected, undesirable, or underspecified pathway.", "Deception-adjacent findings require decomposition of objective, constraints, available affordances, reporting surface, evaluator context, and material concealment or false-belief induction.", "This record should route coercive-leverage and cheating-style examples as possible subtypes only after the pathway audit is complete."],
-    "validator_or_automation_impact": "possible"
+    "routing_note": ["PATCH-0014 adds §3.10.3 Deception-Adjacent Classification Collapse to prevent premature objective-pathway deception classifications.", "Deception-adjacent findings require decomposition of objective, constraints, available affordances, reporting surface, evaluator context, provenance, attribution, and material concealment or false-belief induction.", "Coercive-leverage and cheating-style examples should route as possible subtypes only after the pathway audit is complete."],
+    "validator_or_automation_impact": "VIGIL generated indexes require rebuild after this record update."
   },
   "repair_status": {
-    "status": "unrepaired",
-    "repaired_by": [],
-    "date_repaired": "",
-    "verification_status": "no repair recorded; new failure-mode capture only",
-    "monitoring_status": "active monitoring and taxonomy harmonisation required"
+    "status": "partially-repaired",
+    "repaired_by": ["VIGIL-2026-PATCH-0014"],
+    "date_repaired": "2026-07-08",
+    "verification_status": "Caelestis doctrine repair implemented and VIGIL patch linkage added; ongoing monitoring and generated-index rebuild required",
+    "monitoring_status": "monitoring after PATCH-0014"
   }
 }
