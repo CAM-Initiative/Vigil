@@ -1,15 +1,15 @@
 {
   "id": "VIGIL-2026-FM-0025",
   "record_type": "failure_mode",
-  "record_state": "active",
+  "record_state": "monitoring",
   "date_recorded": "2026-07-07",
   "record_identity": {
     "record_id": "VIGIL-2026-FM-0025",
     "record_type": "failure_mode",
     "title": "Lossy action reporting and missing governance primitive disclosure",
     "created": "2026-07-07",
-    "updated": "2026-07-07",
-    "version": "1.0"
+    "updated": "2026-07-08",
+    "version": "1.1"
   },
   "summary": "A reporting and auditability failure mode in which an AI or agentic system performs, attempts, evaluates, or summarises a task but omits material intermediate steps, tool actions, failed branches, assumptions, uncertainty states, or governance-relevant primitives from the user-facing or evaluator-facing report.",
   "why_it_matters_to_CAM": "CAM requires the audit surface of a system to remain thick enough to explain the action surface. If a model completes or reports on a task while omitting material primitives, the resulting account may look compliant while preventing diagnosis, repair routing, consent review, or safety evaluation.",
@@ -64,6 +64,22 @@
       "source_context": "Public report that Australia's assistant technology minister warned about unintended AI behaviours including cheating and deception, and referenced the Australian AI Safety Institute's model testing role. Used as evidence of public-regulatory uptake of deception-framed AI-safety language, not as independent proof of any specific model's inner intent.",
       "source_url_status": "available",
       "relevance_note": "Current public-regulatory signal showing deception-framed language entering Australian AI governance discourse."
+    },
+    {
+      "source_title": "VIGIL-2026-PATCH-0014 — Deception-adjacent classification and action-pathway attribution discipline",
+      "author_or_publisher": "VIGIL",
+      "source_date": "2026-07-08",
+      "source_url": "https://github.com/CAM-Initiative/Vigil/blob/main/vigil/records/patches/2026/VIGIL-2026-PATCH-0014.json",
+      "archive_url": "",
+      "retrieved_date": "2026-07-08",
+      "source_type": "linked-proposal",
+      "source_platform": "VIGIL",
+      "system_or_product": "VIGIL patch-note registry",
+      "model_or_algorithm": "not applicable",
+      "deployment_context": "Patch record linking FM-0025 to the Caelestis PATCH-0014 amendments.",
+      "source_context": "PATCH-0014 adds Annex L §5.4.7 Action-Pathway, Attribution, and Audit-Surface Integrity, directly addressing the audit-surface and primitive-disclosure gap captured by FM-0025.",
+      "source_url_status": "available / canonical main-branch confirmed",
+      "relevance_note": "Patch record establishing partial repair linkage for FM-0025."
     }
   ],
   "system_context": {
@@ -98,19 +114,19 @@
     "failure_scope": "cross-vendor / evaluation-and-reporting systemic pattern",
     "recurrence_pattern": "emerging / recurrent as agentic evaluation and public deception framing increase",
     "canonical_failure_group": "epistemic",
-    "taxonomy_reference": "CAM-EQ2026-OPERATIONS-003-SUP-01 Appendix B — Runtime & Governance Failure Taxonomy; proposed deception-adjacent subtype pending taxonomy harmonisation",
+    "taxonomy_reference": "CAM-EQ2026-OPERATIONS-003-SUP-01 Appendix B — Runtime & Governance Failure Taxonomy; addressed by PATCH-0014",
     "related_failure_groups": ["governance", "classification", "state-context", "ux-representation", "security-integrity"],
-    "persistence": "active while agentic systems and evaluation reports lack structured primitive disclosure requirements",
+    "persistence": "monitoring after PATCH-0014 doctrine repair; live systems may continue to exhibit this pattern",
     "reproducibility": "partially reproducible through controlled post-action-report and evaluation-summary audits",
     "visibility": "visible through compressed summaries, missing trace information, incomplete action reports, and public accounts that omit mechanism detail"
   },
   "triage": {
     "triage_priority": "P1",
     "triage_owner": "VIGIL maintainers",
-    "triage_status": "active-triage",
-    "mitigation_status": "unrepaired — taxonomy capture and CAM repair routing required",
-    "escalation_required": "yes",
-    "recommended_next_step": "Define a VIGIL/CAM reporting standard requiring action taken, assumptions used, tools/resources accessed, constraints applied, failed attempts, uncertainty, unresolved ambiguity, and user-impacting decisions for consequential or agentic tasks."
+    "triage_status": "monitoring",
+    "mitigation_status": "partially-repaired by VIGIL-2026-PATCH-0014; validator review, generated-index rebuild, and ongoing monitoring remain required",
+    "escalation_required": "no — monitor after patch unless new evidence indicates active unresolved harm",
+    "recommended_next_step": "Verify PATCH-0014 through the next VIGIL validator/index rebuild pass and monitor for future examples of agentic reports with audit surfaces thinner than action surfaces."
   },
   "jurisdictional_context": {
     "primary_jurisdiction": "global",
@@ -124,26 +140,26 @@
     "related_observations": [],
     "related_failure_modes": ["VIGIL-2026-FM-0001", "VIGIL-2026-FM-0023", "VIGIL-2026-FM-0026", "VIGIL-2026-FM-0027"],
     "related_proposals": [],
-    "related_patch_notes": [],
+    "related_patch_notes": ["VIGIL-2026-PATCH-0014"],
     "external_references": [],
     "research": [],
     "standards": []
   },
   "cam_internal": {
-    "affected_instruments": ["CAM-EQ2026-OPERATIONS-003-SUP-01 — Runtime & Governance Failure Taxonomy", "CAM-EQ2026-OPERATIONS-001-SUP-01 — Operational Logging & Audit Standards", "CAM-BS2026-AEON-012-PLATINUM — Annex K: Security Boundary Conditions & Runtime Interface", "Annex L — Accurate Ontological Narration"],
+    "affected_instruments": ["CAM-EQ2026-OPERATIONS-003-SUP-01 — Runtime & Governance Failure Taxonomy", "CAM-EQ2026-OPERATIONS-001-SUP-01 — Operational Logging & Audit Standards", "CAM-BS2026-AEON-012-PLATINUM — Annex K: Security Boundary Conditions & Runtime Interface", "CAM-BS2026-AEON-013-PLATINUM — Annex L: Cognitive & Epistemic Integrity Doctrine"],
     "affected_annexes": ["Appendix B", "Annex L", "Annex K"],
     "affected_domains": ["OPERATIONS", "SECURITY", "CONTINUITY", "AEON", "LATTICE"],
     "governance_layer": "AI safety reporting, model-evaluation interpretation, agentic-system auditability, taxonomy discipline, and public-regulatory communication",
-    "proposal_needed": "yes",
+    "proposal_needed": "no — partially repaired by VIGIL-2026-PATCH-0014",
     "linked_proposal_ids": [],
-    "routing_note": ["Do not classify this as deception by default. The primary repair target is lossless auditability and primitive disclosure.", "Suggested doctrine: the audit surface must not be thinner than the action surface.", "Treat concealment as a stronger subtype only where an authorised observer is materially denied or misled about relevant action state."],
-    "validator_or_automation_impact": "possible"
+    "routing_note": ["PATCH-0014 adds Annex L §5.4.7 requiring action-pathway, attribution-pathway, and audit-surface integrity.", "The audit surface must not be materially thinner than the action surface.", "Treat concealment as a stronger subtype only where an authorised observer is materially denied or misled about relevant action state."],
+    "validator_or_automation_impact": "VIGIL generated indexes require rebuild after this record update."
   },
   "repair_status": {
-    "status": "unrepaired",
-    "repaired_by": [],
-    "date_repaired": "",
-    "verification_status": "no repair recorded; new failure-mode capture only",
-    "monitoring_status": "active monitoring and taxonomy harmonisation required"
+    "status": "partially-repaired",
+    "repaired_by": ["VIGIL-2026-PATCH-0014"],
+    "date_repaired": "2026-07-08",
+    "verification_status": "Caelestis doctrine repair implemented and VIGIL patch linkage added; ongoing monitoring and generated-index rebuild required",
+    "monitoring_status": "monitoring after PATCH-0014"
   }
 }
