@@ -61,12 +61,25 @@ jobs:
           python vigil/scripts/build-vigil-records.py
           rm -f vigil/VIGIL.ActiveRecords.json vigil/VIGIL.ClosedRecords.json vigil/VIGIL.Records.Index.json vigil/VIGIL.Records.json
 
-      - name: Commit validated runtime-conformance update
+      - name: Commit validated runtime-conformance source update
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -- .github/workflows/vigil-records.yml
+          git checkout -- vigil/scripts/apply-runtime-conformance-update.py
           git rm --ignore-unmatch vigil/VIGIL.ActiveRecords.json vigil/VIGIL.ClosedRecords.json vigil/VIGIL.Records.Index.json vigil/VIGIL.Records.json 2>/dev/null || true
-          git add -A vigil .github/workflows/vigil-records.yml
+          git add vigil/VIGIL.Schema.json \
+            vigil/scripts/validate-vigil-records.py \
+            vigil/scripts/test_validate_vigil_records.py \
+            vigil/records/failures/2026/VIGIL-2026-FM-0002.json \
+            vigil/records/failures/2026/VIGIL-2026-FM-0028.json \
+            vigil/records/patches/2026/VIGIL-2026-PATCH-0008.json \
+            vigil/records/patches/2026/VIGIL-2026-PATCH-0015.json \
+            vigil/VIGIL.Failures.Index.json \
+            vigil/VIGIL.Observations.Index.json \
+            vigil/VIGIL.Proposals.Index.json \
+            vigil/VIGIL.PatchNotes.Index.json \
+            vigil/VIGIL.Registry.Index.json
           if git diff --cached --quiet; then
             echo "No VIGIL runtime-conformance changes to commit."
           else
