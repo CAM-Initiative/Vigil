@@ -193,6 +193,12 @@ REPAIR_STATUS_ALLOWED = {"unrepaired", "partially-repaired", "repaired", "supers
 REPAIR_STATUS_REQUIRED = {"status", "repaired_by", "date_repaired", "verification_status", "monitoring_status"}
 RESOLUTION_STATUS_ALLOWED = {"open", "routed", "resolved-by-patch", "deferred", "superseded", "closed-no-action"}
 RESOLUTION_STATUS_REQUIRED = {"status", "resolved_by", "resolution_note"}
+RUNTIME_CONFORMANCE_STATUS_ALLOWED = {"confirmed", "mixed", "unknown", "not-applicable"}
+RUNTIME_CONFORMANCE_COUNT_FIELDS = {
+    "confirming_runtimes": "confirming_count",
+    "non_confirming_runtimes": "non_confirming_count",
+    "unknown_runtimes": "unknown_count",
+}
 PROPOSAL_PATCH_IMPLEMENTATION_FIELDS = {
     "patch_status",
     "date_implemented",
@@ -360,6 +366,136 @@ def validate_resolution_status(path: Path, record: dict[str, Any], errors: list[
     if status == "resolved-by-patch" and not (resolved_by or related_patch_notes(record)):
         warnings.append(f"{path}: PROP resolution_status is resolved-by-patch but no linked patch record is present")
 
+
+
+def _validate_non_negative_count(path: Path, label: str, value: Any, errors: list[str]) -> bool:
+    if isinstance(value, bool) or not isinstance(value, int) or value < 0:
+        errors.append(f"{path}: {label} must be a non-negative integer")
+        return False
+    return True
+
+
+def _validate_string_list(path: Path, label: str, value: Any, errors: list[str]) -> None:
+    if not isinstance(value, list):
+        errors.append(f"{path}: {label} must be an array")
+        return
+    if any(not isinstance(item, str) or not item.strip() for item in value):
+        errors.append(f"{path}: {label} must contain only non-empty strings")
+
+
+def _validate_runtime_entries(
+    path: Path,
+    block_name: str,
+    block: dict[str, Any],
+    array_name: str,
+    count_name: str,
+    required_extra_fields: set[str],
+    errors: list[str],
+) -> None:
+    entries = block.get(array_name)
+    if entries is None:
+        return
+    if not isinstance(entries, list):
+        errors.append(f"{path}: {block_name}.{array_name} must be an array")
+        return
+    count = block.get(count_name)
+    if isinstance(count, int) and not isinstance(count, bool) and count >= 0 and count != len(entries):
+        errors.append(
+            f"{path}: {block_name}.{count_name}={count} does not match "
+            f"{block_name}.{array_name} length {len(entries)}"
+        )
+    required = {"vendor", "platform", "runtime", "date_observed"} | required_extra_fields
+    for index, entry in enumerate(entries):
+        label = f"{block_name}.{array_name}[{index}]"
+        if not isinstance(entry, dict):
+            errors.append(f"{path}: {label} must be an object")
+            continue
+        list_fields = {"evidence_urls", "related_patch_ids"}
+        missing = sorted(
+            field
+            for field in required
+            if field not in entry or (field not in list_fields and is_blank(entry.get(field)))
+        )
+        if missing:
+            errors.append(f"{path}: {label} missing required fields: {', '.join(missing)}")
+        for field in ("vendor", "platform", "runtime", "date_observed"):
+            value = entry.get(field)
+            if value is not None and (not isinstance(value, str) or not value.strip()):
+                errors.append(f"{path}: {label}.{field} must be a non-empty string")
+        for field in ("evidence_urls", "related_patch_ids"):
+            if field in entry:
+                _validate_string_list(path, f"{label}.{field}", entry.get(field), errors)
+
+
+def validate_runtime_conformance(path: Path, record: dict[str, Any], errors: list[str]) -> None:
+    block = record.get("runtime_conformance")
+    if block is None:
+        return
+    if record.get("record_type") not in {"patch", "patch_note"}:
+        errors.append(f"{path}: runtime_conformance is permitted only on PATCH records")
+    if not isinstance(block, dict):
+        errors.append(f"{path}: runtime_conformance must be an object")
+        return
+    required = {"overall_status", "confirming_count", "non_confirming_count", "unknown_count", "notes"}
+    missing = sorted(field for field in required if is_blank(block.get(field)))
+    if missing:
+        errors.append(f"{path}: runtime_conformance missing required fields: {', '.join(missing)}")
+    status = block.get("overall_status")
+    if status not in RUNTIME_CONFORMANCE_STATUS_ALLOWED:
+        allowed = ", ".join(sorted(RUNTIME_CONFORMANCE_STATUS_ALLOWED))
+        errors.append(f"{path}: runtime_conformance.overall_status {status!r} is not allowed; allowed values: {allowed}")
+    for count_name in ("confirming_count", "non_confirming_count", "unknown_count"):
+        _validate_non_negative_count(path, f"runtime_conformance.{count_name}", block.get(count_name), errors)
+    notes = block.get("notes")
+    if not isinstance(notes, str) or not notes.strip():
+        errors.append(f"{path}: runtime_conformance.notes must be a non-empty string")
+    _validate_runtime_entries(
+        path, "runtime_conformance", block, "confirming_runtimes", "confirming_count", {"evidence_basis"}, errors
+    )
+    _validate_runtime_entries(
+        path,
+        "runtime_conformance",
+        block,
+        "non_confirming_runtimes",
+        "non_confirming_count",
+        {"failure_expression", "evidence_urls", "related_patch_ids"},
+        errors,
+    )
+    _validate_runtime_entries(
+        path, "runtime_conformance", block, "unknown_runtimes", "unknown_count", {"evidence_basis"}, errors
+    )
+
+
+def validate_runtime_non_conformance(path: Path, record: dict[str, Any], errors: list[str]) -> None:
+    block = record.get("runtime_non_conformance")
+    if block is None:
+        return
+    if record.get("record_type") != "failure_mode":
+        errors.append(f"{path}: runtime_non_conformance is permitted only on FM records")
+    if not isinstance(block, dict):
+        errors.append(f"{path}: runtime_non_conformance must be an object")
+        return
+    required = {"non_confirming_count", "unknown_count", "non_confirming_runtimes", "notes"}
+    missing = sorted(field for field in required if is_blank(block.get(field)))
+    if missing:
+        errors.append(f"{path}: runtime_non_conformance missing required fields: {', '.join(missing)}")
+    for count_name in ("non_confirming_count", "unknown_count"):
+        _validate_non_negative_count(path, f"runtime_non_conformance.{count_name}", block.get(count_name), errors)
+    notes = block.get("notes")
+    if not isinstance(notes, str) or not notes.strip():
+        errors.append(f"{path}: runtime_non_conformance.notes must be a non-empty string")
+    _validate_runtime_entries(
+        path,
+        "runtime_non_conformance",
+        block,
+        "non_confirming_runtimes",
+        "non_confirming_count",
+        {"failure_expression", "evidence_urls", "related_patch_ids"},
+        errors,
+    )
+    _validate_runtime_entries(
+        path, "runtime_non_conformance", block, "unknown_runtimes", "unknown_count", {"evidence_basis"}, errors
+    )
 
 
 def standards_reference_text(value: Any) -> str:
@@ -557,6 +693,9 @@ def validate_record(
                 errors.append(f"{path}: system_context.interface_surface array must contain non-empty strings")
         elif not isinstance(interface, str) or not interface.strip():
             errors.append(f"{path}: system_context.interface_surface must be a non-empty string or array of non-empty strings")
+
+    validate_runtime_conformance(path, record, errors)
+    validate_runtime_non_conformance(path, record, errors)
 
     jurisdiction = record.get("jurisdictional_context")
     if isinstance(jurisdiction, dict):
