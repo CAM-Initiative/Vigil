@@ -20,32 +20,10 @@ jobs:
       - uses: actions/checkout@v4
         with:
           persist-credentials: true
-          fetch-depth: 0
-
-      - name: Check out pull-request head branch
-        if: github.event_name == 'pull_request'
-        run: git checkout -B "${{ github.head_ref }}" "origin/${{ github.head_ref }}"
 
       - uses: actions/setup-python@v5
         with:
           python-version: "3.x"
-
-      - name: Apply runtime-bounded conformance update
-        run: python vigil/scripts/apply-runtime-conformance-update.py
-
-      - name: Allow empty evidence arrays in runtime details
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-
-          path = Path("vigil/scripts/validate-vigil-records.py")
-          text = path.read_text(encoding="utf-8")
-          old = '        missing = sorted(field for field in required if is_blank(entry.get(field)))\n'
-          new = '''        list_fields = {"evidence_urls", "related_patch_ids"}\n        missing = sorted(\n            field\n            for field in required\n            if field not in entry or (field not in list_fields and is_blank(entry.get(field)))\n        )\n'''
-          if old not in text:
-              raise SystemExit("Runtime detail required-field anchor not found")
-          path.write_text(text.replace(old, new, 1), encoding="utf-8")
-          PY
 
       - name: Test VIGIL validator
         run: python vigil/scripts/test_validate_vigil_records.py
@@ -61,29 +39,16 @@ jobs:
           python vigil/scripts/build-vigil-records.py
           rm -f vigil/VIGIL.ActiveRecords.json vigil/VIGIL.ClosedRecords.json vigil/VIGIL.Records.Index.json vigil/VIGIL.Records.json
 
-      - name: Commit validated runtime-conformance source update
+      - name: Commit generated VIGIL JSON
+        if: github.event_name == 'push'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git checkout -- .github/workflows/vigil-records.yml
-          git checkout -- vigil/scripts/apply-runtime-conformance-update.py
           git rm --ignore-unmatch vigil/VIGIL.ActiveRecords.json vigil/VIGIL.ClosedRecords.json vigil/VIGIL.Records.Index.json vigil/VIGIL.Records.json 2>/dev/null || true
-          git add vigil/VIGIL.Schema.json \
-            vigil/scripts/validate-vigil-records.py \
-            vigil/scripts/test_validate_vigil_records.py \
-            vigil/records/failures/2026/VIGIL-2026-FM-0002.json \
-            vigil/records/failures/2026/VIGIL-2026-FM-0028.json \
-            vigil/records/patches/2026/VIGIL-2026-PATCH-0008.json \
-            vigil/records/patches/2026/VIGIL-2026-PATCH-0015.json \
-            vigil/VIGIL.Failures.Index.json \
-            vigil/VIGIL.Observations.Index.json \
-            vigil/VIGIL.Proposals.Index.json \
-            vigil/VIGIL.PatchNotes.Index.json \
-            vigil/VIGIL.Registry.Index.json
+          git add vigil/VIGIL.Failures.Index.json vigil/VIGIL.Observations.Index.json vigil/VIGIL.Proposals.Index.json vigil/VIGIL.PatchNotes.Index.json vigil/VIGIL.Registry.Index.json
           if git diff --cached --quiet; then
-            echo "No VIGIL runtime-conformance changes to commit."
+            echo "No generated VIGIL JSON changes to commit."
           else
-            git commit -m "Add runtime-bounded conformance tracking"
-            BRANCH="${GITHUB_HEAD_REF:-$GITHUB_REF_NAME}"
-            git push origin HEAD:"${BRANCH}"
+            git commit -m "Build VIGIL registry indexes"
+            git push
           fi
