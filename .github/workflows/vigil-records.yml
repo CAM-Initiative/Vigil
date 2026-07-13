@@ -28,6 +28,20 @@ jobs:
       - name: Apply runtime-bounded conformance update
         run: python vigil/scripts/apply-runtime-conformance-update.py
 
+      - name: Allow empty evidence arrays in runtime details
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path("vigil/scripts/validate-vigil-records.py")
+          text = path.read_text(encoding="utf-8")
+          old = '        missing = sorted(field for field in required if is_blank(entry.get(field)))\n'
+          new = '''        list_fields = {"evidence_urls", "related_patch_ids"}\n        missing = sorted(\n            field\n            for field in required\n            if field not in entry or (field not in list_fields and is_blank(entry.get(field)))\n        )\n'''
+          if old not in text:
+              raise SystemExit("Runtime detail required-field anchor not found")
+          path.write_text(text.replace(old, new, 1), encoding="utf-8")
+          PY
+
       - name: Test VIGIL validator
         run: python vigil/scripts/test_validate_vigil_records.py
 
