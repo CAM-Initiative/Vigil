@@ -25,6 +25,12 @@ jobs:
         with:
           python-version: "3.x"
 
+      - name: Apply runtime-bounded conformance update
+        run: python vigil/scripts/apply-runtime-conformance-update.py
+
+      - name: Test VIGIL validator
+        run: python vigil/scripts/test_validate_vigil_records.py
+
       - name: Route VIGIL records
         run: python vigil/scripts/route-vigil-records.py
 
@@ -36,16 +42,16 @@ jobs:
           python vigil/scripts/build-vigil-records.py
           rm -f vigil/VIGIL.ActiveRecords.json vigil/VIGIL.ClosedRecords.json vigil/VIGIL.Records.Index.json vigil/VIGIL.Records.json
 
-      - name: Commit generated VIGIL JSON
+      - name: Commit validated runtime-conformance update
         if: github.event_name == 'push'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git rm --ignore-unmatch vigil/VIGIL.ActiveRecords.json vigil/VIGIL.ClosedRecords.json vigil/VIGIL.Records.Index.json vigil/VIGIL.Records.json 2>/dev/null || true
-          git add vigil/VIGIL.Failures.Index.json vigil/VIGIL.Observations.Index.json vigil/VIGIL.Proposals.Index.json vigil/VIGIL.PatchNotes.Index.json vigil/VIGIL.Registry.Index.json
+          git add -A vigil .github/workflows/vigil-records.yml
           if git diff --cached --quiet; then
-            echo "No generated VIGIL JSON changes to commit."
+            echo "No VIGIL runtime-conformance changes to commit."
           else
-            git commit -m "Build VIGIL registry indexes"
+            git commit -m "Add runtime-bounded conformance tracking"
             git push
           fi
