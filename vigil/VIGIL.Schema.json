@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://example.invalid/cam/vigil/VIGIL.Schema.json",
-  "version": "2.1-cam-eq2026-operations-003-sup-01",
+  "version": "2.2-runtime-bounded-conformance",
   "purpose": "Authoritative schema-rules contract for VIGIL individual records and generated registers aligned to CAM-EQ2026-OPERATIONS-003-SUP-01 Appendix B without redesigning VIGIL record classes. The canonical failure-group list is a VIGIL-maintained derived registry of CAM-EQ2026-OPERATIONS-003-SUP-01 Appendix B: Runtime & Governance Failure Taxonomy.",
   "source_evidence_rules": {
     "individual_records": [
@@ -23,11 +23,11 @@
       "inaccessible",
       "not applicable",
       "missing_url_requires_research",
-      "not applicable \u2014 repository/internal observation",
+      "not applicable — repository/internal observation",
       "not available",
       "local / pending canonical repository confirmation",
       "available to authenticated account holder",
-      "not applicable \u2014 direct incident testimony"
+      "not applicable — direct incident testimony"
     ]
   },
   "record_classes": {
@@ -139,6 +139,9 @@
         "repaired",
         "superseded",
         "not-actionable"
+      ],
+      "optional_top_level_fields": [
+        "runtime_non_conformance"
       ]
     },
     "proposal": {
@@ -226,7 +229,10 @@
         "triage",
         "failure_classification"
       ],
-      "cam_routing": "Use changed_* fields. PATCH records require implemented-change evidence."
+      "cam_routing": "Use changed_* fields. PATCH records require implemented-change evidence.",
+      "optional_top_level_fields": [
+        "runtime_conformance"
+      ]
     }
   },
   "$defs": {
@@ -439,7 +445,7 @@
       "reproducibility",
       "visibility"
     ],
-    "derived_from": "CAM-EQ2026-OPERATIONS-003-SUP-01 Appendix B: Runtime & Governance Failure Taxonomy, including \u00a73.11 Economic & Legitimacy Failures as economic-legitimacy."
+    "derived_from": "CAM-EQ2026-OPERATIONS-003-SUP-01 Appendix B: Runtime & Governance Failure Taxonomy, including §3.11 Economic & Legitimacy Failures as economic-legitimacy."
   },
   "generated_register_rules": {
     "pruning": "Generated index manifests prune empty arrays, empty strings, empty objects, and nulls while preserving meaningful uncertainty values.",
@@ -500,5 +506,48 @@
       "open"
     ],
     "notes": "Failure modes remain active when repaired; repair progress is represented through triage.mitigation_status, linked_records.related_patch_notes, and optional repair_status."
+  },
+  "runtime_conformance_rules": {
+    "description": "Optional runtime-bounded evidence objects distinguish an implemented CAM repair from observed conformance or non-conformance in named vendor, platform, runtime, model, client, or interface formations. Runtime names remain open-ended and cross-runtime transfer is never presumed.",
+    "runtime_conformance": {
+      "allowed_record_types": [
+        "patch",
+        "patch_note"
+      ],
+      "allowed_overall_status_values": [
+        "confirmed",
+        "mixed",
+        "unknown",
+        "not-applicable"
+      ],
+      "required_fields_when_present": [
+        "overall_status",
+        "confirming_count",
+        "non_confirming_count",
+        "unknown_count",
+        "notes"
+      ],
+      "optional_detail_arrays": [
+        "confirming_runtimes",
+        "non_confirming_runtimes",
+        "unknown_runtimes"
+      ],
+      "count_rule": "Counts must be non-negative integers and must equal the corresponding detail-array length whenever that array is present.",
+      "runtime_identifier_rule": "vendor, platform, runtime, model, and client values are open-ended non-empty strings; no vendor or runtime names are hard-coded by the validator."
+    },
+    "runtime_non_conformance": {
+      "allowed_record_types": [
+        "failure_mode"
+      ],
+      "required_fields_when_present": [
+        "non_confirming_count",
+        "unknown_count",
+        "non_confirming_runtimes",
+        "notes"
+      ],
+      "count_rule": "Counts must be non-negative integers and must equal the corresponding detail-array length whenever that array is present.",
+      "runtime_identifier_rule": "vendor, platform, runtime, model, and client values are open-ended non-empty strings; no vendor or runtime names are hard-coded by the validator."
+    },
+    "interpretive_rule": "patched means the CAM repair exists; confirmed means intended behaviour was observed in a named runtime; non-confirming means the linked failure remains present or recurred in a named runtime. A non-confirming runtime does not invalidate a patch confirmed elsewhere."
   }
 }
