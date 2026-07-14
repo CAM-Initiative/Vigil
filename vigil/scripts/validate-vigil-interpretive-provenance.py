@@ -54,6 +54,12 @@ def main() -> int:
                 errors.append(f"{path}: current_ai_review missing {missing}")
             if current.get("reviewer_type") != "AI analytical reviewer":
                 errors.append(f"{path}: current reviewer must be identified as AI analytical reviewer")
+            current_id = current.get("review_id")
+            if isinstance(history, list) and not any(
+                isinstance(item, dict) and item.get("review_id") == current_id
+                for item in history
+            ):
+                errors.append(f"{path}: current_ai_review must also be preserved in append-only review_history")
         if not isinstance(editor, dict) or not editor.get("name") or not editor.get("authority_boundary"):
             errors.append(f"{path}: human_governance_editor must identify name and authority boundary")
 
