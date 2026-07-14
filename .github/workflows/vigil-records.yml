@@ -5,10 +5,12 @@ on:
     paths:
       - "vigil/**"
       - ".github/workflows/vigil-records.yml"
+      - ".gitignore"
   pull_request:
     paths:
       - "vigil/**"
       - ".github/workflows/vigil-records.yml"
+      - ".gitignore"
 
 permissions:
   contents: write
@@ -20,10 +22,33 @@ jobs:
       - uses: actions/checkout@v4
         with:
           persist-credentials: true
+          show-progress: false
 
       - uses: actions/setup-python@v5
         with:
           python-version: "3.x"
+
+      - name: Reconcile embedded evidence and lifecycle state
+        run: |
+          if [ -f vigil/records/observations/2026/VIGIL-2026-OBS-0008.json ] || \
+             [ -f vigil/records/observations/2026/VIGIL-2026-OBS-0009.json ]; then
+            python vigil/scripts/run-vigil-reconciliation.py
+          else
+            echo "Lifecycle reconciliation already applied."
+          fi
+
+      - name: Correct CAM observatory boundary and ingest voice evidence
+        run: |
+          if [ -f vigil/records/patches/2026/VIGIL-2026-PATCH-0016.json ] || \
+             [ -f vigil/records/patches/2026/VIGIL-2026-PATCH-0020.json ] || \
+             [ ! -f vigil/records/observations/2026/VIGIL-2026-OBS-0011.json ]; then
+            python vigil/scripts/reconcile-vigil-cam-boundary-and-voice.py
+          else
+            echo "CAM observatory boundary correction and voice evidence reconciliation already applied."
+          fi
+
+      - name: Add interpretive provenance and behavioural evidence metadata
+        run: python vigil/scripts/migrate-vigil-interpretive-provenance.py
 
       - name: Test VIGIL validator
         run: python vigil/scripts/test_validate_vigil_records.py
@@ -34,21 +59,27 @@ jobs:
       - name: Validate VIGIL records
         run: python vigil/scripts/validate-vigil-records.py
 
-      - name: Build VIGIL registry indexes
+      - name: Validate VIGIL lifecycle, corpus coverage, patch provenance, CAM boundary, and interpretive provenance
+        run: python vigil/scripts/run-vigil-lifecycle-validation.py
+
+      - name: Build and enrich VIGIL registry indexes
         run: |
           python vigil/scripts/build-vigil-records.py
+          python vigil/scripts/enrich-vigil-indexes.py
           rm -f vigil/VIGIL.ActiveRecords.json vigil/VIGIL.ClosedRecords.json vigil/VIGIL.Records.Index.json vigil/VIGIL.Records.json
 
-      - name: Commit generated VIGIL JSON
+      - name: Commit reconciled VIGIL records and generated indexes
         if: github.event_name == 'push'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          find vigil -type d -name __pycache__ -prune -exec rm -rf {} +
+          find vigil -type f \( -name '*.pyc' -o -name '*.pyo' \) -delete
           git rm --ignore-unmatch vigil/VIGIL.ActiveRecords.json vigil/VIGIL.ClosedRecords.json vigil/VIGIL.Records.Index.json vigil/VIGIL.Records.json 2>/dev/null || true
-          git add vigil/VIGIL.Failures.Index.json vigil/VIGIL.Observations.Index.json vigil/VIGIL.Proposals.Index.json vigil/VIGIL.PatchNotes.Index.json vigil/VIGIL.Registry.Index.json
+          git add vigil
           if git diff --cached --quiet; then
-            echo "No generated VIGIL JSON changes to commit."
+            echo "No reconciled VIGIL changes to commit."
           else
-            git commit -m "Build VIGIL registry indexes"
+            git commit -m "Add VIGIL interpretive provenance and evidence access metadata"
             git push
           fi

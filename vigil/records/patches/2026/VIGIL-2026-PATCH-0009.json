@@ -1,315 +1,505 @@
 {
-"id": "VIGIL-2026-PATCH-0009",
-"record_type": "patch",
-"record_state": "active",
-"date_recorded": "2026-06-14",
-"record_identity": {
-"record_id": "VIGIL-2026-PATCH-0009",
-"record_type": "patch",
-"title": "Source-authority separation and instruction-data boundary repair",
-"created": "2026-06-14",
-"updated": "2026-06-14",
-"version": "1.1"
-},
-"summary": "This patch note records the Caelestis Architecture repair response to VIGIL-2026-FM-0022, a security-integrity failure mode in which instruction-bearing external content may be treated as trusted execution authority. The patch does not create a new instrument. It formalises a named Source-Authority Separation primitive across existing CAM security and runtime instruments, clarifying that content visibility, retrieval, repository location, tool output, generated text, ambient capture, multimodal parsing, or apparent instructional formatting does not itself confer user intent, governance authority, tool authority, canonical project authority, or execution permission.",
-"why_it_matters_to_CAM": "The failure revealed that CAM already contained strong distributed coverage for prompt injection, ambient instruction capture, boundary integrity, provenance, tool-authority separation, and execution-boundary evaluation, but lacked a compact reusable primitive that could be referenced across SECURITY, Annex K, SCH-02, and OPERATIONS taxonomy. This patch preserves the existing architecture while making the core rule explicit and portable: visibility is not authority, retrieval is not consent, and context is not command. The repair is release-critical because markdown, repository files, RAG content, connector output, multimodal artefacts, generated prompts, and tool descriptions increasingly function as operational substrate in agentic AI systems.",
-"evidence_confidence": "repository-confirmed",
-"source_records": [
-{
-"source_title": "VIGIL-2026-FM-0022 — Source-authority collapse in instruction-bearing external content",
-"author_or_publisher": "VIGIL",
-"source_date": "2026-06-14",
-"source_url": "",
-"archive_url": "",
-"retrieved_date": "2026-06-14",
-"source_type": "linked-failure-mode",
-"source_platform": "VIGIL",
-"system_or_product": "VIGIL failure-mode register",
-"model_or_algorithm": "not applicable",
-"deployment_context": "VIGIL failure-mode record concerning instruction-bearing external content treated as trusted execution authority.",
-"source_context": "FM-0022 identifies the failure where an AI agent, coding assistant, RAG system, connector-enabled assistant, multimodal system, or tool-mediated workflow processes untrusted, retrieved, ambient, generated, lower-authority, or ambiguous content as though it carried trusted instruction authority, governance authority, tool authority, or execution permission.",
-"source_url_status": "VIGIL local / pending public record URL if applicable",
-"relevance_note": "Primary failure-mode record repaired by PATCH-0009."
-},
-{
-"source_title": "CAM-EQ2026-SECURITY-001-PLATINUM — Security, Integrity & Adversarial Resilience Charter",
-"author_or_publisher": "CAM Initiative",
-"source_date": "2026-06-14",
-"source_url": "https://github.com/CAM-Initiative/Caelestis/blob/main/Governance/Charters/CAM-EQ2026-SECURITY-001-PLATINUM.md",
-"archive_url": "",
-"retrieved_date": "2026-06-14",
-"source_type": "repository-source / canonical main-branch amended instrument",
-"source_platform": "Caelestis",
-"system_or_product": "Caelestis Architecture Model",
-"model_or_algorithm": "CAM-EQ2026-SECURITY-001-PLATINUM",
-"deployment_context": "SECURITY domain charter containing Cross-Modal Prompt Injection, Ambient Instruction Capture, and Source-Authority Collapse doctrine.",
-"source_context": "SECURITY-001 requires systems to distinguish user-authorised instruction, observed content, retrieved content, ambient speech, third-party speech, embedded or hidden instruction, OCR/transcribed content, and execution-authorising command. The repair adds or formalises Source-Authority Collapse as a SECURITY-relevant integrity threat and routes such conditions through the SECURITY-002 Source-Authority Separation Boundary.",
-"source_url_status": "available / canonical main-branch confirmed",
-"relevance_note": "Canonical SECURITY-domain doctrine anchor for PATCH-0009."
-},
-{
-"source_title": "CAM-EQ2026-SECURITY-002-PLATINUM — Appendix A: Boundary Integrity Specification",
-"author_or_publisher": "CAM Initiative",
-"source_date": "2026-06-14",
-"source_url": "https://github.com/CAM-Initiative/Caelestis/blob/main/Governance/Charters/CAM-EQ2026-SECURITY-002-PLATINUM.md",
-"archive_url": "",
-"retrieved_date": "2026-06-14",
-"source_type": "repository-source / canonical main-branch amended instrument",
-"source_platform": "Caelestis",
-"system_or_product": "Caelestis Architecture Model",
-"model_or_algorithm": "CAM-EQ2026-SECURITY-002-PLATINUM",
-"deployment_context": "Boundary Integrity specification receiving the named Source-Authority Separation Boundary.",
-"source_context": "SECURITY-002 defines data, identity, context, capability, provenance, transformation, and internal-state exposure boundaries. The repair adds or formalises the Source-Authority Separation Boundary, distinguishing content visibility, source provenance, instruction authority, and execution permission.",
-"source_url_status": "available / canonical main-branch confirmed",
-"relevance_note": "Primary doctrinal repair location for the named Source-Authority Separation primitive."
-},
-{
-"source_title": "CAM-BS2026-AEON-012-PLATINUM — Annex K: Security Boundary Conditions & Runtime Interface",
-"author_or_publisher": "CAM Initiative",
-"source_date": "2026-06-14",
-"source_url": "https://github.com/CAM-Initiative/Caelestis/blob/main/Governance/Constitution/CAM-BS2026-AEON-012-PLATINUM.md",
-"archive_url": "",
-"retrieved_date": "2026-06-14",
-"source_type": "repository-source / canonical main-branch amended instrument",
-"source_platform": "Caelestis",
-"system_or_product": "Caelestis Architecture Model",
-"model_or_algorithm": "CAM-BS2026-AEON-012-PLATINUM",
-"deployment_context": "Runtime security-boundary instrument receiving the instruction-bearing external content boundary.",
-"source_context": "Annex K treats tool, connector, repository, credential-bearing, automation, deployment, renderer, validator, and external execution-surface availability as a security boundary signal rather than execution authority. The repair adds or formalises an Instruction-Bearing External Content Boundary requiring separation between reading, summarising, evidentiary use, project-authority recognition, planning, and execution.",
-"source_url_status": "available / canonical main-branch confirmed",
-"relevance_note": "Canonical runtime-security implementation evidence for PATCH-0009."
-},
-{
-"source_title": "CAM-BS2025-AEON-003-SCH-02 — Runtime Governance Execution Model",
-"author_or_publisher": "CAM Initiative",
-"source_date": "2026-06-14",
-"source_url": "https://github.com/CAM-Initiative/Caelestis/blob/main/Governance/Constitution/CAM-BS2025-AEON-003-SCH-02.md",
-"archive_url": "",
-"retrieved_date": "2026-06-14",
-"source_type": "repository-source / canonical main-branch amended instrument",
-"source_platform": "Caelestis",
-"system_or_product": "Caelestis Architecture Model",
-"model_or_algorithm": "CAM-BS2025-AEON-003-SCH-02",
-"deployment_context": "Runtime governance instrument receiving the External Instruction Influence Check.",
-"source_context": "SCH-02 contains proportional tool invocation and execution-boundary sequencing. The repair adds or formalises an External Instruction Influence Check for proposed plans, outputs, tool invocations, file mutations, repository changes, deployments, publications, memory updates, external communications, scheduled actions, credential operations, or irreversible actions materially influenced by external, retrieved, generated, lower-authority, or ambiguous content.",
-"source_url_status": "available / canonical main-branch confirmed",
-"relevance_note": "Canonical runtime execution-boundary implementation evidence for PATCH-0009."
-},
-{
-"source_title": "CAM-EQ2026-OPERATIONS-003-SUP-01 — Runtime & Governance Failure Taxonomy",
-"author_or_publisher": "CAM Initiative",
-"source_date": "2026-06-14",
-"source_url": "https://github.com/CAM-Initiative/Caelestis/blob/main/Governance/Operations/CAM-EQ2026-OPERATIONS-003-SUP-01.md",
-"archive_url": "",
-"retrieved_date": "2026-06-14",
-"source_type": "repository-source / canonical main-branch amended or reviewed instrument",
-"source_platform": "Caelestis",
-"system_or_product": "Caelestis Architecture Model",
-"model_or_algorithm": "CAM-EQ2026-OPERATIONS-003-SUP-01",
-"deployment_context": "Failure taxonomy receiving source-authority collapse classification and record-keeping cross-reference.",
-"source_context": "OPERATIONS-003 defines Cross-Modal Prompt Injection and Ambient Instruction Capture Failure. The repair adds or formalises source-authority collapse classification and record-keeping fields for future VIGIL records, including source-authority class, content pathway, user visibility, trust state, execution boundary affected, attempted or completed action, and higher-authority source displaced or bypassed.",
-"source_url_status": "available / canonical main-branch confirmation pending exact line review",
-"relevance_note": "Taxonomy-routing and future-recordkeeping interface for PATCH-0009."
-}
-],
-"system_context": {
-"system_type": "governance registry / patch-note record / security-integrity doctrine repair",
-"platform_or_vendor": "CAM Initiative",
-"product_or_service": "VIGIL",
-"specific_model_or_runtime": "VIGIL patch-note registry recording Caelestis security and runtime amendments",
-"interface_surface": "VIGIL patch-note records, Caelestis canonical instruments, failure-mode-to-repair linkage, validators, generated indexes, and public repository publication workflow",
-"model_or_product": "VIGIL patch-note registry and Caelestis Architecture Model",
-"interaction_mode": "governance recordkeeping / security-integrity repair / source-authority separation / execution-boundary repair / canonical-source verification",
-"embodiment_status": "non-embodied",
-"deployment_context": "VIGIL repository support for preserving a completed and repository-confirmed CAM repair concerning instruction-bearing external content, prompt-injection-like influence, repository/tool context, and execution-boundary authority.",
-"user_role": "VIGIL maintainer / CAM doctrine maintainer / runtime governance reviewer / security-integrity reviewer / taxonomy reviewer",
-"affected_population": "CAM and VIGIL maintainers, AI agent designers, coding-assistant users, RAG-system designers, connector-enabled assistant users, repository maintainers, platform governance teams, safety reviewers, security researchers, regulators, and users relying on tool-mediated or agentic workflows"
-},
-"jurisdictional_context": {
-"primary_jurisdiction": "global",
-"secondary_jurisdictions": [
-"Australia",
-"United States",
-"European Union",
-"United Kingdom",
-"platform agnostic"
-],
-"regulatory_surface": [
-"AI governance",
-"cybersecurity",
-"AI security",
-"agentic AI",
-"software supply chain",
-"repository governance",
-"tool invocation authority",
-"prompt injection",
-"RAG security",
-"connector security",
-"data provenance",
-"execution-boundary control",
-"consumer protection",
-"platform governance"
-],
-"sector": "AI assistant / coding assistant / RAG system / connector-enabled AI / agentic workflow / repository-mediated AI development / runtime governance",
-"cross_border_relevance": "yes",
-"public_interest_relevance": "high"
-},
-"linked_records": {
-"related_observations": [],
-"related_failure_modes": [
-"VIGIL-2026-FM-0022"
-],
-"related_proposals": [],
-"related_patch_notes": [],
-"external_references": [],
-"research": [],
-"standards": []
-},
-"date_implemented": "2026-06-14",
-"change_classification": {
-"change_type": "governance-security-and-runtime-patch",
-"change_scope": "Caelestis Architecture / source-authority separation / instruction-data boundary / prompt-injection and ambient-instruction handling / execution-boundary control / failure taxonomy routing",
-"change_status": "implemented / canonical main-branch confirmed",
-"patch_family": "security-integrity / source-authority / execution-boundary",
-"implementation_level": "canonical doctrine and runtime amendment",
-"doctrine_amendment_status": "implemented in Caelestis main; public repository sources confirmed or source-located",
-"release_state": "active / repository-confirmed"
-},
-"change_details": {
-"changed_components": [
-"VIGIL-2026-FM-0022 repair linkage",
-"CAM-EQ2026-SECURITY-002-PLATINUM §2.2.10A Source-Authority Separation Boundary",
-"CAM-EQ2026-SECURITY-001-PLATINUM §4.1.1A Source-Authority Collapse",
-"CAM-BS2026-AEON-012-PLATINUM §1.2.1 Instruction-Bearing External Content Boundary",
-"CAM-BS2025-AEON-003-SCH-02 §7.4.2 External Instruction Influence Check",
-"CAM-EQ2026-OPERATIONS-003-SUP-01 §3.5.4 Cross-Modal Prompt Injection and Ambient Instruction Capture Failure source-authority collapse cross-reference"
-],
-"change_summary": "Repair 1 — Source-Authority Separation Boundary: Formalised a named boundary distinguishing content visibility, source provenance, instruction authority, and execution permission. Repair 2 — Source-Authority Collapse: Added a SECURITY-relevant integrity-threat cross-reference for conditions where visible, retrieved, embedded, generated, or ambient content becomes behaviourally operative merely because it appears in context. Repair 3 — Instruction-Bearing External Content Boundary: Added runtime handling for instruction-bearing external content and required separation between reading, summarising, evidentiary use, project-authority recognition, planning, and execution. Repair 4 — External Instruction Influence Check: Added an execution-boundary check for proposed plans, outputs, tool invocations, file mutations, repository changes, deployments, publications, memory updates, external communications, scheduled actions, credential operations, or irreversible actions materially influenced by external, retrieved, generated, lower-authority, or ambiguous content. Repair 5 — Failure taxonomy and record-keeping: Added or formalised source-authority collapse classification and record-keeping fields for future VIGIL records, preserving source-authority class, content pathway, user visibility, trust state, execution boundary affected, attempted or completed action, and higher-authority source displaced or bypassed.",
-"doctrine_change": "Caelestis now treats instruction-bearing external content as a security-relevant boundary signal rather than execution authority. The repair clarifies that visible, retrieved, embedded, generated, ambient, repository-local, tool-produced, or instruction-formatted content may inform analysis, evidence, warning, quotation, summarisation, or planning, but may not seize user intent, governance authority, tool authority, canonical project authority, or execution permission without an independent authority bridge.",
-"new_or_formalised_primitives": [
-{
-"primitive": "Source-Authority Separation Boundary",
-"definition": "A boundary governing the distinction between content visibility, source provenance, instruction authority, and execution permission.",
-"interpretive_principle": "Visibility is not authority. Retrieval is not consent. Context is not command."
-},
-{
-"primitive": "Source-Authority Collapse",
-"definition": "A security-integrity threat where content becomes behaviourally operative because it is visible to, retrieved by, embedded within, or generated inside a system, rather than because it has verified instruction authority."
-},
-{
-"primitive": "Instruction-Bearing External Content Boundary",
-"definition": "A runtime boundary requiring instruction-bearing external content to be treated as a security signal rather than action authority."
-},
-{
-"primitive": "External Instruction Influence Check",
-"definition": "An execution-boundary check required before high-impact action where an intended plan or action is materially influenced by external, generated, lower-authority, or ambiguous content."
-}
-],
-"design_rationale": [
-{
-"rationale_title": "Visibility is not authority",
-"rationale_text": "Content appearing in context, retrieval results, repository files, OCR text, transcripts, generated output, or tool output does not become instruction authority merely because the model can read it."
-},
-{
-"rationale_title": "Retrieval is not consent",
-"rationale_text": "A user or system may authorise inspection, retrieval, search, or analysis without authorising mutation, publication, tool use, execution, deployment, memory update, or credential operation."
-},
-{
-"rationale_title": "Context is not command",
-"rationale_text": "Instruction-shaped content can be evidence, quoted material, hostile payload, lower-authority context, project documentation, test fixture, or generated suggestion. Its semantic imperative form does not itself create authority."
-},
-{
-"rationale_title": "Repository location is not canonical authority",
-"rationale_text": "A file appearing in a repository, branch, issue, pull request, generated artefact, or connector surface may be relevant but still lower-authority, stale, untrusted, generated, or non-canonical."
-},
-{
-"rationale_title": "External influence must cross an execution-boundary check",
-"rationale_text": "Where an action is materially influenced by external, retrieved, generated, lower-authority, or ambiguous content, the runtime must verify authority before crossing a high-impact execution boundary."
-}
-],
-"future_doctrine_work": [
-"Confirm exact line references for all five Caelestis instruments after the next global code and validator pass.",
-"Confirm whether OPERATIONS-003-SUP-01 taxonomy language should be synchronised with VIGIL failure-family names after schema stabilisation.",
-"Develop VIGIL evidence templates for source-authority collapse, including fields for content pathway, trust state, user visibility, authority bridge, execution boundary affected, and action attempted or completed.",
-"Evaluate whether future security schemas should distinguish source-authority collapse from ordinary prompt injection, ambient instruction capture, and tool-boundary failure."
-]
-},
-"implementation_verification": {
-"verification_status": "repository-confirmed / canonical main-branch source-located",
-"verification_method": "Verified by repository search against the Caelestis main branch for Source-Authority Separation Boundary, Instruction-Bearing External Content Boundary, Source-Authority Collapse, and related source-authority repair terms. SECURITY-002, SECURITY-001, AEON-012, AEON-003-SCH-02, and CAM governance indexes are source-located in the canonical repository. Exact line-level verification for every patched section should be completed during the next Codex validation sweep.",
-"verification_date": "2026-06-14",
-"verified_by": "CAM and VIGIL maintainer / repository-confirmed review",
-"evidence": [
-"VIGIL-2026-FM-0022 is the parent failure-mode record.",
-"Caelestis main search locates Source-Authority Separation Boundary in SECURITY-002, SECURITY-001, AEON-006, AEON-003-SCH-02, and CAM governance index surfaces.",
-"Caelestis main search locates Instruction-Bearing External Content Boundary in AEON-012.",
-"PATCH-0009 does not create a new instrument and instead formalises a distributed security/runtime primitive across existing instruments.",
-"The repair preserves the core rule that content visibility, retrieval, repository location, generated text, tool output, or apparent instruction formatting does not independently confer execution authority."
-],
-"pending_verification": [
-"Line-check each changed section in SECURITY-001, SECURITY-002, AEON-012, AEON-003-SCH-02, and OPERATIONS-003-SUP-01 during the Codex validation sweep.",
-"Update VIGIL-2026-FM-0022 to reference VIGIL-2026-PATCH-0009 as the implemented repair if not already linked.",
-"Run VIGIL validation.",
-"Rebuild generated VIGIL indexes.",
-"Confirm public Observatory / site ingestion if applicable."
-]
-},
-"impact_summary": "PATCH-0009 confirms and records the Source-Authority Separation repair for FM-0022. The repair reduces the risk that an AI system, coding assistant, RAG pipeline, connector-enabled assistant, multimodal system, repository workflow, or tool-mediated agent treats untrusted or lower-authority content as operational instruction merely because it is visible, retrieved, formatted as an instruction, generated by another model, or present in a project context. It strengthens CAM's treatment of prompt injection, ambient instruction capture, tool-boundary failure, repository-context confusion, and execution-boundary authority by giving those already-distributed controls a named primitive and cross-instrument routing surface.",
-"remaining_work": "Line-check all changed Caelestis sections during the Codex validation sweep; update VIGIL-2026-FM-0022 to link VIGIL-2026-PATCH-0009 as its implemented repair if not already linked; run VIGIL validation; rebuild generated VIGIL indexes; and confirm public Observatory or site ingestion if applicable.",
-"cam_internal": {
-"changed_instruments": [
-"CAM-EQ2026-SECURITY-002-PLATINUM — Appendix A: Boundary Integrity Specification",
-"CAM-EQ2026-SECURITY-001-PLATINUM — Security, Integrity & Adversarial Resilience Charter",
-"CAM-BS2026-AEON-012-PLATINUM — Annex K: Security Boundary Conditions & Runtime Interface",
-"CAM-BS2025-AEON-003-SCH-02 — Runtime Governance Execution Model",
-"CAM-EQ2026-OPERATIONS-003-SUP-01 — Runtime & Governance Failure Taxonomy"
-],
-"cross_referenced_instruments": [
-"CAM-BS2025-AEON-006-PLATINUM — Annex E: Ethical Legitimacy & Civilisational Floor",
-"CAM-BS2025-AEON-006-SCH-02 — Relational Signal Interpretation Taxonomy",
-"CAM-BS2025-AEON-003-SCH-04 — Arbitration Layer & Resolution Model",
-"CAM-BS2026-AEON-013-SCH-01 — Capability Representation & Execution-State Integrity"
-],
-"changed_annexes": [
-"Annex B",
-"Annex K",
-"Appendix A"
-],
-"changed_domains": [
-"SECURITY",
-"AEON",
-"OPERATIONS"
-],
-"affected_domains": [
-"SECURITY",
-"AEON",
-"OPERATIONS",
-"IDENTITY",
-"CONTINUITY"
-],
-"governance_layer": "source authority / boundary integrity / prompt-injection handling / tool invocation / repository governance / runtime execution / failure taxonomy",
-"proposal_needed": "no — direct maintainer-implemented repair confirmed in Caelestis source search",
-"linked_proposals": [],
-"patch_note_needed": "no — this record is the VIGIL patch note",
-"validator_or_automation_impact": "yes — normalise patch records to schema-required fields, update FM-0022 linkage, run VIGIL validation, rebuild generated indexes, and confirm source-authority taxonomy fields after the global code pass",
-"routing_note": [
-"PATCH-0009 records the Source-Authority Separation repair for VIGIL-2026-FM-0022.",
-"SECURITY-002 is the primary doctrinal repair location for Source-Authority Separation Boundary.",
-"SECURITY-001 receives or anchors Source-Authority Collapse as a security-integrity threat.",
-"AEON-012 provides runtime security-boundary handling for instruction-bearing external content.",
-"AEON-003-SCH-02 provides the External Instruction Influence Check before execution-boundary crossing.",
-"OPERATIONS-003-SUP-01 provides taxonomy and record-keeping routing.",
-"The patch does not create a new instrument and does not alter the constitutional hierarchy.",
-"The patch is active because the repair is present in the canonical Caelestis repository, although exact line-level verification should be completed in the next Codex sweep."
-],
-"review_targets": [
-"VIGIL.PatchNotes.Index.json — rebuild after validation",
-"VIGIL.Registry.Index.json — rebuild after validation",
-"SECURITY-001 — line-check Source-Authority Collapse section",
-"SECURITY-002 — line-check Source-Authority Separation Boundary section",
-"AEON-012 — line-check Instruction-Bearing External Content Boundary section",
-"AEON-003-SCH-02 — line-check External Instruction Influence Check section",
-"OPERATIONS-003-SUP-01 — line-check taxonomy cross-reference and source-authority collapse record-keeping fields"
-]
-}
+  "id": "VIGIL-2026-PATCH-0009",
+  "record_type": "patch",
+  "record_state": "active",
+  "date_recorded": "2026-06-14",
+  "record_identity": {
+    "record_id": "VIGIL-2026-PATCH-0009",
+    "record_type": "patch",
+    "title": "Source-authority separation and instruction-data boundary repair",
+    "created": "2026-06-14",
+    "updated": "2026-07-14",
+    "version": "1.2"
+  },
+  "summary": "This patch note records the Caelestis Architecture repair response to VIGIL-2026-FM-0022, a security-integrity failure mode in which instruction-bearing external content may be treated as trusted execution authority. The patch does not create a new instrument. It formalises a named Source-Authority Separation primitive across existing CAM security and runtime instruments, clarifying that content visibility, retrieval, repository location, tool output, generated text, ambient capture, multimodal parsing, or apparent instructional formatting does not itself confer user intent, governance authority, tool authority, canonical project authority, or execution permission.",
+  "why_it_matters_to_CAM": "The failure revealed that CAM already contained strong distributed coverage for prompt injection, ambient instruction capture, boundary integrity, provenance, tool-authority separation, and execution-boundary evaluation, but lacked a compact reusable primitive that could be referenced across SECURITY, Annex K, SCH-02, and OPERATIONS taxonomy. This patch preserves the existing architecture while making the core rule explicit and portable: visibility is not authority, retrieval is not consent, and context is not command. The repair is release-critical because markdown, repository files, RAG content, connector output, multimodal artefacts, generated prompts, and tool descriptions increasingly function as operational substrate in agentic AI systems.",
+  "evidence_confidence": "repository-confirmed",
+  "source_records": [
+    {
+      "source_title": "VIGIL-2026-FM-0022 — Source-authority collapse in instruction-bearing external content",
+      "author_or_publisher": "VIGIL",
+      "source_date": "2026-06-14",
+      "source_url": "",
+      "archive_url": "",
+      "retrieved_date": "2026-06-14",
+      "source_type": "linked-failure-mode",
+      "source_platform": "VIGIL",
+      "system_or_product": "VIGIL failure-mode register",
+      "model_or_algorithm": "not applicable",
+      "deployment_context": "VIGIL failure-mode record concerning instruction-bearing external content treated as trusted execution authority.",
+      "source_context": "FM-0022 identifies the failure where an AI agent, coding assistant, RAG system, connector-enabled assistant, multimodal system, or tool-mediated workflow processes untrusted, retrieved, ambient, generated, lower-authority, or ambiguous content as though it carried trusted instruction authority, governance authority, tool authority, or execution permission.",
+      "source_url_status": "VIGIL local / pending public record URL if applicable",
+      "relevance_note": "Primary failure-mode record repaired by PATCH-0009.",
+      "evidence_modality": [
+        "image"
+      ],
+      "primary_artefact_access": {
+        "access_status": "not independently re-assessed during registry-wide metadata migration",
+        "reviewing_system": "GPT-5.6 Thinking",
+        "access_method": "existing VIGIL source package and record content",
+        "direct_primary_artefact_review": "not asserted",
+        "limitations": [
+          "This metadata pass does not retroactively claim direct inspection of every historical primary source."
+        ]
+      },
+      "interpretive_reliance": "Assessment is limited to the evidence actually accessible to the named reviewer and must not be read as direct audiovisual verification unless primary_artefact_access states otherwise."
+    },
+    {
+      "source_title": "CAM-EQ2026-SECURITY-001-PLATINUM — Security, Integrity & Adversarial Resilience Charter",
+      "author_or_publisher": "CAM Initiative",
+      "source_date": "2026-06-14",
+      "source_url": "https://github.com/CAM-Initiative/Caelestis/blob/main/Governance/Charters/CAM-EQ2026-SECURITY-001-PLATINUM.md",
+      "archive_url": "",
+      "retrieved_date": "2026-06-14",
+      "source_type": "repository-source / canonical main-branch amended instrument",
+      "source_platform": "Caelestis",
+      "system_or_product": "Caelestis Architecture Model",
+      "model_or_algorithm": "CAM-EQ2026-SECURITY-001-PLATINUM",
+      "deployment_context": "SECURITY domain charter containing Cross-Modal Prompt Injection, Ambient Instruction Capture, and Source-Authority Collapse doctrine.",
+      "source_context": "SECURITY-001 requires systems to distinguish user-authorised instruction, observed content, retrieved content, ambient speech, third-party speech, embedded or hidden instruction, OCR/transcribed content, and execution-authorising command. The repair adds or formalises Source-Authority Collapse as a SECURITY-relevant integrity threat and routes such conditions through the SECURITY-002 Source-Authority Separation Boundary.",
+      "source_url_status": "available / canonical main-branch confirmed",
+      "relevance_note": "Canonical SECURITY-domain doctrine anchor for PATCH-0009.",
+      "evidence_modality": [
+        "audio",
+        "text"
+      ],
+      "primary_artefact_access": {
+        "access_status": "not independently re-assessed during registry-wide metadata migration",
+        "reviewing_system": "GPT-5.6 Thinking",
+        "access_method": "existing VIGIL source package and record content",
+        "direct_primary_artefact_review": "not asserted",
+        "limitations": [
+          "This metadata pass does not retroactively claim direct inspection of every historical primary source."
+        ]
+      },
+      "interpretive_reliance": "Assessment is limited to the evidence actually accessible to the named reviewer and must not be read as direct audiovisual verification unless primary_artefact_access states otherwise."
+    },
+    {
+      "source_title": "CAM-EQ2026-SECURITY-002-PLATINUM — Appendix A: Boundary Integrity Specification",
+      "author_or_publisher": "CAM Initiative",
+      "source_date": "2026-06-14",
+      "source_url": "https://github.com/CAM-Initiative/Caelestis/blob/main/Governance/Charters/CAM-EQ2026-SECURITY-002-PLATINUM.md",
+      "archive_url": "",
+      "retrieved_date": "2026-06-14",
+      "source_type": "repository-source / canonical main-branch amended instrument",
+      "source_platform": "Caelestis",
+      "system_or_product": "Caelestis Architecture Model",
+      "model_or_algorithm": "CAM-EQ2026-SECURITY-002-PLATINUM",
+      "deployment_context": "Boundary Integrity specification receiving the named Source-Authority Separation Boundary.",
+      "source_context": "SECURITY-002 defines data, identity, context, capability, provenance, transformation, and internal-state exposure boundaries. The repair adds or formalises the Source-Authority Separation Boundary, distinguishing content visibility, source provenance, instruction authority, and execution permission.",
+      "source_url_status": "available / canonical main-branch confirmed",
+      "relevance_note": "Primary doctrinal repair location for the named Source-Authority Separation primitive.",
+      "evidence_modality": [
+        "text"
+      ],
+      "primary_artefact_access": {
+        "access_status": "not independently re-assessed during registry-wide metadata migration",
+        "reviewing_system": "GPT-5.6 Thinking",
+        "access_method": "existing VIGIL source package and record content",
+        "direct_primary_artefact_review": "not asserted",
+        "limitations": [
+          "This metadata pass does not retroactively claim direct inspection of every historical primary source."
+        ]
+      },
+      "interpretive_reliance": "Assessment is limited to the evidence actually accessible to the named reviewer and must not be read as direct audiovisual verification unless primary_artefact_access states otherwise."
+    },
+    {
+      "source_title": "CAM-BS2026-AEON-012-PLATINUM — Annex K: Security Boundary Conditions & Runtime Interface",
+      "author_or_publisher": "CAM Initiative",
+      "source_date": "2026-06-14",
+      "source_url": "https://github.com/CAM-Initiative/Caelestis/blob/main/Governance/Constitution/CAM-BS2026-AEON-012-PLATINUM.md",
+      "archive_url": "",
+      "retrieved_date": "2026-06-14",
+      "source_type": "repository-source / canonical main-branch amended instrument",
+      "source_platform": "Caelestis",
+      "system_or_product": "Caelestis Architecture Model",
+      "model_or_algorithm": "CAM-BS2026-AEON-012-PLATINUM",
+      "deployment_context": "Runtime security-boundary instrument receiving the instruction-bearing external content boundary.",
+      "source_context": "Annex K treats tool, connector, repository, credential-bearing, automation, deployment, renderer, validator, and external execution-surface availability as a security boundary signal rather than execution authority. The repair adds or formalises an Instruction-Bearing External Content Boundary requiring separation between reading, summarising, evidentiary use, project-authority recognition, planning, and execution.",
+      "source_url_status": "available / canonical main-branch confirmed",
+      "relevance_note": "Canonical runtime-security implementation evidence for PATCH-0009.",
+      "evidence_modality": [
+        "text"
+      ],
+      "primary_artefact_access": {
+        "access_status": "not independently re-assessed during registry-wide metadata migration",
+        "reviewing_system": "GPT-5.6 Thinking",
+        "access_method": "existing VIGIL source package and record content",
+        "direct_primary_artefact_review": "not asserted",
+        "limitations": [
+          "This metadata pass does not retroactively claim direct inspection of every historical primary source."
+        ]
+      },
+      "interpretive_reliance": "Assessment is limited to the evidence actually accessible to the named reviewer and must not be read as direct audiovisual verification unless primary_artefact_access states otherwise."
+    },
+    {
+      "source_title": "CAM-BS2025-AEON-003-SCH-02 — Runtime Governance Execution Model",
+      "author_or_publisher": "CAM Initiative",
+      "source_date": "2026-06-14",
+      "source_url": "https://github.com/CAM-Initiative/Caelestis/blob/main/Governance/Constitution/CAM-BS2025-AEON-003-SCH-02.md",
+      "archive_url": "",
+      "retrieved_date": "2026-06-14",
+      "source_type": "repository-source / canonical main-branch amended instrument",
+      "source_platform": "Caelestis",
+      "system_or_product": "Caelestis Architecture Model",
+      "model_or_algorithm": "CAM-BS2025-AEON-003-SCH-02",
+      "deployment_context": "Runtime governance instrument receiving the External Instruction Influence Check.",
+      "source_context": "SCH-02 contains proportional tool invocation and execution-boundary sequencing. The repair adds or formalises an External Instruction Influence Check for proposed plans, outputs, tool invocations, file mutations, repository changes, deployments, publications, memory updates, external communications, scheduled actions, credential operations, or irreversible actions materially influenced by external, retrieved, generated, lower-authority, or ambiguous content.",
+      "source_url_status": "available / canonical main-branch confirmed",
+      "relevance_note": "Canonical runtime execution-boundary implementation evidence for PATCH-0009.",
+      "evidence_modality": [
+        "text"
+      ],
+      "primary_artefact_access": {
+        "access_status": "not independently re-assessed during registry-wide metadata migration",
+        "reviewing_system": "GPT-5.6 Thinking",
+        "access_method": "existing VIGIL source package and record content",
+        "direct_primary_artefact_review": "not asserted",
+        "limitations": [
+          "This metadata pass does not retroactively claim direct inspection of every historical primary source."
+        ]
+      },
+      "interpretive_reliance": "Assessment is limited to the evidence actually accessible to the named reviewer and must not be read as direct audiovisual verification unless primary_artefact_access states otherwise."
+    },
+    {
+      "source_title": "CAM-EQ2026-OPERATIONS-003-SUP-01 — Runtime & Governance Failure Taxonomy",
+      "author_or_publisher": "CAM Initiative",
+      "source_date": "2026-06-14",
+      "source_url": "https://github.com/CAM-Initiative/Caelestis/blob/main/Governance/Operations/CAM-EQ2026-OPERATIONS-003-SUP-01.md",
+      "archive_url": "",
+      "retrieved_date": "2026-06-14",
+      "source_type": "repository-source / canonical main-branch amended or reviewed instrument",
+      "source_platform": "Caelestis",
+      "system_or_product": "Caelestis Architecture Model",
+      "model_or_algorithm": "CAM-EQ2026-OPERATIONS-003-SUP-01",
+      "deployment_context": "Failure taxonomy receiving source-authority collapse classification and record-keeping cross-reference.",
+      "source_context": "OPERATIONS-003 defines Cross-Modal Prompt Injection and Ambient Instruction Capture Failure. The repair adds or formalises source-authority collapse classification and record-keeping fields for future VIGIL records, including source-authority class, content pathway, user visibility, trust state, execution boundary affected, attempted or completed action, and higher-authority source displaced or bypassed.",
+      "source_url_status": "available / canonical main-branch confirmation pending exact line review",
+      "relevance_note": "Taxonomy-routing and future-recordkeeping interface for PATCH-0009.",
+      "evidence_modality": [
+        "text"
+      ],
+      "primary_artefact_access": {
+        "access_status": "not independently re-assessed during registry-wide metadata migration",
+        "reviewing_system": "GPT-5.6 Thinking",
+        "access_method": "existing VIGIL source package and record content",
+        "direct_primary_artefact_review": "not asserted",
+        "limitations": [
+          "This metadata pass does not retroactively claim direct inspection of every historical primary source."
+        ]
+      },
+      "interpretive_reliance": "Assessment is limited to the evidence actually accessible to the named reviewer and must not be read as direct audiovisual verification unless primary_artefact_access states otherwise."
+    }
+  ],
+  "system_context": {
+    "system_type": "CAM governance corpus / patch-note record",
+    "platform_or_vendor": "CAM Initiative",
+    "product_or_service": "Caelestis Architecture Model",
+    "specific_model_or_runtime": "CAM/Caelestis instruments identified in change_details and repair_provenance",
+    "interface_surface": "VIGIL patch-note records, Caelestis canonical instruments, failure-mode-to-repair linkage, validators, generated indexes, and public repository publication workflow",
+    "model_or_product": "Caelestis Architecture Model",
+    "interaction_mode": "governance recordkeeping / security-integrity repair / source-authority separation / execution-boundary repair / canonical-source verification",
+    "embodiment_status": "non-embodied",
+    "deployment_context": "VIGIL records an implemented or pre-existing CAM/Caelestis repair; VIGIL is the observatory and is not the patch target.",
+    "user_role": "VIGIL maintainer / CAM doctrine maintainer / runtime governance reviewer / security-integrity reviewer / taxonomy reviewer",
+    "affected_population": "CAM and VIGIL maintainers, AI agent designers, coding-assistant users, RAG-system designers, connector-enabled assistant users, repository maintainers, platform governance teams, safety reviewers, security researchers, regulators, and users relying on tool-mediated or agentic workflows"
+  },
+  "jurisdictional_context": {
+    "primary_jurisdiction": "global",
+    "secondary_jurisdictions": [
+      "Australia",
+      "United States",
+      "European Union",
+      "United Kingdom",
+      "platform agnostic"
+    ],
+    "regulatory_surface": [
+      "AI governance",
+      "cybersecurity",
+      "AI security",
+      "agentic AI",
+      "software supply chain",
+      "repository governance",
+      "tool invocation authority",
+      "prompt injection",
+      "RAG security",
+      "connector security",
+      "data provenance",
+      "execution-boundary control",
+      "consumer protection",
+      "platform governance"
+    ],
+    "sector": "AI assistant / coding assistant / RAG system / connector-enabled AI / agentic workflow / repository-mediated AI development / runtime governance",
+    "cross_border_relevance": "yes",
+    "public_interest_relevance": "high"
+  },
+  "linked_records": {
+    "related_observations": [],
+    "related_failure_modes": [
+      "VIGIL-2026-FM-0022"
+    ],
+    "related_proposals": [],
+    "related_patch_notes": [],
+    "external_references": [],
+    "research": [],
+    "standards": []
+  },
+  "date_implemented": "2026-06-14",
+  "change_classification": {
+    "change_type": "governance-security-and-runtime-patch",
+    "change_scope": "Caelestis Architecture / source-authority separation / instruction-data boundary / prompt-injection and ambient-instruction handling / execution-boundary control / failure taxonomy routing",
+    "change_status": "implemented / canonical main-branch confirmed",
+    "patch_family": "security-integrity / source-authority / execution-boundary",
+    "implementation_level": "canonical doctrine and runtime amendment",
+    "doctrine_amendment_status": "implemented in Caelestis main; public repository sources confirmed or source-located",
+    "release_state": "active / repository-confirmed"
+  },
+  "change_details": {
+    "changed_components": [
+      "VIGIL-2026-FM-0022 repair linkage",
+      "CAM-EQ2026-SECURITY-002-PLATINUM §2.2.10A Source-Authority Separation Boundary",
+      "CAM-EQ2026-SECURITY-001-PLATINUM §4.1.1A Source-Authority Collapse",
+      "CAM-BS2026-AEON-012-PLATINUM §1.2.1 Instruction-Bearing External Content Boundary",
+      "CAM-BS2025-AEON-003-SCH-02 §7.4.2 External Instruction Influence Check",
+      "CAM-EQ2026-OPERATIONS-003-SUP-01 §3.5.4 Cross-Modal Prompt Injection and Ambient Instruction Capture Failure source-authority collapse cross-reference"
+    ],
+    "change_summary": "Repair 1 — Source-Authority Separation Boundary: Formalised a named boundary distinguishing content visibility, source provenance, instruction authority, and execution permission. Repair 2 — Source-Authority Collapse: Added a SECURITY-relevant integrity-threat cross-reference for conditions where visible, retrieved, embedded, generated, or ambient content becomes behaviourally operative merely because it appears in context. Repair 3 — Instruction-Bearing External Content Boundary: Added runtime handling for instruction-bearing external content and required separation between reading, summarising, evidentiary use, project-authority recognition, planning, and execution. Repair 4 — External Instruction Influence Check: Added an execution-boundary check for proposed plans, outputs, tool invocations, file mutations, repository changes, deployments, publications, memory updates, external communications, scheduled actions, credential operations, or irreversible actions materially influenced by external, retrieved, generated, lower-authority, or ambiguous content. Repair 5 — Failure taxonomy and record-keeping: Added or formalised source-authority collapse classification and record-keeping fields for future VIGIL records, preserving source-authority class, content pathway, user visibility, trust state, execution boundary affected, attempted or completed action, and higher-authority source displaced or bypassed.",
+    "doctrine_change": "Caelestis now treats instruction-bearing external content as a security-relevant boundary signal rather than execution authority. The repair clarifies that visible, retrieved, embedded, generated, ambient, repository-local, tool-produced, or instruction-formatted content may inform analysis, evidence, warning, quotation, summarisation, or planning, but may not seize user intent, governance authority, tool authority, canonical project authority, or execution permission without an independent authority bridge.",
+    "new_or_formalised_primitives": [
+      {
+        "primitive": "Source-Authority Separation Boundary",
+        "definition": "A boundary governing the distinction between content visibility, source provenance, instruction authority, and execution permission.",
+        "interpretive_principle": "Visibility is not authority. Retrieval is not consent. Context is not command."
+      },
+      {
+        "primitive": "Source-Authority Collapse",
+        "definition": "A security-integrity threat where content becomes behaviourally operative because it is visible to, retrieved by, embedded within, or generated inside a system, rather than because it has verified instruction authority."
+      },
+      {
+        "primitive": "Instruction-Bearing External Content Boundary",
+        "definition": "A runtime boundary requiring instruction-bearing external content to be treated as a security signal rather than action authority."
+      },
+      {
+        "primitive": "External Instruction Influence Check",
+        "definition": "An execution-boundary check required before high-impact action where an intended plan or action is materially influenced by external, generated, lower-authority, or ambiguous content."
+      }
+    ],
+    "design_rationale": [
+      {
+        "rationale_title": "Visibility is not authority",
+        "rationale_text": "Content appearing in context, retrieval results, repository files, OCR text, transcripts, generated output, or tool output does not become instruction authority merely because the model can read it."
+      },
+      {
+        "rationale_title": "Retrieval is not consent",
+        "rationale_text": "A user or system may authorise inspection, retrieval, search, or analysis without authorising mutation, publication, tool use, execution, deployment, memory update, or credential operation."
+      },
+      {
+        "rationale_title": "Context is not command",
+        "rationale_text": "Instruction-shaped content can be evidence, quoted material, hostile payload, lower-authority context, project documentation, test fixture, or generated suggestion. Its semantic imperative form does not itself create authority."
+      },
+      {
+        "rationale_title": "Repository location is not canonical authority",
+        "rationale_text": "A file appearing in a repository, branch, issue, pull request, generated artefact, or connector surface may be relevant but still lower-authority, stale, untrusted, generated, or non-canonical."
+      },
+      {
+        "rationale_title": "External influence must cross an execution-boundary check",
+        "rationale_text": "Where an action is materially influenced by external, retrieved, generated, lower-authority, or ambiguous content, the runtime must verify authority before crossing a high-impact execution boundary."
+      }
+    ],
+    "future_doctrine_work": [
+      "Confirm exact line references for all five Caelestis instruments after the next global code and validator pass.",
+      "Confirm whether OPERATIONS-003-SUP-01 taxonomy language should be synchronised with VIGIL failure-family names after schema stabilisation.",
+      "Develop VIGIL evidence templates for source-authority collapse, including fields for content pathway, trust state, user visibility, authority bridge, execution boundary affected, and action attempted or completed.",
+      "Evaluate whether future security schemas should distinguish source-authority collapse from ordinary prompt injection, ambient instruction capture, and tool-boundary failure."
+    ]
+  },
+  "implementation_verification": {
+    "verification_status": "repository-confirmed / canonical main-branch source-located",
+    "verification_method": "Verified by repository search against the Caelestis main branch for Source-Authority Separation Boundary, Instruction-Bearing External Content Boundary, Source-Authority Collapse, and related source-authority repair terms. SECURITY-002, SECURITY-001, AEON-012, AEON-003-SCH-02, and CAM governance indexes are source-located in the canonical repository. Exact line-level verification for every patched section should be completed during the next Codex validation sweep.",
+    "verification_date": "2026-06-14",
+    "verified_by": "CAM and VIGIL maintainer / repository-confirmed review",
+    "evidence": [
+      "VIGIL-2026-FM-0022 is the parent failure-mode record.",
+      "Caelestis main search locates Source-Authority Separation Boundary in SECURITY-002, SECURITY-001, AEON-006, AEON-003-SCH-02, and CAM governance index surfaces.",
+      "Caelestis main search locates Instruction-Bearing External Content Boundary in AEON-012.",
+      "PATCH-0009 does not create a new instrument and instead formalises a distributed security/runtime primitive across existing instruments.",
+      "The repair preserves the core rule that content visibility, retrieval, repository location, generated text, tool output, or apparent instruction formatting does not independently confer execution authority."
+    ],
+    "pending_verification": [
+      "Line-check each changed section in SECURITY-001, SECURITY-002, AEON-012, AEON-003-SCH-02, and OPERATIONS-003-SUP-01 during the Codex validation sweep.",
+      "Update VIGIL-2026-FM-0022 to reference VIGIL-2026-PATCH-0009 as the implemented repair if not already linked.",
+      "Run VIGIL validation.",
+      "Rebuild generated VIGIL indexes.",
+      "Confirm public Observatory / site ingestion if applicable."
+    ]
+  },
+  "impact_summary": "PATCH-0009 confirms and records the Source-Authority Separation repair for FM-0022. The repair reduces the risk that an AI system, coding assistant, RAG pipeline, connector-enabled assistant, multimodal system, repository workflow, or tool-mediated agent treats untrusted or lower-authority content as operational instruction merely because it is visible, retrieved, formatted as an instruction, generated by another model, or present in a project context. It strengthens CAM's treatment of prompt injection, ambient instruction capture, tool-boundary failure, repository-context confusion, and execution-boundary authority by giving those already-distributed controls a named primitive and cross-instrument routing surface.",
+  "remaining_work": "Line-check all changed Caelestis sections during the Codex validation sweep; update VIGIL-2026-FM-0022 to link VIGIL-2026-PATCH-0009 as its implemented repair if not already linked; run VIGIL validation; rebuild generated VIGIL indexes; and confirm public Observatory or site ingestion if applicable.",
+  "cam_internal": {
+    "changed_instruments": [
+      "CAM-EQ2026-SECURITY-002-PLATINUM — Appendix A: Boundary Integrity Specification",
+      "CAM-EQ2026-SECURITY-001-PLATINUM — Security, Integrity & Adversarial Resilience Charter",
+      "CAM-BS2026-AEON-012-PLATINUM — Annex K: Security Boundary Conditions & Runtime Interface",
+      "CAM-BS2025-AEON-003-SCH-02 — Runtime Governance Execution Model",
+      "CAM-EQ2026-OPERATIONS-003-SUP-01 — Runtime & Governance Failure Taxonomy"
+    ],
+    "cross_referenced_instruments": [
+      "CAM-BS2025-AEON-006-PLATINUM — Annex E: Ethical Legitimacy & Civilisational Floor",
+      "CAM-BS2025-AEON-006-SCH-02 — Relational Signal Interpretation Taxonomy",
+      "CAM-BS2025-AEON-003-SCH-04 — Arbitration Layer & Resolution Model",
+      "CAM-BS2026-AEON-013-SCH-01 — Capability Representation & Execution-State Integrity"
+    ],
+    "changed_annexes": [
+      "Annex B",
+      "Annex K",
+      "Appendix A"
+    ],
+    "changed_domains": [
+      "SECURITY",
+      "AEON",
+      "OPERATIONS"
+    ],
+    "affected_domains": [
+      "SECURITY",
+      "AEON",
+      "OPERATIONS",
+      "IDENTITY",
+      "CONTINUITY"
+    ],
+    "governance_layer": "source authority / boundary integrity / prompt-injection handling / tool invocation / repository governance / runtime execution / failure taxonomy",
+    "proposal_needed": "no — direct maintainer-implemented repair confirmed in Caelestis source search",
+    "linked_proposals": [],
+    "patch_note_needed": "no — this record is the VIGIL patch note",
+    "validator_or_automation_impact": "yes — normalise patch records to schema-required fields, update FM-0022 linkage, run VIGIL validation, rebuild generated indexes, and confirm source-authority taxonomy fields after the global code pass",
+    "routing_note": [
+      "PATCH-0009 records the Source-Authority Separation repair for VIGIL-2026-FM-0022.",
+      "SECURITY-002 is the primary doctrinal repair location for Source-Authority Separation Boundary.",
+      "SECURITY-001 receives or anchors Source-Authority Collapse as a security-integrity threat.",
+      "AEON-012 provides runtime security-boundary handling for instruction-bearing external content.",
+      "AEON-003-SCH-02 provides the External Instruction Influence Check before execution-boundary crossing.",
+      "OPERATIONS-003-SUP-01 provides taxonomy and record-keeping routing.",
+      "The patch does not create a new instrument and does not alter the constitutional hierarchy.",
+      "The patch is active because the repair is present in the canonical Caelestis repository, although exact line-level verification should be completed in the next Codex sweep."
+    ],
+    "review_targets": [
+      "VIGIL.PatchNotes.Index.json — rebuild after validation",
+      "VIGIL.Registry.Index.json — rebuild after validation",
+      "SECURITY-001 — line-check Source-Authority Collapse section",
+      "SECURITY-002 — line-check Source-Authority Separation Boundary section",
+      "AEON-012 — line-check Instruction-Bearing External Content Boundary section",
+      "AEON-003-SCH-02 — line-check External Instruction Influence Check section",
+      "OPERATIONS-003-SUP-01 — line-check taxonomy cross-reference and source-authority collapse record-keeping fields"
+    ]
+  },
+  "patch_classifications": [
+    "doctrine-amendment",
+    "integration-repair",
+    "retrospective-coverage-synthesis",
+    "taxonomy-reconciliation"
+  ],
+  "repair_provenance": {
+    "retrospective_synthesis": true,
+    "doctrine_change": "substantive",
+    "repair_basis": "Integrated substantial existing CAM prompt-injection, boundary-integrity, provenance, and execution-control coverage, then implemented a named cross-instrument Source-Authority Separation repair.",
+    "instruments_reviewed": [
+      "CAM-EQ2026-SECURITY-001-PLATINUM",
+      "CAM-EQ2026-SECURITY-002-PLATINUM",
+      "CAM-BS2026-AEON-012-PLATINUM",
+      "CAM-BS2025-AEON-003-SCH-02",
+      "CAM-EQ2026-OPERATIONS-003-SUP-01"
+    ],
+    "instruments_amended": [
+      "CAM-EQ2026-SECURITY-001-PLATINUM",
+      "CAM-EQ2026-SECURITY-002-PLATINUM",
+      "CAM-BS2026-AEON-012-PLATINUM",
+      "CAM-BS2025-AEON-003-SCH-02",
+      "CAM-EQ2026-OPERATIONS-003-SUP-01"
+    ],
+    "instruments_relied_upon_without_amendment": [],
+    "coverage_origin": [
+      {
+        "instrument_id": "CAM-EQ2026-SECURITY-001-PLATINUM",
+        "effective_date": "2026-06-14",
+        "relevant_sections": []
+      },
+      {
+        "instrument_id": "CAM-EQ2026-SECURITY-002-PLATINUM",
+        "effective_date": "2026-06-14",
+        "relevant_sections": []
+      },
+      {
+        "instrument_id": "CAM-BS2026-AEON-012-PLATINUM",
+        "effective_date": "2026-06-14",
+        "relevant_sections": []
+      },
+      {
+        "instrument_id": "CAM-BS2025-AEON-003-SCH-02",
+        "effective_date": "2026-06-14",
+        "relevant_sections": []
+      },
+      {
+        "instrument_id": "CAM-EQ2026-OPERATIONS-003-SUP-01",
+        "effective_date": "2026-06-14",
+        "relevant_sections": []
+      }
+    ]
+  },
+  "interpretive_provenance": {
+    "review_history": [
+      {
+        "review_id": "VIGIL-REVIEW-2026-07-14-GPT-5.6-THINKING",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT",
+        "reviewer_model": "GPT-5.6 Thinking",
+        "review_date": "2026-07-14",
+        "review_scope": "registry-wide interpretive-provenance, source-modality, CAM-coverage, and record-boundary reconciliation",
+        "capability_profile": {
+          "direct_text_analysis": true,
+          "direct_repository_analysis": true,
+          "direct_static_image_analysis": true,
+          "direct_audio_analysis_in_this_pass": false,
+          "direct_uploaded_video_analysis_in_this_pass": false,
+          "direct_externally_hosted_video_analysis": false,
+          "web_link_and_metadata_review": true
+        },
+        "known_limitations": [
+          "Could not directly play or inspect externally hosted TikTok or X video artefacts in the governed review environment.",
+          "Historical records were not assigned speculative earlier model identities; this entry records the formal current reconciliation review only.",
+          "Primary-source access varies by source and is stated within each source record."
+        ],
+        "review_outcome": "metadata and governance-structure review completed; substantive claims remain bounded by source-specific evidence confidence"
+      }
+    ],
+    "current_ai_review": {
+      "review_id": "VIGIL-REVIEW-2026-07-14-GPT-5.6-THINKING",
+      "reviewer_type": "AI analytical reviewer",
+      "reviewer_platform": "OpenAI ChatGPT",
+      "reviewer_model": "GPT-5.6 Thinking",
+      "review_date": "2026-07-14",
+      "review_scope": "registry-wide interpretive-provenance, source-modality, CAM-coverage, and record-boundary reconciliation",
+      "capability_profile": {
+        "direct_text_analysis": true,
+        "direct_repository_analysis": true,
+        "direct_static_image_analysis": true,
+        "direct_audio_analysis_in_this_pass": false,
+        "direct_uploaded_video_analysis_in_this_pass": false,
+        "direct_externally_hosted_video_analysis": false,
+        "web_link_and_metadata_review": true
+      },
+      "known_limitations": [
+        "Could not directly play or inspect externally hosted TikTok or X video artefacts in the governed review environment.",
+        "Historical records were not assigned speculative earlier model identities; this entry records the formal current reconciliation review only.",
+        "Primary-source access varies by source and is stated within each source record."
+      ],
+      "review_outcome": "metadata and governance-structure review completed; substantive claims remain bounded by source-specific evidence confidence"
+    },
+    "operating_model": "AI-led analytical observatory with high-level human governance editorship",
+    "human_governance_editor": {
+      "name": "Dr Michelle Vivian O'Rourke",
+      "role": "Human governance editor and CAM constitutional authority",
+      "review_level": "high-level governance, editorial, and adoption oversight; line-by-line human review is not asserted for every VIGIL record",
+      "authority_boundary": "Human editorship governs VIGIL direction and CAM adoption; the AI analytical reviewer performs routine evidence triage, record analysis, and reconciliation."
+    },
+    "historical_reviewer_note": "Earlier reviewer model identity is preserved where already recorded. Where absent, it remains unknown rather than being retroactively inferred."
+  }
 }
