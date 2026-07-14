@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run VIGIL lifecycle, proposal-resolution, and CAM observatory-boundary validation."""
+"""Run VIGIL lifecycle, observatory-boundary, and interpretive-provenance validation."""
 
 from __future__ import annotations
 
@@ -12,6 +12,7 @@ from typing import Any
 SCRIPT_DIR = Path(__file__).resolve().parent
 MODULE_PATH = SCRIPT_DIR / "validate-vigil-lifecycle.py"
 BOUNDARY_PATH = SCRIPT_DIR / "validate-vigil-cam-boundary.py"
+PROVENANCE_PATH = SCRIPT_DIR / "validate-vigil-interpretive-provenance.py"
 
 
 def load_module() -> Any:
@@ -40,8 +41,11 @@ def main() -> int:
     if lifecycle_status:
         return lifecycle_status
 
-    completed = subprocess.run([sys.executable, str(BOUNDARY_PATH)], check=False)
-    return completed.returncode
+    for validator in (BOUNDARY_PATH, PROVENANCE_PATH):
+        completed = subprocess.run([sys.executable, str(validator)], check=False)
+        if completed.returncode:
+            return completed.returncode
+    return 0
 
 
 if __name__ == "__main__":
