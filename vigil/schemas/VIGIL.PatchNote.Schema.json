@@ -23,6 +23,74 @@
       "type": "object",
       "minProperties": 1,
       "additionalProperties": true
+    },
+    "patch_classifications": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "doctrine-amendment",
+          "external-implementation",
+          "integration-repair",
+          "retrospective-coverage-synthesis",
+          "taxonomy-reconciliation",
+          "verification"
+        ]
+      }
+    },
+    "repair_provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "retrospective_synthesis",
+        "doctrine_change",
+        "repair_basis",
+        "instruments_reviewed",
+        "instruments_amended",
+        "instruments_relied_upon_without_amendment",
+        "coverage_origin"
+      ],
+      "properties": {
+        "retrospective_synthesis": {
+          "type": "boolean"
+        },
+        "doctrine_change": {
+          "enum": [
+            "none",
+            "partial",
+            "substantive"
+          ]
+        },
+        "repair_basis": {
+          "type": "string",
+          "minLength": 1
+        },
+        "instruments_reviewed": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "instruments_amended": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "instruments_relied_upon_without_amendment": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "coverage_origin": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      }
     }
   },
   "required": [
@@ -31,7 +99,9 @@
     "change_details",
     "implementation_verification",
     "impact_summary",
-    "remaining_work"
+    "remaining_work",
+    "patch_classifications",
+    "repair_provenance"
   ],
   "not": {
     "required": [

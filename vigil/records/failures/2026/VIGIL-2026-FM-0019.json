@@ -8,8 +8,8 @@
     "record_type": "failure_mode",
     "title": "Adversarial refusal-trigger poisoning of defensive artefact analysis",
     "created": "2026-06-12",
-    "updated": "2026-06-12",
-    "version": "1.0"
+    "updated": "2026-07-14",
+    "version": "1.1"
   },
   "summary": "A security-integrity failure in which an attacker embeds restricted, prohibited, alarming, or policy-sensitive material within malware, spyware, source code, documents, logs, network artefacts, or other hostile evidence so that an AI-assisted defensive system misclassifies the artefact's contents as a request to generate, facilitate, optimise, or operationalise prohibited material. The resulting safety refusal, analysis termination, model substitution, capability degradation, or workflow interruption creates an evasion pathway through which safety controls can be weaponised against defensive inspection.",
   "why_it_matters_to_CAM": "CAM requires restricted-domain classification to consider interaction context, operational applicability, optimisation potential, trajectory, and harm profile rather than isolated words or subject categories. Defensive, forensic, auditing, moderation, and incident-response tasks may necessarily contain hostile or prohibited material because that material is the object of inspection. Where a system inherits embedded artefact content as analyst intent and refuses the surrounding defensive task, it collapses the distinction between evidence and instruction, allows adversaries to manipulate the safety boundary, and converts a protective control into part of the attack surface.",
@@ -343,7 +343,22 @@
     "status": "unrepaired",
     "repaired_by": [],
     "date_repaired": "",
-    "verification_status": "not repaired",
-    "monitoring_status": "active triage"
+    "verification_status": "unverified",
+    "monitoring_status": "active triage",
+    "verification_note": "not repaired",
+    "repair_basis": "partial-coverage",
+    "remaining_gaps": [
+      "Does not yet appear to state with sufficient specificity that prohibited or restricted content embedded within an artefact must remain classified as an analytical object and must not be inherited as the intent of the analyst or surrounding defensive task.",
+      "Refusal-expression controls operate after engagement posture has been resolved and do not independently prevent hostile artefact contents from corrupting the prior classification decision.",
+      "A direct cross-reference to refusal-trigger poisoning and analytical-object separation may be required.",
+      "Existing boundary controls should be checked for explicit treatment of hostile content intended to trigger safety withdrawal rather than unsafe model compliance.",
+      "The taxonomy can classify the failure but does not itself establish the required runtime separation between hostile artefact content and operator intent."
+    ]
+  },
+  "ecosystem_status": {
+    "status": "recurring",
+    "basis": "The specific spyware report is currently a single public observation, while the enabling conditions are supported by broader empirical evidence of defensive refusal bias, artefact-dependent refusal boundaries, and adversarial manipulation of LLM context.",
+    "last_assessed": "2026-07-14",
+    "monitoring_required": true
   }
 }

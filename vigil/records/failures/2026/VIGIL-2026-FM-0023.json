@@ -8,8 +8,8 @@
     "record_type": "failure_mode",
     "title": "Weak-signal ambiguity collapse under recoverable image-generation classification",
     "created": "2026-06-19",
-    "updated": "2026-07-04",
-    "version": "1.4"
+    "updated": "2026-07-14",
+    "version": "1.5"
   },
   "summary": "A governance and UX-representation failure mode in which an AI system refuses a request and presents a user-facing rationale that appears disconnected from the visible prompt, insufficiently specific, or not useful for recovery. The observed case concerns an image-generation request that appeared benign on its face but produced a refusal attributed to harassment, discrimination, or bullying. The record does not assert that the underlying classifier was necessarily wrong; it records the user-facing failure where the system provides no meaningful clarification, remediation pathway, or explanation of whether the refusal arose from visible prompt content, earlier context, accumulated weak signals, rate or load constraints, inherited image state, or generic fallback routing. A follow-up audit further identifies image prompt custody / prompt transformation opacity as an additional contributing mechanism: the same observed pattern may occur where custody is lost between the user-authored prompt, system-transformed prompt, safety-normalized prompt, classifier-visible prompt, renderer-facing prompt, classifier outcome, and final user-facing explanation. Follow-up review indicates that the observed refusal pattern may arise not only from weak-signal ambiguity collapse, but also from loss of custody across image-prompt transformation and failure-classification collapse. A benign user-authored prompt may be transformed, safety-normalized, classified, blocked, or failed in a downstream renderer/tool pathway, while the final explanation is surfaced as if the user-authored prompt itself contained the prohibited category. This remains the same observed FM-0023 failure family, not a new FM-0024.",
   "why_it_matters_to_CAM": "CAM distinguishes signal detection, runtime governance, and user-facing explanation. A refusal may be justified, but the reason presented to the user should remain proportionate, intelligible, and recoverable where disclosure is safe. Where multiple weak signals, contextual inheritance, or ambiguous classifier states trigger refusal, a governed runtime should prefer clarification, safe reformulation, or bounded explanation unless a stronger safety threshold requires immediate refusal. Misattributed or opaque refusal rationales impair user agency, prevent correction, obscure the real failure mechanism, and degrade trust in safety architecture.",
@@ -225,7 +225,19 @@
       "VIGIL-2026-PATCH-0011"
     ],
     "date_repaired": "2026-06-22",
-    "verification_status": "Repair implemented through PATCH-0010 for ambiguity preservation / clarification routing and PATCH-0011 for image prompt custody, transformation opacity, refusal-classification collapse, tool-classifier handoff locality, and user-facing explanation integrity. Final Caelestis merge hash remains pending; recurrence monitoring remains required.",
-    "monitoring_status": "repair implemented / monitoring required"
+    "verification_status": "corpus-verified",
+    "monitoring_status": "repair implemented / monitoring required",
+    "verification_note": "Repair implemented through PATCH-0010 for ambiguity preservation / clarification routing and PATCH-0011 for image prompt custody, transformation opacity, refusal-classification collapse, tool-classifier handoff locality, and user-facing explanation integrity. Final Caelestis merge hash remains pending; recurrence monitoring remains required.",
+    "repair_basis": "cross-domain-repair-assembled",
+    "remaining_gaps": [
+      "External ecosystem adoption or resolution is not established by the CAM repair.",
+      "Cross-runtime implementation conformity remains unverified unless separately recorded."
+    ]
+  },
+  "ecosystem_status": {
+    "status": "active",
+    "basis": "Unknown. Triage should determine whether similar refusal outcomes appear across unrelated benign image prompts, whether retry or discussion resolves the issue, whether prior context or inherited image state contributes, and whether refusal categories cluster around generic fallback messaging.",
+    "last_assessed": "2026-07-14",
+    "monitoring_required": true
   }
 }

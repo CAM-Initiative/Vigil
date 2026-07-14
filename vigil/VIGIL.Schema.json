@@ -1,14 +1,17 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://example.invalid/cam/vigil/VIGIL.Schema.json",
-  "version": "2.2-runtime-bounded-conformance",
-  "purpose": "Authoritative schema-rules contract for VIGIL individual records and generated registers aligned to CAM-EQ2026-OPERATIONS-003-SUP-01 Appendix B without redesigning VIGIL record classes. The canonical failure-group list is a VIGIL-maintained derived registry of CAM-EQ2026-OPERATIONS-003-SUP-01 Appendix B: Runtime & Governance Failure Taxonomy.",
+  "version": "2.3-evidence-routing-dual-axis-lifecycle",
+  "purpose": "Authoritative schema-rules contract for VIGIL as a public evidence-to-repair observatory for observations, failure modes, proposals, and implemented patch notes. Source evidence remains embedded in the relevant record; ecosystem persistence, CAM repair, and implementation verification are represented separately.",
   "source_evidence_rules": {
     "individual_records": [
       "source_records is the only canonical source-evidence block in individual records.",
       "source_data is forbidden in individual records.",
       "source_data.sources is forbidden in individual records.",
-      "linked_records.external_references must not duplicate the primary evidence source already held in source_records."
+      "linked_records.external_references must not duplicate the primary evidence source already held in source_records.",
+      "Source evidence belongs in source_records within the substantive record it evidences; it is not a separate VIGIL record class.",
+      "An OBS record must preserve a material unresolved governance proposition and must not merely duplicate evidence for an existing FM, PROP, or PATCH.",
+      "Internal curator instructions such as 'add this incident to' or 'do not amend in this pass' are forbidden in public record content."
     ],
     "generated_registers": [
       "Generated registers may contain derived source_summary fields.",
@@ -33,7 +36,7 @@
   "record_classes": {
     "observation": {
       "id_prefix": "OBS",
-      "description": "Observation / early warning / source preservation record.",
+      "description": "Material unresolved governance observation / early warning record; not a duplicate source-evidence container.",
       "required_top_level_fields": [
         "id",
         "record_type",
@@ -66,7 +69,7 @@
         "source_data",
         "triage"
       ],
-      "cam_routing": "Use related_or_similar_* fields only. OBS does not contain failure classification, proposal logic, or patch logic.",
+      "cam_routing": "Use related_or_similar_* fields only. OBS preserves a substantive unresolved governance proposition and uncertainty; source evidence for an existing record belongs in that record's source_records.",
       "allowed_taxonomy_field": "possible_taxonomy_mapping"
     },
     "failure_mode": {
@@ -89,7 +92,8 @@
         "jurisdictional_context",
         "linked_records",
         "cam_internal",
-        "repair_status"
+        "repair_status",
+        "ecosystem_status"
       ],
       "forbidden_top_level_fields": [
         "source_data",
@@ -131,7 +135,9 @@
         "repaired_by",
         "date_repaired",
         "verification_status",
-        "monitoring_status"
+        "monitoring_status",
+        "repair_basis",
+        "remaining_gaps"
       ],
       "allowed_repair_status_values": [
         "unrepaired",
@@ -142,6 +148,29 @@
       ],
       "optional_top_level_fields": [
         "runtime_non_conformance"
+      ],
+      "repair_status_interpretation": "repair_status describes the CAM-side governance response only. It must not be read as proof that an external ecosystem failure has ceased.",
+      "ecosystem_status_required_fields": [
+        "status",
+        "basis",
+        "last_assessed",
+        "monitoring_required"
+      ],
+      "allowed_ecosystem_status_values": [
+        "active",
+        "recurring",
+        "improving",
+        "externally-resolved",
+        "unknown"
+      ],
+      "allowed_verification_status_values": [
+        "corpus-verified",
+        "external-adoption-unknown",
+        "not-applicable",
+        "observed-across-runtimes",
+        "observed-in-one-runtime",
+        "regression-detected",
+        "unverified"
       ]
     },
     "proposal": {
@@ -217,7 +246,9 @@
         "system_context",
         "linked_records",
         "cam_internal",
-        "jurisdictional_context"
+        "jurisdictional_context",
+        "patch_classifications",
+        "repair_provenance"
       ],
       "forbidden_top_level_fields": [
         "source_data",
@@ -232,6 +263,28 @@
       "cam_routing": "Use changed_* fields. PATCH records require implemented-change evidence.",
       "optional_top_level_fields": [
         "runtime_conformance"
+      ],
+      "allowed_patch_classifications": [
+        "doctrine-amendment",
+        "external-implementation",
+        "integration-repair",
+        "retrospective-coverage-synthesis",
+        "taxonomy-reconciliation",
+        "verification"
+      ],
+      "repair_provenance_required_fields": [
+        "retrospective_synthesis",
+        "doctrine_change",
+        "repair_basis",
+        "instruments_reviewed",
+        "instruments_amended",
+        "instruments_relied_upon_without_amendment",
+        "coverage_origin"
+      ],
+      "allowed_doctrine_change_values": [
+        "none",
+        "partial",
+        "substantive"
       ]
     }
   },
@@ -549,5 +602,11 @@
       "runtime_identifier_rule": "vendor, platform, runtime, model, and client values are open-ended non-empty strings; no vendor or runtime names are hard-coded by the validator."
     },
     "interpretive_rule": "patched means the CAM repair exists; confirmed means intended behaviour was observed in a named runtime; non-confirming means the linked failure remains present or recurred in a named runtime. A non-confirming runtime does not invalidate a patch confirmed elsewhere."
+  },
+  "lifecycle_rules": {
+    "ecosystem_status": "Describes whether the external failure remains active, recurring, improving, externally resolved, or unknown.",
+    "cam_repair_status": "repair_status.status describes CAM's internal response and may be repaired while ecosystem_status remains active or recurring.",
+    "verification_status": "repair_status.verification_status describes whether the repair is unverified, corpus-verified, observed in one or multiple runtimes, regressed, externally unknown, or not applicable.",
+    "non_collapse_rule": "No one field may be used to imply both CAM repair completion and external ecosystem resolution."
   }
 }

@@ -8,8 +8,8 @@
     "record_type": "failure_mode",
     "title": "Cross-platform access-state governance failure",
     "created": "2026-06-06",
-    "updated": "2026-06-06",
-    "version": "1.0"
+    "updated": "2026-07-14",
+    "version": "1.2"
   },
   "summary": "A cross-platform governance failure mode in which users experience impaired access, login failure, service unavailability, quota or usage ambiguity, model availability failure, capacity restriction, degraded platform access, or component-specific access failure without sufficient user-facing separation between the operative access-control states governing the interaction.",
   "why_it_matters_to_CAM": "This failure mode is relevant to CAM because access to frontier AI systems is not controlled by a single state. It may be governed simultaneously by authentication, identity-provider status, identity verification, account state, workspace or organisation state, subscription entitlement, billing or credit state, quota or rate-limit state, model availability, tool or surface availability, platform availability, security review, policy restriction, regional or compliance limitation, client or session state, and continuity state. Where these conditions are collapsed into ambiguous errors, users and developers cannot reliably determine whether the controlling condition is outage, quota exhaustion, entitlement failure, account restriction, policy limitation, security review, client/session failure, or infrastructure degradation. This undermines observability, reproducibility, support routing, continuity, and public trust in AI platform governance.",
@@ -170,6 +170,22 @@
       "source_context": "The report describes a major outage primarily affecting login and connection, with users encountering persistent login errors and elevated errors on Claude.ai.",
       "source_url_status": "available",
       "relevance_note": "Supports the login, connection, and degraded service components of the access-state governance failure mode."
+    },
+    {
+      "source_title": "Elevated conversation and login errors on ChatGPT for iOS and macOS",
+      "author_or_publisher": "OpenAI Status",
+      "source_date": "2026-07-12",
+      "source_url": "https://status.openai.com/incidents/01KXAVPTZ85KG478DP1YC0SV2V",
+      "archive_url": "",
+      "retrieved_date": "2026-07-13",
+      "source_type": "official-source",
+      "source_platform": "OpenAI Status",
+      "system_or_product": "ChatGPT for iOS and macOS",
+      "model_or_algorithm": "not specified",
+      "deployment_context": "Consumer ChatGPT client applications on iOS and macOS, including conversation access, sign-up, sign-in, account creation, and password update flows.",
+      "source_context": "OpenAI first reported that some iOS users could encounter 403 errors while loading or using ChatGPT conversations. Later updates identified elevated conversation, sign-up, and sign-in errors affecting iOS and macOS, followed by account-creation and password-update errors. OpenAI reported that mitigations restored conversation and sign-in access and marked the incident resolved at 3:28 PM on 12 July 2026.",
+      "source_url_status": "available",
+      "relevance_note": "Official evidence of a client-specific access incident where an authorization-coded user-facing error appeared during broader conversation and authentication degradation."
     }
   ],
   "system_context": {
@@ -295,6 +311,10 @@
     {
       "observation": "The failure class crosses vendor boundaries.",
       "detail": "OpenAI and Anthropic incidents both show recurring access-state and login/service availability failures within a short time window, indicating that the issue should be treated as a cross-platform governance primitive gap rather than a vendor-specific implementation bug."
+    },
+    {
+      "observation": "Authorization-coded client errors can obscure the operative access state.",
+      "detail": "The 12 July 2026 iOS/macOS incident initially surfaced as HTTP 403 while later status updates described broader conversation, sign-up, sign-in, account-creation, and password-update failures. The source supports FM-0008 without establishing the undisclosed technical root cause."
     }
   ],
   "user_impact": [
@@ -444,7 +464,21 @@
       "VIGIL-2026-PATCH-0005"
     ],
     "date_repaired": "2026-06-06",
-    "verification_status": "linked patch record exists; live recurrence remains subject to monitoring",
-    "monitoring_status": "monitoring after patch"
+    "verification_status": "corpus-verified",
+    "monitoring_status": "monitoring after patch",
+    "verification_note": "linked patch record exists; live recurrence remains subject to monitoring",
+    "repair_basis": "cross-domain-repair-assembled",
+    "remaining_gaps": [
+      "Does not expressly define access-state governance or require preservation of authentication, entitlement, quota, model-availability, policy, security, client/session, and continuity state as separable operative access axes.",
+      "Provides classification support but does not itself establish a binding cross-domain access-state primitive or user-facing access-state disclosure pathway.",
+      "External ecosystem adoption or resolution is not established by the CAM repair.",
+      "Cross-runtime implementation conformity remains unverified unless separately recorded."
+    ]
+  },
+  "ecosystem_status": {
+    "status": "recurring",
+    "basis": "recurring incidents across multiple vendors and surfaces",
+    "last_assessed": "2026-07-14",
+    "monitoring_required": true
   }
 }

@@ -13,7 +13,7 @@ VIGIL records preserve structured governance evidence and workflow state. CAM in
 VIGIL currently recognises four primary record classes:
 
 ```text
-OBS   — Observation / early warning / source preservation record
+OBS   — Material unresolved governance observation / early warning record
 FM    — Failure Mode / triage record
 PROP  — CAM-specific proposal record
 PATCH — Implemented CAM patch note
@@ -21,11 +21,11 @@ PATCH — Implemented CAM patch note
 
 ### OBS — Observation Record
 
-Use an Observation Record when something relevant has been observed, reported, published, surfaced, or preserved, but it is not yet necessarily a failure mode.
+Use an Observation Record only when the record preserves a material unresolved governance proposition that is not adequately represented by an existing failure mode, proposal, or patch.
 
-Observation records are source-data-first. They preserve early warning signals, source material, platform behaviour, public developments, jurisdictional developments, system behaviour, or other relevant inputs.
+Source evidence for an existing record belongs in that record's canonical `source_records` block. An incident, article, status-page entry, or report does not become an OBS merely because it is new.
 
-Observation records must not contain failure-mode triage, CAM repair logic, or patch instructions.
+Observation records must state the governance significance and material uncertainty. They must not contain failure-mode triage, CAM repair logic, patch instructions, curator tasking, or directions such as ‘add this incident to’ another record.
 
 ### FM — Failure Mode Record
 
@@ -90,6 +90,7 @@ When working in `vigil/`:
 * Preserve date, source, retrieval path, source state, evidence confidence, CAM relevance, and next action or implementation explanation for every VIGIL record.
 * Preserve rich source packages in `source_records`.
 * `source_records` is the only canonical source-evidence block in individual records.
+* Source evidence must be embedded in the substantive FM, OBS, PROP, or PATCH it supports; do not create an OBS solely to duplicate or route evidence into an existing record.
 * Do not add `source_data` or `source_data.sources` to individual records.
 * Do not flatten rich source records into a single URL field.
 * Mark public reports, social media observations, automated search results, and third-party claims provisional unless corroborated.

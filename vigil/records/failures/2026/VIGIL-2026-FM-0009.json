@@ -8,8 +8,8 @@
     "record_type": "failure_mode",
     "title": "Non-revocable conversational context contamination",
     "created": "2026-06-07",
-    "updated": "2026-06-07",
-    "version": "1.0"
+    "updated": "2026-07-14",
+    "version": "1.1"
   },
   "summary": "A governance failure mode in which assistant-generated conversational outputs, rejected framings, speculative summaries, or erroneous directions remain available as latent directional context after the user has rejected, deleted, moved, quarantined, or otherwise attempted to invalidate the thread, causing later responses to treat contaminated assistant output as if it were legitimate user intent, established project direction, or source-derived context.",
   "why_it_matters_to_CAM": "This failure mode is relevant to CAM because advanced AI systems increasingly rely on conversational continuity, memory, project context, thread movement, summarisation, retrieval, and inferred user intent. Where users cannot mark prior assistant output as non-authoritative, experimental, test material, poisoned, or unsafe for derivative use, the system may launder its own erroneous outputs into later reasoning. This creates provenance ambiguity, revocation failure, user-agency degradation, and governance risk across memory, continuity, relational, operational, and UX-representation layers.",
@@ -283,7 +283,19 @@
     "status": "unrepaired",
     "repaired_by": [],
     "date_repaired": "",
-    "verification_status": "not repaired",
-    "monitoring_status": "active triage"
+    "verification_status": "unverified",
+    "monitoring_status": "active triage",
+    "verification_note": "not repaired",
+    "repair_basis": "partial-coverage",
+    "remaining_gaps": [
+      "Does not expressly define user-controlled quarantine semantics for conversational context or prevent assistant-generated outputs from being reused as positive directional context after rejection.",
+      "Does not expressly define negative authority or derivative-use revocation for contaminated assistant-generated context."
+    ]
+  },
+  "ecosystem_status": {
+    "status": "recurring",
+    "basis": "recurring where assistant-generated outputs are retained, summarised, retrieved, or weighted as future context despite user rejection",
+    "last_assessed": "2026-07-14",
+    "monitoring_required": true
   }
 }

@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "VIGIL.FailureMode.Schema.json",
-  "description": "Failure Mode records require failure definition, threshold, CAM taxonomy-aligned failure classification, and triage.",
+  "description": "Failure Mode records require failure definition, threshold, CAM taxonomy-aligned classification, triage, external ecosystem status, CAM repair status, and verification state.",
   "allOf": [
     {
       "$ref": "VIGIL.Base.Schema.json"
@@ -94,10 +94,38 @@
           "type": "string"
         },
         "verification_status": {
-          "type": "string"
+          "enum": [
+            "corpus-verified",
+            "external-adoption-unknown",
+            "not-applicable",
+            "observed-across-runtimes",
+            "observed-in-one-runtime",
+            "regression-detected",
+            "unverified"
+          ]
         },
         "monitoring_status": {
           "type": "string"
+        },
+        "verification_note": {
+          "type": "string"
+        },
+        "repair_basis": {
+          "enum": [
+            "uncovered",
+            "pre-existing-coverage-identified",
+            "partial-coverage",
+            "patch-implemented",
+            "cross-domain-repair-assembled",
+            "not-actionable",
+            "superseded"
+          ]
+        },
+        "remaining_gaps": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       },
       "required": [
@@ -105,8 +133,42 @@
         "repaired_by",
         "date_repaired",
         "verification_status",
-        "monitoring_status"
+        "monitoring_status",
+        "repair_basis",
+        "remaining_gaps"
       ]
+    },
+    "ecosystem_status": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "basis",
+        "last_assessed",
+        "monitoring_required"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "active",
+            "recurring",
+            "improving",
+            "externally-resolved",
+            "unknown"
+          ]
+        },
+        "basis": {
+          "type": "string",
+          "minLength": 1
+        },
+        "last_assessed": {
+          "type": "string",
+          "minLength": 1
+        },
+        "monitoring_required": {
+          "type": "boolean"
+        }
+      }
     }
   },
   "required": [
@@ -114,7 +176,8 @@
     "failure_threshold",
     "failure_classification",
     "triage",
-    "repair_status"
+    "repair_status",
+    "ecosystem_status"
   ],
   "not": {
     "required": [

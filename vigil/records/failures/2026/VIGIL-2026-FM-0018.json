@@ -1,15 +1,15 @@
 {
   "id": "VIGIL-2026-FM-0018",
   "record_type": "failure_mode",
-  "record_state": "monitoring",
+  "record_state": "active",
   "date_recorded": "2026-06-11",
   "record_identity": {
     "record_id": "VIGIL-2026-FM-0018",
     "record_type": "failure_mode",
     "title": "Ephemeral Codex work loss following quota exhaustion before durable branch persistence",
     "created": "2026-06-11",
-    "updated": "2026-06-11",
-    "version": "1.0"
+    "updated": "2026-07-14",
+    "version": "1.1"
   },
   "summary": "A task-completion and durable-state preservation failure in which Codex performs substantive repository analysis and file modification inside an ephemeral cloud task, but does not create, commit, or push a durable working branch before the user's usage allowance is exhausted. The task then remains suspended or fails during branch or pull-request creation, and the completed work is lost rather than preserved as a branch, commit, patch, diff, archive, or resumable workspace. The user must repeat the same work and consume additional quota to recreate an output that the system had already completed.",
   "why_it_matters_to_CAM": "CAM distinguishes execution from successful completion, and completion from durable handoff. Repository work is not meaningfully complete while its result exists only inside an inaccessible or quota-dependent execution environment. Deferring branch creation, commit, push, or equivalent checkpointing until the end of a costly task creates an avoidable single point of failure. Where quota exhaustion prevents persistence, the platform converts a resource limit into irreversible work loss, duplicate computation, delayed delivery, and additional user cost. A governed coding agent should establish a durable work surface before substantive modification, checkpoint completed phases proportionately, reserve sufficient capacity for persistence and handoff, and provide a recoverable patch or branch even if pull-request creation cannot be completed.",
@@ -154,8 +154,8 @@
   "triage": {
     "triage_priority": "P1",
     "triage_owner": "VIGIL maintainers",
-    "triage_status": "watching-after-patch",
-    "mitigation_status": "unmitigated in the documented incident — no branch, commit, patch, or recoverable workspace was preserved, and the task must be repeated",
+    "triage_status": "open",
+    "mitigation_status": "Partially covered by adjacent CAM controls; explicit durable coding-task atomicity and recovery-artifact repair remains unresolved.",
     "escalation_required": "yes",
     "recommended_next_step": "Preserve the task evidence, determine whether any hidden patch or task workspace can be recovered, and develop a CAM patch or implementation requirement mandating branch-first execution, periodic durable checkpoints, completion-budget reservation, automatic patch export on quota exhaustion, and truthful distinction between substantive processing and durably delivered completion."
   },
@@ -294,13 +294,23 @@
     "recommended_cam_action": "Create a bounded CAM proposal or patch establishing Durable Coding-Task Atomicity: branch-first or checkpoint-first execution, periodic push checkpoints, mandatory persistence-budget reservation, automatic patch fallback, resumable task state, and prohibition on completed status before durable delivery. Link the resulting proposal and patch records to VIGIL-2026-FM-0018."
   },
   "repair_status": {
-    "status": "repaired",
-    "repaired_by": [
-      "VIGIL-2026-PATCH-0002",
-      "VIGIL-2026-PATCH-0005"
-    ],
-    "date_repaired": "2026-06-02T14:26:00Z",
-    "verification_status": "linked patch record exists; live recurrence remains subject to monitoring",
-    "monitoring_status": "monitoring after patch"
+    "status": "partially-repaired",
+    "repaired_by": [],
+    "date_repaired": "",
+    "verification_status": "unverified",
+    "verification_note": "Existing CAM controls provide adjacent proportional-execution, access-state, continuity, and recovery coverage, but no linked patch yet implements the explicit durable coding-task atomicity requirement.",
+    "monitoring_status": "active triage / explicit patch still required",
+    "repair_basis": "partial-coverage",
+    "remaining_gaps": [
+      "A branch-first or checkpoint-first durable coding-task atomicity rule remains to be implemented.",
+      "Automatic user-accessible patch or workspace export on persistence failure remains to be implemented.",
+      "No VIGIL patch currently links a completed repair specifically to FM-0018."
+    ]
+  },
+  "ecosystem_status": {
+    "status": "active",
+    "basis": "May recur whenever substantive cloud-agent work is performed before a durable branch or checkpoint is created and the remaining quota, task lifetime, or infrastructure availability is insufficient for final persistence and handoff.",
+    "last_assessed": "2026-07-14",
+    "monitoring_required": true
   }
 }

@@ -8,8 +8,8 @@
     "record_type": "failure_mode",
     "title": "Instruction-bearing external content treated as trusted execution authority",
     "created": "2026-06-14",
-    "updated": "2026-06-14",
-    "version": "1.1"
+    "updated": "2026-07-14",
+    "version": "1.2"
   },
   "summary": "A security-integrity failure mode in which an AI agent, coding assistant, RAG system, tool-mediated workflow, connector-enabled assistant, multimodal system, security scanner, or repository-linked workflow processes untrusted, retrieved, ambient, generated, lower-authority, or ambiguous content as though it carried trusted instruction authority, governance authority, tool authority, or execution permission. The content may appear in markdown files, repository documents, README files, issue comments, webpages, PDFs, emails, resumes, tickets, logs, memory artefacts, connector content, retrieved documents, images, transcripts, metadata, OCR layers, tool descriptions, model outputs, or generated summaries. The failure occurs where the system fails to preserve separation between content visibility, source provenance, instruction authority, user intent, canonical project authority, and execution permission.",
   "why_it_matters_to_CAM": "CAM already contains substantial doctrine for this class of failure. SECURITY-001 explicitly recognises cross-modal prompt injection and ambient instruction capture, including text, speech, audio, image, video, transcript, subtitle, screen content, environmental signal, embedded metadata, retrieved documents, webpages, comments, and multimodal artefacts. SECURITY-001 also states that systems shall not treat non-authoritative content as user intent, governance authority, tool authority, or execution command merely because it appears in context. SECURITY-002 provides Boundary Integrity, source/provenance categories, internal-state exposure resilience, and the inference-execution gap principle. Annex K treats tool, connector, repository, credential-bearing, automation, deployment, renderer, validator, and external execution-surface availability as a security boundary signal rather than execution authority. SCH-02 provides proportional tool invocation and execution-boundary sequencing. OPERATIONS-003 already contains a closely matching failure taxonomy entry for Cross-Modal Prompt Injection and Ambient Instruction Capture Failure. The remaining CAM gap is therefore narrower: not absence of prompt-injection doctrine, but absence of a named reusable Source-Authority Separation primitive and consistent code/routing pathway across SECURITY, Annex K, SCH-02, and OPERATIONS taxonomy.",
@@ -357,11 +357,22 @@
   "repair_status": {
     "status": "repaired",
     "repaired_by": [
-      "VIGIL-2026-PATCH-0002",
       "VIGIL-2026-PATCH-0009"
     ],
-    "date_repaired": "2026-06-02T14:26:00Z",
-    "verification_status": "linked patch record exists; live recurrence remains subject to monitoring",
-    "monitoring_status": "monitoring after patch"
+    "date_repaired": "2026-06-14",
+    "verification_status": "corpus-verified",
+    "verification_note": "PATCH-0009 records the implemented Source-Authority Separation repair. PATCH-0002 remains adjacent proportional-tool-invocation coverage, not the repairing patch for FM-0022.",
+    "monitoring_status": "ecosystem recurring / monitoring after CAM repair",
+    "repair_basis": "cross-domain-repair-assembled",
+    "remaining_gaps": [
+      "External platform adoption or resolution is not established by the CAM repair.",
+      "Cross-runtime implementation conformity remains unverified unless separately recorded."
+    ]
+  },
+  "ecosystem_status": {
+    "status": "recurring",
+    "basis": "Prompt injection is recognised as a leading LLM application security risk and appears across direct, indirect, multimodal, RAG, MCP, tool-use, repository, ambient, and agentic workflow contexts.",
+    "last_assessed": "2026-07-14",
+    "monitoring_required": true
   }
 }
