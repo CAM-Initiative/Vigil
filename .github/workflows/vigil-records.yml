@@ -41,7 +41,7 @@ jobs:
       - name: Reconcile current corpus coverage
         run: |
           if [ ! -f vigil/records/patches/2026/VIGIL-2026-PATCH-0020.json ]; then
-            python vigil/scripts/reconcile-vigil-corpus-coverage.py
+            python vigil/scripts/run-vigil-corpus-reconciliation.py
           else
             echo "Corpus coverage reconciliation already applied."
           fi
@@ -76,7 +76,7 @@ jobs:
           fi
 
       - name: Validate VIGIL lifecycle, corpus coverage, and patch provenance
-        run: python vigil/scripts/validate-vigil-lifecycle.py
+        run: python vigil/scripts/run-vigil-lifecycle-validation.py
 
       - name: Build and enrich VIGIL registry indexes
         run: |
