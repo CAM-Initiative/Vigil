@@ -65,7 +65,27 @@ jobs:
         run: python vigil/scripts/validate-vigil-records.py
 
       - name: Validate VIGIL lifecycle and patch provenance
-        run: python vigil/scripts/validate-vigil-lifecycle.py
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set +e
+          python vigil/scripts/validate-vigil-lifecycle.py > /tmp/vigil-lifecycle-validation.log 2>&1
+          status=$?
+          set -e
+          cat /tmp/vigil-lifecycle-validation.log
+          if [ "$status" -ne 0 ]; then
+            if [ "${{ github.event_name }}" = "pull_request" ]; then
+              {
+                echo "### Lifecycle validation diagnostic"
+                echo
+                echo '```text'
+                tail -n 160 /tmp/vigil-lifecycle-validation.log
+                echo '```'
+              } > /tmp/vigil-lifecycle-comment.md
+              gh pr comment "${{ github.event.pull_request.number }}" --body-file /tmp/vigil-lifecycle-comment.md
+            fi
+            exit "$status"
+          fi
 
       - name: Build VIGIL registry indexes
         run: |
