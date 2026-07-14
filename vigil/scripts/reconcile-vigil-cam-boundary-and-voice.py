@@ -44,7 +44,7 @@ def all_record_paths() -> list[Path]:
 
 def cleanse_refs(value: Any) -> Any:
     if isinstance(value, list):
-        return [cleanse_refs(item) for item in value if item not in INVALID_PATCHES]
+        return [cleanse_refs(item) for item in value if not (isinstance(item, str) and item in INVALID_PATCHES)]
     if isinstance(value, dict):
         cleaned = {key: cleanse_refs(item) for key, item in value.items()}
         if "follow_on_reconciliation" in cleaned:
@@ -362,6 +362,8 @@ def proposal(
         "system_context": {
             "system_type": "voice-capable conversational AI and CAM governance corpus",
             "platform_or_vendor": "Multi Vendor",
+            "vendor_cluster": ["OpenAI", "Anthropic", "Google", "Microsoft", "Other"],
+            "primary_evidenced_vendors": ["OpenAI", "Other"],
             "product_or_service": "Other",
             "specific_model_or_runtime": "voice, live voice, companion, ambient, and multimodal conversational runtimes",
             "interface_surface": "voice, audio, ambient-presence, conversational, accessibility, and companion interfaces",
@@ -1423,7 +1425,7 @@ def update_existing() -> None:
             "GPT-Live memory, corpus availability, activation, authority, and preservation remain materially uncertain."
         ]
         coverage = fm28.setdefault("corpus_coverage", {})
-        coverage["classification"] = "implemented-repair"
+        coverage["classification"] = "partial-coverage"
         coverage["coverage_summary"] = "CAM-BS2025-AEON-003-SCH-05 and CAM-EQ2026-OPERATIONS-007-PLATINUM directly govern runtime-specific availability, activation, authority, preservation, transition disclosure, and differential conformance. The CAM repair is canonical; external GPT-Live conformance remains non-confirming or unknown."
         coverage["remaining_gaps"] = [
             "External vendor adoption and named-runtime conformance remain unverified.",

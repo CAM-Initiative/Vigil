@@ -37,7 +37,7 @@ Failure Mode records are not generic tags.
 
 ### PROP — Proposal Record
 
-Use a Proposal Record when CAM-specific governance development, amendment logic, template repair, schema repair, validator repair, automation repair, interface repair, or operational design is being proposed.
+Use a Proposal Record when CAM/Caelestis governance development, doctrine amendment, runtime safeguard, architecture primitive, or operational design is being proposed. VIGIL repository maintenance, schema housekeeping, validator maintenance, index rebuilding, and workflow administration are not CAM proposals.
 
 Proposal records may be linked to observations or failure modes, but may also exist without them.
 
@@ -45,7 +45,7 @@ Proposal records must not claim that a patch has already been implemented.
 
 ### PATCH — Patch Note Record
 
-Use a Patch Note Record only when a change has actually been implemented.
+Use a Patch Note Record only when a CAM/Caelestis change has actually been implemented, or when a retrospective patch note identifies direct pre-existing CAM/Caelestis coverage for a failure that VIGIL had not previously linked.
 
 Patch notes record what changed, where it changed, why it changed, what evidence or proposal prompted it, and how implementation was verified.
 
@@ -109,6 +109,16 @@ Agents must preserve record-class boundaries:
 * Do not treat CAM-related instruments as affected by an OBS record; use related/similar routing language for observations.
 * Do not treat an FM record as a mere tag.
 * Do not mutate adopted CAM instruments from inside a VIGIL pass unless separately instructed.
+
+## Observatory Boundary
+
+VIGIL is the observatory, not the governed ecosystem system and not the patched corpus.
+
+* A failure mode must describe an ecosystem system, deployment, runtime, platform behaviour, governance practice, or externally observable failure pattern. VIGIL may appear as the evidence registry or source publisher, but VIGIL itself MUST NOT be the failed system.
+* A PATCH record must document implemented or directly pre-existing CAM/Caelestis doctrine, taxonomy, runtime governance, or architecture coverage. VIGIL schemas, validators, indexes, workflows, migrations, and repository maintenance MUST NOT be represented as PATCH records.
+* A retrospective PATCH is permitted only where it identifies the actual CAM/Caelestis control content, effective origin, relevant sections, and the failure records that content governs.
+* Repository audits, reconciliation passes, migrations, validation changes, and generated-index rebuilds belong in commits, pull-request descriptions, maintenance notes, and record metadata—not in PATCH records.
+* VIGIL records do not create CAM authority. CAM instruments remain authoritative only through the Caelestis amendment, validation, and adoption process.
 
 ## CAM Routing Rules
 
@@ -175,4 +185,5 @@ Every failure mode must preserve a `corpus_coverage` assessment against a named 
 - `partial-coverage` means relevant controls exist but a named primitive or implementation requirement remains missing.
 - `uncovered` means no sufficient direct current-corpus control was identified.
 - External adoption, runtime conformance, ecosystem persistence, and legal compliance remain separate from CAM coverage.
-- Retrospective patches must state the actual control content and distinguish doctrine reviewed, amended, and relied upon without amendment.
+- Retrospective patches must state the actual CAM/Caelestis control content and distinguish doctrine reviewed, amended, and relied upon without amendment.
+- Corpus coverage audits are VIGIL maintenance and metadata reconciliation; they are not PATCH events.

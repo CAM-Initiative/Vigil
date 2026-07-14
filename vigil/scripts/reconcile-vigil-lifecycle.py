@@ -8,6 +8,7 @@ This maintenance script is intentionally deterministic and idempotent. It:
 - separates ecosystem persistence from CAM repair and verification state;
 - backfills structured patch classifications and repair provenance;
 - updates the schema-rules contract, type schemas, templates, and agent guidance.
+- treats all repository maintenance as administration rather than a PATCH record.
 """
 
 from __future__ import annotations
@@ -688,7 +689,6 @@ def main() -> None:
     update_type_schemas()
     update_templates()
     update_guidance()
-    create_reconciliation_patch()
 
 
 if __name__ == "__main__":
