@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
-"""Run the one-time VIGIL reconciliation with safe mixed-list handling."""
+"""Run the preserved one-time VIGIL reconciliation safely.
+
+The workflow invokes this runner only while OBS-0008 or OBS-0009 remains in the
+repository. After evidence migration, the permanent lifecycle validator—not
+repeat execution of this migration—enforces the repaired ontology.
+"""
 
 from __future__ import annotations
 
