@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://example.invalid/cam/vigil/VIGIL.Schema.json",
-  "version": "2.4-corpus-coverage-reconciliation",
-  "purpose": "Authoritative schema-rules contract for VIGIL as a public evidence-to-repair observatory for observations, failure modes, proposals, and implemented patch notes. Source evidence remains embedded in the relevant record; ecosystem persistence, CAM repair, and implementation verification are represented separately.",
+  "version": "2.5-interpretive-provenance",
+  "purpose": "Authoritative schema-rules contract for VIGIL as a public evidence-to-repair observatory for observations, failure modes, proposals, and implemented patch notes. Source evidence remains embedded in the relevant record; ecosystem persistence, CAM repair, and implementation verification are represented separately. Interpretive provenance identifies the AI analytical reviewer, human governance editor, capability profile, source modality, primary-artefact access, and review limitations.",
   "source_evidence_rules": {
     "individual_records": [
       "source_records is the only canonical source-evidence block in individual records.",
@@ -11,7 +11,10 @@
       "linked_records.external_references must not duplicate the primary evidence source already held in source_records.",
       "Source evidence belongs in source_records within the substantive record it evidences; it is not a separate VIGIL record class.",
       "An OBS record must preserve a material unresolved governance proposition and must not merely duplicate evidence for an existing FM, PROP, or PATCH.",
-      "Internal curator instructions such as 'add this incident to' or 'do not amend in this pass' are forbidden in public record content."
+      "Internal curator instructions such as 'add this incident to' or 'do not amend in this pass' are forbidden in public record content.",
+      "Each source record must state evidence_modality.",
+      "Each source record must state primary_artefact_access, including whether direct primary review occurred.",
+      "A transcript, screenshot, summary, or human description must not be represented as equivalent to direct audiovisual or interaction review."
     ],
     "generated_registers": [
       "Generated registers may contain derived source_summary fields.",
@@ -50,7 +53,8 @@
         "jurisdictional_context",
         "linked_records",
         "cam_internal",
-        "next_action"
+        "next_action",
+        "interpretive_provenance"
       ],
       "forbidden_top_level_fields": [
         "change_classification",
@@ -94,7 +98,8 @@
         "cam_internal",
         "repair_status",
         "ecosystem_status",
-        "corpus_coverage"
+        "corpus_coverage",
+        "interpretive_provenance"
       ],
       "forbidden_top_level_fields": [
         "source_data",
@@ -213,7 +218,8 @@
         "cam_internal",
         "proposal_type",
         "system_context",
-        "jurisdictional_context"
+        "jurisdictional_context",
+        "interpretive_provenance"
       ],
       "forbidden_top_level_fields": [
         "change_classification",
@@ -267,7 +273,8 @@
         "cam_internal",
         "jurisdictional_context",
         "patch_classifications",
-        "repair_provenance"
+        "repair_provenance",
+        "interpretive_provenance"
       ],
       "forbidden_top_level_fields": [
         "source_data",
@@ -369,7 +376,10 @@
         "deployment_context",
         "source_context",
         "source_url_status",
-        "relevance_note"
+        "relevance_note",
+        "evidence_modality",
+        "primary_artefact_access",
+        "interpretive_reliance"
       ]
     },
     "vigil_record": {
@@ -634,5 +644,28 @@
     "Retrospective coverage must identify the pre-existing instrument and relevant sections without claiming the doctrine originated on the VIGIL patch date.",
     "Partial and uncovered classifications must preserve concrete remaining gaps.",
     "A coverage assessment must never be inferred solely from thematic similarity; the cited instrument must materially govern the failure mechanism."
-  ]
+  ],
+  "interpretive_provenance_rules": {
+    "required_for_all_records": true,
+    "required_fields": [
+      "review_history",
+      "current_ai_review",
+      "operating_model",
+      "human_governance_editor",
+      "historical_reviewer_note"
+    ],
+    "review_history_rule": "Append reviews; do not overwrite or retroactively invent earlier reviewer model identities.",
+    "current_ai_review_required_fields": [
+      "review_id",
+      "reviewer_type",
+      "reviewer_platform",
+      "reviewer_model",
+      "review_date",
+      "review_scope",
+      "capability_profile",
+      "known_limitations",
+      "review_outcome"
+    ],
+    "human_editor_rule": "Human governance editorship and CAM adoption authority must be distinguished from routine AI analytical review."
+  }
 }
