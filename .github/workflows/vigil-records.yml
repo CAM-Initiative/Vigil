@@ -14,7 +14,6 @@ on:
 
 permissions:
   contents: write
-  pull-requests: write
 
 jobs:
   validate-build:
@@ -43,81 +42,10 @@ jobs:
           if [ -f vigil/records/patches/2026/VIGIL-2026-PATCH-0016.json ] || \
              [ -f vigil/records/patches/2026/VIGIL-2026-PATCH-0020.json ] || \
              [ ! -f vigil/records/observations/2026/VIGIL-2026-OBS-0011.json ]; then
-            python - <<'PY'
-          from pathlib import Path
-          path = Path("vigil/scripts/reconcile-vigil-cam-boundary-and-voice.py")
-          text = path.read_text(encoding="utf-8")
-          text = text.replace(
-              "return [cleanse_refs(item) for item in value if item not in INVALID_PATCHES]",
-              "return [cleanse_refs(item) for item in value if not (isinstance(item, str) and item in INVALID_PATCHES)]",
-          )
-          text = text.replace(
-              '            "platform_or_vendor": "Multi Vendor",\n            "product_or_service": "Other",',
-              '            "platform_or_vendor": "Multi Vendor",\n            "vendor_cluster": ["OpenAI", "Anthropic", "Google", "Microsoft", "Other"],\n            "primary_evidenced_vendors": ["OpenAI", "Other"],\n            "product_or_service": "Other",',
-          )
-          text = text.replace(
-              '        coverage["classification"] = "implemented-repair"',
-              '        coverage["classification"] = "partial-coverage"',
-          )
-          path.write_text(text, encoding="utf-8")
-          PY
             python vigil/scripts/reconcile-vigil-cam-boundary-and-voice.py
           else
             echo "CAM observatory boundary correction and voice evidence reconciliation already applied."
           fi
-
-          python - <<'PY'
-          import json
-          from pathlib import Path
-
-          patches = Path("vigil/records/patches/2026")
-          retrospective_ids = {
-              "VIGIL-2026-PATCH-0017",
-              "VIGIL-2026-PATCH-0018",
-              "VIGIL-2026-PATCH-0019",
-          }
-          for path in sorted(patches.glob("*.json")):
-              record = json.loads(path.read_text(encoding="utf-8"))
-              system = record.get("system_context")
-              if isinstance(system, dict) and system.get("product_or_service") == "VIGIL":
-                  system["system_type"] = "CAM governance corpus / patch-note record"
-                  system["platform_or_vendor"] = "CAM Initiative"
-                  system["product_or_service"] = "Caelestis Architecture Model"
-                  system["model_or_product"] = "Caelestis Architecture Model"
-                  system["specific_model_or_runtime"] = (
-                      "CAM/Caelestis instruments identified in change_details and repair_provenance"
-                  )
-                  system["deployment_context"] = (
-                      "VIGIL records an implemented or pre-existing CAM/Caelestis repair; "
-                      "VIGIL is the observatory and is not the patch target."
-                  )
-
-              cam = record.get("cam_internal")
-              if isinstance(cam, dict):
-                  domains = cam.get("changed_domains")
-                  if isinstance(domains, list):
-                      cam["changed_domains"] = [
-                          item for item in domains
-                          if not (isinstance(item, str) and item.strip().upper() == "VIGIL")
-                      ]
-
-              if record.get("id") in retrospective_ids:
-                  change = record.setdefault("change_classification", {})
-                  change["change_scope"] = (
-                      "Pre-existing canonical CAM/Caelestis doctrine and its failure-to-repair crosswalk"
-                  )
-                  change["implementation_level"] = (
-                      "pre-existing canonical CAM doctrine; VIGIL crosswalk only"
-                  )
-                  change["doctrine_amendment_status"] = (
-                      "none — existing Caelestis coverage identified"
-                  )
-
-              path.write_text(
-                  json.dumps(record, indent=2, ensure_ascii=False) + "\n",
-                  encoding="utf-8",
-              )
-          PY
 
       - name: Test VIGIL validator
         run: python vigil/scripts/test_validate_vigil_records.py
@@ -129,26 +57,7 @@ jobs:
         run: python vigil/scripts/validate-vigil-records.py
 
       - name: Validate VIGIL lifecycle, corpus coverage, patch provenance, and CAM boundary
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          set +e
-          python vigil/scripts/run-vigil-lifecycle-validation.py > /tmp/vigil-lifecycle-validation.log 2>&1
-          status=$?
-          set -e
-          cat /tmp/vigil-lifecycle-validation.log
-          if [ "$status" -ne 0 ]; then
-            {
-              echo "### Temporary CAM-boundary validation diagnostic"
-              echo
-              echo '```text'
-              tail -n 260 /tmp/vigil-lifecycle-validation.log
-              echo '```'
-            } > /tmp/vigil-lifecycle-comment.md
-            gh api --method PATCH repos/CAM-Initiative/Vigil/issues/comments/4965455039 \
-              --raw-field body="$(cat /tmp/vigil-lifecycle-comment.md)"
-            exit "$status"
-          fi
+        run: python vigil/scripts/run-vigil-lifecycle-validation.py
 
       - name: Build and enrich VIGIL registry indexes
         run: |
@@ -168,6 +77,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "No reconciled VIGIL changes to commit."
           else
-            git commit -m "Correct CAM observatory boundary and reconcile voice evidence"
+            git commit -m "Reconcile VIGIL records and rebuild indexes"
             git push
           fi
