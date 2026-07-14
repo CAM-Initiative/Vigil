@@ -1,14 +1,17 @@
 #!/usr/bin/env python3
-"""Run lifecycle validation with canonical resolved-by-patch proposal checks."""
+"""Run VIGIL lifecycle, proposal-resolution, and CAM observatory-boundary validation."""
 
 from __future__ import annotations
 
 import importlib.util
+import subprocess
+import sys
 from pathlib import Path
 from typing import Any
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 MODULE_PATH = SCRIPT_DIR / "validate-vigil-lifecycle.py"
+BOUNDARY_PATH = SCRIPT_DIR / "validate-vigil-cam-boundary.py"
 
 
 def load_module() -> Any:
@@ -33,7 +36,12 @@ def main() -> int:
                 errors.append(f"{path}: resolved-by-patch proposal requires at least one resolving patch")
 
     module.validate_proposal = validate_proposal
-    return module.main()
+    lifecycle_status = module.main()
+    if lifecycle_status:
+        return lifecycle_status
+
+    completed = subprocess.run([sys.executable, str(BOUNDARY_PATH)], check=False)
+    return completed.returncode
 
 
 if __name__ == "__main__":
