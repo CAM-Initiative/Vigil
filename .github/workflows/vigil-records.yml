@@ -47,6 +47,9 @@ jobs:
             echo "CAM observatory boundary correction and voice evidence reconciliation already applied."
           fi
 
+      - name: Add interpretive provenance and behavioural evidence metadata
+        run: python vigil/scripts/migrate-vigil-interpretive-provenance.py
+
       - name: Test VIGIL validator
         run: python vigil/scripts/test_validate_vigil_records.py
 
@@ -56,7 +59,7 @@ jobs:
       - name: Validate VIGIL records
         run: python vigil/scripts/validate-vigil-records.py
 
-      - name: Validate VIGIL lifecycle, corpus coverage, patch provenance, and CAM boundary
+      - name: Validate VIGIL lifecycle, corpus coverage, patch provenance, CAM boundary, and interpretive provenance
         run: python vigil/scripts/run-vigil-lifecycle-validation.py
 
       - name: Build and enrich VIGIL registry indexes
@@ -77,6 +80,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "No reconciled VIGIL changes to commit."
           else
-            git commit -m "Reconcile VIGIL records and rebuild indexes"
+            git commit -m "Add VIGIL interpretive provenance and evidence access metadata"
             git push
           fi
