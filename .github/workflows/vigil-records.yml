@@ -12,7 +12,6 @@ on:
 
 permissions:
   contents: write
-  pull-requests: write
 
 jobs:
   validate-build:
@@ -28,29 +27,10 @@ jobs:
           python-version: "3.x"
 
       - name: Reconcile embedded evidence and lifecycle state
-        env:
-          GH_TOKEN: ${{ github.token }}
         run: |
           if [ -f vigil/records/observations/2026/VIGIL-2026-OBS-0008.json ] || \
              [ -f vigil/records/observations/2026/VIGIL-2026-OBS-0009.json ]; then
-            set +e
-            python vigil/scripts/run-vigil-reconciliation.py > /tmp/vigil-reconciliation.log 2>&1
-            status=$?
-            set -e
-            cat /tmp/vigil-reconciliation.log
-            if [ "$status" -ne 0 ]; then
-              if [ "${{ github.event_name }}" = "pull_request" ]; then
-                {
-                  echo "### Reconciliation diagnostic"
-                  echo
-                  echo '```text'
-                  tail -n 120 /tmp/vigil-reconciliation.log
-                  echo '```'
-                } > /tmp/vigil-reconciliation-comment.md
-                gh pr comment "${{ github.event.pull_request.number }}" --body-file /tmp/vigil-reconciliation-comment.md
-              fi
-              exit "$status"
-            fi
+            python vigil/scripts/run-vigil-reconciliation.py
           else
             echo "Lifecycle reconciliation already applied."
           fi
@@ -65,27 +45,7 @@ jobs:
         run: python vigil/scripts/validate-vigil-records.py
 
       - name: Validate VIGIL lifecycle and patch provenance
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          set +e
-          python vigil/scripts/validate-vigil-lifecycle.py > /tmp/vigil-lifecycle-validation.log 2>&1
-          status=$?
-          set -e
-          cat /tmp/vigil-lifecycle-validation.log
-          if [ "$status" -ne 0 ]; then
-            if [ "${{ github.event_name }}" = "pull_request" ]; then
-              {
-                echo "### Lifecycle validation diagnostic"
-                echo
-                echo '```text'
-                tail -n 160 /tmp/vigil-lifecycle-validation.log
-                echo '```'
-              } > /tmp/vigil-lifecycle-comment.md
-              gh pr comment "${{ github.event.pull_request.number }}" --body-file /tmp/vigil-lifecycle-comment.md
-            fi
-            exit "$status"
-          fi
+        run: python vigil/scripts/validate-vigil-lifecycle.py
 
       - name: Build VIGIL registry indexes
         run: |
