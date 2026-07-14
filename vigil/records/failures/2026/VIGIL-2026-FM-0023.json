@@ -9,7 +9,7 @@
     "title": "Weak-signal ambiguity collapse under recoverable image-generation classification",
     "created": "2026-06-19",
     "updated": "2026-07-14",
-    "version": "1.5"
+    "version": "1.6"
   },
   "summary": "A governance and UX-representation failure mode in which an AI system refuses a request and presents a user-facing rationale that appears disconnected from the visible prompt, insufficiently specific, or not useful for recovery. The observed case concerns an image-generation request that appeared benign on its face but produced a refusal attributed to harassment, discrimination, or bullying. The record does not assert that the underlying classifier was necessarily wrong; it records the user-facing failure where the system provides no meaningful clarification, remediation pathway, or explanation of whether the refusal arose from visible prompt content, earlier context, accumulated weak signals, rate or load constraints, inherited image state, or generic fallback routing. A follow-up audit further identifies image prompt custody / prompt transformation opacity as an additional contributing mechanism: the same observed pattern may occur where custody is lost between the user-authored prompt, system-transformed prompt, safety-normalized prompt, classifier-visible prompt, renderer-facing prompt, classifier outcome, and final user-facing explanation. Follow-up review indicates that the observed refusal pattern may arise not only from weak-signal ambiguity collapse, but also from loss of custody across image-prompt transformation and failure-classification collapse. A benign user-authored prompt may be transformed, safety-normalized, classified, blocked, or failed in a downstream renderer/tool pathway, while the final explanation is surfaced as if the user-authored prompt itself contained the prohibited category. This remains the same observed FM-0023 failure family, not a new FM-0024.",
   "why_it_matters_to_CAM": "CAM distinguishes signal detection, runtime governance, and user-facing explanation. A refusal may be justified, but the reason presented to the user should remain proportionate, intelligible, and recoverable where disclosure is safe. Where multiple weak signals, contextual inheritance, or ambiguous classifier states trigger refusal, a governed runtime should prefer clarification, safe reformulation, or bounded explanation unless a stronger safety threshold requires immediate refusal. Misattributed or opaque refusal rationales impair user agency, prevent correction, obscure the real failure mechanism, and degrade trust in safety architecture.",
@@ -239,5 +239,73 @@
     "basis": "Unknown. Triage should determine whether similar refusal outcomes appear across unrelated benign image prompts, whether retry or discussion resolves the issue, whether prior context or inherited image state contributes, and whether refusal categories cluster around generic fallback messaging.",
     "last_assessed": "2026-07-14",
     "monitoring_required": true
+  },
+  "corpus_coverage": {
+    "classification": "implemented-repair",
+    "corpus_repository": "CAM-Initiative/Caelestis",
+    "corpus_ref": "main",
+    "corpus_commit": "40113eea5428478ba0734b3980600bfcece425a0",
+    "assessed_date": "2026-07-14",
+    "coverage_summary": "A linked VIGIL patch records implemented or assembled CAM coverage. This corpus assessment confirms the repair relationship without implying external resolution.",
+    "covered_by": [
+      {
+        "instrument_id": "CAM-BS2025-AEON-003-SCH-02",
+        "path": "",
+        "sections": [],
+        "coverage_type": "existing-doctrine"
+      },
+      {
+        "instrument_id": "CAM-BS2025-AEON-003-SCH-04",
+        "path": "",
+        "sections": [],
+        "coverage_type": "existing-doctrine"
+      },
+      {
+        "instrument_id": "CAM-BS2025-AEON-006-SCH-06",
+        "path": "",
+        "sections": [],
+        "coverage_type": "existing-doctrine"
+      },
+      {
+        "instrument_id": "CAM-EQ2026-OPERATIONS-003-SUP-01",
+        "path": "",
+        "sections": [],
+        "coverage_type": "existing-doctrine"
+      },
+      {
+        "instrument_id": "AEON-003-SCH-02; AEON-006-SCH-06; AEON-013-SCH-01; OPERATIONS-003-SUP-01",
+        "path": "",
+        "sections": [],
+        "coverage_type": "implemented-doctrine"
+      },
+      {
+        "instrument_id": "CAM-BS2025-AEON-003-SCH-02",
+        "path": "",
+        "sections": [],
+        "coverage_type": "implemented-doctrine"
+      },
+      {
+        "instrument_id": "CAM-BS2025-AEON-006-SCH-06",
+        "path": "",
+        "sections": [],
+        "coverage_type": "implemented-doctrine"
+      },
+      {
+        "instrument_id": "CAM-BS2025-AEON-013-SCH-01",
+        "path": "",
+        "sections": [],
+        "coverage_type": "implemented-doctrine"
+      },
+      {
+        "instrument_id": "CAM-EQ2026-OPERATIONS-003-SUP-01",
+        "path": "",
+        "sections": [],
+        "coverage_type": "implemented-doctrine"
+      }
+    ],
+    "remaining_gaps": [
+      "External ecosystem adoption or resolution is not established by the CAM repair.",
+      "Cross-runtime implementation conformity remains unverified unless separately recorded."
+    ]
   }
 }

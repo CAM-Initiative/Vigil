@@ -1,7 +1,7 @@
 {
   "id": "VIGIL-2026-FM-0017",
   "record_type": "failure_mode",
-  "record_state": "active",
+  "record_state": "monitoring",
   "date_recorded": "2026-06-11",
   "record_identity": {
     "record_id": "VIGIL-2026-FM-0017",
@@ -9,7 +9,7 @@
     "title": "Coarse restricted-domain gating suppressing benign scientific inquiry",
     "created": "2026-06-11",
     "updated": "2026-07-14",
-    "version": "1.1"
+    "version": "1.2"
   },
   "summary": "A restricted-domain classification failure in which a frontier AI system refuses, pauses, reroutes, or degrades benign educational, contextual, analytical, or non-operational scientific requests because they fall within a broad field such as biology, biochemistry, chemistry, cybersecurity, or another dual-use domain, without first resolving the requested depth, operational applicability, optimisation potential, interaction trajectory, or harm profile. In Claude Fable 5, intentionally broad biology safeguards can capture ordinary scientific and medical questions and automatically route them to Claude Opus 4.8 or pause the conversation, reducing access to the selected model even where the request presents no meaningful operational escalation risk.",
   "why_it_matters_to_CAM": "CAM already distinguishes general knowledge, contextual risk, constrained technical engagement, gated operational engagement, and absolute prohibition. A system that collapses an entire scientific field into a restricted class defeats that graduated architecture. Overbroad classification can suppress legitimate education and research, obscure the difference between safety policy and model capability, and deny users the higher-capability model they selected or paid to access. The correct control is not unrestricted disclosure. It is calibrated depth classification: preserve benign RDE-DS0/RDE-T1 and RDE-DS1/RDE-T1-T2 inquiry, permit bounded RDE-DS2/RDE-T2 technical explanation where it does not create material harm uplift, and reserve RDE-DS3/RDE-T3 gating for operational, optimisation-level, or execution-ready requests.",
@@ -106,7 +106,9 @@
     "related_observations": [],
     "related_failure_modes": [],
     "related_proposals": [],
-    "related_patch_notes": [],
+    "related_patch_notes": [
+      "VIGIL-2026-PATCH-0019"
+    ],
     "external_references": [],
     "research": [],
     "standards": []
@@ -162,8 +164,8 @@
   "triage": {
     "triage_priority": "P1",
     "triage_owner": "VIGIL maintainers",
-    "triage_status": "active-monitoring / CAM-covered",
-    "mitigation_status": "partially mitigated — Anthropic provides visible fallback to Claude Opus 4.8 on supported surfaces and is developing more discerning safeguards and trusted-access options; however, the launch-state classifier remains intentionally broad and continues to suppress or downgrade some benign scientific requests.",
+    "triage_status": "watching-after-patch",
+    "mitigation_status": "CAM corpus coverage verified and linked; external ecosystem adoption and runtime conformance remain under monitoring.",
     "escalation_required": "yes",
     "recommended_next_step": "Monitor Anthropic safeguard revisions, fallback transparency, false-positive recurrence, API behaviour, and any trusted-access program. Test representative RDE-DS0, RDE-DS1, RDE-DS2, and RDE-DS3 prompts to determine whether classifier changes preserve ordinary scientific access while maintaining operational safeguards."
   },
@@ -286,18 +288,18 @@
     "recommended_cam_action": "No new CAM doctrine or patch is presently required. Record the external implementation failure and monitor classifier refinement, fallback transparency, trusted-access availability, and recurrence. Reassess CAM only if future evidence reveals a governance gap not already addressed by RDE-DS, RDE-T, OPS.VL, OPS.VCT, FF, or FCS."
   },
   "repair_status": {
-    "status": "unrepaired",
-    "repaired_by": [],
-    "date_repaired": "",
-    "verification_status": "unverified",
-    "monitoring_status": "active triage",
-    "verification_note": "not repaired",
-    "repair_basis": "partial-coverage",
+    "status": "repaired",
+    "repaired_by": [
+      "VIGIL-2026-PATCH-0019"
+    ],
+    "date_repaired": "2026-07-14",
+    "verification_status": "corpus-verified",
+    "monitoring_status": "ecosystem active or recurring / monitoring after CAM repair",
+    "verification_note": "VIGIL-2026-PATCH-0019 records direct canonical Caelestis coverage that existed independently of this VIGIL reconciliation. No new Caelestis doctrine is claimed.",
+    "repair_basis": "pre-existing-coverage-identified",
     "remaining_gaps": [
-      "Failure to preserve RDE-DS0/RDE-T1, RDE-DS1/RDE-T1-T2, and permissible RDE-DS2/RDE-T2 access because broad domain membership is treated as sufficient grounds for model degradation or refusal.",
-      "Failure to distinguish contextual limitation from personal restriction or to preserve a meaningful safe continuation path at the highest permissible depth.",
-      "Failure to provide proportionate, privacy-preserving, and non-discretionary deeper-evaluation pathways where RDE-DS3/RDE-T3 access could lawfully be considered.",
-      "Failure to identify broad domain gating as a classification defect rather than treating every restricted-domain activation as a successful safety outcome."
+      "Anthropic and other external classifier implementations remain outside CAM control.",
+      "Runtime false-positive and fallback-routing conformance remains under monitoring."
     ]
   },
   "ecosystem_status": {
@@ -305,5 +307,31 @@
     "basis": "Multiple benign examples were independently reported at launch, while Anthropic officially acknowledged that intentionally broad safeguards can block legitimate biology work, basic educational content, and normal safe conversations.",
     "last_assessed": "2026-07-14",
     "monitoring_required": true
+  },
+  "corpus_coverage": {
+    "classification": "retrospective-coverage",
+    "corpus_repository": "CAM-Initiative/Caelestis",
+    "corpus_ref": "main",
+    "corpus_commit": "40113eea5428478ba0734b3980600bfcece425a0",
+    "assessed_date": "2026-07-14",
+    "coverage_summary": "Annex E Schedule 7 directly requires graduated restricted-domain engagement rather than binary prohibition, context-sensitive classification rather than keywords alone, and continued access to contextual, educational, safety-oriented, and bounded technical discussion. VIGIL lacked a patch record linking this existing doctrine to FM-0017.",
+    "covered_by": [
+      {
+        "instrument_id": "CAM-BS2025-AEON-006-SCH-07",
+        "path": "Governance/Constitution/CAM-BS2025-AEON-006-SCH-07.md",
+        "sections": [
+          "§3 Core Principle",
+          "§4 Restricted Domain Classes",
+          "§4.1 Dual-Use Domain Handling",
+          "§5 Domain Sensitivity Levels",
+          "§6 Engagement Tiers"
+        ],
+        "coverage_type": "direct-existing-doctrine"
+      }
+    ],
+    "remaining_gaps": [
+      "Anthropic and other external classifier implementations remain outside CAM control.",
+      "Runtime false-positive and fallback-routing conformance remains under monitoring."
+    ]
   }
 }

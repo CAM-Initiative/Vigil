@@ -165,3 +165,14 @@ Do not repair record content by deleting uncertainty.
 Do not update the CAM Interface layer from a VIGIL pass unless separately instructed.
 
 When in doubt, stop and report the uncertainty rather than inventing a mapping.
+
+## Corpus coverage reconciliation
+
+Every failure mode must preserve a `corpus_coverage` assessment against a named repository, ref, commit, and date.
+
+- `implemented-repair` means a linked patch records an implemented CAM repair.
+- `retrospective-coverage` means current canonical doctrine materially governed the failure before VIGIL linked it.
+- `partial-coverage` means relevant controls exist but a named primitive or implementation requirement remains missing.
+- `uncovered` means no sufficient direct current-corpus control was identified.
+- External adoption, runtime conformance, ecosystem persistence, and legal compliance remain separate from CAM coverage.
+- Retrospective patches must state the actual control content and distinguish doctrine reviewed, amended, and relied upon without amendment.

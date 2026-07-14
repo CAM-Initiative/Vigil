@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "VIGIL.FailureMode.Schema.json",
-  "description": "Failure Mode records require failure definition, threshold, CAM taxonomy-aligned classification, triage, external ecosystem status, CAM repair status, and verification state.",
+  "description": "Failure Mode records require definition, threshold, CAM taxonomy classification, triage, external ecosystem status, CAM repair status, implementation verification, and current-corpus coverage.",
   "allOf": [
     {
       "$ref": "VIGIL.Base.Schema.json"
@@ -169,6 +169,89 @@
           "type": "boolean"
         }
       }
+    },
+    "corpus_coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "classification",
+        "corpus_repository",
+        "corpus_ref",
+        "corpus_commit",
+        "assessed_date",
+        "coverage_summary",
+        "covered_by",
+        "remaining_gaps"
+      ],
+      "properties": {
+        "classification": {
+          "enum": [
+            "implemented-repair",
+            "not-applicable",
+            "partial-coverage",
+            "retrospective-coverage",
+            "uncovered",
+            "verification-pending"
+          ]
+        },
+        "corpus_repository": {
+          "type": "string",
+          "minLength": 1
+        },
+        "corpus_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "corpus_commit": {
+          "type": "string",
+          "minLength": 1
+        },
+        "assessed_date": {
+          "type": "string",
+          "minLength": 1
+        },
+        "coverage_summary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "covered_by": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "instrument_id",
+              "path",
+              "sections",
+              "coverage_type"
+            ],
+            "properties": {
+              "instrument_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "path": {
+                "type": "string"
+              },
+              "sections": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "coverage_type": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "remaining_gaps": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
     }
   },
   "required": [
@@ -177,7 +260,8 @@
     "failure_classification",
     "triage",
     "repair_status",
-    "ecosystem_status"
+    "ecosystem_status",
+    "corpus_coverage"
   ],
   "not": {
     "required": [
