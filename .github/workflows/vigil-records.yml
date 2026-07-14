@@ -42,6 +42,16 @@ jobs:
           if [ -f vigil/records/patches/2026/VIGIL-2026-PATCH-0016.json ] || \
              [ -f vigil/records/patches/2026/VIGIL-2026-PATCH-0020.json ] || \
              [ ! -f vigil/records/observations/2026/VIGIL-2026-OBS-0011.json ]; then
+            python - <<'PY'
+          from pathlib import Path
+          path = Path("vigil/scripts/reconcile-vigil-cam-boundary-and-voice.py")
+          text = path.read_text(encoding="utf-8")
+          text = text.replace(
+              "return [cleanse_refs(item) for item in value if item not in INVALID_PATCHES]",
+              "return [cleanse_refs(item) for item in value if not (isinstance(item, str) and item in INVALID_PATCHES)]",
+          )
+          path.write_text(text, encoding="utf-8")
+          PY
             python vigil/scripts/reconcile-vigil-cam-boundary-and-voice.py
           else
             echo "CAM observatory boundary correction and voice evidence reconciliation already applied."
