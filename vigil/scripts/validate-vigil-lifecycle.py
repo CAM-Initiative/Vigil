@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate VIGIL evidence routing, lifecycle separation, and patch provenance."""
+"""Validate VIGIL evidence routing, lifecycle separation, corpus coverage, and patch provenance."""
 
 from __future__ import annotations
 
@@ -29,6 +29,14 @@ REPAIR_BASES = {
     "cross-domain-repair-assembled",
     "not-actionable",
     "superseded",
+}
+CORPUS_COVERAGE_STATES = {
+    "implemented-repair",
+    "retrospective-coverage",
+    "partial-coverage",
+    "uncovered",
+    "verification-pending",
+    "not-applicable",
 }
 PATCH_CLASSIFICATIONS = {
     "doctrine-amendment",
@@ -72,6 +80,80 @@ def load_records() -> tuple[dict[str, dict[str, Any]], dict[str, Path], list[str
 
 def non_empty_string(value: Any) -> bool:
     return isinstance(value, str) and bool(value.strip())
+
+
+def validate_corpus_coverage(
+    record: dict[str, Any],
+    path: Path,
+    repair: dict[str, Any],
+    errors: list[str],
+) -> None:
+    coverage = record.get("corpus_coverage")
+    if not isinstance(coverage, dict):
+        errors.append(f"{path}: failure mode requires corpus_coverage object")
+        return
+
+    classification = coverage.get("classification")
+    if classification not in CORPUS_COVERAGE_STATES:
+        errors.append(f"{path}: corpus_coverage.classification {classification!r} is not canonical")
+
+    for field in (
+        "corpus_repository",
+        "corpus_ref",
+        "corpus_commit",
+        "assessed_date",
+        "coverage_summary",
+    ):
+        if not non_empty_string(coverage.get(field)):
+            errors.append(f"{path}: corpus_coverage.{field} must be a non-empty string")
+
+    covered_by = coverage.get("covered_by")
+    if not isinstance(covered_by, list):
+        errors.append(f"{path}: corpus_coverage.covered_by must be an array")
+        covered_by = []
+    for index, item in enumerate(covered_by):
+        if not isinstance(item, dict):
+            errors.append(f"{path}: corpus_coverage.covered_by[{index}] must be an object")
+            continue
+        if not non_empty_string(item.get("instrument_id")):
+            errors.append(f"{path}: corpus_coverage.covered_by[{index}].instrument_id must be non-empty")
+        if not isinstance(item.get("path"), str):
+            errors.append(f"{path}: corpus_coverage.covered_by[{index}].path must be a string")
+        sections = item.get("sections")
+        if not isinstance(sections, list) or any(not isinstance(section, str) for section in sections):
+            errors.append(f"{path}: corpus_coverage.covered_by[{index}].sections must be an array of strings")
+        if not non_empty_string(item.get("coverage_type")):
+            errors.append(f"{path}: corpus_coverage.covered_by[{index}].coverage_type must be non-empty")
+
+    gaps = coverage.get("remaining_gaps")
+    if not isinstance(gaps, list) or any(not isinstance(item, str) for item in gaps):
+        errors.append(f"{path}: corpus_coverage.remaining_gaps must be an array of strings")
+        gaps = []
+
+    if classification in {"implemented-repair", "retrospective-coverage"}:
+        if repair.get("status") != "repaired":
+            errors.append(f"{path}: {classification} requires repair_status.status 'repaired'")
+        if repair.get("verification_status") != "corpus-verified":
+            errors.append(f"{path}: {classification} requires corpus-verified repair status")
+        if not repair.get("repaired_by"):
+            errors.append(f"{path}: {classification} requires at least one linked patch")
+        if not covered_by:
+            errors.append(f"{path}: {classification} requires at least one covered_by instrument")
+
+    if classification == "retrospective-coverage" and repair.get("repair_basis") != "pre-existing-coverage-identified":
+        errors.append(
+            f"{path}: retrospective-coverage requires repair_basis 'pre-existing-coverage-identified'"
+        )
+
+    if classification == "implemented-repair" and repair.get("repair_basis") not in {
+        "patch-implemented",
+        "cross-domain-repair-assembled",
+        "pre-existing-coverage-identified",
+    }:
+        errors.append(f"{path}: implemented-repair conflicts with repair_basis {repair.get('repair_basis')!r}")
+
+    if classification in {"partial-coverage", "uncovered", "verification-pending"} and not gaps:
+        errors.append(f"{path}: {classification} must preserve concrete remaining_gaps")
 
 
 def validate_failure(
@@ -144,6 +226,8 @@ def validate_failure(
                 f"{path}: repaired CAM status with non-resolved ecosystem state must preserve external or verification gaps"
             )
 
+    validate_corpus_coverage(record, path, repair, errors)
+
 
 def validate_patch(record: dict[str, Any], path: Path, errors: list[str]) -> None:
     classifications = record.get("patch_classifications")
@@ -197,11 +281,51 @@ def validate_patch(record: dict[str, Any], path: Path, errors: list[str]) -> Non
     if provenance.get("retrospective_synthesis") and not unchanged and "retrospective-coverage-synthesis" in (
         classifications or []
     ):
-        # A synthesis may integrate pre-existing provisions that were also amended, but the record must explain this.
         if "existing" not in str(provenance.get("repair_basis", "")).lower():
             errors.append(
                 f"{path}: retrospective synthesis requires unchanged coverage or an explicit existing-coverage basis"
             )
+
+    origins = provenance.get("coverage_origin", [])
+    if isinstance(origins, list):
+        for index, origin in enumerate(origins):
+            if not isinstance(origin, dict):
+                errors.append(f"{path}: repair_provenance.coverage_origin[{index}] must be an object")
+                continue
+            if not non_empty_string(origin.get("instrument_id")):
+                errors.append(f"{path}: repair_provenance.coverage_origin[{index}].instrument_id must be non-empty")
+            sections = origin.get("relevant_sections")
+            if not isinstance(sections, list) or any(not isinstance(section, str) for section in sections):
+                errors.append(
+                    f"{path}: repair_provenance.coverage_origin[{index}].relevant_sections must be an array of strings"
+                )
+
+
+def validate_proposal(record: dict[str, Any], path: Path, records: dict[str, dict[str, Any]], errors: list[str]) -> None:
+    reconciliation = record.get("coverage_reconciliation")
+    if reconciliation is not None:
+        if not isinstance(reconciliation, dict):
+            errors.append(f"{path}: coverage_reconciliation must be an object")
+        else:
+            for field in ("status", "assessed_date", "corpus_commit"):
+                if not non_empty_string(reconciliation.get(field)):
+                    errors.append(f"{path}: coverage_reconciliation.{field} must be non-empty")
+            resolved_by = reconciliation.get("resolved_by", [])
+            remaining_scope = reconciliation.get("remaining_scope", [])
+            if not isinstance(resolved_by, list):
+                errors.append(f"{path}: coverage_reconciliation.resolved_by must be an array")
+                resolved_by = []
+            if not isinstance(remaining_scope, list) or any(not isinstance(item, str) for item in remaining_scope):
+                errors.append(f"{path}: coverage_reconciliation.remaining_scope must be an array of strings")
+            for patch_id in resolved_by:
+                if patch_id not in records:
+                    errors.append(f"{path}: coverage reconciliation patch {patch_id!r} does not resolve")
+
+    resolution = record.get("resolution_status")
+    if isinstance(resolution, dict) and resolution.get("status") == "resolved":
+        resolved_by = resolution.get("resolved_by", [])
+        if not isinstance(resolved_by, list) or not resolved_by:
+            errors.append(f"{path}: resolved proposal requires at least one resolving patch")
 
 
 def validate_observation(record_id: str, record: dict[str, Any], path: Path, errors: list[str]) -> None:
@@ -225,15 +349,17 @@ def main() -> int:
             validate_failure(record_id, record, path, records, errors)
         elif record_type in {"patch", "patch_note"}:
             validate_patch(record, path, errors)
+        elif record_type == "proposal":
+            validate_proposal(record, path, records, errors)
         elif record_type == "observation":
             validate_observation(record_id, record, path, errors)
 
     if errors:
-        print("VIGIL lifecycle validation failed:", file=sys.stderr)
+        print("VIGIL lifecycle and corpus coverage validation failed:", file=sys.stderr)
         for error in errors:
             print(f"- {error}", file=sys.stderr)
         return 1
-    print(f"VIGIL lifecycle validation passed for {len(records)} records.")
+    print(f"VIGIL lifecycle and corpus coverage validation passed for {len(records)} records.")
     return 0
 
 
