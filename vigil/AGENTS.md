@@ -6,7 +6,9 @@ VIGIL does not create doctrine, amend adopted instruments, determine liability, 
 
 VIGIL records preserve structured governance evidence and workflow state. CAM instruments remain authoritative only through the normal Caelestis amendment, validation, and adoption process.
 
-> No VIGIL record without date, source state, evidence confidence, CAM relevance, and next action or implemented-CAM-change explanation.
+VIGIL operates as an **AI-led analytical observatory with high-level human governance editorship**. The named AI system performs routine evidence triage, record analysis, source comparison, reconciliation, and monitoring. The human governance editor sets direction, reviews material governance questions, and retains CAM constitutional and adoption authority. Do not collapse these roles into a generic “VIGIL maintainer” attribution.
+
+> No VIGIL record without date, source state, evidence confidence, CAM relevance, interpretive provenance, and next action or implemented-CAM-change explanation.
 
 ## Record Classes
 
@@ -55,6 +57,25 @@ Patch notes must distinguish completed CAM work from remaining ecosystem or runt
 
 VIGIL schemas, validators, indexes, workflows, migrations, reconciliation passes, and repository administration are never PATCH targets.
 
+## Interpretive Provenance Rules
+
+Every substantive VIGIL record must contain `interpretive_provenance` with:
+
+* an append-only `review_history`;
+* a `current_ai_review` identifying the reviewing platform, exact model/version, date, scope, capability profile, known limitations, and outcome;
+* the operating model of AI-led analysis with high-level human governance editorship;
+* the named human governance editor and authority boundary; and
+* a note preserving unknown historical reviewer identity rather than inventing it.
+
+Rules:
+
+* Do not overwrite prior reviews when a newer AI model re-examines a record.
+* Do not retroactively assign an earlier model identity unless the record or source proves it.
+* A later model may disagree with an earlier interpretation; preserve both reviews and identify the evidence and capability differences.
+* Distinguish AI analytical review from human governance editorship and CAM adoption authority.
+* Do not attribute routine analysis to “VIGIL maintainer” where a named AI system performed the work.
+* Reviewer capability is part of the evidence chain. State whether the reviewer could directly analyse text, images, audio, uploaded video, or externally hosted video.
+
 ## Template Files
 
 Use the approved templates before creating or modifying records:
@@ -97,8 +118,12 @@ When working in `vigil/`:
 * Source evidence must be embedded in the substantive FM, OBS, PROP, or PATCH it supports; do not create an OBS solely to duplicate or route evidence into an existing record.
 * Do not add `source_data` or `source_data.sources` to individual records.
 * Do not flatten rich source records into a single URL field.
+* Every source must identify `evidence_modality`, `primary_artefact_access`, and `interpretive_reliance`.
+* Preserve the original source URL even where a local copy, transcript, screenshot, or later mirror becomes available.
+* A transcript, screenshot, summary, or human description is not equivalent to direct audiovisual or behavioural review.
+* State explicitly whether the named AI reviewer directly inspected the primary artefact.
 * Mark public reports, social-media observations, automated search results, and third-party claims provisional unless corroborated.
-* Do not invent sources, URLs, citations, dates, legal claims, jurisdictions, severity, or harm outcomes.
+* Do not invent sources, URLs, citations, dates, legal claims, jurisdictions, severity, harm outcomes, or direct-access claims.
 * If a source is missing, use a clear TODO, `unknown`, or `not applicable` field according to the relevant template.
 * Keep uncertainty visible.
 
@@ -157,7 +182,7 @@ Do not make CAM affected instruments the primary public classification layer.
 * Run `python vigil/scripts/route-vigil-records.py` to move misplaced records to the correct canonical type/year folder.
 * Record files belong under `vigil/records/<record_type>/<year>/`; record state belongs inside `record_state`, not in the filesystem path.
 * Run `python vigil/scripts/validate-vigil-records.py` before rebuilding.
-* Run `python vigil/scripts/run-vigil-lifecycle-validation.py` to validate lifecycle, corpus coverage, patch provenance, proposal resolution, and the VIGIL/CAM observatory boundary.
+* Run `python vigil/scripts/run-vigil-lifecycle-validation.py` to validate lifecycle, corpus coverage, patch provenance, proposal resolution, the VIGIL/CAM observatory boundary, and interpretive provenance.
 * Rebuild generated registry indexes with `python vigil/scripts/build-vigil-records.py` and `python vigil/scripts/enrich-vigil-indexes.py` after changing records.
 * Use the type-specific registry indexes for interface/live ingestion.
 * Use `vigil/VIGIL.Registry.Index.json` as the master registry composed from the generated type indexes.
