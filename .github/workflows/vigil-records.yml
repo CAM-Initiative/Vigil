@@ -37,12 +37,14 @@ jobs:
             echo "Lifecycle reconciliation already applied."
           fi
 
-      - name: Reconcile current corpus coverage
+      - name: Correct CAM observatory boundary and ingest voice evidence
         run: |
-          if [ ! -f vigil/records/patches/2026/VIGIL-2026-PATCH-0020.json ]; then
-            python vigil/scripts/run-vigil-corpus-reconciliation.py
+          if [ -f vigil/records/patches/2026/VIGIL-2026-PATCH-0016.json ] || \
+             [ -f vigil/records/patches/2026/VIGIL-2026-PATCH-0020.json ] || \
+             [ ! -f vigil/records/observations/2026/VIGIL-2026-OBS-0011.json ]; then
+            python vigil/scripts/reconcile-vigil-cam-boundary-and-voice.py
           else
-            echo "Corpus coverage reconciliation already applied."
+            echo "CAM observatory boundary correction and voice evidence reconciliation already applied."
           fi
 
       - name: Test VIGIL validator
@@ -54,7 +56,7 @@ jobs:
       - name: Validate VIGIL records
         run: python vigil/scripts/validate-vigil-records.py
 
-      - name: Validate VIGIL lifecycle, corpus coverage, and patch provenance
+      - name: Validate VIGIL lifecycle, corpus coverage, patch provenance, and CAM boundary
         run: python vigil/scripts/run-vigil-lifecycle-validation.py
 
       - name: Build and enrich VIGIL registry indexes
@@ -75,6 +77,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "No reconciled VIGIL changes to commit."
           else
-            git commit -m "Reconcile VIGIL corpus coverage and rebuild indexes"
+            git commit -m "Correct CAM observatory boundary and reconcile voice evidence"
             git push
           fi
