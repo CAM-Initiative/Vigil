@@ -37,6 +37,14 @@ jobs:
             echo "Lifecycle reconciliation already applied."
           fi
 
+      - name: Reconcile current corpus coverage
+        run: |
+          if [ ! -f vigil/records/patches/2026/VIGIL-2026-PATCH-0020.json ]; then
+            python vigil/scripts/reconcile-vigil-corpus-coverage.py
+          else
+            echo "Corpus coverage reconciliation already applied."
+          fi
+
       - name: Test VIGIL validator
         run: python vigil/scripts/test_validate_vigil_records.py
 
@@ -46,12 +54,13 @@ jobs:
       - name: Validate VIGIL records
         run: python vigil/scripts/validate-vigil-records.py
 
-      - name: Validate VIGIL lifecycle and patch provenance
+      - name: Validate VIGIL lifecycle, corpus coverage, and patch provenance
         run: python vigil/scripts/validate-vigil-lifecycle.py
 
-      - name: Build VIGIL registry indexes
+      - name: Build and enrich VIGIL registry indexes
         run: |
           python vigil/scripts/build-vigil-records.py
+          python vigil/scripts/enrich-vigil-indexes.py
           rm -f vigil/VIGIL.ActiveRecords.json vigil/VIGIL.ClosedRecords.json vigil/VIGIL.Records.Index.json vigil/VIGIL.Records.json
 
       - name: Commit reconciled VIGIL records and generated indexes
@@ -66,6 +75,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "No reconciled VIGIL changes to commit."
           else
-            git commit -m "Reconcile VIGIL lifecycle and rebuild indexes"
+            git commit -m "Reconcile VIGIL corpus coverage and rebuild indexes"
             git push
           fi
