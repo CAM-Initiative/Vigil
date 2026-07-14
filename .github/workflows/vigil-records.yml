@@ -14,6 +14,7 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
   validate-build:
@@ -64,7 +65,25 @@ jobs:
         run: python vigil/scripts/route-vigil-records.py
 
       - name: Validate VIGIL records
-        run: python vigil/scripts/validate-vigil-records.py
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set +e
+          python vigil/scripts/validate-vigil-records.py > /tmp/vigil-validation.log 2>&1
+          status=$?
+          set -e
+          cat /tmp/vigil-validation.log
+          if [ "$status" -ne 0 ]; then
+            {
+              echo "### Temporary voice-reconciliation validation diagnostic"
+              echo
+              echo '```text'
+              tail -n 220 /tmp/vigil-validation.log
+              echo '```'
+            } > /tmp/vigil-validation-comment.md
+            gh pr comment 29 --body-file /tmp/vigil-validation-comment.md
+            exit "$status"
+          fi
 
       - name: Validate VIGIL lifecycle, corpus coverage, patch provenance, and CAM boundary
         run: python vigil/scripts/run-vigil-lifecycle-validation.py
