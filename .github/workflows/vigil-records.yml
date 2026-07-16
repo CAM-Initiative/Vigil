@@ -54,8 +54,13 @@ jobs:
       - name: Add interpretive provenance and behavioural evidence metadata
         run: python vigil/scripts/migrate-vigil-interpretive-provenance.py
 
-      - name: Test VIGIL validator
-        run: python vigil/scripts/test_validate_vigil_records.py
+      - name: Separate repair provenance from corpus coverage
+        run: python vigil/scripts/migrate-vigil-repair-basis.py
+
+      - name: Test VIGIL validators
+        run: |
+          python vigil/scripts/test_validate_vigil_records.py
+          python vigil/scripts/test_validate_vigil_lifecycle.py
 
       - name: Route VIGIL records
         run: python vigil/scripts/route-vigil-records.py
@@ -84,9 +89,9 @@ jobs:
           if git diff --cached --quiet; then
             echo "No reconciled VIGIL changes to commit."
           else
-            git commit -m "Add VIGIL interpretive provenance and evidence access metadata"
+            git commit -m "Migrate VIGIL repair-basis lifecycle semantics"
             if ! git push; then
-              echo "Main advanced while this run was building generated files; a newer workflow run owns reconciliation."
+              echo "Branch advanced while this run was building generated files; a newer workflow run owns reconciliation."
               exit 0
             fi
           fi
