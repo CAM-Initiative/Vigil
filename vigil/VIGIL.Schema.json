@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://example.invalid/cam/vigil/VIGIL.Schema.json",
-  "version": "2.5-interpretive-provenance",
-  "purpose": "Authoritative schema-rules contract for VIGIL as a public evidence-to-repair observatory for observations, failure modes, proposals, and implemented patch notes. Source evidence remains embedded in the relevant record; ecosystem persistence, CAM repair, and implementation verification are represented separately. Interpretive provenance identifies the AI analytical reviewer, human governance editor, capability profile, source modality, primary-artefact access, and review limitations. Interpretive provenance identifies the AI analytical reviewer, human governance editor, capability profile, source modality, primary-artefact access, and review limitations. Interpretive provenance identifies the AI analytical reviewer, human governance editor, capability profile, source modality, primary-artefact access, and review limitations. Interpretive provenance identifies the AI analytical reviewer, human governance editor, capability profile, source modality, primary-artefact access, and review limitations. Interpretive provenance identifies the AI analytical reviewer, human governance editor, capability profile, source modality, primary-artefact access, and review limitations.",
+  "version": "2.6-repair-basis-separation",
+  "purpose": "Authoritative schema-rules contract for VIGIL as a public evidence-to-repair observatory for observations, failure modes, proposals, and implemented patch notes. Source evidence remains embedded in the relevant record; ecosystem persistence, CAM repair, and implementation verification are represented separately. Interpretive provenance identifies the AI analytical reviewer, human governance editor, capability profile, source modality, primary-artefact access, and review limitations. Interpretive provenance identifies the AI analytical reviewer, human governance editor, capability profile, source modality, primary-artefact access, and review limitations. Interpretive provenance identifies the AI analytical reviewer, human governance editor, capability profile, source modality, primary-artefact access, and review limitations. Interpretive provenance identifies the AI analytical reviewer, human governance editor, capability profile, source modality, primary-artefact access, and review limitations. Interpretive provenance identifies the AI analytical reviewer, human governance editor, capability profile, source modality, primary-artefact access, and review limitations. Interpretive provenance identifies the AI analytical reviewer, human governance editor, capability profile, source modality, primary-artefact access, and review limitations.",
   "source_evidence_rules": {
     "individual_records": [
       "source_records is the only canonical source-evidence block in individual records.",
@@ -12,6 +12,9 @@
       "Source evidence belongs in source_records within the substantive record it evidences; it is not a separate VIGIL record class.",
       "An OBS record must preserve a material unresolved governance proposition and must not merely duplicate evidence for an existing FM, PROP, or PATCH.",
       "Internal curator instructions such as 'add this incident to' or 'do not amend in this pass' are forbidden in public record content.",
+      "Each source record must state evidence_modality.",
+      "Each source record must state primary_artefact_access, including whether direct primary review occurred.",
+      "A transcript, screenshot, summary, or human description must not be represented as equivalent to direct audiovisual or interaction review.",
       "Each source record must state evidence_modality.",
       "Each source record must state primary_artefact_access, including whether direct primary review occurred.",
       "A transcript, screenshot, summary, or human description must not be represented as equivalent to direct audiovisual or interaction review.",
@@ -207,7 +210,16 @@
         "coverage_summary",
         "covered_by",
         "remaining_gaps"
-      ]
+      ],
+      "allowed_repair_basis_values": [
+        "not-yet-established",
+        "pre-existing-coverage-identified",
+        "patch-implemented",
+        "cross-domain-repair-assembled",
+        "not-actionable",
+        "superseded"
+      ],
+      "repair_basis_interpretation": "repair_status.repair_basis identifies what establishes an actual CAM-side repair. Corpus coverage terms such as uncovered and partial-coverage belong only in corpus_coverage.classification."
     },
     "proposal": {
       "id_prefix": "PROP",
@@ -648,7 +660,9 @@
     "ecosystem_status": "Describes whether the external failure remains active, recurring, improving, externally resolved, or unknown.",
     "cam_repair_status": "repair_status.status describes CAM's internal response and may be repaired while ecosystem_status remains active or recurring.",
     "verification_status": "repair_status.verification_status describes whether the repair is unverified, corpus-verified, observed in one or multiple runtimes, regressed, externally unknown, or not applicable.",
-    "non_collapse_rule": "No one field may be used to imply both CAM repair completion and external ecosystem resolution."
+    "non_collapse_rule": "No one field may be used to imply both CAM repair completion and external ecosystem resolution.",
+    "no_patch_no_repair_rule": "A failure with no linked repairing PATCH remains unrepaired and uses repair_basis not-yet-established, even where corpus_coverage identifies adjacent or partial doctrine.",
+    "coverage_separation_rule": "corpus_coverage.classification may be uncovered, partial-coverage, verification-pending, retrospective-coverage, or implemented-repair without being reused as repair provenance."
   },
   "corpus_coverage_rules": [
     "Every failure mode must state its assessment against a named corpus repository, ref, commit, and assessment date.",

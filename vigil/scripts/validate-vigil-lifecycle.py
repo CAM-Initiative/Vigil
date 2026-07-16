@@ -22,9 +22,8 @@ VERIFICATION_STATES = {
     "not-applicable",
 }
 REPAIR_BASES = {
-    "uncovered",
+    "not-yet-established",
     "pre-existing-coverage-identified",
-    "partial-coverage",
     "patch-implemented",
     "cross-domain-repair-assembled",
     "not-actionable",
@@ -203,8 +202,30 @@ def validate_failure(
         errors.append(f"{path}: linked_records.related_patch_notes must be an array")
         linked_patches = []
 
-    if repair.get("status") == "repaired" and not repaired_by:
-        errors.append(f"{path}: repaired CAM status requires at least one repairing patch")
+    status = repair.get("status")
+    if status == "unrepaired":
+        if basis != "not-yet-established":
+            errors.append(f"{path}: unrepaired CAM status requires repair_basis 'not-yet-established'")
+        if repaired_by:
+            errors.append(f"{path}: unrepaired CAM status cannot name a repairing patch")
+        if non_empty_string(repair.get("date_repaired")):
+            errors.append(f"{path}: unrepaired CAM status cannot have date_repaired")
+    elif status in {"partially-repaired", "repaired"}:
+        if not repaired_by:
+            errors.append(f"{path}: {status} CAM status requires at least one repairing patch")
+        if basis == "not-yet-established":
+            errors.append(f"{path}: {status} CAM status cannot use repair_basis 'not-yet-established'")
+    elif status == "not-actionable" and basis != "not-actionable":
+        errors.append(f"{path}: not-actionable CAM status requires repair_basis 'not-actionable'")
+    elif status == "superseded" and basis != "superseded":
+        errors.append(f"{path}: superseded CAM status requires repair_basis 'superseded'")
+
+    if basis in {
+        "pre-existing-coverage-identified",
+        "patch-implemented",
+        "cross-domain-repair-assembled",
+    } and not repaired_by:
+        errors.append(f"{path}: repair_basis {basis!r} requires at least one linked repairing patch")
 
     for patch_id in repaired_by:
         if patch_id not in records:
