@@ -228,6 +228,7 @@ def restore_record(path: Path) -> bool:
             if restored is None:
                 continue
             access_value, reliance = restored
+            source["evidence_modality"] = ["text"]
             source["primary_artefact_access"] = access_value
             source["interpretive_reliance"] = reliance
 
