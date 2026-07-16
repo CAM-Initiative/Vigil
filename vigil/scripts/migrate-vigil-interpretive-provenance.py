@@ -109,7 +109,8 @@ def add_provenance(record: dict[str, Any]) -> None:
     history = block.setdefault("review_history", [])
     if not any(isinstance(item, dict) and item.get("review_id") == REVIEW_ID for item in history):
         history.append(review_entry())
-    block["current_ai_review"] = review_entry()
+    if not isinstance(block.get("current_ai_review"), dict):
+        block["current_ai_review"] = review_entry()
     block["operating_model"] = "AI-led analytical observatory with high-level human governance editorship"
     block["human_governance_editor"] = {
         "name": EDITOR,
@@ -129,11 +130,11 @@ def enrich_sources(record: dict[str, Any]) -> None:
     for source in sources:
         if not isinstance(source, dict):
             continue
-        source["evidence_modality"] = modality(source)
-        source["primary_artefact_access"] = artefact_access(source)
-        source["interpretive_reliance"] = (
+        source.setdefault("evidence_modality", modality(source))
+        source.setdefault("primary_artefact_access", artefact_access(source))
+        source.setdefault("interpretive_reliance", (
             "Assessment is limited to the evidence actually accessible to the named reviewer and must not be read as direct audiovisual verification unless primary_artefact_access states otherwise."
-        )
+        ))
 
 
 def make_fm0033() -> dict[str, Any]:
