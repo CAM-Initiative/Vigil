@@ -12,6 +12,10 @@ on:
       - ".github/workflows/vigil-records.yml"
       - ".gitignore"
 
+concurrency:
+  group: vigil-records-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: write
 
@@ -81,5 +85,8 @@ jobs:
             echo "No reconciled VIGIL changes to commit."
           else
             git commit -m "Add VIGIL interpretive provenance and evidence access metadata"
-            git push
+            if ! git push; then
+              echo "Main advanced while this run was building generated files; a newer workflow run owns reconciliation."
+              exit 0
+            fi
           fi
