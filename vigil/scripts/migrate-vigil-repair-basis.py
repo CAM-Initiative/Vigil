@@ -19,7 +19,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[2]
 VIGIL = ROOT / "vigil"
 RECORDS = VIGIL / "records" / "failures"
-DATE = "2026-07-16"
+DATE = "2026-07-17"
 
 REPAIR_BASES = [
     "not-yet-established",
@@ -117,7 +117,7 @@ def normalize_failure(record: dict[str, Any]) -> bool:
             )
         coverage = record.get("corpus_coverage")
         if isinstance(coverage, dict):
-            coverage["classification"] = "uncovered"
+            coverage["classification"] = "no-confirmed-coverage"
             coverage["coverage_summary"] = (
                 "No confirmed CAM repair or direct corpus coverage has been established for this newly recorded "
                 "failure mode. Potentially relevant instruments remain listed only under cam_internal for future review."
@@ -169,12 +169,13 @@ def update_schema_contract() -> bool:
     path = VIGIL / "VIGIL.Schema.json"
     schema = load(path)
     before = json.dumps(schema, ensure_ascii=False, sort_keys=True)
-    schema["version"] = "2.6-repair-basis-separation"
+    schema["version"] = "2.7-no-confirmed-coverage"
     failure = schema["record_classes"]["failure_mode"]
     failure["allowed_repair_basis_values"] = REPAIR_BASES
     failure["repair_basis_interpretation"] = (
         "repair_status.repair_basis identifies what establishes an actual CAM-side repair. "
-        "Corpus coverage terms such as uncovered and partial-coverage belong only in corpus_coverage.classification."
+        "Corpus coverage states such as no-confirmed-coverage and partial-coverage belong only in "
+        "corpus_coverage.classification."
     )
     lifecycle = schema.setdefault("lifecycle_rules", {})
     lifecycle["no_patch_no_repair_rule"] = (
@@ -182,8 +183,8 @@ def update_schema_contract() -> bool:
         "even where corpus_coverage identifies adjacent or partial doctrine."
     )
     lifecycle["coverage_separation_rule"] = (
-        "corpus_coverage.classification may be uncovered, partial-coverage, verification-pending, "
-        "retrospective-coverage, or implemented-repair without being reused as repair provenance."
+        "corpus_coverage.classification may be no-confirmed-coverage, partial-coverage, verification-pending, "
+        "retrospective-coverage, implemented-repair, or not-applicable without being reused as repair provenance."
     )
     after = json.dumps(schema, ensure_ascii=False, sort_keys=True)
     if after != before:
