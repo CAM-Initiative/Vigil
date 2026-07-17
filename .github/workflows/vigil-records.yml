@@ -57,6 +57,9 @@ jobs:
       - name: Separate repair provenance from corpus coverage
         run: python vigil/scripts/migrate-vigil-repair-basis.py
 
+      - name: Replace ambiguous corpus coverage vocabulary
+        run: python vigil/scripts/migrate-vigil-corpus-coverage.py
+
       - name: Preserve record-specific interpretive provenance
         run: python vigil/scripts/preserve-vigil-provenance.py
 
@@ -93,7 +96,7 @@ jobs:
           if git diff --cached --quiet; then
             echo "No reconciled VIGIL changes to commit."
           else
-            git commit -m "Migrate VIGIL repair-basis lifecycle semantics"
+            git commit -m "Migrate VIGIL lifecycle vocabulary"
             if ! git push; then
               echo "Branch advanced while this run was building generated files; a newer workflow run owns reconciliation."
               exit 0
