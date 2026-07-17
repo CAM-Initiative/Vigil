@@ -33,7 +33,7 @@ CORPUS_COVERAGE_STATES = {
     "implemented-repair",
     "retrospective-coverage",
     "partial-coverage",
-    "uncovered",
+    "no-confirmed-coverage",
     "verification-pending",
     "not-applicable",
 }
@@ -151,7 +151,7 @@ def validate_corpus_coverage(
     }:
         errors.append(f"{path}: implemented-repair conflicts with repair_basis {repair.get('repair_basis')!r}")
 
-    if classification in {"partial-coverage", "uncovered", "verification-pending"} and not gaps:
+    if classification in {"partial-coverage", "no-confirmed-coverage", "verification-pending"} and not gaps:
         errors.append(f"{path}: {classification} must preserve concrete remaining_gaps")
 
 
