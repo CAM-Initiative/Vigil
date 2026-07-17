@@ -60,11 +60,15 @@ jobs:
       - name: Replace ambiguous corpus coverage vocabulary
         run: python vigil/scripts/migrate-vigil-corpus-coverage.py
 
+      - name: Reconcile maintainer pipeline state and validator hygiene
+        run: python vigil/scripts/migrate-vigil-pipeline-state.py
+
       - name: Test VIGIL validators
         run: |
           python vigil/scripts/test_validate_vigil_records.py
           python vigil/scripts/test_validate_vigil_lifecycle.py
           python vigil/scripts/test_vigil_provenance_preservation.py
+          python vigil/scripts/test_vigil_pipeline_state.py
 
       - name: Route VIGIL records
         run: python vigil/scripts/route-vigil-records.py
