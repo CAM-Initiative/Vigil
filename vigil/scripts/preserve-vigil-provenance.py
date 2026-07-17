@@ -242,19 +242,44 @@ def restore_record(path: Path) -> bool:
 def patch_legacy_migration() -> bool:
     path = VIGIL / "scripts" / "migrate-vigil-interpretive-provenance.py"
     text = path.read_text(encoding="utf-8")
-    revised = text.replace(
-        '    block["current_ai_review"] = review_entry()\n',
-        '    if not isinstance(block.get("current_ai_review"), dict):\n        block["current_ai_review"] = review_entry()\n',
+    revised = text
+
+    broken_guard = '''    if not isinstance(block.get("current_ai_review"), dict):
+        if not isinstance(block.get("current_ai_review"), dict):
+        block["current_ai_review"] = review_entry()
+'''
+    fixed_guard = '''    if not isinstance(block.get("current_ai_review"), dict):
+        block["current_ai_review"] = review_entry()
+'''
+    if broken_guard in revised:
+        revised = revised.replace(broken_guard, fixed_guard, 1)
+    elif fixed_guard not in revised:
+        unguarded = '    block["current_ai_review"] = review_entry()\n'
+        if unguarded in revised:
+            revised = revised.replace(unguarded, fixed_guard, 1)
+        else:
+            raise ValueError("Unexpected current_ai_review migration structure")
+
+    old_source_block = (
+        '        source["evidence_modality"] = modality(source)\n'
+        '        source["primary_artefact_access"] = artefact_access(source)\n'
+        '        source["interpretive_reliance"] = (\n'
     )
-    revised = revised.replace(
-        '        source["evidence_modality"] = modality(source)\n        source["primary_artefact_access"] = artefact_access(source)\n        source["interpretive_reliance"] = (\n',
-        '        source.setdefault("evidence_modality", modality(source))\n        source.setdefault("primary_artefact_access", artefact_access(source))\n        source.setdefault("interpretive_reliance", (\n',
+    new_source_block = (
+        '        source.setdefault("evidence_modality", modality(source))\n'
+        '        source.setdefault("primary_artefact_access", artefact_access(source))\n'
+        '        source.setdefault("interpretive_reliance", (\n'
     )
-    revised = revised.replace(
-        '            "Assessment is limited to the evidence actually accessible to the named reviewer and must not be read as direct audiovisual verification unless primary_artefact_access states otherwise."\n        )\n',
-        '            "Assessment is limited to the evidence actually accessible to the named reviewer and must not be read as direct audiovisual verification unless primary_artefact_access states otherwise."\n        ))\n',
-        1,
-    )
+    if old_source_block in revised:
+        revised = revised.replace(old_source_block, new_source_block, 1)
+        revised = revised.replace(
+            '            "Assessment is limited to the evidence actually accessible to the named reviewer and must not be read as direct audiovisual verification unless primary_artefact_access states otherwise."\n        )\n',
+            '            "Assessment is limited to the evidence actually accessible to the named reviewer and must not be read as direct audiovisual verification unless primary_artefact_access states otherwise."\n        ))\n',
+            1,
+        )
+    elif new_source_block not in revised:
+        raise ValueError("Unexpected source-provenance migration structure")
+
     if revised != text:
         path.write_text(revised, encoding="utf-8")
         return True
