@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://example.invalid/cam/vigil/VIGIL.Schema.json",
-  "version": "2.7-no-confirmed-coverage",
-  "purpose": "Authoritative schema-rules contract for VIGIL as a public evidence-to-repair observatory for observations, failure modes, proposals, and implemented patch notes. Source evidence remains embedded in the relevant record; ecosystem persistence, CAM repair, and implementation verification are represented separately. Interpretive provenance identifies the AI analytical reviewer, human governance editor, capability profile, source modality, primary-artefact access, and review limitations. Interpretive provenance identifies the AI analytical reviewer, human governance editor, capability profile, source modality, primary-artefact access, and review limitations. Interpretive provenance identifies the AI analytical reviewer, human governance editor, capability profile, source modality, primary-artefact access, and review limitations. Interpretive provenance identifies the AI analytical reviewer, human governance editor, capability profile, source modality, primary-artefact access, and review limitations. Interpretive provenance identifies the AI analytical reviewer, human governance editor, capability profile, source modality, primary-artefact access, and review limitations. Interpretive provenance identifies the AI analytical reviewer, human governance editor, capability profile, source modality, primary-artefact access, and review limitations. Interpretive provenance identifies the AI analytical reviewer, human governance editor, capability profile, source modality, primary-artefact access, and review limitations. Interpretive provenance identifies the AI analytical reviewer, human governance editor, capability profile, source modality, primary-artefact access, and review limitations. Interpretive provenance identifies the AI analytical reviewer, human governance editor, capability profile, source modality, primary-artefact access, and review limitations. Interpretive provenance identifies the AI analytical reviewer, human governance editor, capability profile, source modality, primary-artefact access, and review limitations.",
+  "version": "2.8-pipeline-state-hygiene",
+  "purpose": "Authoritative schema-rules contract for VIGIL as a public evidence-to-repair observatory for observations, failure modes, proposals, and implemented patch notes. Source evidence remains embedded in the relevant record; ecosystem persistence, CAM repair, and implementation verification are represented separately. Interpretive provenance identifies the AI analytical reviewer, human governance editor, capability profile, source modality, primary-artefact access, and review limitations.",
   "source_evidence_rules": {
     "individual_records": [
       "source_records is the only canonical source-evidence block in individual records.",
@@ -12,33 +12,6 @@
       "Source evidence belongs in source_records within the substantive record it evidences; it is not a separate VIGIL record class.",
       "An OBS record must preserve a material unresolved governance proposition and must not merely duplicate evidence for an existing FM, PROP, or PATCH.",
       "Internal curator instructions such as 'add this incident to' or 'do not amend in this pass' are forbidden in public record content.",
-      "Each source record must state evidence_modality.",
-      "Each source record must state primary_artefact_access, including whether direct primary review occurred.",
-      "A transcript, screenshot, summary, or human description must not be represented as equivalent to direct audiovisual or interaction review.",
-      "Each source record must state evidence_modality.",
-      "Each source record must state primary_artefact_access, including whether direct primary review occurred.",
-      "A transcript, screenshot, summary, or human description must not be represented as equivalent to direct audiovisual or interaction review.",
-      "Each source record must state evidence_modality.",
-      "Each source record must state primary_artefact_access, including whether direct primary review occurred.",
-      "A transcript, screenshot, summary, or human description must not be represented as equivalent to direct audiovisual or interaction review.",
-      "Each source record must state evidence_modality.",
-      "Each source record must state primary_artefact_access, including whether direct primary review occurred.",
-      "A transcript, screenshot, summary, or human description must not be represented as equivalent to direct audiovisual or interaction review.",
-      "Each source record must state evidence_modality.",
-      "Each source record must state primary_artefact_access, including whether direct primary review occurred.",
-      "A transcript, screenshot, summary, or human description must not be represented as equivalent to direct audiovisual or interaction review.",
-      "Each source record must state evidence_modality.",
-      "Each source record must state primary_artefact_access, including whether direct primary review occurred.",
-      "A transcript, screenshot, summary, or human description must not be represented as equivalent to direct audiovisual or interaction review.",
-      "Each source record must state evidence_modality.",
-      "Each source record must state primary_artefact_access, including whether direct primary review occurred.",
-      "A transcript, screenshot, summary, or human description must not be represented as equivalent to direct audiovisual or interaction review.",
-      "Each source record must state evidence_modality.",
-      "Each source record must state primary_artefact_access, including whether direct primary review occurred.",
-      "A transcript, screenshot, summary, or human description must not be represented as equivalent to direct audiovisual or interaction review.",
-      "Each source record must state evidence_modality.",
-      "Each source record must state primary_artefact_access, including whether direct primary review occurred.",
-      "A transcript, screenshot, summary, or human description must not be represented as equivalent to direct audiovisual or interaction review.",
       "Each source record must state evidence_modality.",
       "Each source record must state primary_artefact_access, including whether direct primary review occurred.",
       "A transcript, screenshot, summary, or human description must not be represented as equivalent to direct audiovisual or interaction review."
@@ -613,18 +586,33 @@
     "standards": "linked_records.standards is reserved for external standards, laws, regulatory instruments, technical standards, and external governance references. CAM instrument IDs such as CAM-BS* and CAM-EQ* and VIGIL record IDs such as VIGIL-* belong in cam_internal routing fields, using related/similar for observations, affected for failure modes, target for proposals, and changed for patches."
   },
   "record_state_rules": {
+    "purpose": "Top-level record_state is the maintainer workflow and pipeline state. It must not be used as a proxy for external ecosystem conditions, CAM repair status, proposal resolution, or corpus coverage.",
     "allowed_values": [
-      "active",
-      "watching",
-      "triage-required",
       "draft",
-      "deferred",
-      "implemented",
-      "migration-review",
       "scaffolding",
-      "open"
+      "active",
+      "monitoring",
+      "closed-actioned",
+      "closed-no-action",
+      "deferred",
+      "superseded"
     ],
-    "notes": "Failure modes remain active when repaired; repair progress is represented through triage.mitigation_status, linked_records.related_patch_notes, and optional repair_status."
+    "semantics": {
+      "draft": "Record is being authored and is not yet ready for triage.",
+      "scaffolding": "Temporary incomplete record retained only for construction or migration.",
+      "active": "A governance decision, evidence action, proposal, or CAM repair still requires attention.",
+      "monitoring": "The immediate VIGIL/CAM action is complete or bounded, but recurrence, implementation, or external conformity remains under observation.",
+      "closed-actioned": "The record has been routed, implemented, or otherwise actioned and no longer belongs in the active work queue.",
+      "closed-no-action": "The evidence is retained but no further action is justified.",
+      "deferred": "Action is intentionally postponed and should not appear as current active work.",
+      "superseded": "A successor record now carries the active governance work."
+    },
+    "class_rules": {
+      "failure_mode": "Unrepaired or partially-repaired failures are active; repaired failures are monitoring; not-actionable failures are closed-no-action; superseded failures are superseded.",
+      "proposal": "Open or routed proposals are active; resolved-by-patch proposals are closed-actioned; closed-no-action, deferred, and superseded resolution states map directly.",
+      "patch": "Implemented patch records are closed-actioned. Ecosystem monitoring remains on linked failure or observation records.",
+      "observation": "Observations requiring evidence or routing work are active; routed or actioned observations close; unresolved recurrence or positive-control follow-up is monitoring."
+    }
   },
   "runtime_conformance_rules": {
     "description": "Optional runtime-bounded evidence objects distinguish an implemented CAM repair from observed conformance or non-conformance in named vendor, platform, runtime, model, client, or interface formations. Runtime names remain open-ended and cross-runtime transfer is never presumed.",

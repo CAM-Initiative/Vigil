@@ -292,7 +292,9 @@ def update_schema() -> None:
     path = VIGIL / "VIGIL.Schema.json"
     schema = load(path)
     schema["version"] = "2.5-interpretive-provenance"
-    schema["purpose"] = schema.get("purpose", "") + " Interpretive provenance identifies the AI analytical reviewer, human governance editor, capability profile, source modality, primary-artefact access, and review limitations."
+    purpose_sentence = 'Interpretive provenance identifies the AI analytical reviewer, human governance editor, capability profile, source modality, primary-artefact access, and review limitations.'
+    purpose = str(schema.get("purpose", "")).replace(purpose_sentence, " ")
+    schema["purpose"] = (" ".join(purpose.split()) + " " + purpose_sentence).strip()
     schema["interpretive_provenance_rules"] = {
         "required_for_all_records": True,
         "required_fields": ["review_history", "current_ai_review", "operating_model", "human_governance_editor", "historical_reviewer_note"],
@@ -300,11 +302,14 @@ def update_schema() -> None:
         "current_ai_review_required_fields": ["review_id", "reviewer_type", "reviewer_platform", "reviewer_model", "review_date", "review_scope", "capability_profile", "known_limitations", "review_outcome"],
         "human_editor_rule": "Human governance editorship and CAM adoption authority must be distinguished from routine AI analytical review.",
     }
-    schema["source_evidence_rules"]["individual_records"].extend([
+    source_rules = schema["source_evidence_rules"]["individual_records"]
+    for rule in (
         "Each source record must state evidence_modality.",
         "Each source record must state primary_artefact_access, including whether direct primary review occurred.",
         "A transcript, screenshot, summary, or human description must not be represented as equivalent to direct audiovisual or interaction review.",
-    ])
+    ):
+        if rule not in source_rules:
+            source_rules.append(rule)
     required = schema["$defs"]["source_record"]["required"]
     for field in ("evidence_modality", "primary_artefact_access", "interpretive_reliance"):
         if field not in required:
