@@ -32,26 +32,6 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: Repair legacy provenance migration guard
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-
-          path = Path("vigil/scripts/migrate-vigil-interpretive-provenance.py")
-          text = path.read_text(encoding="utf-8")
-          broken = '''    if not isinstance(block.get("current_ai_review"), dict):
-              if not isinstance(block.get("current_ai_review"), dict):
-              block["current_ai_review"] = review_entry()
-          '''
-          fixed = '''    if not isinstance(block.get("current_ai_review"), dict):
-              block["current_ai_review"] = review_entry()
-          '''
-          if broken in text:
-              path.write_text(text.replace(broken, fixed, 1), encoding="utf-8")
-          elif fixed not in text:
-              raise SystemExit("Unexpected provenance migration guard; refusing speculative repair")
-          PY
-
       - name: Reconcile embedded evidence and lifecycle state
         run: |
           if [ -f vigil/records/observations/2026/VIGIL-2026-OBS-0008.json ] || \
