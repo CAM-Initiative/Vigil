@@ -110,7 +110,6 @@ def add_provenance(record: dict[str, Any]) -> None:
     if not any(isinstance(item, dict) and item.get("review_id") == REVIEW_ID for item in history):
         history.append(review_entry())
     if not isinstance(block.get("current_ai_review"), dict):
-        if not isinstance(block.get("current_ai_review"), dict):
         block["current_ai_review"] = review_entry()
     block["operating_model"] = "AI-led analytical observatory with high-level human governance editorship"
     block["human_governance_editor"] = {
