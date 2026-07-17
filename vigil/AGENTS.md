@@ -211,7 +211,7 @@ Every failure mode must preserve a `corpus_coverage` assessment against a named 
 * `implemented-repair` means a linked patch records an implemented CAM/Caelestis repair and the CAM-side failure status is repaired.
 * `retrospective-coverage` means current canonical CAM/Caelestis doctrine materially governed the failure before VIGIL linked it.
 * `partial-coverage` means relevant CAM/Caelestis controls exist but a named primitive, implementation requirement, or conformance condition remains missing.
-* `uncovered` means no sufficient direct current-corpus control was identified.
+* `no-confirmed-coverage` means a corpus assessment was performed and no sufficient direct current-corpus control was confirmed; it is distinct from `verification-pending`, which means the assessment remains incomplete.
 * External adoption, runtime conformance, ecosystem persistence, and legal compliance remain separate from CAM coverage.
 * Retrospective patches must state the actual CAM/Caelestis control content and distinguish doctrine reviewed, amended, and relied upon without amendment.
 * Corpus coverage audits are VIGIL maintenance and metadata reconciliation; they are not PATCH events.
