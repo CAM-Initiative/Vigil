@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://example.invalid/cam/vigil/VIGIL.Schema.json",
-  "version": "2.6-repair-basis-separation",
+  "version": "2.7-no-confirmed-coverage",
   "purpose": "Authoritative schema-rules contract for VIGIL as a public evidence-to-repair observatory for observations, failure modes, proposals, and implemented patch notes. Source evidence remains embedded in the relevant record; ecosystem persistence, CAM repair, and implementation verification are represented separately. Interpretive provenance identifies the AI analytical reviewer, human governance editor, capability profile, source modality, primary-artefact access, and review limitations. Interpretive provenance identifies the AI analytical reviewer, human governance editor, capability profile, source modality, primary-artefact access, and review limitations. Interpretive provenance identifies the AI analytical reviewer, human governance editor, capability profile, source modality, primary-artefact access, and review limitations. Interpretive provenance identifies the AI analytical reviewer, human governance editor, capability profile, source modality, primary-artefact access, and review limitations. Interpretive provenance identifies the AI analytical reviewer, human governance editor, capability profile, source modality, primary-artefact access, and review limitations. Interpretive provenance identifies the AI analytical reviewer, human governance editor, capability profile, source modality, primary-artefact access, and review limitations. Interpretive provenance identifies the AI analytical reviewer, human governance editor, capability profile, source modality, primary-artefact access, and review limitations. Interpretive provenance identifies the AI analytical reviewer, human governance editor, capability profile, source modality, primary-artefact access, and review limitations. Interpretive provenance identifies the AI analytical reviewer, human governance editor, capability profile, source modality, primary-artefact access, and review limitations.",
   "source_evidence_rules": {
     "individual_records": [
@@ -205,9 +205,9 @@
       "allowed_corpus_coverage_values": [
         "implemented-repair",
         "not-applicable",
+        "no-confirmed-coverage",
         "partial-coverage",
         "retrospective-coverage",
-        "uncovered",
         "verification-pending"
       ],
       "corpus_coverage_required_fields": [
@@ -228,7 +228,8 @@
         "not-actionable",
         "superseded"
       ],
-      "repair_basis_interpretation": "repair_status.repair_basis identifies what establishes an actual CAM-side repair. Corpus coverage terms such as uncovered and partial-coverage belong only in corpus_coverage.classification."
+      "repair_basis_interpretation": "repair_status.repair_basis identifies what establishes an actual CAM-side repair. Corpus coverage states such as no-confirmed-coverage and partial-coverage belong only in corpus_coverage.classification.",
+      "corpus_coverage_interpretation": "no-confirmed-coverage means a corpus assessment was performed and no sufficient direct current-corpus control was confirmed. verification-pending means the assessment remains incomplete. A missing corpus_coverage block is invalid rather than equivalent to either state."
     },
     "proposal": {
       "id_prefix": "PROP",
@@ -671,13 +672,14 @@
     "verification_status": "repair_status.verification_status describes whether the repair is unverified, corpus-verified, observed in one or multiple runtimes, regressed, externally unknown, or not applicable.",
     "non_collapse_rule": "No one field may be used to imply both CAM repair completion and external ecosystem resolution.",
     "no_patch_no_repair_rule": "A failure with no linked repairing PATCH remains unrepaired and uses repair_basis not-yet-established, even where corpus_coverage identifies adjacent or partial doctrine.",
-    "coverage_separation_rule": "corpus_coverage.classification may be uncovered, partial-coverage, verification-pending, retrospective-coverage, or implemented-repair without being reused as repair provenance."
+    "coverage_separation_rule": "corpus_coverage.classification may be no-confirmed-coverage, partial-coverage, verification-pending, retrospective-coverage, implemented-repair, or not-applicable without being reused as repair provenance."
   },
   "corpus_coverage_rules": [
     "Every failure mode must state its assessment against a named corpus repository, ref, commit, and assessment date.",
     "Implemented repair and retrospective coverage are CAM-side states and do not imply external adoption or ecosystem resolution.",
     "Retrospective coverage must identify the pre-existing instrument and relevant sections without claiming the doctrine originated on the VIGIL patch date.",
-    "Partial and uncovered classifications must preserve concrete remaining gaps.",
+    "Partial-coverage and no-confirmed-coverage classifications must preserve concrete remaining gaps.",
+    "no-confirmed-coverage means an assessment was performed and no sufficient direct current-corpus control was confirmed; verification-pending means the assessment remains incomplete.",
     "A coverage assessment must never be inferred solely from thematic similarity; the cited instrument must materially govern the failure mechanism."
   ],
   "interpretive_provenance_rules": {
