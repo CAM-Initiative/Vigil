@@ -9,11 +9,11 @@
     "title": "Cross-vendor assistant interoperability, authority and action-provenance governance",
     "created": "2026-07-17",
     "updated": "2026-07-17",
-    "version": "1.0"
+    "version": "1.1"
   },
   "summary": "Proposal to govern environments in which multiple independently developed AI assistants can access the same operating-system capabilities, applications, contextual data, sensors, device resources, or execution surfaces. Each assistant action should preserve active-agent identity, explicit and non-transitive authority, invocation arbitration, context custody, constitutional origin, execution provenance, revocation integrity, and accountable vendor responsibility.",
   "why_it_matters_to_CAM": "The Digital Markets Act interoperability requirement changes multi-assistant governance from an edge case into a regulated deployment architecture. A shared device may host assistants with different vendors, constitutions, safety policies, memory systems, permissions, and jurisdictional duties. Without explicit arbitration and provenance, users may not know which assistant heard a request, accessed context, planned an action, invoked an application, or bears responsibility for the result. Permissions granted to one assistant may also bleed into another unless authority is explicitly non-transitive.",
-  "evidence_confidence": "confirmed regulatory change requirement / prospective governance proposal",
+  "evidence_confidence": "verified",
   "source_records": [
     {
       "source_title": "Commission provides guidance to Google for AI interoperability on Android and sharing of Google Search data under the Digital Markets Act",
@@ -22,7 +22,7 @@
       "source_url": "https://digital-markets-act.ec.europa.eu/commission-provides-guidance-google-ai-interoperability-android-and-sharing-google-search-data-under-2026-07-15_en",
       "archive_url": "",
       "retrieved_date": "2026-07-17",
-      "source_type": "official-regulatory-source",
+      "source_type": "official-source",
       "source_platform": "European Commission / Digital Markets Act",
       "system_or_product": "Google Android and competing AI assistants",
       "model_or_algorithm": "cross-vendor AI assistant interoperability",
@@ -71,7 +71,7 @@
     "platform_or_vendor": "Multi Vendor",
     "vendor_cluster": ["Google", "OpenAI", "Anthropic", "Microsoft", "Apple", "Other"],
     "primary_evidenced_vendors": ["Google", "Other"],
-    "product_or_service": "Android and third-party AI assistants",
+    "product_or_service": "Other",
     "specific_model_or_runtime": "prospective Android assistant interoperability under EU DMA specification measures",
     "interface_surface": "assistant invocation, voice, contextual access, applications, operating-system actions, sensors, device resources, permissions, memory, and execution logs",
     "model_or_product": "multiple independently governed AI assistants",
@@ -94,30 +94,31 @@
     "related_failure_modes": ["VIGIL-2026-FM-0002", "VIGIL-2026-FM-0008", "VIGIL-2026-FM-0036"],
     "related_proposals": [],
     "related_patch_notes": ["VIGIL-2026-PATCH-0008"],
-    "external_references": [
-      {
-        "label": "European Commission DMA Android AI interoperability specification measures",
-        "url": "https://digital-markets-act.ec.europa.eu/commission-provides-guidance-google-ai-interoperability-android-and-sharing-google-search-data-under-2026-07-15_en",
-        "reference_type": "official-regulatory-source",
-        "note": "Primary external change requirement."
-      }
-    ],
+    "external_references": [],
     "research": [],
     "standards": []
   },
-  "proposal_definition": "CAM should define a shared-device and cross-vendor assistant governance layer in which every assistant invocation, context access, permission use, plan, tool call, application action, and system execution remains attributable to a named active assistant, model/runtime, constitutional source, permission grant, accountable operator, and jurisdictional basis. Authority must be portable where deliberately granted by the user but must not be silently transitive across assistants.",
-  "proposal_scope": [
-    "active-agent identity and user-visible control",
-    "portable but non-transitive permissions",
-    "invocation and wake-word arbitration",
-    "context custody and purpose limitation",
-    "action and execution provenance",
-    "constitutional and policy conflict arbitration",
-    "revocation propagation and cache invalidation",
-    "cross-assistant floor control",
-    "vendor and platform responsibility separation",
-    "jurisdictional and data-sovereignty boundaries"
+  "migration_notes": [
+    "The official European Commission URL is preserved only in source_records and is not duplicated in linked_records.external_references.",
+    "This record proposes prospective CAM/Caelestis work and does not claim implementation."
   ],
+  "proposal_rationale": "Existing conversational multi-agent controls do not fully govern multiple independently operated assistants sharing one operating-system, application, permission, sensor, memory, and execution surface. The EU interoperability requirement creates a concrete need to distinguish active-agent identity, user authority, platform authority, assistant-specific context custody, constitutional origin, action provenance, revocation, and vendor responsibility. Without that separation, competition-driven interoperability can create permission bleed, identity ambiguity, provenance loss, action collisions, and responsibility laundering.",
+  "proposal_type": [
+    "new-specification",
+    "runtime-safeguard",
+    "interoperability-governance",
+    "authority-and-provenance-governance"
+  ],
+  "proposal_scope": {
+    "scope_summary": "Define a shared-device and cross-vendor assistant governance layer covering active-agent identity, non-transitive authority, invocation arbitration, context custody, action provenance, constitutional conflict arbitration, revocation integrity, floor control, vendor responsibility, and jurisdictional boundaries.",
+    "cam_domains": ["OPERATIONS", "RELATION", "IDENTITY", "CONTINUITY", "SECURITY", "LATTICE", "ARBITRATION"],
+    "cam_instruments": ["CAM-EQ2026-RELATION-007-PLATINUM", "CAM-BS2025-AEON-003-SCH-02", "CAM-BS2025-AEON-003-SCH-04", "CAM-EQ2026-SECURITY-001-PLATINUM", "CAM-EQ2026-SECURITY-002-PLATINUM", "CAM-EQ2026-IDENTITY-001-PLATINUM", "CAM-EQ2026-CONTINUITY-001-PLATINUM", "CAM-EQ2026-OPERATIONS-003-SUP-01"],
+    "cam_annexes": ["Annex B", "Annex K", "Annex L"],
+    "registry_components": ["VIGIL proposal and future failure-to-patch linkage after CAM implementation"],
+    "automation_components": [],
+    "interface_components": ["active-assistant indicator", "assistant-specific permission controls", "invocation collision handling", "action-provenance log", "revocation and context-custody controls"],
+    "external_relevance": ["EU Digital Markets Act", "mobile operating systems", "cross-vendor AI assistants", "device permissions", "consumer protection", "privacy", "cybersecurity", "competition governance"]
+  },
   "recommended_controls": [
     {
       "control": "Active Agent Identity",
@@ -152,38 +153,58 @@
       "requirement": "Existing conversational multi-agent floor-control principles should extend to shared-device agency so assistants do not duplicate, contradict, race, or jointly execute an action without governed coordination."
     }
   ],
-  "triage": {
-    "triage_priority": "P1",
-    "triage_owner": "VIGIL maintainers with CAM OPERATIONS, RELATION, IDENTITY, SECURITY, LATTICE, CONTINUITY, and arbitration review",
-    "triage_status": "proposal-ready / corpus design assessment",
-    "mitigation_status": "prospective — existing multi-agent and tool-governance doctrine provides partial coverage",
-    "escalation_required": "yes",
-    "recommended_next_step": "Audit RELATION-007, AEON-003-SCH-02, AEON-003-SCH-04, SECURITY instruments, Annex K, IDENTITY, CONTINUITY, and provenance doctrine, then draft a surgical Caelestis amendment for shared-device cross-vendor assistant authority and action provenance."
-  },
   "cam_internal": {
-    "affected_instruments": ["CAM-EQ2026-RELATION-007-PLATINUM", "CAM-BS2025-AEON-003-SCH-02", "CAM-BS2025-AEON-003-SCH-04", "CAM-EQ2026-SECURITY-001-PLATINUM", "CAM-EQ2026-SECURITY-002-PLATINUM", "CAM-EQ2026-IDENTITY-001-PLATINUM", "CAM-EQ2026-CONTINUITY-001-PLATINUM", "CAM-EQ2026-OPERATIONS-003-SUP-01"],
-    "affected_annexes": ["Annex B", "Annex K", "Annex L"],
-    "affected_domains": ["OPERATIONS", "RELATION", "IDENTITY", "CONTINUITY", "SECURITY", "LATTICE", "ARBITRATION"],
+    "target_instruments": ["CAM-EQ2026-RELATION-007-PLATINUM", "CAM-BS2025-AEON-003-SCH-02", "CAM-BS2025-AEON-003-SCH-04", "CAM-EQ2026-SECURITY-001-PLATINUM", "CAM-EQ2026-SECURITY-002-PLATINUM", "CAM-EQ2026-IDENTITY-001-PLATINUM", "CAM-EQ2026-CONTINUITY-001-PLATINUM", "CAM-EQ2026-OPERATIONS-003-SUP-01"],
+    "target_annexes": ["Annex B", "Annex K", "Annex L"],
+    "target_domains": ["OPERATIONS", "RELATION", "IDENTITY", "CONTINUITY", "SECURITY", "LATTICE", "ARBITRATION"],
     "governance_layer": "cross-vendor assistant interoperability / shared-device authority / identity / permissions / provenance / arbitration",
-    "proposal_needed": "this record is the proposal",
-    "linked_proposal_ids": ["VIGIL-2026-PROP-0014"],
-    "routing_note": [
-      "The EU source creates an interoperability requirement; CAM must define how authority and accountability remain legible when multiple assistants share a device.",
-      "Competition-driven interoperability must not create permission bleed, identity ambiguity, provenance loss, or responsibility laundering.",
-      "The proposal extends but does not replace existing multi-agent floor-control doctrine."
-    ],
-    "validator_or_automation_impact": "new proposal record; generated indexes should rebuild deterministically"
+    "proposal_owner": "CAM Initiative",
+    "drafting_status": "drafting needed",
+    "validator_or_automation_impact": "possible",
+    "interface_impact": "required",
+    "registry_impact": "possible",
+    "routing_note": "The EU source creates an interoperability requirement. CAM must define how authority and accountability remain legible when multiple assistants share a device, while preventing permission bleed, identity ambiguity, provenance loss, and responsibility laundering. The proposal extends but does not replace existing multi-agent floor-control doctrine."
   },
-  "proposal_status": {
-    "status": "proposed",
-    "adoption_status": "not yet adopted into Caelestis",
-    "verification_status": "not applicable until corpus implementation",
-    "monitoring_status": "monitor EU implementation specifications and vendor architecture",
-    "remaining_decisions": [
-      "Whether the governance primitive belongs primarily in RELATION-007, AEON-003-SCH-02, AEON-003-SCH-04, SECURITY, or a cross-domain schedule.",
-      "How user consent, platform permission, and assistant-specific authority should be represented in a shared schema.",
-      "How responsibility is apportioned between assistant vendor, operating-system gatekeeper, application provider, and deploying organisation."
+  "implementation_notes": {
+    "suggested_insertion_points": [
+      "Extend RELATION-007 multi-agent floor-control principles to shared-device invocation and action arbitration.",
+      "Add assistant-specific authority, context custody, and action-provenance controls to AEON-003-SCH-02 and AEON-003-SCH-04.",
+      "Review SECURITY and Annex K for non-transitive permission, token, cache, sensor, and revocation controls.",
+      "Review IDENTITY and CONTINUITY for active-agent identity, constitutional origin, memory separation, and handoff boundaries."
+    ],
+    "template_changes": [],
+    "schema_changes": ["Assess whether CAM requires a canonical cross-assistant action-provenance and authority object."],
+    "validator_changes": [],
+    "automation_changes": [],
+    "interface_changes": [
+      "Expose the active assistant before context access or action execution.",
+      "Expose assistant-specific permission grants and revocation state.",
+      "Provide an auditable chain from invocation through planning, tool execution, and operating-system action."
+    ],
+    "migration_concerns": [
+      "Do not treat operating-system access granted to one assistant as transitive authority for another.",
+      "Do not merge assistant memories, context caches, tokens, or constitutional policies without explicit governed transfer.",
+      "Do not allow the platform gatekeeper to obscure which vendor or assistant caused an action."
+    ],
+    "dependencies": [
+      "Line-by-line audit of RELATION-007, AEON-003-SCH-02, AEON-003-SCH-04, SECURITY-001, SECURITY-002, IDENTITY-001, CONTINUITY-001, Annex K, and the failure taxonomy.",
+      "Observation of final Android implementation, permission UX, logging architecture, and vendor responsibility allocation."
     ]
+  },
+  "external_relevance": {
+    "relevant_to_platforms": "yes",
+    "relevant_to_regulators": "yes",
+    "relevant_to_robotics": "possible",
+    "relevant_to_ux": "yes",
+    "relevant_to_standards": "yes",
+    "relevant_to_researchers": "yes",
+    "external_summary": "Relevant to operating-system gatekeepers, competing assistant providers, application developers, regulators, standards bodies, enterprise device administrators, privacy and cybersecurity researchers, and users of shared-device AI assistants."
+  },
+  "next_action": "Audit the named CAM instruments and draft the minimum non-duplicative Caelestis amendment for shared-device cross-vendor assistant authority, context custody, invocation arbitration, action provenance, revocation integrity, and responsibility allocation. Do not create a VIGIL PATCH record until CAM implementation or direct pre-existing coverage is verified.",
+  "resolution_status": {
+    "status": "open",
+    "resolved_by": [],
+    "resolution_note": "Proposal remains open pending Caelestis corpus assessment and implementation."
   },
   "interpretive_provenance": {
     "review_history": [
