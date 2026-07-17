@@ -16,7 +16,13 @@ SPEC.loader.exec_module(VALIDATOR)
 
 
 class RepairBasisLifecycleTests(unittest.TestCase):
-    def failure(self, status: str, basis: str, repaired_by=None):
+    def failure(
+        self,
+        status: str,
+        basis: str,
+        repaired_by=None,
+        coverage_classification: str = "partial-coverage",
+    ):
         repaired_by = [] if repaired_by is None else repaired_by
         return {
             "id": "VIGIL-TEST-FM-0001",
@@ -24,13 +30,13 @@ class RepairBasisLifecycleTests(unittest.TestCase):
             "ecosystem_status": {
                 "status": "active",
                 "basis": "Test ecosystem remains active.",
-                "last_assessed": "2026-07-16",
+                "last_assessed": "2026-07-17",
                 "monitoring_required": True,
             },
             "repair_status": {
                 "status": status,
                 "repaired_by": repaired_by,
-                "date_repaired": "2026-07-16" if repaired_by else "",
+                "date_repaired": "2026-07-17" if repaired_by else "",
                 "verification_status": "corpus-verified" if repaired_by else "unverified",
                 "monitoring_status": "test",
                 "verification_note": "test",
@@ -39,12 +45,12 @@ class RepairBasisLifecycleTests(unittest.TestCase):
             },
             "linked_records": {"related_patch_notes": repaired_by},
             "corpus_coverage": {
-                "classification": "partial-coverage",
+                "classification": coverage_classification,
                 "corpus_repository": "CAM-Initiative/Caelestis",
                 "corpus_ref": "main",
                 "corpus_commit": "test-commit",
-                "assessed_date": "2026-07-16",
-                "coverage_summary": "Partial doctrine does not itself establish a repair.",
+                "assessed_date": "2026-07-17",
+                "coverage_summary": "Corpus coverage remains distinct from repair provenance.",
                 "covered_by": [],
                 "remaining_gaps": ["Test gap."],
             },
@@ -69,6 +75,23 @@ class RepairBasisLifecycleTests(unittest.TestCase):
         record = self.failure("unrepaired", "partial-coverage")
         errors = self.validate(record)
         self.assertTrue(any("repair_basis" in error for error in errors))
+
+    def test_no_confirmed_coverage_is_canonical(self):
+        record = self.failure(
+            "unrepaired",
+            "not-yet-established",
+            coverage_classification="no-confirmed-coverage",
+        )
+        self.assertEqual(self.validate(record), [])
+
+    def test_uncovered_is_rejected_as_deprecated_coverage_vocabulary(self):
+        record = self.failure(
+            "unrepaired",
+            "not-yet-established",
+            coverage_classification="uncovered",
+        )
+        errors = self.validate(record)
+        self.assertTrue(any("corpus_coverage.classification" in error for error in errors))
 
     def test_partially_repaired_requires_patch(self):
         record = self.failure("partially-repaired", "patch-implemented")
