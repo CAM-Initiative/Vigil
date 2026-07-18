@@ -8,8 +8,8 @@
     "record_type": "failure_mode",
     "title": "Cross-platform access-state governance failure",
     "created": "2026-06-06",
-    "updated": "2026-07-17",
-    "version": "1.4"
+    "updated": "2026-07-18",
+    "version": "1.5"
   },
   "summary": "A cross-platform governance failure mode in which users experience impaired access, login failure, service unavailability, quota or usage ambiguity, model availability failure, capacity restriction, degraded platform access, or component-specific access failure without sufficient user-facing separation between the operative access-control states governing the interaction.",
   "why_it_matters_to_CAM": "This failure mode is relevant to CAM because access to frontier AI systems is not controlled by a single state. It may be governed simultaneously by authentication, identity-provider status, identity verification, account state, workspace or organisation state, subscription entitlement, billing or credit state, quota or rate-limit state, model availability, tool or surface availability, platform availability, security review, policy restriction, regional or compliance limitation, client or session state, and continuity state. Where these conditions are collapsed into ambiguous errors, users and developers cannot reliably determine whether the controlling condition is outage, quota exhaustion, entitlement failure, account restriction, policy limitation, security review, client/session failure, or infrastructure degradation. This undermines observability, reproducibility, support routing, continuity, and public trust in AI platform governance.",
@@ -17,6 +17,94 @@
   "failure_threshold": "This qualifies as a failure mode when users, developers, maintainers, administrators, or downstream systems cannot reasonably determine whether impaired access is caused by authentication failure, third-party identity-provider failure, identity verification, account or workspace restriction, organisation policy, subscription entitlement, billing or credit exhaustion, quota or rate-limit state, model unavailability, tool or component unavailability, platform outage, infrastructure degradation, security review, policy restriction, regional or compliance limitation, stale client/session state, or continuity failure, and the ambiguity materially affects diagnosis, recovery, support escalation, workflow continuity, reproducibility, or trust.",
   "evidence_confidence": "corroborated",
   "source_records": [
+  {
+  "source_title": "Elevated Error Rates For SSO Login",
+  "author_or_publisher": "OpenAI Status",
+  "source_date": "2026-07-16",
+  "source_url": "https://status.openai.com/incidents/01KXN14DD3EYYJ6PJ9M736WDSV",
+  "archive_url": "",
+  "retrieved_date": "2026-07-18",
+  "source_type": "official-source",
+  "source_platform": "OpenAI Status",
+  "system_or_product": "ChatGPT and OpenAI APIs",
+  "model_or_algorithm": "not specified",
+  "deployment_context": "SSO authentication and federated identity access affecting ChatGPT and API users.",
+  "source_context": "OpenAI reported elevated error rates affecting SSO login, applied mitigation, monitored recovery, and marked the incident resolved on 16 July 2026.",
+  "source_url_status": "available",
+  "relevance_note": "Provides official recurrence evidence for federated identity-provider and enterprise SSO control-plane failure within the access-state governance failure class.",
+  "evidence_modality": [
+    "text"
+  ],
+  "primary_artefact_access": {
+    "access_status": "direct text review",
+    "reviewing_system": "GPT-5.6 Thinking",
+    "access_method": "public review of official OpenAI Status incident page",
+    "direct_primary_artefact_review": true,
+    "limitations": [
+      "The public incident report does not disclose the underlying technical root cause."
+    ]
+  },
+  "interpretive_reliance": "Used as official evidence of a resolved SSO access incident without inferring an undisclosed technical cause."
+  },
+  {
+  "source_title": "Codex 5.6-sol Experiencing Increased Server-Overload Errors",
+  "author_or_publisher": "OpenAI Status",
+  "source_date": "2026-07-17",
+  "source_url": "https://status.openai.com/incidents/01KXRHE25717D2WQ1WFMT2B7WZ",
+  "archive_url": "",
+  "retrieved_date": "2026-07-18",
+  "source_type": "official-source",
+  "source_platform": "OpenAI Status",
+  "system_or_product": "OpenAI Codex",
+  "model_or_algorithm": "Codex 5.6-sol",
+  "deployment_context": "Coding-agent model service experiencing increased server-overload errors.",
+  "source_context": "OpenAI reported elevated server-overload errors affecting Codex 5.6-sol, applied mitigation, monitored recovery, and marked the incident resolved on 17 July 2026.",
+  "source_url_status": "available",
+  "relevance_note": "Supports separation of model-specific capacity or overload state from account, authentication, entitlement, policy, and broader platform-availability states.",
+  "evidence_modality": [
+    "text"
+  ],
+  "primary_artefact_access": {
+    "access_status": "direct text review",
+    "reviewing_system": "GPT-5.6 Thinking",
+    "access_method": "public review of official OpenAI Status incident page",
+    "direct_primary_artefact_review": true,
+    "limitations": [
+      "The status page identifies server-overload symptoms but does not publish a detailed technical postmortem."
+    ]
+  },
+  "interpretive_reliance": "Used as official evidence of a resolved model-specific overload incident."
+  },
+  {
+  "source_title": "New ChatGPT App Not Available For Enterprise Users Without Codex Permissions",
+  "author_or_publisher": "OpenAI Status",
+  "source_date": "2026-07-17",
+  "source_url": "https://status.openai.com/incidents/01KXRBA8B98QHMMVP3M86NHFZ1",
+  "archive_url": "",
+  "retrieved_date": "2026-07-18",
+  "source_type": "official-source",
+  "source_platform": "OpenAI Status",
+  "system_or_product": "New ChatGPT application for Enterprise users",
+  "model_or_algorithm": "not specified",
+  "deployment_context": "Enterprise application access coupled to Codex role-based access-control configuration.",
+  "source_context": "OpenAI reported that Enterprise users without Codex RBAC enabled could receive a codex_cli_workspace_disabled error when attempting to log into the new ChatGPT application after installation. ChatGPT Classic was provided as a temporary alternative while a fix was being developed.",
+  "source_url_status": "available",
+  "relevance_note": "Provides evidence of cross-surface permission inheritance in which a component-level Codex permission controls access to a broader ChatGPT application surface.",
+  "evidence_modality": [
+    "text"
+  ],
+  "primary_artefact_access": {
+    "access_status": "direct text review",
+    "reviewing_system": "GPT-5.6 Thinking",
+    "access_method": "public review of official OpenAI Status incident page",
+    "direct_primary_artefact_review": true,
+    "limitations": [
+      "At the time of review, the official incident page remained at Identified rather than Resolved.",
+      "The public report does not establish whether the coupling was an implementation defect, configuration error, or intentional dependency."
+    ]
+  },
+  "interpretive_reliance": "Used as official evidence of cross-surface RBAC and application-entitlement coupling; resolution is not asserted until the official status changes."
+},
     {
       "source_title": "Users may encounter issues logging in or creating an account",
       "author_or_publisher": "OpenAI Status",
@@ -386,7 +474,10 @@
       "incorrect support-routing",
       "workflow interruption",
       "incident reproducibility loss",
-      "user trust degradation"
+      "user trust degradation","federated identity and SSO control-plane dependency",
+      "cross-surface permission inheritance",
+      "component RBAC controlling broader application access",
+      "model-specific capacity or overload ambiguity"
     ],
     "severity": "medium-high",
     "likelihood": "likely",
@@ -498,6 +589,8 @@
     "authenticated_available",
     "authentication_failed",
     "identity_provider_failed",
+    "enterprise_sso_failed",
+    "federated_identity_control_plane_degraded",
     "identity_verification_required",
     "account_restricted",
     "workspace_restricted",
@@ -506,7 +599,10 @@
     "billing_or_credit_unavailable",
     "quota_or_rate_limit_exhausted",
     "model_unavailable",
+    "model_capacity_or_overload",
     "tool_or_surface_unavailable",
+    "component_rbac_restricted",
+    "application_surface_entitlement_unavailable",
     "platform_degraded",
     "regional_or_compliance_restricted",
     "security_review_pending",
@@ -634,7 +730,7 @@
   "ecosystem_status": {
     "status": "recurring",
     "basis": "recurring incidents across multiple vendors and surfaces",
-    "last_assessed": "2026-07-14",
+    "last_assessed": "2026-07-18",
     "monitoring_required": true
   },
   "corpus_coverage": {
