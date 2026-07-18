@@ -236,9 +236,18 @@ def normalize_failure(record: dict[str, Any]) -> dict[str, Any]:
                 "cross-domain-repair-assembled" if len(record.get("cam_internal", {}).get("affected_instruments", [])) > 1 else "patch-implemented",
             )
         elif status == "partially-repaired":
-            repair.setdefault("repair_basis", "partial-coverage")
+            if repair.get("repaired_by"):
+                repair["repair_basis"] = "patch-implemented"
+            else:
+                repair["status"] = "unrepaired"
+                repair["repaired_by"] = []
+                repair["date_repaired"] = ""
+                repair["verification_status"] = "unverified"
+                repair["repair_basis"] = "not-yet-established"
         elif status == "unrepaired":
-            repair.setdefault("repair_basis", "partial-coverage" if record.get("existing_cam_coverage") else "uncovered")
+            repair["repaired_by"] = []
+            repair["date_repaired"] = ""
+            repair["repair_basis"] = "not-yet-established"
         elif status == "not-actionable":
             repair.setdefault("repair_basis", "not-actionable")
         elif status == "superseded":
@@ -405,9 +414,8 @@ def update_type_schemas() -> None:
     repair["properties"]["verification_note"] = {"type": "string"}
     repair["properties"]["repair_basis"] = {
         "enum": [
-            "uncovered",
+            "not-yet-established",
             "pre-existing-coverage-identified",
-            "partial-coverage",
             "patch-implemented",
             "cross-domain-repair-assembled",
             "not-actionable",
@@ -471,7 +479,7 @@ def update_templates() -> None:
         repair = template.setdefault("repair_status", {})
         repair["verification_status"] = "unverified"
         repair["verification_note"] = "State what has and has not been verified."
-        repair["repair_basis"] = "uncovered"
+        repair["repair_basis"] = "not-yet-established"
         repair["remaining_gaps"] = []
         write(fm_path, template)
 

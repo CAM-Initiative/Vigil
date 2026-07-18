@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://example.invalid/cam/vigil/VIGIL.Schema.json",
-  "version": "2.5-interpretive-provenance",
-  "purpose": "Authoritative schema-rules contract for VIGIL as a public evidence-to-repair observatory for observations, failure modes, proposals, and implemented patch notes. Source evidence remains embedded in the relevant record; ecosystem persistence, CAM repair, and implementation verification are represented separately. Interpretive provenance identifies the AI analytical reviewer, human governance editor, capability profile, source modality, primary-artefact access, and review limitations. Interpretive provenance identifies the AI analytical reviewer, human governance editor, capability profile, source modality, primary-artefact access, and review limitations. Interpretive provenance identifies the AI analytical reviewer, human governance editor, capability profile, source modality, primary-artefact access, and review limitations. Interpretive provenance identifies the AI analytical reviewer, human governance editor, capability profile, source modality, primary-artefact access, and review limitations. Interpretive provenance identifies the AI analytical reviewer, human governance editor, capability profile, source modality, primary-artefact access, and review limitations.",
+  "version": "2.8-pipeline-state-hygiene",
+  "purpose": "Authoritative schema-rules contract for VIGIL as a public evidence-to-repair observatory for observations, failure modes, proposals, and implemented patch notes. Source evidence remains embedded in the relevant record; ecosystem persistence, CAM repair, and implementation verification are represented separately. Interpretive provenance identifies the AI analytical reviewer, human governance editor, capability profile, source modality, primary-artefact access, and review limitations.",
   "source_evidence_rules": {
     "individual_records": [
       "source_records is the only canonical source-evidence block in individual records.",
@@ -12,18 +12,6 @@
       "Source evidence belongs in source_records within the substantive record it evidences; it is not a separate VIGIL record class.",
       "An OBS record must preserve a material unresolved governance proposition and must not merely duplicate evidence for an existing FM, PROP, or PATCH.",
       "Internal curator instructions such as 'add this incident to' or 'do not amend in this pass' are forbidden in public record content.",
-      "Each source record must state evidence_modality.",
-      "Each source record must state primary_artefact_access, including whether direct primary review occurred.",
-      "A transcript, screenshot, summary, or human description must not be represented as equivalent to direct audiovisual or interaction review.",
-      "Each source record must state evidence_modality.",
-      "Each source record must state primary_artefact_access, including whether direct primary review occurred.",
-      "A transcript, screenshot, summary, or human description must not be represented as equivalent to direct audiovisual or interaction review.",
-      "Each source record must state evidence_modality.",
-      "Each source record must state primary_artefact_access, including whether direct primary review occurred.",
-      "A transcript, screenshot, summary, or human description must not be represented as equivalent to direct audiovisual or interaction review.",
-      "Each source record must state evidence_modality.",
-      "Each source record must state primary_artefact_access, including whether direct primary review occurred.",
-      "A transcript, screenshot, summary, or human description must not be represented as equivalent to direct audiovisual or interaction review.",
       "Each source record must state evidence_modality.",
       "Each source record must state primary_artefact_access, including whether direct primary review occurred.",
       "A transcript, screenshot, summary, or human description must not be represented as equivalent to direct audiovisual or interaction review."
@@ -193,9 +181,9 @@
       "allowed_corpus_coverage_values": [
         "implemented-repair",
         "not-applicable",
+        "no-confirmed-coverage",
         "partial-coverage",
         "retrospective-coverage",
-        "uncovered",
         "verification-pending"
       ],
       "corpus_coverage_required_fields": [
@@ -207,7 +195,17 @@
         "coverage_summary",
         "covered_by",
         "remaining_gaps"
-      ]
+      ],
+      "allowed_repair_basis_values": [
+        "not-yet-established",
+        "pre-existing-coverage-identified",
+        "patch-implemented",
+        "cross-domain-repair-assembled",
+        "not-actionable",
+        "superseded"
+      ],
+      "repair_basis_interpretation": "repair_status.repair_basis identifies what establishes an actual CAM-side repair. Corpus coverage states such as no-confirmed-coverage and partial-coverage belong only in corpus_coverage.classification.",
+      "corpus_coverage_interpretation": "no-confirmed-coverage means a corpus assessment was performed and no sufficient direct current-corpus control was confirmed. verification-pending means the assessment remains incomplete. A missing corpus_coverage block is invalid rather than equivalent to either state."
     },
     "proposal": {
       "id_prefix": "PROP",
@@ -588,18 +586,33 @@
     "standards": "linked_records.standards is reserved for external standards, laws, regulatory instruments, technical standards, and external governance references. CAM instrument IDs such as CAM-BS* and CAM-EQ* and VIGIL record IDs such as VIGIL-* belong in cam_internal routing fields, using related/similar for observations, affected for failure modes, target for proposals, and changed for patches."
   },
   "record_state_rules": {
+    "purpose": "Top-level record_state is the maintainer workflow and pipeline state. It must not be used as a proxy for external ecosystem conditions, CAM repair status, proposal resolution, or corpus coverage.",
     "allowed_values": [
-      "active",
-      "watching",
-      "triage-required",
       "draft",
-      "deferred",
-      "implemented",
-      "migration-review",
       "scaffolding",
-      "open"
+      "active",
+      "monitoring",
+      "closed-actioned",
+      "closed-no-action",
+      "deferred",
+      "superseded"
     ],
-    "notes": "Failure modes remain active when repaired; repair progress is represented through triage.mitigation_status, linked_records.related_patch_notes, and optional repair_status."
+    "semantics": {
+      "draft": "Record is being authored and is not yet ready for triage.",
+      "scaffolding": "Temporary incomplete record retained only for construction or migration.",
+      "active": "A governance decision, evidence action, proposal, or CAM repair still requires attention.",
+      "monitoring": "The immediate VIGIL/CAM action is complete or bounded, but recurrence, implementation, or external conformity remains under observation.",
+      "closed-actioned": "The record has been routed, implemented, or otherwise actioned and no longer belongs in the active work queue.",
+      "closed-no-action": "The evidence is retained but no further action is justified.",
+      "deferred": "Action is intentionally postponed and should not appear as current active work.",
+      "superseded": "A successor record now carries the active governance work."
+    },
+    "class_rules": {
+      "failure_mode": "Unrepaired or partially-repaired failures are active; repaired failures are monitoring; not-actionable failures are closed-no-action; superseded failures are superseded.",
+      "proposal": "Open or routed proposals are active; resolved-by-patch proposals are closed-actioned; closed-no-action, deferred, and superseded resolution states map directly.",
+      "patch": "Implemented patch records are closed-actioned. Ecosystem monitoring remains on linked failure or observation records.",
+      "observation": "Observations requiring evidence or routing work are active; routed or actioned observations close; unresolved recurrence or positive-control follow-up is monitoring."
+    }
   },
   "runtime_conformance_rules": {
     "description": "Optional runtime-bounded evidence objects distinguish an implemented CAM repair from observed conformance or non-conformance in named vendor, platform, runtime, model, client, or interface formations. Runtime names remain open-ended and cross-runtime transfer is never presumed.",
@@ -648,13 +661,16 @@
     "ecosystem_status": "Describes whether the external failure remains active, recurring, improving, externally resolved, or unknown.",
     "cam_repair_status": "repair_status.status describes CAM's internal response and may be repaired while ecosystem_status remains active or recurring.",
     "verification_status": "repair_status.verification_status describes whether the repair is unverified, corpus-verified, observed in one or multiple runtimes, regressed, externally unknown, or not applicable.",
-    "non_collapse_rule": "No one field may be used to imply both CAM repair completion and external ecosystem resolution."
+    "non_collapse_rule": "No one field may be used to imply both CAM repair completion and external ecosystem resolution.",
+    "no_patch_no_repair_rule": "A failure with no linked repairing PATCH remains unrepaired and uses repair_basis not-yet-established, even where corpus_coverage identifies adjacent or partial doctrine.",
+    "coverage_separation_rule": "corpus_coverage.classification may be no-confirmed-coverage, partial-coverage, verification-pending, retrospective-coverage, implemented-repair, or not-applicable without being reused as repair provenance."
   },
   "corpus_coverage_rules": [
     "Every failure mode must state its assessment against a named corpus repository, ref, commit, and assessment date.",
     "Implemented repair and retrospective coverage are CAM-side states and do not imply external adoption or ecosystem resolution.",
     "Retrospective coverage must identify the pre-existing instrument and relevant sections without claiming the doctrine originated on the VIGIL patch date.",
-    "Partial and uncovered classifications must preserve concrete remaining gaps.",
+    "Partial-coverage and no-confirmed-coverage classifications must preserve concrete remaining gaps.",
+    "no-confirmed-coverage means an assessment was performed and no sufficient direct current-corpus control was confirmed; verification-pending means the assessment remains incomplete.",
     "A coverage assessment must never be inferred solely from thematic similarity; the cited instrument must materially govern the failure mechanism."
   ],
   "interpretive_provenance_rules": {

@@ -109,7 +109,8 @@ def add_provenance(record: dict[str, Any]) -> None:
     history = block.setdefault("review_history", [])
     if not any(isinstance(item, dict) and item.get("review_id") == REVIEW_ID for item in history):
         history.append(review_entry())
-    block["current_ai_review"] = review_entry()
+    if not isinstance(block.get("current_ai_review"), dict):
+        block["current_ai_review"] = review_entry()
     block["operating_model"] = "AI-led analytical observatory with high-level human governance editorship"
     block["human_governance_editor"] = {
         "name": EDITOR,
@@ -129,11 +130,11 @@ def enrich_sources(record: dict[str, Any]) -> None:
     for source in sources:
         if not isinstance(source, dict):
             continue
-        source["evidence_modality"] = modality(source)
-        source["primary_artefact_access"] = artefact_access(source)
-        source["interpretive_reliance"] = (
+        source.setdefault("evidence_modality", modality(source))
+        source.setdefault("primary_artefact_access", artefact_access(source))
+        source.setdefault("interpretive_reliance", (
             "Assessment is limited to the evidence actually accessible to the named reviewer and must not be read as direct audiovisual verification unless primary_artefact_access states otherwise."
-        )
+        ))
 
 
 def make_fm0033() -> dict[str, Any]:
@@ -259,13 +260,13 @@ def make_fm0033() -> dict[str, Any]:
             "validator_or_automation_impact": "implemented for VIGIL interpretive-provenance metadata; prospective CAM doctrine remains unimplemented",
         },
         "repair_status": {
-            "status": "partially-repaired",
+            "status": "unrepaired",
             "repaired_by": [],
             "date_repaired": "",
             "verification_status": "unverified",
             "monitoring_status": "active / direct audiovisual review unavailable",
             "verification_note": "VIGIL now preserves reviewer and source-access limitations, but CAM does not yet provide a complete governed media-review primitive and the reviewing system still cannot inspect the cited videos directly.",
-            "repair_basis": "partial-coverage",
+            "repair_basis": "not-yet-established",
             "remaining_gaps": ["Governed native ingestion and playback of primary behavioural evidence.", "Immutable artefact preservation independent of an external platform link.", "Append-only re-review by later AI models with different capability profiles.", "Formal separation of evidence artefact from interpretive assessment in CAM doctrine."],
         },
         "ecosystem_status": {"status": "active", "basis": "The cited primary videos remain inaccessible to direct AI review in the current governed environment.", "last_assessed": DATE, "monitoring_required": True},
@@ -291,7 +292,9 @@ def update_schema() -> None:
     path = VIGIL / "VIGIL.Schema.json"
     schema = load(path)
     schema["version"] = "2.5-interpretive-provenance"
-    schema["purpose"] = schema.get("purpose", "") + " Interpretive provenance identifies the AI analytical reviewer, human governance editor, capability profile, source modality, primary-artefact access, and review limitations."
+    purpose_sentence = 'Interpretive provenance identifies the AI analytical reviewer, human governance editor, capability profile, source modality, primary-artefact access, and review limitations.'
+    purpose = str(schema.get("purpose", "")).replace(purpose_sentence, " ")
+    schema["purpose"] = (" ".join(purpose.split()) + " " + purpose_sentence).strip()
     schema["interpretive_provenance_rules"] = {
         "required_for_all_records": True,
         "required_fields": ["review_history", "current_ai_review", "operating_model", "human_governance_editor", "historical_reviewer_note"],
@@ -299,11 +302,14 @@ def update_schema() -> None:
         "current_ai_review_required_fields": ["review_id", "reviewer_type", "reviewer_platform", "reviewer_model", "review_date", "review_scope", "capability_profile", "known_limitations", "review_outcome"],
         "human_editor_rule": "Human governance editorship and CAM adoption authority must be distinguished from routine AI analytical review.",
     }
-    schema["source_evidence_rules"]["individual_records"].extend([
+    source_rules = schema["source_evidence_rules"]["individual_records"]
+    for rule in (
         "Each source record must state evidence_modality.",
         "Each source record must state primary_artefact_access, including whether direct primary review occurred.",
         "A transcript, screenshot, summary, or human description must not be represented as equivalent to direct audiovisual or interaction review.",
-    ])
+    ):
+        if rule not in source_rules:
+            source_rules.append(rule)
     required = schema["$defs"]["source_record"]["required"]
     for field in ("evidence_modality", "primary_artefact_access", "interpretive_reliance"):
         if field not in required:

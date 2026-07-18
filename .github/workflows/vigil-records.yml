@@ -23,12 +23,12 @@ jobs:
   validate-build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           persist-credentials: true
           show-progress: false
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.x"
 
@@ -54,8 +54,21 @@ jobs:
       - name: Add interpretive provenance and behavioural evidence metadata
         run: python vigil/scripts/migrate-vigil-interpretive-provenance.py
 
-      - name: Test VIGIL validator
-        run: python vigil/scripts/test_validate_vigil_records.py
+      - name: Separate repair provenance from corpus coverage
+        run: python vigil/scripts/migrate-vigil-repair-basis.py
+
+      - name: Replace ambiguous corpus coverage vocabulary
+        run: python vigil/scripts/migrate-vigil-corpus-coverage.py
+
+      - name: Reconcile maintainer pipeline state and validator hygiene
+        run: python vigil/scripts/migrate-vigil-pipeline-state.py
+
+      - name: Test VIGIL validators
+        run: |
+          python vigil/scripts/test_validate_vigil_records.py
+          python vigil/scripts/test_validate_vigil_lifecycle.py
+          python vigil/scripts/test_vigil_provenance_preservation.py
+          python vigil/scripts/test_vigil_pipeline_state.py
 
       - name: Route VIGIL records
         run: python vigil/scripts/route-vigil-records.py
@@ -84,9 +97,9 @@ jobs:
           if git diff --cached --quiet; then
             echo "No reconciled VIGIL changes to commit."
           else
-            git commit -m "Add VIGIL interpretive provenance and evidence access metadata"
+            git commit -m "Migrate VIGIL lifecycle vocabulary"
             if ! git push; then
-              echo "Main advanced while this run was building generated files; a newer workflow run owns reconciliation."
+              echo "Branch advanced while this run was building generated files; a newer workflow run owns reconciliation."
               exit 0
             fi
           fi

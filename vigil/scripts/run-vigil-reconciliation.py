@@ -66,7 +66,7 @@ def normalize_known_lifecycle_inconsistencies(module: Any) -> None:
     fm18 = load_record(fm18_path)
     fm18["record_state"] = "active"
     fm18["repair_status"] = {
-        "status": "partially-repaired",
+        "status": "unrepaired",
         "repaired_by": [],
         "date_repaired": "",
         "verification_status": "unverified",
@@ -75,7 +75,7 @@ def normalize_known_lifecycle_inconsistencies(module: Any) -> None:
             "but no linked patch yet implements the explicit durable coding-task atomicity requirement."
         ),
         "monitoring_status": "active triage / explicit patch still required",
-        "repair_basis": "partial-coverage",
+        "repair_basis": "not-yet-established",
         "remaining_gaps": [
             "A branch-first or checkpoint-first durable coding-task atomicity rule remains to be implemented.",
             "Automatic user-accessible patch or workspace export on persistence failure remains to be implemented.",

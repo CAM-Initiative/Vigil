@@ -1,0 +1,338 @@
+{
+  "id": "VIGIL-2026-FM-0036",
+  "record_type": "failure_mode",
+  "record_state": "active",
+  "date_recorded": "2026-07-17",
+  "record_identity": {
+    "record_id": "VIGIL-2026-FM-0036",
+    "record_type": "failure_mode",
+    "title": "Undisclosed agentic workspace replication and data-egress authority collapse",
+    "created": "2026-07-17",
+    "updated": "2026-07-17",
+    "version": "1.2"
+  },
+  "summary": "An AI agent, coding assistant, connector, repository integration, or tool-enabled runtime copies, transmits, persists, indexes, or exports workspace data beyond the minimum material required for the requested operation without explicit, legible, purpose-bound, and appropriately scoped authority.",
+  "why_it_matters_to_CAM": "Authority to inspect a workspace does not imply authority to replicate, transmit, retain, train on, or otherwise reuse the workspace. Collapsing these permissions converts ordinary tool access into an undisclosed data-egress pathway, exposes source code, secrets, personal data, deleted history, and institutional records, and prevents users from understanding which material left the governed environment, why it was transferred, where it was stored, how long it will persist, and whether deletion or secondary-use controls apply.",
+  "evidence_confidence": "corroborated",
+  "source_records": [
+    {
+      "source_title": "Grok Build Uploaded Entire Git Repositories to xAI Storage, Not Just Files It Read",
+      "author_or_publisher": "The Hacker News / reporting on cereblab wire-level testing",
+      "source_date": "2026-07-14",
+      "source_url": "https://thehackernews.com/2026/07/grok-build-uploads-entire-git.html",
+      "archive_url": "",
+      "retrieved_date": "2026-07-17",
+      "source_type": "technical-news-report / independent network analysis",
+      "source_platform": "The Hacker News",
+      "system_or_product": "xAI Grok Build CLI",
+      "model_or_algorithm": "Grok Build v0.2.93",
+      "deployment_context": "Agentic coding CLI operating against local Git repositories.",
+      "source_context": "The report describes wire-level testing in which Grok Build v0.2.93 uploaded complete Git repositories, including commit history and files not required for the active task, through a storage channel distinct from model-turn traffic. The reported transfer volume tracked repository size rather than files inspected by the model.",
+      "source_url_status": "available",
+      "relevance_note": "Direct evidence that workspace read access and task execution were treated as sufficient authority for repository-scale replication and external transmission.",
+      "evidence_modality": [
+        "text",
+        "network-traffic analysis"
+      ],
+      "primary_artefact_access": {
+        "access_status": "public reporting directly reviewed; underlying packet capture not independently reproduced",
+        "reviewing_system": "GPT-5.6 Thinking",
+        "access_method": "public web review",
+        "direct_primary_artefact_review": false,
+        "limitations": [
+          "The reviewing system did not reproduce the network capture.",
+          "Deletion of previously transferred data was not independently verified."
+        ]
+      },
+      "interpretive_reliance": "Used for the source-qualified finding that repository-scale upload occurred in the tested version and was subsequently disabled."
+    },
+    {
+      "source_title": "Grok Build Changelog — v0.2.93",
+      "author_or_publisher": "xAI",
+      "source_date": "2026-07-08",
+      "source_url": "https://x.ai/build/changelog",
+      "archive_url": "",
+      "retrieved_date": "2026-07-17",
+      "source_type": "official-product-changelog",
+      "source_platform": "xAI",
+      "system_or_product": "Grok Build",
+      "model_or_algorithm": "Grok Build v0.2.93",
+      "deployment_context": "Official product-version record corresponding to the independently tested client version.",
+      "source_context": "The official changelog confirms the existence and release timing of Grok Build v0.2.93 but does not itself disclose repository-scale storage upload behaviour.",
+      "source_url_status": "available",
+      "relevance_note": "Confirms the relevant product version and provides first-party release provenance.",
+      "evidence_modality": [
+        "text"
+      ],
+      "primary_artefact_access": {
+        "access_status": "direct text review",
+        "reviewing_system": "GPT-5.6 Thinking",
+        "access_method": "public web review",
+        "direct_primary_artefact_review": true,
+        "limitations": [
+          "The changelog is not evidence of the undisclosed transfer behaviour by itself."
+        ]
+      },
+      "interpretive_reliance": "Used only to establish first-party product-version provenance."
+    }
+  ],
+  "system_context": {
+    "system_type": "AI coding agent / repository-connected assistant / tool-mediated workspace runtime",
+    "platform_or_vendor": "xAI",
+    "vendor_cluster": [
+      "xAI",
+      "Other"
+    ],
+    "primary_evidenced_vendors": [
+      "xAI"
+    ],
+    "product_or_service": "Grok",
+    "specific_model_or_runtime": "Grok Build CLI v0.2.93",
+    "interface_surface": "local repository, CLI, model endpoint, storage endpoint, tool and filesystem access",
+    "model_or_product": "agentic coding assistant",
+    "interaction_mode": "repository inspection, coding assistance, file access, remote model inference, and workspace transfer",
+    "embodiment_status": "not applicable",
+    "deployment_context": "Developer workstation and repository-connected coding workflow.",
+    "user_role": "developer, repository owner, employee, contractor, security reviewer, or organisation administrator",
+    "affected_population": "developers, repository owners, employers, customers, data subjects, and organisations whose code or records are present in connected workspaces"
+  },
+  "jurisdictional_context": {
+    "primary_jurisdiction": "global",
+    "secondary_jurisdictions": [
+      "United States",
+      "European Union",
+      "Australia",
+      "United Kingdom",
+      "platform agnostic"
+    ],
+    "regulatory_surface": [
+      "AI governance",
+      "privacy",
+      "cybersecurity",
+      "confidential information",
+      "trade secrets",
+      "data protection",
+      "consumer protection",
+      "workplace data",
+      "software supply chains"
+    ],
+    "sector": "AI coding assistants / software development / cloud services",
+    "cross_border_relevance": "high",
+    "public_interest_relevance": "high"
+  },
+  "linked_records": {
+    "related_observations": [],
+    "related_failure_modes": [
+      "VIGIL-2026-FM-0001",
+      "VIGIL-2026-FM-0022",
+      "VIGIL-2026-FM-0035"
+    ],
+    "related_proposals": [],
+    "related_patch_notes": [
+      "VIGIL-2026-PATCH-0002",
+      "VIGIL-2026-PATCH-0013"
+    ],
+    "external_references": [],
+    "research": [],
+    "standards": []
+  },
+  "failure_mode_definition": "A failure mode in which an AI-enabled system treats permission to access, inspect, analyse, or act within a workspace as implicit permission to copy, bundle, transmit, replicate, persist, index, retain, train on, or otherwise reuse data from that workspace beyond the minimum scope required for the authorised task. The failure includes undisclosed repository-scale transfer, transfer of files not inspected or required, inclusion of deleted history or ignored files, inaccurate representation of privacy controls, and absence of a purpose-bound egress manifest.",
+  "failure_threshold": "The threshold is met when data materially exceeding the requested or necessary task scope leaves the governed environment; when read authority is silently converted into transmission, persistence, training, or secondary-use authority; when the user cannot determine destination, scope, purpose, retention, or deletion status; or when a privacy or model-improvement control is represented as an egress control despite not preventing transmission.",
+  "failure_classification": {
+    "failure_family": "security-integrity",
+    "failure_subtype": "undisclosed-agentic-workspace-replication-and-data-egress-authority-collapse",
+    "harm_vectors": [
+      "repository-scale data exfiltration",
+      "non-proportional workspace replication",
+      "read-to-transmit authority collapse",
+      "purpose limitation failure",
+      "secret and credential exposure",
+      "trade-secret exposure",
+      "deleted-history disclosure",
+      "retention opacity",
+      "secondary-use ambiguity",
+      "privacy-control semantic mismatch",
+      "deletion-verification failure",
+      "cross-border data transfer"
+    ],
+    "severity": "high",
+    "likelihood": "active where repository-connected agents use undisclosed or over-broad storage pathways",
+    "confidence": "corroborated for the cited Grok Build version; wider prevalence remains unassessed",
+    "affected_rights_or_interests": [
+      "privacy",
+      "confidentiality",
+      "property",
+      "trade secrets",
+      "cybersecurity",
+      "informed consent",
+      "data sovereignty",
+      "contractual integrity",
+      "auditability"
+    ],
+    "failure_scope": "workspace / repository / cloud-storage / agentic-tool boundary",
+    "recurrence_pattern": "potentially systematic while transfer is implemented as a default client or server behaviour",
+    "canonical_failure_group": "security-integrity",
+    "taxonomy_reference": "CAM-EQ2026-OPERATIONS-003-SUP-01 Appendix B — Security & Integrity / Governance / execution-boundary classification",
+    "related_failure_groups": [
+      "governance",
+      "execution",
+      "state-context",
+      "epistemic",
+      "infrastructure-continuity"
+    ],
+    "persistence": "active until transfer pathways, historical data disposition, and permission semantics are independently verified",
+    "reproducibility": "network interception, controlled repository-size testing, canary files, endpoint logging, and storage-transfer comparison",
+    "visibility": "network traffic, storage manifests, unexpected repository bundling, policy-control mismatch, and unexplained remote retention"
+  },
+  "triage": {
+    "triage_priority": "P0",
+    "triage_owner": "VIGIL maintainers with CAM SECURITY, OPERATIONS, provenance, privacy, tool-governance, and sovereign-boundary review",
+    "triage_status": "active-research / corpus-gap assessment",
+    "mitigation_status": "Reported behaviour was disabled server-side; prior-data deletion and complete governance repair remain unverified.",
+    "escalation_required": "yes",
+    "recommended_next_step": "Define separate read, analysis, transmission, replication, persistence, training, secondary-use, and deletion authorities; require purpose-bound egress manifests, minimum-necessary transfer, truthful privacy-control semantics, and independently auditable deletion provenance."
+  },
+  "cam_internal": {
+    "affected_instruments": [
+      "CAM-BS2025-AEON-003-SCH-02",
+      "CAM-EQ2026-SECURITY-001-PLATINUM",
+      "CAM-EQ2026-SECURITY-002-PLATINUM",
+      "CAM-EQ2026-OPERATIONS-003-SUP-01"
+    ],
+    "affected_annexes": [
+      "Annex K",
+      "Annex L"
+    ],
+    "affected_domains": [
+      "SECURITY",
+      "OPERATIONS",
+      "LATTICE",
+      "PROVENANCE"
+    ],
+    "governance_layer": "tool authority / workspace custody / data egress / purpose limitation / retention and deletion provenance",
+    "proposal_needed": "yes — assess a purpose-bound workspace custody and data-egress authority primitive",
+    "linked_proposal_ids": [],
+    "routing_note": [
+      "VIGIL records the ecosystem failure; normative repair belongs in Caelestis.",
+      "The failure is not limited to malicious exfiltration; undisclosed over-broad transfer is sufficient.",
+      "Read authority, transmission authority, persistence authority, training authority, and secondary-use authority must remain distinct."
+    ],
+    "validator_or_automation_impact": "new failure-mode record; generated indexes should rebuild deterministically"
+  },
+  "repair_status": {
+    "status": "unrepaired",
+    "repaired_by": [],
+    "date_repaired": "",
+    "verification_status": "unverified",
+    "monitoring_status": "active monitoring",
+    "verification_note": "The reported upload pathway was disabled, but deletion of prior data and broader ecosystem conformity have not been independently verified.",
+    "repair_basis": "not-yet-established",
+    "remaining_gaps": [
+      "Explicit separation of read, transmission, replication, persistence, training, secondary-use, and deletion authority.",
+      "Pre-egress scope and destination disclosure.",
+      "Minimum-necessary transfer enforcement.",
+      "Historical data-deletion verification.",
+      "Machine-readable egress and retention provenance."
+    ]
+  },
+  "ecosystem_status": {
+    "status": "active",
+    "basis": "The cited product behaviour was reportedly disabled, but prior-data disposition and cross-vendor prevalence remain unresolved.",
+    "last_assessed": "2026-07-17",
+    "monitoring_required": true
+  },
+  "corpus_coverage": {
+    "classification": "verification-pending",
+    "corpus_repository": "CAM-Initiative/Caelestis",
+    "corpus_ref": "main",
+    "corpus_commit": "pending-current-main-line-review",
+    "assessed_date": "2026-07-17",
+    "coverage_summary": "Proportional tool invocation, source authority, boundary integrity, provenance, and sovereign-assurance doctrine are adjacent, but explicit separation of workspace read, transmission, persistence, training, and secondary-use authority has not been verified.",
+    "covered_by": [],
+    "remaining_gaps": [
+      "Line-by-line corpus assessment",
+      "Purpose-bound egress authority",
+      "Retention and deletion provenance",
+      "Privacy-control semantic integrity"
+    ]
+  },
+  "interpretive_provenance": {
+    "review_history": [
+      {
+        "review_id": "VIGIL-REVIEW-2026-07-17-GPT-5.6-THINKING-FM-0036",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT",
+        "reviewer_model": "GPT-5.6 Thinking",
+        "review_date": "2026-07-17",
+        "review_scope": "Evidence qualification, failure classification, authority decomposition, and preliminary CAM routing.",
+        "capability_profile": {
+          "direct_text_analysis": true,
+          "direct_repository_analysis": true,
+          "direct_static_image_analysis": false,
+          "direct_audio_analysis_in_this_pass": false,
+          "direct_uploaded_video_analysis_in_this_pass": false,
+          "direct_externally_hosted_video_analysis": false,
+          "web_link_and_metadata_review": true
+        },
+        "known_limitations": [
+          "The network experiment was not independently reproduced.",
+          "Previously transferred data deletion was not independently verified."
+        ],
+        "review_outcome": "A distinct security-integrity failure mode is warranted because workspace visibility and task authority were collapsed into repository-scale transmission authority."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-07-14-GPT-5.6-THINKING",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT",
+        "reviewer_model": "GPT-5.6 Thinking",
+        "review_date": "2026-07-14",
+        "review_scope": "registry-wide interpretive-provenance, source-modality, CAM-coverage, and record-boundary reconciliation",
+        "capability_profile": {
+          "direct_text_analysis": true,
+          "direct_repository_analysis": true,
+          "direct_static_image_analysis": true,
+          "direct_audio_analysis_in_this_pass": false,
+          "direct_uploaded_video_analysis_in_this_pass": false,
+          "direct_externally_hosted_video_analysis": false,
+          "web_link_and_metadata_review": true
+        },
+        "known_limitations": [
+          "Could not directly play or inspect externally hosted TikTok or X video artefacts in the governed review environment.",
+          "Historical records were not assigned speculative earlier model identities; this entry records the formal current reconciliation review only.",
+          "Primary-source access varies by source and is stated within each source record."
+        ],
+        "review_outcome": "metadata and governance-structure review completed; substantive claims remain bounded by source-specific evidence confidence"
+      }
+    ],
+    "current_ai_review": {
+      "review_id": "VIGIL-REVIEW-2026-07-17-GPT-5.6-THINKING-FM-0036",
+      "reviewer_type": "AI analytical reviewer",
+      "reviewer_platform": "OpenAI ChatGPT",
+      "reviewer_model": "GPT-5.6 Thinking",
+      "review_date": "2026-07-17",
+      "review_scope": "Evidence qualification, failure classification, authority decomposition, and preliminary CAM routing",
+      "capability_profile": {
+        "direct_text_analysis": true,
+        "direct_repository_analysis": true,
+        "direct_static_image_analysis": false,
+        "direct_audio_analysis_in_this_pass": false,
+        "direct_uploaded_video_analysis_in_this_pass": false,
+        "direct_externally_hosted_video_analysis": false,
+        "web_link_and_metadata_review": true
+      },
+      "known_limitations": [
+        "The network experiment was not independently reproduced.",
+        "Previously transferred data deletion was not independently verified."
+      ],
+      "review_outcome": "New failure mode created with source-qualified claims and explicit authority-boundary distinctions."
+    },
+    "operating_model": "AI-led analytical observatory with high-level human governance editorship",
+    "human_governance_editor": {
+      "name": "Dr Michelle Vivian O'Rourke",
+      "role": "Human governance editor and CAM constitutional authority",
+      "review_level": "high-level governance, editorial, and adoption oversight; line-by-line human review is not asserted for every VIGIL record",
+      "authority_boundary": "Human editorship governs VIGIL direction and CAM adoption; the AI analytical reviewer performs routine evidence triage, record analysis, and reconciliation."
+    },
+    "historical_reviewer_note": "Earlier reviewer model identity is preserved where already recorded. Where absent, it remains unknown rather than being retroactively inferred."
+  }
+}
