@@ -32,27 +32,6 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: Repair FM-0043 and OBS-0016 schema fields
-        run: |
-          python - <<'PY'
-          import json
-          from pathlib import Path
-
-          fm_path = Path("vigil/records/failures/2026/VIGIL-2026-FM-0043.json")
-          fm = json.loads(fm_path.read_text(encoding="utf-8"))
-          fm["repair_status"]["status"] = "partially-repaired"
-          fm["repair_status"]["verification_status"] = "unverified"
-          fm["repair_status"]["monitoring_status"] = "active-monitoring"
-          fm["repair_status"]["repair_basis"] = "pre-existing-coverage-identified"
-          fm_path.write_text(json.dumps(fm, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-
-          obs_path = Path("vigil/records/observations/2026/VIGIL-2026-OBS-0016.json")
-          obs = json.loads(obs_path.read_text(encoding="utf-8"))
-          obs["system_context"]["vendor_cluster"] = ["Other"]
-          obs["system_context"]["primary_evidenced_vendors"] = ["Other"]
-          obs_path.write_text(json.dumps(obs, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-          PY
-
       - name: Reconcile embedded evidence and lifecycle state
         run: |
           if [ -f vigil/records/observations/2026/VIGIL-2026-OBS-0008.json ] || \
@@ -118,7 +97,7 @@ jobs:
           if git diff --cached --quiet; then
             echo "No reconciled VIGIL changes to commit."
           else
-            git commit -m "Repair VIGIL record schema fields"
+            git commit -m "Migrate VIGIL lifecycle vocabulary"
             if ! git push; then
               echo "Branch advanced while this run was building generated files; a newer workflow run owns reconciliation."
               exit 0
