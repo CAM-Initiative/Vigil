@@ -32,37 +32,6 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: Reconcile embedded evidence and lifecycle state
-        run: |
-          if [ -f vigil/records/observations/2026/VIGIL-2026-OBS-0008.json ] || \
-             [ -f vigil/records/observations/2026/VIGIL-2026-OBS-0009.json ]; then
-            python vigil/scripts/run-vigil-reconciliation.py
-          else
-            echo "Lifecycle reconciliation already applied."
-          fi
-
-      - name: Correct CAM observatory boundary and ingest voice evidence
-        run: |
-          if [ -f vigil/records/patches/2026/VIGIL-2026-PATCH-0016.json ] || \
-             [ -f vigil/records/patches/2026/VIGIL-2026-PATCH-0020.json ] || \
-             [ ! -f vigil/records/observations/2026/VIGIL-2026-OBS-0011.json ]; then
-            python vigil/scripts/reconcile-vigil-cam-boundary-and-voice.py
-          else
-            echo "CAM observatory boundary correction and voice evidence reconciliation already applied."
-          fi
-
-      - name: Add interpretive provenance and behavioural evidence metadata
-        run: python vigil/scripts/migrate-vigil-interpretive-provenance.py
-
-      - name: Separate repair provenance from corpus coverage
-        run: python vigil/scripts/migrate-vigil-repair-basis.py
-
-      - name: Replace ambiguous corpus coverage vocabulary
-        run: python vigil/scripts/migrate-vigil-corpus-coverage.py
-
-      - name: Reconcile maintainer pipeline state and validator hygiene
-        run: python vigil/scripts/migrate-vigil-pipeline-state.py
-
       - name: Test VIGIL validators
         run: |
           python vigil/scripts/test_validate_vigil_records.py
@@ -70,8 +39,8 @@ jobs:
           python vigil/scripts/test_vigil_provenance_preservation.py
           python vigil/scripts/test_vigil_pipeline_state.py
 
-      - name: Route VIGIL records
-        run: python vigil/scripts/route-vigil-records.py
+      - name: Check VIGIL record routing
+        run: python vigil/scripts/route-vigil-records.py --check
 
       - name: Validate VIGIL records
         run: python vigil/scripts/validate-vigil-records.py
@@ -83,23 +52,34 @@ jobs:
         run: |
           python vigil/scripts/build-vigil-records.py
           python vigil/scripts/enrich-vigil-indexes.py
-          rm -f vigil/VIGIL.ActiveRecords.json vigil/VIGIL.ClosedRecords.json vigil/VIGIL.Records.Index.json vigil/VIGIL.Records.json
 
-      - name: Commit reconciled VIGIL records and generated indexes
+      - name: Verify source records and contracts were not mutated
+        run: |
+          if ! git diff --quiet -- vigil/records vigil/templates vigil/schemas vigil/VIGIL.Schema.json; then
+            echo "Validation/build automation modified governed source records or contracts."
+            git diff --name-status -- vigil/records vigil/templates vigil/schemas vigil/VIGIL.Schema.json
+            exit 1
+          fi
+
+      - name: Commit generated VIGIL indexes
         if: github.event_name == 'push'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           find vigil -type d -name __pycache__ -prune -exec rm -rf {} +
           find vigil -type f \( -name '*.pyc' -o -name '*.pyo' \) -delete
-          git rm --ignore-unmatch vigil/VIGIL.ActiveRecords.json vigil/VIGIL.ClosedRecords.json vigil/VIGIL.Records.Index.json vigil/VIGIL.Records.json 2>/dev/null || true
-          git add vigil
+          git add \
+            vigil/VIGIL.Failures.Index.json \
+            vigil/VIGIL.Observations.Index.json \
+            vigil/VIGIL.Proposals.Index.json \
+            vigil/VIGIL.PatchNotes.Index.json \
+            vigil/VIGIL.Registry.Index.json
           if git diff --cached --quiet; then
-            echo "No reconciled VIGIL changes to commit."
+            echo "No generated VIGIL index changes to commit."
           else
-            git commit -m "Migrate VIGIL lifecycle vocabulary"
+            git commit -m "Rebuild VIGIL registry indexes"
             if ! git push; then
-              echo "Branch advanced while this run was building generated files; a newer workflow run owns reconciliation."
+              echo "Branch advanced while this run was building generated files; a newer workflow run owns index generation."
               exit 0
             fi
           fi

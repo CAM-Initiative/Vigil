@@ -71,6 +71,8 @@ Rules:
 
 * Do not overwrite prior reviews when a newer AI model re-examines a record.
 * Do not retroactively assign an earlier model identity unless the record or source proves it.
+* A review date MUST NOT predate `record_identity.created` or, where that field is unavailable, `date_recorded`.
+* Record templates MUST use explicit placeholders and MUST NOT seed a real historical review identity or date into a newly created record.
 * A later model may disagree with an earlier interpretation; preserve both reviews and identify the evidence and capability differences.
 * Distinguish AI analytical review from human governance editorship and CAM adoption authority.
 * Do not attribute routine analysis to “VIGIL maintainer” where a named AI system performed the work.

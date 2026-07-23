@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
-import importlib.util
 import json
 import unittest
+from datetime import date
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -15,16 +15,6 @@ EXPECTED_REVIEWS = {
     "VIGIL-2026-PATCH-0022": "VIGIL-REVIEW-2026-07-16-GPT-5.6-THINKING-PATCH-0022",
 }
 MIGRATION_REVIEW = "VIGIL-REVIEW-2026-07-14-GPT-5.6-THINKING"
-
-
-def load_migration_module():
-    path = ROOT / "vigil" / "scripts" / "migrate-vigil-interpretive-provenance.py"
-    spec = importlib.util.spec_from_file_location("vigil_interpretive_provenance_migration", path)
-    if spec is None or spec.loader is None:
-        raise RuntimeError(f"Unable to load migration module from {path}")
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    return module
 
 
 def load(record_id: str) -> dict:
@@ -57,46 +47,42 @@ class ProvenancePreservationTests(unittest.TestCase):
                     self.assertNotEqual(access["access_status"], GENERIC_ACCESS)
                     self.assertIsInstance(access["direct_primary_artefact_review"], bool)
 
-    def test_dated_migration_review_is_not_backfilled_into_later_record(self):
-        migration = load_migration_module()
-        record = {
-            "date_recorded": "2026-07-23",
-            "record_identity": {"created": "2026-07-23"},
-            "interpretive_provenance": {
-                "review_history": [{"review_id": "VIGIL-REVIEW-2026-07-23-AUTHORED"}],
-                "current_ai_review": {"review_id": "VIGIL-REVIEW-2026-07-23-AUTHORED"},
-                "historical_reviewer_note": "No earlier record existed.",
-            },
-        }
+    def test_no_review_predates_record_creation(self):
+        for path in sorted(RECORDS.rglob("*.json")):
+            with self.subTest(path=path):
+                record = json.loads(path.read_text(encoding="utf-8"))
+                identity = record.get("record_identity", {})
+                created = date.fromisoformat((identity.get("created") or record["date_recorded"])[:10])
+                for review in record["interpretive_provenance"]["review_history"]:
+                    self.assertGreaterEqual(date.fromisoformat(review["review_date"]), created)
 
-        migration.add_provenance(record)
+    def test_migration_review_is_absent_from_records_created_after_migration(self):
+        for path in sorted(RECORDS.rglob("*.json")):
+            with self.subTest(path=path):
+                record = json.loads(path.read_text(encoding="utf-8"))
+                identity = record.get("record_identity", {})
+                created = date.fromisoformat((identity.get("created") or record["date_recorded"])[:10])
+                review_ids = [
+                    item.get("review_id")
+                    for item in record["interpretive_provenance"]["review_history"]
+                    if isinstance(item, dict)
+                ]
+                if created > date(2026, 7, 14):
+                    self.assertNotIn(MIGRATION_REVIEW, review_ids)
 
-        provenance = record["interpretive_provenance"]
-        self.assertNotIn(
-            MIGRATION_REVIEW,
-            [item.get("review_id") for item in provenance["review_history"]],
-        )
-        self.assertEqual(
-            provenance["current_ai_review"]["review_id"],
-            "VIGIL-REVIEW-2026-07-23-AUTHORED",
-        )
-        self.assertEqual(provenance["historical_reviewer_note"], "No earlier record existed.")
-
-    def test_dated_migration_review_remains_available_to_preexisting_record(self):
-        migration = load_migration_module()
-        record = {
-            "date_recorded": "2026-07-13",
-            "record_identity": {"created": "2026-07-13"},
-        }
-
-        migration.add_provenance(record)
-
-        provenance = record["interpretive_provenance"]
-        self.assertIn(
-            MIGRATION_REVIEW,
-            [item.get("review_id") for item in provenance["review_history"]],
-        )
-        self.assertEqual(provenance["current_ai_review"]["review_id"], MIGRATION_REVIEW)
+    def test_templates_do_not_seed_a_real_historical_review(self):
+        for path in sorted((ROOT / "vigil" / "templates").glob("*record*.json")):
+            with self.subTest(path=path):
+                template = json.loads(path.read_text(encoding="utf-8"))
+                provenance = template.get("interpretive_provenance")
+                if not isinstance(provenance, dict):
+                    continue
+                history = provenance.get("review_history", [])
+                self.assertNotIn(
+                    MIGRATION_REVIEW,
+                    [item.get("review_id") for item in history if isinstance(item, dict)],
+                )
+                self.assertEqual(provenance["current_ai_review"]["review_date"], "YYYY-MM-DD")
 
 
 if __name__ == "__main__":
