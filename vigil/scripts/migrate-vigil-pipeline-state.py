@@ -261,16 +261,18 @@ def reconcile_observation(record: dict[str, Any]) -> None:
             )
             notes = cam.get("routing_note")
             if isinstance(notes, list):
+                closure_note = (
+                    "The later governance pattern was promoted into VIGIL-2026-FM-0021; "
+                    "this observation is closed as actioned."
+                )
                 notes = [
                     note
                     for note in notes
                     if "later failure-mode record may be warranted" not in note.lower()
                     and "later proposal may be warranted" not in note.lower()
+                    and note != closure_note
                 ]
-                notes.append(
-                    "The later governance pattern was promoted into VIGIL-2026-FM-0021; "
-                    "this observation is closed as actioned."
-                )
+                notes.append(closure_note)
                 cam["routing_note"] = notes
 
     elif record_id == "VIGIL-2026-OBS-0013":

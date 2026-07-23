@@ -118,7 +118,13 @@ def main() -> None:
         groups = item["failure_classification"]["related_failure_groups"]
         assert set(groups) <= canonical_groups, f"{record_id}: non-canonical related group remains"
 
-    assert record("VIGIL-2026-OBS-0006", "observations")["record_state"] == "closed-actioned"
+    obs6 = record("VIGIL-2026-OBS-0006", "observations")
+    assert obs6["record_state"] == "closed-actioned"
+    closure_note = (
+        "The later governance pattern was promoted into VIGIL-2026-FM-0021; "
+        "this observation is closed as actioned."
+    )
+    assert obs6["cam_internal"]["routing_note"].count(closure_note) == 1
     assert record("VIGIL-2026-OBS-0013", "observations")["record_state"] == "closed-actioned"
     assert record("VIGIL-2026-OBS-0007", "observations")["record_state"] == "active"
 

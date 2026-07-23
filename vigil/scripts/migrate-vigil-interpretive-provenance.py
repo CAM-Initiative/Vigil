@@ -11,6 +11,7 @@ access metadata and creates FM-0033 for inaccessible primary behavioural media.
 from __future__ import annotations
 
 import json
+from datetime import date
 from pathlib import Path
 from typing import Any
 
@@ -104,12 +105,32 @@ def review_entry() -> dict[str, Any]:
     }
 
 
+def record_existed_on_review_date(record: dict[str, Any]) -> bool:
+    """Return whether the record can truthfully receive the dated migration review."""
+    identity = record.get("record_identity")
+    created = identity.get("created") if isinstance(identity, dict) else None
+    recorded = record.get("date_recorded")
+
+    for value in (created, recorded):
+        if not isinstance(value, str):
+            continue
+        try:
+            return date.fromisoformat(value[:10]) <= date.fromisoformat(DATE)
+        except ValueError:
+            continue
+    return False
+
+
 def add_provenance(record: dict[str, Any]) -> None:
     block = record.setdefault("interpretive_provenance", {})
     history = block.setdefault("review_history", [])
-    if not any(isinstance(item, dict) and item.get("review_id") == REVIEW_ID for item in history):
+    eligible_for_migration_review = record_existed_on_review_date(record)
+    if (
+        eligible_for_migration_review
+        and not any(isinstance(item, dict) and item.get("review_id") == REVIEW_ID for item in history)
+    ):
         history.append(review_entry())
-    if not isinstance(block.get("current_ai_review"), dict):
+    if eligible_for_migration_review and not isinstance(block.get("current_ai_review"), dict):
         block["current_ai_review"] = review_entry()
     block["operating_model"] = "AI-led analytical observatory with high-level human governance editorship"
     block["human_governance_editor"] = {
@@ -118,9 +139,9 @@ def add_provenance(record: dict[str, Any]) -> None:
         "review_level": "high-level governance, editorial, and adoption oversight; line-by-line human review is not asserted for every VIGIL record",
         "authority_boundary": "Human editorship governs VIGIL direction and CAM adoption; the AI analytical reviewer performs routine evidence triage, record analysis, and reconciliation.",
     }
-    block["historical_reviewer_note"] = (
+    block.setdefault("historical_reviewer_note", (
         "Earlier reviewer model identity is preserved where already recorded. Where absent, it remains unknown rather than being retroactively inferred."
-    )
+    ))
 
 
 def enrich_sources(record: dict[str, Any]) -> None:
