@@ -22,8 +22,10 @@ class RepairBasisLifecycleTests(unittest.TestCase):
         basis: str,
         repaired_by=None,
         coverage_classification: str = "partial-coverage",
+        verification_status: str | None = None,
     ):
         repaired_by = [] if repaired_by is None else repaired_by
+        verification_status = verification_status or ("corpus-verified" if repaired_by else "unverified")
         return {
             "id": "VIGIL-TEST-FM-0001",
             "record_type": "failure_mode",
@@ -37,7 +39,7 @@ class RepairBasisLifecycleTests(unittest.TestCase):
                 "status": status,
                 "repaired_by": repaired_by,
                 "date_repaired": "2026-07-17" if repaired_by else "",
-                "verification_status": "corpus-verified" if repaired_by else "unverified",
+                "verification_status": verification_status,
                 "monitoring_status": "test",
                 "verification_note": "test",
                 "repair_basis": basis,
@@ -101,6 +103,31 @@ class RepairBasisLifecycleTests(unittest.TestCase):
     def test_partially_repaired_accepts_linked_patch(self):
         patch_id = "VIGIL-TEST-PATCH-0001"
         record = self.failure("partially-repaired", "patch-implemented", [patch_id])
+        patch = {
+            "id": patch_id,
+            "record_type": "patch",
+            "linked_records": {"related_failure_modes": [record["id"]]},
+        }
+        errors = self.validate(record, {record["id"]: record, patch_id: patch})
+        self.assertEqual(errors, [])
+
+    def test_implemented_repair_accepts_regression_detected(self):
+        patch_id = "VIGIL-TEST-PATCH-0001"
+        record = self.failure(
+            "repaired",
+            "patch-implemented",
+            [patch_id],
+            coverage_classification="implemented-repair",
+            verification_status="regression-detected",
+        )
+        record["corpus_coverage"]["covered_by"] = [
+            {
+                "instrument_id": "CAM-EQ2026-RELATION-007-PLATINUM",
+                "path": "Governance/Charters/CAM-EQ2026-RELATION-007-PLATINUM.md",
+                "sections": ["§5.6.2"],
+                "coverage_type": "implemented-doctrine",
+            }
+        ]
         patch = {
             "id": patch_id,
             "record_type": "patch",
