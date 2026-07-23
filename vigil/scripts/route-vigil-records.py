@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import argparse
 import json
 import shutil
 from pathlib import Path
@@ -70,8 +71,9 @@ def target_directory(record: dict[str, Any]) -> Path | None:
     return RECORDS_ROOT / folder / year
 
 
-def route() -> int:
+def route(check_only: bool = False) -> int:
     moved = 0
+    misplaced = 0
     for path in record_files():
         record = load_record(path)
         target_dir = target_directory(record)
@@ -84,12 +86,29 @@ def route() -> int:
             continue
         if target_path.exists():
             raise FileExistsError(f"Refusing to overwrite {target_path}")
+        if check_only:
+            misplaced += 1
+            print(f"Misplaced record: {display_path(path)} -> {display_path(target_path)}")
+            continue
         shutil.move(path.as_posix(), target_path.as_posix())
         moved += 1
         print(f"Moved {path} -> {target_path}")
+    if check_only:
+        if misplaced:
+            print(f"VIGIL record routing check failed: {misplaced} misplaced file(s).")
+            return 1
+        print("VIGIL record routing check passed: 0 misplaced files.")
+        return 0
     print(f"VIGIL record routing complete: {moved} file(s) moved.")
     return 0
 
 
 if __name__ == "__main__":
-    raise SystemExit(route())
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--check",
+        action="store_true",
+        help="Report misplaced records and fail without moving files.",
+    )
+    args = parser.parse_args()
+    raise SystemExit(route(check_only=args.check))

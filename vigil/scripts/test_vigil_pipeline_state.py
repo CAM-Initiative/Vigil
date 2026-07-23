@@ -10,6 +10,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[2]
 VIGIL = ROOT / "vigil"
 RECORDS = VIGIL / "records"
+WORKFLOW = ROOT / ".github" / "workflows" / "vigil-records.yml"
 
 ALLOWED = {
     "draft",
@@ -118,7 +119,13 @@ def main() -> None:
         groups = item["failure_classification"]["related_failure_groups"]
         assert set(groups) <= canonical_groups, f"{record_id}: non-canonical related group remains"
 
-    assert record("VIGIL-2026-OBS-0006", "observations")["record_state"] == "closed-actioned"
+    obs6 = record("VIGIL-2026-OBS-0006", "observations")
+    assert obs6["record_state"] == "closed-actioned"
+    closure_note = (
+        "The later governance pattern was promoted into VIGIL-2026-FM-0021; "
+        "this observation is closed as actioned."
+    )
+    assert obs6["cam_internal"]["routing_note"].count(closure_note) == 1
     assert record("VIGIL-2026-OBS-0013", "observations")["record_state"] == "closed-actioned"
     assert record("VIGIL-2026-OBS-0007", "observations")["record_state"] == "active"
 
@@ -127,6 +134,17 @@ def main() -> None:
     source_rules = schema["source_evidence_rules"]["individual_records"]
     assert len(source_rules) == len(dict.fromkeys(source_rules))
     assert set(schema["record_state_rules"]["allowed_values"]) == ALLOWED
+
+    workflow = WORKFLOW.read_text(encoding="utf-8")
+    for forbidden in (
+        "migrate-vigil-",
+        "reconcile-vigil-",
+        "run-vigil-reconciliation.py",
+        "git add vigil\n",
+    ):
+        assert forbidden not in workflow, f"workflow must not run or broadly stage source mutation: {forbidden}"
+    assert "route-vigil-records.py --check" in workflow
+    assert "Rebuild VIGIL registry indexes" in workflow
 
     print("VIGIL pipeline-state hygiene tests passed.")
 

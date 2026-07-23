@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import json
 import sys
+from datetime import date
 from pathlib import Path
 from typing import Any
 
@@ -26,6 +27,15 @@ def load(path: Path) -> dict[str, Any]:
     return value
 
 
+def parse_iso_date(value: Any) -> date | None:
+    if not isinstance(value, str):
+        return None
+    try:
+        return date.fromisoformat(value[:10])
+    except ValueError:
+        return None
+
+
 def main() -> int:
     errors: list[str] = []
     count = 0
@@ -41,11 +51,45 @@ def main() -> int:
         if not isinstance(provenance, dict):
             errors.append(f"{path}: missing interpretive_provenance")
             continue
+        identity = record.get("record_identity")
+        created_value = identity.get("created") if isinstance(identity, dict) else None
+        if not created_value:
+            created_value = record.get("date_recorded")
+        created_date = parse_iso_date(created_value)
+        if created_date is None:
+            errors.append(f"{path}: record creation date must begin with an ISO YYYY-MM-DD date")
+
         history = provenance.get("review_history")
         current = provenance.get("current_ai_review")
         editor = provenance.get("human_governance_editor")
         if not isinstance(history, list) or not history:
             errors.append(f"{path}: review_history must be a non-empty list")
+        else:
+            seen_review_ids: set[str] = set()
+            for index, review in enumerate(history):
+                if not isinstance(review, dict):
+                    errors.append(f"{path}: review_history[{index}] must be an object")
+                    continue
+                missing = sorted(REVIEW_REQUIRED - set(review))
+                if missing:
+                    errors.append(f"{path}: review_history[{index}] missing {missing}")
+                review_id = review.get("review_id")
+                if not isinstance(review_id, str) or not review_id:
+                    errors.append(f"{path}: review_history[{index}].review_id must be non-empty")
+                elif review_id in seen_review_ids:
+                    errors.append(f"{path}: duplicate review_id {review_id!r}")
+                else:
+                    seen_review_ids.add(review_id)
+                review_date = parse_iso_date(review.get("review_date"))
+                if review_date is None:
+                    errors.append(
+                        f"{path}: review_history[{index}].review_date must be an ISO YYYY-MM-DD date"
+                    )
+                elif created_date is not None and review_date < created_date:
+                    errors.append(
+                        f"{path}: review {review_id!r} dated {review_date} predates record creation "
+                        f"{created_date}"
+                    )
         if not isinstance(current, dict):
             errors.append(f"{path}: current_ai_review must be an object")
         else:
