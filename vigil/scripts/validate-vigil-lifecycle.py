@@ -21,6 +21,12 @@ VERIFICATION_STATES = {
     "external-adoption-unknown",
     "not-applicable",
 }
+VERIFIED_REPAIR_STATES = {
+    "corpus-verified",
+    "observed-in-one-runtime",
+    "observed-across-runtimes",
+    "regression-detected",
+}
 REPAIR_BASES = {
     "not-yet-established",
     "pre-existing-coverage-identified",
@@ -132,8 +138,11 @@ def validate_corpus_coverage(
     if classification in {"implemented-repair", "retrospective-coverage"}:
         if repair.get("status") != "repaired":
             errors.append(f"{path}: {classification} requires repair_status.status 'repaired'")
-        if repair.get("verification_status") != "corpus-verified":
-            errors.append(f"{path}: {classification} requires corpus-verified repair status")
+        if repair.get("verification_status") not in VERIFIED_REPAIR_STATES:
+            errors.append(
+                f"{path}: {classification} requires a verified repair status "
+                "(corpus-verified, observed-in-one-runtime, observed-across-runtimes, or regression-detected)"
+            )
         if not repair.get("repaired_by"):
             errors.append(f"{path}: {classification} requires at least one linked patch")
         if not covered_by:
