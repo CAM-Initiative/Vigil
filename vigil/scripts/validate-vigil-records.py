@@ -201,11 +201,13 @@ DECISION_TRACE_ORIGINS = {
 DECISION_EVENT_TYPES = {
     "evidence-recorded",
     "failure-identified",
+    "proposal-recorded",
     "proposal-approved",
     "corpus-reviewed",
     "implementation-committed",
     "implementation-verified",
     "canonicalised",
+    "ledger-reconciled",
     "reconstructed",
 }
 CORPUS_IMPLEMENTATION_TYPES = {"corpus-amendment", "pre-existing-control", "mixed"}
