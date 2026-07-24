@@ -38,6 +38,12 @@ TYPE_CONFIG: dict[str, dict[str, str]] = {
         "record_type": "patch",
         "category_name": "patch note",
     },
+    "research": {
+        "directory": "research",
+        "output": "VIGIL.Research.Index.json",
+        "record_type": "research",
+        "category_name": "research record",
+    },
 }
 RECORD_TYPE_DIRS = [RECORDS_ROOT / config["directory"] for config in TYPE_CONFIG.values()]
 RECORD_TYPE_TO_REGISTRY = {
@@ -46,6 +52,7 @@ RECORD_TYPE_TO_REGISTRY = {
     "proposal": "proposals",
     "patch": "patch_notes",
     "patch_note": "patch_notes",
+    "research": "research",
 }
 OUTPUT_PATHS = {
     registry_type: VIGIL_DIR / config["output"] for registry_type, config in TYPE_CONFIG.items()
@@ -91,11 +98,12 @@ def raw_url(path: str) -> str:
 
 
 def record_files(directories: list[Path] | None = None) -> list[Path]:
-    """Return individual record JSON files under canonical type/year folders."""
+    """Return individual JSON records and Markdown research records."""
     files: list[Path] = []
     for directory in directories or RECORD_TYPE_DIRS:
         if directory.exists():
-            files.extend(directory.rglob("*.json"))
+            pattern = "*.md" if directory.name == "research" else "*.json"
+            files.extend(directory.rglob(pattern))
     return sorted(files, key=lambda path: path.as_posix())
 
 
@@ -107,11 +115,27 @@ def contains_key(value: Any, key: str) -> bool:
     return False
 
 
+def parse_research_front_matter(path: Path) -> dict[str, Any]:
+    text = path.read_text(encoding="utf-8")
+    if not text.startswith("---\n"):
+        raise ValueError(f"{path} must begin with JSON front matter")
+    end = text.find("\n---\n", 4)
+    if end == -1:
+        raise ValueError(f"{path} has unterminated JSON front matter")
+    metadata = json.loads(text[4:end])
+    if not isinstance(metadata, dict):
+        raise TypeError(f"{path} research front matter must contain one JSON object")
+    return metadata
+
+
 def load_records(directories: list[Path] | None = None) -> list[dict[str, Any]]:
     records: list[dict[str, Any]] = []
     for path in record_files(directories):
-        with path.open("r", encoding="utf-8") as handle:
-            record = json.load(handle)
+        if path.suffix == ".md":
+            record = parse_research_front_matter(path)
+        else:
+            with path.open("r", encoding="utf-8") as handle:
+                record = json.load(handle)
         if not isinstance(record, dict):
             raise TypeError(f"{path} must contain one JSON object")
         if contains_key(record, "source_data"):
@@ -573,6 +597,20 @@ def index_record(record: dict[str, Any]) -> dict[str, Any]:
                 "decision_trace": record.get("decision_trace", {}),
                 "corpus_implementation": record.get("corpus_implementation", {}),
                 "record_reconstruction": record.get("record_reconstruction", {}),
+            }
+        )
+    elif record.get("record_type") == "research":
+        linked = record.get("linked_records", {})
+        entry.update(
+            {
+                "research_status": record.get("status", ""),
+                "research_method": record.get("research_method", ""),
+                "governance_purpose": record.get("governance_purpose", ""),
+                "domains": record.get("domains", []),
+                "related_observations": linked.get("related_observations", []),
+                "related_failure_modes": linked.get("related_failure_modes", []),
+                "related_proposals": linked.get("related_proposals", []),
+                "related_patch_notes": linked.get("related_patch_notes", []),
             }
         )
     return entry

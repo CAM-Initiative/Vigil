@@ -4,7 +4,7 @@ These instructions apply to the entire repository. More specific `AGENTS.md` fil
 
 ## Repository purpose
 
-VIGIL is a public evidence-to-repair ledger for AI ecosystem observations, failure modes, proposals, and patch notes.
+VIGIL is a public evidence-to-repair ledger for AI ecosystem observations, research artefacts, failure modes, proposals, and patch notes.
 
 VIGIL records are evidentiary records, not placeholders. They preserve source metadata, evidence posture, classification context, repair routing, and implementation history. VIGIL does not itself amend CAM/Caelestis doctrine.
 
@@ -36,7 +36,7 @@ python vigil/scripts/build-vigil-records.py
 python vigil/scripts/validate-vigil-records.py
 ```
 
-Generated indexes, including `vigil/VIGIL.Failures.Index.json`, `vigil/VIGIL.Observations.Index.json`, `vigil/VIGIL.Proposals.Index.json`, `vigil/VIGIL.PatchNotes.Index.json`, and `vigil/VIGIL.Registry.Index.json`, are derived outputs. Do not manually patch generated indexes to hide invalid source records.
+Generated indexes, including `vigil/VIGIL.Failures.Index.json`, `vigil/VIGIL.Observations.Index.json`, `vigil/VIGIL.Proposals.Index.json`, `vigil/VIGIL.PatchNotes.Index.json`, `vigil/VIGIL.Research.Index.json`, and `vigil/VIGIL.Registry.Index.json`, are derived outputs. Do not manually patch generated indexes to hide invalid source records.
 
 ## Evidence rules
 

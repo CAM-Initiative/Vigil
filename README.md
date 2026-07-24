@@ -22,7 +22,7 @@ VIGIL exists to support a public evidence-to-repair workflow:
 
 VIGIL is designed to make governance maintenance visible, reviewable, and traceable.
 
-For the detailed conditional lifecycle/routing model and OBS/FM/PROP/PATCH record-class boundaries, see [`vigil/docs/VIGIL.RecordLifecycle.md`](vigil/docs/VIGIL.RecordLifecycle.md).
+For the detailed conditional lifecycle/routing model and OBS/RESEARCH/FM/PROP/PATCH record-class boundaries, see [`vigil/docs/VIGIL.RecordLifecycle.md`](vigil/docs/VIGIL.RecordLifecycle.md).
 
 For contributor, security, agent, and evidence-authoring guidance, see:
 
@@ -52,7 +52,7 @@ VIGIL currently supports the following record types:
    Records of implemented changes, repairs, registry updates, interface fixes, validator changes, schema changes, or other governance-maintenance actions.
 
 5. **Research / Supporting Records**
-   Supporting research, investigation, or source material that may inform observations, proposals, or future governance work.
+   Non-binding research artefacts that may originate an evidence-to-repair chain in place of, or alongside, an observation and link directly to the relevant failure mode, proposal, or patch.
 
 ---
 
@@ -172,6 +172,7 @@ vigil/VIGIL.Failures.Index.json
 vigil/VIGIL.Observations.Index.json
 vigil/VIGIL.Proposals.Index.json
 vigil/VIGIL.PatchNotes.Index.json
+vigil/VIGIL.Research.Index.json
 vigil/VIGIL.Registry.Index.json
 ```
 
@@ -283,6 +284,7 @@ Key repository files include:
 * `vigil/VIGIL.Observations.Index.json` — generated observation index.
 * `vigil/VIGIL.Proposals.Index.json` — generated proposal index.
 * `vigil/VIGIL.PatchNotes.Index.json` — generated patch-note index.
+* `vigil/VIGIL.Research.Index.json` — generated research-artifact index.
 * `templates/` — specialised templates for supported record types.
 * `examples/` — example records or copy/paste templates.
 * `vigil/scripts/` — routing, validation, and registry-generation scripts.

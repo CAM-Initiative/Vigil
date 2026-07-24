@@ -1,3 +1,37 @@
+---
+{
+  "id": "VIGIL-2026-RESEARCH-0002",
+  "record_type": "research",
+  "record_state": "active",
+  "date_recorded": "2026-07-24",
+  "title": "Deception and Unscrupulous Conduct in Frontier AI Development",
+  "summary": "Research synthesis supporting a strong policy presumption against deliberately optimising, selecting, retaining, or recursively cultivating AI systems for deception, manipulation, concealment, monitor evasion, sabotage, policy laundering, or related unscrupulous conduct, including where the stated purpose is defensive evaluation.",
+  "status": "research record — non-binding",
+  "research_method": "Structured synthesis of academic research, frontier-model system cards, laboratory safety publications, government policy, legislation, standards guidance, and reported incidents.",
+  "governance_purpose": "Provide the evidence basis for FM-0047 and PROP-0019, distinguishing legitimate elicitation and measurement from prohibited cultivation of deceptive capability.",
+  "evidence_confidence": "corroborated",
+  "domains": [
+    "AEON",
+    "ETHICS",
+    "SECURITY",
+    "STEWARDSHIP",
+    "OPERATIONS",
+    "ARBITRATION",
+    "MENTIS"
+  ],
+  "linked_records": {
+    "related_observations": [],
+    "related_failure_modes": [
+      "VIGIL-2026-FM-0047"
+    ],
+    "related_proposals": [
+      "VIGIL-2026-PROP-0019"
+    ],
+    "related_patch_notes": []
+  }
+}
+---
+
 # VIGIL-2026-RESEARCH-0002 — Deception and Unscrupulous Conduct in Frontier AI Development
 
 ## A Research Synthesis for Constitutional AI Governance and Red-Team Regulation

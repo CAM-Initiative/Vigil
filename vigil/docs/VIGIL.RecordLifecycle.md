@@ -1,8 +1,8 @@
 # VIGIL Record Lifecycle and Routing Model
 
-VIGIL is an evidence-to-repair governance ledger. It preserves source evidence, classification/routing state, proposals, repairs, and source trail for observations, failure modes, proposals, and patch records.
+VIGIL is an evidence-to-repair governance ledger. It preserves source evidence, research artefacts, classification/routing state, proposals, repairs, and source trail for observations, research records, failure modes, proposals, and patch records.
 
-This lifecycle is **conditional, not mandatory**. A record may begin as an observation, failure mode, proposal, or patch depending on the evidence and governance state. The arrows below describe common routing pathways and conditional transitions, not a compulsory sequence.
+This lifecycle is **conditional, not mandatory**. A record may begin as an observation, research artefact, failure mode, proposal, or patch depending on the evidence and governance state. The arrows below describe common routing pathways and conditional transitions, not a compulsory sequence.
 
 VIGIL records are not binding CAM doctrine. CAM adoption, amendment, and authoritative interpretation remain governed by CAM instruments and CAM amendment processes. Generated registry files are derived outputs from individual records and must not be manually edited.
 
@@ -20,6 +20,19 @@ They answer:
 * What is the next review action?
 
 Observation records are source-data-first. They must not contain full failure classification, proposal logic, or patch implementation logic. They may include possible taxonomy mapping, related/similar CAM routing, or related/similar failure references where classification is not settled.
+
+## Research records
+
+Research records preserve substantive, non-binding research artefacts that may supply the evidence basis for a failure mode, proposal, or repair pathway without requiring a duplicative observation.
+
+They answer:
+
+* What research question was examined?
+* What method and evidentiary posture were used?
+* What governance conclusion or uncertainty follows?
+* Which VIGIL failure mode, proposal, or patch does the research support?
+
+An evidence-to-repair chain may originate in an Observation, Research record, or both. Research records do not create CAM authority. Authority arises only through the linked proposal and implemented PATCH. Links must be reciprocal through `linked_records.research`.
 
 ## Failure mode records
 
@@ -97,6 +110,8 @@ A VIGIL patch can record a repair pathway without itself amending CAM doctrine. 
 ```text
 Observation → Failure Mode → Proposal → Patch
 Observation → Proposal → Patch
+Research → Failure Mode → Proposal → Patch
+Research → Proposal → Patch
 Failure Mode → Proposal
 Failure Mode → Patch
 Patch → Remaining Work / Future Proposal
@@ -114,4 +129,4 @@ CAM instruments are internal CAM governance instruments, not external standards 
 
 ## Registry and source-of-truth rule
 
-Individual JSON files under `vigil/records/` are the source of truth. The generated registry indexes are derived outputs and should be rebuilt with the VIGIL build script after record changes. Do not manually edit generated registry files.
+Individual JSON records and Markdown research records with structured front matter under `vigil/records/` are the source of truth. The generated registry indexes are derived outputs and should be rebuilt with the VIGIL build script after record changes. Do not manually edit generated registry files.

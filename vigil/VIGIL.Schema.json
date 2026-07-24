@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://example.invalid/cam/vigil/VIGIL.Schema.json",
-  "version": "2.8-pipeline-state-hygiene",
-  "purpose": "Authoritative schema-rules contract for VIGIL as a public evidence-to-repair observatory for observations, failure modes, proposals, and implemented patch notes. Source evidence remains embedded in the relevant record; ecosystem persistence, CAM repair, and implementation verification are represented separately. Interpretive provenance identifies the AI analytical reviewer, human governance editor, capability profile, source modality, primary-artefact access, and review limitations.",
+  "version": "2.9-research-record-integration",
+  "purpose": "Authoritative schema-rules contract for VIGIL as a public evidence-to-repair observatory for observations, research artefacts, failure modes, proposals, and implemented patch notes. Source evidence remains embedded in the relevant record; ecosystem persistence, CAM repair, and implementation verification are represented separately. Interpretive provenance identifies the AI analytical reviewer, human governance editor, capability profile, source modality, primary-artefact access, and review limitations.",
   "source_evidence_rules": {
     "individual_records": [
       "source_records is the only canonical source-evidence block in individual records.",
@@ -37,6 +37,26 @@
     ]
   },
   "record_classes": {
+    "research": {
+      "id_prefix": "RESEARCH",
+      "description": "Non-binding research artefact that may originate an evidence-to-repair chain in place of, or alongside, an observation.",
+      "storage_format": "Markdown with required JSON front matter",
+      "authority_boundary": "Research records preserve analysis and evidence. They do not create CAM authority; authority arises through a linked proposal and implemented PATCH.",
+      "required_metadata_fields": [
+        "id",
+        "record_type",
+        "record_state",
+        "date_recorded",
+        "title",
+        "summary",
+        "status",
+        "research_method",
+        "governance_purpose",
+        "evidence_confidence",
+        "domains",
+        "linked_records"
+      ]
+    },
     "observation": {
       "id_prefix": "OBS",
       "description": "Material unresolved governance observation / early warning record; not a duplicate source-evidence container.",
@@ -602,7 +622,8 @@
     "type_specific_list_fields": [
       "failure severity, likelihood, classification, and triage filter fields",
       "proposal type/status filter fields",
-      "patch/change type/status and verification filter fields"
+      "patch/change type/status and verification filter fields",
+      "research status, method, governance purpose, domains, and linked-record fields"
     ],
     "detail_only_fields_excluded_from_indexes": [
       "source_summary",
@@ -625,7 +646,9 @@
     ]
   },
   "linked_records_rules": {
-    "standards": "linked_records.standards is reserved for external standards, laws, regulatory instruments, technical standards, and external governance references. CAM instrument IDs such as CAM-BS* and CAM-EQ* and VIGIL record IDs such as VIGIL-* belong in cam_internal routing fields, using related/similar for observations, affected for failure modes, target for proposals, and changed for patches."
+    "standards": "linked_records.standards is reserved for external standards, laws, regulatory instruments, technical standards, and external governance references. CAM instrument IDs such as CAM-BS* and CAM-EQ* belong in cam_internal routing fields, using related/similar for observations, affected for failure modes, target for proposals, and changed for patches.",
+    "research": "linked_records.research contains VIGIL research artefact IDs. An evidence-to-repair chain may originate in an Observation, Research record, or both. Research is evidentiary and non-binding; authority arises only through the linked proposal and implemented PATCH.",
+    "reciprocity": "Research front-matter links to observations, failure modes, proposals, or patch notes must be reciprocated by the target record in linked_records.research."
   },
   "record_state_rules": {
     "purpose": "Top-level record_state is the maintainer workflow and pipeline state. It must not be used as a proxy for external ecosystem conditions, CAM repair status, proposal resolution, or corpus coverage.",
