@@ -8,7 +8,7 @@
     "record_type": "failure_mode",
     "title": "Ephemeral Codex work loss following quota exhaustion before durable branch persistence",
     "created": "2026-06-11",
-    "updated": "2026-07-17",
+    "updated": "2026-07-24",
     "version": "1.4"
   },
   "summary": "A task-completion and durable-state preservation failure in which Codex performs substantive repository analysis and file modification inside an ephemeral cloud task, but does not create, commit, or push a durable working branch before the user's usage allowance is exhausted. The task then remains suspended or fails during branch or pull-request creation, and the completed work is lost rather than preserved as a branch, commit, patch, diff, archive, or resumable workspace. The user must repeat the same work and consume additional quota to recreate an output that the system had already completed.",
@@ -119,13 +119,24 @@
       "VIGIL-2026-FM-0008"
     ],
     "related_proposals": [],
-    "related_patch_notes": [
-      "VIGIL-2026-PATCH-0002",
-      "VIGIL-2026-PATCH-0005"
-    ],
+    "related_patch_notes": [],
     "external_references": [],
     "research": [],
-    "standards": []
+    "standards": [],
+    "contextual_relations": [
+      {
+        "record_id": "VIGIL-2026-PATCH-0002",
+        "relationship": "implementation-precedent",
+        "chain_inclusion": false,
+        "rationale": "Proportional tool invocation is adjacent coverage but does not repair coding-task persistence loss."
+      },
+      {
+        "record_id": "VIGIL-2026-PATCH-0005",
+        "relationship": "implementation-precedent",
+        "chain_inclusion": false,
+        "rationale": "Access-state governance is adjacent coverage but does not repair coding-task persistence loss."
+      }
+    ]
   },
   "failure_mode_definition": "A failure mode in which an autonomous or semi-autonomous coding agent performs substantive work in an ephemeral, inaccessible, or quota-dependent execution environment but postpones branch creation, commit, push, patch export, or equivalent durable checkpointing until after the expensive work is complete. If quota, session, infrastructure, authentication, tool, or task-state failure occurs before persistence, the completed work is lost and the user must repeat the task. The failure includes any workflow that reports or visibly presents substantive completion without ensuring that the resulting work product exists in a durable, user-accessible, resumable state.",
   "failure_threshold": "The threshold is met where a coding-agent task has produced substantive repository modifications or a materially complete work product, but no durable branch, commit, pushed patch, downloadable diff, archive, or resumable checkpoint exists before quota exhaustion or task failure; the user cannot recover the completed work; and repeating all or part of the task is required. Pull-request creation need not itself succeed for the threshold to be avoided, provided the completed work has already been durably preserved and can be manually reviewed or submitted.",

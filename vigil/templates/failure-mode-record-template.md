@@ -8,6 +8,8 @@ Failure Mode records capture confirmed, strongly evidenced, recurring, or suffic
 * Maintain source evidence only in `source_records`; `source_data` is forbidden anywhere in an individual record.
 * Do **not** add `source_data`.
 * Do **not** duplicate the primary source in `linked_records.external_references`; use that array only for genuinely additional references.
+* Use authoritative proposal and PATCH arrays only for this failure's own repair chain.
+* Put adjacent failures, shared controls, contrasts, and precedents in `linked_records.contextual_relations` with `chain_inclusion: false`.
 * Include `failure_mode_definition`, `failure_threshold`, `failure_classification`, and `triage`; `failure_classification` must include `failure_family`, `canonical_failure_group`, `taxonomy_reference`, `related_failure_groups`, `persistence`, `reproducibility`, and `visibility`.
 * Do not include proposal implementation claims or patch-note fields.
 * CAM routing must use affected CAM routing only: `cam_internal.affected_*` fields because the record has triage-relevant failure classification.

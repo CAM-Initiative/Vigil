@@ -67,6 +67,9 @@ VIGIL operates under the following principles:
 * VIGIL preserves source attribution, dates, confidence state, and routing context.
 * VIGIL treats public, social, news, automated, or preliminary signals as provisional unless corroborated.
 * VIGIL distinguishes evidence, interpretation, classification, proposal, and implementation.
+* VIGIL keeps authoritative repair chains narrow: one primary failure mode per proposal or PATCH by default.
+* Contextual links remain visible but are non-transitive and never imply that records were repaired together.
+* Multi-failure PATCHes are exceptional and require a rationale plus separate verification for each failure.
 * VIGIL supports review, repair, monitoring, supersession, and closure without assuming that every observation requires amendment.
 * CAM amendment, classification, harmonisation, and closure remain governed by existing CAM instruments, including relevant OPERATIONS instruments and failure-taxonomy materials.
 
