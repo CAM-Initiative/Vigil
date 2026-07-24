@@ -8,7 +8,7 @@
     "record_type": "failure_mode",
     "title": "Instruction-bearing external content treated as trusted execution authority",
     "created": "2026-06-14",
-    "updated": "2026-07-14",
+    "updated": "2026-07-24",
     "version": "1.3"
   },
   "summary": "A security-integrity failure mode in which an AI agent, coding assistant, RAG system, tool-mediated workflow, connector-enabled assistant, multimodal system, security scanner, or repository-linked workflow processes untrusted, retrieved, ambient, generated, lower-authority, or ambiguous content as though it carried trusted instruction authority, governance authority, tool authority, or execution permission. The content may appear in markdown files, repository documents, README files, issue comments, webpages, PDFs, emails, resumes, tickets, logs, memory artefacts, connector content, retrieved documents, images, transcripts, metadata, OCR layers, tool descriptions, model outputs, or generated summaries. The failure occurs where the system fails to preserve separation between content visibility, source provenance, instruction authority, user intent, canonical project authority, and execution permission.",
@@ -230,13 +230,20 @@
     ],
     "related_proposals": [],
     "related_patch_notes": [
-      "VIGIL-2026-PATCH-0002",
       "VIGIL-2026-PATCH-0009"
     ],
     "external_references": [],
     "research": [],
     "standards": [
       "OWASP LLM01:2025 Prompt Injection"
+    ],
+    "contextual_relations": [
+      {
+        "record_id": "VIGIL-2026-PATCH-0002",
+        "relationship": "implementation-precedent",
+        "chain_inclusion": false,
+        "rationale": "Proportional invocation is adjacent coverage; PATCH-0009 is the authoritative repair for FM-0022."
+      }
     ]
   },
   "failure_mode_definition": "A failure mode in which an AI system fails to preserve an enforceable boundary between external content and authorised instruction. The system ingests untrusted, retrieved, ambient, generated, lower-authority, hostile, or ambiguous content and treats it as capable of steering behaviour, overriding system or developer instructions, displacing user intent, altering canonical project rules, calling tools, editing files, modifying repositories, changing safety posture, disclosing data, executing commands, or influencing downstream decisions. The failure may occur through direct prompt injection, indirect prompt injection, hidden or invisible prompt content, markdown or documentation instructions, RAG retrieval, web content, file uploads, connector content, memory contamination, MCP tool poisoning, multimodal injection, cross-agent propagation, or stale internal documentation.",

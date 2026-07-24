@@ -8,6 +8,9 @@ Patch Note records capture CAM-specific corpus changes that have actually been i
 * Maintain source evidence only in `source_records`; `source_data` is forbidden anywhere in an individual record.
 * Do **not** add `source_data`.
 * Do **not** duplicate the primary source in `linked_records.external_references`; use that array only for genuinely additional references.
+* Set `repair_scope.primary_failure_mode` to the one failure repaired by this PATCH by default.
+* A multi-failure PATCH is exceptional: explain why one indivisible repair closes every listed failure and provide one `verification_by_failure_mode` result for each.
+* Put adjacent failures, precedents, contrasts, and consequential benefits in `linked_records.contextual_relations` with `chain_inclusion: false`.
 * Put `decision_trace` and `corpus_implementation` before the longer narrative and provenance fields in the JSON record.
 * Include `date_implemented`, `decision_trace`, `corpus_implementation`, `record_reconstruction`, `change_classification`, `change_details`, `implementation_verification`, `impact_summary`, and `remaining_work`.
 * Set `record_reconstruction.reconstructed` to `true` only when an earlier PATCH was rebuilt; native trace-first records use `false` and disclose that lineage explicitly.

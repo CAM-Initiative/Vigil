@@ -267,12 +267,104 @@
             "type": "string"
           }
         },
+        "contextual_relations": {
+          "type": "array",
+          "description": "Typed, non-transitive context links. These records may inform interpretation but never enter an evidence-to-repair chain.",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "record_id",
+              "relationship",
+              "chain_inclusion",
+              "rationale"
+            ],
+            "properties": {
+              "record_id": {
+                "type": "string",
+                "pattern": "^VIGIL-[0-9]{4}-(OBS|FM|PROP|PATCH|RESEARCH)-[0-9]{4}$"
+              },
+              "relationship": {
+                "type": "string",
+                "enum": [
+                  "adjacent",
+                  "adjacent-control",
+                  "contrast",
+                  "supporting-mechanism",
+                  "shared-corpus-area",
+                  "consequential-benefit",
+                  "implementation-precedent",
+                  "separate-workstream",
+                  "governance-context",
+                  "research-context"
+                ]
+              },
+              "chain_inclusion": {
+                "const": false
+              },
+              "rationale": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
         "research": {
           "type": "array",
           "description": "Related VIGIL research artefacts that may provide the evidence origin for this record.",
           "items": {
             "type": "string",
             "pattern": "^VIGIL-[0-9]{4}-RESEARCH-[0-9]{4}$"
+          }
+        }
+      }
+    },
+    "repair_scope": {
+      "type": "object",
+      "description": "Authoritative failure-mode scope for a proposal or PATCH. Contextual records belong in linked_records.contextual_relations and do not participate in repair traversal.",
+      "additionalProperties": false,
+      "required": [
+        "primary_failure_mode",
+        "additional_resolved_failure_modes",
+        "multi_failure_mode_exception",
+        "exception_rationale",
+        "verification_by_failure_mode"
+      ],
+      "properties": {
+        "primary_failure_mode": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^VIGIL-[0-9]{4}-FM-[0-9]{4}$"
+        },
+        "additional_resolved_failure_modes": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^VIGIL-[0-9]{4}-FM-[0-9]{4}$"
+          }
+        },
+        "multi_failure_mode_exception": {
+          "type": "boolean"
+        },
+        "exception_rationale": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "verification_by_failure_mode": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "enum": [
+              "verified",
+              "partially-verified",
+              "unverified",
+              "not-applicable"
+            ]
           }
         }
       }
