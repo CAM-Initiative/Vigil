@@ -28,6 +28,18 @@ jobs:
           persist-credentials: true
           show-progress: false
 
+      - name: Check out complete Caelestis history
+        uses: actions/checkout@v6
+        with:
+          repository: CAM-Initiative/Caelestis
+          path: caelestis
+          fetch-depth: 0
+          persist-credentials: false
+          show-progress: false
+
+      - name: Fetch Caelestis branches used by active PATCH records
+        run: git -C caelestis fetch origin "+refs/heads/*:refs/remotes/origin/*"
+
       - uses: actions/setup-python@v6
         with:
           python-version: "3.x"
@@ -36,8 +48,10 @@ jobs:
         run: |
           python vigil/scripts/test_validate_vigil_records.py
           python vigil/scripts/test_validate_vigil_lifecycle.py
+          python vigil/scripts/test_validate_vigil_patch_trace.py
           python vigil/scripts/test_vigil_provenance_preservation.py
           python vigil/scripts/test_vigil_pipeline_state.py
+          python -m unittest discover -s vigil/tests -p 'test_*.py'
 
       - name: Check VIGIL record routing
         run: python vigil/scripts/route-vigil-records.py --check
@@ -47,6 +61,9 @@ jobs:
 
       - name: Validate VIGIL lifecycle, corpus coverage, patch provenance, CAM boundary, and interpretive provenance
         run: python vigil/scripts/run-vigil-lifecycle-validation.py
+
+      - name: Verify literal PATCH wording against Caelestis
+        run: python vigil/scripts/validate-vigil-patch-trace.py --caelestis-root caelestis
 
       - name: Build and enrich VIGIL registry indexes
         run: |

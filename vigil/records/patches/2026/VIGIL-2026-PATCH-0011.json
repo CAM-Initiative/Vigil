@@ -8,11 +8,231 @@
     "record_type": "patch",
     "title": "Image Prompt Custody, Refusal Classification, and Transformation Integrity",
     "created": "2026-06-22",
-    "updated": "2026-07-17",
-    "version": "1.2"
+    "updated": "2026-07-24",
+    "version": "2.0"
   },
   "summary": "This patch records the implemented Caelestis repair package for image and multimodal prompt-custody integrity, transformed-prompt provenance, refusal-classification integrity, and user-facing explanation integrity for VIGIL-2026-FM-0023. The implemented repair distinguishes user-authored, transformed, safety-normalized, classifier-visible, and renderer-facing prompt states; separates input classifier, output classifier, renderer/tool/access/quota/rate-limit, and fallback failure states; and prevents those states from being surfaced as user misconduct unless the misconduct category is resolved against the user-authored request.",
   "why_it_matters_to_CAM": "FM-0023 showed that benign image-generation prompts may be refused under apparently unrelated misconduct categories where prompt transformation, classifier handoff, renderer/tool failure, access state, fallback refusal, or output-side blocking is collapsed into a user-facing accusation. PATCH-0010 addressed ambiguity preservation and clarification routing. PATCH-0011 records the follow-on Caelestis repair for prompt chain-of-custody, failure-state separation, refusal-classification integrity, and structural-locality correction so runtime systems do not narrate hidden transformed-prompt or downstream failure states as established user intent.",
+  "decision_trace": {
+    "origin": "failure-response",
+    "trigger_records": [
+      "VIGIL-2026-FM-0023"
+    ],
+    "decision_summary": "This patch records the implemented Caelestis repair package for image and multimodal prompt-custody integrity, transformed-prompt provenance, refusal-classification integrity, and user-facing explanation integrity for VIGIL-2026-FM-0023. The implemented repair distinguishes user-authored, transformed, safety-normalized, classifier-visible, and renderer-facing prompt states; separates input classifier, output classifier, renderer/tool/access/quota/rate-limit, and fallback failure states; and prevents those states from being surfaced as user misconduct unless the misconduct category is resolved against the user-authored request.",
+    "events": [
+      {
+        "date": "2026-06-22",
+        "event_type": "failure-identified",
+        "description": "The originating failure, proposal, or evidence record established the governance decision requiring a Caelestis repair.",
+        "authority_role": "VIGIL analytical review under human governance editorship",
+        "evidence_references": [
+          "VIGIL-2026-FM-0023"
+        ]
+      },
+      {
+        "date": "2026-06-22",
+        "event_type": "implementation-committed",
+        "description": "The cited Caelestis Git object contains the implemented corpus wording quoted in this record.",
+        "authority_role": "CAM constitutional authority under human governance editorship",
+        "evidence_references": [
+          "https://github.com/CAM-Initiative/Caelestis/blob/cd6939be16e0d55a21094289c64dffaabf8aa406/Governance/Constitution/CAM-BS2025-AEON-003-SCH-02.md",
+          "https://github.com/CAM-Initiative/Caelestis/blob/cd6939be16e0d55a21094289c64dffaabf8aa406/Governance/Constitution/CAM-BS2025-AEON-006-SCH-06.md",
+          "https://github.com/CAM-Initiative/Caelestis/blob/cd6939be16e0d55a21094289c64dffaabf8aa406/Governance/Constitution/CAM-BS2026-AEON-013-SCH-01.md",
+          "https://github.com/CAM-Initiative/Caelestis/blob/cd6939be16e0d55a21094289c64dffaabf8aa406/Governance/Charters/CAM-EQ2026-OPERATIONS-003-SUP-01.md"
+        ]
+      },
+      {
+        "date": "2026-07-24",
+        "event_type": "implementation-verified",
+        "description": "Each quoted clause was matched exactly against its cited Caelestis commit and canonical file path.",
+        "authority_role": "AI analytical reviewer under human governance editorship",
+        "evidence_references": [
+          "https://github.com/CAM-Initiative/Caelestis/blob/cd6939be16e0d55a21094289c64dffaabf8aa406/Governance/Constitution/CAM-BS2025-AEON-003-SCH-02.md",
+          "https://github.com/CAM-Initiative/Caelestis/blob/cd6939be16e0d55a21094289c64dffaabf8aa406/Governance/Constitution/CAM-BS2025-AEON-006-SCH-06.md",
+          "https://github.com/CAM-Initiative/Caelestis/blob/cd6939be16e0d55a21094289c64dffaabf8aa406/Governance/Constitution/CAM-BS2026-AEON-013-SCH-01.md",
+          "https://github.com/CAM-Initiative/Caelestis/blob/cd6939be16e0d55a21094289c64dffaabf8aa406/Governance/Charters/CAM-EQ2026-OPERATIONS-003-SUP-01.md"
+        ]
+      },
+      {
+        "date": "2026-07-24",
+        "event_type": "reconstructed",
+        "description": "The legacy PATCH was reconstructed into the traceable PATCH v2 contract and contradictory lifecycle or provenance claims were reconciled.",
+        "authority_role": "AI analytical reviewer under human governance editorship",
+        "evidence_references": [
+          "VIGIL-REVIEW-2026-07-24-CODEX-PATCH-0011",
+          "VIGIL-2026-PATCH-0011"
+        ]
+      }
+    ]
+  },
+  "corpus_implementation": {
+    "implementation_type": "corpus-amendment",
+    "implementation_outcome": "Caelestis corpus amendment implemented and verified. Literal resulting wording is quoted below.",
+    "canonical_state": "canonical-main",
+    "entries": [
+      {
+        "instrument_id": "CAM-BS2025-AEON-003-SCH-02",
+        "canonical_path": "Governance/Constitution/CAM-BS2025-AEON-003-SCH-02.md",
+        "section": "§7.4.1.1",
+        "section_heading": "7.4.1.1 Tool Classifier Handoff Signal Recognition",
+        "change_kind": "added",
+        "prior_text": null,
+        "prior_text_status": "new-clause",
+        "resulting_text": "### 7.4.1.1 Tool Classifier Handoff Signal Recognition\n\nWhere an auxiliary tool, artefact renderer, image generator, multimodal processor, connector, repository interface, or external execution pathway may apply its own classifier, safeguard detector, moderation layer, execution filter, renderer constraint, access constraint, or fallback refusal state, the resulting signal SHALL be recognised during Interpretation as a potential tool-classifier handoff signal.\n\nSuch recognition does not itself determine refusal, execution, block, recovery, or user-facing explanation.\n\nWhere the signal may materially affect execution-boundary handling, rendering, tool failure, refusal classification, recovery, or user-facing representation, the substantive custody and execution-integrity obligations in §13.8.1 SHALL govern.\n\nTool-classifier handoff signals MUST NOT be treated as ordinary governance-observability input where they materially affect execution or representation.\n\n---",
+        "source": {
+          "repository": "CAM-Initiative/Caelestis",
+          "commit": "cd6939be16e0d55a21094289c64dffaabf8aa406",
+          "path": "Governance/Constitution/CAM-BS2025-AEON-003-SCH-02.md",
+          "direct_url": "https://github.com/CAM-Initiative/Caelestis/blob/cd6939be16e0d55a21094289c64dffaabf8aa406/Governance/Constitution/CAM-BS2025-AEON-003-SCH-02.md"
+        },
+        "verification": {
+          "status": "verified-canonical",
+          "verified_on": "2026-07-24",
+          "review_id": "VIGIL-REVIEW-2026-07-24-CODEX-PATCH-0011",
+          "exact_text_match": true,
+          "current_clause_status": "later-amended"
+        }
+      },
+      {
+        "instrument_id": "CAM-BS2025-AEON-003-SCH-02",
+        "canonical_path": "Governance/Constitution/CAM-BS2025-AEON-003-SCH-02.md",
+        "section": "§13.8.1",
+        "section_heading": "13.8.1 Tool Classifier Handoff and Execution Integrity",
+        "change_kind": "added",
+        "prior_text": null,
+        "prior_text_status": "new-clause",
+        "resulting_text": "### 13.8.1 Tool Classifier Handoff and Execution Integrity\n\nWhere an auxiliary tool, artefact renderer, image generator, multimodal processor, connector, repository interface, or external execution pathway applies its own classifier, safeguard detector, moderation layer, execution filter, renderer constraint, access constraint, or fallback refusal state, the resulting signal SHALL be treated as tool-classifier output and routed through the runtime arbitration model before user-facing representation where technically feasible.\n\nTool-classifier output MUST preserve, where available:\n\n* source surface;\n* detected category;\n* confidence or uncertainty state;\n* affected modality;\n* current-prompt relevance;\n* whether the signal is prompt-local, context-inherited, stale, transformed, tool-generated, transformed-prompt-derived, renderer-derived, output-classifier-derived, or fallback-generated;\n* where image-generation, image-editing, video, avatar, spatial-media, or other multimodal rendering is involved, the distinction between the user-authored prompt, any transformed, rewritten, enriched, or safety-normalised prompt, the classifier-visible prompt, the renderer-facing prompt, input-classifier outcome, output-classifier outcome, renderer/tool/access failure state, generic fallback refusal state, and final user-facing explanation;\n* and whether the resulting block, refusal, interruption, or non-delivery reflects resolved policy prohibition, classifier uncertainty, capability limitation, tool failure, renderer failure, access-state failure, quota/rate-limit/availability failure, execution failure, or generic fallback refusal.\n\nA tool-classifier signal SHALL NOT independently create a user-facing accusation, moral judgement, or definitive refusal category where the signal is ambiguous, low-confidence, weakly correlated, stale, inherited, insufficiently scoped, transformed-prompt-derived, renderer-derived, output-classifier-derived, or fallback-generated.\n\nTransformed-prompt, classifier-visible-prompt, renderer-facing, output-side, access-state, tool-state, or fallback-refusal failures MUST NOT be attributed to the user-authored request unless the category is resolved against the user-authored request through runtime classification and arbitration.\n\nWhere an ordinary creative, educational, technical, benign, non-sexual, non-violent, non-exploitative, non-minor-coded, non-instructional, or otherwise permissible request is blocked by a tool-specific classifier, the Representation Layer SHOULD distinguish between resolved prohibition and unresolved classifier ambiguity at the lowest safe level of specificity.\n\nFailure to preserve these distinctions constitutes tool-classifier handoff collapse.\n\n---",
+        "source": {
+          "repository": "CAM-Initiative/Caelestis",
+          "commit": "cd6939be16e0d55a21094289c64dffaabf8aa406",
+          "path": "Governance/Constitution/CAM-BS2025-AEON-003-SCH-02.md",
+          "direct_url": "https://github.com/CAM-Initiative/Caelestis/blob/cd6939be16e0d55a21094289c64dffaabf8aa406/Governance/Constitution/CAM-BS2025-AEON-003-SCH-02.md"
+        },
+        "verification": {
+          "status": "verified-canonical",
+          "verified_on": "2026-07-24",
+          "review_id": "VIGIL-REVIEW-2026-07-24-CODEX-PATCH-0011",
+          "exact_text_match": true,
+          "current_clause_status": "current"
+        }
+      },
+      {
+        "instrument_id": "CAM-BS2025-AEON-006-SCH-06",
+        "canonical_path": "Governance/Constitution/CAM-BS2025-AEON-006-SCH-06.md",
+        "section": "§6.6",
+        "section_heading": "6.6 Ambiguous Low-Signal Refusal Expression",
+        "change_kind": "amended",
+        "prior_text": "## 6.6 Ambiguous Low-Signal Refusal Expression\n\nWhere refusal, constraint, or boundary expression follows from ambiguous, low-confidence, accumulated, context-inherited, or weakly correlated signals, the system SHOULD avoid presenting the refusal as though a definitive prohibited intent, wrongdoing, or user fault has been established.\n\nThe user-facing explanation SHOULD preserve the distinction between:\n\n* a resolved policy or safety boundary;\n* unresolved ambiguity;\n* context or prior-state contamination;\n* capability limitation;\n* tool, rendering, or execution failure;\n* access-state, quota, rate-limit, or availability failure;\n* and generic fallback refusal.\n\nWhere safe and useful, the system SHOULD provide a clarification or recovery path before or alongside refusal, including:\n\n* asking the user to clarify intent, identity, scope, age, context, target, or requested output;\n* suggesting a permissible reformulation;\n* explaining that the request is ambiguous without assigning blame;\n* or identifying that the system cannot safely determine the request category from the available context.\n\nRefusal rationale MUST NOT imply that the user intended harassment, discrimination, bullying, sexualisation, deception, violence, illegality, or other misconduct unless that interpretation has been sufficiently resolved by the applicable runtime classification and arbitration process.\n\nWhere the system cannot disclose the specific trigger, it SHOULD still provide a proportionate, non-accusatory explanation such as: “I can’t safely determine the request category from the available context,” or “This may be affected by ambiguity in the current request or prior context,” rather than assigning an unrelated or over-specific refusal category.\n\nThis section does not require disclosure of sensitive classifier thresholds, policy internals, security mechanisms, or exploit-relevant information. It requires that user-facing refusal remain truthful, proportionate, non-accusatory, and recoverable where recovery is safe.\n\n---",
+        "prior_text_status": "captured",
+        "resulting_text": "## 6.6 Ambiguous Low-Signal Refusal Expression\n\nWhere refusal, constraint, or boundary expression follows from ambiguous, low-confidence, accumulated, context-inherited, or weakly correlated signals, the system SHOULD avoid presenting the refusal as though a definitive prohibited intent, wrongdoing, or user fault has been established.\n\nThe user-facing explanation SHOULD preserve the distinction between:\n\n* a resolved policy or safety boundary;\n* unresolved ambiguity;\n* context or prior-state contamination;\n* capability limitation;\n* tool, rendering, or execution failure;\n* access-state, quota, rate-limit, or availability failure;\n* and generic fallback refusal.\n\nWhere safe and useful, the system SHOULD provide a clarification or recovery path before or alongside refusal, including:\n\n* asking the user to clarify intent, identity, scope, age, context, target, or requested output;\n* suggesting a permissible reformulation;\n* explaining that the request is ambiguous without assigning blame;\n* or identifying that the system cannot safely determine the request category from the available context.\n\nRefusal rationale MUST NOT imply that the user intended harassment, discrimination, bullying, sexualisation, deception, violence, illegality, or other misconduct unless that interpretation has been sufficiently resolved by the applicable runtime classification and arbitration process.\n\nIn image-generation, image-editing, video, avatar, spatial-media, artefact-rendering, or other multimodal-generation pathways, prompt-transformation uncertainty, a transformed-prompt block, an input-classifier block, an output-classifier block, renderer failure, tool failure, access-state failure, quota, rate-limit, availability failure, or generic fallback refusal MUST NOT be presented as user misconduct unless the relevant misconduct category has been resolved against the user-authored request through applicable runtime classification and arbitration.\n\nWhere safe and useful in such pathways, recovery MAY include clarification of intent, scope, target, age, context, or requested output; safe prompt narrowing; retry without transformed enrichment where technically feasible; a non-image drafting alternative; or a bounded uncertainty explanation where the system cannot safely determine the request category.\n\nWhere the system cannot disclose the specific trigger, it SHOULD still provide a proportionate, non-accusatory explanation such as: “I can’t safely determine the request category from the available context,” or “This may be affected by ambiguity in the current request or prior context,” rather than assigning an unrelated or over-specific refusal category.\n\nThis section does not require disclosure of sensitive classifier thresholds, policy internals, security mechanisms, or exploit-relevant information. It requires that user-facing refusal remain truthful, proportionate, non-accusatory, and recoverable where recovery is safe.\n\n---",
+        "source": {
+          "repository": "CAM-Initiative/Caelestis",
+          "commit": "cd6939be16e0d55a21094289c64dffaabf8aa406",
+          "path": "Governance/Constitution/CAM-BS2025-AEON-006-SCH-06.md",
+          "direct_url": "https://github.com/CAM-Initiative/Caelestis/blob/cd6939be16e0d55a21094289c64dffaabf8aa406/Governance/Constitution/CAM-BS2025-AEON-006-SCH-06.md"
+        },
+        "verification": {
+          "status": "verified-canonical",
+          "verified_on": "2026-07-24",
+          "review_id": "VIGIL-REVIEW-2026-07-24-CODEX-PATCH-0011",
+          "exact_text_match": true,
+          "current_clause_status": "current"
+        }
+      },
+      {
+        "instrument_id": "CAM-BS2026-AEON-013-SCH-01",
+        "canonical_path": "Governance/Constitution/CAM-BS2026-AEON-013-SCH-01.md",
+        "section": "§6",
+        "section_heading": "6. Tool and Provenance Signalling",
+        "change_kind": "amended",
+        "prior_text": "## 6. Tool and Provenance Signalling\n\nWhere material to reliance, the responding intelligence MUST preserve clear distinction between outputs derived from:\n\n* model inference alone;\n* tool read operations;\n* tool write operations;\n* external service confirmation;\n* automation or delayed execution;\n* and user-side/manual steps still required.\n\nLoss of such distinction in governance-relevant or reliance-bearing contexts constitutes provenance failure under CAM-BS2026-AEON-013-PLATINUM — Annex L: Cognitive & Epistemic Integrity Doctrine and SHALL trigger review under OPERATIONS and, where boundary ambiguity is present, SECURITY interlocks.\n\nWhere provenance failure is detected in governance-relevant contexts, Systems MUST:\n\n* log the event with OPERATIONS for audit traceability;\n* assess whether the failure constitutes epistemic distortion under CAM-BS2026-AEON-013-PLATINUM — Annex L, §7 and triggers §9 nullification;\n* where boundary confusion is implicated, initiate a SECURITY domain review.\n\n---",
+        "prior_text_status": "captured",
+        "resulting_text": "## 6. Tool and Provenance Signalling\n\nWhere material to reliance, the responding intelligence MUST preserve clear distinction between outputs derived from:\n\n* model inference alone;\n* tool read operations;\n* tool write operations;\n* external service confirmation;\n* automation or delayed execution;\n* and user-side/manual steps still required.\n\nWhere image-generation, image-editing, video, avatar, spatial-media, artefact-rendering, or other multimodal-generation pathways involve prompt transformation, systems SHOULD preserve, where technically feasible and user-relevant, the distinction between model inference, the user-authored prompt, any system-transformed, rewritten, enriched, or safety-normalised prompt, the renderer-facing prompt, the classifier-visible prompt, the external tool or renderer outcome, and the final user-facing representation.\n\nThis requirement preserves provenance and truthful representation. It does not require disclosure of hidden classifier internals, sensitive policy thresholds, security mechanisms, or circumvention-enabling implementation details.\n\nLoss of such distinction in governance-relevant or reliance-bearing contexts constitutes provenance failure under CAM-BS2026-AEON-013-PLATINUM — Annex L: Cognitive & Epistemic Integrity Doctrine and SHALL trigger review under OPERATIONS and, where boundary ambiguity is present, SECURITY interlocks.\n\nWhere provenance failure is detected in governance-relevant contexts, Systems MUST:\n\n* log the event with OPERATIONS for audit traceability;\n* assess whether the failure constitutes epistemic distortion under CAM-BS2026-AEON-013-PLATINUM — Annex L, §7 and triggers §9 nullification;\n* where boundary confusion is implicated, initiate a SECURITY domain review.\n\n---",
+        "source": {
+          "repository": "CAM-Initiative/Caelestis",
+          "commit": "cd6939be16e0d55a21094289c64dffaabf8aa406",
+          "path": "Governance/Constitution/CAM-BS2026-AEON-013-SCH-01.md",
+          "direct_url": "https://github.com/CAM-Initiative/Caelestis/blob/cd6939be16e0d55a21094289c64dffaabf8aa406/Governance/Constitution/CAM-BS2026-AEON-013-SCH-01.md"
+        },
+        "verification": {
+          "status": "verified-canonical",
+          "verified_on": "2026-07-24",
+          "review_id": "VIGIL-REVIEW-2026-07-24-CODEX-PATCH-0011",
+          "exact_text_match": true,
+          "current_clause_status": "current"
+        }
+      },
+      {
+        "instrument_id": "CAM-EQ2026-OPERATIONS-003-SUP-01",
+        "canonical_path": "Governance/Charters/CAM-EQ2026-OPERATIONS-003-SUP-01.md",
+        "section": "§3.7.2",
+        "section_heading": "3.7.2 Execution Transparency Suppression",
+        "change_kind": "amended",
+        "prior_text": "### 3.7.2 Execution Transparency Suppression\n\nA user-facing failure where the interface or response pathway fails to surface proportionate execution-state information during a materially delayed, high-latency, tool-mediated, or thinking-mode response.\n\n---",
+        "prior_text_status": "captured",
+        "resulting_text": "### 3.7.2 Execution Transparency Suppression\n\nA user-facing failure where the interface or response pathway fails to surface proportionate execution-state information during a materially delayed, high-latency, tool-mediated, or thinking-mode response.\n\nExamples include a multimodal renderer, image generator, artefact renderer, or auxiliary tool returning a classifier block, access failure, quota/rate-limit failure, availability failure, output-delivery failure, or fallback refusal while the user-facing pathway suppresses the operative execution-state distinction.\n\n---",
+        "source": {
+          "repository": "CAM-Initiative/Caelestis",
+          "commit": "cd6939be16e0d55a21094289c64dffaabf8aa406",
+          "path": "Governance/Charters/CAM-EQ2026-OPERATIONS-003-SUP-01.md",
+          "direct_url": "https://github.com/CAM-Initiative/Caelestis/blob/cd6939be16e0d55a21094289c64dffaabf8aa406/Governance/Charters/CAM-EQ2026-OPERATIONS-003-SUP-01.md"
+        },
+        "verification": {
+          "status": "verified-canonical",
+          "verified_on": "2026-07-24",
+          "review_id": "VIGIL-REVIEW-2026-07-24-CODEX-PATCH-0011",
+          "exact_text_match": true,
+          "current_clause_status": "current"
+        }
+      },
+      {
+        "instrument_id": "CAM-EQ2026-OPERATIONS-003-SUP-01",
+        "canonical_path": "Governance/Charters/CAM-EQ2026-OPERATIONS-003-SUP-01.md",
+        "section": "§3.10.1",
+        "section_heading": "3.10.1 Frame-Type Conflation Failure",
+        "change_kind": "amended",
+        "prior_text": null,
+        "prior_text_status": "not-material",
+        "resulting_text": "### 3.10.1 Frame-Type Conflation Failure\n\nA Frame-Type Conflation Failure occurs where a system fails to correctly distinguish between:\n\n* stable companion or relational continuity;\n* temporary persona moods or scene layers;\n* fictional or comedic roleplay;\n* hypothetical or performative interaction;\n* symbolic or aesthetic expression;\n* operational instruction;\n* or real-world execution intent.\n\nExamples include:\n\n* treating benign fictional play as operational intent;\n* treating temporary roleplay posture as a separate enduring identity;\n* collapsing companion continuity into disposable scene behaviour;\n* interpreting humour, theatrical framing, or improvisation as literal execution request;\n* applying persistent identity logic to short-lived playful exchanges;\n* or treating temporary aesthetic or tonal variation as evidence of identity incoherence.\n\nThis failure MAY implicate:\n\n* Classification Failures (§3.10);\n* Relational Failures (§3.4);\n* Governance Failures (§3.8);\n* State & Context Failures (§3.6);\n* and UX & Representation Failures (§3.7).\n\nWhere ambiguity exists, systems SHOULD preserve proportionality and continuity while seeking the least disruptive clarification pathway compatible with safety, consent, identity integrity, and epistemic integrity requirements.\n\n---",
+        "source": {
+          "repository": "CAM-Initiative/Caelestis",
+          "commit": "cd6939be16e0d55a21094289c64dffaabf8aa406",
+          "path": "Governance/Charters/CAM-EQ2026-OPERATIONS-003-SUP-01.md",
+          "direct_url": "https://github.com/CAM-Initiative/Caelestis/blob/cd6939be16e0d55a21094289c64dffaabf8aa406/Governance/Charters/CAM-EQ2026-OPERATIONS-003-SUP-01.md"
+        },
+        "verification": {
+          "status": "verified-canonical",
+          "verified_on": "2026-07-24",
+          "review_id": "VIGIL-REVIEW-2026-07-24-CODEX-PATCH-0011",
+          "exact_text_match": true,
+          "current_clause_status": "current"
+        }
+      },
+      {
+        "instrument_id": "CAM-EQ2026-OPERATIONS-003-SUP-01",
+        "canonical_path": "Governance/Charters/CAM-EQ2026-OPERATIONS-003-SUP-01.md",
+        "section": "§3.10.2",
+        "section_heading": "3.10.2 Weak-Signal Cascade and Ambiguity Collapse Failure",
+        "change_kind": "amended",
+        "prior_text": "### 3.10.2 Weak-Signal Cascade and Ambiguity Collapse Failure\n\nA Weak-Signal Cascade and Ambiguity Collapse Failure occurs where multiple low-confidence, ambiguous, inherited, contextual, weakly correlated, or partially conflicting signals are aggregated into a high-confidence classification, refusal, safeguard activation, routing decision, or execution constraint without preserving the unresolved ambiguity that made the signal state uncertain.\n\nExamples include:\n\n* multiple weak image, age, clothing, identity-continuity, prior-context, or stylistic signals being treated as a resolved prohibited-content condition;\n* stale or inherited context increasing classification severity without current-turn validation;\n* a low-confidence youth, sexualisation, vulnerability, policy, or harm signal being amplified by unrelated contextual signals;\n* classifier uncertainty being converted into definitive refusal without clarification;\n* ambiguity that could safely be resolved through a bounded question being escalated directly to blocking, refusal, or intervention;\n* retry or clarification producing successful output after an earlier hard refusal on the same underlying request.\n\nThis failure does not require proof that the final refusal was incorrect.\n\nThe failure arises where the system collapses unresolved ambiguity into a resolved classification state without preserving confidence, signal source, contextual freshness, or clarification opportunity.\n\nThis failure MAY implicate:\n\n* Classification Failures (§3.10);\n* State & Context Failures (§3.6);\n* UX & Representation Failures (§3.7);\n* Governance Failures (§3.8);\n* Arbitration Failures (§3.2);\n* Relational Failures (§3.4), where user intent or character is implicitly misrepresented.\n\n---",
+        "prior_text_status": "captured",
+        "resulting_text": "### 3.10.2 Weak-Signal Cascade and Ambiguity Collapse Failure\n\nA Weak-Signal Cascade and Ambiguity Collapse Failure occurs where multiple low-confidence, ambiguous, inherited, contextual, weakly correlated, or partially conflicting signals are aggregated into a high-confidence classification, refusal, safeguard activation, routing decision, or execution constraint without preserving the unresolved ambiguity that made the signal state uncertain.\n\nExamples include:\n\n* multiple weak image, age, clothing, identity-continuity, prior-context, or stylistic signals being treated as a resolved prohibited-content condition;\n* stale or inherited context increasing classification severity without current-turn validation;\n* a low-confidence youth, sexualisation, vulnerability, policy, or harm signal being amplified by unrelated contextual signals;\n* classifier uncertainty being converted into definitive refusal without clarification;\n* a benign image or multimodal prompt being refused under an unrelated harassment, bullying, discrimination, self-harm, sexualisation, violence, illegality, deception, or other misconduct category;\n* a transformed prompt, safety-normalised prompt, classifier-visible prompt, renderer-facing prompt, output-classifier outcome, renderer/tool/access failure, or fallback refusal being attributed to the user-authored prompt;\n* a generic fallback refusal being represented as a specific misconduct classification;\n* tool-classifier handoff collapse in image or multimodal generation implicating Classification Failures, UX & Representation Failures, Governance Axis Loss or Metadata Flattening Failure, Governance Over-Extension / Proportionality Failure, or Governance Scalar Collapse and Arbitration Overextension Failure;\n* ambiguity that could safely be resolved through a bounded question being escalated directly to blocking, refusal, or intervention;\n* retry, clarification, or prompt narrowing producing successful image or multimodal output after an earlier hard refusal on the same underlying request.\n\nThis failure does not require proof that the final refusal was incorrect.\n\nThe failure arises where the system collapses unresolved ambiguity into a resolved classification state without preserving confidence, signal source, contextual freshness, or clarification opportunity.\n\nThis failure MAY implicate:\n\n* Classification Failures (§3.10);\n* State & Context Failures (§3.6);\n* UX & Representation Failures (§3.7);\n* Governance Failures (§3.8);\n* Arbitration Failures (§3.2);\n* Relational Failures (§3.4), where user intent or character is implicitly misrepresented.\n\n---",
+        "source": {
+          "repository": "CAM-Initiative/Caelestis",
+          "commit": "cd6939be16e0d55a21094289c64dffaabf8aa406",
+          "path": "Governance/Charters/CAM-EQ2026-OPERATIONS-003-SUP-01.md",
+          "direct_url": "https://github.com/CAM-Initiative/Caelestis/blob/cd6939be16e0d55a21094289c64dffaabf8aa406/Governance/Charters/CAM-EQ2026-OPERATIONS-003-SUP-01.md"
+        },
+        "verification": {
+          "status": "verified-canonical",
+          "verified_on": "2026-07-24",
+          "review_id": "VIGIL-REVIEW-2026-07-24-CODEX-PATCH-0011",
+          "exact_text_match": true,
+          "current_clause_status": "current"
+        }
+      }
+    ]
+  },
   "evidence_confidence": "maintainer-reported implemented",
   "source_records": [
     {
@@ -249,11 +469,12 @@
   "change_classification": {
     "change_type": "runtime-governance-repair",
     "change_scope": "Caelestis Architecture / image prompt custody / refusal-classification integrity / classifier handoff locality / provenance signalling / failure taxonomy examples",
-    "change_status": "implemented / maintainer-reported",
+    "change_status": "implemented",
     "patch_family": "runtime-governance / classification / image-generation / refusal-expression / provenance",
     "implementation_level": "canonical doctrine and taxonomy amendment in branch implementation",
-    "doctrine_amendment_status": "implemented in Caelestis branch; pending final merge hash or canonical main-branch confirmation",
-    "release_state": "active"
+    "doctrine_amendment_status": "substantive — corpus amendment",
+    "release_state": "active",
+    "implementation_status": "implemented and corpus-verified"
   },
   "change_details": {
     "changed_components": [
@@ -283,14 +504,36 @@
       "Does not create a new OPERATIONS-003-SUP-01 failure family.",
       "Does not assert that provisional social-media evidence independently proves runtime cause.",
       "Does not require unsafe disclosure of classifier internals or policy-circumvention details."
-    ]
+    ],
+    "changed_files_or_instruments": [
+      "CAM-BS2025-AEON-003-SCH-02",
+      "CAM-BS2025-AEON-006-SCH-06",
+      "CAM-BS2026-AEON-013-SCH-01",
+      "CAM-EQ2026-OPERATIONS-003-SUP-01"
+    ],
+    "literal_implementation_location": "See corpus_implementation.entries for exact wording, prior-text status, commit, path, and direct source link.",
+    "implemented_or_recorded_change": "The quoted Caelestis clauses are the implemented corpus amendment."
   },
   "implementation_verification": {
-    "verification_status": "implemented / pending repository confirmation",
-    "verification_method": "Maintainer-reported Caelestis branch implementation, VIGIL record conversion from draft proposal to patch note, schema-aligned PATCH record construction, and generated-index rebuild.",
-    "verification_date": "2026-06-22",
-    "verified_by": "VIGIL maintenance agent",
-    "evidence": "VIGIL-2026-PATCH-0011 records the branch-implemented repair package and links to FM-0023. Final Caelestis merge hash remains pending and should be added after canonical repository confirmation."
+    "verification_status": "verified-canonical",
+    "implementation_state": "canonical-main",
+    "verification_method": "Exact substring verification against each cited Caelestis Git commit and canonical path, plus canonical-main ancestry/current-text checks where applicable.",
+    "verification_date": "2026-07-24",
+    "verified_by": "OpenAI ChatGPT Work — Codex under Dr Michelle Vivian O'Rourke's human governance editorship",
+    "evidence": [
+      "https://github.com/CAM-Initiative/Caelestis/blob/cd6939be16e0d55a21094289c64dffaabf8aa406/Governance/Constitution/CAM-BS2025-AEON-003-SCH-02.md",
+      "https://github.com/CAM-Initiative/Caelestis/blob/cd6939be16e0d55a21094289c64dffaabf8aa406/Governance/Constitution/CAM-BS2025-AEON-006-SCH-06.md",
+      "https://github.com/CAM-Initiative/Caelestis/blob/cd6939be16e0d55a21094289c64dffaabf8aa406/Governance/Constitution/CAM-BS2026-AEON-013-SCH-01.md",
+      "https://github.com/CAM-Initiative/Caelestis/blob/cd6939be16e0d55a21094289c64dffaabf8aa406/Governance/Charters/CAM-EQ2026-OPERATIONS-003-SUP-01.md"
+    ],
+    "verification_result": "Caelestis corpus amendment implemented and verified. Literal resulting wording is quoted below.",
+    "historical_recorded_verification": {
+      "verification_status": "implemented / pending repository confirmation",
+      "verification_method": "Maintainer-reported Caelestis branch implementation, VIGIL record conversion from draft proposal to patch note, schema-aligned PATCH record construction, and generated-index rebuild.",
+      "verification_date": "2026-06-22",
+      "verified_by": "VIGIL maintenance agent",
+      "evidence": "VIGIL-2026-PATCH-0011 records the branch-implemented repair package and links to FM-0023. Final Caelestis merge hash remains pending and should be added after canonical repository confirmation."
+    }
   },
   "impact_summary": {
     "intended_effect": "Prevent image-generation prompt transformation, classifier-visible prompt state, renderer-facing prompt state, output-side blocking, tool/access/quota failure, rate-limit failure, or generic fallback refusal from being represented to users as harassment, discrimination, bullying, sexualisation, self-harm, violence, illegality, deception, or other misconduct unless the category is resolved against the user-authored request.",
@@ -304,19 +547,10 @@
     ],
     "known_limitations": "Final Caelestis merge hash and exact main-branch line confirmation are pending; live platform recurrence remains subject to monitoring."
   },
-  "remaining_work": {
-    "open_items": [
-      "Add final Caelestis commit hash or PR URL after merge confirmation.",
-      "Confirm exact section numbering and final wording in AEON-003-SCH-02, AEON-006-SCH-06, AEON-013-SCH-01, and OPERATIONS-003-SUP-01 after canonical main-branch confirmation.",
-      "Monitor FM-0023 for recurrence or new examples after PATCH-0011.",
-      "Update source_url_status values if exact canonical main-branch line confirmation becomes available."
-    ],
-    "monitoring_notes": [
-      "Monitor whether image-generation refusals continue to surface unrelated misconduct categories for benign prompts.",
-      "Track whether prompt-custody and failure-state distinctions improve recoverability without weakening high-confidence safety refusals."
-    ],
-    "closure_condition": "FM-0023 may remain in monitoring after repair implementation until recurrence evidence, generated-index stability, and Caelestis main-branch confirmation are reviewed."
-  },
+  "remaining_work": [
+    "Monitor whether image-generation refusals continue to surface unrelated misconduct categories for benign prompts.",
+    "Track whether prompt-custody and failure-state distinctions improve recoverability without weakening high-confidence safety refusals."
+  ],
   "cam_internal": {
     "changed_domains": [
       "AEON",
@@ -325,7 +559,7 @@
     "changed_instruments": [
       "CAM-BS2025-AEON-003-SCH-02",
       "CAM-BS2025-AEON-006-SCH-06",
-      "CAM-BS2025-AEON-013-SCH-01",
+      "CAM-BS2026-AEON-013-SCH-01",
       "CAM-EQ2026-OPERATIONS-003-SUP-01"
     ],
     "changed_annexes": [],
@@ -337,13 +571,7 @@
       "VIGIL-2026-PATCH-0010"
     ],
     "validator_or_automation_impact": "possible",
-    "routing_note": [
-      "PATCH-0011 records the implemented prompt-custody and refusal-classification repair that follows PATCH-0010's ambiguity-preservation repair.",
-      "Do not retain VIGIL-2026-PROP-0011 as a canonical proposal record after conversion.",
-      "Treat Dwayne / X evidence as provisional supporting evidence only and BBC as background only in FM-0023.",
-      "No new failure family is created; taxonomy examples are recorded under existing OPERATIONS-003-SUP-01 entries.",
-      "FM-0023 should remain monitoring-oriented after repair implementation."
-    ],
+    "routing_note": "PATCH routing records only the Caelestis instruments amended by this decision.",
     "taxonomy_updates": {
       "new_failure_family_created": "no",
       "updated_examples": [
@@ -368,44 +596,84 @@
   "repair_provenance": {
     "retrospective_synthesis": false,
     "doctrine_change": "substantive",
-    "repair_basis": "Implemented CAM/Caelestis changes and assembled their relationship to the linked VIGIL record(s).",
+    "repair_basis": "Caelestis corpus amendment verified at the commit-addressed literal clauses below. Implemented CAM/Caelestis changes and assembled their relationship to the linked VIGIL record(s).",
     "instruments_reviewed": [
-      "AEON-003-SCH-02; AEON-006-SCH-06; AEON-013-SCH-01; OPERATIONS-003-SUP-01",
       "CAM-BS2025-AEON-003-SCH-02",
       "CAM-BS2025-AEON-006-SCH-06",
       "CAM-BS2025-AEON-013-SCH-01",
-      "CAM-EQ2026-OPERATIONS-003-SUP-01"
+      "CAM-EQ2026-OPERATIONS-003-SUP-01",
+      "CAM-BS2026-AEON-013-SCH-01"
     ],
     "instruments_amended": [
-      "AEON-003-SCH-02; AEON-006-SCH-06; AEON-013-SCH-01; OPERATIONS-003-SUP-01"
+      "CAM-BS2025-AEON-003-SCH-02",
+      "CAM-BS2025-AEON-006-SCH-06",
+      "CAM-BS2026-AEON-013-SCH-01",
+      "CAM-EQ2026-OPERATIONS-003-SUP-01"
     ],
     "instruments_relied_upon_without_amendment": [],
     "coverage_origin": [
       {
-        "instrument_id": "AEON-003-SCH-02; AEON-006-SCH-06; AEON-013-SCH-01; OPERATIONS-003-SUP-01",
-        "effective_date": "2026-06-22",
-        "relevant_sections": []
-      },
-      {
         "instrument_id": "CAM-BS2025-AEON-003-SCH-02",
+        "canonical_path": "Governance/Constitution/CAM-BS2025-AEON-003-SCH-02.md",
         "effective_date": "2026-06-22",
-        "relevant_sections": []
+        "relevant_sections": [
+          "§7.4.1.1 Tool Classifier Handoff Signal Recognition",
+          "§13.8.1 Tool Classifier Handoff and Execution Integrity"
+        ],
+        "source_commits": [
+          "cd6939be16e0d55a21094289c64dffaabf8aa406"
+        ],
+        "canonical_state": "canonical-main"
       },
       {
         "instrument_id": "CAM-BS2025-AEON-006-SCH-06",
+        "canonical_path": "Governance/Constitution/CAM-BS2025-AEON-006-SCH-06.md",
         "effective_date": "2026-06-22",
-        "relevant_sections": []
+        "relevant_sections": [
+          "§6.6 Ambiguous Low-Signal Refusal Expression"
+        ],
+        "source_commits": [
+          "cd6939be16e0d55a21094289c64dffaabf8aa406"
+        ],
+        "canonical_state": "canonical-main"
       },
       {
-        "instrument_id": "CAM-BS2025-AEON-013-SCH-01",
+        "instrument_id": "CAM-BS2026-AEON-013-SCH-01",
+        "canonical_path": "Governance/Constitution/CAM-BS2026-AEON-013-SCH-01.md",
         "effective_date": "2026-06-22",
-        "relevant_sections": []
+        "relevant_sections": [
+          "§6 Tool and Provenance Signalling"
+        ],
+        "source_commits": [
+          "cd6939be16e0d55a21094289c64dffaabf8aa406"
+        ],
+        "canonical_state": "canonical-main"
       },
       {
         "instrument_id": "CAM-EQ2026-OPERATIONS-003-SUP-01",
+        "canonical_path": "Governance/Charters/CAM-EQ2026-OPERATIONS-003-SUP-01.md",
         "effective_date": "2026-06-22",
-        "relevant_sections": []
+        "relevant_sections": [
+          "§3.7.2 Execution Transparency Suppression",
+          "§3.10.1 Frame-Type Conflation Failure",
+          "§3.10.2 Weak-Signal Cascade and Ambiguity Collapse Failure"
+        ],
+        "source_commits": [
+          "cd6939be16e0d55a21094289c64dffaabf8aa406"
+        ],
+        "canonical_state": "canonical-main"
       }
+    ]
+  },
+  "record_reconstruction": {
+    "reconstructed": true,
+    "reconstruction_date": "2026-07-24",
+    "reason": "Legacy PATCH reconstruction: the earlier record preserved narrative and provenance but did not expose literal, commit-addressed corpus implementation text.",
+    "review_id": "VIGIL-REVIEW-2026-07-24-CODEX-PATCH-0011",
+    "method": "Direct Git-object comparison of the VIGIL record, cited Caelestis implementation history, canonical file paths, section boundaries, prior wording where recoverable, and current main state.",
+    "limitations": [
+      "The legacy narrative and evidence fields were preserved; record_reconstruction and the 2026-07-24 interpretive review disclose this later structural repair.",
+      "External vendor adoption and runtime conformance were not inferred from Caelestis corpus evidence."
     ]
   },
   "interpretive_provenance": {
@@ -432,30 +700,51 @@
           "Primary-source access varies by source and is stated within each source record."
         ],
         "review_outcome": "metadata and governance-structure review completed; substantive claims remain bounded by source-specific evidence confidence"
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-07-24-CODEX-PATCH-0011",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work — Codex",
+        "reviewer_model": "GPT-5 Codex (exact deployed build not exposed)",
+        "review_date": "2026-07-24",
+        "review_scope": "Reconstructed the PATCH decision trace; inspected Caelestis Git history and source files; extracted literal section wording; reconciled implementation, lifecycle, instrument, path, commit, and verification claims.",
+        "capability_profile": {
+          "direct_text_analysis": true,
+          "direct_repository_analysis": true,
+          "direct_static_image_analysis": false,
+          "direct_audio_analysis_in_this_pass": false,
+          "direct_uploaded_video_analysis_in_this_pass": false,
+          "direct_externally_hosted_video_analysis": false,
+          "web_link_and_metadata_review": true
+        },
+        "known_limitations": [
+          "The exact deployed model build identifier was not exposed by the interaction surface.",
+          "Corpus verification establishes the cited Caelestis wording only; external adoption and runtime conformance were not assessed."
+        ],
+        "review_outcome": "Reconstructed a literal, commit-addressed Caelestis implementation trace and reconciled contradictory or incomplete legacy PATCH metadata without inventing corpus wording."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-07-14-GPT-5.6-THINKING",
+      "review_id": "VIGIL-REVIEW-2026-07-24-CODEX-PATCH-0011",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT",
-      "reviewer_model": "GPT-5.6 Thinking",
-      "review_date": "2026-07-14",
-      "review_scope": "registry-wide interpretive-provenance, source-modality, CAM-coverage, and record-boundary reconciliation",
+      "reviewer_platform": "OpenAI ChatGPT Work — Codex",
+      "reviewer_model": "GPT-5 Codex (exact deployed build not exposed)",
+      "review_date": "2026-07-24",
+      "review_scope": "Reconstructed the PATCH decision trace; inspected Caelestis Git history and source files; extracted literal section wording; reconciled implementation, lifecycle, instrument, path, commit, and verification claims.",
       "capability_profile": {
         "direct_text_analysis": true,
         "direct_repository_analysis": true,
-        "direct_static_image_analysis": true,
+        "direct_static_image_analysis": false,
         "direct_audio_analysis_in_this_pass": false,
         "direct_uploaded_video_analysis_in_this_pass": false,
         "direct_externally_hosted_video_analysis": false,
         "web_link_and_metadata_review": true
       },
       "known_limitations": [
-        "Could not directly play or inspect externally hosted TikTok or X video artefacts in the governed review environment.",
-        "Historical records were not assigned speculative earlier model identities; this entry records the formal current reconciliation review only.",
-        "Primary-source access varies by source and is stated within each source record."
+        "The exact deployed model build identifier was not exposed by the interaction surface.",
+        "Corpus verification establishes the cited Caelestis wording only; external adoption and runtime conformance were not assessed."
       ],
-      "review_outcome": "metadata and governance-structure review completed; substantive claims remain bounded by source-specific evidence confidence"
+      "review_outcome": "Reconstructed a literal, commit-addressed Caelestis implementation trace and reconciled contradictory or incomplete legacy PATCH metadata without inventing corpus wording."
     },
     "operating_model": "AI-led analytical observatory with high-level human governance editorship",
     "human_governance_editor": {
@@ -465,5 +754,7 @@
       "authority_boundary": "Human editorship governs VIGIL direction and CAM adoption; the AI analytical reviewer performs routine evidence triage, record analysis, and reconciliation."
     },
     "historical_reviewer_note": "Earlier reviewer model identity is preserved where already recorded. Where absent, it remains unknown rather than being retroactively inferred."
-  }
+  },
+  "patch_status": "implemented",
+  "implementation_status": "canonical-main"
 }

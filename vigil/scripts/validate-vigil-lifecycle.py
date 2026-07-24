@@ -52,6 +52,9 @@ PATCH_CLASSIFICATIONS = {
     "verification",
 }
 DOCTRINE_CHANGE = {"none", "partial", "substantive"}
+CORPUS_IMPLEMENTATION_TYPES = {"corpus-amendment", "pre-existing-control", "mixed"}
+CORPUS_CANONICAL_STATES = {"canonical-main", "historical-canonical", "branch-only", "unverified"}
+AMENDMENT_CHANGE_KINDS = {"added", "amended", "removed"}
 CURATOR_DIRECTIVES = (
     "add this incident to",
     "add this observation to",
@@ -248,6 +251,20 @@ def validate_failure(
         related_failures = patch.get("linked_records", {}).get("related_failure_modes", [])
         if isinstance(related_failures, list) and record_id not in related_failures:
             errors.append(f"{path}: patch {patch_id!r} does not reciprocally link to {record_id}")
+        implementation = patch.get("corpus_implementation")
+        canonical_state = (
+            implementation.get("canonical_state")
+            if isinstance(implementation, dict)
+            else None
+        )
+        if status == "repaired" and canonical_state not in {
+            "canonical-main",
+            "historical-canonical",
+        }:
+            errors.append(
+                f"{path}: repaired failure cannot rely on {patch_id!r} while its "
+                f"corpus implementation is {canonical_state!r}"
+            )
 
     ecosystem_state = ecosystem.get("status") if isinstance(ecosystem, dict) else None
     if repair.get("status") == "repaired" and ecosystem_state in {"active", "recurring", "improving", "unknown"}:
@@ -329,6 +346,129 @@ def validate_patch(record: dict[str, Any], path: Path, errors: list[str]) -> Non
                 errors.append(
                     f"{path}: repair_provenance.coverage_origin[{index}].relevant_sections must be an array of strings"
                 )
+            if not non_empty_string(origin.get("canonical_path")):
+                errors.append(
+                    f"{path}: repair_provenance.coverage_origin[{index}].canonical_path must be non-empty"
+                )
+
+    implementation = record.get("corpus_implementation")
+    if not isinstance(implementation, dict):
+        errors.append(f"{path}: corpus_implementation must be an object")
+        return
+    implementation_type = implementation.get("implementation_type")
+    canonical_state = implementation.get("canonical_state")
+    entries = implementation.get("entries")
+    if implementation_type not in CORPUS_IMPLEMENTATION_TYPES:
+        errors.append(f"{path}: corpus_implementation.implementation_type is not canonical")
+    if canonical_state not in CORPUS_CANONICAL_STATES:
+        errors.append(f"{path}: corpus_implementation.canonical_state is not canonical")
+    if not isinstance(entries, list) or not entries:
+        errors.append(f"{path}: corpus_implementation.entries must be a non-empty array")
+        entries = []
+
+    amendment_instruments: set[str] = set()
+    relied_instruments: set[str] = set()
+    entry_keys: set[tuple[str, str, str]] = set()
+    for index, entry in enumerate(entries):
+        if not isinstance(entry, dict):
+            continue
+        instrument_id = entry.get("instrument_id")
+        canonical_path = entry.get("canonical_path")
+        section = entry.get("section")
+        key = (str(instrument_id), str(canonical_path), str(section))
+        if key in entry_keys:
+            errors.append(f"{path}: corpus_implementation.entries[{index}] duplicates instrument/path/section")
+        entry_keys.add(key)
+        change_kind = entry.get("change_kind")
+        if change_kind in AMENDMENT_CHANGE_KINDS and non_empty_string(instrument_id):
+            amendment_instruments.add(instrument_id)
+        elif change_kind == "relied-upon" and non_empty_string(instrument_id):
+            relied_instruments.add(instrument_id)
+
+        verification = entry.get("verification")
+        verification_status = verification.get("status") if isinstance(verification, dict) else None
+        if canonical_state == "canonical-main" and verification_status != "verified-canonical":
+            errors.append(
+                f"{path}: canonical-main corpus entry {index} requires verification.status 'verified-canonical'"
+            )
+        elif canonical_state == "historical-canonical" and verification_status != "verified-historical":
+            errors.append(
+                f"{path}: historical-canonical corpus entry {index} requires verification.status 'verified-historical'"
+            )
+        elif canonical_state == "branch-only" and verification_status != "verified-branch-only":
+            errors.append(
+                f"{path}: branch-only corpus entry {index} requires verification.status 'verified-branch-only'"
+            )
+        elif canonical_state == "unverified" and verification_status != "unresolved":
+            errors.append(f"{path}: unverified corpus entry {index} requires verification.status 'unresolved'")
+
+    declared_amended = {
+        item for item in provenance.get("instruments_amended", []) if isinstance(item, str) and item
+    }
+    declared_relied = {
+        item
+        for item in provenance.get("instruments_relied_upon_without_amendment", [])
+        if isinstance(item, str) and item
+    }
+    if amendment_instruments != declared_amended:
+        errors.append(
+            f"{path}: corpus amendment instruments must exactly match "
+            "repair_provenance.instruments_amended"
+        )
+    if relied_instruments != declared_relied:
+        errors.append(
+            f"{path}: relied-upon corpus instruments must exactly match "
+            "repair_provenance.instruments_relied_upon_without_amendment"
+        )
+
+    if implementation_type == "pre-existing-control":
+        if doctrine != "none":
+            errors.append(f"{path}: pre-existing-control requires doctrine_change 'none'")
+        if amendment_instruments:
+            errors.append(f"{path}: pre-existing-control must not contain amendment entries")
+        if not relied_instruments:
+            errors.append(f"{path}: pre-existing-control requires at least one relied-upon entry")
+        if not provenance.get("retrospective_synthesis"):
+            errors.append(f"{path}: pre-existing-control requires retrospective_synthesis true")
+        if "retrospective-coverage-synthesis" not in (classifications or []):
+            errors.append(f"{path}: pre-existing-control requires retrospective-coverage-synthesis classification")
+    elif implementation_type == "corpus-amendment":
+        if doctrine == "none":
+            errors.append(f"{path}: corpus-amendment cannot declare doctrine_change 'none'")
+        if not amendment_instruments:
+            errors.append(f"{path}: corpus-amendment requires at least one amendment entry")
+        if relied_instruments:
+            errors.append(f"{path}: corpus-amendment with relied-upon entries must be classified as mixed")
+    elif implementation_type == "mixed":
+        if doctrine == "none":
+            errors.append(f"{path}: mixed implementation cannot declare doctrine_change 'none'")
+        if not amendment_instruments or not relied_instruments:
+            errors.append(f"{path}: mixed implementation requires both amendment and relied-upon entries")
+
+    state = record.get("record_state")
+    if state == "closed-actioned" and canonical_state not in {"canonical-main", "historical-canonical"}:
+        errors.append(f"{path}: closed-actioned PATCH requires canonical-main or historical-canonical corpus state")
+    if canonical_state == "branch-only" and state != "active":
+        errors.append(f"{path}: branch-only PATCH must remain active")
+    if canonical_state == "unverified" and state == "closed-actioned":
+        errors.append(f"{path}: unverified PATCH cannot be closed-actioned")
+
+    changed = record.get("cam_internal", {}).get("changed_instruments", [])
+    if isinstance(changed, list) and {item for item in changed if isinstance(item, str)} != declared_amended:
+        errors.append(f"{path}: cam_internal.changed_instruments must exactly match amended corpus instruments")
+
+    reconstruction = record.get("record_reconstruction")
+    if isinstance(reconstruction, dict):
+        reconstruction_review = reconstruction.get("review_id")
+        interpretive = record.get("interpretive_provenance")
+        history = interpretive.get("review_history", []) if isinstance(interpretive, dict) else []
+        review_ids = {
+            review.get("review_id")
+            for review in history
+            if isinstance(review, dict) and non_empty_string(review.get("review_id"))
+        }
+        if reconstruction_review not in review_ids:
+            errors.append(f"{path}: record_reconstruction.review_id must resolve in interpretive review_history")
 
 
 def validate_proposal(record: dict[str, Any], path: Path, records: dict[str, dict[str, Any]], errors: list[str]) -> None:
@@ -352,10 +492,30 @@ def validate_proposal(record: dict[str, Any], path: Path, records: dict[str, dic
                     errors.append(f"{path}: coverage reconciliation patch {patch_id!r} does not resolve")
 
     resolution = record.get("resolution_status")
-    if isinstance(resolution, dict) and resolution.get("status") == "resolved":
+    if isinstance(resolution, dict) and resolution.get("status") == "resolved-by-patch":
         resolved_by = resolution.get("resolved_by", [])
         if not isinstance(resolved_by, list) or not resolved_by:
             errors.append(f"{path}: resolved proposal requires at least one resolving patch")
+            return
+        for patch_id in resolved_by:
+            patch = records.get(patch_id)
+            if patch is None:
+                errors.append(f"{path}: resolving patch {patch_id!r} does not resolve")
+                continue
+            if patch.get("record_type") not in {"patch", "patch_note"}:
+                errors.append(f"{path}: resolving record {patch_id!r} is not a patch")
+                continue
+            implementation = patch.get("corpus_implementation")
+            canonical_state = (
+                implementation.get("canonical_state")
+                if isinstance(implementation, dict)
+                else None
+            )
+            if canonical_state not in {"canonical-main", "historical-canonical"}:
+                errors.append(
+                    f"{path}: resolved proposal cannot rely on {patch_id!r} while its "
+                    f"corpus implementation is {canonical_state!r}"
+                )
 
 
 def validate_observation(record_id: str, record: dict[str, Any], path: Path, errors: list[str]) -> None:

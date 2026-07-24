@@ -471,8 +471,8 @@ def list_metadata(record: dict[str, Any]) -> dict[str, Any]:
     """Return the lean collapsed-list metadata used by generated index entries.
 
     Detailed summaries remain available in the canonical record JSON and in legacy
-    aggregate helpers, but generated indexes intentionally expose only list,
-    search, filter, sort, and canonical-location fields.
+    aggregate helpers. Generated indexes stay lean except that PATCH entries expose
+    the decision and literal corpus implementation trace required for public audit.
     """
     sources = canonical_sources(record)
     primary_source = sources[0] if sources else {}
@@ -567,6 +567,14 @@ def index_record(record: dict[str, Any]) -> dict[str, Any]:
         "github_blob_url": github_blob_url(path) if path else "",
         "raw_url": raw_url(path) if path else "",
     }
+    if record.get("record_type") in {"patch", "patch_note"}:
+        entry.update(
+            {
+                "decision_trace": record.get("decision_trace", {}),
+                "corpus_implementation": record.get("corpus_implementation", {}),
+                "record_reconstruction": record.get("record_reconstruction", {}),
+            }
+        )
     return entry
 
 

@@ -267,6 +267,9 @@ class ValidateVigilRecordsTest(unittest.TestCase):
     def test_patch_rejects_missing_required_implementation_fields(self):
         def mutate(record):
             for field in (
+                "decision_trace",
+                "corpus_implementation",
+                "record_reconstruction",
                 "change_classification",
                 "change_details",
                 "implementation_verification",
