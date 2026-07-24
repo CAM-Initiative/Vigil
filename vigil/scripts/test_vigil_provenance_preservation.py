@@ -12,8 +12,9 @@ GENERIC_ACCESS = "not independently re-assessed during registry-wide metadata mi
 EXPECTED_REVIEWS = {
     "VIGIL-2026-FM-0034": "VIGIL-REVIEW-2026-07-15-GPT-5.6-THINKING",
     "VIGIL-2026-FM-0035": "VIGIL-REVIEW-2026-07-16-GPT-5.6-THINKING-FM-0035",
-    "VIGIL-2026-PATCH-0022": "VIGIL-REVIEW-2026-07-16-GPT-5.6-THINKING-PATCH-0022",
 }
+PATCH_0022_HISTORICAL_REVIEW = "VIGIL-REVIEW-2026-07-16-GPT-5.6-THINKING-PATCH-0022"
+PATCH_0022_RECONSTRUCTION_REVIEW = "VIGIL-REVIEW-2026-07-24-CODEX-PATCH-0022"
 MIGRATION_REVIEW = "VIGIL-REVIEW-2026-07-14-GPT-5.6-THINKING"
 
 
@@ -31,15 +32,28 @@ class ProvenancePreservationTests(unittest.TestCase):
                 current = record["interpretive_provenance"]["current_ai_review"]
                 self.assertEqual(current["review_id"], expected_review_id)
 
+    def test_patch_reconstruction_preserves_prior_review_and_declares_new_current_review(self):
+        record = load("VIGIL-2026-PATCH-0022")
+        review_ids = {
+            review["review_id"]
+            for review in record["interpretive_provenance"]["review_history"]
+        }
+        self.assertIn(PATCH_0022_HISTORICAL_REVIEW, review_ids)
+        self.assertIn(PATCH_0022_RECONSTRUCTION_REVIEW, review_ids)
+        self.assertEqual(
+            record["interpretive_provenance"]["current_ai_review"]["review_id"],
+            PATCH_0022_RECONSTRUCTION_REVIEW,
+        )
+
     def test_authored_source_modalities_are_text(self):
-        for record_id in EXPECTED_REVIEWS:
+        for record_id in (*EXPECTED_REVIEWS, "VIGIL-2026-PATCH-0022"):
             with self.subTest(record_id=record_id):
                 record = load(record_id)
                 for source in record["source_records"]:
                     self.assertEqual(source["evidence_modality"], ["text"])
 
     def test_source_access_is_not_replaced_by_generic_migration_metadata(self):
-        for record_id in EXPECTED_REVIEWS:
+        for record_id in (*EXPECTED_REVIEWS, "VIGIL-2026-PATCH-0022"):
             with self.subTest(record_id=record_id):
                 record = load(record_id)
                 for source in record["source_records"]:

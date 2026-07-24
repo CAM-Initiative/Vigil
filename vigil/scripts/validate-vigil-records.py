@@ -183,12 +183,48 @@ FM_REQUIRED = {"failure_mode_definition", "failure_threshold", "failure_classifi
 PROP_REQUIRED = {"proposal_rationale", "proposal_type", "proposal_scope", "implementation_notes", "external_relevance", "next_action"}
 PATCH_REQUIRED = {
     "date_implemented",
+    "decision_trace",
+    "corpus_implementation",
+    "record_reconstruction",
     "change_classification",
     "change_details",
     "implementation_verification",
     "impact_summary",
     "remaining_work",
 }
+DECISION_TRACE_ORIGINS = {
+    "failure-response",
+    "proposal-implementation",
+    "research-integration",
+    "retrospective-coverage",
+}
+DECISION_EVENT_TYPES = {
+    "evidence-recorded",
+    "failure-identified",
+    "proposal-approved",
+    "corpus-reviewed",
+    "implementation-committed",
+    "implementation-verified",
+    "canonicalised",
+    "reconstructed",
+}
+CORPUS_IMPLEMENTATION_TYPES = {"corpus-amendment", "pre-existing-control", "mixed"}
+CORPUS_CANONICAL_STATES = {"canonical-main", "historical-canonical", "branch-only", "unverified"}
+CORPUS_CHANGE_KINDS = {"added", "amended", "removed", "relied-upon"}
+CORPUS_PRIOR_TEXT_STATES = {
+    "captured",
+    "new-clause",
+    "not-material",
+    "unavailable",
+    "not-applicable",
+}
+CORPUS_VERIFICATION_STATES = {
+    "verified-canonical",
+    "verified-historical",
+    "verified-branch-only",
+    "unresolved",
+}
+CORPUS_CURRENT_CLAUSE_STATES = {"current", "later-amended", "repealed", "unknown"}
 REPAIR_STATUS_ALLOWED = {"unrepaired", "partially-repaired", "repaired", "superseded", "not-actionable"}
 REPAIR_STATUS_REQUIRED = {"status", "repaired_by", "date_repaired", "verification_status", "monitoring_status"}
 RESOLUTION_STATUS_ALLOWED = {"open", "routed", "resolved-by-patch", "deferred", "superseded", "closed-no-action"}
@@ -241,6 +277,152 @@ def add_missing(errors: list[str], path: Path, record: dict[str, Any], fields: s
     missing = sorted(field for field in fields if is_blank(record.get(field)))
     if missing:
         errors.append(f"{path}: missing required fields: {', '.join(missing)}")
+
+
+def is_non_empty_string(value: Any) -> bool:
+    return isinstance(value, str) and bool(value.strip())
+
+
+def validate_non_empty_string_array(path: Path, field: str, value: Any, errors: list[str]) -> list[str]:
+    if not isinstance(value, list) or any(not is_non_empty_string(item) for item in value):
+        errors.append(f"{path}: {field} must be an array of non-empty strings")
+        return []
+    return value
+
+
+def validate_patch_trace_structure(path: Path, record: dict[str, Any], errors: list[str]) -> None:
+    decision = record.get("decision_trace")
+    if not isinstance(decision, dict):
+        errors.append(f"{path}: PATCH decision_trace must be an object")
+    else:
+        if decision.get("origin") not in DECISION_TRACE_ORIGINS:
+            errors.append(f"{path}: decision_trace.origin is not canonical")
+        validate_non_empty_string_array(
+            path,
+            "decision_trace.trigger_records",
+            decision.get("trigger_records"),
+            errors,
+        )
+        if not is_non_empty_string(decision.get("decision_summary")):
+            errors.append(f"{path}: decision_trace.decision_summary must be a non-empty string")
+        events = decision.get("events")
+        if not isinstance(events, list) or not events:
+            errors.append(f"{path}: decision_trace.events must be a non-empty array")
+        else:
+            for index, event in enumerate(events):
+                prefix = f"decision_trace.events[{index}]"
+                if not isinstance(event, dict):
+                    errors.append(f"{path}: {prefix} must be an object")
+                    continue
+                for field in ("date", "description", "authority_role"):
+                    if not is_non_empty_string(event.get(field)):
+                        errors.append(f"{path}: {prefix}.{field} must be a non-empty string")
+                if event.get("event_type") not in DECISION_EVENT_TYPES:
+                    errors.append(f"{path}: {prefix}.event_type is not canonical")
+                references = validate_non_empty_string_array(
+                    path,
+                    f"{prefix}.evidence_references",
+                    event.get("evidence_references"),
+                    errors,
+                )
+                if not references:
+                    errors.append(f"{path}: {prefix}.evidence_references must not be empty")
+
+    implementation = record.get("corpus_implementation")
+    if not isinstance(implementation, dict):
+        errors.append(f"{path}: PATCH corpus_implementation must be an object")
+    else:
+        if implementation.get("implementation_type") not in CORPUS_IMPLEMENTATION_TYPES:
+            errors.append(f"{path}: corpus_implementation.implementation_type is not canonical")
+        if implementation.get("canonical_state") not in CORPUS_CANONICAL_STATES:
+            errors.append(f"{path}: corpus_implementation.canonical_state is not canonical")
+        if not is_non_empty_string(implementation.get("implementation_outcome")):
+            errors.append(f"{path}: corpus_implementation.implementation_outcome must be a non-empty string")
+        entries = implementation.get("entries")
+        if not isinstance(entries, list) or not entries:
+            errors.append(f"{path}: corpus_implementation.entries must be a non-empty array")
+        else:
+            for index, entry in enumerate(entries):
+                prefix = f"corpus_implementation.entries[{index}]"
+                if not isinstance(entry, dict):
+                    errors.append(f"{path}: {prefix} must be an object")
+                    continue
+                for field in ("instrument_id", "canonical_path", "section", "section_heading", "resulting_text"):
+                    if not is_non_empty_string(entry.get(field)):
+                        errors.append(f"{path}: {prefix}.{field} must be a non-empty string")
+                canonical_path = entry.get("canonical_path")
+                if is_non_empty_string(canonical_path) and not (
+                    canonical_path.startswith("Governance/Charters/")
+                    or canonical_path.startswith("Governance/Constitution/")
+                ):
+                    errors.append(f"{path}: {prefix}.canonical_path must be a canonical Caelestis governance path")
+                if entry.get("change_kind") not in CORPUS_CHANGE_KINDS:
+                    errors.append(f"{path}: {prefix}.change_kind is not canonical")
+                prior_status = entry.get("prior_text_status")
+                if prior_status not in CORPUS_PRIOR_TEXT_STATES:
+                    errors.append(f"{path}: {prefix}.prior_text_status is not canonical")
+                prior_text = entry.get("prior_text")
+                if prior_status == "captured" and not is_non_empty_string(prior_text):
+                    errors.append(f"{path}: {prefix}.prior_text must contain literal wording when status is captured")
+                if prior_status != "captured" and prior_text is not None:
+                    errors.append(f"{path}: {prefix}.prior_text must be null unless prior_text_status is captured")
+
+                source = entry.get("source")
+                if not isinstance(source, dict):
+                    errors.append(f"{path}: {prefix}.source must be an object")
+                else:
+                    repository = source.get("repository")
+                    commit = source.get("commit")
+                    source_path = source.get("path")
+                    direct_url = source.get("direct_url")
+                    if repository != "CAM-Initiative/Caelestis":
+                        errors.append(f"{path}: {prefix}.source.repository must be CAM-Initiative/Caelestis")
+                    if not isinstance(commit, str) or len(commit) != 40 or any(
+                        character not in "0123456789abcdef" for character in commit
+                    ):
+                        errors.append(f"{path}: {prefix}.source.commit must be a lowercase 40-character SHA")
+                    if source_path != canonical_path:
+                        errors.append(f"{path}: {prefix}.source.path must equal canonical_path")
+                    expected_url = (
+                        f"https://github.com/{repository}/blob/{commit}/{source_path}"
+                        if all(isinstance(value, str) for value in (repository, commit, source_path))
+                        else ""
+                    )
+                    if direct_url != expected_url:
+                        errors.append(f"{path}: {prefix}.source.direct_url must be the exact commit-addressed file URL")
+
+                verification = entry.get("verification")
+                if not isinstance(verification, dict):
+                    errors.append(f"{path}: {prefix}.verification must be an object")
+                else:
+                    status = verification.get("status")
+                    if status not in CORPUS_VERIFICATION_STATES:
+                        errors.append(f"{path}: {prefix}.verification.status is not canonical")
+                    for field in ("verified_on", "review_id"):
+                        if not is_non_empty_string(verification.get(field)):
+                            errors.append(f"{path}: {prefix}.verification.{field} must be a non-empty string")
+                    if not isinstance(verification.get("exact_text_match"), bool):
+                        errors.append(f"{path}: {prefix}.verification.exact_text_match must be boolean")
+                    if status != "unresolved" and verification.get("exact_text_match") is not True:
+                        errors.append(f"{path}: {prefix} verified wording requires exact_text_match true")
+                    if verification.get("current_clause_status") not in CORPUS_CURRENT_CLAUSE_STATES:
+                        errors.append(f"{path}: {prefix}.verification.current_clause_status is not canonical")
+
+    reconstruction = record.get("record_reconstruction")
+    if not isinstance(reconstruction, dict):
+        errors.append(f"{path}: PATCH record_reconstruction must be an object")
+    else:
+        if not isinstance(reconstruction.get("reconstructed"), bool):
+            errors.append(f"{path}: record_reconstruction.reconstructed must be boolean")
+        for field in ("reconstruction_date", "reason", "review_id", "method"):
+            if not is_non_empty_string(reconstruction.get(field)):
+                errors.append(f"{path}: record_reconstruction.{field} must be a non-empty string")
+        validate_non_empty_string_array(
+            path,
+            "record_reconstruction.limitations",
+            reconstruction.get("limitations"),
+            errors,
+        )
 
 
 def load_allowed_canonical_failure_groups(schema_path: Path | None = None) -> set[str]:
@@ -802,6 +984,7 @@ def validate_record(
                 errors.append(f"{path}: PROP record_state 'closed-actioned' requires a linked patch record")
     elif record_type in {"patch", "patch_note"}:
         add_missing(errors, path, record, PATCH_REQUIRED)
+        validate_patch_trace_structure(path, record, errors)
         if is_blank(record.get("date_implemented")):
             errors.append(f"{path}: PATCH date_implemented is required")
         if is_blank(record.get("change_details")) or is_blank(record.get("implementation_verification")):

@@ -107,9 +107,22 @@ class RepairBasisLifecycleTests(unittest.TestCase):
             "id": patch_id,
             "record_type": "patch",
             "linked_records": {"related_failure_modes": [record["id"]]},
+            "corpus_implementation": {"canonical_state": "canonical-main"},
         }
         errors = self.validate(record, {record["id"]: record, patch_id: patch})
         self.assertEqual(errors, [])
+
+    def test_repaired_rejects_branch_only_patch(self):
+        patch_id = "VIGIL-TEST-PATCH-0001"
+        record = self.failure("repaired", "patch-implemented", [patch_id])
+        patch = {
+            "id": patch_id,
+            "record_type": "patch",
+            "linked_records": {"related_failure_modes": [record["id"]]},
+            "corpus_implementation": {"canonical_state": "branch-only"},
+        }
+        errors = self.validate(record, {record["id"]: record, patch_id: patch})
+        self.assertTrue(any("branch-only" in error for error in errors))
 
     def test_implemented_repair_accepts_regression_detected(self):
         patch_id = "VIGIL-TEST-PATCH-0001"
@@ -132,9 +145,53 @@ class RepairBasisLifecycleTests(unittest.TestCase):
             "id": patch_id,
             "record_type": "patch",
             "linked_records": {"related_failure_modes": [record["id"]]},
+            "corpus_implementation": {"canonical_state": "canonical-main"},
         }
         errors = self.validate(record, {record["id"]: record, patch_id: patch})
         self.assertEqual(errors, [])
+
+
+class ProposalLifecycleTests(unittest.TestCase):
+    def validate(self, record, records):
+        errors = []
+        VALIDATOR.validate_proposal(
+            record,
+            Path("VIGIL-TEST-PROP.json"),
+            records,
+            errors,
+        )
+        return errors
+
+    def test_resolved_proposal_rejects_branch_only_patch(self):
+        patch_id = "VIGIL-TEST-PATCH-0001"
+        proposal = {
+            "resolution_status": {
+                "status": "resolved-by-patch",
+                "resolved_by": [patch_id],
+            }
+        }
+        patch = {
+            "id": patch_id,
+            "record_type": "patch",
+            "corpus_implementation": {"canonical_state": "branch-only"},
+        }
+        errors = self.validate(proposal, {patch_id: patch})
+        self.assertTrue(any("branch-only" in error for error in errors))
+
+    def test_resolved_proposal_accepts_canonical_patch(self):
+        patch_id = "VIGIL-TEST-PATCH-0001"
+        proposal = {
+            "resolution_status": {
+                "status": "resolved-by-patch",
+                "resolved_by": [patch_id],
+            }
+        }
+        patch = {
+            "id": patch_id,
+            "record_type": "patch",
+            "corpus_implementation": {"canonical_state": "canonical-main"},
+        }
+        self.assertEqual(self.validate(proposal, {patch_id: patch}), [])
 
 
 if __name__ == "__main__":

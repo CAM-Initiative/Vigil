@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "VIGIL.PatchNote.Schema.json",
-  "description": "Patch Note records require implemented change date, classification, details, verification, impact summary, and remaining work.",
+  "description": "PATCH records expose a decision trace and literal, commit-addressed Caelestis implementation evidence. Narrative and analytical provenance remain available without substituting for the implemented corpus text.",
   "allOf": [
     {
       "$ref": "VIGIL.Base.Schema.json"
@@ -13,6 +13,19 @@
         "patch",
         "patch_note"
       ]
+    },
+    "date_implemented": {
+      "type": "string",
+      "minLength": 1
+    },
+    "decision_trace": {
+      "$ref": "#/$defs/decision_trace"
+    },
+    "corpus_implementation": {
+      "$ref": "#/$defs/corpus_implementation"
+    },
+    "record_reconstruction": {
+      "$ref": "#/$defs/record_reconstruction"
     },
     "change_details": {
       "type": "object",
@@ -67,22 +80,13 @@
           "minLength": 1
         },
         "instruments_reviewed": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
+          "$ref": "#/$defs/instrument_ids"
         },
         "instruments_amended": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
+          "$ref": "#/$defs/instrument_ids"
         },
         "instruments_relied_upon_without_amendment": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
+          "$ref": "#/$defs/instrument_ids"
         },
         "coverage_origin": {
           "type": "array",
@@ -95,17 +99,313 @@
   },
   "required": [
     "date_implemented",
+    "decision_trace",
+    "corpus_implementation",
+    "record_reconstruction",
     "change_classification",
     "change_details",
     "implementation_verification",
     "impact_summary",
     "remaining_work",
     "patch_classifications",
-    "repair_provenance"
+    "repair_provenance",
+    "interpretive_provenance"
   ],
   "not": {
     "required": [
       "source_data"
     ]
+  },
+  "$defs": {
+    "non_empty_string": {
+      "type": "string",
+      "minLength": 1
+    },
+    "instrument_ids": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/non_empty_string"
+      }
+    },
+    "decision_trace": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "origin",
+        "trigger_records",
+        "decision_summary",
+        "events"
+      ],
+      "properties": {
+        "origin": {
+          "enum": [
+            "failure-response",
+            "proposal-implementation",
+            "research-integration",
+            "retrospective-coverage"
+          ]
+        },
+        "trigger_records": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/non_empty_string"
+          }
+        },
+        "decision_summary": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "events": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/decision_event"
+          }
+        }
+      }
+    },
+    "decision_event": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "date",
+        "event_type",
+        "description",
+        "authority_role",
+        "evidence_references"
+      ],
+      "properties": {
+        "date": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "event_type": {
+          "enum": [
+            "evidence-recorded",
+            "failure-identified",
+            "proposal-approved",
+            "corpus-reviewed",
+            "implementation-committed",
+            "implementation-verified",
+            "canonicalised",
+            "reconstructed"
+          ]
+        },
+        "description": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "authority_role": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "evidence_references": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/non_empty_string"
+          }
+        }
+      }
+    },
+    "corpus_implementation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "implementation_type",
+        "implementation_outcome",
+        "canonical_state",
+        "entries"
+      ],
+      "properties": {
+        "implementation_type": {
+          "enum": [
+            "corpus-amendment",
+            "pre-existing-control",
+            "mixed"
+          ]
+        },
+        "implementation_outcome": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "canonical_state": {
+          "enum": [
+            "canonical-main",
+            "historical-canonical",
+            "branch-only",
+            "unverified"
+          ]
+        },
+        "entries": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/corpus_entry"
+          }
+        }
+      }
+    },
+    "corpus_entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "instrument_id",
+        "canonical_path",
+        "section",
+        "section_heading",
+        "change_kind",
+        "prior_text",
+        "prior_text_status",
+        "resulting_text",
+        "source",
+        "verification"
+      ],
+      "properties": {
+        "instrument_id": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "canonical_path": {
+          "type": "string",
+          "pattern": "^Governance/(Charters|Constitution)/.+\\.md$"
+        },
+        "section": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "section_heading": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "change_kind": {
+          "enum": [
+            "added",
+            "amended",
+            "removed",
+            "relied-upon"
+          ]
+        },
+        "prior_text": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "prior_text_status": {
+          "enum": [
+            "captured",
+            "new-clause",
+            "not-material",
+            "unavailable",
+            "not-applicable"
+          ]
+        },
+        "resulting_text": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "source": {
+          "$ref": "#/$defs/corpus_source"
+        },
+        "verification": {
+          "$ref": "#/$defs/corpus_verification"
+        }
+      }
+    },
+    "corpus_source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repository",
+        "commit",
+        "path",
+        "direct_url"
+      ],
+      "properties": {
+        "repository": {
+          "const": "CAM-Initiative/Caelestis"
+        },
+        "commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "path": {
+          "type": "string",
+          "pattern": "^Governance/(Charters|Constitution)/.+\\.md$"
+        },
+        "direct_url": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https://github\\.com/CAM-Initiative/Caelestis/blob/[0-9a-f]{40}/Governance/"
+        }
+      }
+    },
+    "corpus_verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "verified_on",
+        "review_id",
+        "exact_text_match",
+        "current_clause_status"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "verified-canonical",
+            "verified-historical",
+            "verified-branch-only",
+            "unresolved"
+          ]
+        },
+        "verified_on": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "review_id": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "exact_text_match": {
+          "type": "boolean"
+        },
+        "current_clause_status": {
+          "enum": [
+            "current",
+            "later-amended",
+            "repealed",
+            "unknown"
+          ]
+        }
+      }
+    },
+    "record_reconstruction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reconstructed",
+        "reconstruction_date",
+        "reason",
+        "review_id",
+        "method",
+        "limitations"
+      ],
+      "properties": {
+        "reconstructed": {
+          "type": "boolean"
+        },
+        "reconstruction_date": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "reason": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "review_id": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "method": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/non_empty_string"
+          }
+        }
+      }
+    }
   }
 }

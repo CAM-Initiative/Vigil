@@ -48,7 +48,22 @@ def main() -> None:
 
             record_type = item.get("record_type")
             if record_type in {"patch", "patch_note"} and item.get("date_implemented"):
-                assert state == "closed-actioned", f"{path}: implemented patch must be closed-actioned"
+                implementation = item.get("corpus_implementation", {})
+                canonical_state = (
+                    implementation.get("canonical_state")
+                    if isinstance(implementation, dict)
+                    else None
+                )
+                expected = {
+                    "canonical-main": "closed-actioned",
+                    "historical-canonical": "closed-actioned",
+                    "branch-only": "active",
+                    "unverified": "active",
+                }.get(canonical_state)
+                if expected is not None:
+                    assert state == expected, (
+                        f"{path}: {canonical_state} patch must be {expected}"
+                    )
 
             if record_type == "failure_mode" and state not in {"draft", "scaffolding"}:
                 repair = item.get("repair_status", {})
@@ -128,6 +143,20 @@ def main() -> None:
     assert obs6["cam_internal"]["routing_note"].count(closure_note) == 1
     assert record("VIGIL-2026-OBS-0013", "observations")["record_state"] == "closed-actioned"
     assert record("VIGIL-2026-OBS-0007", "observations")["record_state"] == "active"
+
+    patch25 = record("VIGIL-2026-PATCH-0025", "patches")
+    assert patch25["record_state"] == "active"
+    assert patch25["corpus_implementation"]["canonical_state"] == "branch-only"
+
+    fm44 = record("VIGIL-2026-FM-0044", "failures")
+    assert fm44["record_state"] == "active"
+    assert fm44["repair_status"]["status"] == "partially-repaired"
+    assert fm44["corpus_coverage"]["classification"] == "verification-pending"
+
+    prop17 = record("VIGIL-2026-PROP-0017", "proposals")
+    assert prop17["record_state"] == "active"
+    assert prop17["resolution_status"]["status"] == "routed"
+    assert prop17["resolution_status"]["resolved_by"] == []
 
     schema = load(VIGIL / "VIGIL.Schema.json")
     assert str(schema.get("purpose", "")).count(PROVENANCE_PURPOSE) == 1

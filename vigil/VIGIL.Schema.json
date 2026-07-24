@@ -262,7 +262,7 @@
     },
     "patch": {
       "id_prefix": "PATCH",
-      "description": "Implemented CAM patch note.",
+      "description": "Traceable Caelestis implementation record: either a corpus amendment or an explicit retrospective reliance on pre-existing control. VIGIL maintenance is outside the PATCH class.",
       "required_top_level_fields": [
         "id",
         "record_type",
@@ -271,6 +271,9 @@
         "record_identity",
         "summary",
         "date_implemented",
+        "decision_trace",
+        "corpus_implementation",
+        "record_reconstruction",
         "change_classification",
         "change_details",
         "implementation_verification",
@@ -296,7 +299,7 @@
         "triage",
         "failure_classification"
       ],
-      "cam_routing": "Use changed_* fields. PATCH records require implemented-change evidence.",
+      "cam_routing": "Use changed_* fields. PATCH records require commit-addressed literal Caelestis text. VIGIL schema, template, validator, workflow, registry, documentation, and interface maintenance is never a corpus PATCH.",
       "optional_top_level_fields": [
         "runtime_conformance"
       ],
@@ -321,7 +324,46 @@
         "none",
         "partial",
         "substantive"
-      ]
+      ],
+      "allowed_decision_origins": [
+        "failure-response",
+        "proposal-implementation",
+        "research-integration",
+        "retrospective-coverage"
+      ],
+      "allowed_implementation_types": [
+        "corpus-amendment",
+        "pre-existing-control",
+        "mixed"
+      ],
+      "allowed_canonical_states": [
+        "canonical-main",
+        "historical-canonical",
+        "branch-only",
+        "unverified"
+      ],
+      "allowed_change_kinds": [
+        "added",
+        "amended",
+        "removed",
+        "relied-upon"
+      ],
+      "corpus_entry_required_fields": [
+        "instrument_id",
+        "canonical_path",
+        "section",
+        "section_heading",
+        "change_kind",
+        "prior_text",
+        "prior_text_status",
+        "resulting_text",
+        "source",
+        "verification"
+      ],
+      "literal_text_rule": "Every corpus entry must reproduce wording exactly from source.commit:source.path. A verified entry sets exact_text_match true; cross-repository validation must fail on a paraphrase or unresolved Git object.",
+      "retrospective_rule": "Pre-existing coverage uses implementation_type pre-existing-control and change_kind relied-upon, quotes the relevant wording, and does not imply that the doctrine originated on the PATCH date.",
+      "branch_rule": "A branch-only implementation remains active and must not be represented as closed-actioned or canonical-main.",
+      "array_reconciliation_rule": "Amendment and relied-upon instrument sets in corpus_implementation.entries must exactly match repair_provenance and cam_internal routing."
     }
   },
   "$defs": {
@@ -610,7 +652,7 @@
     "class_rules": {
       "failure_mode": "Unrepaired or partially-repaired failures are active; repaired failures are monitoring; not-actionable failures are closed-no-action; superseded failures are superseded.",
       "proposal": "Open or routed proposals are active; resolved-by-patch proposals are closed-actioned; closed-no-action, deferred, and superseded resolution states map directly.",
-      "patch": "Implemented patch records are closed-actioned. Ecosystem monitoring remains on linked failure or observation records.",
+      "patch": "Canonical-main and historical-canonical patch records may be closed-actioned. Branch-only and unverified patch records remain active. Ecosystem monitoring remains on linked failure or observation records.",
       "observation": "Observations requiring evidence or routing work are active; routed or actioned observations close; unresolved recurrence or positive-control follow-up is monitoring."
     }
   },
@@ -672,6 +714,15 @@
     "Partial-coverage and no-confirmed-coverage classifications must preserve concrete remaining gaps.",
     "no-confirmed-coverage means an assessment was performed and no sufficient direct current-corpus control was confirmed; verification-pending means the assessment remains incomplete.",
     "A coverage assessment must never be inferred solely from thematic similarity; the cited instrument must materially govern the failure mechanism."
+  ],
+  "patch_trace_rules": [
+    "PATCH is a signal trace of a governance decision and its Caelestis outcome, not a container for VIGIL maintenance.",
+    "Decision chronology belongs in decision_trace; literal implemented or relied-upon corpus wording belongs in corpus_implementation; reconstruction disclosure belongs in record_reconstruction.",
+    "record_reconstruction.reconstructed is true only for rebuilt legacy PATCH records and false for records created natively under the trace-first contract.",
+    "Narrative, evidence, and interpretive provenance remain preserved below the implementation trace and must not substitute for it.",
+    "Each corpus entry names exactly one instrument and canonical path, one section and heading, its change kind, prior wording status, literal resulting wording, commit-addressed source, and verification state.",
+    "Retrospective reliance is labelled pre-existing control relied upon—no corpus amendment.",
+    "Actioned corpus PATCH records without traceable implementation text are invalid."
   ],
   "interpretive_provenance_rules": {
     "required_for_all_records": true,

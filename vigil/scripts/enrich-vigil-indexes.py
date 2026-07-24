@@ -138,11 +138,14 @@ def main() -> None:
         INDEXES["patches"],
         records_by_id("patches"),
         {
+            "decision_trace": "decision_trace",
+            "corpus_implementation": "corpus_implementation",
+            "record_reconstruction": "record_reconstruction",
             "patch_classifications": "patch_classifications",
             "repair_provenance_summary": "repair_provenance",
         },
     )
-    print("Enriched VIGIL indexes with lifecycle, corpus, reviewer, and evidence-access summaries.")
+    print("Enriched VIGIL indexes with decision traces, literal corpus implementation, lifecycle, reviewer, and evidence-access summaries.")
 
 
 if __name__ == "__main__":

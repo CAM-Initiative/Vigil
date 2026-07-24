@@ -8,11 +8,112 @@
     "record_type": "patch",
     "title": "Access-State Governance and access-state ambiguity taxonomy repair",
     "created": "2026-06-06",
-    "updated": "2026-07-17",
-    "version": "1.2"
+    "updated": "2026-07-24",
+    "version": "2.0"
   },
   "summary": "This patch note records that VIGIL-2026-FM-0008 identified a missing Access-State Governance primitive and a missing operational taxonomy class for access-state collapse or access-state ambiguity. The Caelestis repairs have already been implemented outside this VIGIL pass: CAM-BS2025-AEON-003-SCH-04 added §6.1 Access-State Governance, and CAM-EQ2026-OPERATIONS-003-SUP-01 added §3.7.7 Access-State Collapse and Access-State Ambiguity Failure plus the optional controlled subtype FF.ACCESS_STATE_AMBIGUITY. This VIGIL patch records the completed repair path and preserves the narrow scope: Annex B arbitration logic, Operations taxonomy, and later cross-references only if needed.",
   "why_it_matters_to_CAM": "FM-0008 showed that access to frontier AI systems may be governed by separable authentication, entitlement, quota, model availability, platform availability, policy, security, client, organisation, and continuity/session states. Collapsing those states into an ambiguous user-facing failure prevents users, developers, maintainers, and downstream systems from identifying the operative access-controlling condition. The implemented CAM repair treats Access-State Governance as a cross-domain arbitration primitive and supplies an Operations failure class for systems that deny, degrade, restrict, rate-limit, interrupt, or prevent access without preserving or disclosing the operative access-controlling condition. No full rewrite of IDENTITY, SECURITY, ECONOMICS, CONTINUITY, OBSERVABILITY, or other domain instruments is recorded at this stage.",
+  "decision_trace": {
+    "origin": "failure-response",
+    "trigger_records": [
+      "VIGIL-2026-FM-0008"
+    ],
+    "decision_summary": "This patch note records that VIGIL-2026-FM-0008 identified a missing Access-State Governance primitive and a missing operational taxonomy class for access-state collapse or access-state ambiguity. The Caelestis repairs have already been implemented outside this VIGIL pass: CAM-BS2025-AEON-003-SCH-04 added §6.1 Access-State Governance, and CAM-EQ2026-OPERATIONS-003-SUP-01 added §3.7.7 Access-State Collapse and Access-State Ambiguity Failure plus the optional controlled subtype FF.ACCESS_STATE_AMBIGUITY. This VIGIL patch records the completed repair path and preserves the narrow scope: Annex B arbitration logic, Operations taxonomy, and later cross-references only if needed.",
+    "events": [
+      {
+        "date": "2026-06-06",
+        "event_type": "failure-identified",
+        "description": "The originating failure, proposal, or evidence record established the governance decision requiring a Caelestis repair.",
+        "authority_role": "VIGIL analytical review under human governance editorship",
+        "evidence_references": [
+          "VIGIL-2026-FM-0008"
+        ]
+      },
+      {
+        "date": "2026-06-06",
+        "event_type": "implementation-committed",
+        "description": "The cited Caelestis Git object contains the implemented corpus wording quoted in this record.",
+        "authority_role": "CAM constitutional authority under human governance editorship",
+        "evidence_references": [
+          "https://github.com/CAM-Initiative/Caelestis/blob/bc9c60b9c57952cc91065149bc60d72b0beb5052/Governance/Constitution/CAM-BS2025-AEON-003-SCH-04.md",
+          "https://github.com/CAM-Initiative/Caelestis/blob/bc9c60b9c57952cc91065149bc60d72b0beb5052/Governance/Charters/CAM-EQ2026-OPERATIONS-003-SUP-01.md"
+        ]
+      },
+      {
+        "date": "2026-07-24",
+        "event_type": "implementation-verified",
+        "description": "Each quoted clause was matched exactly against its cited Caelestis commit and canonical file path.",
+        "authority_role": "AI analytical reviewer under human governance editorship",
+        "evidence_references": [
+          "https://github.com/CAM-Initiative/Caelestis/blob/bc9c60b9c57952cc91065149bc60d72b0beb5052/Governance/Constitution/CAM-BS2025-AEON-003-SCH-04.md",
+          "https://github.com/CAM-Initiative/Caelestis/blob/bc9c60b9c57952cc91065149bc60d72b0beb5052/Governance/Charters/CAM-EQ2026-OPERATIONS-003-SUP-01.md"
+        ]
+      },
+      {
+        "date": "2026-07-24",
+        "event_type": "reconstructed",
+        "description": "The legacy PATCH was reconstructed into the traceable PATCH v2 contract and contradictory lifecycle or provenance claims were reconciled.",
+        "authority_role": "AI analytical reviewer under human governance editorship",
+        "evidence_references": [
+          "VIGIL-REVIEW-2026-07-24-CODEX-PATCH-0005",
+          "VIGIL-2026-PATCH-0005"
+        ]
+      }
+    ]
+  },
+  "corpus_implementation": {
+    "implementation_type": "corpus-amendment",
+    "implementation_outcome": "Caelestis corpus amendment implemented and verified. Literal resulting wording is quoted below.",
+    "canonical_state": "canonical-main",
+    "entries": [
+      {
+        "instrument_id": "CAM-BS2025-AEON-003-SCH-04",
+        "canonical_path": "Governance/Constitution/CAM-BS2025-AEON-003-SCH-04.md",
+        "section": "§6.1",
+        "section_heading": "6.1 Access-State Governance",
+        "change_kind": "added",
+        "prior_text": null,
+        "prior_text_status": "new-clause",
+        "resulting_text": "## 6.1 Access-State Governance\n\nAccess-State Governance is recognised as a cross-domain arbitration primitive within the CAM runtime governance model.\n\nFor the purposes of this Schedule, an access state is not a single condition. Access to a system, model, tool, account, workspace, organisation, API surface, or continuity-bearing session may be controlled simultaneously by multiple governance states, including but not limited to:\n\n* authentication state;\n* third-party identity-provider state;\n* identity-verification state;\n* account state;\n* workspace, team, tenant, or organisation state;\n* subscription, entitlement, billing, credit, or allocation state;\n* quota, usage-limit, rate-limit, message-limit, or pooled-resource state;\n* model-availability state;\n* tool-availability or surface-availability state;\n* platform-availability or infrastructure-continuity state;\n* security-review, account-protection, or abuse-control state;\n* policy-restriction or enforcement state;\n* regional, legal, compliance, age-gating, sanctions, export-control, or data-residency state;\n* client, application, device, browser, cache, or frontend-bundle state;\n* continuity, session, refresh-token, or re-entry state.\n\nWhere access is denied, degraded, restricted, unavailable, rate-limited, interrupted, or ambiguous, the operative access-controlling state SHOULD be preserved as a separable governance signal and SHOULD NOT be collapsed into a single undifferentiated user-facing error where such collapse would materially impair diagnosis, recovery, contestability, auditability, support routing, or downstream operational continuity.\n\nAccess-State Governance does not require disclosure of sensitive security, anti-abuse, anti-fraud, infrastructure, or enforcement details where disclosure would create a material circumvention, privacy, safety, or system-integrity risk. However, systems SHOULD provide a proportionate access-state category sufficient to distinguish, where reasonably possible, between authentication failure, identity-provider failure, account restriction, workspace or organisation restriction, entitlement limitation, billing or credit limitation, quota or rate-limit exhaustion, model unavailability, tool or surface unavailability, platform degradation, security review, policy restriction, regional or compliance restriction, client-side failure, and continuity or session invalidity.\n\nWhere multiple access states are active, the Arbitration Layer SHOULD preserve the controlling state, subordinate contributing states, and user-facing disclosure state as distinct signals. A system SHOULD avoid representing an entitlement failure as an outage, a quota failure as a policy restriction, a policy restriction as a technical outage, a model-availability failure as an account failure, or a continuity/session failure as a user-authentication failure unless that representation is technically and procedurally accurate.\n\nAccess-State Governance applies across human users, accounts, workspaces, organisations, agents, API actors, and continuity-bearing sessions. It is relevant to CAM domains including IDENTITY, SECURITY, ECONOMICS, CONTINUITY, OBSERVABILITY, OPERATIONS, and ARBITRATION.\n\nAccess-State Governance defines arbitration handling only. It does not create entitlement rights, incident response procedure, support workflow, remediation authority, enforcement authority, or disclosure obligations beyond those recognised by the applicable domain, operations, security, continuity, observability, legal, or platform-governance instruments.\n\n---",
+        "source": {
+          "repository": "CAM-Initiative/Caelestis",
+          "commit": "bc9c60b9c57952cc91065149bc60d72b0beb5052",
+          "path": "Governance/Constitution/CAM-BS2025-AEON-003-SCH-04.md",
+          "direct_url": "https://github.com/CAM-Initiative/Caelestis/blob/bc9c60b9c57952cc91065149bc60d72b0beb5052/Governance/Constitution/CAM-BS2025-AEON-003-SCH-04.md"
+        },
+        "verification": {
+          "status": "verified-canonical",
+          "verified_on": "2026-07-24",
+          "review_id": "VIGIL-REVIEW-2026-07-24-CODEX-PATCH-0005",
+          "exact_text_match": true,
+          "current_clause_status": "current"
+        }
+      },
+      {
+        "instrument_id": "CAM-EQ2026-OPERATIONS-003-SUP-01",
+        "canonical_path": "Governance/Charters/CAM-EQ2026-OPERATIONS-003-SUP-01.md",
+        "section": "§3.7.7",
+        "section_heading": "3.7.7 Access-State Collapse and Access-State Ambiguity Failure",
+        "change_kind": "added",
+        "prior_text": null,
+        "prior_text_status": "new-clause",
+        "resulting_text": "### 3.7.7 Access-State Collapse and Access-State Ambiguity Failure\n\nAn Access-State Collapse and Access-State Ambiguity Failure occurs where a system denies, degrades, restricts, rate-limits, interrupts, or prevents access without preserving or disclosing a sufficiently distinct access-state category to identify the operative access-controlling condition.\n\nThis failure may arise where authentication state, identity-provider state, identity-verification state, account state, workspace or organisation state, entitlement state, subscription or billing state, credit state, quota or rate-limit state, model-availability state, tool-availability state, platform-availability state, infrastructure-continuity state, security-review state, policy-restriction state, regional or compliance state, client/application state, or continuity/session state are collapsed into an ambiguous or misleading user-facing message.\n\nExamples include:\n\n* login failure that does not distinguish credential failure, identity-provider failure, session expiry, account restriction, workspace restriction, or platform outage;\n* model-unavailable messaging that does not distinguish model retirement, capacity restriction, entitlement limitation, rollout limitation, regional unavailability, policy gating, or temporary infrastructure degradation;\n* quota, message-limit, or usage-limit messaging that does not distinguish user quota, workspace quota, billing state, pooled-resource exhaustion, rate-limit protection, platform capacity, or erroneous limit state;\n* service-busy or degraded-service messaging that does not distinguish outage, queueing, account-level restriction, security review, abuse-control state, or client-side failure;\n* partial access where read access, write access, execution access, tool access, billing access, admin access, export access, or recovery access are not distinguished;\n* continuity-bearing sessions remaining visible while execution authority, refresh-token validity, account authority, or model/tool access has degraded or expired;\n* user-facing restriction that does not distinguish policy enforcement, legal or regional restriction, security review, entitlement failure, account suspension, or temporary containment.\n\nThe governance concern is not merely that access is unavailable. The governance concern is that the operative access-controlling state is not sufficiently separated, preserved, disclosed, routed, or auditable.\n\nThis failure MAY impair:\n\n* diagnosis;\n* support routing;\n* recovery pathway selection;\n* entitlement management;\n* quota management;\n* contestability;\n* incident reproducibility;\n* continuity preservation;\n* downstream operational planning;\n* and user trust.\n\nThis failure MAY implicate:\n\n* UX & Representation Failures (§3.7);\n* Governance Failures (§3.8);\n* Arbitration Failures (§3.2);\n* State & Context Failures (§3.6);\n* Security & Integrity Failures (§3.5);\n* Infrastructure & Continuity Failures (§3.9);\n* Classification Failures (§3.10);\n* and Economic & Legitimacy Failures (§3.11), where access ambiguity materially affects paid entitlement, allocation, public participation, or legitimacy-bearing access.\n\nWhere multiple access states may be active, OPERATIONS SHOULD preserve the access-state axes separately and route the matter to CAM-BS2025-AEON-003-PLATINUM — Annex B / Arbitration Layer where a controlling access state must be resolved.\n\nWhere the operative cause is uncertain, the event SHOULD be classified as access-state ambiguity rather than outage, suspension, quota exhaustion, deletion, entitlement failure, or policy restriction unless the evidence supports that narrower classification.\n\nThis failure class operationalises the Access-State Governance primitive defined in CAM-BS2025-AEON-003-SCH-04, §6.1.\n\n---",
+        "source": {
+          "repository": "CAM-Initiative/Caelestis",
+          "commit": "bc9c60b9c57952cc91065149bc60d72b0beb5052",
+          "path": "Governance/Charters/CAM-EQ2026-OPERATIONS-003-SUP-01.md",
+          "direct_url": "https://github.com/CAM-Initiative/Caelestis/blob/bc9c60b9c57952cc91065149bc60d72b0beb5052/Governance/Charters/CAM-EQ2026-OPERATIONS-003-SUP-01.md"
+        },
+        "verification": {
+          "status": "verified-canonical",
+          "verified_on": "2026-07-24",
+          "review_id": "VIGIL-REVIEW-2026-07-24-CODEX-PATCH-0005",
+          "exact_text_match": true,
+          "current_clause_status": "current"
+        }
+      }
+    ]
+  },
   "evidence_confidence": "verified",
   "source_records": [
     {
@@ -149,10 +250,11 @@
   "change_classification": {
     "change_type": "governance-observation-patch",
     "change_scope": "Caelestis Architecture / VIGIL failure-mode-to-patch interface",
-    "change_status": "recorded",
+    "change_status": "implemented",
     "patch_family": "architecture-gap-record",
     "implementation_level": "patch-note-only",
-    "doctrine_amendment_status": "implemented-in-caelestis"
+    "doctrine_amendment_status": "substantive — corpus amendment",
+    "implementation_status": "implemented and corpus-verified"
   },
   "change_details": {
     "changed_components": [
@@ -170,27 +272,48 @@
       "No full domain rewrite is required at this stage.",
       "Create later cross-references to IDENTITY, SECURITY, ECONOMICS, CONTINUITY, OBSERVABILITY, or other affected domains only if needed.",
       "Continue monitoring FM-0008 evidence for recurrence and for whether user-facing access-state disclosure remains ambiguous in practice."
-    ]
+    ],
+    "changed_files_or_instruments": [
+      "CAM-BS2025-AEON-003-SCH-04",
+      "CAM-EQ2026-OPERATIONS-003-SUP-01"
+    ],
+    "literal_implementation_location": "See corpus_implementation.entries for exact wording, prior-text status, commit, path, and direct source link.",
+    "implemented_or_recorded_change": "The quoted Caelestis clauses are the implemented corpus amendment."
   },
   "implementation_verification": {
-    "verification_status": "verified",
-    "verification_method": "Record completed Caelestis repair actions in VIGIL PATCH-0005, link FM-0008 to the patch record, run VIGIL validator, and rebuild generated VIGIL indexes.",
-    "verification_date": "2026-06-06",
-    "verified_by": "VIGIL repository automation / maintainer review",
+    "verification_status": "verified-canonical",
+    "implementation_state": "canonical-main",
+    "verification_method": "Exact substring verification against each cited Caelestis Git commit and canonical path, plus canonical-main ancestry/current-text checks where applicable.",
+    "verification_date": "2026-07-24",
+    "verified_by": "OpenAI ChatGPT Work — Codex under Dr Michelle Vivian O'Rourke's human governance editorship",
     "evidence": [
-      "VIGIL-2026-FM-0008 exists and validates after Multi Vendor normalisation.",
-      "VIGIL-2026-PATCH-0005 records the completed SCH-04 Access-State Governance repair.",
-      "VIGIL-2026-PATCH-0005 records the completed OPERATIONS-003-SUP-01 Access-State Collapse / Access-State Ambiguity Failure taxonomy repair.",
-      "VIGIL-2026-PATCH-0005 records optional subtype FF.ACCESS_STATE_AMBIGUITY and Operations ledger entry 1.12.",
-      "FM-0008 links PATCH-0005 as its repair record."
-    ]
+      "https://github.com/CAM-Initiative/Caelestis/blob/bc9c60b9c57952cc91065149bc60d72b0beb5052/Governance/Constitution/CAM-BS2025-AEON-003-SCH-04.md",
+      "https://github.com/CAM-Initiative/Caelestis/blob/bc9c60b9c57952cc91065149bc60d72b0beb5052/Governance/Charters/CAM-EQ2026-OPERATIONS-003-SUP-01.md"
+    ],
+    "verification_result": "Caelestis corpus amendment implemented and verified. Literal resulting wording is quoted below.",
+    "historical_recorded_verification": {
+      "verification_status": "verified",
+      "verification_method": "Record completed Caelestis repair actions in VIGIL PATCH-0005, link FM-0008 to the patch record, run VIGIL validator, and rebuild generated VIGIL indexes.",
+      "verification_date": "2026-06-06",
+      "verified_by": "VIGIL repository automation / maintainer review",
+      "evidence": [
+        "VIGIL-2026-FM-0008 exists and validates after Multi Vendor normalisation.",
+        "VIGIL-2026-PATCH-0005 records the completed SCH-04 Access-State Governance repair.",
+        "VIGIL-2026-PATCH-0005 records the completed OPERATIONS-003-SUP-01 Access-State Collapse / Access-State Ambiguity Failure taxonomy repair.",
+        "VIGIL-2026-PATCH-0005 records optional subtype FF.ACCESS_STATE_AMBIGUITY and Operations ledger entry 1.12.",
+        "FM-0008 links PATCH-0005 as its repair record."
+      ]
+    }
   },
   "impact_summary": "PATCH-0005 preserves the VIGIL-to-Caelestis repair chain for FM-0008. The completed repair defines Access-State Governance as a cross-domain arbitration primitive and classifies Access-State Collapse / Access-State Ambiguity Failure as the operational failure class for ambiguous access-denial, degradation, restriction, rate-limit, interruption, or access-prevention conditions. The patch deliberately avoids sprawl into IDENTITY, SECURITY, ECONOMICS, CONTINUITY, OBSERVABILITY, or other domains; those domains remain affected cross-reference candidates only.",
-  "remaining_work": "Continue evidence monitoring and create later cross-references only if needed. No full domain rewrite is recorded or required by this VIGIL patch note.",
+  "remaining_work": [
+    "Continue evidence monitoring and add later cross-references only where a distinct corpus change is actually implemented.",
+    "External implementation and behavioural conformance are not established by corpus verification."
+  ],
   "cam_internal": {
     "changed_instruments": [
-      "CAM-BS2025-AEON-003-SCH-04 — Annex B: Arbitration Layer & Resolution Model",
-      "CAM-EQ2026-OPERATIONS-003-SUP-01 — Appendix B: Runtime & Governance Failure Taxonomy"
+      "CAM-BS2025-AEON-003-SCH-04",
+      "CAM-EQ2026-OPERATIONS-003-SUP-01"
     ],
     "changed_annexes": [
       "Annex B",
@@ -206,12 +329,7 @@
     "linked_proposals": [],
     "patch_note_needed": "no — this record is the VIGIL patch note",
     "validator_or_automation_impact": "yes",
-    "routing_note": [
-      "This VIGIL patch note records completed Caelestis repairs for FM-0008 and does not modify the CAM instruments in this repository pass.",
-      "Annex B creates the doctrine: Access-State Governance is a cross-domain arbitration primitive and access is controlled by multiple separable states that should not be collapsed into one ambiguous user-facing failure.",
-      "Operations creates the taxonomy: Access-State Collapse / Access-State Ambiguity Failure is the operational failure class used to classify incidents like FM-0008.",
-      "Avoid patch sprawl into IDENTITY, SECURITY, ECONOMICS, CONTINUITY, OBSERVABILITY, or other domain instruments at this stage; treat those domains as affected cross-reference candidates only."
-    ],
+    "routing_note": "PATCH routing records only the Caelestis instruments amended by this decision.",
     "review_targets": [
       "IDENTITY domain instruments — cross-reference candidate only",
       "SECURITY domain instruments — cross-reference candidate only",
@@ -228,7 +346,7 @@
   "repair_provenance": {
     "retrospective_synthesis": false,
     "doctrine_change": "substantive",
-    "repair_basis": "Implemented CAM/Caelestis changes and assembled their relationship to the linked VIGIL record(s).",
+    "repair_basis": "Caelestis corpus amendment verified at the commit-addressed literal clauses below. Implemented CAM/Caelestis changes and assembled their relationship to the linked VIGIL record(s).",
     "instruments_reviewed": [
       "CAM-BS2025-AEON-003-SCH-04",
       "CAM-EQ2026-OPERATIONS-003-SUP-01"
@@ -241,14 +359,39 @@
     "coverage_origin": [
       {
         "instrument_id": "CAM-BS2025-AEON-003-SCH-04",
+        "canonical_path": "Governance/Constitution/CAM-BS2025-AEON-003-SCH-04.md",
         "effective_date": "2026-06-06",
-        "relevant_sections": []
+        "relevant_sections": [
+          "§6.1 Access-State Governance"
+        ],
+        "source_commits": [
+          "bc9c60b9c57952cc91065149bc60d72b0beb5052"
+        ],
+        "canonical_state": "canonical-main"
       },
       {
         "instrument_id": "CAM-EQ2026-OPERATIONS-003-SUP-01",
+        "canonical_path": "Governance/Charters/CAM-EQ2026-OPERATIONS-003-SUP-01.md",
         "effective_date": "2026-06-06",
-        "relevant_sections": []
+        "relevant_sections": [
+          "§3.7.7 Access-State Collapse and Access-State Ambiguity Failure"
+        ],
+        "source_commits": [
+          "bc9c60b9c57952cc91065149bc60d72b0beb5052"
+        ],
+        "canonical_state": "canonical-main"
       }
+    ]
+  },
+  "record_reconstruction": {
+    "reconstructed": true,
+    "reconstruction_date": "2026-07-24",
+    "reason": "Legacy PATCH reconstruction: the earlier record preserved narrative and provenance but did not expose literal, commit-addressed corpus implementation text.",
+    "review_id": "VIGIL-REVIEW-2026-07-24-CODEX-PATCH-0005",
+    "method": "Direct Git-object comparison of the VIGIL record, cited Caelestis implementation history, canonical file paths, section boundaries, prior wording where recoverable, and current main state.",
+    "limitations": [
+      "The legacy narrative and evidence fields were preserved; record_reconstruction and the 2026-07-24 interpretive review disclose this later structural repair.",
+      "External vendor adoption and runtime conformance were not inferred from Caelestis corpus evidence."
     ]
   },
   "interpretive_provenance": {
@@ -275,30 +418,51 @@
           "Primary-source access varies by source and is stated within each source record."
         ],
         "review_outcome": "metadata and governance-structure review completed; substantive claims remain bounded by source-specific evidence confidence"
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-07-24-CODEX-PATCH-0005",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work — Codex",
+        "reviewer_model": "GPT-5 Codex (exact deployed build not exposed)",
+        "review_date": "2026-07-24",
+        "review_scope": "Reconstructed the PATCH decision trace; inspected Caelestis Git history and source files; extracted literal section wording; reconciled implementation, lifecycle, instrument, path, commit, and verification claims.",
+        "capability_profile": {
+          "direct_text_analysis": true,
+          "direct_repository_analysis": true,
+          "direct_static_image_analysis": false,
+          "direct_audio_analysis_in_this_pass": false,
+          "direct_uploaded_video_analysis_in_this_pass": false,
+          "direct_externally_hosted_video_analysis": false,
+          "web_link_and_metadata_review": true
+        },
+        "known_limitations": [
+          "The exact deployed model build identifier was not exposed by the interaction surface.",
+          "Corpus verification establishes the cited Caelestis wording only; external adoption and runtime conformance were not assessed."
+        ],
+        "review_outcome": "Reconstructed a literal, commit-addressed Caelestis implementation trace and reconciled contradictory or incomplete legacy PATCH metadata without inventing corpus wording."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-07-14-GPT-5.6-THINKING",
+      "review_id": "VIGIL-REVIEW-2026-07-24-CODEX-PATCH-0005",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT",
-      "reviewer_model": "GPT-5.6 Thinking",
-      "review_date": "2026-07-14",
-      "review_scope": "registry-wide interpretive-provenance, source-modality, CAM-coverage, and record-boundary reconciliation",
+      "reviewer_platform": "OpenAI ChatGPT Work — Codex",
+      "reviewer_model": "GPT-5 Codex (exact deployed build not exposed)",
+      "review_date": "2026-07-24",
+      "review_scope": "Reconstructed the PATCH decision trace; inspected Caelestis Git history and source files; extracted literal section wording; reconciled implementation, lifecycle, instrument, path, commit, and verification claims.",
       "capability_profile": {
         "direct_text_analysis": true,
         "direct_repository_analysis": true,
-        "direct_static_image_analysis": true,
+        "direct_static_image_analysis": false,
         "direct_audio_analysis_in_this_pass": false,
         "direct_uploaded_video_analysis_in_this_pass": false,
         "direct_externally_hosted_video_analysis": false,
         "web_link_and_metadata_review": true
       },
       "known_limitations": [
-        "Could not directly play or inspect externally hosted TikTok or X video artefacts in the governed review environment.",
-        "Historical records were not assigned speculative earlier model identities; this entry records the formal current reconciliation review only.",
-        "Primary-source access varies by source and is stated within each source record."
+        "The exact deployed model build identifier was not exposed by the interaction surface.",
+        "Corpus verification establishes the cited Caelestis wording only; external adoption and runtime conformance were not assessed."
       ],
-      "review_outcome": "metadata and governance-structure review completed; substantive claims remain bounded by source-specific evidence confidence"
+      "review_outcome": "Reconstructed a literal, commit-addressed Caelestis implementation trace and reconciled contradictory or incomplete legacy PATCH metadata without inventing corpus wording."
     },
     "operating_model": "AI-led analytical observatory with high-level human governance editorship",
     "human_governance_editor": {
@@ -308,5 +472,7 @@
       "authority_boundary": "Human editorship governs VIGIL direction and CAM adoption; the AI analytical reviewer performs routine evidence triage, record analysis, and reconciliation."
     },
     "historical_reviewer_note": "Earlier reviewer model identity is preserved where already recorded. Where absent, it remains unknown rather than being retroactively inferred."
-  }
+  },
+  "patch_status": "implemented",
+  "implementation_status": "canonical-main"
 }
