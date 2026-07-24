@@ -12,10 +12,11 @@ VIGIL operates as an **AI-led analytical observatory with high-level human gover
 
 ## Record Classes
 
-VIGIL currently recognises four primary record classes:
+VIGIL currently recognises five primary record classes:
 
 ```text
 OBS   — Material unresolved ecosystem governance observation / early warning record
+RESEARCH — Non-binding research artefact that may originate an evidence-to-repair chain
 FM    — Ecosystem Failure Mode / triage record
 PROP  — CAM/Caelestis proposal record
 PATCH — Implemented or directly pre-existing CAM/Caelestis patch note
@@ -28,6 +29,12 @@ Use an Observation Record only when the record preserves a material unresolved g
 Source evidence for an existing record belongs in that record's canonical `source_records` block. An incident, article, status-page entry, or report does not become an OBS merely because it is new.
 
 Observation records must state the governance significance and material uncertainty. They must not contain failure-mode triage, CAM repair logic, patch instructions, curator tasking, or directions such as ‘add this incident to’ another record.
+
+### RESEARCH — Research Record
+
+Use a Research Record for a substantive research artefact that supplies the evidence basis for a failure mode, proposal, or repair pathway and would otherwise make a separate observation duplicative.
+
+Research records are non-binding. They may originate an evidence-to-repair chain in place of, or alongside, an observation, but CAM authority arises only through a linked proposal and implemented PATCH. Markdown research records must carry the required structured front matter and reciprocal links to the VIGIL records they support.
 
 ### FM — Failure Mode Record
 
@@ -173,6 +180,7 @@ Do not make CAM affected instruments the primary public classification layer.
   * `vigil/VIGIL.Observations.Index.json`
   * `vigil/VIGIL.Proposals.Index.json`
   * `vigil/VIGIL.PatchNotes.Index.json`
+  * `vigil/VIGIL.Research.Index.json`
   * `vigil/VIGIL.Registry.Index.json`
 * Do not recreate deprecated generated aggregate files:
   * `vigil/VIGIL.ActiveRecords.json`
