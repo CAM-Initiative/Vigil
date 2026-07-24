@@ -173,7 +173,10 @@ class BuildVigilRecordsTest(unittest.TestCase):
         records = builder.load_records()
         grouped = builder.records_by_registry(records)
 
-        self.assertEqual(set(grouped), {"failure_modes", "observations", "proposals", "patch_notes"})
+        self.assertEqual(
+            set(grouped),
+            {"failure_modes", "observations", "proposals", "patch_notes", "research"},
+        )
         self.assertEqual(sum(len(items) for items in grouped.values()), len(records))
         for registry_type, registry_records in grouped.items():
             expected_ids = {
@@ -249,7 +252,8 @@ class BuildVigilRecordsTest(unittest.TestCase):
                     self.assertEqual(entry["github_blob_url"], builder.github_blob_url(entry["path"]))
                     self.assertEqual(entry["raw_url"], builder.raw_url(entry["path"]))
                     self.assertIn("/vigil/records/", entry["raw_url"])
-                    self.assertTrue(entry["raw_url"].endswith(f"/{entry['id']}.json"))
+                    suffix = ".md" if entry["record_type"] == "research" else ".json"
+                    self.assertTrue(entry["raw_url"].endswith(f"/{entry['id']}{suffix}"))
                 patch = next((entry for entry in registry["records"] if entry["record_type"] == "patch"), None)
                 if patch:
                     self.assertIn("date_implemented", patch)
@@ -264,6 +268,7 @@ class BuildVigilRecordsTest(unittest.TestCase):
                 "observations": temp / "vigil" / "VIGIL.Observations.Index.json",
                 "proposals": temp / "vigil" / "VIGIL.Proposals.Index.json",
                 "patch_notes": temp / "vigil" / "VIGIL.PatchNotes.Index.json",
+                "research": temp / "vigil" / "VIGIL.Research.Index.json",
             }
             for registry_type, path in index_paths.items():
                 path.parent.mkdir(parents=True, exist_ok=True)
@@ -271,7 +276,7 @@ class BuildVigilRecordsTest(unittest.TestCase):
 
             master = builder.build_master_from_type_indexes(index_paths)
             self.assertEqual(master["registry_type"], "vigil_registry_master")
-            self.assertEqual(master["registry_count"], 4)
+            self.assertEqual(master["registry_count"], 5)
             expected_counts = {
                 registry_type: len(registry_records)
                 for registry_type, registry_records in grouped.items()
@@ -351,7 +356,8 @@ class BuildVigilRecordsTest(unittest.TestCase):
                     self.assertTrue(required.issubset(entry), entry["id"])
                     self.assertTrue(set(entry).issubset(allowed), sorted(set(entry) - allowed))
                     self.assertTrue(entry["path"].startswith("vigil/records/"))
-                    self.assertTrue(entry["raw_url"].endswith(f"/{entry['id']}.json"))
+                    suffix = ".md" if entry["record_type"] == "research" else ".json"
+                    self.assertTrue(entry["raw_url"].endswith(f"/{entry['id']}{suffix}"))
 
     def test_committed_enriched_index_entries_use_declared_interface_fields(self):
         schema_path = ROOT / "vigil" / "schemas" / "VIGIL.Index.Schema.json"
@@ -374,7 +380,9 @@ class BuildVigilRecordsTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp_dir:
             temp = Path(temp_dir)
             temp_records = temp / "records"
-            for source in sorted((ROOT / "vigil" / "records").rglob("*.json")):
+            sources = sorted((ROOT / "vigil" / "records").rglob("*.json"))
+            sources += sorted((ROOT / "vigil" / "records" / "research").rglob("*.md"))
+            for source in sources:
                 relative = source.relative_to(ROOT / "vigil" / "records")
                 target = temp_records / relative
                 target.parent.mkdir(parents=True, exist_ok=True)
@@ -392,12 +400,14 @@ class BuildVigilRecordsTest(unittest.TestCase):
                     temp_records / "failures",
                     temp_records / "proposals",
                     temp_records / "patches",
+                    temp_records / "research",
                 ]
                 builder.OUTPUT_PATHS = {
                     "failure_modes": temp / "VIGIL.Failures.Index.json",
                     "observations": temp / "VIGIL.Observations.Index.json",
                     "proposals": temp / "VIGIL.Proposals.Index.json",
                     "patch_notes": temp / "VIGIL.PatchNotes.Index.json",
+                    "research": temp / "VIGIL.Research.Index.json",
                 }
                 builder.MASTER_OUTPUT_PATH = temp / "VIGIL.Registry.Index.json"
                 builder.DEPRECATED_OUTPUT_PATHS = [
@@ -410,8 +420,11 @@ class BuildVigilRecordsTest(unittest.TestCase):
                 for output in builder.OUTPUT_PATHS.values():
                     self.assertTrue(output.exists())
                 master = json.loads(builder.MASTER_OUTPUT_PATH.read_text(encoding="utf-8"))
-                self.assertEqual(master["record_count"]["total"], len(list(temp_records.rglob("*.json"))))
-                self.assertEqual(master["registry_count"], 4)
+                expected_records = len(list(temp_records.rglob("*.json"))) + len(
+                    list((temp_records / "research").rglob("*.md"))
+                )
+                self.assertEqual(master["record_count"]["total"], expected_records)
+                self.assertEqual(master["registry_count"], 5)
                 for deprecated in builder.DEPRECATED_OUTPUT_PATHS:
                     self.assertFalse(deprecated.exists())
             finally:
