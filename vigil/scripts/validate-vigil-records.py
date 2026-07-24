@@ -19,12 +19,14 @@ DEPRECATED_OUTPUT_PATHS = [
     VIGIL_DIR / "VIGIL.Records.Index.json",
     VIGIL_DIR / "VIGIL.Records.json",
 ]
-RECORD_TYPE_DIRS = [
+DEFAULT_RECORD_TYPE_DIRS = [
     RECORDS_ROOT / "observations",
     RECORDS_ROOT / "failures",
     RECORDS_ROOT / "proposals",
     RECORDS_ROOT / "patches",
 ]
+RECORD_TYPE_DIRS = list(DEFAULT_RECORD_TYPE_DIRS)
+RESEARCH_ROOT = RECORDS_ROOT / "research"
 
 RECORD_TYPES = {"observation", "failure_mode", "proposal", "patch", "patch_note"}
 CAM_INTERNAL_REFERENCE_PREFIXES = ("CAM-BS", "CAM-EQ", "VIGIL-")
@@ -248,6 +250,19 @@ PROPOSAL_PATCH_IMPLEMENTATION_FIELDS = {
 def load_json(path: Path) -> Any:
     with path.open("r", encoding="utf-8") as handle:
         return json.load(handle)
+
+
+def load_research_metadata(path: Path) -> dict[str, Any]:
+    text = path.read_text(encoding="utf-8")
+    if not text.startswith("---\n"):
+        raise ValueError("research record must begin with JSON front matter")
+    end = text.find("\n---\n", 4)
+    if end == -1:
+        raise ValueError("research record has unterminated JSON front matter")
+    metadata = json.loads(text[4:end])
+    if not isinstance(metadata, dict):
+        raise TypeError("research front matter must contain one JSON object")
+    return metadata
 
 
 def record_files(root: Path | None = None) -> list[Path]:
@@ -788,13 +803,24 @@ def validate_record(
         for index, ref in enumerate(linked.get("external_references", [])):
             if isinstance(ref, dict) and (ref.get("url") in primary_urls or ref.get("source_url") in primary_urls):
                 errors.append(f"{path}: linked_records.external_references[{index}] duplicates a primary source_records URL")
-        for field in ("related_observations", "related_failure_modes", "related_proposals", "related_patch_notes"):
+        for field in (
+            "related_observations",
+            "related_failure_modes",
+            "related_proposals",
+            "related_patch_notes",
+            "research",
+        ):
             value = linked.get(field, [])
             if not isinstance(value, list):
                 errors.append(f"{path}: linked_records.{field} must be an array")
                 continue
             for linked_id in value:
-                if isinstance(linked_id, str) and linked_id and linked_id not in known_ids:
+                if (
+                    isinstance(linked_id, str)
+                    and linked_id
+                    and linked_id not in known_ids
+                    and (field != "research" or linked_id.startswith("VIGIL-"))
+                ):
                     warnings.append(f"{path}: linked record id {linked_id!r} in {field} cannot be resolved; it may be a future record")
         standards = linked.get("standards", [])
         if isinstance(standards, list):
@@ -997,6 +1023,58 @@ def validate_record(
             errors.append(f"{path}: PATCH lacks implemented-change evidence")
 
 
+def validate_research_record(
+    path: Path,
+    record: dict[str, Any],
+    known_ids: set[str],
+    errors: list[str],
+) -> None:
+    required = {
+        "id",
+        "record_type",
+        "record_state",
+        "date_recorded",
+        "title",
+        "summary",
+        "status",
+        "research_method",
+        "governance_purpose",
+        "evidence_confidence",
+        "domains",
+        "linked_records",
+    }
+    add_missing(errors, path, record, required)
+    record_id = record.get("id")
+    if record.get("record_type") != "research":
+        errors.append(f"{path}: research front matter record_type must be 'research'")
+    if not isinstance(record_id, str) or not record_id.startswith("VIGIL-") or "-RESEARCH-" not in record_id:
+        errors.append(f"{path}: research id must use VIGIL-YYYY-RESEARCH-NNNN")
+    elif path.stem != record_id:
+        errors.append(f"{path}: filename stem does not match research id {record_id!r}")
+    for field in ("title", "summary", "status", "research_method", "governance_purpose"):
+        if not isinstance(record.get(field), str) or not record[field].strip():
+            errors.append(f"{path}: {field} must be a non-empty string")
+    domains = record.get("domains")
+    if not isinstance(domains, list) or not domains or any(
+        not isinstance(domain, str) or not domain.strip() for domain in domains
+    ):
+        errors.append(f"{path}: domains must be a non-empty array of non-empty strings")
+    linked = record.get("linked_records")
+    if not isinstance(linked, dict):
+        errors.append(f"{path}: linked_records must be an object")
+        return
+    for field in ("related_observations", "related_failure_modes", "related_proposals", "related_patch_notes"):
+        values = linked.get(field)
+        if not isinstance(values, list):
+            errors.append(f"{path}: linked_records.{field} must be an array")
+            continue
+        for linked_id in values:
+            if not isinstance(linked_id, str) or not linked_id:
+                errors.append(f"{path}: linked_records.{field} must contain only non-empty strings")
+            elif linked_id not in known_ids:
+                errors.append(f"{path}: linked research target {linked_id!r} cannot be resolved")
+
+
 def validate(root: Path | None = None, schema_path: Path | None = None) -> int:
     errors: list[str] = []
     warnings: list[str] = []
@@ -1012,6 +1090,7 @@ def validate(root: Path | None = None, schema_path: Path | None = None) -> int:
 
     files = record_files(root)
     records_by_path: dict[Path, dict[str, Any]] = {}
+    research_by_path: dict[Path, dict[str, Any]] = {}
     ids: set[str] = set()
     for path in files:
         try:
@@ -1033,6 +1112,20 @@ def validate(root: Path | None = None, schema_path: Path | None = None) -> int:
                 errors.append(f"{path}: duplicate id {record['id']!r}")
             ids.add(record["id"])
 
+    if root is None and RECORD_TYPE_DIRS == DEFAULT_RECORD_TYPE_DIRS and RESEARCH_ROOT.exists():
+        for path in sorted(RESEARCH_ROOT.rglob("*.md"), key=lambda item: item.as_posix()):
+            try:
+                record = load_research_metadata(path)
+            except Exception as exc:  # noqa: BLE001
+                errors.append(f"{path}: unable to read research metadata: {exc}")
+                continue
+            research_by_path[path] = record
+            record_id = record.get("id")
+            if isinstance(record_id, str):
+                if record_id in ids:
+                    errors.append(f"{path}: duplicate id {record_id!r}")
+                ids.add(record_id)
+
     for path, record in records_by_path.items():
         validate_record(
             path,
@@ -1045,6 +1138,28 @@ def validate(root: Path | None = None, schema_path: Path | None = None) -> int:
             allowed_product_or_service_values,
         )
 
+    for path, record in research_by_path.items():
+        validate_research_record(path, record, ids, errors)
+
+    records_by_id = {
+        record["id"]: record
+        for record in records_by_path.values()
+        if isinstance(record.get("id"), str)
+    }
+    for path, research in research_by_path.items():
+        research_id = research.get("id")
+        linked = research.get("linked_records", {})
+        if not isinstance(research_id, str) or not isinstance(linked, dict):
+            continue
+        for field in ("related_observations", "related_failure_modes", "related_proposals", "related_patch_notes"):
+            for linked_id in linked.get(field, []):
+                target = records_by_id.get(linked_id)
+                target_research = target.get("linked_records", {}).get("research", []) if target else []
+                if research_id not in target_research:
+                    errors.append(
+                        f"{path}: {linked_id} must reciprocally include {research_id} in linked_records.research"
+                    )
+
     for warning in warnings:
         print(f"WARNING: {warning}", file=sys.stderr)
 
@@ -1054,7 +1169,11 @@ def validate(root: Path | None = None, schema_path: Path | None = None) -> int:
             print(f"- {error}", file=sys.stderr)
         return 1
 
-    print(f"VIGIL record validation passed: {len(records_by_path)} files, {len(ids)} unique records.")
+    print(
+        "VIGIL record validation passed: "
+        f"{len(records_by_path)} JSON files, {len(research_by_path)} research files, "
+        f"{len(ids)} unique records."
+    )
     return 0
 
 
