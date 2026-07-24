@@ -1,3 +1,34 @@
+---
+{
+  "id": "VIGIL-2026-RESEARCH-0001",
+  "record_type": "research",
+  "record_state": "closed-actioned",
+  "date_recorded": "2026-05-31",
+  "title": "Approaching the Human Cognitive Domain",
+  "summary": "Research synthesis examining emerging pathways for AI systems to infer, model, predict, influence, monitor, and partially externalise aspects of human cognitive state, and the resulting need for a dedicated human cognitive integrity governance domain.",
+  "status": "research record — non-binding",
+  "research_method": "Structured synthesis of peer-reviewed research, official programmes, legislation, policy, and governance analysis.",
+  "governance_purpose": "Provide the research basis for PROP-0001 and the subsequent creation of the MENTIS domain instruments recorded by PATCH-0023.",
+  "evidence_confidence": "corroborated",
+  "domains": [
+    "MENTIS",
+    "ETHICS",
+    "SECURITY",
+    "RELATION",
+    "STEWARDSHIP"
+  ],
+  "linked_records": {
+    "related_observations": [],
+    "related_failure_modes": [],
+    "related_proposals": [
+      "VIGIL-2026-PROP-0001"
+    ],
+    "related_patch_notes": [
+      "VIGIL-2026-PATCH-0023"
+    ]
+  }
+}
+---
 
 # VIGIL-2026-RESEARCH-0001 — Approaching the Human Cognitive Domain
 
