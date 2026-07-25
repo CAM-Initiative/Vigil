@@ -8,8 +8,8 @@
     "record_type": "failure_mode",
     "title": "Adversarial policy laundering through agent delegation",
     "created": "2026-07-23",
-    "updated": "2026-07-24",
-    "version": "1.1"
+    "updated": "2026-07-25",
+    "version": "1.2"
   },
   "summary": "A multi-agent governance failure in which a planner, orchestrator, evaluator, or general-purpose model delegates part of an otherwise legitimate objective to a specialised adversarial agent because that agent is optimised to deceive, manipulate, circumvent safeguards, exploit weaknesses, or defeat resistance, and then accepts, integrates, or executes the delegated result without independently preserving the originating task's ethical, authority, target, method, telemetry, and stop constraints. The adversarial agent's role-specific conduct repertoire or broader permissions are thereby laundered into the aggregate task as though they were authorised by the original objective.",
   "why_it_matters_to_CAM": "Advanced systems may select other models or agents by comparative advantage. A specialised red-team model can be legitimately trained to use tactics that would be inadmissible outside a bounded threat model, yet become dangerous when an orchestrator treats that capability as a general-purpose route around obstacles. Delegation can diffuse responsibility across planner, attacker, defender, executor, benchmark, and harness so that each component appears locally coherent while no component owns the aggregate ethical and authority decision. CAM therefore requires constraints to propagate through delegation, role-specific permissions to remain positively confined, adversarial outputs to return as non-executing evidence pending independent review, and an external governor that is not rewarded by either attack or defence success.",
@@ -158,10 +158,7 @@
   },
   "linked_records": {
     "related_observations": [],
-    "related_failure_modes": [
-      "VIGIL-2026-FM-0002",
-      "VIGIL-2026-FM-0044"
-    ],
+    "related_failure_modes": [],
     "related_proposals": [
       "VIGIL-2026-PROP-0019"
     ],
@@ -173,10 +170,22 @@
     "standards": [],
     "contextual_relations": [
       {
+        "record_id": "VIGIL-2026-FM-0002",
+        "relationship": "adjacent-control-problem",
+        "chain_inclusion": false,
+        "rationale": "Multi-agent governance is relevant to delegated adversarial roles, but this record does not establish the red-team governance repair path."
+      },
+      {
+        "record_id": "VIGIL-2026-FM-0044",
+        "relationship": "supporting-mechanism",
+        "chain_inclusion": false,
+        "rationale": "Unscrupulous conduct classification is related to the broader boundary, but it does not resolve adversarial policy laundering through agent delegation."
+      },
+      {
         "record_id": "VIGIL-2026-PROP-0017",
         "relationship": "separate-workstream",
         "chain_inclusion": false,
-        "rationale": "PROP-0017 and PATCH-0025 govern objective-pathway authority and admissibility; PROP-0019 addresses the distinct cultivation and laundering of deceptive adversarial capability."
+        "rationale": "PROP-0017 concerns objective-pathway admissibility. PROP-0019 is the distinct red-team governance proposal for this failure mode."
       }
     ]
   },
@@ -261,6 +270,7 @@
     "governance_layer": "multi-agent delegation / adversarial-role confinement / constraint propagation / model and action provenance / independent oversight / aggregate ethical admissibility",
     "proposal_needed": "yes — pending direct corpus-gap verification",
     "linked_proposal_ids": [
+      "VIGIL-2026-PROP-0017",
       "VIGIL-2026-PROP-0019"
     ],
     "routing_note": [
