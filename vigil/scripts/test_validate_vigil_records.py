@@ -106,6 +106,51 @@ class RuntimeConformanceValidationTests(unittest.TestCase):
         self.assertTrue(any("does not match" in error for error in errors))
 
 
+class LinkedRecordIdentifierValidationTests(unittest.TestCase):
+    def validate_record(self, linked_records):
+        errors = []
+        warnings = []
+        VALIDATOR.validate_record(
+            Path("VIGIL-2026-PROP-0999.json"),
+            {
+                "id": "VIGIL-2026-PROP-0999",
+                "record_type": "proposal",
+                "record_identity": {
+                    "record_id": "VIGIL-2026-PROP-0999",
+                    "record_type": "proposal",
+                },
+                "record_state": "active",
+                "source_records": [],
+                "linked_records": linked_records,
+                "system_context": {
+                    "platform_or_vendor": "Other",
+                    "product_or_service": "Other",
+                    "specific_model_or_runtime": "Not applicable",
+                    "interface_surface": "test",
+                },
+            },
+            {"VIGIL-2026-PROP-0999", "VIGIL-2026-FM-0001"},
+            errors,
+            warnings,
+            VALIDATOR.FALLBACK_ALLOWED_CANONICAL_FAILURE_GROUPS,
+            VALIDATOR.FALLBACK_ALLOWED_PLATFORM_OR_VENDOR_VALUES,
+            VALIDATOR.FALLBACK_ALLOWED_PRODUCT_OR_SERVICE_VALUES,
+        )
+        return errors, warnings
+
+    def test_malformed_internal_link_is_an_error_not_a_future_record_warning(self):
+        errors, warnings = self.validate_record({"related_failure_modes": ["VIGIL-1"]})
+
+        self.assertTrue(any("malformed VIGIL record id 'VIGIL-1'" in error for error in errors))
+        self.assertFalse(any("VIGIL-1" in warning for warning in warnings))
+
+    def test_valid_future_internal_link_remains_a_warning(self):
+        errors, warnings = self.validate_record({"related_failure_modes": ["VIGIL-2026-FM-0999"]})
+
+        self.assertFalse(any("malformed" in error for error in errors))
+        self.assertTrue(any("VIGIL-2026-FM-0999" in warning for warning in warnings))
+
+
 class RelationshipScopeValidationTests(unittest.TestCase):
     KNOWN_IDS = {
         "VIGIL-2026-FM-0001",

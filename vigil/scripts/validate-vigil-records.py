@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 from pathlib import Path
 from typing import Any
@@ -30,6 +31,7 @@ RESEARCH_ROOT = RECORDS_ROOT / "research"
 
 RECORD_TYPES = {"observation", "failure_mode", "proposal", "patch", "patch_note"}
 CAM_INTERNAL_REFERENCE_PREFIXES = ("CAM-BS", "CAM-EQ", "VIGIL-")
+VIGIL_RECORD_ID_PATTERN = re.compile(r"^VIGIL-\d{4}-(?:OBS|FM|PROP|PATCH|RESEARCH)-\d{4}$")
 FALLBACK_ALLOWED_CANONICAL_FAILURE_GROUPS = {
     # Fallback only. The primary VIGIL taxonomy source is
     # VIGIL.Schema.json / cam_failure_taxonomy.allowed_canonical_failure_group_values,
@@ -848,6 +850,15 @@ def is_cam_instrument_reference(value: Any) -> bool:
     return standards_reference_text(value).startswith(CAM_INTERNAL_REFERENCE_PREFIXES)
 
 
+def linked_record_identifier(value: Any) -> str | None:
+    if isinstance(value, str):
+        return value
+    if isinstance(value, dict):
+        candidate = value.get("id", value.get("record_id"))
+        return candidate if isinstance(candidate, str) else None
+    return None
+
+
 def validate_canonical_path(path: Path, record_id: Any, record_type: Any, errors: list[str]) -> None:
     """Validate canonical repository paths while allowing standalone fixture files."""
     try:
@@ -951,13 +962,18 @@ def validate_record(
                 errors.append(f"{path}: linked_records.{field} must be an array")
                 continue
             for linked_id in value:
+                identifier = linked_record_identifier(linked_id)
+                requires_vigil_record_id = field != "research" or (isinstance(identifier, str) and identifier.startswith("VIGIL-"))
+                if requires_vigil_record_id and (not isinstance(identifier, str) or not VIGIL_RECORD_ID_PATTERN.fullmatch(identifier)):
+                    errors.append(f"{path}: linked_records.{field} contains malformed VIGIL record id {linked_id!r}")
+                    continue
                 if (
-                    isinstance(linked_id, str)
-                    and linked_id
-                    and linked_id not in known_ids
-                    and (field != "research" or linked_id.startswith("VIGIL-"))
+                    isinstance(identifier, str)
+                    and identifier
+                    and identifier not in known_ids
+                    and requires_vigil_record_id
                 ):
-                    warnings.append(f"{path}: linked record id {linked_id!r} in {field} cannot be resolved; it may be a future record")
+                    warnings.append(f"{path}: linked record id {identifier!r} in {field} cannot be resolved; it may be a future record")
         standards = linked.get("standards", [])
         if isinstance(standards, list):
             for index, standard in enumerate(standards):
