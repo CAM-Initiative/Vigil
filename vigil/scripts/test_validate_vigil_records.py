@@ -106,5 +106,88 @@ class RuntimeConformanceValidationTests(unittest.TestCase):
         self.assertTrue(any("does not match" in error for error in errors))
 
 
+class RelationshipScopeValidationTests(unittest.TestCase):
+    KNOWN_IDS = {
+        "VIGIL-2026-FM-0001",
+        "VIGIL-2026-FM-0002",
+        "VIGIL-2026-PATCH-0001",
+    }
+
+    def validate(self, record):
+        errors = []
+        VALIDATOR.validate_relationship_scope(
+            Path("VIGIL-TEST-RECORD.json"),
+            record,
+            self.KNOWN_IDS,
+            errors,
+        )
+        return errors
+
+    def test_contextual_relation_is_non_transitive(self):
+        errors = self.validate({
+            "record_type": "failure_mode",
+            "linked_records": {
+                "related_failure_modes": [],
+                "contextual_relations": [{
+                    "record_id": "VIGIL-2026-FM-0002",
+                    "relationship": "contrast",
+                    "chain_inclusion": False,
+                    "rationale": "Comparison only; it is not part of this repair chain.",
+                }],
+            },
+        })
+        self.assertEqual(errors, [])
+
+    def test_contextual_relation_cannot_also_be_authoritative(self):
+        errors = self.validate({
+            "record_type": "proposal",
+            "linked_records": {
+                "related_failure_modes": ["VIGIL-2026-FM-0001"],
+                "contextual_relations": [{
+                    "record_id": "VIGIL-2026-FM-0001",
+                    "relationship": "adjacent",
+                    "chain_inclusion": False,
+                    "rationale": "Invalid dual classification.",
+                }],
+            },
+        })
+        self.assertTrue(any("both contextual and chain-included" in error for error in errors))
+
+    def test_multiple_patch_failures_require_explicit_exception(self):
+        errors = self.validate({
+            "record_type": "patch",
+            "linked_records": {
+                "related_failure_modes": [
+                    "VIGIL-2026-FM-0001",
+                    "VIGIL-2026-FM-0002",
+                ],
+                "contextual_relations": [],
+            },
+        })
+        self.assertTrue(any("multi-failure-mode exception" in error for error in errors))
+
+    def test_multi_failure_patch_requires_per_failure_verification(self):
+        errors = self.validate({
+            "record_type": "patch",
+            "linked_records": {
+                "related_failure_modes": [
+                    "VIGIL-2026-FM-0001",
+                    "VIGIL-2026-FM-0002",
+                ],
+                "contextual_relations": [],
+            },
+            "repair_scope": {
+                "primary_failure_mode": "VIGIL-2026-FM-0001",
+                "additional_resolved_failure_modes": ["VIGIL-2026-FM-0002"],
+                "multi_failure_mode_exception": True,
+                "exception_rationale": "One indivisible amendment directly closes both failures.",
+                "verification_by_failure_mode": {
+                    "VIGIL-2026-FM-0001": "verified",
+                },
+            },
+        })
+        self.assertTrue(any("exactly one result" in error for error in errors))
+
+
 if __name__ == "__main__":
     unittest.main()

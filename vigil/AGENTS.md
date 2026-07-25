@@ -54,6 +54,11 @@ Proposal records may be linked to observations or failure modes, but may also ex
 
 Proposal records must not claim that a patch has already been implemented.
 
+Each proposal should identify no more than one authoritative primary failure mode by default.
+Governance-origin and research-origin proposals may have no primary failure mode. Adjacent failures,
+precedents, and separate workstreams belong in typed, non-transitive
+`linked_records.contextual_relations`.
+
 ### PATCH — Patch Note Record
 
 Use a Patch Note Record only when a CAM/Caelestis change has actually been implemented, or when a retrospective patch note identifies direct pre-existing CAM/Caelestis coverage for a failure that VIGIL had not previously linked.
@@ -61,6 +66,11 @@ Use a Patch Note Record only when a CAM/Caelestis change has actually been imple
 Patch notes record the actual CAM/Caelestis control content, where it changed or originated, why it governs the failure, what evidence or proposal prompted the repair or crosswalk, and how corpus implementation was verified.
 
 Patch notes must distinguish completed CAM work from remaining ecosystem or runtime work.
+
+A PATCH resolves one primary failure mode by default. Multiple resolved failure modes require an
+explicit `repair_scope` exception rationale and a separate verification outcome for every failure.
+Mere adjacency, shared subject matter, or use of the same corpus instrument does not establish a
+multi-failure repair.
 
 VIGIL schemas, validators, indexes, workflows, migrations, reconciliation passes, and repository administration are never PATCH targets.
 

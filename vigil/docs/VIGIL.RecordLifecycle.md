@@ -120,6 +120,36 @@ Observation → Monitoring / Closed No Action
 
 These examples are routing patterns. They do not require every observation to become a failure mode, every failure mode to become a proposal, or every proposal to become a patch.
 
+## Authoritative repair scope and contextual relationships
+
+The default repair chain is narrow:
+
+```text
+Evidence → primary failure mode → proposal → PATCH
+```
+
+Research and observations may supply evidence. A proposal or PATCH ordinarily has no more than one
+`repair_scope.primary_failure_mode`. Other relevant records belong in
+`linked_records.contextual_relations`, where `chain_inclusion` must be `false`.
+
+Contextual relationships are visible but non-transitive. They may identify an adjacent control,
+contrast, supporting mechanism, shared corpus area, implementation precedent, separate workstream,
+or governance context. They must not be traversed as evidence that a proposal or PATCH resolves the
+contextual record.
+
+A PATCH may resolve multiple failure modes only as an explicit exception. The PATCH must:
+
+* identify one primary failure mode and each additional resolved failure mode;
+* explain why a single repair inseparably closes the failures together; and
+* provide a separate verification result for every failure mode.
+
+A governance-origin or research-origin proposal may have no primary failure mode. It must not be
+forced into an artificial failure chain merely to complete a sequence.
+
+`linked_records.related_failure_modes` is authoritative only when it matches `repair_scope`. A
+record cannot appear in both an authoritative linked-record array and `contextual_relations`.
+“Related” never means “repaired together.”
+
 
 ## Linked standards and CAM routing
 

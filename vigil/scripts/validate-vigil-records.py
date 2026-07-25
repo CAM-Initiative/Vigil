@@ -506,6 +506,142 @@ def related_patch_notes(record: dict[str, Any]) -> list[str]:
     return [patch for patch in patches if isinstance(patch, str) and patch]
 
 
+def validate_relationship_scope(
+    path: Path,
+    record: dict[str, Any],
+    known_ids: set[str],
+    errors: list[str],
+    warnings: list[str] | None = None,
+) -> None:
+    record_type = record.get("record_type")
+    linked = record.get("linked_records")
+    if not isinstance(linked, dict):
+        return
+
+    authoritative_ids: set[str] = set()
+    for field in (
+        "related_observations",
+        "related_failure_modes",
+        "related_proposals",
+        "related_patch_notes",
+        "research",
+    ):
+        values = linked.get(field, [])
+        if isinstance(values, list):
+            authoritative_ids.update(value for value in values if isinstance(value, str) and value)
+
+    contextual = linked.get("contextual_relations", [])
+    if not isinstance(contextual, list):
+        errors.append(f"{path}: linked_records.contextual_relations must be an array")
+    else:
+        seen_contextual: set[str] = set()
+        for index, relation in enumerate(contextual):
+            label = f"{path}: linked_records.contextual_relations[{index}]"
+            if not isinstance(relation, dict):
+                errors.append(f"{label} must be an object")
+                continue
+            missing = sorted(
+                field
+                for field in ("record_id", "relationship", "chain_inclusion", "rationale")
+                if field not in relation
+            )
+            if missing:
+                errors.append(f"{label} missing required keys: {', '.join(missing)}")
+            record_id = relation.get("record_id")
+            if not isinstance(record_id, str) or not record_id:
+                errors.append(f"{label}.record_id must be a non-empty string")
+            else:
+                if record_id in seen_contextual:
+                    errors.append(f"{label}.record_id duplicates contextual relation {record_id!r}")
+                seen_contextual.add(record_id)
+                if record_id in authoritative_ids:
+                    errors.append(
+                        f"{label}.record_id {record_id!r} is also present in an authoritative linked_records "
+                        "array; a record cannot be both contextual and chain-included"
+                    )
+                if record_id not in known_ids and warnings is not None:
+                    warnings.append(f"{label}.record_id {record_id!r} cannot be resolved; it may be a future record")
+            if relation.get("chain_inclusion") is not False:
+                errors.append(f"{label}.chain_inclusion must be false")
+            if not isinstance(relation.get("rationale"), str) or not relation["rationale"].strip():
+                errors.append(f"{label}.rationale must be a non-empty string")
+
+    repair_scope = record.get("repair_scope")
+    related_failures = linked.get("related_failure_modes", [])
+    if not isinstance(related_failures, list):
+        related_failures = []
+    if repair_scope is None:
+        if record_type in {"proposal", "patch", "patch_note"} and len(related_failures) > 1:
+            errors.append(
+                f"{path}: multiple authoritative failure-mode links require repair_scope and an explicit "
+                "multi-failure-mode exception"
+            )
+        return
+    if record_type not in {"proposal", "patch", "patch_note"}:
+        errors.append(f"{path}: repair_scope is permitted only on proposal and PATCH records")
+        return
+    if not isinstance(repair_scope, dict):
+        errors.append(f"{path}: repair_scope must be an object")
+        return
+
+    required = {
+        "primary_failure_mode",
+        "additional_resolved_failure_modes",
+        "multi_failure_mode_exception",
+        "exception_rationale",
+        "verification_by_failure_mode",
+    }
+    missing = sorted(required - set(repair_scope))
+    if missing:
+        errors.append(f"{path}: repair_scope missing required keys: {', '.join(missing)}")
+
+    primary = repair_scope.get("primary_failure_mode")
+    if primary is not None and (not isinstance(primary, str) or not primary.startswith("VIGIL-") or "-FM-" not in primary):
+        errors.append(f"{path}: repair_scope.primary_failure_mode must be a VIGIL FM id or null")
+        primary = None
+    additional = repair_scope.get("additional_resolved_failure_modes")
+    if not isinstance(additional, list) or any(not isinstance(item, str) or "-FM-" not in item for item in additional):
+        errors.append(f"{path}: repair_scope.additional_resolved_failure_modes must contain only VIGIL FM ids")
+        additional = []
+    elif len(additional) != len(set(additional)):
+        errors.append(f"{path}: repair_scope.additional_resolved_failure_modes must not contain duplicates")
+
+    resolved = ([primary] if primary else []) + additional
+    if primary and primary in additional:
+        errors.append(f"{path}: repair_scope primary failure mode must not be repeated as an additional failure")
+    if related_failures != resolved:
+        errors.append(
+            f"{path}: linked_records.related_failure_modes must exactly match repair_scope authoritative order "
+            f"{resolved!r}"
+        )
+    for failure_id in resolved:
+        if failure_id not in known_ids and warnings is not None:
+            warnings.append(f"{path}: repair_scope failure id {failure_id!r} cannot be resolved; it may be a future record")
+
+    exception = repair_scope.get("multi_failure_mode_exception")
+    rationale = repair_scope.get("exception_rationale")
+    if not isinstance(exception, bool):
+        errors.append(f"{path}: repair_scope.multi_failure_mode_exception must be boolean")
+    elif exception:
+        if not additional:
+            errors.append(f"{path}: multi-failure-mode exception requires at least one additional resolved failure")
+        if not isinstance(rationale, str) or not rationale.strip():
+            errors.append(f"{path}: multi-failure-mode exception requires a non-empty exception_rationale")
+    elif additional:
+        errors.append(f"{path}: additional resolved failures require multi_failure_mode_exception true")
+
+    verification = repair_scope.get("verification_by_failure_mode")
+    if not isinstance(verification, dict):
+        errors.append(f"{path}: repair_scope.verification_by_failure_mode must be an object")
+    elif record_type in {"patch", "patch_note"} and set(verification) != set(resolved):
+        errors.append(
+            f"{path}: PATCH repair_scope.verification_by_failure_mode must contain exactly one result for "
+            "each authoritative failure mode"
+        )
+    elif record_type == "proposal" and verification:
+        errors.append(f"{path}: proposal repair_scope.verification_by_failure_mode must remain empty")
+
+
 def validate_repair_status(
     path: Path,
     record: dict[str, Any],
@@ -834,6 +970,8 @@ def validate_record(
             errors.append(f"{path}: linked_records.standards must be an array when present")
         if record_type == "proposal" and record.get("external_standards_required") is True and not linked.get("standards"):
             warnings.append(f"{path}: external standards are marked required but absent from proposal linked_records.standards")
+
+    validate_relationship_scope(path, record, known_ids, errors, warnings)
 
     system_context = record.get("system_context")
     if not isinstance(system_context, dict):
