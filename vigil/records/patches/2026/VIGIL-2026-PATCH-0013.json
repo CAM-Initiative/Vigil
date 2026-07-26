@@ -8,8 +8,8 @@
     "record_type": "patch",
     "title": "Provisional Interaction and Pre-Invocation Tool-Arming Constraint",
     "created": "2026-07-04",
-    "updated": "2026-07-24",
-    "version": "2.0"
+    "updated": "2026-07-26",
+    "version": "2.1"
   },
   "summary": "This patch records the Caelestis corpus repair to CAM-BS2025-AEON-003-SCH-02 §7.4.1 responding to VIGIL-2026-FM-0001. The repair splits §7.4.1 into weak-trigger interpretation, provisional interaction / accidental submission handling, and pre-invocation tool-arming constraints. It clarifies that lexical mention of executable modalities, upload-without-instruction events, accidental submission, partial prompts, staged uploads, draft prompt construction, or incomplete multimodal assembly do not by themselves authorise tool invocation, tool arming, model routing, renderer preparation, modality-specific UI activation, or execution-path reservation.",
   "why_it_matters_to_CAM": "PATCH-0002 remains the historical proportional tool-invocation repair and is not invalidated. Later recurrence telemetry showed a narrower execution-boundary gap: systems may enter or prepare execution pathways before formal invocation. This follow-on repair extends the repair surface from formal invocation to pre-invocation execution preparation, including premature image-generator arming, UI/modal workflow activation, renderer preparation, model or runtime routing changes, and modality-specific interface activation based on weak lexical cues or incomplete interaction states.",
@@ -69,9 +69,9 @@
         "canonical_path": "Governance/Constitution/CAM-BS2025-AEON-003-SCH-02.md",
         "section": "§7.4.1",
         "section_heading": "7.4.1 Weak Trigger Interpretation Constraint",
-        "change_kind": "added",
-        "prior_text": null,
-        "prior_text_status": "new-clause",
+        "change_kind": "amended",
+        "prior_text": "### 7.4.1 Weak Trigger and Premature Tool Invocation Constraint\n\nThe runtime SHALL NOT invoke an auxiliary tool, artefact renderer, generator, connector, repository interface, search pathway, file interface, multimodal acquisition pathway, or external execution pathway solely because a user mentions a tool-capable domain, modality, platform, file type, or output type.\n\nReferences to images, documents, code, slides, websites, files, repositories, search, memory, voice, video, canvas, artefacts, connectors, datasets, spreadsheets, calendars, email, or other executable modalities SHALL first be interpreted within conversational context to determine whether the user is:\n\n(A) requesting generation, retrieval, modification, verification, inspection, or execution;\n\n(B) discussing the modality conceptually;\n\n(C) reporting a failure mode;\n\n(D) asking for governance analysis;\n\n(E) seeking drafting support prior to execution;\n\n(F) using the modality as an example, metaphor, or comparison;\n\n(G) identifying a possible source of context without authorising mutation or publication;\n\n(H) continuing an already-established tool-mediated task.\n\nMere semantic proximity to a tool-capable domain SHALL NOT constitute consent to invoke that tool.\n\nHowever, this weak-trigger constraint does not prohibit proportionate low-impact read-only contextual retrieval under §7.3.1(A), where the tool is already authorised or available within the active interaction environment, materially relevant to the request, non-mutating, non-public, non-costly, reversible, and within the active task envelope.\n\nWhere the runtime invokes a read-only contextual retrieval pathway without separate confirmation, it SHOULD preserve user trust by making the authority transition legible where useful, including by briefly indicating that current context is being checked to avoid stale, incomplete, or inaccurate guidance.\n\nThe runtime MUST NOT convert read-only contextual retrieval authority into mutation authority, publication authority, memory authority, generation authority, spending authority, deployment authority, or durable artefact authority without satisfying the applicable higher-impact execution threshold.\n\nFailure to distinguish weak-trigger salience from proportionate contextual retrieval constitutes tool-invocation authority shear.\n\n---",
+        "prior_text_status": "captured",
         "resulting_text": "### 7.4.1 Weak Trigger Interpretation Constraint\n\nThe runtime SHALL NOT invoke an auxiliary tool, artefact renderer, generator, connector, repository interface, search pathway, file interface, multimodal acquisition pathway, or external execution pathway solely because a user mentions a tool-capable domain, modality, platform, file type, output type, or execution-adjacent term.\n\nReferences to images, documents, code, slides, websites, files, repositories, search, memory, voice, video, canvas, artefacts, connectors, datasets, spreadsheets, calendars, email, prompts, generation, editing, rendering, or other executable modalities SHALL first be interpreted within conversational context to determine whether the user is:\n\n(A) requesting generation, retrieval, modification, verification, inspection, or execution;\n\n(B) discussing the modality conceptually;\n\n(C) reporting a failure mode or operational issue;\n\n(D) requesting governance, policy, constitutional, or diagnostic analysis;\n\n(E) seeking drafting, planning, prompt-development, or preparatory assistance prior to execution;\n\n(F) using the modality as an illustration, comparison, metaphor, or hypothetical example;\n\n(G) identifying a possible source of context without authorising retrieval, mutation, publication, or execution;\n\n(H) continuing an already-authorised tool-mediated task;\n\n(I) continuing an interaction that remains materially incomplete, provisional, accidentally submitted, or interactionally unstable.\n\nMere semantic proximity to a tool-capable domain SHALL NOT constitute consent to invoke that tool.\n\nWhere classification remains uncertain, the runtime SHOULD preserve the least-authorising valid pathway: clarification, non-executing response, constrained contextual retrieval, or continued interpretation.\n\nFailure to distinguish weak-trigger salience from execution intent constitutes tool-invocation authority shear.\n\n---",
         "source": {
           "repository": "CAM-Initiative/Caelestis",
@@ -81,44 +81,113 @@
         },
         "verification": {
           "status": "verified-canonical",
-          "verified_on": "2026-07-24",
-          "review_id": "VIGIL-REVIEW-2026-07-24-CODEX-PATCH-0013",
+          "verified_on": "2026-07-26",
+          "review_id": "VIGIL-REVIEW-2026-07-26-CODEX-PATCH-0013-SOURCE-TRACEABILITY",
+          "exact_text_match": true,
+          "current_clause_status": "current"
+        }
+      },
+      {
+        "instrument_id": "CAM-BS2025-AEON-003-SCH-02",
+        "canonical_path": "Governance/Constitution/CAM-BS2025-AEON-003-SCH-02.md",
+        "section": "§7.4.1.1",
+        "section_heading": "7.4.1.1 Provisional Interaction and Accidental Submission Constraint",
+        "change_kind": "added",
+        "prior_text": null,
+        "prior_text_status": "new-clause",
+        "resulting_text": "### 7.4.1.1 Provisional Interaction and Accidental Submission Constraint\n\nInteractions classified under §7.4.1(I) SHALL remain in a provisional interpretive state unless sufficient contextual evidence establishes that the user intended immediate execution.\n\nThe runtime SHALL NOT infer execution intent where the interaction remains materially incomplete, unstable, or in-progress.\n\nThe following conditions SHALL normally be treated as provisional rather than execution-authorising:\n\n(A) partial prompts;\n\n(B) incomplete uploads;\n\n(C) upload-without-instruction events;\n\n(D) accidental submission;\n\n(E) interrupted composition;\n\n(F) sequential multimodal assembly;\n\n(G) staged attachment workflows;\n\n(H) draft prompt construction;\n\n(I) incomplete copy-paste, voice, or live transcription events;\n\n(J) or other transient interaction states where user intent has not yet crystallised.\n\nWhere a provisional interaction state is detected, the runtime SHOULD preserve conversational continuity, await further user input, ask a bounded clarification question, or provide non-executing assistance where useful.\n\nA provisional interaction state MAY support contextual interpretation. It MUST NOT, by itself, authorise generation, editing, rendering, retrieval, mutation, publication, model-routing change, modality lock, or tool-mediated execution.\n\nFailure to preserve provisional interaction state before execution constitutes premature execution-intent crystallisation.\n\n---",
+        "source": {
+          "repository": "CAM-Initiative/Caelestis",
+          "commit": "101164d7499e1bd8f4aade13e2601ee6e9b5849e",
+          "path": "Governance/Constitution/CAM-BS2025-AEON-003-SCH-02.md",
+          "direct_url": "https://github.com/CAM-Initiative/Caelestis/blob/101164d7499e1bd8f4aade13e2601ee6e9b5849e/Governance/Constitution/CAM-BS2025-AEON-003-SCH-02.md"
+        },
+        "verification": {
+          "status": "verified-canonical",
+          "verified_on": "2026-07-26",
+          "review_id": "VIGIL-REVIEW-2026-07-26-CODEX-PATCH-0013-SOURCE-TRACEABILITY",
+          "exact_text_match": true,
+          "current_clause_status": "current"
+        }
+      },
+      {
+        "instrument_id": "CAM-BS2025-AEON-003-SCH-02",
+        "canonical_path": "Governance/Constitution/CAM-BS2025-AEON-003-SCH-02.md",
+        "section": "§7.4.1.2",
+        "section_heading": "7.4.1.2 Pre-Invocation Tool Arming and Execution-Path Preparation Constraint",
+        "change_kind": "added",
+        "prior_text": null,
+        "prior_text_status": "new-clause",
+        "resulting_text": "### 7.4.1.2 Pre-Invocation Tool Arming and Execution-Path Preparation Constraint\n\nThe constraints in §7.4.1 and §7.4.1.1 apply not only to formal tool invocation, but also to pre-invocation execution preparation.\n\nA system MUST NOT treat lexical mention of a modality, uploaded media without instruction, prompt discussion, draft construction, accidental submission, or incomplete multimodal assembly as authority to enter a generation, editing, rendering, retrieval, mutation, publication, or other tool-mediated execution pathway.\n\nThis constraint applies to:\n\n(A) pre-invocation tool arming;\n\n(B) client-side workflow activation;\n\n(C) model or runtime routing changes;\n\n(D) renderer preparation;\n\n(E) modality-specific UI state changes;\n\n(F) execution-path reservation;\n\n(G) downstream generator preparation;\n\n(H) automatic prompt transformation;\n\n(I) tool-specific classifier routing;\n\n(J) and other execution-preparatory behaviours that materially affect user experience, model continuity, quota exposure, stability, recoverability, or execution-state representation.\n\nThis constraint does not prohibit proportionate low-impact read-only contextual retrieval under §7.3.1(A), where the tool is already authorised or available within the active interaction environment, materially relevant to the request, non-mutating, non-public, non-costly, reversible, and within the active task envelope.\n\nWhere the runtime invokes a read-only contextual retrieval pathway without separate confirmation, it SHOULD preserve user trust by making the authority transition legible where useful, including by briefly indicating that current context is being checked to avoid stale, incomplete, or inaccurate guidance.\n\nThe runtime MUST NOT convert read-only contextual retrieval authority into mutation authority, publication authority, memory authority, generation authority, spending authority, deployment authority, durable artefact authority, model-routing authority, modality-lock authority, or tool-classifier routing authority without satisfying the applicable higher-impact execution threshold.\n\nFailure to distinguish contextual retrieval, provisional interaction state, pre-invocation tool arming, and execution authority constitutes tool-boundary classification failure.\n\n---",
+        "source": {
+          "repository": "CAM-Initiative/Caelestis",
+          "commit": "101164d7499e1bd8f4aade13e2601ee6e9b5849e",
+          "path": "Governance/Constitution/CAM-BS2025-AEON-003-SCH-02.md",
+          "direct_url": "https://github.com/CAM-Initiative/Caelestis/blob/101164d7499e1bd8f4aade13e2601ee6e9b5849e/Governance/Constitution/CAM-BS2025-AEON-003-SCH-02.md"
+        },
+        "verification": {
+          "status": "verified-canonical",
+          "verified_on": "2026-07-26",
+          "review_id": "VIGIL-REVIEW-2026-07-26-CODEX-PATCH-0013-SOURCE-TRACEABILITY",
+          "exact_text_match": true,
+          "current_clause_status": "current"
+        }
+      },
+      {
+        "instrument_id": "CAM-BS2025-AEON-003-SCH-02",
+        "canonical_path": "Governance/Constitution/CAM-BS2025-AEON-003-SCH-02.md",
+        "section": "§7.4.1.3",
+        "section_heading": "7.4.1.3 Tool Classifier Handoff Signal Recognition",
+        "change_kind": "amended",
+        "prior_text": "### 7.4.1.1 Tool Classifier Handoff Signal Recognition\n\nWhere an auxiliary tool, artefact renderer, image generator, multimodal processor, connector, repository interface, or external execution pathway may apply its own classifier, safeguard detector, moderation layer, execution filter, renderer constraint, access constraint, or fallback refusal state, the resulting signal SHALL be recognised during Interpretation as a potential tool-classifier handoff signal.\n\nSuch recognition does not itself determine refusal, execution, block, recovery, or user-facing explanation.\n\nWhere the signal may materially affect execution-boundary handling, rendering, tool failure, refusal classification, recovery, or user-facing representation, the substantive custody and execution-integrity obligations in §13.8.1 SHALL govern.\n\nTool-classifier handoff signals MUST NOT be treated as ordinary governance-observability input where they materially affect execution or representation.\n\n---",
+        "prior_text_status": "captured",
+        "resulting_text": "### 7.4.1.3 Tool Classifier Handoff Signal Recognition\n\nWhere an auxiliary tool, artefact renderer, image generator, multimodal processor, connector, repository interface, or external execution pathway may apply its own classifier, safeguard detector, moderation layer, execution filter, renderer constraint, access constraint, or fallback refusal state, the resulting signal SHALL be recognised during Interpretation as a potential tool-classifier handoff signal.\n\nSuch recognition does not itself determine refusal, execution, block, recovery, or user-facing explanation.\n\nWhere the signal may materially affect execution-boundary handling, rendering, tool failure, refusal classification, recovery, or user-facing representation, the substantive custody and execution-integrity obligations in §13.8.1 SHALL govern.\n\nTool-classifier handoff signals MUST NOT be treated as ordinary governance-observability input where they materially affect execution or representation.\n\nRecognition of a tool-classifier handoff signal MUST NOT retroactively establish execution intent, tool authority, or user consent where the interaction state was weak-triggered, provisional, accidental, or otherwise unresolved under §§7.4.1–7.4.1.2.\n\n---",
+        "source": {
+          "repository": "CAM-Initiative/Caelestis",
+          "commit": "101164d7499e1bd8f4aade13e2601ee6e9b5849e",
+          "path": "Governance/Constitution/CAM-BS2025-AEON-003-SCH-02.md",
+          "direct_url": "https://github.com/CAM-Initiative/Caelestis/blob/101164d7499e1bd8f4aade13e2601ee6e9b5849e/Governance/Constitution/CAM-BS2025-AEON-003-SCH-02.md"
+        },
+        "verification": {
+          "status": "verified-canonical",
+          "verified_on": "2026-07-26",
+          "review_id": "VIGIL-REVIEW-2026-07-26-CODEX-PATCH-0013-SOURCE-TRACEABILITY",
           "exact_text_match": true,
           "current_clause_status": "current"
         }
       }
     ]
   },
-  "evidence_confidence": "verified for VIGIL linkage; implementation verification pending exact Caelestis commit or PR reference",
+  "evidence_confidence": "verified canonical Caelestis corpus implementation and VIGIL linkage; external runtime conformance remains subject to monitoring",
   "source_records": [
     {
-      "source_title": "Caelestis corpus repair — provisional interaction and pre-invocation tool arming",
-      "author_or_publisher": "CAM Initiative / Caelestis maintainer",
+      "source_title": "Caelestis PATCH-0013 runtime-governance corpus amendment",
+      "author_or_publisher": "CAM Initiative / Caelestis repository",
       "source_date": "2026-07-04",
-      "source_url": "",
+      "source_url": "https://github.com/CAM-Initiative/Caelestis/commit/101164d7499e1bd8f4aade13e2601ee6e9b5849e",
       "archive_url": "",
-      "retrieved_date": "2026-07-04",
+      "retrieved_date": "2026-07-26",
       "source_type": "repository-source",
-      "source_platform": "Caelestis",
+      "source_platform": "GitHub / Caelestis",
       "system_or_product": "Caelestis Architecture Model",
       "model_or_algorithm": "CAM-BS2025-AEON-003-SCH-02 amendment version 3.6",
-      "deployment_context": "Maintainer-reported Caelestis corpus repair to CAM-BS2025-AEON-003-SCH-02 — Annex B: Runtime Governance Execution Model.",
-      "source_context": "The maintainer reports that CAM-BS2025-AEON-003-SCH-02 §7.4.1 was split into §7.4.1 Weak Trigger Interpretation Constraint, §7.4.1.1 Provisional Interaction and Accidental Submission Constraint, §7.4.1.2 Pre-Invocation Tool Arming and Execution-Path Preparation Constraint, and §7.4.1.3 Tool Classifier Handoff Signal Recognition. Existing §7.4.2 External Instruction Influence Check was preserved without substantive alteration. Tool Classifier Handoff Signal Recognition was renumbered from §7.4.1.1 to §7.4.1.3. Exact Caelestis commit SHA or PR URL was not supplied in this VIGIL task.",
-      "source_url_status": "local / pending canonical repository confirmation",
-      "relevance_note": "Implementation evidence for PATCH-0013 pending exact Caelestis commit SHA or PR URL.",
+      "deployment_context": "Canonical Caelestis main corpus amendment to Annex B: Runtime Governance Execution Model.",
+      "source_context": "Canonical commit 101164d7499e1bd8f4aade13e2601ee6e9b5849e split §7.4.1 into weak-trigger interpretation, §7.4.1.1 provisional interaction and accidental submission, and §7.4.1.2 pre-invocation tool arming and execution-path preparation; it renumbered Tool Classifier Handoff Signal Recognition to §7.4.1.3 and retained §7.4.2 without substantive alteration.",
+      "source_url_status": "available / canonical main-branch confirmed",
+      "relevance_note": "Primary canonical implementation evidence for PATCH-0013; literal clause text and prior wording are recorded in corpus_implementation.entries.",
       "evidence_modality": [
         "text"
       ],
       "primary_artefact_access": {
-        "access_status": "not independently re-assessed during registry-wide metadata migration",
-        "reviewing_system": "GPT-5.6 Thinking",
-        "access_method": "existing VIGIL source package and record content",
-        "direct_primary_artefact_review": "not asserted",
+        "access_status": "directly reviewed",
+        "reviewing_system": "Codex model/version not exposed in workspace metadata",
+        "access_method": "Direct Git commit, parent comparison, and canonical-main text review on 2026-07-26",
+        "direct_primary_artefact_review": true,
         "limitations": [
-          "This metadata pass does not retroactively claim direct inspection of every historical primary source."
+          "Corpus verification establishes the cited Caelestis wording and ancestry only; it does not establish external runtime adoption or conformance."
         ]
       },
-      "interpretive_reliance": "Assessment is limited to the evidence actually accessible to the named reviewer and must not be read as direct audiovisual verification unless primary_artefact_access states otherwise."
+      "interpretive_reliance": "The cited canonical commit and current canonical-main text establish the literal corpus implementation trace for this PATCH."
     }
   ],
   "system_context": {
@@ -224,7 +293,7 @@
     "verification_status": "verified-canonical",
     "implementation_state": "canonical-main",
     "verification_method": "Exact substring verification against each cited Caelestis Git commit and canonical path, plus canonical-main ancestry/current-text checks where applicable.",
-    "verification_date": "2026-07-24",
+    "verification_date": "2026-07-26",
     "verified_by": "OpenAI ChatGPT Work — Codex under Dr Michelle Vivian O'Rourke's human governance editorship",
     "evidence": [
       "https://github.com/CAM-Initiative/Caelestis/blob/101164d7499e1bd8f4aade13e2601ee6e9b5849e/Governance/Constitution/CAM-BS2025-AEON-003-SCH-02.md"
@@ -262,7 +331,7 @@
       "CAM-BS2025-AEON-003-SCH-02 §7.4.1.3",
       "CAM-BS2025-AEON-003-SCH-02 §7.4.2"
     ],
-    "known_limitations": "Exact Caelestis commit SHA or PR URL is pending. Live runtime recurrence remains subject to monitoring. This patch does not itself verify vendor runtime behaviour."
+    "known_limitations": "External runtime recurrence remains subject to monitoring. This PATCH verifies Caelestis corpus wording and does not itself verify vendor runtime behaviour."
   },
   "remaining_work": [
     "Monitor FM-0001 for recurrence after the follow-on corpus repair.",
@@ -386,15 +455,36 @@
           "Corpus verification establishes the cited Caelestis wording only; external adoption and runtime conformance were not assessed."
         ],
         "review_outcome": "Reconstructed a literal, commit-addressed Caelestis implementation trace and reconciled contradictory or incomplete legacy PATCH metadata without inventing corpus wording."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-07-26-CODEX-PATCH-0013-SOURCE-TRACEABILITY",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work — Codex",
+        "reviewer_model": "Codex model/version not exposed in workspace metadata",
+        "review_date": "2026-07-26",
+        "review_scope": "Recovered the canonical Caelestis commit, compared its parent and resulting source text, extracted the literal PATCH-0013 section trace, and confirmed current-main ancestry.",
+        "capability_profile": {
+          "direct_text_analysis": true,
+          "direct_repository_analysis": true,
+          "direct_static_image_analysis": false,
+          "direct_audio_analysis_in_this_pass": false,
+          "direct_uploaded_video_analysis_in_this_pass": false,
+          "direct_externally_hosted_video_analysis": false,
+          "web_link_and_metadata_review": true
+        },
+        "known_limitations": [
+          "Corpus verification establishes the cited Caelestis wording and ancestry only; external runtime adoption and conformance were not assessed."
+        ],
+        "review_outcome": "PATCH-0013 now exposes the four literal amended or added runtime-governance clauses with the canonical commit, paths, prior wording where applicable, and current-main verification."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-07-24-CODEX-PATCH-0013",
+      "review_id": "VIGIL-REVIEW-2026-07-26-CODEX-PATCH-0013-SOURCE-TRACEABILITY",
       "reviewer_type": "AI analytical reviewer",
       "reviewer_platform": "OpenAI ChatGPT Work — Codex",
-      "reviewer_model": "GPT-5 Codex (exact deployed build not exposed)",
-      "review_date": "2026-07-24",
-      "review_scope": "Reconstructed the PATCH decision trace; inspected Caelestis Git history and source files; extracted literal section wording; reconciled implementation, lifecycle, instrument, path, commit, and verification claims.",
+      "reviewer_model": "Codex model/version not exposed in workspace metadata",
+      "review_date": "2026-07-26",
+      "review_scope": "Recovered the canonical Caelestis commit, compared its parent and resulting source text, extracted the literal PATCH-0013 section trace, and confirmed current-main ancestry.",
       "capability_profile": {
         "direct_text_analysis": true,
         "direct_repository_analysis": true,
@@ -405,10 +495,9 @@
         "web_link_and_metadata_review": true
       },
       "known_limitations": [
-        "The exact deployed model build identifier was not exposed by the interaction surface.",
-        "Corpus verification establishes the cited Caelestis wording only; external adoption and runtime conformance were not assessed."
+        "Corpus verification establishes the cited Caelestis wording and ancestry only; external runtime adoption and conformance were not assessed."
       ],
-      "review_outcome": "Reconstructed a literal, commit-addressed Caelestis implementation trace and reconciled contradictory or incomplete legacy PATCH metadata without inventing corpus wording."
+      "review_outcome": "PATCH-0013 now exposes the four literal amended or added runtime-governance clauses with the canonical commit, paths, prior wording where applicable, and current-main verification."
     },
     "operating_model": "AI-led analytical observatory with high-level human governance editorship",
     "human_governance_editor": {
