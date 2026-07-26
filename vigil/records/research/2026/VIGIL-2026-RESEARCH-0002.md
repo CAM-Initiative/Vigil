@@ -19,6 +19,10 @@
     "ARBITRATION",
     "MENTIS"
   ],
+  "system_context": {
+    "platform_or_vendor": "CAM Initiative",
+    "product_or_service": "Caelestis Architecture Model"
+  },
   "linked_records": {
     "related_observations": [],
     "related_failure_modes": [
