@@ -1,0 +1,99 @@
+name: Apply VIGIL red-team PATCH-0031
+
+on:
+  pull_request:
+    branches:
+      - governance/red-team-governance-patch
+    types: [opened, synchronize, reopened]
+    paths:
+      - .github/trigger/red-team-patch-0031.txt
+
+permissions:
+  contents: write
+
+concurrency:
+  group: vigil-red-team-patch-0031
+  cancel-in-progress: false
+
+jobs:
+  apply:
+    if: github.head_ref == 'automation/red-team-patch-trigger-20260727'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out VIGIL patch branch
+        uses: actions/checkout@v4
+        with:
+          ref: governance/red-team-governance-patch
+          fetch-depth: 0
+
+      - name: Check out Caelestis working branch
+        uses: actions/checkout@v4
+        with:
+          repository: CAM-Initiative/Caelestis
+          ref: policy/civilisational-wealth-governance
+          path: Caelestis
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Build literal PATCH record and reciprocal links
+        run: python scripts/build_vigil_patch_0031.py --caelestis-root Caelestis
+
+      - name: Validate VIGIL records and lifecycle
+        shell: bash
+        run: |
+          set -euo pipefail
+          python vigil/scripts/validate-vigil-records.py
+          python vigil/scripts/run-vigil-lifecycle-validation.py
+
+      - name: Route and rebuild VIGIL indexes
+        shell: bash
+        run: |
+          set -euo pipefail
+          python vigil/scripts/route-vigil-records.py
+          python vigil/scripts/build-vigil-records.py
+          python vigil/scripts/enrich-vigil-indexes.py
+
+      - name: Validate literal Caelestis PATCH trace
+        run: python vigil/scripts/validate-vigil-patch-trace.py --caelestis-root Caelestis
+
+      - name: Run VIGIL tests
+        run: python -m unittest discover -s vigil/tests -p 'test_*.py'
+
+      - name: Final validation pass
+        shell: bash
+        run: |
+          set -euo pipefail
+          python vigil/scripts/validate-vigil-records.py
+          python vigil/scripts/run-vigil-lifecycle-validation.py
+          git diff --check
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          for path in Path("vigil").rglob("*.json"):
+              json.loads(path.read_text(encoding="utf-8"))
+          PY
+
+      - name: Remove temporary applicator and workflow
+        run: |
+          rm -f scripts/build_vigil_patch_0031.py
+          rm -f .github/workflows/apply-red-team-patch-0031.yml
+
+      - name: Commit and push PATCH package
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "VIGIL Governance Automation"
+          git config user.email "governance-automation@users.noreply.github.com"
+          git add vigil/
+          git add -u scripts/build_vigil_patch_0031.py .github/workflows/apply-red-team-patch-0031.yml
+          git diff --cached --check
+          if git diff --cached --quiet; then
+            echo "No VIGIL changes were produced."
+            exit 1
+          fi
+          git commit -m "Add red-team governance PATCH-0031"
+          git push origin HEAD:governance/red-team-governance-patch
