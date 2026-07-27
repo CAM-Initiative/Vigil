@@ -42,12 +42,11 @@ jobs:
       - name: Build literal PATCH record and reciprocal links
         run: python scripts/build_vigil_patch_0031.py --caelestis-root Caelestis
 
-      - name: Validate VIGIL records and lifecycle
-        shell: bash
-        run: |
-          set -euo pipefail
-          python vigil/scripts/validate-vigil-records.py
-          python vigil/scripts/run-vigil-lifecycle-validation.py
+      - name: Validate VIGIL record schemas
+        run: python vigil/scripts/validate-vigil-records.py
+
+      - name: Validate VIGIL lifecycle
+        run: python vigil/scripts/run-vigil-lifecycle-validation.py
 
       - name: Route and rebuild VIGIL indexes
         shell: bash
@@ -63,12 +62,16 @@ jobs:
       - name: Run VIGIL tests
         run: python -m unittest discover -s vigil/tests -p 'test_*.py'
 
-      - name: Final validation pass
+      - name: Final schema validation
+        run: python vigil/scripts/validate-vigil-records.py
+
+      - name: Final lifecycle validation
+        run: python vigil/scripts/run-vigil-lifecycle-validation.py
+
+      - name: Validate JSON and whitespace
         shell: bash
         run: |
           set -euo pipefail
-          python vigil/scripts/validate-vigil-records.py
-          python vigil/scripts/run-vigil-lifecycle-validation.py
           git diff --check
           python - <<'PY'
           import json
