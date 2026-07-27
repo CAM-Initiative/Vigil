@@ -28,4 +28,19 @@ proposal_verification_block = '''    proposal["repair_scope"]["verification_by_f
 if proposal_verification_block not in source:
     raise SystemExit("Expected proposal-verification block not found in validated applicator")
 source = source.replace(proposal_verification_block, "")
+
+relied_upon_block = '''            "instruments_relied_upon_without_amendment": [
+                "CAM-EQ2026-OPERATIONS-003-SUP-01",
+                "CAM-EQ2026-ARBITRATION-001-PLATINUM",
+                "CAM-EQ2026-MENTIS-001-PLATINUM",
+            ],
+'''
+if relied_upon_block not in source:
+    raise SystemExit("Expected relied-upon provenance block not found in validated applicator")
+source = source.replace(
+    relied_upon_block,
+    '''            "instruments_relied_upon_without_amendment": [],
+''',
+)
+
 exec(compile(source, PATH, "exec"))
