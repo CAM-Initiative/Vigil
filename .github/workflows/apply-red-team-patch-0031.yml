@@ -84,7 +84,26 @@ jobs:
           exit 1
 
       - name: Validate VIGIL lifecycle
-        run: python vigil/scripts/run-vigil-lifecycle-validation.py
+        id: lifecycle
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -o pipefail
+          python vigil/scripts/run-vigil-lifecycle-validation.py 2>&1 | tee /tmp/vigil-patch-0031-lifecycle.log
+
+      - name: Persist lifecycle diagnostic
+        if: steps.lifecycle.outcome == 'failure'
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .github/diagnostics
+          cp /tmp/vigil-patch-0031-lifecycle.log .github/diagnostics/vigil-patch-0031-lifecycle.log
+          git config user.name "VIGIL Governance Automation"
+          git config user.email "governance-automation@users.noreply.github.com"
+          git add .github/diagnostics/vigil-patch-0031-lifecycle.log
+          git commit -m "Record PATCH-0031 lifecycle diagnostic"
+          git push origin HEAD:governance/red-team-governance-patch
+          exit 1
 
       - name: Route and rebuild VIGIL indexes
         shell: bash
@@ -124,6 +143,7 @@ jobs:
           rm -f .github/workflows/apply-red-team-patch-0031.yml
           rm -f .github/diagnostics/vigil-patch-0031-build.log
           rm -f .github/diagnostics/vigil-patch-0031-schema.log
+          rm -f .github/diagnostics/vigil-patch-0031-lifecycle.log
 
       - name: Commit and push PATCH package
         shell: bash
@@ -132,7 +152,7 @@ jobs:
           git config user.name "VIGIL Governance Automation"
           git config user.email "governance-automation@users.noreply.github.com"
           git add vigil/
-          git add -u scripts/build_vigil_patch_0031.py .github/workflows/apply-red-team-patch-0031.yml .github/diagnostics/vigil-patch-0031-build.log .github/diagnostics/vigil-patch-0031-schema.log
+          git add -u scripts/build_vigil_patch_0031.py .github/workflows/apply-red-team-patch-0031.yml .github/diagnostics/vigil-patch-0031-build.log .github/diagnostics/vigil-patch-0031-schema.log .github/diagnostics/vigil-patch-0031-lifecycle.log
           git diff --cached --check
           if git diff --cached --quiet; then
             echo "No VIGIL changes were produced."
