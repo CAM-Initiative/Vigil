@@ -15,7 +15,7 @@ original = subprocess.check_output(["git", "show", f"origin/main:{SCRIPT_PATH}"]
 
 if os.environ.get("GITHUB_EVENT_NAME") == "push" and os.environ.get("GITHUB_REF_NAME") == TARGET_BRANCH:
     completed = subprocess.run(
-        [sys.executable, "-c", compile(original, SCRIPT_PATH, "exec")],
+        [sys.executable, "-c", original],
         cwd=ROOT,
         text=True,
         capture_output=True,
@@ -31,7 +31,7 @@ if os.environ.get("GITHUB_EVENT_NAME") == "push" and os.environ.get("GITHUB_REF_
     subprocess.run(["git", "config", "user.name", "github-actions[bot]"], cwd=ROOT, check=True)
     subprocess.run(["git", "config", "user.email", "41898282+github-actions[bot]@users.noreply.github.com"], cwd=ROOT, check=True)
     subprocess.run(["git", "add", SCRIPT_PATH, ".github/Indices/vigil-validation-error.txt"], cwd=ROOT, check=True)
-    subprocess.run(["git", "commit", "-m", "Capture consolidated VIGIL validator failure"], cwd=ROOT, check=True)
+    subprocess.run(["git", "commit", "-m", "Capture consolidated VIGIL validator result"], cwd=ROOT, check=True)
     subprocess.run(["git", "push", "origin", f"HEAD:{TARGET_BRANCH}"], cwd=ROOT, check=True)
     raise SystemExit(completed.returncode)
 
