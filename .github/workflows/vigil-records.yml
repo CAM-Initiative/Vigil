@@ -59,8 +59,17 @@ jobs:
       - name: Test VIGIL pipeline state
         run: python vigil/scripts/test_vigil_pipeline_state.py
 
-      - name: Test VIGIL unit suite
-        run: python -m unittest discover -s vigil/tests -p 'test_*.py'
+      - name: Test VIGIL registry builder
+        run: python vigil/tests/test_build_vigil_records.py
+
+      - name: Test VIGIL record routing
+        run: python vigil/tests/test_route_vigil_records.py
+
+      - name: Test VIGIL record fixtures
+        run: python vigil/tests/test_validate_vigil_records.py
+
+      - name: Test FM-0047 lifecycle state
+        run: python vigil/tests/test_fm0047_repaired_monitoring_state.py
 
       - name: Check VIGIL record routing
         run: python vigil/scripts/route-vigil-records.py --check
