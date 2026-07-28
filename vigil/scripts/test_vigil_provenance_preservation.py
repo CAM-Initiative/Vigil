@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""Regression checks for chronological and record-specific interpretive provenance."""
 from __future__ import annotations
 
 import json
@@ -15,6 +16,10 @@ EXPECTED_REVIEWS = {
 }
 PATCH_0022_HISTORICAL_REVIEW = "VIGIL-REVIEW-2026-07-16-GPT-5.6-THINKING-PATCH-0022"
 PATCH_0022_RECONSTRUCTION_REVIEW = "VIGIL-REVIEW-2026-07-24-CODEX-PATCH-0022"
+# The later canonical-source verification review is current; earlier reviews remain preserved in history.
+PATCH_0022_SOURCE_TRACEABILITY_REVIEW = (
+    "VIGIL-REVIEW-2026-07-26-CODEX-PATCH-0022-SOURCE-TRACEABILITY"
+)
 MIGRATION_REVIEW = "VIGIL-REVIEW-2026-07-14-GPT-5.6-THINKING"
 
 
@@ -32,7 +37,8 @@ class ProvenancePreservationTests(unittest.TestCase):
                 current = record["interpretive_provenance"]["current_ai_review"]
                 self.assertEqual(current["review_id"], expected_review_id)
 
-    def test_patch_reconstruction_preserves_prior_review_and_declares_new_current_review(self):
+    def test_patch_reconstruction_preserves_review_history_and_latest_current_review(self):
+        """A later verification may become current without deleting the reconstruction review."""
         record = load("VIGIL-2026-PATCH-0022")
         review_ids = {
             review["review_id"]
@@ -40,9 +46,10 @@ class ProvenancePreservationTests(unittest.TestCase):
         }
         self.assertIn(PATCH_0022_HISTORICAL_REVIEW, review_ids)
         self.assertIn(PATCH_0022_RECONSTRUCTION_REVIEW, review_ids)
+        self.assertIn(PATCH_0022_SOURCE_TRACEABILITY_REVIEW, review_ids)
         self.assertEqual(
             record["interpretive_provenance"]["current_ai_review"]["review_id"],
-            PATCH_0022_RECONSTRUCTION_REVIEW,
+            PATCH_0022_SOURCE_TRACEABILITY_REVIEW,
         )
 
     def test_authored_source_modalities_are_text(self):
