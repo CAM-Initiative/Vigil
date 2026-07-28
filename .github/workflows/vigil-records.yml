@@ -59,6 +59,12 @@ jobs:
       - name: Test VIGIL pipeline state
         run: python vigil/scripts/test_vigil_pipeline_state.py
 
+      - name: Test canonical source block on all JSON records
+        run: python -m unittest vigil.tests.test_build_vigil_records.BuildVigilRecordsTest.test_individual_records_keep_source_records_only
+
+      - name: Test primary registry record coverage
+        run: python -m unittest vigil.tests.test_build_vigil_records.BuildVigilRecordsTest.test_generated_index_includes_all_individual_records_and_no_legacy_aggregate
+
       - name: Test VIGIL registry builder
         run: python vigil/tests/test_build_vigil_records.py
 
