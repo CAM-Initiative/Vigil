@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""Regression checks for chronological and record-specific interpretive provenance."""
 from __future__ import annotations
 
 import json
