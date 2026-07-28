@@ -44,14 +44,23 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: Test VIGIL validators
-        run: |
-          python vigil/scripts/test_validate_vigil_records.py
-          python vigil/scripts/test_validate_vigil_lifecycle.py
-          python vigil/scripts/test_validate_vigil_patch_trace.py
-          python vigil/scripts/test_vigil_provenance_preservation.py
-          python vigil/scripts/test_vigil_pipeline_state.py
-          python -m unittest discover -s vigil/tests -p 'test_*.py'
+      - name: Test VIGIL record validator
+        run: python vigil/scripts/test_validate_vigil_records.py
+
+      - name: Test VIGIL lifecycle validator
+        run: python vigil/scripts/test_validate_vigil_lifecycle.py
+
+      - name: Test VIGIL PATCH trace validator
+        run: python vigil/scripts/test_validate_vigil_patch_trace.py
+
+      - name: Test VIGIL provenance preservation
+        run: python vigil/scripts/test_vigil_provenance_preservation.py
+
+      - name: Test VIGIL pipeline state
+        run: python vigil/scripts/test_vigil_pipeline_state.py
+
+      - name: Test VIGIL unit suite
+        run: python -m unittest discover -s vigil/tests -p 'test_*.py'
 
       - name: Check VIGIL record routing
         run: python vigil/scripts/route-vigil-records.py --check
