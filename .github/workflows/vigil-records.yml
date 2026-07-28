@@ -57,7 +57,9 @@ jobs:
         run: python vigil/scripts/route-vigil-records.py --check
 
       - name: Validate VIGIL records
-        run: python vigil/scripts/validate-vigil-records.py
+        run: |
+          python vigil/scripts/validate-vigil-records.py
+          python vigil/scripts/validate-vigil-learn-records.py
 
       - name: Validate VIGIL lifecycle, corpus coverage, patch provenance, CAM boundary, and interpretive provenance
         run: python vigil/scripts/run-vigil-lifecycle-validation.py
@@ -69,12 +71,13 @@ jobs:
         run: |
           python vigil/scripts/build-vigil-records.py
           python vigil/scripts/enrich-vigil-indexes.py
+          python vigil/scripts/build-vigil-learn-records.py
 
       - name: Verify source records and contracts were not mutated
         run: |
-          if ! git diff --quiet -- vigil/records vigil/templates vigil/schemas vigil/VIGIL.Schema.json; then
+          if ! git diff --quiet -- vigil/records vigil/templates vigil/schemas vigil/VIGIL.Schema.json vigil/VIGIL.Learn.Schema.json; then
             echo "Validation/build automation modified governed source records or contracts."
-            git diff --name-status -- vigil/records vigil/templates vigil/schemas vigil/VIGIL.Schema.json
+            git diff --name-status -- vigil/records vigil/templates vigil/schemas vigil/VIGIL.Schema.json vigil/VIGIL.Learn.Schema.json
             exit 1
           fi
 
@@ -90,6 +93,8 @@ jobs:
             vigil/VIGIL.Observations.Index.json \
             vigil/VIGIL.Proposals.Index.json \
             vigil/VIGIL.PatchNotes.Index.json \
+            vigil/VIGIL.Research.Index.json \
+            vigil/VIGIL.Learn.Index.json \
             vigil/VIGIL.Registry.Index.json
           if git diff --cached --quiet; then
             echo "No generated VIGIL index changes to commit."
