@@ -37,6 +37,7 @@ class ProvenancePreservationTests(unittest.TestCase):
                 self.assertEqual(current["review_id"], expected_review_id)
 
     def test_patch_reconstruction_preserves_review_history_and_latest_current_review(self):
+        """A later verification may become current without deleting the reconstruction review."""
         record = load("VIGIL-2026-PATCH-0022")
         review_ids = {
             review["review_id"]
