@@ -145,18 +145,20 @@ def main() -> None:
     assert record("VIGIL-2026-OBS-0007", "observations")["record_state"] == "active"
 
     patch25 = record("VIGIL-2026-PATCH-0025", "patches")
-    assert patch25["record_state"] == "active"
-    assert patch25["corpus_implementation"]["canonical_state"] == "branch-only"
+    assert patch25["record_state"] == "closed-actioned"
+    assert patch25["corpus_implementation"]["canonical_state"] == "canonical-main"
 
     fm44 = record("VIGIL-2026-FM-0044", "failures")
-    assert fm44["record_state"] == "active"
-    assert fm44["repair_status"]["status"] == "partially-repaired"
-    assert fm44["corpus_coverage"]["classification"] == "verification-pending"
+    assert fm44["record_state"] == "monitoring"
+    assert fm44["repair_status"]["status"] == "repaired"
+    assert fm44["corpus_coverage"]["classification"] == "implemented-repair"
+    assert fm44["ecosystem_status"]["status"] == "active"
+    assert fm44["repair_status"]["remaining_gaps"]
 
     prop17 = record("VIGIL-2026-PROP-0017", "proposals")
-    assert prop17["record_state"] == "active"
-    assert prop17["resolution_status"]["status"] == "routed"
-    assert prop17["resolution_status"]["resolved_by"] == []
+    assert prop17["record_state"] == "closed-actioned"
+    assert prop17["resolution_status"]["status"] == "resolved-by-patch"
+    assert prop17["resolution_status"]["resolved_by"] == ["VIGIL-2026-PATCH-0025"]
 
     schema = load(VIGIL / "VIGIL.Schema.json")
     assert str(schema.get("purpose", "")).count(PROVENANCE_PURPOSE) == 1
