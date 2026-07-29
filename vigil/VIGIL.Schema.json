@@ -14,7 +14,11 @@
       "Internal curator instructions such as 'add this incident to' or 'do not amend in this pass' are forbidden in public record content.",
       "Each source record must state evidence_modality.",
       "Each source record must state primary_artefact_access, including whether direct primary review occurred.",
-      "A transcript, screenshot, summary, or human description must not be represented as equivalent to direct audiovisual or interaction review."
+      "A transcript, screenshot, summary, or human description must not be represented as equivalent to direct audiovisual or interaction review.",
+      "Each source record must state source_residence so external incident evidence is distinguishable from CAM/VIGIL provenance.",
+      "Each source record must state source_role so evidence, governance basis, taxonomy basis, implementation evidence, verification evidence, and record cross-references are not rendered interchangeably.",
+      "External-evidence interfaces must require source_residence external; absence of a VIGIL identifier is not sufficient evidence of external residence.",
+      "CAM-internal and VIGIL-internal sources remain valid provenance but must not be rendered as external incident evidence."
     ],
     "generated_registers": [
       "Generated registers may contain derived source_summary fields.",
@@ -442,6 +446,8 @@
         "archive_url",
         "retrieved_date",
         "source_type",
+        "source_role",
+        "source_residence",
         "source_platform",
         "system_or_product",
         "model_or_algorithm",
@@ -466,6 +472,31 @@
         "source_records",
         "linked_records",
         "cam_internal"
+      ]
+    },
+    "source_residence": {
+      "enum": [
+        "external",
+        "cam-internal",
+        "vigil-internal",
+        "user-supplied",
+        "unknown"
+      ]
+    },
+    "source_role": {
+      "enum": [
+        "incident-evidence",
+        "affected-party-evidence",
+        "research-evidence",
+        "standards-or-regulatory-basis",
+        "governance-basis",
+        "taxonomy-basis",
+        "implementation-evidence",
+        "verification-evidence",
+        "contextual-background",
+        "record-cross-reference",
+        "direct-testimony",
+        "unknown"
       ]
     }
   },
@@ -748,7 +779,8 @@
     "Narrative, evidence, and interpretive provenance remain preserved below the implementation trace and must not substitute for it.",
     "Each corpus entry names exactly one instrument and canonical path, one section and heading, its change kind, prior wording status, literal resulting wording, commit-addressed source, and verification state.",
     "Retrospective reliance is labelled pre-existing control relied upon—no corpus amendment.",
-    "Actioned corpus PATCH records without traceable implementation text are invalid."
+    "Actioned corpus PATCH records without traceable implementation text are invalid.",
+    "Every PATCH must preserve corpus_release_provenance distinguishing the exact implementation corpus state, later canonical state, and published archive release. A current archive citation must not be represented as the historical implementation version without verified release inclusion."
   ],
   "interpretive_provenance_rules": {
     "required_for_all_records": true,

@@ -44,20 +44,49 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: Test VIGIL validators
-        run: |
-          python vigil/scripts/test_validate_vigil_records.py
-          python vigil/scripts/test_validate_vigil_lifecycle.py
-          python vigil/scripts/test_validate_vigil_patch_trace.py
-          python vigil/scripts/test_vigil_provenance_preservation.py
-          python vigil/scripts/test_vigil_pipeline_state.py
-          python -m unittest discover -s vigil/tests -p 'test_*.py'
+      - name: Test source provenance classification
+        run: python vigil/scripts/test_vigil_source_provenance.py
+
+      - name: Validate source provenance
+        run: python vigil/scripts/validate-vigil-source-provenance.py
+
+      - name: Validate PATCH corpus release provenance
+        run: python vigil/scripts/validate-vigil-patch-corpus-provenance.py
+
+      - name: Test VIGIL record validator
+        run: python vigil/scripts/test_validate_vigil_records.py
+
+      - name: Test VIGIL lifecycle validator
+        run: python vigil/scripts/test_validate_vigil_lifecycle.py
+
+      - name: Test VIGIL PATCH trace validator
+        run: python vigil/scripts/test_validate_vigil_patch_trace.py
+
+      - name: Test VIGIL provenance preservation
+        run: python vigil/scripts/test_vigil_provenance_preservation.py
+
+      - name: Test VIGIL pipeline state
+        run: python vigil/scripts/test_vigil_pipeline_state.py
+
+      - name: Test VIGIL registry builder
+        run: python vigil/tests/test_build_vigil_records.py
+
+      - name: Test VIGIL record routing
+        run: python vigil/tests/test_route_vigil_records.py
+
+      - name: Test VIGIL record fixtures
+        run: python vigil/tests/test_validate_vigil_records.py
+
+      - name: Test FM-0047 lifecycle state
+        run: python vigil/tests/test_fm0047_repaired_monitoring_state.py
 
       - name: Check VIGIL record routing
         run: python vigil/scripts/route-vigil-records.py --check
 
       - name: Validate VIGIL records
-        run: python vigil/scripts/validate-vigil-records.py
+        run: |
+          python vigil/scripts/validate-vigil-records.py
+          python vigil/scripts/validate-vigil-learn-records.py
 
       - name: Validate VIGIL lifecycle, corpus coverage, patch provenance, CAM boundary, and interpretive provenance
         run: python vigil/scripts/run-vigil-lifecycle-validation.py
@@ -69,12 +98,13 @@ jobs:
         run: |
           python vigil/scripts/build-vigil-records.py
           python vigil/scripts/enrich-vigil-indexes.py
+          python vigil/scripts/build-vigil-learn-records.py
 
       - name: Verify source records and contracts were not mutated
         run: |
-          if ! git diff --quiet -- vigil/records vigil/templates vigil/schemas vigil/VIGIL.Schema.json; then
+          if ! git diff --quiet -- vigil/records vigil/templates vigil/schemas vigil/VIGIL.Schema.json vigil/VIGIL.Learn.Schema.json; then
             echo "Validation/build automation modified governed source records or contracts."
-            git diff --name-status -- vigil/records vigil/templates vigil/schemas vigil/VIGIL.Schema.json
+            git diff --name-status -- vigil/records vigil/templates vigil/schemas vigil/VIGIL.Schema.json vigil/VIGIL.Learn.Schema.json
             exit 1
           fi
 
@@ -90,6 +120,8 @@ jobs:
             vigil/VIGIL.Observations.Index.json \
             vigil/VIGIL.Proposals.Index.json \
             vigil/VIGIL.PatchNotes.Index.json \
+            vigil/VIGIL.Research.Index.json \
+            vigil/VIGIL.Learn.Index.json \
             vigil/VIGIL.Registry.Index.json
           if git diff --cached --quiet; then
             echo "No generated VIGIL index changes to commit."
