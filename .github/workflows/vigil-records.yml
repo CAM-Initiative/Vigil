@@ -44,6 +44,34 @@ jobs:
         with:
           python-version: "3.x"
 
+      - name: Test source provenance classification
+        run: python vigil/scripts/test_vigil_source_provenance.py
+
+      - name: Apply one-time source provenance migration
+        if: github.event_name == 'push' && github.ref_name == 'governance/learn-record-exemplar'
+        run: |
+          python vigil/scripts/migrate-vigil-source-provenance.py
+          python vigil/scripts/validate-vigil-source-provenance.py
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            vigil/VIGIL.Schema.json \
+            vigil/templates \
+            vigil/records \
+            vigil/migrations/source-provenance-migration-2026-07-29.json
+          if git diff --cached --quiet; then
+            echo "Source provenance migration is already applied."
+          else
+            git commit -m "Backfill VIGIL source residence and roles"
+            git push
+          fi
+
+      - name: Check source provenance migration state
+        run: python vigil/scripts/migrate-vigil-source-provenance.py --check
+
+      - name: Validate source provenance
+        run: python vigil/scripts/validate-vigil-source-provenance.py
+
       - name: Test VIGIL record validator
         run: python vigil/scripts/test_validate_vigil_records.py
 
