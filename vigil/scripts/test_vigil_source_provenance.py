@@ -23,7 +23,7 @@ def classify(source, record_type="failure_mode"):
 
 def main() -> int:
     assert classify({
-        "source_title": "OpenAI incident disclosure",
+        "source_title": "OpenAI and Hugging Face partner to address security incident during model evaluation",
         "author_or_publisher": "OpenAI",
         "source_url": "https://openai.com/example",
         "source_type": "official-source",
