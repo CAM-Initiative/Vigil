@@ -1,0 +1,35 @@
+name: Fix OBS-0023 multi-vendor context
+
+on:
+  push:
+    branches:
+      - governance/learn-record-exemplar
+    paths:
+      - "scripts/fix-obs-0023-multi-vendor-context.py"
+      - ".github/workflows/fix-obs-0023-multi-vendor-context.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: governance/learn-record-exemplar
+          fetch-depth: 0
+      - name: Repair OBS-0023 multi-vendor context
+        run: python scripts/fix-obs-0023-multi-vendor-context.py
+      - name: Commit repaired observation
+        run: |
+          if git diff --quiet -- vigil/records/observations/2026/VIGIL-2026-OBS-0023.json; then
+            echo "OBS-0023 already current."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add vigil/records/observations/2026/VIGIL-2026-OBS-0023.json
+          git commit -m "Fix OBS-0023 multi-vendor context"
+          git push origin HEAD:governance/learn-record-exemplar
