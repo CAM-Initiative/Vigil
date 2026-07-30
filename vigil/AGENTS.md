@@ -111,6 +111,8 @@ vigil/templates/proposal-record-tempate.json
 
 vigil/templates/patch-note-record-template.md
 vigil/templates/patch-note-record-template.json
+
+vigil/templates/research-record-template.md
 ```
 
 If the proposal template filename is later corrected from `tempate` to `template`, update this file and any scripts or references in the same administrative commit, not as a VIGIL PATCH record.
@@ -126,6 +128,11 @@ vigil/VIGIL.Schema.json
 This file is a schema-rules contract for VIGIL record classes. It is not a CAM instrument and must not be represented as a PATCH target.
 
 Agents must implement or validate records according to the approved record-class templates and schema rules. Do not infer new record classes, rename fields, flatten source records, or relax validation without explicit instruction.
+
+Published RESEARCH records must satisfy the research quality contract in `VIGIL.Schema.json`.
+Short, single-source or lightly synthesised material belongs in an existing record's
+`source_records` or in an OBS where a distinct unresolved governance proposition exists.
+Do not promote a source summary to RESEARCH merely because it has a valid front matter block.
 
 ## Source Evidence Rules
 

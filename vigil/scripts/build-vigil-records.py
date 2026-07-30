@@ -604,8 +604,12 @@ def index_record(record: dict[str, Any]) -> dict[str, Any]:
         entry.update(
             {
                 "research_status": record.get("status", ""),
+                "publication_status": record.get("publication_status", ""),
                 "research_method": record.get("research_method", ""),
+                "research_scope": record.get("research_scope", ""),
                 "governance_purpose": record.get("governance_purpose", ""),
+                "limitations": record.get("limitations", ""),
+                "source_corpus_count": len(record.get("source_corpus", [])),
                 "domains": record.get("domains", []),
                 "related_observations": linked.get("related_observations", []),
                 "related_failure_modes": linked.get("related_failure_modes", []),

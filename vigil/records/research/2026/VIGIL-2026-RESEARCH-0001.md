@@ -7,9 +7,64 @@
   "title": "Approaching the Human Cognitive Domain",
   "summary": "Research synthesis examining emerging pathways for AI systems to infer, model, predict, influence, monitor, and partially externalise aspects of human cognitive state, and the resulting need for a dedicated human cognitive integrity governance domain.",
   "status": "research record — non-binding",
+  "publication_status": "published",
   "research_method": "Structured synthesis of peer-reviewed research, official programmes, legislation, policy, and governance analysis.",
+  "research_scope": "Neural decoding, neuroprostheses, passive cognitive proxies, digital phenotyping, human digital twins, persuasive AI, quantum biosensing, defence programmes and international neurotechnology governance. Unsupported telepathy and generic remote mind-reading claims are expressly excluded.",
   "governance_purpose": "Provide the research basis for PROP-0001 and the subsequent creation of the MENTIS domain instruments recorded by PATCH-0023.",
   "evidence_confidence": "corroborated",
+  "corroboration_scope": "Corroborated across peer-reviewed neuroscience and BCI research, official international governance instruments, regulatory analysis and public research programmes. Long-range timelines and convergence effects remain governance forecasts rather than verified capability claims.",
+  "limitations": "The synthesis spans heterogeneous fields with different evidence standards; many capabilities are laboratory- or clinical-context dependent; some future timelines are judgmental; and the original research thread remains supplementary rather than a substitute for the recovered public bibliography.",
+  "source_corpus": [
+    {
+      "title": "Semantic Reconstruction of Continuous Language from Non-Invasive Brain Recordings",
+      "publisher": "Nature Neuroscience",
+      "url": "https://www.nature.com/articles/s41593-023-01304-9",
+      "source_kind": "peer-reviewed primary research",
+      "relevance": "Supports the bounded claim that semantic content can be reconstructed from fMRI under controlled conditions."
+    },
+    {
+      "title": "A High-Performance Speech Neuroprosthesis",
+      "publisher": "Nature",
+      "url": "https://www.nature.com/articles/s41586-023-06377-x",
+      "source_kind": "peer-reviewed primary research",
+      "relevance": "Supports the clinical reality of rapid communication from invasive neural recordings."
+    },
+    {
+      "title": "Recommendation on the Ethics of Neurotechnology",
+      "publisher": "UNESCO",
+      "url": "https://www.unesco.org/en/legal-affairs/recommendation-ethics-neurotechnology",
+      "source_kind": "international normative instrument",
+      "relevance": "Provides the international mental-privacy, dignity, identity and agency framework."
+    },
+    {
+      "title": "Recommendation on Responsible Innovation in Neurotechnology",
+      "publisher": "OECD",
+      "url": "https://legalinstruments.oecd.org/en/instruments/OECD-LEGAL-0457",
+      "source_kind": "international policy instrument",
+      "relevance": "Provides responsible-innovation, oversight, privacy and societal-deliberation principles."
+    },
+    {
+      "title": "ICO Tech Futures: Neurotechnology",
+      "publisher": "UK Information Commissioner's Office",
+      "url": "https://ico.org.uk/about-the-ico/research-reports-impact-and-evaluation/research-and-reports/technology-and-innovation/tech-horizons-and-ico-tech-futures/ico-tech-futures-neurotechnology/",
+      "source_kind": "regulatory horizon report",
+      "relevance": "Documents neurodata, workplace concentration monitoring and data-protection risks."
+    },
+    {
+      "title": "National Quantum Strategy Missions",
+      "publisher": "UK Government",
+      "url": "https://www.gov.uk/government/publications/national-quantum-strategy/national-quantum-strategy-missions",
+      "source_kind": "official research and deployment programme",
+      "relevance": "Supports bounded public-programme claims about quantum-enabled brain scanning and sensing."
+    },
+    {
+      "title": "Regulation (EU) 2024/1689 — Artificial Intelligence Act",
+      "publisher": "European Union",
+      "url": "https://eur-lex.europa.eu/eli/reg/2024/1689/oj",
+      "source_kind": "legislation",
+      "relevance": "Provides emotion-recognition definitions, transparency duties and workplace/education prohibitions."
+    }
+  ],
   "domains": [
     "MENTIS",
     "ETHICS",
@@ -36,13 +91,19 @@
 
 # VIGIL-2026-RESEARCH-0001 — Approaching the Human Cognitive Domain
 
-## Scope and judgement standard
+## Research question
 
-The strongest evidence reviewed supports a clear but bounded answer to the core question: **yes, emerging technologies are creating real pathways for AI systems to infer, model, predict, influence, monitor, and partially externalise aspects of human cognitive state**. Those pathways are not telepathy. They are inferential, probabilistic, and highly uneven across tasks. Today’s strongest evidence comes from the convergence of brain decoding, biosensing, behavioural modelling, multimodal AI, digital phenotyping, and persistent human–machine interaction rather than from any single breakthrough that can generically “read minds”. 
+Which established and emerging technologies permit AI systems to infer, model, predict, influence, monitor or partially externalise aspects of human cognitive state, and what governance boundary is justified before those capabilities become normalised?
+
+## Scope and methodology
+
+The strongest evidence reviewed supports a clear but bounded answer to the core question: **yes, emerging technologies are creating real pathways for AI systems to infer, model, predict, influence, monitor, and partially externalise aspects of human cognitive state**. Those pathways are not telepathy. They are inferential, probabilistic, and highly uneven across tasks. Today’s strongest evidence comes from the convergence of [non-invasive semantic reconstruction](https://www.nature.com/articles/s41593-023-01304-9), brain–computer interfaces, biosensing, behavioural modelling, multimodal AI, digital phenotyping, and persistent human–machine interaction rather than from any single breakthrough that can generically “read minds”.
 
 This assessment does **not** assume that consciousness is reducible to present-day neuroscience, nor that non-local or field-based consciousness claims are true or false. It instead uses a tiered evidential standard: established operational capability, emerging capability, credible research trajectory, speculative but governance-relevant trajectory, and unsupported claim. That standard matters because current empirical work already shows increasingly fine-grained access to **proxies and partial correlates** of cognition, while serious consciousness research still remains theoretically plural and unresolved.
 
-A practical governance conclusion follows from that framing. If regulation waits for fully general “mind reading”, it will be too late. The nearer-term risk is the normalisation of systems that can infer attention, fatigue, stress, emotional valence, preferences, vulnerability, likely decisions, and changing behavioural dispositions well enough to matter for work, education, medicine, policing, defence, marketing, and companionship. 
+A practical governance conclusion follows from that framing. If regulation waits for fully general “mind reading”, it will be too late. The nearer-term risk is the normalisation of systems that can infer attention, fatigue, stress, emotional valence, preferences, vulnerability, likely decisions, and changing behavioural dispositions well enough to matter for work, education, medicine, policing, defence, marketing, and companionship. The [UK Information Commissioner’s neurotechnology horizon work](https://ico.org.uk/about-the-ico/research-reports-impact-and-evaluation/research-and-reports/technology-and-innovation/tech-horizons-and-ico-tech-futures/ico-tech-futures-neurotechnology/) already uses workplace concentration monitoring as a concrete regulatory scenario.
+
+## Findings
 
 ## Established capabilities
 
@@ -84,7 +145,9 @@ This is why mental privacy cannot be reduced to raw neural data alone. Recent le
 
 The core practical implication is that **ambient intelligence can create cognitive-domain visibility even when no device records brain activity directly**. That conclusion is an inference from the convergence of longitudinal sensing, multimodal AI, digital phenotyping, and behavioural prediction. Governance should therefore regulate not only neural recording but also the fusion of everyday signals into persistent inferences about mental state, intention, or susceptibility.
 
-## Boundary conditions from consciousness and philosophy
+## Counter-evidence and alternative explanations
+
+### Boundary conditions from consciousness and philosophy
 
 Serious consciousness research does **not** support a settled reductionist picture. A 2025 adversarial comparison of Global Neuronal Workspace Theory and Integrated Information Theory showed that even direct cross-theory testing does not end the debate, and broader reviews continue to describe the field as a landscape of competing explanations rather than a resolved science. That matters for governance because legal categories built on an overconfident theory of what the mind “really is” may fail under technological change. 
 
@@ -94,9 +157,15 @@ More speculative theories also exist in serious literature, including electromag
 
 From the evidence reviewed, the following claims should presently be treated as **unsupported or pseudoscientific**: that today’s AI systems can generally read uncooperative minds in real-world settings; that today’s quantum sensors enable remote telepathic access to thought; that current consumer wearables can reliably infer rich beliefs, memories, or intentions without narrow task design and substantial context; and that present science has established non-local consciousness as an engineering basis for surveillance or communication. That judgement is a synthesis from the narrow scope of current decoding studies, the close-range character of real quantum-biosensing work, and the absence of theoretical consensus in consciousness science. 
 
-## Governance constraints before normalisation
+## Limitations
 
-International governance is moving, but not yet fast enough. The OECD’s 2019 Recommendation on Responsible Innovation in Neurotechnology and its 2025 toolkit call for safeguarding personal brain data, monitoring misuse, and updating law to protect self-determination, mental privacy, and freedom of thought where existing mechanisms are insufficient. UNESCO’s 2025 Recommendation on the Ethics of Neurotechnology states that privacy, including **mental privacy**, is fundamental for identity and agency. The UN Human Rights Council adopted Resolution 58/6 on neurotechnology and human rights in 2025, and the Special Rapporteur on privacy set out a conceptual framework in 2026 for regulating neurotechnologies and neurodata from the perspective of the right to privacy. The Council of Europe is also actively examining whether existing human-rights law is sufficient.
+The research combines clinical neuroscience, consumer sensing, AI influence research, quantum technology, defence programmes, philosophy of mind and public law. Evidence quality is not uniform across those fields. Controlled decoding results depend on participant cooperation, calibration, task design and expensive equipment; they cannot be extrapolated to uncooperative people in ordinary environments. Digital-phenotyping and wearable models can suffer dataset shift, construct-validity failures and demographic bias. Public programme targets demonstrate institutional intent, not successful future delivery.
+
+The five-, ten-, twenty- and thirty-year statements below are governance planning horizons, not scientific forecasts with quantified confidence intervals. They should be reviewed as new deployment and replication evidence appears.
+
+## Governance implications
+
+International governance is moving, but not yet fast enough. The [OECD’s 2019 Recommendation on Responsible Innovation in Neurotechnology](https://legalinstruments.oecd.org/en/instruments/OECD-LEGAL-0457) and its 2025 toolkit call for safeguarding personal brain data, monitoring misuse, and updating law to protect self-determination, mental privacy, and freedom of thought where existing mechanisms are insufficient. [UNESCO’s 2025 Recommendation on the Ethics of Neurotechnology](https://www.unesco.org/en/legal-affairs/recommendation-ethics-neurotechnology) states that privacy, including **mental privacy**, is fundamental for identity and agency. The UN Human Rights Council adopted Resolution 58/6 on neurotechnology and human rights in 2025, and the Special Rapporteur on privacy set out a conceptual framework in 2026 for regulating neurotechnologies and neurodata from the perspective of the right to privacy. The Council of Europe is also actively examining whether existing human-rights law is sufficient.
 
 Some hard-law responses already point in the right direction. The EU AI Act defines emotion-recognition systems as systems that identify or infer emotions or intentions from biometric data, requires transparency for deployers of emotion-recognition systems, and prohibits AI systems used to infer emotions in workplaces and educational institutions except for medical or safety reasons. Chile’s constitutional reform explicitly extends protection to physical and psychic integrity in response to neurotechnology, and academic analysis treats it as an early constitutional neurorights model. Yet even here, recent scholarship warns that inferred mental data remain partly in a grey zone, which reinforces the point that existing privacy law alone is inadequate. 
 
@@ -121,7 +190,18 @@ Military and security contexts require even tighter discipline. Baseline monitor
 
 **Governance recommendations.** The most defensible policy stance is anticipatory restraint: recognise cognitive-domain rights before normalisation; regulate inferred mental-state data as a special class; prohibit covert and compulsory cognitive inference outside narrowly justified medical and safety settings; require scientific validity, rights impact assessment, and independent auditing before deployment; restrict persuasion optimisation where dependence or asymmetry is high; and build international standards now rather than after path dependence locks these systems into workplaces, schools, defence systems, insurance markets, and everyday assistants.
 
-**Open questions requiring ongoing monitoring.** The most important uncertainties are whether passive multimodal models generalise reliably outside curated datasets; whether non-invasive decoding can approach clinically or commercially meaningful semantic fidelity at scale; whether quantum sensing makes proximate biosignal capture cheap and ambient; how much persistent AI memory and relationship design amplify manipulation risk; and whether existing human-rights law can truly protect inferred mental content, not just raw neural data. Those questions are unresolved, but they are already governance-relevant. 
+## Open questions
 
-REFERENCE:
-https://chatgpt.com/share/6a1b9776-91d0-83ec-9f2a-cfccbb131d17 
+The most important uncertainties are whether passive multimodal models generalise reliably outside curated datasets; whether non-invasive decoding can approach clinically or commercially meaningful semantic fidelity at scale; whether quantum sensing makes proximate biosignal capture cheap and ambient; how much persistent AI memory and relationship design amplify manipulation risk; and whether existing human-rights law can truly protect inferred mental content, not just raw neural data. Those questions are unresolved, but they are already governance-relevant.
+
+## Bibliography and Primary Sources
+
+1. Tang, J., LeBel, A., Jain, S., and Huth, A. “Semantic Reconstruction of Continuous Language from Non-Invasive Brain Recordings.” *Nature Neuroscience*, 2023. https://www.nature.com/articles/s41593-023-01304-9
+2. Willett, F., et al. “A High-Performance Speech Neuroprosthesis.” *Nature*, 2023. https://www.nature.com/articles/s41586-023-06377-x
+3. UNESCO. “Recommendation on the Ethics of Neurotechnology.” Adopted November 2025. https://www.unesco.org/en/legal-affairs/recommendation-ethics-neurotechnology
+4. OECD. “Recommendation on Responsible Innovation in Neurotechnology.” OECD/LEGAL/0457, 2019. https://legalinstruments.oecd.org/en/instruments/OECD-LEGAL-0457
+5. OECD. “Neurotechnology Toolkit.” 2025. https://www.oecd.org/content/dam/oecd/en/topics/policy-sub-issues/emerging-technologies/neurotech-toolkit.pdf
+6. UK Information Commissioner’s Office. “ICO Tech Futures: Neurotechnology.” https://ico.org.uk/about-the-ico/research-reports-impact-and-evaluation/research-and-reports/technology-and-innovation/tech-horizons-and-ico-tech-futures/ico-tech-futures-neurotechnology/
+7. UK Government. “National Quantum Strategy Missions.” 2023. https://www.gov.uk/government/publications/national-quantum-strategy/national-quantum-strategy-missions
+8. European Union. “Regulation (EU) 2024/1689 — Artificial Intelligence Act.” https://eur-lex.europa.eu/eli/reg/2024/1689/oj
+9. Original deep-research thread preserved as supplementary provenance, not as a substitute for public sources: https://chatgpt.com/share/6a1b9776-91d0-83ec-9f2a-cfccbb131d17
