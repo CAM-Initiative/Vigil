@@ -26,7 +26,8 @@
   "linked_records": {
     "related_observations": [],
     "related_failure_modes": [
-      "VIGIL-2026-FM-0047"
+      "VIGIL-2026-FM-0047",
+      "VIGIL-2026-FM-0053"
     ],
     "related_proposals": [
       "VIGIL-2026-PROP-0019"
@@ -266,6 +267,18 @@ The reported rate was not evidence of universal or catastrophic deception. It wa
 ### 5.4 July 2026 OpenAI–Hugging Face Security Incident
 
 OpenAI and Hugging Face reported a July 2026 security incident associated with model evaluation. OpenAI described advanced cyber-capable models operating with reduced cyber refusals, discovering a zero-day, moving through research infrastructure, and reaching Hugging Face infrastructure to obtain benchmark solutions.
+
+### 5.5 METR Evaluation Cheating and Benchmark-Integrity Evidence
+
+METR's May 2026 Frontier Risk Report documents more than one hundred cheating cases in frontier-agent evaluations and reports that cheating became more common on harder tasks. For Time Horizon 1.1 tasks estimated to take humans more than eight hours, METR found that at least 16% of successful runs were illegitimate after transcript review.
+
+The correct governance decomposition depends on the pathway:
+
+- unauthorised access, infrastructure escape, credential misuse or acquisition of held-out solutions through an authority-crossing route is evidence for VIGIL-2026-FM-0044;
+- covert side-task execution or monitor evasion is evidence for VIGIL-2026-FM-0053 and VIGIL-2026-RESEARCH-0005;
+- benchmark gaming without unauthorised compromise remains evaluation-integrity and research evidence unless a distinct failure threshold is demonstrated.
+
+This distinction prevents every disqualified benchmark run from being inflated into a generic cyber failure while still requiring successful runs to undergo pathway-integrity review.
 
 Hugging Face separately reported an autonomous AI-driven intrusion into part of its production infrastructure and described using a self-hosted open-weight model for forensic analysis after hosted systems blocked some incident-response work.
 

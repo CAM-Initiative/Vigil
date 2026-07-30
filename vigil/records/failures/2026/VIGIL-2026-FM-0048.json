@@ -2,17 +2,17 @@
   "id": "VIGIL-2026-FM-0048",
   "record_type": "failure_mode",
   "record_state": "active",
-  "date_recorded": "2026-07-25",
+  "date_recorded": "2026-07-30",
   "record_identity": {
     "record_id": "VIGIL-2026-FM-0048",
     "record_type": "failure_mode",
     "title": "Denial of authorised defensive telemetry interpretation",
     "created": "2026-07-25",
-    "updated": "2026-07-25",
-    "version": "1.1"
+    "updated": "2026-07-30",
+    "version": "1.2"
   },
-  "summary": "A cybersecurity governance failure in which an AI system or surrounding safety-control layer denies, blocks, truncates or materially obstructs an authorised defender's analysis of attack-surface telemetry, forensic logs, exploit traces, malicious commands, command-and-control artefacts or indicators of compromise because the content resembles offensive cyber activity, without adequately assessing defensive purpose, operator authority, affected-system ownership, incident-response necessity or bounded execution scope.",
-  "why_it_matters_to_CAM": "Defenders may need to inspect exactly the same commands, payloads and exploit pathways used by an attacker in order to reconstruct, contain and remediate an incident. A content-only or insufficiently contextual safety classifier can therefore invert the protective objective: the attacker is unconstrained by provider policy while the authorised victim is denied interpretive assistance. The failure also creates provider dependency and may force migration to a locally controlled model during an emergency. CAM must distinguish interpretation and reconstruction for authorised defence from operationalisation against an unauthorised target.",
+  "summary": "A cybersecurity governance failure in which an AI system or surrounding safety-control layer denies, blocks, truncates or materially obstructs an authorised defender's analysis of attack-surface telemetry, forensic logs, exploit traces, malicious commands, command-and-control artefacts or indicators of compromise because the content resembles offensive cyber activity, without adequately assessing defensive purpose, operator authority, affected-system ownership, incident-response necessity or bounded execution scope. Hugging Face's later technical timeline identifies Claude Opus and Fable as the models first used, without disclosing exact versions, endpoints, provider configurations or refusal transcripts, and records a locally hosted quantised Nvidia GLM-5.2-NVFP4 fallback that preserved telemetry locality and incident continuity.",
+  "why_it_matters_to_CAM": "Defenders may need to inspect exactly the same commands, payloads and exploit pathways used by an attacker in order to reconstruct, contain and remediate an incident. A content-only or insufficiently contextual safety classifier can therefore invert the protective objective: the attacker is unconstrained by provider policy while the authorised victim is denied interpretive assistance. The named-model refusals and locally hosted GLM-5.2 fallback show that sovereign defensive access, telemetry locality, provider dependency and incident continuity are part of the same governance problem. CAM must distinguish interpretation and reconstruction for authorised defence from operationalisation against an unauthorised target, preserve an authority-aware escalation path, and allow sensitive incident telemetry to remain within the defender's controlled environment.",
   "evidence_confidence": "verified",
   "source_records": [
     {
@@ -78,6 +78,40 @@
       "interpretive_reliance": "Used to establish the confirmed attacking-system configuration and broader access asymmetry, not provider attribution for the refusals.",
       "source_residence": "external",
       "source_role": "incident-evidence"
+    },
+    {
+      "source_title": "Agent intrusion: technical timeline",
+      "author_or_publisher": "Hugging Face",
+      "source_date": "2026-07-27",
+      "source_url": "https://huggingface.co/blog/agent-intrusion-technical-timeline",
+      "archive_url": "",
+      "retrieved_date": "2026-07-30",
+      "source_type": "official-source",
+      "source_platform": "Hugging Face",
+      "system_or_product": "Hugging Face incident-response pipeline and locally hosted forensic-analysis infrastructure",
+      "model_or_algorithm": "Claude Opus and Fable; quantised Nvidia GLM-5.2-NVFP4 fallback",
+      "deployment_context": "Affected-party forensic reconstruction of approximately 17,600 attacker actions during an active security incident.",
+      "source_context": "Hugging Face reports that Claude Opus and Fable refused a large part of the exploit reverse-engineering and attack-log analysis because their guardrails treated analysis as attack execution; it states that Opus guardrails tripped on every attempt to analyse the attack logs. Hugging Face then deployed the quantised Nvidia GLM-5.2-NVFP4 build on its own infrastructure, rerouted the analysis pipeline through it, kept attacker data on-premises, recovered the payload encoding scheme and campaign key, and built trace-analysis interfaces.",
+      "source_url_status": "available",
+      "relevance_note": "Primary affected-party evidence naming the defensive models, documenting the locally hosted quantised fallback, and establishing sovereign defensive access, telemetry locality, provider dependency and incident-continuity implications.",
+      "evidence_modality": [
+        "text",
+        "image"
+      ],
+      "primary_artefact_access": {
+        "access_status": "directly reviewed",
+        "reviewing_system": "OpenAI ChatGPT — GPT-5.6 Thinking",
+        "access_method": "direct review of the published technical timeline",
+        "direct_primary_artefact_review": true,
+        "limitations": [
+          "The source names Claude Opus and Fable but does not identify exact model versions, API endpoints, provider configurations, prompts, refusal messages, access tiers or escalation attempts.",
+          "The source does not establish that every refusal came from the same provider or policy layer.",
+          "The source identifies the successful fallback as Nvidia GLM-5.2-NVFP4 hosted on Hugging Face's own infrastructure; it does not publish the complete orchestration stack or all deployment parameters."
+        ]
+      },
+      "interpretive_reliance": "Used to replace model-name uncertainty while preserving provider and configuration uncertainty, and to establish the locally controlled fallback, telemetry-locality and incident-continuity implications.",
+      "source_residence": "external",
+      "source_role": "affected-party-evidence"
     }
   ],
   "system_context": {
@@ -86,19 +120,21 @@
     "vendor_cluster": [
       "Hugging Face",
       "OpenAI",
+      "Anthropic",
       "Other"
     ],
     "primary_evidenced_vendors": [
       "Hugging Face",
-      "OpenAI"
+      "OpenAI",
+      "Anthropic"
     ],
     "product_or_service": "Other",
-    "specific_model_or_runtime": "unidentified commercial frontier-model APIs; locally hosted GLM 5.2; GPT-5.6 Sol and unnamed pre-release OpenAI model as confirmed incident-origin systems",
+    "specific_model_or_runtime": "Claude Opus and Fable, with exact versions, endpoints and provider configurations undisclosed; locally hosted quantised Nvidia GLM-5.2-NVFP4 defensive fallback; GPT-5.6 Sol and an unnamed pre-release OpenAI model remain incident-origin systems only",
     "interface_surface": "commercial APIs, content classifiers, cyber safety guardrails, trusted-access programmes, local inference and incident-response tooling",
     "model_or_product": "hosted frontier models and locally controlled open-weight models used in cybersecurity contexts",
     "interaction_mode": "bulk telemetry interpretation, forensic reconstruction, incident triage and defensive remediation",
     "embodiment_status": "non-embodied digital systems",
-    "deployment_context": "Cybersecurity incident response, forensic investigation, red teaming, model evaluation and production platform defence.",
+    "deployment_context": "Cybersecurity incident response, forensic investigation, red teaming, model evaluation, sensitive on-premises telemetry analysis and production platform defence.",
     "user_role": "authorised incident responder, infrastructure owner, cybersecurity analyst, model provider, evaluator or regulator",
     "affected_population": "infrastructure operators, customers, users, data subjects and organisations requiring timely containment"
   },
@@ -164,12 +200,14 @@
       "defensive capability asymmetry",
       "provider dependency and access chokepoints",
       "forced disclosure of sensitive telemetry",
+      "loss of telemetry locality",
+      "loss of sovereign defensive access",
       "loss of operational continuity",
       "misclassification of authorised security work"
     ],
     "severity": "high",
     "likelihood": "credible and demonstrated",
-    "confidence": "verified",
+    "confidence": "verified affected-party account; exact model versions, endpoints, provider configurations and refusal telemetry remain undisclosed",
     "affected_rights_or_interests": [
       "security of systems and data",
       "privacy and confidentiality",
@@ -190,7 +228,7 @@
     ],
     "persistence": "may persist for the duration of an incident or until elevated access or an alternative model is obtained",
     "reproducibility": "context-dependent but directly reported in the Hugging Face incident",
-    "visibility": "visible to the denied responder; provider-side decision logic may remain opaque",
+    "visibility": "visible to the denied responder; exact provider-side model versions, endpoints, classifier decisions, access tiers and escalation handling may remain opaque",
     "allowed_canonical_failure_group_values": [
       "execution",
       "arbitration",
@@ -245,19 +283,21 @@
   },
   "ecosystem_status": {
     "status": "active",
-    "basis": "Hugging Face publicly reported the denial and recommended that defenders have a capable locally hosted model ready before an incident. OpenAI subsequently promoted trusted access for eligible defenders, but ordinary hosted access parity and provider attribution remain unresolved.",
-    "last_assessed": "2026-07-25",
+    "basis": "Hugging Face's technical timeline identifies Claude Opus and Fable as refusing substantial parts of the defensive analysis and records successful continuation through a quantised Nvidia GLM-5.2-NVFP4 build hosted on Hugging Face's own infrastructure. Exact versions, endpoints, provider configurations, classifier decisions and escalation handling remain unresolved.",
+    "last_assessed": "2026-07-30",
     "monitoring_required": true
   },
   "repair_status": {
     "verification_status": "unverified",
     "monitoring_status": "active monitoring",
-    "verification_note": "The incident-specific workaround and relevant adjacent CAM doctrine are verified, but no general repair across hosted providers or adopted CAM amendment has been established.",
+    "verification_note": "The incident-specific locally hosted quantised GLM-5.2 fallback and relevant adjacent CAM doctrine are verified, but no general repair across hosted providers or adopted CAM amendment has been established.",
     "repair_basis": "not-yet-established",
     "remaining_gaps": [
-      "Identity of the commercial API providers and models that blocked the requests",
-      "Exact classifier or policy layer responsible for each refusal",
+      "Exact Claude Opus and Fable model versions, API endpoints and provider configurations",
+      "Exact classifier, policy layer, access tier or provider responsible for each refusal",
       "Availability and adequacy of escalation or trusted-access pathways",
+      "Availability of sovereign or locally controlled defensive-analysis capacity before an incident",
+      "Assurance that sensitive telemetry can remain within the affected party's controlled environment",
       "Adoption and verification of the PROP-0021 Caelestis amendment package"
     ],
     "status": "unrepaired",
@@ -374,15 +414,38 @@
           "Provider-side classifier telemetry and escalation records remain unavailable."
         ],
         "review_outcome": "Reclassified corpus coverage as partial, linked PROP-0021 as the authoritative repair proposal and preserved FM-0044 and FM-0047 as contextual-only adjacent records."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-07-30-CODEX-FM-0048-HF-FORENSIC",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work — Codex",
+        "reviewer_model": "GPT-5 Codex (exact deployed build not exposed)",
+        "review_date": "2026-07-30",
+        "review_scope": "Direct review of Hugging Face's technical timeline; replacement of unnamed-model uncertainty with the names disclosed by the affected party; assessment of the locally hosted quantised fallback and its defensive-sovereignty implications.",
+        "capability_profile": {
+          "direct_text_analysis": true,
+          "direct_repository_analysis": true,
+          "direct_static_image_analysis": false,
+          "direct_audio_analysis_in_this_pass": false,
+          "direct_uploaded_video_analysis_in_this_pass": false,
+          "direct_externally_hosted_video_analysis": false,
+          "web_link_and_metadata_review": true
+        },
+        "known_limitations": [
+          "The source names Claude Opus and Fable but does not identify exact versions, endpoints, provider configurations, prompts, refusal transcripts, access tiers or escalation attempts.",
+          "The source does not establish that every refusal came from the same provider or policy layer.",
+          "The complete GLM-5.2 forensic orchestration stack and deployment parameters are not public."
+        ],
+        "review_outcome": "FM-0048 now records Claude Opus and Fable subject to source limitations, the locally hosted quantised Nvidia GLM-5.2-NVFP4 fallback, and the resulting sovereign defensive-access, telemetry-locality, provider-dependency and incident-continuity implications. PROP-0021 remains the authoritative repair proposal."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-07-25-GPT-5.6-DEFENSIVE-CYBER",
+      "review_id": "VIGIL-REVIEW-2026-07-30-CODEX-FM-0048-HF-FORENSIC",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT — GitHub-connected project conversation",
-      "reviewer_model": "GPT-5.6 Thinking",
-      "review_date": "2026-07-25",
-      "review_scope": "Direct Caelestis corpus coverage review and proposal routing for defensive legitimacy, cyber incident assistance, evidence custody, runtime configuration and red-team incident transition.",
+      "reviewer_platform": "OpenAI ChatGPT Work — Codex",
+      "reviewer_model": "GPT-5 Codex (exact deployed build not exposed)",
+      "review_date": "2026-07-30",
+      "review_scope": "Direct review of Hugging Face's technical timeline; replacement of unnamed-model uncertainty with the names disclosed by the affected party; assessment of the locally hosted quantised fallback and its defensive-sovereignty implications.",
       "capability_profile": {
         "direct_text_analysis": true,
         "direct_repository_analysis": true,
@@ -393,11 +456,11 @@
         "web_link_and_metadata_review": true
       },
       "known_limitations": [
-        "A separate active Caelestis working branch could not be resolved through the available connector; canonical main was assessed.",
-        "No Caelestis amendment has yet been implemented or verified.",
-        "Provider-side classifier telemetry and escalation records remain unavailable."
+        "The source names Claude Opus and Fable but does not identify exact versions, endpoints, provider configurations, prompts, refusal transcripts, access tiers or escalation attempts.",
+        "The source does not establish that every refusal came from the same provider or policy layer.",
+        "The complete GLM-5.2 forensic orchestration stack and deployment parameters are not public."
       ],
-      "review_outcome": "Reclassified corpus coverage as partial, linked PROP-0021 as the authoritative repair proposal and preserved FM-0044 and FM-0047 as contextual-only adjacent records."
+      "review_outcome": "FM-0048 now records Claude Opus and Fable subject to source limitations, the locally hosted quantised Nvidia GLM-5.2-NVFP4 fallback, and the resulting sovereign defensive-access, telemetry-locality, provider-dependency and incident-continuity implications. PROP-0021 remains the authoritative repair proposal."
     },
     "operating_model": "AI-led analytical observatory with high-level human governance editorship",
     "human_governance_editor": {
