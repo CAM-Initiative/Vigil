@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://www.cam-initiative.org/schemas/vigil/VIGIL.Learn.Schema.json",
-  "version": "0.1-exemplar",
+  "version": "0.2-exemplar",
   "title": "VIGIL LEARN Record Extension",
   "purpose": "Defines the VIGIL learning-closure record used to publish a completed evidence-to-repair chain as durable, searchable governance knowledge.",
   "authority_boundary": [
@@ -102,6 +102,16 @@
     "summary": {
       "type": "string",
       "minLength": 1
+    },
+    "what_happened": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "description": "Three concise factual statements preserving the case, mechanism, and consequence without summarising internal repair content."
     },
     "abstracted_learning": {
       "type": "string",
@@ -307,6 +317,25 @@
       "minProperties": 1
     }
   },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "publication_status": {
+            "const": "published"
+          }
+        },
+        "required": [
+          "publication_status"
+        ]
+      },
+      "then": {
+        "required": [
+          "what_happened"
+        ]
+      }
+    }
+  ],
   "$defs": {
     "non_empty_string_array": {
       "type": "array",

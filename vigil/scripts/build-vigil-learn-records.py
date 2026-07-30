@@ -75,6 +75,7 @@ def index_entry(path: Path, record: dict[str, Any]) -> dict[str, Any]:
         "report_title": record.get("report_title", ""),
         "case_descriptor": record.get("case_descriptor", ""),
         "summary": record.get("summary", ""),
+        "what_happened": record.get("what_happened", []),
         "abstracted_learning": record.get("abstracted_learning", ""),
         "must_not_be_forgotten": record.get("must_not_be_forgotten", []),
         "future_application": record.get("future_application", []),

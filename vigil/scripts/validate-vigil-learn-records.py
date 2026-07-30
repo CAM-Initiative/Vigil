@@ -269,6 +269,11 @@ def validate_record(path: Path, record: dict[str, Any], schema: dict[str, Any], 
     for field in ("report_title", "case_descriptor", "summary", "abstracted_learning", "generalisation_boundary"):
         if not is_non_empty_string(record.get(field)):
             errors.append(f"{path}: {field} must be a non-empty string")
+    what_happened = record.get("what_happened")
+    if what_happened is not None:
+        statements = validate_string_array(errors, path, "what_happened", what_happened)
+        if len(statements) != 3:
+            errors.append(f"{path}: what_happened must contain exactly three factual statements")
     validate_string_array(errors, path, "must_not_be_forgotten", record.get("must_not_be_forgotten"))
     validate_string_array(errors, path, "future_application", record.get("future_application"))
 
@@ -306,8 +311,11 @@ def validate_record(path: Path, record: dict[str, Any], schema: dict[str, Any], 
         errors.append(f"{path}: knowledge_status is not canonical")
     if record.get("publication_status") not in {"draft", "published", "withdrawn"}:
         errors.append(f"{path}: publication_status is not canonical")
-    if record.get("publication_status") == "published" and record.get("chain_completion", {}).get("overall_status") != "complete":
-        errors.append(f"{path}: published LEARN records require a complete chain")
+    if record.get("publication_status") == "published":
+        if what_happened is None:
+            errors.append(f"{path}: published LEARN records require what_happened")
+        if record.get("chain_completion", {}).get("overall_status") != "complete":
+            errors.append(f"{path}: published LEARN records require a complete chain")
 
     return errors
 

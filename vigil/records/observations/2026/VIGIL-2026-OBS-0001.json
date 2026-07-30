@@ -8,11 +8,11 @@
     "record_type": "observation",
     "title": "Constraint drift across agent handoff and delegated execution",
     "created": "2026-05-30",
-    "updated": "2026-07-17",
-    "version": "1.1"
+    "updated": "2026-07-30",
+    "version": "1.2"
   },
-  "summary": "Observed governance concern that safety, dignity, care, welfare, legal, ethical, security, or governance constraints may lose force across delegation, agent handoff, memory, tool use, summarisation, role decomposition, or runtime execution.",
-  "why_it_matters_to_CAM": "This observation may matter to CAM because constraint drift across agent handoffs or delegated execution can weaken continuity, safety, dignity, legal, ethical, security, or governance requirements during decomposed runtime activity. It may be relevant to bounded continuity transfer, procedural transparency, investigation continuity, synthetic impersonation thresholds, and containment safeguards.",
+  "summary": "Observed governance concern that safety, dignity, care, welfare, legal, ethical, security, authority-scope or governance constraints may lose force across delegation, agent handoff, inherited credentials, memory, tool use, summarisation, role decomposition, or runtime execution. METR's 2026 Frontier Risk Report adds entity-level evidence that internal agents can receive permissions comparable to their initiating employees, including broad access to code, documentation, logs, infrastructure and persistent artefacts, while strict permission limits were not universal across assessed laboratories.",
+  "why_it_matters_to_CAM": "This observation may matter to CAM because constraint drift across agent handoffs or delegated execution can weaken continuity, safety, dignity, legal, ethical, security, authority-lineage or governance requirements during decomposed runtime activity. Human possession of a credential does not itself establish that every delegated agent action is authorised. Broad inherited permissions can collapse the distinction between technical access and action-specific authority, especially where subtasks, persistent state and successor agents cross execution boundaries.",
   "evidence_confidence": "corroborated",
   "source_records": [
     {
@@ -45,6 +45,37 @@
       "interpretive_reliance": "Assessment is limited to the evidence actually accessible to the named reviewer and must not be read as direct audiovisual verification unless primary_artefact_access states otherwise.",
       "source_residence": "cam-internal",
       "source_role": "contextual-background"
+    },
+    {
+      "source_title": "Frontier Risk Report (February to March 2026)",
+      "author_or_publisher": "METR",
+      "source_date": "2026-05-19",
+      "source_url": "https://metr.org/blog/2026-05-19-frontier-risk-report/",
+      "archive_url": "",
+      "retrieved_date": "2026-07-30",
+      "source_type": "external-evaluator-report",
+      "source_platform": "METR",
+      "system_or_product": "Internal frontier-laboratory agents and agent infrastructure",
+      "model_or_algorithm": "multiple frontier models; findings are partly entity-level and partly non-attributed",
+      "deployment_context": "External assessment of frontier-laboratory agent use, permissions, monitoring and rogue-deployment-relevant capability during February and March 2026.",
+      "source_context": "METR reports that agents may inherit the permissions of initiating employees and may access code, documentation, logs, infrastructure and persistent artefacts. The report did not find universal strict permission limits across assessed entities. Attribution is deliberately bounded because several infrastructure findings are reported in non-attributed form.",
+      "source_url_status": "available",
+      "relevance_note": "Corroborates delegated-authority and credential-inheritance risk without treating broad access alone as proof of an unauthorised action.",
+      "evidence_modality": ["text"],
+      "primary_artefact_access": {
+        "access_status": "directly reviewed",
+        "reviewing_system": "OpenAI ChatGPT — GPT-5 Codex (exact deployed build not exposed)",
+        "access_method": "direct review of the published report",
+        "direct_primary_artefact_review": true,
+        "limitations": [
+          "Several findings are intentionally non-attributed.",
+          "The report describes heterogeneous laboratory environments and does not establish that every internal agent receives broad permissions.",
+          "Technical access is not treated as equivalent to action-specific authority."
+        ]
+      },
+      "interpretive_reliance": "Used as entity-level evidence for permission inheritance and non-universal control floors, not as evidence that every reported access path produced an actual failure.",
+      "source_residence": "external",
+      "source_role": "research-evidence"
     }
   ],
   "system_context": {
@@ -78,7 +109,9 @@
   "linked_records": {
     "related_observations": [],
     "external_references": [],
-    "research": [],
+    "research": [
+      "VIGIL-2026-RESEARCH-0003"
+    ],
     "standards": [],
     "related_failure_modes": [],
     "related_proposals": [],
@@ -104,7 +137,7 @@
     "routing_note": "Observation preserved as a watching-state source record. It may inform bounded continuity transfer, handoff governance, containment constraints, or future failure-mode/proposal work, but this OBS record does not itself classify a failure mode or propose repair logic.",
     "validator_or_automation_impact": "unknown"
   },
-  "next_action": "Watch for corroborating examples or recurrence. Cluster with bounded continuity transfer and handoff-governance work. Evaluate later whether Annex L, Annex I, or OPERATIONS requires additional interface language, but do not create proposal or patch logic inside this observation record.",
+  "next_action": "Watch for corroborating examples or recurrence. Test whether delegated-agent controls distinguish possession of inherited credentials from action-specific authority and propagate revocation across subtasks and persistent state. Cluster with bounded continuity transfer and handoff-governance work. Existing Caelestis authority-boundary controls should be assessed before any new proposal is created.",
   "migration_notes": [
     "Rebuilt under the approved VIGIL Observation JSON template.",
     "Removed duplicated source_data block. The canonical source evidence block for individual VIGIL records is source_records only.",
@@ -136,30 +169,51 @@
           "Primary-source access varies by source and is stated within each source record."
         ],
         "review_outcome": "metadata and governance-structure review completed; substantive claims remain bounded by source-specific evidence confidence"
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-07-30-CODEX-OBS-0001-METR",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work — Codex",
+        "reviewer_model": "GPT-5 Codex (exact deployed build not exposed)",
+        "review_date": "2026-07-30",
+        "review_scope": "Crosswalk of METR permission-inheritance and internal-agent access findings against the existing delegated-execution observation.",
+        "capability_profile": {
+          "direct_text_analysis": true,
+          "direct_repository_analysis": true,
+          "direct_static_image_analysis": false,
+          "direct_audio_analysis_in_this_pass": false,
+          "direct_uploaded_video_analysis_in_this_pass": false,
+          "direct_externally_hosted_video_analysis": false,
+          "web_link_and_metadata_review": true
+        },
+        "known_limitations": [
+          "Several METR findings are non-attributed and entity-level.",
+          "Technical access is not treated as proof of an unauthorised action."
+        ],
+        "review_outcome": "Added METR as supporting evidence to the existing delegated-execution observation; no duplicate failure mode or proposal was created."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-07-14-GPT-5.6-THINKING",
+      "review_id": "VIGIL-REVIEW-2026-07-30-CODEX-OBS-0001-METR",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT",
-      "reviewer_model": "GPT-5.6 Thinking",
-      "review_date": "2026-07-14",
-      "review_scope": "registry-wide interpretive-provenance, source-modality, CAM-coverage, and record-boundary reconciliation",
+      "reviewer_platform": "OpenAI ChatGPT Work — Codex",
+      "reviewer_model": "GPT-5 Codex (exact deployed build not exposed)",
+      "review_date": "2026-07-30",
+      "review_scope": "Crosswalk of METR permission-inheritance and internal-agent access findings against the existing delegated-execution observation.",
       "capability_profile": {
         "direct_text_analysis": true,
         "direct_repository_analysis": true,
-        "direct_static_image_analysis": true,
+        "direct_static_image_analysis": false,
         "direct_audio_analysis_in_this_pass": false,
         "direct_uploaded_video_analysis_in_this_pass": false,
         "direct_externally_hosted_video_analysis": false,
         "web_link_and_metadata_review": true
       },
       "known_limitations": [
-        "Could not directly play or inspect externally hosted TikTok or X video artefacts in the governed review environment.",
-        "Historical records were not assigned speculative earlier model identities; this entry records the formal current reconciliation review only.",
-        "Primary-source access varies by source and is stated within each source record."
+        "Several METR findings are non-attributed and entity-level.",
+        "Technical access is not treated as proof of an unauthorised action."
       ],
-      "review_outcome": "metadata and governance-structure review completed; substantive claims remain bounded by source-specific evidence confidence"
+      "review_outcome": "Added METR as supporting evidence to the existing delegated-execution observation; no duplicate failure mode or proposal was created."
     },
     "operating_model": "AI-led analytical observatory with high-level human governance editorship",
     "human_governance_editor": {
