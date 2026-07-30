@@ -73,8 +73,8 @@ def validate_string_array(
     return value
 
 
-def canonical_record_ids() -> set[str]:
-    ids: set[str] = set()
+def canonical_records() -> dict[str, dict[str, Any]]:
+    records: dict[str, dict[str, Any]] = {}
     for path in RECORDS_ROOT.rglob("*.json"):
         try:
             record = load_json(path)
@@ -82,7 +82,7 @@ def canonical_record_ids() -> set[str]:
             continue
         record_id = record.get("id") if isinstance(record, dict) else None
         if isinstance(record_id, str):
-            ids.add(record_id)
+            records[record_id] = record
     for path in (RECORDS_ROOT / "research").rglob("*.md") if (RECORDS_ROOT / "research").exists() else []:
         text = path.read_text(encoding="utf-8")
         if not text.startswith("---\n"):
@@ -95,8 +95,17 @@ def canonical_record_ids() -> set[str]:
         except Exception:
             continue
         if isinstance(metadata, dict) and isinstance(metadata.get("id"), str):
-            ids.add(metadata["id"])
-    return ids
+            records[metadata["id"]] = metadata
+    return records
+
+
+def source_field_is_populated(record: dict[str, Any], field_path: str) -> bool:
+    value: Any = record
+    for segment in field_path.split("."):
+        if not isinstance(value, dict) or segment not in value:
+            return False
+        value = value[segment]
+    return value not in (None, "", [], {})
 
 
 def validate_taxonomy_links(
@@ -163,8 +172,12 @@ def validate_taxonomy_links(
 
 
 def validate_report_sections(
-    errors: list[str], path: Path, record: dict[str, Any], known_ids: set[str]
+    errors: list[str],
+    path: Path,
+    record: dict[str, Any],
+    known_records: dict[str, dict[str, Any]],
 ) -> None:
+    known_ids = set(known_records)
     sections = record.get("report_section_sources")
     if not isinstance(sections, dict):
         errors.append(f"{path}: report_section_sources must be an object")
@@ -180,7 +193,7 @@ def validate_report_sections(
         record_ids = validate_string_array(
             errors, path, f"report_section_sources.{section_name}.record_ids", section.get("record_ids")
         )
-        validate_string_array(
+        source_fields = validate_string_array(
             errors, path, f"report_section_sources.{section_name}.source_fields", section.get("source_fields")
         )
         if not is_non_empty_string(section.get("basis")):
@@ -190,6 +203,66 @@ def validate_report_sections(
                 errors.append(f"{path}: report_section_sources.{section_name} contains malformed id {record_id!r}")
             elif record_id not in known_ids:
                 errors.append(f"{path}: report_section_sources.{section_name} id {record_id!r} cannot be resolved")
+        resolved_records = [
+            known_records[record_id] for record_id in record_ids if record_id in known_records
+        ]
+        for source_field in source_fields:
+            if not any(source_field_is_populated(source, source_field) for source in resolved_records):
+                errors.append(
+                    f"{path}: report_section_sources.{section_name}.source_fields declares "
+                    f"{source_field!r}, but that field is not populated by any cited record"
+                )
+
+    basis = record.get("learning_basis") if isinstance(record.get("learning_basis"), dict) else {}
+    primary_failure = basis.get("primary_failure_mode")
+    proposal_records = basis.get("proposal_records", []) if isinstance(basis.get("proposal_records"), list) else []
+    patch_records = basis.get("patch_records", []) if isinstance(basis.get("patch_records"), list) else []
+    learn_id = record.get("id")
+
+    section_02_ids = set(sections.get("section_02_record", {}).get("record_ids", []))
+    required_chain_ids = {
+        value
+        for value in [primary_failure, learn_id, *proposal_records, *patch_records]
+        if isinstance(value, str)
+    }
+    missing_chain_ids = sorted(required_chain_ids - section_02_ids)
+    if missing_chain_ids:
+        errors.append(
+            f"{path}: report_section_sources.section_02_record must include every authoritative "
+            f"learning-basis record: {', '.join(missing_chain_ids)}"
+        )
+
+    section_03_ids = sections.get("section_03_classification", {}).get("record_ids", [])
+    if primary_failure not in section_03_ids:
+        errors.append(
+            f"{path}: report_section_sources.section_03_classification must include "
+            "learning_basis.primary_failure_mode"
+        )
+
+    section_04_ids = set(sections.get("section_04_diagnosis", {}).get("record_ids", []))
+    allowed_diagnosis_ids = {
+        value
+        for value in [primary_failure, *proposal_records, *patch_records]
+        if isinstance(value, str)
+    }
+    if not section_04_ids.intersection(allowed_diagnosis_ids):
+        errors.append(
+            f"{path}: report_section_sources.section_04_diagnosis must cite an authoritative "
+            "FM, PROP, or PATCH from learning_basis"
+        )
+
+    section_05_ids = set(sections.get("section_05_repair", {}).get("record_ids", []))
+    if not section_05_ids.intersection(patch_records):
+        errors.append(
+            f"{path}: report_section_sources.section_05_repair must cite a PATCH from "
+            "learning_basis.patch_records"
+        )
+
+    section_06_ids = sections.get("section_06_learn", {}).get("record_ids", [])
+    if learn_id not in section_06_ids:
+        errors.append(
+            f"{path}: report_section_sources.section_06_learn must cite the current LEARN record"
+        )
 
     completion = record.get("chain_completion")
     if not isinstance(completion, dict):
@@ -214,7 +287,7 @@ def validate_linked_records(
     expected = {
         "related_observations": (re.compile(r"^VIGIL-\d{4}-OBS-\d{4}$"), True),
         "related_failure_modes": (FM_ID, False),
-        "related_proposals": (PROP_ID, False),
+        "related_proposals": (PROP_ID, True),
         "related_patch_notes": (PATCH_ID, False),
         "related_learn_records": (LEARN_ID, True),
         "research": (re.compile(r"^VIGIL-\d{4}-RESEARCH-\d{4}$"), True),
@@ -240,8 +313,14 @@ def validate_linked_records(
             errors.append(f"{path}: linked_records.related_patch_notes must match learning_basis.patch_records")
 
 
-def validate_record(path: Path, record: dict[str, Any], schema: dict[str, Any], known_ids: set[str]) -> list[str]:
+def validate_record(
+    path: Path,
+    record: dict[str, Any],
+    schema: dict[str, Any],
+    known_records: dict[str, dict[str, Any]],
+) -> list[str]:
     errors: list[str] = []
+    known_ids = set(known_records)
     required = schema.get("required", [])
     for field in required:
         if field not in record or record[field] in (None, "", [], {}):
@@ -292,7 +371,13 @@ def validate_record(path: Path, record: dict[str, Any], schema: dict[str, Any], 
         primary = basis.get("primary_failure_mode")
         if not isinstance(primary, str) or not FM_ID.fullmatch(primary) or primary not in known_ids:
             errors.append(f"{path}: learning_basis.primary_failure_mode must resolve to a VIGIL FM")
-        proposals = validate_string_array(errors, path, "learning_basis.proposal_records", basis.get("proposal_records"))
+        proposals = validate_string_array(
+            errors,
+            path,
+            "learning_basis.proposal_records",
+            basis.get("proposal_records"),
+            allow_empty=True,
+        )
         patches = validate_string_array(errors, path, "learning_basis.patch_records", basis.get("patch_records"))
         for value, pattern, label in (
             *((value, PROP_ID, "proposal") for value in proposals),
@@ -304,7 +389,7 @@ def validate_record(path: Path, record: dict[str, Any], schema: dict[str, Any], 
             errors.append(f"{path}: learning_basis.basis_statement must be a non-empty string")
 
     validate_taxonomy_links(errors, path, record, known_ids)
-    validate_report_sections(errors, path, record, known_ids)
+    validate_report_sections(errors, path, record, known_records)
     validate_linked_records(errors, path, record, known_ids)
 
     if record.get("knowledge_status") not in {"current", "under-review", "superseded"}:
@@ -331,7 +416,8 @@ def main() -> int:
         print("VIGIL.Learn.Schema.json must contain one JSON object", file=sys.stderr)
         return 1
 
-    known_ids = canonical_record_ids()
+    records_by_id = canonical_records()
+    known_ids = set(records_by_id)
     files = sorted(LEARN_ROOT.rglob("*.json"), key=lambda item: item.as_posix()) if LEARN_ROOT.exists() else []
     if not files:
         errors.append(f"{LEARN_ROOT}: no LEARN records found")
@@ -345,7 +431,7 @@ def main() -> int:
         if not isinstance(record, dict):
             errors.append(f"{path}: LEARN record must contain one JSON object")
             continue
-        errors.extend(validate_record(path, record, schema, known_ids))
+        errors.extend(validate_record(path, record, schema, records_by_id))
 
     if errors:
         print("VIGIL LEARN validation failed:", file=sys.stderr)

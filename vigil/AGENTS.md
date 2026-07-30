@@ -12,7 +12,7 @@ VIGIL operates as an **AI-led analytical observatory with high-level human gover
 
 ## Record Classes
 
-VIGIL currently recognises five primary record classes:
+VIGIL currently recognises six primary record classes:
 
 ```text
 OBS   — Material unresolved ecosystem governance observation / early warning record
@@ -20,6 +20,7 @@ RESEARCH — Non-binding research artefact that may originate an evidence-to-rep
 FM    — Ecosystem Failure Mode / triage record
 PROP  — CAM/Caelestis proposal record
 PATCH — Implemented or directly pre-existing CAM/Caelestis patch note
+LEARN — Published, bounded learning closure for a section-complete chain
 ```
 
 ### OBS — Observation Record
@@ -34,7 +35,7 @@ Observation records must state the governance significance and material uncertai
 
 Use a Research Record for a substantive research artefact that supplies the evidence basis for a failure mode, proposal, or repair pathway and would otherwise make a separate observation duplicative.
 
-Research records are non-binding. They may originate an evidence-to-repair chain in place of, or alongside, an observation, but CAM authority arises only through a linked proposal and implemented PATCH. Markdown research records must carry the required structured front matter and reciprocal links to the VIGIL records they support.
+Research records are non-binding. They may originate an evidence-to-repair chain in place of, or alongside, an observation, but CAM authority arises only through an implemented PATCH. A proposal may supply diagnosis and response design where one was required; it is not mandatory where the authoritative FM and/or PATCH already populates that report section. Markdown research records must carry the required structured front matter and reciprocal links to the VIGIL records they support.
 
 ### FM — Failure Mode Record
 
@@ -73,6 +74,20 @@ Mere adjacency, shared subject matter, or use of the same corpus instrument does
 multi-failure repair.
 
 VIGIL schemas, validators, indexes, workflows, migrations, reconciliation passes, and repository administration are never PATCH targets.
+
+### LEARN — Learning Closure Record
+
+Use a LEARN record only when Sections 01–05 already contain sufficient authoritative content and the LEARN record can supply Section 06 without creating new incident evidence, failure classification, proposal authority, or repair claims.
+
+Completion is a report-section test, not a record-count test:
+
+* OBS is optional where FM or RESEARCH supplies Section 01.
+* PROP is optional where FM diagnosis and/or PATCH response rationale supplies Section 04.
+* FM remains authoritative for Section 03.
+* PATCH remains authoritative for Section 05.
+* LEARN remains authoritative only for Section 06.
+
+LEARN records must preserve the factual kernel, abstracted lesson, non-forget principles, future application, and generalisation boundary. They must not duplicate `source_records` or summarise internal PATCH content for the public Knowledge Base.
 
 ## Interpretive Provenance Rules
 
