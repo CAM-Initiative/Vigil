@@ -151,6 +151,90 @@ class LinkedRecordIdentifierValidationTests(unittest.TestCase):
         self.assertTrue(any("VIGIL-2026-FM-0999" in warning for warning in warnings))
 
 
+class ResearchQualityValidationTests(unittest.TestCase):
+    def valid_record(self):
+        return {
+            "id": "VIGIL-2026-RESEARCH-0999",
+            "record_type": "research",
+            "record_state": "active",
+            "date_recorded": "2026-07-30",
+            "title": "Research quality fixture",
+            "summary": "A substantive fixture for the published research quality contract.",
+            "status": "research record — non-binding",
+            "publication_status": "published",
+            "research_method": "Structured comparison of primary sources.",
+            "research_scope": "A bounded test fixture.",
+            "governance_purpose": "Validate the research quality contract.",
+            "evidence_confidence": "corroborated",
+            "corroboration_scope": "The fixture uses several primary artefacts from one institutional corpus.",
+            "limitations": "Synthetic content used only for validator testing.",
+            "source_corpus": [
+                {
+                    "title": f"Source {index}",
+                    "publisher": "Example Research Institute",
+                    "url": f"https://research.example/source-{index}",
+                    "source_kind": "primary research",
+                    "relevance": "Supports a distinct fixture claim.",
+                }
+                for index in range(1, 5)
+            ],
+            "domains": ["OPERATIONS"],
+            "linked_records": {
+                "related_observations": [],
+                "related_failure_modes": [],
+                "related_proposals": [],
+                "related_patch_notes": [],
+            },
+        }
+
+    def valid_body(self):
+        sections = "\n\n".join(
+            f"## {section}\n\n"
+            + (
+                "Claim "
+                "[one](https://research.example/source-1), "
+                "[two](https://research.example/source-2), and "
+                "[three](https://research.example/source-3). "
+                if section == "Findings"
+                else ""
+            )
+            + ("evidence " * 240)
+            for section in VALIDATOR.RESEARCH_REQUIRED_SECTIONS
+        )
+        return sections + "\n\n1. https://research.example/source-1\n2. https://research.example/source-2\n3. https://research.example/source-3\n4. https://research.example/source-4\n"
+
+    def validate(self, record=None, body=None):
+        errors = []
+        VALIDATOR.validate_research_record(
+            Path("VIGIL-2026-RESEARCH-0999.md"),
+            record or self.valid_record(),
+            {"VIGIL-2026-RESEARCH-0999"},
+            errors,
+            self.valid_body() if body is None else body,
+        )
+        return errors
+
+    def test_substantive_published_research_passes(self):
+        self.assertEqual(self.validate(), [])
+
+    def test_thin_published_research_fails(self):
+        errors = self.validate(body="## Research question\n\nToo short.")
+        self.assertTrue(any("minimum is" in error for error in errors))
+        self.assertTrue(any("missing required section" in error for error in errors))
+
+    def test_published_research_requires_multiple_sources(self):
+        record = self.valid_record()
+        record["source_corpus"] = record["source_corpus"][:1]
+        errors = self.validate(record=record)
+        self.assertTrue(any("source_corpus entries" in error for error in errors))
+
+    def test_single_publisher_corroboration_requires_qualification(self):
+        record = self.valid_record()
+        record.pop("corroboration_scope")
+        errors = self.validate(record=record)
+        self.assertTrue(any("corroboration_scope" in error for error in errors))
+
+
 class RelationshipScopeValidationTests(unittest.TestCase):
     KNOWN_IDS = {
         "VIGIL-2026-FM-0001",

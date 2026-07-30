@@ -75,6 +75,29 @@ Internal evidence should remain internal. Do not represent it as external public
 
 Keep `product_or_service` to one canonical value. For genuinely multi-vendor and multi-product records, use `product_or_service: "Other"` unless one canonical product clearly controls the record. Put specific product, model, surface, and incident claims in descriptive fields and source-level metadata.
 
+## Published research quality
+
+A RESEARCH record is a substantive analytical artefact, not a container for a report summary.
+Before setting `publication_status: "published"`, the record must:
+
+* answer a bounded research question;
+* describe its scope, source-selection method and exclusions;
+* present findings with claim-level links;
+* preserve counter-evidence and alternative explanations;
+* state evidence, access, measurement and generalisation limitations;
+* distinguish governance implications from adopted CAM doctrine;
+* identify open questions;
+* provide a public bibliography and structured `source_corpus`; and
+* qualify the basis of `corroborated` where all evidence comes from one institutional publisher.
+
+The validator enforces a minimum floor for structure, length and source traceability. Those
+checks do not prove research quality. Human editorial review and substantive comparison of
+claims against the cited sources remain necessary.
+
+Short single-source material should normally be added to the `source_records` of the record it
+evidences. Use an OBS only where the material establishes a distinct unresolved governance
+proposition. Do not create RESEARCH merely to raise the apparent status of a source note.
+
 ## Related audit material
 
 See also:

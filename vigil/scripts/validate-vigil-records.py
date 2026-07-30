@@ -9,6 +9,7 @@ import re
 import sys
 from pathlib import Path
 from typing import Any
+from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parents[2]
 VIGIL_DIR = ROOT / "vigil"
@@ -28,6 +29,18 @@ DEFAULT_RECORD_TYPE_DIRS = [
 ]
 RECORD_TYPE_DIRS = list(DEFAULT_RECORD_TYPE_DIRS)
 RESEARCH_ROOT = RECORDS_ROOT / "research"
+RESEARCH_REQUIRED_SECTIONS = (
+    "Research question",
+    "Scope and methodology",
+    "Findings",
+    "Counter-evidence and alternative explanations",
+    "Limitations",
+    "Governance implications",
+    "Open questions",
+    "Bibliography and Primary Sources",
+)
+RESEARCH_MINIMUM_PUBLISHED_WORDS = 1500
+RESEARCH_MINIMUM_SOURCE_CORPUS_ENTRIES = 4
 
 RECORD_TYPES = {"observation", "failure_mode", "proposal", "patch", "patch_note"}
 CAM_INTERNAL_REFERENCE_PREFIXES = ("CAM-BS", "CAM-EQ", "VIGIL-")
@@ -254,7 +267,7 @@ def load_json(path: Path) -> Any:
         return json.load(handle)
 
 
-def load_research_metadata(path: Path) -> dict[str, Any]:
+def load_research_document(path: Path) -> tuple[dict[str, Any], str]:
     text = path.read_text(encoding="utf-8")
     if not text.startswith("---\n"):
         raise ValueError("research record must begin with JSON front matter")
@@ -264,6 +277,11 @@ def load_research_metadata(path: Path) -> dict[str, Any]:
     metadata = json.loads(text[4:end])
     if not isinstance(metadata, dict):
         raise TypeError("research front matter must contain one JSON object")
+    return metadata, text[end + 5 :]
+
+
+def load_research_metadata(path: Path) -> dict[str, Any]:
+    metadata, _ = load_research_document(path)
     return metadata
 
 
@@ -1182,6 +1200,7 @@ def validate_research_record(
     record: dict[str, Any],
     known_ids: set[str],
     errors: list[str],
+    body: str = "",
 ) -> None:
     required = {
         "id",
@@ -1196,6 +1215,10 @@ def validate_research_record(
         "evidence_confidence",
         "domains",
         "linked_records",
+        "publication_status",
+        "research_scope",
+        "limitations",
+        "source_corpus",
     }
     add_missing(errors, path, record, required)
     record_id = record.get("id")
@@ -1208,6 +1231,11 @@ def validate_research_record(
     for field in ("title", "summary", "status", "research_method", "governance_purpose"):
         if not isinstance(record.get(field), str) or not record[field].strip():
             errors.append(f"{path}: {field} must be a non-empty string")
+    for field in ("research_scope", "limitations"):
+        if not isinstance(record.get(field), str) or not record[field].strip():
+            errors.append(f"{path}: {field} must be a non-empty string")
+    if record.get("publication_status") not in {"draft", "published", "superseded"}:
+        errors.append(f"{path}: publication_status must be draft, published, or superseded")
     domains = record.get("domains")
     if not isinstance(domains, list) or not domains or any(
         not isinstance(domain, str) or not domain.strip() for domain in domains
@@ -1228,6 +1256,66 @@ def validate_research_record(
             elif linked_id not in known_ids:
                 errors.append(f"{path}: linked research target {linked_id!r} cannot be resolved")
 
+    source_corpus = record.get("source_corpus")
+    if not isinstance(source_corpus, list):
+        errors.append(f"{path}: source_corpus must be an array")
+        source_corpus = []
+    source_domains: set[str] = set()
+    source_urls: set[str] = set()
+    for index, source in enumerate(source_corpus):
+        if not isinstance(source, dict):
+            errors.append(f"{path}: source_corpus[{index}] must be an object")
+            continue
+        for field in ("title", "publisher", "url", "source_kind", "relevance"):
+            if not is_non_empty_string(source.get(field)):
+                errors.append(f"{path}: source_corpus[{index}].{field} must be a non-empty string")
+        url = source.get("url")
+        if is_non_empty_string(url):
+            parsed = urlparse(url)
+            if parsed.scheme not in {"http", "https"} or not parsed.netloc:
+                errors.append(f"{path}: source_corpus[{index}].url must be an external HTTP(S) URL")
+            else:
+                source_urls.add(url)
+                source_domains.add(parsed.netloc.lower().removeprefix("www."))
+
+    if record.get("publication_status") == "published":
+        word_count = len(re.findall(r"\b[\w’'-]+\b", body))
+        if word_count < RESEARCH_MINIMUM_PUBLISHED_WORDS:
+            errors.append(
+                f"{path}: published research body has {word_count} words; "
+                f"minimum is {RESEARCH_MINIMUM_PUBLISHED_WORDS}"
+            )
+        for section in RESEARCH_REQUIRED_SECTIONS:
+            if not re.search(rf"^##\s+{re.escape(section)}\s*$", body, flags=re.MULTILINE | re.IGNORECASE):
+                errors.append(f"{path}: published research missing required section '## {section}'")
+        if len(source_corpus) < RESEARCH_MINIMUM_SOURCE_CORPUS_ENTRIES:
+            errors.append(
+                f"{path}: published research requires at least "
+                f"{RESEARCH_MINIMUM_SOURCE_CORPUS_ENTRIES} source_corpus entries"
+            )
+        bibliography_match = re.search(
+            r"^##\s+Bibliography and Primary Sources\s*$([\s\S]*)",
+            body,
+            flags=re.MULTILINE | re.IGNORECASE,
+        )
+        bibliography = bibliography_match.group(1) if bibliography_match else ""
+        bibliography_urls = set(re.findall(r"https?://[^\s)>]+", bibliography))
+        if len(bibliography_urls) < RESEARCH_MINIMUM_SOURCE_CORPUS_ENTRIES:
+            errors.append(
+                f"{path}: published research bibliography requires at least "
+                f"{RESEARCH_MINIMUM_SOURCE_CORPUS_ENTRIES} distinct external URLs"
+            )
+        body_before_bibliography = body[: bibliography_match.start()] if bibliography_match else body
+        claim_level_links = set(re.findall(r"\[[^\]]+\]\((https?://[^)]+)\)", body_before_bibliography))
+        if len(claim_level_links) < 3:
+            errors.append(f"{path}: published research requires at least 3 claim-level source links")
+        if record.get("evidence_confidence") in {"corroborated", "externally corroborated"}:
+            if len(source_domains) < 2 and not is_non_empty_string(record.get("corroboration_scope")):
+                errors.append(
+                    f"{path}: corroborated research from one publisher domain requires "
+                    "a non-empty corroboration_scope qualification"
+                )
+
 
 def validate(root: Path | None = None, schema_path: Path | None = None) -> int:
     errors: list[str] = []
@@ -1245,6 +1333,7 @@ def validate(root: Path | None = None, schema_path: Path | None = None) -> int:
     files = record_files(root)
     records_by_path: dict[Path, dict[str, Any]] = {}
     research_by_path: dict[Path, dict[str, Any]] = {}
+    research_body_by_path: dict[Path, str] = {}
     ids: set[str] = set()
     for path in files:
         try:
@@ -1269,11 +1358,12 @@ def validate(root: Path | None = None, schema_path: Path | None = None) -> int:
     if root is None and RECORD_TYPE_DIRS == DEFAULT_RECORD_TYPE_DIRS and RESEARCH_ROOT.exists():
         for path in sorted(RESEARCH_ROOT.rglob("*.md"), key=lambda item: item.as_posix()):
             try:
-                record = load_research_metadata(path)
+                record, body = load_research_document(path)
             except Exception as exc:  # noqa: BLE001
                 errors.append(f"{path}: unable to read research metadata: {exc}")
                 continue
             research_by_path[path] = record
+            research_body_by_path[path] = body
             record_id = record.get("id")
             if isinstance(record_id, str):
                 if record_id in ids:
@@ -1293,7 +1383,7 @@ def validate(root: Path | None = None, schema_path: Path | None = None) -> int:
         )
 
     for path, record in research_by_path.items():
-        validate_research_record(path, record, ids, errors)
+        validate_research_record(path, record, ids, errors, research_body_by_path.get(path, ""))
 
     records_by_id = {
         record["id"]: record
