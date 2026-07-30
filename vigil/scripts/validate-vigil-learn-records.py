@@ -109,8 +109,12 @@ def source_field_is_populated(record: dict[str, Any], field_path: str) -> bool:
 
 
 def validate_taxonomy_links(
-    errors: list[str], path: Path, record: dict[str, Any], known_ids: set[str]
+    errors: list[str],
+    path: Path,
+    record: dict[str, Any],
+    known_records: dict[str, dict[str, Any]],
 ) -> None:
+    known_ids = set(known_records)
     links = record.get("failure_taxonomy_links")
     if not isinstance(links, list) or not links:
         errors.append(f"{path}: failure_taxonomy_links must be a non-empty array")
@@ -152,6 +156,67 @@ def validate_taxonomy_links(
         for field in ("canonical_failure_name", "taxonomy_reference"):
             if not is_non_empty_string(link.get(field)):
                 errors.append(f"{path}: {label}.{field} must be a non-empty string")
+        canonical_name = link.get("canonical_failure_name")
+        taxonomy_reference = link.get("taxonomy_reference")
+        if record.get("publication_status") == "published":
+            if isinstance(taxonomy_reference, str) and "§" not in taxonomy_reference:
+                errors.append(
+                    f"{path}: {label}.taxonomy_reference must identify the specific adopted CAM "
+                    "failure clause, not only a generic family or appendix"
+                )
+            generic_names = {
+                "Execution Failures",
+                "Arbitration Failures",
+                "Epistemic Failures",
+                "Relational Failures",
+                "Security & Integrity Failures",
+                "State & Context Failures",
+                "UX & Representation Failures",
+                "Governance Failures",
+                "Infrastructure & Continuity Failures",
+                "Classification Failures",
+            }
+            if canonical_name in generic_names:
+                errors.append(
+                    f"{path}: {label}.canonical_failure_name must identify the specific CAM "
+                    "failure mode, not a generic failure family"
+                )
+
+        linked_failure = known_records.get(failure_id) if isinstance(failure_id, str) else None
+        fm_classification = (
+            linked_failure.get("failure_classification")
+            if isinstance(linked_failure, dict)
+            and isinstance(linked_failure.get("failure_classification"), dict)
+            else {}
+        )
+        fm_taxonomy_reference = fm_classification.get("taxonomy_reference")
+        if (
+            isinstance(taxonomy_reference, str)
+            and isinstance(fm_taxonomy_reference, str)
+            and taxonomy_reference != fm_taxonomy_reference
+        ):
+            errors.append(
+                f"{path}: {label}.taxonomy_reference must exactly match the authoritative "
+                f"{failure_id} failure_classification.taxonomy_reference"
+            )
+        if (
+            isinstance(canonical_name, str)
+            and isinstance(fm_taxonomy_reference, str)
+            and canonical_name.casefold() not in fm_taxonomy_reference.casefold()
+        ):
+            errors.append(
+                f"{path}: {label}.canonical_failure_name is not identified by the authoritative "
+                f"{failure_id} taxonomy reference"
+            )
+        if (
+            isinstance(family_code, str)
+            and isinstance(fm_taxonomy_reference, str)
+            and family_code not in fm_taxonomy_reference
+        ):
+            errors.append(
+                f"{path}: {label}.primary_failure_family_code is not identified by the "
+                f"authoritative {failure_id} taxonomy reference"
+            )
         if link.get("relationship") != "lesson-derived-from":
             errors.append(f"{path}: {label}.relationship must be 'lesson-derived-from'")
 
@@ -388,7 +453,19 @@ def validate_record(
         if not is_non_empty_string(basis.get("basis_statement")):
             errors.append(f"{path}: learning_basis.basis_statement must be a non-empty string")
 
-    validate_taxonomy_links(errors, path, record, known_ids)
+    case_context = record.get("case_context")
+    if not isinstance(case_context, dict):
+        errors.append(f"{path}: case_context must be an object")
+    else:
+        first_occurrence_date = case_context.get("first_occurrence_date")
+        if not isinstance(first_occurrence_date, str) or not re.fullmatch(
+            r"\d{4}-\d{2}-\d{2}", first_occurrence_date
+        ):
+            errors.append(f"{path}: case_context.first_occurrence_date must use YYYY-MM-DD")
+        if not is_non_empty_string(case_context.get("first_occurrence_basis")):
+            errors.append(f"{path}: case_context.first_occurrence_basis must be a non-empty string")
+
+    validate_taxonomy_links(errors, path, record, known_records)
     validate_report_sections(errors, path, record, known_records)
     validate_linked_records(errors, path, record, known_ids)
 

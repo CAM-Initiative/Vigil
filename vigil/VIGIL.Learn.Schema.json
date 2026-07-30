@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://www.cam-initiative.org/schemas/vigil/VIGIL.Learn.Schema.json",
-  "version": "0.3-section-completion",
+  "version": "0.4-specific-taxonomy-and-occurrence-date",
   "title": "VIGIL LEARN Record Extension",
   "purpose": "Defines the VIGIL learning-closure record used to publish a completed evidence-to-repair chain as durable, searchable governance knowledge.",
   "authority_boundary": [
@@ -31,6 +31,7 @@
     "chain_completion",
     "knowledge_status",
     "publication_status",
+    "case_context",
     "linked_records",
     "interpretive_provenance"
   ],
@@ -253,6 +254,47 @@
         "published",
         "withdrawn"
       ]
+    },
+    "case_context": {
+      "type": "object",
+      "required": [
+        "year",
+        "first_occurrence_date",
+        "first_occurrence_basis",
+        "primary_vendors",
+        "incident_status",
+        "cam_repair_status",
+        "monitoring_required"
+      ],
+      "properties": {
+        "year": {
+          "type": "integer",
+          "minimum": 2000
+        },
+        "first_occurrence_date": {
+          "type": "string",
+          "format": "date",
+          "description": "Earliest occurrence date supported by the linked evidence. Where the underlying activity began earlier but its date is undisclosed, use the earliest publicly documented date and state that limitation in first_occurrence_basis."
+        },
+        "first_occurrence_basis": {
+          "type": "string",
+          "minLength": 1
+        },
+        "primary_vendors": {
+          "$ref": "#/$defs/non_empty_string_array"
+        },
+        "incident_status": {
+          "type": "string",
+          "minLength": 1
+        },
+        "cam_repair_status": {
+          "type": "string",
+          "minLength": 1
+        },
+        "monitoring_required": {
+          "type": "boolean"
+        }
+      }
     },
     "linked_records": {
       "type": "object",

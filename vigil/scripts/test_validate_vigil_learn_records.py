@@ -81,6 +81,31 @@ class LearnCompletionContractTests(unittest.TestCase):
         errors = self.validate(record)
         self.assertTrue(any("section_05_repair must cite a PATCH" in error for error in errors))
 
+    def test_published_learn_requires_first_occurrence_date(self):
+        record = copy.deepcopy(EXEMPLAR)
+        del record["case_context"]["first_occurrence_date"]
+        errors = self.validate(record)
+        self.assertTrue(any("first_occurrence_date" in error for error in errors))
+
+    def test_published_learn_rejects_generic_failure_family_as_mode(self):
+        record = copy.deepcopy(EXEMPLAR)
+        record["failure_taxonomy_links"][0]["canonical_failure_name"] = "Security & Integrity Failures"
+        record["failure_taxonomy_links"][0]["taxonomy_reference"] = (
+            "CAM-EQ2026-OPERATIONS-003-SUP-01 Appendix B — Security & Integrity Failures"
+        )
+        errors = self.validate(record)
+        self.assertTrue(any("specific CAM failure mode" in error for error in errors))
+        self.assertTrue(any("specific adopted CAM failure clause" in error for error in errors))
+
+    def test_learn_taxonomy_must_match_authoritative_failure_record(self):
+        record = copy.deepcopy(EXEMPLAR)
+        record["failure_taxonomy_links"][0]["taxonomy_reference"] = (
+            "CAM-EQ2026-OPERATIONS-003-SUP-01 §3.8.7 — Constraint Drift Failure; "
+            "primary classification OPS.FF.GOVERNANCE"
+        )
+        errors = self.validate(record)
+        self.assertTrue(any("must exactly match the authoritative" in error for error in errors))
+
 
 if __name__ == "__main__":
     unittest.main()
