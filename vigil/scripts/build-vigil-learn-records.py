@@ -84,6 +84,8 @@ def index_entry(path: Path, record: dict[str, Any]) -> dict[str, Any]:
         "publication_status": record.get("publication_status", ""),
         "knowledge_tags": record.get("knowledge_tags", []),
         "year": case_context.get("year", ""),
+        "first_occurrence_date": case_context.get("first_occurrence_date", ""),
+        "first_occurrence_basis": case_context.get("first_occurrence_basis", ""),
         "primary_vendors": case_context.get("primary_vendors", []),
         "incident_status": case_context.get("incident_status", ""),
         "cam_repair_status": case_context.get("cam_repair_status", ""),
