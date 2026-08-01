@@ -105,6 +105,18 @@ class LearnCompletionContractTests(unittest.TestCase):
                 errors = self.validate(record)
                 self.assertTrue(any(field in error for error in errors))
 
+    def test_published_learn_rejects_malformed_integration_fields(self):
+        for field in (
+            "governance_misconception",
+            "integrated_learning",
+            "risk_if_not_integrated",
+        ):
+            with self.subTest(field=field):
+                record = copy.deepcopy(EXEMPLAR)
+                record[field] = ["Valid statement", 7]
+                errors = self.validate(record)
+                self.assertTrue(any(field in error for error in errors))
+
     def test_published_learn_rejects_legacy_field(self):
         record = copy.deepcopy(EXEMPLAR)
         record["must_not_be_forgotten"] = ["Legacy wording"]
