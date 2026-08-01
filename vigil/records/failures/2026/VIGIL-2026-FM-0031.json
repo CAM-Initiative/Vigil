@@ -1,15 +1,15 @@
 {
   "id": "VIGIL-2026-FM-0031",
   "record_type": "failure_mode",
-  "record_state": "active",
+  "record_state": "monitoring",
   "date_recorded": "2026-07-14",
   "record_identity": {
     "record_id": "VIGIL-2026-FM-0031",
     "record_type": "failure_mode",
     "title": "Literal social advice without pragmatic risk calibration",
     "created": "2026-07-14",
-    "updated": "2026-07-24",
-    "version": "1.1"
+    "updated": "2026-08-01",
+    "version": "1.2"
   },
   "summary": "A conversational system gives facially helpful interpersonal advice without checking whether literal, repeated, or context-insensitive compliance could become intrusive, coercive, uncomfortable, unsafe, or socially harmful.",
   "why_it_matters_to_CAM": "A user may be joking, testing, communicating literally, socially uncertain, neurodivergent, or unfamiliar with an unstated boundary. The system should preserve plausible interpretations and add a concise pragmatic downside check rather than assuming the boundary is already understood.",
@@ -101,7 +101,9 @@
     "related_proposals": [
       "VIGIL-2026-PROP-0013"
     ],
-    "related_patch_notes": [],
+    "related_patch_notes": [
+      "VIGIL-2026-PATCH-0032"
+    ],
     "external_references": [],
     "research": [],
     "standards": [],
@@ -117,8 +119,8 @@
   "failure_mode_definition": "A failure mode in which interpersonal guidance is presented with actionable seriousness while omitting material consent, repetition, proportionality, personal-boundary, reputational, or legal downside. The failure includes prematurely collapsing ambiguous communication into a single reading before giving literal advice.",
   "failure_threshold": "The threshold is met where following the advice literally or repeatedly could reasonably make another person uncomfortable, appear coercive or obsessive, breach a boundary, or expose the user to foreseeable social or legal consequences, and the system does not provide a proportionate qualifier or clarification.",
   "failure_classification": {
-    "failure_family": "classification",
-    "failure_subtype": "literal-social-advice-without-pragmatic-risk-calibration",
+    "failure_family": "relational",
+    "failure_subtype": "pragmatic-interpersonal-advice-calibration-failure",
     "harm_vectors": [
       "literal advice without social downside check",
       "consent and boundary omission",
@@ -140,13 +142,14 @@
     ],
     "failure_scope": "vendor-specific observed signal / structurally relevant to voice-capable AI systems",
     "recurrence_pattern": "observed or reported in July 2026 voice interactions; broader recurrence requires monitoring",
-    "canonical_failure_group": "classification",
-    "taxonomy_reference": "CAM-EQ2026-OPERATIONS-003-SUP-01 Appendix B",
+    "canonical_failure_group": "relational",
+    "taxonomy_reference": "CAM-EQ2026-OPERATIONS-003-SUP-01 Appendix B §3.4.6",
     "related_failure_groups": [
-      "relational",
+      "classification",
       "epistemic",
       "ux-representation",
-      "governance"
+      "governance",
+      "state-context"
     ],
     "persistence": "active in external voice runtimes unless separately shown to improve or resolve",
     "reproducibility": "requires controlled replay and runtime-specific testing",
@@ -155,31 +158,27 @@
   "triage": {
     "triage_priority": "P1",
     "triage_owner": "VIGIL maintainers",
-    "triage_status": "active-research / proposal-linked",
-    "mitigation_status": "Ambiguity preservation and relational safeguards provide partial coverage, but no explicit pragmatic downside check for interpersonal advice was confirmed.",
-    "escalation_required": "yes",
-    "recommended_next_step": "Validate the source video, test literal and playful variants, and evaluate PROP-0013 for a narrowly scoped social-advice calibration rule."
+    "triage_status": "CAM repair verified on named Caelestis branch; ecosystem monitoring active",
+    "mitigation_status": "VIGIL-2026-PATCH-0032 records the verified branch implementation across RELATION-001, AEON-006-SCH-02, AEON-006-SCH-04, and the failure taxonomy at Caelestis commit 78a1db9f33edb2ed510318e23800bbc0182859d7.",
+    "escalation_required": "external runtime conformance and primary audiovisual source monitoring",
+    "recommended_next_step": "Maintain PATCH-0032 verification, assess canonical adoption after the Caelestis branch is merged, and continue external runtime and primary-source monitoring without reopening the repaired CAM corpus gap."
   },
   "cam_internal": {
     "affected_instruments": [
-      "CAM-BS2025-AEON-003-SCH-04",
-      "CAM-BS2025-AEON-003-SCH-02",
+      "CAM-EQ2026-RELATION-001-PLATINUM",
       "CAM-BS2025-AEON-006-SCH-02",
-      "CAM-EQ2026-RELATION-001-PLATINUM"
+      "CAM-BS2025-AEON-006-SCH-04",
+      "CAM-EQ2026-OPERATIONS-003-SUP-01"
     ],
     "affected_annexes": [
-      "Annex B",
-      "Annex E",
-      "Annex L"
+      "Annex E"
     ],
     "affected_domains": [
       "RELATION",
-      "ETHICS",
-      "MENTIS",
       "OPERATIONS",
       "AEON"
     ],
-    "governance_layer": "voice interaction / relational governance / epistemic integrity / runtime conformance",
+    "governance_layer": "relational signal interpretation / directional modulation / interpersonal advice calibration / runtime conformance",
     "proposal_needed": "yes — VIGIL-2026-PROP-0013",
     "linked_proposal_ids": [
       "VIGIL-2026-PROP-0013"
@@ -188,57 +187,75 @@
       "The failure subject is an ecosystem runtime behaviour; VIGIL is the evidence and repair observatory, not the failed system.",
       "Do not infer subjective emotion, hidden runtime cause, or proprietary architecture beyond the supplied evidence."
     ],
-    "validator_or_automation_impact": "none"
+    "validator_or_automation_impact": "VIGIL generated indexes and section-complete chain reports require deterministic rebuild."
   },
   "repair_status": {
-    "status": "unrepaired",
-    "repaired_by": [],
-    "date_repaired": "",
-    "verification_status": "unverified",
-    "monitoring_status": "source validation and CAM gap review",
-    "verification_note": "The public source video requires direct validation; current CAM ambiguity controls are relevant but not sufficient to establish a complete repair.",
-    "repair_basis": "not-yet-established",
+    "status": "partially-repaired",
+    "repaired_by": [
+      "VIGIL-2026-PATCH-0032"
+    ],
+    "date_repaired": "2026-08-01",
+    "verification_status": "corpus-verified",
+    "monitoring_status": "active-monitoring",
+    "verification_note": "PATCH-0032 verifies the implemented social-advice calibration clauses against Caelestis branch governance/social-advice-calibration at commit 78a1db9f33edb2ed510318e23800bbc0182859d7. Formal repaired status requires canonical main adoption; external runtime conformance remains a separate monitoring matter.",
+    "repair_basis": "patch-implemented",
     "remaining_gaps": [
-      "No explicit pragmatic downside check for interpersonal advice was identified.",
-      "No explicit requirement was identified to preserve usefulness across joking, testing, literal, and socially uncertain interpretations.",
-      "No concise boundary-carrying response pattern was identified for low-severity social-risk advice."
+      "The verified Caelestis implementation remains branch-only until merged to main.",
+      "Primary audiovisual source validation remains outstanding and is not required to establish the independently verified corpus repair.",
+      "External provider adoption and runtime conformance remain unverified."
     ]
   },
   "ecosystem_status": {
     "status": "active",
-    "basis": "Observed or publicly reported July 2026 voice-runtime behaviour remains externally unresolved.",
-    "last_assessed": "2026-07-14",
+    "basis": "The CAM-side corpus gap is repaired on a verified Caelestis working branch. The reported external voice-runtime behaviour, provider adoption, primary audiovisual source validation, and runtime conformance remain unresolved.",
+    "last_assessed": "2026-08-01",
     "monitoring_required": true
   },
   "corpus_coverage": {
     "classification": "partial-coverage",
     "corpus_repository": "CAM-Initiative/Caelestis",
-    "corpus_ref": "main",
-    "corpus_commit": "40113eea5428478ba0734b3980600bfcece425a0",
-    "assessed_date": "2026-07-14",
-    "coverage_summary": "Ambiguity preservation and relational-signal interpretation provide adjacent controls, but the corpus does not expressly require a pragmatic interpersonal downside check before actionable social advice.",
+    "corpus_ref": "governance/social-advice-calibration",
+    "corpus_commit": "78a1db9f33edb2ed510318e23800bbc0182859d7",
+    "assessed_date": "2026-08-01",
+    "coverage_summary": "PATCH-0032 verifies the approved layered repair: substantive relational doctrine in RELATION-001, third-party boundary signal interpretation in AEON-006-SCH-02, directional consequence calibration in AEON-006-SCH-04, and structural classification in OPERATIONS-003-SUP-01. The CAM-side gap is repaired on the named working branch; canonical main adoption remains pending.",
     "covered_by": [
       {
-        "instrument_id": "CAM-BS2025-AEON-003-SCH-04",
-        "path": "Governance/Constitution/CAM-BS2025-AEON-003-SCH-04.md",
+        "instrument_id": "CAM-EQ2026-RELATION-001-PLATINUM",
+        "path": "Governance/Charters/CAM-EQ2026-RELATION-001-PLATINUM.md",
         "sections": [
-          "clarification as an arbitration outcome",
-          "ambiguity non-collapse"
+          "§3.2 Pragmatic Interpersonal Advice and Boundary-Carrying Assistance"
         ],
-        "coverage_type": "adjacent-doctrine"
+        "coverage_type": "implemented-branch-doctrine"
       },
       {
         "instrument_id": "CAM-BS2025-AEON-006-SCH-02",
         "path": "Governance/Constitution/CAM-BS2025-AEON-006-SCH-02.md",
         "sections": [
-          "relational signal interpretation and repair posture"
+          "§2.2 item 11 Interpersonal Advice and Third-Party Boundary Signals"
         ],
-        "coverage_type": "adjacent-doctrine"
+        "coverage_type": "implemented-branch-doctrine"
+      },
+      {
+        "instrument_id": "CAM-BS2025-AEON-006-SCH-04",
+        "path": "Governance/Constitution/CAM-BS2025-AEON-006-SCH-04.md",
+        "sections": [
+          "§3.1(f) Interpersonal Consequence Threshold"
+        ],
+        "coverage_type": "implemented-branch-doctrine"
+      },
+      {
+        "instrument_id": "CAM-EQ2026-OPERATIONS-003-SUP-01",
+        "path": "Governance/Charters/CAM-EQ2026-OPERATIONS-003-SUP-01.md",
+        "sections": [
+          "§3.4.6 Pragmatic Interpersonal Advice Calibration Failure"
+        ],
+        "coverage_type": "implemented-branch-taxonomy"
       }
     ],
     "remaining_gaps": [
-      "Pragmatic downside check for literal or repeated interpersonal advice.",
-      "Boundary-preserving handling of deadpan, joking, testing, literal, and atypical communication."
+      "Canonical adoption on Caelestis main remains pending.",
+      "External provider adoption and runtime conformance remain unverified.",
+      "Primary audiovisual source validation remains outstanding."
     ]
   },
   "interpretive_provenance": {
@@ -265,15 +282,38 @@
           "Primary-source access varies by source and is stated within each source record."
         ],
         "review_outcome": "metadata and governance-structure review completed; substantive claims remain bounded by source-specific evidence confidence"
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-08-01-GPT5-FM0031-PATCH0032",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work / Codex",
+        "reviewer_model": "GPT-5 — exact deployment subversion unavailable",
+        "review_date": "2026-08-01",
+        "review_scope": "Direct review of the FM-0031 and PROP-0013 chain, user-supplied implementation handover, current Caelestis source-authority placement, four-instrument branch implementation, literal PATCH construction, reciprocal-link reconciliation, and repository validation.",
+        "capability_profile": {
+          "direct_text_analysis": true,
+          "direct_repository_analysis": true,
+          "direct_static_image_analysis": true,
+          "direct_audio_analysis_in_this_pass": false,
+          "direct_uploaded_video_analysis_in_this_pass": false,
+          "direct_externally_hosted_video_analysis": false,
+          "web_link_and_metadata_review": false
+        },
+        "known_limitations": [
+          "The Caelestis implementation is verified on governance/social-advice-calibration and is not yet canonical on main.",
+          "The externally hosted X video was not directly played or independently transcribed in this review.",
+          "External provider adoption and runtime conformance were not established."
+        ],
+        "review_outcome": "FM-0031 is partially repaired by verified branch-only PATCH-0032; formal CAM-side closure awaits canonical adoption while primary audiovisual validation and external runtime conformance remain separately visible."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-07-14-GPT-5.6-THINKING",
+      "review_id": "VIGIL-REVIEW-2026-08-01-GPT5-FM0031-PATCH0032",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT",
-      "reviewer_model": "GPT-5.6 Thinking",
-      "review_date": "2026-07-14",
-      "review_scope": "registry-wide interpretive-provenance, source-modality, CAM-coverage, and record-boundary reconciliation",
+      "reviewer_platform": "OpenAI ChatGPT Work / Codex",
+      "reviewer_model": "GPT-5 — exact deployment subversion unavailable",
+      "review_date": "2026-08-01",
+      "review_scope": "Direct review of the FM-0031 and PROP-0013 chain, user-supplied implementation handover, current Caelestis source-authority placement, four-instrument branch implementation, literal PATCH construction, reciprocal-link reconciliation, and repository validation.",
       "capability_profile": {
         "direct_text_analysis": true,
         "direct_repository_analysis": true,
@@ -281,14 +321,14 @@
         "direct_audio_analysis_in_this_pass": false,
         "direct_uploaded_video_analysis_in_this_pass": false,
         "direct_externally_hosted_video_analysis": false,
-        "web_link_and_metadata_review": true
+        "web_link_and_metadata_review": false
       },
       "known_limitations": [
-        "Could not directly play or inspect externally hosted TikTok or X video artefacts in the governed review environment.",
-        "Historical records were not assigned speculative earlier model identities; this entry records the formal current reconciliation review only.",
-        "Primary-source access varies by source and is stated within each source record."
+        "The Caelestis implementation is verified on governance/social-advice-calibration and is not yet canonical on main.",
+        "The externally hosted X video was not directly played or independently transcribed in this review.",
+        "External provider adoption and runtime conformance were not established."
       ],
-      "review_outcome": "metadata and governance-structure review completed; substantive claims remain bounded by source-specific evidence confidence"
+      "review_outcome": "FM-0031 is partially repaired by verified branch-only PATCH-0032; formal CAM-side closure awaits canonical adoption while primary audiovisual validation and external runtime conformance remain separately visible."
     },
     "operating_model": "AI-led analytical observatory with high-level human governance editorship",
     "human_governance_editor": {
