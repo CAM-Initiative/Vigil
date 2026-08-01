@@ -81,6 +81,44 @@ class LearnCompletionContractTests(unittest.TestCase):
         errors = self.validate(record)
         self.assertTrue(any("section_05_repair must cite a PATCH" in error for error in errors))
 
+    def test_published_learn_requires_reasoning_and_integration_fields(self):
+        for field in (
+            "governance_misconception",
+            "integrated_learning",
+            "risk_if_not_integrated",
+        ):
+            with self.subTest(field=field):
+                record = copy.deepcopy(EXEMPLAR)
+                del record[field]
+                errors = self.validate(record)
+                self.assertTrue(any(field in error for error in errors))
+
+    def test_published_learn_rejects_empty_integration_fields(self):
+        for field in (
+            "governance_misconception",
+            "integrated_learning",
+            "risk_if_not_integrated",
+        ):
+            with self.subTest(field=field):
+                record = copy.deepcopy(EXEMPLAR)
+                record[field] = []
+                errors = self.validate(record)
+                self.assertTrue(any(field in error for error in errors))
+
+    def test_published_learn_rejects_legacy_field(self):
+        record = copy.deepcopy(EXEMPLAR)
+        record["must_not_be_forgotten"] = ["Legacy wording"]
+        errors = self.validate(record)
+        self.assertTrue(any("legacy must_not_be_forgotten" in error for error in errors))
+
+    def test_section_six_requires_all_closure_fields(self):
+        record = copy.deepcopy(EXEMPLAR)
+        record["report_section_sources"]["section_06_learn"]["source_fields"].remove(
+            "risk_if_not_integrated"
+        )
+        errors = self.validate(record)
+        self.assertTrue(any("all required LEARN closure fields" in error for error in errors))
+
     def test_published_learn_requires_first_occurrence_date(self):
         record = copy.deepcopy(EXEMPLAR)
         del record["case_context"]["first_occurrence_date"]
