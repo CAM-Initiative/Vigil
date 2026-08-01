@@ -22,6 +22,18 @@ PATCH_ID = re.compile(r"^VIGIL-\d{4}-PATCH-\d{4}$")
 ANY_RECORD_ID = re.compile(r"^VIGIL-\d{4}-(?:OBS|FM|PROP|PATCH|RESEARCH|LEARN)-\d{4}$")
 FAMILY_CODE = re.compile(r"^OPS\.FF\.[A-Z0-9_]+$")
 
+REQUIRED_LEARN_SOURCE_FIELDS = {
+    "report_title",
+    "what_happened",
+    "governance_misconception",
+    "abstracted_learning",
+    "integrated_learning",
+    "risk_if_not_integrated",
+    "future_application",
+    "generalisation_boundary",
+    "failure_taxonomy_links",
+}
+
 REQUIRED_SECTIONS = {
     "section_01_observation",
     "section_02_record",
@@ -323,10 +335,18 @@ def validate_report_sections(
             "learning_basis.patch_records"
         )
 
-    section_06_ids = sections.get("section_06_learn", {}).get("record_ids", [])
+    section_06 = sections.get("section_06_learn", {})
+    section_06_ids = section_06.get("record_ids", [])
     if learn_id not in section_06_ids:
         errors.append(
             f"{path}: report_section_sources.section_06_learn must cite the current LEARN record"
+        )
+    section_06_fields = set(section_06.get("source_fields", []))
+    missing_learn_fields = sorted(REQUIRED_LEARN_SOURCE_FIELDS - section_06_fields)
+    if missing_learn_fields:
+        errors.append(
+            f"{path}: report_section_sources.section_06_learn.source_fields must include "
+            f"all required LEARN closure fields: {', '.join(missing_learn_fields)}"
         )
 
     completion = record.get("chain_completion")
@@ -414,11 +434,16 @@ def validate_record(
         if not is_non_empty_string(record.get(field)):
             errors.append(f"{path}: {field} must be a non-empty string")
     what_happened = record.get("what_happened")
-    if what_happened is not None:
-        statements = validate_string_array(errors, path, "what_happened", what_happened)
-        if len(statements) != 3:
-            errors.append(f"{path}: what_happened must contain exactly three factual statements")
-    validate_string_array(errors, path, "must_not_be_forgotten", record.get("must_not_be_forgotten"))
+    statements = validate_string_array(errors, path, "what_happened", what_happened)
+    if len(statements) != 3:
+        errors.append(f"{path}: what_happened must contain exactly three factual statements")
+    validate_string_array(
+        errors, path, "governance_misconception", record.get("governance_misconception")
+    )
+    validate_string_array(errors, path, "integrated_learning", record.get("integrated_learning"))
+    validate_string_array(
+        errors, path, "risk_if_not_integrated", record.get("risk_if_not_integrated")
+    )
     validate_string_array(errors, path, "future_application", record.get("future_application"))
 
     forbidden = sorted(field for field in FORBIDDEN_AUTHORITY_FIELDS if field in record)
@@ -474,8 +499,11 @@ def validate_record(
     if record.get("publication_status") not in {"draft", "published", "withdrawn"}:
         errors.append(f"{path}: publication_status is not canonical")
     if record.get("publication_status") == "published":
-        if what_happened is None:
-            errors.append(f"{path}: published LEARN records require what_happened")
+        if "must_not_be_forgotten" in record:
+            errors.append(
+                f"{path}: published LEARN records must use integrated_learning, not "
+                "the legacy must_not_be_forgotten field"
+            )
         if record.get("chain_completion", {}).get("overall_status") != "complete":
             errors.append(f"{path}: published LEARN records require a complete chain")
 
