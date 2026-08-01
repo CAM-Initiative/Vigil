@@ -87,7 +87,7 @@ Completion is a report-section test, not a record-count test:
 * PATCH remains authoritative for Section 05.
 * LEARN remains authoritative only for Section 06.
 
-LEARN records must preserve the factual kernel, abstracted lesson, non-forget principles, future application, and generalisation boundary. They must not duplicate `source_records` or summarise internal PATCH content for the public Knowledge Base.
+LEARN records must preserve the factual kernel, governance reasoning corrected by the completed chain, abstracted lesson, conclusions to integrate, foreseeable risk if the learning is omitted or diluted, future application, and generalisation boundary. They must not duplicate `source_records`, summarise internal PATCH content for the public Knowledge Base, or imply that an integrated learning conclusion has already been implemented by an external system.
 
 ## Interpretive Provenance Rules
 
