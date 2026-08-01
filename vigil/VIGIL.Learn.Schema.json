@@ -1,9 +1,9 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://www.cam-initiative.org/schemas/vigil/VIGIL.Learn.Schema.json",
-  "version": "0.4-specific-taxonomy-and-occurrence-date",
+  "version": "0.5-governance-reasoning-and-integration-risk",
   "title": "VIGIL LEARN Record Extension",
-  "purpose": "Defines the VIGIL learning-closure record used to publish a completed evidence-to-repair chain as durable, searchable governance knowledge.",
+  "purpose": "Defines the VIGIL learning-closure record used to publish a completed evidence-to-repair chain as durable, searchable governance knowledge, including the governance reasoning corrected and the foreseeable risk if the learning is not integrated.",
   "authority_boundary": [
     "A LEARN record does not introduce, amend, or authoritatively classify a failure mode.",
     "Failure classification remains authoritative in the linked VIGIL Failure Mode record and the cited Caelestis failure taxonomy.",
@@ -21,8 +21,11 @@
     "report_title",
     "case_descriptor",
     "summary",
+    "what_happened",
+    "governance_misconception",
     "abstracted_learning",
-    "must_not_be_forgotten",
+    "integrated_learning",
+    "risk_if_not_integrated",
     "future_application",
     "generalisation_boundary",
     "failure_taxonomy_links",
@@ -114,12 +117,21 @@
       },
       "description": "Three concise factual statements preserving the case, mechanism, and consequence without summarising internal repair content."
     },
+    "governance_misconception": {
+      "$ref": "#/$defs/non_empty_string_array",
+      "description": "The premises, inferences, interpretations, or governance reasoning patterns that the completed chain found unsupported, invalid, or improperly overextended. Wording must preserve uncertainty where the finding is provisional."
+    },
     "abstracted_learning": {
       "type": "string",
       "minLength": 1
     },
-    "must_not_be_forgotten": {
-      "$ref": "#/$defs/non_empty_string_array"
+    "integrated_learning": {
+      "$ref": "#/$defs/non_empty_string_array",
+      "description": "Specific conclusions established by the completed chain that should inform future governance reasoning, system design, evaluation, policy, and response. This field does not claim external implementation or runtime conformance."
+    },
+    "risk_if_not_integrated": {
+      "$ref": "#/$defs/non_empty_string_array",
+      "description": "Foreseeable recurrence, secondary harm, escalation, feedback effects, distorted interpretation, or cross-domain transfer if the learning is omitted, diluted, or not incorporated."
     },
     "future_application": {
       "$ref": "#/$defs/non_empty_string_array"
