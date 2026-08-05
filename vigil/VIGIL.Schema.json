@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://example.invalid/cam/vigil/VIGIL.Schema.json",
-  "version": "3.0-research-quality-contract",
+  "version": "3.1-triage-separation-model",
   "purpose": "Authoritative schema-rules contract for VIGIL as a public evidence-to-repair observatory for observations, research artefacts, failure modes, proposals, and implemented patch notes. Source evidence remains embedded in the relevant record; ecosystem persistence, CAM repair, and implementation verification are represented separately. Interpretive provenance identifies the AI analytical reviewer, human governance editor, capability profile, source modality, primary-artefact access, and review limitations.",
   "source_evidence_rules": {
     "individual_records": [
@@ -826,5 +826,105 @@
       "review_outcome"
     ],
     "human_editor_rule": "Human governance editorship and CAM adoption authority must be distinguished from routine AI analytical review."
+  },
+  "triage_model_rules": {
+    "doctrine": "Current triage priority is mutable operational state. Historical urgency is provenance. Failure severity is classification. Triage status is workflow. Ecosystem monitoring is continuing external observation.",
+    "applicability": {
+      "current_record_class": "failure_mode",
+      "boundary": "OBS records must not contain failure-mode triage. PROP, PATCH, RESEARCH, and LEARN preserve their own class-specific lifecycle fields and must not receive synthetic FM triage blocks.",
+      "migration_phase": "Pass 1 documents the target contract and inventory only. Pass 2 adds hard schema and validator enforcement. Pass 3 reconciles records after human review of the inventory."
+    },
+    "semantic_dimensions": {
+      "failure_classification.severity": "Inherent or evidenced seriousness of the failure. CAM repair does not reduce severity.",
+      "triage.triage_priority": "Urgency of outstanding CAM or VIGIL work now; mutable and operational.",
+      "triage.triage_status": "Current VIGIL workflow state; not a severity or priority synonym.",
+      "record_state": "Record lifecycle state under the existing lifecycle contract.",
+      "ecosystem_status.monitoring_required": "Whether the continuing external condition requires observation; independent of current CAM/VIGIL workload.",
+      "triage_history": "Append-only provenance for evidenced priority/status transitions; historical urgency does not control current sorting."
+    },
+    "target_controlled_values": {
+      "severity": [
+        "critical",
+        "high",
+        "moderate",
+        "low",
+        "negligible",
+        "to-be-assessed",
+        "not-applicable"
+      ],
+      "triage_priority": [
+        "P0",
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "none"
+      ],
+      "triage_status": [
+        "needs-review",
+        "active-investigation",
+        "awaiting-evidence",
+        "ready-for-routing",
+        "routed",
+        "repair-in-progress",
+        "verification-required",
+        "monitoring",
+        "deferred",
+        "closed"
+      ]
+    },
+    "priority_meanings": {
+      "P0": "Immediate active critical workflow.",
+      "P1": "High-priority active work that should be addressed next.",
+      "P2": "Normal active queue with a defined next action.",
+      "P3": "Low-priority but actionable work.",
+      "P4": "Deferred backlog or possible future task.",
+      "none": "No active CAM or VIGIL triage work remains."
+    },
+    "transition_history_contract": {
+      "field": "triage_history",
+      "type": "optional append-only array during migration; required for transitions recorded after adoption of this contract",
+      "minimum_fields": [
+        "priority",
+        "status",
+        "effective_date",
+        "reason",
+        "changed_by"
+      ],
+      "actor_rule": "changed_by must identify the evidenced actor or authority. Do not attribute AI-led analysis generically to 'VIGIL maintainers' where the reviewing system is known.",
+      "legacy_rule": "Do not fabricate retrospective transitions. A legacy record with only a known current state may omit triage_history until an evidenced transition occurs."
+    },
+    "cross_field_invariants": [
+      "triage_status closed requires triage_priority none.",
+      "P0, P1, P2, and P3 require a non-empty recommended_next_step.",
+      "P0 requires escalation_required to indicate escalation or contain a documented explanation.",
+      "monitoring with an active priority requires a concrete monitoring action in recommended_next_step.",
+      "triage_priority none is incompatible with active-investigation, repair-in-progress, and verification-required.",
+      "A closed record_state requires triage_priority none.",
+      "P4 may omit an immediate action only when triage_status is deferred; otherwise a bounded future action or retention reason is required."
+    ],
+    "separation_rules": [
+      "Do not derive current priority from severity.",
+      "Do not derive severity from priority.",
+      "Do not derive current priority from historical triage entries.",
+      "Monitoring alone does not justify P0-P4.",
+      "A linked proposal or patch does not by itself close the failure-mode workflow.",
+      "Registry projection must expose severity, triage_priority, triage_status, monitoring_required, record_state, and repair_status independently."
+    ],
+    "severity_migration_review": {
+      "values_already_target_conformant": [
+        "critical",
+        "high",
+        "low"
+      ],
+      "legacy_values_observed": [
+        "medium",
+        "medium-high",
+        "low-to-medium",
+        "high; potentially critical where evidence concerns catastrophic harm, systemic risk, fundamental rights or security compromise",
+        "to be assessed"
+      ],
+      "mapping_boundary": "No severity value is rewritten in Pass 1. medium-high, low-to-medium, and conditional prose ratings require record-level judgment. medium to moderate and to be assessed to to-be-assessed remain proposed normalisations for Pass 3 review."
+    }
   }
 }
