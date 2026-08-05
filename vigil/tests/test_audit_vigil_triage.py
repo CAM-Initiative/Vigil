@@ -111,5 +111,21 @@ class TriageInventoryTests(unittest.TestCase):
             self.assertIn("legacy-severity-mapping-required", row["review_flags"])
 
 
+    def test_current_corpus_is_fully_reconciled_to_model_2(self):
+        inventory = AUDIT.build_inventory(AUDIT.ROOT)
+        self.assertEqual(inventory["scope"]["record_count"], 56)
+        self.assertTrue(inventory["migration_safety"]["records_reconciled"])
+        self.assertEqual(inventory["migration_safety"]["phase"], "pass-3-record-reconciliation")
+        self.assertTrue(all(not row["review_flags"] for row in inventory["records"]))
+        self.assertTrue(
+            all(
+                row["triage_priority"] in AUDIT.ALLOWED_PRIORITIES
+                and row["triage_status"] in AUDIT.ALLOWED_STATUSES
+                and row["severity"] in AUDIT.PREFERRED_SEVERITIES
+                for row in inventory["records"]
+            )
+        )
+
+
 if __name__ == "__main__":
     unittest.main()

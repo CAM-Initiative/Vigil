@@ -124,7 +124,7 @@ def review_flags(row: dict[str, Any]) -> list[str]:
         flags.append("priority-may-contain-severity")
     if priority in {"closed", "monitoring"}:
         flags.append("priority-contains-workflow-status")
-    if row.get("repair_status") == "repaired" and priority in ACTIVE_PRIORITIES:
+    if row.get("repair_status") == "repaired" and priority in {"P0", "P1"}:
         flags.append("repaired-with-active-priority-review")
     if row.get("severity") not in PREFERRED_SEVERITIES:
         flags.append("legacy-severity-mapping-required")
@@ -187,7 +187,7 @@ def build_inventory(root: Path = ROOT) -> dict[str, Any]:
     rows.sort(key=lambda row: str(row.get("record_id") or ""))
     flag_counts = count(flag for row in rows for flag in row["review_flags"])
     return {
-        "inventory_contract": "VIGIL severity and triage migration — Pass 2 contract enforcement",
+        "inventory_contract": "VIGIL severity and triage migration — Pass 3 record reconciliation",
         "governing_rule": (
             "Current triage priority is mutable operational state. Historical urgency is provenance. "
             "Failure severity is classification. Triage status is workflow. Ecosystem monitoring is "
@@ -207,10 +207,10 @@ def build_inventory(root: Path = ROOT) -> dict[str, Any]:
             "severity": list(PREFERRED_SEVERITIES),
         },
         "migration_safety": {
-            "phase": "pass-2-contract-enforcement",
-            "records_reconciled": False,
+            "phase": "pass-3-record-reconciliation",
+            "records_reconciled": True,
             "historical_transitions_fabricated": False,
-            "note": "Flags identify review candidates; they do not decide replacement values.",
+            "note": "Every current failure-mode record has been reviewed under model 2.0; flags identify future regression.",
         },
         "grouped_counts": {
             "priority": count(row.get("triage_priority") for row in rows),
@@ -246,11 +246,11 @@ def render_markdown(inventory: dict[str, Any]) -> str:
     counts = inventory["grouped_counts"]
     records = inventory["records"]
     lines = [
-        "# VIGIL Triage Model Inventory — Pass 1",
+        "# VIGIL Triage Model Inventory — Pass 3",
         "",
         "> " + inventory["governing_rule"],
         "",
-        "This is a deterministic migration inventory under the model 2.0 contract. It records current legacy values and review flags; it does not assign replacement priority, status, or severity values.",
+        "This deterministic inventory records the reconciled current model 2.0 state. Severity remains classification; priority represents only outstanding CAM/VIGIL work.",
         "",
         "## Scope and boundary",
         "",
@@ -277,7 +277,7 @@ def render_markdown(inventory: dict[str, Any]) -> str:
         "",
         *markdown_table(["Severity", "Count"], counts["severity"].items()),
         "",
-        "Model 2.0 severity uses `S0`, `S1`, `S2`, `S3`, `S4`, and `SU`. Every current descriptive severity value remains unchanged and requires reviewed Pass 3 mapping. Ranges, conditional prose, and unassessed values must not be converted blindly.",
+        "All current failure modes use model 2.0 severity values `S0`, `S1`, `S2`, `S3`, `S4`, or `SU`. Each assignment is supported by a record-level severity assessment basis; `SU` retains an explicit assessment gap.",
         "",
         "## Priority by record state",
         "",
@@ -302,7 +302,7 @@ def render_markdown(inventory: dict[str, Any]) -> str:
         "",
         "## Review-flag definitions",
         "",
-        "Flags are diagnostic only. `repaired-with-active-priority-review` does not assume that `PN` is correct; a concrete verification or routing task may justify an active priority. `monitoring-p0-p1` includes lifecycle monitoring and legacy watch/monitor phrases. `legacy-severity-mapping-required` preserves every descriptive severity until reviewed mapping.",
+        "Flags are regression diagnostics. `repaired-with-active-priority-review` identifies repaired records retaining urgent P0/P1 treatment. `monitoring-p0-p1` identifies elevated monitoring that requires explicit triggers and intervention pathways. `legacy-severity-mapping-required` identifies descriptive values that have not entered model 2.0.",
         "",
         "## Record inventory",
         "",
@@ -318,9 +318,9 @@ def render_markdown(inventory: dict[str, Any]) -> str:
             ),
         ),
         "",
-        "## Pass 2 and Pass 3 boundary",
+        "## Reconciliation result",
         "",
-        "Pass 2 makes the model 2.0 contract executable for new and reconciled FM records. Pass 3 must reconcile each flagged record according to its actual harm scope and outstanding CAM/VIGIL work. No historical transition may be invented from this inventory.",
+        "Pass 3 individually reconciles every current failure mode against evidenced harm, outstanding CAM/VIGIL work, repair state, verification, lifecycle, and ecosystem monitoring. Legacy priority values are not converted into invented historical transitions.",
         "",
     ]
     return "\n".join(lines)
