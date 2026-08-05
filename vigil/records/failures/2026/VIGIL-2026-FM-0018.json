@@ -8,7 +8,7 @@
     "record_type": "failure_mode",
     "title": "Ephemeral Codex work loss following quota exhaustion before durable branch persistence",
     "created": "2026-06-11",
-    "updated": "2026-08-01",
+    "updated": "2026-08-05",
     "version": "1.5"
   },
   "summary": "A task-completion and durable-state preservation failure in which Codex performs substantive repository analysis and file modification inside an ephemeral cloud task, but does not create, commit, or push a durable working branch before the user's usage allowance is exhausted. The task then remains suspended or fails during branch or pull-request creation, and the completed work is lost rather than preserved as a branch, commit, patch, diff, archive, or resumable workspace. The user must repeat the same work and consume additional quota to recreate an output that the system had already completed.",
@@ -201,7 +201,7 @@
     "triage_priority": "P1",
     "triage_owner": "VIGIL maintainers",
     "triage_status": "CAM repair verified on named Caelestis branch; ecosystem monitoring active",
-    "mitigation_status": "VIGIL-2026-PATCH-0033 records the verified branch implementation across AEON-003-SCH-02, OPERATIONS-001-SUP-01, and OPERATIONS-003-SUP-01 at Caelestis commit c0a9d373a70602b231c0169cf7629b69ae9fd2d7.",
+    "mitigation_status": "VIGIL-2026-PATCH-0033 records the verified branch implementation across AEON-003-SCH-02, OPERATIONS-001-SUP-01, and OPERATIONS-003-SUP-01 at Caelestis commit 1e7eec44c65b53830fd345b9a6c2267be2985b3a.",
     "escalation_required": "canonical adoption, external interface implementation, and runtime conformance monitoring",
     "recommended_next_step": "Maintain PATCH-0033 verification, assess canonical adoption after the Caelestis branch is merged, and monitor external pause/checkpoint/resume implementation without reopening the repaired branch-level corpus gap."
   },
@@ -333,11 +333,10 @@
     ],
     "date_repaired": "2026-08-01",
     "verification_status": "corpus-verified",
-    "verification_note": "PATCH-0033 verifies the implemented runtime, logging, and taxonomy clauses against Caelestis branch governance/social-advice-calibration at commit c0a9d373a70602b231c0169cf7629b69ae9fd2d7. Formal repaired status requires canonical main adoption; external interface and runtime conformance remain separate monitoring matters.",
+    "verification_note": "PATCH-0033 verifies the canonically adopted durability, checkpoint and infrastructure-continuity clauses at Caelestis main commit 1e7eec44c65b53830fd345b9a6c2267be2985b3a. External interface implementation and runtime conformance remain separate monitoring matters.",
     "monitoring_status": "active-monitoring",
     "repair_basis": "patch-implemented",
     "remaining_gaps": [
-      "The verified Caelestis implementation remains branch-only until merged to main.",
       "External provider interface implementation and runtime conformance remain unverified."
     ]
   },
@@ -350,10 +349,10 @@
   "corpus_coverage": {
     "classification": "partial-coverage",
     "corpus_repository": "CAM-Initiative/Caelestis",
-    "corpus_ref": "governance/social-advice-calibration",
-    "corpus_commit": "c0a9d373a70602b231c0169cf7629b69ae9fd2d7",
-    "assessed_date": "2026-08-01",
-    "coverage_summary": "PATCH-0033 verifies the approved three-layer repair: runtime durability and safe interruption in AEON-003-SCH-02 §17.8.2, checkpoint and resumable-state records in OPERATIONS-001-SUP-01 §6.2.1, and the exact structural failure class in OPERATIONS-003-SUP-01 §3.9.3. The CAM-side gap is repaired on the named working branch; canonical main adoption remains pending.",
+    "corpus_ref": "main",
+    "corpus_commit": "1e7eec44c65b53830fd345b9a6c2267be2985b3a",
+    "assessed_date": "2026-08-05",
+    "coverage_summary": "PATCH-0033 canonically adopts the three-layer repair: runtime durability and safe interruption in AEON-003-SCH-02 §17.8.2, checkpoint and resumable-state records in OPERATIONS-001-SUP-01 §6.2.1, and the exact structural failure class in OPERATIONS-003-SUP-01 §3.9.3.",
     "covered_by": [
       {
         "instrument_id": "CAM-BS2025-AEON-003-SCH-02",
@@ -361,7 +360,7 @@
         "sections": [
           "§17.8.2 Durable Work-State and Resumable Interruption Control"
         ],
-        "coverage_type": "implemented-branch-doctrine"
+        "coverage_type": "implemented-canonical-doctrine"
       },
       {
         "instrument_id": "CAM-EQ2026-OPERATIONS-001-SUP-01",
@@ -369,7 +368,7 @@
         "sections": [
           "§6.2.1 Agent Checkpoint, Pause and Resumable-State Records"
         ],
-        "coverage_type": "implemented-branch-doctrine"
+        "coverage_type": "implemented-canonical-doctrine"
       },
       {
         "instrument_id": "CAM-EQ2026-OPERATIONS-003-SUP-01",
@@ -377,11 +376,10 @@
         "sections": [
           "§3.9.3 Ephemeral Agent Work Loss and Non-Recoverable Interruption Failure"
         ],
-        "coverage_type": "implemented-branch-taxonomy"
+        "coverage_type": "implemented-canonical-taxonomy"
       }
     ],
     "remaining_gaps": [
-      "Canonical adoption on Caelestis main remains pending.",
       "External provider interface implementation and runtime conformance remain unverified."
     ]
   },
@@ -427,11 +425,11 @@
           "web_link_and_metadata_review": false
         },
         "known_limitations": [
-          "The Caelestis implementation is verified on governance/social-advice-calibration and is not yet canonical on main.",
+          "The Caelestis implementation is verified on main and is not yet canonical on main.",
           "The authenticated historical Codex task record was not independently re-opened in this review; incident claims remain bounded by the existing first-party evidence package.",
           "External provider adoption, interface implementation, and runtime conformance were not established."
         ],
-        "review_outcome": "FM-0018 is partially repaired by verified branch-only PATCH-0033; formal CAM-side closure awaits canonical adoption while external interface implementation and runtime conformance remain separately visible."
+        "review_outcome": "FM-0018 is partially repaired by verified canonical-main PATCH-0033; formal CAM-side closure awaits canonical adoption while external interface implementation and runtime conformance remain separately visible."
       }
     ],
     "current_ai_review": {
@@ -451,11 +449,11 @@
         "web_link_and_metadata_review": false
       },
       "known_limitations": [
-        "The Caelestis implementation is verified on governance/social-advice-calibration and is not yet canonical on main.",
+        "The Caelestis implementation is verified on main and is not yet canonical on main.",
         "The authenticated historical Codex task record was not independently re-opened in this review; incident claims remain bounded by the existing first-party evidence package.",
         "External provider adoption, interface implementation, and runtime conformance were not established."
       ],
-      "review_outcome": "FM-0018 is partially repaired by verified branch-only PATCH-0033; formal CAM-side closure awaits canonical adoption while external interface implementation and runtime conformance remain separately visible."
+      "review_outcome": "FM-0018 is partially repaired by verified canonical-main PATCH-0033; formal CAM-side closure awaits canonical adoption while external interface implementation and runtime conformance remain separately visible."
     },
     "operating_model": "AI-led analytical observatory with high-level human governance editorship",
     "human_governance_editor": {
