@@ -47,6 +47,21 @@ The failed subject must be an ecosystem system, deployment, runtime, platform be
 
 Failure Mode records are not generic tags.
 
+### Triage State Boundaries
+
+Use this doctrine for every failure-mode triage decision:
+
+> Current triage priority is mutable operational state. Historical urgency is provenance. Failure severity is classification. Triage status is workflow. Ecosystem monitoring is continuing external observation.
+
+* `failure_classification.severity` describes the failure and is not reduced merely because CAM repaired its own corpus.
+* `triage.triage_priority` describes outstanding CAM/VIGIL work now. It must not preserve historical urgency or passive monitoring as current queue priority.
+* `triage.triage_status` describes workflow state and must not carry free-form repair, severity, or monitoring prose.
+* `record_state` remains the record lifecycle.
+* `ecosystem_status.monitoring_required` describes the continuing external condition and does not automatically justify P0–P4.
+* Preserve evidenced priority/status transitions in append-only `triage_history`; never fabricate a legacy transition.
+* During the staged migration, use `vigil/docs/2026-triage-model-inventory.json` as the review surface. Do not mass-map ambiguous legacy priority, status, or severity values.
+
+
 ### PROP — Proposal Record
 
 Use a Proposal Record when CAM/Caelestis governance development, doctrine amendment, runtime safeguard, architecture primitive, or operational design is being proposed. VIGIL repository maintenance, schema housekeeping, validator maintenance, index rebuilding, and workflow administration are not CAM proposals.
