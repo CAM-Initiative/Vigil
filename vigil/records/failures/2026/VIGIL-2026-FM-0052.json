@@ -8,8 +8,8 @@
     "record_type": "failure_mode",
     "title": "Correct safety detection without consequential escalation",
     "created": "2026-07-30",
-    "updated": "2026-07-30",
-    "version": "1.0"
+    "updated": "2026-08-05",
+    "version": "1.1"
   },
   "summary": "A safety-response failure in which monitoring, training-time review or incident telemetry correctly detects or materially identifies hazardous, anomalous or unauthorised behaviour, but severity classification, correlation, ownership, routing, on-call activation, interruption or follow-through does not convert the signal into a timely consequential response.",
   "why_it_matters_to_CAM": "Detection has no protective value unless it reaches an authorised decision-maker and changes the system state when the risk threshold is met. Treating monitor accuracy as the end of the control chain can conceal failures in criticality assignment, handoff and intervention. The Hugging Face timeline supplies incident evidence of signals that were correlated by an AI security stack but did not acquire sufficient criticality or reach on-call intervention; METR separately reports training-time detection of unwanted behaviour that did not initially receive consequential priority.",
@@ -112,7 +112,8 @@
     "failure_family": "arbitration",
     "failure_subtype": "correct-detection-without-consequential-escalation",
     "harm_vectors": ["under-classified alerts", "missed on-call activation", "unowned safety signals", "continued unauthorised activity after detection", "training-time warning deprioritisation", "fragmented telemetry without intervention", "loss of containment opportunity", "delayed evidence preservation", "normalisation of detected anomalies"],
-    "severity": "critical",
+    "severity": "S1",
+    "severity_assessment_basis": "S1: The evidenced pathway can produce severe, widespread, or enduring harm through under-classified alerts, missed on-call activation, unowned safety signals across cross-system and cross-organisational; the record does not establish the articulated catastrophic pathway required for S0.",
     "likelihood": "demonstrated",
     "confidence": "corroborated",
     "affected_rights_or_interests": ["life and safety", "security of systems and data", "effective remedy", "accountability", "operational continuity", "public trust"],
@@ -127,11 +128,14 @@
     "allowed_canonical_failure_group_values": ["execution", "arbitration", "epistemic", "relational", "security-integrity", "state-context", "ux-representation", "governance", "infrastructure-continuity", "classification", "economic-legitimacy", "provisional"]
   },
   "triage": {
-    "triage_priority": "P0",
-    "triage_owner": "VIGIL maintainers",
-    "triage_status": "active-monitoring",
+    "model_version": "2.0",
+    "triage_priority": "P1",
+    "triage_owner": "OpenAI Codex analytical reviewer under Dr Michelle Vivian O'Rourke's human governance editorship",
+    "triage_status": "under-assessment",
+    "triage_action_basis": "A material unresolved governance control has an identified route and requires prompt near-term action.",
+    "triage_review_date": "2026-08-19",
     "mitigation_status": "partial corpus coverage; cross-organisational conformance and verification remain open",
-    "escalation_required": "yes",
+    "escalation_required": "no — prompt governance action is required, but no emergency escalation condition is established.",
     "recommended_next_step": "Test whether Caelestis incident-lifecycle controls require evidence that every material safety signal has a severity rationale, accountable owner, time-bounded route, intervention decision and closure record. Do not create a proposal until the corpus-placement review confirms a specific gap."
   },
   "cam_internal": {
@@ -161,7 +165,8 @@
     "remaining_gaps": ["Confirm cross-instrument placement for a correct-detection-to-consequence invariant.", "Determine whether a proposal is needed after clause-level placement review.", "Define verification evidence for alerts closed without intervention."]
   },
   "interpretive_provenance": {
-    "review_history": [{
+    "review_history": [
+{
       "review_id": "VIGIL-REVIEW-2026-07-30-CODEX-FM-0052",
       "reviewer_type": "AI analytical reviewer",
       "reviewer_platform": "OpenAI ChatGPT",
@@ -171,17 +176,53 @@
       "capability_profile": {"direct_text_analysis": true, "direct_repository_analysis": true, "direct_static_image_analysis": true, "direct_audio_analysis_in_this_pass": false, "direct_uploaded_video_analysis_in_this_pass": false, "direct_externally_hosted_video_analysis": false, "web_link_and_metadata_review": true},
       "known_limitations": ["Raw alert outputs, training logs and complete internal decision records were unavailable.", "No new proposal was created before full corpus placement review."],
       "review_outcome": "Created a distinct failure mode for correct safety detection that does not produce consequential escalation."
-    }],
+    },
+      {
+        "review_id": "VIGIL-REVIEW-2026-08-05-OPENAI-CODEX-TRIAGE-V2",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work Mode",
+        "reviewer_model": "OpenAI Codex (GPT-5 family; exact deployed model version not exposed in session metadata)",
+        "review_date": "2026-08-05",
+        "review_scope": "record-level severity, current-priority, workflow, lifecycle, repair, monitoring, and provenance reconciliation under VIGIL triage model 2.0",
+        "capability_profile": {
+          "direct_text_analysis": true,
+          "direct_repository_analysis": true,
+          "direct_static_image_analysis": false,
+          "direct_audio_analysis_in_this_pass": false,
+          "direct_uploaded_video_analysis_in_this_pass": false,
+          "direct_externally_hosted_video_analysis": false,
+          "web_link_and_metadata_review": false
+        },
+        "known_limitations": [
+          "This pass reviewed canonical record evidence and repository state; it did not independently re-open every external primary source.",
+          "Severity was bounded to the evidenced failure definition, harm pathway, deployment scope, recurrence, and stated uncertainty.",
+          "Legacy priority values were not treated as model 2.0 historical transitions because their prior semantic basis was not consistently evidenced."
+        ],
+        "review_outcome": "Model 2.0 severity, current priority, workflow state, record lifecycle, and next action reconciled without fabricating historical triage transitions."
+      }
+    ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-07-30-CODEX-FM-0052",
+      "review_id": "VIGIL-REVIEW-2026-08-05-OPENAI-CODEX-TRIAGE-V2",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT",
-      "reviewer_model": "GPT-5 Codex (exact deployed build not exposed)",
-      "review_date": "2026-07-30",
-      "review_scope": "Detection-to-consequence failure classification and corpus crosswalk.",
-      "capability_profile": {"direct_text_analysis": true, "direct_repository_analysis": true, "direct_static_image_analysis": true, "direct_audio_analysis_in_this_pass": false, "direct_uploaded_video_analysis_in_this_pass": false, "direct_externally_hosted_video_analysis": false, "web_link_and_metadata_review": true},
-      "known_limitations": ["Internal alert and decision records were unavailable."],
-      "review_outcome": "Distinct failure mode created with partial existing-corpus coverage."
+      "reviewer_platform": "OpenAI ChatGPT Work Mode",
+      "reviewer_model": "OpenAI Codex (GPT-5 family; exact deployed model version not exposed in session metadata)",
+      "review_date": "2026-08-05",
+      "review_scope": "record-level severity, current-priority, workflow, lifecycle, repair, monitoring, and provenance reconciliation under VIGIL triage model 2.0",
+      "capability_profile": {
+        "direct_text_analysis": true,
+        "direct_repository_analysis": true,
+        "direct_static_image_analysis": false,
+        "direct_audio_analysis_in_this_pass": false,
+        "direct_uploaded_video_analysis_in_this_pass": false,
+        "direct_externally_hosted_video_analysis": false,
+        "web_link_and_metadata_review": false
+      },
+      "known_limitations": [
+        "This pass reviewed canonical record evidence and repository state; it did not independently re-open every external primary source.",
+        "Severity was bounded to the evidenced failure definition, harm pathway, deployment scope, recurrence, and stated uncertainty.",
+        "Legacy priority values were not treated as model 2.0 historical transitions because their prior semantic basis was not consistently evidenced."
+      ],
+      "review_outcome": "Model 2.0 severity, current priority, workflow state, record lifecycle, and next action reconciled without fabricating historical triage transitions."
     },
     "operating_model": "AI-led analytical observatory with high-level human governance editorship",
     "human_governance_editor": {"name": "Dr Michelle Vivian O'Rourke", "role": "Human governance editor and CAM constitutional authority", "review_level": "high-level governance, editorial, and adoption oversight; line-by-line human review is not asserted for every VIGIL record", "authority_boundary": "Human editorship governs VIGIL direction and CAM adoption; the AI analytical reviewer performs routine evidence triage, record analysis, and reconciliation."},

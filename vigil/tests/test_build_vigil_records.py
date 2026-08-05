@@ -258,6 +258,37 @@ class BuildVigilRecordsTest(unittest.TestCase):
                 if patch:
                     self.assertIn("date_implemented", patch)
 
+
+    def test_failure_registry_projects_severity_workflow_repair_and_monitoring_separately(self):
+        record = self.load_record("VIGIL-2026-FM-0002")
+        entry = builder.index_record(record)
+
+        self.assertEqual(entry["severity"], record["failure_classification"]["severity"])
+        self.assertEqual(entry["triage_priority"], record["triage"]["triage_priority"])
+        self.assertEqual(entry["triage_status"], record["triage"]["triage_status"])
+        self.assertEqual(entry["record_state"], record["record_state"])
+        self.assertEqual(entry["repair_status"], record["repair_status"]["status"])
+        self.assertEqual(
+            entry["monitoring_required"],
+            record["ecosystem_status"]["monitoring_required"],
+        )
+
+    def test_failure_aggregate_preserves_declared_triage_history(self):
+        record = self.load_record("VIGIL-2026-FM-0002")
+        record["triage_history"] = [{
+            "date": "2026-08-05",
+            "from": "P0",
+            "to": "P2",
+            "reason": "Immediate work completed.",
+            "action_basis": "Planned verification remains.",
+            "trigger": "Repair evidence reviewed.",
+            "assessed_by": "AI analytical reviewer",
+            "next_review": "2026-08-12",
+        }]
+
+        aggregate = builder.aggregate_record(record)
+        self.assertEqual(aggregate["triage_history"], record["triage_history"])
+
     def test_master_registry_is_composed_from_generated_type_indexes(self):
         with tempfile.TemporaryDirectory() as temp_dir:
             temp = Path(temp_dir)

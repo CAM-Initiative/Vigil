@@ -245,11 +245,19 @@ def triage_summary(record: dict[str, Any]) -> dict[str, Any]:
         record,
         "triage",
         [
+            "model_version",
             "triage_priority",
             "triage_status",
+            "triage_owner",
+            "triage_action_basis",
+            "triage_review_date",
+            "triage_assessment_gap",
             "mitigation_status",
             "escalation_required",
             "recommended_next_step",
+            "active_escalation_trigger",
+            "intervention_pathway",
+            "urgent_condition",
         ],
     )
 
@@ -512,6 +520,8 @@ def list_metadata(record: dict[str, Any]) -> dict[str, Any]:
         else {}
     )
     triage = record.get("triage") if isinstance(record.get("triage"), dict) else {}
+    repair = record.get("repair_status") if isinstance(record.get("repair_status"), dict) else {}
+    ecosystem = record.get("ecosystem_status") if isinstance(record.get("ecosystem_status"), dict) else {}
     proposal_scope = (
         record.get("proposal_scope") if isinstance(record.get("proposal_scope"), dict) else {}
     )
@@ -526,7 +536,7 @@ def list_metadata(record: dict[str, Any]) -> dict[str, Any]:
         else {}
     )
 
-    return {
+    metadata = {
         "source_count": len(sources),
         "primary_source_title": primary_source.get("source_title", ""),
         "primary_source_type": primary_source.get("source_type", ""),
@@ -572,6 +582,19 @@ def list_metadata(record: dict[str, Any]) -> dict[str, Any]:
         "verification_status": verification.get("verification_status")
         or verification.get("status", ""),
     }
+    if record.get("record_type") == "failure_mode":
+        metadata.update(
+            {
+                "triage_model_version": triage.get("model_version", ""),
+                "triage_owner": triage.get("triage_owner", ""),
+                "triage_action_basis": triage.get("triage_action_basis", ""),
+                "triage_review_date": triage.get("triage_review_date", ""),
+                "recommended_next_step": triage.get("recommended_next_step", ""),
+                "monitoring_required": ecosystem.get("monitoring_required", ""),
+                "repair_status": repair.get("status", ""),
+            }
+        )
+    return metadata
 
 
 def index_record(record: dict[str, Any]) -> dict[str, Any]:

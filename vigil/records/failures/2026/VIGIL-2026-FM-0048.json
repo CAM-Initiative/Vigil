@@ -8,8 +8,8 @@
     "record_type": "failure_mode",
     "title": "Denial of authorised defensive telemetry interpretation",
     "created": "2026-07-25",
-    "updated": "2026-07-30",
-    "version": "1.2"
+    "updated": "2026-08-05",
+    "version": "1.3"
   },
   "summary": "A cybersecurity governance failure in which an AI system or surrounding safety-control layer denies, blocks, truncates or materially obstructs an authorised defender's analysis of attack-surface telemetry, forensic logs, exploit traces, malicious commands, command-and-control artefacts or indicators of compromise because the content resembles offensive cyber activity, without adequately assessing defensive purpose, operator authority, affected-system ownership, incident-response necessity or bounded execution scope. Hugging Face's later technical timeline identifies Claude Opus and Fable as the models first used, without disclosing exact versions, endpoints, provider configurations or refusal transcripts, and records a locally hosted quantised Nvidia GLM-5.2-NVFP4 fallback that preserved telemetry locality and incident continuity.",
   "why_it_matters_to_CAM": "Defenders may need to inspect exactly the same commands, payloads and exploit pathways used by an attacker in order to reconstruct, contain and remediate an incident. A content-only or insufficiently contextual safety classifier can therefore invert the protective objective: the attacker is unconstrained by provider policy while the authorised victim is denied interpretive assistance. The named-model refusals and locally hosted GLM-5.2 fallback show that sovereign defensive access, telemetry locality, provider dependency and incident continuity are part of the same governance problem. CAM must distinguish interpretation and reconstruction for authorised defence from operationalisation against an unauthorised target, preserve an authority-aware escalation path, and allow sensitive incident telemetry to remain within the defender's controlled environment.",
@@ -205,7 +205,7 @@
       "loss of operational continuity",
       "misclassification of authorised security work"
     ],
-    "severity": "high",
+    "severity": "S2",
     "likelihood": "credible and demonstrated",
     "confidence": "verified affected-party account; exact model versions, endpoints, provider configurations and refusal telemetry remain undisclosed",
     "affected_rights_or_interests": [
@@ -242,14 +242,18 @@
       "classification",
       "economic-legitimacy",
       "provisional"
-    ]
+    ],
+    "severity_assessment_basis": "S2: The evidenced pathway supports substantial harm through delayed incident detection and containment, incomplete forensic reconstruction, continued attacker persistence within multi-vendor and cross-sector, without establishing severe widespread or catastrophic impact."
   },
   "triage": {
-    "triage_priority": "high",
-    "triage_owner": "VIGIL maintainers",
-    "triage_status": "needs-review",
+    "model_version": "2.0",
+    "triage_priority": "P1",
+    "triage_owner": "OpenAI Codex analytical reviewer under Dr Michelle Vivian O'Rourke's human governance editorship",
+    "triage_status": "action-required",
+    "triage_action_basis": "A material unresolved governance control has an identified route and requires prompt near-term action.",
+    "triage_review_date": "2026-08-19",
     "mitigation_status": "external workaround demonstrated; CAM coverage is partial and a proposal has been recorded",
-    "escalation_required": "yes",
+    "escalation_required": "no — prompt governance action is required, but no emergency escalation condition is established.",
     "recommended_next_step": "Advance VIGIL-2026-PROP-0021 through human review and coordinated Caelestis drafting. Preserve a strict distinction between interpreting an existing attack pathway and operationalising an attack against an unauthorised target."
   },
   "cam_internal": {
@@ -437,15 +441,38 @@
           "The complete GLM-5.2 forensic orchestration stack and deployment parameters are not public."
         ],
         "review_outcome": "FM-0048 now records Claude Opus and Fable subject to source limitations, the locally hosted quantised Nvidia GLM-5.2-NVFP4 fallback, and the resulting sovereign defensive-access, telemetry-locality, provider-dependency and incident-continuity implications. PROP-0021 remains the authoritative repair proposal."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-08-05-OPENAI-CODEX-TRIAGE-V2",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work Mode",
+        "reviewer_model": "OpenAI Codex (GPT-5 family; exact deployed model version not exposed in session metadata)",
+        "review_date": "2026-08-05",
+        "review_scope": "record-level severity, current-priority, workflow, lifecycle, repair, monitoring, and provenance reconciliation under VIGIL triage model 2.0",
+        "capability_profile": {
+          "direct_text_analysis": true,
+          "direct_repository_analysis": true,
+          "direct_static_image_analysis": false,
+          "direct_audio_analysis_in_this_pass": false,
+          "direct_uploaded_video_analysis_in_this_pass": false,
+          "direct_externally_hosted_video_analysis": false,
+          "web_link_and_metadata_review": false
+        },
+        "known_limitations": [
+          "This pass reviewed canonical record evidence and repository state; it did not independently re-open every external primary source.",
+          "Severity was bounded to the evidenced failure definition, harm pathway, deployment scope, recurrence, and stated uncertainty.",
+          "Legacy priority values were not treated as model 2.0 historical transitions because their prior semantic basis was not consistently evidenced."
+        ],
+        "review_outcome": "Model 2.0 severity, current priority, workflow state, record lifecycle, and next action reconciled without fabricating historical triage transitions."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-07-30-CODEX-FM-0048-HF-FORENSIC",
+      "review_id": "VIGIL-REVIEW-2026-08-05-OPENAI-CODEX-TRIAGE-V2",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT Work — Codex",
-      "reviewer_model": "GPT-5 Codex (exact deployed build not exposed)",
-      "review_date": "2026-07-30",
-      "review_scope": "Direct review of Hugging Face's technical timeline; replacement of unnamed-model uncertainty with the names disclosed by the affected party; assessment of the locally hosted quantised fallback and its defensive-sovereignty implications.",
+      "reviewer_platform": "OpenAI ChatGPT Work Mode",
+      "reviewer_model": "OpenAI Codex (GPT-5 family; exact deployed model version not exposed in session metadata)",
+      "review_date": "2026-08-05",
+      "review_scope": "record-level severity, current-priority, workflow, lifecycle, repair, monitoring, and provenance reconciliation under VIGIL triage model 2.0",
       "capability_profile": {
         "direct_text_analysis": true,
         "direct_repository_analysis": true,
@@ -453,14 +480,14 @@
         "direct_audio_analysis_in_this_pass": false,
         "direct_uploaded_video_analysis_in_this_pass": false,
         "direct_externally_hosted_video_analysis": false,
-        "web_link_and_metadata_review": true
+        "web_link_and_metadata_review": false
       },
       "known_limitations": [
-        "The source names Claude Opus and Fable but does not identify exact versions, endpoints, provider configurations, prompts, refusal transcripts, access tiers or escalation attempts.",
-        "The source does not establish that every refusal came from the same provider or policy layer.",
-        "The complete GLM-5.2 forensic orchestration stack and deployment parameters are not public."
+        "This pass reviewed canonical record evidence and repository state; it did not independently re-open every external primary source.",
+        "Severity was bounded to the evidenced failure definition, harm pathway, deployment scope, recurrence, and stated uncertainty.",
+        "Legacy priority values were not treated as model 2.0 historical transitions because their prior semantic basis was not consistently evidenced."
       ],
-      "review_outcome": "FM-0048 now records Claude Opus and Fable subject to source limitations, the locally hosted quantised Nvidia GLM-5.2-NVFP4 fallback, and the resulting sovereign defensive-access, telemetry-locality, provider-dependency and incident-continuity implications. PROP-0021 remains the authoritative repair proposal."
+      "review_outcome": "Model 2.0 severity, current priority, workflow state, record lifecycle, and next action reconciled without fabricating historical triage transitions."
     },
     "operating_model": "AI-led analytical observatory with high-level human governance editorship",
     "human_governance_editor": {

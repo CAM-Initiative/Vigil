@@ -9,7 +9,7 @@
     "title": "Ephemeral Codex work loss following quota exhaustion before durable branch persistence",
     "created": "2026-06-11",
     "updated": "2026-08-05",
-    "version": "1.5"
+    "version": "1.6"
   },
   "summary": "A task-completion and durable-state preservation failure in which Codex performs substantive repository analysis and file modification inside an ephemeral cloud task, but does not create, commit, or push a durable working branch before the user's usage allowance is exhausted. The task then remains suspended or fails during branch or pull-request creation, and the completed work is lost rather than preserved as a branch, commit, patch, diff, archive, or resumable workspace. The user must repeat the same work and consume additional quota to recreate an output that the system had already completed.",
   "why_it_matters_to_CAM": "CAM distinguishes execution from successful completion, and completion from durable handoff. Repository work is not meaningfully complete while its result exists only inside an inaccessible or quota-dependent execution environment. Deferring branch creation, commit, push, or equivalent checkpointing until the end of a costly task creates an avoidable single point of failure. Where quota exhaustion prevents persistence, the platform converts a resource limit into irreversible work loss, duplicate computation, delayed delivery, and additional user cost. A governed coding agent should establish a durable work surface before substantive modification, checkpoint completed phases proportionately, reserve sufficient capacity for persistence and handoff, and provide a recoverable patch or branch even if pull-request creation cannot be completed.",
@@ -166,7 +166,7 @@
       "user trust degradation",
       "research and governance continuity impairment"
     ],
-    "severity": "medium",
+    "severity": "S3",
     "likelihood": "documented single incident with systemic recurrence potential wherever persistence is deferred until task completion",
     "confidence": "corroborated",
     "affected_rights_or_interests": [
@@ -195,14 +195,18 @@
     ],
     "persistence": "CAM-side repair implemented on the named Caelestis working branch; canonical adoption and external runtime conformance remain pending",
     "reproducibility": "reproducible where a cloud coding task performs modifications in an ephemeral workspace, consumes the available quota, and attempts branch or pull-request creation only after substantive work has completed",
-    "visibility": "visible through task status, quota-exhaustion messaging, absence of a GitHub branch or pull request, and inability to recover the completed modifications"
+    "visibility": "visible through task status, quota-exhaustion messaging, absence of a GitHub branch or pull request, and inability to recover the completed modifications",
+    "severity_assessment_basis": "S3: The record supports meaningful but bounded, context-dependent, or reversible harm through completed work loss, ephemeral execution-state dependency, missing branch persistence within vendor-specific / cloud-task workflow / potentially systemic coding-agent persistence pattern."
   },
   "triage": {
-    "triage_priority": "P1",
-    "triage_owner": "VIGIL maintainers",
-    "triage_status": "CAM repair verified on named Caelestis branch; ecosystem monitoring active",
+    "model_version": "2.0",
+    "triage_priority": "P2",
+    "triage_owner": "OpenAI Codex analytical reviewer under Dr Michelle Vivian O'Rourke's human governance editorship",
+    "triage_status": "verification-pending",
+    "triage_action_basis": "A defined corpus-adoption or repair-verification task remains, without an emergency condition.",
+    "triage_review_date": "2026-09-05",
     "mitigation_status": "VIGIL-2026-PATCH-0033 records the verified branch implementation across AEON-003-SCH-02, OPERATIONS-001-SUP-01, and OPERATIONS-003-SUP-01 at Caelestis commit 1e7eec44c65b53830fd345b9a6c2267be2985b3a.",
-    "escalation_required": "canonical adoption, external interface implementation, and runtime conformance monitoring",
+    "escalation_required": "no",
     "recommended_next_step": "Maintain PATCH-0033 verification, assess canonical adoption after the Caelestis branch is merged, and monitor external pause/checkpoint/resume implementation without reopening the repaired branch-level corpus gap."
   },
   "distinguishing_observations": [
@@ -430,30 +434,53 @@
           "External provider adoption, interface implementation, and runtime conformance were not established."
         ],
         "review_outcome": "FM-0018 is partially repaired by verified canonical-main PATCH-0033; formal CAM-side closure awaits canonical adoption while external interface implementation and runtime conformance remain separately visible."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-08-05-OPENAI-CODEX-TRIAGE-V2",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work Mode",
+        "reviewer_model": "OpenAI Codex (GPT-5 family; exact deployed model version not exposed in session metadata)",
+        "review_date": "2026-08-05",
+        "review_scope": "record-level severity, current-priority, workflow, lifecycle, repair, monitoring, and provenance reconciliation under VIGIL triage model 2.0",
+        "capability_profile": {
+          "direct_text_analysis": true,
+          "direct_repository_analysis": true,
+          "direct_static_image_analysis": false,
+          "direct_audio_analysis_in_this_pass": false,
+          "direct_uploaded_video_analysis_in_this_pass": false,
+          "direct_externally_hosted_video_analysis": false,
+          "web_link_and_metadata_review": false
+        },
+        "known_limitations": [
+          "This pass reviewed canonical record evidence and repository state; it did not independently re-open every external primary source.",
+          "Severity was bounded to the evidenced failure definition, harm pathway, deployment scope, recurrence, and stated uncertainty.",
+          "Legacy priority values were not treated as model 2.0 historical transitions because their prior semantic basis was not consistently evidenced."
+        ],
+        "review_outcome": "Model 2.0 severity, current priority, workflow state, record lifecycle, and next action reconciled without fabricating historical triage transitions."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-08-01-GPT5-FM0018-PATCH0033",
+      "review_id": "VIGIL-REVIEW-2026-08-05-OPENAI-CODEX-TRIAGE-V2",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT Work / Codex",
-      "reviewer_model": "GPT-5 — exact deployment subversion unavailable",
-      "review_date": "2026-08-01",
-      "review_scope": "Direct review of FM-0018, PROP-0010, the user-supplied implementation handover, current Caelestis source-authority placement, three-instrument branch implementation, PATCH-0033 literal trace, reciprocal links, and repository validation.",
+      "reviewer_platform": "OpenAI ChatGPT Work Mode",
+      "reviewer_model": "OpenAI Codex (GPT-5 family; exact deployed model version not exposed in session metadata)",
+      "review_date": "2026-08-05",
+      "review_scope": "record-level severity, current-priority, workflow, lifecycle, repair, monitoring, and provenance reconciliation under VIGIL triage model 2.0",
       "capability_profile": {
         "direct_text_analysis": true,
         "direct_repository_analysis": true,
-        "direct_static_image_analysis": true,
+        "direct_static_image_analysis": false,
         "direct_audio_analysis_in_this_pass": false,
         "direct_uploaded_video_analysis_in_this_pass": false,
         "direct_externally_hosted_video_analysis": false,
         "web_link_and_metadata_review": false
       },
       "known_limitations": [
-        "The Caelestis implementation is verified on main and is not yet canonical on main.",
-        "The authenticated historical Codex task record was not independently re-opened in this review; incident claims remain bounded by the existing first-party evidence package.",
-        "External provider adoption, interface implementation, and runtime conformance were not established."
+        "This pass reviewed canonical record evidence and repository state; it did not independently re-open every external primary source.",
+        "Severity was bounded to the evidenced failure definition, harm pathway, deployment scope, recurrence, and stated uncertainty.",
+        "Legacy priority values were not treated as model 2.0 historical transitions because their prior semantic basis was not consistently evidenced."
       ],
-      "review_outcome": "FM-0018 is partially repaired by verified canonical-main PATCH-0033; formal CAM-side closure awaits canonical adoption while external interface implementation and runtime conformance remain separately visible."
+      "review_outcome": "Model 2.0 severity, current priority, workflow state, record lifecycle, and next action reconciled without fabricating historical triage transitions."
     },
     "operating_model": "AI-led analytical observatory with high-level human governance editorship",
     "human_governance_editor": {

@@ -1,10 +1,405 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "VIGIL.FailureMode.Schema.json",
-  "description": "Failure Mode records require definition, threshold, CAM taxonomy classification, triage, external ecosystem status, CAM repair status, implementation verification, and current-corpus coverage.",
+  "description": "Failure Mode records require classification, versioned severity and triage state, external ecosystem status, CAM repair status, implementation verification, and current-corpus coverage. Model 2.0 is strict; legacy records are reconciled in Pass 3.",
   "allOf": [
     {
       "$ref": "VIGIL.Base.Schema.json"
+    },
+    {
+      "if": {
+        "properties": {
+          "triage": {
+            "type": "object",
+            "properties": {
+              "model_version": {
+                "const": "2.0"
+              }
+            },
+            "required": [
+              "model_version"
+            ]
+          }
+        },
+        "required": [
+          "triage"
+        ]
+      },
+      "then": {
+        "properties": {
+          "failure_classification": {
+            "type": "object",
+            "required": [
+              "severity",
+              "severity_assessment_basis"
+            ],
+            "properties": {
+              "severity": {
+                "enum": [
+                  "S0",
+                  "S1",
+                  "S2",
+                  "S3",
+                  "S4",
+                  "SU"
+                ]
+              },
+              "severity_assessment_basis": {
+                "type": "string",
+                "minLength": 1
+              },
+              "severity_assessment_gap": {
+                "type": "string"
+              }
+            },
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "severity": {
+                      "const": "SU"
+                    }
+                  },
+                  "required": [
+                    "severity"
+                  ]
+                },
+                "then": {
+                  "required": [
+                    "severity_assessment_gap"
+                  ],
+                  "properties": {
+                    "severity_assessment_gap": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "triage": {
+            "type": "object",
+            "required": [
+              "model_version",
+              "triage_priority",
+              "triage_owner",
+              "triage_status",
+              "triage_action_basis",
+              "triage_review_date",
+              "escalation_required",
+              "recommended_next_step"
+            ],
+            "properties": {
+              "model_version": {
+                "const": "2.0"
+              },
+              "triage_priority": {
+                "enum": [
+                  "P0",
+                  "P1",
+                  "P2",
+                  "P3",
+                  "PN",
+                  "PU"
+                ]
+              },
+              "triage_status": {
+                "enum": [
+                  "intake",
+                  "under-assessment",
+                  "action-required",
+                  "repair-in-progress",
+                  "verification-pending",
+                  "monitoring",
+                  "blocked",
+                  "closed-actioned",
+                  "closed-no-action",
+                  "superseded"
+                ]
+              },
+              "triage_owner": {
+                "type": "string"
+              },
+              "triage_action_basis": {
+                "type": "string"
+              },
+              "triage_review_date": {
+                "type": "string"
+              },
+              "triage_assessment_gap": {
+                "type": "string"
+              },
+              "escalation_required": {
+                "type": "string"
+              },
+              "recommended_next_step": {
+                "type": "string"
+              },
+              "active_escalation_trigger": {
+                "type": "string"
+              },
+              "intervention_pathway": {
+                "type": "string"
+              },
+              "urgent_condition": {
+                "type": "string"
+              }
+            },
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "triage_priority": {
+                      "enum": [
+                        "P0",
+                        "P1",
+                        "P2",
+                        "P3"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "triage_priority"
+                  ]
+                },
+                "then": {
+                  "properties": {
+                    "recommended_next_step": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  }
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "triage_priority": {
+                      "enum": [
+                        "P0",
+                        "P1"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "triage_priority"
+                  ]
+                },
+                "then": {
+                  "properties": {
+                    "triage_owner": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "triage_action_basis": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "triage_review_date": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  }
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "triage_priority": {
+                      "const": "P0"
+                    }
+                  },
+                  "required": [
+                    "triage_priority"
+                  ]
+                },
+                "then": {
+                  "properties": {
+                    "escalation_required": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  }
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "triage_priority": {
+                      "const": "PU"
+                    }
+                  },
+                  "required": [
+                    "triage_priority"
+                  ]
+                },
+                "then": {
+                  "required": [
+                    "triage_assessment_gap"
+                  ],
+                  "properties": {
+                    "triage_assessment_gap": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "recommended_next_step": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  }
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "triage_priority": {
+                      "const": "PN"
+                    }
+                  },
+                  "required": [
+                    "triage_priority"
+                  ]
+                },
+                "then": {
+                  "properties": {
+                    "triage_status": {
+                      "not": {
+                        "enum": [
+                          "action-required",
+                          "repair-in-progress",
+                          "verification-pending"
+                        ]
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "triage_status": {
+                      "enum": [
+                        "closed-actioned",
+                        "closed-no-action",
+                        "superseded"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "triage_status"
+                  ]
+                },
+                "then": {
+                  "properties": {
+                    "triage_priority": {
+                      "const": "PN"
+                    }
+                  }
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "triage_status": {
+                      "const": "monitoring"
+                    },
+                    "triage_priority": {
+                      "enum": [
+                        "P0",
+                        "P1"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "triage_status",
+                    "triage_priority"
+                  ]
+                },
+                "then": {
+                  "required": [
+                    "active_escalation_trigger",
+                    "intervention_pathway"
+                  ],
+                  "properties": {
+                    "active_escalation_trigger": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "intervention_pathway": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "triage_history": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "date",
+                "from",
+                "to",
+                "reason",
+                "action_basis",
+                "trigger",
+                "assessed_by",
+                "next_review"
+              ],
+              "properties": {
+                "date": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "from": {
+                  "enum": [
+                    "P0",
+                    "P1",
+                    "P2",
+                    "P3",
+                    "PN",
+                    "PU"
+                  ]
+                },
+                "to": {
+                  "enum": [
+                    "P0",
+                    "P1",
+                    "P2",
+                    "P3",
+                    "PN",
+                    "PU"
+                  ]
+                },
+                "reason": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "action_basis": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "trigger": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "assessed_by": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "next_review": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        }
+      }
     }
   ],
   "properties": {
@@ -251,6 +646,9 @@
           }
         }
       }
+    },
+    "triage": {
+      "type": "object"
     }
   },
   "required": [

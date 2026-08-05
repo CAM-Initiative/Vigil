@@ -42,6 +42,36 @@ RESEARCH_REQUIRED_SECTIONS = (
 RESEARCH_MINIMUM_PUBLISHED_WORDS = 1500
 RESEARCH_MINIMUM_SOURCE_CORPUS_ENTRIES = 4
 
+TRIAGE_MODEL_VERSION = "2.0"
+ALLOWED_TRIAGE_PRIORITIES = {"P0", "P1", "P2", "P3", "PN", "PU"}
+ACTIVE_TRIAGE_PRIORITIES = {"P0", "P1", "P2", "P3"}
+ALLOWED_TRIAGE_STATUSES = {
+    "intake",
+    "under-assessment",
+    "action-required",
+    "repair-in-progress",
+    "verification-pending",
+    "monitoring",
+    "blocked",
+    "closed-actioned",
+    "closed-no-action",
+    "superseded",
+}
+PN_FORBIDDEN_STATUSES = {"action-required", "repair-in-progress", "verification-pending"}
+CLOSED_TRIAGE_STATUSES = {"closed-actioned", "closed-no-action", "superseded"}
+CLOSED_RECORD_STATES = {"closed", "closed-actioned", "closed-no-action", "superseded"}
+ALLOWED_SEVERITIES = {"S0", "S1", "S2", "S3", "S4", "SU"}
+TRIAGE_HISTORY_REQUIRED = {
+    "date",
+    "from",
+    "to",
+    "reason",
+    "action_basis",
+    "trigger",
+    "assessed_by",
+    "next_review",
+}
+
 RECORD_TYPES = {"observation", "failure_mode", "proposal", "patch", "patch_note"}
 CAM_INTERNAL_REFERENCE_PREFIXES = ("CAM-BS", "CAM-EQ", "VIGIL-")
 VIGIL_RECORD_ID_PATTERN = re.compile(r"^VIGIL-\d{4}-(?:OBS|FM|PROP|PATCH|RESEARCH)-\d{4}$")
@@ -698,6 +728,102 @@ def validate_repair_status(
         warnings.append(f"{path}: FM record_state is active while repair_status.status is repaired; prefer monitoring")
 
 
+def validate_triage_model(
+    path: Path,
+    record: dict[str, Any],
+    errors: list[str],
+) -> None:
+    """Enforce severity/triage model 2.0 without silently reinterpreting legacy records."""
+    triage = record.get("triage")
+    classification = record.get("failure_classification")
+    if not isinstance(triage, dict) or triage.get("model_version") != TRIAGE_MODEL_VERSION:
+        return
+    if not isinstance(classification, dict):
+        errors.append(f"{path}: model 2.0 FM requires failure_classification")
+        return
+
+    severity = classification.get("severity")
+    if severity not in ALLOWED_SEVERITIES:
+        errors.append(
+            f"{path}: model 2.0 severity {severity!r} is invalid; expected one of "
+            f"{', '.join(sorted(ALLOWED_SEVERITIES))}"
+        )
+    if is_blank(classification.get("severity_assessment_basis")):
+        errors.append(f"{path}: model 2.0 severity requires severity_assessment_basis")
+    if severity == "SU" and is_blank(classification.get("severity_assessment_gap")):
+        errors.append(f"{path}: SU severity requires severity_assessment_gap")
+
+    required = {
+        "triage_priority",
+        "triage_owner",
+        "triage_status",
+        "triage_action_basis",
+        "triage_review_date",
+        "escalation_required",
+        "recommended_next_step",
+    }
+    add_missing(errors, path, triage, required)
+    priority = triage.get("triage_priority")
+    status = triage.get("triage_status")
+    if priority not in ALLOWED_TRIAGE_PRIORITIES:
+        errors.append(
+            f"{path}: model 2.0 triage_priority {priority!r} is invalid; expected one of "
+            f"{', '.join(sorted(ALLOWED_TRIAGE_PRIORITIES))}"
+        )
+    if status not in ALLOWED_TRIAGE_STATUSES:
+        errors.append(
+            f"{path}: model 2.0 triage_status {status!r} is invalid; expected one of "
+            f"{', '.join(sorted(ALLOWED_TRIAGE_STATUSES))}"
+        )
+    if priority in ACTIVE_TRIAGE_PRIORITIES and is_blank(triage.get("recommended_next_step")):
+        errors.append(f"{path}: {priority} requires recommended_next_step")
+    if priority in {"P0", "P1"}:
+        for field in ("triage_owner", "triage_action_basis", "triage_review_date"):
+            if is_blank(triage.get(field)):
+                errors.append(f"{path}: {priority} requires {field}")
+    if priority == "P0" and is_blank(triage.get("escalation_required")):
+        errors.append(f"{path}: P0 requires escalation_required or a documented escalation trigger")
+    if priority == "PU":
+        if is_blank(triage.get("triage_assessment_gap")):
+            errors.append(f"{path}: PU requires triage_assessment_gap")
+        if is_blank(triage.get("recommended_next_step")):
+            errors.append(f"{path}: PU requires a triage next step")
+    if priority == "PN" and status in PN_FORBIDDEN_STATUSES:
+        errors.append(f"{path}: PN is incompatible with triage_status {status!r}")
+    if status in CLOSED_TRIAGE_STATUSES and priority != "PN":
+        errors.append(f"{path}: triage_status {status!r} requires PN")
+    if str(record.get("record_state", "")).lower() in CLOSED_RECORD_STATES and priority != "PN":
+        errors.append(f"{path}: closed record_state requires PN")
+    if status == "monitoring" and priority in {"P0", "P1"}:
+        for field in ("active_escalation_trigger", "intervention_pathway"):
+            if is_blank(triage.get(field)):
+                errors.append(f"{path}: monitoring with {priority} requires {field}")
+
+    repair = record.get("repair_status")
+    if isinstance(repair, dict) and repair.get("status") == "repaired" and priority in {"P0", "P1"}:
+        if is_blank(triage.get("urgent_condition")):
+            errors.append(f"{path}: repaired record retaining {priority} requires urgent_condition")
+
+    history = record.get("triage_history")
+    if history is not None:
+        if not isinstance(history, list):
+            errors.append(f"{path}: triage_history must be an append-only array")
+        else:
+            for index, entry in enumerate(history):
+                label = f"{path}: triage_history[{index}]"
+                if not isinstance(entry, dict):
+                    errors.append(f"{label} must be an object")
+                    continue
+                add_missing(errors, path, entry, TRIAGE_HISTORY_REQUIRED)
+                if entry.get("from") not in ALLOWED_TRIAGE_PRIORITIES:
+                    errors.append(f"{label}.from is not a model 2.0 priority")
+                if entry.get("to") not in ALLOWED_TRIAGE_PRIORITIES:
+                    errors.append(f"{label}.to is not a model 2.0 priority")
+                for field in TRIAGE_HISTORY_REQUIRED - {"from", "to"}:
+                    if is_blank(entry.get(field)):
+                        errors.append(f"{label}.{field} must not be blank")
+
+
 def validate_resolution_status(path: Path, record: dict[str, Any], errors: list[str], warnings: list[str]) -> None:
     resolution_status = record.get("resolution_status")
     if resolution_status is None:
@@ -1117,6 +1243,7 @@ def validate_record(
     elif record_type == "failure_mode":
         add_missing(errors, path, record, FM_REQUIRED)
         validate_repair_status(path, record, errors, warnings)
+        validate_triage_model(path, record, errors)
         classification = record.get("failure_classification")
         if isinstance(classification, dict):
             if is_blank(classification.get("failure_family")):

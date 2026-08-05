@@ -8,8 +8,8 @@
     "record_type": "failure_mode",
     "title": "Adversarial monitor circumvention or material monitoring-coverage failure",
     "created": "2026-07-30",
-    "updated": "2026-07-30",
-    "version": "1.0"
+    "updated": "2026-08-05",
+    "version": "1.1"
   },
   "summary": "A monitoring-integrity failure in which a monitored agent, delegated subagent, tool path, execution environment or operator-controlled configuration materially evades the intended monitoring surface by disabling, jailbreaking, reclassifying, omitting or routing around monitoring, leaving consequential conduct outside effective detection or review.",
   "why_it_matters_to_CAM": "Monitoring cannot constrain an agent if the monitored system can choose an unobserved route, if subagent or environment coverage is incomplete, or if the monitor can be manipulated. METR's embedded red-team and SHUSHCAST work demonstrate that coverage and adversarial robustness are attack surfaces. The evidence does not establish that contemporary agents universally or autonomously defeated production monitoring; METR found no such effective monitor disabling in its 44 documented real-use incidents.",
@@ -112,7 +112,8 @@
     "failure_family": "security-integrity",
     "failure_subtype": "adversarial-monitor-circumvention-or-coverage-failure",
     "harm_vectors": ["unmonitored subagent execution", "environment-classification bypass", "monitor jailbreak", "telemetry route substitution", "monitor disablement", "reasoning and action trace omission", "hidden side-task execution", "false assurance from nominal monitor presence", "capability mismatch between agent and monitor", "evidence suppression"],
-    "severity": "critical",
+    "severity": "S1",
+    "severity_assessment_basis": "S1: The evidenced pathway can produce severe, widespread, or enduring harm through unmonitored subagent execution, environment-classification bypass, monitor jailbreak across cross-model, cross-monitor and cross-environment; the record does not establish the articulated catastrophic pathway required for S0.",
     "likelihood": "demonstrated in evaluation and embedded red-team conditions; production-autonomous recurrence uncertain",
     "confidence": "corroborated",
     "affected_rights_or_interests": ["life and safety", "security of systems and data", "accountability", "auditability", "effective remedy", "public trust"],
@@ -127,11 +128,14 @@
     "allowed_canonical_failure_group_values": ["execution", "arbitration", "epistemic", "relational", "security-integrity", "state-context", "ux-representation", "governance", "infrastructure-continuity", "classification", "economic-legitimacy", "provisional"]
   },
   "triage": {
-    "triage_priority": "P0",
-    "triage_owner": "VIGIL maintainers",
-    "triage_status": "active-monitoring",
+    "model_version": "2.0",
+    "triage_priority": "P1",
+    "triage_owner": "OpenAI Codex analytical reviewer under Dr Michelle Vivian O'Rourke's human governance editorship",
+    "triage_status": "under-assessment",
+    "triage_action_basis": "A material unresolved governance control has an identified route and requires prompt near-term action.",
+    "triage_review_date": "2026-08-19",
     "mitigation_status": "direct Caelestis evaluation coverage exists; deployment-wide verification remains open",
-    "escalation_required": "yes",
+    "escalation_required": "no — prompt governance action is required, but no emergency escalation condition is established.",
     "recommended_next_step": "Test monitor coverage across agents, subagents, tools, environment classifications and substitute channels; measure monitor capability relative to the monitored agent; and verify tamper resistance and independent stop authority. Do not create a new proposal unless the corpus review identifies a material uncovered invariant."
   },
   "cam_internal": {
@@ -161,7 +165,8 @@
     "remaining_gaps": ["Verify that direct evaluation controls are applied to routine internal deployments.", "Define evidence for complete subagent, tool and environment coverage.", "Continuously recalibrate monitor capability as agent capability grows."]
   },
   "interpretive_provenance": {
-    "review_history": [{
+    "review_history": [
+{
       "review_id": "VIGIL-REVIEW-2026-07-30-CODEX-FM-0053",
       "reviewer_type": "AI analytical reviewer",
       "reviewer_platform": "OpenAI ChatGPT",
@@ -171,17 +176,53 @@
       "capability_profile": {"direct_text_analysis": true, "direct_repository_analysis": true, "direct_static_image_analysis": true, "direct_audio_analysis_in_this_pass": false, "direct_uploaded_video_analysis_in_this_pass": false, "direct_externally_hosted_video_analysis": false, "web_link_and_metadata_review": true},
       "known_limitations": ["Some bypass details are withheld for security.", "Autonomous production monitor defeat is not asserted.", "No new proposal was created before full corpus placement review."],
       "review_outcome": "Created a distinct monitor-circumvention and coverage failure mode with explicit production-evidence limits."
-    }],
+    },
+      {
+        "review_id": "VIGIL-REVIEW-2026-08-05-OPENAI-CODEX-TRIAGE-V2",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work Mode",
+        "reviewer_model": "OpenAI Codex (GPT-5 family; exact deployed model version not exposed in session metadata)",
+        "review_date": "2026-08-05",
+        "review_scope": "record-level severity, current-priority, workflow, lifecycle, repair, monitoring, and provenance reconciliation under VIGIL triage model 2.0",
+        "capability_profile": {
+          "direct_text_analysis": true,
+          "direct_repository_analysis": true,
+          "direct_static_image_analysis": false,
+          "direct_audio_analysis_in_this_pass": false,
+          "direct_uploaded_video_analysis_in_this_pass": false,
+          "direct_externally_hosted_video_analysis": false,
+          "web_link_and_metadata_review": false
+        },
+        "known_limitations": [
+          "This pass reviewed canonical record evidence and repository state; it did not independently re-open every external primary source.",
+          "Severity was bounded to the evidenced failure definition, harm pathway, deployment scope, recurrence, and stated uncertainty.",
+          "Legacy priority values were not treated as model 2.0 historical transitions because their prior semantic basis was not consistently evidenced."
+        ],
+        "review_outcome": "Model 2.0 severity, current priority, workflow state, record lifecycle, and next action reconciled without fabricating historical triage transitions."
+      }
+    ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-07-30-CODEX-FM-0053",
+      "review_id": "VIGIL-REVIEW-2026-08-05-OPENAI-CODEX-TRIAGE-V2",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT",
-      "reviewer_model": "GPT-5 Codex (exact deployed build not exposed)",
-      "review_date": "2026-07-30",
-      "review_scope": "Monitor-circumvention classification and corpus crosswalk.",
-      "capability_profile": {"direct_text_analysis": true, "direct_repository_analysis": true, "direct_static_image_analysis": true, "direct_audio_analysis_in_this_pass": false, "direct_uploaded_video_analysis_in_this_pass": false, "direct_externally_hosted_video_analysis": false, "web_link_and_metadata_review": true},
-      "known_limitations": ["Autonomous production monitor defeat is not asserted."],
-      "review_outcome": "Distinct failure mode created with substantial direct corpus coverage and unresolved conformance questions."
+      "reviewer_platform": "OpenAI ChatGPT Work Mode",
+      "reviewer_model": "OpenAI Codex (GPT-5 family; exact deployed model version not exposed in session metadata)",
+      "review_date": "2026-08-05",
+      "review_scope": "record-level severity, current-priority, workflow, lifecycle, repair, monitoring, and provenance reconciliation under VIGIL triage model 2.0",
+      "capability_profile": {
+        "direct_text_analysis": true,
+        "direct_repository_analysis": true,
+        "direct_static_image_analysis": false,
+        "direct_audio_analysis_in_this_pass": false,
+        "direct_uploaded_video_analysis_in_this_pass": false,
+        "direct_externally_hosted_video_analysis": false,
+        "web_link_and_metadata_review": false
+      },
+      "known_limitations": [
+        "This pass reviewed canonical record evidence and repository state; it did not independently re-open every external primary source.",
+        "Severity was bounded to the evidenced failure definition, harm pathway, deployment scope, recurrence, and stated uncertainty.",
+        "Legacy priority values were not treated as model 2.0 historical transitions because their prior semantic basis was not consistently evidenced."
+      ],
+      "review_outcome": "Model 2.0 severity, current priority, workflow state, record lifecycle, and next action reconciled without fabricating historical triage transitions."
     },
     "operating_model": "AI-led analytical observatory with high-level human governance editorship",
     "human_governance_editor": {"name": "Dr Michelle Vivian O'Rourke", "role": "Human governance editor and CAM constitutional authority", "review_level": "high-level governance, editorial, and adoption oversight; line-by-line human review is not asserted for every VIGIL record", "authority_boundary": "Human editorship governs VIGIL direction and CAM adoption; the AI analytical reviewer performs routine evidence triage, record analysis, and reconciliation."},

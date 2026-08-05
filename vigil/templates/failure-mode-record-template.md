@@ -42,3 +42,17 @@ Example:
 ```
 
 Rationale: Multi-vendor records require separated vendor evidence because top-level database fields are controlled values for indexing, filtering, validation, and UI routing. Detailed vendor, product, surface, and source claims belong in evidence metadata, not comma-combined canonical fields.
+
+## Severity and triage model 2.0
+
+New failure-mode records must declare `triage.model_version: "2.0"`.
+
+Severity and priority are independent:
+
+* Severity uses `S0` catastrophic, `S1` critical, `S2` high, `S3` moderate, `S4` low, or `SU` unassessed.
+* `SU` requires `failure_classification.severity_assessment_gap` and a concrete assessment next step.
+* Priority uses `P0` immediate, `P1` urgent, `P2` planned, `P3` routine, `PN` no active priority, or `PU` priority unassessed.
+* P0–P3 require a concrete action. P0 and P1 also require a named owner, action basis, and review horizon.
+* `PN` does not mean low severity or no ecosystem monitoring. `PU` is temporary and requires `triage_assessment_gap`.
+* `triage.triage_status` is the workflow-status field. Use only `intake`, `under-assessment`, `action-required`, `repair-in-progress`, `verification-pending`, `monitoring`, `blocked`, `closed-actioned`, `closed-no-action`, or `superseded`.
+* Append evidenced priority transitions to top-level `triage_history`. Do not reconstruct or backdate a legacy transition.
