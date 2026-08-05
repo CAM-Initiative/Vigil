@@ -92,12 +92,14 @@ def learn_by_failure(root: Path) -> dict[str, dict[str, Any]]:
     for path in record_files(root, "learn"):
         learn = load_json(path)
         ids = []
-        primary = learn.get("primary_failure_mode")
+        learning_basis = learn.get("learning_basis") if isinstance(learn.get("learning_basis"), dict) else {}
+        linked = learn.get("linked_records") if isinstance(learn.get("linked_records"), dict) else {}
+        primary = learn.get("primary_failure_mode") or learning_basis.get("primary_failure_mode")
         if isinstance(primary, str):
             ids.append(primary)
-        related = learn.get("related_failure_modes")
-        if isinstance(related, list):
-            ids.extend(value for value in related if isinstance(value, str))
+        for related in (learn.get("related_failure_modes"), linked.get("related_failure_modes")):
+            if isinstance(related, list):
+                ids.extend(value for value in related if isinstance(value, str))
         for failure_id in ids:
             mapping.setdefault(failure_id, learn)
     return mapping
@@ -157,7 +159,18 @@ def build_inventory(root: Path = ROOT) -> dict[str, Any]:
         patch_ids = linked_patch_ids(record)
         learn = learns.get(str(record.get("id")))
         linked_patches_exist = bool(patch_ids) and all(patch_id in patches for patch_id in patch_ids)
-        learn_complete = bool(learn and learn.get("chain_state") == "complete")
+        chain_completion = (
+            learn.get("chain_completion")
+            if learn and isinstance(learn.get("chain_completion"), dict)
+            else {}
+        )
+        learn_complete = bool(
+            learn
+            and (
+                learn.get("chain_state") == "complete"
+                or chain_completion.get("overall_status") == "complete"
+            )
+        )
         row = {
             "record_id": record.get("id"),
             "record_type": record.get("record_type"),
