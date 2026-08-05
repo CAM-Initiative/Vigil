@@ -14,30 +14,22 @@ ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_JSON = ROOT / "vigil" / "docs" / "2026-triage-model-inventory.json"
 DEFAULT_MARKDOWN = ROOT / "vigil" / "docs" / "2026-triage-model-inventory.md"
 
-ALLOWED_PRIORITIES = ("P0", "P1", "P2", "P3", "P4", "none")
+ALLOWED_PRIORITIES = ("P0", "P1", "P2", "P3", "PN", "PU")
 ALLOWED_STATUSES = (
-    "needs-review",
-    "active-investigation",
-    "awaiting-evidence",
-    "ready-for-routing",
-    "routed",
+    "intake",
+    "under-assessment",
+    "action-required",
     "repair-in-progress",
-    "verification-required",
+    "verification-pending",
     "monitoring",
-    "deferred",
-    "closed",
+    "blocked",
+    "closed-actioned",
+    "closed-no-action",
+    "superseded",
 )
 ACTIVE_PRIORITIES = {"P0", "P1", "P2", "P3"}
-ACTIVE_NONE_FORBIDDEN = {"active-investigation", "repair-in-progress", "verification-required"}
-PREFERRED_SEVERITIES = (
-    "critical",
-    "high",
-    "moderate",
-    "low",
-    "negligible",
-    "to-be-assessed",
-    "not-applicable",
-)
+PN_FORBIDDEN_STATUSES = {"action-required", "repair-in-progress", "verification-pending"}
+PREFERRED_SEVERITIES = ("S0", "S1", "S2", "S3", "S4", "SU")
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -120,14 +112,14 @@ def review_flags(row: dict[str, Any]) -> list[str]:
         flags.append("missing-priority")
     if status in (None, ""):
         flags.append("missing-status")
-    if state.startswith("closed") and priority != "none":
+    if state.startswith("closed") and priority != "PN":
         flags.append("closed-state-active-priority")
     if monitoring_like(row) and priority in {"P0", "P1"}:
         flags.append("monitoring-p0-p1")
     if priority in ACTIVE_PRIORITIES and not text_present(next_step):
         flags.append("active-priority-without-next-step")
-    if priority == "none" and status in ACTIVE_NONE_FORBIDDEN:
-        flags.append("none-with-active-status")
+    if priority == "PN" and status in PN_FORBIDDEN_STATUSES:
+        flags.append("pn-with-active-status")
     if priority in {"High", "Medium", "Low", "Critical", "Urgent", "high", "medium", "low"}:
         flags.append("priority-may-contain-severity")
     if priority in {"closed", "monitoring"}:
@@ -195,7 +187,7 @@ def build_inventory(root: Path = ROOT) -> dict[str, Any]:
     rows.sort(key=lambda row: str(row.get("record_id") or ""))
     flag_counts = count(flag for row in rows for flag in row["review_flags"])
     return {
-        "inventory_contract": "VIGIL triage semantic migration — Pass 1 model and inventory",
+        "inventory_contract": "VIGIL severity and triage migration — Pass 2 contract enforcement",
         "governing_rule": (
             "Current triage priority is mutable operational state. Historical urgency is provenance. "
             "Failure severity is classification. Triage status is workflow. Ecosystem monitoring is "
@@ -215,7 +207,7 @@ def build_inventory(root: Path = ROOT) -> dict[str, Any]:
             "severity": list(PREFERRED_SEVERITIES),
         },
         "migration_safety": {
-            "phase": "pass-1-inventory-only",
+            "phase": "pass-2-contract-enforcement",
             "records_reconciled": False,
             "historical_transitions_fabricated": False,
             "note": "Flags identify review candidates; they do not decide replacement values.",
@@ -258,7 +250,7 @@ def render_markdown(inventory: dict[str, Any]) -> str:
         "",
         "> " + inventory["governing_rule"],
         "",
-        "This is a deterministic pre-migration inventory. It records the current branch state and review flags; it does not assign replacement priority, status, or severity values.",
+        "This is a deterministic migration inventory under the model 2.0 contract. It records current legacy values and review flags; it does not assign replacement priority, status, or severity values.",
         "",
         "## Scope and boundary",
         "",
@@ -285,7 +277,7 @@ def render_markdown(inventory: dict[str, Any]) -> str:
         "",
         *markdown_table(["Severity", "Count"], counts["severity"].items()),
         "",
-        "The target severity vocabulary is `critical`, `high`, `moderate`, `low`, `negligible`, `to-be-assessed`, and `not-applicable`. Existing `medium`, `medium-high`, `low-to-medium`, conditional prose ratings, and `to be assessed` are not rewritten in Pass 1. `medium-high`, `low-to-medium`, and conditional prose ratings require record-level judgment rather than blind mapping.",
+        "Model 2.0 severity uses `S0`, `S1`, `S2`, `S3`, `S4`, and `SU`. Every current descriptive severity value remains unchanged and requires reviewed Pass 3 mapping. Ranges, conditional prose, and unassessed values must not be converted blindly.",
         "",
         "## Priority by record state",
         "",
@@ -310,7 +302,7 @@ def render_markdown(inventory: dict[str, Any]) -> str:
         "",
         "## Review-flag definitions",
         "",
-        "Flags are diagnostic only. `repaired-with-active-priority-review` does not assume that `none` is correct; a concrete verification or routing task may justify an active priority. `monitoring-p0-p1` includes both lifecycle monitoring and legacy watch/monitor status phrases. `legacy-severity-mapping-required` preserves severity until the migration mapping is reviewed.",
+        "Flags are diagnostic only. `repaired-with-active-priority-review` does not assume that `PN` is correct; a concrete verification or routing task may justify an active priority. `monitoring-p0-p1` includes lifecycle monitoring and legacy watch/monitor phrases. `legacy-severity-mapping-required` preserves every descriptive severity until reviewed mapping.",
         "",
         "## Record inventory",
         "",
@@ -328,7 +320,7 @@ def render_markdown(inventory: dict[str, Any]) -> str:
         "",
         "## Pass 2 and Pass 3 boundary",
         "",
-        "Pass 2 may enforce the target vocabularies and cross-field invariants in schemas, templates, validators, tests, and registry projection. Pass 3 must reconcile each flagged record according to its actual outstanding CAM/VIGIL work. No historical transition may be invented from this inventory.",
+        "Pass 2 makes the model 2.0 contract executable for new and reconciled FM records. Pass 3 must reconcile each flagged record according to its actual harm scope and outstanding CAM/VIGIL work. No historical transition may be invented from this inventory.",
         "",
     ]
     return "\n".join(lines)
