@@ -35,8 +35,13 @@ class TriageInventoryTests(unittest.TestCase):
                 "VIGIL-2026-LEARN-0001.json",
                 {
                     "id": "VIGIL-2026-LEARN-0001",
-                    "primary_failure_mode": "VIGIL-2026-FM-0001",
-                    "chain_state": "complete",
+                    "learning_basis": {
+                        "primary_failure_mode": "VIGIL-2026-FM-0001"
+                    },
+                    "linked_records": {
+                        "related_failure_modes": ["VIGIL-2026-FM-0001"]
+                    },
+                    "chain_completion": {"overall_status": "complete"},
                 },
             )
             self.write_record(
