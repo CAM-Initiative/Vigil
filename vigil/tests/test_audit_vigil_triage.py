@@ -52,9 +52,9 @@ class TriageInventoryTests(unittest.TestCase):
                     "id": "VIGIL-2026-FM-0001",
                     "record_type": "failure_mode",
                     "record_state": "monitoring",
-                    "failure_classification": {"severity": "critical"},
+                    "failure_classification": {"severity": "S1"},
                     "triage": {
-                        "triage_priority": "none",
+                        "triage_priority": "PN",
                         "triage_status": "monitoring",
                         "recommended_next_step": "Observe recurrence.",
                     },
@@ -71,8 +71,8 @@ class TriageInventoryTests(unittest.TestCase):
 
             inventory = AUDIT.build_inventory(root)
             row = inventory["records"][0]
-            self.assertEqual(row["severity"], "critical")
-            self.assertEqual(row["triage_priority"], "none")
+            self.assertEqual(row["severity"], "S1")
+            self.assertEqual(row["triage_priority"], "PN")
             self.assertEqual(row["triage_status"], "monitoring")
             self.assertTrue(row["monitoring_required"])
             self.assertTrue(row["linked_patch_records_exist"])
