@@ -327,7 +327,24 @@ def render_json(inventory: dict[str, Any]) -> str:
 
 def write_or_check(path: Path, content: str, check: bool) -> bool:
     if check:
-        return path.exists() and path.read_text(encoding="utf-8") == content
+        if not path.exists():
+            print(f"Missing triage inventory output: {path}")
+            return False
+        current = path.read_text(encoding="utf-8")
+        if current == content:
+            return True
+        current_lines = current.splitlines()
+        expected_lines = content.splitlines()
+        limit = max(len(current_lines), len(expected_lines))
+        for index in range(limit):
+            current_line = current_lines[index] if index < len(current_lines) else "<missing>"
+            expected_line = expected_lines[index] if index < len(expected_lines) else "<missing>"
+            if current_line != expected_line:
+                print(f"First triage inventory difference in {path} at line {index + 1}:")
+                print(f"  committed: {current_line}")
+                print(f"  generated: {expected_line}")
+                break
+        return False
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(content, encoding="utf-8")
     return True
