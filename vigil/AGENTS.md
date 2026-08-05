@@ -53,13 +53,15 @@ Use this doctrine for every failure-mode triage decision:
 
 > Current triage priority is mutable operational state. Historical urgency is provenance. Failure severity is classification. Triage status is workflow. Ecosystem monitoring is continuing external observation.
 
-* `failure_classification.severity` describes the failure and is not reduced merely because CAM repaired its own corpus.
-* `triage.triage_priority` describes outstanding CAM/VIGIL work now. It must not preserve historical urgency or passive monitoring as current queue priority.
-* `triage.triage_status` describes workflow state and must not carry free-form repair, severity, or monitoring prose.
-* `record_state` remains the record lifecycle.
-* `ecosystem_status.monitoring_required` describes the continuing external condition and does not automatically justify P0–P4.
-* Preserve evidenced priority/status transitions in append-only `triage_history`; never fabricate a legacy transition.
-* During the staged migration, use `vigil/docs/2026-triage-model-inventory.json` as the review surface. Do not mass-map ambiguous legacy priority, status, or severity values.
+* Model 2.0 severity uses only `S0`, `S1`, `S2`, `S3`, `S4`, and `SU`. Rate the greatest reasonably supported harm within the stated evidence and deployment scope; do not use an unconstrained imaginable worst case.
+* `failure_classification.severity` describes the failure and is not reduced merely because CAM repaired its own corpus. `SU` requires a stated assessment gap and next step.
+* Model 2.0 priority uses only `P0`, `P1`, `P2`, `P3`, `PN`, and `PU`. `PN` means no active queue priority; `PU` means urgency is not yet assessed.
+* `triage.triage_priority` describes the urgency of the next required CAM/VIGIL action now. It must not preserve historical urgency, severity, public importance, or passive monitoring as queue priority.
+* `triage.triage_status` is the canonical workflow-status field and uses the controlled workflow vocabulary in `VIGIL.Schema.json`; do not add a duplicate `workflow_status` field.
+* `record_state` remains the record lifecycle. `ecosystem_status.monitoring_required` remains continuing external observation and does not automatically justify P0–P3.
+* New and reconciled FM records declare `triage.model_version: "2.0"`. Legacy records remain in diagnostic migration mode until Pass 3 review.
+* Preserve evidenced transitions in append-only `triage_history`; never fabricate a legacy transition. Identify the analytical reviewer and governance authority accurately rather than defaulting to a generic “VIGIL maintainers” actor.
+* Use `vigil/docs/2026-triage-model-inventory.json` as the migration review surface. Do not mass-map descriptive severity, uncontrolled priority, or free-text workflow values.
 
 
 ### PROP — Proposal Record
