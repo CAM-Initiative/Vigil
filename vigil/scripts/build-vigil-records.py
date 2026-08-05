@@ -446,7 +446,7 @@ def source_summary(record: dict[str, Any]) -> dict[str, Any]:
     platforms = sorted(
         {source.get("source_platform") for source in sources if source.get("source_platform")}
     )
-    metadata = {
+    return {
         "source_count": len(sources),
         "primary_source_title": primary.get("source_title", ""),
         "primary_source_type": primary.get("source_type", ""),
@@ -536,7 +536,7 @@ def list_metadata(record: dict[str, Any]) -> dict[str, Any]:
         else {}
     )
 
-    return {
+    metadata = {
         "source_count": len(sources),
         "primary_source_title": primary_source.get("source_title", ""),
         "primary_source_type": primary_source.get("source_type", ""),
