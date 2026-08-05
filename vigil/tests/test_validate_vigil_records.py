@@ -395,10 +395,18 @@ class ValidateVigilRecordsTest(unittest.TestCase):
         def invalid(record):
             self.adopt_triage_v2(record, priority="P1")
             record["repair_status"]["status"] = "repaired"
+            record["repair_status"]["repaired_by"] = ["VIGIL-2026-PATCH-9999"]
+            record["repair_status"]["date_repaired"] = "2026-08-05"
+            record["repair_status"]["repair_basis"] = "patch-implemented"
+            record["linked_records"]["related_patch_notes"] = ["VIGIL-2026-PATCH-9999"]
 
         def valid(record):
             self.adopt_triage_v2(record, priority="P1")
             record["repair_status"]["status"] = "repaired"
+            record["repair_status"]["repaired_by"] = ["VIGIL-2026-PATCH-9999"]
+            record["repair_status"]["date_repaired"] = "2026-08-05"
+            record["repair_status"]["repair_basis"] = "patch-implemented"
+            record["linked_records"]["related_patch_notes"] = ["VIGIL-2026-PATCH-9999"]
             record["triage"]["urgent_condition"] = "Time-sensitive implementation verification remains incomplete."
 
         self.assertNotEqual(self.validate_mutated_fixture("VIGIL-2026-FM-0001.json", invalid), 0)
