@@ -21,6 +21,7 @@ PATCH_0022_SOURCE_TRACEABILITY_REVIEW = (
     "VIGIL-REVIEW-2026-07-26-CODEX-PATCH-0022-SOURCE-TRACEABILITY"
 )
 MIGRATION_REVIEW = "VIGIL-REVIEW-2026-07-14-GPT-5.6-THINKING"
+TRIAGE_RECONCILIATION_REVIEW = "VIGIL-REVIEW-2026-08-05-OPENAI-CODEX-TRIAGE-V2"
 
 
 def load(record_id: str) -> dict:
@@ -30,12 +31,18 @@ def load(record_id: str) -> dict:
 
 
 class ProvenancePreservationTests(unittest.TestCase):
-    def test_record_specific_current_reviews_are_preserved(self):
+    def test_record_specific_reviews_remain_in_history_after_triage_reconciliation(self):
         for record_id, expected_review_id in EXPECTED_REVIEWS.items():
             with self.subTest(record_id=record_id):
                 record = load(record_id)
-                current = record["interpretive_provenance"]["current_ai_review"]
-                self.assertEqual(current["review_id"], expected_review_id)
+                provenance = record["interpretive_provenance"]
+                review_ids = {review["review_id"] for review in provenance["review_history"]}
+                self.assertIn(expected_review_id, review_ids)
+                self.assertIn(TRIAGE_RECONCILIATION_REVIEW, review_ids)
+                self.assertEqual(
+                    provenance["current_ai_review"]["review_id"],
+                    TRIAGE_RECONCILIATION_REVIEW,
+                )
 
     def test_patch_reconstruction_preserves_review_history_and_latest_current_review(self):
         """A later verification may become current without deleting the reconstruction review."""
