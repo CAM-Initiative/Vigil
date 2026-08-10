@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/CAM-Initiative/VIGIL/vigil/external_sources/ledger.schema.json",
+  "title": "VIGIL External Governance Source Ledger",
+  "type": "object",
+  "required": ["schema_version", "updated_at", "entries"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "updated_at": {"type": ["string", "null"]},
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "vigil_source_id",
+          "external_source_id",
+          "source_version",
+          "canonical_identifier",
+          "issuer",
+          "jurisdiction",
+          "source_class",
+          "source_lifecycle_state",
+          "official_locator",
+          "upstream_source_id",
+          "fingerprint",
+          "change_state",
+          "alignment_state",
+          "first_seen",
+          "last_seen"
+        ],
+        "properties": {
+          "vigil_source_id": {"type": "string", "pattern": "^EXT-[A-F0-9]{12}$"},
+          "external_source_id": {"type": "string", "minLength": 1},
+          "source_version": {"type": "string", "minLength": 1},
+          "canonical_identifier": {
+            "type": "object",
+            "required": ["scheme", "value"],
+            "properties": {
+              "scheme": {"type": "string", "minLength": 1},
+              "value": {"type": "string", "minLength": 1}
+            },
+            "additionalProperties": false
+          },
+          "title": {"type": ["string", "null"]},
+          "issuer": {"type": "string", "minLength": 1},
+          "jurisdiction": {"type": "string", "minLength": 1},
+          "source_class": {"type": "string", "minLength": 1},
+          "source_lifecycle_state": {"type": "string", "minLength": 1},
+          "publication_date": {"type": ["string", "null"]},
+          "effective_date": {"type": ["string", "null"]},
+          "official_locator": {"type": "string", "minLength": 1},
+          "upstream_source_id": {"type": "string", "minLength": 1},
+          "upstream_record_id": {"type": ["string", "null"]},
+          "upstream_release": {"type": ["string", "null"]},
+          "fingerprint": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+          "change_state": {
+            "enum": ["new", "changed", "superseded", "withdrawn", "unchanged"]
+          },
+          "alignment_state": {
+            "enum": [
+              "unassigned",
+              "review-required",
+              "mapped",
+              "patch-required",
+              "patched",
+              "verified",
+              "no-change-required",
+              "not-applicable",
+              "superseded-before-review"
+            ]
+          },
+          "alignment_eligible": {"type": "boolean"},
+          "caelestis_assessed_commit": {"type": ["string", "null"]},
+          "caelestis_crosswalk_refs": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "first_seen": {"type": "string", "minLength": 1},
+          "last_seen": {"type": "string", "minLength": 1},
+          "notes": {"type": ["string", "null"]}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
