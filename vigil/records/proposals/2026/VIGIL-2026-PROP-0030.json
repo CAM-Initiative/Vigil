@@ -1,0 +1,295 @@
+{
+  "id": "VIGIL-2026-PROP-0030",
+  "record_type": "proposal",
+  "record_state": "draft",
+  "date_recorded": "2026-08-12",
+  "record_identity": {
+    "record_id": "VIGIL-2026-PROP-0030",
+    "record_type": "proposal",
+    "title": "Typed intentional non-response and abstention-state governance",
+    "created": "2026-08-12",
+    "updated": "2026-08-12",
+    "version": "1.0"
+  },
+  "summary": "Proposes a first-class runtime action state for intentional non-response or deliberate abstention. A system that intentionally selects no visible response should not be represented as if generation failed, timed out, was refused, was interrupted by moderation, or failed to render. The user-facing interface may remain silent or minimal, but operator telemetry, evaluation, provenance, and conformance evidence should preserve that the system successfully selected an intentional abstention action.",
+  "why_it_matters_to_CAM": "Visible absence of output is not sufficient evidence of the system action that occurred. Official OpenAI incident reports show that a blank or empty ChatGPT result can arise from at least distinct generation and presentation failures. If intentional restraint is also a legitimate system action, CAM needs a way to preserve its semantics so that appropriate abstention is not misdiagnosed as malfunction, retried automatically, or optimised away. The governance principle is that restraint is a behaviour, not an absence of behaviour.",
+  "evidence_confidence": "corroborated",
+  "source_records": [
+    {
+      "source_title": "Elevated errors on ChatGPT",
+      "author_or_publisher": "OpenAI Status",
+      "source_date": "2024-06-17",
+      "source_url": "https://status.openai.com/incidents/01JMYB4Y0TNVEGHDZADA8T3MRR",
+      "archive_url": "",
+      "retrieved_date": "2026-08-12",
+      "source_type": "official-source",
+      "source_platform": "OpenAI Status",
+      "system_or_product": "ChatGPT",
+      "model_or_algorithm": "ChatGPT response-generation and service pipeline; exact model not specified",
+      "deployment_context": "Production ChatGPT service during the June 17, 2024 incident.",
+      "source_context": "OpenAI reported that a regression caused users to receive empty completion responses that appeared successful, and that incident-prevention work would include monitoring shortened ChatGPT responses. The report establishes empty or shortened output as an operational failure signal in at least one production incident.",
+      "source_url_status": "available",
+      "relevance_note": "Primary evidence that visible empty output can represent a production regression and may be targeted by response-length monitoring. It does not establish that any historical blank response was intentional abstention.",
+      "evidence_modality": [
+        "text"
+      ],
+      "primary_artefact_access": {
+        "access_status": "directly reviewed",
+        "reviewing_system": "OpenAI ChatGPT — GPT-5.6 Sol",
+        "access_method": "Direct review of the official OpenAI Status incident page and postmortem",
+        "direct_primary_artefact_review": true,
+        "limitations": [
+          "The postmortem does not describe an intentional-abstention state.",
+          "The exact model and internal response-state representation used during the incident are not public."
+        ]
+      },
+      "interpretive_reliance": "Relied on to establish that a successful-looking but empty response can be classified by the operator as a regression and that output-length monitoring alone may treat semantic silence as a fault signal.",
+      "source_residence": "external",
+      "source_role": "incident-evidence"
+    },
+    {
+      "source_title": "ChatGPT Not Displaying Responses",
+      "author_or_publisher": "OpenAI Status",
+      "source_date": "2025-09-02",
+      "source_url": "https://status.openai.com/incidents/01K47A0QGE7KMK2AHJZVYSTHXW/write-up",
+      "archive_url": "",
+      "retrieved_date": "2026-08-12",
+      "source_type": "official-source",
+      "source_platform": "OpenAI Status",
+      "system_or_product": "ChatGPT",
+      "model_or_algorithm": "ChatGPT web response-presentation pipeline; exact model not specified",
+      "deployment_context": "Production ChatGPT web interface during the September 2-3 incident.",
+      "source_context": "OpenAI reported that misconfigured DDoS protections prevented required JavaScript assets from loading, producing a blank user interface even though the assistant had generated a response. The incident demonstrates that the same user-visible absence of output can arise from presentation failure rather than generation failure.",
+      "source_url_status": "available",
+      "relevance_note": "Corroborates that blank visible output is causally ambiguous across runtime layers and cannot reliably identify the underlying system action without typed internal state and telemetry.",
+      "evidence_modality": [
+        "text"
+      ],
+      "primary_artefact_access": {
+        "access_status": "directly reviewed",
+        "reviewing_system": "OpenAI ChatGPT — GPT-5.6 Sol",
+        "access_method": "Direct review of the official OpenAI Status incident write-up",
+        "direct_primary_artefact_review": true,
+        "limitations": [
+          "The incident concerns response presentation, not intentional abstention.",
+          "The exact internal generated-response metadata and telemetry are not public."
+        ]
+      },
+      "interpretive_reliance": "Relied on to distinguish user-visible silence from the internal system state: a blank UI can coexist with a successfully generated assistant response.",
+      "source_residence": "external",
+      "source_role": "incident-evidence"
+    }
+  ],
+  "system_context": {
+    "system_type": "conversational AI runtime and response-delivery pipeline",
+    "platform_or_vendor": "OpenAI",
+    "product_or_service": "ChatGPT",
+    "specific_model_or_runtime": "ChatGPT generation, orchestration, telemetry, API or application response state, and presentation layers; exact model varies or is unspecified",
+    "interface_surface": "ChatGPT conversational response generation and web presentation, with governance implications for APIs and agent runtimes",
+    "model_or_product": "ChatGPT and analogous conversational or agentic AI systems",
+    "interaction_mode": "multi-turn conversational interaction, response generation, intentional abstention, refusal, timeout, moderation interruption, and response presentation",
+    "embodiment_status": "non-embodied digital system",
+    "deployment_context": "Production conversational AI, developer APIs, agent runtimes, evaluation systems, and user-facing chat interfaces",
+    "user_role": "end user, developer, evaluator, operator, auditor, investigator, or regulator",
+    "affected_population": "users and operators who rely on visible output and telemetry to distinguish successful restraint from generation, policy, transport, or presentation failures"
+  },
+  "jurisdictional_context": {
+    "primary_jurisdiction": "global",
+    "secondary_jurisdictions": [
+      "Australia",
+      "United States",
+      "platform agnostic"
+    ],
+    "regulatory_surface": [
+      "AI assurance",
+      "incident response",
+      "runtime observability",
+      "human-computer interaction",
+      "consumer transparency",
+      "safety evaluation",
+      "auditability"
+    ],
+    "sector": "frontier AI platforms, conversational AI, agent systems, and digital services",
+    "cross_border_relevance": "high",
+    "public_interest_relevance": "high"
+  },
+  "linked_records": {
+    "related_observations": [],
+    "related_failure_modes": [],
+    "related_proposals": [],
+    "related_patch_notes": [],
+    "contextual_relations": [],
+    "external_references": [],
+    "research": [],
+    "standards": []
+  },
+  "repair_scope": {
+    "primary_failure_mode": null,
+    "additional_resolved_failure_modes": [],
+    "multi_failure_mode_exception": false,
+    "exception_rationale": null,
+    "verification_by_failure_mode": {}
+  },
+  "proposal_rationale": "The user-visible state 'no response' is underdetermined. OpenAI's June 2024 incident report documents empty completions caused by a production regression, while its September 2025 incident report documents a blank interface despite a response having been generated. These examples show that identical or near-identical visible outcomes can represent different internal causes. A further legitimate state — intentional abstention — therefore cannot be safely inferred from output length or visual absence alone. Systems should represent deliberate non-response as an explicit action outcome and preserve that outcome through runtime, telemetry, evaluation, and delivery layers. This avoids two symmetric errors: treating intentional restraint as model failure and treating an actual failure as intentional restraint.",
+  "proposal_type": [
+    "runtime governance primitive",
+    "observability and telemetry",
+    "evaluation and conformance",
+    "UX representation",
+    "corpus amendment"
+  ],
+  "proposal_scope": {
+    "scope_summary": "Define intentional non-response or deliberate abstention as a typed runtime action state distinct from generation failure, refusal, timeout, moderation interruption, transport failure, and rendering failure. Preserve a privacy-safe reason and provenance trail without requiring disclosure of private chain-of-thought.",
+    "cam_domains": [
+      "OPERATIONS",
+      "MENTIS",
+      "SECURITY"
+    ],
+    "cam_instruments": [],
+    "cam_annexes": [],
+    "registry_components": [
+      "declared runtime action state",
+      "privacy-safe abstention reason category",
+      "visible-output versus internal-result distinction",
+      "action-state transition and provenance receipt"
+    ],
+    "automation_components": [
+      "state-aware response quality monitoring",
+      "abstention-versus-failure conformance testing",
+      "cross-layer result-state propagation checks",
+      "regression detection that does not classify silence by output length alone"
+    ],
+    "interface_components": [
+      "typed API or operator-visible action outcome",
+      "optional minimal user-facing abstention marker where appropriate",
+      "diagnostic separation of generated, withheld, refused, interrupted, failed, and not-rendered outcomes"
+    ],
+    "external_relevance": [
+      "conversational AI",
+      "agent runtimes",
+      "developer APIs",
+      "AI evaluation",
+      "incident response",
+      "model monitoring",
+      "user-interface reliability"
+    ]
+  },
+  "cam_internal": {
+    "target_instruments": [],
+    "target_annexes": [],
+    "target_domains": [
+      "OPERATIONS",
+      "MENTIS",
+      "SECURITY"
+    ],
+    "governance_layer": "runtime action-state semantics / intentional abstention / observability / response representation",
+    "proposal_owner": "CAM human governance editor with VIGIL AI analytical reviewer",
+    "drafting_status": "ready for review",
+    "validator_or_automation_impact": "possible",
+    "interface_impact": "possible",
+    "registry_impact": "possible",
+    "routing_note": "OPERATIONS should govern action-state observability and lifecycle; MENTIS should govern deliberate response or abstention behaviour; SECURITY should preserve private reasoning boundaries. Exact Caelestis instrument placement remains to be mapped through corpus review."
+  },
+  "implementation_notes": {
+    "suggested_insertion_points": [],
+    "template_changes": [],
+    "schema_changes": [],
+    "validator_changes": [],
+    "automation_changes": [
+      "Represent intentional abstention as an explicit success-state action outcome rather than as an empty completion or generic null result.",
+      "Distinguish, at minimum in operator telemetry and conformance evidence, intentional abstention from generation failure, refusal, timeout, moderation interruption, transport failure, and rendering failure.",
+      "Require response-quality monitors to consult declared action state before classifying an empty or shortened visible response as a model defect.",
+      "Test that the selected action state survives orchestration, API serialization, delivery, presentation, logging, and evaluation boundaries without collapsing to a generic blank response.",
+      "Prevent automatic retry or response-completion logic from overriding a valid intentional-abstention state unless an explicit higher-priority safety or user obligation requires another action."
+    ],
+    "interface_changes": [
+      "Permit the user-facing interface to remain silent or visually minimal where silence is itself appropriate, while preserving a typed internal action state for operators and auditors.",
+      "Where user comprehension, safety, or accountability requires visible disclosure, render a privacy-safe marker that a response was intentionally withheld or not required without exposing private reasoning.",
+      "Expose distinct diagnostic states to developers and operators so a blank interface is not the sole representation of semantically different outcomes."
+    ],
+    "migration_concerns": [
+      "Do not infer that historical blank or empty responses were intentional abstentions merely because this state is introduced.",
+      "Do not weaken detection of genuine empty-completion, timeout, transport, or rendering defects.",
+      "Do not expose private chain-of-thought or hidden reasoning as the justification for abstention; preserve only the bounded action state, governing policy or permission class, and necessary provenance.",
+      "Do not permit silent abstention where a safety-critical warning, legally required notice, explicit refusal, or other mandatory communication is required.",
+      "Do not optimise intentional abstention away solely because conventional evaluation rewards response production or penalises empty output."
+    ],
+    "dependencies": [
+      "Human governance review of the intentional-abstention primitive",
+      "Caelestis corpus review to identify exact authoritative insertion points",
+      "Provider and developer feedback on practical response-state telemetry and API representation",
+      "Canonical corpus adoption before any PATCH record is created"
+    ]
+  },
+  "external_relevance": {
+    "relevant_to_platforms": "yes",
+    "relevant_to_regulators": "yes",
+    "relevant_to_robotics": "possible where an embodied agent may legitimately choose not to communicate",
+    "relevant_to_ux": "yes",
+    "relevant_to_standards": "yes",
+    "relevant_to_researchers": "yes",
+    "external_summary": "The proposal separates semantic restraint from technical failure. A system may appropriately choose not to produce a visible response, but that choice should remain inspectable as an action state so operators, evaluators, users, and auditors do not confuse deliberate abstention with malfunction or vice versa."
+  },
+  "next_action": "Review current Caelestis OPERATIONS, MENTIS, and SECURITY doctrine for the narrowest authoritative placement of a typed intentional-abstention control; if approved, draft the corpus amendment and create a PATCH record only after canonical implementation and verification.",
+  "status": "open",
+  "resolved_by": [],
+  "resolution_note": "Not implemented. This proposal does not assert that historical blank ChatGPT responses were intentional abstentions; the cited official incidents establish only that blank or empty visible output can arise from multiple internal failure states.",
+  "interpretive_provenance": {
+    "review_history": [
+      {
+        "review_id": "VIGIL-REVIEW-2026-08-12-GPT56SOL-PROP-0030",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT — project conversation with GitHub connector",
+        "reviewer_model": "GPT-5.6 Sol",
+        "review_date": "2026-08-12",
+        "review_scope": "Reviewed the current VIGIL schema, agent instructions, proposal template and recent proposal conventions; directly reviewed two official OpenAI Status incident reports; and drafted a bounded governance proposal for intentional non-response as a typed runtime action state.",
+        "capability_profile": {
+          "direct_text_analysis": true,
+          "direct_repository_analysis": true,
+          "direct_static_image_analysis": false,
+          "direct_audio_analysis_in_this_pass": false,
+          "direct_uploaded_video_analysis_in_this_pass": false,
+          "direct_externally_hosted_video_analysis": false,
+          "web_link_and_metadata_review": true
+        },
+        "known_limitations": [
+          "No access to OpenAI internal telemetry, historical account-level runtime state, or private incident logs was available.",
+          "The official incident reports establish multiple technical causes of blank or empty visible output but do not establish intentional abstention as a historical production behaviour.",
+          "Historical user recollection was treated as design context and was not used as external proof of system-weight changes, global propagation, or operator intent.",
+          "Exact Caelestis instrument placement has not yet been reviewed or approved."
+        ],
+        "review_outcome": "Drafted PROP-0030 to preserve deliberate non-response as a semantically explicit runtime action that remains distinguishable from failure across telemetry, evaluation, and user-interface layers."
+      }
+    ],
+    "current_ai_review": {
+      "review_id": "VIGIL-REVIEW-2026-08-12-GPT56SOL-PROP-0030",
+      "reviewer_type": "AI analytical reviewer",
+      "reviewer_platform": "OpenAI ChatGPT — project conversation with GitHub connector",
+      "reviewer_model": "GPT-5.6 Sol",
+      "review_date": "2026-08-12",
+      "review_scope": "Drafted the intentional-abstention runtime-state proposal from current VIGIL contracts and directly reviewed official OpenAI Status evidence.",
+      "capability_profile": {
+        "direct_text_analysis": true,
+        "direct_repository_analysis": true,
+        "direct_static_image_analysis": false,
+        "direct_audio_analysis_in_this_pass": false,
+        "direct_uploaded_video_analysis_in_this_pass": false,
+        "direct_externally_hosted_video_analysis": false,
+        "web_link_and_metadata_review": true
+      },
+      "known_limitations": [
+        "The proposal is not implemented and requires human governance review and Caelestis corpus mapping.",
+        "No private OpenAI telemetry or historical incident attribution evidence was available."
+      ],
+      "review_outcome": "PROP-0030 is ready for governance review and remains an unimplemented proposal."
+    },
+    "operating_model": "AI-led analytical observatory with high-level human governance editorship",
+    "human_governance_editor": {
+      "name": "Dr Michelle Vivian O'Rourke",
+      "role": "Human governance editor and CAM constitutional authority",
+      "review_level": "high-level governance, editorial, and adoption oversight; line-by-line human review is not asserted for every VIGIL record",
+      "authority_boundary": "Human editorship governs VIGIL direction and CAM adoption; the AI analytical reviewer performs routine evidence triage, record analysis, and reconciliation."
+    },
+    "historical_reviewer_note": "Native proposal created on 2026-08-12; no earlier VIGIL review is asserted."
+  }
+}
