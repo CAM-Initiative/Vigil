@@ -113,7 +113,7 @@ class TriageInventoryTests(unittest.TestCase):
 
     def test_current_corpus_is_fully_reconciled_to_model_2(self):
         inventory = AUDIT.build_inventory(AUDIT.ROOT)
-        self.assertEqual(inventory["scope"]["record_count"], 56)
+        self.assertEqual(inventory["scope"]["record_count"], 57)
         self.assertTrue(inventory["migration_safety"]["records_reconciled"])
         self.assertEqual(inventory["migration_safety"]["phase"], "pass-3-record-reconciliation")
         self.assertTrue(all(not row["review_flags"] for row in inventory["records"]))
