@@ -1,0 +1,70 @@
+name: External governance source ledger
+
+on:
+  push:
+    paths:
+      - "vigil/external_sources/**"
+      - "vigil/scripts/manage-external-governance-ledger.py"
+      - "vigil/scripts/apply-external-governance-baseline.py"
+      - "vigil/tests/test_external_governance_ledger.py"
+      - ".github/workflows/external-governance-ledger.yml"
+  pull_request:
+    paths:
+      - "vigil/external_sources/**"
+      - "vigil/scripts/manage-external-governance-ledger.py"
+      - "vigil/scripts/apply-external-governance-baseline.py"
+      - "vigil/tests/test_external_governance_ledger.py"
+      - ".github/workflows/external-governance-ledger.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: external-governance-ledger-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  validate-ledger:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: true
+          show-progress: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.x"
+      - name: Test deterministic lifecycle and review-state transitions
+        run: python vigil/tests/test_external_governance_ledger.py
+      - name: Apply deterministic baseline release
+        run: python vigil/scripts/apply-external-governance-baseline.py
+      - name: Validate source matrix, ledger and alignment queue
+        run: python vigil/scripts/manage-external-governance-ledger.py validate
+      - name: Check generated baseline on pull request
+        if: github.event_name == 'pull_request'
+        run: |
+          if ! git diff --quiet -- vigil/external_sources/ledger.json vigil/external_sources/alignment-queue.json vigil/external_sources/EXTERNAL-GOVERNANCE-SOURCES.md; then
+            echo "External governance baseline outputs are stale."
+            git diff --stat -- vigil/external_sources/ledger.json vigil/external_sources/alignment-queue.json vigil/external_sources/EXTERNAL-GOVERNANCE-SOURCES.md
+            exit 1
+          fi
+      - name: Commit generated baseline outputs
+        if: github.event_name == 'push' && github.actor != 'github-actions[bot]'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            vigil/external_sources/ledger.json \
+            vigil/external_sources/alignment-queue.json \
+            vigil/external_sources/EXTERNAL-GOVERNANCE-SOURCES.md
+          if git diff --cached --quiet; then
+            echo "External governance baseline outputs already current."
+          else
+            git commit -m "Rebuild external governance baseline"
+            git push
+          fi
+
+# Network ingestion remains deliberately disabled here. Baseline Release 2 is rebuilt
+# from publisher-verified seed records. Future live adapters may update VIGIL maintenance
+# state, but MUST NOT edit Caelestis or create substantive VIGIL records automatically.

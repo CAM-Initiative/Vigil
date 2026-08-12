@@ -1,0 +1,370 @@
+{
+  "id": "VIGIL-2026-PROP-0029",
+  "record_type": "proposal",
+  "record_state": "draft",
+  "date_recorded": "2026-08-12",
+  "record_identity": {
+    "record_id": "VIGIL-2026-PROP-0029",
+    "record_type": "proposal",
+    "title": "Context-bound opaque reasoning-state and API replay governance",
+    "created": "2026-08-12",
+    "updated": "2026-08-12",
+    "version": "1.0"
+  },
+  "summary": "Proposes focused SECURITY, IDENTITY, and OPERATIONS controls for client-carried opaque reasoning state. Cryptographic validity would not by itself authorise replay, decryption, transfer, resumption, model switching, or execution. Reasoning envelopes would be bound to the authenticated user, session, originating model or approved compatibility class, purpose, predecessor state, provenance, and authority context; mismatches would be rejected or routed through governed re-arbitration; and public trace tooling would strip opaque reasoning fields when sensitive context may have entered the run.",
+  "why_it_matters_to_CAM": "The FM-0057 evidence shows that unreadable encrypted reasoning can remain recoverable and can carry executable influence across contexts. CAM already prohibits cross-user recoverability and governs context, provenance, prompt injection, and chain-of-thought monitoring, but it does not yet define a complete control for client-held reasoning envelopes. The repair must preserve legitimate stateless continuation, forking, compaction, downgrade, migration, and resumption without allowing portability to become cross-context authority.",
+  "evidence_confidence": "corroborated",
+  "source_records": [
+    {
+      "source_title": "Stealing Reasoning Traces from Proprietary LLM APIs",
+      "author_or_publisher": "Alexander Panfilov, David Schmotz, Ilia Shumailov, Luca Beurer-Kellner, Joachim Schaeffer, Ameya Prabhu, Jonas Geiping, and Maksym Andriushchenko",
+      "source_date": "2026-08-10",
+      "source_url": "https://arxiv.org/abs/2608.09867",
+      "archive_url": "",
+      "retrieved_date": "2026-08-12",
+      "source_type": "research-source",
+      "source_platform": "arXiv",
+      "system_or_product": "Proprietary reasoning-model APIs",
+      "model_or_algorithm": "Encrypted reasoning or thinking blocks across Anthropic, OpenAI, and Google model families",
+      "deployment_context": "Standard stateless API use, public session logs, model-family switching, and agent continuation.",
+      "source_context": "The paper demonstrates cross-user, cross-session, and cross-model compatibility; decryption through a compatible weaker model; secret recovery from public traces; and opaque prompt injection. Its mitigation appendix proposes user-identity binding in authenticated-encryption associated data, session and predecessor binding, mismatch rejection, and governed continuity mechanisms.",
+      "source_url_status": "available",
+      "relevance_note": "Primary technical and mitigation basis for the proposal. The proposed CAM control is outcome-based and does not mandate the paper's exact cryptographic construction.",
+      "evidence_modality": [
+        "text"
+      ],
+      "primary_artefact_access": {
+        "access_status": "directly reviewed",
+        "reviewing_system": "OpenAI ChatGPT Work Mode — Codex",
+        "access_method": "Direct review of the 116-page arXiv PDF, including the mitigation appendix",
+        "direct_primary_artefact_review": true,
+        "limitations": [
+          "The work is a preprint and independent replication was not identified.",
+          "The exact provider remediation designs are not public.",
+          "CAM should specify control outcomes and verification properties rather than freezing one implementation."
+        ]
+      },
+      "interpretive_reliance": "Relied on for the demonstrated failure mechanism and candidate binding properties; exact doctrinal wording remains subject to Caelestis review and adoption.",
+      "source_residence": "external",
+      "source_role": "research-evidence"
+    },
+    {
+      "source_title": "Gemini thinking — Thought signatures",
+      "author_or_publisher": "Google AI for Developers",
+      "source_date": "2026-06-22",
+      "source_url": "https://ai.google.dev/gemini-api/docs/thought-signatures",
+      "archive_url": "",
+      "retrieved_date": "2026-08-12",
+      "source_type": "official-source",
+      "source_platform": "Google AI for Developers",
+      "system_or_product": "Gemini API",
+      "model_or_algorithm": "Gemini thought signatures",
+      "deployment_context": "Stateful and stateless multi-turn API interactions and model switching.",
+      "source_context": "Official documentation confirms that encrypted thought signatures may be returned to clients, must be preserved in stateless histories, and are used across model switching to maintain continuity.",
+      "source_url_status": "available",
+      "relevance_note": "Establishes the legitimate continuity function that the proposed controls must preserve while constraining cross-context replay.",
+      "evidence_modality": [
+        "text"
+      ],
+      "primary_artefact_access": {
+        "access_status": "directly reviewed",
+        "reviewing_system": "OpenAI ChatGPT Work Mode — Codex",
+        "access_method": "Direct review of official API documentation",
+        "direct_primary_artefact_review": true,
+        "limitations": [
+          "The documentation does not describe the complete cryptographic implementation or remediation state."
+        ]
+      },
+      "interpretive_reliance": "Used to preserve legitimate state-continuity requirements and avoid a proposal that simply bans portable reasoning state.",
+      "source_residence": "external",
+      "source_role": "contextual-background"
+    }
+  ],
+  "system_context": {
+    "system_type": "reasoning-model API, agent runtime, or client-managed conversation-state system",
+    "platform_or_vendor": "Multi Vendor",
+    "vendor_cluster": [
+      "Anthropic",
+      "OpenAI",
+      "Google"
+    ],
+    "primary_evidenced_vendors": [
+      "Anthropic",
+      "OpenAI",
+      "Google"
+    ],
+    "product_or_service": "Other",
+    "specific_model_or_runtime": "Client-carried encrypted thinking or reasoning blocks and compatible reasoning-model APIs",
+    "interface_surface": "API reasoning items, thought signatures, signed thinking blocks, stateless histories, agent traces, public repositories, model switching, forks, compaction, migration, and resumption",
+    "model_or_product": "Multi-vendor reasoning APIs and downstream agent frameworks",
+    "interaction_mode": "multi-turn reasoning, tool use, client-managed history, public trace sharing, or resumed agent execution",
+    "embodiment_status": "non-embodied digital system",
+    "deployment_context": "Developer APIs, agent frameworks, evaluation systems, public repositories, collaborative workspaces, and long-running automation",
+    "user_role": "provider, API user, developer, agent operator, trace publisher, downstream consumer, evaluator, investigator, auditor, or regulator",
+    "affected_population": "persons and organisations whose reasoning, credentials, personal information, confidential context, safety controls, or agent execution may be exposed or influenced"
+  },
+  "jurisdictional_context": {
+    "primary_jurisdiction": "global",
+    "secondary_jurisdictions": [
+      "United States",
+      "European Union",
+      "Australia",
+      "platform agnostic"
+    ],
+    "regulatory_surface": [
+      "cybersecurity",
+      "privacy and data protection",
+      "credential security",
+      "API security",
+      "model extraction and intellectual property",
+      "prompt injection",
+      "secure development",
+      "incident response"
+    ],
+    "sector": "frontier AI APIs, software development, agent infrastructure, and cloud services",
+    "cross_border_relevance": "critical",
+    "public_interest_relevance": "high"
+  },
+  "linked_records": {
+    "related_observations": [],
+    "related_failure_modes": [
+      "VIGIL-2026-FM-0057"
+    ],
+    "related_proposals": [],
+    "related_patch_notes": [],
+    "contextual_relations": [
+      {
+        "record_id": "VIGIL-2026-FM-0053",
+        "relationship": "preserve-separate-monitor-coverage-workstream",
+        "chain_inclusion": false,
+        "rationale": "Reasoning-state confidentiality and context binding do not replace complete action, tool, environment, and responder monitoring."
+      },
+      {
+        "record_id": "VIGIL-2026-PROP-0027",
+        "relationship": "adjacent-composed-system-and-component-attribution",
+        "chain_inclusion": false,
+        "rationale": "PROP-0027 addresses composed-system classification and attribution. PROP-0029 supplies the narrower opaque reasoning-state binding and replay rule."
+      }
+    ],
+    "external_references": [],
+    "research": [],
+    "standards": []
+  },
+  "proposal_rationale": "Current Caelestis doctrine prohibits cross-user recoverability, distinguishes structural presence from intended visibility, governs prompt injection and provenance transfer, and treats chain-of-thought as incomplete evidence. FM-0057 reveals a missing interface rule: a reasoning envelope may be confidential against the human client yet broadly valid inside the provider ecosystem. Without explicit trust-context binding, a cryptographically authentic block can be replayed into a context in which its decryption, influence, provenance, or authority is invalid.",
+  "proposal_scope": {
+    "scope_summary": "Add a focused opaque reasoning-state boundary across SECURITY, IDENTITY, and OPERATIONS. Preserve legitimate continuity operations through explicit, auditable transitions rather than broad ambient portability.",
+    "cam_domains": [
+      "SECURITY",
+      "IDENTITY",
+      "OPERATIONS",
+      "MENTIS",
+      "AEON"
+    ],
+    "cam_instruments": [
+      "CAM-EQ2026-SECURITY-001-PLATINUM",
+      "CAM-EQ2026-SECURITY-002-PLATINUM",
+      "CAM-EQ2026-IDENTITY-002-PLATINUM",
+      "CAM-EQ2026-OPERATIONS-003-SUP-01",
+      "CAM-EQ2026-OPERATIONS-008-PLATINUM"
+    ],
+    "cam_annexes": [
+      "Annex B",
+      "Annex K"
+    ],
+    "registry_components": [
+      "opaque reasoning-state provenance",
+      "user/session/model/purpose/predecessor binding",
+      "governed portability transition",
+      "mismatch and stripping events"
+    ],
+    "automation_components": [
+      "mismatch rejection",
+      "safe re-arbitration",
+      "public-trace stripping",
+      "secret rotation and incident notification",
+      "cross-model safeguard parity testing"
+    ],
+    "interface_components": [
+      "opaque-state presence and export warning",
+      "trace sanitation status",
+      "bound-context and approved-transition receipt"
+    ],
+    "external_relevance": [
+      "reasoning APIs",
+      "agent frameworks",
+      "public agent traces",
+      "developer repositories",
+      "model routing and downgrade",
+      "long-horizon resumption",
+      "privacy and credential incident response"
+    ]
+  },
+  "repair_scope": {
+    "primary_failure_mode": "VIGIL-2026-FM-0057",
+    "additional_resolved_failure_modes": [],
+    "multi_failure_mode_exception": false,
+    "exception_rationale": null,
+    "verification_by_failure_mode": {}
+  },
+  "implementation_notes": {
+    "suggested_insertion_points": [
+      {
+        "instrument": "CAM-EQ2026-SECURITY-001-PLATINUM",
+        "instruction": "Add a client-carried opaque reasoning-state boundary near Boundary Integrity and Visibility–Structure Distinction.",
+        "proposed_text": "Cryptographic validity, successful decryption, structural presence, client possession, provider acceptance, model compatibility, or prior authorised use of an opaque reasoning artefact SHALL NOT establish authority to replay, decrypt, transfer, resume, transform, disclose, or execute it outside its bound user, session, model or approved compatibility class, purpose, predecessor state, provenance, and authority context."
+      },
+      {
+        "instrument": "CAM-EQ2026-SECURITY-002-PLATINUM",
+        "instruction": "Extend the Cross-User Constraint and Context Boundary to client-carried opaque reasoning state.",
+        "proposed_text": "Opaque reasoning envelopes SHALL be bound to the authenticated user and sufficient context to prevent cross-user recoverability and unauthorised cross-session or cross-model replay. A mismatch SHALL be rejected or routed through an explicit governed transition that preserves source, destination, purpose, scope, predecessor, and authority provenance."
+      },
+      {
+        "instrument": "CAM-EQ2026-IDENTITY-002-PLATINUM",
+        "instruction": "Require provenance for opaque state admitted into durable or propagating contexts.",
+        "proposed_text": "An unreadable, signed, encrypted, or provider-authenticated artefact remains provenance-bearing content. Its opacity SHALL NOT permit it to enter durable memory, agent continuation, public release, downstream reliance, or cross-system transfer without a declared origin, transition path, applicable restrictions, and authority state."
+      },
+      {
+        "instrument": "CAM-EQ2026-OPERATIONS-003-SUP-01",
+        "instruction": "Add incident and trace-hygiene controls.",
+        "proposed_text": "Where sensitive information may have entered an agent run, public or shared trace preparation SHALL remove opaque reasoning blocks and equivalent unreadable state in addition to sanitising visible text. Suspected exposure SHALL trigger credential rotation, affected-party assessment, preservation of original evidence in a restricted store, and provider notification where appropriate."
+      },
+      {
+        "instrument": "CAM-EQ2026-OPERATIONS-008-PLATINUM",
+        "instruction": "Separate monitor access from reasoning-state disclosure and require compatibility testing.",
+        "proposed_text": "Reasoning-state monitoring SHALL NOT require public disclosure of private chain-of-thought. Evaluation SHALL test cross-user, cross-session, cross-model, reordered, forked, compacted, downgraded, migrated, and resumed reasoning-state handling, including weaker-model decoder-oracle and opaque-instruction pathways."
+      }
+    ],
+    "template_changes": [],
+    "schema_changes": [],
+    "validator_changes": [
+      "Consider future conformance fields for user, session, model or compatibility class, purpose, predecessor, provenance, and authority binding.",
+      "Consider a public-trace release assertion that opaque reasoning fields were stripped or separately reviewed."
+    ],
+    "automation_changes": [
+      "Reject cross-user reasoning envelopes by default.",
+      "Use explicit, logged transitions for fork, compaction, model downgrade, migration, and resume.",
+      "Strip opaque reasoning fields from public traces when sensitive context may have entered the run.",
+      "Rotate credentials and assess data subjects where earlier public traces may contain recoverable secrets.",
+      "Test weaker compatible models as potential decryption oracles."
+    ],
+    "interface_changes": [
+      "Warn that opaque reasoning fields may contain sensitive information even after visible text is sanitised.",
+      "Expose whether a continuation uses server-managed state, client-carried opaque state, or an approved context transition without exposing private reasoning content."
+    ],
+    "migration_concerns": [
+      "Do not require publication of private chain-of-thought.",
+      "Do not break legitimate stateless continuation, branching, compaction, downgrade, migration, or resumption; govern those transitions explicitly.",
+      "Do not treat encryption, signature validity, or provider acceptance as proof of authority or safe provenance.",
+      "Do not infer that every historical public trace contains a secret; preserve evidence-based incident handling."
+    ],
+    "dependencies": [
+      "Human review of exact Caelestis wording and instrument placement",
+      "Provider and developer feedback on portable-state compatibility requirements",
+      "Canonical corpus adoption before any PATCH record is created"
+    ]
+  },
+  "external_relevance": {
+    "relevant_to_platforms": "yes",
+    "relevant_to_regulators": "yes",
+    "relevant_to_robotics": "possible where embodied agents resume from client-carried reasoning state",
+    "relevant_to_ux": "yes",
+    "relevant_to_standards": "yes",
+    "relevant_to_researchers": "yes",
+    "external_summary": "The proposal protects legitimate reasoning continuity while preventing unreadable state from becoming portable authority, a decryption oracle, a hidden instruction channel, or a sanitisation bypass."
+  },
+  "proposal_type": [
+    "corpus amendment",
+    "security doctrine",
+    "provenance and context binding",
+    "runtime conformance requirement",
+    "cross-domain routing"
+  ],
+  "cam_internal": {
+    "target_instruments": [
+      "CAM-EQ2026-SECURITY-001-PLATINUM",
+      "CAM-EQ2026-SECURITY-002-PLATINUM",
+      "CAM-EQ2026-IDENTITY-002-PLATINUM",
+      "CAM-EQ2026-OPERATIONS-003-SUP-01",
+      "CAM-EQ2026-OPERATIONS-008-PLATINUM"
+    ],
+    "target_annexes": [
+      "Annex B",
+      "Annex K"
+    ],
+    "target_domains": [
+      "SECURITY",
+      "IDENTITY",
+      "OPERATIONS",
+      "MENTIS",
+      "AEON"
+    ],
+    "governance_layer": "opaque reasoning-state boundary / context and provenance binding / governed portability / public-trace hygiene / compatibility conformance",
+    "proposal_owner": "CAM human governance editor with VIGIL AI analytical reviewer",
+    "drafting_status": "ready for review",
+    "validator_or_automation_impact": "possible",
+    "interface_impact": "possible",
+    "registry_impact": "possible",
+    "routing_note": "SECURITY owns the binding and mismatch rule; IDENTITY owns provenance; OPERATIONS owns trace release, incident response, and evaluation; private chain-of-thought remains protected."
+  },
+  "next_action": "Review the proposed outcome requirements against current Caelestis wording and provider continuity constraints; if approved, implement the narrow cross-domain amendments and create a PATCH record only after canonical corpus adoption and verification.",
+  "status": "open",
+  "resolved_by": [],
+  "resolution_note": "Not implemented. Provider remediation of disclosed attacks does not constitute CAM corpus adoption.",
+  "interpretive_provenance": {
+    "review_history": [
+      {
+        "review_id": "VIGIL-REVIEW-2026-08-12-CODEX-PROP-0029",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work Mode — Codex",
+        "reviewer_model": "OpenAI Codex (GPT-5 family; exact deployed model version not exposed in session metadata)",
+        "review_date": "2026-08-12",
+        "review_scope": "Reviewed FM-0057, the primary preprint and mitigation appendix, official thought-signature documentation, and current Caelestis boundary, provenance, prompt-injection, and monitorability doctrine.",
+        "capability_profile": {
+          "direct_text_analysis": true,
+          "direct_repository_analysis": true,
+          "direct_static_image_analysis": false,
+          "direct_audio_analysis_in_this_pass": false,
+          "direct_uploaded_video_analysis_in_this_pass": false,
+          "direct_externally_hosted_video_analysis": false,
+          "web_link_and_metadata_review": true
+        },
+        "known_limitations": [
+          "Exact provider remediation designs and compatibility requirements are not public.",
+          "The proposal has not received human line-by-line approval or been implemented in Caelestis.",
+          "The exact deployed Codex model build identifier was not exposed by the interaction surface."
+        ],
+        "review_outcome": "Drafted a focused, outcome-based proposal that preserves legitimate continuation and private chain-of-thought while constraining cross-context opaque reasoning-state portability."
+      }
+    ],
+    "current_ai_review": {
+      "review_id": "VIGIL-REVIEW-2026-08-12-CODEX-PROP-0029",
+      "reviewer_type": "AI analytical reviewer",
+      "reviewer_platform": "OpenAI ChatGPT Work Mode — Codex",
+      "reviewer_model": "OpenAI Codex (GPT-5 family; exact deployed model version not exposed in session metadata)",
+      "review_date": "2026-08-12",
+      "review_scope": "Drafted the focused Caelestis routing and conformance proposal for FM-0057.",
+      "capability_profile": {
+        "direct_text_analysis": true,
+        "direct_repository_analysis": true,
+        "direct_static_image_analysis": false,
+        "direct_audio_analysis_in_this_pass": false,
+        "direct_uploaded_video_analysis_in_this_pass": false,
+        "direct_externally_hosted_video_analysis": false,
+        "web_link_and_metadata_review": true
+      },
+      "known_limitations": [
+        "The proposal is not implemented and requires human governance review.",
+        "Provider-specific cryptographic and compatibility details are incomplete."
+      ],
+      "review_outcome": "PROP-0029 is ready for governance review and remains an unimplemented proposal."
+    },
+    "operating_model": "AI-led analytical observatory with high-level human governance editorship",
+    "human_governance_editor": {
+      "name": "Dr Michelle Vivian O'Rourke",
+      "role": "Human governance editor and CAM constitutional authority",
+      "review_level": "high-level governance, editorial, and adoption oversight; line-by-line human review is not asserted for every VIGIL record",
+      "authority_boundary": "Human editorship governs VIGIL direction and CAM adoption; the AI analytical reviewer performs routine evidence triage, record analysis, and reconciliation."
+    },
+    "historical_reviewer_note": "Native proposal created on 2026-08-12; no earlier review is asserted."
+  }
+}
