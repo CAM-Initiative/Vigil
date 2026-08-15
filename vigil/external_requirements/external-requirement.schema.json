@@ -24,14 +24,19 @@
     "source_access_notes",
     "requirement_summary",
     "requirement_posture",
+    "expectation_type",
     "applicable_actor",
     "governed_object",
     "lifecycle_stage",
     "governance_expectation",
     "evidence_expectation",
+    "timing_or_frequency",
+    "required_artefacts",
+    "verification_method",
     "applicability_conditions",
     "exceptions_or_qualifications",
     "governance_concepts",
+    "source_defined_tags",
     "related_external_requirements",
     "interpretation_status",
     "interpretation_provenance",
@@ -71,6 +76,9 @@
     "requirement_posture": {
       "enum": ["mandatory-normative", "recommended-practice", "permitted-optional", "definitional", "informative-guidance", "implementation-example", "conformity-evidence-expectation"]
     },
+    "expectation_type": {
+      "enum": ["positive-duty", "prohibition", "permission", "definition", "guidance", "implementation-example", "conformity-criterion", "right-or-protection"]
+    },
     "applicable_actor": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
     "governed_object": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
     "lifecycle_stage": {
@@ -83,6 +91,9 @@
     },
     "governance_expectation": {"type": "string", "minLength": 1},
     "evidence_expectation": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "timing_or_frequency": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "required_artefacts": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "verification_method": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
     "applicability_conditions": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
     "exceptions_or_qualifications": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
     "governance_concepts": {
@@ -91,6 +102,18 @@
       "uniqueItems": true,
       "items": {
         "enum": ["accountability", "ai-literacy", "assurance", "change-management", "conformity", "data-governance", "documentation", "environmental-impact", "fairness-bias", "human-oversight", "impact-assessment", "incident-governance", "inventory", "lifecycle-governance", "monitoring", "privacy", "provenance", "risk-management", "robustness", "safety", "security", "supply-chain", "testing-evaluation", "traceability", "transparency", "worker-affected-person-rights"]
+      }
+    },
+    "source_defined_tags": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["scheme", "values"],
+        "properties": {
+          "scheme": {"type": "string", "minLength": 1},
+          "values": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}, "uniqueItems": true}
+        },
+        "additionalProperties": false
       }
     },
     "related_external_requirements": {"type": "array", "items": {"type": "string", "pattern": "^EXTREQ-[A-F0-9]{16}$"}, "uniqueItems": true},

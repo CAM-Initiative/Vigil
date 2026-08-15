@@ -46,6 +46,21 @@ class ExternalRequirementsTests(unittest.TestCase):
         )
         self.assertEqual(before, after)
 
+    def test_same_clause_atomic_requirements_have_distinct_identities(self):
+        item = next(req for req in self.requirements if req["clause_or_control"] == "Article 50(4)")
+        peer = next(req for req in self.requirements if req["clause_or_control"] == "Article 50(4)" and req["identity_key"] != item["identity_key"])
+        self.assertNotEqual(item["requirement_id"], peer["requirement_id"])
+
+    def test_source_version_change_changes_requirement_identity(self):
+        item = self.requirements[0]
+        changed = mod.requirement_id(item["vigil_source_id"], item["source_version"] + "-revised", item["clause_or_control"], item["identity_key"])
+        self.assertNotEqual(item["requirement_id"], changed)
+
+    def test_clause_renumbering_changes_requirement_identity(self):
+        item = self.requirements[0]
+        changed = mod.requirement_id(item["vigil_source_id"], item["source_version"], item["clause_or_control"] + "A", item["identity_key"])
+        self.assertNotEqual(item["requirement_id"], changed)
+
     def test_duplicate_requirement_id_fails(self):
         requirements = copy.deepcopy(self.requirements)
         requirements.append(copy.deepcopy(requirements[0]))
@@ -92,10 +107,42 @@ class ExternalRequirementsTests(unittest.TestCase):
 
     def test_official_extract_cannot_claim_reviewed_interpretation(self):
         requirements = copy.deepcopy(self.requirements)
+        scopes = copy.deepcopy(self.scope_entries)
         imda = next(item for item in requirements if item["external_source_id"] == "IMDA-AGENTIC-AI-MGF")
+        for entry in scopes:
+            if mod.source_key(entry) == mod.source_key(imda):
+                entry["source_access_status"] = "official-public-extract"
+                entry["extraction_status"] = "partial"
+                entry["known_unreviewed_sections"] = ["Full framework"]
+                entry["maintainer_action_required"] = True
+                entry["maintainer_action"] = "Review the complete authoritative framework."
+                entry["next_action"] = entry["maintainer_action"]
+        imda["source_access_status"] = "official-public-extract"
+        imda["interpretation_provenance"]["basis"] = "official-public-extract"
         imda["interpretation_status"] = "reviewed-analytical-summary"
-        errors = self.validate_requirements(requirements)
+        errors = self.validate_requirements(requirements, scopes)
         self.assertTrue(any("public-extract access requires" in error for error in errors), errors)
+
+    def test_complete_source_cannot_retain_known_unreviewed_sections(self):
+        scopes = copy.deepcopy(self.scope_entries)
+        complete = next(entry for entry in scopes if entry["extraction_status"] == "complete")
+        complete["known_unreviewed_sections"] = ["Unreviewed annex"]
+        errors = self.validate_requirements(scope_entries=scopes)
+        self.assertTrue(any("complete extraction cannot retain known unreviewed sections" in error for error in errors), errors)
+
+    def test_nonmandatory_prohibition_fails(self):
+        requirements = copy.deepcopy(self.requirements)
+        target = next(item for item in requirements if item["expectation_type"] == "prohibition")
+        target["requirement_posture"] = "recommended-practice"
+        errors = self.validate_requirements(requirements)
+        self.assertTrue(any("prohibition must have mandatory-normative posture" in error for error in errors), errors)
+
+    def test_duplicate_source_defined_tag_scheme_fails(self):
+        requirements = copy.deepcopy(self.requirements)
+        target = next(item for item in requirements if item["source_defined_tags"])
+        target["source_defined_tags"].append(copy.deepcopy(target["source_defined_tags"][0]))
+        errors = self.validate_requirements(requirements)
+        self.assertTrue(any("source_defined_tag schemes must be unique" in error for error in errors), errors)
 
     def test_requirement_on_superseded_source_version_fails(self):
         requirements = copy.deepcopy(self.requirements)

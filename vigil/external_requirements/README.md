@@ -6,7 +6,7 @@ These records are maintained external reference data. They are not VIGIL evident
 
 ## Maintained inputs
 
-- `source-scope.json` classifies every registered source version by role, access basis and extraction status.
+- `source-scope.json` classifies every registered source version by role, access basis, extraction status, known unreviewed sections, next action and downstream alignment priority.
 - `requirements.json` contains stable requirement-level records.
 - `external-requirement.schema.json` and `source-scope.schema.json` define the data contracts.
 
@@ -16,6 +16,7 @@ These records are maintained external reference data. They are not VIGIL evident
 - `completeness-report.json` records source-level extraction statistics and unresolved access or interpretation state.
 - `EXTERNAL-AI-GOVERNANCE-REQUIREMENTS.md` is the human-reviewable catalogue.
 - `SOURCE-ACCESS-LIMITATIONS.md` is the maintainer access list.
+- `BLOCKED-SOURCE-PRIORITIES.md` prioritises inaccessible primary standards by governance value without asserting that their normative text was reviewed.
 
 ## Commands
 
@@ -25,6 +26,6 @@ python vigil/scripts/manage-external-requirements.py validate --check-generated
 python vigil/tests/test_external_requirements.py
 ```
 
-Requirement identifiers are deterministic from the registered source version, clause/control and a stable `identity_key`. Editing an analytical summary does not change identity. Changing the represented source clause or atomic requirement does.
+Requirement identifiers are deterministic from the registered source version, clause/control and a stable `identity_key`. Editing an analytical summary does not change identity. Changing the represented source clause or atomic requirement does. Schema version 1.1 also preserves explicit prohibition/duty type, source-stated timing, required artefacts, verification methods and source-defined tags where the source actually supplies them.
 
 Copyrighted or access-controlled standards are never reconstructed from titles, abstracts or third-party summaries. Their source-scope rows remain visibly access-blocked until licensed primary text is available for review.

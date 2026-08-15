@@ -26,6 +26,7 @@ INDEX_PATH = REQ / "requirements-index.json"
 COMPLETENESS_PATH = REQ / "completeness-report.json"
 CATALOGUE_PATH = REQ / "EXTERNAL-AI-GOVERNANCE-REQUIREMENTS.md"
 ACCESS_PATH = REQ / "SOURCE-ACCESS-LIMITATIONS.md"
+PRIORITY_PATH = REQ / "BLOCKED-SOURCE-PRIORITIES.md"
 
 SOURCE_ROLES = {
     "primary-ai-governance",
@@ -66,6 +67,14 @@ POSTURES = {
     "informative-guidance",
     "implementation-example",
     "conformity-evidence-expectation",
+}
+EXPECTATION_TYPES = {
+    "positive-duty", "prohibition", "permission", "definition", "guidance",
+    "implementation-example", "conformity-criterion", "right-or-protection",
+}
+ALIGNMENT_PRIORITIES = {
+    "critical-alignment-source", "high-value-alignment-source",
+    "supporting-specialist-source", "low-immediate-priority",
 }
 INTERPRETATION_STATES = {
     "authoritative-direct",
@@ -151,14 +160,19 @@ REQUIRED_REQUIREMENT_FIELDS = {
     "source_access_notes",
     "requirement_summary",
     "requirement_posture",
+    "expectation_type",
     "applicable_actor",
     "governed_object",
     "lifecycle_stage",
     "governance_expectation",
     "evidence_expectation",
+    "timing_or_frequency",
+    "required_artefacts",
+    "verification_method",
     "applicability_conditions",
     "exceptions_or_qualifications",
     "governance_concepts",
+    "source_defined_tags",
     "related_external_requirements",
     "interpretation_status",
     "interpretation_provenance",
@@ -177,6 +191,10 @@ REQUIRED_SCOPE_FIELDS = {
     "extraction_status",
     "extraction_scope_notes",
     "inaccessible_sections",
+    "known_unreviewed_sections",
+    "next_action",
+    "alignment_priority",
+    "alignment_priority_rationale",
     "maintainer_action_required",
     "maintainer_action",
 }
@@ -262,6 +280,14 @@ def validate_scope(
             errors.append(f"source-scope {key} access_checked_at must use YYYY-MM-DD")
         if not string_array(entry.get("inaccessible_sections", [])):
             errors.append(f"source-scope {key} inaccessible_sections must be a unique string array")
+        if not string_array(entry.get("known_unreviewed_sections", [])):
+            errors.append(f"source-scope {key} known_unreviewed_sections must be a unique string array")
+        if not non_empty(entry.get("next_action")):
+            errors.append(f"source-scope {key} next_action must be non-empty")
+        if entry.get("alignment_priority") not in ALIGNMENT_PRIORITIES:
+            errors.append(f"source-scope {key} has invalid alignment_priority")
+        if not non_empty(entry.get("alignment_priority_rationale")):
+            errors.append(f"source-scope {key} alignment_priority_rationale must be non-empty")
         action_required = entry.get("maintainer_action_required")
         if not isinstance(action_required, bool):
             errors.append(f"source-scope {key} maintainer_action_required must be boolean")
@@ -271,6 +297,8 @@ def validate_scope(
             errors.append(f"source-scope {key} cannot be complete with access {access}")
         if extraction == "complete" and entry.get("inaccessible_sections"):
             errors.append(f"source-scope {key} complete extraction cannot list inaccessible sections")
+        if extraction == "complete" and entry.get("known_unreviewed_sections"):
+            errors.append(f"source-scope {key} complete extraction cannot retain known unreviewed sections")
         if extraction == "blocked-access" and access not in INSUFFICIENT_FULL_REVIEW_ACCESS:
             errors.append(f"source-scope {key} blocked-access conflicts with access {access}")
         if extraction in {"blocked-access", "partial", "in-progress", "not-started"} and not action_required:
@@ -370,6 +398,8 @@ def validate_requirements(
             errors.append(f"{label}: requirement summary and governance expectation must be non-empty")
         if req.get("requirement_posture") not in POSTURES:
             errors.append(f"{label}: invalid requirement_posture")
+        if req.get("expectation_type") not in EXPECTATION_TYPES:
+            errors.append(f"{label}: invalid expectation_type")
         if req.get("interpretation_status") not in INTERPRETATION_STATES:
             errors.append(f"{label}: invalid interpretation_status")
         for field in ("applicable_actor", "governed_object", "lifecycle_stage", "governance_concepts"):
@@ -381,9 +411,27 @@ def validate_requirements(
         for value in req.get("governance_concepts", []):
             if value not in GOVERNANCE_CONCEPTS:
                 errors.append(f"{label}: invalid governance_concept {value!r}")
-        for field in ("evidence_expectation", "applicability_conditions", "exceptions_or_qualifications", "related_external_requirements", "review_limitations"):
+        for field in ("evidence_expectation", "timing_or_frequency", "required_artefacts", "verification_method", "applicability_conditions", "exceptions_or_qualifications", "related_external_requirements", "review_limitations"):
             if not string_array(req.get(field)):
                 errors.append(f"{label}: {field} must be a unique string array")
+        tags = req.get("source_defined_tags")
+        if not isinstance(tags, list):
+            errors.append(f"{label}: source_defined_tags must be an array")
+        else:
+            schemes: set[str] = set()
+            for tag in tags:
+                if not isinstance(tag, dict) or set(tag) != {"scheme", "values"}:
+                    errors.append(f"{label}: each source_defined_tag requires only scheme and values")
+                    continue
+                if not non_empty(tag.get("scheme")) or not string_array(tag.get("values"), nonempty=True):
+                    errors.append(f"{label}: source_defined_tag requires a scheme and non-empty unique values")
+                if tag.get("scheme") in schemes:
+                    errors.append(f"{label}: source_defined_tag schemes must be unique")
+                schemes.add(tag.get("scheme"))
+        if req.get("expectation_type") == "prohibition" and req.get("requirement_posture") != "mandatory-normative":
+            errors.append(f"{label}: prohibition must have mandatory-normative posture")
+        if req.get("requirement_posture") == "mandatory-normative" and req.get("interpretation_status") in {"provisional-interpretation", "needs-specialist-review"}:
+            errors.append(f"{label}: mandatory posture requires reviewed authoritative source interpretation")
 
         status = req.get("interpretation_status")
         access = req.get("source_access_status")
@@ -449,7 +497,7 @@ def build_outputs(
 ) -> dict[Path, str]:
     sorted_requirements = sorted(requirements, key=lambda item: item["requirement_id"])
     index = {
-        "schema_version": "1.0",
+        "schema_version": "1.1",
         "generated_from": "requirements.json",
         "generated_at": reviewed_at,
         "requirement_count": len(sorted_requirements),
@@ -462,6 +510,7 @@ def build_outputs(
                 "clause_or_control": req["clause_or_control"],
                 "requirement_summary": req["requirement_summary"],
                 "requirement_posture": req["requirement_posture"],
+                "expectation_type": req["expectation_type"],
                 "applicable_actor": req["applicable_actor"],
                 "governance_concepts": req["governance_concepts"],
                 "interpretation_status": req["interpretation_status"],
@@ -486,16 +535,22 @@ def build_outputs(
             "source_version": scope["source_version"],
             "source_role": scope["source_role"],
             "source_access_status": scope["source_access_status"],
+            "source_access_notes": scope["source_access_notes"],
             "extraction_status": scope["extraction_status"],
+            "extraction_scope_notes": scope["extraction_scope_notes"],
             "requirement_count": len(items),
             "reviewed_requirement_count": sum(item["interpretation_status"] in {"authoritative-direct", "reviewed-analytical-summary"} for item in items),
             "unresolved_interpretation_count": sum(item["interpretation_status"] in {"provisional-interpretation", "needs-specialist-review"} for item in items),
             "inaccessible_sections": scope["inaccessible_sections"],
+            "known_unreviewed_sections": scope["known_unreviewed_sections"],
+            "next_action": scope["next_action"],
+            "alignment_priority": scope["alignment_priority"],
+            "alignment_priority_rationale": scope["alignment_priority_rationale"],
             "maintainer_action_required": scope["maintainer_action_required"],
             "maintainer_action": scope["maintainer_action"],
         })
     completeness = {
-        "schema_version": "1.0",
+        "schema_version": "1.1",
         "generated_at": reviewed_at,
         "source_version_count": len(source_rows),
         "primary_source_version_count": sum(row["source_role"] == "primary-ai-governance" for row in source_rows),
@@ -522,21 +577,25 @@ def build_outputs(
             f"- Access: `{row['source_access_status']}`",
             f"- Extraction: `{row['extraction_status']}`",
             f"- Requirements: {row['requirement_count']} ({row['reviewed_requirement_count']} reviewed; {row['unresolved_interpretation_count']} unresolved)",
+            f"- Next action: {row['next_action']}",
             "",
         ]
         items = by_source[(row["vigil_source_id"], row["source_version"])]
         if items:
             catalogue += [
-                "| Requirement | Clause/control | Summary | Posture | Actor | Governance expectation | Evidence expectation | Review state |",
-                "| --- | --- | --- | --- | --- | --- | --- | --- |",
+                "| Requirement | Clause/control | Summary | Posture / type | Actor | Object | Governance expectation | Evidence expectation | Timing / artefact / verification | Applicability / qualification | Review / access |",
+                "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
             ]
             for req in sorted(items, key=lambda item: (item["clause_or_control"], item["requirement_id"])):
                 actor = ", ".join(req["applicable_actor"])
                 evidence = "; ".join(req["evidence_expectation"]) or "Not expressly stated"
+                applicability = "; ".join(req["applicability_conditions"] + req["exceptions_or_qualifications"]) or "Generally applicable within the cited provision"
+                governed_object = ", ".join(req["governed_object"])
+                operational_detail = "; ".join(req["timing_or_frequency"] + req["required_artefacts"] + req["verification_method"]) or "Not expressly stated"
                 safe = lambda value: str(value).replace("|", "\\|").replace("\n", " ")
                 catalogue.append(
-                    f"| `{req['requirement_id']}` | {safe(req['clause_or_control'])} | {safe(req['requirement_summary'])} | `{req['requirement_posture']}` | "
-                    f"{safe(actor)} | {safe(req['governance_expectation'])} | {safe(evidence)} | `{req['interpretation_status']}` |"
+                    f"| `{req['requirement_id']}` | {safe(req['clause_or_control'])} | {safe(req['requirement_summary'])} | `{req['requirement_posture']}` / `{req['expectation_type']}` | "
+                    f"{safe(actor)} | {safe(governed_object)} | {safe(req['governance_expectation'])} | {safe(evidence)} | {safe(operational_detail)} | {safe(applicability)} | `{req['interpretation_status']}` / `{req['source_access_status']}` |"
                 )
             catalogue.append("")
         else:
@@ -563,11 +622,29 @@ def build_outputs(
         )
     access.append("")
 
+    blocked_primary = [row for row in source_rows if row["source_role"] == "primary-ai-governance" and row["extraction_status"] == "blocked-access"]
+    priority = [
+        "# Blocked Primary-Source Priorities",
+        "",
+        "This is an access-planning projection. Priority does not imply that inaccessible normative requirements were reviewed.",
+        "",
+        "| Priority | Source | Version | Governance value | Access limitation | Next action |",
+        "| --- | --- | --- | --- | --- | --- |",
+    ]
+    priority_order = {"critical-alignment-source": 0, "high-value-alignment-source": 1, "supporting-specialist-source": 2, "low-immediate-priority": 3}
+    for row in sorted(blocked_primary, key=lambda item: (priority_order[item["alignment_priority"]], item["title"], item["source_version"])):
+        priority.append(
+            f"| `{row['alignment_priority']}` | {row['title']} | `{row['source_version']}` | "
+            f"{row['alignment_priority_rationale'].replace('|', '\\|')} | {row['source_access_status']} | {row['next_action'].replace('|', '\\|')} |"
+        )
+    priority.append("")
+
     return {
         INDEX_PATH: json_text(index),
         COMPLETENESS_PATH: json_text(completeness),
         CATALOGUE_PATH: "\n".join(catalogue).rstrip() + "\n",
         ACCESS_PATH: "\n".join(access).rstrip() + "\n",
+        PRIORITY_PATH: "\n".join(priority).rstrip() + "\n",
     }
 
 
@@ -586,8 +663,8 @@ def load_and_validate() -> tuple[dict[Path, str], list[str]]:
     ledger_entries = ledger.get("entries", [])
     scope_entries = scope_doc.get("entries", [])
     requirements = req_doc.get("requirements", [])
-    if scope_doc.get("schema_version") != "1.0" or req_doc.get("schema_version") != "1.0":
-        errors.append("source-scope and requirements documents must use schema_version 1.0")
+    if scope_doc.get("schema_version") != "1.1" or req_doc.get("schema_version") != "1.1":
+        errors.append("source-scope and requirements documents must use schema_version 1.1")
     if not isinstance(scope_doc.get("reviewed_at"), str) or not DATE_RE.fullmatch(scope_doc["reviewed_at"]):
         errors.append("source-scope reviewed_at must use YYYY-MM-DD")
     if not isinstance(req_doc.get("updated_at"), str) or not DATE_RE.fullmatch(req_doc["updated_at"]):
