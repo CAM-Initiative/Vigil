@@ -8,6 +8,7 @@ This is a maintenance view, not a statement that Caelestis conforms to every lis
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | `EXT-13FB945E8A06` | CycloneDX 1.7 — Machine Learning Bill of Materials (ML-BOM) | `1.7` | OWASP CycloneDX | International | `published` | `review-required` | `CycloneDX 1.7` |
 | `EXT-7DB18E82C9D3` | Regulation (EU) 2024/1689 (Artificial Intelligence Act) | `2024-07-12` | European Union | European Union | `in-force` | `review-required` | `32024R1689` |
+| `EXT-7DB18E82C9D3` | Regulation (EU) 2024/1689 (Artificial Intelligence Act) — consolidated 27 July 2026 | `2026-07-27` | European Union | European Union | `in-force` | `review-required` | `02024R1689-20260727` |
 | `EXT-520160AFF6F2` | Regulation (EU) 2024/2847 — Cyber Resilience Act | `2024-11-20` | European Union | European Union | `in-force` | `review-required` | `32024R2847` |
 | `EXT-8C86296B74F3` | Regulation (EU) 2023/2854 — Data Act | `2023-12-22` | European Union | European Union | `in-force` | `review-required` | `32023R2854` |
 | `EXT-CC0DF5403326` | Regulation (EU) 2022/868 — Data Governance Act | `2022-06-03` | European Union | European Union | `in-force` | `review-required` | `32022R0868` |
@@ -80,7 +81,7 @@ This is a maintenance view, not a statement that Caelestis conforms to every lis
 
 ## Baseline Release 2
 
-71 final/current external source versions are registered. Draft and under-development instruments remain monitor-only and are not added to the alignment queue until their publisher reports a final/alignment-eligible lifecycle state.
+72 final/current external source versions are registered. Draft and under-development instruments remain monitor-only and are not added to the alignment queue until their publisher reports a final/alignment-eligible lifecycle state.
 
 ## Provenance boundary
 

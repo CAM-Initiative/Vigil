@@ -7,6 +7,9 @@ on:
       - "vigil/scripts/manage-external-governance-ledger.py"
       - "vigil/scripts/apply-external-governance-baseline.py"
       - "vigil/tests/test_external_governance_ledger.py"
+      - "vigil/external_requirements/**"
+      - "vigil/scripts/manage-external-requirements.py"
+      - "vigil/tests/test_external_requirements.py"
       - ".github/workflows/external-governance-ledger.yml"
   pull_request:
     paths:
@@ -14,6 +17,9 @@ on:
       - "vigil/scripts/manage-external-governance-ledger.py"
       - "vigil/scripts/apply-external-governance-baseline.py"
       - "vigil/tests/test_external_governance_ledger.py"
+      - "vigil/external_requirements/**"
+      - "vigil/scripts/manage-external-requirements.py"
+      - "vigil/tests/test_external_requirements.py"
       - ".github/workflows/external-governance-ledger.yml"
   workflow_dispatch:
 
@@ -41,12 +47,25 @@ jobs:
         run: python vigil/scripts/apply-external-governance-baseline.py
       - name: Validate source matrix, ledger and alignment queue
         run: python vigil/scripts/manage-external-governance-ledger.py validate
+      - name: Test external requirement identity, provenance and access controls
+        run: python vigil/tests/test_external_requirements.py
+      - name: Build and validate external requirement projections
+        run: |
+          python vigil/scripts/manage-external-requirements.py build
+          python vigil/scripts/manage-external-requirements.py validate --check-generated
       - name: Check generated baseline on pull request
         if: github.event_name == 'pull_request'
         run: |
-          if ! git diff --quiet -- vigil/external_sources/ledger.json vigil/external_sources/alignment-queue.json vigil/external_sources/EXTERNAL-GOVERNANCE-SOURCES.md; then
-            echo "External governance baseline outputs are stale."
-            git diff --stat -- vigil/external_sources/ledger.json vigil/external_sources/alignment-queue.json vigil/external_sources/EXTERNAL-GOVERNANCE-SOURCES.md
+          if ! git diff --quiet -- \
+            vigil/external_sources/ledger.json \
+            vigil/external_sources/alignment-queue.json \
+            vigil/external_sources/EXTERNAL-GOVERNANCE-SOURCES.md \
+            vigil/external_requirements/requirements-index.json \
+            vigil/external_requirements/completeness-report.json \
+            vigil/external_requirements/EXTERNAL-AI-GOVERNANCE-REQUIREMENTS.md \
+            vigil/external_requirements/SOURCE-ACCESS-LIMITATIONS.md; then
+            echo "External governance generated outputs are stale."
+            git diff --stat -- vigil/external_sources vigil/external_requirements
             exit 1
           fi
       - name: Commit generated baseline outputs
@@ -57,7 +76,11 @@ jobs:
           git add \
             vigil/external_sources/ledger.json \
             vigil/external_sources/alignment-queue.json \
-            vigil/external_sources/EXTERNAL-GOVERNANCE-SOURCES.md
+            vigil/external_sources/EXTERNAL-GOVERNANCE-SOURCES.md \
+            vigil/external_requirements/requirements-index.json \
+            vigil/external_requirements/completeness-report.json \
+            vigil/external_requirements/EXTERNAL-AI-GOVERNANCE-REQUIREMENTS.md \
+            vigil/external_requirements/SOURCE-ACCESS-LIMITATIONS.md
           if git diff --cached --quiet; then
             echo "External governance baseline outputs already current."
           else

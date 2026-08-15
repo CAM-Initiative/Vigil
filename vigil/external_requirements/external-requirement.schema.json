@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/CAM-Initiative/Vigil/vigil/external_requirements/external-requirement.schema.json",
+  "title": "VIGIL External AI-Governance Requirement",
+  "description": "Layer 1 analytical reference data derived from an authoritative external source. These records are not VIGIL OBS/FM/PROP/PATCH/LEARN records and do not state Caelestis alignment.",
+  "type": "object",
+  "required": [
+    "requirement_id",
+    "identity_key",
+    "vigil_source_id",
+    "external_source_id",
+    "source_version",
+    "canonical_source_identifier",
+    "issuer",
+    "jurisdiction",
+    "source_class",
+    "source_lifecycle_state",
+    "source_role",
+    "authoritative_locator",
+    "clause_or_control",
+    "parent_section_or_group",
+    "source_access_status",
+    "source_review_date",
+    "source_access_notes",
+    "requirement_summary",
+    "requirement_posture",
+    "applicable_actor",
+    "governed_object",
+    "lifecycle_stage",
+    "governance_expectation",
+    "evidence_expectation",
+    "applicability_conditions",
+    "exceptions_or_qualifications",
+    "governance_concepts",
+    "related_external_requirements",
+    "interpretation_status",
+    "interpretation_provenance",
+    "review_limitations"
+  ],
+  "properties": {
+    "requirement_id": {"type": "string", "pattern": "^EXTREQ-[A-F0-9]{16}$"},
+    "identity_key": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$"},
+    "vigil_source_id": {"type": "string", "pattern": "^EXT-[A-F0-9]{12}$"},
+    "external_source_id": {"type": "string", "minLength": 1},
+    "source_version": {"type": "string", "minLength": 1},
+    "canonical_source_identifier": {
+      "type": "object",
+      "required": ["scheme", "value"],
+      "properties": {
+        "scheme": {"type": "string", "minLength": 1},
+        "value": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "issuer": {"type": "string", "minLength": 1},
+    "jurisdiction": {"type": "string", "minLength": 1},
+    "source_class": {"type": "string", "minLength": 1},
+    "source_lifecycle_state": {"type": "string", "minLength": 1},
+    "source_role": {
+      "enum": ["primary-ai-governance", "supporting-external-authority", "context-or-discovery", "excluded-from-current-scope"]
+    },
+    "authoritative_locator": {"type": "string", "format": "uri"},
+    "clause_or_control": {"type": "string", "minLength": 1},
+    "parent_section_or_group": {"type": ["string", "null"]},
+    "source_access_status": {
+      "enum": ["direct-public-primary", "direct-licensed-primary", "official-public-extract", "official-metadata-only", "secondary-source-only", "source-unavailable"]
+    },
+    "source_review_date": {"type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$"},
+    "source_access_notes": {"type": "string", "minLength": 1},
+    "requirement_summary": {"type": "string", "minLength": 1},
+    "requirement_posture": {
+      "enum": ["mandatory-normative", "recommended-practice", "permitted-optional", "definitional", "informative-guidance", "implementation-example", "conformity-evidence-expectation"]
+    },
+    "applicable_actor": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "governed_object": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "lifecycle_stage": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "enum": ["governance", "design", "development", "data-acquisition", "training", "testing-evaluation", "conformity-assessment", "placing-on-market", "deployment", "operation-use", "monitoring", "incident-response", "change-management", "retirement", "supply-chain", "cross-lifecycle", "not-specified"]
+      }
+    },
+    "governance_expectation": {"type": "string", "minLength": 1},
+    "evidence_expectation": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "applicability_conditions": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "exceptions_or_qualifications": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "governance_concepts": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "enum": ["accountability", "ai-literacy", "assurance", "change-management", "conformity", "data-governance", "documentation", "environmental-impact", "fairness-bias", "human-oversight", "impact-assessment", "incident-governance", "inventory", "lifecycle-governance", "monitoring", "privacy", "provenance", "risk-management", "robustness", "safety", "security", "supply-chain", "testing-evaluation", "traceability", "transparency", "worker-affected-person-rights"]
+      }
+    },
+    "related_external_requirements": {"type": "array", "items": {"type": "string", "pattern": "^EXTREQ-[A-F0-9]{16}$"}, "uniqueItems": true},
+    "interpretation_status": {
+      "enum": ["authoritative-direct", "reviewed-analytical-summary", "provisional-interpretation", "needs-specialist-review"]
+    },
+    "interpretation_provenance": {
+      "type": "object",
+      "required": ["basis", "reviewed_by", "review_method", "source_locator", "source_fingerprint"],
+      "properties": {
+        "basis": {"enum": ["direct-primary-text", "licensed-primary-text", "official-public-extract", "official-metadata-only", "secondary-source"]},
+        "reviewed_by": {"type": "string", "minLength": 1},
+        "review_method": {"type": "string", "minLength": 1},
+        "source_locator": {"type": "string", "minLength": 1},
+        "source_fingerprint": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+      },
+      "additionalProperties": false
+    },
+    "review_limitations": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true}
+  },
+  "additionalProperties": false
+}
