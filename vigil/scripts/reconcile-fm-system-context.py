@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-"""Reconcile failure-mode system context from record-local evidence metadata.
+"""Reconcile failure-mode affected-system context from structured VIGIL metadata.
 
-This is a bounded, deterministic migration. It does not browse, infer systems from
-narrative prose, or change evidence. It projects concrete provider/product/model
-metadata already present in each FM's source_records into system_context so public
-interfaces do not collapse known systems into placeholder values such as
-"Multi Vendor", "Other", or "Unknown".
+The projection deliberately separates the platform on which evidence is published
+(`source_platform`) from the AI/platform system affected by the failure. Affected
+system identity is derived from structured `system_or_product` and
+`model_or_algorithm` source metadata, with a bounded fallback to the FM's existing
+concrete `system_context` for older records that pre-date those source fields.
+Narrative prose is never mined to manufacture vendor/model identity.
 """
 
 from __future__ import annotations
@@ -14,6 +15,7 @@ import argparse
 import copy
 import json
 import re
+import subprocess
 from collections import OrderedDict
 from pathlib import Path
 from typing import Any
@@ -28,7 +30,6 @@ EVIDENCE_ROLES = {
     "affected-party-evidence",
     "research-evidence",
     "verification-evidence",
-    "standards-or-regulatory-basis",
     "direct-testimony",
     "unknown",
 }
@@ -49,14 +50,16 @@ PLACEHOLDERS = {
     "multiple evidenced access surfaces; specify details in source_records and deployment_context.",
 }
 
+GENERIC_PLATFORM_VALUES = {"Multi Vendor", "Other", "Unknown", "Not applicable"}
+
 PROVIDER_PATTERNS: list[tuple[str, tuple[str, ...]]] = [
-    ("OpenAI", ("openai", "chatgpt", "codex", "gpt-")),
+    ("OpenAI", ("openai", "chatgpt", "codex", "gpt-", "gpt ")),
     ("Anthropic", ("anthropic", "claude")),
     ("Google", ("google", "gemini", "vertex ai", "ai studio")),
-    ("Meta", ("meta ai", "meta", "llama")),
+    ("Meta", ("meta ai", "llama", "meta")),
     ("xAI", ("xai", "grok", "x premium")),
-    ("Microsoft", ("microsoft", "copilot", "azure ai", "azure openai")),
-    ("GitHub", ("github", "github copilot")),
+    ("Microsoft", ("microsoft", "azure ai", "azure openai", "microsoft copilot")),
+    ("GitHub", ("github copilot", "github")),
     ("Amazon", ("amazon", "aws", "bedrock")),
     ("Hugging Face", ("hugging face", "huggingface")),
     ("Mistral", ("mistral", "le chat")),
@@ -73,7 +76,7 @@ PROVIDER_PATTERNS: list[tuple[str, tuple[str, ...]]] = [
     ("Midjourney", ("midjourney",)),
     ("Adobe", ("adobe", "firefly")),
     ("TikTok", ("tiktok",)),
-    ("Snap", ("snapchat", "snap")),
+    ("Snap", ("snapchat",)),
 ]
 
 PRODUCT_PATTERNS: list[tuple[str, tuple[str, ...]]] = [
@@ -90,9 +93,8 @@ PRODUCT_PATTERNS: list[tuple[str, tuple[str, ...]]] = [
     ("Vertex AI", ("vertex ai",)),
     ("Grok", ("grok",)),
     ("X Premium", ("x premium",)),
-    ("X", (" x ", "x profile", "x status", "x help center")),
     ("GitHub Copilot", ("github copilot",)),
-    ("Copilot", ("copilot",)),
+    ("Copilot", ("microsoft copilot",)),
     ("Azure OpenAI", ("azure openai",)),
     ("Amazon Bedrock", ("bedrock",)),
     ("Llama", ("llama",)),
@@ -108,6 +110,39 @@ PRODUCT_PATTERNS: list[tuple[str, tuple[str, ...]]] = [
     ("TikTok", ("tiktok",)),
     ("Snapchat", ("snapchat",)),
 ]
+
+PRODUCT_PROVIDER = {
+    "ChatGPT": "OpenAI",
+    "Codex": "OpenAI",
+    "OpenAI API": "OpenAI",
+    "Claude": "Anthropic",
+    "Claude Code": "Anthropic",
+    "Claude Console": "Anthropic",
+    "Claude API": "Anthropic",
+    "Claude Cowork": "Anthropic",
+    "Gemini": "Google",
+    "Google AI Studio": "Google",
+    "Vertex AI": "Google",
+    "Grok": "xAI",
+    "X": "xAI",
+    "X Premium": "xAI",
+    "GitHub Copilot": "GitHub",
+    "Copilot": "Microsoft",
+    "Azure OpenAI": "Microsoft",
+    "Amazon Bedrock": "Amazon",
+    "Llama": "Meta",
+    "Le Chat": "Mistral",
+    "Perplexity": "Perplexity",
+    "Replit Agent": "Replit",
+    "Cursor": "Cursor",
+    "Meta AI": "Meta",
+    "Character.AI": "Character.AI",
+    "Firefly": "Adobe",
+    "Midjourney": "Midjourney",
+    "Runway": "Runway",
+    "TikTok": "TikTok",
+    "Snapchat": "Snap",
+}
 
 CONCRETE_LEGACY_PROVIDERS = {
     "OpenAI", "xAI", "Anthropic", "Meta", "Google", "DeepSeek", "Kimi", "Sesame",
@@ -159,51 +194,56 @@ def add_unique(target: list[str], value: str) -> None:
         target.append(value)
 
 
-def structured_text(source: dict[str, Any], *fields: str) -> str:
-    return " | ".join(str(source.get(field, "")) for field in fields if isinstance(source.get(field), str))
+def extend_unique(target: list[str], values: list[str]) -> None:
+    for value in values:
+        add_unique(target, value)
 
 
-def providers_from_source(source: dict[str, Any]) -> list[str]:
-    platform_text = norm(source.get("source_platform"))
-    if platform_text == "x":
-        return ["xAI"]
-    direct: list[str] = []
-    for provider, patterns in PROVIDER_PATTERNS:
-        if any(pattern in platform_text for pattern in patterns):
-            add_unique(direct, provider)
-    if direct:
-        return direct
-
-    text = norm(structured_text(source, "system_or_product", "model_or_algorithm"))
-    inferred: list[str] = []
-    for provider, patterns in PROVIDER_PATTERNS:
-        if any(pattern in text for pattern in patterns):
-            add_unique(inferred, provider)
-    return inferred
+def structured_text(value: dict[str, Any], *fields: str) -> str:
+    return " | ".join(str(value.get(field, "")) for field in fields if isinstance(value.get(field), str))
 
 
-def products_from_source(source: dict[str, Any]) -> list[str]:
-    text = f" {norm(structured_text(source, 'source_platform', 'system_or_product', 'model_or_algorithm'))} "
+def products_from_text(value: Any) -> list[str]:
+    if not meaningful(value):
+        return []
+    text = f" {norm(value)} "
     products: list[str] = []
     for product, patterns in PRODUCT_PATTERNS:
         if any(pattern in text for pattern in patterns):
-            if product == "Claude" and "claude code" in text and not re.search(r"(^|[|/,;]\s*)claude(\s*[|/,;]|$)", text):
-                continue
-            if product == "Copilot" and "github copilot" in text and "microsoft copilot" not in text:
-                continue
             add_unique(products, product)
+    # X is too short to use as a generic substring pattern.
+    raw = norm(value)
+    if raw == "x" or re.search(r"(?:^|[|/,;]\s*)x(?:\s*[|/,;]|$)", raw):
+        add_unique(products, "X")
+    if "x premium" in raw:
+        add_unique(products, "X")
     return products
 
 
-def models_from_source(source: dict[str, Any]) -> list[str]:
-    value = source.get("model_or_algorithm")
+def providers_from_text(value: Any) -> list[str]:
+    if not meaningful(value):
+        return []
+    text = norm(value)
+    providers: list[str] = []
+    for provider, patterns in PROVIDER_PATTERNS:
+        if any(pattern in text for pattern in patterns):
+            add_unique(providers, provider)
+    for product in products_from_text(value):
+        provider = PRODUCT_PROVIDER.get(product)
+        if provider:
+            add_unique(providers, provider)
+    return providers
+
+
+def split_model_values(value: Any) -> list[str]:
     if not meaningful(value):
         return []
     text = str(value).strip()
-    pieces = [piece.strip() for piece in re.split(r"\s*(?:/|;|\|)\s*", text) if meaningful(piece)]
     result: list[str] = []
-    for piece in pieces:
-        add_unique(result, piece)
+    for piece in re.split(r"\s*(?:/|;|\|)\s*", text):
+        piece = piece.strip()
+        if meaningful(piece):
+            add_unique(result, piece)
     return result
 
 
@@ -215,39 +255,170 @@ def eligible_source(source: Any) -> bool:
     return residence in EVIDENCE_RESIDENCES and role in EVIDENCE_ROLES
 
 
-def project_system_context(record: dict[str, Any]) -> dict[str, Any]:
+def source_affected_identity(source: dict[str, Any]) -> tuple[list[str], list[str], list[str]]:
+    """Return affected-system identity from fields that describe the affected system.
+
+    `source_platform` is intentionally excluded: it identifies where evidence is
+    published/hosted and may be TikTok, Reddit, a news outlet, GitHub, etc.
+    """
+    affected_text = structured_text(source, "system_or_product", "model_or_algorithm")
+    products = products_from_text(affected_text)
+    providers = providers_from_text(affected_text)
+    models = split_model_values(source.get("model_or_algorithm"))
+    return providers, products, models
+
+
+def context_identity(context: dict[str, Any]) -> tuple[list[str], list[str], list[str]]:
+    """Recover concrete identity from the FM's structured system_context.
+
+    Higher-specificity runtime/model fields take precedence when an earlier
+    reconciliation accidentally wrote an evidence-host platform into the lower
+    compatibility fields.
+    """
+    specific = context.get("specific_model_or_runtime")
+    model_or_product = context.get("model_or_product")
+    product_or_service = context.get("product_or_service")
+    platform = context.get("platform_or_vendor")
+
+    high_products = products_from_text(specific)
+    high_providers = providers_from_text(specific)
+
+    mid_text = " | ".join(
+        str(value) for value in (model_or_product, product_or_service) if meaningful(value)
+    )
+    mid_products = products_from_text(mid_text)
+    mid_providers = providers_from_text(mid_text)
+
+    providers: list[str] = []
+    products: list[str] = []
+
+    if high_providers:
+        extend_unique(providers, high_providers)
+        extend_unique(products, high_products)
+        for product in mid_products:
+            mapped = PRODUCT_PROVIDER.get(product)
+            if mapped is None or mapped in providers:
+                add_unique(products, product)
+    elif mid_providers:
+        extend_unique(providers, mid_providers)
+        extend_unique(products, high_products)
+        extend_unique(products, mid_products)
+    else:
+        extend_unique(products, high_products)
+        extend_unique(products, mid_products)
+        if platform in CONCRETE_LEGACY_PROVIDERS:
+            add_unique(providers, str(platform))
+
+    # Where product identity implies a provider, use it unless doing so conflicts
+    # with a more specific runtime/model provider already established.
+    for product in products:
+        provider = PRODUCT_PROVIDER.get(product)
+        if provider and (not high_providers or provider in high_providers):
+            add_unique(providers, provider)
+
+    if not providers and platform in CONCRETE_LEGACY_PROVIDERS:
+        add_unique(providers, str(platform))
+
+    models = split_model_values(specific)
+    return providers, products, models
+
+
+def baseline_context(path: Path, baseline_ref: str | None) -> dict[str, Any] | None:
+    if not baseline_ref:
+        return None
+    relative = path.relative_to(ROOT).as_posix()
+    result = subprocess.run(
+        ["git", "show", f"{baseline_ref}:{relative}"],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if result.returncode != 0:
+        return None
+    try:
+        record = json.loads(result.stdout)
+    except json.JSONDecodeError:
+        return None
+    context = record.get("system_context") if isinstance(record, dict) else None
+    return context if isinstance(context, dict) else None
+
+
+def projection_entry(
+    source: dict[str, Any],
+    providers: list[str],
+    products: list[str],
+    models: list[str],
+    projection_basis: str,
+) -> dict[str, Any]:
+    entry: OrderedDict[str, Any] = OrderedDict()
+    entry["providers_or_vendors"] = providers
+    entry["products_or_services"] = products
+    entry["models_or_runtimes"] = models
+    entry["projection_basis"] = projection_basis
+    if meaningful(source.get("source_platform")):
+        entry["evidence_source_platform"] = str(source["source_platform"]).strip()
+    if meaningful(source.get("deployment_context")):
+        entry["deployment_context"] = str(source["deployment_context"]).strip()
+    entry["source_title"] = str(source.get("source_title", "")).strip() or "Untitled evidence source"
+    if meaningful(source.get("source_url")):
+        entry["source_url"] = str(source["source_url"]).strip()
+    return dict(entry)
+
+
+def project_system_context(
+    record: dict[str, Any],
+    fallback_context: dict[str, Any] | None = None,
+) -> dict[str, Any]:
     context = copy.deepcopy(record.get("system_context") or {})
+    fallback = copy.deepcopy(fallback_context or context)
+
     vendors: list[str] = []
     products: list[str] = []
     models: list[str] = []
     evidenced_systems: list[dict[str, Any]] = []
+    eligible_sources: list[dict[str, Any]] = []
 
     for source in record.get("source_records", []):
         if not eligible_source(source):
             continue
-        source_vendors = providers_from_source(source)
-        source_products = products_from_source(source)
-        source_models = models_from_source(source)
+        eligible_sources.append(source)
+        source_vendors, source_products, source_models = source_affected_identity(source)
         if not (source_vendors or source_products or source_models):
             continue
+        extend_unique(vendors, source_vendors)
+        extend_unique(products, source_products)
+        extend_unique(models, source_models)
+        evidenced_systems.append(
+            projection_entry(
+                source,
+                source_vendors,
+                source_products,
+                source_models,
+                "source-affected-system-metadata",
+            )
+        )
 
-        for value in source_vendors:
-            add_unique(vendors, value)
-        for value in source_products:
-            add_unique(products, value)
-        for value in source_models:
-            add_unique(models, value)
-
-        entry: OrderedDict[str, Any] = OrderedDict()
-        entry["providers_or_vendors"] = source_vendors
-        entry["products_or_services"] = source_products
-        entry["models_or_runtimes"] = source_models
-        if meaningful(source.get("deployment_context")):
-            entry["deployment_context"] = str(source["deployment_context"]).strip()
-        entry["source_title"] = str(source.get("source_title", "")).strip()
-        if meaningful(source.get("source_url")):
-            entry["source_url"] = str(source["source_url"]).strip()
-        evidenced_systems.append(dict(entry))
+    fallback_vendors, fallback_products, fallback_models = context_identity(fallback)
+    # A concrete record-level context is a compatibility fallback for older
+    # evidence packages only when the FM still has evidentiary support attached.
+    if eligible_sources:
+        missing_vendors = [value for value in fallback_vendors if value not in vendors]
+        missing_products = [value for value in fallback_products if value not in products]
+        missing_models = [value for value in fallback_models if value not in models]
+        if missing_vendors or missing_products or missing_models:
+            extend_unique(vendors, missing_vendors)
+            extend_unique(products, missing_products)
+            extend_unique(models, missing_models)
+            evidenced_systems.append(
+                projection_entry(
+                    eligible_sources[0],
+                    missing_vendors,
+                    missing_products,
+                    missing_models,
+                    "record-system-context-fallback",
+                )
+            )
 
     if len(vendors) > 1:
         evidence_scope = "multi-provider"
@@ -255,7 +426,7 @@ def project_system_context(record: dict[str, Any]) -> dict[str, Any]:
         evidence_scope = "single-provider"
     elif products or models:
         evidence_scope = "provider-unresolved"
-    elif norm(context.get("platform_or_vendor")) == "not applicable":
+    elif norm(fallback.get("platform_or_vendor")) == "not applicable":
         evidence_scope = "not-applicable"
     else:
         evidence_scope = "system-unresolved"
@@ -266,55 +437,65 @@ def project_system_context(record: dict[str, Any]) -> dict[str, Any]:
     context["evidenced_models_or_runtimes"] = models
     context["evidenced_systems"] = evidenced_systems
     context["evidence_projection"] = {
-        "basis": "record-local source_records",
-        "method": "deterministic structured-metadata roll-up",
+        "basis": "record-local affected-system metadata",
+        "method": "structured source affected-system roll-up with record system-context fallback",
         "reconciled_on": RECONCILIATION_DATE,
         "inference_boundary": (
-            "Provider, product, model, and runtime names are projected only from structured "
-            "source_platform, system_or_product, and model_or_algorithm metadata. Narrative "
-            "source_context and relevance_note text are not mined for additional system claims."
+            "Affected provider, product, model, and runtime identity is projected from structured "
+            "system_or_product and model_or_algorithm source metadata, with bounded fallback to an "
+            "existing concrete FM system_context for older records. source_platform identifies where "
+            "evidence is hosted or published and is not treated as affected-system identity. Narrative "
+            "source_context, relevance_note, article titles, and publisher prose are not mined for identity."
         ),
     }
 
     if len(vendors) > 1:
         context["platform_or_vendor"] = "Multi Vendor"
-        context["vendor_cluster"] = vendors
-        context["primary_evidenced_vendors"] = vendors
     elif len(vendors) == 1:
         context["platform_or_vendor"] = vendors[0]
-        context["vendor_cluster"] = vendors
-        context["primary_evidenced_vendors"] = vendors
     else:
-        legacy = context.get("platform_or_vendor")
-        if legacy in CONCRETE_LEGACY_PROVIDERS:
-            context.setdefault("vendor_cluster", [legacy])
-            context.setdefault("primary_evidenced_vendors", [])
-        else:
-            if legacy == "Multi Vendor":
-                context["platform_or_vendor"] = "Unknown"
-            context["vendor_cluster"] = []
-            context["primary_evidenced_vendors"] = []
+        legacy_platform = fallback.get("platform_or_vendor")
+        context["platform_or_vendor"] = (
+            legacy_platform
+            if isinstance(legacy_platform, str) and legacy_platform not in {"Multi Vendor", "Other"}
+            else "Unknown"
+        )
+    context["vendor_cluster"] = vendors
+    context["primary_evidenced_vendors"] = vendors
 
     if len(products) == 1 and products[0] in CANONICAL_SINGLE_PRODUCTS:
         context["product_or_service"] = products[0]
     elif len(products) > 1:
         context["product_or_service"] = "Other"
+    else:
+        legacy_product = fallback.get("product_or_service")
+        if isinstance(legacy_product, str) and legacy_product.strip():
+            context["product_or_service"] = legacy_product
 
-    if len(models) == 1:
-        context["specific_model_or_runtime"] = models[0]
-    elif len(models) > 1:
+    if models:
         context["specific_model_or_runtime"] = "; ".join(models)
+    else:
+        legacy_model = fallback.get("specific_model_or_runtime")
+        if isinstance(legacy_model, str) and legacy_model.strip():
+            context["specific_model_or_runtime"] = legacy_model
 
     if products:
         context["model_or_product"] = "; ".join(products)
+    else:
+        legacy_model_product = fallback.get("model_or_product")
+        if isinstance(legacy_model_product, str) and legacy_model_product.strip():
+            context["model_or_product"] = legacy_model_product
 
     return context
 
 
-def reconcile_record(record: dict[str, Any]) -> bool:
+def reconcile_record(
+    record: dict[str, Any],
+    fallback_context: dict[str, Any] | None = None,
+) -> bool:
     if record.get("record_type") != "failure_mode":
         return False
-    projected = project_system_context(record)
+    projected = project_system_context(record, fallback_context=fallback_context)
     if projected == record.get("system_context"):
         return False
     record["system_context"] = projected
@@ -352,15 +533,15 @@ def render_report(records: list[dict[str, Any]], changed_ids: list[str]) -> str:
         "",
         f"**Reconciliation date:** {RECONCILIATION_DATE}",
         "",
-        "**Scope:** All canonical VIGIL failure-mode records. This is a deterministic metadata projection from each FM's own `source_records`; it does not add external evidence, browse sources, infer vendor/model identity from narrative prose, or modify Layer 1 external requirements.",
+        "**Scope:** All canonical VIGIL failure-mode records. The projection separates evidence publication/hosting platform from the affected AI/platform system. It does not add external evidence, browse sources, or infer affected-system identity from narrative prose. Layer 1 external requirements are not modified by this reconciliation.",
         "",
-        "## Outcome",
+        "## Current corpus state",
         "",
         f"- Failure modes reviewed: **{len(records)}**",
-        f"- Failure modes changed by reconciliation: **{len(changed_ids)}**",
         f"- Failure modes with evidenced providers/vendors: **{with_vendors}**",
         f"- Failure modes with evidenced products/services: **{with_products}**",
         f"- Failure modes with evidenced models/runtimes: **{with_models}**",
+        f"- Records changed in this execution: **{len(changed_ids)}**",
         "",
         "### Evidence scope",
         "",
@@ -371,18 +552,16 @@ def render_report(records: list[dict[str, Any]], changed_ids: list[str]) -> str:
         lines.append(f"| `{scope}` | {scopes[scope]} |")
     lines += [
         "",
-        "## Contract",
+        "## Projection contract",
         "",
-        "The maintained `system_context` block now separates compatibility summary fields from evidence-backed roll-ups:",
+        "- `source_platform` identifies where evidence is hosted or published; it is not an affected-system field.",
+        "- `source_records[].system_or_product` and `source_records[].model_or_algorithm` are the preferred source-level affected-system fields.",
+        "- Existing concrete FM `system_context` values provide a bounded compatibility fallback for older evidence packages that pre-date those source fields.",
+        "- `evidenced_vendors`, `evidenced_products_or_services`, and `evidenced_models_or_runtimes` are the public-facing normalized roll-ups.",
+        "- `evidenced_systems` preserves source traceability and records whether an identity came from source affected-system metadata or the record-context fallback.",
+        "- Narrative `source_context`, `relevance_note`, article titles, and publisher prose are not mined to manufacture system identity.",
         "",
-        "- `evidence_scope` describes whether record-local evidence resolves zero, one, or multiple providers.",
-        "- `evidenced_vendors` lists providers/vendors established by structured source metadata.",
-        "- `evidenced_products_or_services` lists concrete products/services established by structured source metadata.",
-        "- `evidenced_models_or_runtimes` preserves concrete model/runtime names present in `model_or_algorithm`.",
-        "- `evidenced_systems` preserves source-level traceability to the evidence record that established each system claim.",
-        "- `platform_or_vendor`, `product_or_service`, and `specific_model_or_runtime` remain compatibility summary fields and must not substitute for the evidence-backed arrays in public interfaces.",
-        "",
-        "No system identity is inferred from narrative `source_context`, `relevance_note`, article title, or publisher identity alone.",
+        "The 2026-08-15 transmutation applied this contract across the then-current FM corpus. Subsequent executions are deterministic freshness checks; the changed-record list below describes only the current execution.",
         "",
         "## Multi-provider failure modes",
         "",
@@ -392,24 +571,25 @@ def render_report(records: list[dict[str, Any]], changed_ids: list[str]) -> str:
         "",
         "## Unresolved system identity",
         "",
-        "The following records retain insufficient structured source metadata to identify a provider or system deterministically. They are not silently filled from narrative context:",
+        "These records still lack sufficient structured affected-system metadata or a concrete pre-existing FM system context. They remain unresolved rather than being filled from narrative evidence:",
         "",
     ]
     lines += [f"- `{record_id}`" for record_id in unresolved] or ["- None"]
-    lines += ["", "## Changed records", ""]
+    lines += ["", "## Records changed in this execution", ""]
     lines += [f"- `{record_id}`" for record_id in changed_ids] or ["- None"]
     lines.append("")
     return "\n".join(lines)
 
 
-def run(check: bool, write_report: bool) -> int:
+def run(check: bool, write_report: bool, baseline_ref: str | None) -> int:
     changed_paths: list[Path] = []
     changed_ids: list[str] = []
     records: list[dict[str, Any]] = []
 
     for path in failure_files():
         record = load_json(path)
-        changed = reconcile_record(record)
+        fallback = baseline_context(path, baseline_ref)
+        changed = reconcile_record(record, fallback_context=fallback)
         records.append(record)
         if changed:
             changed_paths.append(path)
@@ -440,8 +620,12 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--check", action="store_true", help="Fail when any FM system_context differs from the deterministic projection.")
     parser.add_argument("--write-report", action="store_true", help="Write the repository reconciliation review report.")
+    parser.add_argument(
+        "--baseline-ref",
+        help="Optional historical ref whose pre-transmutation system_context should be used as the compatibility fallback during a migration run.",
+    )
     args = parser.parse_args()
-    return run(args.check, args.write_report)
+    return run(args.check, args.write_report, args.baseline_ref)
 
 
 if __name__ == "__main__":
