@@ -1,0 +1,82 @@
+name: FM affected-system transmutation v2
+
+on:
+  push:
+    branches:
+      - agent/instrumental-coercive-influence-capability-revalidation
+    paths:
+      - ".github/workflows/fm-affected-system-transmutation-v2.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  transmute:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+          show-progress: false
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.x"
+
+      - name: Apply affected-system contract v2
+        run: python vigil/scripts/apply-fm-affected-system-contract-v2.py
+
+      - name: Recover and reconcile pre-transmutation FM context
+        run: |
+          python vigil/scripts/reconcile-fm-system-context.py \
+            --baseline-ref 8545e8e219891c05e8429d71388f1b72afaefbe0 \
+            --write-report
+
+      - name: Test affected-system reconciliation
+        run: python vigil/tests/test_reconcile_fm_system_context.py
+
+      - name: Verify reconciled FM contexts are idempotent
+        run: python vigil/scripts/reconcile-fm-system-context.py --check
+
+      - name: Test VIGIL record validator
+        run: python vigil/scripts/test_validate_vigil_records.py
+
+      - name: Validate VIGIL records
+        run: python vigil/scripts/validate-vigil-records.py
+
+      - name: Verify triage inventory freshness
+        run: python vigil/scripts/audit-vigil-triage.py --check
+
+      - name: Test registry builder
+        run: python vigil/tests/test_build_vigil_records.py
+
+      - name: Rebuild generated VIGIL indexes
+        run: python vigil/scripts/build-vigil-records.py
+
+      - name: Commit affected-system reconciliation
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            vigil/records/failures \
+            vigil/docs/reviews/FM-SYSTEM-CONTEXT-01-evidence-rollup-reconciliation.md \
+            vigil/docs/evidence-authoring-guidance.md \
+            vigil/VIGIL.Schema.json \
+            vigil/schemas/VIGIL.Index.Schema.json \
+            vigil/templates/failure-mode-record-template.json \
+            vigil/templates/failure-mode-record-template.md \
+            vigil/scripts/build-vigil-records.py \
+            vigil/tests/test_build_vigil_records.py \
+            vigil/VIGIL.Failures.Index.json \
+            vigil/VIGIL.Observations.Index.json \
+            vigil/VIGIL.Proposals.Index.json \
+            vigil/VIGIL.PatchNotes.Index.json \
+            vigil/VIGIL.Research.Index.json \
+            vigil/VIGIL.Registry.Index.json
+          if git diff --cached --quiet; then
+            echo "Affected-system reconciliation already current."
+          else
+            git commit -m "Correct FM affected-system transmutation semantics"
+            git push
+          fi
