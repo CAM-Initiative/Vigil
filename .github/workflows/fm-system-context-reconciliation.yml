@@ -6,6 +6,7 @@ on:
       - agent/instrumental-coercive-influence-capability-revalidation
     paths:
       - "vigil/scripts/reconcile-fm-system-context.py"
+      - "vigil/scripts/apply-fm-system-context-contract.py"
       - "vigil/tests/test_reconcile_fm_system_context.py"
       - ".github/workflows/fm-system-context-reconciliation.yml"
 
@@ -28,19 +29,39 @@ jobs:
       - name: Test FM system-context reconciliation
         run: python vigil/tests/test_reconcile_fm_system_context.py
 
-      - name: Reconcile all failure-mode system contexts
-        run: |
-          python vigil/scripts/reconcile-fm-system-context.py --write-report
-          python vigil/scripts/reconcile-fm-system-context.py --check
+      - name: Verify reconciled failure-mode system contexts
+        run: python vigil/scripts/reconcile-fm-system-context.py --check
 
-      - name: Commit reconciled failure-mode records
+      - name: Apply permanent FM system-context contract
+        run: python vigil/scripts/apply-fm-system-context-contract.py
+
+      - name: Refresh deterministic triage inventory
+        run: python vigil/scripts/audit-vigil-triage.py
+
+      - name: Test VIGIL record validator
+        run: python vigil/scripts/test_validate_vigil_records.py
+
+      - name: Validate reconciled VIGIL records
+        run: python vigil/scripts/validate-vigil-records.py
+
+      - name: Verify triage inventory freshness
+        run: python vigil/scripts/audit-vigil-triage.py --check
+
+      - name: Commit system-context contract and generated inventory
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add vigil/records/failures vigil/docs/reviews/FM-SYSTEM-CONTEXT-01-evidence-rollup-reconciliation.md
+          git add \
+            vigil/VIGIL.Schema.json \
+            vigil/templates/failure-mode-record-template.json \
+            vigil/templates/failure-mode-record-template.md \
+            vigil/scripts/validate-vigil-records.py \
+            .github/workflows/vigil-records.yml \
+            vigil/docs/2026-triage-model-inventory.json \
+            vigil/docs/2026-triage-model-inventory.md
           if git diff --cached --quiet; then
-            echo "FM system-context reconciliation already current."
+            echo "FM system-context contract already current."
           else
-            git commit -m "Reconcile FM system context from evidence"
+            git commit -m "Enforce evidence-backed FM system context"
             git push
           fi
