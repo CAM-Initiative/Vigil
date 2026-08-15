@@ -77,7 +77,8 @@ def test_evidence_host_is_not_affected_vendor() -> None:
     assert "TikTok" not in projected["evidenced_vendors"]
     assert "TikTok" not in projected["evidenced_products_or_services"]
     assert projected["evidenced_systems"][0]["projection_basis"] == "record-system-context-fallback"
-    assert projected["evidenced_systems"][0]["evidence_source_platform"] == "TikTok"
+    assert projected["evidenced_systems"][0]["source_title"] == "VIGIL-2026-FM-9999 historical system_context"
+    assert "evidence_source_platform" not in projected["evidenced_systems"][0]
 
 
 def test_publisher_and_narrative_are_not_mined() -> None:
@@ -127,6 +128,33 @@ def test_specific_model_beats_polluted_host_compatibility_fields() -> None:
     assert projected["product_or_service"] == "ChatGPT"
 
 
+def test_uncertainty_is_not_a_model_and_provider_cluster_survives() -> None:
+    record = base_record(
+        [source("OpenAI Status", "ChatGPT and OpenAI APIs", "not specified")],
+        context={
+            "platform_or_vendor": "Multi Vendor",
+            "vendor_cluster": ["OpenAI", "Anthropic"],
+            "primary_evidenced_vendors": ["OpenAI", "Anthropic"],
+            "product_or_service": "Other",
+            "specific_model_or_runtime": "Not limited to a single model or runtime",
+            "model_or_product": "OpenAI and Anthropic frontier AI platform services",
+            "interface_surface": "multiple access surfaces",
+        },
+    )
+    projected = MODULE.project_system_context(record)
+    assert projected["evidence_scope"] == "multi-provider"
+    assert projected["evidenced_vendors"] == ["OpenAI", "Anthropic"]
+    assert projected["evidenced_models_or_runtimes"] == []
+    fallback = [
+        item for item in projected["evidenced_systems"]
+        if item["projection_basis"] == "record-system-context-fallback"
+    ]
+    assert len(fallback) == 1
+    assert fallback[0]["providers_or_vendors"] == ["Anthropic"]
+    assert fallback[0]["source_title"] == "VIGIL-2026-FM-9999 historical system_context"
+    assert "evidence_source_platform" not in fallback[0]
+
+
 def test_reconciliation_is_idempotent() -> None:
     record = base_record([source("Vendor documentation", "ChatGPT", "GPT-5")])
     assert MODULE.reconcile_record(record) is True
@@ -139,6 +167,7 @@ def main() -> int:
     test_publisher_and_narrative_are_not_mined()
     test_x_affected_system_can_use_record_context_fallback()
     test_specific_model_beats_polluted_host_compatibility_fields()
+    test_uncertainty_is_not_a_model_and_provider_cluster_survives()
     test_reconciliation_is_idempotent()
     print("FM system-context reconciliation tests passed.")
     return 0
