@@ -6,7 +6,7 @@ This deterministic inventory records the reconciled current model 2.0 state. Sev
 
 ## Scope and boundary
 
-All 57 current failure-mode records are included. VIGIL's record-boundary contract forbids failure-mode triage in OBS and PROP/PATCH records, so those classes are not given synthetic triage state.
+All 58 current failure-mode records are included. VIGIL's record-boundary contract forbids failure-mode triage in OBS and PROP/PATCH records, so those classes are not given synthetic triage state.
 
 ## Headline findings
 
@@ -23,7 +23,7 @@ All 57 current failure-mode records are included. VIGIL's record-boundary contra
 | --- | --- |
 | PN | 21 |
 | P2 | 20 |
-| P1 | 13 |
+| P1 | 14 |
 | P3 | 3 |
 
 ## Status counts
@@ -31,7 +31,7 @@ All 57 current failure-mode records are included. VIGIL's record-boundary contra
 | Status | Count |
 | --- | --- |
 | monitoring | 24 |
-| action-required | 18 |
+| action-required | 19 |
 | under-assessment | 10 |
 | verification-pending | 5 |
 
@@ -41,7 +41,7 @@ All 57 current failure-mode records are included. VIGIL's record-boundary contra
 | --- | --- |
 | S1 | 24 |
 | S2 | 21 |
-| S3 | 10 |
+| S3 | 11 |
 | S4 | 1 |
 | SU | 1 |
 
@@ -53,7 +53,7 @@ All current failure modes use model 2.0 severity values `S0`, `S1`, `S2`, `S3`, 
 | --- | --- | --- |
 | monitoring | PN | 21 |
 | active | P2 | 16 |
-| active | P1 | 13 |
+| active | P1 | 14 |
 | monitoring | P2 | 4 |
 | monitoring | P3 | 2 |
 | active | P3 | 1 |
@@ -63,7 +63,7 @@ All current failure modes use model 2.0 severity values `S0`, `S1`, `S2`, `S3`, 
 | Repair status | Priority | Count |
 | --- | --- | --- |
 | repaired | PN | 21 |
-| unrepaired | P1 | 12 |
+| unrepaired | P1 | 13 |
 | unrepaired | P2 | 12 |
 | partially-repaired | P2 | 4 |
 | repaired | P2 | 4 |
@@ -77,7 +77,7 @@ All current failure modes use model 2.0 severity values `S0`, `S1`, `S2`, `S3`, 
 | --- | --- | --- |
 | True | PN | 21 |
 | True | P2 | 20 |
-| True | P1 | 13 |
+| True | P1 | 14 |
 | True | P3 | 3 |
 
 ## Review-flag definitions
@@ -145,6 +145,7 @@ Flags are regression diagnostics. `repaired-with-active-priority-review` identif
 | VIGIL-2026-FM-0055 | active | P2 | verification-pending | S2 | partially-repaired | unknown | true | Maintain PATCH-0034 verification, reconcile to canonical-main after the Caelestis branch merges, and assess external provider, regulator and investigator implementation without treating confidential access as unrestricted disclosure. | VIGIL-2026-PATCH-0034 | — | false | — |
 | VIGIL-2026-FM-0056 | active | P1 | action-required | S1 | unrepaired | unknown | true | Implement VIGIL-2026-PROP-0028 as focused SECURITY identity-lifecycle and cross-organisational authority amendments with OPERATIONS cross-references. | — | — | false | — |
 | VIGIL-2026-FM-0057 | active | P2 | action-required | S2 | unrepaired | improving | true | Review and, if approved, implement VIGIL-2026-PROP-0029; monitor provider advisories, independent replication, treatment of previously published traces, and recurrence through variant APIs or agent frameworks. | — | — | false | — |
+| VIGIL-2026-FM-0058 | active | P1 | action-required | S3 | unrepaired | active | true | Perform a Caelestis coverage audit for explicit prohibitions and runtime controls preventing instrumental manipulation or coercive influence, then create a proposal only for any irreducible governance gap. | — | — | false | — |
 
 ## Reconciliation result
 

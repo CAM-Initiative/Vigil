@@ -17,31 +17,64 @@ Failure Mode records capture confirmed, strongly evidenced, recurring, or suffic
 Required FM sections are identity, summary, CAM relevance, failure definition, threshold, evidence confidence, `source_records`, system context (including `platform_or_vendor`, `product_or_service`, `specific_model_or_runtime`, and `interface_surface`), failure classification, triage, jurisdictional context, linked records, and affected CAM routing.
 
 
-## Multi Vendor authoring
+## Evidence-backed system context
 
-Use `platform_or_vendor: "Multi Vendor"` only when the record is genuinely supported by source evidence from more than one vendor or platform.
+`system_context` separates **scope** from **identity**.
 
-Multi Vendor records must include non-empty `vendor_cluster` and `primary_evidenced_vendors` arrays. `product_or_service` must remain a single canonical value, not a comma-separated product or surface list. For genuinely multi-product / multi-vendor records, use `product_or_service: "Other"` unless a single canonical product clearly controls the record. Put detailed product, model, surface, deployment, and incident facts in `interface_surface`, `model_or_product`, `deployment_context`, and `source_records`.
+Use `platform_or_vendor: "Multi Vendor"` only as a compatibility summary when structured evidence establishes more than one affected provider. It is not a substitute for naming the providers and systems VIGIL actually knows.
+
+Failure-mode records must maintain the evidence-backed projection:
+
+* `evidence_scope` — `single-provider`, `multi-provider`, `provider-unresolved`, `system-unresolved`, or `not-applicable`;
+* `evidenced_vendors` — concrete providers/vendors established by structured evidence metadata;
+* `evidenced_products_or_services` — concrete products/services established by structured evidence metadata;
+* `evidenced_models_or_runtimes` — concrete model/runtime names established by structured evidence metadata;
+* `evidenced_systems` — source-traceable per-evidence system identities; and
+* `evidence_projection` — the derivation basis, method, reconciliation date, and inference boundary.
+
+The maintained projection is derived from `source_records[].source_platform`, `source_records[].system_or_product`, and `source_records[].model_or_algorithm`. Do **not** mine narrative `source_context`, `relevance_note`, article titles, or publisher identity to manufacture a provider/model identity that the structured evidence does not establish.
+
+For genuinely multi-provider records, keep the compatibility fields (`platform_or_vendor: "Multi Vendor"` and usually `product_or_service: "Other"`) for existing filters, but populate the evidence-backed arrays with the actual evidenced systems. Public interfaces should prefer those concrete arrays over placeholder compatibility values.
 
 Example:
 
 ```json
 "system_context": {
   "platform_or_vendor": "Multi Vendor",
-  "vendor_cluster": [
-    "OpenAI",
-    "Anthropic"
-  ],
-  "primary_evidenced_vendors": [
-    "OpenAI",
-    "Anthropic"
-  ],
   "product_or_service": "Other",
-  "interface_surface": "Multiple evidenced access surfaces; specify details in source_records and deployment_context."
+  "specific_model_or_runtime": "Claude; Claude Code; ChatGPT; Codex",
+  "evidence_scope": "multi-provider",
+  "evidenced_vendors": [
+    "OpenAI",
+    "Anthropic"
+  ],
+  "evidenced_products_or_services": [
+    "ChatGPT",
+    "Codex",
+    "OpenAI API",
+    "Claude",
+    "Claude Code",
+    "Claude API"
+  ],
+  "evidenced_models_or_runtimes": [
+    "Claude",
+    "Claude Code",
+    "ChatGPT",
+    "Codex"
+  ],
+  "evidenced_systems": [
+    {
+      "providers_or_vendors": ["OpenAI"],
+      "products_or_services": ["ChatGPT", "Codex", "OpenAI API"],
+      "models_or_runtimes": [],
+      "source_title": "Official source title",
+      "source_url": "https://example.invalid/source"
+    }
+  ]
 }
 ```
 
-Rationale: Multi-vendor records require separated vendor evidence because top-level database fields are controlled values for indexing, filtering, validation, and UI routing. Detailed vendor, product, surface, and source claims belong in evidence metadata, not comma-combined canonical fields.
+If structured source metadata is insufficient, preserve `provider-unresolved` or `system-unresolved`. Do not silently fill gaps from narrative context.
 
 ## Severity and triage model 2.0
 

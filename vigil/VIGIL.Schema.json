@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://example.invalid/cam/vigil/VIGIL.Schema.json",
-  "version": "3.2-severity-triage-contract",
+  "version": "3.3-evidence-backed-system-context",
   "purpose": "Authoritative schema-rules contract for VIGIL as a public evidence-to-repair observatory for observations, research artefacts, failure modes, proposals, and implemented patch notes. Source evidence remains embedded in the relevant record; ecosystem persistence, CAM repair, and implementation verification are represented separately. Interpretive provenance identifies the AI analytical reviewer, human governance editor, capability profile, source modality, primary-artefact access, and review limitations.",
   "source_evidence_rules": {
     "individual_records": [
@@ -522,7 +522,7 @@
     }
   },
   "system_context_rules": {
-    "description": "system_context describes the observed/proposed system, platform, product, service, runtime, interface, deployment, or governance corpus using normalised field names.",
+    "description": "system_context describes the observed/proposed system, platform, product, service, runtime, interface, deployment, or governance corpus. For failure modes, compatibility summary fields are supplemented by an evidence-backed system roll-up derived from record-local structured source metadata.",
     "required_fields": [
       "platform_or_vendor",
       "product_or_service",
@@ -614,7 +614,34 @@
       "Not applicable"
     ],
     "specific_model_or_runtime_rule": "Non-empty string; intentionally not an enum because runtime names and tool-augmented modes drift frequently.",
-    "interface_surface_rule": "Non-empty string or array of non-empty strings describing where or how behaviour appears."
+    "interface_surface_rule": "Non-empty string or array of non-empty strings describing where or how behaviour appears.",
+    "failure_mode_evidence_projection": {
+      "required_fields": [
+        "evidence_scope",
+        "evidenced_vendors",
+        "evidenced_products_or_services",
+        "evidenced_models_or_runtimes",
+        "evidenced_systems",
+        "evidence_projection"
+      ],
+      "allowed_evidence_scope_values": [
+        "single-provider",
+        "multi-provider",
+        "provider-unresolved",
+        "system-unresolved",
+        "not-applicable"
+      ],
+      "source_fields": [
+        "source_records[].source_platform",
+        "source_records[].system_or_product",
+        "source_records[].model_or_algorithm"
+      ],
+      "traceability_rule": "Each evidenced_systems entry preserves the source title and, where present, source URL that establishes the projected provider, product, model, or runtime identity.",
+      "no_narrative_inference_rule": "Provider, product, model, and runtime identities must not be synthesized from narrative source_context, relevance_note, article titles, or publisher identity where the structured system metadata does not establish them.",
+      "compatibility_rule": "platform_or_vendor, product_or_service, and specific_model_or_runtime remain compatibility summary fields. Multi Vendor is an evidence-scope summary and must not substitute for the concrete evidenced_vendors, evidenced_products_or_services, or evidenced_models_or_runtimes arrays.",
+      "public_projection_rule": "Public interfaces should prefer evidence-backed arrays and source-traceable evidenced_systems over placeholder compatibility values such as Multi Vendor, Other, or Unknown.",
+      "unresolved_rule": "Insufficient structured system metadata remains explicitly unresolved; narrative evidence may support later human reconciliation but must not be silently converted into a system identity."
+    }
   },
   "cam_internal_rules": {
     "description": "cam_internal describes CAM routing, targets, affected areas, or changed components.",

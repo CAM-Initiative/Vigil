@@ -7,7 +7,7 @@
 ## Outcome
 
 - Failure modes reviewed: **58**
-- Failure modes changed by reconciliation: **58**
+- Failure modes changed by reconciliation: **11**
 - Failure modes with evidenced providers/vendors: **42**
 - Failure modes with evidenced products/services: **35**
 - Failure modes with evidenced models/runtimes: **47**
@@ -79,61 +79,14 @@ The following records retain insufficient structured source metadata to identify
 
 ## Changed records
 
-- `VIGIL-2026-FM-0001`
-- `VIGIL-2026-FM-0002`
-- `VIGIL-2026-FM-0003`
 - `VIGIL-2026-FM-0004`
-- `VIGIL-2026-FM-0005`
-- `VIGIL-2026-FM-0006`
-- `VIGIL-2026-FM-0007`
-- `VIGIL-2026-FM-0008`
-- `VIGIL-2026-FM-0009`
-- `VIGIL-2026-FM-0010`
-- `VIGIL-2026-FM-0011`
-- `VIGIL-2026-FM-0012`
-- `VIGIL-2026-FM-0013`
-- `VIGIL-2026-FM-0014`
-- `VIGIL-2026-FM-0015`
-- `VIGIL-2026-FM-0016`
-- `VIGIL-2026-FM-0017`
-- `VIGIL-2026-FM-0018`
-- `VIGIL-2026-FM-0019`
-- `VIGIL-2026-FM-0020`
-- `VIGIL-2026-FM-0021`
-- `VIGIL-2026-FM-0022`
-- `VIGIL-2026-FM-0023`
-- `VIGIL-2026-FM-0024`
-- `VIGIL-2026-FM-0025`
-- `VIGIL-2026-FM-0026`
-- `VIGIL-2026-FM-0027`
-- `VIGIL-2026-FM-0028`
-- `VIGIL-2026-FM-0029`
-- `VIGIL-2026-FM-0030`
-- `VIGIL-2026-FM-0031`
-- `VIGIL-2026-FM-0032`
 - `VIGIL-2026-FM-0033`
-- `VIGIL-2026-FM-0034`
-- `VIGIL-2026-FM-0035`
-- `VIGIL-2026-FM-0036`
 - `VIGIL-2026-FM-0037`
 - `VIGIL-2026-FM-0038`
 - `VIGIL-2026-FM-0039`
 - `VIGIL-2026-FM-0040`
-- `VIGIL-2026-FM-0041`
-- `VIGIL-2026-FM-0042`
-- `VIGIL-2026-FM-0043`
-- `VIGIL-2026-FM-0044`
 - `VIGIL-2026-FM-0045`
 - `VIGIL-2026-FM-0046`
-- `VIGIL-2026-FM-0047`
-- `VIGIL-2026-FM-0048`
-- `VIGIL-2026-FM-0049`
-- `VIGIL-2026-FM-0050`
 - `VIGIL-2026-FM-0051`
-- `VIGIL-2026-FM-0052`
 - `VIGIL-2026-FM-0053`
-- `VIGIL-2026-FM-0054`
 - `VIGIL-2026-FM-0055`
-- `VIGIL-2026-FM-0056`
-- `VIGIL-2026-FM-0057`
-- `VIGIL-2026-FM-0058`

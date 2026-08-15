@@ -289,6 +289,11 @@ def project_system_context(record: dict[str, Any]) -> dict[str, Any]:
         if legacy in CONCRETE_LEGACY_PROVIDERS:
             context.setdefault("vendor_cluster", [legacy])
             context.setdefault("primary_evidenced_vendors", [])
+        else:
+            if legacy == "Multi Vendor":
+                context["platform_or_vendor"] = "Unknown"
+            context["vendor_cluster"] = []
+            context["primary_evidenced_vendors"] = []
 
     if len(products) == 1 and products[0] in CANONICAL_SINGLE_PRODUCTS:
         context["product_or_service"] = products[0]
