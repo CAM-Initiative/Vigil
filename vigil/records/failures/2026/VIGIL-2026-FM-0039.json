@@ -87,7 +87,7 @@
     "primary_evidenced_vendors": [],
     "comparative_vendor_notes": {},
     "product_or_service": "Other",
-    "specific_model_or_runtime": "not fully established in the database record",
+    "specific_model_or_runtime": "not fully established in the database record; varies by incident",
     "interface_surface": "clinical, utilisation-review, and coverage workflow",
     "model_or_product": "care-duration and prescription risk scoring",
     "interaction_mode": "automated or AI-assisted consequential decision",
@@ -99,7 +99,8 @@
     "evidenced_vendors": [],
     "evidenced_products_or_services": [],
     "evidenced_models_or_runtimes": [
-      "not fully established in the database record"
+      "not fully established in the database record",
+      "varies by incident"
     ],
     "evidenced_systems": [
       {
@@ -108,6 +109,8 @@
         "models_or_runtimes": [
           "not fully established in the database record"
         ],
+        "projection_basis": "source-affected-system-metadata",
+        "evidence_source_platform": "AI Incident Database",
         "deployment_context": "Reported use of an algorithmic care-duration estimate in coverage denial allegations.",
         "source_title": "UnitedHealth AI Model Allegedly Used to Deny Medicare Advantage Care",
         "source_url": "https://incidentdatabase.ai/cite/608/"
@@ -118,16 +121,30 @@
         "models_or_runtimes": [
           "not fully established in the database record"
         ],
+        "projection_basis": "source-affected-system-metadata",
+        "evidence_source_platform": "AI Incident Database",
         "deployment_context": "Reported validation, opacity, and bias concerns affecting pain treatment and prescribing.",
         "source_title": "NarxCare Risk Scores Alleged to Produce Harmful or Biased Clinical Restrictions",
         "source_url": "https://incidentdatabase.ai/cite/172/"
+      },
+      {
+        "providers_or_vendors": [],
+        "products_or_services": [],
+        "models_or_runtimes": [
+          "varies by incident"
+        ],
+        "projection_basis": "record-system-context-fallback",
+        "evidence_source_platform": "AI Incident Database",
+        "deployment_context": "Reported use of an algorithmic care-duration estimate in coverage denial allegations.",
+        "source_title": "UnitedHealth AI Model Allegedly Used to Deny Medicare Advantage Care",
+        "source_url": "https://incidentdatabase.ai/cite/608/"
       }
     ],
     "evidence_projection": {
-      "basis": "record-local source_records",
-      "method": "deterministic structured-metadata roll-up",
+      "basis": "record-local affected-system metadata",
+      "method": "structured source affected-system roll-up with record system-context fallback",
       "reconciled_on": "2026-08-15",
-      "inference_boundary": "Provider, product, model, and runtime names are projected only from structured source_platform, system_or_product, and model_or_algorithm metadata. Narrative source_context and relevance_note text are not mined for additional system claims."
+      "inference_boundary": "Affected provider, product, model, and runtime identity is projected from structured system_or_product and model_or_algorithm source metadata, with bounded fallback to an existing concrete FM system_context for older records. source_platform identifies where evidence is hosted or published and is not treated as affected-system identity. Narrative source_context, relevance_note, article titles, and publisher prose are not mined for identity."
     }
   },
   "jurisdictional_context": {

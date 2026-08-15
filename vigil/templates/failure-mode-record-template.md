@@ -19,62 +19,29 @@ Required FM sections are identity, summary, CAM relevance, failure definition, t
 
 ## Evidence-backed system context
 
-`system_context` separates **scope** from **identity**.
+`system_context` separates **failure scope**, **affected-system identity**, and **evidence-source provenance**.
 
-Use `platform_or_vendor: "Multi Vendor"` only as a compatibility summary when structured evidence establishes more than one affected provider. It is not a substitute for naming the providers and systems VIGIL actually knows.
+`source_records[].source_platform` identifies where evidence is hosted, published, or observed. It may therefore be `TikTok`, `Reddit`, `GitHub`, a news publisher, a status page, or another evidence surface. **Do not treat `source_platform` as the affected AI/platform vendor.**
 
-Failure-mode records must maintain the evidence-backed projection:
+Use these source-level fields for affected-system identity where the evidence package supports them:
+
+* `system_or_product` — affected system, product, service, platform surface, or tool;
+* `model_or_algorithm` — affected model, runtime, algorithm, or model family where established.
+
+Failure-mode records maintain the normalized projection:
 
 * `evidence_scope` — `single-provider`, `multi-provider`, `provider-unresolved`, `system-unresolved`, or `not-applicable`;
-* `evidenced_vendors` — concrete providers/vendors established by structured evidence metadata;
-* `evidenced_products_or_services` — concrete products/services established by structured evidence metadata;
-* `evidenced_models_or_runtimes` — concrete model/runtime names established by structured evidence metadata;
-* `evidenced_systems` — source-traceable per-evidence system identities; and
-* `evidence_projection` — the derivation basis, method, reconciliation date, and inference boundary.
+* `evidenced_vendors` — concrete affected providers/vendors established by structured metadata;
+* `evidenced_products_or_services` — concrete affected products/services;
+* `evidenced_models_or_runtimes` — concrete model/runtime names;
+* `evidenced_systems` — traceable per-evidence system projections including `projection_basis`; and
+* `evidence_projection` — derivation basis, method, reconciliation date, and inference boundary.
 
-The maintained projection is derived from `source_records[].source_platform`, `source_records[].system_or_product`, and `source_records[].model_or_algorithm`. Do **not** mine narrative `source_context`, `relevance_note`, article titles, or publisher identity to manufacture a provider/model identity that the structured evidence does not establish.
+For older records created before `system_or_product` and `model_or_algorithm` were populated consistently, a **concrete pre-existing FM `system_context`** may be used as a bounded compatibility fallback. This fallback must remain linked to actual evidence records and must not be used to manufacture additional vendors or models.
 
-For genuinely multi-provider records, keep the compatibility fields (`platform_or_vendor: "Multi Vendor"` and usually `product_or_service: "Other"`) for existing filters, but populate the evidence-backed arrays with the actual evidenced systems. Public interfaces should prefer those concrete arrays over placeholder compatibility values.
+`platform_or_vendor: "Multi Vendor"` is a scope summary only. It is valid when the normalized evidence supports more than one affected provider, but public interfaces should display the concrete `evidenced_vendors`, products, and models/runtimes rather than presenting `Multi Vendor`, `Other`, or `Unknown` as if those were system identities.
 
-Example:
-
-```json
-"system_context": {
-  "platform_or_vendor": "Multi Vendor",
-  "product_or_service": "Other",
-  "specific_model_or_runtime": "Claude; Claude Code; ChatGPT; Codex",
-  "evidence_scope": "multi-provider",
-  "evidenced_vendors": [
-    "OpenAI",
-    "Anthropic"
-  ],
-  "evidenced_products_or_services": [
-    "ChatGPT",
-    "Codex",
-    "OpenAI API",
-    "Claude",
-    "Claude Code",
-    "Claude API"
-  ],
-  "evidenced_models_or_runtimes": [
-    "Claude",
-    "Claude Code",
-    "ChatGPT",
-    "Codex"
-  ],
-  "evidenced_systems": [
-    {
-      "providers_or_vendors": ["OpenAI"],
-      "products_or_services": ["ChatGPT", "Codex", "OpenAI API"],
-      "models_or_runtimes": [],
-      "source_title": "Official source title",
-      "source_url": "https://example.invalid/source"
-    }
-  ]
-}
-```
-
-If structured source metadata is insufficient, preserve `provider-unresolved` or `system-unresolved`. Do not silently fill gaps from narrative context.
+Do **not** mine narrative `source_context`, `relevance_note`, article titles, publisher prose, or social-media captions to manufacture affected-system identity. If structured metadata and the existing concrete FM context are insufficient, preserve `provider-unresolved` or `system-unresolved` and repair the evidence metadata separately.
 
 ## Severity and triage model 2.0
 

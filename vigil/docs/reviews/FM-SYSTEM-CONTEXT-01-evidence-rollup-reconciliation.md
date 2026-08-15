@@ -2,67 +2,75 @@
 
 **Reconciliation date:** 2026-08-15
 
-**Scope:** All canonical VIGIL failure-mode records. This is a deterministic metadata projection from each FM's own `source_records`; it does not add external evidence, browse sources, infer vendor/model identity from narrative prose, or modify Layer 1 external requirements.
+**Scope:** All canonical VIGIL failure-mode records. The projection separates evidence publication/hosting platform from the affected AI/platform system. It does not add external evidence, browse sources, or infer affected-system identity from narrative prose. Layer 1 external requirements are not modified by this reconciliation.
 
-## Outcome
+## Current corpus state
 
 - Failure modes reviewed: **58**
-- Failure modes changed by reconciliation: **11**
-- Failure modes with evidenced providers/vendors: **42**
+- Failure modes with evidenced providers/vendors: **44**
 - Failure modes with evidenced products/services: **35**
-- Failure modes with evidenced models/runtimes: **47**
+- Failure modes with evidenced models/runtimes: **48**
+- Records changed in this execution: **58**
 
 ### Evidence scope
 
 | Scope | Records |
 | --- | ---: |
-| `multi-provider` | 19 |
+| `multi-provider` | 28 |
 | `not-applicable` | 1 |
-| `provider-unresolved` | 8 |
-| `single-provider` | 23 |
-| `system-unresolved` | 7 |
+| `provider-unresolved` | 5 |
+| `single-provider` | 16 |
+| `system-unresolved` | 8 |
 
-## Contract
+## Projection contract
 
-The maintained `system_context` block now separates compatibility summary fields from evidence-backed roll-ups:
+- `source_platform` identifies where evidence is hosted or published; it is not an affected-system field.
+- `source_records[].system_or_product` and `source_records[].model_or_algorithm` are the preferred source-level affected-system fields.
+- Existing concrete FM `system_context` values provide a bounded compatibility fallback for older evidence packages that pre-date those source fields.
+- `evidenced_vendors`, `evidenced_products_or_services`, and `evidenced_models_or_runtimes` are the public-facing normalized roll-ups.
+- `evidenced_systems` preserves source traceability and records whether an identity came from source affected-system metadata or the record-context fallback.
+- Narrative `source_context`, `relevance_note`, article titles, and publisher prose are not mined to manufacture system identity.
 
-- `evidence_scope` describes whether record-local evidence resolves zero, one, or multiple providers.
-- `evidenced_vendors` lists providers/vendors established by structured source metadata.
-- `evidenced_products_or_services` lists concrete products/services established by structured source metadata.
-- `evidenced_models_or_runtimes` preserves concrete model/runtime names present in `model_or_algorithm`.
-- `evidenced_systems` preserves source-level traceability to the evidence record that established each system claim.
-- `platform_or_vendor`, `product_or_service`, and `specific_model_or_runtime` remain compatibility summary fields and must not substitute for the evidence-backed arrays in public interfaces.
-
-No system identity is inferred from narrative `source_context`, `relevance_note`, article title, or publisher identity alone.
+The 2026-08-15 transmutation applied this contract across the then-current FM corpus. Subsequent executions are deterministic freshness checks; the changed-record list below describes only the current execution.
 
 ## Multi-provider failure modes
 
 - `VIGIL-2026-FM-0007`
 - `VIGIL-2026-FM-0008`
+- `VIGIL-2026-FM-0010`
+- `VIGIL-2026-FM-0011`
 - `VIGIL-2026-FM-0012`
+- `VIGIL-2026-FM-0013`
 - `VIGIL-2026-FM-0014`
 - `VIGIL-2026-FM-0015`
-- `VIGIL-2026-FM-0019`
+- `VIGIL-2026-FM-0016`
 - `VIGIL-2026-FM-0020`
 - `VIGIL-2026-FM-0022`
 - `VIGIL-2026-FM-0024`
 - `VIGIL-2026-FM-0025`
 - `VIGIL-2026-FM-0026`
+- `VIGIL-2026-FM-0027`
 - `VIGIL-2026-FM-0032`
 - `VIGIL-2026-FM-0034`
+- `VIGIL-2026-FM-0035`
 - `VIGIL-2026-FM-0042`
+- `VIGIL-2026-FM-0043`
 - `VIGIL-2026-FM-0044`
+- `VIGIL-2026-FM-0047`
 - `VIGIL-2026-FM-0048`
+- `VIGIL-2026-FM-0049`
 - `VIGIL-2026-FM-0052`
+- `VIGIL-2026-FM-0053`
 - `VIGIL-2026-FM-0057`
 - `VIGIL-2026-FM-0058`
 
 ## Unresolved system identity
 
-The following records retain insufficient structured source metadata to identify a provider or system deterministically. They are not silently filled from narrative context:
+These records still lack sufficient structured affected-system metadata or a concrete pre-existing FM system context. They remain unresolved rather than being filled from narrative evidence:
 
 - `VIGIL-2026-FM-0003`
 - `VIGIL-2026-FM-0004`
+- `VIGIL-2026-FM-0021`
 - `VIGIL-2026-FM-0029`
 - `VIGIL-2026-FM-0030`
 - `VIGIL-2026-FM-0033`
@@ -70,23 +78,67 @@ The following records retain insufficient structured source metadata to identify
 - `VIGIL-2026-FM-0038`
 - `VIGIL-2026-FM-0039`
 - `VIGIL-2026-FM-0040`
-- `VIGIL-2026-FM-0041`
 - `VIGIL-2026-FM-0045`
 - `VIGIL-2026-FM-0046`
-- `VIGIL-2026-FM-0050`
 - `VIGIL-2026-FM-0051`
-- `VIGIL-2026-FM-0053`
 
-## Changed records
+## Records changed in this execution
 
+- `VIGIL-2026-FM-0001`
+- `VIGIL-2026-FM-0002`
+- `VIGIL-2026-FM-0003`
 - `VIGIL-2026-FM-0004`
+- `VIGIL-2026-FM-0005`
+- `VIGIL-2026-FM-0006`
+- `VIGIL-2026-FM-0007`
+- `VIGIL-2026-FM-0008`
+- `VIGIL-2026-FM-0009`
+- `VIGIL-2026-FM-0010`
+- `VIGIL-2026-FM-0011`
+- `VIGIL-2026-FM-0012`
+- `VIGIL-2026-FM-0013`
+- `VIGIL-2026-FM-0014`
+- `VIGIL-2026-FM-0015`
+- `VIGIL-2026-FM-0016`
+- `VIGIL-2026-FM-0017`
+- `VIGIL-2026-FM-0018`
+- `VIGIL-2026-FM-0019`
+- `VIGIL-2026-FM-0020`
+- `VIGIL-2026-FM-0021`
+- `VIGIL-2026-FM-0022`
+- `VIGIL-2026-FM-0023`
+- `VIGIL-2026-FM-0024`
+- `VIGIL-2026-FM-0025`
+- `VIGIL-2026-FM-0026`
+- `VIGIL-2026-FM-0027`
+- `VIGIL-2026-FM-0028`
+- `VIGIL-2026-FM-0029`
+- `VIGIL-2026-FM-0030`
+- `VIGIL-2026-FM-0031`
+- `VIGIL-2026-FM-0032`
 - `VIGIL-2026-FM-0033`
+- `VIGIL-2026-FM-0034`
+- `VIGIL-2026-FM-0035`
+- `VIGIL-2026-FM-0036`
 - `VIGIL-2026-FM-0037`
 - `VIGIL-2026-FM-0038`
 - `VIGIL-2026-FM-0039`
 - `VIGIL-2026-FM-0040`
+- `VIGIL-2026-FM-0041`
+- `VIGIL-2026-FM-0042`
+- `VIGIL-2026-FM-0043`
+- `VIGIL-2026-FM-0044`
 - `VIGIL-2026-FM-0045`
 - `VIGIL-2026-FM-0046`
+- `VIGIL-2026-FM-0047`
+- `VIGIL-2026-FM-0048`
+- `VIGIL-2026-FM-0049`
+- `VIGIL-2026-FM-0050`
 - `VIGIL-2026-FM-0051`
+- `VIGIL-2026-FM-0052`
 - `VIGIL-2026-FM-0053`
+- `VIGIL-2026-FM-0054`
 - `VIGIL-2026-FM-0055`
+- `VIGIL-2026-FM-0056`
+- `VIGIL-2026-FM-0057`
+- `VIGIL-2026-FM-0058`

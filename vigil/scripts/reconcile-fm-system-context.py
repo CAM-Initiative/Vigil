@@ -44,6 +44,7 @@ PLACEHOLDERS = {
     "n/a",
     "na",
     "none",
+    "not limited to a single model or runtime",
     "as described by the incident record",
     "as described by source",
     "multiple products or services across evidenced vendors; use source_records for specifics.",
@@ -280,6 +281,14 @@ def context_identity(context: dict[str, Any]) -> tuple[list[str], list[str], lis
     product_or_service = context.get("product_or_service")
     platform = context.get("platform_or_vendor")
 
+    declared_providers: list[str] = []
+    for field in ("primary_evidenced_vendors", "vendor_cluster"):
+        values = context.get(field)
+        if isinstance(values, list):
+            for value in values:
+                if value in CONCRETE_LEGACY_PROVIDERS:
+                    add_unique(declared_providers, str(value))
+
     high_products = products_from_text(specific)
     high_providers = providers_from_text(specific)
 
@@ -291,6 +300,7 @@ def context_identity(context: dict[str, Any]) -> tuple[list[str], list[str], lis
 
     providers: list[str] = []
     products: list[str] = []
+    extend_unique(providers, declared_providers)
 
     if high_providers:
         extend_unique(providers, high_providers)

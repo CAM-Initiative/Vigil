@@ -632,15 +632,21 @@
         "not-applicable"
       ],
       "source_fields": [
-        "source_records[].source_platform",
         "source_records[].system_or_product",
         "source_records[].model_or_algorithm"
       ],
-      "traceability_rule": "Each evidenced_systems entry preserves the source title and, where present, source URL that establishes the projected provider, product, model, or runtime identity.",
-      "no_narrative_inference_rule": "Provider, product, model, and runtime identities must not be synthesized from narrative source_context, relevance_note, article titles, or publisher identity where the structured system metadata does not establish them.",
-      "compatibility_rule": "platform_or_vendor, product_or_service, and specific_model_or_runtime remain compatibility summary fields. Multi Vendor is an evidence-scope summary and must not substitute for the concrete evidenced_vendors, evidenced_products_or_services, or evidenced_models_or_runtimes arrays.",
+      "traceability_rule": "Each evidenced_systems entry preserves its projection_basis and the supporting source title; source_platform may be retained separately as evidence_source_platform so evidence host and affected system remain distinguishable.",
+      "no_narrative_inference_rule": "Provider, product, model, and runtime identities must not be synthesized from narrative source_context, relevance_note, article titles, publisher prose, or the evidence-host source_platform field. Older records may use a concrete pre-existing FM system_context as a bounded fallback where source-level affected-system fields were not yet populated.",
+      "compatibility_rule": "platform_or_vendor, product_or_service, and specific_model_or_runtime remain compatibility summary fields. Multi Vendor describes scope only and must not substitute for concrete evidenced_vendors, evidenced_products_or_services, or evidenced_models_or_runtimes arrays.",
       "public_projection_rule": "Public interfaces should prefer evidence-backed arrays and source-traceable evidenced_systems over placeholder compatibility values such as Multi Vendor, Other, or Unknown.",
-      "unresolved_rule": "Insufficient structured system metadata remains explicitly unresolved; narrative evidence may support later human reconciliation but must not be silently converted into a system identity."
+      "unresolved_rule": "Insufficient structured system metadata remains explicitly unresolved; narrative evidence may support later human reconciliation but must not be silently converted into a system identity.",
+      "record_context_fallback_fields": [
+        "system_context.platform_or_vendor",
+        "system_context.product_or_service",
+        "system_context.specific_model_or_runtime",
+        "system_context.model_or_product"
+      ],
+      "source_platform_rule": "source_records[].source_platform identifies where evidence is hosted, published, or observed. It is source provenance and must not be treated as affected provider/product identity unless the affected-system fields independently establish the same system."
     }
   },
   "cam_internal_rules": {

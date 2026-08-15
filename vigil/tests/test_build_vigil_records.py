@@ -114,6 +114,13 @@ class BuildVigilRecordsTest(unittest.TestCase):
             aggregate["system_summary"]["product_or_service"], "ChatGPT"
         )
         self.assertEqual(aggregate["system_summary"]["specific_model_or_runtime"], "ChatGPT Advanced Voice Mode")
+        self.assertEqual(aggregate["system_summary"]["evidence_scope"], "single-provider")
+        self.assertEqual(aggregate["system_summary"]["evidenced_vendors"], ["OpenAI"])
+        self.assertEqual(aggregate["system_summary"]["evidenced_products_or_services"], ["ChatGPT"])
+        self.assertEqual(
+            aggregate["system_summary"]["evidenced_models_or_runtimes"],
+            ["ChatGPT Advanced Voice Mode"],
+        )
         self.assertEqual(aggregate["system_summary"]["interaction_mode"], "voice | multi-device")
 
     def test_generated_index_entries_exclude_detail_only_structures(self):

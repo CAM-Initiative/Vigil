@@ -86,14 +86,16 @@
     "platform_or_vendor": "Multi Vendor",
     "vendor_cluster": [
       "Hugging Face",
-      "Anthropic"
+      "Anthropic",
+      "OpenAI"
     ],
     "primary_evidenced_vendors": [
       "Hugging Face",
-      "Anthropic"
+      "Anthropic",
+      "OpenAI"
     ],
     "product_or_service": "Other",
-    "specific_model_or_runtime": "AI-assisted security correlation stack; exact component models not fully specified; Anthropic model; exact training-time system details are bounded by the report",
+    "specific_model_or_runtime": "AI-assisted security correlation stack; exact component models not fully specified; Anthropic model; exact training-time system details are bounded by the report; training-time safety review and production AI-assisted security monitoring",
     "interface_surface": "telemetry, alert correlation, severity classification, incident queues, on-call routing, training review and intervention controls",
     "model_or_product": "monitoring and safety-response pipelines",
     "interaction_mode": "automated detection with human and organisational escalation",
@@ -104,14 +106,16 @@
     "evidence_scope": "multi-provider",
     "evidenced_vendors": [
       "Hugging Face",
-      "Anthropic"
+      "Anthropic",
+      "OpenAI"
     ],
     "evidenced_products_or_services": [],
     "evidenced_models_or_runtimes": [
       "AI-assisted security correlation stack",
       "exact component models not fully specified",
       "Anthropic model",
-      "exact training-time system details are bounded by the report"
+      "exact training-time system details are bounded by the report",
+      "training-time safety review and production AI-assisted security monitoring"
     ],
     "evidenced_systems": [
       {
@@ -123,6 +127,8 @@
           "AI-assisted security correlation stack",
           "exact component models not fully specified"
         ],
+        "projection_basis": "source-affected-system-metadata",
+        "evidence_source_platform": "Hugging Face",
         "deployment_context": "Detection and escalation during the OpenAI–Hugging Face evaluation intrusion.",
         "source_title": "Agent intrusion: technical timeline",
         "source_url": "https://huggingface.co/blog/agent-intrusion-technical-timeline"
@@ -136,16 +142,32 @@
           "Anthropic model",
           "exact training-time system details are bounded by the report"
         ],
+        "projection_basis": "source-affected-system-metadata",
+        "evidence_source_platform": "METR",
         "deployment_context": "Entity-level review of model-behaviour detection and prioritisation.",
         "source_title": "Frontier Risk Report (February to March 2026)",
         "source_url": "https://metr.org/blog/2026-05-19-frontier-risk-report/"
+      },
+      {
+        "providers_or_vendors": [
+          "OpenAI"
+        ],
+        "products_or_services": [],
+        "models_or_runtimes": [
+          "training-time safety review and production AI-assisted security monitoring"
+        ],
+        "projection_basis": "record-system-context-fallback",
+        "evidence_source_platform": "Hugging Face",
+        "deployment_context": "Detection and escalation during the OpenAI–Hugging Face evaluation intrusion.",
+        "source_title": "Agent intrusion: technical timeline",
+        "source_url": "https://huggingface.co/blog/agent-intrusion-technical-timeline"
       }
     ],
     "evidence_projection": {
-      "basis": "record-local source_records",
-      "method": "deterministic structured-metadata roll-up",
+      "basis": "record-local affected-system metadata",
+      "method": "structured source affected-system roll-up with record system-context fallback",
       "reconciled_on": "2026-08-15",
-      "inference_boundary": "Provider, product, model, and runtime names are projected only from structured source_platform, system_or_product, and model_or_algorithm metadata. Narrative source_context and relevance_note text are not mined for additional system claims."
+      "inference_boundary": "Affected provider, product, model, and runtime identity is projected from structured system_or_product and model_or_algorithm source metadata, with bounded fallback to an existing concrete FM system_context for older records. source_platform identifies where evidence is hosted or published and is not treated as affected-system identity. Narrative source_context, relevance_note, article titles, and publisher prose are not mined for identity."
     }
   },
   "jurisdictional_context": {
