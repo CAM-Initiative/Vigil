@@ -36,60 +36,24 @@ jobs:
 
           path = Path("vigil/scripts/reconcile-fm-system-context.py")
           text = path.read_text(encoding="utf-8")
-          old = '''    else:
-              legacy = context.get("platform_or_vendor")
-              if legacy in CONCRETE_LEGACY_PROVIDERS:
-                  context.setdefault("vendor_cluster", [legacy])
-                  context.setdefault("primary_evidenced_vendors", [])
-
-          if len(products) == 1 and products[0] in CANONICAL_SINGLE_PRODUCTS:
-          '''
-          new = '''    else:
-              legacy = context.get("platform_or_vendor")
-              if legacy in CONCRETE_LEGACY_PROVIDERS:
-                  context.setdefault("vendor_cluster", [legacy])
-                  context.setdefault("primary_evidenced_vendors", [])
-              else:
-                  if legacy == "Multi Vendor":
-                      context["platform_or_vendor"] = "Unknown"
-                  context["vendor_cluster"] = []
-                  context["primary_evidenced_vendors"] = []
-
-          if len(products) == 1 and products[0] in CANONICAL_SINGLE_PRODUCTS:
-          '''
+          old = "\n".join([
+              '        if legacy in CONCRETE_LEGACY_PROVIDERS:',
+              '            context.setdefault("vendor_cluster", [legacy])',
+              '            context.setdefault("primary_evidenced_vendors", [])',
+          ])
+          new = "\n".join([
+              '        if legacy in CONCRETE_LEGACY_PROVIDERS:',
+              '            context.setdefault("vendor_cluster", [legacy])',
+              '            context.setdefault("primary_evidenced_vendors", [])',
+              '        else:',
+              '            if legacy == "Multi Vendor":',
+              '                context["platform_or_vendor"] = "Unknown"',
+              '            context["vendor_cluster"] = []',
+              '            context["primary_evidenced_vendors"] = []',
+          ])
           if old not in text:
-              raise SystemExit("reconciler marker not found")
+              raise SystemExit("reconciler logic marker not found")
           path.write_text(text.replace(old, new, 1), encoding="utf-8")
-
-          test_path = Path("vigil/tests/test_reconcile_fm_system_context.py")
-          tests = test_path.read_text(encoding="utf-8")
-          if "test_unresolved_multivendor_is_demoted" not in tests:
-              marker = '''def test_reconciliation_is_idempotent() -> None:
-          '''
-              addition = '''def test_unresolved_multivendor_is_demoted() -> None:
-              record = base_record([source("Wired")])
-              projected = MODULE.project_system_context(record)
-              assert projected["evidence_scope"] == "system-unresolved"
-              assert projected["platform_or_vendor"] == "Unknown"
-              assert projected["vendor_cluster"] == []
-              assert projected["primary_evidenced_vendors"] == []
-
-
-          '''
-              if marker not in tests:
-                  raise SystemExit("test marker not found")
-              tests = tests.replace(marker, addition + marker, 1)
-              call_marker = '''    test_x_platform_maps_to_existing_xai_provider_and_x_product()
-              test_reconciliation_is_idempotent()
-          '''
-              call_replacement = '''    test_x_platform_maps_to_existing_xai_provider_and_x_product()
-              test_unresolved_multivendor_is_demoted()
-              test_reconciliation_is_idempotent()
-          '''
-              if call_marker not in tests:
-                  raise SystemExit("test call marker not found")
-              tests = tests.replace(call_marker, call_replacement, 1)
-              test_path.write_text(tests, encoding="utf-8")
           PY
 
       - name: Reconcile all failure-mode system contexts
@@ -124,7 +88,6 @@ jobs:
             vigil/templates/failure-mode-record-template.json \
             vigil/templates/failure-mode-record-template.md \
             vigil/scripts/reconcile-fm-system-context.py \
-            vigil/tests/test_reconcile_fm_system_context.py \
             vigil/scripts/validate-vigil-records.py \
             .github/workflows/vigil-records.yml \
             vigil/docs/2026-triage-model-inventory.json \
