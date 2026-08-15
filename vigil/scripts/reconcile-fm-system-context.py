@@ -44,6 +44,7 @@ PLACEHOLDERS = {
     "n/a",
     "na",
     "none",
+    "not specified",
     "not limited to a single model or runtime",
     "as described by the incident record",
     "as described by source",
@@ -376,6 +377,21 @@ def projection_entry(
     return dict(entry)
 
 
+def record_context_fallback_entry(
+    record_id: str,
+    providers: list[str],
+    products: list[str],
+    models: list[str],
+) -> dict[str, Any]:
+    return {
+        "providers_or_vendors": providers,
+        "products_or_services": products,
+        "models_or_runtimes": models,
+        "projection_basis": "record-system-context-fallback",
+        "source_title": f"{record_id} historical system_context",
+    }
+
+
 def project_system_context(
     record: dict[str, Any],
     fallback_context: dict[str, Any] | None = None,
@@ -421,12 +437,11 @@ def project_system_context(
             extend_unique(products, missing_products)
             extend_unique(models, missing_models)
             evidenced_systems.append(
-                projection_entry(
-                    eligible_sources[0],
+                record_context_fallback_entry(
+                    str(record.get("id", "VIGIL failure mode")),
                     missing_vendors,
                     missing_products,
                     missing_models,
-                    "record-system-context-fallback",
                 )
             )
 

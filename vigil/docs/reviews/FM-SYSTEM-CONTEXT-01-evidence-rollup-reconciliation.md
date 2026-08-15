@@ -10,7 +10,7 @@
 - Failure modes with evidenced providers/vendors: **44**
 - Failure modes with evidenced products/services: **35**
 - Failure modes with evidenced models/runtimes: **48**
-- Records changed in this execution: **58**
+- Records changed in this execution: **48**
 
 ### Evidence scope
 
@@ -86,9 +86,6 @@ These records still lack sufficient structured affected-system metadata or a con
 
 - `VIGIL-2026-FM-0001`
 - `VIGIL-2026-FM-0002`
-- `VIGIL-2026-FM-0003`
-- `VIGIL-2026-FM-0004`
-- `VIGIL-2026-FM-0005`
 - `VIGIL-2026-FM-0006`
 - `VIGIL-2026-FM-0007`
 - `VIGIL-2026-FM-0008`
@@ -104,7 +101,6 @@ These records still lack sufficient structured affected-system metadata or a con
 - `VIGIL-2026-FM-0018`
 - `VIGIL-2026-FM-0019`
 - `VIGIL-2026-FM-0020`
-- `VIGIL-2026-FM-0021`
 - `VIGIL-2026-FM-0022`
 - `VIGIL-2026-FM-0023`
 - `VIGIL-2026-FM-0024`
@@ -112,15 +108,11 @@ These records still lack sufficient structured affected-system metadata or a con
 - `VIGIL-2026-FM-0026`
 - `VIGIL-2026-FM-0027`
 - `VIGIL-2026-FM-0028`
-- `VIGIL-2026-FM-0029`
-- `VIGIL-2026-FM-0030`
 - `VIGIL-2026-FM-0031`
 - `VIGIL-2026-FM-0032`
-- `VIGIL-2026-FM-0033`
 - `VIGIL-2026-FM-0034`
 - `VIGIL-2026-FM-0035`
 - `VIGIL-2026-FM-0036`
-- `VIGIL-2026-FM-0037`
 - `VIGIL-2026-FM-0038`
 - `VIGIL-2026-FM-0039`
 - `VIGIL-2026-FM-0040`
@@ -134,11 +126,9 @@ These records still lack sufficient structured affected-system metadata or a con
 - `VIGIL-2026-FM-0048`
 - `VIGIL-2026-FM-0049`
 - `VIGIL-2026-FM-0050`
-- `VIGIL-2026-FM-0051`
 - `VIGIL-2026-FM-0052`
 - `VIGIL-2026-FM-0053`
 - `VIGIL-2026-FM-0054`
-- `VIGIL-2026-FM-0055`
 - `VIGIL-2026-FM-0056`
 - `VIGIL-2026-FM-0057`
 - `VIGIL-2026-FM-0058`
