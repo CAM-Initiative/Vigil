@@ -27,6 +27,57 @@ jobs:
       - name: Apply affected-system contract v2
         run: python vigil/scripts/apply-fm-affected-system-contract-v2.py
 
+      - name: Preserve evidenced provider clusters during fallback
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path("vigil/scripts/reconcile-fm-system-context.py")
+          text = path.read_text(encoding="utf-8")
+
+          old_placeholder = '    "none",\n    "as described by the incident record",'
+          new_placeholder = '    "none",\n    "not limited to a single model or runtime",\n    "as described by the incident record",'
+          if old_placeholder in text:
+              text = text.replace(old_placeholder, new_placeholder, 1)
+
+          old_platform = '''    platform = context.get("platform_or_vendor")
+
+    high_products = products_from_text(specific)
+'''
+          new_platform = '''    platform = context.get("platform_or_vendor")
+
+    declared_providers: list[str] = []
+    for field in ("primary_evidenced_vendors", "vendor_cluster"):
+        values = context.get(field)
+        if isinstance(values, list):
+            for value in values:
+                if value in CONCRETE_LEGACY_PROVIDERS:
+                    add_unique(declared_providers, str(value))
+
+    high_products = products_from_text(specific)
+'''
+          if old_platform not in text:
+              raise SystemExit("context provider marker not found")
+          text = text.replace(old_platform, new_platform, 1)
+
+          old_lists = '''    providers: list[str] = []
+    products: list[str] = []
+
+    if high_providers:
+'''
+          new_lists = '''    providers: list[str] = []
+    products: list[str] = []
+    extend_unique(providers, declared_providers)
+
+    if high_providers:
+'''
+          if old_lists not in text:
+              raise SystemExit("context provider-list marker not found")
+          text = text.replace(old_lists, new_lists, 1)
+
+          path.write_text(text, encoding="utf-8")
+          PY
+
       - name: Recover and reconcile pre-transmutation FM context
         run: |
           python vigil/scripts/reconcile-fm-system-context.py \
@@ -66,6 +117,7 @@ jobs:
             vigil/schemas/VIGIL.Index.Schema.json \
             vigil/templates/failure-mode-record-template.json \
             vigil/templates/failure-mode-record-template.md \
+            vigil/scripts/reconcile-fm-system-context.py \
             vigil/scripts/build-vigil-records.py \
             vigil/tests/test_build_vigil_records.py \
             vigil/VIGIL.Failures.Index.json \
