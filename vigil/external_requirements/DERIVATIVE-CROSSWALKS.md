@@ -2,8 +2,21 @@
 
 Separate from Layer 1 direct-source requirements. Crosswalks record developer-asserted relationships; they do not supply target normative text or establish Caelestis conformity.
 
-- Crosswalk records: 3
+- Crosswalk records: 7
 - Ingested mapping rows: 22
+
+## NIST AI RMF 1.0 to ISO/IEC FDIS 42001
+
+- ID: `XWALK-3B88B22163C7E4F8`
+- Version/status: `undated NIST-hosted Microsoft crosswalk` / `NIST-AIRC-listed`
+- Relationship: `informative`
+- Developer / host: Microsoft / NIST AI Resource Center
+- Rows represented: 0 (`not-ingested`)
+- Conformance assertion permitted: `false`
+
+- Provenance: NIST AIRC lists this Microsoft crosswalk under ISO-IEC-42001.
+- Provenance: The hosted PDF explicitly identifies its target as ISO/IEC FDIS 42001, not the final ISO/IEC 42001:2023 publication. VIGIL therefore preserves the FDIS version boundary.
+- Provenance: Row-level mappings are intentionally deferred to the derivative dataset ingestion pass.
 
 ## SDOS-RuntimeGov-to-AI-RMF-v1.0
 
@@ -18,6 +31,45 @@ Separate from Layer 1 direct-source requirements. Crosswalks record developer-as
 - Provenance: NIST states that 49 AI RMF subcategories are mapped; the full row-level submission was not ingested in this work package.
 - Provenance: The current SDOS primary source is v1.10. This v1.7 crosswalk is retained as version-bounded derivative evidence and must not be silently applied to later SDOS versions.
 - Provenance: The live AAM SDOS page currently labels the AI RMF OLIR as Reference ID 220, while the NIST OLIR catalogue exposes the Final record at Reference ID 212. VIGIL treats the NIST catalogue as authoritative for OLIR record identity.
+
+## ISO/IEC 42005 to NIST AI RMF 1.0
+
+- ID: `XWALK-66431E5018136D90`
+- Version/status: `2025-08-14` / `NIST-AIRC-listed`
+- Relationship: `informative`
+- Developer / host: INCITS/AI / NIST AI Resource Center
+- Rows represented: 0 (`not-ingested`)
+- Conformance assertion permitted: `false`
+
+- Provenance: NIST AIRC lists this crosswalk as submitted by INCITS/AI and dated 14 August 2025.
+- Provenance: The hosted PDF itself labels the mapped ISO source as ISO/IEC DIS 42005; VIGIL therefore does not silently apply the mapping to the final ISO/IEC 42005:2025 text.
+- Provenance: Row-level mappings are intentionally deferred to the derivative dataset ingestion pass.
+
+## NIST AI RMF 1.0 to ISO/IEC 5338:2023 and ISO/IEC 5339:2024
+
+- ID: `XWALK-B706925C4597DFB8`
+- Version/status: `2024-04-11` / `NIST-AIRC-listed`
+- Relationship: `informative`
+- Developer / host: INCITS/AI / NIST AI Resource Center
+- Rows represented: 0 (`not-ingested`)
+- Conformance assertion permitted: `false`
+
+- Provenance: NIST AIRC lists this INCITS crosswalk dated 11 April 2024.
+- Provenance: The document is principally a conceptual/lifecycle alignment and trustworthiness comparison rather than a comprehensive clause-equivalence table.
+- Provenance: Row-level or figure/table relationships are intentionally deferred to the derivative dataset ingestion pass.
+
+## ISO/IEC 23894:2023 to NIST AI RMF 1.0 (Revised)
+
+- ID: `XWALK-BB94A7BB099F5311`
+- Version/status: `2025-08-14` / `NIST-AIRC-listed`
+- Relationship: `informative`
+- Developer / host: INCITS/AI / NIST AI Resource Center
+- Rows represented: 0 (`not-ingested`)
+- Conformance assertion permitted: `false`
+
+- Provenance: NIST AIRC lists this revised crosswalk as submitted by INCITS/AI and dated 14 August 2025.
+- Provenance: The crosswalk identifies ISO/IEC 23894:2023 clauses against AI RMF functions but is not itself the ISO normative text.
+- Provenance: Row-level mappings are intentionally deferred to the derivative dataset ingestion pass.
 
 ## SDOS-v1.10-to-ISO-IEC-42001-2023-supplementary
 
