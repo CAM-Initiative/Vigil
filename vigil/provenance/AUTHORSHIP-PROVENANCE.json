@@ -1,8 +1,8 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "declaration_id": "VIGIL-AUTHORSHIP-PROVENANCE-1",
   "title": "VIGIL authorship, human-review and human-verification provenance",
-  "scope": "VIGIL-authored extraction, abstraction, classification, interpretation, crosswalking, analysis and record production",
+  "scope": "VIGIL-authored extraction, abstraction, classification, interpretation, crosswalking, applicability assessment, analysis and record production",
   "operating_model": "AI-authored, semi-autonomous production under human contract approval",
   "default_provenance": {
     "content_origin": "ai-authored",
@@ -62,9 +62,10 @@
     "contract_approver_implies_human_review": false,
     "contract_approver_implies_human_verification": false,
     "review_and_verification_are_separate": true,
-    "human_presence_is_not_meaningful_assurance": true
+    "human_presence_is_not_meaningful_assurance": true,
+    "post_production_assurance_rewrites_authorship": false
   },
-  "external_source_boundary": "External laws, standards, publications, incident reports and other evidentiary materials retain their own authorship and authority. This declaration concerns VIGIL's extraction, abstraction, classification, interpretation, crosswalking, analysis and record production; it does not label the external source itself as AI-authored.",
+  "external_source_boundary": "External laws, standards, publications, incident reports and other evidentiary materials retain their own authorship and authority. This declaration concerns VIGIL's extraction, abstraction, classification, interpretation, crosswalking, applicability assessment, analysis and record production; it does not label the external source itself as AI-authored.",
   "dataset_declarations": {
     "external-governance-layer-0-and-layer-1": {
       "applies_to": [
@@ -87,7 +88,36 @@
         "human_verification_status": "not-verified"
       },
       "external_source_authorship_unchanged": true
+    },
+    "cam-applicability-layer-2": {
+      "applies_to": [
+        "vigil/cam_conformance/"
+      ],
+      "covers": [
+        "CAM applicability assessment",
+        "CAM coverage assessment",
+        "CAM conformance/compliance/alignment disposition",
+        "remediation routing preparation"
+      ],
+      "provenance": {
+        "content_origin": "ai-authored",
+        "generation_mode": "semi-autonomous",
+        "human_role": "contract-approver",
+        "human_authorship": false,
+        "human_review_status": "not-reviewed",
+        "human_verification_status": "not-verified"
+      },
+      "layer_boundary": "Layer 2 may reference effective Layer 1 EXTREQ records but must not rewrite Layer 0 source facts or Layer 1 external requirement meaning."
     }
+  },
+  "post_production_assurance_rule": {
+    "assurance_field": "assurance_provenance",
+    "external_requirement_assurance_dataset": "vigil/external_requirements/source-review-assurance.json",
+    "assurance_does_not_rewrite_authorship": true,
+    "absence_of_assurance_does_not_mean_review": true,
+    "absence_of_assurance_does_not_mean_verification": true,
+    "contract_approval_is_not_assurance": true,
+    "rule": "A later human review or verification is additional assurance over an existing artefact. It must be recorded separately and must not change an AI-authored artefact into a human-authored artefact."
   },
   "generated_artefact_rule": {
     "provenance": {

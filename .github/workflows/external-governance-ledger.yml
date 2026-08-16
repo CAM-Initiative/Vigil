@@ -4,30 +4,40 @@ on:
   push:
     paths:
       - "vigil/external_sources/**"
+      - "vigil/external_requirements/**"
+      - "vigil/cam_conformance/**"
+      - "vigil/provenance/AUTHORSHIP-PROVENANCE.json"
       - "vigil/scripts/manage-external-governance-ledger.py"
       - "vigil/scripts/apply-external-governance-baseline.py"
-      - "vigil/tests/test_external_governance_ledger.py"
-      - "vigil/external_requirements/**"
-      - "vigil/provenance/AUTHORSHIP-PROVENANCE.json"
-      - "vigil/scripts/validate-authorship-provenance.py"
-      - "vigil/tests/test_authorship_provenance.py"
       - "vigil/scripts/manage-external-requirements.py"
       - "vigil/scripts/manage-external-requirements-extended.py"
+      - "vigil/scripts/manage-external-requirements-effective.py"
+      - "vigil/scripts/validate-cam-conformance.py"
+      - "vigil/scripts/validate-authorship-provenance.py"
+      - "vigil/tests/test_external_governance_ledger.py"
       - "vigil/tests/test_external_requirements.py"
+      - "vigil/tests/test_external_requirements_extended.py"
+      - "vigil/tests/test_cam_conformance.py"
+      - "vigil/tests/test_authorship_provenance.py"
       - ".github/workflows/external-governance-ledger.yml"
   pull_request:
     paths:
       - "vigil/external_sources/**"
+      - "vigil/external_requirements/**"
+      - "vigil/cam_conformance/**"
+      - "vigil/provenance/AUTHORSHIP-PROVENANCE.json"
       - "vigil/scripts/manage-external-governance-ledger.py"
       - "vigil/scripts/apply-external-governance-baseline.py"
-      - "vigil/tests/test_external_governance_ledger.py"
-      - "vigil/external_requirements/**"
-      - "vigil/provenance/AUTHORSHIP-PROVENANCE.json"
-      - "vigil/scripts/validate-authorship-provenance.py"
-      - "vigil/tests/test_authorship_provenance.py"
       - "vigil/scripts/manage-external-requirements.py"
       - "vigil/scripts/manage-external-requirements-extended.py"
+      - "vigil/scripts/manage-external-requirements-effective.py"
+      - "vigil/scripts/validate-cam-conformance.py"
+      - "vigil/scripts/validate-authorship-provenance.py"
+      - "vigil/tests/test_external_governance_ledger.py"
       - "vigil/tests/test_external_requirements.py"
+      - "vigil/tests/test_external_requirements_extended.py"
+      - "vigil/tests/test_cam_conformance.py"
+      - "vigil/tests/test_authorship_provenance.py"
       - ".github/workflows/external-governance-ledger.yml"
   workflow_dispatch:
 
@@ -57,14 +67,18 @@ jobs:
         run: python vigil/scripts/manage-external-governance-ledger.py validate
       - name: Rebuild frozen baseline requirement projections for baseline tests
         run: python vigil/scripts/manage-external-requirements.py build
-      - name: Test baseline external requirement identity, provenance and access controls
+      - name: Test frozen external requirement identity, provenance and access controls
         run: python vigil/tests/test_external_requirements.py
-      - name: Build and validate effective external requirements and derivative crosswalks
+      - name: Build and validate effective Layer 1 requirements
         run: |
-          python vigil/scripts/manage-external-requirements-extended.py build
-          python vigil/scripts/manage-external-requirements-extended.py validate --check-generated
-      - name: Test effective requirement extension boundaries
+          python vigil/scripts/manage-external-requirements-effective.py build
+          python vigil/scripts/manage-external-requirements-effective.py validate --check-generated
+      - name: Test effective Layer 1 provenance, semantics and transition boundaries
         run: python vigil/tests/test_external_requirements_extended.py
+      - name: Validate separate Layer 2 CAM applicability/conformance architecture
+        run: |
+          python vigil/tests/test_cam_conformance.py
+          python vigil/scripts/validate-cam-conformance.py
       - name: Validate VIGIL authorship and human-review provenance
         run: |
           python vigil/tests/test_authorship_provenance.py
@@ -81,6 +95,7 @@ jobs:
             vigil/external_requirements/effective-requirements.json \
             vigil/external_requirements/requirements-index.json \
             vigil/external_requirements/completeness-report.json \
+            vigil/external_requirements/source-coverage-manifests.json \
             vigil/external_requirements/EXTERNAL-AI-GOVERNANCE-REQUIREMENTS.md \
             vigil/external_requirements/SOURCE-ACCESS-LIMITATIONS.md \
             vigil/external_requirements/BLOCKED-SOURCE-PRIORITIES.md \
@@ -105,6 +120,7 @@ jobs:
             vigil/external_requirements/effective-requirements.json \
             vigil/external_requirements/requirements-index.json \
             vigil/external_requirements/completeness-report.json \
+            vigil/external_requirements/source-coverage-manifests.json \
             vigil/external_requirements/EXTERNAL-AI-GOVERNANCE-REQUIREMENTS.md \
             vigil/external_requirements/SOURCE-ACCESS-LIMITATIONS.md \
             vigil/external_requirements/BLOCKED-SOURCE-PRIORITIES.md \
@@ -118,7 +134,6 @@ jobs:
             git push
           fi
 
-# Network ingestion remains deliberately disabled here. The frozen publisher-verified
-# baseline is extended only by reviewed maintained source supplements. Neither source
-# ingestion nor derivative crosswalk processing may edit Caelestis or create substantive
-# VIGIL evidentiary records automatically.
+# Network ingestion remains deliberately disabled. Maintained source supplements must
+# come from lawful official-source review. Neither source ingestion nor derivative
+# processing may edit CAM, create Layer 2 findings, or create substantive VIGIL records.

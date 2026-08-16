@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/CAM-Initiative/Vigil/vigil/cam_conformance/cam-applicability.schema.json",
+  "title": "VIGIL Layer 2 CAM Applicability and Conformance Assessment",
+  "description": "A CAM-specific applicability and coverage judgement for one effective Layer 1 EXTREQ. This schema does not modify Layer 0 or Layer 1.",
+  "type": "object",
+  "required": ["assessment_id", "extreq_id", "external_source_id", "source_version", "normative_force", "alignment_relationship", "applicability_state", "applicability_rationale", "coverage_state", "cam_corpus_commit", "cam_instrument_refs", "coverage_evidence_refs", "assessment_provenance", "assurance_provenance", "remediation_required", "remediation_refs", "vigil_routing_state", "limitations"],
+  "properties": {
+    "assessment_id": {"type": "string", "pattern": "^CAMALIGN-[A-F0-9]{16}$"},
+    "extreq_id": {"type": "string", "pattern": "^EXTREQ-[A-F0-9]{16}$"},
+    "external_source_id": {"type": "string", "minLength": 1},
+    "source_version": {"type": "string", "minLength": 1},
+    "normative_force": {"enum": ["binding-law", "regulatory-requirement", "contractual-or-incorporated-standard", "voluntary-consensus-standard", "voluntary-technical-specification", "informative-technical-report", "government-voluntary-framework", "industry-framework"]},
+    "alignment_relationship": {"enum": ["compliance", "conformance", "alignment", "reference-only"]},
+    "applicability_state": {"enum": ["applicable", "conditionally-applicable", "reference-only", "not-applicable", "unresolved"]},
+    "applicability_rationale": {"type": "string", "minLength": 1},
+    "coverage_state": {"enum": ["full", "partial", "absent", "conflicting", "indeterminate", "not-applicable"]},
+    "cam_corpus_commit": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
+    "cam_instrument_refs": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "coverage_evidence_refs": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "assessment_provenance": {
+      "type": "object",
+      "required": ["content_origin", "generation_mode", "human_role", "human_authorship", "human_review_status", "human_verification_status", "declaration"],
+      "properties": {
+        "content_origin": {"enum": ["human-authored", "ai-authored", "human-ai-coauthored"]},
+        "generation_mode": {"enum": ["manual", "ai-assisted", "semi-autonomous"]},
+        "human_role": {"enum": ["none", "contract-approver", "substantive-contributor", "co-author", "reviewer", "verifier"]},
+        "human_authorship": {"type": "boolean"},
+        "human_review_status": {"enum": ["not-reviewed", "spot-checked", "substantively-reviewed", "line-by-line-reviewed"]},
+        "human_verification_status": {"enum": ["not-verified", "sample-verified", "source-verified", "fully-verified"]},
+        "declaration": {"const": "vigil/provenance/AUTHORSHIP-PROVENANCE.json"}
+      },
+      "additionalProperties": false
+    },
+    "assurance_provenance": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["assurance_id", "human_role", "performed_by", "performed_at", "human_review_status", "human_verification_status", "scope", "method", "evidence_refs", "limitations"],
+        "properties": {
+          "assurance_id": {"type": "string", "pattern": "^ASSURE-[A-F0-9]{16}$"},
+          "human_role": {"enum": ["reviewer", "verifier"]},
+          "performed_by": {"type": "string", "minLength": 1},
+          "performed_at": {"type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$"},
+          "human_review_status": {"enum": ["not-reviewed", "spot-checked", "substantively-reviewed", "line-by-line-reviewed"]},
+          "human_verification_status": {"enum": ["not-verified", "sample-verified", "source-verified", "fully-verified"]},
+          "scope": {"type": "string", "minLength": 1},
+          "method": {"type": "string", "minLength": 1},
+          "evidence_refs": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+          "limitations": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true}
+        },
+        "additionalProperties": false
+      }
+    },
+    "remediation_required": {"type": "boolean"},
+    "remediation_refs": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "vigil_routing_state": {"enum": ["none", "needs-review", "ready-for-routing", "routed"]},
+    "limitations": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true}
+  },
+  "additionalProperties": false
+}
