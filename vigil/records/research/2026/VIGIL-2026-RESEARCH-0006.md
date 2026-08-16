@@ -137,9 +137,9 @@
 
 # VIGIL-2026-RESEARCH-0006
 
-## Conflict-condition threat signals, defensive interception and offensive-authority renewal: deployment-evidence reanalysis
+# VIGIL-2026-RESEARCH-0006 — Conflict-condition threat signals, defensive interception and offensive-authority renewal
 
-## 1. Abstract
+## Abstract
 
 This reanalysis resets the evidentiary posture of RESEARCH-0006.
 
@@ -163,7 +163,7 @@ Accordingly, the "perpetual war token" remains an analytical metaphor, not an ob
 
 ---
 
-## 2. Research question
+## Research question
 
 The primary question is:
 
@@ -181,7 +181,9 @@ Subsidiary questions are:
 
 ---
 
-## 3. Research reset and epistemic posture
+## Scope and methodology
+
+### Research reset and epistemic posture
 
 This record applies a strict rule:
 
@@ -199,7 +201,7 @@ The report therefore distinguishes **absence of evidence** from **evidence of ab
 
 ---
 
-## 4. Methodology
+### Methodology
 
 Sources were classified by both confidence and evidentiary layer.
 
@@ -230,7 +232,7 @@ A high-confidence Layer 2 claim remains a Layer 2 claim.
 
 ---
 
-## 5. Evidence-layer framework
+### Evidence-layer framework
 
 The evidentiary problem can be represented as:
 
@@ -252,21 +254,23 @@ This asymmetry is itself a material research finding.
 
 ---
 
-## 6. Normative requirement versus deployment
+## Findings
+
+### Normative requirement versus deployment
 
 The UN Charter preserves the inherent right of individual or collective self-defence in Article 51 when an armed attack occurs. That is a legal rule concerning state use of force; it is not a software permission model.
 
-International humanitarian law governs the conduct of attacks irrespective of whether an operation is described as offensive or defensive. Additional Protocol I Article 57 requires those who plan or decide upon attacks to take feasible steps to verify targets, choose means and methods to reduce civilian harm, assess expected incidental harm, and cancel or suspend attacks where required. The ICRC commentary expressly notes that the precautions apply to attacks whether they are acts of aggression or responses to aggression.
+[Additional Protocol I Article 57](https://ihl-databases.icrc.org/en/ihl-treaties/api-1977/article-57) governs precautions in attack irrespective of whether an operation is described as offensive or defensive. It requires those who plan or decide upon attacks to take feasible steps to verify targets, choose means and methods to reduce civilian harm, assess expected incidental harm, and cancel or suspend attacks where required. The ICRC commentary expressly notes that the precautions apply to attacks whether they are acts of aggression or responses to aggression.
 
 These sources establish that an incoming attack or defensive posture does not erase attack-specific IHL obligations. They do **not** establish what a particular command-and-control system technically permits after a hostile event.
 
-Similarly, U.S. DoD Directive 3000.09 requires autonomous and semi-autonomous weapon systems to be designed so commanders and operators can exercise appropriate levels of human judgement over the use of force and requires realistic performance, reliability, effectiveness and suitability. The U.S.-led Political Declaration on Responsible Military Use of AI and Autonomy calls for oversight, operator training, auditable development, testing and assurance across lifecycles, including monitoring so critical safety features are not degraded in self-learning or continuously updating systems.
+Similarly, the [U.S. DoD's update to Directive 3000.09](https://www.defense.gov/News/Releases/Release/Article/3278076/dod-announces-update-to-dod-directive-300009-autonomy-in-weapon-systems/) requires autonomous and semi-autonomous weapon systems to be designed so commanders and operators can exercise appropriate levels of human judgement over the use of force and requires realistic performance, reliability, effectiveness and suitability. The [Political Declaration on Responsible Military Use of AI and Autonomy](https://2021-2025.state.gov/political-declaration-on-responsible-military-use-of-artificial-intelligence-and-autonomy) calls for oversight, operator training, auditable development, testing and assurance across lifecycles, including monitoring so critical safety features are not degraded in self-learning or continuously updating systems.
 
 Those are material normative and policy controls. They cannot be cited as proof that every fielded system conforms.
 
 ---
 
-## 7. Authority terminology and authority-layer model
+### Authority terminology and authority-layer model
 
 The original expression "offensive reauthorisation" compresses multiple authority layers and should be used cautiously.
 
@@ -310,7 +314,7 @@ These layers can overlap operationally, but they are not synonyms.
 
 ---
 
-## 8. Legal framework
+### Legal framework
 
 ### 8.1 Self-defence
 
@@ -332,7 +336,7 @@ This is an important normative and analytical finding, not proof that deployed s
 
 ---
 
-## 9. Military doctrine and policy
+### Military doctrine and policy
 
 The reviewed U.S., UK and multilateral policy sources show convergence around several ideas:
 
@@ -354,7 +358,7 @@ They do not establish implementation quality in any particular deployed system.
 
 ---
 
-## 10. Defensive interception
+### Defensive interception
 
 Iron Dome is publicly described as a radar-supported defensive interception system that detects rocket launches, predicts trajectories and selectively engages threats assessed as heading toward populated areas.
 
@@ -375,9 +379,9 @@ The defensive function is therefore **documented**; the wider authority architec
 
 ---
 
-## 11. Offensive targeting and weapons-release authority
+### Offensive targeting and weapons-release authority
 
-The IDF's June 2024 public description of Habsora and Lavender states that:
+The [IDF's June 2024 public description of Habsora and Lavender](https://www.idf.il/en/mini-sites/idf-press-releases-israel-at-war/june-24-pr/the-idfs-use-of-data-technologies-in-intelligence-processing-published-june-18-2024/) states that:
 
 - the tools help analysts process and cross-reference intelligence;
 - target identification must be performed by a human analyst;
@@ -393,7 +397,7 @@ That distinction is central because independent reporting alleges a materially d
 
 ---
 
-## 12. Threat-event triggering and pre-delegated authority
+### Threat-event triggering and pre-delegated authority
 
 Military operations can legitimately contain event-triggered or pre-delegated authority. Examples include rapid defensive engagement against incoming threats and standing rules that allow immediate action under defined conditions.
 
@@ -407,7 +411,7 @@ Public sources reviewed for RESEARCH-0006 do not expose sufficient command or te
 
 ---
 
-## 13. AI and automation in military decision pathways
+### AI and automation in military decision pathways
 
 Military AI may operate in several distinct roles:
 
@@ -433,7 +437,7 @@ It is not evidence that every deployed military AI workflow maintains that separ
 
 ---
 
-## 14. Meaningful human review versus nominal human presence
+### Meaningful human review versus nominal human presence
 
 ### 14.1 Review-quality test
 
@@ -472,7 +476,7 @@ It does **not** demonstrate the specific defensive-to-offensive authority propag
 
 ---
 
-## 15. Human-factors evidence and assurance failure
+### Human-factors evidence and assurance failure
 
 The broader human-factors literature supports the Patriot lesson.
 
@@ -486,7 +490,7 @@ These findings support a general proposition:
 
 ---
 
-## 16. Israel–Gaza case study
+### Israel–Gaza case study
 
 ### 16.1 Defensive system
 
@@ -573,7 +577,7 @@ They do not establish shared legal authority, shared permission states or automa
 
 ---
 
-## 17. Comparative deployment evidence
+### Comparative deployment evidence
 
 ### 17.1 Patriot
 
@@ -603,7 +607,7 @@ These comparative examples are more probative for the policy-to-deployment gap t
 
 ---
 
-## 18. Defensive–offensive technical coupling
+### Defensive–offensive technical coupling
 
 Public evidence demonstrates that modern military operations can share:
 
@@ -632,7 +636,7 @@ FM-0060 therefore remains an **architectural hazard with deployed occurrence unv
 
 ---
 
-## 19. Deployment evidence for authority separation
+### Deployment evidence for authority separation
 
 The strongest positive evidence for separation is currently at the policy and declared-workflow levels.
 
@@ -663,7 +667,7 @@ The correct status is **under-verified at deployment level**.
 
 ---
 
-## 20. Authority state, persistence, suspension and revalidation
+### Authority state, persistence, suspension and revalidation
 
 Military authority is not a single state variable.
 
@@ -689,7 +693,7 @@ No reviewed source provides enough technical permission-state information to aff
 
 ---
 
-## 21. Model/system updates and governance-control regression
+### Model/system updates and governance-control regression
 
 ### 21.1 Empirical AI evidence
 
@@ -731,7 +735,7 @@ It supports the general assurance principle that material AI changes require con
 
 ---
 
-## 22. Version-bounded assurance
+### Version-bounded assurance
 
 The following proposition is externally defensible:
 
@@ -764,7 +768,7 @@ This is a governance and assurance conclusion, not evidence that a named militar
 
 ---
 
-## 23. Independent challenge and ground-truth channels
+### Independent challenge and ground-truth channels
 
 Humanitarian organisations, legal advisers, neutral intermediaries, civilian-harm monitoring and independent investigations can provide evidence that challenges military data pipelines.
 
@@ -783,7 +787,7 @@ The WCK incident demonstrates why the transition from "information exists" to "i
 
 ---
 
-## 24. Counter-evidence and falsification
+## Counter-evidence and alternative explanations
 
 The research actively sought evidence that would reduce concern.
 
@@ -818,7 +822,7 @@ This is an absence of public evidence, not evidence that those controls do not e
 
 ---
 
-## 25. Absence of evidence versus evidence of absence
+### Absence of evidence versus evidence of absence
 
 ### Absence of evidence
 
@@ -839,7 +843,7 @@ No broad deployment-level evidence of absence was identified for the core coupli
 
 ---
 
-## 26. Terminology map
+### Terminology map
 
 | Internal / analytical term | Closest external concept | Status |
 |---|---|---|
@@ -864,7 +868,7 @@ No broad deployment-level evidence of absence was identified for the core coupli
 
 ---
 
-## 27. Claim–evidence matrix
+### Claim–evidence matrix
 
 | Proposition | Confidence | Evidence layer | Strongest support | Counter-evidence / limitation | Deployment established? | Meaningful review established? | Lifecycle persistence established? |
 |---|---|---|---|---|---|---|---|
@@ -884,7 +888,7 @@ No broad deployment-level evidence of absence was identified for the core coupli
 
 ---
 
-## 28. Control-persistence matrix
+### Control-persistence matrix
 
 | System / domain | Evaluated state | Governance/safety property | Change | Revalidation evidence | Continued effectiveness | Carry-forward conclusion |
 |---|---|---|---|---|---|---|
@@ -897,7 +901,7 @@ No broad deployment-level evidence of absence was identified for the core coupli
 
 ---
 
-## 29. External factual findings
+### External factual findings
 
 The following are the strongest externally grounded findings.
 
@@ -914,7 +918,7 @@ The following are the strongest externally grounded findings.
 
 ---
 
-## 30. Analytical synthesis
+### Analytical synthesis
 
 The original RESEARCH-0006 question remains useful, but its evidentiary basis must be reframed.
 
@@ -936,7 +940,23 @@ These are prudent controls justified by cross-domain and military assurance evid
 
 ---
 
-## 31. Implications for RESEARCH-0006 internal constructs
+## Limitations
+
+1. Classified rules of engagement and command authorizations are unavailable.
+2. Deployed source code, permission-state architecture and logs are unavailable.
+3. Lavender reporting depends substantially on confidential Israeli intelligence sources and remains contested.
+4. The IDF's public account is detailed but institutionally self-reported.
+5. Patriot is a highly automated defensive system but not a contemporary machine-learning targeting model.
+6. WCK demonstrates procedural and human decision failure, not AI causation.
+7. LLM fine-tuning studies demonstrate general governance-property regression, not military authority regression.
+8. FDA and NIST lifecycle practices are cross-domain analogues, not military legal requirements.
+9. No public audit was found that longitudinally verifies defensive/offensive permission separation across versions of a named deployed military AI system.
+
+---
+
+## Governance implications
+
+### Implications for RESEARCH-0006 internal constructs
 
 The internal constructs should be revised as follows.
 
@@ -980,7 +1000,7 @@ The non-propagation property must be version-bounded and revalidated after mater
 
 ---
 
-## 32. Implications for broader VIGIL authority-separation model
+### Implications for broader VIGIL authority-separation model
 
 ### FM-0059 — Human-in-the-loop assurance failure
 
@@ -1020,7 +1040,7 @@ It should explicitly include:
 
 ---
 
-## 33. Assessment of the "perpetual war token" abstraction
+### Assessment of the "perpetual war token" abstraction
 
 ### Literal deployed mechanism
 
@@ -1054,21 +1074,7 @@ A less provocative research term would be:
 
 ---
 
-## 34. Limitations
-
-1. Classified rules of engagement and command authorizations are unavailable.
-2. Deployed source code, permission-state architecture and logs are unavailable.
-3. Lavender reporting depends substantially on confidential Israeli intelligence sources and remains contested.
-4. The IDF's public account is detailed but institutionally self-reported.
-5. Patriot is a highly automated defensive system but not a contemporary machine-learning targeting model.
-6. WCK demonstrates procedural and human decision failure, not AI causation.
-7. LLM fine-tuning studies demonstrate general governance-property regression, not military authority regression.
-8. FDA and NIST lifecycle practices are cross-domain analogues, not military legal requirements.
-9. No public audit was found that longitudinally verifies defensive/offensive permission separation across versions of a named deployed military AI system.
-
----
-
-## 35. Unresolved deployment questions
+## Open questions
 
 - What actual technical permissions are exposed to military AI decision-support systems?
 - Can target-generation tools write to execution or engagement systems directly?
@@ -1085,7 +1091,7 @@ A less provocative research term would be:
 
 ---
 
-## 36. Conclusions
+## Conclusion
 
 The reanalysis does not validate the original "perpetual war token" as a deployed mechanism.
 
@@ -1107,7 +1113,7 @@ This is a defensible governance architecture even though the review did not esta
 
 ---
 
-## 37. Final decision questions
+## Final decision questions
 
 ### 1. What does law require regarding defensive and offensive force?
 
@@ -1189,7 +1195,7 @@ Yes, if framed as precautionary governance architecture rather than a factual cl
 
 ---
 
-## 38. Bibliography / source register
+## Bibliography and Primary Sources
 
 ### A. Existing RESEARCH-0006 source corpus retained
 
@@ -1329,7 +1335,7 @@ Yes, if framed as precautionary governance architecture rather than a factual cl
 
 ---
 
-## Source-use warning
+### Source-use warning
 
 The bibliography intentionally contains sources at different evidentiary layers.
 
