@@ -13,7 +13,7 @@ Generated from the maintained Layer 0 source ledger, Layer 1 source-scope decisi
 - Access: `direct-public-primary`
 - Extraction: `complete`
 - Requirements: 24 (24 reviewed; 0 unresolved)
-- Next action: Monitor SDOS changelog for material changes.
+- Next action: Monitor for material source revision.
 
 | Requirement | Clause/control | Summary | Posture / type | Actor | Object | Governance expectation | Evidence expectation | Timing / artefact / verification | Applicability / qualification | Review / access |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -235,9 +235,9 @@ No requirement records are asserted. Retained as a bounded supporting authority.
 - Access: `direct-licensed-primary`
 - Extraction: `supporting-only`
 - Requirements: 0 (0 reviewed; 0 unresolved)
-- Next action: Retain licensed-primary provenance under supporting-source scope.
+- Next action: Monitor source lifecycle.
 
-No requirement records are asserted. Primary text access recorded; comprehensive first-class decomposition is not planned under current scope.
+No requirement records are asserted. Supporting authority only; exhaustive first-class decomposition is outside current scope.
 
 ## IEEE Recommended Practice for Organizational Governance of Artificial Intelligence — 2026
 
@@ -246,9 +246,9 @@ No requirement records are asserted. Primary text access recorded; comprehensive
 - Access: `official-metadata-only`
 - Extraction: `blocked-access`
 - Requirements: 0 (0 reviewed; 0 unresolved)
-- Next action: Obtain lawful primary text before extraction.
+- Next action: Obtain lawful primary-source access.
 
-No requirement records are asserted. Primary source remains access-blocked; no requirements inferred from metadata.
+No requirement records are asserted. Primary-source review is blocked by access; requirements are not inferred.
 
 ## IEEE Standard Model Process for Addressing Ethical Concerns during System Design — 2021
 
@@ -257,7 +257,7 @@ No requirement records are asserted. Primary source remains access-blocked; no r
 - Access: `direct-licensed-primary`
 - Extraction: `complete`
 - Requirements: 55 (55 reviewed; 0 unresolved)
-- Next action: Monitor the source for amendment, corrigendum, supersession, or other material revision.
+- Next action: Monitor for material source revision.
 
 | Requirement | Clause/control | Summary | Posture / type | Actor | Object | Governance expectation | Evidence expectation | Timing / artefact / verification | Applicability / qualification | Review / access |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -324,7 +324,7 @@ No requirement records are asserted. Primary source remains access-blocked; no r
 - Access: `direct-licensed-primary`
 - Extraction: `complete`
 - Requirements: 33 (33 reviewed; 0 unresolved)
-- Next action: Monitor the source for amendment, corrigendum, supersession, or other material revision.
+- Next action: Monitor for material source revision.
 
 | Requirement | Clause/control | Summary | Posture / type | Actor | Object | Governance expectation | Evidence expectation | Timing / artefact / verification | Applicability / qualification | Review / access |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -369,9 +369,9 @@ No requirement records are asserted. Primary source remains access-blocked; no r
 - Access: `direct-licensed-primary`
 - Extraction: `supporting-only`
 - Requirements: 0 (0 reviewed; 0 unresolved)
-- Next action: Retain licensed-primary provenance under supporting-source scope.
+- Next action: Monitor source lifecycle.
 
-No requirement records are asserted. Primary text access recorded; comprehensive first-class decomposition is not planned under current scope.
+No requirement records are asserted. Supporting authority only; exhaustive first-class decomposition is outside current scope.
 
 ## IEEE Standard for Algorithmic Bias Considerations — 2024
 
@@ -380,9 +380,9 @@ No requirement records are asserted. Primary text access recorded; comprehensive
 - Access: `direct-public-primary`
 - Extraction: `not-started`
 - Requirements: 0 (0 reviewed; 0 unresolved)
-- Next action: Retrieve GET primary text and perform bounded analytical extraction.
+- Next action: Begin bounded primary-source review.
 
-No requirement records are asserted. Primary text is accessible, but Layer 1 extraction has not started.
+No requirement records are asserted. Primary-source access may exist, but analytical extraction has not started.
 
 ## IEEE Standard for Transparent Employer Data Governance — 2021
 
@@ -391,9 +391,9 @@ No requirement records are asserted. Primary text is accessible, but Layer 1 ext
 - Access: `direct-licensed-primary`
 - Extraction: `supporting-only`
 - Requirements: 0 (0 reviewed; 0 unresolved)
-- Next action: Retain licensed-primary provenance under supporting-source scope.
+- Next action: Monitor source lifecycle.
 
-No requirement records are asserted. Primary text access recorded; comprehensive first-class decomposition is not planned under current scope.
+No requirement records are asserted. Supporting authority only; exhaustive first-class decomposition is outside current scope.
 
 ## IEEE Ontological Standard for Ethically Driven Robotics and Automation Systems — 2021
 
@@ -402,7 +402,7 @@ No requirement records are asserted. Primary text access recorded; comprehensive
 - Access: `direct-licensed-primary`
 - Extraction: `complete`
 - Requirements: 10 (10 reviewed; 0 unresolved)
-- Next action: Monitor the source for amendment, corrigendum, supersession, or other material revision.
+- Next action: Monitor for material source revision.
 
 | Requirement | Clause/control | Summary | Posture / type | Actor | Object | Governance expectation | Evidence expectation | Timing / artefact / verification | Applicability / qualification | Review / access |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -424,7 +424,7 @@ No requirement records are asserted. Primary text access recorded; comprehensive
 - Access: `direct-licensed-primary`
 - Extraction: `complete`
 - Requirements: 55 (55 reviewed; 0 unresolved)
-- Next action: Monitor the source for amendment, corrigendum, supersession, or other material revision.
+- Next action: Monitor for material source revision.
 
 | Requirement | Clause/control | Summary | Posture / type | Actor | Object | Governance expectation | Evidence expectation | Timing / artefact / verification | Applicability / qualification | Review / access |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -491,7 +491,7 @@ No requirement records are asserted. Primary text access recorded; comprehensive
 - Access: `direct-licensed-primary`
 - Extraction: `complete`
 - Requirements: 18 (18 reviewed; 0 unresolved)
-- Next action: Monitor the source for amendment, corrigendum, supersession, or other material revision.
+- Next action: Monitor for material source revision.
 
 | Requirement | Clause/control | Summary | Posture / type | Actor | Object | Governance expectation | Evidence expectation | Timing / artefact / verification | Applicability / qualification | Review / access |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -521,9 +521,9 @@ No requirement records are asserted. Primary text access recorded; comprehensive
 - Access: `direct-licensed-primary`
 - Extraction: `supporting-only`
 - Requirements: 0 (0 reviewed; 0 unresolved)
-- Next action: Retain licensed-primary provenance under supporting-source scope.
+- Next action: Monitor source lifecycle.
 
-No requirement records are asserted. Primary text access recorded; comprehensive first-class decomposition is not planned under current scope.
+No requirement records are asserted. Supporting authority only; exhaustive first-class decomposition is outside current scope.
 
 ## IEEE Standard for Ethical Considerations in Emulated Empathy in Autonomous and Intelligent Systems — 2024
 
@@ -532,7 +532,7 @@ No requirement records are asserted. Primary text access recorded; comprehensive
 - Access: `direct-licensed-primary`
 - Extraction: `complete`
 - Requirements: 41 (41 reviewed; 0 unresolved)
-- Next action: Monitor the source for amendment, corrigendum, supersession, or other material revision.
+- Next action: Monitor for material source revision.
 
 | Requirement | Clause/control | Summary | Posture / type | Actor | Object | Governance expectation | Evidence expectation | Timing / artefact / verification | Applicability / qualification | Review / access |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -585,7 +585,7 @@ No requirement records are asserted. Primary text access recorded; comprehensive
 - Access: `direct-licensed-primary`
 - Extraction: `complete`
 - Requirements: 66 (66 reviewed; 0 unresolved)
-- Next action: Monitor the source for amendment, corrigendum, supersession, or other material revision.
+- Next action: Monitor for material source revision.
 
 | Requirement | Clause/control | Summary | Posture / type | Actor | Object | Governance expectation | Evidence expectation | Timing / artefact / verification | Applicability / qualification | Review / access |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
