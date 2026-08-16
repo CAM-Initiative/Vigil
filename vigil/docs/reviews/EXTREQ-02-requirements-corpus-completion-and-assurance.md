@@ -3,7 +3,9 @@
 ## Review authority and boundary
 
 - Review date: 2026-08-15
-- Reviewer: Dr Michelle Vivian O’Rourke
+- Human governance role: Dr Michelle Vivian O’Rourke — contract approver
+- Substantive human review: not established
+- Human source verification: not established
 - Working branch: `agent/instrumental-coercive-influence-capability-revalidation`
 - Starting branch head: `c8b0c31ea86fa07c4a5e74472bfe73002c889f73`
 - Canonical `main` at preflight: `e0afc3f38c64ebe1318efb4e2c6008bfe014cafc`
