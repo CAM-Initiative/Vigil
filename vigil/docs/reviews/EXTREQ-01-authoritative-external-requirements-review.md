@@ -4,7 +4,11 @@
 
 **Working branch:** `agent/instrumental-coercive-influence-capability-revalidation`
 
-**Reviewer:** Dr Michelle Vivian O’Rourke
+**Human governance role:** Dr Michelle Vivian O’Rourke — contract approver
+
+**Substantive human review:** not established
+
+**Human source verification:** not established
 
 **Scope:** VIGIL Layer 0 source identity/lifecycle and Layer 1 external requirement reference data only. No Caelestis coverage, conformance or repair assessment was performed.
 
