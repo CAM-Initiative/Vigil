@@ -6,7 +6,7 @@ This deterministic inventory records the reconciled current model 2.0 state. Sev
 
 ## Scope and boundary
 
-All 58 current failure-mode records are included. VIGIL's record-boundary contract forbids failure-mode triage in OBS and PROP/PATCH records, so those classes are not given synthetic triage state.
+All 61 current failure-mode records are included. VIGIL's record-boundary contract forbids failure-mode triage in OBS and PROP/PATCH records, so those classes are not given synthetic triage state.
 
 ## Headline findings
 
@@ -21,8 +21,8 @@ All 58 current failure-mode records are included. VIGIL's record-boundary contra
 
 | Priority | Count |
 | --- | --- |
+| P2 | 23 |
 | PN | 21 |
-| P2 | 20 |
 | P1 | 14 |
 | P3 | 3 |
 
@@ -33,14 +33,14 @@ All 58 current failure-mode records are included. VIGIL's record-boundary contra
 | monitoring | 24 |
 | action-required | 19 |
 | under-assessment | 10 |
-| verification-pending | 5 |
+| verification-pending | 8 |
 
 ## Severity counts and migration boundary
 
 | Severity | Count |
 | --- | --- |
-| S1 | 24 |
-| S2 | 21 |
+| S1 | 26 |
+| S2 | 22 |
 | S3 | 11 |
 | S4 | 1 |
 | SU | 1 |
@@ -52,7 +52,7 @@ All current failure modes use model 2.0 severity values `S0`, `S1`, `S2`, `S3`, 
 | Record state | Priority | Count |
 | --- | --- | --- |
 | monitoring | PN | 21 |
-| active | P2 | 16 |
+| active | P2 | 19 |
 | active | P1 | 14 |
 | monitoring | P2 | 4 |
 | monitoring | P3 | 2 |
@@ -64,8 +64,8 @@ All current failure modes use model 2.0 severity values `S0`, `S1`, `S2`, `S3`, 
 | --- | --- | --- |
 | repaired | PN | 21 |
 | unrepaired | P1 | 13 |
-| unrepaired | P2 | 12 |
-| partially-repaired | P2 | 4 |
+| unrepaired | P2 | 13 |
+| partially-repaired | P2 | 6 |
 | repaired | P2 | 4 |
 | repaired | P3 | 2 |
 | partially-repaired | P1 | 1 |
@@ -75,8 +75,8 @@ All current failure modes use model 2.0 severity values `S0`, `S1`, `S2`, `S3`, 
 
 | Monitoring required | Priority | Count |
 | --- | --- | --- |
+| True | P2 | 23 |
 | True | PN | 21 |
-| True | P2 | 20 |
 | True | P1 | 14 |
 | True | P3 | 3 |
 
@@ -146,6 +146,9 @@ Flags are regression diagnostics. `repaired-with-active-priority-review` identif
 | VIGIL-2026-FM-0056 | active | P1 | action-required | S1 | unrepaired | unknown | true | Implement VIGIL-2026-PROP-0028 as focused SECURITY identity-lifecycle and cross-organisational authority amendments with OPERATIONS cross-references. | — | — | false | — |
 | VIGIL-2026-FM-0057 | active | P2 | action-required | S2 | unrepaired | improving | true | Review and, if approved, implement VIGIL-2026-PROP-0029; monitor provider advisories, independent replication, treatment of previously published traces, and recurrence through variant APIs or agent frameworks. | — | — | false | — |
 | VIGIL-2026-FM-0058 | active | P1 | action-required | S3 | unrepaired | active | true | Perform a Caelestis coverage audit for explicit prohibitions and runtime controls preventing instrumental manipulation or coercive influence, then create a proposal only for any irreducible governance gap. | — | — | false | — |
+| VIGIL-2026-FM-0059 | active | P2 | verification-pending | S2 | unrepaired | recurring | true | Validate FM-0059 against the VIGIL schema, refresh generated indexes, verify the Caelestis supplement and its metadata under the governance rebuild, then monitor for external incident evidence that cleanly instantiates the generic mechanism. | — | — | false | — |
+| VIGIL-2026-FM-0060 | active | P2 | verification-pending | S1 | partially-repaired | unknown | true | Reconcile PATCH-0037 and this FM to canonical main if the Caelestis branch is merged; meanwhile test scope-specific suspension and defensive-continuity behaviour in conforming implementations. | VIGIL-2026-PATCH-0037 | — | false | — |
+| VIGIL-2026-FM-0061 | active | P2 | verification-pending | S1 | partially-repaired | unknown | true | Reconcile PATCH-0037 and this FM to canonical main if merged; test that later hostile events create new assessment events and cannot restore expired offensive authority without separate attributable reauthorisation. | VIGIL-2026-PATCH-0037 | — | false | — |
 
 ## Reconciliation result
 
