@@ -43,7 +43,7 @@ def review_summary(source: dict[str, Any]) -> dict[str, Any]:
     current = provenance.get("current_ai_review")
     editor = provenance.get("human_governance_editor")
     output: dict[str, Any] = {
-        "operating_model": provenance.get("operating_model"),
+        "operating_model": "AI-authored, semi-autonomous production under human contract approval",
         "review_count": len(provenance.get("review_history", [])) if isinstance(provenance.get("review_history"), list) else 0,
     }
     if isinstance(current, dict):
@@ -56,10 +56,12 @@ def review_summary(source: dict[str, Any]) -> dict[str, Any]:
             "known_limitations": current.get("known_limitations"),
         }
     if isinstance(editor, dict):
-        output["human_governance_editor"] = {
+        output["human_contract_approver"] = {
             "name": editor.get("name"),
-            "role": editor.get("role"),
-            "review_level": editor.get("review_level"),
+            "role": "contract-approver",
+            "human_authorship": False,
+            "human_review_status": "not-reviewed",
+            "human_verification_status": "not-verified",
         }
     return {key: value for key, value in output.items() if value not in (None, "", [], {})}
 

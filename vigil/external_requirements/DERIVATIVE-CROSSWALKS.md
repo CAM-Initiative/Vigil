@@ -96,3 +96,7 @@ Separate from Layer 1 direct-source requirements. Crosswalks record developer-as
 - Provenance: Rows are the representative mapping table published in the current owner-authored SDOS v1.10 reference document.
 - Provenance: AAM states that a complete 49-subcategory mapping exists, but the current NIST OLIR Final record is explicitly version-bounded to SDOS v1.7; this file therefore does not represent the v1.10 sample as NIST-validated.
 - Provenance: The mapping is informative/supportive and does not establish equivalence or conformity.
+
+## Authorship provenance
+
+This is a deterministically generated projection of `vigil/external_requirements/derivative-crosswalks.json`. Its upstream VIGIL content is AI-authored and semi-autonomous under human contract approval; no human review or verification is implied. See `vigil/provenance/AUTHORSHIP-PROVENANCE.json`.

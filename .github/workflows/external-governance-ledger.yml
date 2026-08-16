@@ -8,6 +8,9 @@ on:
       - "vigil/scripts/apply-external-governance-baseline.py"
       - "vigil/tests/test_external_governance_ledger.py"
       - "vigil/external_requirements/**"
+      - "vigil/provenance/AUTHORSHIP-PROVENANCE.json"
+      - "vigil/scripts/validate-authorship-provenance.py"
+      - "vigil/tests/test_authorship_provenance.py"
       - "vigil/scripts/manage-external-requirements.py"
       - "vigil/scripts/manage-external-requirements-extended.py"
       - "vigil/tests/test_external_requirements.py"
@@ -19,6 +22,9 @@ on:
       - "vigil/scripts/apply-external-governance-baseline.py"
       - "vigil/tests/test_external_governance_ledger.py"
       - "vigil/external_requirements/**"
+      - "vigil/provenance/AUTHORSHIP-PROVENANCE.json"
+      - "vigil/scripts/validate-authorship-provenance.py"
+      - "vigil/tests/test_authorship_provenance.py"
       - "vigil/scripts/manage-external-requirements.py"
       - "vigil/scripts/manage-external-requirements-extended.py"
       - "vigil/tests/test_external_requirements.py"
@@ -59,6 +65,10 @@ jobs:
           python vigil/scripts/manage-external-requirements-extended.py validate --check-generated
       - name: Test effective requirement extension boundaries
         run: python vigil/tests/test_external_requirements_extended.py
+      - name: Validate VIGIL authorship and human-review provenance
+        run: |
+          python vigil/tests/test_authorship_provenance.py
+          python vigil/scripts/validate-authorship-provenance.py
       - name: Check generated baseline on pull request
         if: github.event_name == 'pull_request'
         run: |

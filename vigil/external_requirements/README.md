@@ -4,6 +4,8 @@ This directory is Layer 1 of VIGIL's external-governance reference machinery. La
 
 These records are maintained external reference data. They are not VIGIL evidentiary record classes, do not create CAM/Caelestis authority, and do not state whether Caelestis conforms.
 
+The Layer 0/Layer 1 identification, extraction, analytical paraphrase, classification, and crosswalk-preparation content is AI-authored and semi-autonomous under human contract approval. It has not been manually reviewed line by line or independently human-verified. External sources retain their own authorship and authority. See `../provenance/AUTHORSHIP-PROVENANCE.json` for the controlled vocabulary and inheritance rules.
+
 ## Maintained inputs
 
 - `source-scope.json` and `requirements.json` preserve the deterministic baseline corpus.
@@ -29,6 +31,8 @@ The effective builder expands extension packs into the same normalized Layer 1 s
 python vigil/scripts/manage-external-requirements-extended.py build
 python vigil/scripts/manage-external-requirements-extended.py validate --check-generated
 python vigil/tests/test_external_requirements.py
+python vigil/tests/test_authorship_provenance.py
+python vigil/scripts/validate-authorship-provenance.py
 ```
 
 Requirement identifiers remain deterministic from the registered source version, clause/control and stable `identity_key`. Editing an analytical summary does not change identity; changing the represented source clause or atomic requirement does.

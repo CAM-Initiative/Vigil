@@ -122,11 +122,17 @@
     },
     "interpretation_provenance": {
       "type": "object",
-      "required": ["basis", "reviewed_by", "review_method", "source_locator", "source_fingerprint"],
+      "required": ["basis", "content_origin", "generated_by", "generation_mode", "human_role", "human_authorship", "human_review_status", "human_verification_status", "source_analysis_method", "source_locator", "source_fingerprint"],
       "properties": {
         "basis": {"enum": ["direct-primary-text", "licensed-primary-text", "official-public-extract", "official-metadata-only", "secondary-source"]},
-        "reviewed_by": {"type": "string", "minLength": 1},
-        "review_method": {"type": "string", "minLength": 1},
+        "content_origin": {"const": "ai-authored"},
+        "generated_by": {"const": "ai"},
+        "generation_mode": {"const": "semi-autonomous"},
+        "human_role": {"const": "contract-approver"},
+        "human_authorship": {"const": false},
+        "human_review_status": {"const": "not-reviewed"},
+        "human_verification_status": {"const": "not-verified"},
+        "source_analysis_method": {"type": "string", "minLength": 1},
         "source_locator": {"type": "string", "minLength": 1},
         "source_fingerprint": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
       },

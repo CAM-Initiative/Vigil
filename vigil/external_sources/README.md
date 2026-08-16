@@ -2,6 +2,8 @@
 
 This directory contains VIGIL maintenance machinery for detecting changes in external AI-governance sources. It is Layer 0: source identity, version, lifecycle and coarse review workflow. It is not a VIGIL record class and it does not create CAM/Caelestis authority.
 
+VIGIL's source identification, abstraction, classification, and related maintenance content is AI-authored and semi-autonomous under human contract approval, with no human review or verification implied. External sources retain their own authorship and authority. The repository declaration is `../provenance/AUTHORSHIP-PROVENANCE.json`.
+
 Layer 1 under `vigil/external_requirements/` classifies source scope and preserves requirement-level analytical reference data. It is deliberately separate from this ledger: a registered source is not itself a requirement, and requirement extraction state is not an external-source lifecycle or internal-alignment state.
 
 ## Boundary

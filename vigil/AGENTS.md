@@ -6,7 +6,7 @@ VIGIL does not create doctrine, amend adopted instruments, determine liability, 
 
 VIGIL records preserve structured governance evidence and workflow state. CAM instruments remain authoritative only through the normal Caelestis amendment, validation, and adoption process.
 
-VIGIL operates as an **AI-led analytical observatory with high-level human governance editorship**. The named AI system performs routine evidence triage, record analysis, source comparison, reconciliation, and monitoring. The human governance editor sets direction, reviews material governance questions, and retains CAM constitutional and adoption authority. Do not collapse these roles into a generic “VIGIL maintainer” attribution.
+VIGIL operates by default as **AI-authored, semi-autonomous production under human contract approval**. The named AI system performs substantive evidence triage, record analysis, source comparison, reconciliation, monitoring, and record production. The default human role is `contract-approver`: establishing or approving objectives and boundaries, authorising repository actions and progression decisions, and retaining any separately established CAM constitutional or adoption authority. Contract approval does not establish human authorship, substantive review, source verification, or line-by-line inspection. Use [`provenance/AUTHORSHIP-PROVENANCE.json`](provenance/AUTHORSHIP-PROVENANCE.json) for the controlled vocabulary, inheritance rules, and any evidenced artefact-level exception.
 
 > No VIGIL record without date, source state, evidence confidence, CAM relevance, interpretive provenance, and next action or implemented-CAM-change explanation.
 

@@ -8,6 +8,14 @@ It is the public watchstanding layer for CAM-adjacent observations, unresolved g
 
 VIGIL does **not** create binding CAM doctrine by itself. It preserves evidence, classification context, routing state, source attribution, and repair history so that CAM governance work can proceed from structured public records rather than scattered observations.
 
+## Authorship and review disclosure
+
+VIGIL is a predominantly AI-authored and semi-autonomously maintained governance research system operating under human contract approval. Unless an artefact expressly states otherwise, substantive VIGIL content should not be assumed to have been human-authored, human-reviewed or independently human-verified.
+
+Human participation principally consists of establishing or approving work contracts, defining execution boundaries, authorising repository actions and progression decisions, with occasional substantive intervention. Repository inclusion or publication does not itself constitute human review or verification.
+
+External laws, standards, publications and evidentiary sources retain their own authorship and authority. This disclosure concerns VIGIL's extraction, abstraction, classification, analysis, crosswalking and record production. The authoritative machine-readable declaration and controlled vocabulary are in [`vigil/provenance/AUTHORSHIP-PROVENANCE.json`](vigil/provenance/AUTHORSHIP-PROVENANCE.json).
+
 ---
 
 ## Purpose

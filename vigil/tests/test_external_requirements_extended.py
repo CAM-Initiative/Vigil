@@ -67,6 +67,19 @@ class EffectiveExternalRequirementsTests(unittest.TestCase):
         self.assertEqual(len(records), 16)
         self.assertEqual(len({r["requirement_id"] for r in records}), 16)
 
+    def test_requirement_provenance_does_not_inflate_human_review(self) -> None:
+        for record in self.requirements:
+            provenance = record["interpretation_provenance"]
+            self.assertEqual(provenance["content_origin"], "ai-authored")
+            self.assertEqual(provenance["generated_by"], "ai")
+            self.assertEqual(provenance["generation_mode"], "semi-autonomous")
+            self.assertEqual(provenance["human_role"], "contract-approver")
+            self.assertFalse(provenance["human_authorship"])
+            self.assertEqual(provenance["human_review_status"], "not-reviewed")
+            self.assertEqual(provenance["human_verification_status"], "not-verified")
+            self.assertNotIn("reviewed_by", provenance)
+            self.assertNotIn("review_method", provenance)
+
 
 if __name__ == "__main__":
     unittest.main()

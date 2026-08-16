@@ -24,8 +24,10 @@ ALLOWED = {
 }
 
 PROVENANCE_PURPOSE = (
-    "Interpretive provenance identifies the AI analytical reviewer, human governance editor, "
-    "capability profile, source modality, primary-artefact access, and review limitations."
+    "Interpretive provenance identifies AI source analysis, capability profile, source modality, "
+    "primary-artefact access, review limitations, and historical authority context. Authorship, "
+    "human-review, and human-verification status are governed separately by "
+    "vigil/provenance/AUTHORSHIP-PROVENANCE.json."
 )
 
 

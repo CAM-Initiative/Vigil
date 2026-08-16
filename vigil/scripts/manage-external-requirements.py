@@ -139,6 +139,15 @@ PROVENANCE_BASES = {
     "official-metadata-only",
     "secondary-source",
 }
+AUTHORSHIP_PROVENANCE_FIELDS = {
+    "content_origin": "ai-authored",
+    "generated_by": "ai",
+    "generation_mode": "semi-autonomous",
+    "human_role": "contract-approver",
+    "human_authorship": False,
+    "human_review_status": "not-reviewed",
+    "human_verification_status": "not-verified",
+}
 
 REQUIRED_REQUIREMENT_FIELDS = {
     "requirement_id",
@@ -439,11 +448,25 @@ def validate_requirements(
         if not isinstance(provenance, dict):
             errors.append(f"{label}: interpretation_provenance must be an object")
         else:
-            for field in ("basis", "reviewed_by", "review_method", "source_locator", "source_fingerprint"):
+            required_provenance = {
+                "basis",
+                *AUTHORSHIP_PROVENANCE_FIELDS,
+                "source_analysis_method",
+                "source_locator",
+                "source_fingerprint",
+            }
+            for field in required_provenance:
+                if field == "human_authorship":
+                    continue
                 if not non_empty(provenance.get(field)):
                     errors.append(f"{label}: interpretation_provenance.{field} must be non-empty")
-            if set(provenance) != {"basis", "reviewed_by", "review_method", "source_locator", "source_fingerprint"}:
+            if set(provenance) != required_provenance:
                 errors.append(f"{label}: interpretation_provenance has missing or unexpected fields")
+            for field, expected in AUTHORSHIP_PROVENANCE_FIELDS.items():
+                if provenance.get(field) != expected:
+                    errors.append(
+                        f"{label}: interpretation_provenance.{field} must be {expected!r}"
+                    )
             if provenance.get("basis") not in PROVENANCE_BASES:
                 errors.append(f"{label}: invalid interpretation_provenance.basis")
             if provenance.get("source_fingerprint") != ledger.get("fingerprint"):

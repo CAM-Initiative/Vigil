@@ -83,3 +83,7 @@ Frozen Layer 0 plus reviewed extension sources. Inventory only; no Caelestis con
 | `EXT-71B4139453FA` | SPDX Specification 3.0.1 — AI Profile | `3.0.1` | SPDX / Linux Foundation | `published` | `SPDX Specification 3.0.1` |
 
 Private-sector frameworks retain their actual publisher authority; inclusion does not elevate them to standards or regulatory authority.
+
+## Authorship provenance
+
+This is a deterministically generated projection of `vigil/external_sources/ledger.json`, `vigil/external_requirements/extensions/*.json`. Its upstream VIGIL content is AI-authored and semi-autonomous under human contract approval; no human review or verification is implied. See `vigil/provenance/AUTHORSHIP-PROVENANCE.json`.

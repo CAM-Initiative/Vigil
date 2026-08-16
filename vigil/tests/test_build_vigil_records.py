@@ -194,6 +194,11 @@ class BuildVigilRecordsTest(unittest.TestCase):
             self.assertEqual({record["id"] for record in registry_records}, expected_ids)
 
         observations = builder.type_registry("observations", grouped["observations"])
+        provenance = observations["authorship_provenance"]
+        self.assertEqual(provenance["content_origin"], "deterministically-generated")
+        self.assertEqual(provenance["generation_mode"], "deterministic-generation")
+        self.assertEqual(provenance["human_review_status"], "not-reviewed")
+        self.assertEqual(provenance["upstream_provenance"], ["vigil/records/observations/"])
         entry = next(record for record in observations["records"] if record["id"] == "VIGIL-2026-OBS-0001")
         self.assertEqual(entry["path"], "vigil/records/observations/2026/VIGIL-2026-OBS-0001.json")
         self.assertEqual(
