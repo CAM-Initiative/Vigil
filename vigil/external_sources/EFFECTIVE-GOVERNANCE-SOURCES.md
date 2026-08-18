@@ -2,8 +2,8 @@
 
 Frozen Layer 0 plus reviewed extension sources. Inventory only; no CAM applicability or conformity is asserted.
 
-- Effective source versions: 74
-- Reviewed through: 2026-08-16
+- Effective source versions: 81
+- Reviewed through: 2026-08-18
 
 | VIGIL Source | External Source | Version | Issuer | Lifecycle | Canonical identifier | Metadata fingerprint |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -17,6 +17,10 @@ Frozen Layer 0 plus reviewed extension sources. Inventory only; no CAM applicabi
 | `EXT-6A56DEC1D4F8` | Regulation (EU) 2022/2065 — Digital Services Act | `2022-10-27` | European Union | `in-force` | `32022R2065` | `a5d0697de7c0…` |
 | `EXT-76B0AF88E460` | Regulation (EU) 2016/679 — General Data Protection Regulation | `2016-05-04` | European Union | `in-force` | `32016R0679` | `bf9710b492db…` |
 | `EXT-09FD2B8839B5` | Directive (EU) 2022/2555 — NIS 2 Directive | `2022-12-27` | European Union | `in-force` | `32022L2555` | `74c1e4ba77a2…` |
+| `EXT-83ADBE32BD67` | Medical Device Reporting (MDR) Adverse Event Codes | `2026-04-13` | U.S. Food and Drug Administration | `current` | `MDR Adverse Event Codes` | `0ad76993d090…` |
+| `EXT-6E952C27A4DA` | Accident/Incident Data Reporting (ADREP) Taxonomy | `current-2026-08-18` | International Civil Aviation Organization | `maintained` | `ADREP Taxonomy` | `1aefa16ff105…` |
+| `EXT-2356288837AC` | Failure modes and effects analysis (FMEA and FMECA) | `2018` | International Electrotechnical Commission | `published` | `IEC 60812:2018` | `4bbee87e376f…` |
+| `EXT-51F9B0769770` | IEEE Standard Classification for Software Anomalies | `2009` | IEEE Standards Association | `inactive-reserved` | `IEEE 1044-2009` | `e4449931a284…` |
 | `EXT-D009E06C7E91` | IEEE Standard for an Age Appropriate Digital Services Framework Based on the 5Rights Principles for Children | `2021` | IEEE Standards Association | `active` | `IEEE 2089-2021` | `3429130bc121…` |
 | `EXT-C6E029B2EF0F` | IEEE Recommended Practice for Organizational Governance of Artificial Intelligence | `2026` | IEEE Standards Association | `active` | `IEEE 2863-2026` | `92b8a5f49598…` |
 | `EXT-31AD0314218F` | IEEE Standard Model Process for Addressing Ethical Concerns during System Design | `2021` | IEEE Standards Association | `active` | `IEEE 7000-2021` | `95bc320d2635…` |
@@ -31,6 +35,7 @@ Frozen Layer 0 plus reviewed extension sources. Inventory only; no CAM applicabi
 | `EXT-8D54F96680C4` | IEEE Standard for Ethical Considerations in Emulated Empathy in Autonomous and Intelligent Systems | `2024` | IEEE Standards Association | `active` | `IEEE 7014-2024` | `25c22e8e007b…` |
 | `EXT-17722772CDFD` | IEEE Recommended Practice for Ethical Considerations of Emulated Empathy in Partner-Based General-Purpose Artificial Intelligence Systems | `2026` | IEEE Standards Association | `active` | `IEEE 7014.1-2026` | `3722157f3ab5…` |
 | `EXT-3CCBC407EAC8` | Model AI Governance Framework for Agentic AI | `2026-05` | Infocomm Media Development Authority of Singapore | `published` | `Model AI Governance Framework for Agentic AI` | `fadb6f8c6903…` |
+| `EXT-91E5F69556FE` | Terminologies for Categorized Adverse Event Reporting (AER): terms, terminology and codes | `2026` | International Medical Device Regulators Forum | `current` | `IMDRF/AE WG/N43 — Release 2026` | `8a1724e13085…` |
 | `EXT-562CDDAAB3BE` | Information technology — Artificial intelligence — Treatment of unwanted bias in classification and regression machine learning tasks | `2024` | ISO/IEC JTC 1/SC 42 | `published` | `ISO/IEC TS 12791:2024` | `3fe8509df2cc…` |
 | `EXT-CB22558F9F71` | Information technology — Artificial intelligence (AI) — Transparency taxonomy of AI systems | `2025` | ISO/IEC JTC 1/SC 42 | `published` | `ISO/IEC 12792:2025` | `5e13014dca54…` |
 | `EXT-040EEAE53753` | Information technology — Artificial intelligence — Overview of machine learning computing devices | `2024` | ISO/IEC JTC 1/SC 42 | `published` | `ISO/IEC TR 17903:2024` | `ba2074b01d2f…` |
@@ -70,6 +75,7 @@ Frozen Layer 0 plus reviewed extension sources. Inventory only; no CAM applicabi
 | `EXT-5435F9552ED1` | Information technology — Artificial intelligence — Objectives and approaches for explainability and interpretability of machine learning (ML) models and artificial intelligence (AI) systems | `2025` | ISO/IEC JTC 1/SC 42 | `published` | `ISO/IEC TS 6254:2025` | `d013ccc08b74…` |
 | `EXT-EFFD34D14635` | Information technology — Artificial intelligence — Data life cycle framework | `2023` | ISO/IEC JTC 1/SC 42 | `published` | `ISO/IEC 8183:2023` | `eef20cc0c28b…` |
 | `EXT-6DDF68F621A8` | Information technology — Artificial intelligence — Controllability of automated artificial intelligence systems | `2024` | ISO/IEC JTC 1/SC 42 | `published` | `ISO/IEC TS 8200:2024` | `d30681948b9d…` |
+| `EXT-D5DA0E7978BE` | Systems and software engineering — Vocabulary | `2017` | ISO/IEC/IEEE | `published-to-be-revised` | `ISO/IEC/IEEE 24765:2017` | `f143f7b6590a…` |
 | `EXT-6442C7954667` | Artificial Intelligence Risk Management Framework (AI RMF 1.0) | `1.0` | National Institute of Standards and Technology | `final` | `NIST AI 100-1` | `951b90bd2e20…` |
 | `EXT-2B2B0FF7FBE9` | Adversarial Machine Learning: A Taxonomy and Terminology of Attacks and Mitigations | `E2025` | National Institute of Standards and Technology | `final` | `NIST AI 100-2e2025` | `69fa03746e32…` |
 | `EXT-13A4EA0D8BCF` | The Language of Trustworthy AI: An In-Depth Glossary of Terms | `2023` | National Institute of Standards and Technology | `final` | `NIST AI 100-3` | `91b7886d97b1…` |
@@ -80,6 +86,7 @@ Frozen Layer 0 plus reviewed extension sources. Inventory only; no CAM applicabi
 | `EXT-1BE47AB84994` | Towards a Standard for Identifying and Managing Bias in Artificial Intelligence | `2022` | National Institute of Standards and Technology | `final` | `NIST SP 1270` | `148c48bd8310…` |
 | `EXT-4AADC9C1B06B` | Secure Software Development Framework (SSDF) Version 1.1: Recommendations for Mitigating the Risk of Software Vulnerabilities | `1.1` | National Institute of Standards and Technology | `final` | `NIST SP 800-218` | `624534d2fabc…` |
 | `EXT-65F7658B8B04` | Secure Software Development Practices for Generative AI and Dual-Use Foundation Models: An SSDF Community Profile | `2024` | National Institute of Standards and Technology | `final` | `NIST SP 800-218A` | `7e8c131e26a2…` |
+| `EXT-E1BE6678F807` | Towards a common reporting framework for AI incidents | `2025` | OECD | `published` | `10.1787/f326d4ac-en` | `ce5a311fb4c6…` |
 | `EXT-71B4139453FA` | SPDX Specification 3.0.1 — AI Profile | `3.0.1` | SPDX / Linux Foundation | `published` | `SPDX Specification 3.0.1` | `43764801bf00…` |
 
 The metadata fingerprint identifies registered source/version metadata only; it is not a reviewed-document digest.

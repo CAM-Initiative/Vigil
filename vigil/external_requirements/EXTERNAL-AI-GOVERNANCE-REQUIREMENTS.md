@@ -2,7 +2,7 @@
 
 Generated from the maintained Layer 0 source ledger, Layer 1 source-scope decisions and requirement records. This catalogue does not state Caelestis coverage or conformance.
 
-- Registered source versions: 74
+- Registered source versions: 81
 - Primary AI-governance source versions: 57
 - Requirement records: 845
 
@@ -227,6 +227,50 @@ No requirement records are asserted. Retained as a bounded supporting authority.
 - Next action: No further requirement extraction is planned in the current scope.
 
 No requirement records are asserted. Retained as a bounded supporting authority. It is not decomposed into a comprehensive first-class requirement corpus in the current scope.
+
+## Medical Device Reporting (MDR) Adverse Event Codes — 2026-04-13
+
+- Source: `EXT-83ADBE32BD67` / `FDA-MDR-ADVERSE-EVENT-CODES`
+- Role: `context-or-discovery`
+- Access: `direct-public-primary`
+- Extraction: `context-only`
+- Requirements: 0 (0 reviewed; 0 unresolved)
+- Next action: Use as comparative reporting architecture; rely on IMDRF for the international terminology lineage.
+
+No requirement records are asserted. Regulatory adverse-event coding exemplar retained for reporting-axis comparison and explicit preservation of unresolved investigation states.
+
+## Accident/Incident Data Reporting (ADREP) Taxonomy — current-2026-08-18
+
+- Source: `EXT-6E952C27A4DA` / `ICAO-ADREP-TAXONOMY`
+- Role: `context-or-discovery`
+- Access: `direct-public-primary`
+- Extraction: `context-only`
+- Requirements: 0 (0 reviewed; 0 unresolved)
+- Next action: Use only as comparative reporting architecture; monitor ICAO taxonomy revision.
+
+No requirement records are asserted. Cross-sector accident/incident taxonomy exemplar retained for multi-axis reporting architecture and common-language comparison.
+
+## Failure modes and effects analysis (FMEA and FMECA) — 2018
+
+- Source: `EXT-2356288837AC` / `IEC-60812`
+- Role: `supporting-external-authority`
+- Access: `official-metadata-only`
+- Extraction: `supporting-only`
+- Requirements: 0 (0 reviewed; 0 unresolved)
+- Next action: Use as a terminology and method cross-reference; obtain lawful primary text only if clause-level conformance analysis becomes necessary.
+
+No requirement records are asserted. Registered for FMEA/FMECA failure-mode, effects, cause, criticality and reporting-structure comparison. No clause-level normative extraction is claimed.
+
+## IEEE Standard Classification for Software Anomalies — 2009
+
+- Source: `EXT-51F9B0769770` / `IEEE-1044`
+- Role: `context-or-discovery`
+- Access: `official-metadata-only`
+- Extraction: `context-only`
+- Requirements: 0 (0 reviewed; 0 unresolved)
+- Next action: Retain for terminology/history and causal-analysis comparison.
+
+No requirement records are asserted. Historical software-anomaly classification reference; IEEE marks the standard inactive-reserved. No current conformance claim or clause extraction is intended.
 
 ## IEEE Standard for an Age Appropriate Digital Services Framework Based on the 5Rights Principles for Children — 2021
 
@@ -700,6 +744,17 @@ No requirement records are asserted. Supporting authority only; exhaustive first
 | `EXTREQ-4253F163EB11C1C9` | 2.4 | Inform users when they are interacting with or materially affected by an agentic AI system. | `recommended-practice` / `guidance` | Organization developing or deploying agentic AI | Agentic AI system and associated governance controls | Inform users when they are interacting with or materially affected by an agentic AI system. | Not expressly stated | Not expressly stated | Generally applicable within the cited provision | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-47EE577CC52EF131` | 2.4 | Provide channels for users to seek help, report problems, challenge outcomes or escalate to a responsible human. | `recommended-practice` / `guidance` | Organization developing or deploying agentic AI | Agentic AI system and associated governance controls | Provide channels for users to seek help, report problems, challenge outcomes or escalate to a responsible human. | Report or reporting evidence specified by the cited action. | Report expressly specified by the cited requirement or control. | Generally applicable within the cited provision | `reviewed-analytical-summary` / `direct-public-primary` |
 
+## Terminologies for Categorized Adverse Event Reporting (AER): terms, terminology and codes — 2026
+
+- Source: `EXT-91E5F69556FE` / `IMDRF-AER-N43`
+- Role: `context-or-discovery`
+- Access: `direct-public-primary`
+- Extraction: `context-only`
+- Requirements: 0 (0 reviewed; 0 unresolved)
+- Next action: Use for comparative failure-report ontology design; do not infer AI-specific requirements.
+
+No requirement records are asserted. Cross-sector adverse-event terminology exemplar retained for separation of problem, investigation, finding, conclusion, effect and component dimensions.
+
 ## Information technology — Artificial intelligence — Treatment of unwanted bias in classification and regression machine learning tasks — 2024
 
 - Source: `EXT-562CDDAAB3BE` / `ISO-IEC-12791`
@@ -1128,6 +1183,17 @@ No requirement records are asserted. Primary AI-governance source is in scope, b
 - Next action: Provide lawful licensed primary-text access for bounded requirement review; do not upload or commit the copyrighted standard text.
 
 No requirement records are asserted. Primary AI-governance source is in scope, but requirement extraction is blocked because only official metadata or an abstract was accessed.
+
+## Systems and software engineering — Vocabulary — 2017
+
+- Source: `EXT-D5DA0E7978BE` / `ISO-IEC-IEEE-24765`
+- Role: `supporting-external-authority`
+- Access: `official-metadata-only`
+- Extraction: `supporting-only`
+- Requirements: 0 (0 reviewed; 0 unresolved)
+- Next action: Monitor Edition 3 development and use the published 2017 identity for terminology cross-reference until superseded.
+
+No requirement records are asserted. Registered as systems/software vocabulary authority. No definitions beyond lawfully available publisher material are reconstructed.
 
 ## Artificial Intelligence Risk Management Framework (AI RMF 1.0) — 1.0
 
@@ -1666,6 +1732,17 @@ No requirement records are asserted. Retained as a bounded supporting authority.
 | `EXTREQ-4602E72E8865E71B` | RV.2.2 C1 | Consider being prepared to stop using an AI model at any time and to continue operations through other means until the AI model’s risks are sufficiently addressed. | `informative-guidance` / `guidance` | AI model producer | Generative AI or dual-use foundation model development practice | Consider being prepared to stop using an AI model at any time and to continue operations through other means until the AI model’s risks are sufficiently addressed. | Not expressly stated | Not expressly stated | Generally applicable within the cited provision | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-CF93CC5F8D6CDAC1` | RV.2.2 R1 | Risk responses for AI models should consider the time and expenses that may be associated with rebuilding them. | `recommended-practice` / `guidance` | AI model producer | Generative AI or dual-use foundation model development practice | Risk responses for AI models should consider the time and expenses that may be associated with rebuilding them. | Not expressly stated | Not expressly stated | Generally applicable within the cited provision | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-B266BCD5C9F680AB` | RV.2.2 R2 | Establish and implement criteria and processes for when to stop using an AI model and when to roll back to a previous version and its components. | `recommended-practice` / `guidance` | AI model producer | Generative AI or dual-use foundation model development practice | Establish and implement criteria and processes for when to stop using an AI model and when to roll back to a previous version and its components. | Not expressly stated | Not expressly stated | Generally applicable within the cited provision | `reviewed-analytical-summary` / `direct-public-primary` |
+
+## Towards a common reporting framework for AI incidents — 2025
+
+- Source: `EXT-E1BE6678F807` / `OECD-AI-INCIDENT-REPORTING-2025`
+- Role: `supporting-external-authority`
+- Access: `direct-public-primary`
+- Extraction: `supporting-only`
+- Requirements: 0 (0 reviewed; 0 unresolved)
+- Next action: Crosswalk VIGIL failure-report fields against OECD reporting criteria without converting policy guidance into mandatory duties.
+
+No requirement records are asserted. AI-specific incident-reporting framework retained for reporting-dimension and interoperability comparison, not as a binding requirement baseline.
 
 ## SPDX Specification 3.0.1 — AI Profile — 3.0.1
 
