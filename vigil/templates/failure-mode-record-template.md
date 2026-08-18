@@ -11,11 +11,37 @@ Failure Mode records capture confirmed, strongly evidenced, recurring, or suffic
 * Use authoritative proposal and PATCH arrays only for this failure's own repair chain.
 * Put adjacent failures, shared controls, contrasts, and precedents in `linked_records.contextual_relations` with `chain_inclusion: false`.
 * Include `failure_mode_definition`, `failure_threshold`, `failure_classification`, and `triage`; `failure_classification` must include `failure_family`, `canonical_failure_group`, `taxonomy_reference`, `related_failure_groups`, `persistence`, `reproducibility`, and `visibility`.
+* `failure_classification.faceted_analysis` is additive. Existing records do not require retrospective facet population. New or materially reassessed records SHOULD use it when evidence permits.
 * Do not include proposal implementation claims or patch-note fields.
 * CAM routing must use affected CAM routing only: `cam_internal.affected_*` fields because the record has triage-relevant failure classification.
 
 Required FM sections are identity, summary, CAM relevance, failure definition, threshold, evidence confidence, `source_records`, system context (including `platform_or_vendor`, `product_or_service`, `specific_model_or_runtime`, and `interface_surface`), failure classification, triage, jurisdictional context, linked records, and affected CAM routing.
 
+## Faceted failure reporting
+
+The canonical failure family answers **what failed**. It must not be used as a container for every other incident-reporting dimension.
+
+Where evidence permits, use `failure_classification.faceted_analysis` to keep the following questions separate:
+
+* `event_state` — whether the record concerns an anomaly, hazard, near miss, incident, confirmed failure, or an unresolved state;
+* `manifestation` — what was actually observed or represented at the interaction/system surface;
+* `mechanism_or_cause` and `cause_status` — the candidate mechanism and how strongly causation is established;
+* `failure_locus` — the component or interface at which the failure arose or became observable;
+* `repair_side` — where remediation responsibility currently belongs; this may differ from the failure locus;
+* `execution_phase` — where in the execution trajectory the failure occurred;
+* `observability` — overt, latent, silent, differentially observable, externally detected, user reported, or unknown;
+* `evidence_state` — reported, observed, corroborated, reproduced, root-cause confirmed, provisional, or unknown;
+* `effect_or_harm` — the resulting or evidenced consequence, kept separate from severity;
+* `propagation` — local, downstream, cascading, cross-provider, systemic, or unknown;
+* `completion_state` — including premature termination, non-termination, and false completion;
+* `verification_state` — whether verification was absent, incomplete, incorrect, passed, failed, or unresolved; and
+* `execution_pattern` — including repeated-step, looping, retry amplification, and degraded-but-functional execution.
+
+`external_taxonomy_refs` may cite an external taxonomy, standard or reporting framework used to support a classification, but those references do not change the authority of the VIGIL record or establish conformance.
+
+Do not infer a root cause because the schema offers a field. Use `unknown`, `hypothesised`, or `provisional` states where the available evidence does not support a stronger conclusion. A user-visible symptom may arise at one locus while remediation belongs at a different component or governance layer.
+
+The faceted block is intentionally optional for legacy records. Absence means the facets have not been recorded; it does not imply a negative finding.
 
 ## Evidence-backed system context
 
