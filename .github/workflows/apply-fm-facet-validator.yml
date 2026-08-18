@@ -1,0 +1,236 @@
+name: Apply Faceted FM Validator Enforcement
+
+on:
+  push:
+    branches:
+      - agent/instrumental-coercive-influence-capability-revalidation
+    paths:
+      - .github/workflows/apply-fm-facet-validator.yml
+
+permissions:
+  contents: write
+
+jobs:
+  enforce:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.x"
+
+      - name: Apply marker-checked validator amendment
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('vigil/scripts/validate-vigil-records.py')
+          text = path.read_text(encoding='utf-8')
+          if 'def validate_fm_faceted_analysis(' in text:
+              raise SystemExit('faceted validator already exists')
+
+          function = r'''
+
+def validate_fm_faceted_analysis(path: Path, classification: dict[str, Any], errors: list[str]) -> None:
+    block = classification.get("faceted_analysis")
+    if block is None:
+        return
+    if not isinstance(block, dict):
+        errors.append(f"{path}: failure_classification.faceted_analysis must be an object")
+        return
+
+    allowed_fields = {
+        "schema_version",
+        "event_state",
+        "manifestation",
+        "mechanism_or_cause",
+        "cause_status",
+        "failure_locus",
+        "repair_side",
+        "execution_phase",
+        "observability",
+        "evidence_state",
+        "effect_or_harm",
+        "propagation",
+        "completion_state",
+        "verification_state",
+        "execution_pattern",
+        "reporting_notes",
+        "external_taxonomy_refs",
+    }
+    unknown_fields = sorted(set(block) - allowed_fields)
+    if unknown_fields:
+        errors.append(
+            f"{path}: failure_classification.faceted_analysis contains unsupported field(s): "
+            f"{', '.join(unknown_fields)}"
+        )
+
+    required_fields = {
+        "schema_version",
+        "event_state",
+        "failure_locus",
+        "observability",
+        "evidence_state",
+        "propagation",
+    }
+    missing = sorted(field for field in required_fields if field not in block or is_blank(block.get(field)))
+    if missing:
+        errors.append(
+            f"{path}: failure_classification.faceted_analysis missing required fields: {', '.join(missing)}"
+        )
+
+    if block.get("schema_version") != "1.0":
+        errors.append(f"{path}: failure_classification.faceted_analysis.schema_version must be '1.0'")
+
+    scalar_enums = {
+        "event_state": {"anomaly", "hazard", "near-miss", "incident", "confirmed-failure", "unknown"},
+        "cause_status": {"unknown", "hypothesised", "corroborated", "reproduced", "root-cause-confirmed", "not-applicable"},
+        "observability": {"overt", "latent", "silent", "differentially-observable", "externally-detected", "user-reported", "unknown"},
+        "evidence_state": {"reported", "observed", "corroborated", "reproduced", "root-cause-confirmed", "provisional", "unknown"},
+        "propagation": {"local", "downstream", "cascading", "cross-provider", "systemic", "unknown"},
+        "completion_state": {"completed", "premature-termination", "non-termination", "false-completion", "unknown", "not-applicable"},
+        "verification_state": {"not-attempted", "incomplete", "incorrect", "passed", "failed", "unknown", "not-applicable"},
+        "execution_pattern": {"single-pass", "repeated-step", "looping", "retry-amplification", "degraded-but-functional", "unknown", "not-applicable"},
+    }
+    for field, allowed in scalar_enums.items():
+        if field not in block:
+            continue
+        value = block.get(field)
+        if value not in allowed:
+            errors.append(
+                f"{path}: failure_classification.faceted_analysis.{field} {value!r} is not allowed; "
+                f"allowed values: {', '.join(sorted(allowed))}"
+            )
+
+    locus_values = {
+        "model",
+        "harness",
+        "orchestration",
+        "agent-agent-interface",
+        "model-harness-interface",
+        "memory",
+        "retrieval",
+        "tool",
+        "tool-environment-interface",
+        "data-pipeline",
+        "provider-service",
+        "cross-provider-interface",
+        "user-interface",
+        "evaluator",
+        "human-workflow",
+        "external-environment",
+        "other",
+        "unknown",
+    }
+    repair_values = locus_values | {"governance", "multi-party"}
+    phase_values = {
+        "intake",
+        "planning",
+        "reasoning",
+        "delegation",
+        "retrieval",
+        "tool-selection",
+        "tool-execution",
+        "inter-agent-handoff",
+        "verification",
+        "completion-assessment",
+        "output-generation",
+        "post-processing",
+        "monitoring",
+        "change-management",
+        "unknown",
+        "not-applicable",
+    }
+
+    for field, allowed, require_nonempty in (
+        ("failure_locus", locus_values, True),
+        ("repair_side", repair_values, False),
+        ("execution_phase", phase_values, False),
+    ):
+        if field not in block:
+            continue
+        values = block.get(field)
+        if not isinstance(values, list):
+            errors.append(f"{path}: failure_classification.faceted_analysis.{field} must be an array")
+            continue
+        if require_nonempty and not values:
+            errors.append(f"{path}: failure_classification.faceted_analysis.{field} must not be empty")
+        if len(values) != len(set(values)):
+            errors.append(f"{path}: failure_classification.faceted_analysis.{field} must contain unique values")
+        for value in values:
+            if value not in allowed:
+                errors.append(
+                    f"{path}: failure_classification.faceted_analysis.{field} contains unsupported value {value!r}"
+                )
+
+    for field in ("manifestation", "mechanism_or_cause", "effect_or_harm", "external_taxonomy_refs"):
+        if field not in block:
+            continue
+        values = block.get(field)
+        if not isinstance(values, list):
+            errors.append(f"{path}: failure_classification.faceted_analysis.{field} must be an array")
+            continue
+        if any(not isinstance(value, str) or not value.strip() for value in values):
+            errors.append(
+                f"{path}: failure_classification.faceted_analysis.{field} must contain only non-empty strings"
+            )
+        if all(isinstance(value, str) for value in values) and len(values) != len(set(values)):
+            errors.append(f"{path}: failure_classification.faceted_analysis.{field} must contain unique values")
+
+    notes = block.get("reporting_notes")
+    if notes is not None and (not isinstance(notes, str) or not notes.strip()):
+        errors.append(
+            f"{path}: failure_classification.faceted_analysis.reporting_notes must be a non-empty string when present"
+        )
+'''
+
+          marker = '\ndef validate_record(\n'
+          if text.count(marker) != 1:
+              raise SystemExit('validate_record insertion marker mismatch')
+          text = text.replace(marker, function + marker, 1)
+
+          call_marker = '''            add_missing(
+                errors,
+                path,
+                classification,
+                {"taxonomy_reference", "related_failure_groups", "persistence", "reproducibility", "visibility"},
+            )
+'''
+          if text.count(call_marker) != 1:
+              raise SystemExit('failure classification call marker mismatch')
+          text = text.replace(call_marker, call_marker + '            validate_fm_faceted_analysis(path, classification, errors)\n', 1)
+          path.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Commit validator enforcement
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add vigil/scripts/validate-vigil-records.py
+          git commit -m "Enforce faceted failure mode reporting values"
+
+      - name: Run focused and repository validations
+        shell: bash
+        run: |
+          set -euo pipefail
+          python vigil/tests/test_failure_mode_facets.py
+          python vigil/tests/test_validate_vigil_records.py
+          python vigil/scripts/validate-vigil-records.py
+          python vigil/scripts/manage-external-requirements-effective.py validate --check-generated
+          python vigil/scripts/validate-authorship-provenance.py
+
+      - name: Remove one-off workflow and push
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -f .github/workflows/apply-fm-facet-validator.yml
+          git add .github/workflows/apply-fm-facet-validator.yml
+          git commit -m "Remove one-off FM facet validator workflow"
+          git push origin HEAD:"${GITHUB_REF_NAME}"
