@@ -148,3 +148,22 @@ jobs:
           git status --short
           git commit -m "Normalise external governance architecture"
           git push origin HEAD:"${GITHUB_REF_NAME}"
+
+      - name: Publish failure run reference without partial migration
+        if: failure()
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin "${GITHUB_REF_NAME}"
+          git reset --hard "origin/${GITHUB_REF_NAME}"
+          mkdir -p vigil/docs/reviews
+          cat > vigil/docs/reviews/EXTREQ-04-normalisation-failure.txt <<EOF
+          External governance architecture normalisation failed.
+          Run: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}
+          Head at run start: ${GITHUB_SHA}
+          EOF
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add vigil/docs/reviews/EXTREQ-04-normalisation-failure.txt
+          git commit -m "Record external governance normalisation failure"
+          git push origin HEAD:"${GITHUB_REF_NAME}"
