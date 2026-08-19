@@ -196,7 +196,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          git restore --source="origin/${GITHUB_REF_NAME}" -- .github/workflows
+          rm -rf .github/workflows
+          git checkout "origin/${GITHUB_REF_NAME}" -- .github/workflows
 
       - name: Commit normalised architecture
         shell: bash
