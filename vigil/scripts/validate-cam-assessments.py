@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate VIGIL Layer 2 CAM applicability/conformance assessments."""
+"""Validate VIGIL CAM applicability and coverage assessments."""
 
 from __future__ import annotations
 
@@ -11,9 +11,9 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
-LAYER2 = ROOT / "cam_conformance"
-ASSESSMENTS = LAYER2 / "assessments.json"
-EFFECTIVE_REQUIREMENTS = ROOT / "external_requirements" / "effective-requirements.json"
+CAM_ASSESSMENT = ROOT / "cam_assessment"
+ASSESSMENTS = CAM_ASSESSMENT / "assessments.json"
+REQUIREMENTS = ROOT / "external_requirements" / "requirements.json"
 PROVENANCE_REF = "vigil/provenance/AUTHORSHIP-PROVENANCE.json"
 
 FORCE = {
@@ -113,7 +113,7 @@ def validate_assessment(item: dict[str, Any], extreq: dict[str, Any]) -> list[st
 
     for field in ("external_source_id", "source_version", "normative_force", "alignment_relationship"):
         if item.get(field) != extreq.get(field):
-            errors.append(f"{label}: {field} differs from effective Layer 1 EXTREQ")
+            errors.append(f"{label}: {field} differs from canonical EXTREQ")
     if item["normative_force"] not in FORCE:
         errors.append(f"{label}: invalid normative_force")
     if item["alignment_relationship"] not in RELATIONSHIP:
@@ -173,24 +173,24 @@ def validate_assessment(item: dict[str, Any], extreq: dict[str, Any]) -> list[st
 
 def validate_repository(
     assessments_document: dict[str, Any] | None = None,
-    effective_document: dict[str, Any] | None = None,
+    requirements_document: dict[str, Any] | None = None,
 ) -> list[str]:
     assessments_document = assessments_document or load(ASSESSMENTS)
-    effective_document = effective_document or load(EFFECTIVE_REQUIREMENTS)
+    requirements_document = requirements_document or load(REQUIREMENTS)
     errors: list[str] = []
     if assessments_document.get("schema_version") != "1.0":
-        errors.append("Layer 2 assessments schema_version must be 1.0")
+        errors.append("CAM assessments schema_version must be 1.0")
     if assessments_document.get("authorship_provenance") != DEFAULT_PROVENANCE:
-        errors.append("Layer 2 dataset authorship provenance differs from VIGIL default")
-    extreqs = {item["requirement_id"]: item for item in effective_document.get("requirements", [])}
+        errors.append("CAM assessment dataset authorship provenance differs from VIGIL default")
+    extreqs = {item["requirement_id"]: item for item in requirements_document.get("requirements", [])}
     seen: set[str] = set()
     for item in assessments_document.get("assessments", []):
         if not isinstance(item, dict):
-            errors.append("Layer 2 assessment must be an object")
+            errors.append("CAM assessment must be an object")
             continue
         aid = item.get("assessment_id")
         if aid in seen:
-            errors.append(f"duplicate Layer 2 assessment_id {aid}")
+            errors.append(f"duplicate CAM assessment_id {aid}")
         seen.add(aid)
         rid = item.get("extreq_id")
         extreq = extreqs.get(rid)
@@ -203,11 +203,11 @@ def validate_repository(
 def main() -> int:
     errors = validate_repository()
     if errors:
-        print("VIGIL Layer 2 CAM conformance validation failed:", file=sys.stderr)
+        print("VIGIL CAM assessment validation failed:", file=sys.stderr)
         for error in errors:
             print(f"- {error}", file=sys.stderr)
         return 1
-    print("VIGIL Layer 2 CAM conformance validation passed.")
+    print("VIGIL CAM assessment validation passed.")
     return 0
 
 if __name__ == "__main__":

@@ -161,10 +161,10 @@ def validate_repository() -> list[str]:
         errors.append(f"{DECLARATION_PATH}: legacy interpretive provenance must not override authorship provenance")
 
     dataset = declaration.get("dataset_declarations", {}).get(
-        "external-governance-layer-0-and-layer-1", {}
+        "external-governance-sources-and-requirements", {}
     )
     if dataset.get("provenance") != DEFAULT:
-        errors.append(f"{DECLARATION_PATH}: Layer 0/Layer 1 provenance differs from the VIGIL default")
+        errors.append(f"{DECLARATION_PATH}: external governance source/requirement provenance differs from the VIGIL default")
     if dataset.get("external_source_authorship_unchanged") is not True:
         errors.append(f"{DECLARATION_PATH}: external-source authorship boundary must be preserved")
     generated = declaration.get("generated_artefact_rule", {})
@@ -192,8 +192,8 @@ def validate_repository() -> list[str]:
                 errors.append(f"{label}: source_analysis_method must be non-empty")
 
     for relative in (
-        "external_sources/effective-ledger.json",
-        "external_requirements/effective-requirements.json",
+        "external_sources/source-registry.json",
+        "external_requirements/requirements.json",
         "external_requirements/derivative-crosswalks.json",
     ):
         document = load(VIGIL / relative)
@@ -203,23 +203,12 @@ def validate_repository() -> list[str]:
             for field, value in DEFAULT.items():
                 if provenance.get(field) != value:
                     errors.append(f"{relative}: {field} must be {value!r}")
-        generation = document.get("generation_provenance")
-        errors.extend(
-            validate_provenance(
-                generation,
-                f"{relative}.generation_provenance",
-                require_declaration=True,
-                require_upstream=True,
-            )
-        )
-        if isinstance(generation, dict):
-            for field, value in GENERATED.items():
-                if generation.get(field) != value:
-                    errors.append(f"{relative}.generation_provenance: {field} must be {value!r}")
 
     for relative in (
+        "external_sources/source-review-queue.json",
         "external_requirements/requirements-index.json",
         "external_requirements/completeness-report.json",
+        "external_requirements/source-coverage-manifests.json",
         "external_requirements/derivative-crosswalk-index.json",
     ):
         document = load(VIGIL / relative)

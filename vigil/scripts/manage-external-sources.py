@@ -269,7 +269,7 @@ def validate(check_generated: bool = False) -> None:
             errors.append(f"invalid change_state for {key}")
         if entry.get("source_metadata_fingerprint") != metadata_fingerprint(entry):
             errors.append(f"source metadata fingerprint mismatch for {key}")
-        if entry.get("review_eligible") is not isinstance(entry.get("review_eligible"), bool):
+        if not isinstance(entry.get("review_eligible"), bool):
             errors.append(f"review_eligible must be boolean for {key}")
     expected_queue = build_queue(registry)
     expected_catalogue = render_catalogue(registry)

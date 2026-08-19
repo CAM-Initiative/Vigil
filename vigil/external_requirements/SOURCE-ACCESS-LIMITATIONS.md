@@ -1,6 +1,6 @@
 # Source Access Limitations and Maintainer Access List
 
-A source listed here has not been represented as fully reviewed. Titles, abstracts, metadata or secondary summaries are not treated as substitutes for normative source text.
+Sources listed here are not represented as fully reviewed. Metadata, abstracts, previews and secondary summaries are not substitutes for authoritative normative text.
 
 | Source | Version | Role | Access | Extraction | Inaccessible material | Maintainer action |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -49,7 +49,3 @@ A source listed here has not been represented as fully reviewed. Titles, abstrac
 | Information technology — Artificial intelligence — Data life cycle framework | `2023` | `primary-ai-governance` | `official-metadata-only` | `blocked-access` | Normative clauses and controls beyond official metadata or abstract | Provide lawful licensed primary-text access for bounded requirement review; do not upload or commit the copyrighted standard text. |
 | Information technology — Artificial intelligence — Controllability of automated artificial intelligence systems | `2024` | `primary-ai-governance` | `official-metadata-only` | `blocked-access` | Normative clauses and controls beyond official metadata or abstract | Provide lawful licensed primary-text access for bounded requirement review; do not upload or commit the copyrighted standard text. |
 | Systems and software engineering — Vocabulary | `2017` | `supporting-external-authority` | `official-metadata-only` | `supporting-only` | Full or sufficient source text | No action currently required |
-
-## Authorship provenance
-
-This is a deterministically generated projection of `vigil/external_requirements/requirements.json`, `vigil/external_requirements/extensions/*.json`. Its upstream VIGIL content is AI-authored and semi-autonomous under human contract approval; no human review or verification is implied. See `vigil/provenance/AUTHORSHIP-PROVENANCE.json`.
