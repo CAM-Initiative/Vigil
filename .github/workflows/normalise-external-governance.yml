@@ -1,0 +1,150 @@
+name: Normalise external governance architecture
+
+on:
+  push:
+    branches:
+      - agent/instrumental-coercive-influence-capability-revalidation
+    paths:
+      - .github/workflows/normalise-external-governance.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: normalise-external-governance
+  cancel-in-progress: false
+
+jobs:
+  normalise:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+          show-progress: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Verify branch and pre-normalisation state
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "${GITHUB_REF_NAME}" = "agent/instrumental-coercive-influence-capability-revalidation"
+          python vigil/scripts/manage-external-requirements-effective.py validate --check-generated
+          python vigil/tests/test_external_requirements_extended.py
+
+      - name: Promote current effective state to canonical state
+        run: python vigil/scripts/normalise-external-governance.py
+
+      - name: Finalise CAM assessment schema wording
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          path = Path('vigil/cam_assessment/assessment.schema.json')
+          data = json.loads(path.read_text(encoding='utf-8'))
+          data['title'] = 'VIGIL CAM Applicability and Coverage Assessment'
+          data['description'] = (
+              'A CAM-specific applicability and coverage judgement for one canonical EXTREQ. '
+              'This schema does not modify external-source facts or external-requirement meaning.'
+          )
+          path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+          PY
+
+      - name: Build and validate canonical external source registry
+        run: |
+          python vigil/scripts/manage-external-sources.py build
+          python vigil/scripts/manage-external-sources.py validate --check-generated
+          python vigil/tests/test_external_sources.py
+
+      - name: Build and validate canonical external requirements
+        run: |
+          python vigil/scripts/manage-external-requirements.py build
+          python vigil/scripts/manage-external-requirements.py validate --check-generated
+          python vigil/tests/test_external_requirements.py
+
+      - name: Validate CAM assessment separation
+        run: |
+          python vigil/tests/test_cam_assessments.py
+          python vigil/scripts/validate-cam-assessments.py
+
+      - name: Validate authorship and assurance provenance
+        run: |
+          python vigil/tests/test_authorship_provenance.py
+          python vigil/scripts/validate-authorship-provenance.py
+
+      - name: Reject surviving migration architecture in active paths
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          roots = [
+              Path('vigil/external_sources'),
+              Path('vigil/external_requirements'),
+              Path('vigil/cam_assessment'),
+              Path('vigil/scripts/manage-external-sources.py'),
+              Path('vigil/scripts/manage-external-requirements.py'),
+              Path('vigil/scripts/validate-cam-assessments.py'),
+              Path('vigil/tests/test_external_sources.py'),
+              Path('vigil/tests/test_external_requirements.py'),
+              Path('vigil/tests/test_cam_assessments.py'),
+              Path('vigil/provenance/AUTHORSHIP-PROVENANCE.json'),
+              Path('vigil/scripts/validate-authorship-provenance.py'),
+              Path('.github/workflows/external-governance.yml'),
+          ]
+          forbidden = [
+              'Layer 0', 'Layer 1', 'Layer 2',
+              'effective-requirements.json', 'effective-ledger.json',
+              'EFFECTIVE-GOVERNANCE-SOURCES.md', 'EXTERNAL-GOVERNANCE-SOURCES.md',
+              'cam_conformance', 'extension-transitions.json',
+              'manage-external-requirements-effective.py',
+              'manage-external-requirements-extended.py',
+          ]
+          problems = []
+          files = []
+          for root in roots:
+              if root.is_file():
+                  files.append(root)
+              elif root.is_dir():
+                  files.extend(p for p in root.rglob('*') if p.is_file() and p.suffix in {'.md', '.json', '.py', '.yml', '.yaml'})
+          for path in files:
+              text = path.read_text(encoding='utf-8')
+              for token in forbidden:
+                  if token in text:
+                      problems.append(f'{path}: contains {token!r}')
+          if problems:
+              raise SystemExit('\n'.join(problems))
+          PY
+          test ! -e vigil/external_sources/ledger.json
+          test ! -e vigil/external_sources/effective-ledger.json
+          test ! -e vigil/external_requirements/effective-requirements.json
+          test ! -d vigil/external_requirements/extensions
+          test ! -d vigil/cam_conformance
+
+      - name: Compile active Python tooling
+        run: |
+          python -m py_compile \
+            vigil/scripts/manage-external-sources.py \
+            vigil/scripts/manage-external-requirements.py \
+            vigil/scripts/validate-cam-assessments.py \
+            vigil/scripts/validate-authorship-provenance.py \
+            vigil/tests/test_external_sources.py \
+            vigil/tests/test_external_requirements.py \
+            vigil/tests/test_cam_assessments.py
+
+      - name: Commit normalised architecture
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git status --short
+          git commit -m "Normalise external governance architecture"
+          git push origin HEAD:"${GITHUB_REF_NAME}"
