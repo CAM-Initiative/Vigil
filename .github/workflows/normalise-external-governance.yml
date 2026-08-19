@@ -192,6 +192,12 @@ jobs:
             vigil/tests/test_external_requirements.py \
             vigil/tests/test_cam_assessments.py
 
+      - name: Restore workflow files for connector publication
+        shell: bash
+        run: |
+          set -euo pipefail
+          git restore --source="origin/${GITHUB_REF_NAME}" -- .github/workflows
+
       - name: Commit normalised architecture
         shell: bash
         run: |
