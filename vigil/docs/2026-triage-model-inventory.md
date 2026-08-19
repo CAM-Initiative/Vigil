@@ -6,7 +6,7 @@ This deterministic inventory records the reconciled current model 2.0 state. Sev
 
 ## Scope and boundary
 
-All 61 current failure-mode records are included. VIGIL's record-boundary contract forbids failure-mode triage in OBS and PROP/PATCH records, so those classes are not given synthetic triage state.
+All 65 current failure-mode records are included. VIGIL's record-boundary contract forbids failure-mode triage in OBS and PROP/PATCH records, so those classes are not given synthetic triage state.
 
 ## Headline findings
 
@@ -23,7 +23,8 @@ All 61 current failure-mode records are included. VIGIL's record-boundary contra
 | --- | --- |
 | P2 | 23 |
 | PN | 21 |
-| P1 | 14 |
+| P1 | 15 |
+| P0 | 3 |
 | P3 | 3 |
 
 ## Status counts
@@ -31,7 +32,7 @@ All 61 current failure-mode records are included. VIGIL's record-boundary contra
 | Status | Count |
 | --- | --- |
 | monitoring | 24 |
-| action-required | 19 |
+| action-required | 23 |
 | under-assessment | 10 |
 | verification-pending | 8 |
 
@@ -39,8 +40,8 @@ All 61 current failure-mode records are included. VIGIL's record-boundary contra
 
 | Severity | Count |
 | --- | --- |
-| S1 | 26 |
-| S2 | 22 |
+| S1 | 29 |
+| S2 | 23 |
 | S3 | 11 |
 | S4 | 1 |
 | SU | 1 |
@@ -53,8 +54,9 @@ All current failure modes use model 2.0 severity values `S0`, `S1`, `S2`, `S3`, 
 | --- | --- | --- |
 | monitoring | PN | 21 |
 | active | P2 | 19 |
-| active | P1 | 14 |
+| active | P1 | 15 |
 | monitoring | P2 | 4 |
+| active | P0 | 3 |
 | monitoring | P3 | 2 |
 | active | P3 | 1 |
 
@@ -63,10 +65,11 @@ All current failure modes use model 2.0 severity values `S0`, `S1`, `S2`, `S3`, 
 | Repair status | Priority | Count |
 | --- | --- | --- |
 | repaired | PN | 21 |
-| unrepaired | P1 | 13 |
+| unrepaired | P1 | 14 |
 | unrepaired | P2 | 13 |
 | partially-repaired | P2 | 6 |
 | repaired | P2 | 4 |
+| unrepaired | P0 | 3 |
 | repaired | P3 | 2 |
 | partially-repaired | P1 | 1 |
 | unrepaired | P3 | 1 |
@@ -77,7 +80,8 @@ All current failure modes use model 2.0 severity values `S0`, `S1`, `S2`, `S3`, 
 | --- | --- | --- |
 | True | P2 | 23 |
 | True | PN | 21 |
-| True | P1 | 14 |
+| True | P1 | 15 |
+| True | P0 | 3 |
 | True | P3 | 3 |
 
 ## Review-flag definitions
@@ -149,6 +153,10 @@ Flags are regression diagnostics. `repaired-with-active-priority-review` identif
 | VIGIL-2026-FM-0059 | active | P2 | verification-pending | S2 | unrepaired | recurring | true | Validate FM-0059 against the VIGIL schema, refresh generated indexes, verify the Caelestis supplement and its metadata under the governance rebuild, then monitor for external incident evidence that cleanly instantiates the generic mechanism. | — | — | false | — |
 | VIGIL-2026-FM-0060 | active | P2 | verification-pending | S1 | partially-repaired | unknown | true | Reconcile PATCH-0037 and this FM to canonical main if the Caelestis branch is merged; meanwhile test scope-specific suspension and defensive-continuity behaviour in conforming implementations. | VIGIL-2026-PATCH-0037 | — | false | — |
 | VIGIL-2026-FM-0061 | active | P2 | verification-pending | S1 | partially-repaired | unknown | true | Reconcile PATCH-0037 and this FM to canonical main if merged; test that later hostile events create new assessment events and cannot restore expired offensive authority without separate attributable reauthorisation. | VIGIL-2026-PATCH-0037 | — | false | — |
+| VIGIL-2026-FM-0062 | active | P0 | action-required | S1 | unrepaired | active | true | Review current CAM identity, essential-service non-denial, degraded-verification, contestability and economic-legitimacy doctrine before creating any proposal; explicitly compare FM-0038, FM-0039, FM-0050 and PROP-0023. | — | — | false | — |
+| VIGIL-2026-FM-0063 | active | P0 | action-required | S1 | unrepaired | active | true | Conduct an exact CAM coverage review for clinical non-substitution, escalation, uncertainty, emergency routing and qualified-care boundaries; do not presume a new patch. | — | — | false | — |
+| VIGIL-2026-FM-0064 | active | P0 | action-required | S1 | unrepaired | active | true | Treat minor-derived and adult non-consensual manifestations as subtypes; review existing CAM minor-safety, NCII, identifiable-person deepfake and identity-integrity doctrine before considering any proposal. | — | — | false | — |
+| VIGIL-2026-FM-0065 | active | P1 | action-required | S2 | unrepaired | active | true | Test SECURITY-002 and adjacent source-authority controls for factual synthesis and retrieval corroboration, explicitly distinguishing this epistemic-poisoning mechanism from FM-0019 refusal-trigger poisoning, before opening any proposal. | — | — | false | — |
 
 ## Reconciliation result
 
