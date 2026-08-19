@@ -65,8 +65,10 @@ jobs:
       - name: Test VIGIL triage inventory
         run: python vigil/tests/test_audit_vigil_triage.py
 
-      - name: Check VIGIL triage inventory
-        run: python vigil/scripts/audit-vigil-triage.py --check
+      - name: Rebuild and verify VIGIL triage inventory
+        run: |
+          python vigil/scripts/audit-vigil-triage.py
+          python vigil/scripts/audit-vigil-triage.py --check
 
       - name: Test VIGIL LEARN validator
         run: python vigil/scripts/test_validate_vigil_learn_records.py
@@ -134,7 +136,7 @@ jobs:
             exit 1
           fi
 
-      - name: Commit generated VIGIL indexes
+      - name: Commit generated VIGIL outputs
         if: github.event_name == 'push'
         run: |
           git config user.name "github-actions[bot]"
@@ -148,13 +150,15 @@ jobs:
             vigil/VIGIL.PatchNotes.Index.json \
             vigil/VIGIL.Research.Index.json \
             vigil/VIGIL.Learn.Index.json \
-            vigil/VIGIL.Registry.Index.json
+            vigil/VIGIL.Registry.Index.json \
+            vigil/docs/2026-triage-model-inventory.json \
+            vigil/docs/2026-triage-model-inventory.md
           if git diff --cached --quiet; then
-            echo "No generated VIGIL index changes to commit."
+            echo "No generated VIGIL output changes to commit."
           else
-            git commit -m "Rebuild VIGIL registry indexes"
+            git commit -m "Rebuild VIGIL generated outputs"
             if ! git push; then
-              echo "Branch advanced while this run was building generated files; a newer workflow run owns index generation."
+              echo "Branch advanced while this run was building generated files; a newer workflow run owns generated-output refresh."
               exit 0
             fi
           fi
