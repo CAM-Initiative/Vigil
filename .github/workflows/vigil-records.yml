@@ -1,98 +1,160 @@
-name: VIGIL records — August 19 intake execution
+name: VIGIL records
 
 on:
   push:
-    branches:
-      - agent/instrumental-coercive-influence-capability-revalidation
     paths:
       - "vigil/**"
       - ".github/workflows/vigil-records.yml"
-      - ".github/workflows/vigil-intake-2026-08-19.yml"
+      - ".gitignore"
+  pull_request:
+    paths:
+      - "vigil/**"
+      - ".github/workflows/vigil-records.yml"
+      - ".gitignore"
 
 concurrency:
-  group: vigil-records-intake-${{ github.ref }}
+  group: vigil-records-${{ github.ref }}
   cancel-in-progress: true
 
 permissions:
   contents: write
 
 jobs:
-  apply-validate-build:
+  validate-build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
         with:
-          fetch-depth: 0
           persist-credentials: true
           show-progress: false
+
+      - name: Check out complete Caelestis history
+        uses: actions/checkout@v6
+        with:
+          repository: CAM-Initiative/Caelestis
+          path: caelestis
+          fetch-depth: 0
+          persist-credentials: false
+          show-progress: false
+
+      - name: Fetch Caelestis branches used by active PATCH records
+        run: git -C caelestis fetch origin "+refs/heads/*:refs/remotes/origin/*"
+
       - uses: actions/setup-python@v6
         with:
-          python-version: "3.11"
+          python-version: "3.x"
 
-      - name: Execute staged intake transformation
-        shell: bash
-        run: |
-          set -euo pipefail
-          awk '/^          python - <<'\''PY'\''$/{flag=1;next} /^          PY$/{if(flag){exit}} flag{sub(/^          /,""); print}' \
-            .github/workflows/vigil-intake-2026-08-19.yml > /tmp/vigil-intake.py
-          test -s /tmp/vigil-intake.py
-          python /tmp/vigil-intake.py
+      - name: Test source provenance classification
+        run: python vigil/scripts/test_vigil_source_provenance.py
 
-      - name: Normalise derived FM context and generated routing state
-        run: |
-          python vigil/scripts/reconcile-fm-system-context.py
-          python vigil/scripts/audit-vigil-triage.py
-          python vigil/scripts/route-vigil-records.py
+      - name: Validate source provenance
+        run: python vigil/scripts/validate-vigil-source-provenance.py
 
-      - name: Validate governed intake records
+      - name: Validate PATCH corpus release provenance
+        run: python vigil/scripts/validate-vigil-patch-corpus-provenance.py
+
+      - name: Test VIGIL record validator
+        run: python vigil/scripts/test_validate_vigil_records.py
+
+      - name: Test FM system-context reconciliation
+        run: python vigil/tests/test_reconcile_fm_system_context.py
+
+      - name: Check FM system-context reconciliation
+        run: python vigil/scripts/reconcile-fm-system-context.py --check
+
+      - name: Test VIGIL triage inventory
+        run: python vigil/tests/test_audit_vigil_triage.py
+
+      - name: Check VIGIL triage inventory
+        run: python vigil/scripts/audit-vigil-triage.py --check
+
+      - name: Test VIGIL LEARN validator
+        run: python vigil/scripts/test_validate_vigil_learn_records.py
+
+      - name: Test VIGIL lifecycle validator
+        run: python vigil/scripts/test_validate_vigil_lifecycle.py
+
+      - name: Test VIGIL PATCH trace validator
+        run: python vigil/scripts/test_validate_vigil_patch_trace.py
+
+      - name: Test VIGIL provenance preservation
+        run: python vigil/scripts/test_vigil_provenance_preservation.py
+
+      - name: Test VIGIL pipeline state
+        run: python vigil/scripts/test_vigil_pipeline_state.py
+
+      - name: Test and validate VIGIL authorship provenance
         run: |
-          python vigil/scripts/test_validate_vigil_records.py
-          python vigil/tests/test_failure_mode_facets.py
-          python vigil/scripts/validate-failure-mode-facets.py
-          python vigil/scripts/validate-vigil-records.py
-          python vigil/tests/test_audit_vigil_triage.py
-          python vigil/scripts/audit-vigil-triage.py --check
           python vigil/tests/test_authorship_provenance.py
           python vigil/scripts/validate-authorship-provenance.py
-          python vigil/tests/test_reconcile_fm_system_context.py
-          python vigil/scripts/reconcile-fm-system-context.py --check
-          python vigil/scripts/route-vigil-records.py --check
 
-      - name: Build VIGIL indexes
+      - name: Test VIGIL registry builder
+        run: python vigil/tests/test_build_vigil_records.py
+
+      - name: Test VIGIL record routing
+        run: python vigil/tests/test_route_vigil_records.py
+
+      - name: Test VIGIL record fixtures
+        run: python vigil/tests/test_validate_vigil_records.py
+
+      - name: Test faceted failure-mode reporting schema
+        run: python vigil/tests/test_failure_mode_facets.py
+
+      - name: Validate faceted failure-mode records
+        run: python vigil/scripts/validate-failure-mode-facets.py
+
+      - name: Test FM-0047 lifecycle state
+        run: python vigil/tests/test_fm0047_repaired_monitoring_state.py
+
+      - name: Check VIGIL record routing
+        run: python vigil/scripts/route-vigil-records.py --check
+
+      - name: Validate VIGIL records
+        run: |
+          python vigil/scripts/validate-vigil-records.py
+          python vigil/scripts/validate-vigil-learn-records.py
+
+      - name: Validate VIGIL lifecycle, corpus coverage, patch provenance, CAM boundary, and interpretive provenance
+        run: python vigil/scripts/run-vigil-lifecycle-validation.py
+
+      - name: Verify literal PATCH wording against Caelestis
+        run: python vigil/scripts/validate-vigil-patch-trace.py --caelestis-root caelestis
+
+      - name: Build and enrich VIGIL registry indexes
         run: |
           python vigil/scripts/build-vigil-records.py
           python vigil/scripts/enrich-vigil-indexes.py
           python vigil/scripts/build-vigil-learn-records.py
 
-      - name: Confirm expected allocations
-        shell: bash
+      - name: Verify source records and contracts were not mutated
         run: |
-          python - <<'PY'
-          import json
-          from pathlib import Path
-          failures=json.loads(Path('vigil/VIGIL.Failures.Index.json').read_text())
-          observations=json.loads(Path('vigil/VIGIL.Observations.Index.json').read_text())
-          fids={r['id'] for r in failures['records']}
-          oids={r['id'] for r in observations['records']}
-          assert {'VIGIL-2026-FM-0062','VIGIL-2026-FM-0063','VIGIL-2026-FM-0064','VIGIL-2026-FM-0065'} <= fids
-          assert {'VIGIL-2026-OBS-0028','VIGIL-2026-OBS-0029','VIGIL-2026-OBS-0030'} <= oids
-          assert failures['record_count'] >= 65
-          assert observations['record_count'] >= 30
-          PY
+          if ! git diff --quiet -- vigil/records vigil/templates vigil/schemas vigil/VIGIL.Schema.json vigil/VIGIL.Learn.Schema.json; then
+            echo "Validation/build automation modified governed source records or contracts."
+            git diff --name-status -- vigil/records vigil/templates vigil/schemas vigil/VIGIL.Schema.json vigil/VIGIL.Learn.Schema.json
+            exit 1
+          fi
 
-      - name: Commit validated intake package
-        shell: bash
+      - name: Commit generated VIGIL indexes
+        if: github.event_name == 'push'
         run: |
-          set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           find vigil -type d -name __pycache__ -prune -exec rm -rf {} +
           find vigil -type f \( -name '*.pyc' -o -name '*.pyo' \) -delete
-          git add -A -- vigil
-          git status --short
+          git add \
+            vigil/VIGIL.Failures.Index.json \
+            vigil/VIGIL.Observations.Index.json \
+            vigil/VIGIL.Proposals.Index.json \
+            vigil/VIGIL.PatchNotes.Index.json \
+            vigil/VIGIL.Research.Index.json \
+            vigil/VIGIL.Learn.Index.json \
+            vigil/VIGIL.Registry.Index.json
           if git diff --cached --quiet; then
-            echo "No intake changes to commit."
+            echo "No generated VIGIL index changes to commit."
           else
-            git commit -m "Ingest August 19 VIGIL incident evidence"
-            git push origin HEAD:${GITHUB_REF_NAME}
+            git commit -m "Rebuild VIGIL registry indexes"
+            if ! git push; then
+              echo "Branch advanced while this run was building generated files; a newer workflow run owns index generation."
+              exit 0
+            fi
           fi
