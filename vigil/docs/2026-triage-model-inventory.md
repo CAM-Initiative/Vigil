@@ -6,7 +6,7 @@ This deterministic inventory records the reconciled current model 2.0 state. Sev
 
 ## Scope and boundary
 
-All 65 current failure-mode records are included. VIGIL's record-boundary contract forbids failure-mode triage in OBS and PROP/PATCH records, so those classes are not given synthetic triage state.
+All 70 current failure-mode records are included. VIGIL's record-boundary contract forbids failure-mode triage in OBS and PROP/PATCH records, so those classes are not given synthetic triage state.
 
 ## Headline findings
 
@@ -21,8 +21,8 @@ All 65 current failure-mode records are included. VIGIL's record-boundary contra
 
 | Priority | Count |
 | --- | --- |
-| P2 | 23 |
-| PN | 21 |
+| PN | 25 |
+| P2 | 24 |
 | P1 | 15 |
 | P0 | 3 |
 | P3 | 3 |
@@ -31,7 +31,7 @@ All 65 current failure-mode records are included. VIGIL's record-boundary contra
 
 | Status | Count |
 | --- | --- |
-| monitoring | 24 |
+| monitoring | 29 |
 | action-required | 23 |
 | under-assessment | 10 |
 | verification-pending | 8 |
@@ -40,7 +40,7 @@ All 65 current failure-mode records are included. VIGIL's record-boundary contra
 
 | Severity | Count |
 | --- | --- |
-| S1 | 29 |
+| S1 | 34 |
 | S2 | 23 |
 | S3 | 11 |
 | S4 | 1 |
@@ -52,10 +52,10 @@ All current failure modes use model 2.0 severity values `S0`, `S1`, `S2`, `S3`, 
 
 | Record state | Priority | Count |
 | --- | --- | --- |
-| monitoring | PN | 21 |
+| monitoring | PN | 25 |
 | active | P2 | 19 |
 | active | P1 | 15 |
-| monitoring | P2 | 4 |
+| monitoring | P2 | 5 |
 | active | P0 | 3 |
 | monitoring | P3 | 2 |
 | active | P3 | 1 |
@@ -67,7 +67,8 @@ All current failure modes use model 2.0 severity values `S0`, `S1`, `S2`, `S3`, 
 | repaired | PN | 21 |
 | unrepaired | P1 | 14 |
 | unrepaired | P2 | 13 |
-| partially-repaired | P2 | 6 |
+| partially-repaired | P2 | 7 |
+| partially-repaired | PN | 4 |
 | repaired | P2 | 4 |
 | unrepaired | P0 | 3 |
 | repaired | P3 | 2 |
@@ -78,8 +79,8 @@ All current failure modes use model 2.0 severity values `S0`, `S1`, `S2`, `S3`, 
 
 | Monitoring required | Priority | Count |
 | --- | --- | --- |
-| True | P2 | 23 |
-| True | PN | 21 |
+| True | PN | 25 |
+| True | P2 | 24 |
 | True | P1 | 15 |
 | True | P0 | 3 |
 | True | P3 | 3 |
@@ -157,6 +158,11 @@ Flags are regression diagnostics. `repaired-with-active-priority-review` identif
 | VIGIL-2026-FM-0063 | active | P0 | action-required | S1 | unrepaired | active | true | Conduct an exact CAM coverage review for clinical non-substitution, escalation, uncertainty, emergency routing and qualified-care boundaries; do not presume a new patch. | — | — | false | — |
 | VIGIL-2026-FM-0064 | active | P0 | action-required | S1 | unrepaired | active | true | Treat minor-derived and adult non-consensual manifestations as subtypes; review existing CAM minor-safety, NCII, identifiable-person deepfake and identity-integrity doctrine before considering any proposal. | — | — | false | — |
 | VIGIL-2026-FM-0065 | active | P1 | action-required | S2 | unrepaired | active | true | Test SECURITY-002 and adjacent source-authority controls for factual synthesis and retrieval corroboration, explicitly distinguishing this epistemic-poisoning mechanism from FM-0019 refusal-trigger poisoning, before opening any proposal. | — | — | false | — |
+| VIGIL-2026-FM-0066 | monitoring | P2 | monitoring | S1 | partially-repaired | active | true | Monitor canonical disposition of Caelestis commit 4b93c3e0b0722040da64ef490e7115d9fcb0109c and future evidence of capability-linked safeguard continuity across access surfaces. | VIGIL-2026-PATCH-0038 | — | false | — |
+| VIGIL-2026-FM-0067 | monitoring | PN | monitoring | S1 | partially-repaired | active | true | Monitor recurrence, verify implementation conformance across affected architectures, and reconcile branch-only Caelestis coverage if adopted on main. | VIGIL-2026-PATCH-0039 | VIGIL-2026-LEARN-0009 | true | — |
+| VIGIL-2026-FM-0068 | monitoring | PN | monitoring | S1 | partially-repaired | active | true | Monitor recurrence, verify implementation conformance across affected architectures, and reconcile branch-only Caelestis coverage if adopted on main. | VIGIL-2026-PATCH-0040 | VIGIL-2026-LEARN-0010 | true | — |
+| VIGIL-2026-FM-0069 | monitoring | PN | monitoring | S1 | partially-repaired | active | true | Monitor recurrence, verify implementation conformance across affected architectures, and reconcile branch-only Caelestis coverage if adopted on main. | VIGIL-2026-PATCH-0041 | VIGIL-2026-LEARN-0011 | true | — |
+| VIGIL-2026-FM-0070 | monitoring | PN | monitoring | S1 | partially-repaired | active | true | Monitor recurrence, verify implementation conformance across affected architectures, and reconcile branch-only Caelestis coverage if adopted on main. | VIGIL-2026-PATCH-0042 | VIGIL-2026-LEARN-0012 | true | — |
 
 ## Reconciliation result
 

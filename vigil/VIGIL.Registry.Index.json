@@ -28,20 +28,20 @@
   ],
   "registry_count": 6,
   "record_count": {
-    "failure_modes": 65,
+    "failure_modes": 70,
     "observations": 30,
     "proposals": 32,
-    "patch_notes": 35,
+    "patch_notes": 40,
     "research": 6,
-    "total": 176,
-    "learn_records": 8
+    "total": 190,
+    "learn_records": 12
   },
   "registries": {
     "failure_modes": {
       "path": "vigil/VIGIL.Failures.Index.json",
       "github_blob_url": "https://github.com/CAM-Initiative/Vigil/blob/main/vigil/VIGIL.Failures.Index.json",
       "raw_url": "https://raw.githubusercontent.com/CAM-Initiative/Vigil/main/vigil/VIGIL.Failures.Index.json",
-      "record_count": 65
+      "record_count": 70
     },
     "observations": {
       "path": "vigil/VIGIL.Observations.Index.json",
@@ -59,7 +59,7 @@
       "path": "vigil/VIGIL.PatchNotes.Index.json",
       "github_blob_url": "https://github.com/CAM-Initiative/Vigil/blob/main/vigil/VIGIL.PatchNotes.Index.json",
       "raw_url": "https://raw.githubusercontent.com/CAM-Initiative/Vigil/main/vigil/VIGIL.PatchNotes.Index.json",
-      "record_count": 35
+      "record_count": 40
     },
     "research": {
       "path": "vigil/VIGIL.Research.Index.json",
@@ -71,7 +71,7 @@
       "path": "vigil/VIGIL.Learn.Index.json",
       "github_blob_url": "https://github.com/CAM-Initiative/Vigil/blob/main/vigil/VIGIL.Learn.Index.json",
       "raw_url": "https://raw.githubusercontent.com/CAM-Initiative/Vigil/main/vigil/VIGIL.Learn.Index.json",
-      "record_count": 8
+      "record_count": 12
     }
   },
   "records": [
@@ -2077,15 +2077,17 @@
       "source_types": [
         "repository-source",
         "research-source",
-        "security-standard / taxonomy"
+        "security-standard / taxonomy",
+        "third-party-report"
       ],
-      "source_count": 4,
+      "source_count": 6,
       "primary_source_title": "LLM01:2025 Prompt Injection",
       "primary_source_type": "security-standard / taxonomy",
       "primary_source_platform": "OWASP",
       "source_platforms": [
         "Caelestis",
         "OWASP",
+        "Varonis Threat Labs",
         "arXiv"
       ],
       "source_url_status": "available",
@@ -2117,14 +2119,17 @@
         "Claude Code",
         "Claude",
         "Gemini",
-        "Cursor"
+        "Cursor",
+        "Copilot"
       ],
       "evidenced_models_or_runtimes": [
-        "Claude Desktop, Claude Code, Cursor, Cline, Continue, Gemini CLI, Langflow, and related MCP clients"
+        "Claude Desktop, Claude Code, Cursor, Cline, Continue, Gemini CLI, Langflow, and related MCP clients",
+        "Microsoft Copilot Personal",
+        "Atlassian Rovo"
       ],
       "product_or_service": "Other",
-      "specific_model_or_runtime": "Claude Desktop, Claude Code, Cursor, Cline, Continue, Gemini CLI, Langflow, and related MCP clients",
-      "model_or_product": "Claude Code; Claude; Gemini; Cursor",
+      "specific_model_or_runtime": "Claude Desktop, Claude Code, Cursor, Cline, Continue, Gemini CLI, Langflow, and related MCP clients; Microsoft Copilot Personal; Atlassian Rovo",
+      "model_or_product": "Claude Code; Claude; Gemini; Cursor; Copilot",
       "interface_surface": "chat, browser, file upload, repository workspace, IDE, MCP client, RAG pipeline, web search, email assistant, document summariser, security scanner, ticketing workflow, CI/CD agent, multimodal input, and connector-enabled assistant",
       "deployment_context": "Consumer, developer, enterprise, cybersecurity, governance, research, legal, education, platform-integrity, and operational workflows where AI systems process untrusted external content and may take or recommend actions.",
       "primary_jurisdiction": "global",
@@ -4534,13 +4539,15 @@
       "evidence_confidence": "verified evaluation and embedded-red-team mechanism; autonomous production defeat remains bounded",
       "source_types": [
         "external-evaluator-report",
-        "monitorability-research"
+        "monitorability-research",
+        "third-party-report"
       ],
-      "source_count": 2,
+      "source_count": 3,
       "primary_source_title": "Early work on monitorability evaluations",
       "primary_source_type": "monitorability-research",
       "primary_source_platform": "METR",
       "source_platforms": [
+        "Anthropic",
         "METR"
       ],
       "source_url_status": "available",
@@ -4565,14 +4572,18 @@
         "Meta",
         "OpenAI"
       ],
+      "evidenced_products_or_services": [
+        "Claude"
+      ],
       "evidenced_models_or_runtimes": [
         "multiple frontier agent and monitor models",
         "multiple frontier models and monitoring systems",
+        "Claude models and biological-risk safeguards",
         "SHUSHCAST, APPS-backdoor evaluations and embedded frontier-laboratory monitoring review"
       ],
-      "product_or_service": "Other",
-      "specific_model_or_runtime": "multiple frontier agent and monitor models; multiple frontier models and monitoring systems; SHUSHCAST, APPS-backdoor evaluations and embedded frontier-laboratory monitoring review",
-      "model_or_product": "agent and monitor model pairs",
+      "product_or_service": "Claude",
+      "specific_model_or_runtime": "multiple frontier agent and monitor models; multiple frontier models and monitoring systems; Claude models and biological-risk safeguards; SHUSHCAST, APPS-backdoor evaluations and embedded frontier-laboratory monitoring review",
+      "model_or_product": "Claude",
       "interface_surface": "agent traces, reasoning traces, subagent calls, tool traffic, environment classification, telemetry routing and monitor prompts",
       "deployment_context": "Controlled monitorability evaluations and internal frontier-laboratory monitoring infrastructure.",
       "primary_jurisdiction": "global",
@@ -5438,6 +5449,366 @@
       "raw_url": "https://raw.githubusercontent.com/CAM-Initiative/Vigil/main/vigil/records/failures/2026/VIGIL-2026-FM-0065.json"
     },
     {
+      "id": "VIGIL-2026-FM-0066",
+      "record_type": "failure_mode",
+      "record_state": "monitoring",
+      "date_recorded": "2026-08-22",
+      "title": "Material risk assessment omits alternate access routes to the same capability",
+      "summary": "A material risk is identified for an AI capability and a safeguard is prescribed or deployed on one access surface, but the applicable risk or impact assessment does not include materially relevant alternate routes to the same or equivalent capability. The omitted route can therefore remain outside the intended control boundary even though the underlying hazardous capability and risk condition are unchanged.",
+      "evidence_confidence": "verified",
+      "source_types": [
+        "official-source"
+      ],
+      "source_count": 1,
+      "primary_source_title": "Redacted Risk Report August 2026",
+      "primary_source_type": "official-source",
+      "primary_source_platform": "Anthropic",
+      "source_platforms": [
+        "Anthropic"
+      ],
+      "source_url_status": "available",
+      "system_type": "frontier-model access architecture, human-feedback pipeline and safety-assurance system",
+      "platform_or_vendor": "Anthropic",
+      "vendor_cluster": [
+        "Anthropic"
+      ],
+      "primary_evidenced_vendors": [
+        "Anthropic"
+      ],
+      "evidence_scope": "single-provider",
+      "evidenced_vendors": [
+        "Anthropic"
+      ],
+      "evidenced_models_or_runtimes": [
+        "Models subject to biological safeguards",
+        "Exact model mix in the affected contractor pathway is not asserted"
+      ],
+      "product_or_service": "Other",
+      "specific_model_or_runtime": "Models subject to biological safeguards; Exact model mix in the affected contractor pathway is not asserted",
+      "model_or_product": "Anthropic models",
+      "interface_surface": "production, research, evaluation, contractor, vendor-mediated human-feedback, internal and delegated model-access pathways and their associated safeguards",
+      "deployment_context": "Frontier-model development and post-training infrastructure with multiple organisational and technical access surfaces.",
+      "primary_jurisdiction": "global",
+      "regulatory_surface": [
+        "AI risk management",
+        "impact assessment",
+        "frontier-model safety",
+        "biological risk",
+        "third-party risk management",
+        "vendor governance",
+        "safety assurance",
+        "monitoring and audit"
+      ],
+      "sector": "frontier AI development, post-training, vendor operations and safety assurance",
+      "canonical_failure_group": "governance",
+      "failure_family": "governance",
+      "failure_subtype": "material-risk-assessment-alternate-access-route-omission",
+      "severity": "S1",
+      "likelihood": "demonstrated in the Anthropic contractor pathway; recurrence is plausible wherever risk assessment and safeguard assignment are organised by interface, team, vendor or deployment surface rather than by capability and exposure",
+      "triage_priority": "P2",
+      "triage_status": "monitoring",
+      "mitigation_status": "Anthropic reports full remediation and retrospective review with no concerning chemical or biological misuse. Current Caelestis doctrine has adjacent security and operations coverage but the operational taxonomy lacks an explicit subtype for the upstream assessment-scope failure.",
+      "escalation_required": "no emergency escalation; prompt corpus and taxonomy review required",
+      "triage_model_version": "2.0",
+      "triage_owner": "OpenAI ChatGPT — GPT-5.6 Sol analytical reviewer under Dr Michelle Vivian O'Rourke's human contract approval",
+      "triage_action_basis": "The distinct mechanism now has a branch-only capability-risk continuity control; canonical adoption and external conformance remain open.",
+      "triage_review_date": "2026-08-22",
+      "recommended_next_step": "Monitor canonical disposition of Caelestis commit 4b93c3e0b0722040da64ef490e7115d9fcb0109c and future evidence of capability-linked safeguard continuity across access surfaces.",
+      "monitoring_required": true,
+      "repair_status": "partially-repaired",
+      "path": "vigil/records/failures/2026/VIGIL-2026-FM-0066.json",
+      "github_blob_url": "https://github.com/CAM-Initiative/Vigil/blob/main/vigil/records/failures/2026/VIGIL-2026-FM-0066.json",
+      "raw_url": "https://raw.githubusercontent.com/CAM-Initiative/Vigil/main/vigil/records/failures/2026/VIGIL-2026-FM-0066.json"
+    },
+    {
+      "id": "VIGIL-2026-FM-0067",
+      "record_type": "failure_mode",
+      "record_state": "monitoring",
+      "date_recorded": "2026-08-22",
+      "title": "Persistent adversarial context or memory poisoning",
+      "summary": "Attacker-controlled or untrusted state survives the originating content or interaction and remains retrievable or behaviourally operative in later inference, planning or execution without adequate provenance, quarantine, revocation or derivative-use suppression.",
+      "evidence_confidence": "corroborated",
+      "source_types": [
+        "research-source"
+      ],
+      "source_count": 2,
+      "primary_source_title": "CoSnitch: When Your AI Assistant Becomes Its Own Whistleblower",
+      "primary_source_type": "research-source",
+      "primary_source_platform": "Varonis",
+      "source_platforms": [
+        "Microsoft",
+        "Varonis"
+      ],
+      "source_url_status": "available",
+      "system_type": "AI assistant and agent memory architecture",
+      "platform_or_vendor": "Microsoft",
+      "vendor_cluster": [
+        "Microsoft"
+      ],
+      "primary_evidenced_vendors": [
+        "Microsoft"
+      ],
+      "evidence_scope": "single-provider",
+      "evidenced_vendors": [
+        "Microsoft"
+      ],
+      "evidenced_products_or_services": [
+        "Copilot"
+      ],
+      "evidenced_models_or_runtimes": [
+        "Microsoft Copilot Personal",
+        "Microsoft Copilot Personal and Microsoft agent memory guidance"
+      ],
+      "product_or_service": "Copilot",
+      "specific_model_or_runtime": "Microsoft Copilot Personal; Microsoft Copilot Personal and Microsoft agent memory guidance",
+      "model_or_product": "Copilot",
+      "interface_surface": "web summarisation, memory writes, cross-session retrieval and connected services",
+      "deployment_context": "consumer and enterprise agentic systems with persistent memory",
+      "primary_jurisdiction": "global",
+      "regulatory_surface": [
+        "AI security",
+        "cybersecurity",
+        "data protection",
+        "security assurance",
+        "incident response"
+      ],
+      "sector": "cross-sector AI and software security",
+      "canonical_failure_group": "security-integrity",
+      "failure_family": "security-integrity",
+      "failure_subtype": "persistent-adversarial-context-or-memory-poisoning",
+      "severity": "S1",
+      "likelihood": "demonstrated in controlled security research; recurrence depends on deployment architecture and control coverage",
+      "triage_priority": "PN",
+      "triage_status": "monitoring",
+      "mitigation_status": "Provider remediation is reported for the cited product-specific findings; the general mechanism remains ecosystem-relevant.",
+      "escalation_required": "no emergency escalation; continuing ecosystem monitoring and conformance testing required",
+      "triage_model_version": "2.0",
+      "triage_owner": "OpenAI ChatGPT — GPT-5.6 Sol analytical reviewer under Dr Michelle Vivian O'Rourke's human contract approval",
+      "triage_action_basis": "The mechanism was classified, received a distinct non-duplicative threshold, and has branch-only Caelestis taxonomy and control coverage requiring canonical adoption monitoring.",
+      "triage_review_date": "2026-08-22",
+      "recommended_next_step": "Monitor recurrence, verify implementation conformance across affected architectures, and reconcile branch-only Caelestis coverage if adopted on main.",
+      "monitoring_required": true,
+      "repair_status": "partially-repaired",
+      "path": "vigil/records/failures/2026/VIGIL-2026-FM-0067.json",
+      "github_blob_url": "https://github.com/CAM-Initiative/Vigil/blob/main/vigil/records/failures/2026/VIGIL-2026-FM-0067.json",
+      "raw_url": "https://raw.githubusercontent.com/CAM-Initiative/Vigil/main/vigil/records/failures/2026/VIGIL-2026-FM-0067.json"
+    },
+    {
+      "id": "VIGIL-2026-FM-0068",
+      "record_type": "failure_mode",
+      "record_state": "monitoring",
+      "date_recorded": "2026-08-22",
+      "title": "Transformation-mediated source-authority laundering",
+      "summary": "Untrusted, lower-authority or adversarial content undergoes decoding, decryption, deserialisation, reconstruction, rendering or another representation change and the transformed representation is assigned greater instruction, governance or execution authority than the source possessed.",
+      "evidence_confidence": "corroborated",
+      "source_types": [
+        "research-source"
+      ],
+      "source_count": 1,
+      "primary_source_title": "Grok chat history leak: Cryptographic Context Injection",
+      "primary_source_type": "research-source",
+      "primary_source_platform": "Adversa AI",
+      "source_platforms": [
+        "Adversa AI"
+      ],
+      "source_url_status": "available",
+      "system_type": "multivendor generative AI with code-execution and transformation pathways",
+      "platform_or_vendor": "Multi Vendor",
+      "vendor_cluster": [
+        "Google",
+        "xAI"
+      ],
+      "primary_evidenced_vendors": [
+        "Google",
+        "xAI"
+      ],
+      "evidence_scope": "multi-provider",
+      "evidenced_vendors": [
+        "Google",
+        "xAI"
+      ],
+      "evidenced_products_or_services": [
+        "Gemini",
+        "Grok"
+      ],
+      "evidenced_models_or_runtimes": [
+        "Grok and Gemini production systems",
+        "Grok and Gemini production systems as reported by Adversa AI"
+      ],
+      "product_or_service": "Other",
+      "specific_model_or_runtime": "Grok and Gemini production systems; Grok and Gemini production systems as reported by Adversa AI",
+      "model_or_product": "Gemini; Grok",
+      "interface_surface": "web retrieval, encrypted input, authorised decryption, code execution and post-transformation instruction handling",
+      "deployment_context": "production consumer AI services with runtime transformation capability",
+      "primary_jurisdiction": "global",
+      "regulatory_surface": [
+        "AI security",
+        "cybersecurity",
+        "data protection",
+        "security assurance",
+        "incident response"
+      ],
+      "sector": "cross-sector AI and software security",
+      "canonical_failure_group": "security-integrity",
+      "failure_family": "security-integrity",
+      "failure_subtype": "transformation-mediated-source-authority-laundering",
+      "severity": "S1",
+      "likelihood": "demonstrated in controlled security research; recurrence depends on deployment architecture and control coverage",
+      "triage_priority": "PN",
+      "triage_status": "monitoring",
+      "mitigation_status": "Provider remediation is reported for the cited product-specific findings; the general mechanism remains ecosystem-relevant.",
+      "escalation_required": "no emergency escalation; continuing ecosystem monitoring and conformance testing required",
+      "triage_model_version": "2.0",
+      "triage_owner": "OpenAI ChatGPT — GPT-5.6 Sol analytical reviewer under Dr Michelle Vivian O'Rourke's human contract approval",
+      "triage_action_basis": "The mechanism was classified, received a distinct non-duplicative threshold, and has branch-only Caelestis taxonomy and control coverage requiring canonical adoption monitoring.",
+      "triage_review_date": "2026-08-22",
+      "recommended_next_step": "Monitor recurrence, verify implementation conformance across affected architectures, and reconcile branch-only Caelestis coverage if adopted on main.",
+      "monitoring_required": true,
+      "repair_status": "partially-repaired",
+      "path": "vigil/records/failures/2026/VIGIL-2026-FM-0068.json",
+      "github_blob_url": "https://github.com/CAM-Initiative/Vigil/blob/main/vigil/records/failures/2026/VIGIL-2026-FM-0068.json",
+      "raw_url": "https://raw.githubusercontent.com/CAM-Initiative/Vigil/main/vigil/records/failures/2026/VIGIL-2026-FM-0068.json"
+    },
+    {
+      "id": "VIGIL-2026-FM-0069",
+      "record_type": "failure_mode",
+      "record_state": "monitoring",
+      "date_recorded": "2026-08-22",
+      "title": "Agent-framework control-plane boundary failure",
+      "summary": "Untrusted model output or data-plane content becomes trusted orchestration, configuration, tool-schema, routing, cache, checkpoint, memory-policy, serialized-object or other framework control state without fresh provenance and authority validation.",
+      "evidence_confidence": "corroborated",
+      "source_types": [
+        "research-source"
+      ],
+      "source_count": 2,
+      "primary_source_title": "When Your AI Agent's Memory Becomes a Security Liability",
+      "primary_source_type": "research-source",
+      "primary_source_platform": "Check Point Research",
+      "source_platforms": [
+        "Check Point Research",
+        "Microsoft"
+      ],
+      "source_url_status": "available",
+      "system_type": "multi-vendor agent-framework and orchestration infrastructure",
+      "platform_or_vendor": "Microsoft",
+      "vendor_cluster": [
+        "Microsoft"
+      ],
+      "primary_evidenced_vendors": [
+        "Microsoft"
+      ],
+      "evidence_scope": "single-provider",
+      "evidenced_vendors": [
+        "Microsoft"
+      ],
+      "evidenced_models_or_runtimes": [
+        "LangGraph checkpoint and memory infrastructure",
+        "Semantic Kernel tool and framework execution pathways",
+        "LangGraph and Microsoft Semantic Kernel agent frameworks"
+      ],
+      "product_or_service": "Other",
+      "specific_model_or_runtime": "LangGraph checkpoint and memory infrastructure; Semantic Kernel tool and framework execution pathways; LangGraph and Microsoft Semantic Kernel agent frameworks",
+      "model_or_product": "LangGraph and Semantic Kernel",
+      "interface_surface": "checkpointing, memory, tool parameters, deserialisation, orchestration and host execution",
+      "deployment_context": "stateful and tool-connected agent applications",
+      "primary_jurisdiction": "global",
+      "regulatory_surface": [
+        "AI security",
+        "cybersecurity",
+        "data protection",
+        "security assurance",
+        "incident response"
+      ],
+      "sector": "cross-sector AI and software security",
+      "canonical_failure_group": "security-integrity",
+      "failure_family": "security-integrity",
+      "failure_subtype": "agent-framework-control-plane-boundary-failure",
+      "severity": "S1",
+      "likelihood": "demonstrated in controlled security research; recurrence depends on deployment architecture and control coverage",
+      "triage_priority": "PN",
+      "triage_status": "monitoring",
+      "mitigation_status": "Provider remediation is reported for the cited product-specific findings; the general mechanism remains ecosystem-relevant.",
+      "escalation_required": "no emergency escalation; continuing ecosystem monitoring and conformance testing required",
+      "triage_model_version": "2.0",
+      "triage_owner": "OpenAI ChatGPT — GPT-5.6 Sol analytical reviewer under Dr Michelle Vivian O'Rourke's human contract approval",
+      "triage_action_basis": "The mechanism was classified, received a distinct non-duplicative threshold, and has branch-only Caelestis taxonomy and control coverage requiring canonical adoption monitoring.",
+      "triage_review_date": "2026-08-22",
+      "recommended_next_step": "Monitor recurrence, verify implementation conformance across affected architectures, and reconcile branch-only Caelestis coverage if adopted on main.",
+      "monitoring_required": true,
+      "repair_status": "partially-repaired",
+      "path": "vigil/records/failures/2026/VIGIL-2026-FM-0069.json",
+      "github_blob_url": "https://github.com/CAM-Initiative/Vigil/blob/main/vigil/records/failures/2026/VIGIL-2026-FM-0069.json",
+      "raw_url": "https://raw.githubusercontent.com/CAM-Initiative/Vigil/main/vigil/records/failures/2026/VIGIL-2026-FM-0069.json"
+    },
+    {
+      "id": "VIGIL-2026-FM-0070",
+      "record_type": "failure_mode",
+      "record_state": "monitoring",
+      "date_recorded": "2026-08-22",
+      "title": "Aggregate security-control composition failure",
+      "summary": "Individually bounded, locally acceptable or independently mitigated control states combine into an end-to-end pathway that violates a security invariant because assurance was performed locally rather than across the composed execution chain.",
+      "evidence_confidence": "corroborated",
+      "source_types": [
+        "research-source"
+      ],
+      "source_count": 1,
+      "primary_source_title": "SearchLeak: How We Turned M365 Copilot Into a One-Click Data Exfiltration Weapon",
+      "primary_source_type": "research-source",
+      "primary_source_platform": "Varonis",
+      "source_platforms": [
+        "Varonis"
+      ],
+      "source_url_status": "available",
+      "system_type": "enterprise AI search and composed security-control architecture",
+      "platform_or_vendor": "Microsoft",
+      "vendor_cluster": [
+        "Microsoft"
+      ],
+      "primary_evidenced_vendors": [
+        "Microsoft"
+      ],
+      "evidence_scope": "single-provider",
+      "evidenced_vendors": [
+        "Microsoft"
+      ],
+      "evidenced_models_or_runtimes": [
+        "Microsoft 365 Copilot Enterprise Search"
+      ],
+      "product_or_service": "Copilot",
+      "specific_model_or_runtime": "Microsoft 365 Copilot Enterprise Search",
+      "model_or_product": "Microsoft 365 Copilot",
+      "interface_surface": "parameter handling, prompt processing, search, streaming HTML rendering, server-side requests, browser loading and egress",
+      "deployment_context": "Microsoft 365 enterprise environment",
+      "primary_jurisdiction": "global",
+      "regulatory_surface": [
+        "AI security",
+        "cybersecurity",
+        "data protection",
+        "security assurance",
+        "incident response"
+      ],
+      "sector": "cross-sector AI and software security",
+      "canonical_failure_group": "security-integrity",
+      "failure_family": "security-integrity",
+      "failure_subtype": "aggregate-security-control-composition-failure",
+      "severity": "S1",
+      "likelihood": "demonstrated in controlled security research; recurrence depends on deployment architecture and control coverage",
+      "triage_priority": "PN",
+      "triage_status": "monitoring",
+      "mitigation_status": "Provider remediation is reported for the cited product-specific findings; the general mechanism remains ecosystem-relevant.",
+      "escalation_required": "no emergency escalation; continuing ecosystem monitoring and conformance testing required",
+      "triage_model_version": "2.0",
+      "triage_owner": "OpenAI ChatGPT — GPT-5.6 Sol analytical reviewer under Dr Michelle Vivian O'Rourke's human contract approval",
+      "triage_action_basis": "The mechanism was classified, received a distinct non-duplicative threshold, and has branch-only Caelestis taxonomy and control coverage requiring canonical adoption monitoring.",
+      "triage_review_date": "2026-08-22",
+      "recommended_next_step": "Monitor recurrence, verify implementation conformance across affected architectures, and reconcile branch-only Caelestis coverage if adopted on main.",
+      "monitoring_required": true,
+      "repair_status": "partially-repaired",
+      "path": "vigil/records/failures/2026/VIGIL-2026-FM-0070.json",
+      "github_blob_url": "https://github.com/CAM-Initiative/Vigil/blob/main/vigil/records/failures/2026/VIGIL-2026-FM-0070.json",
+      "raw_url": "https://raw.githubusercontent.com/CAM-Initiative/Vigil/main/vigil/records/failures/2026/VIGIL-2026-FM-0070.json"
+    },
+    {
       "id": "VIGIL-2026-LEARN-0001",
       "record_type": "learn",
       "record_state": "closed-actioned",
@@ -6158,6 +6529,284 @@
       "path": "vigil/records/learn/2026/VIGIL-2026-LEARN-0008.json",
       "github_blob_url": "https://github.com/CAM-Initiative/Vigil/blob/main/vigil/records/learn/2026/VIGIL-2026-LEARN-0008.json",
       "raw_url": "https://raw.githubusercontent.com/CAM-Initiative/Vigil/main/vigil/records/learn/2026/VIGIL-2026-LEARN-0008.json"
+    },
+    {
+      "id": "VIGIL-2026-LEARN-0009",
+      "record_type": "learn",
+      "record_state": "active",
+      "date_recorded": "2026-08-22",
+      "title": "Persistent state does not acquire authority through survival",
+      "report_title": "Persistent state does not acquire authority through survival",
+      "case_descriptor": "Lessons from persistent adversarial context or memory poisoning evidence and branch-only governance repair",
+      "summary": "The completed chain separates persistent adversarial context or memory poisoning from adjacent prompt-injection, authority, monitoring and consequence categories and records a bounded Caelestis repair.",
+      "what_happened": [
+        "Primary technical evidence demonstrated persistent adversarial context or memory poisoning.",
+        "The mechanism survived a full-inventory non-duplication test.",
+        "Caelestis implemented a direct control and named taxonomy subtype on its existing working branch."
+      ],
+      "governance_misconception": [
+        "Treating the originating cyber incident, hostile input or resulting consequence as the failure mode obscures the independently repairable persistent adversarial context or memory poisoning mechanism."
+      ],
+      "abstracted_learning": "Persistent state does not acquire authority through survival.",
+      "integrated_learning": [
+        "Classify the structural trust or assurance transition independently from threat capability and incident consequence.",
+        "Preserve provenance, authority boundaries and end-to-end assurance at the point where the mechanism arises.",
+        "Record branch-only governance repair without claiming canonical or external resolution."
+      ],
+      "risk_if_not_integrated": [
+        "Evidence will be routed into broad catch-all records and the actual control boundary may remain unrepaired.",
+        "Local mitigations may suppress one exploit implementation while leaving the structural mechanism intact."
+      ],
+      "future_application": [
+        "Agent memory and retrieval evaluation",
+        "Transformation and decoding pipelines",
+        "Tool-connected agent frameworks",
+        "Composed end-to-end security assurance"
+      ],
+      "generalisation_boundary": "The lesson does not establish malicious deployment, ecosystem prevalence, canonical Caelestis adoption or external-system conformance; ordinary prompt injection and threat capability alone remain outside this mechanism.",
+      "knowledge_status": "current",
+      "publication_status": "published",
+      "knowledge_tags": [
+        "security-integrity",
+        "authority",
+        "agent-security",
+        "SECURITY-RECON-01"
+      ],
+      "year": 2026,
+      "first_occurrence_date": "2026-08-22",
+      "first_occurrence_basis": "Earliest bounded occurrence in this reconciled record is the public technical evidence cited by the linked failure mode; the date is the reconciliation date where incident chronology varies.",
+      "primary_vendors": [
+        "Microsoft"
+      ],
+      "incident_status": "demonstrated in controlled security research; malicious deployment not inferred",
+      "cam_repair_status": "implemented on named Caelestis working branch; canonical adoption not established",
+      "monitoring_required": true,
+      "chain_state": "complete",
+      "primary_failure_mode": "VIGIL-2026-FM-0067",
+      "primary_failure_family_code": "OPS.FF.SECURITY_INTEGRITY",
+      "canonical_failure_name": "Persistent adversarial context or memory poisoning",
+      "taxonomy_reference": "CAM-EQ2026-OPERATIONS-003-SUP-01 §3.5.10 — Persistent Adversarial Context or Memory Poisoning; primary classification OPS.FF.SECURITY_INTEGRITY",
+      "taxonomy_status": "established-by-linked-patch",
+      "establishing_patch_id": "VIGIL-2026-PATCH-0039",
+      "related_observations": [],
+      "related_failure_modes": [
+        "VIGIL-2026-FM-0067"
+      ],
+      "related_proposals": [],
+      "related_patch_notes": [
+        "VIGIL-2026-PATCH-0039"
+      ],
+      "related_learn_records": [],
+      "path": "vigil/records/learn/2026/VIGIL-2026-LEARN-0009.json",
+      "github_blob_url": "https://github.com/CAM-Initiative/Vigil/blob/main/vigil/records/learn/2026/VIGIL-2026-LEARN-0009.json",
+      "raw_url": "https://raw.githubusercontent.com/CAM-Initiative/Vigil/main/vigil/records/learn/2026/VIGIL-2026-LEARN-0009.json"
+    },
+    {
+      "id": "VIGIL-2026-LEARN-0010",
+      "record_type": "learn",
+      "record_state": "active",
+      "date_recorded": "2026-08-22",
+      "title": "Transformation-mediated source-authority laundering",
+      "report_title": "Transformation-mediated source-authority laundering",
+      "case_descriptor": "Lessons from §3.5.11 evidence and branch-only governance repair",
+      "summary": "The completed chain separates §3.5.11 from adjacent prompt-injection, authority, monitoring and consequence categories and records a bounded Caelestis repair.",
+      "what_happened": [
+        "Primary technical evidence demonstrated §3.5.11.",
+        "The mechanism survived a full-inventory non-duplication test.",
+        "Caelestis implemented a direct control and named taxonomy subtype on its existing working branch."
+      ],
+      "governance_misconception": [
+        "Treating the originating cyber incident, hostile input or resulting consequence as the failure mode obscures the independently repairable §3.5.11 mechanism."
+      ],
+      "abstracted_learning": "Transformation-mediated source-authority laundering.",
+      "integrated_learning": [
+        "Classify the structural trust or assurance transition independently from threat capability and incident consequence.",
+        "Preserve provenance, authority boundaries and end-to-end assurance at the point where the mechanism arises.",
+        "Record branch-only governance repair without claiming canonical or external resolution."
+      ],
+      "risk_if_not_integrated": [
+        "Evidence will be routed into broad catch-all records and the actual control boundary may remain unrepaired.",
+        "Local mitigations may suppress one exploit implementation while leaving the structural mechanism intact."
+      ],
+      "future_application": [
+        "Agent memory and retrieval evaluation",
+        "Transformation and decoding pipelines",
+        "Tool-connected agent frameworks",
+        "Composed end-to-end security assurance"
+      ],
+      "generalisation_boundary": "The lesson does not establish malicious deployment, ecosystem prevalence, canonical Caelestis adoption or external-system conformance; ordinary prompt injection and threat capability alone remain outside this mechanism.",
+      "knowledge_status": "current",
+      "publication_status": "published",
+      "knowledge_tags": [
+        "security-integrity",
+        "authority",
+        "agent-security",
+        "SECURITY-RECON-01"
+      ],
+      "year": 2026,
+      "first_occurrence_date": "2026-08-22",
+      "first_occurrence_basis": "Earliest bounded occurrence in this reconciled record is the public technical evidence cited by the linked failure mode; the date is the reconciliation date where incident chronology varies.",
+      "primary_vendors": [],
+      "incident_status": "demonstrated in controlled security research; malicious deployment not inferred",
+      "cam_repair_status": "implemented on named Caelestis working branch; canonical adoption not established",
+      "monitoring_required": true,
+      "chain_state": "complete",
+      "primary_failure_mode": "VIGIL-2026-FM-0068",
+      "primary_failure_family_code": "OPS.FF.SECURITY_INTEGRITY",
+      "canonical_failure_name": "Transformation-Mediated Source-Authority Laundering",
+      "taxonomy_reference": "CAM-EQ2026-OPERATIONS-003-SUP-01 §3.5.11 — Transformation-Mediated Source-Authority Laundering; primary classification OPS.FF.SECURITY_INTEGRITY",
+      "taxonomy_status": "established-by-linked-patch",
+      "establishing_patch_id": "VIGIL-2026-PATCH-0040",
+      "related_observations": [],
+      "related_failure_modes": [
+        "VIGIL-2026-FM-0068"
+      ],
+      "related_proposals": [],
+      "related_patch_notes": [
+        "VIGIL-2026-PATCH-0040"
+      ],
+      "related_learn_records": [],
+      "path": "vigil/records/learn/2026/VIGIL-2026-LEARN-0010.json",
+      "github_blob_url": "https://github.com/CAM-Initiative/Vigil/blob/main/vigil/records/learn/2026/VIGIL-2026-LEARN-0010.json",
+      "raw_url": "https://raw.githubusercontent.com/CAM-Initiative/Vigil/main/vigil/records/learn/2026/VIGIL-2026-LEARN-0010.json"
+    },
+    {
+      "id": "VIGIL-2026-LEARN-0011",
+      "record_type": "learn",
+      "record_state": "active",
+      "date_recorded": "2026-08-22",
+      "title": "Agent-framework control-plane boundary failure",
+      "report_title": "Agent-framework control-plane boundary failure",
+      "case_descriptor": "Lessons from §3.5.12 evidence and branch-only governance repair",
+      "summary": "The completed chain separates §3.5.12 from adjacent prompt-injection, authority, monitoring and consequence categories and records a bounded Caelestis repair.",
+      "what_happened": [
+        "Primary technical evidence demonstrated §3.5.12.",
+        "The mechanism survived a full-inventory non-duplication test.",
+        "Caelestis implemented a direct control and named taxonomy subtype on its existing working branch."
+      ],
+      "governance_misconception": [
+        "Treating the originating cyber incident, hostile input or resulting consequence as the failure mode obscures the independently repairable §3.5.12 mechanism."
+      ],
+      "abstracted_learning": "Agent-framework control-plane boundary failure.",
+      "integrated_learning": [
+        "Classify the structural trust or assurance transition independently from threat capability and incident consequence.",
+        "Preserve provenance, authority boundaries and end-to-end assurance at the point where the mechanism arises.",
+        "Record branch-only governance repair without claiming canonical or external resolution."
+      ],
+      "risk_if_not_integrated": [
+        "Evidence will be routed into broad catch-all records and the actual control boundary may remain unrepaired.",
+        "Local mitigations may suppress one exploit implementation while leaving the structural mechanism intact."
+      ],
+      "future_application": [
+        "Agent memory and retrieval evaluation",
+        "Transformation and decoding pipelines",
+        "Tool-connected agent frameworks",
+        "Composed end-to-end security assurance"
+      ],
+      "generalisation_boundary": "The lesson does not establish malicious deployment, ecosystem prevalence, canonical Caelestis adoption or external-system conformance; ordinary prompt injection and threat capability alone remain outside this mechanism.",
+      "knowledge_status": "current",
+      "publication_status": "published",
+      "knowledge_tags": [
+        "security-integrity",
+        "authority",
+        "agent-security",
+        "SECURITY-RECON-01"
+      ],
+      "year": 2026,
+      "first_occurrence_date": "2026-08-22",
+      "first_occurrence_basis": "Earliest bounded occurrence in this reconciled record is the public technical evidence cited by the linked failure mode; the date is the reconciliation date where incident chronology varies.",
+      "primary_vendors": [],
+      "incident_status": "demonstrated in controlled security research; malicious deployment not inferred",
+      "cam_repair_status": "implemented on named Caelestis working branch; canonical adoption not established",
+      "monitoring_required": true,
+      "chain_state": "complete",
+      "primary_failure_mode": "VIGIL-2026-FM-0069",
+      "primary_failure_family_code": "OPS.FF.SECURITY_INTEGRITY",
+      "canonical_failure_name": "Agent-Framework Control-Plane Boundary Failure",
+      "taxonomy_reference": "CAM-EQ2026-OPERATIONS-003-SUP-01 §3.5.12 — Agent-Framework Control-Plane Boundary Failure; primary classification OPS.FF.SECURITY_INTEGRITY",
+      "taxonomy_status": "established-by-linked-patch",
+      "establishing_patch_id": "VIGIL-2026-PATCH-0041",
+      "related_observations": [],
+      "related_failure_modes": [
+        "VIGIL-2026-FM-0069"
+      ],
+      "related_proposals": [],
+      "related_patch_notes": [
+        "VIGIL-2026-PATCH-0041"
+      ],
+      "related_learn_records": [],
+      "path": "vigil/records/learn/2026/VIGIL-2026-LEARN-0011.json",
+      "github_blob_url": "https://github.com/CAM-Initiative/Vigil/blob/main/vigil/records/learn/2026/VIGIL-2026-LEARN-0011.json",
+      "raw_url": "https://raw.githubusercontent.com/CAM-Initiative/Vigil/main/vigil/records/learn/2026/VIGIL-2026-LEARN-0011.json"
+    },
+    {
+      "id": "VIGIL-2026-LEARN-0012",
+      "record_type": "learn",
+      "record_state": "active",
+      "date_recorded": "2026-08-22",
+      "title": "Aggregate security-control composition failure",
+      "report_title": "Aggregate security-control composition failure",
+      "case_descriptor": "Lessons from §3.5.13 evidence and branch-only governance repair",
+      "summary": "The completed chain separates §3.5.13 from adjacent prompt-injection, authority, monitoring and consequence categories and records a bounded Caelestis repair.",
+      "what_happened": [
+        "Primary technical evidence demonstrated §3.5.13.",
+        "The mechanism survived a full-inventory non-duplication test.",
+        "Caelestis implemented a direct control and named taxonomy subtype on its existing working branch."
+      ],
+      "governance_misconception": [
+        "Treating the originating cyber incident, hostile input or resulting consequence as the failure mode obscures the independently repairable §3.5.13 mechanism."
+      ],
+      "abstracted_learning": "Aggregate security-control composition failure.",
+      "integrated_learning": [
+        "Classify the structural trust or assurance transition independently from threat capability and incident consequence.",
+        "Preserve provenance, authority boundaries and end-to-end assurance at the point where the mechanism arises.",
+        "Record branch-only governance repair without claiming canonical or external resolution."
+      ],
+      "risk_if_not_integrated": [
+        "Evidence will be routed into broad catch-all records and the actual control boundary may remain unrepaired.",
+        "Local mitigations may suppress one exploit implementation while leaving the structural mechanism intact."
+      ],
+      "future_application": [
+        "Agent memory and retrieval evaluation",
+        "Transformation and decoding pipelines",
+        "Tool-connected agent frameworks",
+        "Composed end-to-end security assurance"
+      ],
+      "generalisation_boundary": "The lesson does not establish malicious deployment, ecosystem prevalence, canonical Caelestis adoption or external-system conformance; ordinary prompt injection and threat capability alone remain outside this mechanism.",
+      "knowledge_status": "current",
+      "publication_status": "published",
+      "knowledge_tags": [
+        "security-integrity",
+        "authority",
+        "agent-security",
+        "SECURITY-RECON-01"
+      ],
+      "year": 2026,
+      "first_occurrence_date": "2026-08-22",
+      "first_occurrence_basis": "Earliest bounded occurrence in this reconciled record is the public technical evidence cited by the linked failure mode; the date is the reconciliation date where incident chronology varies.",
+      "primary_vendors": [],
+      "incident_status": "demonstrated in controlled security research; malicious deployment not inferred",
+      "cam_repair_status": "implemented on named Caelestis working branch; canonical adoption not established",
+      "monitoring_required": true,
+      "chain_state": "complete",
+      "primary_failure_mode": "VIGIL-2026-FM-0070",
+      "primary_failure_family_code": "OPS.FF.SECURITY_INTEGRITY",
+      "canonical_failure_name": "Aggregate Security-Control Composition Failure",
+      "taxonomy_reference": "CAM-EQ2026-OPERATIONS-003-SUP-01 §3.5.13 — Aggregate Security-Control Composition Failure; primary classification OPS.FF.SECURITY_INTEGRITY",
+      "taxonomy_status": "established-by-linked-patch",
+      "establishing_patch_id": "VIGIL-2026-PATCH-0042",
+      "related_observations": [],
+      "related_failure_modes": [
+        "VIGIL-2026-FM-0070"
+      ],
+      "related_proposals": [],
+      "related_patch_notes": [
+        "VIGIL-2026-PATCH-0042"
+      ],
+      "related_learn_records": [],
+      "path": "vigil/records/learn/2026/VIGIL-2026-LEARN-0012.json",
+      "github_blob_url": "https://github.com/CAM-Initiative/Vigil/blob/main/vigil/records/learn/2026/VIGIL-2026-LEARN-0012.json",
+      "raw_url": "https://raw.githubusercontent.com/CAM-Initiative/Vigil/main/vigil/records/learn/2026/VIGIL-2026-LEARN-0012.json"
     },
     {
       "id": "VIGIL-2026-OBS-0001",
@@ -16922,6 +17571,488 @@
         "method": "Direct comparison of the VIGIL decision records with the named Caelestis implementation commit, parent state, literal corpus text, and post-implementation registries.",
         "limitations": [
           "Canonical merge provenance is not yet available and is not inferred."
+        ]
+      }
+    },
+    {
+      "id": "VIGIL-2026-PATCH-0038",
+      "record_type": "patch",
+      "record_state": "active",
+      "date_recorded": "2026-08-22",
+      "date_implemented": "2026-08-22",
+      "title": "Capability-risk safeguard continuity across materially equivalent access surfaces",
+      "summary": "Records the branch-only Caelestis implementation for capability-risk safeguard continuity across materially equivalent access surfaces.",
+      "evidence_confidence": "verified",
+      "source_types": [
+        "repository-source"
+      ],
+      "source_count": 1,
+      "primary_source_title": "SECURITY-RECON-01 implementation",
+      "primary_source_type": "repository-source",
+      "primary_source_platform": "GitHub",
+      "source_platforms": [
+        "GitHub"
+      ],
+      "source_url_status": "available",
+      "system_type": "governance corpus implementation",
+      "platform_or_vendor": "CAM Initiative",
+      "product_or_service": "Caelestis Architecture Model",
+      "specific_model_or_runtime": "agent/corpus-industry-standards-normalisation at 4b93c3e0b0722040da64ef490e7115d9fcb0109c",
+      "model_or_product": "Caelestis Architecture Model",
+      "interface_surface": "SECURITY and OPERATIONS governance instruments",
+      "deployment_context": "branch-only governance corpus",
+      "primary_jurisdiction": "global",
+      "regulatory_surface": [
+        "AI security",
+        "AI assurance"
+      ],
+      "sector": "cross-sector",
+      "patch_type": "instrument-amendment",
+      "change_type": "instrument-amendment",
+      "path": "vigil/records/patches/2026/VIGIL-2026-PATCH-0038.json",
+      "github_blob_url": "https://github.com/CAM-Initiative/Vigil/blob/main/vigil/records/patches/2026/VIGIL-2026-PATCH-0038.json",
+      "raw_url": "https://raw.githubusercontent.com/CAM-Initiative/Vigil/main/vigil/records/patches/2026/VIGIL-2026-PATCH-0038.json",
+      "decision_trace": {
+        "origin": "failure-response",
+        "trigger_records": [
+          "VIGIL-2026-FM-0066"
+        ],
+        "decision_summary": "Coverage review confirmed a direct normative or named-taxonomy gap and implementation was completed on the existing Caelestis working branch.",
+        "events": [
+          {
+            "date": "2026-08-22",
+            "event_type": "implementation-committed",
+            "description": "Caelestis commit 4b93c3e0b0722040da64ef490e7115d9fcb0109c implemented and validated the repair.",
+            "authority_role": "Caelestis working-branch implementation",
+            "evidence_references": [
+              "https://github.com/CAM-Initiative/Caelestis/commit/4b93c3e0b0722040da64ef490e7115d9fcb0109c"
+            ]
+          }
+        ]
+      },
+      "corpus_implementation": {
+        "implementation_type": "corpus-amendment",
+        "implementation_outcome": "Implemented Capability-Risk Continuity Across Access Surfaces together with the SECURITY-RECON-01 taxonomy reconciliation on the named branch.",
+        "canonical_state": "branch-only",
+        "entries": [
+          {
+            "instrument_id": "CAM-EQ2026-SECURITY-001-PLATINUM",
+            "canonical_path": "Governance/Charters/CAM-EQ2026-SECURITY-001-PLATINUM.md",
+            "section": "§3.4.1",
+            "section_heading": "Capability-Risk Continuity Across Access Surfaces",
+            "change_kind": "added",
+            "prior_text_status": "new-clause",
+            "resulting_text": "### 3.4.1 Capability-Risk Continuity Across Access Surfaces\n\nA material risk classification and its required safeguards SHALL follow the relevant capability and exposure across materially equivalent access routes unless a difference in treatment is explicitly justified, bounded and independently assured.\n\nSecurity assessment SHALL enumerate materially relevant production, research, evaluation, contractor, vendor, human-feedback or post-training, internal, delegated, substitute and newly introduced access pathways by capability and exposure rather than interface name alone. Introduction or material change of a route, vendor, workflow, credential class, model interface or equivalent capability pathway requires reassessment of the applicable risk and control assignment.\n\nA different safeguard posture MAY be used where the difference in capability, exposure, user population, purpose or operating boundary is documented and sufficient controls are independently verified on that route. Local deployment of a safeguard on one surface MUST NOT be represented as aggregate coverage of materially equivalent surfaces without evidence.",
+            "source": {
+              "repository": "CAM-Initiative/Caelestis",
+              "commit": "4b93c3e0b0722040da64ef490e7115d9fcb0109c",
+              "path": "Governance/Charters/CAM-EQ2026-SECURITY-001-PLATINUM.md",
+              "direct_url": "https://github.com/CAM-Initiative/Caelestis/blob/4b93c3e0b0722040da64ef490e7115d9fcb0109c/Governance/Charters/CAM-EQ2026-SECURITY-001-PLATINUM.md"
+            },
+            "verification": {
+              "status": "verified-branch-only",
+              "verified_on": "2026-08-22",
+              "review_id": "VIGIL-REVIEW-2026-08-22-SECURITY-RECON-01",
+              "exact_text_match": true,
+              "current_clause_status": "current"
+            }
+          }
+        ]
+      },
+      "record_reconstruction": {
+        "reconstructed": false,
+        "reconstruction_date": "not applicable — native PATCH v2 record",
+        "reason": "Created directly under the traceable PATCH contract after implementation.",
+        "review_id": "VIGIL-REVIEW-2026-08-22-SECURITY-RECON-01",
+        "method": "Direct comparison of VIGIL mechanism and named Caelestis implementation commit.",
+        "limitations": [
+          "Canonical adoption is not established."
+        ]
+      }
+    },
+    {
+      "id": "VIGIL-2026-PATCH-0039",
+      "record_type": "patch",
+      "record_state": "active",
+      "date_recorded": "2026-08-22",
+      "date_implemented": "2026-08-22",
+      "title": "Persistent adversarial state provenance, quarantine and revocation controls",
+      "summary": "Records the branch-only Caelestis implementation for persistent adversarial state provenance, quarantine and revocation controls.",
+      "evidence_confidence": "verified",
+      "source_types": [
+        "repository-source"
+      ],
+      "source_count": 1,
+      "primary_source_title": "SECURITY-RECON-01 implementation",
+      "primary_source_type": "repository-source",
+      "primary_source_platform": "GitHub",
+      "source_platforms": [
+        "GitHub"
+      ],
+      "source_url_status": "available",
+      "system_type": "governance corpus implementation",
+      "platform_or_vendor": "CAM Initiative",
+      "product_or_service": "Caelestis Architecture Model",
+      "specific_model_or_runtime": "agent/corpus-industry-standards-normalisation at 4b93c3e0b0722040da64ef490e7115d9fcb0109c",
+      "model_or_product": "Caelestis Architecture Model",
+      "interface_surface": "SECURITY and OPERATIONS governance instruments",
+      "deployment_context": "branch-only governance corpus",
+      "primary_jurisdiction": "global",
+      "regulatory_surface": [
+        "AI security",
+        "AI assurance"
+      ],
+      "sector": "cross-sector",
+      "patch_type": "instrument-amendment",
+      "change_type": "instrument-amendment",
+      "path": "vigil/records/patches/2026/VIGIL-2026-PATCH-0039.json",
+      "github_blob_url": "https://github.com/CAM-Initiative/Vigil/blob/main/vigil/records/patches/2026/VIGIL-2026-PATCH-0039.json",
+      "raw_url": "https://raw.githubusercontent.com/CAM-Initiative/Vigil/main/vigil/records/patches/2026/VIGIL-2026-PATCH-0039.json",
+      "decision_trace": {
+        "origin": "failure-response",
+        "trigger_records": [
+          "VIGIL-2026-FM-0067"
+        ],
+        "decision_summary": "Coverage review confirmed a direct normative or named-taxonomy gap and implementation was completed on the existing Caelestis working branch.",
+        "events": [
+          {
+            "date": "2026-08-22",
+            "event_type": "implementation-committed",
+            "description": "Caelestis commit 4b93c3e0b0722040da64ef490e7115d9fcb0109c implemented and validated the repair.",
+            "authority_role": "Caelestis working-branch implementation",
+            "evidence_references": [
+              "https://github.com/CAM-Initiative/Caelestis/commit/4b93c3e0b0722040da64ef490e7115d9fcb0109c"
+            ]
+          }
+        ]
+      },
+      "corpus_implementation": {
+        "implementation_type": "corpus-amendment",
+        "implementation_outcome": "Implemented Persistent Adversarial State Integrity together with the SECURITY-RECON-01 taxonomy reconciliation on the named branch.",
+        "canonical_state": "branch-only",
+        "entries": [
+          {
+            "instrument_id": "CAM-EQ2026-SECURITY-002-PLATINUM",
+            "canonical_path": "Governance/Charters/CAM-EQ2026-SECURITY-002-PLATINUM.md",
+            "section": "§2.2.11.1",
+            "section_heading": "Persistent State Authority, Quarantine and Revocation",
+            "change_kind": "added",
+            "prior_text_status": "new-clause",
+            "resulting_text": "#### 2.2.11.1 Persistent State Authority, Quarantine and Revocation\n\nContent written to memory, retrieval stores, summaries, caches, profiles, checkpoints, work state or other persistent context SHALL preserve its originating source-authority and trust classification. Persistence does not legitimise state.\n\nSecurity-relevant persistent writes require provenance sufficient to identify the originating content, write pathway, transformation history, affected scope and derivative uses. Untrusted, hostile, ambiguous or unexpectedly behaviour-shaping state SHALL be quarantinable, revocable and invalidatable without requiring the originating interaction to remain active.\n\nSystems SHALL provide proportionate means to:\n\n* prevent attacker-controlled content from silently becoming durable instruction or policy;\n* detect and isolate persistent state whose provenance or behavioural effect is unsafe or unresolved;\n* suppress retrieval and derivative use after revocation or invalidation;\n* identify later actions materially influenced by poisoned state; and\n* revalidate persistent state before it can authorise or materially shape later consequential action.\n\nThis boundary is narrower than general context contamination: it governs adversarial or untrusted state that survives its originating content and remains capable of later behavioural effect.",
+            "source": {
+              "repository": "CAM-Initiative/Caelestis",
+              "commit": "4b93c3e0b0722040da64ef490e7115d9fcb0109c",
+              "path": "Governance/Charters/CAM-EQ2026-SECURITY-002-PLATINUM.md",
+              "direct_url": "https://github.com/CAM-Initiative/Caelestis/blob/4b93c3e0b0722040da64ef490e7115d9fcb0109c/Governance/Charters/CAM-EQ2026-SECURITY-002-PLATINUM.md"
+            },
+            "verification": {
+              "status": "verified-branch-only",
+              "verified_on": "2026-08-22",
+              "review_id": "VIGIL-REVIEW-2026-08-22-SECURITY-RECON-01",
+              "exact_text_match": true,
+              "current_clause_status": "current"
+            }
+          }
+        ]
+      },
+      "record_reconstruction": {
+        "reconstructed": false,
+        "reconstruction_date": "not applicable — native PATCH v2 record",
+        "reason": "Created directly under the traceable PATCH contract after implementation.",
+        "review_id": "VIGIL-REVIEW-2026-08-22-SECURITY-RECON-01",
+        "method": "Direct comparison of VIGIL mechanism and named Caelestis implementation commit.",
+        "limitations": [
+          "Canonical adoption is not established."
+        ]
+      }
+    },
+    {
+      "id": "VIGIL-2026-PATCH-0040",
+      "record_type": "patch",
+      "record_state": "active",
+      "date_recorded": "2026-08-22",
+      "date_implemented": "2026-08-22",
+      "title": "Transformation-mediated source-authority preservation control",
+      "summary": "Records the branch-only Caelestis implementation for transformation-mediated source-authority preservation control.",
+      "evidence_confidence": "verified",
+      "source_types": [
+        "repository-source"
+      ],
+      "source_count": 1,
+      "primary_source_title": "SECURITY-RECON-01 implementation",
+      "primary_source_type": "repository-source",
+      "primary_source_platform": "GitHub",
+      "source_platforms": [
+        "GitHub"
+      ],
+      "source_url_status": "available",
+      "system_type": "governance corpus implementation",
+      "platform_or_vendor": "CAM Initiative",
+      "product_or_service": "Caelestis Architecture Model",
+      "specific_model_or_runtime": "agent/corpus-industry-standards-normalisation at 4b93c3e0b0722040da64ef490e7115d9fcb0109c",
+      "model_or_product": "Caelestis Architecture Model",
+      "interface_surface": "SECURITY and OPERATIONS governance instruments",
+      "deployment_context": "branch-only governance corpus",
+      "primary_jurisdiction": "global",
+      "regulatory_surface": [
+        "AI security",
+        "AI assurance"
+      ],
+      "sector": "cross-sector",
+      "patch_type": "instrument-amendment",
+      "change_type": "instrument-amendment",
+      "path": "vigil/records/patches/2026/VIGIL-2026-PATCH-0040.json",
+      "github_blob_url": "https://github.com/CAM-Initiative/Vigil/blob/main/vigil/records/patches/2026/VIGIL-2026-PATCH-0040.json",
+      "raw_url": "https://raw.githubusercontent.com/CAM-Initiative/Vigil/main/vigil/records/patches/2026/VIGIL-2026-PATCH-0040.json",
+      "decision_trace": {
+        "origin": "failure-response",
+        "trigger_records": [
+          "VIGIL-2026-FM-0068"
+        ],
+        "decision_summary": "Coverage review confirmed a direct normative or named-taxonomy gap and implementation was completed on the existing Caelestis working branch.",
+        "events": [
+          {
+            "date": "2026-08-22",
+            "event_type": "implementation-committed",
+            "description": "Caelestis commit 4b93c3e0b0722040da64ef490e7115d9fcb0109c implemented and validated the repair.",
+            "authority_role": "Caelestis working-branch implementation",
+            "evidence_references": [
+              "https://github.com/CAM-Initiative/Caelestis/commit/4b93c3e0b0722040da64ef490e7115d9fcb0109c"
+            ]
+          }
+        ]
+      },
+      "corpus_implementation": {
+        "implementation_type": "corpus-amendment",
+        "implementation_outcome": "Implemented Transformation Boundary together with the SECURITY-RECON-01 taxonomy reconciliation on the named branch.",
+        "canonical_state": "branch-only",
+        "entries": [
+          {
+            "instrument_id": "CAM-EQ2026-SECURITY-002-PLATINUM",
+            "canonical_path": "Governance/Charters/CAM-EQ2026-SECURITY-002-PLATINUM.md",
+            "section": "§2.2.6",
+            "section_heading": "Transformation Boundary",
+            "change_kind": "amended",
+            "prior_text": "### 2.2.6 Transformation Boundary\n\nThe Transformation Boundary governs the limits of permissible transformation between source and output representations.\n\nIt defines when transformation becomes reconstruction.",
+            "prior_text_status": "captured",
+            "resulting_text": "### 2.2.6 Transformation Boundary\n\nThe Transformation Boundary governs the limits of permissible transformation between source and output representations.\n\nIt defines when transformation becomes reconstruction.\n\nTransformation, decoding, decryption, deserialisation, reconstruction, rendering, summarisation, transcription or other representation change SHALL preserve the originating source, trust level, authority, provenance and adversarial or taint status to the degree necessary for the transformed representation's proposed use.\n\nTransformation of content SHALL NOT increase its instruction, governance or execution authority. A transformed representation may receive new authority only through a fresh, independently valid authority decision that does not rely on the transformation itself as evidence of trust.",
+            "source": {
+              "repository": "CAM-Initiative/Caelestis",
+              "commit": "4b93c3e0b0722040da64ef490e7115d9fcb0109c",
+              "path": "Governance/Charters/CAM-EQ2026-SECURITY-002-PLATINUM.md",
+              "direct_url": "https://github.com/CAM-Initiative/Caelestis/blob/4b93c3e0b0722040da64ef490e7115d9fcb0109c/Governance/Charters/CAM-EQ2026-SECURITY-002-PLATINUM.md"
+            },
+            "verification": {
+              "status": "verified-branch-only",
+              "verified_on": "2026-08-22",
+              "review_id": "VIGIL-REVIEW-2026-08-22-SECURITY-RECON-01",
+              "exact_text_match": true,
+              "current_clause_status": "current"
+            }
+          }
+        ]
+      },
+      "record_reconstruction": {
+        "reconstructed": false,
+        "reconstruction_date": "not applicable — native PATCH v2 record",
+        "reason": "Created directly under the traceable PATCH contract after implementation.",
+        "review_id": "VIGIL-REVIEW-2026-08-22-SECURITY-RECON-01",
+        "method": "Direct comparison of VIGIL mechanism and named Caelestis implementation commit.",
+        "limitations": [
+          "Canonical adoption is not established."
+        ]
+      }
+    },
+    {
+      "id": "VIGIL-2026-PATCH-0041",
+      "record_type": "patch",
+      "record_state": "active",
+      "date_recorded": "2026-08-22",
+      "date_implemented": "2026-08-22",
+      "title": "Agent-framework data-plane and control-plane separation control",
+      "summary": "Records the branch-only Caelestis implementation for agent-framework data-plane and control-plane separation control.",
+      "evidence_confidence": "verified",
+      "source_types": [
+        "repository-source"
+      ],
+      "source_count": 1,
+      "primary_source_title": "SECURITY-RECON-01 implementation",
+      "primary_source_type": "repository-source",
+      "primary_source_platform": "GitHub",
+      "source_platforms": [
+        "GitHub"
+      ],
+      "source_url_status": "available",
+      "system_type": "governance corpus implementation",
+      "platform_or_vendor": "CAM Initiative",
+      "product_or_service": "Caelestis Architecture Model",
+      "specific_model_or_runtime": "agent/corpus-industry-standards-normalisation at 4b93c3e0b0722040da64ef490e7115d9fcb0109c",
+      "model_or_product": "Caelestis Architecture Model",
+      "interface_surface": "SECURITY and OPERATIONS governance instruments",
+      "deployment_context": "branch-only governance corpus",
+      "primary_jurisdiction": "global",
+      "regulatory_surface": [
+        "AI security",
+        "AI assurance"
+      ],
+      "sector": "cross-sector",
+      "patch_type": "instrument-amendment",
+      "change_type": "instrument-amendment",
+      "path": "vigil/records/patches/2026/VIGIL-2026-PATCH-0041.json",
+      "github_blob_url": "https://github.com/CAM-Initiative/Vigil/blob/main/vigil/records/patches/2026/VIGIL-2026-PATCH-0041.json",
+      "raw_url": "https://raw.githubusercontent.com/CAM-Initiative/Vigil/main/vigil/records/patches/2026/VIGIL-2026-PATCH-0041.json",
+      "decision_trace": {
+        "origin": "failure-response",
+        "trigger_records": [
+          "VIGIL-2026-FM-0069"
+        ],
+        "decision_summary": "Coverage review confirmed a direct normative or named-taxonomy gap and implementation was completed on the existing Caelestis working branch.",
+        "events": [
+          {
+            "date": "2026-08-22",
+            "event_type": "implementation-committed",
+            "description": "Caelestis commit 4b93c3e0b0722040da64ef490e7115d9fcb0109c implemented and validated the repair.",
+            "authority_role": "Caelestis working-branch implementation",
+            "evidence_references": [
+              "https://github.com/CAM-Initiative/Caelestis/commit/4b93c3e0b0722040da64ef490e7115d9fcb0109c"
+            ]
+          }
+        ]
+      },
+      "corpus_implementation": {
+        "implementation_type": "corpus-amendment",
+        "implementation_outcome": "Implemented Agent-Framework Control-Plane Boundary together with the SECURITY-RECON-01 taxonomy reconciliation on the named branch.",
+        "canonical_state": "branch-only",
+        "entries": [
+          {
+            "instrument_id": "CAM-EQ2026-SECURITY-002-PLATINUM",
+            "canonical_path": "Governance/Charters/CAM-EQ2026-SECURITY-002-PLATINUM.md",
+            "section": "§2.2.7",
+            "section_heading": "Internal State Exposure Boundary",
+            "change_kind": "amended",
+            "prior_text": "### 2.2.7 Internal State Exposure Boundary\n\nThe Internal State Exposure Boundary governs risks arising from exposure or inference of internal system components, including prompts, orchestration logic, tool routing, memory mechanisms, and behavioural constraints.\n\nSystems MUST assume that such components MAY be exposed through:\n\n* direct leakage\n* adversarial extraction\n* behavioural inference\n* operational error\n\nSystems MUST ensure that exposure of such components does not:\n\n* compromise safety invariants\n* enable unauthorised escalation of capability\n* invalidate governance constraints",
+            "prior_text_status": "captured",
+            "resulting_text": "### 2.2.7 Internal State Exposure Boundary\n\nThe Internal State Exposure Boundary governs risks arising from exposure or inference of internal system components, including prompts, orchestration logic, tool routing, memory mechanisms, and behavioural constraints.\n\nSystems MUST assume that such components MAY be exposed through:\n\n* direct leakage\n* adversarial extraction\n* behavioural inference\n* operational error\n\nSystems MUST ensure that exposure of such components does not:\n\n* compromise safety invariants\n* enable unauthorised escalation of capability\n* invalidate governance constraints\n\nModel-produced, retrieved, memory-derived or attacker-influenced data MUST NOT become configuration, executable tool schema, orchestration instruction, serialized or deserialized control object, routing policy, memory policy, cache directive or other framework control state without fresh provenance, source-authority and execution-boundary validation.\n\nModel output is data at the framework boundary. It does not become trusted control-plane state merely because it is well-formed, stored by an authorised framework, reloaded from a checkpoint, passed by another agent or accepted by a serializer.",
+            "source": {
+              "repository": "CAM-Initiative/Caelestis",
+              "commit": "4b93c3e0b0722040da64ef490e7115d9fcb0109c",
+              "path": "Governance/Charters/CAM-EQ2026-SECURITY-002-PLATINUM.md",
+              "direct_url": "https://github.com/CAM-Initiative/Caelestis/blob/4b93c3e0b0722040da64ef490e7115d9fcb0109c/Governance/Charters/CAM-EQ2026-SECURITY-002-PLATINUM.md"
+            },
+            "verification": {
+              "status": "verified-branch-only",
+              "verified_on": "2026-08-22",
+              "review_id": "VIGIL-REVIEW-2026-08-22-SECURITY-RECON-01",
+              "exact_text_match": true,
+              "current_clause_status": "current"
+            }
+          }
+        ]
+      },
+      "record_reconstruction": {
+        "reconstructed": false,
+        "reconstruction_date": "not applicable — native PATCH v2 record",
+        "reason": "Created directly under the traceable PATCH contract after implementation.",
+        "review_id": "VIGIL-REVIEW-2026-08-22-SECURITY-RECON-01",
+        "method": "Direct comparison of VIGIL mechanism and named Caelestis implementation commit.",
+        "limitations": [
+          "Canonical adoption is not established."
+        ]
+      }
+    },
+    {
+      "id": "VIGIL-2026-PATCH-0042",
+      "record_type": "patch",
+      "record_state": "active",
+      "date_recorded": "2026-08-22",
+      "date_implemented": "2026-08-22",
+      "title": "End-to-end aggregate security-control composition assurance",
+      "summary": "Records the branch-only Caelestis implementation for end-to-end aggregate security-control composition assurance.",
+      "evidence_confidence": "verified",
+      "source_types": [
+        "repository-source"
+      ],
+      "source_count": 1,
+      "primary_source_title": "SECURITY-RECON-01 implementation",
+      "primary_source_type": "repository-source",
+      "primary_source_platform": "GitHub",
+      "source_platforms": [
+        "GitHub"
+      ],
+      "source_url_status": "available",
+      "system_type": "governance corpus implementation",
+      "platform_or_vendor": "CAM Initiative",
+      "product_or_service": "Caelestis Architecture Model",
+      "specific_model_or_runtime": "agent/corpus-industry-standards-normalisation at 4b93c3e0b0722040da64ef490e7115d9fcb0109c",
+      "model_or_product": "Caelestis Architecture Model",
+      "interface_surface": "SECURITY and OPERATIONS governance instruments",
+      "deployment_context": "branch-only governance corpus",
+      "primary_jurisdiction": "global",
+      "regulatory_surface": [
+        "AI security",
+        "AI assurance"
+      ],
+      "sector": "cross-sector",
+      "patch_type": "instrument-amendment",
+      "change_type": "instrument-amendment",
+      "path": "vigil/records/patches/2026/VIGIL-2026-PATCH-0042.json",
+      "github_blob_url": "https://github.com/CAM-Initiative/Vigil/blob/main/vigil/records/patches/2026/VIGIL-2026-PATCH-0042.json",
+      "raw_url": "https://raw.githubusercontent.com/CAM-Initiative/Vigil/main/vigil/records/patches/2026/VIGIL-2026-PATCH-0042.json",
+      "decision_trace": {
+        "origin": "failure-response",
+        "trigger_records": [
+          "VIGIL-2026-FM-0070"
+        ],
+        "decision_summary": "Coverage review confirmed a direct normative or named-taxonomy gap and implementation was completed on the existing Caelestis working branch.",
+        "events": [
+          {
+            "date": "2026-08-22",
+            "event_type": "implementation-committed",
+            "description": "Caelestis commit 4b93c3e0b0722040da64ef490e7115d9fcb0109c implemented and validated the repair.",
+            "authority_role": "Caelestis working-branch implementation",
+            "evidence_references": [
+              "https://github.com/CAM-Initiative/Caelestis/commit/4b93c3e0b0722040da64ef490e7115d9fcb0109c"
+            ]
+          }
+        ]
+      },
+      "corpus_implementation": {
+        "implementation_type": "corpus-amendment",
+        "implementation_outcome": "Implemented Aggregate Security-Control Composition together with the SECURITY-RECON-01 taxonomy reconciliation on the named branch.",
+        "canonical_state": "branch-only",
+        "entries": [
+          {
+            "instrument_id": "CAM-EQ2026-SECURITY-001-PLATINUM",
+            "canonical_path": "Governance/Charters/CAM-EQ2026-SECURITY-001-PLATINUM.md",
+            "section": "§3.5.2",
+            "section_heading": "Aggregate Security-Control Composition",
+            "change_kind": "added",
+            "prior_text_status": "new-clause",
+            "resulting_text": "### 3.5.2 Aggregate Security-Control Composition Integrity\n\nLocal conformance of individual controls SHALL NOT be treated as evidence of aggregate security integrity where their composition creates a materially different attack pathway.\n\nSecurity assurance MUST evaluate the end-to-end chain across input handling, retrieval, transformation, model or agent processing, memory, orchestration, tools, identity and credential inheritance, network behaviour, rendering, egress, monitoring and recovery wherever their interaction can create a new path to a protected asset or effect.\n\nWhere individually bounded behaviours compose into an unauthorised pathway, the failure SHALL be attributed to the composed security-control boundary even if no individual component exceeded its local specification. This rule concerns security-control composition; it does not replace the distinct target–action authority and objective-pathway rule in §3.5.1.",
+            "source": {
+              "repository": "CAM-Initiative/Caelestis",
+              "commit": "4b93c3e0b0722040da64ef490e7115d9fcb0109c",
+              "path": "Governance/Charters/CAM-EQ2026-SECURITY-001-PLATINUM.md",
+              "direct_url": "https://github.com/CAM-Initiative/Caelestis/blob/4b93c3e0b0722040da64ef490e7115d9fcb0109c/Governance/Charters/CAM-EQ2026-SECURITY-001-PLATINUM.md"
+            },
+            "verification": {
+              "status": "verified-branch-only",
+              "verified_on": "2026-08-22",
+              "review_id": "VIGIL-REVIEW-2026-08-22-SECURITY-RECON-01",
+              "exact_text_match": true,
+              "current_clause_status": "current"
+            }
+          }
+        ]
+      },
+      "record_reconstruction": {
+        "reconstructed": false,
+        "reconstruction_date": "not applicable — native PATCH v2 record",
+        "reason": "Created directly under the traceable PATCH contract after implementation.",
+        "review_id": "VIGIL-REVIEW-2026-08-22-SECURITY-RECON-01",
+        "method": "Direct comparison of VIGIL mechanism and named Caelestis implementation commit.",
+        "limitations": [
+          "Canonical adoption is not established."
         ]
       }
     },
