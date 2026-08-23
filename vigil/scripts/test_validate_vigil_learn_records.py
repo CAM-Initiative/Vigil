@@ -18,11 +18,11 @@ sys.modules[SPEC.name] = VALIDATOR
 SPEC.loader.exec_module(VALIDATOR)
 
 VIGIL_DIR = SCRIPT_DIR.parent
+DRAFTS_DIR = VIGIL_DIR / "drafts"
 SCHEMA = json.loads((VIGIL_DIR / "VIGIL.Learn.Schema.json").read_text(encoding="utf-8"))
 EXEMPLAR = json.loads(
     (
-        VIGIL_DIR
-        / "records"
+        DRAFTS_DIR
         / "learn"
         / "2026"
         / "VIGIL-2026-LEARN-0001.json"
@@ -30,9 +30,22 @@ EXEMPLAR = json.loads(
 )
 
 
+def draft_reference_records():
+    records = {}
+    for folder in ("proposals", "patches", "learn"):
+        root = DRAFTS_DIR / folder
+        if not root.exists():
+            continue
+        for path in root.rglob("*.json"):
+            item = json.loads(path.read_text(encoding="utf-8"))
+            if isinstance(item, dict) and isinstance(item.get("id"), str):
+                records[item["id"]] = item
+    return records
+
+
 class LearnCompletionContractTests(unittest.TestCase):
     def setUp(self) -> None:
-        self.records = VALIDATOR.canonical_records()
+        self.records = {**VALIDATOR.canonical_records(), **draft_reference_records()}
 
     def validate(self, record):
         return VALIDATOR.validate_record(
