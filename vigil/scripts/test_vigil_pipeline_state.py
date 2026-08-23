@@ -47,6 +47,16 @@ def main() -> None:
         assert not (RECORDS / withdrawn).exists(), f"{withdrawn} must not be in the public record tree"
         assert (DRAFTS / withdrawn).exists(), f"{withdrawn} draft archive is missing"
 
+    master = load(VIGIL / "VIGIL.Registry.Index.json")
+    assert set(master.get("registries", {})) == {"failure_modes", "observations", "research"}
+    counts = master.get("record_count", {})
+    assert set(counts) == {"failure_modes", "observations", "research", "total"}
+    assert not any(
+        isinstance(item, dict)
+        and item.get("record_type") in {"proposal", "patch", "patch_note", "learn"}
+        for item in master.get("records", [])
+    ), "withdrawn record classes must not appear in the public master registry"
+
     for folder in ("observations", "failures"):
         for path in sorted((RECORDS / folder).rglob("*.json")):
             item = load(path)
@@ -132,10 +142,15 @@ def main() -> None:
         "reconcile-vigil-",
         "run-vigil-reconciliation.py",
         "git add vigil\n",
+        "build-vigil-learn-records.py",
+        "vigil/VIGIL.Proposals.Index.json",
+        "vigil/VIGIL.PatchNotes.Index.json",
+        "vigil/VIGIL.Learn.Index.json",
     ):
-        assert forbidden not in workflow, f"workflow must not run or broadly stage source mutation: {forbidden}"
+        assert forbidden not in workflow, f"workflow must not publish or broadly stage withdrawn material: {forbidden}"
     assert "route-vigil-records.py --check" in workflow
-    assert "Build and enrich VIGIL registry indexes" in workflow
+    assert "build-vigil-public-records.py" in workflow
+    assert "Build and enrich public VIGIL registry indexes" in workflow
 
     print("VIGIL pipeline-state hygiene tests passed.")
 
