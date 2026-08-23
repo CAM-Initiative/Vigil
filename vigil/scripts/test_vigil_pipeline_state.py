@@ -39,11 +39,14 @@ def load(path: Path) -> dict[str, Any]:
 
 
 def record(record_id: str, folder: str) -> dict[str, Any]:
-    root = DRAFTS if folder in {"proposals", "patches", "learn"} else RECORDS
-    return load(root / folder / "2026" / f"{record_id}.json")
+    return load(RECORDS / folder / "2026" / f"{record_id}.json")
 
 
 def main() -> None:
+    for withdrawn in ("proposals", "patches", "learn"):
+        assert not (RECORDS / withdrawn).exists(), f"{withdrawn} must not be in the public record tree"
+        assert (DRAFTS / withdrawn).exists(), f"{withdrawn} draft archive is missing"
+
     for folder in ("observations", "failures"):
         for path in sorted((RECORDS / folder).rglob("*.json")):
             item = load(path)
@@ -63,14 +66,6 @@ def main() -> None:
                 }.get(status)
                 if expected is not None:
                     assert state == expected, f"{path}: {status} failure must be {expected}"
-
-    # Withdrawn records remain preserved as draft working material and retain their
-    # historical internal consistency, but are not part of the public record tree.
-    prop = record("VIGIL-2026-PROP-0001", "proposals")
-    assert prop["record_state"] == "closed-actioned"
-    assert prop["resolution_status"]["status"] == "resolved-by-patch"
-    assert "VIGIL-2026-PATCH-0023" in prop["resolution_status"]["resolved_by"]
-    assert (DRAFTS / "patches" / "2026" / "VIGIL-2026-PATCH-0023.json").exists()
 
     fm8 = record("VIGIL-2026-FM-0008", "failures")
     assert fm8["failure_classification"]["failure_family"] == "governance"
@@ -118,21 +113,12 @@ def main() -> None:
     assert record("VIGIL-2026-OBS-0013", "observations")["record_state"] == "closed-actioned"
     assert record("VIGIL-2026-OBS-0007", "observations")["record_state"] == "active"
 
-    patch25 = record("VIGIL-2026-PATCH-0025", "patches")
-    assert patch25["record_state"] == "closed-actioned"
-    assert patch25["corpus_implementation"]["canonical_state"] == "canonical-main"
-
     fm44 = record("VIGIL-2026-FM-0044", "failures")
     assert fm44["record_state"] == "monitoring"
     assert fm44["repair_status"]["status"] == "repaired"
     assert fm44["corpus_coverage"]["classification"] == "implemented-repair"
     assert fm44["ecosystem_status"]["status"] == "active"
     assert fm44["repair_status"]["remaining_gaps"]
-
-    prop17 = record("VIGIL-2026-PROP-0017", "proposals")
-    assert prop17["record_state"] == "closed-actioned"
-    assert prop17["resolution_status"]["status"] == "resolved-by-patch"
-    assert prop17["resolution_status"]["resolved_by"] == ["VIGIL-2026-PATCH-0025"]
 
     schema = load(VIGIL / "VIGIL.Schema.json")
     assert str(schema.get("purpose", "")).count(PROVENANCE_PURPOSE) == 1
