@@ -135,7 +135,7 @@ def main() -> None:
     ):
         assert forbidden not in workflow, f"workflow must not run or broadly stage source mutation: {forbidden}"
     assert "route-vigil-records.py --check" in workflow
-    assert "Rebuild VIGIL registry indexes" in workflow
+    assert "Build and enrich VIGIL registry indexes" in workflow
 
     print("VIGIL pipeline-state hygiene tests passed.")
 
