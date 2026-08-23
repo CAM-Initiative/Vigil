@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate optional architectural component roles in VIGIL system_context blocks."""
+"""Validate optional architectural component roles in published VIGIL records."""
 
 from __future__ import annotations
 
@@ -14,8 +14,6 @@ SCHEMA_PATH = VIGIL_DIR / "VIGIL.Schema.json"
 RECORD_ROOTS = (
     VIGIL_DIR / "records" / "observations",
     VIGIL_DIR / "records" / "failures",
-    VIGIL_DIR / "records" / "proposals",
-    VIGIL_DIR / "records" / "patches",
 )
 
 
@@ -89,7 +87,7 @@ def validate() -> int:
 
     print(
         "VIGIL component-role validation passed: "
-        f"{checked} records checked, {classified} records carry component_role."
+        f"{checked} published records checked, {classified} records carry component_role."
     )
     return 0
 
