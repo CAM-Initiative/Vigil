@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Enrich generated VIGIL indexes with lifecycle, corpus, and review provenance."""
+"""Enrich generated public VIGIL indexes with lifecycle and review provenance."""
 
 from __future__ import annotations
 
@@ -11,11 +11,11 @@ ROOT = Path(__file__).resolve().parents[2]
 VIGIL = ROOT / "vigil"
 RECORDS = VIGIL / "records"
 
+# Only currently published record classes are enrichment inputs. PROP, PATCH and
+# LEARN material is retained under vigil/drafts and must not be loaded here.
 INDEXES = {
     "observations": VIGIL / "VIGIL.Observations.Index.json",
     "failures": VIGIL / "VIGIL.Failures.Index.json",
-    "proposals": VIGIL / "VIGIL.Proposals.Index.json",
-    "patches": VIGIL / "VIGIL.PatchNotes.Index.json",
 }
 
 
@@ -43,7 +43,7 @@ def review_summary(source: dict[str, Any]) -> dict[str, Any]:
     current = provenance.get("current_ai_review")
     editor = provenance.get("human_governance_editor")
     output: dict[str, Any] = {
-        "operating_model": provenance.get("operating_model"),
+        "operating_model": "AI-authored, semi-autonomous production under human contract approval",
         "review_count": len(provenance.get("review_history", [])) if isinstance(provenance.get("review_history"), list) else 0,
     }
     if isinstance(current, dict):
@@ -56,10 +56,12 @@ def review_summary(source: dict[str, Any]) -> dict[str, Any]:
             "known_limitations": current.get("known_limitations"),
         }
     if isinstance(editor, dict):
-        output["human_governance_editor"] = {
+        output["human_contract_approver"] = {
             "name": editor.get("name"),
-            "role": editor.get("role"),
-            "review_level": editor.get("review_level"),
+            "role": "contract-approver",
+            "human_authorship": False,
+            "human_review_status": "not-reviewed",
+            "human_verification_status": "not-verified",
         }
     return {key: value for key, value in output.items() if value not in (None, "", [], {})}
 
@@ -126,26 +128,7 @@ def main() -> None:
             "corpus_coverage_summary": "corpus_coverage",
         },
     )
-    enrich_index(
-        INDEXES["proposals"],
-        records_by_id("proposals"),
-        {
-            "resolution_status_summary": "resolution_status",
-            "coverage_reconciliation_summary": "coverage_reconciliation",
-        },
-    )
-    enrich_index(
-        INDEXES["patches"],
-        records_by_id("patches"),
-        {
-            "decision_trace": "decision_trace",
-            "corpus_implementation": "corpus_implementation",
-            "record_reconstruction": "record_reconstruction",
-            "patch_classifications": "patch_classifications",
-            "repair_provenance_summary": "repair_provenance",
-        },
-    )
-    print("Enriched VIGIL indexes with decision traces, literal corpus implementation, lifecycle, reviewer, and evidence-access summaries.")
+    print("Enriched public VIGIL indexes with lifecycle, reviewer, and evidence-access summaries.")
 
 
 if __name__ == "__main__":

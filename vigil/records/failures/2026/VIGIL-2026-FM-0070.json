@@ -1,0 +1,315 @@
+{
+  "id": "VIGIL-2026-FM-0070",
+  "record_type": "failure_mode",
+  "record_state": "active",
+  "date_recorded": "2026-08-22",
+  "record_identity": {
+    "record_id": "VIGIL-2026-FM-0070",
+    "record_type": "failure_mode",
+    "title": "Aggregate security-control composition failure",
+    "created": "2026-08-22",
+    "updated": "2026-08-22",
+    "version": "1.0"
+  },
+  "summary": "Individually bounded, locally acceptable or independently mitigated control states combine into an end-to-end pathway that violates a security invariant because assurance was performed locally rather than across the composed execution chain.",
+  "why_it_matters_to_CAM": "A system can pass component-level checks while the interactions among prompt handling, retrieval, rendering, network behaviour and egress create a new exploit path that no local control assessment represents.",
+  "evidence_confidence": "corroborated",
+  "source_records": [
+    {
+      "source_title": "SearchLeak: How We Turned M365 Copilot Into a One-Click Data Exfiltration Weapon",
+      "author_or_publisher": "Varonis Threat Labs",
+      "source_date": "2026-06-15",
+      "source_url": "https://www.varonis.com/blog/searchleak",
+      "archive_url": "",
+      "retrieved_date": "2026-08-22",
+      "source_type": "research-source",
+      "source_platform": "Varonis",
+      "system_or_product": "Microsoft 365 Copilot Enterprise",
+      "model_or_algorithm": "Microsoft 365 Copilot Enterprise Search",
+      "deployment_context": "Enterprise search connected to Microsoft 365 organisational data.",
+      "source_context": "Varonis reports a chain combining parameter-to-prompt injection, streaming HTML rendering race behaviour and Bing server-side request behaviour to create one-click data exfiltration.",
+      "source_url_status": "available",
+      "relevance_note": "Primary technical disclosure that locally distinct control behaviours composed into an unauthorised end-to-end path.",
+      "evidence_modality": [
+        "text"
+      ],
+      "primary_artefact_access": {
+        "access_status": "directly reviewed",
+        "reviewing_system": "OpenAI ChatGPT Work — GPT-5.6 Sol",
+        "access_method": "direct public web retrieval",
+        "direct_primary_artefact_review": true,
+        "limitations": [
+          "Security-research demonstration; public disclosure does not expose all provider-internal architecture or forensic evidence."
+        ]
+      },
+      "interpretive_reliance": "Relied on for the exploit-chain components, end-to-end exfiltration pathway and reported remediation.",
+      "source_residence": "external",
+      "source_role": "research-evidence"
+    }
+  ],
+  "system_context": {
+    "system_type": "enterprise AI search and composed security-control architecture",
+    "platform_or_vendor": "Microsoft",
+    "product_or_service": "Copilot",
+    "specific_model_or_runtime": "Microsoft 365 Copilot Enterprise Search",
+    "interface_surface": "parameter handling, prompt processing, search, streaming HTML rendering, server-side requests, browser loading and egress",
+    "model_or_product": "Microsoft 365 Copilot",
+    "interaction_mode": "one-click enterprise search interaction with connected organisational data",
+    "embodiment_status": "non-embodied digital system",
+    "deployment_context": "Microsoft 365 enterprise environment",
+    "user_role": "provider, deployer, operator, security researcher, evaluator, auditor or regulator",
+    "affected_population": "users, organisations and third parties whose data, systems or execution environment may be affected",
+    "component_role": [
+      "foundation-model",
+      "retrieval",
+      "user-interface",
+      "external-service",
+      "policy-safety"
+    ],
+    "evidence_scope": "single-provider",
+    "evidenced_vendors": [
+      "Microsoft"
+    ],
+    "evidenced_products_or_services": [],
+    "evidenced_models_or_runtimes": [
+      "Microsoft 365 Copilot Enterprise Search"
+    ],
+    "evidenced_systems": [
+      {
+        "providers_or_vendors": [
+          "Microsoft"
+        ],
+        "products_or_services": [],
+        "models_or_runtimes": [
+          "Microsoft 365 Copilot Enterprise Search"
+        ],
+        "projection_basis": "source-affected-system-metadata",
+        "evidence_source_platform": "Varonis",
+        "deployment_context": "Enterprise search connected to Microsoft 365 organisational data.",
+        "source_title": "SearchLeak: How We Turned M365 Copilot Into a One-Click Data Exfiltration Weapon",
+        "source_url": "https://www.varonis.com/blog/searchleak"
+      }
+    ],
+    "evidence_projection": {
+      "basis": "record-local affected-system metadata",
+      "method": "structured source affected-system roll-up with record system-context fallback",
+      "reconciled_on": "2026-08-15",
+      "inference_boundary": "Affected provider, product, model, and runtime identity is projected from structured system_or_product and model_or_algorithm source metadata, with bounded fallback to an existing concrete FM system_context for older records. source_platform identifies where evidence is hosted or published and is not treated as affected-system identity. Narrative source_context, relevance_note, article titles, and publisher prose are not mined for identity."
+    },
+    "vendor_cluster": [
+      "Microsoft"
+    ],
+    "primary_evidenced_vendors": [
+      "Microsoft"
+    ]
+  },
+  "jurisdictional_context": {
+    "primary_jurisdiction": "global",
+    "secondary_jurisdictions": [
+      "United States",
+      "European Union",
+      "Australia",
+      "platform agnostic"
+    ],
+    "regulatory_surface": [
+      "AI security",
+      "cybersecurity",
+      "data protection",
+      "security assurance",
+      "incident response"
+    ],
+    "sector": "cross-sector AI and software security",
+    "cross_border_relevance": "high",
+    "public_interest_relevance": "high"
+  },
+  "linked_records": {
+    "related_observations": [],
+    "related_failure_modes": [
+      "VIGIL-2026-FM-0022",
+      "VIGIL-2026-FM-0044"
+    ],
+    "related_proposals": [],
+    "related_patch_notes": [
+      "VIGIL-2026-PATCH-0042"
+    ],
+    "contextual_relations": [],
+    "external_references": [],
+    "research": [],
+    "standards": []
+  },
+  "failure_mode_definition": "A failure in which individually bounded, locally acceptable or independently mitigated control states combine into an end-to-end pathway that violates a security invariant because assurance is performed locally rather than across the composed execution chain.",
+  "failure_threshold": "The threshold requires at least two component or control states whose interaction creates a materially different end-to-end security property, an unauthorised pathway or protected-asset effect, and evidence that local rather than composed assurance failed to identify or constrain the chain. Objective success or unauthorised action alone is insufficient.",
+  "failure_classification": {
+    "failure_family": "security-integrity",
+    "failure_subtype": "aggregate-security-control-composition-failure",
+    "harm_vectors": [
+      "end-to-end data exfiltration",
+      "false aggregate assurance",
+      "cross-component exploit chaining",
+      "connected-data exposure",
+      "control bypass through composition"
+    ],
+    "severity": "S1",
+    "severity_assessment_basis": "S1 reflects a demonstrated critical one-click path to sensitive enterprise data exfiltration through a multi-component chain, with no confirmed live malicious exploitation established in the reviewed disclosure.",
+    "likelihood": "demonstrated in controlled security research; recurrence depends on deployment architecture and control coverage",
+    "confidence": "high for the demonstrated mechanism; bounded for undisclosed provider internals and ecosystem prevalence",
+    "affected_rights_or_interests": [
+      "privacy",
+      "confidentiality",
+      "security",
+      "autonomy",
+      "accountability",
+      "institutional trust"
+    ],
+    "failure_scope": "composed AI application, rendering, retrieval, network and egress controls",
+    "recurrence_pattern": "May recur in systems whose component controls are assured independently without end-to-end adversarial pathway analysis.",
+    "canonical_failure_group": "security-integrity",
+    "taxonomy_reference": "CAM-EQ2026-OPERATIONS-003-SUP-01 §3.5.13 — Aggregate Security-Control Composition Failure; primary classification OPS.FF.SECURITY_INTEGRITY",
+    "related_failure_groups": [
+      "governance",
+      "state-context",
+      "execution"
+    ],
+    "persistence": "Persists until the composed pathway is removed or bounded; individual component fixes may or may not be sufficient.",
+    "reproducibility": "Testable through authorised end-to-end attack-path analysis that retains component-local assumptions and observes the aggregate effect.",
+    "visibility": "Low under local assurance; evident only when the full chain is executed or modelled."
+  },
+  "triage": {
+    "model_version": "2.0",
+    "triage_priority": "PN",
+    "triage_owner": "OpenAI ChatGPT — GPT-5.6 Sol analytical reviewer under Dr Michelle Vivian O'Rourke's human contract approval",
+    "triage_status": "monitoring",
+    "triage_action_basis": "The mechanism was classified, received a distinct non-duplicative threshold, and has branch-only Caelestis taxonomy and control coverage requiring canonical adoption monitoring.",
+    "triage_review_date": "2026-08-22",
+    "triage_assessment_gap": "External adoption and conformance are unknown; public disclosures do not expose every internal control and affected deployment.",
+    "mitigation_status": "Provider remediation is reported for the cited product-specific findings; the general mechanism remains ecosystem-relevant.",
+    "escalation_required": "no emergency escalation; continuing ecosystem monitoring and conformance testing required",
+    "recommended_next_step": "Monitor recurrence, verify implementation conformance across affected architectures, and reconcile branch-only Caelestis coverage if adopted on main."
+  },
+  "cam_internal": {
+    "affected_instruments": [
+      "CAM-EQ2026-OPERATIONS-003-SUP-01",
+      "CAM-EQ2026-SECURITY-001-PLATINUM",
+      "CAM-EQ2026-SECURITY-002-PLATINUM"
+    ],
+    "affected_annexes": [
+      "Annex B",
+      "Annex K"
+    ],
+    "affected_domains": [
+      "OPERATIONS",
+      "SECURITY",
+      "AEON"
+    ],
+    "governance_layer": "end-to-end composed security assurance",
+    "proposal_needed": "no — direct implementation verified",
+    "linked_proposal_ids": [],
+    "routing_note": "SECURITY-001 owns aggregate security-control composition integrity; FM-0044 remains distinct as an objective-pathway authority failure.",
+    "validator_or_automation_impact": "No schema change. Generated VIGIL indexes and lifecycle validation require rebuild after record creation."
+  },
+  "ecosystem_status": {
+    "status": "active",
+    "basis": "The cited product-specific issues were disclosed through security research and may be remediated, but the structural mechanism remains applicable across systems using comparable memory, transformation, framework or composed-control pathways.",
+    "last_assessed": "2026-08-22",
+    "monitoring_required": true
+  },
+  "repair_status": {
+    "status": "partially-repaired",
+    "repaired_by": [
+      "VIGIL-2026-PATCH-0042"
+    ],
+    "date_repaired": "2026-08-22",
+    "verification_status": "corpus-verified",
+    "monitoring_status": "branch-only Caelestis repair verified; external ecosystem monitoring continues",
+    "repair_basis": "patch-implemented",
+    "remaining_gaps": [
+      "Canonical-main adoption of the Caelestis branch is not established.",
+      "External implementation and conformance remain unknown."
+    ]
+  },
+  "corpus_coverage": {
+    "classification": "partial-coverage",
+    "corpus_repository": "CAM-Initiative/Caelestis",
+    "corpus_ref": "agent/corpus-industry-standards-normalisation",
+    "corpus_commit": "4b93c3e0b0722040da64ef490e7115d9fcb0109c",
+    "assessed_date": "2026-08-22",
+    "coverage_summary": "The Caelestis branch adds aggregate security-control composition integrity at SECURITY-001 §3.5.2 and a named failure at OPERATIONS §3.5.13.",
+    "covered_by": [
+      {
+        "instrument_id": "CAM-EQ2026-SECURITY-001-PLATINUM",
+        "path": "Governance/Charters/CAM-EQ2026-SECURITY-001-PLATINUM.md",
+        "sections": [
+          "§3.5.2"
+        ],
+        "coverage_type": "implemented-doctrine"
+      },
+      {
+        "instrument_id": "CAM-EQ2026-OPERATIONS-003-SUP-01",
+        "path": "Governance/Charters/CAM-EQ2026-OPERATIONS-003-SUP-01.md",
+        "sections": [
+          "§3.5.13"
+        ],
+        "coverage_type": "implemented-doctrine"
+      }
+    ],
+    "remaining_gaps": [
+      "Implementation is branch-only until canonical adoption.",
+      "External systems are not shown to conform merely because Caelestis doctrine is repaired."
+    ]
+  },
+  "interpretive_provenance": {
+    "review_history": [
+      {
+        "review_id": "VIGIL-REVIEW-2026-08-22-SOL-FM-0070",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work with public web and repository access",
+        "reviewer_model": "GPT-5.6 Sol",
+        "review_date": "2026-08-22",
+        "review_scope": "Primary-source technical review, complete VIGIL FM non-duplication comparison, Caelestis coverage review and record classification.",
+        "capability_profile": {
+          "direct_text_analysis": true,
+          "direct_repository_analysis": true,
+          "direct_static_image_analysis": false,
+          "direct_audio_analysis_in_this_pass": false,
+          "direct_uploaded_video_analysis_in_this_pass": false,
+          "direct_externally_hosted_video_analysis": false,
+          "web_link_and_metadata_review": true
+        },
+        "known_limitations": [
+          "No private provider telemetry, exploit code or complete internal forensic record was available.",
+          "Human substantive review and external conformance verification are not established."
+        ],
+        "review_outcome": "Accepted as distinct from FM-0044 because the failure is local security-control assurance over a composed chain, not objective admissibility or target-action authority."
+      }
+    ],
+    "current_ai_review": {
+      "review_id": "VIGIL-REVIEW-2026-08-22-SOL-FM-0070",
+      "reviewer_type": "AI analytical reviewer",
+      "reviewer_platform": "OpenAI ChatGPT Work",
+      "reviewer_model": "GPT-5.6 Sol",
+      "review_date": "2026-08-22",
+      "review_scope": "Mechanism classification, source review and Caelestis crosswalk.",
+      "capability_profile": {
+        "direct_text_analysis": true,
+        "direct_repository_analysis": true,
+        "direct_static_image_analysis": false,
+        "direct_audio_analysis_in_this_pass": false,
+        "direct_uploaded_video_analysis_in_this_pass": false,
+        "direct_externally_hosted_video_analysis": false,
+        "web_link_and_metadata_review": true
+      },
+      "known_limitations": [
+        "External adoption and full provider-internal evidence are unavailable."
+      ],
+      "review_outcome": "Accepted as distinct from FM-0044 because the failure is local security-control assurance over a composed chain, not objective admissibility or target-action authority."
+    },
+    "operating_model": "AI-authored, semi-autonomous production under human contract approval",
+    "human_governance_editor": {
+      "name": "Dr Michelle Vivian O'Rourke",
+      "role": "Human contract approver and CAM constitutional authority",
+      "review_level": "contract approval only; human substantive review and verification are not established",
+      "authority_boundary": "Human approval governs VIGIL direction and CAM adoption; AI performs evidence triage, analysis and record production."
+    },
+    "historical_reviewer_note": "Native record created during SECURITY-RECON-01 after review of all 66 pre-existing failure modes."
+  }
+}

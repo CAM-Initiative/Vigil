@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://example.invalid/cam/vigil/VIGIL.Schema.json",
-  "version": "3.2-severity-triage-contract",
-  "purpose": "Authoritative schema-rules contract for VIGIL as a public evidence-to-repair observatory for observations, research artefacts, failure modes, proposals, and implemented patch notes. Source evidence remains embedded in the relevant record; ecosystem persistence, CAM repair, and implementation verification are represented separately. Interpretive provenance identifies the AI analytical reviewer, human governance editor, capability profile, source modality, primary-artefact access, and review limitations.",
+  "version": "3.4-component-role-system-context",
+  "purpose": "Authoritative schema-rules contract for VIGIL as a public evidence-to-repair observatory for observations, research artefacts, failure modes, proposals, and implemented patch notes. Source evidence remains embedded in the relevant record; ecosystem persistence, CAM repair, and implementation verification are represented separately. Interpretive provenance identifies AI source analysis, capability profile, source modality, primary-artefact access, review limitations, and historical authority context. Authorship, human-review, and human-verification status are governed separately by vigil/provenance/AUTHORSHIP-PROVENANCE.json.",
   "source_evidence_rules": {
     "individual_records": [
       "source_records is the only canonical source-evidence block in individual records.",
@@ -522,12 +522,15 @@
     }
   },
   "system_context_rules": {
-    "description": "system_context describes the observed/proposed system, platform, product, service, runtime, interface, deployment, or governance corpus using normalised field names.",
+    "description": "system_context describes the observed/proposed system, platform, product, service, runtime, interface, deployment, architectural component role, or governance corpus. Provider/vendor identity, product/service identity, and architectural function are orthogonal dimensions. For failure modes, compatibility summary fields are supplemented by an evidence-backed system roll-up derived from record-local structured source metadata.",
     "required_fields": [
       "platform_or_vendor",
       "product_or_service",
       "specific_model_or_runtime",
       "interface_surface"
+    ],
+    "optional_fields": [
+      "component_role"
     ],
     "deprecated_fields": [
       "product_family",
@@ -613,8 +616,65 @@
       "Unknown",
       "Not applicable"
     ],
+    "allowed_component_role_values": [
+      "foundation-model",
+      "inference-runtime",
+      "orchestration",
+      "agent-runtime",
+      "planning",
+      "routing",
+      "tool-broker",
+      "tool-interface",
+      "retrieval",
+      "memory-state",
+      "identity-authentication",
+      "policy-safety",
+      "evaluation",
+      "execution",
+      "user-interface",
+      "external-service",
+      "other",
+      "unknown",
+      "not-applicable"
+    ],
+    "component_role_rule": "Optional non-empty array of unique controlled architectural-function labels. It describes what the evidenced component does in the stack and is independent of provider/vendor and product/service identity. Existing records are not required to backfill component_role until materially reviewed.",
+    "component_role_evidence_rule": "Assign component roles only where record-local evidence or direct system documentation supports the function. Do not infer an underlying model provider, deployment arrangement, or additional component merely from the presence of an orchestration or agent harness.",
+    "multi_vendor_rule": "Multi Vendor means two or more evidenced provider/vendor identities participate in the relevant system context. It must not be used merely because a system combines heterogeneous component types, local and hosted components, or an orchestration layer with an unresolved model provider.",
     "specific_model_or_runtime_rule": "Non-empty string; intentionally not an enum because runtime names and tool-augmented modes drift frequently.",
-    "interface_surface_rule": "Non-empty string or array of non-empty strings describing where or how behaviour appears."
+    "interface_surface_rule": "Non-empty string or array of non-empty strings describing where or how behaviour appears.",
+    "failure_mode_evidence_projection": {
+      "required_fields": [
+        "evidence_scope",
+        "evidenced_vendors",
+        "evidenced_products_or_services",
+        "evidenced_models_or_runtimes",
+        "evidenced_systems",
+        "evidence_projection"
+      ],
+      "allowed_evidence_scope_values": [
+        "single-provider",
+        "multi-provider",
+        "provider-unresolved",
+        "system-unresolved",
+        "not-applicable"
+      ],
+      "source_fields": [
+        "source_records[].system_or_product",
+        "source_records[].model_or_algorithm"
+      ],
+      "traceability_rule": "Each evidenced_systems entry preserves its projection_basis and the supporting source title; source_platform may be retained separately as evidence_source_platform so evidence host and affected system remain distinguishable.",
+      "no_narrative_inference_rule": "Provider, product, model, runtime, and component-role identities must not be synthesized from narrative source_context, relevance_note, article titles, publisher prose, or the evidence-host source_platform field. Older records may use a concrete pre-existing FM system_context as a bounded fallback where source-level affected-system fields were not yet populated.",
+      "compatibility_rule": "platform_or_vendor, product_or_service, and specific_model_or_runtime remain compatibility summary fields. component_role is an orthogonal architectural-function dimension. Multi Vendor describes provider scope only and must not substitute for concrete evidenced_vendors, evidenced_products_or_services, evidenced_models_or_runtimes, or component roles.",
+      "public_projection_rule": "Public interfaces should prefer evidence-backed arrays and source-traceable evidenced_systems over placeholder compatibility values such as Multi Vendor, Other, or Unknown, and should expose component_role when materially relevant.",
+      "unresolved_rule": "Insufficient structured system metadata remains explicitly unresolved; narrative evidence may support later human reconciliation but must not be silently converted into a system identity or architectural role.",
+      "record_context_fallback_fields": [
+        "system_context.platform_or_vendor",
+        "system_context.product_or_service",
+        "system_context.specific_model_or_runtime",
+        "system_context.model_or_product"
+      ],
+      "source_platform_rule": "source_records[].source_platform identifies where evidence is hosted, published, or observed. It is source provenance and must not be treated as affected provider/product identity unless the affected-system fields independently establish the same system."
+    }
   },
   "cam_internal_rules": {
     "description": "cam_internal describes CAM routing, targets, affected areas, or changed components.",
@@ -825,7 +885,7 @@
       "known_limitations",
       "review_outcome"
     ],
-    "human_editor_rule": "Human governance editorship and CAM adoption authority must be distinguished from routine AI analytical review."
+    "human_editor_rule": "The legacy human_governance_editor field preserves historical authority context. It is not an authorship-provenance override and must not imply human authorship, substantive review, source verification, or line-by-line inspection. New records use contract-approver semantics unless contemporaneous evidence establishes a specific exception."
   },
   "triage_model_rules": {
     "doctrine": "Current triage priority is mutable operational state. Historical urgency is provenance. Failure severity is classification. Triage status is workflow. Ecosystem monitoring is continuing external observation.",

@@ -1,0 +1,236 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/CAM-Initiative/Vigil/vigil/external_requirements/source-review-assurance.schema.json",
+  "title": "VIGIL Source Review Artefact and Human Assurance Overlay",
+  "description": "External-requirement sidecar for exact reviewed primary-source digests and post-production human assurance. It supplements, and never rewrites, AI authorship provenance.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "updated_at",
+    "description",
+    "authorship_provenance",
+    "source_reviews"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "updated_at": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "authorship_provenance": {
+      "type": "object",
+      "required": [
+        "content_origin",
+        "generation_mode",
+        "human_role",
+        "human_authorship",
+        "human_review_status",
+        "human_verification_status",
+        "declaration"
+      ],
+      "properties": {
+        "content_origin": {
+          "const": "ai-authored"
+        },
+        "generation_mode": {
+          "const": "semi-autonomous"
+        },
+        "human_role": {
+          "const": "contract-approver"
+        },
+        "human_authorship": {
+          "const": false
+        },
+        "human_review_status": {
+          "const": "not-reviewed"
+        },
+        "human_verification_status": {
+          "const": "not-verified"
+        },
+        "declaration": {
+          "const": "vigil/provenance/AUTHORSHIP-PROVENANCE.json"
+        }
+      },
+      "additionalProperties": false
+    },
+    "source_reviews": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "vigil_source_id",
+          "external_source_id",
+          "source_version",
+          "source_metadata_fingerprint",
+          "reviewed_source_digest",
+          "assurance_provenance"
+        ],
+        "properties": {
+          "vigil_source_id": {
+            "type": "string",
+            "pattern": "^EXT-[A-F0-9]{12}$"
+          },
+          "external_source_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source_version": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source_metadata_fingerprint": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "reviewed_source_digest": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "required": [
+              "algorithm",
+              "digest",
+              "recorded_at",
+              "artefact_role",
+              "access_basis",
+              "evidence_ref"
+            ],
+            "properties": {
+              "algorithm": {
+                "const": "sha256"
+              },
+              "digest": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "recorded_at": {
+                "type": "string",
+                "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+              },
+              "artefact_role": {
+                "const": "reviewed-primary-source"
+              },
+              "access_basis": {
+                "enum": [
+                  "public-primary",
+                  "licensed-primary",
+                  "official-public-extract"
+                ]
+              },
+              "evidence_ref": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "additionalProperties": false
+          },
+          "assurance_provenance": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "assurance_id",
+                "human_role",
+                "performed_by",
+                "performed_at",
+                "human_review_status",
+                "human_verification_status",
+                "target_scope",
+                "target_requirement_ids",
+                "scope",
+                "method",
+                "evidence_refs",
+                "limitations"
+              ],
+              "properties": {
+                "assurance_id": {
+                  "type": "string",
+                  "pattern": "^ASSURE-[A-F0-9]{16}$"
+                },
+                "human_role": {
+                  "enum": [
+                    "reviewer",
+                    "verifier"
+                  ]
+                },
+                "performed_by": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "performed_at": {
+                  "type": "string",
+                  "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                },
+                "human_review_status": {
+                  "enum": [
+                    "not-reviewed",
+                    "spot-checked",
+                    "substantively-reviewed",
+                    "line-by-line-reviewed"
+                  ]
+                },
+                "human_verification_status": {
+                  "enum": [
+                    "not-verified",
+                    "sample-verified",
+                    "source-verified",
+                    "fully-verified"
+                  ]
+                },
+                "target_scope": {
+                  "enum": [
+                    "source-version",
+                    "explicit-requirements"
+                  ]
+                },
+                "target_requirement_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^EXTREQ-[A-F0-9]{16}$"
+                  },
+                  "uniqueItems": true
+                },
+                "scope": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "method": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "evidence_refs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "uniqueItems": true
+                },
+                "limitations": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "uniqueItems": true
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

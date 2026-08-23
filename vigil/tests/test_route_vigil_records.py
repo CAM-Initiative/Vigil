@@ -39,6 +39,18 @@ class RouteVigilRecordsTest(unittest.TestCase):
                 f"Invalid JSON in {relative_path}: Extra data at line 2 column 1.",
             )
 
+    def test_withdrawn_record_type_has_no_public_target_directory(self):
+        for record_type in ("proposal", "patch", "patch_note", "learn"):
+            with self.subTest(record_type=record_type):
+                with self.assertRaises(ValueError):
+                    router.target_directory(
+                        {
+                            "id": "VIGIL-2026-PROP-9999",
+                            "record_type": record_type,
+                            "record_state": "draft",
+                        }
+                    )
+
 
 if __name__ == "__main__":
     unittest.main()

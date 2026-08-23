@@ -1,85 +1,51 @@
-# External Governance Source Ledger
+# External Governance Sources
 
-This directory contains VIGIL maintenance machinery for detecting changes in external AI-governance sources. It is not a VIGIL record class and it does not create CAM/Caelestis authority.
+This directory is VIGIL's canonical registry of external governance source identity, version, lifecycle, publisher metadata and source-review workflow state. It is not a VIGIL evidentiary record class and it does not create CAM authority.
+
+VIGIL's source identification, abstraction, classification and maintenance content is AI-authored and semi-autonomous under human contract approval unless an explicit provenance override says otherwise. External laws, standards and publications retain their own authorship and authority. See `../provenance/AUTHORSHIP-PROVENANCE.json`.
 
 ## Boundary
 
-The pipeline is deliberately one-way:
+The governance flow is:
 
-`external source -> VIGIL change ledger -> human alignment review -> Caelestis repair (if required) -> VIGIL verification`
+`external source -> external requirement -> CAM applicability/coverage assessment -> VIGIL routing/repair`
 
-An upstream change may create or update maintenance state in this directory. It MUST NOT directly edit Caelestis, create a VIGIL PATCH, or determine substantive alignment automatically.
+Source registration records what an external instrument is and whether it has changed. It MUST NOT determine whether the source applies to CAM, manufacture an external requirement, create a CAM coverage finding, or create a substantive VIGIL repair record automatically.
 
 ## Source authority
 
-The canonical source for legal or standards status is the official publisher or regulator. Third-party trackers may be used only for discovery. Vorp Labs is intentionally excluded from this source matrix and ingestion design.
+The canonical authority for legal or standards status is the official publisher, regulator or legislature. Third-party trackers may be used only for discovery.
 
-Primary source families currently registered:
+`review_state` is VIGIL source-review workflow state. It is not a CAM applicability, conformance or coverage finding.
 
-- Australia: Federal Register of Legislation API.
-- European Union: EUR-Lex / CELLAR and official OJEU material.
-- United Kingdom: legislation.gov.uk API and Atom publication feeds.
-- United States federal legislation: Congress.gov API and GovInfo.
-- United States federal regulation: Regulations.gov API and GovInfo/Federal Register.
-- ISO/IEC metadata: ISO Open Data.
-- NIST: NIST/CSRC publication feeds and datasets.
-- IEEE: official IEEE Standards metadata, currently manual/low-frequency pending a supported bulk metadata feed.
-- CEN/CENELEC harmonised AI standards: development metadata plus OJEU citation as the legal harmonisation trigger.
-- Regulations.ai and OECD.AI: optional discovery-only inputs; neither is authoritative for lifecycle state.
+## Stable identity and metadata fingerprint
 
-## State separation
+Each source/version has an internal `vigil_source_id` plus a publisher-native `canonical_identifier`. The durable source key is `external_source_id + source_version`.
 
-External lifecycle and CAM review state are independent.
+`source_metadata_fingerprint` is a SHA-256 of VIGIL's material source-metadata projection. It supports deterministic source/version change detection. It is **not** a digest of a reviewed PDF, HTML capture, licensed standard file or other primary artefact.
 
-`source_lifecycle_state` describes the external instrument, for example `draft`, `consultation`, `adopted`, `published`, `effective`, `superseded`, or `withdrawn`.
-
-`alignment_state` describes CAM/VIGIL disposition: `unassigned`, `review-required`, `mapped`, `patch-required`, `patched`, `verified`, `no-change-required`, `not-applicable`, or `superseded-before-review`.
-
-Only configured final/adopted lifecycle states are alignment-eligible. Draft and consultation material may be observed but does not automatically enter the alignment queue.
-
-## Stable identity
-
-Each row has an internal `vigil_source_id` plus a publisher-native `canonical_identifier`. The durable review key is:
-
-`external_source_id + source_version`
-
-Upstream-provider identity is provenance only. Changing discovery providers must not change the VIGIL source identity.
+Exact reviewed-source artefact digests belong in `../external_requirements/source-review-assurance.json`. Historical reviewed artefacts for which no digest was recorded remain `not-recorded`; VIGIL does not manufacture retrospective digests.
 
 ## Files
 
-- `source-matrix.json` — source families, authority posture, lifecycle mappings, and automation readiness.
-- `ledger.schema.json` — maintenance-ledger contract.
-- `ledger.json` — accepted external-source observations.
-- `alignment-queue.json` — generated review queue; no substantive alignment judgement.
-- `../scripts/manage-external-governance-ledger.py` — deterministic canonicalise/hash/diff/filter/queue engine.
-- `../tests/test_external_governance_ledger.py` — unit tests for lifecycle and state transitions.
+- `source-matrix.json` — publisher/source families, authority posture, lifecycle mappings and retrieval readiness.
+- `source-registry.schema.json` — canonical source-registry contract.
+- `source-registry.json` — maintained current source/version registry.
+- `source-review-queue.json` — generated source-review queue.
+- `SOURCE-CATALOGUE.md` — generated human-readable current source catalogue.
+- `../scripts/manage-external-sources.py` — deterministic source registry maintenance and generation.
 
 ## Commands
 
-Validate current files:
-
 ```bash
-python vigil/scripts/manage-external-governance-ledger.py validate
+python vigil/scripts/manage-external-sources.py build
+python vigil/scripts/manage-external-sources.py validate --check-generated
 ```
 
-Ingest a normalised JSON array exported by a source adapter or prepared from an official feed:
+For normalized observations from an official-source adapter:
 
 ```bash
-python vigil/scripts/manage-external-governance-ledger.py ingest \
-  --source australia-frl \
-  --input /path/to/items.json
+python vigil/scripts/manage-external-sources.py ingest --source <source-id> --input /path/to/items.json
 ```
 
-Regenerate the review queue:
-
-```bash
-python vigil/scripts/manage-external-governance-ledger.py queue
-```
-
-Run tests:
-
-```bash
-python vigil/tests/test_external_governance_ledger.py
-```
-
-The normal ingestion path is intentionally model-free: fetch -> validate -> canonicalise -> hash -> diff -> lifecycle filter -> queue. Semantic assessment begins only after an item reaches `review-required`.
+Semantic external-requirement extraction belongs under `../external_requirements/`. CAM applicability and coverage assessment belongs under `../cam_assessment/`.

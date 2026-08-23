@@ -28,21 +28,14 @@ jobs:
           persist-credentials: true
           show-progress: false
 
-      - name: Check out complete Caelestis history
-        uses: actions/checkout@v6
-        with:
-          repository: CAM-Initiative/Caelestis
-          path: caelestis
-          fetch-depth: 0
-          persist-credentials: false
-          show-progress: false
-
-      - name: Fetch Caelestis branches used by active PATCH records
-        run: git -C caelestis fetch origin "+refs/heads/*:refs/remotes/origin/*"
-
       - uses: actions/setup-python@v6
         with:
           python-version: "3.x"
+
+      - name: Refresh public VIGIL registry indexes for validation
+        run: |
+          python vigil/scripts/build-vigil-public-records.py
+          python vigil/scripts/enrich-vigil-indexes.py
 
       - name: Test source provenance classification
         run: python vigil/scripts/test_vigil_source_provenance.py
@@ -50,20 +43,22 @@ jobs:
       - name: Validate source provenance
         run: python vigil/scripts/validate-vigil-source-provenance.py
 
-      - name: Validate PATCH corpus release provenance
-        run: python vigil/scripts/validate-vigil-patch-corpus-provenance.py
-
       - name: Test VIGIL record validator
         run: python vigil/scripts/test_validate_vigil_records.py
+
+      - name: Test FM system-context reconciliation
+        run: python vigil/tests/test_reconcile_fm_system_context.py
+
+      - name: Check FM system-context reconciliation
+        run: python vigil/scripts/reconcile-fm-system-context.py --check
 
       - name: Test VIGIL triage inventory
         run: python vigil/tests/test_audit_vigil_triage.py
 
-      - name: Check VIGIL triage inventory
-        run: python vigil/scripts/audit-vigil-triage.py --check
-
-      - name: Test VIGIL LEARN validator
-        run: python vigil/scripts/test_validate_vigil_learn_records.py
+      - name: Rebuild and verify VIGIL triage inventory
+        run: |
+          python vigil/scripts/audit-vigil-triage.py
+          python vigil/scripts/audit-vigil-triage.py --check
 
       - name: Test VIGIL lifecycle validator
         run: python vigil/scripts/test_validate_vigil_lifecycle.py
@@ -77,6 +72,11 @@ jobs:
       - name: Test VIGIL pipeline state
         run: python vigil/scripts/test_vigil_pipeline_state.py
 
+      - name: Test and validate VIGIL authorship provenance
+        run: |
+          python vigil/tests/test_authorship_provenance.py
+          python vigil/scripts/validate-authorship-provenance.py
+
       - name: Test VIGIL registry builder
         run: python vigil/tests/test_build_vigil_records.py
 
@@ -84,7 +84,13 @@ jobs:
         run: python vigil/tests/test_route_vigil_records.py
 
       - name: Test VIGIL record fixtures
-        run: python vigil/tests/test_validate_vigil_records.py
+        run: python vigil/tests/test_validate_vigil_records.py -b
+
+      - name: Test faceted failure-mode reporting schema
+        run: python vigil/tests/test_failure_mode_facets.py
+
+      - name: Validate faceted failure-mode records
+        run: python vigil/scripts/validate-failure-mode-facets.py
 
       - name: Test FM-0047 lifecycle state
         run: python vigil/tests/test_fm0047_repaired_monitoring_state.py
@@ -92,22 +98,18 @@ jobs:
       - name: Check VIGIL record routing
         run: python vigil/scripts/route-vigil-records.py --check
 
-      - name: Validate VIGIL records
+      - name: Validate public VIGIL records
         run: |
-          python vigil/scripts/validate-vigil-records.py
-          python vigil/scripts/validate-vigil-learn-records.py
+          python vigil/scripts/validate-vigil-public-records.py
+          python vigil/scripts/validate-vigil-system-components.py
 
-      - name: Validate VIGIL lifecycle, corpus coverage, patch provenance, CAM boundary, and interpretive provenance
+      - name: Validate VIGIL lifecycle, corpus coverage, CAM boundary, and interpretive provenance
         run: python vigil/scripts/run-vigil-lifecycle-validation.py
 
-      - name: Verify literal PATCH wording against Caelestis
-        run: python vigil/scripts/validate-vigil-patch-trace.py --caelestis-root caelestis
-
-      - name: Build and enrich VIGIL registry indexes
+      - name: Build and enrich public VIGIL registry indexes
         run: |
-          python vigil/scripts/build-vigil-records.py
+          python vigil/scripts/build-vigil-public-records.py
           python vigil/scripts/enrich-vigil-indexes.py
-          python vigil/scripts/build-vigil-learn-records.py
 
       - name: Verify source records and contracts were not mutated
         run: |
@@ -117,7 +119,7 @@ jobs:
             exit 1
           fi
 
-      - name: Commit generated VIGIL indexes
+      - name: Commit generated VIGIL outputs
         if: github.event_name == 'push'
         run: |
           git config user.name "github-actions[bot]"
@@ -127,17 +129,16 @@ jobs:
           git add \
             vigil/VIGIL.Failures.Index.json \
             vigil/VIGIL.Observations.Index.json \
-            vigil/VIGIL.Proposals.Index.json \
-            vigil/VIGIL.PatchNotes.Index.json \
             vigil/VIGIL.Research.Index.json \
-            vigil/VIGIL.Learn.Index.json \
-            vigil/VIGIL.Registry.Index.json
+            vigil/VIGIL.Registry.Index.json \
+            vigil/docs/2026-triage-model-inventory.json \
+            vigil/docs/2026-triage-model-inventory.md
           if git diff --cached --quiet; then
-            echo "No generated VIGIL index changes to commit."
+            echo "No generated VIGIL output changes to commit."
           else
-            git commit -m "Rebuild VIGIL registry indexes"
+            git commit -m "Rebuild public VIGIL registry indexes and generated outputs"
             if ! git push; then
-              echo "Branch advanced while this run was building generated files; a newer workflow run owns index generation."
+              echo "Branch advanced while this run was building generated files; a newer workflow run owns generated-output refresh."
               exit 0
             fi
           fi

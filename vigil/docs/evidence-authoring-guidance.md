@@ -21,6 +21,18 @@ For external sources, records should include:
 
 Use `source_records` as the canonical evidence block. Do not add `source_data`, `source_data.sources`, or flattened one-off URL fields to individual records.
 
+
+### Evidence source platform versus affected system
+
+`source_platform` is **source provenance**: it identifies the platform, publication surface, repository, status page, social network, or other location through which the evidence is supplied. It does not, by itself, identify the AI/platform system affected by the failure. A TikTok video about ChatGPT therefore has `source_platform: "TikTok"` while the affected system remains OpenAI / ChatGPT.
+
+Where an external source identifies an affected system, populate these structured fields as well:
+
+* `system_or_product` — the affected platform, product, service, tool, or system stated by the evidence;
+* `model_or_algorithm` — the affected model, runtime, algorithm, or model family where established.
+
+Do not infer either field from the publisher or hosting platform. Where the evidence does not establish a model, use the existing bounded uncertainty convention rather than guessing.
+
 ## Source URL status conventions
 
 The current validator does not enforce a closed enum for `source_url_status`, but repository practice uses clear descriptive values. Prefer these conventions:
@@ -73,7 +85,7 @@ Internal evidence should remain internal. Do not represent it as external public
 
 `platform_or_vendor: "Multi Vendor"` is valid only when source evidence supports more than one vendor or platform. Multi Vendor records must include non-empty `vendor_cluster` and `primary_evidenced_vendors` arrays.
 
-Keep `product_or_service` to one canonical value. For genuinely multi-vendor and multi-product records, use `product_or_service: "Other"` unless one canonical product clearly controls the record. Put specific product, model, surface, and incident claims in descriptive fields and source-level metadata.
+Keep `product_or_service` to one canonical compatibility value. For genuinely multi-vendor and multi-product records, use `product_or_service: "Other"` unless one canonical product clearly controls the record. Record the actual affected vendors/products/models in `system_or_product`, `model_or_algorithm`, and the FM evidence-backed system projection; do not use `source_platform` as a substitute.
 
 ## Published research quality
 

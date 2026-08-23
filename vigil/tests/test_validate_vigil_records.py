@@ -88,18 +88,20 @@ class ValidateVigilRecordsTest(unittest.TestCase):
                 path = ROOT / "vigil" / "records" / "observations" / "2026" / f"{record_id}.json"
                 self.assertEqual(validator.validate(path), 0)
 
-    def test_clean_proposal_records_pass(self):
-        proposal_dir = ROOT / "vigil" / "records" / "proposals" / "2026"
-        for path in sorted(proposal_dir.glob("VIGIL-2026-PROP-*.json")):
-            with self.subTest(record=path.name):
-                self.assertEqual(validator.validate(path), 0)
+    def test_withdrawn_record_classes_are_absent_from_public_tree(self):
+        for folder in ("proposals", "patches", "learn"):
+            with self.subTest(folder=folder):
+                self.assertFalse(
+                    (ROOT / "vigil" / "records" / folder).exists(),
+                    f"{folder} must remain outside the public record tree",
+                )
 
-    def test_patch_seed_record_validates(self):
-        seed = ROOT / "vigil" / "records" / "patches" / "2026" / "VIGIL-2026-PATCH-0001.json"
-        self.assertEqual(validator.validate(seed), 0)
+    def test_patch_fixture_validates_without_publication(self):
+        fixture = ROOT / "vigil" / "tests" / "fixtures" / "valid" / "VIGIL-2026-PATCH-0001.json"
+        self.assertEqual(validator.validate(fixture), 0)
 
     def test_patch_note_record_type_uses_patch_prefix_and_patches_path(self):
-        fixture = ROOT / "vigil" / "records" / "patches" / "2026" / "VIGIL-2026-PATCH-0001.json"
+        fixture = ROOT / "vigil" / "tests" / "fixtures" / "valid" / "VIGIL-2026-PATCH-0001.json"
         with fixture.open(encoding="utf-8") as handle:
             record = json.load(handle)
         record["record_type"] = "patch_note"

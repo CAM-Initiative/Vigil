@@ -16,11 +16,12 @@ SPEC.loader.exec_module(AUDIT)
 
 class TriageInventoryTests(unittest.TestCase):
     def write_record(self, root, record_class, name, value):
-        path = root / "vigil" / "records" / record_class / "2026" / name
+        base = "drafts" if record_class in {"proposals", "patches", "learn"} else "records"
+        path = root / "vigil" / base / record_class / "2026" / name
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(json.dumps(value), encoding="utf-8")
 
-    def test_inventory_separates_current_work_from_severity_and_monitoring(self):
+    def test_inventory_ignores_withdrawn_draft_repair_records(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
             self.write_record(
@@ -75,8 +76,9 @@ class TriageInventoryTests(unittest.TestCase):
             self.assertEqual(row["triage_priority"], "PN")
             self.assertEqual(row["triage_status"], "monitoring")
             self.assertTrue(row["monitoring_required"])
-            self.assertTrue(row["linked_patch_records_exist"])
-            self.assertTrue(row["evidence_chain_appears_complete"])
+            self.assertFalse(row["linked_patch_records_exist"])
+            self.assertFalse(row["learn_record_exists"])
+            self.assertFalse(row["evidence_chain_appears_complete"])
             self.assertEqual(row["review_flags"], [])
 
     def test_legacy_values_are_flagged_without_being_rewritten(self):
@@ -110,10 +112,10 @@ class TriageInventoryTests(unittest.TestCase):
             self.assertIn("priority-may-contain-severity", row["review_flags"])
             self.assertIn("legacy-severity-mapping-required", row["review_flags"])
 
-
     def test_current_corpus_is_fully_reconciled_to_model_2(self):
         inventory = AUDIT.build_inventory(AUDIT.ROOT)
-        self.assertEqual(inventory["scope"]["record_count"], 57)
+        canonical_failure_count = len(AUDIT.record_files(AUDIT.ROOT, "failures"))
+        self.assertEqual(inventory["scope"]["record_count"], canonical_failure_count)
         self.assertTrue(inventory["migration_safety"]["records_reconciled"])
         self.assertEqual(inventory["migration_safety"]["phase"], "pass-3-record-reconciliation")
         self.assertTrue(all(not row["review_flags"] for row in inventory["records"]))

@@ -1,160 +1,24 @@
 #!/usr/bin/env python3
+"""Regression check for the current public LEARN boundary.
+
+LEARN records are intentionally withdrawn to ``vigil/drafts`` while their design,
+schema, and publication model are under review. Public validation must therefore
+not load or resolve them.
+"""
+
 from __future__ import annotations
 
-import copy
-import importlib.util
-import json
-import sys
 import unittest
 from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).resolve().parent
-MODULE_PATH = SCRIPT_DIR / "validate-vigil-learn-records.py"
-SPEC = importlib.util.spec_from_file_location("validate_vigil_learn_records", MODULE_PATH)
-if SPEC is None or SPEC.loader is None:
-    raise RuntimeError("Unable to load VIGIL LEARN validator")
-VALIDATOR = importlib.util.module_from_spec(SPEC)
-sys.modules[SPEC.name] = VALIDATOR
-SPEC.loader.exec_module(VALIDATOR)
-
 VIGIL_DIR = SCRIPT_DIR.parent
-SCHEMA = json.loads((VIGIL_DIR / "VIGIL.Learn.Schema.json").read_text(encoding="utf-8"))
-EXEMPLAR = json.loads(
-    (
-        VIGIL_DIR
-        / "records"
-        / "learn"
-        / "2026"
-        / "VIGIL-2026-LEARN-0001.json"
-    ).read_text(encoding="utf-8")
-)
+PUBLIC_LEARN_ROOT = VIGIL_DIR / "records" / "learn"
 
 
-class LearnCompletionContractTests(unittest.TestCase):
-    def setUp(self) -> None:
-        self.records = VALIDATOR.canonical_records()
-
-    def validate(self, record):
-        return VALIDATOR.validate_record(
-            Path(f"{record['id']}.json"),
-            record,
-            SCHEMA,
-            {**self.records, record["id"]: record},
-        )
-
-    def proposal_optional_record(self):
-        record = copy.deepcopy(EXEMPLAR)
-        record["learning_basis"]["proposal_records"] = []
-        record["linked_records"]["related_proposals"] = []
-        record["report_section_sources"]["section_02_record"]["record_ids"] = [
-            "VIGIL-2026-FM-0044",
-            "VIGIL-2026-PATCH-0025",
-            "VIGIL-2026-LEARN-0001",
-        ]
-        record["report_section_sources"]["section_04_diagnosis"] = {
-            "record_ids": [
-                "VIGIL-2026-FM-0044",
-                "VIGIL-2026-PATCH-0025",
-            ],
-            "source_fields": ["triage", "change_details"],
-            "basis": "The FM and PATCH populate diagnosis without a separate proposal.",
-        }
-        return record
-
-    def test_complete_sections_do_not_require_proposal(self):
-        errors = self.validate(self.proposal_optional_record())
-        self.assertEqual(errors, [])
-
-    def test_declared_source_field_must_exist(self):
-        record = self.proposal_optional_record()
-        record["report_section_sources"]["section_04_diagnosis"]["source_fields"] = [
-            "field_that_does_not_exist"
-        ]
-        errors = self.validate(record)
-        self.assertTrue(any("field_that_does_not_exist" in error for error in errors))
-
-    def test_section_five_must_cite_authoritative_patch(self):
-        record = self.proposal_optional_record()
-        record["report_section_sources"]["section_05_repair"]["record_ids"] = [
-            "VIGIL-2026-FM-0044"
-        ]
-        errors = self.validate(record)
-        self.assertTrue(any("section_05_repair must cite a PATCH" in error for error in errors))
-
-    def test_published_learn_requires_reasoning_and_integration_fields(self):
-        for field in (
-            "governance_misconception",
-            "integrated_learning",
-            "risk_if_not_integrated",
-        ):
-            with self.subTest(field=field):
-                record = copy.deepcopy(EXEMPLAR)
-                del record[field]
-                errors = self.validate(record)
-                self.assertTrue(any(field in error for error in errors))
-
-    def test_published_learn_rejects_empty_integration_fields(self):
-        for field in (
-            "governance_misconception",
-            "integrated_learning",
-            "risk_if_not_integrated",
-        ):
-            with self.subTest(field=field):
-                record = copy.deepcopy(EXEMPLAR)
-                record[field] = []
-                errors = self.validate(record)
-                self.assertTrue(any(field in error for error in errors))
-
-    def test_published_learn_rejects_malformed_integration_fields(self):
-        for field in (
-            "governance_misconception",
-            "integrated_learning",
-            "risk_if_not_integrated",
-        ):
-            with self.subTest(field=field):
-                record = copy.deepcopy(EXEMPLAR)
-                record[field] = ["Valid statement", 7]
-                errors = self.validate(record)
-                self.assertTrue(any(field in error for error in errors))
-
-    def test_published_learn_rejects_legacy_field(self):
-        record = copy.deepcopy(EXEMPLAR)
-        record["must_not_be_forgotten"] = ["Legacy wording"]
-        errors = self.validate(record)
-        self.assertTrue(any("legacy must_not_be_forgotten" in error for error in errors))
-
-    def test_section_six_requires_all_closure_fields(self):
-        record = copy.deepcopy(EXEMPLAR)
-        record["report_section_sources"]["section_06_learn"]["source_fields"].remove(
-            "risk_if_not_integrated"
-        )
-        errors = self.validate(record)
-        self.assertTrue(any("all required LEARN closure fields" in error for error in errors))
-
-    def test_published_learn_requires_first_occurrence_date(self):
-        record = copy.deepcopy(EXEMPLAR)
-        del record["case_context"]["first_occurrence_date"]
-        errors = self.validate(record)
-        self.assertTrue(any("first_occurrence_date" in error for error in errors))
-
-    def test_published_learn_rejects_generic_failure_family_as_mode(self):
-        record = copy.deepcopy(EXEMPLAR)
-        record["failure_taxonomy_links"][0]["canonical_failure_name"] = "Security & Integrity Failures"
-        record["failure_taxonomy_links"][0]["taxonomy_reference"] = (
-            "CAM-EQ2026-OPERATIONS-003-SUP-01 Appendix B — Security & Integrity Failures"
-        )
-        errors = self.validate(record)
-        self.assertTrue(any("specific CAM failure mode" in error for error in errors))
-        self.assertTrue(any("specific adopted CAM failure clause" in error for error in errors))
-
-    def test_learn_taxonomy_must_match_authoritative_failure_record(self):
-        record = copy.deepcopy(EXEMPLAR)
-        record["failure_taxonomy_links"][0]["taxonomy_reference"] = (
-            "CAM-EQ2026-OPERATIONS-003-SUP-01 §3.8.7 — Constraint Drift Failure; "
-            "primary classification OPS.FF.GOVERNANCE"
-        )
-        errors = self.validate(record)
-        self.assertTrue(any("must exactly match the authoritative" in error for error in errors))
+class LearnPublicBoundaryTests(unittest.TestCase):
+    def test_no_public_learn_record_tree_exists(self) -> None:
+        self.assertFalse(PUBLIC_LEARN_ROOT.exists())
 
 
 if __name__ == "__main__":

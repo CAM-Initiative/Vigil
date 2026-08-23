@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "VIGIL.FailureMode.Schema.json",
-  "description": "Failure Mode records require classification, versioned severity and triage state, external ecosystem status, CAM repair status, implementation verification, and current-corpus coverage. Model 2.0 is strict; legacy records are reconciled in Pass 3.",
+  "description": "Failure Mode records require structural classification, versioned severity and triage state, external ecosystem status, CAM repair status, implementation verification, and current-corpus coverage. Optional faceted failure analysis separates what failed from manifestation, cause, locus, observability, propagation, evidence state, and repair responsibility without forcing retrospective inference into legacy records. Model 2.0 triage remains strict.",
   "allOf": [
     {
       "$ref": "VIGIL.Base.Schema.json"
@@ -430,6 +430,7 @@
             "governance",
             "infrastructure-continuity",
             "classification",
+            "economic-legitimacy",
             "provisional"
           ]
         },
@@ -450,6 +451,7 @@
               "governance",
               "infrastructure-continuity",
               "classification",
+              "economic-legitimacy",
               "provisional"
             ]
           }
@@ -462,6 +464,222 @@
         },
         "visibility": {
           "type": "string"
+        },
+        "faceted_analysis": {
+          "type": "object",
+          "description": "Optional structured reporting facets. These dimensions complement the canonical failure family and must not be treated as substitutes for severity, cause evidence, or taxonomy classification.",
+          "required": [
+            "schema_version",
+            "event_state",
+            "failure_locus",
+            "observability",
+            "evidence_state",
+            "propagation"
+          ],
+          "properties": {
+            "schema_version": {
+              "const": "1.0"
+            },
+            "event_state": {
+              "enum": [
+                "anomaly",
+                "hazard",
+                "near-miss",
+                "incident",
+                "confirmed-failure",
+                "unknown"
+              ]
+            },
+            "manifestation": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "uniqueItems": true
+            },
+            "mechanism_or_cause": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "uniqueItems": true
+            },
+            "cause_status": {
+              "enum": [
+                "unknown",
+                "hypothesised",
+                "corroborated",
+                "reproduced",
+                "root-cause-confirmed",
+                "not-applicable"
+              ]
+            },
+            "failure_locus": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": {
+                "enum": [
+                  "model",
+                  "harness",
+                  "orchestration",
+                  "agent-agent-interface",
+                  "model-harness-interface",
+                  "memory",
+                  "retrieval",
+                  "tool",
+                  "tool-environment-interface",
+                  "data-pipeline",
+                  "provider-service",
+                  "cross-provider-interface",
+                  "user-interface",
+                  "evaluator",
+                  "human-workflow",
+                  "external-environment",
+                  "other",
+                  "unknown"
+                ]
+              }
+            },
+            "repair_side": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "enum": [
+                  "model",
+                  "harness",
+                  "orchestration",
+                  "agent-agent-interface",
+                  "model-harness-interface",
+                  "memory",
+                  "retrieval",
+                  "tool",
+                  "tool-environment-interface",
+                  "data-pipeline",
+                  "provider-service",
+                  "cross-provider-interface",
+                  "user-interface",
+                  "evaluator",
+                  "human-workflow",
+                  "governance",
+                  "multi-party",
+                  "external-environment",
+                  "other",
+                  "unknown"
+                ]
+              }
+            },
+            "execution_phase": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "enum": [
+                  "intake",
+                  "planning",
+                  "reasoning",
+                  "delegation",
+                  "retrieval",
+                  "tool-selection",
+                  "tool-execution",
+                  "inter-agent-handoff",
+                  "verification",
+                  "completion-assessment",
+                  "output-generation",
+                  "post-processing",
+                  "monitoring",
+                  "change-management",
+                  "unknown",
+                  "not-applicable"
+                ]
+              }
+            },
+            "observability": {
+              "enum": [
+                "overt",
+                "latent",
+                "silent",
+                "differentially-observable",
+                "externally-detected",
+                "user-reported",
+                "unknown"
+              ]
+            },
+            "evidence_state": {
+              "enum": [
+                "reported",
+                "observed",
+                "corroborated",
+                "reproduced",
+                "root-cause-confirmed",
+                "provisional",
+                "unknown"
+              ]
+            },
+            "effect_or_harm": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "uniqueItems": true
+            },
+            "propagation": {
+              "enum": [
+                "local",
+                "downstream",
+                "cascading",
+                "cross-provider",
+                "systemic",
+                "unknown"
+              ]
+            },
+            "completion_state": {
+              "enum": [
+                "completed",
+                "premature-termination",
+                "non-termination",
+                "false-completion",
+                "unknown",
+                "not-applicable"
+              ]
+            },
+            "verification_state": {
+              "enum": [
+                "not-attempted",
+                "incomplete",
+                "incorrect",
+                "passed",
+                "failed",
+                "unknown",
+                "not-applicable"
+              ]
+            },
+            "execution_pattern": {
+              "enum": [
+                "single-pass",
+                "repeated-step",
+                "looping",
+                "retry-amplification",
+                "degraded-but-functional",
+                "unknown",
+                "not-applicable"
+              ]
+            },
+            "reporting_notes": {
+              "type": "string"
+            },
+            "external_taxonomy_refs": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "additionalProperties": false
         }
       }
     },

@@ -10,6 +10,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[2]
 VIGIL = ROOT / "vigil"
 RECORDS = VIGIL / "records"
+DRAFTS = VIGIL / "drafts"
 WORKFLOW = ROOT / ".github" / "workflows" / "vigil-records.yml"
 
 ALLOWED = {
@@ -24,8 +25,10 @@ ALLOWED = {
 }
 
 PROVENANCE_PURPOSE = (
-    "Interpretive provenance identifies the AI analytical reviewer, human governance editor, "
-    "capability profile, source modality, primary-artefact access, and review limitations."
+    "Interpretive provenance identifies AI source analysis, capability profile, source modality, "
+    "primary-artefact access, review limitations, and historical authority context. Authorship, "
+    "human-review, and human-verification status are governed separately by "
+    "vigil/provenance/AUTHORSHIP-PROVENANCE.json."
 )
 
 
@@ -40,31 +43,27 @@ def record(record_id: str, folder: str) -> dict[str, Any]:
 
 
 def main() -> None:
-    for folder in ("observations", "failures", "proposals", "patches"):
+    for withdrawn in ("proposals", "patches", "learn"):
+        assert not (RECORDS / withdrawn).exists(), f"{withdrawn} must not be in the public record tree"
+        assert (DRAFTS / withdrawn).exists(), f"{withdrawn} draft archive is missing"
+
+    master = load(VIGIL / "VIGIL.Registry.Index.json")
+    assert set(master.get("registries", {})) == {"failure_modes", "observations", "research"}
+    counts = master.get("record_count", {})
+    assert set(counts) == {"failure_modes", "observations", "research", "total"}
+    assert not any(
+        isinstance(item, dict)
+        and item.get("record_type") in {"proposal", "patch", "patch_note", "learn"}
+        for item in master.get("records", [])
+    ), "withdrawn record classes must not appear in the public master registry"
+
+    for folder in ("observations", "failures"):
         for path in sorted((RECORDS / folder).rglob("*.json")):
             item = load(path)
             state = item.get("record_state")
             assert state in ALLOWED, f"{path}: non-canonical record_state {state!r}"
 
             record_type = item.get("record_type")
-            if record_type in {"patch", "patch_note"} and item.get("date_implemented"):
-                implementation = item.get("corpus_implementation", {})
-                canonical_state = (
-                    implementation.get("canonical_state")
-                    if isinstance(implementation, dict)
-                    else None
-                )
-                expected = {
-                    "canonical-main": "closed-actioned",
-                    "historical-canonical": "closed-actioned",
-                    "branch-only": "active",
-                    "unverified": "active",
-                }.get(canonical_state)
-                if expected is not None:
-                    assert state == expected, (
-                        f"{path}: {canonical_state} patch must be {expected}"
-                    )
-
             if record_type == "failure_mode" and state not in {"draft", "scaffolding"}:
                 repair = item.get("repair_status", {})
                 status = repair.get("status") if isinstance(repair, dict) else None
@@ -77,26 +76,6 @@ def main() -> None:
                 }.get(status)
                 if expected is not None:
                     assert state == expected, f"{path}: {status} failure must be {expected}"
-
-            if record_type == "proposal" and state not in {"draft", "scaffolding"}:
-                resolution = item.get("resolution_status", {})
-                status = resolution.get("status") if isinstance(resolution, dict) else None
-                expected = {
-                    "resolved-by-patch": "closed-actioned",
-                    "closed-no-action": "closed-no-action",
-                    "deferred": "deferred",
-                    "superseded": "superseded",
-                    "open": "active",
-                    "routed": "active",
-                }.get(status)
-                if expected is not None:
-                    assert state == expected, f"{path}: {status} proposal must be {expected}"
-
-    prop = record("VIGIL-2026-PROP-0001", "proposals")
-    assert prop["record_state"] == "closed-actioned"
-    assert prop["resolution_status"]["status"] == "resolved-by-patch"
-    assert "VIGIL-2026-PATCH-0023" in prop["resolution_status"]["resolved_by"]
-    assert (RECORDS / "patches" / "2026" / "VIGIL-2026-PATCH-0023.json").exists()
 
     fm8 = record("VIGIL-2026-FM-0008", "failures")
     assert fm8["failure_classification"]["failure_family"] == "governance"
@@ -144,21 +123,12 @@ def main() -> None:
     assert record("VIGIL-2026-OBS-0013", "observations")["record_state"] == "closed-actioned"
     assert record("VIGIL-2026-OBS-0007", "observations")["record_state"] == "active"
 
-    patch25 = record("VIGIL-2026-PATCH-0025", "patches")
-    assert patch25["record_state"] == "closed-actioned"
-    assert patch25["corpus_implementation"]["canonical_state"] == "canonical-main"
-
     fm44 = record("VIGIL-2026-FM-0044", "failures")
     assert fm44["record_state"] == "monitoring"
     assert fm44["repair_status"]["status"] == "repaired"
     assert fm44["corpus_coverage"]["classification"] == "implemented-repair"
     assert fm44["ecosystem_status"]["status"] == "active"
     assert fm44["repair_status"]["remaining_gaps"]
-
-    prop17 = record("VIGIL-2026-PROP-0017", "proposals")
-    assert prop17["record_state"] == "closed-actioned"
-    assert prop17["resolution_status"]["status"] == "resolved-by-patch"
-    assert prop17["resolution_status"]["resolved_by"] == ["VIGIL-2026-PATCH-0025"]
 
     schema = load(VIGIL / "VIGIL.Schema.json")
     assert str(schema.get("purpose", "")).count(PROVENANCE_PURPOSE) == 1
@@ -172,10 +142,15 @@ def main() -> None:
         "reconcile-vigil-",
         "run-vigil-reconciliation.py",
         "git add vigil\n",
+        "build-vigil-learn-records.py",
+        "vigil/VIGIL.Proposals.Index.json",
+        "vigil/VIGIL.PatchNotes.Index.json",
+        "vigil/VIGIL.Learn.Index.json",
     ):
-        assert forbidden not in workflow, f"workflow must not run or broadly stage source mutation: {forbidden}"
+        assert forbidden not in workflow, f"workflow must not publish or broadly stage withdrawn material: {forbidden}"
     assert "route-vigil-records.py --check" in workflow
-    assert "Rebuild VIGIL registry indexes" in workflow
+    assert "build-vigil-public-records.py" in workflow
+    assert "Build and enrich public VIGIL registry indexes" in workflow
 
     print("VIGIL pipeline-state hygiene tests passed.")
 

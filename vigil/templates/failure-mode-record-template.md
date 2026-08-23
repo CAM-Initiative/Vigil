@@ -11,37 +11,63 @@ Failure Mode records capture confirmed, strongly evidenced, recurring, or suffic
 * Use authoritative proposal and PATCH arrays only for this failure's own repair chain.
 * Put adjacent failures, shared controls, contrasts, and precedents in `linked_records.contextual_relations` with `chain_inclusion: false`.
 * Include `failure_mode_definition`, `failure_threshold`, `failure_classification`, and `triage`; `failure_classification` must include `failure_family`, `canonical_failure_group`, `taxonomy_reference`, `related_failure_groups`, `persistence`, `reproducibility`, and `visibility`.
+* `failure_classification.faceted_analysis` is additive. Existing records do not require retrospective facet population. New or materially reassessed records SHOULD use it when evidence permits.
 * Do not include proposal implementation claims or patch-note fields.
 * CAM routing must use affected CAM routing only: `cam_internal.affected_*` fields because the record has triage-relevant failure classification.
 
 Required FM sections are identity, summary, CAM relevance, failure definition, threshold, evidence confidence, `source_records`, system context (including `platform_or_vendor`, `product_or_service`, `specific_model_or_runtime`, and `interface_surface`), failure classification, triage, jurisdictional context, linked records, and affected CAM routing.
 
+## Faceted failure reporting
 
-## Multi Vendor authoring
+The canonical failure family answers **what failed**. It must not be used as a container for every other incident-reporting dimension.
 
-Use `platform_or_vendor: "Multi Vendor"` only when the record is genuinely supported by source evidence from more than one vendor or platform.
+Where evidence permits, use `failure_classification.faceted_analysis` to keep the following questions separate:
 
-Multi Vendor records must include non-empty `vendor_cluster` and `primary_evidenced_vendors` arrays. `product_or_service` must remain a single canonical value, not a comma-separated product or surface list. For genuinely multi-product / multi-vendor records, use `product_or_service: "Other"` unless a single canonical product clearly controls the record. Put detailed product, model, surface, deployment, and incident facts in `interface_surface`, `model_or_product`, `deployment_context`, and `source_records`.
+* `event_state` — whether the record concerns an anomaly, hazard, near miss, incident, confirmed failure, or an unresolved state;
+* `manifestation` — what was actually observed or represented at the interaction/system surface;
+* `mechanism_or_cause` and `cause_status` — the candidate mechanism and how strongly causation is established;
+* `failure_locus` — the component or interface at which the failure arose or became observable;
+* `repair_side` — where remediation responsibility currently belongs; this may differ from the failure locus;
+* `execution_phase` — where in the execution trajectory the failure occurred;
+* `observability` — overt, latent, silent, differentially observable, externally detected, user reported, or unknown;
+* `evidence_state` — reported, observed, corroborated, reproduced, root-cause confirmed, provisional, or unknown;
+* `effect_or_harm` — the resulting or evidenced consequence, kept separate from severity;
+* `propagation` — local, downstream, cascading, cross-provider, systemic, or unknown;
+* `completion_state` — including premature termination, non-termination, and false completion;
+* `verification_state` — whether verification was absent, incomplete, incorrect, passed, failed, or unresolved; and
+* `execution_pattern` — including repeated-step, looping, retry amplification, and degraded-but-functional execution.
 
-Example:
+`external_taxonomy_refs` may cite an external taxonomy, standard or reporting framework used to support a classification, but those references do not change the authority of the VIGIL record or establish conformance.
 
-```json
-"system_context": {
-  "platform_or_vendor": "Multi Vendor",
-  "vendor_cluster": [
-    "OpenAI",
-    "Anthropic"
-  ],
-  "primary_evidenced_vendors": [
-    "OpenAI",
-    "Anthropic"
-  ],
-  "product_or_service": "Other",
-  "interface_surface": "Multiple evidenced access surfaces; specify details in source_records and deployment_context."
-}
-```
+Do not infer a root cause because the schema offers a field. Use `unknown`, `hypothesised`, or `provisional` states where the available evidence does not support a stronger conclusion. A user-visible symptom may arise at one locus while remediation belongs at a different component or governance layer.
 
-Rationale: Multi-vendor records require separated vendor evidence because top-level database fields are controlled values for indexing, filtering, validation, and UI routing. Detailed vendor, product, surface, and source claims belong in evidence metadata, not comma-combined canonical fields.
+The faceted block is intentionally optional for legacy records. Absence means the facets have not been recorded; it does not imply a negative finding.
+
+## Evidence-backed system context
+
+`system_context` separates **failure scope**, **affected-system identity**, and **evidence-source provenance**.
+
+`source_records[].source_platform` identifies where evidence is hosted, published, or observed. It may therefore be `TikTok`, `Reddit`, `GitHub`, a news publisher, a status page, or another evidence surface. **Do not treat `source_platform` as the affected AI/platform vendor.**
+
+Use these source-level fields for affected-system identity where the evidence package supports them:
+
+* `system_or_product` — affected system, product, service, platform surface, or tool;
+* `model_or_algorithm` — affected model, runtime, algorithm, or model family where established.
+
+Failure-mode records maintain the normalized projection:
+
+* `evidence_scope` — `single-provider`, `multi-provider`, `provider-unresolved`, `system-unresolved`, or `not-applicable`;
+* `evidenced_vendors` — concrete affected providers/vendors established by structured metadata;
+* `evidenced_products_or_services` — concrete affected products/services;
+* `evidenced_models_or_runtimes` — concrete model/runtime names;
+* `evidenced_systems` — traceable per-evidence system projections including `projection_basis`; and
+* `evidence_projection` — derivation basis, method, reconciliation date, and inference boundary.
+
+For older records created before `system_or_product` and `model_or_algorithm` were populated consistently, a **concrete pre-existing FM `system_context`** may be used as a bounded compatibility fallback. This fallback must remain linked to actual evidence records and must not be used to manufacture additional vendors or models.
+
+`platform_or_vendor: "Multi Vendor"` is a scope summary only. It is valid when the normalized evidence supports more than one affected provider, but public interfaces should display the concrete `evidenced_vendors`, products, and models/runtimes rather than presenting `Multi Vendor`, `Other`, or `Unknown` as if those were system identities.
+
+Do **not** mine narrative `source_context`, `relevance_note`, article titles, publisher prose, or social-media captions to manufacture affected-system identity. If structured metadata and the existing concrete FM context are insufficient, preserve `provider-unresolved` or `system-unresolved` and repair the evidence metadata separately.
 
 ## Severity and triage model 2.0
 

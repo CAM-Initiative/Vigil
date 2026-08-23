@@ -182,6 +182,29 @@ SYSTEM_CONTEXT_REQUIRED = {
     "specific_model_or_runtime",
     "interface_surface",
 }
+
+
+FM_EVIDENCE_SCOPE_VALUES = {
+    "single-provider",
+    "multi-provider",
+    "provider-unresolved",
+    "system-unresolved",
+    "not-applicable",
+}
+FM_EVIDENCE_CONTEXT_REQUIRED = {
+    "evidence_scope",
+    "evidenced_vendors",
+    "evidenced_products_or_services",
+    "evidenced_models_or_runtimes",
+    "evidenced_systems",
+    "evidence_projection",
+}
+FM_EVIDENCE_PROJECTION_REQUIRED = {
+    "basis",
+    "method",
+    "reconciled_on",
+    "inference_boundary",
+}
 ID_PREFIX = {
     "observation": "OBS",
     "failure_mode": "FM",
@@ -908,6 +931,161 @@ def _validate_runtime_entries(
                 _validate_string_list(path, f"{label}.{field}", entry.get(field), errors)
 
 
+
+def _unique_non_empty_strings(
+    path: Path,
+    label: str,
+    value: Any,
+    errors: list[str],
+) -> list[str]:
+    if not isinstance(value, list):
+        errors.append(f"{path}: {label} must be an array")
+        return []
+    if any(not isinstance(item, str) or not item.strip() for item in value):
+        errors.append(f"{path}: {label} must contain only non-empty strings")
+        return []
+    if len(value) != len(set(value)):
+        errors.append(f"{path}: {label} must not contain duplicates")
+    return value
+
+
+def validate_fm_evidence_system_context(
+    path: Path,
+    context: dict[str, Any],
+    errors: list[str],
+) -> None:
+    missing = sorted(field for field in FM_EVIDENCE_CONTEXT_REQUIRED if field not in context)
+    if missing:
+        errors.append(
+            f"{path}: FM system_context missing evidence-backed fields: {', '.join(missing)}"
+        )
+        return
+
+    scope = context.get("evidence_scope")
+    if scope not in FM_EVIDENCE_SCOPE_VALUES:
+        errors.append(
+            f"{path}: system_context.evidence_scope {scope!r} is invalid; expected one of "
+            f"{', '.join(sorted(FM_EVIDENCE_SCOPE_VALUES))}"
+        )
+
+    vendors = _unique_non_empty_strings(
+        path, "system_context.evidenced_vendors", context.get("evidenced_vendors"), errors
+    )
+    products = _unique_non_empty_strings(
+        path,
+        "system_context.evidenced_products_or_services",
+        context.get("evidenced_products_or_services"),
+        errors,
+    )
+    models = _unique_non_empty_strings(
+        path,
+        "system_context.evidenced_models_or_runtimes",
+        context.get("evidenced_models_or_runtimes"),
+        errors,
+    )
+
+    systems = context.get("evidenced_systems")
+    union_vendors: list[str] = []
+    union_products: list[str] = []
+    union_models: list[str] = []
+    if not isinstance(systems, list):
+        errors.append(f"{path}: system_context.evidenced_systems must be an array")
+        systems = []
+    else:
+        for index, system in enumerate(systems):
+            label = f"system_context.evidenced_systems[{index}]"
+            if not isinstance(system, dict):
+                errors.append(f"{path}: {label} must be an object")
+                continue
+            source_title = system.get("source_title")
+            if not isinstance(source_title, str) or not source_title.strip():
+                errors.append(f"{path}: {label}.source_title must be a non-empty string")
+            for optional_field in ("source_url", "deployment_context"):
+                value = system.get(optional_field)
+                if value is not None and (not isinstance(value, str) or not value.strip()):
+                    errors.append(f"{path}: {label}.{optional_field} must be a non-empty string when present")
+            entry_vendors = _unique_non_empty_strings(
+                path, f"{label}.providers_or_vendors", system.get("providers_or_vendors"), errors
+            )
+            entry_products = _unique_non_empty_strings(
+                path, f"{label}.products_or_services", system.get("products_or_services"), errors
+            )
+            entry_models = _unique_non_empty_strings(
+                path, f"{label}.models_or_runtimes", system.get("models_or_runtimes"), errors
+            )
+            if not (entry_vendors or entry_products or entry_models):
+                errors.append(f"{path}: {label} must identify at least one provider, product, model, or runtime")
+            for item in entry_vendors:
+                if item not in union_vendors:
+                    union_vendors.append(item)
+            for item in entry_products:
+                if item not in union_products:
+                    union_products.append(item)
+            for item in entry_models:
+                if item not in union_models:
+                    union_models.append(item)
+
+    if vendors != union_vendors:
+        errors.append(
+            f"{path}: system_context.evidenced_vendors must equal the ordered union of evidenced_systems providers"
+        )
+    if products != union_products:
+        errors.append(
+            f"{path}: system_context.evidenced_products_or_services must equal the ordered union of "
+            "evidenced_systems products"
+        )
+    if models != union_models:
+        errors.append(
+            f"{path}: system_context.evidenced_models_or_runtimes must equal the ordered union of "
+            "evidenced_systems models/runtimes"
+        )
+
+    if scope == "multi-provider" and len(vendors) < 2:
+        errors.append(f"{path}: multi-provider evidence_scope requires at least two evidenced_vendors")
+    if scope == "single-provider" and len(vendors) != 1:
+        errors.append(f"{path}: single-provider evidence_scope requires exactly one evidenced_vendor")
+    if scope in {"provider-unresolved", "system-unresolved", "not-applicable"} and vendors:
+        errors.append(f"{path}: {scope} evidence_scope must not contain evidenced_vendors")
+    if scope in {"system-unresolved", "not-applicable"} and (products or models or systems):
+        errors.append(f"{path}: {scope} evidence_scope must not contain concrete evidenced systems")
+    if scope == "provider-unresolved" and not (products or models):
+        errors.append(
+            f"{path}: provider-unresolved evidence_scope requires an evidenced product/model with unresolved provider"
+        )
+
+    platform = context.get("platform_or_vendor")
+    if platform == "Multi Vendor" and scope != "multi-provider":
+        errors.append(f"{path}: platform_or_vendor 'Multi Vendor' requires evidence_scope 'multi-provider'")
+    if scope == "multi-provider" and platform != "Multi Vendor":
+        errors.append(f"{path}: multi-provider evidence_scope requires platform_or_vendor 'Multi Vendor'")
+
+    if vendors:
+        for compatibility_field in ("vendor_cluster", "primary_evidenced_vendors"):
+            value = context.get(compatibility_field)
+            if value != vendors:
+                errors.append(
+                    f"{path}: system_context.{compatibility_field} must equal evidenced_vendors for reconciled FMs"
+                )
+
+    projection = context.get("evidence_projection")
+    if not isinstance(projection, dict):
+        errors.append(f"{path}: system_context.evidence_projection must be an object")
+    else:
+        missing_projection = sorted(
+            field for field in FM_EVIDENCE_PROJECTION_REQUIRED if is_blank(projection.get(field))
+        )
+        if missing_projection:
+            errors.append(
+                f"{path}: system_context.evidence_projection missing required fields: "
+                f"{', '.join(missing_projection)}"
+            )
+        reconciled_on = projection.get("reconciled_on")
+        if isinstance(reconciled_on, str) and not re.fullmatch(r"\d{4}-\d{2}-\d{2}", reconciled_on):
+            errors.append(
+                f"{path}: system_context.evidence_projection.reconciled_on must use YYYY-MM-DD"
+            )
+
+
 def validate_runtime_conformance(path: Path, record: dict[str, Any], errors: list[str]) -> None:
     block = record.get("runtime_conformance")
     if block is None:
@@ -1242,6 +1420,7 @@ def validate_record(
             errors.append(f"{path}: OBS contains forbidden patch_status; patch state belongs in PATCH records")
     elif record_type == "failure_mode":
         add_missing(errors, path, record, FM_REQUIRED)
+        validate_fm_evidence_system_context(path, system_context, errors)
         validate_repair_status(path, record, errors, warnings)
         validate_triage_model(path, record, errors)
         classification = record.get("failure_classification")
