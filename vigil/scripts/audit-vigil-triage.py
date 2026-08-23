@@ -41,8 +41,7 @@ def load_json(path: Path) -> dict[str, Any]:
 
 
 def record_files(root: Path, record_class: str) -> list[Path]:
-    base = "drafts" if record_class in {"proposals", "patches", "learn"} else "records"
-    return sorted((root / "vigil" / base / record_class).rglob("*.json"))
+    return sorted((root / "vigil" / "records" / record_class).rglob("*.json"))
 
 
 def count(values: Iterable[Any]) -> dict[str, int]:
