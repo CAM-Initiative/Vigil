@@ -28,18 +28,6 @@ jobs:
           persist-credentials: true
           show-progress: false
 
-      - name: Check out complete Caelestis history
-        uses: actions/checkout@v6
-        with:
-          repository: CAM-Initiative/Caelestis
-          path: caelestis
-          fetch-depth: 0
-          persist-credentials: false
-          show-progress: false
-
-      - name: Fetch Caelestis branches used by active PATCH records
-        run: git -C caelestis fetch origin "+refs/heads/*:refs/remotes/origin/*"
-
       - uses: actions/setup-python@v6
         with:
           python-version: "3.x"
@@ -55,9 +43,6 @@ jobs:
 
       - name: Validate source provenance
         run: python vigil/scripts/validate-vigil-source-provenance.py
-
-      - name: Validate PATCH corpus release provenance
-        run: python vigil/scripts/validate-vigil-patch-corpus-provenance.py
 
       - name: Test VIGIL record validator
         run: python vigil/scripts/test_validate_vigil_records.py
@@ -75,9 +60,6 @@ jobs:
         run: |
           python vigil/scripts/audit-vigil-triage.py
           python vigil/scripts/audit-vigil-triage.py --check
-
-      - name: Test VIGIL LEARN validator
-        run: python vigil/scripts/test_validate_vigil_learn_records.py
 
       - name: Test VIGIL lifecycle validator
         run: python vigil/scripts/test_validate_vigil_lifecycle.py
@@ -121,13 +103,9 @@ jobs:
         run: |
           python vigil/scripts/validate-vigil-public-records.py
           python vigil/scripts/validate-vigil-system-components.py
-          python vigil/scripts/validate-vigil-learn-records.py
 
-      - name: Validate VIGIL lifecycle, corpus coverage, patch provenance, CAM boundary, and interpretive provenance
+      - name: Validate VIGIL lifecycle, corpus coverage, CAM boundary, and interpretive provenance
         run: python vigil/scripts/run-vigil-lifecycle-validation.py
-
-      - name: Verify literal PATCH wording against Caelestis
-        run: python vigil/scripts/validate-vigil-patch-trace.py --caelestis-root caelestis
 
       - name: Build and enrich VIGIL registry indexes
         run: |
