@@ -21,7 +21,7 @@ class TriageInventoryTests(unittest.TestCase):
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(json.dumps(value), encoding="utf-8")
 
-    def test_inventory_separates_current_work_from_severity_and_monitoring(self):
+    def test_inventory_ignores_withdrawn_draft_repair_records(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
             self.write_record(
@@ -76,8 +76,9 @@ class TriageInventoryTests(unittest.TestCase):
             self.assertEqual(row["triage_priority"], "PN")
             self.assertEqual(row["triage_status"], "monitoring")
             self.assertTrue(row["monitoring_required"])
-            self.assertTrue(row["linked_patch_records_exist"])
-            self.assertTrue(row["evidence_chain_appears_complete"])
+            self.assertFalse(row["linked_patch_records_exist"])
+            self.assertFalse(row["learn_record_exists"])
+            self.assertFalse(row["evidence_chain_appears_complete"])
             self.assertEqual(row["review_flags"], [])
 
     def test_legacy_values_are_flagged_without_being_rewritten(self):
