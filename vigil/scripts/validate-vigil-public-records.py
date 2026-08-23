@@ -1,15 +1,14 @@
 #!/usr/bin/env python3
-"""Validate the public VIGIL record set while resolving withdrawn draft references.
+"""Validate the canonical/public VIGIL record set.
 
-PROP, PATCH and LEARN records under ``vigil/drafts`` are retained working material.
-They may satisfy referential-integrity checks from public records, but they are not
-validated as canonical/public records and are not publication inputs.
+Only records under ``vigil/records`` participate in public validation and reference
+resolution. PROP, PATCH and LEARN material under ``vigil/drafts`` is intentionally
+outside this boundary and is not loaded, resolved, validated, or published here.
 """
 
 from __future__ import annotations
 
 import importlib.util
-import json
 import sys
 from pathlib import Path
 from typing import Any
@@ -17,7 +16,6 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[2]
 VIGIL_DIR = ROOT / "vigil"
 MODULE_PATH = VIGIL_DIR / "scripts" / "validate-vigil-records.py"
-DRAFTS_ROOT = VIGIL_DIR / "drafts"
 
 
 def load_module() -> Any:
@@ -27,23 +25,6 @@ def load_module() -> Any:
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
-
-
-def load_draft_reference_records() -> dict[str, dict[str, Any]]:
-    records: dict[str, dict[str, Any]] = {}
-    for folder in ("proposals", "patches", "learn"):
-        root = DRAFTS_ROOT / folder
-        if not root.exists():
-            continue
-        for path in sorted(root.rglob("*.json")):
-            try:
-                value = json.loads(path.read_text(encoding="utf-8"))
-            except (OSError, json.JSONDecodeError):
-                continue
-            record_id = value.get("id") if isinstance(value, dict) else None
-            if isinstance(record_id, str) and record_id:
-                records[record_id] = value
-    return records
 
 
 def main() -> int:
@@ -73,6 +54,8 @@ def main() -> int:
         if not isinstance(record, dict):
             errors.append(f"{path}: individual record file must contain one JSON object")
             continue
+        if record.get("record_type") in {"proposal", "patch", "patch_note", "learn"}:
+            errors.append(f"{path}: withdrawn record type must not appear in vigil/records")
         if "records" in record or "generated_notice" in record:
             errors.append(f"{path}: individual record file must not contain a generated aggregate wrapper")
         public_records_by_path[path] = record
@@ -97,19 +80,11 @@ def main() -> int:
                     errors.append(f"{path}: duplicate id {record_id!r}")
                 public_ids.add(record_id)
 
-    draft_reference_records = load_draft_reference_records()
-    duplicate_draft_ids = sorted(public_ids.intersection(draft_reference_records))
-    if duplicate_draft_ids:
-        errors.append(
-            "Draft/public record ID collision(s): " + ", ".join(duplicate_draft_ids)
-        )
-    known_ids = public_ids | set(draft_reference_records)
-
     for path, record in public_records_by_path.items():
         module.validate_record(
             path,
             record,
-            known_ids,
+            public_ids,
             errors,
             warnings,
             allowed_groups,
@@ -121,32 +96,28 @@ def main() -> int:
         module.validate_research_record(
             path,
             record,
-            known_ids,
+            public_ids,
             errors,
             research_body_by_path.get(path, ""),
         )
 
-    reference_records_by_id = {
+    public_records_by_id = {
         record["id"]: record
         for record in public_records_by_path.values()
         if isinstance(record.get("id"), str)
     }
-    reference_records_by_id.update(draft_reference_records)
 
     for path, research in public_research_by_path.items():
         research_id = research.get("id")
         linked = research.get("linked_records", {})
         if not isinstance(research_id, str) or not isinstance(linked, dict):
             continue
-        for field in (
-            "related_observations",
-            "related_failure_modes",
-            "related_proposals",
-            "related_patch_notes",
-        ):
+        for field in ("related_observations", "related_failure_modes"):
             for linked_id in linked.get(field, []):
-                target = reference_records_by_id.get(linked_id)
-                target_research = target.get("linked_records", {}).get("research", []) if target else []
+                target = public_records_by_id.get(linked_id)
+                if target is None:
+                    continue
+                target_research = target.get("linked_records", {}).get("research", [])
                 if research_id not in target_research:
                     errors.append(
                         f"{path}: {linked_id} must reciprocally include {research_id} in linked_records.research"
@@ -164,7 +135,7 @@ def main() -> int:
     print(
         "VIGIL public record validation passed: "
         f"{len(public_records_by_path)} JSON files, {len(public_research_by_path)} research files, "
-        f"{len(public_ids)} public records; {len(draft_reference_records)} withdrawn draft references available for resolution."
+        f"{len(public_ids)} public records; draft records excluded from resolution."
     )
     return 0
 
