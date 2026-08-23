@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Route misplaced individual VIGIL record files into canonical type/year folders."""
+"""Route misplaced published VIGIL records into canonical type/year folders."""
 
 from __future__ import annotations
 
@@ -15,14 +15,12 @@ RECORDS_ROOT = VIGIL_DIR / "records"
 TYPE_DIR = {
     "observation": "observations",
     "failure_mode": "failures",
-    "proposal": "proposals",
-    "patch": "patches",
-    "patch_note": "patches",
 }
+WITHDRAWN_RECORD_TYPES = {"proposal", "patch", "patch_note", "learn"}
 
 
 def record_files() -> list[Path]:
-    """Recursively scan individual VIGIL record JSON files under vigil/records/."""
+    """Recursively scan individual published VIGIL record JSON files."""
     if not RECORDS_ROOT.exists():
         return []
     return sorted(RECORDS_ROOT.rglob("*.json"), key=lambda path: path.as_posix())
@@ -59,12 +57,17 @@ def id_year(record: dict[str, Any]) -> str | None:
 
 
 def target_directory(record: dict[str, Any]) -> Path | None:
-    """Return canonical type/year directory; record_state never controls the path."""
+    """Return canonical public type/year directory; draft classes are rejected."""
     record_state = record.get("record_state")
     if record_state is None:
         print(f"Skipped record without record_state: {record.get('id')!r}")
         return None
-    folder = TYPE_DIR.get(str(record.get("record_type", "")))
+    record_type = str(record.get("record_type", ""))
+    if record_type in WITHDRAWN_RECORD_TYPES:
+        raise ValueError(
+            f"{record.get('id')!r}: withdrawn record type {record_type!r} must not appear under vigil/records"
+        )
+    folder = TYPE_DIR.get(record_type)
     year = id_year(record)
     if folder is None or year is None:
         return None
@@ -76,7 +79,14 @@ def route(check_only: bool = False) -> int:
     misplaced = 0
     for path in record_files():
         record = load_record(path)
-        target_dir = target_directory(record)
+        try:
+            target_dir = target_directory(record)
+        except ValueError as exc:
+            if check_only:
+                misplaced += 1
+                print(f"Withdrawn public record: {display_path(path)} — {exc}")
+                continue
+            raise
         if target_dir is None:
             print(f"Skipped {path}: unable to derive canonical type/year path")
             continue
@@ -95,7 +105,7 @@ def route(check_only: bool = False) -> int:
         print(f"Moved {path} -> {target_path}")
     if check_only:
         if misplaced:
-            print(f"VIGIL record routing check failed: {misplaced} misplaced file(s).")
+            print(f"VIGIL record routing check failed: {misplaced} misplaced or withdrawn file(s).")
             return 1
         print("VIGIL record routing check passed: 0 misplaced files.")
         return 0
@@ -108,7 +118,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--check",
         action="store_true",
-        help="Report misplaced records and fail without moving files.",
+        help="Report misplaced or withdrawn public records and fail without moving files.",
     )
     args = parser.parse_args()
     raise SystemExit(route(check_only=args.check))
