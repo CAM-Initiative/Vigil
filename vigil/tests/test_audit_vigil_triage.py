@@ -16,7 +16,8 @@ SPEC.loader.exec_module(AUDIT)
 
 class TriageInventoryTests(unittest.TestCase):
     def write_record(self, root, record_class, name, value):
-        path = root / "vigil" / "records" / record_class / "2026" / name
+        base = "drafts" if record_class in {"proposals", "patches", "learn"} else "records"
+        path = root / "vigil" / base / record_class / "2026" / name
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(json.dumps(value), encoding="utf-8")
 
