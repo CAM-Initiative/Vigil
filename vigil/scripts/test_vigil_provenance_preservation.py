@@ -9,6 +9,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 RECORDS = ROOT / "vigil" / "records"
+DRAFTS = ROOT / "vigil" / "drafts"
 GENERIC_ACCESS = "not independently re-assessed during registry-wide metadata migration"
 EXPECTED_REVIEWS = {
     "VIGIL-2026-FM-0034": "VIGIL-REVIEW-2026-07-15-GPT-5.6-THINKING",
@@ -25,8 +26,10 @@ TRIAGE_RECONCILIATION_REVIEW = "VIGIL-REVIEW-2026-08-05-OPENAI-CODEX-TRIAGE-V2"
 
 
 def load(record_id: str) -> dict:
-    folder = "patches" if "-PATCH-" in record_id else "failures"
-    path = RECORDS / folder / "2026" / f"{record_id}.json"
+    if "-PATCH-" in record_id:
+        path = DRAFTS / "patches" / "2026" / f"{record_id}.json"
+    else:
+        path = RECORDS / "failures" / "2026" / f"{record_id}.json"
     return json.loads(path.read_text(encoding="utf-8"))
 
 
