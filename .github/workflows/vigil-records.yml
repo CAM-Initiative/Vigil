@@ -44,6 +44,12 @@ jobs:
         with:
           python-version: "3.x"
 
+      - name: Refresh public VIGIL registry indexes for validation
+        run: |
+          python vigil/scripts/build-vigil-records.py
+          python vigil/scripts/enrich-vigil-indexes.py
+          python vigil/scripts/build-vigil-learn-records.py
+
       - name: Test source provenance classification
         run: python vigil/scripts/test_vigil_source_provenance.py
 
@@ -111,9 +117,9 @@ jobs:
       - name: Check VIGIL record routing
         run: python vigil/scripts/route-vigil-records.py --check
 
-      - name: Validate VIGIL records
+      - name: Validate public VIGIL records
         run: |
-          python vigil/scripts/validate-vigil-records.py
+          python vigil/scripts/validate-vigil-public-records.py
           python vigil/scripts/validate-vigil-system-components.py
           python vigil/scripts/validate-vigil-learn-records.py
 
