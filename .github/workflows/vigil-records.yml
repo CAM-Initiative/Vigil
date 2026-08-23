@@ -34,9 +34,8 @@ jobs:
 
       - name: Refresh public VIGIL registry indexes for validation
         run: |
-          python vigil/scripts/build-vigil-records.py
+          python vigil/scripts/build-vigil-public-records.py
           python vigil/scripts/enrich-vigil-indexes.py
-          python vigil/scripts/build-vigil-learn-records.py
 
       - name: Test source provenance classification
         run: python vigil/scripts/test_vigil_source_provenance.py
@@ -107,11 +106,10 @@ jobs:
       - name: Validate VIGIL lifecycle, corpus coverage, CAM boundary, and interpretive provenance
         run: python vigil/scripts/run-vigil-lifecycle-validation.py
 
-      - name: Build and enrich VIGIL registry indexes
+      - name: Build and enrich public VIGIL registry indexes
         run: |
-          python vigil/scripts/build-vigil-records.py
+          python vigil/scripts/build-vigil-public-records.py
           python vigil/scripts/enrich-vigil-indexes.py
-          python vigil/scripts/build-vigil-learn-records.py
 
       - name: Verify source records and contracts were not mutated
         run: |
@@ -131,17 +129,14 @@ jobs:
           git add \
             vigil/VIGIL.Failures.Index.json \
             vigil/VIGIL.Observations.Index.json \
-            vigil/VIGIL.Proposals.Index.json \
-            vigil/VIGIL.PatchNotes.Index.json \
             vigil/VIGIL.Research.Index.json \
-            vigil/VIGIL.Learn.Index.json \
             vigil/VIGIL.Registry.Index.json \
             vigil/docs/2026-triage-model-inventory.json \
             vigil/docs/2026-triage-model-inventory.md
           if git diff --cached --quiet; then
             echo "No generated VIGIL output changes to commit."
           else
-            git commit -m "Rebuild VIGIL registry indexes and generated outputs"
+            git commit -m "Rebuild public VIGIL registry indexes and generated outputs"
             if ! git push; then
               echo "Branch advanced while this run was building generated files; a newer workflow run owns generated-output refresh."
               exit 0
