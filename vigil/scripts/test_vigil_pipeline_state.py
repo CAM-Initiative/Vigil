@@ -10,6 +10,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[2]
 VIGIL = ROOT / "vigil"
 RECORDS = VIGIL / "records"
+DRAFTS = VIGIL / "drafts"
 WORKFLOW = ROOT / ".github" / "workflows" / "vigil-records.yml"
 
 ALLOWED = {
@@ -38,35 +39,18 @@ def load(path: Path) -> dict[str, Any]:
 
 
 def record(record_id: str, folder: str) -> dict[str, Any]:
-    return load(RECORDS / folder / "2026" / f"{record_id}.json")
+    root = DRAFTS if folder in {"proposals", "patches", "learn"} else RECORDS
+    return load(root / folder / "2026" / f"{record_id}.json")
 
 
 def main() -> None:
-    for folder in ("observations", "failures", "proposals", "patches"):
+    for folder in ("observations", "failures"):
         for path in sorted((RECORDS / folder).rglob("*.json")):
             item = load(path)
             state = item.get("record_state")
             assert state in ALLOWED, f"{path}: non-canonical record_state {state!r}"
 
             record_type = item.get("record_type")
-            if record_type in {"patch", "patch_note"} and item.get("date_implemented"):
-                implementation = item.get("corpus_implementation", {})
-                canonical_state = (
-                    implementation.get("canonical_state")
-                    if isinstance(implementation, dict)
-                    else None
-                )
-                expected = {
-                    "canonical-main": "closed-actioned",
-                    "historical-canonical": "closed-actioned",
-                    "branch-only": "active",
-                    "unverified": "active",
-                }.get(canonical_state)
-                if expected is not None:
-                    assert state == expected, (
-                        f"{path}: {canonical_state} patch must be {expected}"
-                    )
-
             if record_type == "failure_mode" and state not in {"draft", "scaffolding"}:
                 repair = item.get("repair_status", {})
                 status = repair.get("status") if isinstance(repair, dict) else None
@@ -80,25 +64,13 @@ def main() -> None:
                 if expected is not None:
                     assert state == expected, f"{path}: {status} failure must be {expected}"
 
-            if record_type == "proposal" and state not in {"draft", "scaffolding"}:
-                resolution = item.get("resolution_status", {})
-                status = resolution.get("status") if isinstance(resolution, dict) else None
-                expected = {
-                    "resolved-by-patch": "closed-actioned",
-                    "closed-no-action": "closed-no-action",
-                    "deferred": "deferred",
-                    "superseded": "superseded",
-                    "open": "active",
-                    "routed": "active",
-                }.get(status)
-                if expected is not None:
-                    assert state == expected, f"{path}: {status} proposal must be {expected}"
-
+    # Withdrawn records remain preserved as draft working material and retain their
+    # historical internal consistency, but are not part of the public record tree.
     prop = record("VIGIL-2026-PROP-0001", "proposals")
     assert prop["record_state"] == "closed-actioned"
     assert prop["resolution_status"]["status"] == "resolved-by-patch"
     assert "VIGIL-2026-PATCH-0023" in prop["resolution_status"]["resolved_by"]
-    assert (RECORDS / "patches" / "2026" / "VIGIL-2026-PATCH-0023.json").exists()
+    assert (DRAFTS / "patches" / "2026" / "VIGIL-2026-PATCH-0023.json").exists()
 
     fm8 = record("VIGIL-2026-FM-0008", "failures")
     assert fm8["failure_classification"]["failure_family"] == "governance"
