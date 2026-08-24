@@ -21,7 +21,6 @@ def markdown(data: dict) -> str:
     family = data["family"]
     out = [
         f"# {family['name']}", "",
-        "> **Generated review view.** The JSON family file is canonical; this Markdown is a human-readable projection.", "",
         "## Family", "",
         "| Field | Value |", "|---|---|",
         f"| Code | `{family['code']}` |",
@@ -99,7 +98,7 @@ def html_view(data: dict) -> str:
 <style>
 :root{{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#171717;background:#f5f5f4}}body{{margin:0;line-height:1.55}}main{{max-width:1100px;margin:auto;padding:36px 20px 80px}}.hero,.card{{background:#fff;border:1px solid #d6d3d1;border-radius:16px;padding:26px;margin-bottom:20px}}h1{{font-size:clamp(2rem,5vw,3.2rem);line-height:1.05}}h3{{font-size:1.4rem;margin:.4rem 0}}code{{background:#f5f5f4;border:1px solid #e7e5e4;border-radius:5px;padding:2px 5px;overflow-wrap:anywhere}}.plain{{background:#fafaf9;padding:14px 16px;border-radius:10px;font-size:1.06rem}}.invariant{{border-left:4px solid #44403c;background:#fafaf9;padding:12px 16px}}.grid{{display:grid;grid-template-columns:1fr 1fr;gap:14px}}.grid section{{background:#fafaf9;border-radius:10px;padding:14px}}.top{{display:flex;justify-content:space-between;gap:20px;align-items:start}}.pill{{font-size:.73rem;border:1px solid #d6d3d1;border-radius:999px;padding:3px 8px;text-transform:uppercase;letter-spacing:.05em}}@media(max-width:760px){{.grid{{grid-template-columns:1fr}}.top{{display:block}}}}
 </style></head><body><main>
-<section class="hero"><p><strong>VIGIL Failure Taxonomy · Prototype family</strong></p><h1>{esc(family['name'])}</h1><p class="plain">{esc(family['plain_english'])}</p><p><strong>Code:</strong> <code>{esc(family['code'])}</code> · <strong>Version:</strong> {esc(family['version'])} · <strong>Status:</strong> {esc(family['status'])}</p><h2>Technical definition</h2><p>{esc(family['definition'])}</p><h2>Governing invariant</h2><p class="invariant">{esc(family['invariant'])}</p><h2>Classification boundary</h2><div class="grid"><section><h3>Include when</h3><p>{esc(family['inclusion_rule'])}</p></section><section><h3>Do not use when</h3><p>{esc(family['exclusion_rule'])}</p></section></div><h2>Scope</h2><ul>{scope}</ul><details><summary><strong>Allowed failure codes</strong></summary><ul>{allowed}</ul></details><p><small>Generated review view. The JSON family file is canonical.</small></p></section>
+<section class="hero"><p><strong>VIGIL Failure Taxonomy · Prototype family</strong></p><h1>{esc(family['name'])}</h1><p class="plain">{esc(family['plain_english'])}</p><p><strong>Code:</strong> <code>{esc(family['code'])}</code> · <strong>Version:</strong> {esc(family['version'])} · <strong>Status:</strong> {esc(family['status'])}</p><h2>Technical definition</h2><p>{esc(family['definition'])}</p><h2>Governing invariant</h2><p class="invariant">{esc(family['invariant'])}</p><h2>Classification boundary</h2><div class="grid"><section><h3>Include when</h3><p>{esc(family['inclusion_rule'])}</p></section><section><h3>Do not use when</h3><p>{esc(family['exclusion_rule'])}</p></section></div><h2>Scope</h2><ul>{scope}</ul><details><summary><strong>Allowed failure codes</strong></summary><ul>{allowed}</ul></details></section>
 <h2>Failure classes</h2>{''.join(cards)}</main></body></html>"""
 
 
