@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/CAM-Initiative/Vigil/vigil/external_sources/source-registry.schema.json",
   "title": "VIGIL External Governance Source Registry",
-  "description": "Canonical registry of external governance source identity, version, lifecycle, metadata fingerprint and source-review workflow state. It does not record CAM applicability or coverage.",
+  "description": "Canonical registry of external governance source identity, version, lifecycle, public governance knowledge, metadata fingerprint and source-review workflow state. It does not record CAM applicability or coverage.",
   "type": "object",
   "required": [
     "schema_version",
@@ -12,7 +12,7 @@
   ],
   "properties": {
     "schema_version": {
-      "const": "1.0"
+      "const": "1.1"
     },
     "updated_at": {
       "type": [
@@ -162,6 +162,79 @@
             "type": "string",
             "minLength": 1
           },
+          "public_summary": {
+            "type": "string",
+            "minLength": 200
+          },
+          "ai_governance_relevance": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "accountability",
+                "ai-literacy",
+                "assurance",
+                "change-management",
+                "conformity",
+                "data-governance",
+                "documentation",
+                "environmental-impact",
+                "fairness-bias",
+                "human-oversight",
+                "impact-assessment",
+                "incident-governance",
+                "inventory",
+                "lifecycle-governance",
+                "monitoring",
+                "privacy",
+                "provenance",
+                "risk-management",
+                "robustness",
+                "safety",
+                "security",
+                "supply-chain",
+                "testing-evaluation",
+                "traceability",
+                "transparency",
+                "worker-affected-person-rights"
+              ]
+            }
+          },
+          "applicable_lifecycle_stages": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "governance",
+                "design",
+                "development",
+                "data-acquisition",
+                "training",
+                "testing-evaluation",
+                "conformity-assessment",
+                "placing-on-market",
+                "deployment",
+                "operation-use",
+                "monitoring",
+                "incident-response",
+                "change-management",
+                "retirement",
+                "supply-chain",
+                "cross-lifecycle",
+                "not-specified"
+              ]
+            }
+          },
+          "relevance_scope": {
+            "type": "string",
+            "minLength": 40
+          },
+          "last_substantive_reviewed": {
+            "type": "string",
+            "format": "date"
+          },
           "notes": {
             "type": [
               "string",
@@ -169,6 +242,29 @@
             ]
           }
         },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "review_eligible": {
+                  "const": true
+                }
+              },
+              "required": [
+                "review_eligible"
+              ]
+            },
+            "then": {
+              "required": [
+                "public_summary",
+                "ai_governance_relevance",
+                "applicable_lifecycle_stages",
+                "relevance_scope",
+                "last_substantive_reviewed"
+              ]
+            }
+          }
+        ],
         "additionalProperties": false
       }
     }
