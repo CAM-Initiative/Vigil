@@ -1,148 +1,117 @@
-# VIGIL Failure Taxonomy — Prototype
+# VIGIL Failure Taxonomy — Technical Standard
 
-This directory prototypes a portable, machine-readable **technical reference standard for AI governance failure mechanisms**.
+This directory contains a portable, machine-readable technical reference for AI-governance failure mechanisms. It is separate from incident, severity, harm, evidence-confidence, triage, jurisdiction, vendor, repair-state, and other event metadata.
 
-The prototype is deliberately separate from VIGIL evidence-to-repair records. A failure taxonomy class describes **what kind of structural failure exists**. An incident or VIGIL Failure Mode record may later apply one or more taxonomy codes, but severity, evidence confidence, vendor, date, harm, triage state and repair status do not belong inside the taxonomy definition itself.
-
-## Prototype architecture
+## Architecture
 
 ```text
 VIGIL.FailureTaxonomy.Index.json
-        |
-        +-- families/
-              |
-              +-- authority-boundary-integrity.json
-              +-- provenance-lineage-integrity.json
-              +-- verification-completion-integrity.json
-              +-- observability-audit-integrity.json
-
-VIGIL.FailureTaxonomy.Schema.json                     <- machine contract
-validate_taxonomy.py                                  <- integrity checks
-render_taxonomy.py                                    <- human renderer
+VIGIL.FailureTaxonomy.Schema.json
+families/
+  VIGIL-FF-0001-authority-boundary-integrity.json
+  VIGIL-FF-0002-provenance-lineage-integrity.json
+  VIGIL-FF-0003-verification-completion-integrity.json
+  VIGIL-FF-0004-observability-audit-integrity.json
+generated/
+  one complete HTML page per family
+  VIGIL.FailureTaxonomy.FullReference.html
+migration/
+  Caelestis.LegacyFailure.MigrationLedger.json
+  Caelestis.LegacyFailure.InventoryReview.md
 ```
 
-The intended scale is **one JSON file per bounded failure family**, not one file per failure class and not one file per broad organisational domain.
+Family JSON is canonical. HTML and Markdown references are generated projections. The migration ledger is non-normative source-analysis evidence and is not a dependency of the portable taxonomy.
 
-A family is acceptable only when every child class can complete this sentence coherently:
+## Taxonomic boundary
+
+A family is admissible only when every child can coherently complete:
 
 > Every class in this family is a way in which **the same bounded structural invariant** fails.
 
-Broad containers such as `governance`, `UX`, `safety`, or `AI system failure` are not suitable family names merely because many failures can appear there.
+Broad organisational containers such as governance, UX, safety, security, or AI-system failure are not families merely because failures can appear there. A candidate family normally requires a bounded invariant, meaningful inclusion and exclusion rules, at least two distinct mechanisms absent a compelling singleton case, and independence from vendor, framework, locus, governor, harm, and severity.
 
-## Filename and identity rules
+The hierarchy is:
 
-Family filenames use a bounded, descriptive, lowercase kebab-case slug:
+**Failure Taxonomy → Failure Family → Failure Class → Variant where justified**
 
-```text
-families/<bounded-family-name>.json
-```
+One JSON file contains one bounded family. Classes and variants remain inside that file.
 
-Examples:
+## Immutable identity and semantic codes
 
-```text
-authority-boundary-integrity.json
-provenance-lineage-integrity.json
-verification-completion-integrity.json
-observability-audit-integrity.json
-```
+Identity is independent from naming:
 
-The **stable taxonomy code is the identity**. The filename is only a repository locator. This means a family can be renamed or moved without changing the identity of every downstream record that cites its code.
+- family IDs use `VIGIL-FF-NNNN`;
+- class IDs use `VIGIL-FC-NNNNNN`;
+- `family_code` and `class_code` are human-readable semantic codes;
+- relationships target immutable class IDs;
+- prior public codes remain in `aliases`;
+- optional `supersession` metadata records controlled deprecation.
 
-Filename rules:
+IDs survive renaming. A class ID also survives movement between families. Semantic codes may change in a controlled taxonomy revision. A class identity must never be computed from its current family, code, filename, filesystem order, or array position.
 
-- one file contains one failure family;
-- a filename describes the bounded invariant, not an organisational domain, harm category, product surface, vendor, or incident;
-- failure classes and variants remain inside their family file and do not receive separate files;
-- family discovery occurs through `VIGIL.FailureTaxonomy.Index.json`, so filesystem order does not carry taxonomic meaning;
-- no conceptual directory tree is created beneath `families/`; relationships belong in structured taxonomy fields, not folder nesting;
-- if one family grows so large that its classes no longer share one coherent invariant, the remedy is to identify a genuinely distinct failure family, not to create arbitrary shard files.
+### Allocation rules
 
-This keeps file growth proportional to the number of **meaningful failure families**, not the number of individual failure classes. Hundreds or thousands of classes therefore do not imply hundreds or thousands of files.
+1. Allocate the next unused numeric ID from the catalogue-wide sequence.
+2. Record the ID in the family file and index before public use.
+3. Never reuse, renumber, or silently recycle an allocated ID.
+4. When an entity is removed, reserve its ID in index `removed_ids`.
+5. Preserve prior semantic codes in `aliases` after renaming.
+6. Use `supersession` only for an explicit deprecated-to-successor transition; do not change identity for an ordinary rename or family move.
+7. Allocate an ID only after the proposed concept has passed its abstraction and boundary review.
 
-## Prototype design influences
+Family filenames use `<family_id>-<human-readable-slug>.json`. The immutable ID provides durable location identity; the slug aids readers. The generated index resolves current locations. Filesystem position and alphabetical order carry no taxonomic meaning, and nested domain directories are not used.
 
-The storage and review model borrows proven scaling mechanics from several established resources without adopting their substantive classifications:
+## Family and class content
 
-- **MITRE CWE** — stable identifiers, abstraction levels, relationships, status, descriptions, examples and multiple views over a large technical weakness catalogue.
-- **AI Incident Database (AIID)** — multiple taxonomies can coexist over the same incident corpus rather than forcing incident, cause, harm and technical failure into one hierarchy.
-- **OECD AI Incidents and Hazards Monitor / Common Reporting Framework** — incident status and metadata such as harm and severity are treated as dimensions of an event rather than definitions of the failure mechanism itself.
-- **MIT AI Risk Repository** — separate causal and domain taxonomies demonstrate the value of keeping orthogonal classification axes separate.
+Every family defines its immutable ID, semantic code, canonical name, version, status, abstraction, plain-English explanation, technical definition, governing invariant, scope, inclusion rule, exclusion rule, aliases, and allowed class IDs/codes.
 
-## Family file contract
+Every class or variant defines its immutable ID, semantic code, current family ID, canonical name, abstraction, status, plain-English explanation, technical definition, recognition criteria, exclusions, examples, aliases, typed relationships where relevant, and optional external mappings or supersession metadata.
 
-Each family carries:
+Definitions must not contain incident-specific values. Severity, harm, persistence, reproducibility, visibility, incident status, evidence confidence, jurisdiction, vendor/model, manifestation, locus, repair side, propagation, observability state, evidence state, and repair status remain orthogonal event dimensions.
 
-- stable family code;
-- family name, version, status and abstraction;
-- a plain-English explanation;
-- a technical definition;
-- the invariant the family protects;
-- scope;
-- explicit inclusion and exclusion rules;
-- an enumerated `allowed_codes` list;
-- child failure classes and variants.
+## Relationships
 
-Each failure class carries:
+Supported relationship types are `child_of`, `parent_of`, `peer_of`, `distinguish_from`, `can_cooccur_with`, `may_result_in`, and `may_be_result_of`. Targets use `VIGIL-FC-NNNNNN`, never a mutable compound semantic path.
 
-- stable code and canonical name;
-- abstraction (`class` or `variant`);
-- plain-English explanation;
-- technical definition;
-- required recognition conditions;
-- explicit exclusions;
-- illustrative examples;
-- aliases/search terms where useful;
-- typed relationships;
-- optional external-standard mappings.
+A variant has exactly one in-family class parent. Definitions are not duplicated merely to express co-occurrence or distinction.
 
-## Why both plain English and technical definitions?
+## Generation
 
-The taxonomy must support two users at once:
-
-1. a person asking, “What actually is this failure?”; and
-2. a machine, auditor or evaluator that needs deterministic classification fields.
-
-The plain-English explanation is therefore mandatory, not editorial decoration.
-
-## Human review
-
-The JSON file is canonical, but nobody should have to review raw JSON. The renderer produces Markdown or standalone HTML from the same family file without adding implementation commentary to the public reference view.
-
-Generate a Markdown view:
+Generate every complete family page and the combined full-reference book:
 
 ```bash
 python vigil/taxonomy/render_taxonomy.py \
-  vigil/taxonomy/families/authority-boundary-integrity.json \
+  --catalogue \
+  --output-dir vigil/taxonomy/generated
+```
+
+Generate one Markdown family reference when needed:
+
+```bash
+python vigil/taxonomy/render_taxonomy.py \
+  vigil/taxonomy/families/VIGIL-FF-0001-authority-boundary-integrity.json \
   --format markdown \
-  --output /tmp/authority-boundary-integrity.md
+  --output /tmp/VIGIL-FF-0001.md
 ```
 
-Generate a standalone HTML view:
+Regenerate the migration review projection:
 
 ```bash
-python vigil/taxonomy/render_taxonomy.py \
-  vigil/taxonomy/families/authority-boundary-integrity.json \
-  --format html \
-  --output /tmp/authority-boundary-integrity.html
+python vigil/taxonomy/render_migration_inventory.py \
+  vigil/taxonomy/migration/Caelestis.LegacyFailure.MigrationLedger.json \
+  --output vigil/taxonomy/migration/Caelestis.LegacyFailure.InventoryReview.md
 ```
 
-Validate all current prototype families:
+## Validation
+
+Run catalogue-wide schema and integrity validation:
 
 ```bash
-python vigil/taxonomy/validate_taxonomy.py vigil/taxonomy/families/*.json
+python vigil/taxonomy/validate_taxonomy.py
 ```
 
-## Prototype scale test
+The validator checks every family against the JSON Schema and enforces duplicate-ID/code detection, family membership, variant parentage, relationship targets, duplicate relationships, allowed-list drift, index/file agreement, filename identity, removed-ID references, mandatory descriptions, and supersession-chain integrity.
 
-The current prototype deliberately uses four bounded families with different structural concerns:
+## Portability
 
-1. **Authority Boundary Integrity Failures** — unjustified creation, expansion, transfer or inheritance of authority.
-2. **Provenance & Lineage Integrity Failures** — loss or distortion of origin, authorship, transformation, continuity or target binding.
-3. **Verification & Completion Integrity Failures** — unsupported, stale or mismatched claims of verification or completion.
-4. **Observability & Audit Integrity Failures** — inadequate capture, attribution, coverage or reconstruction of material system activity.
-
-The review question is:
-
-> Does this family/file model remain understandable, bounded, searchable and extensible when structurally different failure families coexist and the number of failure classes grows substantially?
-
-No Caelestis instrument, path, authority field or CAM-specific control dependency is part of the portable taxonomy data model.
+No Caelestis instrument, path, authority field, constitutional relationship, CAM control dependency, or “implements provision” relationship belongs in canonical family JSON. Legacy sources may be analysed only in the separate migration ledger. The standard must remain understandable and usable without access to CAM or Caelestis.

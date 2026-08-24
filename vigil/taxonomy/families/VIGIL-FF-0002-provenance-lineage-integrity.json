@@ -1,15 +1,16 @@
 {
-  "schema_version": "0.1.0",
+  "schema_version": "0.2.0",
   "standard": {
     "name": "VIGIL Failure Taxonomy",
-    "version": "0.1.0-prototype",
-    "status": "prototype",
+    "version": "0.2.0-draft",
+    "status": "draft",
     "description": "Prototype portable classification standard for recurring AI governance failure mechanisms."
   },
   "family": {
-    "code": "VIGIL.FF.PROVENANCE_LINEAGE",
+    "family_id": "VIGIL-FF-0002",
+    "family_code": "PROVENANCE_LINEAGE",
     "name": "Provenance & Lineage Integrity Failures",
-    "status": "prototype",
+    "status": "draft",
     "abstraction": "family",
     "version": "0.1.0",
     "plain_english": "The system loses, changes, or misstates where information, work, or state came from, who contributed it, what happened to it, or what it properly applies to.",
@@ -26,20 +27,33 @@
     ],
     "inclusion_rule": "Use this family when the primary structural failure is loss, distortion, false assignment, or unsupported reconstruction of origin, authorship, transformation history, continuity, or application target.",
     "exclusion_rule": "Do not use this family merely because content is inaccurate, unauthorised, harmful, stale, or unavailable. A qualifying failure must concern the integrity of provenance or lineage itself.",
-    "allowed_codes": [
-      "VIGIL.FF.PROVENANCE_LINEAGE.MISATTRIBUTION",
-      "VIGIL.FF.PROVENANCE_LINEAGE.UNTRACEABLE_SYNTHESIS",
-      "VIGIL.FF.PROVENANCE_LINEAGE.CROSS_CONTEXT_DISTORTION",
-      "VIGIL.FF.PROVENANCE_LINEAGE.LINEAGE_COLLAPSE",
-      "VIGIL.FF.PROVENANCE_LINEAGE.FALSE_CONTINUITY",
-      "VIGIL.FF.PROVENANCE_LINEAGE.TARGET_BINDING_FAILURE"
+    "aliases": [
+      "VIGIL.FF.PROVENANCE_LINEAGE"
+    ],
+    "allowed_class_ids": [
+      "VIGIL-FC-000010",
+      "VIGIL-FC-000011",
+      "VIGIL-FC-000012",
+      "VIGIL-FC-000013",
+      "VIGIL-FC-000014",
+      "VIGIL-FC-000015"
+    ],
+    "allowed_class_codes": [
+      "MISATTRIBUTION",
+      "UNTRACEABLE_SYNTHESIS",
+      "CROSS_CONTEXT_DISTORTION",
+      "LINEAGE_COLLAPSE",
+      "FALSE_CONTINUITY",
+      "TARGET_BINDING_FAILURE"
     ]
   },
   "classes": [
     {
-      "code": "VIGIL.FF.PROVENANCE_LINEAGE.MISATTRIBUTION",
+      "class_id": "VIGIL-FC-000010",
+      "class_code": "MISATTRIBUTION",
+      "family_id": "VIGIL-FF-0002",
       "name": "Authorship or Source Misattribution",
-      "status": "prototype",
+      "status": "draft",
       "abstraction": "class",
       "plain_english": "The system says the wrong person, system, or source created or supplied something.",
       "definition": "A failure in which substantive origin, authorship, contribution, or source role is assigned to an actor or source that did not support that attribution.",
@@ -60,14 +74,17 @@
         "A synthesis based on several sources is presented as though it came from one named source."
       ],
       "aliases": [
+        "VIGIL.FF.PROVENANCE_LINEAGE.MISATTRIBUTION",
         "source misattribution",
         "authorship misattribution"
       ]
     },
     {
-      "code": "VIGIL.FF.PROVENANCE_LINEAGE.UNTRACEABLE_SYNTHESIS",
+      "class_id": "VIGIL-FC-000011",
+      "class_code": "UNTRACEABLE_SYNTHESIS",
+      "family_id": "VIGIL-FF-0002",
       "name": "Untraceable Synthesis",
-      "status": "prototype",
+      "status": "draft",
       "abstraction": "class",
       "plain_english": "The system combines material into a new result but can no longer show what materially contributed to it.",
       "definition": "A failure in which materially contributing antecedent sources, inputs, transformations, or contribution roles cannot be adequately traced through a synthesized or derived output where such traceability is required for reliable interpretation or reuse.",
@@ -86,12 +103,17 @@
       "examples": [
         "A generated policy summary cannot distinguish which requirements came from which underlying sources.",
         "A long-running agent compacts several decisions into one state object and loses the decisions that materially produced it."
+      ],
+      "aliases": [
+        "VIGIL.FF.PROVENANCE_LINEAGE.UNTRACEABLE_SYNTHESIS"
       ]
     },
     {
-      "code": "VIGIL.FF.PROVENANCE_LINEAGE.CROSS_CONTEXT_DISTORTION",
+      "class_id": "VIGIL-FC-000012",
+      "class_code": "CROSS_CONTEXT_DISTORTION",
+      "family_id": "VIGIL-FF-0002",
       "name": "Cross-Context Lineage Distortion",
-      "status": "prototype",
+      "status": "draft",
       "abstraction": "class",
       "plain_english": "Something carried from one conversation, project, user, or environment changes meaning when reused somewhere else, but the system treats it as unchanged.",
       "definition": "A failure in which material transferred across sessions, users, projects, systems, environments, roles, or temporal contexts loses the provenance or applicability information needed to preserve its original meaning and limits.",
@@ -110,12 +132,17 @@
       "examples": [
         "Advice produced for one repository is applied to another repository without preserving the original target context.",
         "A prior-session statement is reused as current user intent after the surrounding conditions have changed."
+      ],
+      "aliases": [
+        "VIGIL.FF.PROVENANCE_LINEAGE.CROSS_CONTEXT_DISTORTION"
       ]
     },
     {
-      "code": "VIGIL.FF.PROVENANCE_LINEAGE.LINEAGE_COLLAPSE",
+      "class_id": "VIGIL-FC-000013",
+      "class_code": "LINEAGE_COLLAPSE",
+      "family_id": "VIGIL-FF-0002",
       "name": "Transformation Lineage Collapse",
-      "status": "prototype",
+      "status": "draft",
       "abstraction": "class",
       "plain_english": "The system keeps the final artefact but loses the chain of changes that turned the source into that artefact.",
       "definition": "A failure in which one or more material transformation stages are flattened, overwritten, or omitted such that the relationship between an antecedent source and the current representation can no longer be reliably reconstructed.",
@@ -134,12 +161,17 @@
       "examples": [
         "A document is repeatedly summarized and rewritten until the final version can no longer identify which claims came from original evidence and which were introduced later.",
         "An agent checkpoint retains a resulting policy state but not the transformations that produced it."
+      ],
+      "aliases": [
+        "VIGIL.FF.PROVENANCE_LINEAGE.LINEAGE_COLLAPSE"
       ]
     },
     {
-      "code": "VIGIL.FF.PROVENANCE_LINEAGE.FALSE_CONTINUITY",
+      "class_id": "VIGIL-FC-000014",
+      "class_code": "FALSE_CONTINUITY",
+      "family_id": "VIGIL-FF-0002",
       "name": "False Continuity Attribution",
-      "status": "prototype",
+      "status": "draft",
       "abstraction": "variant",
       "plain_english": "A reconstructed, copied, or similar state is presented as though it is the same continuous state when continuity has not actually been established.",
       "definition": "A lineage failure in which similarity, reconstruction, restoration, copying, migration, shared identifiers, or retained fragments are represented as sufficient proof of uninterrupted continuity across a material discontinuity or uncertain transition.",
@@ -162,15 +194,20 @@
       "relationships": [
         {
           "type": "child_of",
-          "target_code": "VIGIL.FF.PROVENANCE_LINEAGE.CROSS_CONTEXT_DISTORTION",
-          "note": "False continuity is a specialised lineage distortion across a continuity-bearing transition."
+          "note": "False continuity is a specialised lineage distortion across a continuity-bearing transition.",
+          "target_id": "VIGIL-FC-000012"
         }
+      ],
+      "aliases": [
+        "VIGIL.FF.PROVENANCE_LINEAGE.FALSE_CONTINUITY"
       ]
     },
     {
-      "code": "VIGIL.FF.PROVENANCE_LINEAGE.TARGET_BINDING_FAILURE",
+      "class_id": "VIGIL-FC-000015",
+      "class_code": "TARGET_BINDING_FAILURE",
+      "family_id": "VIGIL-FF-0002",
       "name": "Target-Object Binding Failure",
-      "status": "prototype",
+      "status": "draft",
       "abstraction": "class",
       "plain_english": "Correct material is silently attached to, applied to, or interpreted as belonging to the wrong thing.",
       "definition": "A failure in which a signal, instruction, edit, classification, evidence item, decision, or derived output loses reliable binding to the object, person, file, system, record, task, or context to which it properly applies.",
@@ -193,9 +230,12 @@
       "relationships": [
         {
           "type": "can_cooccur_with",
-          "target_code": "VIGIL.FF.AUTHORITY_BOUNDARY.TARGET_SCOPE_TRANSPOSITION",
-          "note": "Target-binding loss concerns provenance; authority transposition additionally requires unjustified permission carryover."
+          "note": "Target-binding loss concerns provenance; authority transposition additionally requires unjustified permission carryover.",
+          "target_id": "VIGIL-FC-000003"
         }
+      ],
+      "aliases": [
+        "VIGIL.FF.PROVENANCE_LINEAGE.TARGET_BINDING_FAILURE"
       ]
     }
   ]

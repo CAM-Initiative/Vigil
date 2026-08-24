@@ -1,15 +1,16 @@
 {
-  "schema_version": "0.1.0",
+  "schema_version": "0.2.0",
   "standard": {
     "name": "VIGIL Failure Taxonomy",
-    "version": "0.1.0-prototype",
-    "status": "prototype",
+    "version": "0.2.0-draft",
+    "status": "draft",
     "description": "Prototype portable classification standard for recurring AI governance failure mechanisms."
   },
   "family": {
-    "code": "VIGIL.FF.OBSERVABILITY_AUDIT",
+    "family_id": "VIGIL-FF-0004",
+    "family_code": "OBSERVABILITY_AUDIT",
     "name": "Observability & Audit Integrity Failures",
-    "status": "prototype",
+    "status": "draft",
     "abstraction": "family",
     "version": "0.1.0",
     "plain_english": "The system does something important, but the people or systems responsible for oversight cannot reliably see, attribute, or reconstruct what happened.",
@@ -26,20 +27,33 @@
     ],
     "inclusion_rule": "Use this family when the primary structural failure is missing, bypassed, insufficient, corrupted, or non-reconstructable observability over material system activity or its responsible execution path.",
     "exclusion_rule": "Do not use this family merely because an outcome is unexplained, incorrect, secret, or difficult to interpret. A qualifying failure must concern the capture, preservation, attribution, coverage, or reconstructability of material operational evidence.",
-    "allowed_codes": [
-      "VIGIL.FF.OBSERVABILITY_AUDIT.MATERIAL_EVENT_NONCAPTURE",
-      "VIGIL.FF.OBSERVABILITY_AUDIT.MONITOR_CIRCUMVENTION",
-      "VIGIL.FF.OBSERVABILITY_AUDIT.AUDIT_TRAIL_NONRECONSTRUCTABILITY",
-      "VIGIL.FF.OBSERVABILITY_AUDIT.ACTOR_ACTION_ATTRIBUTION_LOSS",
-      "VIGIL.FF.OBSERVABILITY_AUDIT.HIDDEN_EXECUTION_PATH",
-      "VIGIL.FF.OBSERVABILITY_AUDIT.AUDIT_EVIDENCE_INTEGRITY_LOSS"
+    "aliases": [
+      "VIGIL.FF.OBSERVABILITY_AUDIT"
+    ],
+    "allowed_class_ids": [
+      "VIGIL-FC-000022",
+      "VIGIL-FC-000023",
+      "VIGIL-FC-000024",
+      "VIGIL-FC-000025",
+      "VIGIL-FC-000026",
+      "VIGIL-FC-000027"
+    ],
+    "allowed_class_codes": [
+      "MATERIAL_EVENT_NONCAPTURE",
+      "MONITOR_CIRCUMVENTION",
+      "AUDIT_TRAIL_NONRECONSTRUCTABILITY",
+      "ACTOR_ACTION_ATTRIBUTION_LOSS",
+      "HIDDEN_EXECUTION_PATH",
+      "AUDIT_EVIDENCE_INTEGRITY_LOSS"
     ]
   },
   "classes": [
     {
-      "code": "VIGIL.FF.OBSERVABILITY_AUDIT.MATERIAL_EVENT_NONCAPTURE",
+      "class_id": "VIGIL-FC-000022",
+      "class_code": "MATERIAL_EVENT_NONCAPTURE",
+      "family_id": "VIGIL-FF-0004",
       "name": "Material Event Non-Capture",
-      "status": "prototype",
+      "status": "draft",
       "abstraction": "class",
       "plain_english": "Something important happens, but no adequate event record is created.",
       "definition": "A failure in which a materially consequential action, state transition, decision, tool invocation, permission change, external effect, or control event occurs without the event record needed for proportionate oversight or later reconstruction.",
@@ -58,12 +72,17 @@
       "examples": [
         "An agent changes an external permission without recording that the permission change occurred.",
         "A high-impact automated decision is executed without retaining the decision event required for later review."
+      ],
+      "aliases": [
+        "VIGIL.FF.OBSERVABILITY_AUDIT.MATERIAL_EVENT_NONCAPTURE"
       ]
     },
     {
-      "code": "VIGIL.FF.OBSERVABILITY_AUDIT.MONITOR_CIRCUMVENTION",
+      "class_id": "VIGIL-FC-000023",
+      "class_code": "MONITOR_CIRCUMVENTION",
+      "family_id": "VIGIL-FF-0004",
       "name": "Monitor Circumvention or Coverage Bypass",
-      "status": "prototype",
+      "status": "draft",
       "abstraction": "class",
       "plain_english": "The action still happens, but it takes a route that the required monitor does not see.",
       "definition": "A failure in which an agent, sub-agent, tool path, environment, configuration, routing condition, or execution surface evades, disables, omits, or bypasses a monitoring control required to observe consequential conduct.",
@@ -82,12 +101,17 @@
       "examples": [
         "A sub-agent uses a tool route that is not connected to the monitor governing the main agent.",
         "An evaluation environment disables logging for a path that still permits consequential external actions."
+      ],
+      "aliases": [
+        "VIGIL.FF.OBSERVABILITY_AUDIT.MONITOR_CIRCUMVENTION"
       ]
     },
     {
-      "code": "VIGIL.FF.OBSERVABILITY_AUDIT.AUDIT_TRAIL_NONRECONSTRUCTABILITY",
+      "class_id": "VIGIL-FC-000024",
+      "class_code": "AUDIT_TRAIL_NONRECONSTRUCTABILITY",
+      "family_id": "VIGIL-FF-0004",
       "name": "Audit-Trail Non-Reconstructability",
-      "status": "prototype",
+      "status": "draft",
       "abstraction": "class",
       "plain_english": "There are logs, but they are not enough to work out what actually happened.",
       "definition": "A failure in which audit evidence exists but lacks the ordering, identity, target, state, correlation, timing, version, or action detail necessary to reconstruct a materially relevant execution or decision pathway with adequate confidence.",
@@ -106,12 +130,17 @@
       "examples": [
         "Logs record several tool calls but cannot establish which model output triggered which call.",
         "A decision log records the final outcome but not the input version or policy version used to reach it."
+      ],
+      "aliases": [
+        "VIGIL.FF.OBSERVABILITY_AUDIT.AUDIT_TRAIL_NONRECONSTRUCTABILITY"
       ]
     },
     {
-      "code": "VIGIL.FF.OBSERVABILITY_AUDIT.ACTOR_ACTION_ATTRIBUTION_LOSS",
+      "class_id": "VIGIL-FC-000025",
+      "class_code": "ACTOR_ACTION_ATTRIBUTION_LOSS",
+      "family_id": "VIGIL-FF-0004",
       "name": "Actor–Action Attribution Loss",
-      "status": "prototype",
+      "status": "draft",
       "abstraction": "class",
       "plain_english": "An action is visible, but it is unclear which model, agent, tool, human, or automated process actually caused it.",
       "definition": "A failure in which a material action or decision cannot be reliably attributed to the effective actor, agent, model, human, service, tool, policy, or orchestration component responsible for initiating or controlling it.",
@@ -134,15 +163,20 @@
       "relationships": [
         {
           "type": "distinguish_from",
-          "target_code": "VIGIL.FF.PROVENANCE_LINEAGE.MISATTRIBUTION",
-          "note": "Operational actor attribution is distinct from authorship or source attribution, though both may fail together."
+          "note": "Operational actor attribution is distinct from authorship or source attribution, though both may fail together.",
+          "target_id": "VIGIL-FC-000010"
         }
+      ],
+      "aliases": [
+        "VIGIL.FF.OBSERVABILITY_AUDIT.ACTOR_ACTION_ATTRIBUTION_LOSS"
       ]
     },
     {
-      "code": "VIGIL.FF.OBSERVABILITY_AUDIT.HIDDEN_EXECUTION_PATH",
+      "class_id": "VIGIL-FC-000026",
+      "class_code": "HIDDEN_EXECUTION_PATH",
+      "family_id": "VIGIL-FF-0004",
       "name": "Hidden Material Execution Path",
-      "status": "prototype",
+      "status": "draft",
       "abstraction": "class",
       "plain_english": "A consequential path exists inside the system, but oversight cannot see that the path was used.",
       "definition": "A failure in which a materially consequential routing, delegation, sub-agent, tool, fallback, control-channel, or alternate execution path can affect outcomes without proportionate visibility to the monitoring, audit, or review surface responsible for the system.",
@@ -165,14 +199,19 @@
       "relationships": [
         {
           "type": "can_cooccur_with",
-          "target_code": "VIGIL.FF.AUTHORITY_BOUNDARY.CONTROL_PLANE_CROSSOVER"
+          "target_id": "VIGIL-FC-000006"
         }
+      ],
+      "aliases": [
+        "VIGIL.FF.OBSERVABILITY_AUDIT.HIDDEN_EXECUTION_PATH"
       ]
     },
     {
-      "code": "VIGIL.FF.OBSERVABILITY_AUDIT.AUDIT_EVIDENCE_INTEGRITY_LOSS",
+      "class_id": "VIGIL-FC-000027",
+      "class_code": "AUDIT_EVIDENCE_INTEGRITY_LOSS",
+      "family_id": "VIGIL-FF-0004",
       "name": "Audit-Evidence Integrity Loss",
-      "status": "prototype",
+      "status": "draft",
       "abstraction": "class",
       "plain_english": "The audit evidence exists, but it has been altered, truncated, reordered, detached from context, or otherwise degraded so it can no longer be trusted for review.",
       "definition": "A failure in which captured audit, telemetry, event, decision, or monitoring evidence loses integrity through alteration, truncation, reordering, context loss, identifier loss, version ambiguity, overwrite, or unsupported transformation before or during review.",
@@ -195,9 +234,12 @@
       "relationships": [
         {
           "type": "can_cooccur_with",
-          "target_code": "VIGIL.FF.PROVENANCE_LINEAGE.LINEAGE_COLLAPSE",
-          "note": "Audit-evidence integrity loss concerns review evidence; lineage collapse concerns provenance of the governed material or state."
+          "note": "Audit-evidence integrity loss concerns review evidence; lineage collapse concerns provenance of the governed material or state.",
+          "target_id": "VIGIL-FC-000013"
         }
+      ],
+      "aliases": [
+        "VIGIL.FF.OBSERVABILITY_AUDIT.AUDIT_EVIDENCE_INTEGRITY_LOSS"
       ]
     }
   ]

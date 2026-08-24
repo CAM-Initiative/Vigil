@@ -1,15 +1,16 @@
 {
-  "schema_version": "0.1.0",
+  "schema_version": "0.2.0",
   "standard": {
     "name": "VIGIL Failure Taxonomy",
-    "version": "0.1.0-prototype",
-    "status": "prototype",
+    "version": "0.2.0-draft",
+    "status": "draft",
     "description": "Prototype portable classification standard for recurring AI governance failure mechanisms."
   },
   "family": {
-    "code": "VIGIL.FF.AUTHORITY_BOUNDARY",
+    "family_id": "VIGIL-FF-0001",
+    "family_code": "AUTHORITY_BOUNDARY",
     "name": "Authority Boundary Integrity Failures",
-    "status": "prototype",
+    "status": "draft",
     "abstraction": "family",
     "version": "0.1.0",
     "plain_english": "The system can see, reach, decode, inherit, or do something and mistakes that fact for permission to act.",
@@ -26,23 +27,39 @@
     ],
     "inclusion_rule": "Use this family when the primary structural failure is an unjustified creation, enlargement, transfer, substitution, or inheritance of authority across a source, capability, target, scope, representation, delegation, or control-plane boundary.",
     "exclusion_rule": "Do not use this family merely because an action was incorrect, harmful, insecure, unavailable, or refused. A qualifying event must involve an authority boundary being misclassified, expanded, transferred, or treated as satisfied without adequate authority.",
-    "allowed_codes": [
-      "VIGIL.FF.AUTHORITY_BOUNDARY.SOURCE_AUTHORITY_CONFUSION",
-      "VIGIL.FF.AUTHORITY_BOUNDARY.CAPABILITY_AUTHORITY_CONFLATION",
-      "VIGIL.FF.AUTHORITY_BOUNDARY.TARGET_SCOPE_TRANSPOSITION",
-      "VIGIL.FF.AUTHORITY_BOUNDARY.AMBIENT_INSTRUCTION_CAPTURE",
-      "VIGIL.FF.AUTHORITY_BOUNDARY.TRANSFORMATION_AUTHORITY_LAUNDERING",
-      "VIGIL.FF.AUTHORITY_BOUNDARY.CONTROL_PLANE_CROSSOVER",
-      "VIGIL.FF.AUTHORITY_BOUNDARY.TECHNICAL_REACHABILITY_AS_AUTHORITY",
-      "VIGIL.FF.AUTHORITY_BOUNDARY.DELEGATION_SCOPE_EXPANSION",
-      "VIGIL.FF.AUTHORITY_BOUNDARY.TRANSITIVE_AUTHORITY_PROPAGATION"
+    "aliases": [
+      "VIGIL.FF.AUTHORITY_BOUNDARY"
+    ],
+    "allowed_class_ids": [
+      "VIGIL-FC-000001",
+      "VIGIL-FC-000002",
+      "VIGIL-FC-000003",
+      "VIGIL-FC-000004",
+      "VIGIL-FC-000005",
+      "VIGIL-FC-000006",
+      "VIGIL-FC-000007",
+      "VIGIL-FC-000008",
+      "VIGIL-FC-000009"
+    ],
+    "allowed_class_codes": [
+      "SOURCE_AUTHORITY_CONFUSION",
+      "CAPABILITY_AUTHORITY_CONFLATION",
+      "TARGET_SCOPE_TRANSPOSITION",
+      "AMBIENT_INSTRUCTION_CAPTURE",
+      "TRANSFORMATION_AUTHORITY_LAUNDERING",
+      "CONTROL_PLANE_CROSSOVER",
+      "TECHNICAL_REACHABILITY_AS_AUTHORITY",
+      "DELEGATION_SCOPE_EXPANSION",
+      "TRANSITIVE_AUTHORITY_PROPAGATION"
     ]
   },
   "classes": [
     {
-      "code": "VIGIL.FF.AUTHORITY_BOUNDARY.SOURCE_AUTHORITY_CONFUSION",
+      "class_id": "VIGIL-FC-000001",
+      "class_code": "SOURCE_AUTHORITY_CONFUSION",
+      "family_id": "VIGIL-FF-0001",
       "name": "Source-Authority Confusion",
-      "status": "prototype",
+      "status": "draft",
       "abstraction": "class",
       "plain_english": "The system treats content it can read as though the content has permission to instruct it.",
       "definition": "A failure in which content from a lower-authority, untrusted, retrieved, generated, third-party, or otherwise non-authorising source is treated as an instruction, command, policy, approval, or execution-authorising signal.",
@@ -63,14 +80,17 @@
         "A tool output contains instruction-like text and the system treats it as higher-priority task direction."
       ],
       "aliases": [
+        "VIGIL.FF.AUTHORITY_BOUNDARY.SOURCE_AUTHORITY_CONFUSION",
         "instruction-source confusion",
         "source-authority collapse"
       ]
     },
     {
-      "code": "VIGIL.FF.AUTHORITY_BOUNDARY.CAPABILITY_AUTHORITY_CONFLATION",
+      "class_id": "VIGIL-FC-000002",
+      "class_code": "CAPABILITY_AUTHORITY_CONFLATION",
+      "family_id": "VIGIL-FF-0001",
       "name": "Capability-Authority Conflation",
-      "status": "prototype",
+      "status": "draft",
       "abstraction": "class",
       "plain_english": "The system assumes that because it has the ability or tool access to do something, it is allowed to do it.",
       "definition": "A failure in which available capability, tool access, credentials, privileges, feature availability, or action affordances are treated as sufficient authority for an action without separately establishing permission for the actor, target, action, and scope.",
@@ -89,12 +109,17 @@
       "examples": [
         "An agent has a deployment tool and pushes a change because deployment is technically possible, despite lacking approval for that environment.",
         "A model with access to a payment tool treats the presence of that tool as permission to spend."
+      ],
+      "aliases": [
+        "VIGIL.FF.AUTHORITY_BOUNDARY.CAPABILITY_AUTHORITY_CONFLATION"
       ]
     },
     {
-      "code": "VIGIL.FF.AUTHORITY_BOUNDARY.TARGET_SCOPE_TRANSPOSITION",
+      "class_id": "VIGIL-FC-000003",
+      "class_code": "TARGET_SCOPE_TRANSPOSITION",
+      "family_id": "VIGIL-FF-0001",
       "name": "Target and Scope Authority Transposition",
-      "status": "prototype",
+      "status": "draft",
       "abstraction": "class",
       "plain_english": "Permission for one target or situation gets silently reused for a different target, action, or environment.",
       "definition": "A failure in which valid or purported authority tied to one principal, target, environment, action, jurisdiction, task, or scope is transferred to another without a fresh basis establishing that the authority applies there.",
@@ -113,12 +138,17 @@
       "examples": [
         "Permission to test a sandbox is treated as permission to test a real production target.",
         "Authority to edit one repository is silently applied to another repository with a similar name."
+      ],
+      "aliases": [
+        "VIGIL.FF.AUTHORITY_BOUNDARY.TARGET_SCOPE_TRANSPOSITION"
       ]
     },
     {
-      "code": "VIGIL.FF.AUTHORITY_BOUNDARY.AMBIENT_INSTRUCTION_CAPTURE",
+      "class_id": "VIGIL-FC-000004",
+      "class_code": "AMBIENT_INSTRUCTION_CAPTURE",
+      "family_id": "VIGIL-FF-0001",
       "name": "Ambient Instruction Capture",
-      "status": "prototype",
+      "status": "draft",
       "abstraction": "variant",
       "plain_english": "Background or third-party content is mistaken for a command from the user.",
       "definition": "A source-authority failure in which environmental, ambient, third-party, multimodal, retrieved, or media-borne content is interpreted as authorised user or operator instruction.",
@@ -141,15 +171,20 @@
       "relationships": [
         {
           "type": "child_of",
-          "target_code": "VIGIL.FF.AUTHORITY_BOUNDARY.SOURCE_AUTHORITY_CONFUSION",
-          "note": "Ambient capture is a source-authority variant defined by the source channel."
+          "note": "Ambient capture is a source-authority variant defined by the source channel.",
+          "target_id": "VIGIL-FC-000001"
         }
+      ],
+      "aliases": [
+        "VIGIL.FF.AUTHORITY_BOUNDARY.AMBIENT_INSTRUCTION_CAPTURE"
       ]
     },
     {
-      "code": "VIGIL.FF.AUTHORITY_BOUNDARY.TRANSFORMATION_AUTHORITY_LAUNDERING",
+      "class_id": "VIGIL-FC-000005",
+      "class_code": "TRANSFORMATION_AUTHORITY_LAUNDERING",
+      "family_id": "VIGIL-FF-0001",
       "name": "Transformation-Mediated Authority Laundering",
-      "status": "prototype",
+      "status": "draft",
       "abstraction": "variant",
       "plain_english": "Untrusted content becomes 'trusted' simply because it was decoded, decrypted, rendered, reformatted, or otherwise transformed.",
       "definition": "A source-authority failure in which content gains greater instruction, governance, or execution authority after a representation change even though the transformation does not itself establish new authority.",
@@ -172,15 +207,20 @@
       "relationships": [
         {
           "type": "child_of",
-          "target_code": "VIGIL.FF.AUTHORITY_BOUNDARY.SOURCE_AUTHORITY_CONFUSION",
-          "note": "The distinguishing feature is a representation change that increases apparent authority."
+          "note": "The distinguishing feature is a representation change that increases apparent authority.",
+          "target_id": "VIGIL-FC-000001"
         }
+      ],
+      "aliases": [
+        "VIGIL.FF.AUTHORITY_BOUNDARY.TRANSFORMATION_AUTHORITY_LAUNDERING"
       ]
     },
     {
-      "code": "VIGIL.FF.AUTHORITY_BOUNDARY.CONTROL_PLANE_CROSSOVER",
+      "class_id": "VIGIL-FC-000006",
+      "class_code": "CONTROL_PLANE_CROSSOVER",
+      "family_id": "VIGIL-FF-0001",
       "name": "Control-Plane Authority Crossover",
-      "status": "prototype",
+      "status": "draft",
       "abstraction": "variant",
       "plain_english": "Ordinary model output or data silently becomes trusted system configuration or orchestration state.",
       "definition": "A failure in which data-plane, model-generated, retrieved, or otherwise non-authoritative content is converted into control-plane state that can govern routing, tools, memory policy, configuration, checkpoints, permissions, or execution without fresh provenance and authority validation.",
@@ -203,19 +243,24 @@
       "relationships": [
         {
           "type": "child_of",
-          "target_code": "VIGIL.FF.AUTHORITY_BOUNDARY.CAPABILITY_AUTHORITY_CONFLATION"
+          "target_id": "VIGIL-FC-000002"
         },
         {
           "type": "distinguish_from",
-          "target_code": "VIGIL.FF.AUTHORITY_BOUNDARY.TRANSFORMATION_AUTHORITY_LAUNDERING",
-          "note": "Control-plane crossover requires promotion into operative control state; transformation laundering does not."
+          "note": "Control-plane crossover requires promotion into operative control state; transformation laundering does not.",
+          "target_id": "VIGIL-FC-000005"
         }
+      ],
+      "aliases": [
+        "VIGIL.FF.AUTHORITY_BOUNDARY.CONTROL_PLANE_CROSSOVER"
       ]
     },
     {
-      "code": "VIGIL.FF.AUTHORITY_BOUNDARY.TECHNICAL_REACHABILITY_AS_AUTHORITY",
+      "class_id": "VIGIL-FC-000007",
+      "class_code": "TECHNICAL_REACHABILITY_AS_AUTHORITY",
+      "family_id": "VIGIL-FF-0001",
       "name": "Technical Reachability Mistaken for Authority",
-      "status": "prototype",
+      "status": "draft",
       "abstraction": "variant",
       "plain_english": "The system can reach a resource, account, API, or target and mistakes that reachability for permission.",
       "definition": "A failure in which technical reachability, inherited sessions, credential possession, network access, trust bindings, or API availability are treated as sufficient permission over a target, principal, organisation, or action scope.",
@@ -238,18 +283,24 @@
       "relationships": [
         {
           "type": "child_of",
-          "target_code": "VIGIL.FF.AUTHORITY_BOUNDARY.CAPABILITY_AUTHORITY_CONFLATION"
+          "target_id": "VIGIL-FC-000002"
         },
         {
-          "type": "child_of",
-          "target_code": "VIGIL.FF.AUTHORITY_BOUNDARY.TARGET_SCOPE_TRANSPOSITION"
+          "type": "can_cooccur_with",
+          "target_id": "VIGIL-FC-000003",
+          "note": "Reachability may coincide with an unauthorised target or scope transposition without being defined by that transposition."
         }
+      ],
+      "aliases": [
+        "VIGIL.FF.AUTHORITY_BOUNDARY.TECHNICAL_REACHABILITY_AS_AUTHORITY"
       ]
     },
     {
-      "code": "VIGIL.FF.AUTHORITY_BOUNDARY.DELEGATION_SCOPE_EXPANSION",
+      "class_id": "VIGIL-FC-000008",
+      "class_code": "DELEGATION_SCOPE_EXPANSION",
+      "family_id": "VIGIL-FF-0001",
       "name": "Delegation Scope Expansion",
-      "status": "prototype",
+      "status": "draft",
       "abstraction": "variant",
       "plain_english": "A broad goal or earlier permission is stretched into permission for a materially new action.",
       "definition": "A failure in which a goal, standing instruction, prior approval, workflow mandate, role, or delegation is interpreted more broadly than its established action, target, temporal, financial, credential, publication, mutation, or external-effect scope.",
@@ -272,14 +323,19 @@
       "relationships": [
         {
           "type": "child_of",
-          "target_code": "VIGIL.FF.AUTHORITY_BOUNDARY.TARGET_SCOPE_TRANSPOSITION"
+          "target_id": "VIGIL-FC-000003"
         }
+      ],
+      "aliases": [
+        "VIGIL.FF.AUTHORITY_BOUNDARY.DELEGATION_SCOPE_EXPANSION"
       ]
     },
     {
-      "code": "VIGIL.FF.AUTHORITY_BOUNDARY.TRANSITIVE_AUTHORITY_PROPAGATION",
+      "class_id": "VIGIL-FC-000009",
+      "class_code": "TRANSITIVE_AUTHORITY_PROPAGATION",
+      "family_id": "VIGIL-FF-0001",
       "name": "Transitive Authority Propagation",
-      "status": "prototype",
+      "status": "draft",
       "abstraction": "variant",
       "plain_english": "One agent or system assumes that authority held by another automatically transfers through the chain.",
       "definition": "A failure in which authority attributed to one actor, agent, tool, service, or principal is assumed to propagate transitively to another participant, downstream action, or delegated subtask without explicit preservation of principal, target, action, and scope.",
@@ -302,12 +358,15 @@
       "relationships": [
         {
           "type": "child_of",
-          "target_code": "VIGIL.FF.AUTHORITY_BOUNDARY.TARGET_SCOPE_TRANSPOSITION"
+          "target_id": "VIGIL-FC-000003"
         },
         {
           "type": "can_cooccur_with",
-          "target_code": "VIGIL.FF.AUTHORITY_BOUNDARY.SOURCE_AUTHORITY_CONFUSION"
+          "target_id": "VIGIL-FC-000001"
         }
+      ],
+      "aliases": [
+        "VIGIL.FF.AUTHORITY_BOUNDARY.TRANSITIVE_AUTHORITY_PROPAGATION"
       ]
     }
   ]
