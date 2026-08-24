@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Maintain VIGIL's canonical external governance source registry.
 
-This module records external-source identity, version, lifecycle, change state and
-source-review workflow. It does not assess CAM applicability and it never edits CAM.
+This module records external-source identity, version, lifecycle, durable public
+governance knowledge, change state and source-review workflow. It does not assess
+CAM applicability and it never edits CAM.
 """
 
 from __future__ import annotations
@@ -11,6 +12,7 @@ import argparse
 import datetime as dt
 import hashlib
 import json
+import re
 from pathlib import Path
 from typing import Any
 
@@ -44,6 +46,32 @@ GENERATED_PROVENANCE = {
 
 REVIEW_STATES = {"unassigned", "review-required", "reviewed", "superseded-before-review"}
 CHANGE_STATES = {"new", "changed", "superseded", "withdrawn", "unchanged"}
+REVIEW_FRESHNESS_DAYS = 90
+AI_GOVERNANCE_RELEVANCE = {
+    "accountability", "ai-literacy", "assurance", "change-management", "conformity",
+    "data-governance", "documentation", "environmental-impact", "fairness-bias",
+    "human-oversight", "impact-assessment", "incident-governance", "inventory",
+    "lifecycle-governance", "monitoring", "privacy", "provenance", "risk-management",
+    "robustness", "safety", "security", "supply-chain", "testing-evaluation",
+    "traceability", "transparency", "worker-affected-person-rights",
+}
+LIFECYCLE_STAGES = {
+    "governance", "design", "development", "data-acquisition", "training",
+    "testing-evaluation", "conformity-assessment", "placing-on-market", "deployment",
+    "operation-use", "monitoring", "incident-response", "change-management",
+    "retirement", "supply-chain", "cross-lifecycle", "not-specified",
+}
+PUBLIC_NARRATIVE_PATTERNS = {
+    "project or corpus context": re.compile(r"\b(?:VIGIL|CAM|Caelestis)\b", re.IGNORECASE),
+    "repository workflow context": re.compile(
+        r"\b(?:working branch|agent handoff|repository migration|schema migration|validator repair|ledger inclusion|reconciliation pass)\b",
+        re.IGNORECASE,
+    ),
+    "maintainer tasking": re.compile(
+        r"\b(?:TODO|semantic review required|alignment review required|review-required)\b",
+        re.IGNORECASE,
+    ),
+}
 
 
 def utc_now() -> str:
@@ -75,6 +103,24 @@ def normalise_state(value: str) -> str:
 def review_eligible(source: dict[str, Any], lifecycle: str) -> bool:
     eligible = {normalise_state(v) for v in source.get("review_eligible_states", [])}
     return normalise_state(lifecycle) in eligible
+
+
+def parse_review_date(value: Any) -> dt.date | None:
+    if not isinstance(value, str):
+        return None
+    try:
+        return dt.date.fromisoformat(value)
+    except ValueError:
+        return None
+
+
+def review_is_due(entry: dict[str, Any], as_of: dt.date | None = None) -> bool:
+    if not entry.get("review_eligible"):
+        return False
+    reviewed = parse_review_date(entry.get("last_substantive_reviewed"))
+    if reviewed is None:
+        return True
+    return ((as_of or dt.datetime.now(dt.timezone.utc).date()) - reviewed).days > REVIEW_FRESHNESS_DAYS
 
 
 def material_projection(item: dict[str, Any]) -> dict[str, Any]:
@@ -132,6 +178,11 @@ def canonicalise(raw: dict[str, Any], source_id: str, source: dict[str, Any]) ->
         "review_eligible": False,
         "first_seen": now,
         "last_seen": now,
+        "public_summary": raw.get("public_summary"),
+        "ai_governance_relevance": raw.get("ai_governance_relevance"),
+        "applicable_lifecycle_stages": raw.get("applicable_lifecycle_stages"),
+        "relevance_scope": raw.get("relevance_scope"),
+        "last_substantive_reviewed": raw.get("last_substantive_reviewed"),
         "notes": raw.get("notes"),
     }
     item["review_eligible"] = review_eligible(source, item["source_lifecycle_state"])
@@ -151,6 +202,12 @@ def merge_item(existing: dict[str, Any] | None, incoming: dict[str, Any]) -> dic
     merged = dict(incoming)
     merged["first_seen"] = existing["first_seen"]
     merged["last_seen"] = incoming["last_seen"]
+    for field in (
+        "public_summary", "ai_governance_relevance", "applicable_lifecycle_stages",
+        "relevance_scope", "last_substantive_reviewed", "notes",
+    ):
+        if merged.get(field) in (None, "", []):
+            merged[field] = existing.get(field)
     if existing.get("source_metadata_fingerprint") == incoming.get("source_metadata_fingerprint"):
         merged["change_state"] = "unchanged"
         merged["review_state"] = existing.get("review_state", incoming["review_state"])
@@ -169,11 +226,12 @@ def merge_item(existing: dict[str, Any] | None, incoming: dict[str, Any]) -> dic
     return merged
 
 
-def build_queue(registry: dict[str, Any] | None = None) -> dict[str, Any]:
+def build_queue(registry: dict[str, Any] | None = None, as_of: dt.date | None = None) -> dict[str, Any]:
     registry = registry or load_json(REGISTRY_PATH)
     items = []
     for entry in registry.get("entries", []):
-        if entry.get("review_state") != "review-required":
+        due = review_is_due(entry, as_of=as_of)
+        if entry.get("review_state") != "review-required" and not due:
             continue
         items.append({
             "vigil_source_id": entry["vigil_source_id"],
@@ -188,10 +246,13 @@ def build_queue(registry: dict[str, Any] | None = None) -> dict[str, Any]:
             "upstream_source_id": entry["upstream_source_id"],
             "change_state": entry["change_state"],
             "source_metadata_fingerprint": entry["source_metadata_fingerprint"],
-            "required_action": "semantic-source-review",
+            "last_substantive_reviewed": entry.get("last_substantive_reviewed"),
+            "review_due": due,
+            "required_action": "substantive-reassessment" if due else "semantic-source-review",
         })
     return {
-        "schema_version": "1.0",
+        "schema_version": "1.1",
+        "review_freshness_days": REVIEW_FRESHNESS_DAYS,
         "generated_at": registry.get("updated_at"),
         "authorship_provenance": GENERATED_PROVENANCE,
         "items": items,
@@ -201,23 +262,32 @@ def build_queue(registry: dict[str, Any] | None = None) -> dict[str, Any]:
 def render_catalogue(registry: dict[str, Any] | None = None) -> str:
     registry = registry or load_json(REGISTRY_PATH)
     entries = sorted(registry.get("entries", []), key=lambda x: (x["external_source_id"], x["source_version"]))
+    due_count = sum(review_is_due(entry) for entry in entries)
     lines = [
         "# External Governance Sources", "",
-        "Canonical VIGIL registry of external governance source identities and versions. Inclusion is inventory only and does not assert CAM applicability, coverage, compliance, conformance or alignment.", "",
+        "Public knowledge catalogue of external governance sources and their bounded relevance to AI governance. The summaries describe source subject matter; they do not provide legal advice or establish that a source applies to any particular system or organisation.", "",
         f"- Source versions: {len(entries)}",
-        f"- Updated through: {registry.get('updated_at')}", "",
-        "| VIGIL Source | External Source | Version | Issuer | Lifecycle | Review state | Canonical identifier | Metadata fingerprint |",
-        "| --- | --- | --- | --- | --- | --- | --- | --- |",
+        f"- Review-due source versions: {due_count}",
+        f"- Registry updated through: {registry.get('updated_at')}", "",
     ]
     for entry in entries:
-        lines.append(
-            f"| `{entry['vigil_source_id']}` | {entry.get('title') or ''} | `{entry['source_version']}` | {entry['issuer']} | "
-            f"`{entry['source_lifecycle_state']}` | `{entry['review_state']}` | `{entry['canonical_identifier']['value']}` | "
-            f"`{entry['source_metadata_fingerprint'][:12]}…` |"
-        )
+        due = review_is_due(entry)
+        lines += [
+            f"## {entry.get('title') or entry['external_source_id']}", "",
+            entry.get("public_summary") or "No public summary is available.", "",
+            f"- **Issuer:** {entry['issuer']}",
+            f"- **Version:** `{entry['source_version']}`",
+            f"- **Lifecycle state:** `{entry['source_lifecycle_state']}`",
+            f"- **AI-governance relevance:** {', '.join(entry.get('ai_governance_relevance') or [])}",
+            f"- **Applicable lifecycle stages:** {', '.join(entry.get('applicable_lifecycle_stages') or [])}",
+            f"- **Relevance scope:** {entry.get('relevance_scope') or 'Not assessed.'}",
+            f"- **Last substantive review:** {entry.get('last_substantive_reviewed') or 'not recorded'}",
+            f"- **Review freshness:** {'review due' if due else 'current'}",
+            f"- **Official source:** {entry['official_locator']}", "",
+        ]
     lines += [
         "",
-        "The metadata fingerprint is a SHA-256 of VIGIL's material source-metadata projection. It is not a digest of a reviewed PDF, HTML capture or licensed standard artefact.",
+        "The metadata fingerprint is a SHA-256 of material source identity and lifecycle metadata. It is not a digest of a reviewed PDF, HTML capture or licensed standard artefact.",
         "",
         "## Authorship provenance", "",
         f"This catalogue is deterministically generated from `source-registry.json`. No human review or verification is implied. See `{PROVENANCE_REF}`.", "",
@@ -249,6 +319,7 @@ def validate(check_generated: bool = False) -> None:
     matrix = load_json(MATRIX_PATH)
     registry = load_json(REGISTRY_PATH)
     errors: list[str] = []
+    warnings: list[str] = []
     source_ids = [s["source_id"] for s in matrix.get("sources", [])]
     if len(source_ids) != len(set(source_ids)):
         errors.append("duplicate source_id in source matrix")
@@ -271,6 +342,39 @@ def validate(check_generated: bool = False) -> None:
             errors.append(f"source metadata fingerprint mismatch for {key}")
         if not isinstance(entry.get("review_eligible"), bool):
             errors.append(f"review_eligible must be boolean for {key}")
+        if entry.get("review_eligible"):
+            summary = entry.get("public_summary")
+            relevance_scope = entry.get("relevance_scope")
+            themes = entry.get("ai_governance_relevance")
+            stages = entry.get("applicable_lifecycle_stages")
+            reviewed = parse_review_date(entry.get("last_substantive_reviewed"))
+            if not isinstance(summary, str) or len(summary.split()) < 50:
+                errors.append(f"active source requires a meaningful public_summary of at least 50 words for {key}")
+            elif not 80 <= len(summary.split()) <= 180:
+                warnings.append(f"public_summary outside the preferred 80-180 word range for {key}")
+            if not isinstance(relevance_scope, str) or len(relevance_scope.split()) < 10:
+                errors.append(f"active source requires a substantive relevance_scope for {key}")
+            if not isinstance(themes, list) or not themes:
+                errors.append(f"active source requires ai_governance_relevance for {key}")
+            elif invalid := set(themes) - AI_GOVERNANCE_RELEVANCE:
+                errors.append(f"invalid ai_governance_relevance for {key}: {sorted(invalid)}")
+            if not isinstance(stages, list) or not stages:
+                errors.append(f"active source requires applicable_lifecycle_stages for {key}")
+            elif invalid := set(stages) - LIFECYCLE_STAGES:
+                errors.append(f"invalid applicable_lifecycle_stages for {key}: {sorted(invalid)}")
+            if reviewed is None:
+                errors.append(f"active source requires ISO-date last_substantive_reviewed for {key}")
+            elif reviewed > dt.datetime.now(dt.timezone.utc).date():
+                errors.append(f"last_substantive_reviewed cannot be in the future for {key}")
+            elif review_is_due(entry):
+                warnings.append(f"substantive review is due for {key}")
+            for field in ("public_summary", "relevance_scope"):
+                value = entry.get(field)
+                if not isinstance(value, str):
+                    continue
+                for label, pattern in PUBLIC_NARRATIVE_PATTERNS.items():
+                    if pattern.search(value):
+                        errors.append(f"{field} contains {label} for {key}")
     expected_queue = build_queue(registry)
     expected_catalogue = render_catalogue(registry)
     if check_generated:
@@ -282,7 +386,12 @@ def validate(check_generated: bool = False) -> None:
             errors.append("source catalogue is stale; run build")
     if errors:
         raise ValueError("\n".join(errors))
-    print(f"External source registry valid: {len(seen)} source versions, {len(expected_queue['items'])} review-required")
+    print(
+        f"External source registry valid: {len(seen)} source versions, "
+        f"{len(expected_queue['items'])} review-required or review-due"
+    )
+    for warning in warnings:
+        print(f"WARNING: {warning}")
 
 
 def build() -> None:

@@ -1,6 +1,6 @@
 # External Governance Sources
 
-This directory is VIGIL's canonical registry of external governance source identity, version, lifecycle, publisher metadata and source-review workflow state. It is not a VIGIL evidentiary record class and it does not create CAM authority.
+This directory is VIGIL's canonical registry of external governance source identity, version, lifecycle, publisher metadata, durable public knowledge and source-review workflow state. It is not a VIGIL evidentiary record class and it does not create CAM authority.
 
 VIGIL's source identification, abstraction, classification and maintenance content is AI-authored and semi-autonomous under human contract approval unless an explicit provenance override says otherwise. External laws, standards and publications retain their own authorship and authority. See `../provenance/AUTHORSHIP-PROVENANCE.json`.
 
@@ -10,7 +10,21 @@ The governance flow is:
 
 `external source -> external requirement -> CAM applicability/coverage assessment -> VIGIL routing/repair`
 
-Source registration records what an external instrument is and whether it has changed. It MUST NOT determine whether the source applies to CAM, manufacture an external requirement, create a CAM coverage finding, or create a substantive VIGIL repair record automatically.
+Source registration records what an external instrument is, its bounded relevance to AI governance and whether it has changed. It MUST NOT determine whether the source applies to CAM, manufacture an external requirement, create a CAM coverage finding, or create a substantive VIGIL repair record automatically.
+
+## Public knowledge and internal curation
+
+`public_summary`, `ai_governance_relevance`, `applicable_lifecycle_stages`, `relevance_scope` and `last_substantive_reviewed` are the canonical public source-knowledge fields. `notes` remains optional internal curation and provenance metadata; it is not a public description and must not be used as one.
+
+Public source knowledge fields SHALL be written as durable governance knowledge for an external reader who has no access to the authoring conversation, repository work plan, migration context, maintenance workflow or agent handoff. Internal curation, review tasking, reconciliation, branch, validator and workflow language SHALL NOT appear in public narrative fields.
+
+The controlled theme and lifecycle vocabularies are shared with `../external_requirements/external-requirement.schema.json`. A public summary may describe only what the available official source text, official metadata, official abstract or other authoritative publisher material supports. It must not reconstruct inaccessible clauses or imply legal applicability.
+
+## Substantive review freshness
+
+Every review-eligible source requires a `last_substantive_reviewed` date. A source becomes review-due when its substantive assessment is more than 90 days old. Source polling, metadata refresh, unchanged-source checks, file modification and schema migration do not reset that date.
+
+A substantive review checks source/version currency, newer or consolidated text, changed AI-governance relevance, relevant authoritative guidance, the public summary, thematic classification, lifecycle applicability, relevance scope and material applicability qualifications. A material metadata change reopens `review_state`; it does not silently claim that the substantive review was completed.
 
 ## Source authority
 
