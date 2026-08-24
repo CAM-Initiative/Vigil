@@ -16,6 +16,12 @@ The taxonomy branch was 14 commits ahead of and 0 behind `main`. It was 14 commi
 
 TAXONOMY-03 changes only taxonomy files and `vigil/tests/test_failure_taxonomy.py`. The concurrent EXTSRC changes remain untouched. With the recorded remote heads unchanged, the TAXONOMY-03 result is 15 commits ahead of and 0 behind `main`, and 15 commits ahead of and 4 behind `agent/extsrc-ux-01`; the remote comparison is rechecked after publication.
 
+### Post-publication remote verification
+
+At final verification on 24 August 2026, the remote taxonomy branch was at `3b8615bd51809a42c07764a428444ae6b2d8eb72`. Concurrently, EXTSRC-UX-01 had been deliberately merged to `main` through PR #57, advancing `main` to `9fcaf0e498ca5f7ea0db7c925da4f9c10a4a6891`; the remote `agent/extsrc-ux-01` branch had then been deleted.
+
+The taxonomy branch is therefore 15 commits ahead of and 1 commit behind current `main`. Comparison of the taxonomy branch's unique changed files with the 13 files changed by the EXTSRC merge found no overlap. No EXTSRC file or commit was copied, merged, rebased, reset, or cherry-picked into the taxonomy branch. Any future reconciliation remains a separate bounded package through updated `main`.
+
 ## Identifier allocation
 
 Before allocation, the catalogue's highest identifiers were `VIGIL-FF-0004` and `VIGIL-FC-000027`; `removed_ids` was empty. The batch allocated families `VIGIL-FF-0005` through `VIGIL-FF-0007` and classes/variants `VIGIL-FC-000028` through `VIGIL-FC-000042` sequentially. No identifier was reused or derived from family membership.
