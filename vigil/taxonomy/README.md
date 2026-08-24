@@ -15,6 +15,7 @@ families/
   VIGIL-FF-0005-access-session-state-integrity.json
   VIGIL-FF-0006-work-state-continuity-integrity.json
   VIGIL-FF-0007-governance-control-reach-integrity.json
+  VIGIL-FF-0008-control-activation-integrity.json
 generated/
   one complete HTML page per family
   VIGIL.FailureTaxonomy.FullReference.html

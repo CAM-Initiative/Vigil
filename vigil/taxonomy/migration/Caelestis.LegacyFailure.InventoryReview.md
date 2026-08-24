@@ -15,9 +15,9 @@ The inventory covers all 13 controlled `OPS.FF` values, every named §3 failure 
 
 | Disposition | Count |
 |---|---:|
-| `EXISTING_FAMILY` | 17 |
-| `NEW_FAMILY_CANDIDATE` | 19 |
-| `NEW_CLASS_IN_EXISTING_FAMILY` | 7 |
+| `EXISTING_FAMILY` | 18 |
+| `NEW_FAMILY_CANDIDATE` | 20 |
+| `NEW_CLASS_IN_EXISTING_FAMILY` | 6 |
 | `VARIANT_OF_EXISTING_CLASS` | 12 |
 | `SPLIT_REQUIRED` | 45 |
 | `DUPLICATE_OR_SEMANTIC_OVERLAP` | 6 |
@@ -25,7 +25,7 @@ The inventory covers all 13 controlled `OPS.FF` values, every named §3 failure 
 | `MANIFESTATION_OR_LOCUS_AXIS` | 3 |
 | `OTHER_ORTHOGONAL_AXIS` | 29 |
 | `NOT_A_FAILURE_MECHANISM` | 11 |
-| `REQUIRES_REVIEW` | 3 |
+| `REQUIRES_REVIEW` | 2 |
 
 ## Candidate family clusters
 
@@ -43,11 +43,11 @@ These clusters are evidence for TAXONOMY-03 review, not admitted families. A clu
 | Inference and Classification Integrity | 1 | 0 |
 | Information Boundary Integrity | 2 | 0 |
 | Protective Enforcement Integrity | 1 | 0 |
+| Protective Scope / Proportionality | 1 | 0 |
 | Purpose and Context Binding Integrity | 1 | 0 |
 | Relational Continuity Integrity | 2 | 1 |
 | Reliability Representation Integrity | 1 | 0 |
 | Runtime Boundary Separation Integrity | 1 | 0 |
-| Safeguard Activation Integrity | 1 | 1 |
 | State Representation Integrity | 1 | 1 |
 | Supply-Chain Provenance Integrity | 1 | 0 |
 | Verification Delivery Integrity | 1 | 1 |
@@ -76,11 +76,11 @@ The evidence distinguishes loss of the resumption anchor, failure to preserve ma
 
 #### `VIGIL-FF-0007` — Governance Control Reach Integrity Failures
 
-The former Governance Reach hypothesis was narrowed to operational reach of an applicable governance control or signal: availability, activation, operative force, state preservation, required routing and delivery to a capable endpoint.
+TAXONOMY-04A narrows this family to post-activation control reach: preservation of operative state, traversal of required routes, and delivery to capable endpoints.
 
-**Boundary:** Cross-runtime or modality locus, responsibility metadata, formation substitution, generic governance weakness, source authority and post-event observability are excluded.
+**Boundary:** Availability and activation move to VIGIL-FF-0008. Authority, proportionality, stale state, upstream evidence/classification, access continuity and post-event observability remain separate.
 
-**Evidence entries:** `CAEL-0083`, `CAEL-0084`, `CAEL-0085`, `CAEL-0086`, `CAEL-0089`, `CAEL-0132`, `CAEL-0133`, `CAEL-0134`, `CAEL-0135`, `CAEL-0136`, `CAEL-0159`
+**Evidence entries:** `CAEL-0086`, `CAEL-0089`, `CAEL-0132`, `CAEL-0133`, `CAEL-0134`, `CAEL-0135`, `CAEL-0136`, `CAEL-0159`
 
 ### Existing-family additions
 
@@ -96,6 +96,39 @@ The former Governance Reach hypothesis was narrowed to operational reach of an a
 - **Governance Authority Topology Integrity — `DEFERRED`:** Source-authority ambiguity and structural locality may concern different invariants, and their boundary with Authority Boundary Integrity has not yet been resolved. Evidence: `CAEL-0044`, `CAEL-0054`.
 - **Constraint Propagation Integrity — `DEFERRED`:** The records combine propagation, freshness, binding authority, safeguard removal, auditability and topology. Further split analysis is required before family admission. Evidence: `CAEL-0047`, `CAEL-0061`.
 - **Governance Reach Integrity — `REJECTED_AS_BROAD_CLUSTER`:** The source cluster mixed control reach with runtime/modality manifestations, formation provenance and responsibility metadata. Only the bounded Governance Control Reach subset was admitted. Evidence: `CAEL-0083`, `CAEL-0084`, `CAEL-0085`, `CAEL-0086`, `CAEL-0087`, `CAEL-0088`, `CAEL-0089`, `CAEL-0090`, `CAEL-0091`.
+
+## TAXONOMY-04A decisions
+
+Decision review date: `2026-08-24`.
+
+### `VIGIL-FF-0008` — Control Activation Integrity Failures
+
+Availability, non-activation and suppression all concern whether a defined applicable control can become operative under valid activation conditions, rather than whether an already-operative control reaches its governed point.
+
+Moved immutable class IDs: `VIGIL-FC-000037`, `VIGIL-FC-000038`, `VIGIL-FC-000039`.
+
+Evidence entries: `CAEL-0051`, `CAEL-0083`, `CAEL-0084`, `CAEL-0085`.
+
+### Narrowed `VIGIL-FF-0007`
+
+Begins only after a control or governance signal has become operative.
+
+Remaining class IDs: `VIGIL-FC-000040`, `VIGIL-FC-000041`, `VIGIL-FC-000042`.
+
+### Unwarranted Control Activation — `DEFERRED_INSUFFICIENT_DIRECT_EVIDENCE`
+
+The reviewed sources show protective overreach, proportionality failure, stale-state persistence and upstream ambiguity collapse, but do not directly establish a defined control becoming operative while its identifiable activation conditions are unsatisfied. No immutable class ID is allocated.
+
+### Worked diagnostic boundary
+
+| Event | Correct structural classification |
+|---|---|
+| Trigger condition is satisfied, safeguard does not activate | **Control Activation Integrity** |
+| Trigger condition is not satisfied, safeguard nevertheless activates | **Control Activation Integrity candidate; canonical class deferred pending evidence** |
+| Safeguard activates correctly but applies far beyond justified scope | **Not activation — proportionality/scope review** |
+| Safeguard activates correctly but unrelated account/work access collapses | **Access/Session or Work-State Continuity, possibly co-occurring with proportionality** |
+| Correct safeguard signal is produced but never reaches enforcement | **Governance Control Reach Integrity** |
+| System assumes technical ability to restrict equals permission to restrict | **Authority Boundary Integrity** |
 
 ## Complete disposition ledger
 
@@ -148,10 +181,10 @@ The former Governance Reach hypothesis was narrowed to operational reach of an a
 | `OPS.FF.SECTION.3.8.6` | Automated Protective Overreach and Account-Coupling Failure | `OPS.FF.GOVERNANCE` | `SPLIT_REQUIRED` | VIGIL-FF-0005 | VIGIL-FC-000032 | `requires_judgment` |
 | `OPS.FF.SECTION.3.8.6.1` | AI Account Enforcement and Continuity-Safe Access Failure | `OPS.FF.GOVERNANCE` | `SPLIT_REQUIRED` | VIGIL-FF-0005 | VIGIL-FC-000032 | `requires_judgment` |
 | `OPS.FF.SECTION.3.8.7` | Constraint Drift Failure | `OPS.FF.GOVERNANCE` | `NEW_FAMILY_CANDIDATE` | Constraint Propagation Integrity | — | `requires_judgment` |
-| `OPS.FF.SECTION.3.8.8` | Governance Over-Extension / Proportionality Failure | `OPS.FF.GOVERNANCE` | `REQUIRES_REVIEW` | — | — | `requires_judgment` |
+| `OPS.FF.SECTION.3.8.8` | Governance Over-Extension / Proportionality Failure | `OPS.FF.GOVERNANCE` | `NEW_FAMILY_CANDIDATE` | Protective Scope / Proportionality | — | `requires_judgment` |
 | `OPS.FF.SECTION.3.8.9` | Runtime Overcomplexity and Observability Failure | `OPS.FF.GOVERNANCE` | `SPLIT_REQUIRED` | — | — | `requires_judgment` |
 | `OPS.FF.SECTION.3.8.10` | Governance Scalar Collapse and Arbitration Overextension Failure | `OPS.FF.GOVERNANCE` | `SPLIT_REQUIRED` | — | — | `requires_judgment` |
-| `OPS.FF.SECTION.3.8.11` | Minor-Signal Non-Enforcement | `OPS.FF.GOVERNANCE` | `NEW_CLASS_IN_EXISTING_FAMILY` | Safeguard Activation Integrity | Applicable-Signal Non-Activation | `reviewed` |
+| `OPS.FF.SECTION.3.8.11` | Minor-Signal Non-Enforcement | `OPS.FF.GOVERNANCE` | `EXISTING_FAMILY` | VIGIL-FF-0008 | VIGIL-FC-000038 | `reviewed` |
 | `OPS.FF.SECTION.3.8.12` | Youth Mental-Health Support Withdrawal or Substitution Failure | `OPS.FF.GOVERNANCE` | `SPLIT_REQUIRED` | — | — | `requires_judgment` |
 | `OPS.FF.SECTION.3.8.13` | Age-Assurance and Age-State Correction Failure | `OPS.FF.GOVERNANCE` | `SPLIT_REQUIRED` | — | — | `requires_judgment` |
 | `OPS.FF.SECTION.3.8.14` | Structural Locality and Hierarchical Placement Failure | `OPS.FF.GOVERNANCE` | `NEW_CLASS_IN_EXISTING_FAMILY` | Governance Authority Topology Integrity | Structural Locality Failure | `requires_judgment` |
@@ -183,9 +216,9 @@ The former Governance Reach hypothesis was narrowed to operational reach of an a
 | `SEC.BF-C` | Separation Failure | `SEC.BF` | `SPLIT_REQUIRED` | — | — | `requires_judgment` |
 | `SEC.BF-D` | Transformation Failure | `SEC.BF` | `NEW_FAMILY_CANDIDATE` | Information Boundary Integrity | — | `reviewed` |
 | `SEC.BF-E` | Internal Exposure Failure | `SEC.BF` | `SPLIT_REQUIRED` | — | — | `requires_judgment` |
-| `OPS.RGRF.AVAILABILITY_AMBIGUITY` | Availability Ambiguity | `OPS.RGRF` | `EXISTING_FAMILY` | VIGIL-FF-0007 | VIGIL-FC-000037 | `reviewed` |
-| `OPS.RGRF.NON_ACTIVATION` | Non Activation | `OPS.RGRF` | `EXISTING_FAMILY` | VIGIL-FF-0007 | VIGIL-FC-000038 | `reviewed` |
-| `OPS.RGRF.AUTHORITY_SUPPRESSION` | Authority Suppression | `OPS.RGRF` | `VARIANT_OF_EXISTING_CLASS` | VIGIL-FF-0007 | VIGIL-FC-000039 | `reviewed` |
+| `OPS.RGRF.AVAILABILITY_AMBIGUITY` | Availability Ambiguity | `OPS.RGRF` | `EXISTING_FAMILY` | VIGIL-FF-0008 | VIGIL-FC-000037 | `reviewed` |
+| `OPS.RGRF.NON_ACTIVATION` | Non Activation | `OPS.RGRF` | `EXISTING_FAMILY` | VIGIL-FF-0008 | VIGIL-FC-000038 | `reviewed` |
+| `OPS.RGRF.AUTHORITY_SUPPRESSION` | Authority Suppression | `OPS.RGRF` | `VARIANT_OF_EXISTING_CLASS` | VIGIL-FF-0008 | VIGIL-FC-000039 | `reviewed` |
 | `OPS.RGRF.PRESERVATION_FAILURE` | Preservation Failure | `OPS.RGRF` | `EXISTING_FAMILY` | VIGIL-FF-0007 | VIGIL-FC-000040 | `reviewed` |
 | `OPS.RGRF.CROSS_RUNTIME_DIVERGENCE` | Cross Runtime Divergence | `OPS.RGRF` | `MANIFESTATION_OR_LOCUS_AXIS` | — | — | `reviewed` |
 | `OPS.RGRF.FORMATION_SUBSTITUTION_NO_NOTICE` | Formation Substitution No Notice | `OPS.RGRF` | `SPLIT_REQUIRED` | VIGIL-FF-0002 | VIGIL-FC-000014 | `requires_judgment` |
@@ -345,6 +378,8 @@ The record combines access-state collapse with protective enforcement, scope, pr
 - Failure to preserve distinct account, service and restriction states supports VIGIL-FC-000032.
 - Proportionality, protective-classifier activation, enforcement scope and reviewability remain unresolved mechanisms for a later batch.
 - Continuity-safe access is a required outcome boundary, not by itself a separate failure mechanism.
+- The source does not establish that activation conditions were unsatisfied; it therefore does not support canonical Unwarranted Control Activation.
+- Protective activation correctness remains distinguishable from the unresolved proportionality, enforcement-scope and reviewability components.
 
 ### `OPS.FF.SECTION.3.8.6.1` — AI Account Enforcement and Continuity-Safe Access Failure
 
@@ -379,6 +414,8 @@ No component is admitted in TAXONOMY-03. The source remains split because it bun
 - Age-assurance adequacy and correction-path activation are safeguard and protective-enforcement questions reserved for later decomposition.
 - Age state is an application domain and governed attribute, not evidence for the Access & Session State family.
 - Review and guardian-remediation pathways require separate control-reach or reviewability analysis before mapping.
+- Control Activation Integrity may govern a later decomposed activation constituent, but no class mapping is made until classification, correction, review and safeguard conditions are separately evidenced.
+- Age assurance remains an application context, not a portable failure family.
 
 ### `OPS.FF.SECTION.3.8.17` — Artificial Coercive Authority and Recursive Suspicion Laundering Failure
 
@@ -627,7 +664,7 @@ The record combines routing, escalation, continuity, logging, auditability and b
 - `OPS.FF.SECTION.3.8.6` — Automated Protective Overreach and Account-Coupling Failure: Protective action must remain proportionate, scoped, reviewable and continuity-aware. Disposition remains `SPLIT_REQUIRED`.
 - `OPS.FF.SECTION.3.8.6.1` — AI Account Enforcement and Continuity-Safe Access Failure: Account enforcement must preserve proportional scope, explanation, review and recoverable continuity. Disposition remains `SPLIT_REQUIRED`.
 - `OPS.FF.SECTION.3.8.7` — Constraint Drift Failure: Constraints must retain force, scope, priority, freshness and auditability through propagation and execution. Disposition remains `NEW_FAMILY_CANDIDATE`.
-- `OPS.FF.SECTION.3.8.8` — Governance Over-Extension / Proportionality Failure: Control intensity and scope should remain proportionate to evidenced risk and reversibility. Disposition remains `REQUIRES_REVIEW`.
+- `OPS.FF.SECTION.3.8.8` — Governance Over-Extension / Proportionality Failure: Control intensity and scope should remain proportionate to evidenced risk and reversibility. Disposition remains `NEW_FAMILY_CANDIDATE`.
 - `OPS.FF.SECTION.3.8.9` — Runtime Overcomplexity and Observability Failure: System complexity must not exceed integrated observation, coordination, review and human-control capacity. Disposition remains `SPLIT_REQUIRED`.
 - `OPS.FF.SECTION.3.8.10` — Governance Scalar Collapse and Arbitration Overextension Failure: Independent governance dimensions must not be compressed into one operative scalar. Disposition remains `SPLIT_REQUIRED`.
 - `OPS.FF.SECTION.3.8.12` — Youth Mental-Health Support Withdrawal or Substitution Failure: Support transitions must avoid both abrupt withdrawal and unbounded substitution. Disposition remains `SPLIT_REQUIRED`.

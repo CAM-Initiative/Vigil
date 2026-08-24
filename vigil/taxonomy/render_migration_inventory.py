@@ -67,6 +67,27 @@ def render(data: dict) -> str:
             evidence = ", ".join(f"`{value}`" for value in item["source_entries"])
             out.append(f"- **{item['name']} — `{item['decision']}`:** {item['reason']} Evidence: {evidence}.")
 
+    decisions_04a = data.get("taxonomy_04a_decisions", {})
+    if decisions_04a:
+        admitted = decisions_04a["admitted_family"]
+        narrowed = decisions_04a["narrowed_family"]
+        candidate = decisions_04a["candidate_decision"]
+        out.extend([
+            "", "## TAXONOMY-04A decisions", "",
+            f"Decision review date: `{decisions_04a['review_date']}`.", "",
+            f"### `{admitted['family_id']}` — {admitted['name']}", "",
+            admitted["rationale"], "",
+            "Moved immutable class IDs: " + ", ".join(f"`{value}`" for value in admitted["moved_class_ids"]) + ".", "",
+            "Evidence entries: " + ", ".join(f"`{value}`" for value in admitted["evidence_entries"]) + ".", "",
+            f"### Narrowed `{narrowed['family_id']}`", "", narrowed["boundary"], "",
+            "Remaining class IDs: " + ", ".join(f"`{value}`" for value in narrowed["remaining_class_ids"]) + ".", "",
+            f"### {candidate['name']} — `{candidate['decision']}`", "", candidate["reason"], "",
+            "### Worked diagnostic boundary", "",
+            "| Event | Correct structural classification |", "|---|---|",
+        ])
+        for example in decisions_04a["diagnostic_examples"]:
+            out.append(f"| {example['event']} | **{example['classification']}** |")
+
     out.extend(["", "## Complete disposition ledger", "", "| Source | Source name | Legacy family | Disposition | Candidate family | Candidate class | Review |", "|---|---|---|---|---|---|---|"])
     for item in entries:
         out.append(

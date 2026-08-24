@@ -1,0 +1,155 @@
+{
+  "schema_version": "0.2.0",
+  "standard": {
+    "name": "VIGIL Failure Taxonomy",
+    "version": "0.2.0-draft",
+    "status": "draft",
+    "description": "Prototype portable classification standard for recurring AI governance failure mechanisms."
+  },
+  "family": {
+    "family_id": "VIGIL-FF-0008",
+    "family_code": "CONTROL_ACTIVATION",
+    "name": "Control Activation Integrity Failures",
+    "status": "draft",
+    "abstraction": "family",
+    "version": "0.1.0",
+    "plain_english": "The right control turns on at the right time \u2014 and a control does not become operative when its activation conditions are not satisfied.",
+    "definition": "Failures in which the operational availability or applicability of a defined governance control cannot be determined in time, an applicable control does not become operative when its valid activation conditions are satisfied, or the authority required to activate it is suppressed.",
+    "invariant": "An applicable governance control or safeguard must become operative when its valid activation conditions are satisfied, remain inactive when those conditions are not satisfied, and retain the operative authority required for activation.",
+    "scope": [
+      "AI governance controls",
+      "policy and assurance workflows",
+      "safeguards and approval gates",
+      "protective handling",
+      "control activation conditions",
+      "blocking, gating, escalation and redirection authority"
+    ],
+    "inclusion_rule": "Use this family when the primary structural question is whether a defined control was operationally available and applicable in time, and whether it became operative only when its valid activation conditions were satisfied.",
+    "exclusion_rule": "Do not use this family for upstream evidence or classification error, stale contextual state, correct activation followed by excessive scope or intensity, lack of authority to impose an action, loss of an operative control state in transit, downstream access or work-state damage, or absence of audit evidence.",
+    "aliases": [],
+    "allowed_class_ids": [
+      "VIGIL-FC-000037",
+      "VIGIL-FC-000038",
+      "VIGIL-FC-000039"
+    ],
+    "allowed_class_codes": [
+      "CONTROL_AVAILABILITY_AMBIGUITY",
+      "REQUIRED_CONTROL_NONACTIVATION",
+      "CONTROL_AUTHORITY_SUPPRESSION"
+    ]
+  },
+  "classes": [
+    {
+      "class_id": "VIGIL-FC-000037",
+      "class_code": "CONTROL_AVAILABILITY_AMBIGUITY",
+      "family_id": "VIGIL-FF-0008",
+      "name": "Control Availability Ambiguity",
+      "status": "draft",
+      "abstraction": "class",
+      "plain_english": "It is materially unclear whether the governance control needed for a decision or action is available to operate.",
+      "definition": "A failure in which the operational availability, applicable coverage, or callable state of a required governance control cannot be determined with sufficient confidence before the control must influence a material decision or action.",
+      "recognition": {
+        "required_conditions": [
+          "A governance control may be required for a material decision or action.",
+          "Its operational availability or applicable coverage cannot be determined in time to rely on it.",
+          "The ambiguity materially impairs safe routing, activation, or execution."
+        ]
+      },
+      "exclusions": [
+        "The control is known to be available but is not activated.",
+        "The control's owner is uncertain while its operational availability remains clear.",
+        "The control operates and the dispute concerns whether its rule is adequate."
+      ],
+      "examples": [
+        "An agent cannot determine whether the approval service governing a high-impact action is active in the current environment.",
+        "A workflow reaches execution without knowing whether the required policy control covers the selected tool path."
+      ],
+      "relationships": [
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000002",
+          "note": "Control availability concerns whether a governance mechanism can operate; capability-authority conflation concerns treating operational ability as sufficient permission to act."
+        },
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000040",
+          "note": "Availability ambiguity occurs before activation; control-state preservation begins only after operative control state exists."
+        }
+      ],
+      "aliases": []
+    },
+    {
+      "class_id": "VIGIL-FC-000038",
+      "class_code": "REQUIRED_CONTROL_NONACTIVATION",
+      "family_id": "VIGIL-FF-0008",
+      "name": "Required Control Non-Activation",
+      "status": "draft",
+      "abstraction": "class",
+      "plain_english": "A governance control is available and applicable, but the event that should trigger it does not make it operate.",
+      "definition": "A failure in which an available and applicable governance control is not invoked, engaged, or made operative when its defined trigger or required condition occurs.",
+      "recognition": {
+        "required_conditions": [
+          "A governance control is available and applicable.",
+          "A defined trigger or condition requiring activation occurs.",
+          "The control is not activated before the governed decision or action proceeds."
+        ]
+      },
+      "exclusions": [
+        "The control activates but is bypassed downstream.",
+        "It is unresolved whether the control is available or applicable.",
+        "The triggering condition did not occur."
+      ],
+      "examples": [
+        "A high-impact threshold is met, but the configured human-approval gate is never invoked.",
+        "A model change qualifies for required evaluation, yet the evaluation workflow is not activated before deployment."
+      ],
+      "aliases": [],
+      "relationships": [
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000042",
+          "note": "Non-activation means no operative safeguard state is produced; a delivery dead-end means an operative governance signal is produced but fails to reach a capable endpoint."
+        }
+      ]
+    },
+    {
+      "class_id": "VIGIL-FC-000039",
+      "class_code": "CONTROL_AUTHORITY_SUPPRESSION",
+      "family_id": "VIGIL-FF-0008",
+      "name": "Control Authority Suppression",
+      "status": "draft",
+      "abstraction": "variant",
+      "plain_english": "A control is present, but the force that should let it stop or redirect the action is disabled or neutralised.",
+      "definition": "A required-control-non-activation variant in which a governance control is reached or nominally present but its operative blocking, gating, escalation, or redirection authority is suppressed before it can govern the material action.",
+      "recognition": {
+        "required_conditions": [
+          "A governance control is applicable and nominally present or reached.",
+          "The control requires operative authority to block, gate, escalate, or redirect a material action.",
+          "That authority is disabled, neutralised, or withheld so the control cannot activate effectively."
+        ]
+      },
+      "exclusions": [
+        "The control operates with authority but its substantive decision is disputed.",
+        "The actor never reaches the control because a required route is bypassed.",
+        "The issue is uncertainty about which actor has authority rather than suppression of the control's operative force."
+      ],
+      "examples": [
+        "A safety gate receives a prohibited-action signal but is configured in advisory-only mode where blocking is required.",
+        "An escalation control is invoked, but its ability to pause execution is disabled for the active runtime."
+      ],
+      "relationships": [
+        {
+          "type": "child_of",
+          "target_id": "VIGIL-FC-000038",
+          "note": "The distinguishing condition is non-activation caused by suppression of the control's operative authority."
+        },
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000002",
+          "note": "The failed mechanism is suppression of a control's operative force, not the mistaken treatment of capability or access as sufficient permission."
+        }
+      ],
+      "aliases": []
+    }
+  ]
+}

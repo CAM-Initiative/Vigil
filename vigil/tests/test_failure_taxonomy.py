@@ -73,6 +73,41 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         self.write(path, data)
         self.assertTrue(any("cannot have a parent in another family" in error for error in self.errors()))
 
+    def test_reclassified_immutable_ids_are_preserved_in_activation_family(self):
+        documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
+        activation = next(item for item in documents if item["family"]["family_id"] == "VIGIL-FF-0008")
+        self.assertEqual(
+            [item["class_id"] for item in activation["classes"]],
+            ["VIGIL-FC-000037", "VIGIL-FC-000038", "VIGIL-FC-000039"],
+        )
+
+    def test_family_membership_alignment_is_mandatory_after_reclassification(self):
+        path = next(path for path in self.paths() if "VIGIL-FF-0008" in path.name)
+        data = json.loads(path.read_text(encoding="utf-8"))
+        data["classes"][0]["family_id"] = "VIGIL-FF-0007"
+        self.write(path, data)
+        self.assertTrue(any("has family_id" in error and "expected" in error for error in self.errors()))
+
+    def test_reclassified_variant_parent_remains_in_same_family(self):
+        path = next(path for path in self.paths() if "VIGIL-FF-0008" in path.name)
+        data = json.loads(path.read_text(encoding="utf-8"))
+        variant = next(item for item in data["classes"] if item["class_id"] == "VIGIL-FC-000039")
+        parent = next(rel for rel in variant["relationships"] if rel["type"] == "child_of")
+        self.assertEqual(parent["target_id"], "VIGIL-FC-000038")
+        self.assertEqual(self.errors(), [])
+
+    def test_reclassification_relationships_resolve_across_family_boundary(self):
+        self.assertEqual(self.errors(), [])
+        documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
+        class_ids = {item["class_id"] for document in documents for item in document["classes"]}
+        activation = next(item for item in documents if item["family"]["family_id"] == "VIGIL-FF-0008")
+        targets = {
+            relationship["target_id"]
+            for item in activation["classes"]
+            for relationship in item.get("relationships", [])
+        }
+        self.assertTrue(targets <= class_ids)
+
     def test_index_count_drift_is_rejected(self):
         index = json.loads(MODULE.INDEX_PATH.read_text(encoding="utf-8"))
         index["families"][0]["class_count"] += 1

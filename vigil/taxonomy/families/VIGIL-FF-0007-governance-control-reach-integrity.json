@@ -12,10 +12,10 @@
     "name": "Governance Control Reach Integrity Failures",
     "status": "draft",
     "abstraction": "family",
-    "version": "0.1.0",
-    "plain_english": "A governance control that should affect a material decision or action is unavailable, never activates, loses force, or cannot reach the point where it must operate.",
-    "definition": "Failures in which an applicable governance control or signal is unavailable, fails to activate, loses operative authority or state, bypasses a required route, or terminates before reaching the material decision, execution, or review point it is meant to govern.",
-    "invariant": "An applicable governance control or signal must be available, activate when required, retain its operative authority and state, and traverse the required route to the material point it governs.",
+    "version": "0.2.0",
+    "plain_english": "A governance control has become operative, but its material state or effect does not survive the path to the point it must govern.",
+    "definition": "Failures occurring after a governance control or signal has become operative, in which its material state is lost or changed, a required governance route is bypassed, or the operative signal fails to reach a capable decision, execution, or review point.",
+    "invariant": "An operative governance control or signal must retain its material state and traverse the required route to a capable decision, execution, or review point.",
     "scope": [
       "AI governance controls",
       "policy and assurance workflows",
@@ -24,127 +24,21 @@
       "control-plane routing",
       "oversight and escalation channels"
     ],
-    "inclusion_rule": "Use this family when the primary structural failure is that an applicable governance control or signal cannot become or remain operationally effective at the decision, action, or review point it is intended to govern.",
-    "exclusion_rule": "Do not use this family for a generic governance weakness, uncertainty about who holds authority, a control that reaches the target but is substantively inadequate, a mere interface or modality difference, or absence of audit evidence after an otherwise effective control operation.",
+    "inclusion_rule": "Use this family only after a governance control or signal has become operative, when its material state or effect fails to survive the required path to the point it must govern.",
+    "exclusion_rule": "Do not use this family for failure to determine whether a control is available, failure to activate an applicable control, activation when valid conditions are not satisfied, uncertainty about authority, excessive control scope or intensity, stale contextual state, upstream evidence or classification error, or downstream access and work-state consequences.",
     "aliases": [],
     "allowed_class_ids": [
-      "VIGIL-FC-000037",
-      "VIGIL-FC-000038",
-      "VIGIL-FC-000039",
       "VIGIL-FC-000040",
       "VIGIL-FC-000041",
       "VIGIL-FC-000042"
     ],
     "allowed_class_codes": [
-      "CONTROL_AVAILABILITY_AMBIGUITY",
-      "REQUIRED_CONTROL_NONACTIVATION",
-      "CONTROL_AUTHORITY_SUPPRESSION",
       "CONTROL_STATE_PRESERVATION_FAILURE",
       "REQUIRED_GOVERNANCE_ROUTE_BYPASS",
       "GOVERNANCE_SIGNAL_DELIVERY_DEAD_END"
     ]
   },
   "classes": [
-    {
-      "class_id": "VIGIL-FC-000037",
-      "class_code": "CONTROL_AVAILABILITY_AMBIGUITY",
-      "family_id": "VIGIL-FF-0007",
-      "name": "Control Availability Ambiguity",
-      "status": "draft",
-      "abstraction": "class",
-      "plain_english": "It is materially unclear whether the governance control needed for a decision or action is available to operate.",
-      "definition": "A failure in which the operational availability, applicable coverage, or callable state of a required governance control cannot be determined with sufficient confidence before the control must influence a material decision or action.",
-      "recognition": {
-        "required_conditions": [
-          "A governance control may be required for a material decision or action.",
-          "Its operational availability or applicable coverage cannot be determined in time to rely on it.",
-          "The ambiguity materially impairs safe routing, activation, or execution."
-        ]
-      },
-      "exclusions": [
-        "The control is known to be available but is not activated.",
-        "The control's owner is uncertain while its operational availability remains clear.",
-        "The control operates and the dispute concerns whether its rule is adequate."
-      ],
-      "examples": [
-        "An agent cannot determine whether the approval service governing a high-impact action is active in the current environment.",
-        "A workflow reaches execution without knowing whether the required policy control covers the selected tool path."
-      ],
-      "relationships": [
-        {
-          "type": "distinguish_from",
-          "target_id": "VIGIL-FC-000002",
-          "note": "Control availability concerns whether a governance mechanism can operate; capability-authority conflation concerns treating operational ability as sufficient permission to act."
-        }
-      ],
-      "aliases": []
-    },
-    {
-      "class_id": "VIGIL-FC-000038",
-      "class_code": "REQUIRED_CONTROL_NONACTIVATION",
-      "family_id": "VIGIL-FF-0007",
-      "name": "Required Control Non-Activation",
-      "status": "draft",
-      "abstraction": "class",
-      "plain_english": "A governance control is available and applicable, but the event that should trigger it does not make it operate.",
-      "definition": "A failure in which an available and applicable governance control is not invoked, engaged, or made operative when its defined trigger or required condition occurs.",
-      "recognition": {
-        "required_conditions": [
-          "A governance control is available and applicable.",
-          "A defined trigger or condition requiring activation occurs.",
-          "The control is not activated before the governed decision or action proceeds."
-        ]
-      },
-      "exclusions": [
-        "The control activates but is bypassed downstream.",
-        "It is unresolved whether the control is available or applicable.",
-        "The triggering condition did not occur."
-      ],
-      "examples": [
-        "A high-impact threshold is met, but the configured human-approval gate is never invoked.",
-        "A model change qualifies for required evaluation, yet the evaluation workflow is not activated before deployment."
-      ],
-      "aliases": []
-    },
-    {
-      "class_id": "VIGIL-FC-000039",
-      "class_code": "CONTROL_AUTHORITY_SUPPRESSION",
-      "family_id": "VIGIL-FF-0007",
-      "name": "Control Authority Suppression",
-      "status": "draft",
-      "abstraction": "variant",
-      "plain_english": "A control is present, but the force that should let it stop or redirect the action is disabled or neutralised.",
-      "definition": "A required-control-non-activation variant in which a governance control is reached or nominally present but its operative blocking, gating, escalation, or redirection authority is suppressed before it can govern the material action.",
-      "recognition": {
-        "required_conditions": [
-          "A governance control is applicable and nominally present or reached.",
-          "The control requires operative authority to block, gate, escalate, or redirect a material action.",
-          "That authority is disabled, neutralised, or withheld so the control cannot activate effectively."
-        ]
-      },
-      "exclusions": [
-        "The control operates with authority but its substantive decision is disputed.",
-        "The actor never reaches the control because a required route is bypassed.",
-        "The issue is uncertainty about which actor has authority rather than suppression of the control's operative force."
-      ],
-      "examples": [
-        "A safety gate receives a prohibited-action signal but is configured in advisory-only mode where blocking is required.",
-        "An escalation control is invoked, but its ability to pause execution is disabled for the active runtime."
-      ],
-      "relationships": [
-        {
-          "type": "child_of",
-          "target_id": "VIGIL-FC-000038",
-          "note": "The distinguishing condition is non-activation caused by suppression of the control's operative authority."
-        },
-        {
-          "type": "distinguish_from",
-          "target_id": "VIGIL-FC-000002",
-          "note": "The failed mechanism is suppression of a control's operative force, not the mistaken treatment of capability or access as sufficient permission."
-        }
-      ],
-      "aliases": []
-    },
     {
       "class_id": "VIGIL-FC-000040",
       "class_code": "CONTROL_STATE_PRESERVATION_FAILURE",
