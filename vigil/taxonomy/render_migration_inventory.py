@@ -20,9 +20,9 @@ def render(data: dict) -> str:
     counts = Counter(item["disposition"] for item in entries)
     clusters: dict[str, list[dict]] = defaultdict(list)
     for item in entries:
-        candidate = name(item.get("candidate_portable_family"), "family")
-        if candidate not in {"—", "VIGIL-FF-0001", "VIGIL-FF-0002", "VIGIL-FF-0003", "VIGIL-FF-0004"}:
-            clusters[candidate].append(item)
+        candidate = item.get("candidate_portable_family")
+        if isinstance(candidate, dict) and candidate.get("family_name"):
+            clusters[candidate["family_name"]].append(item)
 
     out = [
         "# Caelestis Legacy Failure Inventory and Clustering Review", "",
@@ -44,6 +44,28 @@ def render(data: dict) -> str:
     for cluster, items in sorted(clusters.items()):
         proposed = {name(item.get("candidate_class"), "class") for item in items} - {"—"}
         out.append(f"| {cluster} | {len(items)} | {len(proposed)} |")
+
+    decisions = data.get("taxonomy_03_decisions", {})
+    if decisions:
+        out.extend(["", "## TAXONOMY-03 decisions", ""])
+        out.append(f"Decision review date: `{decisions['review_date']}`.")
+        out.extend(["", "### Admitted families", ""])
+        for item in decisions.get("admitted_families", []):
+            evidence = ", ".join(f"`{value}`" for value in item["evidence_entries"])
+            out.extend([
+                f"#### `{item['family_id']}` — {item['name']}", "",
+                item["admission_rationale"], "",
+                f"**Boundary:** {item['boundary']}", "",
+                f"**Evidence entries:** {evidence}", "",
+            ])
+        out.extend(["### Existing-family additions", "", "| Class | Family | Evidence entries |", "|---|---|---|"])
+        for item in decisions.get("existing_family_additions", []):
+            evidence = ", ".join(f"`{value}`" for value in item["evidence_entries"])
+            out.append(f"| `{item['class_id']}` | `{item['family_id']}` | {evidence} |")
+        out.extend(["", "### Rejected or deferred candidate families", ""])
+        for item in decisions.get("deferred_candidates", []):
+            evidence = ", ".join(f"`{value}`" for value in item["source_entries"])
+            out.append(f"- **{item['name']} — `{item['decision']}`:** {item['reason']} Evidence: {evidence}.")
 
     out.extend(["", "## Complete disposition ledger", "", "| Source | Source name | Legacy family | Disposition | Candidate family | Candidate class | Review |", "|---|---|---|---|---|---|---|"])
     for item in entries:
@@ -80,8 +102,8 @@ def render(data: dict) -> str:
             )
 
     out.extend([
-        "", "## TAXONOMY-03 handoff", "",
-        "Admit only a reviewed batch of approximately three to five bounded families. Allocate immutable IDs only after the family invariant and exclusion boundary are approved. Resolve duplicate and split entries first; retain unready entries in this ledger instead of forcing them into a broad container. Generate full family and combined references and validate the whole catalogue after every batch.", "",
+        "", "## Remaining migration work", "",
+        "Unresolved entries and split components remain non-normative migration evidence. Future batches must derive their scope from this remaining evidence and must not treat the deferred candidate labels as predetermined families.", "",
     ])
     return "\n".join(out)
 

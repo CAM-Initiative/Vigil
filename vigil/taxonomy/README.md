@@ -12,6 +12,9 @@ families/
   VIGIL-FF-0002-provenance-lineage-integrity.json
   VIGIL-FF-0003-verification-completion-integrity.json
   VIGIL-FF-0004-observability-audit-integrity.json
+  VIGIL-FF-0005-access-session-state-integrity.json
+  VIGIL-FF-0006-work-state-continuity-integrity.json
+  VIGIL-FF-0007-governance-control-reach-integrity.json
 generated/
   one complete HTML page per family
   VIGIL.FailureTaxonomy.FullReference.html
@@ -110,7 +113,7 @@ Run catalogue-wide schema and integrity validation:
 python vigil/taxonomy/validate_taxonomy.py
 ```
 
-The validator checks every family against the JSON Schema and enforces duplicate-ID/code detection, family membership, variant parentage, relationship targets, duplicate relationships, allowed-list drift, index/file agreement, filename identity, removed-ID references, mandatory descriptions, and supersession-chain integrity.
+The validator checks every family against the JSON Schema and enforces duplicate-ID/code detection, family membership, variant parentage, relationship targets, duplicate relationships, allowed-list drift, index/file agreement, filename identity, removed-ID references, mandatory descriptions, same-kind supersession, and supersession-chain integrity.
 
 ## Portability
 

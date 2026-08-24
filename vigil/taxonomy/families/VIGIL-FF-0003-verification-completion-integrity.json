@@ -36,7 +36,8 @@
       "VIGIL-FC-000018",
       "VIGIL-FC-000019",
       "VIGIL-FC-000020",
-      "VIGIL-FC-000021"
+      "VIGIL-FC-000021",
+      "VIGIL-FC-000028"
     ],
     "allowed_class_codes": [
       "VERIFICATION_OMISSION",
@@ -44,7 +45,8 @@
       "COMPLETION_CONDITION_MISMATCH",
       "POST_VERIFICATION_MUTATION",
       "STALE_VERIFICATION_REUSE",
-      "PARTIAL_COMPLETION_AS_COMPLETE"
+      "PARTIAL_COMPLETION_AS_COMPLETE",
+      "DETERMINISTIC_VERIFICATION_DECOMPOSITION_OMISSION"
     ]
   },
   "classes": [
@@ -229,6 +231,42 @@
       ],
       "aliases": [
         "VIGIL.FF.VERIFICATION_COMPLETION.PARTIAL_COMPLETION_AS_COMPLETE"
+      ]
+    },
+    {
+      "class_id": "VIGIL-FC-000028",
+      "class_code": "DETERMINISTIC_VERIFICATION_DECOMPOSITION_OMISSION",
+      "family_id": "VIGIL-FF-0003",
+      "name": "Deterministic Verification Decomposition Omission",
+      "status": "draft",
+      "abstraction": "variant",
+      "plain_english": "A result that could be checked by breaking it into exact parts is asserted without performing that check.",
+      "definition": "A required-verification-omission variant in which a deterministic claim can and should be verified through explicit decomposition into countable, comparable, or otherwise mechanically checkable components, but that decomposition is omitted before the claim is represented as verified or exact.",
+      "recognition": {
+        "required_conditions": [
+          "The claim concerns a result that is deterministically checkable through explicit decomposition.",
+          "The required decomposition or equivalent exact check is not performed.",
+          "The result is nevertheless represented as exact, verified, or suitable for exact reliance."
+        ]
+      },
+      "exclusions": [
+        "The result is verified through an equivalent deterministic method.",
+        "The claim is clearly approximate and exact verification is not required.",
+        "The available check is probabilistic or judgement-based rather than deterministic decomposition."
+      ],
+      "examples": [
+        "A model supplies an exact character count without enumerating or mechanically counting the characters.",
+        "An agent asserts that two structured lists match exactly without comparing their elements."
+      ],
+      "relationships": [
+        {
+          "type": "child_of",
+          "target_id": "VIGIL-FC-000016",
+          "note": "The distinguishing condition is omission of an available deterministic decomposition check."
+        }
+      ],
+      "aliases": [
+        "VIGIL.FF.EXECUTION.DETERMINISTIC_ORTHOGRAPHIC_VERIFICATION"
       ]
     }
   ]

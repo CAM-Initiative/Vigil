@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import copy
 import importlib.util
 import json
 import shutil
@@ -96,6 +95,32 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         )
         self.write(path, data)
         self.assertTrue(any("references removed ID" in error for error in self.errors()))
+
+    def test_family_cannot_be_superseded_by_class(self):
+        path, data = self.document()
+        data["family"]["status"] = "deprecated"
+        data["family"]["supersession"] = {
+            "deprecated_on": "2026-08-24",
+            "superseded_by_id": data["classes"][0]["class_id"],
+            "reason": "Invalid cross-kind test fixture."
+        }
+        self.write(path, data)
+        index = json.loads(MODULE.INDEX_PATH.read_text(encoding="utf-8"))
+        index["families"][0]["status"] = "deprecated"
+        self.write(MODULE.INDEX_PATH, index)
+        self.assertTrue(any("must be the same taxonomy kind" in error for error in self.errors()))
+
+    def test_class_cannot_be_superseded_by_family(self):
+        path, data = self.document()
+        item = data["classes"][0]
+        item["status"] = "deprecated"
+        item["supersession"] = {
+            "deprecated_on": "2026-08-24",
+            "superseded_by_id": data["family"]["family_id"],
+            "reason": "Invalid cross-kind test fixture."
+        }
+        self.write(path, data)
+        self.assertTrue(any("must be the same taxonomy kind" in error for error in self.errors()))
 
     def test_split_migration_entry_requires_split_notes(self):
         ledger = json.loads(MODULE.MIGRATION_LEDGER.read_text(encoding="utf-8"))

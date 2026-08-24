@@ -167,6 +167,35 @@ def validate_migration_ledger(family_ids: set[str], class_ids: set[str]) -> list
         if isinstance(class_candidate, dict) and "class_id" in class_candidate:
             if class_candidate["class_id"] not in class_ids:
                 errors.append(f"{where}: unknown candidate class ID {class_candidate['class_id']}")
+    decisions = ledger.get("taxonomy_03_decisions")
+    if decisions is not None:
+        where = f"{MIGRATION_LEDGER}: taxonomy_03_decisions"
+        if not isinstance(decisions, dict):
+            errors.append(f"{where} must be an object")
+        else:
+            admitted = decisions.get("admitted_families", [])
+            additions = decisions.get("existing_family_additions", [])
+            deferred = decisions.get("deferred_candidates", [])
+            for number, item in enumerate(admitted):
+                item_where = f"{where}.admitted_families[{number}]"
+                if item.get("family_id") not in family_ids:
+                    errors.append(f"{item_where}: unknown family ID {item.get('family_id')}")
+                if not item.get("evidence_entries"):
+                    errors.append(f"{item_where}: evidence_entries must be non-empty")
+            for number, item in enumerate(additions):
+                item_where = f"{where}.existing_family_additions[{number}]"
+                if item.get("family_id") not in family_ids:
+                    errors.append(f"{item_where}: unknown family ID {item.get('family_id')}")
+                if item.get("class_id") not in class_ids:
+                    errors.append(f"{item_where}: unknown class ID {item.get('class_id')}")
+                if not item.get("evidence_entries"):
+                    errors.append(f"{item_where}: evidence_entries must be non-empty")
+            for number, item in enumerate(deferred):
+                item_where = f"{where}.deferred_candidates[{number}]"
+                if item.get("decision") not in {"DEFERRED", "REJECTED_AS_BROAD_CLUSTER"}:
+                    errors.append(f"{item_where}: invalid decision {item.get('decision')!r}")
+                if not item.get("reason") or not item.get("source_entries"):
+                    errors.append(f"{item_where}: reason and source_entries are required")
     return errors
 
 
@@ -354,6 +383,10 @@ def validate_catalogue(paths: list[Path]) -> tuple[list[str], int]:
                 errors.append(f"{identifier}: cannot supersede itself")
             elif target not in allocated_ids:
                 errors.append(f"{identifier}: supersession target {target} is not allocated")
+            elif (identifier in family_by_id) != (target in family_by_id):
+                errors.append(
+                    f"{identifier}: supersession target {target} must be the same taxonomy kind"
+                )
             supersession_targets[identifier] = target
     for start in supersession_targets:
         seen: set[str] = set()
