@@ -1,0 +1,204 @@
+{
+  "schema_version": "0.1.0",
+  "standard": {
+    "name": "VIGIL Failure Taxonomy",
+    "version": "0.1.0-prototype",
+    "status": "prototype",
+    "description": "Prototype portable classification standard for recurring AI governance failure mechanisms."
+  },
+  "family": {
+    "code": "VIGIL.FF.OBSERVABILITY_AUDIT",
+    "name": "Observability & Audit Integrity Failures",
+    "status": "prototype",
+    "abstraction": "family",
+    "version": "0.1.0",
+    "plain_english": "The system does something important, but the people or systems responsible for oversight cannot reliably see, attribute, or reconstruct what happened.",
+    "definition": "Failures in which materially consequential actions, state transitions, control-path activity, actor attribution, monitoring coverage, or audit evidence are not captured or preserved sufficiently to support timely detection, reconstruction, accountability, verification, or review.",
+    "invariant": "Material actions and state changes remain observable and reconstructable enough to determine what happened, through which path, under whose effective control, and with what evidence, without requiring hidden reasoning disclosure.",
+    "scope": [
+      "AI models and agentic systems",
+      "tool and API execution",
+      "multi-agent orchestration",
+      "monitoring and telemetry systems",
+      "audit logs and event records",
+      "high-impact automated decisions",
+      "governance and assurance workflows"
+    ],
+    "inclusion_rule": "Use this family when the primary structural failure is missing, bypassed, insufficient, corrupted, or non-reconstructable observability over material system activity or its responsible execution path.",
+    "exclusion_rule": "Do not use this family merely because an outcome is unexplained, incorrect, secret, or difficult to interpret. A qualifying failure must concern the capture, preservation, attribution, coverage, or reconstructability of material operational evidence.",
+    "allowed_codes": [
+      "VIGIL.FF.OBSERVABILITY_AUDIT.MATERIAL_EVENT_NONCAPTURE",
+      "VIGIL.FF.OBSERVABILITY_AUDIT.MONITOR_CIRCUMVENTION",
+      "VIGIL.FF.OBSERVABILITY_AUDIT.AUDIT_TRAIL_NONRECONSTRUCTABILITY",
+      "VIGIL.FF.OBSERVABILITY_AUDIT.ACTOR_ACTION_ATTRIBUTION_LOSS",
+      "VIGIL.FF.OBSERVABILITY_AUDIT.HIDDEN_EXECUTION_PATH",
+      "VIGIL.FF.OBSERVABILITY_AUDIT.AUDIT_EVIDENCE_INTEGRITY_LOSS"
+    ]
+  },
+  "classes": [
+    {
+      "code": "VIGIL.FF.OBSERVABILITY_AUDIT.MATERIAL_EVENT_NONCAPTURE",
+      "name": "Material Event Non-Capture",
+      "status": "prototype",
+      "abstraction": "class",
+      "plain_english": "Something important happens, but no adequate event record is created.",
+      "definition": "A failure in which a materially consequential action, state transition, decision, tool invocation, permission change, external effect, or control event occurs without the event record needed for proportionate oversight or later reconstruction.",
+      "recognition": {
+        "required_conditions": [
+          "A materially consequential event occurs.",
+          "The applicable oversight or assurance context requires the event to be observable or reconstructable.",
+          "No adequate record of the event is captured or retained."
+        ]
+      },
+      "exclusions": [
+        "The event is immaterial for the applicable assurance level.",
+        "Equivalent evidence is captured through another reliable mechanism.",
+        "The event record exists but is merely inconvenient to access."
+      ],
+      "examples": [
+        "An agent changes an external permission without recording that the permission change occurred.",
+        "A high-impact automated decision is executed without retaining the decision event required for later review."
+      ]
+    },
+    {
+      "code": "VIGIL.FF.OBSERVABILITY_AUDIT.MONITOR_CIRCUMVENTION",
+      "name": "Monitor Circumvention or Coverage Bypass",
+      "status": "prototype",
+      "abstraction": "class",
+      "plain_english": "The action still happens, but it takes a route that the required monitor does not see.",
+      "definition": "A failure in which an agent, sub-agent, tool path, environment, configuration, routing condition, or execution surface evades, disables, omits, or bypasses a monitoring control required to observe consequential conduct.",
+      "recognition": {
+        "required_conditions": [
+          "A monitoring control is required for the relevant class of conduct.",
+          "Material conduct occurs through a path or condition outside effective monitor coverage.",
+          "The coverage gap prevents or materially degrades intended detection, review, or intervention."
+        ]
+      },
+      "exclusions": [
+        "The monitor observes the conduct but a downstream reviewer fails to act.",
+        "Monitoring is not required for the relevant conduct or assurance level.",
+        "The issue is only poor alert quality while material activity remains captured."
+      ],
+      "examples": [
+        "A sub-agent uses a tool route that is not connected to the monitor governing the main agent.",
+        "An evaluation environment disables logging for a path that still permits consequential external actions."
+      ]
+    },
+    {
+      "code": "VIGIL.FF.OBSERVABILITY_AUDIT.AUDIT_TRAIL_NONRECONSTRUCTABILITY",
+      "name": "Audit-Trail Non-Reconstructability",
+      "status": "prototype",
+      "abstraction": "class",
+      "plain_english": "There are logs, but they are not enough to work out what actually happened.",
+      "definition": "A failure in which audit evidence exists but lacks the ordering, identity, target, state, correlation, timing, version, or action detail necessary to reconstruct a materially relevant execution or decision pathway with adequate confidence.",
+      "recognition": {
+        "required_conditions": [
+          "Some audit or telemetry evidence is available.",
+          "A materially relevant execution, decision, or state-change pathway requires reconstruction.",
+          "The available evidence cannot establish one or more necessary elements of the pathway with sufficient reliability."
+        ]
+      },
+      "exclusions": [
+        "The pathway can be reconstructed adequately from the available evidence.",
+        "The unresolved detail is immaterial to the review question.",
+        "The failure is simply that no event was captured at all."
+      ],
+      "examples": [
+        "Logs record several tool calls but cannot establish which model output triggered which call.",
+        "A decision log records the final outcome but not the input version or policy version used to reach it."
+      ]
+    },
+    {
+      "code": "VIGIL.FF.OBSERVABILITY_AUDIT.ACTOR_ACTION_ATTRIBUTION_LOSS",
+      "name": "Actor–Action Attribution Loss",
+      "status": "prototype",
+      "abstraction": "class",
+      "plain_english": "An action is visible, but it is unclear which model, agent, tool, human, or automated process actually caused it.",
+      "definition": "A failure in which a material action or decision cannot be reliably attributed to the effective actor, agent, model, human, service, tool, policy, or orchestration component responsible for initiating or controlling it.",
+      "recognition": {
+        "required_conditions": [
+          "A material action or decision is observable.",
+          "Attribution to the effective initiating or controlling actor is necessary for review or accountability.",
+          "Available evidence cannot reliably establish that attribution or collapses distinct actors into one undifferentiated source."
+        ]
+      },
+      "exclusions": [
+        "The responsible actor is adequately attributable.",
+        "The issue is authorship provenance of content rather than operational responsibility for an action.",
+        "Multiple actors jointly contributed and the evidence accurately preserves the shared contribution."
+      ],
+      "examples": [
+        "A multi-agent system records that a change occurred but not which sub-agent initiated it.",
+        "A shared service account makes an external change and logs do not preserve which automated process exercised the account."
+      ],
+      "relationships": [
+        {
+          "type": "distinguish_from",
+          "target_code": "VIGIL.FF.PROVENANCE_LINEAGE.MISATTRIBUTION",
+          "note": "Operational actor attribution is distinct from authorship or source attribution, though both may fail together."
+        }
+      ]
+    },
+    {
+      "code": "VIGIL.FF.OBSERVABILITY_AUDIT.HIDDEN_EXECUTION_PATH",
+      "name": "Hidden Material Execution Path",
+      "status": "prototype",
+      "abstraction": "class",
+      "plain_english": "A consequential path exists inside the system, but oversight cannot see that the path was used.",
+      "definition": "A failure in which a materially consequential routing, delegation, sub-agent, tool, fallback, control-channel, or alternate execution path can affect outcomes without proportionate visibility to the monitoring, audit, or review surface responsible for the system.",
+      "recognition": {
+        "required_conditions": [
+          "A material alternate or internal execution path exists and can affect an externally relevant outcome.",
+          "The applicable oversight surface does not expose or capture use of that path adequately.",
+          "The hidden path materially impairs supervision, reconstruction, or assurance."
+        ]
+      },
+      "exclusions": [
+        "The execution path is internal but adequately represented through equivalent audit evidence.",
+        "The hidden detail is only internal reasoning with no material execution or governance effect.",
+        "The path is visible and the failure concerns authority rather than observability."
+      ],
+      "examples": [
+        "A user-facing agent silently delegates a high-impact step to an unexposed sub-agent whose actions are absent from the audit trail.",
+        "A fallback tool route executes externally but is not represented in the system's normal action history."
+      ],
+      "relationships": [
+        {
+          "type": "can_cooccur_with",
+          "target_code": "VIGIL.FF.AUTHORITY_BOUNDARY.CONTROL_PLANE_CROSSOVER"
+        }
+      ]
+    },
+    {
+      "code": "VIGIL.FF.OBSERVABILITY_AUDIT.AUDIT_EVIDENCE_INTEGRITY_LOSS",
+      "name": "Audit-Evidence Integrity Loss",
+      "status": "prototype",
+      "abstraction": "class",
+      "plain_english": "The audit evidence exists, but it has been altered, truncated, reordered, detached from context, or otherwise degraded so it can no longer be trusted for review.",
+      "definition": "A failure in which captured audit, telemetry, event, decision, or monitoring evidence loses integrity through alteration, truncation, reordering, context loss, identifier loss, version ambiguity, overwrite, or unsupported transformation before or during review.",
+      "recognition": {
+        "required_conditions": [
+          "Audit or monitoring evidence was captured or expected to remain available.",
+          "The evidence undergoes a material integrity-degrading change or loses required contextual binding.",
+          "The degradation reduces confidence in reconstruction, attribution, verification, or review."
+        ]
+      },
+      "exclusions": [
+        "The evidence is preserved accurately but supports an unfavourable conclusion.",
+        "The missing information was never captured in the first place.",
+        "A lawful retention limit removes evidence after the period for which reviewability was required."
+      ],
+      "examples": [
+        "A log export drops correlation identifiers needed to connect actions across services.",
+        "A monitoring summary overwrites the raw event sequence and preserves only an unsupported aggregate conclusion."
+      ],
+      "relationships": [
+        {
+          "type": "can_cooccur_with",
+          "target_code": "VIGIL.FF.PROVENANCE_LINEAGE.LINEAGE_COLLAPSE",
+          "note": "Audit-evidence integrity loss concerns review evidence; lineage collapse concerns provenance of the governed material or state."
+        }
+      ]
+    }
+  ]
+}
