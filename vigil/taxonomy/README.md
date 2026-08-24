@@ -11,12 +11,14 @@ VIGIL.FailureTaxonomy.Index.json
         |
         +-- families/
               |
-              +-- authority-boundary-integrity.json   <- canonical data
+              +-- authority-boundary-integrity.json
+              +-- provenance-lineage-integrity.json
+              +-- verification-completion-integrity.json
+              +-- observability-audit-integrity.json
 
 VIGIL.FailureTaxonomy.Schema.json                     <- machine contract
 validate_taxonomy.py                                  <- integrity checks
 render_taxonomy.py                                    <- human renderer
-previews/*.md / *.html                                <- generated review views
 ```
 
 The intended scale is **one JSON file per bounded failure family**, not one file per failure class and not one file per broad organisational domain.
@@ -26,6 +28,36 @@ A family is acceptable only when every child class can complete this sentence co
 > Every class in this family is a way in which **the same bounded structural invariant** fails.
 
 Broad containers such as `governance`, `UX`, `safety`, or `AI system failure` are not suitable family names merely because many failures can appear there.
+
+## Filename and identity rules
+
+Family filenames use a bounded, descriptive, lowercase kebab-case slug:
+
+```text
+families/<bounded-family-name>.json
+```
+
+Examples:
+
+```text
+authority-boundary-integrity.json
+provenance-lineage-integrity.json
+verification-completion-integrity.json
+observability-audit-integrity.json
+```
+
+The **stable taxonomy code is the identity**. The filename is only a repository locator. This means a family can be renamed or moved without changing the identity of every downstream record that cites its code.
+
+Filename rules:
+
+- one file contains one failure family;
+- a filename describes the bounded invariant, not an organisational domain, harm category, product surface, vendor, or incident;
+- failure classes and variants remain inside their family file and do not receive separate files;
+- family discovery occurs through `VIGIL.FailureTaxonomy.Index.json`, so filesystem order does not carry taxonomic meaning;
+- no conceptual directory tree is created beneath `families/`; relationships belong in structured taxonomy fields, not folder nesting;
+- if one family grows so large that its classes no longer share one coherent invariant, the remedy is to identify a genuinely distinct failure family, not to create arbitrary shard files.
+
+This keeps file growth proportional to the number of **meaningful failure families**, not the number of individual failure classes. Hundreds or thousands of classes therefore do not imply hundreds or thousands of files.
 
 ## Prototype design influences
 
@@ -74,37 +106,43 @@ The plain-English explanation is therefore mandatory, not editorial decoration.
 
 ## Human review
 
-The JSON file is canonical, but nobody should have to review raw JSON.
+The JSON file is canonical, but nobody should have to review raw JSON. The renderer produces Markdown or standalone HTML from the same family file without adding implementation commentary to the public reference view.
 
-Generate the Markdown preview:
+Generate a Markdown view:
 
 ```bash
 python vigil/taxonomy/render_taxonomy.py \
   vigil/taxonomy/families/authority-boundary-integrity.json \
   --format markdown \
-  --output vigil/taxonomy/previews/authority-boundary-integrity.md
+  --output /tmp/authority-boundary-integrity.md
 ```
 
-Generate the standalone HTML preview:
+Generate a standalone HTML view:
 
 ```bash
 python vigil/taxonomy/render_taxonomy.py \
   vigil/taxonomy/families/authority-boundary-integrity.json \
   --format html \
-  --output vigil/taxonomy/previews/authority-boundary-integrity.html
+  --output /tmp/authority-boundary-integrity.html
 ```
 
-Validate internal integrity:
+Validate all current prototype families:
 
 ```bash
-python vigil/taxonomy/validate_taxonomy.py \
-  vigil/taxonomy/families/authority-boundary-integrity.json
+python vigil/taxonomy/validate_taxonomy.py vigil/taxonomy/families/*.json
 ```
 
-## Prototype question
+## Prototype scale test
 
-This first family is intentionally substantial enough to test scale. The review question is not “are these nine class names final?” It is:
+The current prototype deliberately uses four bounded families with different structural concerns:
 
-> Does this family/file model remain understandable, bounded, searchable and extensible if VIGIL eventually contains hundreds or thousands of failure classes?
+1. **Authority Boundary Integrity Failures** — unjustified creation, expansion, transfer or inheritance of authority.
+2. **Provenance & Lineage Integrity Failures** — loss or distortion of origin, authorship, transformation, continuity or target binding.
+3. **Verification & Completion Integrity Failures** — unsupported, stale or mismatched claims of verification or completion.
+4. **Observability & Audit Integrity Failures** — inadequate capture, attribution, coverage or reconstruction of material system activity.
+
+The review question is:
+
+> Does this family/file model remain understandable, bounded, searchable and extensible when structurally different failure families coexist and the number of failure classes grows substantially?
 
 No Caelestis instrument, path, authority field or CAM-specific control dependency is part of the portable taxonomy data model.
