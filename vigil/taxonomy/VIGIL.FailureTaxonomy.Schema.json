@@ -1,0 +1,306 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://www.cam-initiative.org/vigil/schemas/failure-taxonomy-family.schema.json",
+  "title": "VIGIL Failure Taxonomy Family",
+  "description": "Portable machine-readable schema for one VIGIL AI governance failure family.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "standard",
+    "family",
+    "classes"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "0.1.0"
+    },
+    "standard": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "version",
+        "status"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "prototype",
+            "draft",
+            "beta",
+            "active",
+            "deprecated"
+          ]
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "family": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "code",
+        "name",
+        "status",
+        "abstraction",
+        "version",
+        "plain_english",
+        "definition",
+        "invariant",
+        "scope",
+        "inclusion_rule",
+        "exclusion_rule",
+        "allowed_codes"
+      ],
+      "properties": {
+        "code": {
+          "type": "string",
+          "pattern": "^VIGIL\\.FF\\.[A-Z0-9_]+$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "prototype",
+            "draft",
+            "beta",
+            "active",
+            "deprecated"
+          ]
+        },
+        "abstraction": {
+          "type": "string",
+          "const": "family"
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "plain_english": {
+          "type": "string",
+          "minLength": 1
+        },
+        "definition": {
+          "type": "string",
+          "minLength": 1
+        },
+        "invariant": {
+          "type": "string",
+          "minLength": 1
+        },
+        "scope": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "inclusion_rule": {
+          "type": "string",
+          "minLength": 1
+        },
+        "exclusion_rule": {
+          "type": "string",
+          "minLength": 1
+        },
+        "allowed_codes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^VIGIL\\.FF\\.[A-Z0-9_]+\\.[A-Z0-9_]+$"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      }
+    },
+    "classes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "name",
+          "status",
+          "abstraction",
+          "plain_english",
+          "definition",
+          "recognition",
+          "exclusions",
+          "examples"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "pattern": "^VIGIL\\.FF\\.[A-Z0-9_]+\\.[A-Z0-9_]+$"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "prototype",
+              "draft",
+              "beta",
+              "active",
+              "deprecated"
+            ]
+          },
+          "abstraction": {
+            "type": "string",
+            "enum": [
+              "class",
+              "variant"
+            ]
+          },
+          "plain_english": {
+            "type": "string",
+            "minLength": 1
+          },
+          "definition": {
+            "type": "string",
+            "minLength": 1
+          },
+          "recognition": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "required_conditions"
+            ],
+            "properties": {
+              "required_conditions": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "minItems": 1
+              },
+              "indicators": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          },
+          "exclusions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minItems": 1
+          },
+          "examples": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minItems": 1
+          },
+          "aliases": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "relationships": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "type",
+                "target_code"
+              ],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "child_of",
+                    "parent_of",
+                    "peer_of",
+                    "distinguish_from",
+                    "can_cooccur_with",
+                    "may_result_in",
+                    "may_be_result_of"
+                  ]
+                },
+                "target_code": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "note": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "external_mappings": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "scheme",
+                "identifier",
+                "relationship"
+              ],
+              "properties": {
+                "scheme": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "identifier": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "relationship": {
+                  "type": "string",
+                  "enum": [
+                    "direct",
+                    "broader",
+                    "narrower",
+                    "partial",
+                    "analogous",
+                    "unresolved"
+                  ]
+                },
+                "note": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
