@@ -143,6 +143,46 @@ class ValidateVigilRecordsTest(unittest.TestCase):
 
         self.assertNotEqual(self.validate_mutated_fixture("VIGIL-2026-FM-0001.json", mutate), 0)
 
+    def test_fm_requires_diagnostic_provenance(self):
+        def mutate(record):
+            record.pop("diagnostic_provenance")
+
+        self.assertNotEqual(self.validate_mutated_fixture("VIGIL-2026-FM-0001.json", mutate), 0)
+
+    def test_fm_diagnostic_model_must_match_creation_date(self):
+        def mutate(record):
+            record["diagnostic_provenance"]["ai_model"] = "GPT-5.6 Sol"
+
+        self.assertNotEqual(self.validate_mutated_fixture("VIGIL-2026-FM-0001.json", mutate), 0)
+
+    def test_fm_diagnostic_date_must_match_canonical_creation_date(self):
+        def mutate(record):
+            record["diagnostic_provenance"]["diagnostic_date"] = "2026-06-01"
+
+        self.assertNotEqual(self.validate_mutated_fixture("VIGIL-2026-FM-0001.json", mutate), 0)
+
+    def test_fm_conflicting_creation_dates_require_explicit_anomaly(self):
+        def mutate(record):
+            record["date_recorded"] = "2026-06-01"
+
+        self.assertNotEqual(self.validate_mutated_fixture("VIGIL-2026-FM-0001.json", mutate), 0)
+
+    def test_canonical_fm_diagnostic_provenance_inventory(self):
+        records = []
+        for path in sorted((ROOT / "vigil" / "records" / "failures").rglob("*.json")):
+            with path.open(encoding="utf-8") as handle:
+                records.append(json.load(handle))
+        self.assertEqual(len(records), 71)
+        models = {"GPT-5.5": 0, "GPT-5.6 Sol": 0}
+        conflicts = []
+        for record in records:
+            diagnostic = record["diagnostic_provenance"]
+            models[diagnostic["ai_model"]] += 1
+            if diagnostic["date_attribution_status"] == "creation-date-conflict-recorded":
+                conflicts.append(record["id"])
+        self.assertEqual(models, {"GPT-5.5": 27, "GPT-5.6 Sol": 44})
+        self.assertEqual(conflicts, ["VIGIL-2026-FM-0044", "VIGIL-2026-FM-0048"])
+
     def test_legacy_source_record_keys_are_rejected(self):
         def mutate(record):
             record["source_records"][0]["title"] = record["source_records"][0].pop("source_title")

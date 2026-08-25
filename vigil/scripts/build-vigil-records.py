@@ -630,6 +630,12 @@ def index_record(record: dict[str, Any]) -> dict[str, Any]:
                 "record_reconstruction": record.get("record_reconstruction", {}),
             }
         )
+    elif record.get("record_type") == "failure_mode":
+        diagnostic = record.get("diagnostic_provenance")
+        if isinstance(diagnostic, dict):
+            entry["diagnostic_provenance_summary"] = {
+                key: value for key, value in diagnostic.items() if value not in (None, "", [], {})
+            }
     elif record.get("record_type") == "research":
         linked = record.get("linked_records", {})
         entry.update(

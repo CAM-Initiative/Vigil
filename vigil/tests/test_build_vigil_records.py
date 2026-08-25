@@ -205,6 +205,10 @@ class BuildVigilRecordsTest(unittest.TestCase):
         self.assertEqual(entry["record_state"], record["record_state"])
         self.assertEqual(entry["repair_status"], record["repair_status"]["status"])
         self.assertEqual(entry["monitoring_required"], record["ecosystem_status"]["monitoring_required"])
+        self.assertEqual(
+            entry["diagnostic_provenance_summary"],
+            record["diagnostic_provenance"],
+        )
 
     def test_failure_registry_has_no_legacy_taxonomy_or_peer_failure_projection(self):
         retired = {

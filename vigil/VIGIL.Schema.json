@@ -144,6 +144,7 @@
         "repair_status",
         "ecosystem_status",
         "corpus_coverage",
+        "diagnostic_provenance",
         "interpretive_provenance"
       ],
       "forbidden_top_level_fields": [
@@ -174,6 +175,24 @@
       ],
       "linked_records_rule": "Failure-mode records preserve their own evidence-to-repair chain but must not contain linked_records.related_failure_modes. Peer similarity and class membership belong to the taxonomy layer.",
       "taxonomy_transition_rule": "Failure-mode records intentionally carry no formal failure-taxonomy classification until the VIGIL-native taxonomy is applied by a separate migration.",
+      "diagnostic_provenance_required_fields": [
+        "method",
+        "diagnostic_date",
+        "human_role",
+        "ai_role",
+        "ai_platform",
+        "ai_model",
+        "model_attribution_basis",
+        "review_status",
+        "authority_boundary",
+        "date_attribution_status"
+      ],
+      "diagnostic_provenance_rule": "Diagnostic provenance identifies the human-AI collaboration that formulated the failure definition, recognition threshold, governance significance, gap assessment and diagnostic reasoning. It is distinct from source review, later interpretive review, repair and learning provenance. New failure modes must declare it explicitly. Historical attribution may use the approved creation-date rule, but a later reviewer must never replace the original diagnostic collaborator.",
+      "historical_diagnostic_model_attribution": {
+        "2026-04-23_through_2026-07-08": "OpenAI GPT-5.5",
+        "2026-07-09_onward": "OpenAI GPT-5.6 Sol",
+        "before_2026-04-23": "manual review required"
+      },
       "repair_status_required_fields": [
         "status",
         "repaired_by",

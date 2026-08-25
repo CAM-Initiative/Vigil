@@ -43,6 +43,13 @@ RESEARCH_MINIMUM_PUBLISHED_WORDS = 1500
 RESEARCH_MINIMUM_SOURCE_CORPUS_ENTRIES = 4
 
 TRIAGE_MODEL_VERSION = "2.0"
+DIAGNOSTIC_METHOD = "human-ai-collaborative-analysis"
+DIAGNOSTIC_PLATFORM = "OpenAI ChatGPT"
+DIAGNOSTIC_REVIEW_STATUS = "human-reviewed-and-approved"
+DIAGNOSTIC_REQUIRED_FIELDS = {
+    "method", "diagnostic_date", "human_role", "ai_role", "ai_platform", "ai_model",
+    "model_attribution_basis", "review_status", "authority_boundary", "date_attribution_status",
+}
 ALLOWED_TRIAGE_PRIORITIES = {"P0", "P1", "P2", "P3", "PN", "PU"}
 ACTIVE_TRIAGE_PRIORITIES = {"P0", "P1", "P2", "P3"}
 ALLOWED_TRIAGE_STATUSES = {
@@ -1400,6 +1407,54 @@ def validate_record(
             errors.append(f"{path}: OBS contains forbidden patch_status; patch state belongs in PATCH records")
     elif record_type == "failure_mode":
         add_missing(errors, path, record, FM_REQUIRED)
+        diagnostic = record.get("diagnostic_provenance")
+        if not isinstance(diagnostic, dict):
+            errors.append(f"{path}: FM diagnostic_provenance must be an object")
+        else:
+            add_missing(errors, path, diagnostic, DIAGNOSTIC_REQUIRED_FIELDS)
+            created = record.get("record_identity", {}).get("created") if isinstance(record.get("record_identity"), dict) else None
+            recorded = record.get("date_recorded")
+            expected_date = str(created or recorded or "")[:10]
+            diagnostic_date = diagnostic.get("diagnostic_date")
+            if not isinstance(diagnostic_date, str) or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", diagnostic_date):
+                errors.append(f"{path}: FM diagnostic_provenance.diagnostic_date must be ISO YYYY-MM-DD")
+            elif diagnostic_date != expected_date:
+                errors.append(
+                    f"{path}: FM diagnostic_provenance.diagnostic_date must equal the preferred canonical "
+                    f"creation date {expected_date!r}"
+                )
+            if diagnostic.get("method") != DIAGNOSTIC_METHOD:
+                errors.append(f"{path}: FM diagnostic_provenance.method must be {DIAGNOSTIC_METHOD!r}")
+            if diagnostic.get("ai_platform") != DIAGNOSTIC_PLATFORM:
+                errors.append(f"{path}: FM diagnostic_provenance.ai_platform must be {DIAGNOSTIC_PLATFORM!r}")
+            if diagnostic.get("review_status") != DIAGNOSTIC_REVIEW_STATUS:
+                errors.append(
+                    f"{path}: FM diagnostic_provenance.review_status must be {DIAGNOSTIC_REVIEW_STATUS!r}"
+                )
+            expected_model = None
+            if isinstance(diagnostic_date, str) and re.fullmatch(r"\d{4}-\d{2}-\d{2}", diagnostic_date):
+                if diagnostic_date < "2026-04-23":
+                    errors.append(
+                        f"{path}: FM diagnostic date predates the approved historical attribution window; "
+                        "manual provenance review is required"
+                    )
+                elif diagnostic_date <= "2026-07-08":
+                    expected_model = "GPT-5.5"
+                else:
+                    expected_model = "GPT-5.6 Sol"
+            if expected_model and diagnostic.get("ai_model") != expected_model:
+                errors.append(
+                    f"{path}: FM diagnostic_provenance.ai_model must be {expected_model!r} for diagnostic date "
+                    f"{diagnostic_date!r}"
+                )
+            dates_conflict = bool(created and recorded and str(created)[:10] != str(recorded)[:10])
+            expected_status = "creation-date-conflict-recorded" if dates_conflict else "canonical-creation-date-aligned"
+            if diagnostic.get("date_attribution_status") != expected_status:
+                errors.append(
+                    f"{path}: FM diagnostic_provenance.date_attribution_status must be {expected_status!r}"
+                )
+            if dates_conflict and not diagnostic.get("date_anomaly_note"):
+                errors.append(f"{path}: conflicting FM creation dates require diagnostic_provenance.date_anomaly_note")
         validate_fm_evidence_system_context(path, system_context, errors)
         validate_repair_status(path, record, errors, warnings)
         validate_triage_model(path, record, errors)

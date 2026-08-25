@@ -111,6 +111,17 @@ def enrich_index(path: Path, source_records: dict[str, dict[str, Any]], fields: 
         review = review_summary(source)
         if review:
             item["interpretive_provenance_summary"] = review
+        diagnostic = source.get("diagnostic_provenance")
+        if isinstance(diagnostic, dict):
+            item["diagnostic_provenance_summary"] = {
+                key: diagnostic.get(key)
+                for key in (
+                    "method", "diagnostic_date", "human_role", "ai_role", "ai_platform", "ai_model",
+                    "model_attribution_basis", "review_status", "authority_boundary", "date_attribution_status",
+                    "date_anomaly_note",
+                )
+                if diagnostic.get(key) not in (None, "", [], {})
+            }
         access = evidence_access_summary(source)
         if access["evidence_modalities"] or access["primary_artefact_access_states"]:
             item["evidence_access_summary"] = access

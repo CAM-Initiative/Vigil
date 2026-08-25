@@ -17,6 +17,12 @@ Failure Mode records capture confirmed, strongly evidenced, recurring, or suffic
 
 Required FM sections are identity, summary, CAM relevance, failure definition, threshold, evidence confidence, `source_records`, system context (including `platform_or_vendor`, `product_or_service`, `specific_model_or_runtime`, and `interface_surface`), failure classification, triage, jurisdictional context, linked records, and affected CAM routing.
 
+## Diagnostic provenance
+
+Every failure mode must declare `diagnostic_provenance` for the analytical act that formulated the failure definition, threshold, governance significance, gap assessment and diagnostic reasoning. Record the original human–AI collaboration: the human governance editor's substantive judgement, correction, review and approval; the AI collaborator's synthesis, mechanism analysis, comparison and drafting support; the exact platform/model; and the canonical creation date as `diagnostic_date`.
+
+Diagnostic provenance is distinct from source inspection in `interpretive_provenance`, later reassessment, repair implementation and LEARN abstraction. A later reviewer must not replace the original diagnostic model. Never infer that model from the investigated system, source description, incident model, or a later review entry. New records must identify diagnostic provenance contemporaneously; historical inference is permitted only under an approved, documented migration rule.
+
 ## Faceted failure reporting
 
 The faceted analysis records independent incident-reporting dimensions without assigning a formal failure-taxonomy class.

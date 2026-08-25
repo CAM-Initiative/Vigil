@@ -110,6 +110,8 @@ LEARN records must preserve the factual kernel, governance reasoning corrected b
 
 ## Interpretive Provenance Rules
 
+Failure modes also require a separate `diagnostic_provenance` block identifying the original human–AI analytical collaboration that formulated the diagnosis. It must preserve the diagnostic date, human and AI roles, exact diagnostic model, attribution basis, review/approval status, and authority boundary. Do not derive diagnostic authorship from the investigated system or overwrite it when a later model reviews the record. Diagnostic provenance does not replace source-review `interpretive_provenance`, repair provenance, or LEARN provenance.
+
 Every substantive VIGIL record must contain `interpretive_provenance` with:
 
 * an append-only `review_history`;
