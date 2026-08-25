@@ -78,8 +78,20 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         activation = next(item for item in documents if item["family"]["family_id"] == "VIGIL-FF-0008")
         self.assertEqual(
             [item["class_id"] for item in activation["classes"]],
-            ["VIGIL-FC-000037", "VIGIL-FC-000038", "VIGIL-FC-000039"],
+            ["VIGIL-FC-000037", "VIGIL-FC-000038", "VIGIL-FC-000039", "VIGIL-FC-000043"],
         )
+
+    def test_unwarranted_activation_is_a_peer_class_with_bounded_exclusions(self):
+        documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
+        activation = next(item for item in documents if item["family"]["family_id"] == "VIGIL-FF-0008")
+        unwarranted = next(item for item in activation["classes"] if item["class_id"] == "VIGIL-FC-000043")
+        self.assertEqual(unwarranted["abstraction"], "class")
+        self.assertEqual(len(unwarranted["recognition"]["required_conditions"]), 5)
+        relationship = next(item for item in unwarranted["relationships"] if item["target_id"] == "VIGIL-FC-000038")
+        self.assertEqual(relationship["type"], "distinguish_from")
+        exclusions = " ".join(unwarranted["exclusions"]).lower()
+        for boundary in ("classification", "scope", "stale", "authority", "reach"):
+            self.assertIn(boundary, exclusions)
 
     def test_family_membership_alignment_is_mandatory_after_reclassification(self):
         path = next(path for path in self.paths() if "VIGIL-FF-0008" in path.name)

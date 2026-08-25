@@ -30,12 +30,14 @@
     "allowed_class_ids": [
       "VIGIL-FC-000037",
       "VIGIL-FC-000038",
-      "VIGIL-FC-000039"
+      "VIGIL-FC-000039",
+      "VIGIL-FC-000043"
     ],
     "allowed_class_codes": [
       "CONTROL_AVAILABILITY_AMBIGUITY",
       "REQUIRED_CONTROL_NONACTIVATION",
-      "CONTROL_AUTHORITY_SUPPRESSION"
+      "CONTROL_AUTHORITY_SUPPRESSION",
+      "UNWARRANTED_CONTROL_ACTIVATION"
     ]
   },
   "classes": [
@@ -109,6 +111,11 @@
           "type": "distinguish_from",
           "target_id": "VIGIL-FC-000042",
           "note": "Non-activation means no operative safeguard state is produced; a delivery dead-end means an operative governance signal is produced but fails to reach a capable endpoint."
+        },
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000043",
+          "note": "Required non-activation occurs when valid activation conditions are satisfied but the control remains inactive; unwarranted activation occurs when those conditions are not satisfied but the control becomes operative."
         }
       ]
     },
@@ -147,6 +154,54 @@
           "type": "distinguish_from",
           "target_id": "VIGIL-FC-000002",
           "note": "The failed mechanism is suppression of a control's operative force, not the mistaken treatment of capability or access as sufficient permission."
+        }
+      ],
+      "aliases": []
+    },
+    {
+      "class_id": "VIGIL-FC-000043",
+      "class_code": "UNWARRANTED_CONTROL_ACTIVATION",
+      "family_id": "VIGIL-FF-0008",
+      "name": "Unwarranted Control Activation",
+      "status": "draft",
+      "abstraction": "class",
+      "plain_english": "A control becomes operative even though the conditions that justify activating it are not satisfied.",
+      "definition": "A failure in which a defined governance control or safeguard becomes operative despite the absence of the valid activation condition, trigger state, or applicability condition required for that control to activate.",
+      "recognition": {
+        "required_conditions": [
+          "A defined governance control or safeguard exists.",
+          "Identifiable conditions determine when that control should become operative.",
+          "Those valid activation conditions are not satisfied in the material context.",
+          "The control nevertheless becomes operative.",
+          "The activation produces a material governance, execution, restriction, routing, refusal, escalation, or access effect."
+        ]
+      },
+      "exclusions": [
+        "An upstream evidence or classification error supplies an incorrect trigger state and the control activates correctly relative to that state.",
+        "The control validly activates but its scope or intensity is excessive or disproportionate.",
+        "A control validly activated earlier but remains operative after its triggering condition expires because contextual state is stale.",
+        "Technical capability to impose an action is mistaken for authority or permission to impose it.",
+        "The control correctly activates but its material state or effect does not reach the governed point."
+      ],
+      "examples": [
+        "A defensive analysis is refused because hostile text inside the inspected artefact is treated as a request to perform the hostile act, even though the restriction trigger is absent for the bounded inspection task.",
+        "A permissible interaction is redirected by a safeguard whose defined activation conditions are not present in the material context."
+      ],
+      "relationships": [
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000038",
+          "note": "Unwarranted activation occurs when valid activation conditions are not satisfied but the control becomes operative; required non-activation is the opposite activation-state failure."
+        },
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000040",
+          "note": "Unwarranted activation concerns whether the control should become operative; preservation failure begins after a control has become operative and concerns loss of its material state or effect."
+        },
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000002",
+          "note": "Unwarranted activation concerns unsatisfied activation conditions; capability-authority conflation concerns treating technical ability as sufficient permission."
         }
       ],
       "aliases": []

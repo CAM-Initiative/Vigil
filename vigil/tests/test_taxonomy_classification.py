@@ -50,8 +50,33 @@ class TaxonomyClassificationTests(unittest.TestCase):
             block = record["taxonomy_classification"]
             if block["classification_status"] != "classified":
                 self.assertNotIn("primary_class", block, record["id"])
-        candidate = next(r for r in self.records if r["id"] == "VIGIL-2026-FM-0019")
-        self.assertNotIn("class_id", candidate["taxonomy_classification"]["candidate_class"])
+        for record in self.records:
+            candidate = record["taxonomy_classification"].get("candidate_class")
+            if candidate:
+                self.assertNotIn("class_id", candidate)
+
+    def test_native_unwarranted_activation_evidence_is_reconciled(self):
+        expected = {
+            "VIGIL-2026-FM-0019": "high",
+            "VIGIL-2026-FM-0020": "medium",
+            "VIGIL-2026-FM-0048": "high",
+        }
+        for record_id, confidence in expected.items():
+            record = next(r for r in self.records if r["id"] == record_id)
+            block = record["taxonomy_classification"]
+            self.assertEqual(block["classification_status"], "classified")
+            self.assertEqual(block["primary_family"]["family_id"], "VIGIL-FF-0008")
+            self.assertEqual(block["primary_class"]["class_id"], "VIGIL-FC-000043")
+            self.assertEqual(block["primary_class"]["abstraction"], "class")
+            self.assertEqual(block["classification_confidence"], confidence)
+            self.assertNotIn("candidate_class", block)
+
+    def test_classification_ledger_class_ids_resolve(self):
+        _, classes = validator.taxonomy_catalogue()
+        ledger = json.loads((VIGIL / "taxonomy" / "migration" / "VIGIL.FailureMode.TaxonomyClassificationLedger.json").read_text(encoding="utf-8"))
+        for entry in ledger["entries"]:
+            if entry["class_id"]:
+                self.assertIn(entry["class_id"], classes, entry["failure_mode_id"])
 
     def test_positive_control_fm_0068(self):
         record = next(r for r in self.records if r["id"] == "VIGIL-2026-FM-0068")
