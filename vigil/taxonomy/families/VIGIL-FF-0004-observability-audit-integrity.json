@@ -38,7 +38,9 @@
       "VIGIL-FC-000026",
       "VIGIL-FC-000027",
       "VIGIL-FC-000029",
-      "VIGIL-FC-000030"
+      "VIGIL-FC-000030",
+      "VIGIL-FC-000044",
+      "VIGIL-FC-000045"
     ],
     "allowed_class_codes": [
       "MATERIAL_EVENT_NONCAPTURE",
@@ -48,7 +50,9 @@
       "HIDDEN_EXECUTION_PATH",
       "AUDIT_EVIDENCE_INTEGRITY_LOSS",
       "EXECUTION_STATE_NONDISCLOSURE",
-      "MATERIAL_SIGNAL_FRAGMENTATION"
+      "MATERIAL_SIGNAL_FRAGMENTATION",
+      "PRIMARY_EVIDENCE_ACCESSIBILITY_FAILURE",
+      "AUTHORISED_INVESTIGATIVE_EVIDENCE_ACCESS_PATHWAY_FAILURE"
     ]
   },
   "classes": [
@@ -317,6 +321,97 @@
       "aliases": [
         "VIGIL.FF.OBSERVABILITY.SIGNAL_FRAGMENTATION"
       ]
+    },
+    {
+      "class_id": "VIGIL-FC-000044",
+      "class_code": "PRIMARY_EVIDENCE_ACCESSIBILITY_FAILURE",
+      "family_id": "VIGIL-FF-0004",
+      "name": "Primary Evidence Accessibility Failure",
+      "status": "draft",
+      "abstraction": "class",
+      "plain_english": "The authoritative evidence exists, but an authorised reviewer cannot directly inspect it and secondary representations cannot preserve what matters.",
+      "definition": "A failure in which an existing or identifiable authoritative evidence artefact required for a material governance review cannot be directly accessed through the authorised review environment, while available secondary representations cannot reliably preserve the properties necessary to answer the review question.",
+      "recognition": {
+        "required_conditions": [
+          "An authoritative primary evidence artefact exists or is identifiable.",
+          "An authorised reviewer requires direct inspection of that artefact for a material governance question.",
+          "The available review environment cannot provide practical direct access to the artefact.",
+          "Available transcripts, screenshots, metadata, descriptions, summaries, or other secondary representations cannot reliably preserve the material evidential properties.",
+          "The access failure materially impairs verification, reconstruction, attribution, or review."
+        ]
+      },
+      "exclusions": [
+        "The material event was never captured or no authoritative evidence artefact exists.",
+        "The evidence is directly accessible but lacks sufficient content to reconstruct the event.",
+        "An equivalent authoritative artefact remains directly reviewable through another available route.",
+        "Access is merely inconvenient and the material review question can be answered reliably from available evidence.",
+        "The primary failure is absence of a governed pathway for an external authority to obtain protected evidence."
+      ],
+      "examples": [
+        "A preserved multimodal interaction cannot be inspected in the authorised review environment, and a transcript omits timing, overlap, prosody, and gesture needed for the governance determination.",
+        "An identifiable primary artefact is blocked by an unsupported format or access boundary, while screenshots cannot preserve the sequence needed for reliable review."
+      ],
+      "relationships": [
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000022",
+          "note": "Primary evidence accessibility failure requires an existing or identifiable artefact; material event non-capture means the required event record was never adequately created or retained."
+        },
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000024",
+          "note": "Accessibility failure prevents the reviewer from inspecting potentially adequate evidence; non-reconstructability means the available evidence itself cannot establish the required pathway."
+        },
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000045",
+          "note": "Primary artefact accessibility concerns practical inspection within an authorised review environment; investigative pathway failure concerns the absence of a governed route through which valid external authority can obtain protected evidence."
+        }
+      ],
+      "aliases": []
+    },
+    {
+      "class_id": "VIGIL-FC-000045",
+      "class_code": "AUTHORISED_INVESTIGATIVE_EVIDENCE_ACCESS_PATHWAY_FAILURE",
+      "family_id": "VIGIL-FF-0004",
+      "name": "Authorised Investigative Evidence-Access Pathway Failure",
+      "status": "draft",
+      "abstraction": "class",
+      "plain_english": "Valid investigative authority exists, but there is no bounded and auditable route through which it can obtain the evidence needed for review.",
+      "definition": "A failure in which a governance or assurance architecture provides no sufficiently defined, lawful, authority-verified, confidentiality-protected, proportionate, and auditable pathway through which an already-authorised regulator or properly mandated investigator can obtain evidence necessary for a material investigation or verification.",
+      "recognition": {
+        "required_conditions": [
+          "A material investigation, compliance question, causal determination, or remediation claim requires non-public evidence.",
+          "A regulator or properly mandated investigator has an independently valid basis to request or inspect the necessary evidence.",
+          "The governance architecture lacks a sufficiently defined route to authenticate authority and purpose, identify responsive evidence, and provide controlled access or production.",
+          "The missing route does not adequately govern confidentiality, security, privilege, proportionality, withholding review, access logging, custody, retention, or deletion as applicable.",
+          "The pathway failure materially prevents or degrades authorised investigation or verification."
+        ]
+      },
+      "exclusions": [
+        "The requester lacks valid authority or attempts to self-authorise.",
+        "A bounded pathway exists and a particular request is lawfully denied or limited under its rules.",
+        "The evidence is public or otherwise directly accessible to the authorised reviewer without a protected production pathway.",
+        "The failure is solely technical inability to open an artefact already available within the authorised review environment.",
+        "The taxonomy is being used to create, enlarge, or determine investigative authority."
+      ],
+      "examples": [
+        "A provider preserves incident evidence but has no process to authenticate a regulator's mandate, scope production, protect confidential material, record access, or review withholding.",
+        "An assurance framework requires independent investigation but supplies no secure and auditable mechanism for a properly mandated investigator to inspect necessary non-public evidence."
+      ],
+      "relationships": [
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000044",
+          "note": "Investigative pathway failure concerns the governed route for valid external authority to obtain protected evidence; primary artefact accessibility concerns practical inspection of an artefact already within an authorised review context."
+        },
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000007",
+          "note": "The class presupposes independently valid investigative authority and concerns the missing access pathway; purpose-bound credential overreach concerns using credentials beyond authorised purpose or scope."
+        }
+      ],
+      "aliases": []
     }
   ]
 }

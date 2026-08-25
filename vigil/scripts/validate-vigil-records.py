@@ -90,7 +90,8 @@ TRIAGE_HISTORY_REQUIRED = {
 
 RECORD_TYPES = {"observation", "failure_mode", "proposal", "patch", "patch_note"}
 CAM_INTERNAL_REFERENCE_PREFIXES = ("CAM-BS", "CAM-EQ", "VIGIL-")
-VIGIL_RECORD_ID_PATTERN = re.compile(r"^VIGIL-\d{4}-(?:OBS|FM|PROP|PATCH|RESEARCH)-\d{4}$")
+VIGIL_RECORD_ID_PATTERN = re.compile(r"^VIGIL-\d{4}-(?:OBS|FM|PROP|PATCH|LEARN|RESEARCH)-\d{4}$")
+WITHDRAWN_REFERENCE_ID_PATTERN = re.compile(r"^VIGIL-\d{4}-(?:PROP|PATCH|LEARN)-\d{4}$")
 RETIRED_FM_TAXONOMY_FIELDS = {
     "failure_family",
     "failure_subtype",
@@ -1181,6 +1182,34 @@ def linked_record_identifier(value: Any) -> str | None:
     return None
 
 
+def withdrawn_reference_ids(record: dict[str, Any]) -> set[str]:
+    """Return typed withdrawn-record IDs retained as provenance tokens.
+
+    Draft artefacts are deliberately not loaded or made resolvable. Only
+    well-formed identifiers already present in canonical public metadata are
+    acknowledged for link-integrity checks.
+    """
+    linked = record.get("linked_records")
+    if not isinstance(linked, dict):
+        return set()
+    references: set[str] = set()
+    for field in ("related_proposals", "related_patch_notes", "related_learn_records"):
+        values = linked.get(field, [])
+        if isinstance(values, list):
+            for value in values:
+                identifier = linked_record_identifier(value)
+                if isinstance(identifier, str) and WITHDRAWN_REFERENCE_ID_PATTERN.fullmatch(identifier):
+                    references.add(identifier)
+    contextual = linked.get("contextual_relations", [])
+    if isinstance(contextual, list):
+        for relation in contextual:
+            if isinstance(relation, dict):
+                identifier = relation.get("record_id")
+                if isinstance(identifier, str) and WITHDRAWN_REFERENCE_ID_PATTERN.fullmatch(identifier):
+                    references.add(identifier)
+    return references
+
+
 def validate_canonical_path(path: Path, record_id: Any, record_type: Any, errors: list[str]) -> None:
     """Validate canonical repository paths while allowing standalone fixture files."""
     try:
@@ -1787,11 +1816,18 @@ def validate(root: Path | None = None, schema_path: Path | None = None) -> int:
                     errors.append(f"{path}: duplicate id {record_id!r}")
                 ids.add(record_id)
 
+    acknowledged_withdrawn_ids: set[str] = set()
+    for record in records_by_path.values():
+        acknowledged_withdrawn_ids.update(withdrawn_reference_ids(record))
+    for record in research_by_path.values():
+        acknowledged_withdrawn_ids.update(withdrawn_reference_ids(record))
+    validation_link_ids = ids | acknowledged_withdrawn_ids
+
     for path, record in records_by_path.items():
         validate_record(
             path,
             record,
-            ids,
+            validation_link_ids,
             errors,
             warnings,
             allowed_platform_or_vendor_values,
@@ -1799,7 +1835,7 @@ def validate(root: Path | None = None, schema_path: Path | None = None) -> int:
         )
 
     for path, record in research_by_path.items():
-        validate_research_record(path, record, ids, errors, research_body_by_path.get(path, ""))
+        validate_research_record(path, record, validation_link_ids, errors, research_body_by_path.get(path, ""))
 
     records_by_id = {
         record["id"]: record
@@ -1811,7 +1847,7 @@ def validate(root: Path | None = None, schema_path: Path | None = None) -> int:
         linked = research.get("linked_records", {})
         if not isinstance(research_id, str) or not isinstance(linked, dict):
             continue
-        for field in ("related_observations", "related_failure_modes", "related_proposals", "related_patch_notes"):
+        for field in ("related_observations", "related_failure_modes"):
             for linked_id in linked.get(field, []):
                 target = records_by_id.get(linked_id)
                 target_research = target.get("linked_records", {}).get("research", []) if target else []
@@ -1832,7 +1868,8 @@ def validate(root: Path | None = None, schema_path: Path | None = None) -> int:
     print(
         "VIGIL record validation passed: "
         f"{len(records_by_path)} JSON files, {len(research_by_path)} research files, "
-        f"{len(ids)} unique records."
+        f"{len(ids)} unique public records; "
+        f"{len(acknowledged_withdrawn_ids)} withdrawn link IDs retained as non-resolvable provenance references."
     )
     return 0
 

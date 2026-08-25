@@ -176,6 +176,23 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         self.write(MODULE.MIGRATION_LEDGER, ledger)
         self.assertTrue(any("SPLIT_REQUIRED requires split_notes" in error for error in self.errors()))
 
+    def test_evidence_accessibility_classes_are_distinct_peer_mechanisms(self):
+        documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
+        observability = next(item for item in documents if item["family"]["family_id"] == "VIGIL-FF-0004")
+        classes = {item["class_id"]: item for item in observability["classes"]}
+        primary = classes["VIGIL-FC-000044"]
+        pathway = classes["VIGIL-FC-000045"]
+        self.assertEqual(primary["abstraction"], "class")
+        self.assertEqual(pathway["abstraction"], "class")
+        self.assertTrue(any(r["type"] == "distinguish_from" and r["target_id"] == pathway["class_id"] for r in primary["relationships"]))
+        self.assertTrue(any(r["type"] == "distinguish_from" and r["target_id"] == primary["class_id"] for r in pathway["relationships"]))
+        primary_boundaries = " ".join(primary["exclusions"]).lower()
+        self.assertIn("never captured", primary_boundaries)
+        self.assertIn("reconstruct", primary_boundaries)
+        pathway_boundaries = " ".join(pathway["exclusions"]).lower()
+        self.assertIn("lacks valid authority", pathway_boundaries)
+        self.assertIn("self-authorise", pathway_boundaries)
+
 
 if __name__ == "__main__":
     unittest.main()

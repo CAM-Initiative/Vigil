@@ -78,6 +78,19 @@ class TaxonomyClassificationTests(unittest.TestCase):
             if entry["class_id"]:
                 self.assertIn(entry["class_id"], classes, entry["failure_mode_id"])
 
+    def test_evidence_accessibility_family_only_records_are_reconciled(self):
+        expected = {
+            "VIGIL-2026-FM-0033": "VIGIL-FC-000044",
+            "VIGIL-2026-FM-0055": "VIGIL-FC-000045",
+        }
+        for record_id, class_id in expected.items():
+            record = next(r for r in self.records if r["id"] == record_id)
+            block = record["taxonomy_classification"]
+            self.assertEqual(block["classification_status"], "classified")
+            self.assertEqual(block["primary_family"]["family_id"], "VIGIL-FF-0004")
+            self.assertEqual(block["primary_class"]["class_id"], class_id)
+            self.assertEqual(block["classification_confidence"], "medium")
+
     def test_positive_control_fm_0068(self):
         record = next(r for r in self.records if r["id"] == "VIGIL-2026-FM-0068")
         block = record["taxonomy_classification"]

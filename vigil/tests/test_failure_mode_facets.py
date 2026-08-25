@@ -100,6 +100,13 @@ class FailureModeFacetsTest(unittest.TestCase):
         record["failure_classification"]["faceted_analysis"] = self._valid_facets()
         self.assertEqual(self._validate_record(record), 0)
 
+    def test_fm_0071_uses_controlled_facets_without_losing_reporting_detail(self):
+        path = ROOT / "vigil" / "records" / "failures" / "2026" / "VIGIL-2026-FM-0071.json"
+        record = json.loads(path.read_text(encoding="utf-8"))
+        self.assertEqual(self._validate_facets(record), 0)
+        notes = record["failure_classification"]["faceted_analysis"]["reporting_notes"]
+        self.assertIn("trajectory-level", notes)
+
 
 if __name__ == "__main__":
     unittest.main()

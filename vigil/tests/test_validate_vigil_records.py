@@ -14,6 +14,22 @@ spec.loader.exec_module(validator)
 
 
 class ValidateVigilRecordsTest(unittest.TestCase):
+    def test_canonical_repository_validation_closes_withdrawn_provenance_links(self):
+        self.assertEqual(validator.validate(), 0)
+
+    def test_only_typed_withdrawn_relationships_are_acknowledged(self):
+        record = {
+            "linked_records": {
+                "related_proposals": ["VIGIL-2026-PROP-0001"],
+                "related_patch_notes": ["VIGIL-2026-PATCH-0023"],
+                "related_observations": ["VIGIL-2026-OBS-9999"],
+            }
+        }
+        self.assertEqual(
+            validator.withdrawn_reference_ids(record),
+            {"VIGIL-2026-PROP-0001", "VIGIL-2026-PATCH-0023"},
+        )
+
     def test_valid_fixtures_pass(self):
         self.assertEqual(validator.validate(ROOT / "vigil" / "tests" / "fixtures" / "valid"), 0)
 
