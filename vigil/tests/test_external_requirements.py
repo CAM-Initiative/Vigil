@@ -133,10 +133,25 @@ class ExternalRequirementsTests(unittest.TestCase):
         self.assertEqual(ieee7003["represented_requirement_count"], 0)
         self.assertNotEqual(ieee7003["source_retrieval_state"], "retrieved")
 
+    def test_generated_coverage_preserves_current_review_model_and_clock(self):
+        for item in self.coverage:
+            provenance = item["substantive_review_provenance"]
+            self.assertEqual(provenance["canonical_source"], "vigil/external_sources/source-registry.json")
+            self.assertEqual(provenance["review_system"], {
+                "provider": "OpenAI", "platform": "ChatGPT", "model": "GPT-5.6 Sol"
+            })
+            self.assertEqual(provenance["review_date"], "2026-08-24")
+            self.assertEqual(provenance["next_substantive_review"], "2026-11-22")
+
     def test_empty_assurance_overlay_does_not_invent_human_assurance(self):
         overlay = MODULE.load_json(MODULE.REVIEW_ASSURANCE_PATH)
         self.assertEqual(overlay["source_reviews"], [])
         self.assertTrue(all(record["assurance_provenance"] == [] for record in self.requirements))
+        self.assertTrue(all(
+            item["substantive_review_provenance"]["human_review_status"] == "not-reviewed"
+            and item["substantive_review_provenance"]["human_verification_status"] == "not-verified"
+            for item in self.coverage
+        ))
 
     def test_metadata_only_source_cannot_claim_direct_review(self):
         requirements = copy.deepcopy(self.requirements)

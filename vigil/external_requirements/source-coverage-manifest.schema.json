@@ -13,7 +13,7 @@
   ],
   "properties": {
     "schema_version": {
-      "const": "1.0"
+      "const": "1.1"
     },
     "generated_at": {
       "type": "string",
@@ -38,6 +38,7 @@
           "source_access_status",
           "source_retrieval_state",
           "analysis_state",
+          "substantive_review_provenance",
           "reviewed_sections",
           "reviewed_sections_status",
           "represented_requirement_count",
@@ -107,6 +108,36 @@
               "excluded",
               "superseded-version"
             ]
+          },
+          "substantive_review_provenance": {
+            "type": "object",
+            "required": [
+              "canonical_source", "current_review_event_id", "review_date", "next_substantive_review",
+              "review_system", "ai_role", "review_method", "human_role", "human_review_status",
+              "human_verification_status"
+            ],
+            "properties": {
+              "canonical_source": {"const": "vigil/external_sources/source-registry.json"},
+              "current_review_event_id": {"type": "string", "pattern": "^EXTREV-[A-F0-9]{16}$"},
+              "review_date": {"type": "string", "format": "date"},
+              "next_substantive_review": {"type": "string", "format": "date"},
+              "review_system": {
+                "type": "object",
+                "required": ["provider", "platform", "model"],
+                "properties": {
+                  "provider": {"type": "string", "minLength": 1},
+                  "platform": {"type": "string", "minLength": 1},
+                  "model": {"type": "string", "minLength": 1}
+                },
+                "additionalProperties": false
+              },
+              "ai_role": {"type": "string", "minLength": 1},
+              "review_method": {"type": "object"},
+              "human_role": {"type": "string", "minLength": 1},
+              "human_review_status": {"type": "string", "minLength": 1},
+              "human_verification_status": {"type": "string", "minLength": 1}
+            },
+            "additionalProperties": false
           },
           "reviewed_sections": {
             "type": "array",

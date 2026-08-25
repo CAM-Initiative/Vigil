@@ -9,6 +9,7 @@ review state. CAM applicability and coverage are assessed separately under
 from __future__ import annotations
 
 import argparse
+import datetime as dt
 import hashlib
 import json
 import re
@@ -496,7 +497,12 @@ def validate_requirements(
             errors.append(f"source-scope {key} status {status} conflicts with {count} requirement record(s)")
 
 
-def coverage_manifest(scope: dict[str, Any], reqs: list[dict[str, Any]], review: dict[str, Any] | None) -> dict[str, Any]:
+def coverage_manifest(
+    scope: dict[str, Any],
+    source: dict[str, Any],
+    reqs: list[dict[str, Any]],
+    review: dict[str, Any] | None,
+) -> dict[str, Any]:
     status = scope["extraction_status"]
     state = {
         "complete": "bounded-complete", "partial": "partial", "in-progress": "partial",
@@ -505,6 +511,10 @@ def coverage_manifest(scope: dict[str, Any], reqs: list[dict[str, Any]], review:
     }[status]
     direct = scope["source_access_status"] in {"direct-public-primary", "direct-licensed-primary"}
     digest = (review or {}).get("reviewed_source_digest")
+    provenance = source["substantive_review_provenance"]
+    current_id = provenance["current_review_event_id"]
+    current = next(event for event in provenance["review_events"] if event["review_event_id"] == current_id)
+    next_review = (dt.date.fromisoformat(current["review_date"]) + dt.timedelta(days=90)).isoformat()
     return {
         "vigil_source_id": scope["vigil_source_id"],
         "external_source_id": scope["external_source_id"],
@@ -513,6 +523,18 @@ def coverage_manifest(scope: dict[str, Any], reqs: list[dict[str, Any]], review:
         "source_access_status": scope["source_access_status"],
         "source_retrieval_state": "retrieved" if direct and reqs else ("not-established" if direct else "not-retrieved"),
         "analysis_state": status,
+        "substantive_review_provenance": {
+            "canonical_source": "vigil/external_sources/source-registry.json",
+            "current_review_event_id": current_id,
+            "review_date": current["review_date"],
+            "next_substantive_review": next_review,
+            "review_system": current["review_system"],
+            "ai_role": current["ai_role"],
+            "review_method": current["review_method"],
+            "human_role": current["human_role"],
+            "human_review_status": current["human_review_status"],
+            "human_verification_status": current["human_verification_status"],
+        },
         "reviewed_sections": [],
         "reviewed_sections_status": "not-enumerated",
         "represented_requirement_count": len(reqs),
@@ -611,9 +633,12 @@ def build_outputs(
         "primary_source_version_count": sum(r["source_role"] == "primary-ai-governance" for r in source_rows),
         "requirement_count": len(sorted_requirements), "sources": source_rows,
     }
-    manifests = [coverage_manifest(scope, by_source[source_key(scope)], reviews.get(source_key(scope))) for scope in sorted(scopes, key=lambda x: (x["external_source_id"], x["source_version"]))]
+    manifests = [
+        coverage_manifest(scope, registry_by_key[source_key(scope)], by_source[source_key(scope)], reviews.get(source_key(scope)))
+        for scope in sorted(scopes, key=lambda x: (x["external_source_id"], x["source_version"]))
+    ]
     coverage = {
-        "schema_version": "1.0", "generated_at": reviewed_at, "authorship_provenance": generated(upstream),
+        "schema_version": "1.1", "generated_at": reviewed_at, "authorship_provenance": generated(upstream),
         "source_version_count": len(manifests), "manifests": manifests,
     }
     catalogue = [
@@ -718,8 +743,8 @@ def load_and_validate() -> tuple[dict[Path, str], list[str]]:
     scope_doc = load_json(SCOPE_PATH)
     req_doc = load_json(REQUIREMENTS_PATH)
     crosswalk_doc = load_json(CROSSWALKS_PATH)
-    if registry.get("schema_version") != "1.1":
-        errors.append("source-registry schema_version must be 1.1")
+    if registry.get("schema_version") != "1.2":
+        errors.append("source-registry schema_version must be 1.2")
     if scope_doc.get("schema_version") != "1.2":
         errors.append("source-scope schema_version must be 1.2")
     if req_doc.get("schema_version") != "1.2":

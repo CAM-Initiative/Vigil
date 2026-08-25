@@ -20,6 +20,7 @@ ROOT = Path(__file__).resolve().parents[1]
 EXT = ROOT / "external_sources"
 MATRIX_PATH = EXT / "source-matrix.json"
 REGISTRY_PATH = EXT / "source-registry.json"
+SOURCE_SCOPE_PATH = ROOT / "external_requirements" / "source-scope.json"
 QUEUE_PATH = EXT / "source-review-queue.json"
 CATALOGUE_PATH = EXT / "SOURCE-CATALOGUE.md"
 PROVENANCE_REF = "vigil/provenance/AUTHORSHIP-PROVENANCE.json"
@@ -47,6 +48,30 @@ GENERATED_PROVENANCE = {
 REVIEW_STATES = {"unassigned", "review-required", "reviewed", "superseded-before-review"}
 CHANGE_STATES = {"new", "changed", "superseded", "withdrawn", "unchanged"}
 REVIEW_FRESHNESS_DAYS = 90
+REVIEW_METHOD_ACCESS = {
+    "direct-public-primary": "direct-public-primary-review",
+    "direct-licensed-primary": "direct-licensed-primary-review",
+    "official-public-extract": "official-public-extract-review",
+    "official-metadata-only": "official-metadata-only-review",
+    "secondary-source-only": "secondary-source-only-review",
+    "source-unavailable": "blocked-primary-text-review",
+}
+REVIEW_METHOD_SCOPE = {
+    "complete": "bounded-complete-review",
+    "partial": "partial-review",
+    "in-progress": "partial-review",
+    "supporting-only": "supporting-only-review",
+    "context-only": "context-only-review",
+    "blocked-access": "blocked-primary-text-review",
+    "not-started": "not-started",
+    "excluded": "excluded",
+    "superseded-version": "superseded-version-review",
+}
+REVIEW_EVENT_REQUIRED = {
+    "review_event_id", "review_date", "review_system", "ai_role", "generation_mode",
+    "review_method", "review_scope", "source_scope_reference", "limitations_reference",
+    "human_role", "human_review_status", "human_verification_status",
+}
 AI_GOVERNANCE_RELEVANCE = {
     "accountability", "ai-literacy", "assurance", "change-management", "conformity",
     "data-governance", "documentation", "environmental-impact", "fairness-bias",
@@ -120,7 +145,23 @@ def review_is_due(entry: dict[str, Any], as_of: dt.date | None = None) -> bool:
     reviewed = parse_review_date(entry.get("last_substantive_reviewed"))
     if reviewed is None:
         return True
-    return ((as_of or dt.datetime.now(dt.timezone.utc).date()) - reviewed).days > REVIEW_FRESHNESS_DAYS
+    return (as_of or dt.datetime.now(dt.timezone.utc).date()) >= reviewed + dt.timedelta(days=REVIEW_FRESHNESS_DAYS)
+
+
+def next_substantive_review(entry: dict[str, Any]) -> str | None:
+    reviewed = parse_review_date(entry.get("last_substantive_reviewed"))
+    return (reviewed + dt.timedelta(days=REVIEW_FRESHNESS_DAYS)).isoformat() if reviewed else None
+
+
+def current_review_event(entry: dict[str, Any]) -> dict[str, Any] | None:
+    provenance = entry.get("substantive_review_provenance")
+    if not isinstance(provenance, dict):
+        return None
+    current_id = provenance.get("current_review_event_id")
+    return next(
+        (event for event in provenance.get("review_events", []) if event.get("review_event_id") == current_id),
+        None,
+    )
 
 
 def material_projection(item: dict[str, Any]) -> dict[str, Any]:
@@ -183,6 +224,7 @@ def canonicalise(raw: dict[str, Any], source_id: str, source: dict[str, Any]) ->
         "applicable_lifecycle_stages": raw.get("applicable_lifecycle_stages"),
         "relevance_scope": raw.get("relevance_scope"),
         "last_substantive_reviewed": raw.get("last_substantive_reviewed"),
+        "substantive_review_provenance": raw.get("substantive_review_provenance"),
         "notes": raw.get("notes"),
     }
     item["review_eligible"] = review_eligible(source, item["source_lifecycle_state"])
@@ -204,7 +246,7 @@ def merge_item(existing: dict[str, Any] | None, incoming: dict[str, Any]) -> dic
     merged["last_seen"] = incoming["last_seen"]
     for field in (
         "public_summary", "ai_governance_relevance", "applicable_lifecycle_stages",
-        "relevance_scope", "last_substantive_reviewed", "notes",
+        "relevance_scope", "last_substantive_reviewed", "substantive_review_provenance", "notes",
     ):
         if merged.get(field) in (None, "", []):
             merged[field] = existing.get(field)
@@ -233,6 +275,7 @@ def build_queue(registry: dict[str, Any] | None = None, as_of: dt.date | None = 
         due = review_is_due(entry, as_of=as_of)
         if entry.get("review_state") != "review-required" and not due:
             continue
+        current = current_review_event(entry) or {}
         items.append({
             "vigil_source_id": entry["vigil_source_id"],
             "external_source_id": entry["external_source_id"],
@@ -247,6 +290,9 @@ def build_queue(registry: dict[str, Any] | None = None, as_of: dt.date | None = 
             "change_state": entry["change_state"],
             "source_metadata_fingerprint": entry["source_metadata_fingerprint"],
             "last_substantive_reviewed": entry.get("last_substantive_reviewed"),
+            "next_substantive_review": next_substantive_review(entry),
+            "review_system": current.get("review_system"),
+            "review_method": current.get("review_method"),
             "review_due": due,
             "required_action": "substantive-reassessment" if due else "semantic-source-review",
         })
@@ -272,6 +318,9 @@ def render_catalogue(registry: dict[str, Any] | None = None) -> str:
     ]
     for entry in entries:
         due = review_is_due(entry)
+        current = current_review_event(entry) or {}
+        system = current.get("review_system") or {}
+        method = current.get("review_method") or {}
         lines += [
             f"## {entry.get('title') or entry['external_source_id']}", "",
             entry.get("public_summary") or "No public summary is available.", "",
@@ -282,6 +331,9 @@ def render_catalogue(registry: dict[str, Any] | None = None) -> str:
             f"- **Applicable lifecycle stages:** {', '.join(entry.get('applicable_lifecycle_stages') or [])}",
             f"- **Relevance scope:** {entry.get('relevance_scope') or 'Not assessed.'}",
             f"- **Last substantive review:** {entry.get('last_substantive_reviewed') or 'not recorded'}",
+            f"- **Next substantive review:** {next_substantive_review(entry) or 'not scheduled'}",
+            f"- **Substantive reviewer:** {system.get('provider', 'not recorded')} / {system.get('platform', 'not recorded')} / {system.get('model', 'not recorded')}",
+            f"- **Review method:** {method.get('access_method', 'not recorded')} · {method.get('scope_method', 'not recorded')}",
             f"- **Review freshness:** {'review due' if due else 'current'}",
             f"- **Official source:** {entry['official_locator']}", "",
         ]
@@ -320,6 +372,11 @@ def validate(check_generated: bool = False) -> None:
     registry = load_json(REGISTRY_PATH)
     errors: list[str] = []
     warnings: list[str] = []
+    scope_document = load_json(SOURCE_SCOPE_PATH)
+    scopes = {
+        (item["vigil_source_id"], item["source_version"]): item
+        for item in scope_document.get("entries", [])
+    }
     source_ids = [s["source_id"] for s in matrix.get("sources", [])]
     if len(source_ids) != len(set(source_ids)):
         errors.append("duplicate source_id in source matrix")
@@ -348,6 +405,7 @@ def validate(check_generated: bool = False) -> None:
             themes = entry.get("ai_governance_relevance")
             stages = entry.get("applicable_lifecycle_stages")
             reviewed = parse_review_date(entry.get("last_substantive_reviewed"))
+            provenance = entry.get("substantive_review_provenance")
             if not isinstance(summary, str) or len(summary.split()) < 50:
                 errors.append(f"active source requires a meaningful public_summary of at least 50 words for {key}")
             elif not 80 <= len(summary.split()) <= 180:
@@ -368,6 +426,58 @@ def validate(check_generated: bool = False) -> None:
                 errors.append(f"last_substantive_reviewed cannot be in the future for {key}")
             elif review_is_due(entry):
                 warnings.append(f"substantive review is due for {key}")
+            if not isinstance(provenance, dict):
+                errors.append(f"active source requires substantive_review_provenance for {key}")
+            else:
+                events = provenance.get("review_events")
+                if not isinstance(events, list) or not events:
+                    errors.append(f"substantive_review_provenance requires review_events for {key}")
+                else:
+                    dates = []
+                    event_ids = set()
+                    for event in events:
+                        if not isinstance(event, dict):
+                            errors.append(f"substantive review event must be an object for {key}")
+                            continue
+                        missing = REVIEW_EVENT_REQUIRED - set(event)
+                        if missing:
+                            errors.append(f"substantive review event missing {sorted(missing)} for {key}")
+                        event_id = event.get("review_event_id")
+                        if event_id in event_ids:
+                            errors.append(f"duplicate substantive review event id for {key}")
+                        event_ids.add(event_id)
+                        event_date = parse_review_date(event.get("review_date"))
+                        if event_date is None:
+                            errors.append(f"invalid substantive review event date for {key}")
+                        else:
+                            dates.append(event_date)
+                        system = event.get("review_system")
+                        if not isinstance(system, dict) or any(not system.get(x) for x in ("provider", "platform", "model")):
+                            errors.append(f"substantive review event requires provider/platform/model for {key}")
+                        if event.get("human_role") != "contract-approver":
+                            errors.append(f"substantive review event human_role must remain contract-approver for {key}")
+                        if event.get("human_review_status") != "not-reviewed":
+                            errors.append(f"substantive review event must not inflate human review for {key}")
+                        if event.get("human_verification_status") != "not-verified":
+                            errors.append(f"substantive review event must not inflate human verification for {key}")
+                    if reviewed and dates and max(dates) != reviewed:
+                        errors.append(f"last_substantive_reviewed must equal latest review event for {key}")
+                    if provenance.get("current_review_event_id") != events[-1].get("review_event_id"):
+                        errors.append(f"current_review_event_id must identify final chronological event for {key}")
+                scope = scopes.get((entry.get("vigil_source_id"), entry.get("source_version")))
+                if scope is None:
+                    errors.append(f"substantive review provenance cannot resolve source-scope entry for {key}")
+                elif isinstance(provenance.get("review_events"), list):
+                    for event in provenance["review_events"]:
+                        if not isinstance(event, dict):
+                            continue
+                        method = event.get("review_method")
+                        expected = {
+                            "access_method": REVIEW_METHOD_ACCESS.get(scope.get("source_access_status")),
+                            "scope_method": REVIEW_METHOD_SCOPE.get(scope.get("extraction_status")),
+                        }
+                        if method != expected:
+                            errors.append(f"substantive review method conflicts with source-scope for {key}")
             for field in ("public_summary", "relevance_scope"):
                 value = entry.get(field)
                 if not isinstance(value, str):

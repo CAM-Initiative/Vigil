@@ -30,6 +30,8 @@ External requirements MUST NOT contain CAM instrument mappings, CAM coverage sta
 
 `source_metadata_fingerprint` is a SHA-256 of VIGIL's registered source/version metadata projection. It is not a hash of the PDF, HTML capture or other primary-source artefact reviewed.
 
+The AI system/model and method responsible for substantive source review are recorded canonically in the matching `../external_sources/source-registry.json` review event. That event references `source-scope.json` for maintained access and extraction limitations. It does not replace requirement-level interpretation provenance.
+
 Where an exact reviewed artefact digest was actually recorded, `source-review-assurance.json` records its SHA-256. Historical direct-source extractions for which no exact artefact digest was preserved remain `reviewed_source_digest_status: not-recorded`. VIGIL does not manufacture retrospective digests.
 
 For licensed standards, a digest and non-copyrighted artefact metadata may be retained. Licensed source text itself must not be committed unless redistribution rights permit it.

@@ -14,7 +14,7 @@ Source registration records what an external instrument is, its bounded relevanc
 
 ## Public knowledge and internal curation
 
-`public_summary`, `ai_governance_relevance`, `applicable_lifecycle_stages`, `relevance_scope` and `last_substantive_reviewed` are the canonical public source-knowledge fields. `notes` remains optional internal curation and provenance metadata; it is not a public description and must not be used as one.
+`public_summary`, `ai_governance_relevance`, `applicable_lifecycle_stages`, `relevance_scope`, `last_substantive_reviewed` and `substantive_review_provenance` are the canonical public source-knowledge and analytical-review fields. `notes` remains optional internal curation metadata; it is not a public description and must not be used as one.
 
 Public source knowledge fields SHALL be written as durable governance knowledge for an external reader who has no access to the authoring conversation, repository work plan, migration context, maintenance workflow or agent handoff. Internal curation, review tasking, reconciliation, branch, validator and workflow language SHALL NOT appear in public narrative fields.
 
@@ -22,9 +22,11 @@ The controlled theme and lifecycle vocabularies are shared with `../external_req
 
 ## Substantive review freshness
 
-Every review-eligible source requires a `last_substantive_reviewed` date. A source becomes review-due when its substantive assessment is more than 90 days old. Source polling, metadata refresh, unchanged-source checks, file modification and schema migration do not reset that date.
+Every review-eligible source requires a `last_substantive_reviewed` date and a structured review event identifying the AI provider, platform, model, role, method, scope basis and human-assurance posture. A source becomes review-due exactly 90 calendar days after its latest substantive review. Source polling, metadata refresh, unchanged-source checks, file modification and schema migration do not reset that date.
 
 A substantive review checks source/version currency, newer or consolidated text, changed AI-governance relevance, relevant authoritative guidance, the public summary, thematic classification, lifecycle applicability, relevance scope and material applicability qualifications. A material metadata change reopens `review_state`; it does not silently claim that the substantive review was completed.
+
+Review events reference the matching source/version in `../external_requirements/source-scope.json` for the maintained source-access posture, extraction scope, inaccessible sections and known unreviewed sections. This avoids duplicating source-specific limitations. AI substantive review is distinct from authorship provenance and from post-production human assurance. Human review, source verification and reviewed-artefact digests remain separately evidenced in `../external_requirements/source-review-assurance.json`.
 
 ## Source authority
 
