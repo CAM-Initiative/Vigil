@@ -234,11 +234,6 @@ def classification_summary(record: dict[str, Any]) -> dict[str, Any]:
         record,
         "failure_classification",
         [
-            "canonical_failure_group",
-            "failure_family",
-            "failure_subtype",
-            "taxonomy_reference",
-            "related_failure_groups",
             "harm_vectors",
             "severity",
             "likelihood",
@@ -574,10 +569,6 @@ def list_metadata(record: dict[str, Any]) -> dict[str, Any]:
         "primary_jurisdiction": jurisdiction.get("primary_jurisdiction", ""),
         "regulatory_surface": jurisdiction.get("regulatory_surface", []),
         "sector": jurisdiction.get("sector", ""),
-        "canonical_failure_group": classification.get("canonical_failure_group")
-        or change_classification.get("canonical_failure_group", ""),
-        "failure_family": classification.get("failure_family", ""),
-        "failure_subtype": classification.get("failure_subtype", ""),
         "severity": classification.get("severity", ""),
         "likelihood": classification.get("likelihood", ""),
         "triage_priority": triage.get("triage_priority", ""),
@@ -701,6 +692,8 @@ def build_master_from_type_indexes(index_paths: dict[str, Path] | None = None) -
         registry = json.loads(path.read_text(encoding="utf-8"))
         rel_path = repo_relative_path(path)
         count = int(registry.get("record_count", 0))
+        if count == 0:
+            continue
         counts[registry_type] = count
         registries[registry_type] = {
             "path": rel_path,
@@ -711,7 +704,7 @@ def build_master_from_type_indexes(index_paths: dict[str, Path] | None = None) -
         records.extend(master_record(record) for record in registry.get("records", []) if isinstance(record, dict))
 
     counts["total"] = sum(counts.values())
-    generated_from = [repo_relative_path(paths[registry_type]) for registry_type in TYPE_CONFIG]
+    generated_from = [registries[registry_type]["path"] for registry_type in registries]
     return {
         "generated_notice": NOTICE,
         "authorship_provenance": {
@@ -720,7 +713,7 @@ def build_master_from_type_indexes(index_paths: dict[str, Path] | None = None) -
         },
         "registry_type": "vigil_registry_master",
         "generated_from": generated_from,
-        "registry_count": len(TYPE_CONFIG),
+        "registry_count": len(registries),
         "record_count": counts,
         "registries": registries,
         "records": sorted(records, key=lambda record: str(record.get("id", ""))),

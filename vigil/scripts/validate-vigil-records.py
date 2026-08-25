@@ -75,22 +75,14 @@ TRIAGE_HISTORY_REQUIRED = {
 RECORD_TYPES = {"observation", "failure_mode", "proposal", "patch", "patch_note"}
 CAM_INTERNAL_REFERENCE_PREFIXES = ("CAM-BS", "CAM-EQ", "VIGIL-")
 VIGIL_RECORD_ID_PATTERN = re.compile(r"^VIGIL-\d{4}-(?:OBS|FM|PROP|PATCH|RESEARCH)-\d{4}$")
-FALLBACK_ALLOWED_CANONICAL_FAILURE_GROUPS = {
-    # Fallback only. The primary VIGIL taxonomy source is
-    # VIGIL.Schema.json / cam_failure_taxonomy.allowed_canonical_failure_group_values,
-    # derived from CAM-EQ2026-OPERATIONS-003-SUP-01 Appendix B.
-    "execution",
-    "arbitration",
-    "epistemic",
-    "relational",
-    "security-integrity",
-    "state-context",
-    "ux-representation",
-    "governance",
-    "infrastructure-continuity",
-    "classification",
-    "economic-legitimacy",
-    "provisional",
+RETIRED_FM_TAXONOMY_FIELDS = {
+    "failure_family",
+    "failure_subtype",
+    "canonical_failure_group",
+    "taxonomy_reference",
+    "related_failure_groups",
+    "allowed_canonical_failure_group_values",
+    "classification_status",
 }
 FALLBACK_ALLOWED_PLATFORM_OR_VENDOR_VALUES = {
     # Fallback only. The primary VIGIL system-context source is
@@ -513,17 +505,6 @@ def validate_patch_trace_structure(path: Path, record: dict[str, Any], errors: l
             reconstruction.get("limitations"),
             errors,
         )
-
-
-def load_allowed_canonical_failure_groups(schema_path: Path | None = None) -> set[str]:
-    """Load canonical failure groups from the VIGIL schema-derived CAM taxonomy registry."""
-    try:
-        schema = load_json(schema_path or SCHEMA_PATH)
-        values = schema.get("cam_failure_taxonomy", {}).get("allowed_canonical_failure_group_values", [])
-        loaded = {value for value in values if isinstance(value, str) and value}
-        return loaded or set(FALLBACK_ALLOWED_CANONICAL_FAILURE_GROUPS)
-    except Exception:  # noqa: BLE001 - validator must retain a labelled offline fallback
-        return set(FALLBACK_ALLOWED_CANONICAL_FAILURE_GROUPS)
 
 
 def load_allowed_system_context_values(
@@ -1203,7 +1184,6 @@ def validate_record(
     known_ids: set[str],
     errors: list[str],
     warnings: list[str],
-    allowed_canonical_failure_groups: set[str],
     allowed_platform_or_vendor_values: set[str],
     allowed_product_or_service_values: set[str],
 ) -> None:
@@ -1425,43 +1405,39 @@ def validate_record(
         validate_triage_model(path, record, errors)
         classification = record.get("failure_classification")
         if isinstance(classification, dict):
-            if is_blank(classification.get("failure_family")):
-                errors.append(f"{path}: FM failure_classification.failure_family is required")
-            canonical_group = classification.get("canonical_failure_group")
-            if is_blank(canonical_group):
-                errors.append(f"{path}: FM failure_classification.canonical_failure_group is required")
-            elif canonical_group not in allowed_canonical_failure_groups:
-                allowed = ", ".join(sorted(allowed_canonical_failure_groups))
+            retired = sorted(RETIRED_FM_TAXONOMY_FIELDS.intersection(classification))
+            if retired:
                 errors.append(
-                    f"{path}: FM failure_classification.canonical_failure_group {canonical_group!r} "
-                    f"is not in allowed CAM taxonomy groups: {allowed}"
+                    f"{path}: FM failure_classification contains retired taxonomy fields: {', '.join(retired)}"
                 )
-            failure_family = classification.get("failure_family")
-            if (
-                isinstance(failure_family, str)
-                and failure_family
-                and canonical_group in allowed_canonical_failure_groups
-                and failure_family not in allowed_canonical_failure_groups
-            ):
-                warnings.append(
-                    f"{path}: FM failure_classification.failure_family {failure_family!r} is not a canonical "
-                    "group; treating it as a local family/subtype routed through canonical_failure_group"
+            facets = classification.get("faceted_analysis")
+            if isinstance(facets, dict) and "external_taxonomy_refs" in facets:
+                errors.append(
+                    f"{path}: FM failure_classification.faceted_analysis.external_taxonomy_refs is retired "
+                    "during the taxonomy-free transition"
                 )
-            related_groups = classification.get("related_failure_groups")
-            if isinstance(related_groups, list):
-                for related_group in related_groups:
-                    if isinstance(related_group, str) and related_group and related_group not in allowed_canonical_failure_groups:
-                        warnings.append(
-                            f"{path}: FM failure_classification.related_failure_groups contains "
-                            f"non-canonical value {related_group!r}; move local concepts to harm_vectors, "
-                            "routing_note, or subtype fields"
-                        )
             add_missing(
                 errors,
                 path,
                 classification,
-                {"taxonomy_reference", "related_failure_groups", "persistence", "reproducibility", "visibility"},
+                {"persistence", "reproducibility", "visibility"},
             )
+        linked = record.get("linked_records")
+        if isinstance(linked, dict) and "related_failure_modes" in linked:
+            errors.append(
+                f"{path}: FM linked_records.related_failure_modes is retired; peer failure similarity belongs "
+                "to taxonomy membership"
+            )
+        cam = record.get("cam_internal")
+        if isinstance(cam, dict):
+            retired_cam = sorted(
+                {"cam_taxonomy_primary_group", "cam_taxonomy_secondary_groups", "cam_taxonomy_candidate_labels"}
+                .intersection(cam)
+            )
+            if retired_cam:
+                errors.append(f"{path}: FM cam_internal contains retired taxonomy fields: {', '.join(retired_cam)}")
+        if "proposed_taxonomy_patch" in record:
+            errors.append(f"{path}: FM proposed_taxonomy_patch is retired")
     elif record_type == "proposal":
         add_missing(errors, path, record, PROP_REQUIRED)
         state = str(record.get("record_state", "")).lower()
@@ -1632,7 +1608,6 @@ def validate(root: Path | None = None, schema_path: Path | None = None) -> int:
             if deprecated_path.exists():
                 errors.append(f"{deprecated_path}: deprecated generated file must not exist")
 
-    allowed_canonical_failure_groups = load_allowed_canonical_failure_groups(schema_path)
     allowed_platform_or_vendor_values = load_allowed_platform_or_vendor_values(schema_path)
     allowed_product_or_service_values = load_allowed_product_or_service_values(schema_path)
 
@@ -1683,7 +1658,6 @@ def validate(root: Path | None = None, schema_path: Path | None = None) -> int:
             ids,
             errors,
             warnings,
-            allowed_canonical_failure_groups,
             allowed_platform_or_vendor_values,
             allowed_product_or_service_values,
         )

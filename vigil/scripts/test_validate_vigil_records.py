@@ -132,7 +132,6 @@ class LinkedRecordIdentifierValidationTests(unittest.TestCase):
             {"VIGIL-2026-PROP-0999", "VIGIL-2026-FM-0001"},
             errors,
             warnings,
-            VALIDATOR.FALLBACK_ALLOWED_CANONICAL_FAILURE_GROUPS,
             VALIDATOR.FALLBACK_ALLOWED_PLATFORM_OR_VENDOR_VALUES,
             VALIDATOR.FALLBACK_ALLOWED_PRODUCT_OR_SERVICE_VALUES,
         )

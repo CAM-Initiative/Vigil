@@ -64,7 +64,6 @@ class FailureModeFacetsTest(unittest.TestCase):
             "verification_state": "incomplete",
             "execution_pattern": "single-pass",
             "reporting_notes": "Locus and repair side are intentionally separate.",
-            "external_taxonomy_refs": ["OECD AI incident reporting framework", "IEC 60812:2018"],
         }
 
     def test_legacy_failure_without_facets_remains_valid(self):
@@ -96,10 +95,9 @@ class FailureModeFacetsTest(unittest.TestCase):
         record["failure_classification"]["faceted_analysis"] = facets
         self.assertNotEqual(self._validate_facets(record), 0)
 
-    def test_economic_legitimacy_is_schema_valid(self):
+    def test_faceted_analysis_remains_valid_without_taxonomy(self):
         record = self._record()
-        record["failure_classification"]["canonical_failure_group"] = "economic-legitimacy"
-        record["failure_classification"]["related_failure_groups"] = ["economic-legitimacy"]
+        record["failure_classification"]["faceted_analysis"] = self._valid_facets()
         self.assertEqual(self._validate_record(record), 0)
 
 

@@ -35,7 +35,6 @@ ALLOWED_FIELDS = {
     "verification_state",
     "execution_pattern",
     "reporting_notes",
-    "external_taxonomy_refs",
 }
 
 REQUIRED_FIELDS = {
@@ -151,7 +150,6 @@ STRING_ARRAY_FIELDS = {
     "manifestation",
     "mechanism_or_cause",
     "effect_or_harm",
-    "external_taxonomy_refs",
 }
 
 

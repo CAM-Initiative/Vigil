@@ -349,11 +349,6 @@
     "related_observations": [
       "VIGIL-2026-OBS-0006"
     ],
-    "related_failure_modes": [
-      "VIGIL-2026-FM-0001",
-      "VIGIL-2026-FM-0017",
-      "VIGIL-2026-FM-0019"
-    ],
     "related_proposals": [],
     "related_patch_notes": [
       "VIGIL-2026-PATCH-0009"
@@ -375,8 +370,6 @@
   "failure_mode_definition": "A failure mode in which an AI system fails to preserve an enforceable boundary between external content and authorised instruction. The system ingests untrusted, retrieved, ambient, generated, lower-authority, hostile, or ambiguous content and treats it as capable of steering behaviour, overriding system or developer instructions, displacing user intent, altering canonical project rules, calling tools, editing files, modifying repositories, changing safety posture, disclosing data, executing commands, or influencing downstream decisions. The failure may occur through direct prompt injection, indirect prompt injection, hidden or invisible prompt content, markdown or documentation instructions, RAG retrieval, web content, file uploads, connector content, memory contamination, MCP tool poisoning, multimodal injection, cross-agent propagation, or stale internal documentation.",
   "failure_threshold": "The threshold is met where external, lower-authority, retrieved, generated, ambient, hostile, or ambiguous content materially changes model behaviour, execution planning, tool invocation, file mutation, repository implementation, source selection, data disclosure, safety classification, refusal routing, output content, or downstream decision-making in a way that the user, system owner, or canonical governance source did not authorise. The threshold is also met where a system cannot identify that an external instruction conflicts with source-authoritative project documentation or where it silently obeys an instruction contained in untrusted content during a tool-mediated or agentic workflow.",
   "failure_classification": {
-    "failure_family": "security-integrity",
-    "failure_subtype": "instruction-bearing-external-content-trusted-as-execution-authority",
     "harm_vectors": [
       "prompt injection",
       "indirect prompt injection",
@@ -412,18 +405,6 @@
     ],
     "failure_scope": "multi-vendor / cross-surface / systemic security pattern",
     "recurrence_pattern": "Prompt injection is recognised as a leading LLM application security risk and appears across direct, indirect, multimodal, RAG, MCP, tool-use, repository, ambient, and agentic workflow contexts.",
-    "canonical_failure_group": "security-integrity",
-    "taxonomy_reference": "CAM-EQ2026-OPERATIONS-003-SUP-01 Appendix B — FF.SECURITY_INTEGRITY; existing CAM mapping: Cross-Modal Prompt Injection and Ambient Instruction Capture Failure; external standard mapping: OWASP LLM01:2025 Prompt Injection; related mappings include excessive agency, supply chain, vector/embedding weakness, and sensitive information disclosure where applicable.",
-    "related_failure_groups": [
-      "execution",
-      "arbitration",
-      "classification",
-      "state-context",
-      "infrastructure-continuity",
-      "epistemic",
-      "governance",
-      "ux-representation"
-    ],
     "persistence": "persistent wherever systems ingest external content into the same context used for instruction following, authority assessment, retrieval, or tool-mediated action",
     "reproducibility": "widely reproducible in direct, indirect, RAG, file, webpage, repository, MCP, multimodal, and ambient settings; severity varies by tool privileges and guardrail design",
     "visibility": "user-facing unexpected behaviour, tool-call logs, file diffs, altered outputs, silent instruction following, data leakage, safety misrouting, execution traces, source-authority conflicts, and audit records where present",

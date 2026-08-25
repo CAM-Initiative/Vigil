@@ -43,6 +43,8 @@ Use a Failure Mode Record when an ecosystem failure pattern is confirmed, strong
 
 Failure Mode records must include the failure definition, failure threshold, classification, triage information, source records, and CAM routing implications.
 
+During the taxonomy-free transition, `failure_classification` preserves substantive case dimensions such as severity, likelihood, harm, scope, recurrence, persistence, reproducibility, visibility, and evidence facets, but MUST NOT contain legacy taxonomy family, subtype, canonical-group, taxonomy-reference, or related-group fields. Failure-mode records MUST NOT contain `linked_records.related_failure_modes`; peer similarity and class membership belong to the taxonomy layer and must not be recreated as contextual relations.
+
 The failed subject must be an ecosystem system, deployment, runtime, platform behaviour, governance practice, or externally observable failure pattern. VIGIL itself is not the failed system.
 
 Failure Mode records are not generic tags.

@@ -9,8 +9,8 @@ Failure Mode records capture confirmed, strongly evidenced, recurring, or suffic
 * Do **not** add `source_data`.
 * Do **not** duplicate the primary source in `linked_records.external_references`; use that array only for genuinely additional references.
 * Use authoritative proposal and PATCH arrays only for this failure's own repair chain.
-* Put adjacent failures, shared controls, contrasts, and precedents in `linked_records.contextual_relations` with `chain_inclusion: false`.
-* Include `failure_mode_definition`, `failure_threshold`, `failure_classification`, and `triage`; `failure_classification` must include `failure_family`, `canonical_failure_group`, `taxonomy_reference`, `related_failure_groups`, `persistence`, `reproducibility`, and `visibility`.
+* Do not add `linked_records.related_failure_modes` or convert peer-FM similarity into contextual relations. Similarity and class membership belong to the taxonomy layer.
+* Include `failure_mode_definition`, `failure_threshold`, `failure_classification`, and `triage`; during the taxonomy-free transition, `failure_classification` preserves substantive fields such as severity, harm, scope, recurrence, persistence, reproducibility and visibility but contains no formal taxonomy fields.
 * `failure_classification.faceted_analysis` is additive. Existing records do not require retrospective facet population. New or materially reassessed records SHOULD use it when evidence permits.
 * Do not include proposal implementation claims or patch-note fields.
 * CAM routing must use affected CAM routing only: `cam_internal.affected_*` fields because the record has triage-relevant failure classification.
@@ -19,7 +19,7 @@ Required FM sections are identity, summary, CAM relevance, failure definition, t
 
 ## Faceted failure reporting
 
-The canonical failure family answers **what failed**. It must not be used as a container for every other incident-reporting dimension.
+The faceted analysis records independent incident-reporting dimensions without assigning a formal failure-taxonomy class.
 
 Where evidence permits, use `failure_classification.faceted_analysis` to keep the following questions separate:
 
@@ -36,8 +36,6 @@ Where evidence permits, use `failure_classification.faceted_analysis` to keep th
 * `completion_state` — including premature termination, non-termination, and false completion;
 * `verification_state` — whether verification was absent, incomplete, incorrect, passed, failed, or unresolved; and
 * `execution_pattern` — including repeated-step, looping, retry amplification, and degraded-but-functional execution.
-
-`external_taxonomy_refs` may cite an external taxonomy, standard or reporting framework used to support a classification, but those references do not change the authority of the VIGIL record or establish conformance.
 
 Do not infer a root cause because the schema offers a field. Use `unknown`, `hypothesised`, or `provisional` states where the available evidence does not support a stronger conclusion. A user-visible symptom may arise at one locus while remediation belongs at a different component or governance layer.
 

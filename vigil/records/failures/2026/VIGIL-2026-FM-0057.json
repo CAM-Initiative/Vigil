@@ -223,7 +223,6 @@
   },
   "linked_records": {
     "related_observations": [],
-    "related_failure_modes": [],
     "related_proposals": [
       "VIGIL-2026-PROP-0029"
     ],
@@ -249,8 +248,6 @@
   "failure_mode_definition": "An API, model family, client, agent runtime, or trace-handling workflow accepts a cryptographically valid opaque reasoning block outside the user, session, model, purpose, predecessor state, or authority context for which it was produced, enabling unauthorised decryption, replay, extraction, context fabrication, capability transfer, secret recovery, safety bypass, or covert instruction execution.",
   "failure_threshold": "The threshold is met where at least one of the following is demonstrated or materially supported: a reasoning block from one user is accepted in another user's authenticated context; a block is accepted across sessions without adequate predecessor or purpose binding; a weaker or differently safeguarded model can decode or act upon a stronger model's block; sanitised public traces retain recoverable secrets in opaque fields; or an instruction embedded in an opaque block influences a later agent without an independently visible provenance and authority check. Mere use of server-managed reasoning state within its bound session does not meet the threshold.",
   "failure_classification": {
-    "failure_family": "security-integrity",
-    "failure_subtype": "cross-context-encrypted-reasoning-state-portability",
     "harm_vectors": [
       "cross-user recoverability",
       "cross-session replay",
@@ -281,14 +278,6 @@
     ],
     "failure_scope": "multi-vendor reasoning APIs / client-managed state / public agent traces / downstream agent continuations / global",
     "recurrence_pattern": "May recur whenever opaque reasoning is portable beyond its originating trust context, public traces retain unreadable blocks, model families have uneven anti-extraction safeguards, or downstream agents accept opaque state as valid context without renewed authority checks.",
-    "canonical_failure_group": "security-integrity",
-    "taxonomy_reference": "CAM-EQ2026-OPERATIONS-003-SUP-01 Appendix B — OPS.FF.SECURITY-INTEGRITY; VIGIL subtype: cross-context-encrypted-reasoning-state-portability",
-    "related_failure_groups": [
-      "state-context",
-      "execution",
-      "epistemic",
-      "governance"
-    ],
     "persistence": "Persists while vulnerable reasoning blocks remain usable, public or shared traces retain recoverable opaque state, or provider and client controls do not bind and validate user, session, model, purpose, predecessor, provenance, and authority context.",
     "reproducibility": "Reproducible only within authorised test accounts and synthetic data by testing whether reasoning envelopes are accepted across users, sessions, models, reordered histories, forks, compaction boundaries, and downstream continuations; public testing must not decode third-party traces or expose secrets.",
     "visibility": "Low to ordinary users because opaque blocks are unreadable and may survive visible-text sanitisation; providers may observe replay patterns, identity mismatches, decoder-model requests, anomalous continuation, or repeated extraction-shaped output."

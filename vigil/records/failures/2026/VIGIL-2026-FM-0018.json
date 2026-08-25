@@ -190,9 +190,6 @@
   },
   "linked_records": {
     "related_observations": [],
-    "related_failure_modes": [
-      "VIGIL-2026-FM-0008"
-    ],
     "related_proposals": [
       "VIGIL-2026-PROP-0010"
     ],
@@ -220,8 +217,6 @@
   "failure_mode_definition": "A failure mode in which an autonomous or semi-autonomous coding agent performs substantive work in an ephemeral, inaccessible, or quota-dependent execution environment but postpones branch creation, commit, push, patch export, or equivalent durable checkpointing until after the expensive work is complete. If quota, session, infrastructure, authentication, tool, or task-state failure occurs before persistence, the completed work is lost and the user must repeat the task. The failure includes any workflow that reports or visibly presents substantive completion without ensuring that the resulting work product exists in a durable, user-accessible, resumable state.",
   "failure_threshold": "The threshold is met where a coding-agent task has produced substantive repository modifications or a materially complete work product, but no durable branch, commit, pushed patch, downloadable diff, archive, or resumable checkpoint exists before quota exhaustion or task failure; the user cannot recover the completed work; and repeating all or part of the task is required. Pull-request creation need not itself succeed for the threshold to be avoided, provided the completed work has already been durably preserved and can be manually reviewed or submitted.",
   "failure_classification": {
-    "failure_family": "infrastructure-continuity",
-    "failure_subtype": "ephemeral-agent-work-loss-and-non-recoverable-interruption",
     "harm_vectors": [
       "completed work loss",
       "ephemeral execution-state dependency",
@@ -254,16 +249,6 @@
     ],
     "failure_scope": "vendor-specific / cloud-task workflow / potentially systemic coding-agent persistence pattern",
     "recurrence_pattern": "May recur whenever substantive cloud-agent work is performed before a durable branch or checkpoint is created and the remaining quota, task lifetime, or infrastructure availability is insufficient for final persistence and handoff.",
-    "canonical_failure_group": "infrastructure-continuity",
-    "taxonomy_reference": "CAM-EQ2026-OPERATIONS-003-SUP-01 §3.9.3 — Ephemeral Agent Work Loss and Non-Recoverable Interruption Failure; primary classification OPS.FF.INFRASTRUCTURE_CONTINUITY",
-    "related_failure_groups": [
-      "governance",
-      "state-context",
-      "ux-representation",
-      "execution",
-      "economic-legitimacy",
-      "security-integrity"
-    ],
     "persistence": "CAM-side repair implemented on the named Caelestis working branch; canonical adoption and external runtime conformance remain pending",
     "reproducibility": "reproducible where a cloud coding task performs modifications in an ephemeral workspace, consumes the available quota, and attempts branch or pull-request creation only after substantive work has completed",
     "visibility": "visible through task status, quota-exhaustion messaging, absence of a GitHub branch or pull request, and inability to recover the completed modifications",

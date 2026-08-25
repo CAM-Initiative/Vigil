@@ -119,46 +119,27 @@ class ValidateVigilRecordsTest(unittest.TestCase):
             finally:
                 validator.RECORDS_ROOT, validator.RECORD_TYPE_DIRS = originals
 
-    def test_fm_requires_canonical_failure_group(self):
+    def test_taxonomy_free_fm_fixture_is_valid(self):
+        self.assertEqual(
+            self.validate_mutated_fixture("VIGIL-2026-FM-0001.json", lambda record: None),
+            0,
+        )
+
+    def test_fm_rejects_retired_canonical_failure_group(self):
         def mutate(record):
-            record["failure_classification"].pop("canonical_failure_group", None)
+            record["failure_classification"]["canonical_failure_group"] = "governance"
 
         self.assertNotEqual(self.validate_mutated_fixture("VIGIL-2026-FM-0001.json", mutate), 0)
 
-    def test_fm_rejects_unknown_canonical_failure_group(self):
+    def test_fm_rejects_retired_failure_family(self):
         def mutate(record):
-            record["failure_classification"]["canonical_failure_group"] = "legacy-runtime"
+            record["failure_classification"]["failure_family"] = "legacy-runtime"
 
         self.assertNotEqual(self.validate_mutated_fixture("VIGIL-2026-FM-0001.json", mutate), 0)
 
-
-    def test_economic_legitimacy_is_accepted_as_canonical_failure_group(self):
+    def test_fm_rejects_peer_failure_links(self):
         def mutate(record):
-            record["failure_classification"]["canonical_failure_group"] = "economic-legitimacy"
-            record["failure_classification"]["failure_family"] = "economic-legitimacy"
-            record["failure_classification"]["failure_subtype"] = "paid-public-square-legitimacy-gating"
-            record["failure_classification"]["taxonomy_reference"] = "CAM-EQ2026-OPERATIONS-003-SUP-01 Appendix B §3.11"
-
-        self.assertEqual(self.validate_mutated_fixture("VIGIL-2026-FM-0001.json", mutate), 0)
-
-    def test_platform_legitimacy_is_rejected_as_canonical_failure_group(self):
-        def mutate(record):
-            record["failure_classification"]["canonical_failure_group"] = "platform-legitimacy"
-
-        self.assertNotEqual(self.validate_mutated_fixture("VIGIL-2026-FM-0001.json", mutate), 0)
-
-    def test_platform_legitimacy_can_be_local_subtype_under_economic_legitimacy(self):
-        def mutate(record):
-            record["failure_classification"]["canonical_failure_group"] = "economic-legitimacy"
-            record["failure_classification"]["failure_family"] = "economic-legitimacy"
-            record["failure_classification"]["failure_subtype"] = "platform-legitimacy"
-            record["failure_classification"]["taxonomy_reference"] = "CAM-EQ2026-OPERATIONS-003-SUP-01 Appendix B §3.11"
-
-        self.assertEqual(self.validate_mutated_fixture("VIGIL-2026-FM-0001.json", mutate), 0)
-
-    def test_fm_requires_failure_family(self):
-        def mutate(record):
-            record["failure_classification"].pop("failure_family", None)
+            record["linked_records"]["related_failure_modes"] = ["VIGIL-2026-FM-0002"]
 
         self.assertNotEqual(self.validate_mutated_fixture("VIGIL-2026-FM-0001.json", mutate), 0)
 
