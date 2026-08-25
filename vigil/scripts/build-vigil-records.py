@@ -58,6 +58,7 @@ OUTPUT_PATHS = {
     registry_type: VIGIL_DIR / config["output"] for registry_type, config in TYPE_CONFIG.items()
 }
 MASTER_OUTPUT_PATH = VIGIL_DIR / "VIGIL.Registry.Index.json"
+TAXONOMY_EXAMPLES_PATH = VIGIL_DIR / "taxonomy" / "generated" / "VIGIL.FailureTaxonomy.CaseFileExamples.json"
 DEPRECATED_OUTPUT_PATHS = [
     VIGIL_DIR / "VIGIL.ActiveRecords.json",
     VIGIL_DIR / "VIGIL.ClosedRecords.json",
@@ -248,6 +249,23 @@ def classification_summary(record: dict[str, Any]) -> dict[str, Any]:
     )
 
 
+def taxonomy_classification_summary(record: dict[str, Any]) -> dict[str, Any]:
+    block = record.get("taxonomy_classification")
+    if not isinstance(block, dict):
+        return {}
+    family = block.get("primary_family") if isinstance(block.get("primary_family"), dict) else {}
+    klass = block.get("primary_class") if isinstance(block.get("primary_class"), dict) else {}
+    return {
+        "taxonomy_version": block.get("taxonomy_version", ""),
+        "classification_status": block.get("classification_status", ""),
+        "family_id": family.get("family_id", ""),
+        "family_name": family.get("family_name", ""),
+        "class_id": klass.get("class_id", ""),
+        "class_name": klass.get("class_name", ""),
+        "abstraction": klass.get("abstraction", ""),
+    }
+
+
 def triage_summary(record: dict[str, Any]) -> dict[str, Any]:
     return dict_summary(
         record,
@@ -405,6 +423,7 @@ def generated_summaries(record: dict[str, Any]) -> dict[str, Any]:
         summaries.update(
             {
                 "classification_summary": classification_summary(record),
+                "taxonomy_classification_summary": taxonomy_classification_summary(record),
                 "triage_summary": triage_summary(record),
                 "failure_mode_definition_summary": record.get("failure_mode_definition", ""),
                 "failure_threshold_summary": record.get("failure_threshold", ""),
@@ -600,6 +619,7 @@ def list_metadata(record: dict[str, Any]) -> dict[str, Any]:
                 "recommended_next_step": triage.get("recommended_next_step", ""),
                 "monitoring_required": ecosystem.get("monitoring_required", ""),
                 "repair_status": repair.get("status", ""),
+                "taxonomy_classification_summary": taxonomy_classification_summary(record),
             }
         )
     return metadata
@@ -731,9 +751,36 @@ def remove_deprecated_outputs() -> None:
         path.unlink(missing_ok=True)
 
 
+def taxonomy_examples(records: list[dict[str, Any]]) -> dict[str, Any]:
+    classes: dict[str, list[dict[str, str]]] = {}
+    families: dict[str, list[dict[str, str]]] = {}
+    for record in records:
+        if record.get("record_type") != "failure_mode":
+            continue
+        block = record.get("taxonomy_classification")
+        if not isinstance(block, dict):
+            continue
+        example = {"failure_mode_id": str(record.get("id", "")), "title": record_title(record)}
+        family = block.get("primary_family")
+        klass = block.get("primary_class")
+        if isinstance(family, dict) and family.get("family_id"):
+            families.setdefault(family["family_id"], []).append(example)
+        if isinstance(klass, dict) and klass.get("class_id"):
+            classes.setdefault(klass["class_id"], []).append(example)
+    return {
+        "generated_notice": NOTICE,
+        "taxonomy_version": "0.2.0-draft",
+        "normative_status": "non-normative reverse mapping",
+        "generated_from": ["vigil/records/failures/2026/"],
+        "families": {key: value for key, value in sorted(families.items())},
+        "classes": {key: value for key, value in sorted(classes.items())},
+    }
+
+
 def build() -> None:
     remove_deprecated_outputs()
-    grouped = records_by_registry(load_records())
+    all_records = load_records()
+    grouped = records_by_registry(all_records)
     for registry_type, records in grouped.items():
         output_path = OUTPUT_PATHS[registry_type]
         write_json(output_path, type_registry(registry_type, records))
@@ -742,6 +789,8 @@ def build() -> None:
     master = build_master_from_type_indexes()
     write_json(MASTER_OUTPUT_PATH, master)
     print(f"Wrote {MASTER_OUTPUT_PATH} with {master['record_count']['total']} records.")
+    write_json(TAXONOMY_EXAMPLES_PATH, taxonomy_examples(all_records))
+    print(f"Wrote {TAXONOMY_EXAMPLES_PATH}.")
 
 
 if __name__ == "__main__":

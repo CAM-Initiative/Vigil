@@ -107,6 +107,7 @@
         "date_implemented",
         "external_relevance",
         "failure_classification",
+        "taxonomy_classification",
         "failure_mode_definition",
         "failure_threshold",
         "impact_summary",
@@ -174,7 +175,23 @@
         "classification_status"
       ],
       "linked_records_rule": "Failure-mode records preserve their own evidence-to-repair chain but must not contain linked_records.related_failure_modes. Peer similarity and class membership belong to the taxonomy layer.",
-      "taxonomy_transition_rule": "Failure-mode records intentionally carry no formal failure-taxonomy classification until the VIGIL-native taxonomy is applied by a separate migration.",
+      "taxonomy_classification_required_fields": [
+        "taxonomy_version",
+        "classification_status",
+        "classification_basis",
+        "classification_confidence",
+        "classified_on",
+        "structural_review_flags",
+        "classification_review_provenance"
+      ],
+      "taxonomy_classification_status_values": [
+        "classified",
+        "family-only",
+        "candidate-new-class",
+        "unmapped",
+        "deferred"
+      ],
+      "taxonomy_classification_rule": "VIGIL-native taxonomy classification is distinct from failure_classification event dimensions. Classified records require a canonical immutable family and class; family-only records identify no class; candidate-new-class records allocate no ID; unmapped and deferred records remain explicit valid outcomes.",
       "diagnostic_provenance_required_fields": [
         "method",
         "diagnostic_date",

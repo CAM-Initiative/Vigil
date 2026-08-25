@@ -119,7 +119,7 @@ class ValidateVigilRecordsTest(unittest.TestCase):
             finally:
                 validator.RECORDS_ROOT, validator.RECORD_TYPE_DIRS = originals
 
-    def test_taxonomy_free_fm_fixture_is_valid(self):
+    def test_taxonomy_classified_fm_fixture_is_valid(self):
         self.assertEqual(
             self.validate_mutated_fixture("VIGIL-2026-FM-0001.json", lambda record: None),
             0,

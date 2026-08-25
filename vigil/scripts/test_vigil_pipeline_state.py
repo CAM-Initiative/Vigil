@@ -90,6 +90,9 @@ def main() -> None:
         classification = item["failure_classification"]
         assert not retired_taxonomy_fields.intersection(classification), path
         assert "related_failure_modes" not in item["linked_records"], path
+        assert item["taxonomy_classification"]["classification_status"] in {
+            "classified", "family-only", "candidate-new-class", "unmapped", "deferred"
+        }, path
 
     obs6 = record("VIGIL-2026-OBS-0006", "observations")
     assert obs6["record_state"] == "closed-actioned"

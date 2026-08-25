@@ -10,7 +10,8 @@ Failure Mode records capture confirmed, strongly evidenced, recurring, or suffic
 * Do **not** duplicate the primary source in `linked_records.external_references`; use that array only for genuinely additional references.
 * Use authoritative proposal and PATCH arrays only for this failure's own repair chain.
 * Do not add `linked_records.related_failure_modes` or convert peer-FM similarity into contextual relations. Similarity and class membership belong to the taxonomy layer.
-* Include `failure_mode_definition`, `failure_threshold`, `failure_classification`, and `triage`; during the taxonomy-free transition, `failure_classification` preserves substantive fields such as severity, harm, scope, recurrence, persistence, reproducibility and visibility but contains no formal taxonomy fields.
+* Include `failure_mode_definition`, `failure_threshold`, `failure_classification`, `taxonomy_classification`, and `triage`; `failure_classification` preserves orthogonal event dimensions while `taxonomy_classification` records the distinct VIGIL-native mechanism outcome.
+* New Failure Modes must record one of `classified`, `family-only`, `candidate-new-class`, `unmapped`, or `deferred`. Never guess a class to avoid an explicit gap.
 * `failure_classification.faceted_analysis` is additive. Existing records do not require retrospective facet population. New or materially reassessed records SHOULD use it when evidence permits.
 * Do not include proposal implementation claims or patch-note fields.
 * CAM routing must use affected CAM routing only: `cam_internal.affected_*` fields because the record has triage-relevant failure classification.

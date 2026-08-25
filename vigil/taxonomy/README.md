@@ -26,6 +26,8 @@ migration/
 
 Family JSON is canonical. HTML and Markdown references are generated projections. The migration ledger is non-normative source-analysis evidence and is not a dependency of the portable taxonomy.
 
+`generated/VIGIL.FailureTaxonomy.CaseFileExamples.json` is a non-normative reverse mapping derived from canonical Failure Mode `taxonomy_classification` blocks. It lets public interfaces discover Case File examples for immutable family and class IDs without embedding incident-specific record IDs in portable taxonomy definitions.
+
 ## Taxonomic boundary
 
 A family is admissible only when every child can coherently complete:

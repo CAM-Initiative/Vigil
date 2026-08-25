@@ -50,6 +50,15 @@ DIAGNOSTIC_REQUIRED_FIELDS = {
     "method", "diagnostic_date", "human_role", "ai_role", "ai_platform", "ai_model",
     "model_attribution_basis", "review_status", "authority_boundary", "date_attribution_status",
 }
+TAXONOMY_CLASSIFICATION_STATUSES = {"classified", "family-only", "candidate-new-class", "unmapped", "deferred"}
+TAXONOMY_CLASSIFICATION_REQUIRED = {
+    "taxonomy_version", "classification_status", "classification_basis", "classification_confidence",
+    "classified_on", "classification_review_provenance",
+}
+TAXONOMY_REVIEW_REQUIRED = {
+    "method", "review_date", "ai_provider", "ai_platform", "ai_model", "ai_role",
+    "human_review_status", "authority_boundary",
+}
 ALLOWED_TRIAGE_PRIORITIES = {"P0", "P1", "P2", "P3", "PN", "PU"}
 ACTIVE_TRIAGE_PRIORITIES = {"P0", "P1", "P2", "P3"}
 ALLOWED_TRIAGE_STATUSES = {
@@ -248,7 +257,10 @@ OBS_FORBIDDEN = {
     "failure_mode_definition",
     "failure_threshold",
 }
-FM_REQUIRED = {"failure_mode_definition", "failure_threshold", "failure_classification", "triage", "repair_status"}
+FM_REQUIRED = {
+    "failure_mode_definition", "failure_threshold", "failure_classification", "taxonomy_classification",
+    "triage", "repair_status",
+}
 PROP_REQUIRED = {"proposal_rationale", "proposal_type", "proposal_scope", "implementation_notes", "external_relevance", "next_action"}
 PATCH_REQUIRED = {
     "date_implemented",
@@ -1185,6 +1197,74 @@ def validate_canonical_path(path: Path, record_id: Any, record_type: Any, errors
         errors.append(f"{path}: record path must be vigil/records/{expected.as_posix()} for id/type")
 
 
+def taxonomy_catalogue() -> tuple[dict[str, dict[str, Any]], dict[str, dict[str, Any]]]:
+    families: dict[str, dict[str, Any]] = {}
+    classes: dict[str, dict[str, Any]] = {}
+    for taxonomy_path in sorted((VIGIL_DIR / "taxonomy" / "families").glob("*.json")):
+        document = load_json(taxonomy_path)
+        family = document.get("family", {})
+        if isinstance(family, dict) and family.get("family_id"):
+            families[family["family_id"]] = family
+        for item in document.get("classes", []):
+            if isinstance(item, dict) and item.get("class_id"):
+                classes[item["class_id"]] = item
+    return families, classes
+
+
+def validate_taxonomy_classification(path: Path, record: dict[str, Any], errors: list[str]) -> None:
+    block = record.get("taxonomy_classification")
+    if not isinstance(block, dict):
+        errors.append(f"{path}: FM taxonomy_classification must be an object")
+        return
+    add_missing(errors, path, block, TAXONOMY_CLASSIFICATION_REQUIRED)
+    if "structural_review_flags" not in block:
+        errors.append(f"{path}: taxonomy_classification missing required field structural_review_flags")
+    status = block.get("classification_status")
+    if status not in TAXONOMY_CLASSIFICATION_STATUSES:
+        errors.append(f"{path}: unsupported taxonomy classification status {status!r}")
+    if block.get("taxonomy_version") != "0.2.0-draft":
+        errors.append(f"{path}: taxonomy_classification.taxonomy_version must be '0.2.0-draft'")
+    if block.get("classification_confidence") not in {"high", "medium", "low"}:
+        errors.append(f"{path}: invalid taxonomy classification confidence")
+    if not isinstance(block.get("structural_review_flags"), list):
+        errors.append(f"{path}: taxonomy structural_review_flags must be an array")
+    families, classes = taxonomy_catalogue()
+    family = block.get("primary_family")
+    klass = block.get("primary_class")
+    if status in {"classified", "family-only"} and not isinstance(family, dict):
+        errors.append(f"{path}: {status} taxonomy outcome requires primary_family")
+    if status == "classified" and not isinstance(klass, dict):
+        errors.append(f"{path}: classified taxonomy outcome requires primary_class")
+    if status != "classified" and klass is not None:
+        errors.append(f"{path}: {status} taxonomy outcome must not assert primary_class")
+    if status == "candidate-new-class" and not isinstance(block.get("candidate_class"), dict):
+        errors.append(f"{path}: candidate-new-class outcome requires candidate_class without an immutable ID")
+    if isinstance(family, dict):
+        canonical = families.get(family.get("family_id"))
+        if not canonical:
+            errors.append(f"{path}: taxonomy family ID does not resolve")
+        elif family.get("family_code") != canonical.get("family_code") or family.get("family_name") != canonical.get("name"):
+            errors.append(f"{path}: taxonomy family code/name disagrees with canonical taxonomy")
+    if isinstance(klass, dict):
+        canonical_class = classes.get(klass.get("class_id"))
+        if not canonical_class:
+            errors.append(f"{path}: taxonomy class ID does not resolve")
+        else:
+            if isinstance(family, dict) and canonical_class.get("family_id") != family.get("family_id"):
+                errors.append(f"{path}: taxonomy class does not belong to asserted family")
+            expected = (canonical_class.get("class_code"), canonical_class.get("name"), canonical_class.get("abstraction"))
+            actual = (klass.get("class_code"), klass.get("class_name"), klass.get("abstraction"))
+            if actual != expected:
+                errors.append(f"{path}: taxonomy class code/name/abstraction disagrees with canonical taxonomy")
+    review = block.get("classification_review_provenance")
+    if not isinstance(review, dict):
+        errors.append(f"{path}: taxonomy classification_review_provenance must be an object")
+    else:
+        add_missing(errors, path, review, TAXONOMY_REVIEW_REQUIRED)
+        if review.get("human_review_status") not in {"not-reviewed", "human-reviewed", "human-verified"}:
+            errors.append(f"{path}: invalid taxonomy human_review_status")
+
+
 def validate_record(
     path: Path,
     record: dict[str, Any],
@@ -1458,6 +1538,7 @@ def validate_record(
         validate_fm_evidence_system_context(path, system_context, errors)
         validate_repair_status(path, record, errors, warnings)
         validate_triage_model(path, record, errors)
+        validate_taxonomy_classification(path, record, errors)
         classification = record.get("failure_classification")
         if isinstance(classification, dict):
             retired = sorted(RETIRED_FM_TAXONOMY_FIELDS.intersection(classification))

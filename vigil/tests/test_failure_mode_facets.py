@@ -95,7 +95,7 @@ class FailureModeFacetsTest(unittest.TestCase):
         record["failure_classification"]["faceted_analysis"] = facets
         self.assertNotEqual(self._validate_facets(record), 0)
 
-    def test_faceted_analysis_remains_valid_without_taxonomy(self):
+    def test_faceted_analysis_remains_orthogonal_to_taxonomy(self):
         record = self._record()
         record["failure_classification"]["faceted_analysis"] = self._valid_facets()
         self.assertEqual(self._validate_record(record), 0)
