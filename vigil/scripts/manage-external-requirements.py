@@ -718,8 +718,8 @@ def load_and_validate() -> tuple[dict[Path, str], list[str]]:
     scope_doc = load_json(SCOPE_PATH)
     req_doc = load_json(REQUIREMENTS_PATH)
     crosswalk_doc = load_json(CROSSWALKS_PATH)
-    if registry.get("schema_version") != "1.0":
-        errors.append("source-registry schema_version must be 1.0")
+    if registry.get("schema_version") != "1.1":
+        errors.append("source-registry schema_version must be 1.1")
     if scope_doc.get("schema_version") != "1.2":
         errors.append("source-scope schema_version must be 1.2")
     if req_doc.get("schema_version") != "1.2":

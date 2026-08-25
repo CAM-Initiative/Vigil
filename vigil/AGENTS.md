@@ -189,6 +189,19 @@ When working in `vigil/`:
 * If a source is missing, use a clear TODO, `unknown`, or `not applicable` field according to the relevant template.
 * Keep uncertainty visible.
 
+## External source public-knowledge rules
+
+For records under `external_sources/`, preserve a strict boundary between public knowledge and internal curation metadata.
+
+* `public_summary`, `ai_governance_relevance`, `applicable_lifecycle_stages`, `relevance_scope` and `last_substantive_reviewed` are the canonical public source-knowledge fields.
+* `notes` is optional internal curation/provenance metadata and MUST NOT be used as a public source description.
+* Public source knowledge SHALL address an external reader with no access to repository plans, migrations, review queues, validators, branches, agent handoffs or authoring conversations.
+* Public narrative fields MUST NOT contain internal tasking, workflow, reconciliation or project-specific corpus language.
+* Do not infer inaccessible normative clauses from a title, abstract, table of contents, crosswalk or secondary summary. State the interpretation boundary in `relevance_scope`.
+* Reuse the controlled governance-theme and lifecycle vocabularies in `external_requirements/external-requirement.schema.json`.
+* `last_substantive_reviewed` changes only after reassessing source currency, AI-governance relevance, public summary, themes, lifecycle stages, scope and qualifications. Metadata sync, source polling, unchanged-source checks and schema migration do not reset it.
+* A review-eligible source more than 90 days past `last_substantive_reviewed` is review-due.
+
 ## Record-Boundary Rules
 
 Agents must preserve record-class boundaries:
