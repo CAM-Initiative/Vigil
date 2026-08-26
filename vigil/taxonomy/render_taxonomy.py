@@ -11,6 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 INDEX = ROOT / "VIGIL.FailureTaxonomy.Index.json"
+CASE_EXAMPLES = ROOT / "generated" / "VIGIL.FailureTaxonomy.CaseFileExamples.json"
 
 
 def load(path: Path) -> dict:
@@ -97,7 +98,27 @@ def markdown_family(data: dict, level: int = 1) -> str:
     return "\n".join(out).rstrip() + "\n"
 
 
-def class_html(item: dict) -> str:
+def case_examples_html(examples: list[dict]) -> str:
+    if not examples:
+        return ""
+    rows = []
+    for example in examples:
+        role = str(example.get("classification_role", "primary")).title()
+        confidence = str(example.get("classification_confidence", "unknown"))
+        basis = str(example.get("classification_basis", ""))
+        rows.append(
+            f"<li><strong>{esc(role)}:</strong> <code>{esc(example.get('failure_mode_id', ''))}</code> — "
+            f"{esc(example.get('title', ''))} <span class=\"pill\">{esc(confidence)}</span>"
+            + (f"<p>{esc(basis)}</p>" if basis else "")
+            + "</li>"
+        )
+    return (
+        f"<details class=\"case-files\"><summary><strong>VIGIL Case File classifications ({len(rows)})</strong>"
+        "</summary><ul>" + "".join(rows) + "</ul></details>"
+    )
+
+
+def class_html(item: dict, case_examples: list[dict] | None = None) -> str:
     recognition = "".join(f"<li>{esc(x)}</li>" for x in item["recognition"]["required_conditions"])
     indicators = ""
     if item["recognition"].get("indicators"):
@@ -105,7 +126,7 @@ def class_html(item: dict) -> str:
             f"<li>{esc(x)}</li>" for x in item["recognition"]["indicators"]
         ) + "</ul>"
     exclusions = "".join(f"<li>{esc(x)}</li>" for x in item["exclusions"])
-    examples = "".join(f"<li>{esc(x)}</li>" for x in item["examples"])
+    illustrative_examples = "".join(f"<li>{esc(x)}</li>" for x in item["examples"])
     aliases = ""
     if item.get("aliases"):
         aliases = "<h4>Prior codes and aliases</h4><ul>" + "".join(
@@ -131,11 +152,11 @@ def class_html(item: dict) -> str:
   <p class="plain"><strong>Plain English:</strong> {esc(item['plain_english'])}</p>
   <h4>Technical definition</h4><p>{esc(item['definition'])}</p>
   <div class="grid"><section><h4>Recognition criteria</h4><ul>{recognition}</ul>{indicators}</section><section><h4>Exclusions</h4><ul>{exclusions}</ul></section></div>
-  <h4>Illustrative examples</h4><ul>{examples}</ul>{aliases}{relationships}{mappings}
+  <h4>Illustrative examples</h4><ul>{illustrative_examples}</ul>{aliases}{relationships}{mappings}{case_examples_html(case_examples or [])}
 </article>"""
 
 
-def family_html(data: dict, heading_level: int = 1) -> str:
+def family_html(data: dict, heading_level: int = 1, case_examples: dict[str, list[dict]] | None = None) -> str:
     family = data["family"]
     tag = f"h{heading_level}"
     scope = "".join(f"<li>{esc(x)}</li>" for x in family["scope"])
@@ -151,7 +172,7 @@ def family_html(data: dict, heading_level: int = 1) -> str:
 <h2>Technical definition</h2><p>{esc(family['definition'])}</p><h2>Governing invariant</h2><p class="invariant">{esc(family['invariant'])}</p>
 <h2>Classification boundary</h2><div class="grid"><section><h3>Include when</h3><p>{esc(family['inclusion_rule'])}</p></section><section><h3>Exclude when</h3><p>{esc(family['exclusion_rule'])}</p></section></div>
 <h2>Scope</h2><ul>{scope}</ul><details><summary><strong>Allowed identifiers</strong></summary><ul>{allowed}</ul></details><details><summary><strong>Prior codes and aliases</strong></summary><ul>{aliases}</ul></details></section>
-<h2>Failure classes</h2>{''.join(class_html(item) for item in data['classes'])}</section>"""
+<h2>Failure classes</h2>{''.join(class_html(item, (case_examples or {}).get(item['class_id'], [])) for item in data['classes'])}</section>"""
 
 
 STYLE = """
@@ -165,8 +186,8 @@ def document(title: str, body: str) -> str:
 """
 
 
-def html_family(data: dict) -> str:
-    return document(data["family"]["name"], family_html(data))
+def html_family(data: dict, case_examples: dict[str, list[dict]] | None = None) -> str:
+    return document(data["family"]["name"], family_html(data, case_examples=case_examples))
 
 
 def load_catalogue(index_path: Path = INDEX) -> list[dict]:
@@ -174,7 +195,15 @@ def load_catalogue(index_path: Path = INDEX) -> list[dict]:
     return [load(index_path.parent / item["file"]) for item in index["families"]]
 
 
-def combined_html(families: list[dict]) -> str:
+def load_case_examples(path: Path = CASE_EXAMPLES) -> dict[str, list[dict]]:
+    if not path.exists():
+        return {}
+    document = load(path)
+    classes = document.get("classes", {})
+    return classes if isinstance(classes, dict) else {}
+
+
+def combined_html(families: list[dict], case_examples: dict[str, list[dict]] | None = None) -> str:
     contents = ["<section class=\"contents\"><h1>VIGIL Failure Taxonomy</h1><p>Full reference book</p><h2>Contents</h2><ol>"]
     for data in families:
         family = data["family"]
@@ -185,19 +214,25 @@ def combined_html(families: list[dict]) -> str:
         )
         contents.append("</ul></li>")
     contents.append("</ol></section>")
-    return document("VIGIL Failure Taxonomy — Full Reference", "".join(contents) + "".join(family_html(d, 1) for d in families))
+    return document(
+        "VIGIL Failure Taxonomy — Full Reference",
+        "".join(contents) + "".join(family_html(d, 1, case_examples) for d in families),
+    )
 
 
 def generate_catalogue(output_dir: Path) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
     families = load_catalogue()
+    case_examples = load_case_examples()
     for data in families:
         family_id = data["family"]["family_id"]
         index = load(INDEX)
         entry = next(item for item in index["families"] if item["family_id"] == family_id)
         stem = Path(entry["file"]).stem
-        (output_dir / f"{stem}.html").write_text(html_family(data), encoding="utf-8")
-    (output_dir / "VIGIL.FailureTaxonomy.FullReference.html").write_text(combined_html(families), encoding="utf-8")
+        (output_dir / f"{stem}.html").write_text(html_family(data, case_examples), encoding="utf-8")
+    (output_dir / "VIGIL.FailureTaxonomy.FullReference.html").write_text(
+        combined_html(families, case_examples), encoding="utf-8"
+    )
 
 
 def main() -> None:
@@ -216,7 +251,7 @@ def main() -> None:
     if not args.input or not args.format or not args.output:
         parser.error("single-family rendering requires input, --format and --output")
     data = load(args.input)
-    rendered = markdown_family(data) if args.format == "markdown" else html_family(data)
+    rendered = markdown_family(data) if args.format == "markdown" else html_family(data, load_case_examples())
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(rendered, encoding="utf-8")
 

@@ -6,6 +6,7 @@ from __future__ import annotations
 import copy
 import importlib.util
 import json
+import subprocess
 import unittest
 from pathlib import Path
 
@@ -40,10 +41,69 @@ class TaxonomyClassificationTests(unittest.TestCase):
             validator.validate_taxonomy_classification(Path(record["id"]), record, errors)
             self.assertEqual(errors, [], record["id"])
             if block["classification_status"] == "classified":
+                self.assertIn("primary_family", block, record["id"])
+                self.assertIn("primary_class", block, record["id"])
                 family = block["primary_family"]
                 klass = block["primary_class"]
                 self.assertEqual(classes[klass["class_id"]]["family_id"], family["family_id"])
                 self.assertEqual(families[family["family_id"]]["name"], family["family_name"])
+
+    def test_secondary_classifications_are_optional_and_zero_is_valid(self):
+        legacy = copy.deepcopy(next(r for r in self.records if r["id"] == "VIGIL-2026-FM-0068"))
+        self.assertNotIn("secondary_classifications", legacy["taxonomy_classification"])
+        errors = []
+        validator.validate_taxonomy_classification(Path("legacy.json"), legacy, errors)
+        self.assertEqual(errors, [])
+        legacy["taxonomy_classification"]["secondary_classifications"] = []
+        errors = []
+        validator.validate_taxonomy_classification(Path("zero.json"), legacy, errors)
+        self.assertEqual(errors, [])
+
+    def test_secondary_ids_must_resolve_and_match_family(self):
+        record = copy.deepcopy(next(r for r in self.records if r["id"] == "VIGIL-2026-FM-0062"))
+        secondary = record["taxonomy_classification"]["secondary_classifications"][0]
+        secondary["class"]["class_id"] = "VIGIL-FC-999999"
+        errors = []
+        validator.validate_taxonomy_classification(Path("unknown.json"), record, errors)
+        self.assertTrue(any("class ID does not resolve" in error for error in errors), errors)
+
+        record = copy.deepcopy(next(r for r in self.records if r["id"] == "VIGIL-2026-FM-0062"))
+        record["taxonomy_classification"]["secondary_classifications"][0]["family"] = {
+            "family_id": "VIGIL-FF-0002",
+            "family_code": "PROVENANCE_LINEAGE",
+            "family_name": "Provenance & Lineage Integrity Failures",
+        }
+        errors = []
+        validator.validate_taxonomy_classification(Path("mismatch.json"), record, errors)
+        self.assertTrue(any("does not belong" in error for error in errors), errors)
+
+    def test_primary_class_cannot_be_repeated_as_secondary(self):
+        record = copy.deepcopy(next(r for r in self.records if r["id"] == "VIGIL-2026-FM-0062"))
+        block = record["taxonomy_classification"]
+        secondary = block["secondary_classifications"][0]
+        secondary["family"] = copy.deepcopy(block["primary_family"])
+        secondary["class"] = copy.deepcopy(block["primary_class"])
+        errors = []
+        validator.validate_taxonomy_classification(Path("duplicate-primary.json"), record, errors)
+        self.assertTrue(any("duplicates the primary class" in error for error in errors), errors)
+
+    def test_duplicate_secondary_class_is_rejected(self):
+        record = copy.deepcopy(next(r for r in self.records if r["id"] == "VIGIL-2026-FM-0062"))
+        block = record["taxonomy_classification"]
+        block["secondary_classifications"].append(copy.deepcopy(block["secondary_classifications"][0]))
+        errors = []
+        validator.validate_taxonomy_classification(Path("duplicate-secondary.json"), record, errors)
+        self.assertTrue(any("duplicates a secondary class" in error for error in errors), errors)
+
+    def test_secondary_cannot_replace_primary(self):
+        record = copy.deepcopy(next(r for r in self.records if r["id"] == "VIGIL-2026-FM-0062"))
+        block = record["taxonomy_classification"]
+        block["classification_status"] = "unmapped"
+        del block["primary_family"]
+        del block["primary_class"]
+        errors = []
+        validator.validate_taxonomy_classification(Path("replacement.json"), record, errors)
+        self.assertTrue(any("cannot replace a missing primary" in error for error in errors), errors)
 
     def test_non_exact_outcomes_do_not_invent_class_ids(self):
         for record in self.records:
@@ -129,13 +189,48 @@ class TaxonomyClassificationTests(unittest.TestCase):
                     "class_id": klass.get("class_id", ""), "class_name": klass.get("class_name", ""),
                     "abstraction": klass.get("abstraction", ""),
                 }
+                secondary_summaries = []
+                for secondary in block.get("secondary_classifications", []):
+                    secondary_summaries.append({
+                        "family_id": secondary["family"]["family_id"],
+                        "family_name": secondary["family"]["family_name"],
+                        "class_id": secondary["class"]["class_id"],
+                        "class_name": secondary["class"]["class_name"],
+                        "abstraction": secondary["class"]["abstraction"],
+                    })
+                if secondary_summaries:
+                    expected["secondary_classifications"] = secondary_summaries
                 self.assertEqual(entry["taxonomy_classification_summary"], {k: v for k, v in expected.items() if v})
 
     def test_reverse_mapping_contains_only_canonical_classifications(self):
         projection = json.loads((VIGIL / "taxonomy" / "generated" / "VIGIL.FailureTaxonomy.CaseFileExamples.json").read_text(encoding="utf-8"))
-        projected = {item["failure_mode_id"] for rows in projection["classes"].values() for item in rows}
+        projected = {
+            item["failure_mode_id"]
+            for rows in projection["classes"].values()
+            for item in rows
+            if item["classification_role"] == "primary"
+        }
         exact = {r["id"] for r in self.records if r["taxonomy_classification"]["classification_status"] == "classified"}
         self.assertEqual(projected, exact)
+
+    def test_generated_examples_preserve_primary_secondary_distinction(self):
+        projection = json.loads((VIGIL / "taxonomy" / "generated" / "VIGIL.FailureTaxonomy.CaseFileExamples.json").read_text(encoding="utf-8"))
+        primary = next(item for item in projection["classes"]["VIGIL-FC-000046"] if item["failure_mode_id"] == "VIGIL-2026-FM-0062")
+        secondary = next(item for item in projection["classes"]["VIGIL-FC-000048"] if item["failure_mode_id"] == "VIGIL-2026-FM-0062")
+        self.assertEqual(primary["classification_role"], "primary")
+        self.assertEqual(secondary["classification_role"], "secondary")
+        self.assertNotEqual(primary["classification_basis"], secondary["classification_basis"])
+
+    def test_deterministic_regeneration_is_byte_stable(self):
+        targets = [
+            VIGIL / "VIGIL.Failures.Index.json",
+            VIGIL / "VIGIL.Registry.Index.json",
+            VIGIL / "taxonomy" / "generated" / "VIGIL.FailureTaxonomy.CaseFileExamples.json",
+        ]
+        subprocess.run(["python", str(VIGIL / "scripts" / "build-vigil-records.py")], cwd=ROOT, check=True, capture_output=True, text=True)
+        first = {path: path.read_bytes() for path in targets}
+        subprocess.run(["python", str(VIGIL / "scripts" / "build-vigil-records.py")], cwd=ROOT, check=True, capture_output=True, text=True)
+        self.assertEqual(first, {path: path.read_bytes() for path in targets})
 
 
 if __name__ == "__main__":

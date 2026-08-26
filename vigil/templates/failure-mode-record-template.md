@@ -10,7 +10,8 @@ Failure Mode records capture confirmed, strongly evidenced, recurring, or suffic
 * Do **not** duplicate the primary source in `linked_records.external_references`; use that array only for genuinely additional references.
 * Use authoritative proposal and PATCH arrays only for this failure's own repair chain.
 * Do not add `linked_records.related_failure_modes` or convert peer-FM similarity into contextual relations. Similarity and class membership belong to the taxonomy layer.
-* Include `failure_mode_definition`, `failure_threshold`, `failure_classification`, `taxonomy_classification`, and `triage`; `failure_classification` preserves orthogonal event dimensions while `taxonomy_classification` records the distinct VIGIL-native mechanism outcome.
+* Include `failure_mode_definition`, `failure_threshold`, `failure_classification`, `taxonomy_classification`, and `triage`; `failure_classification` preserves orthogonal event dimensions while `taxonomy_classification` records exactly one primary VIGIL-native mechanism for a classified FM and may include zero or more independently evidenced `secondary_classifications`.
+* Do not use a secondary classification for a harm, consequence, manifestation, sector, locus, unsupported hypothesis, or merely conceivable upstream cause. Each secondary needs its own canonical family/class pair, basis, and confidence and must differ from the primary and every other secondary.
 * New Failure Modes must record one of `classified`, `family-only`, `candidate-new-class`, `unmapped`, or `deferred`. Never guess a class to avoid an explicit gap.
 * `failure_classification.faceted_analysis` is additive. Existing records do not require retrospective facet population. New or materially reassessed records SHOULD use it when evidence permits.
 * Do not include proposal implementation claims or patch-note fields.

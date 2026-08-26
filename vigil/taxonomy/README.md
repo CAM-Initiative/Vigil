@@ -16,6 +16,7 @@ families/
   VIGIL-FF-0006-work-state-continuity-integrity.json
   VIGIL-FF-0007-governance-control-reach-integrity.json
   VIGIL-FF-0008-control-activation-integrity.json
+  VIGIL-FF-0009-agency-preserving-influence-integrity.json
 generated/
   one complete HTML page per family
   VIGIL.FailureTaxonomy.FullReference.html
@@ -26,7 +27,9 @@ migration/
 
 Family JSON is canonical. HTML and Markdown references are generated projections. The migration ledger is non-normative source-analysis evidence and is not a dependency of the portable taxonomy.
 
-`generated/VIGIL.FailureTaxonomy.CaseFileExamples.json` is a non-normative reverse mapping derived from canonical Failure Mode `taxonomy_classification` blocks. It lets public interfaces discover Case File examples for immutable family and class IDs without embedding incident-specific record IDs in portable taxonomy definitions.
+`generated/VIGIL.FailureTaxonomy.CaseFileExamples.json` is a non-normative reverse mapping derived from canonical Failure Mode `taxonomy_classification` blocks. It lets public interfaces discover Case File examples for immutable family and class IDs without embedding incident-specific record IDs in portable taxonomy definitions. Each projected example declares whether the mapping is the Failure Mode's primary structural mechanism or an independently evidenced secondary mechanism.
+
+Canonical Failure Mode classification preserves one principal mechanism in the existing `primary_family` and `primary_class` objects. The optional `secondary_classifications` array records zero or more additional, independently evidenced structural mechanisms. A secondary classification is not a harm, consequence, manifestation, sector, locus, hypothesis, or merely conceivable upstream cause. Primary and secondary class IDs must be distinct, and every duplicated family/class label must resolve to the canonical taxonomy.
 
 ## Taxonomic boundary
 

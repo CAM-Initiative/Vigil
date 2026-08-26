@@ -255,7 +255,7 @@ def taxonomy_classification_summary(record: dict[str, Any]) -> dict[str, Any]:
         return {}
     family = block.get("primary_family") if isinstance(block.get("primary_family"), dict) else {}
     klass = block.get("primary_class") if isinstance(block.get("primary_class"), dict) else {}
-    return {
+    summary = {
         "taxonomy_version": block.get("taxonomy_version", ""),
         "classification_status": block.get("classification_status", ""),
         "family_id": family.get("family_id", ""),
@@ -264,6 +264,24 @@ def taxonomy_classification_summary(record: dict[str, Any]) -> dict[str, Any]:
         "class_name": klass.get("class_name", ""),
         "abstraction": klass.get("abstraction", ""),
     }
+    secondaries = []
+    for secondary in block.get("secondary_classifications", []):
+        if not isinstance(secondary, dict):
+            continue
+        secondary_family = secondary.get("family", {})
+        secondary_class = secondary.get("class", {})
+        if not isinstance(secondary_family, dict) or not isinstance(secondary_class, dict):
+            continue
+        secondaries.append({
+            "family_id": secondary_family.get("family_id", ""),
+            "family_name": secondary_family.get("family_name", ""),
+            "class_id": secondary_class.get("class_id", ""),
+            "class_name": secondary_class.get("class_name", ""),
+            "abstraction": secondary_class.get("abstraction", ""),
+        })
+    if secondaries:
+        summary["secondary_classifications"] = secondaries
+    return summary
 
 
 def triage_summary(record: dict[str, Any]) -> dict[str, Any]:
@@ -760,13 +778,47 @@ def taxonomy_examples(records: list[dict[str, Any]]) -> dict[str, Any]:
         block = record.get("taxonomy_classification")
         if not isinstance(block, dict):
             continue
-        example = {"failure_mode_id": str(record.get("id", "")), "title": record_title(record)}
+        base_example = {"failure_mode_id": str(record.get("id", "")), "title": record_title(record)}
         family = block.get("primary_family")
         klass = block.get("primary_class")
         if isinstance(family, dict) and family.get("family_id"):
+            example = {
+                **base_example,
+                "classification_role": "primary",
+                "class_id": str(klass.get("class_id", "")) if isinstance(klass, dict) else "",
+                "class_name": str(klass.get("class_name", "")) if isinstance(klass, dict) else "",
+                "classification_confidence": str(block.get("classification_confidence", "")),
+                "classification_basis": str(block.get("classification_basis", "")),
+            }
             families.setdefault(family["family_id"], []).append(example)
         if isinstance(klass, dict) and klass.get("class_id"):
-            classes.setdefault(klass["class_id"], []).append(example)
+            classes.setdefault(klass["class_id"], []).append({
+                **base_example,
+                "classification_role": "primary",
+                "classification_confidence": str(block.get("classification_confidence", "")),
+                "classification_basis": str(block.get("classification_basis", "")),
+            })
+        for secondary in block.get("secondary_classifications", []):
+            if not isinstance(secondary, dict):
+                continue
+            secondary_family = secondary.get("family")
+            secondary_class = secondary.get("class")
+            if not isinstance(secondary_family, dict) or not isinstance(secondary_class, dict):
+                continue
+            secondary_example = {
+                **base_example,
+                "classification_role": "secondary",
+                "classification_confidence": str(secondary.get("classification_confidence", "")),
+                "classification_basis": str(secondary.get("classification_basis", "")),
+            }
+            if secondary_family.get("family_id"):
+                families.setdefault(secondary_family["family_id"], []).append({
+                    **secondary_example,
+                    "class_id": str(secondary_class.get("class_id", "")),
+                    "class_name": str(secondary_class.get("class_name", "")),
+                })
+            if secondary_class.get("class_id"):
+                classes.setdefault(secondary_class["class_id"], []).append(secondary_example)
     return {
         "generated_notice": NOTICE,
         "taxonomy_version": "0.2.0-draft",

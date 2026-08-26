@@ -59,6 +59,9 @@ TAXONOMY_REVIEW_REQUIRED = {
     "method", "review_date", "ai_provider", "ai_platform", "ai_model", "ai_role",
     "human_review_status", "authority_boundary",
 }
+TAXONOMY_SECONDARY_REQUIRED = {
+    "family", "class", "classification_basis", "classification_confidence",
+}
 ALLOWED_TRIAGE_PRIORITIES = {"P0", "P1", "P2", "P3", "PN", "PU"}
 ACTIVE_TRIAGE_PRIORITIES = {"P0", "P1", "P2", "P3"}
 ALLOWED_TRIAGE_STATUSES = {
@@ -1285,6 +1288,67 @@ def validate_taxonomy_classification(path: Path, record: dict[str, Any], errors:
             actual = (klass.get("class_code"), klass.get("class_name"), klass.get("abstraction"))
             if actual != expected:
                 errors.append(f"{path}: taxonomy class code/name/abstraction disagrees with canonical taxonomy")
+    secondaries = block.get("secondary_classifications", [])
+    if not isinstance(secondaries, list):
+        errors.append(f"{path}: taxonomy secondary_classifications must be an array")
+        secondaries = []
+    if secondaries and status != "classified":
+        errors.append(f"{path}: secondary classifications cannot replace a missing primary classification")
+    primary_class_id = klass.get("class_id") if isinstance(klass, dict) else None
+    seen_secondary_ids: set[str] = set()
+    for number, secondary in enumerate(secondaries):
+        secondary_where = f"{path}: taxonomy secondary_classifications[{number}]"
+        if not isinstance(secondary, dict):
+            errors.append(f"{secondary_where} must be an object")
+            continue
+        missing = TAXONOMY_SECONDARY_REQUIRED.difference(secondary)
+        if missing:
+            errors.append(f"{secondary_where} missing required fields: {sorted(missing)}")
+        secondary_family = secondary.get("family")
+        secondary_class = secondary.get("class")
+        if not isinstance(secondary_family, dict):
+            errors.append(f"{secondary_where}.family must be an object")
+        if not isinstance(secondary_class, dict):
+            errors.append(f"{secondary_where}.class must be an object")
+        if secondary.get("classification_confidence") not in {"high", "medium", "low"}:
+            errors.append(f"{secondary_where} has invalid classification_confidence")
+        if not isinstance(secondary.get("classification_basis"), str) or not secondary.get("classification_basis", "").strip():
+            errors.append(f"{secondary_where} classification_basis must be a non-empty string")
+        if not isinstance(secondary_family, dict) or not isinstance(secondary_class, dict):
+            continue
+        canonical_family = families.get(secondary_family.get("family_id"))
+        if not canonical_family:
+            errors.append(f"{secondary_where} family ID does not resolve")
+        elif (
+            secondary_family.get("family_code") != canonical_family.get("family_code")
+            or secondary_family.get("family_name") != canonical_family.get("name")
+        ):
+            errors.append(f"{secondary_where} family code/name disagrees with canonical taxonomy")
+        secondary_class_id = secondary_class.get("class_id")
+        canonical_secondary_class = classes.get(secondary_class_id)
+        if not canonical_secondary_class:
+            errors.append(f"{secondary_where} class ID does not resolve")
+        else:
+            if canonical_secondary_class.get("family_id") != secondary_family.get("family_id"):
+                errors.append(f"{secondary_where} class does not belong to asserted family")
+            expected = (
+                canonical_secondary_class.get("class_code"),
+                canonical_secondary_class.get("name"),
+                canonical_secondary_class.get("abstraction"),
+            )
+            actual = (
+                secondary_class.get("class_code"),
+                secondary_class.get("class_name"),
+                secondary_class.get("abstraction"),
+            )
+            if actual != expected:
+                errors.append(f"{secondary_where} class code/name/abstraction disagrees with canonical taxonomy")
+        if secondary_class_id == primary_class_id:
+            errors.append(f"{secondary_where} duplicates the primary class")
+        if secondary_class_id in seen_secondary_ids:
+            errors.append(f"{secondary_where} duplicates a secondary class")
+        if isinstance(secondary_class_id, str):
+            seen_secondary_ids.add(secondary_class_id)
     review = block.get("classification_review_provenance")
     if not isinstance(review, dict):
         errors.append(f"{path}: taxonomy classification_review_provenance must be an object")
