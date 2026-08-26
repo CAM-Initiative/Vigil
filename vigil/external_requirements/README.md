@@ -13,6 +13,8 @@ The maintained current state is represented directly by:
 - `requirements.json` — canonical EXTREQ corpus;
 - `source-scope.json` — source access, extraction and review-priority state;
 - `external-requirement.schema.json` and `source-scope.schema.json` — canonical contracts;
+- `metadata-review.json` and `metadata-review.schema.json` — field-level source-fidelity review state for machine-critical requirement metadata;
+- `METADATA-REVIEW-METHODOLOGY.md` — review-state semantics and completion rules;
 - `source-review-assurance.json` — exact reviewed-source digests and separately evidenced human review/verification;
 - `source-coverage-manifests.json` — generated access/retrieval/analysis/completeness view.
 
@@ -56,6 +58,21 @@ An available public or licensed route is therefore not treated as proof that the
 
 `bounded-complete` means governance-significant material identified by the recorded extraction criterion is represented. It does **not** claim that every sentence, note or informative annex was atomised into an EXTREQ record.
 
+Source-fidelity assurance is stricter than historical extraction completeness. See `SOURCE-FIDELITY-METHODOLOGY.md` and `SOURCE-FIDELITY-STATUS.md`.
+
+## Metadata review state
+
+Empty arrays in fidelity-critical metadata fields are ambiguous unless a review decision has been recorded. `metadata-review.json` distinguishes:
+
+- `populated-reviewed` — values are present and have been checked against the source proposition;
+- `not-specified-by-source` — the source was reviewed and does not state that semantic dimension;
+- `not-applicable` — the semantic dimension does not apply to the proposition; and
+- `review-required` — no defensible source-fidelity decision has yet been recorded.
+
+The tracked fields are `applicable_actor`, `governed_object`, `timing_or_frequency`, `required_artefacts`, `evidence_expectation`, `verification_method`, `applicability_conditions`, and `exceptions_or_qualifications`.
+
+The initial ledger is deliberately conservative: legacy requirements are not automatically marked reviewed merely because fields already contain values. `validate-external-requirement-metadata.py` turns those unresolved decisions into a finite review queue. Default mode reports unresolved review work but fails only on contradictory/malformed review-state contracts; `--strict` also fails while unresolved review decisions remain.
+
 ## Derivative crosswalk boundary
 
 Derivative publisher or VIGIL crosswalks may support discovery and comparison, but they cannot manufacture missing source wording, convert metadata-only access into reviewed normative content, determine CAM applicability, or assert compliance/conformance/implementation.
@@ -76,7 +93,11 @@ For ISO/IEC, IEEE and other controlled standards:
 ```bash
 python vigil/scripts/manage-external-requirements.py build
 python vigil/scripts/manage-external-requirements.py validate --check-generated
+python vigil/scripts/validate-external-requirement-metadata.py
+python vigil/scripts/validate-external-requirement-metadata.py --write-report
+python vigil/scripts/validate-external-requirement-metadata.py --strict
 python vigil/tests/test_external_requirements.py
+python vigil/scripts/test_external_requirement_metadata.py
 ```
 
 CAM applicability and coverage are validated separately under `../cam_assessment/`.
