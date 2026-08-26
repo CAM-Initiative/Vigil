@@ -13,6 +13,8 @@ An empty array in `requirements.json` does not, by itself, establish which of th
 
 The companion `metadata-review.json` ledger records that decision state without rewriting legacy requirement records merely to manufacture completeness.
 
+`reextraction-backlog.json` separately records records whose source-level meaning cannot be made faithful by field population alone. Fields materially affected by a queued fidelity defect remain `review-required` until the record is enriched or deterministically migrated.
+
 ## Fidelity-critical fields
 
 The following fields require explicit review-state tracking:
@@ -81,3 +83,5 @@ This allows the historical corpus to remain processable while new and repaired r
 A requirement is `metadata-complete` only when all eight fidelity-critical fields have explicit non-`review-required` decisions and all decisions are consistent with the canonical field values.
 
 Metadata completeness does not, by itself, establish substantive legal interpretation correctness or human verification of the requirement.
+
+A source may therefore be fully metadata-reviewed while still carrying a source-fidelity or re-extraction qualification. Metadata completion and clause-extraction completion are separate claims.

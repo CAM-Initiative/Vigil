@@ -84,6 +84,19 @@ Strict validation is reserved for a source or corpus slice that is intended to b
 
 A green historical EXTREQ schema validation is not evidence that metadata fidelity has been substantively reviewed.
 
-## Execution note
+## EXTREQ-04 execution state
 
-The repository changes in this pass define the deterministic queue and EU seeding workflow. A live corpus-wide report must be generated in a repository execution environment using the documented commands before numeric queue totals are treated as authoritative.
+The first substantive review is recorded in `EXTREQ-04-METADATA-FIDELITY-AUDIT.md` and the generated `METADATA-REVIEW-REPORT.md`.
+
+Current measured state:
+
+- 947 canonical-plus-staged records assessed;
+- 339 metadata-complete records;
+- 608 records still requiring review;
+- 4,797 unresolved field decisions;
+- 61 canonical records in the deterministic re-extraction backlog;
+- NIST AI RMF 1.0 fully metadata-reviewed;
+- the EU staged slice complete but its source/version partial because unresolved canonical records remain;
+- NIST AI 600-1 partial pending 60 constituent enrichments;
+- CycloneDX 1.7 partial pending one modality-preserving decomposition; and
+- 37 primary source versions blocked by authoritative-text access.

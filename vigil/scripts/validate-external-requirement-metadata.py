@@ -9,6 +9,8 @@ ROOT = Path(__file__).resolve().parents[1]
 REQ = ROOT / "external_requirements"
 CANONICAL = REQ / "requirements.json"
 LEDGER = REQ / "metadata-review.json"
+BACKLOG = REQ / "reextraction-backlog.json"
+SOURCE_SCOPE = REQ / "source-scope.json"
 REEXTRACTIONS = REQ / "reextractions"
 REPORT_JSON = REQ / "metadata-review-report.json"
 REPORT_MD = REQ / "METADATA-REVIEW-REPORT.md"
@@ -74,6 +76,9 @@ def validate(strict: bool, write_report: bool) -> int:
     staged = staged_records()
     ledger_doc = load(LEDGER)
     entries = ledger_doc.get("entries", [])
+    backlog_doc = load(BACKLOG) if BACKLOG.exists() else {"entries": []}
+    backlog_entries = backlog_doc.get("entries", [])
+    source_scope = load(SOURCE_SCOPE).get("entries", [])
     errors = []
     entry_by_id = {}
     for entry in entries:
@@ -90,8 +95,32 @@ def validate(strict: bool, write_report: bool) -> int:
     rows = []
     all_records = [("canonical", r) for r in canonical] + [("staged", r) for r in staged]
     record_ids = {r.get("requirement_id") for _, r in all_records}
+    canonical_by_id = {r.get("requirement_id"): r for r in canonical}
     for rid in sorted(set(entry_by_id) - record_ids):
         errors.append(f"metadata-review entry does not resolve to canonical or staged requirement: {rid}")
+
+    backlog_by_id = {}
+    for backlog_entry in backlog_entries:
+        rid = backlog_entry.get("current_requirement_id")
+        if rid in backlog_by_id:
+            errors.append(f"duplicate re-extraction backlog entry {rid}")
+            continue
+        backlog_by_id[rid] = backlog_entry
+        record = canonical_by_id.get(rid)
+        if record is None:
+            errors.append(f"re-extraction backlog entry does not resolve to canonical requirement: {rid}")
+            continue
+        for field in ("vigil_source_id", "external_source_id", "source_version", "clause_or_control"):
+            if backlog_entry.get(field) != record.get(field):
+                errors.append(f"{rid} re-extraction backlog {field} differs from canonical requirement")
+        affected = backlog_entry.get("affected_metadata_dimensions", [])
+        unknown = sorted(set(affected) - set(FIELDS))
+        if unknown:
+            errors.append(f"{rid} re-extraction backlog has unknown metadata dimensions: {unknown}")
+        ledger_entry = entry_by_id.get(rid)
+        for field in affected:
+            if ledger_entry and ledger_entry.get("field_status", {}).get(field) != "review-required":
+                errors.append(f"{rid} {field}: re-extraction-affected field must remain review-required")
 
     for surface, record in all_records:
         rid = record.get("requirement_id", "<missing>")
@@ -127,12 +156,14 @@ def validate(strict: bool, write_report: bool) -> int:
         })
 
     summary = Counter()
+    field_summary = {field: Counter() for field in FIELDS}
     by_source = defaultdict(lambda: {
         "records": 0,
         "metadata_complete": 0,
         "review_required_records": 0,
         "review_required_fields": 0,
         "field_counts": {field: Counter() for field in FIELDS},
+        "reextraction_records": 0,
     })
     for row in rows:
         summary["records"] += 1
@@ -147,26 +178,64 @@ def validate(strict: bool, write_report: bool) -> int:
         source["metadata_complete"] += row["metadata_complete"]
         source["review_required_records"] += bool(row["unresolved_fields"])
         source["review_required_fields"] += len(row["unresolved_fields"])
+        source["reextraction_records"] += row["requirement_id"] in backlog_by_id
         for field in FIELDS:
             status = row["field_status"][field]
             observation = row["field_observation"][field]
             source["field_counts"][field][f"{status}:{observation}"] += 1
+            field_summary[field][f"{status}:{observation}"] += 1
+
+    summary["reextraction_backlog_entries"] = len(backlog_entries)
+    summary["records_flagged_for_reextraction"] = len(backlog_by_id)
+    defect_categories = Counter(
+        defect
+        for entry in backlog_entries
+        for defect in entry.get("detected_fidelity_defects", [])
+    )
 
     source_summary = []
     for key, value in sorted(by_source.items(), key=lambda item: (-item[1]["review_required_fields"], item[0])):
+        if value["metadata_complete"] == value["records"]:
+            review_status = "fully-metadata-reviewed"
+        elif value["metadata_complete"] or value["review_required_fields"] < value["records"] * len(FIELDS):
+            review_status = "partially-metadata-reviewed"
+        else:
+            review_status = "unreviewed"
         source_summary.append({
             "source_key": key,
             "records": value["records"],
             "metadata_complete": value["metadata_complete"],
             "review_required_records": value["review_required_records"],
             "review_required_fields": value["review_required_fields"],
+            "review_status": review_status,
+            "reextraction_records": value["reextraction_records"],
             "field_counts": {field: dict(counts) for field, counts in value["field_counts"].items()},
         })
+
+    represented_source_keys = set(by_source)
+    blocked_sources = []
+    for source in source_scope:
+        key = "|".join((str(source.get("vigil_source_id")), str(source.get("source_version"))))
+        if source.get("source_role") != "primary-ai-governance":
+            continue
+        if source.get("extraction_status") == "blocked-access" or source.get("source_access_status") in {
+            "official-metadata-only", "secondary-source-only", "source-unavailable"
+        }:
+            blocked_sources.append({
+                "source_key": key,
+                "external_source_id": source.get("external_source_id"),
+                "source_access_status": source.get("source_access_status"),
+                "extraction_status": source.get("extraction_status"),
+                "represented_in_report": key in represented_source_keys,
+            })
 
     report = {
         "schema_version": "1.1",
         "summary": dict(summary),
         "errors": errors,
+        "field_summary": {field: dict(counts) for field, counts in field_summary.items()},
+        "reextraction_defect_categories": dict(sorted(defect_categories.items())),
+        "blocked_sources": sorted(blocked_sources, key=lambda item: item["source_key"]),
         "source_summary": source_summary,
         "review_queue": [r for r in rows if r["unresolved_fields"]],
     }
@@ -181,17 +250,54 @@ def validate(strict: bool, write_report: bool) -> int:
             f"- Metadata-complete: {summary['metadata_complete']}",
             f"- Records requiring review: {summary['review_required_records']}",
             f"- Unresolved field decisions: {summary['review_required_fields']}",
+            f"- Records flagged for re-extraction: {summary['records_flagged_for_reextraction']}",
+            f"- Primary sources blocked by access: {len(blocked_sources)}",
             f"- Contract errors: {len(errors)}",
+            "",
+            "## Field-level decision state",
+            "",
+            "| Field | Populated, reviewed | Populated, unreviewed | Empty, unreviewed | Not specified by source | Not applicable |",
+            "|---|---:|---:|---:|---:|---:|",
+        ]
+        for field in FIELDS:
+            counts = field_summary[field]
+            lines.append(
+                f"| `{field}` | {counts['populated-reviewed:populated']} | "
+                f"{counts['review-required:populated']} | {counts['review-required:empty']} | "
+                f"{counts['not-specified-by-source:empty']} | {counts['not-applicable:empty']} |"
+            )
+        lines.extend([
             "",
             "## Source-level review backlog",
             "",
-            "| Source/version | Records | Complete | Records requiring review | Unresolved field decisions |",
-            "|---|---:|---:|---:|---:|",
-        ]
+            "| Source/version | Status | Records | Complete | Records requiring review | Unresolved fields | Re-extraction |",
+            "|---|---|---:|---:|---:|---:|---:|",
+        ])
         for source in source_summary:
             lines.append(
-                f"| `{source['source_key']}` | {source['records']} | {source['metadata_complete']} | "
-                f"{source['review_required_records']} | {source['review_required_fields']} |"
+                f"| `{source['source_key']}` | `{source['review_status']}` | {source['records']} | "
+                f"{source['metadata_complete']} | {source['review_required_records']} | "
+                f"{source['review_required_fields']} | {source['reextraction_records']} |"
+            )
+        lines.extend([
+            "",
+            "## Re-extraction findings",
+            "",
+            f"- Backlog records: {len(backlog_entries)}",
+        ])
+        for defect, count in sorted(defect_categories.items()):
+            lines.append(f"- `{defect}`: {count}")
+        lines.extend([
+            "",
+            "## Primary sources blocked by access",
+            "",
+            "| Source/version | Access | Extraction | Represented requirements |",
+            "|---|---|---|---|",
+        ])
+        for source in blocked_sources:
+            lines.append(
+                f"| `{source['source_key']}` | `{source['source_access_status']}` | "
+                f"`{source['extraction_status']}` | {'yes' if source['represented_in_report'] else 'no'} |"
             )
         lines.extend([
             "",

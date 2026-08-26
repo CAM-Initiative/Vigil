@@ -77,6 +77,8 @@ Default mode reports unresolved review work but fails only on contradictory/malf
 
 For the staged 27 July 2026 EU AI Act re-extraction, `seed-eu-ai-act-metadata-review.py` can materialise review-ledger entries from the source-reviewed re-extraction and metadata-normalisation work. It is intentionally limited to those staged packages, treats populated source-explicit fields as `populated-reviewed`, treats reviewed empty fields as `not-specified-by-source`, never infers `not-applicable`, and refuses to overwrite conflicting existing review decisions.
 
+The first non-EU source slices are materialised by `seed-reviewed-source-metadata.py`. It is deliberately limited to NIST AI RMF 1.0, CycloneDX 1.7 and NIST AI 600-1, preserves the NIST AI 600-1 subcategory-level AI Actor Tasks without misattributing them to every suggested action, and refuses conflicting ledger decisions. Records whose source meaning is too compressed for a final field decision are recorded in `reextraction-backlog.json`; affected fields remain `review-required`.
+
 ## Derivative crosswalk boundary
 
 Derivative publisher or VIGIL crosswalks may support discovery and comparison, but they cannot manufacture missing source wording, convert metadata-only access into reviewed normative content, determine CAM applicability, or assert compliance/conformance/implementation.
@@ -102,6 +104,8 @@ python vigil/scripts/validate-external-requirement-metadata.py --write-report
 python vigil/scripts/validate-external-requirement-metadata.py --strict
 python vigil/scripts/seed-eu-ai-act-metadata-review.py
 python vigil/scripts/seed-eu-ai-act-metadata-review.py --write
+python vigil/scripts/seed-reviewed-source-metadata.py
+python vigil/scripts/seed-reviewed-source-metadata.py --write
 python vigil/tests/test_external_requirements.py
 python vigil/scripts/test_external_requirement_metadata.py
 ```
