@@ -46,6 +46,41 @@
               "available to authenticated account holder",
               "not applicable — direct incident testimony"
             ]
+          },
+          "affected_system_projection": {
+            "type": "boolean",
+            "description": "Optional affected-system roll-up control. Omit or set true when the source describes a system affected by the failure; set false when the source is supporting context and must not be projected into the FM affected-system identity."
+          },
+          "affected_system_identity": {
+            "type": "object",
+            "description": "Optional explicit structured affected-system identity. When present, reconciliation prefers this block over text extraction from system_or_product and model_or_algorithm.",
+            "additionalProperties": false,
+            "properties": {
+              "providers_or_vendors": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "uniqueItems": true
+              },
+              "products_or_services": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "uniqueItems": true
+              },
+              "models_or_runtimes": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "uniqueItems": true
+              }
+            }
           }
         },
         "additionalProperties": true
@@ -71,6 +106,7 @@
             "Meta",
             "Google",
             "DeepSeek",
+            "Alibaba",
             "Kimi",
             "Sesame",
             "Cohere",
@@ -143,6 +179,7 @@
             "Deep Research",
             "Perplexity Assistant",
             "Llama",
+            "Qwen",
             "Le Chat",
             "GitHub Copilot",
             "TikTok",
