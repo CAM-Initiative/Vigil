@@ -193,7 +193,7 @@ When working in `vigil/`:
 
 For records under `external_sources/`, preserve a strict boundary between public knowledge and internal curation metadata.
 
-* `public_summary`, `ai_governance_relevance`, `applicable_lifecycle_stages`, `relevance_scope`, `last_substantive_reviewed` and `substantive_review_provenance` are the canonical public source-knowledge and analytical-review fields.
+* `public_summary`, `ai_governance_relevance`, `applicable_lifecycle_stages`, `relevance_scope` and `last_substantive_reviewed` are the canonical public source-knowledge fields.
 * `notes` is optional internal curation/provenance metadata and MUST NOT be used as a public source description.
 * Public source knowledge SHALL address an external reader with no access to repository plans, migrations, review queues, validators, branches, agent handoffs or authoring conversations.
 * Public narrative fields MUST NOT contain internal tasking, workflow, reconciliation or project-specific corpus language.
