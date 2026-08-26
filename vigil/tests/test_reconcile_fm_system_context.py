@@ -110,7 +110,6 @@ def test_x_affected_system_can_use_record_context_fallback() -> None:
 
 
 def test_specific_model_beats_polluted_host_compatibility_fields() -> None:
-    # Reproduces the FM-0002 state produced by the first migration pass.
     record = base_record(
         [source("TikTok")],
         context={
@@ -155,6 +154,51 @@ def test_uncertainty_is_not_a_model_and_provider_cluster_survives() -> None:
     assert "evidence_source_platform" not in fallback[0]
 
 
+def test_qwen_maps_to_alibaba() -> None:
+    record = base_record([source("Research paper", "Qwen models", "Qwen3 235B")])
+    projected = MODULE.project_system_context(record)
+    assert projected["evidenced_vendors"] == ["Alibaba"]
+    assert projected["evidenced_products_or_services"] == ["Qwen"]
+    assert projected["platform_or_vendor"] == "Alibaba"
+    assert projected["product_or_service"] == "Qwen"
+
+
+def test_explicit_affected_identity_is_authoritative_and_disables_legacy_fallback() -> None:
+    primary = source("Nature Communications", "mixed model evaluation", "prose summary")
+    primary["affected_system_identity"] = {
+        "providers_or_vendors": ["OpenAI", "Anthropic", "Google", "Meta", "xAI", "DeepSeek", "Alibaba"],
+        "products_or_services": [],
+        "models_or_runtimes": ["GPT-4o", "Claude 4 Sonnet", "Gemini 2.5 Flash", "Qwen3 235B"],
+    }
+    record = base_record(
+        [primary],
+        context={
+            "platform_or_vendor": "Multi Vendor",
+            "vendor_cluster": ["OpenAI", "Anthropic"],
+            "primary_evidenced_vendors": ["OpenAI", "Anthropic"],
+            "product_or_service": "Other",
+            "specific_model_or_runtime": "Legacy prose runtime label",
+            "model_or_product": "stateful systems",
+            "interface_surface": "multi-turn",
+        },
+    )
+    projected = MODULE.project_system_context(record)
+    assert projected["evidenced_vendors"] == ["OpenAI", "Anthropic", "Google", "Meta", "xAI", "DeepSeek", "Alibaba"]
+    assert projected["evidenced_models_or_runtimes"] == ["GPT-4o", "Claude 4 Sonnet", "Gemini 2.5 Flash", "Qwen3 235B"]
+    assert "Legacy prose runtime label" not in projected["evidenced_models_or_runtimes"]
+    assert projected["evidenced_systems"][0]["projection_basis"] == "source-explicit-affected-system-identity"
+
+
+def test_supporting_source_can_opt_out_of_affected_system_projection() -> None:
+    primary = source("Research paper", "ChatGPT", "GPT-4o", title="Primary")
+    supporting = source("Provider announcement", "OpenAI API safety systems", "Private Safety Processing", title="Supporting")
+    supporting["affected_system_projection"] = False
+    projected = MODULE.project_system_context(base_record([primary, supporting]))
+    assert projected["evidenced_vendors"] == ["OpenAI"]
+    assert projected["evidenced_models_or_runtimes"] == ["GPT-4o"]
+    assert [item["source_title"] for item in projected["evidenced_systems"]] == ["Primary"]
+
+
 def test_reconciliation_is_idempotent() -> None:
     record = base_record([source("Vendor documentation", "ChatGPT", "GPT-5")])
     assert MODULE.reconcile_record(record) is True
@@ -168,6 +212,9 @@ def main() -> int:
     test_x_affected_system_can_use_record_context_fallback()
     test_specific_model_beats_polluted_host_compatibility_fields()
     test_uncertainty_is_not_a_model_and_provider_cluster_survives()
+    test_qwen_maps_to_alibaba()
+    test_explicit_affected_identity_is_authoritative_and_disables_legacy_fallback()
+    test_supporting_source_can_opt_out_of_affected_system_projection()
     test_reconciliation_is_idempotent()
     print("FM system-context reconciliation tests passed.")
     return 0
