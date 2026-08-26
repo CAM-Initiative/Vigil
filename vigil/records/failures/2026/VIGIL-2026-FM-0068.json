@@ -110,7 +110,7 @@
     "evidence_projection": {
       "basis": "record-local affected-system metadata",
       "method": "structured source affected-system roll-up with record system-context fallback",
-      "reconciled_on": "2026-08-15",
+      "reconciled_on": "2026-08-22",
       "inference_boundary": "Affected provider, product, model, and runtime identity is projected from structured system_or_product and model_or_algorithm source metadata, with bounded fallback to an existing concrete FM system_context for older records. source_platform identifies where evidence is hosted or published and is not treated as affected-system identity. Narrative source_context, relevance_note, article titles, and publisher prose are not mined for identity."
     },
     "vendor_cluster": [
@@ -143,10 +143,6 @@
   },
   "linked_records": {
     "related_observations": [],
-    "related_failure_modes": [
-      "VIGIL-2026-FM-0022",
-      "VIGIL-2026-FM-0057"
-    ],
     "related_proposals": [],
     "related_patch_notes": [
       "VIGIL-2026-PATCH-0040"
@@ -159,8 +155,6 @@
   "failure_mode_definition": "A failure in which untrusted, lower-authority or adversarial content undergoes a representation-changing operation and the resulting representation is assigned greater instruction, governance or execution authority than the originating source possessed.",
   "failure_threshold": "The threshold requires an identifiable transformation, preservation of a lower-authority or adversarial originating source, a post-transformation increase in operative authority, and a security-relevant effect or credible pathway. Ordinary prompt injection without transformation, benign decoding with preserved authority, mere encrypted-data handling and FM-0057 opaque reasoning-envelope portability are excluded.",
   "failure_classification": {
-    "failure_family": "security-integrity",
-    "failure_subtype": "transformation-mediated-source-authority-laundering",
     "harm_vectors": [
       "guardrail bypass",
       "data exfiltration",
@@ -182,13 +176,6 @@
     ],
     "failure_scope": "transformation, decoding, decryption, deserialisation, reconstruction and rendering boundaries",
     "recurrence_pattern": "May recur wherever a trusted runtime transforms uninspectable or lower-authority input and fails to carry forward provenance and trust state.",
-    "canonical_failure_group": "security-integrity",
-    "taxonomy_reference": "CAM-EQ2026-OPERATIONS-003-SUP-01 §3.5.11 — Transformation-Mediated Source-Authority Laundering; primary classification OPS.FF.SECURITY_INTEGRITY",
-    "related_failure_groups": [
-      "governance",
-      "state-context",
-      "execution"
-    ],
     "persistence": "May be transient or persistent depending on whether the transformed state is retained; persistence is not required.",
     "reproducibility": "Testable through authorised transformed-input cases that compare pre- and post-transformation authority classification and resulting tool or data access.",
     "visibility": "Often low before transformation because the operative instruction is not present in plaintext at the inspection boundary."
@@ -276,6 +263,18 @@
       "External systems are not shown to conform merely because Caelestis doctrine is repaired."
     ]
   },
+  "diagnostic_provenance": {
+    "method": "human-ai-collaborative-analysis",
+    "diagnostic_date": "2026-08-22",
+    "human_role": "substantive governance analysis, contextual judgement, correction, review and approval",
+    "ai_role": "analytical synthesis, mechanism identification, evidence and governance-context comparison, and drafting support",
+    "ai_platform": "OpenAI ChatGPT",
+    "ai_model": "GPT-5.6 Sol",
+    "model_attribution_basis": "inferred from canonical failure-mode creation date and documented ChatGPT model availability",
+    "review_status": "human-reviewed-and-approved",
+    "authority_boundary": "The AI collaborator supported analysis and drafting but was not independently authoritative; the human governance editor reviewed and accepted the diagnosis.",
+    "date_attribution_status": "canonical-creation-date-aligned"
+  },
   "interpretive_provenance": {
     "review_history": [
       {
@@ -330,5 +329,34 @@
       "authority_boundary": "Human approval governs VIGIL direction and CAM adoption; AI performs evidence triage, analysis and record production."
     },
     "historical_reviewer_note": "Native record created during SECURITY-RECON-01 after review of all 66 pre-existing failure modes."
+  },
+  "taxonomy_classification": {
+    "taxonomy_version": "0.2.0-draft",
+    "classification_status": "classified",
+    "classification_basis": "The FM and class share the required transformation, lower-authority source, post-transformation authority increase, and operative effect.",
+    "classification_confidence": "high",
+    "classified_on": "2026-08-25",
+    "structural_review_flags": [],
+    "primary_family": {
+      "family_id": "VIGIL-FF-0001",
+      "family_code": "AUTHORITY_BOUNDARY",
+      "family_name": "Authority Boundary Integrity Failures"
+    },
+    "primary_class": {
+      "class_id": "VIGIL-FC-000005",
+      "class_code": "TRANSFORMATION_AUTHORITY_LAUNDERING",
+      "class_name": "Transformation-Mediated Authority Laundering",
+      "abstraction": "variant"
+    },
+    "classification_review_provenance": {
+      "method": "record-definition-threshold-to-taxonomy-criteria-review",
+      "review_date": "2026-08-25",
+      "ai_provider": "OpenAI",
+      "ai_platform": "ChatGPT Work",
+      "ai_model": "GPT-5.6 Sol",
+      "ai_role": "substantive taxonomy classification analysis and drafting support",
+      "human_review_status": "not-reviewed",
+      "authority_boundary": "AI classification is provisional draft taxonomy analysis and is not independently authoritative."
+    }
   }
 }

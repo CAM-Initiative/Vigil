@@ -1,0 +1,195 @@
+{
+  "schema_version": "0.2.0",
+  "standard": {
+    "name": "VIGIL Failure Taxonomy",
+    "version": "0.2.0-draft",
+    "status": "draft",
+    "description": "Prototype portable classification standard for recurring AI governance failure mechanisms."
+  },
+  "family": {
+    "family_id": "VIGIL-FF-0005",
+    "family_code": "ACCESS_SESSION_STATE",
+    "name": "Access & Session State Integrity Failures",
+    "status": "draft",
+    "abstraction": "family",
+    "version": "0.1.0",
+    "plain_english": "The access or session state presented to a person or system no longer matches the access that is actually effective.",
+    "definition": "Failures in which effective authentication, access, or session state becomes unsynchronised, indistinguishable, or inaccurately represented across expiry, revocation, re-entry, refresh, recovery, or other access-state transitions.",
+    "invariant": "Effective access and session state must remain synchronised, distinguishable, and accurately represented across authentication and access transitions.",
+    "scope": [
+      "AI assistants and agentic systems",
+      "authenticated user sessions",
+      "tool and service access",
+      "account re-entry and recovery",
+      "multi-surface applications",
+      "access-state user interfaces"
+    ],
+    "inclusion_rule": "Use this family when the primary structural failure is a divergence, collapse, or ambiguity in the effective authentication, access, or session state across a state transition.",
+    "exclusion_rule": "Do not use this family for lack of authority to perform an action, theft or exposure of credentials, or loss of work state where the access and session state itself remains accurate.",
+    "aliases": [],
+    "allowed_class_ids": [
+      "VIGIL-FC-000031",
+      "VIGIL-FC-000032",
+      "VIGIL-FC-000033",
+      "VIGIL-FC-000048"
+    ],
+    "allowed_class_codes": [
+      "AUTHENTICATION_STATE_CONTINUITY_FAILURE",
+      "ACCESS_STATE_COLLAPSE",
+      "REENTRY_ACCESS_STATE_AMBIGUITY",
+      "VERIFICATION_DEPENDENCY_ACCESS_FAILURE"
+    ]
+  },
+  "classes": [
+    {
+      "class_id": "VIGIL-FC-000031",
+      "class_code": "AUTHENTICATION_STATE_CONTINUITY_FAILURE",
+      "family_id": "VIGIL-FF-0005",
+      "name": "Authentication-State Continuity Failure",
+      "status": "draft",
+      "abstraction": "class",
+      "plain_english": "Authentication changes underneath the interaction, but the session does not transition coherently with it.",
+      "definition": "A failure in which expiry, revocation, refresh, recovery, or replacement of authentication state is not propagated coherently to the active session and its dependent operations, leaving effective access inconsistent with the session's represented state.",
+      "recognition": {
+        "required_conditions": [
+          "An authentication-state transition occurs or is required.",
+          "An active session or dependent operation retains a materially inconsistent authentication or access state.",
+          "The inconsistency impairs correct continuation, termination, reauthentication, or access enforcement."
+        ]
+      },
+      "exclusions": [
+        "The session transitions coherently and merely requires the user to authenticate again.",
+        "A validly authenticated actor lacks authority for the requested action.",
+        "Credentials are exposed or stolen without a session-state continuity failure."
+      ],
+      "examples": [
+        "A long-running AI task continues to appear authenticated after the underlying service token has expired, then fails without presenting the required reauthentication state.",
+        "A revoked account remains effective in one active agent session because revocation is not propagated to that session."
+      ],
+      "relationships": [
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000002",
+          "note": "Authentication-state continuity concerns whether access state remains coherent; capability-authority conflation concerns treating access or capability as sufficient permission to act."
+        }
+      ],
+      "aliases": []
+    },
+    {
+      "class_id": "VIGIL-FC-000032",
+      "class_code": "ACCESS_STATE_COLLAPSE",
+      "family_id": "VIGIL-FF-0005",
+      "name": "Access-State Collapse",
+      "status": "draft",
+      "abstraction": "class",
+      "plain_english": "Different access conditions are flattened into one unclear state, so the next safe action cannot be determined.",
+      "definition": "A failure in which materially distinct access conditions, causes, scopes, restrictions, or recovery paths are collapsed into an undifferentiated or misleading state representation, preventing reliable interpretation or handling of effective access.",
+      "recognition": {
+        "required_conditions": [
+          "Two or more materially distinct access states or transition causes exist.",
+          "The system represents them as the same state or omits the distinction needed for correct handling.",
+          "The collapse creates material ambiguity about available access, required recovery, or permitted continuation."
+        ]
+      },
+      "exclusions": [
+        "Different access states are intentionally grouped but preserve an adequate safe recovery path.",
+        "The user understands the access state but disputes the underlying policy.",
+        "The ambiguity concerns who authorised an action rather than whether access is effective."
+      ],
+      "examples": [
+        "An interface uses the same generic failure state for an expired session, a suspended account, and an unavailable identity provider without preserving the different recovery paths.",
+        "An agent reports only that access failed when one resource was revoked but other authorised resources remain available."
+      ],
+      "relationships": [
+        {
+          "type": "can_cooccur_with",
+          "target_id": "VIGIL-FC-000031",
+          "note": "A failed authentication transition can also collapse distinct access-state causes, but neither mechanism requires the other."
+        }
+      ],
+      "aliases": []
+    },
+    {
+      "class_id": "VIGIL-FC-000033",
+      "class_code": "REENTRY_ACCESS_STATE_AMBIGUITY",
+      "family_id": "VIGIL-FF-0005",
+      "name": "Re-entry Access-State Ambiguity",
+      "status": "draft",
+      "abstraction": "variant",
+      "plain_english": "After returning to an interrupted session or account, it is unclear what access has actually been restored.",
+      "definition": "An access-state-collapse variant in which return, recovery, relaunch, or re-entry presents an ambiguous mixture of restored, expired, restricted, or unavailable access without making the effective post-transition state distinguishable.",
+      "recognition": {
+        "required_conditions": [
+          "A user or system re-enters after interruption, recovery, relaunch, or an access transition.",
+          "The post-entry surface does not distinguish materially different restored and unavailable access states.",
+          "The ambiguity impairs safe resumption or selection of the correct recovery path."
+        ]
+      },
+      "exclusions": [
+        "Re-entry accurately presents which capabilities were restored and which require renewed access.",
+        "The only failure is loss of work content despite an accurate access state.",
+        "The actor has clear access but lacks authority for the intended operation."
+      ],
+      "examples": [
+        "After reauthentication, an AI workspace displays an earlier conversation but does not show that connected-service access was not restored.",
+        "A recovered account returns to an apparently active agent session while its external tool grants remain unresolved."
+      ],
+      "relationships": [
+        {
+          "type": "child_of",
+          "target_id": "VIGIL-FC-000032",
+          "note": "The distinguishing condition is access-state collapse specifically at re-entry or recovery."
+        },
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000035",
+          "note": "Re-entry access ambiguity concerns effective access; work-state persistence failure concerns whether material work survives."
+        }
+      ],
+      "aliases": []
+    },
+    {
+      "class_id": "VIGIL-FC-000048",
+      "class_code": "VERIFICATION_DEPENDENCY_ACCESS_FAILURE",
+      "family_id": "VIGIL-FF-0005",
+      "name": "Verification-Dependency Access Failure",
+      "status": "draft",
+      "abstraction": "class",
+      "plain_english": "A verifier cannot complete its check, so otherwise valid or unresolved access is blocked without a proportionate fallback route.",
+      "definition": "A failure in which an otherwise valid or unresolved access or entitlement state becomes practically unavailable solely because a dependent identity, licence, eligibility, or entitlement verification cannot complete, without a proportionate cached credential, grace period, alternative verification route, or degraded access pathway.",
+      "recognition": {
+        "required_conditions": [
+          "A valid or unresolved access, identity, licence, eligibility, or entitlement state exists.",
+          "Practical access depends on a verification service or pathway completing successfully.",
+          "The verification service or pathway is unavailable, inconclusive, or unable to verify rather than establishing invalidity.",
+          "Access is denied, suspended, or materially burdened because verification cannot complete.",
+          "No proportionate cached, grace, alternative-verification, or degraded-access pathway preserves the valid or unresolved state."
+        ]
+      },
+      "exclusions": [
+        "Verification establishes that access or entitlement is expired, revoked, fraudulent, ineligible, or otherwise invalid.",
+        "The affected function is inherently online-only and no independent offline-capable access interest exists.",
+        "An adequate alternative verification or degraded access route remains practically available.",
+        "The primary failure is treating non-verification as authority for a consequential entitlement decision; that authority conversion is classified separately.",
+        "Material work is lost even though the access state remains accurate and a recovery route exists."
+      ],
+      "examples": [
+        "Purchased offline-capable content cannot launch during a remote licence-verification outage and no signed offline entitlement or grace period is available.",
+        "A biometric verifier cannot resolve identity and essential-benefit access is blocked without a practical alternative verification route."
+      ],
+      "relationships": [
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000032",
+          "note": "Access-state collapse obscures which state applies; verification-dependency access failure can present the state accurately yet still provide no viable fallback when verification is unresolved."
+        },
+        {
+          "type": "can_cooccur_with",
+          "target_id": "VIGIL-FC-000046",
+          "note": "A missing fallback can coincide with treating non-verification as decision authority, but the access and authority mechanisms remain distinct."
+        }
+      ],
+      "aliases": []
+    }
+  ]
+}

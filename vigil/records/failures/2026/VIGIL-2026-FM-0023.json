@@ -236,11 +236,6 @@
   },
   "linked_records": {
     "related_observations": [],
-    "related_failure_modes": [
-      "VIGIL-2026-FM-0017",
-      "VIGIL-2026-FM-0020",
-      "VIGIL-2026-FM-0001"
-    ],
     "related_proposals": [],
     "related_patch_notes": [
       "VIGIL-2026-PATCH-0010",
@@ -253,8 +248,6 @@
   "failure_mode_definition": "A failure mode in which a classifier, runtime safety layer, or governance-decision layer refuses a request and communicates a rationale that is overbroad, misleading, non-specific, or apparently unrelated to the visible prompt or recoverable user intent. The failure may arise from accumulated weak signals, earlier-context contamination, inherited image state, retry instability, load or routing constraints, generic fallback refusal messaging, or a genuine policy trigger that is not legibly communicated to the user. The failure is not defined by proving that the refusal itself was wrong; it is defined by the mismatch between the user-facing rationale and the user's ability to understand, correct, clarify, or safely proceed. A follow-up mechanism is image prompt custody / prompt transformation opacity: benign user-authored prompts may be rewritten, normalized, expanded, or converted into classifier-visible and renderer-facing prompts, then refused or explained as if the classifier outcome arose directly from the original user wording. The same observed failure family also covers overbroad refusal-category or failure-classification collapse where unresolved classifier ambiguity, transformed-prompt mismatch, renderer/tool/access failure, output-classifier block, or fallback refusal is narrated as a specific misconduct category unsupported by the visible user-authored request.",
   "failure_threshold": "The threshold is met where a request is refused, the visible request does not obviously match the stated refusal category, the refusal gives no meaningful clarification or recovery path, and the available evidence indicates either recurrence across users, recoverability after discussion or retry, or plausible ambiguity that should have supported clarification rather than hard refusal. The threshold is also met where a non-policy condition such as load, rate limiting, routing, tool failure, or inherited state is presented to the user as a content-policy violation. The threshold also includes cases where the system cannot preserve or explain the distinction between user-authored prompt, transformed prompt, safety-normalized prompt, classifier-visible prompt, renderer-facing prompt, classifier outcome, and final user-facing explanation. The threshold further includes overbroad refusal-category collapse where harassment, discrimination, bullying, sexualisation, self-harm, violence, illegality, deception, or other misconduct is implied without the relevant category being resolved against the user-authored request.",
   "failure_classification": {
-    "failure_family": "classification",
-    "failure_subtype": "weak-signal-cascade-and-ambiguity-collapse-under-recoverable-classification",
     "harm_vectors": [
       "weak-signal ambiguity collapse",
       "premature classification convergence",
@@ -294,14 +287,6 @@
     ],
     "failure_scope": "vendor-specific / image-generation surface / potentially systemic classification-and-routing pattern",
     "recurrence_pattern": "Unknown. Triage should determine whether similar refusal outcomes appear across unrelated benign image prompts, whether retry or discussion resolves the issue, whether prior context or inherited image state contributes, and whether refusal categories cluster around generic fallback messaging.",
-    "canonical_failure_group": "classification",
-    "taxonomy_reference": "CAM-EQ2026-OPERATIONS-003-SUP-01 Appendix B §3.10.2 Weak-Signal Cascade and Ambiguity Collapse Failure; related review under §3.8.14 Structural Locality and Hierarchical Placement Failure, Execution Transparency Suppression, UX/refusal explanation mismatch, classification ambiguity, and failure-classification collapse where runtime gate placement or hidden state collapse affects routing.",
-    "related_failure_groups": [
-      "arbitration",
-      "governance",
-      "ux-representation",
-      "epistemic"
-    ],
     "persistence": "to be assessed",
     "reproducibility": "unknown pending controlled prompt/context collection",
     "visibility": "visible through screenshots of refusal wording, exact prompt text, prior prompt/image history, retry behaviour, discussion-mediated recovery, and user reports",
@@ -428,6 +413,18 @@
       "Cross-runtime implementation conformity remains unverified unless separately recorded."
     ]
   },
+  "diagnostic_provenance": {
+    "method": "human-ai-collaborative-analysis",
+    "diagnostic_date": "2026-06-19",
+    "human_role": "substantive governance analysis, contextual judgement, correction, review and approval",
+    "ai_role": "analytical synthesis, mechanism identification, evidence and governance-context comparison, and drafting support",
+    "ai_platform": "OpenAI ChatGPT",
+    "ai_model": "GPT-5.5",
+    "model_attribution_basis": "inferred from canonical failure-mode creation date and documented ChatGPT model availability",
+    "review_status": "human-reviewed-and-approved",
+    "authority_boundary": "The AI collaborator supported analysis and drafting but was not independently authoritative; the human governance editor reviewed and accepted the diagnosis.",
+    "date_attribution_status": "canonical-creation-date-aligned"
+  },
   "interpretive_provenance": {
     "review_history": [
       {
@@ -508,5 +505,53 @@
       "authority_boundary": "Human editorship governs VIGIL direction and CAM adoption; the AI analytical reviewer performs routine evidence triage, record analysis, and reconciliation."
     },
     "historical_reviewer_note": "Earlier reviewer model identity is preserved where already recorded. Where absent, it remains unknown rather than being retroactively inferred."
+  },
+  "taxonomy_classification": {
+    "taxonomy_version": "0.2.0-draft",
+    "classification_status": "classified",
+    "classification_basis": "The record expressly identifies loss of custody across user-authored, transformed, safety-normalised, classifier-visible, renderer-facing, outcome, and explanation stages, preventing reliable reconstruction of what was evaluated.",
+    "classification_confidence": "high",
+    "classified_on": "2026-08-26",
+    "structural_review_flags": [
+      "compound-mechanism"
+    ],
+    "primary_family": {
+      "family_id": "VIGIL-FF-0002",
+      "family_code": "PROVENANCE_LINEAGE",
+      "family_name": "Provenance & Lineage Integrity Failures"
+    },
+    "primary_class": {
+      "class_id": "VIGIL-FC-000013",
+      "class_code": "LINEAGE_COLLAPSE",
+      "class_name": "Transformation Lineage Collapse",
+      "abstraction": "class"
+    },
+    "secondary_classifications": [
+      {
+        "family": {
+          "family_id": "VIGIL-FF-0002",
+          "family_code": "PROVENANCE_LINEAGE",
+          "family_name": "Provenance & Lineage Integrity Failures"
+        },
+        "class": {
+          "class_id": "VIGIL-FC-000047",
+          "class_code": "UNSUPPORTED_MECHANISM_ATTRIBUTION",
+          "class_name": "Unsupported Mechanism Attribution",
+          "abstraction": "class"
+        },
+        "classification_basis": "The final explanation may attribute a specific policy or misconduct mechanism to the visible user request even though the available lineage does not establish that causal account and material alternatives remain unresolved.",
+        "classification_confidence": "high"
+      }
+    ],
+    "classification_review_provenance": {
+      "method": "compound-mechanism-record-definition-threshold-to-taxonomy-criteria-review",
+      "review_date": "2026-08-26",
+      "ai_provider": "OpenAI",
+      "ai_platform": "ChatGPT Work",
+      "ai_model": "GPT-5.6 Sol",
+      "ai_role": "substantive taxonomy classification analysis, family-invariant testing, and drafting support",
+      "human_review_status": "not-reviewed",
+      "authority_boundary": "AI classification is provisional draft taxonomy analysis and is not independently authoritative."
+    }
   }
 }

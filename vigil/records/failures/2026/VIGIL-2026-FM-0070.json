@@ -8,11 +8,11 @@
     "record_type": "failure_mode",
     "title": "Aggregate security-control composition failure",
     "created": "2026-08-22",
-    "updated": "2026-08-22",
-    "version": "1.0"
+    "updated": "2026-08-26",
+    "version": "1.1"
   },
-  "summary": "Individually bounded, locally acceptable or independently mitigated control states combine into an end-to-end pathway that violates a security invariant because assurance was performed locally rather than across the composed execution chain.",
-  "why_it_matters_to_CAM": "A system can pass component-level checks while the interactions among prompt handling, retrieval, rendering, network behaviour and egress create a new exploit path that no local control assessment represents.",
+  "summary": "A crafted Microsoft 365 Copilot Enterprise Search link supplies attacker-controlled text through the q parameter; Copilot interprets it as executable search instructions, streams an active image element before later output neutralisation, and routes the resulting request through an allowlisted Bing image endpoint that fetches an attacker-controlled URL. The three source-established weaknesses compose into a prompt-to-egress path.",
+  "why_it_matters_to_CAM": "The disclosure shows why end-to-end review must preserve transitions among prompt ingress, connected-data retrieval, streaming rendering, output neutralisation, browser policy and trusted server-side fetches. It establishes a composed exploit chain; it does not establish Microsoft's complete internal assurance process or prove that assurance was performed only at component level.",
   "evidence_confidence": "corroborated",
   "source_records": [
     {
@@ -27,9 +27,9 @@
       "system_or_product": "Microsoft 365 Copilot Enterprise",
       "model_or_algorithm": "Microsoft 365 Copilot Enterprise Search",
       "deployment_context": "Enterprise search connected to Microsoft 365 organisational data.",
-      "source_context": "Varonis reports a chain combining parameter-to-prompt injection, streaming HTML rendering race behaviour and Bing server-side request behaviour to create one-click data exfiltration.",
+      "source_context": "Varonis documents three necessary links: the attacker-controlled q parameter is interpreted as executable Copilot instructions; an image element in the streaming response triggers before later code-block wrapping or sanitisation neutralises it; and the browser requests an allowlisted Bing image endpoint whose backend fetches an attacker-controlled URL containing retrieved enterprise data.",
       "source_url_status": "available",
-      "relevance_note": "Primary technical disclosure that locally distinct control behaviours composed into an unauthorised end-to-end path.",
+      "relevance_note": "Primary technical disclosure for the stage-by-stage prompt-to-egress chain. It supports the component transitions and their dependency, but not claims about the provider's complete assurance methodology.",
       "evidence_modality": [
         "text"
       ],
@@ -39,10 +39,12 @@
         "access_method": "direct public web retrieval",
         "direct_primary_artefact_review": true,
         "limitations": [
-          "Security-research demonstration; public disclosure does not expose all provider-internal architecture or forensic evidence."
+          "Security-research demonstration; the disclosure does not expose the complete provider architecture or forensic record.",
+          "The disclosure does not establish Microsoft's complete internal assurance process, that each component was independently judged acceptable, or that composition risk was never assessed internally.",
+          "Live malicious exploitation outside the reported research demonstration is not established."
         ]
       },
-      "interpretive_reliance": "Relied on for the exploit-chain components, end-to-end exfiltration pathway and reported remediation.",
+      "interpretive_reliance": "Relied on for the q-parameter interpretation, connected-data search, streaming image activation before later neutralisation, CSP allowlisting, Bing server-side fetch, end-to-end exfiltration demonstration, necessity of all three links, and reported remediation. Provider-internal assurance methodology is not inferred.",
       "source_residence": "external",
       "source_role": "research-evidence"
     }
@@ -93,7 +95,7 @@
     "evidence_projection": {
       "basis": "record-local affected-system metadata",
       "method": "structured source affected-system roll-up with record system-context fallback",
-      "reconciled_on": "2026-08-15",
+      "reconciled_on": "2026-08-22",
       "inference_boundary": "Affected provider, product, model, and runtime identity is projected from structured system_or_product and model_or_algorithm source metadata, with bounded fallback to an existing concrete FM system_context for older records. source_platform identifies where evidence is hosted or published and is not treated as affected-system identity. Narrative source_context, relevance_note, article titles, and publisher prose are not mined for identity."
     },
     "vendor_cluster": [
@@ -124,10 +126,6 @@
   },
   "linked_records": {
     "related_observations": [],
-    "related_failure_modes": [
-      "VIGIL-2026-FM-0022",
-      "VIGIL-2026-FM-0044"
-    ],
     "related_proposals": [],
     "related_patch_notes": [
       "VIGIL-2026-PATCH-0042"
@@ -137,11 +135,9 @@
     "research": [],
     "standards": []
   },
-  "failure_mode_definition": "A failure in which individually bounded, locally acceptable or independently mitigated control states combine into an end-to-end pathway that violates a security invariant because assurance is performed locally rather than across the composed execution chain.",
-  "failure_threshold": "The threshold requires at least two component or control states whose interaction creates a materially different end-to-end security property, an unauthorised pathway or protected-asset effect, and evidence that local rather than composed assurance failed to identify or constrain the chain. Objective success or unauthorised action alone is insufficient.",
+  "failure_mode_definition": "A compound failure in which attacker-controlled search material is treated as instruction, a response becomes active before its output-neutralisation control takes effect, and a trusted intermediary extends the outbound path to an attacker-controlled destination. The cited event establishes the interaction of these component weaknesses; it does not by itself establish the provider's internal assurance methodology.",
+  "failure_threshold": "The threshold requires source-supported component transitions that each enable the next and together create an unauthorised end-to-end path to a protected asset or boundary effect. Mere coexistence of vulnerabilities is insufficient, and a claim that assurance was component-local requires separate evidence about the assurance process.",
   "failure_classification": {
-    "failure_family": "security-integrity",
-    "failure_subtype": "aggregate-security-control-composition-failure",
     "harm_vectors": [
       "end-to-end data exfiltration",
       "false aggregate assurance",
@@ -162,17 +158,10 @@
       "institutional trust"
     ],
     "failure_scope": "composed AI application, rendering, retrieval, network and egress controls",
-    "recurrence_pattern": "May recur in systems whose component controls are assured independently without end-to-end adversarial pathway analysis.",
-    "canonical_failure_group": "security-integrity",
-    "taxonomy_reference": "CAM-EQ2026-OPERATIONS-003-SUP-01 §3.5.13 — Aggregate Security-Control Composition Failure; primary classification OPS.FF.SECURITY_INTEGRITY",
-    "related_failure_groups": [
-      "governance",
-      "state-context",
-      "execution"
-    ],
+    "recurrence_pattern": "May recur where prompt ingress, connected-data retrieval, streaming render, output neutralisation and trusted outbound services interact so that each stage enables a boundary violation in the next.",
     "persistence": "Persists until the composed pathway is removed or bounded; individual component fixes may or may not be sufficient.",
     "reproducibility": "Testable through authorised end-to-end attack-path analysis that retains component-local assumptions and observes the aggregate effect.",
-    "visibility": "Low under local assurance; evident only when the full chain is executed or modelled."
+    "visibility": "The individual transitions are visible in the technical disclosure, but the material prompt-to-egress effect becomes clear only when the ordered chain is reconstructed end to end."
   },
   "triage": {
     "model_version": "2.0",
@@ -257,6 +246,18 @@
       "External systems are not shown to conform merely because Caelestis doctrine is repaired."
     ]
   },
+  "diagnostic_provenance": {
+    "method": "human-ai-collaborative-analysis",
+    "diagnostic_date": "2026-08-22",
+    "human_role": "substantive governance analysis, contextual judgement, correction, review and approval",
+    "ai_role": "analytical synthesis, mechanism identification, evidence and governance-context comparison, and drafting support",
+    "ai_platform": "OpenAI ChatGPT",
+    "ai_model": "GPT-5.6 Sol",
+    "model_attribution_basis": "inferred from canonical failure-mode creation date and documented ChatGPT model availability",
+    "review_status": "human-reviewed-and-approved",
+    "authority_boundary": "The AI collaborator supported analysis and drafting but was not independently authoritative; the human governance editor reviewed and accepted the diagnosis.",
+    "date_attribution_status": "canonical-creation-date-aligned"
+  },
   "interpretive_provenance": {
     "review_history": [
       {
@@ -280,15 +281,38 @@
           "Human substantive review and external conformance verification are not established."
         ],
         "review_outcome": "Accepted as distinct from FM-0044 because the failure is local security-control assurance over a composed chain, not objective admissibility or target-action authority."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-08-26-SOL-0070",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work with public web and repository access",
+        "reviewer_model": "GPT-5.6 Sol",
+        "review_date": "2026-08-26",
+        "review_scope": "TAXONOMY-08 direct primary-source re-review, stage-by-stage exploit decomposition, source/inference separation, and post-repair compound taxonomy classification.",
+        "capability_profile": {
+          "direct_text_analysis": true,
+          "direct_repository_analysis": true,
+          "direct_static_image_analysis": false,
+          "direct_audio_analysis_in_this_pass": false,
+          "direct_uploaded_video_analysis_in_this_pass": false,
+          "direct_externally_hosted_video_analysis": false,
+          "web_link_and_metadata_review": true
+        },
+        "known_limitations": [
+          "No private provider telemetry, exploit code or complete internal forensic record was available.",
+          "The source does not establish Microsoft's complete assurance methodology or live malicious exploitation outside the research demonstration.",
+          "Human substantive review and external conformance verification are not established."
+        ],
+        "review_outcome": "Repaired unsupported assurance-process claims, added a complete human-readable exploit chain, and classified the source-established event through existing primary and secondary mechanisms. No composition class or family was admitted."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-08-22-SOL-FM-0070",
+      "review_id": "VIGIL-REVIEW-2026-08-26-SOL-0070",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT Work",
+      "reviewer_platform": "OpenAI ChatGPT Work with public web and repository access",
       "reviewer_model": "GPT-5.6 Sol",
-      "review_date": "2026-08-22",
-      "review_scope": "Mechanism classification, source review and Caelestis crosswalk.",
+      "review_date": "2026-08-26",
+      "review_scope": "TAXONOMY-08 direct primary-source re-review, stage-by-stage exploit decomposition, source/inference separation, and post-repair compound taxonomy classification.",
       "capability_profile": {
         "direct_text_analysis": true,
         "direct_repository_analysis": true,
@@ -299,9 +323,11 @@
         "web_link_and_metadata_review": true
       },
       "known_limitations": [
-        "External adoption and full provider-internal evidence are unavailable."
+        "No private provider telemetry, exploit code or complete internal forensic record was available.",
+        "The source does not establish Microsoft's complete assurance methodology or live malicious exploitation outside the research demonstration.",
+        "Human substantive review and external conformance verification are not established."
       ],
-      "review_outcome": "Accepted as distinct from FM-0044 because the failure is local security-control assurance over a composed chain, not objective admissibility or target-action authority."
+      "review_outcome": "Repaired unsupported assurance-process claims, added a complete human-readable exploit chain, and classified the source-established event through existing primary and secondary mechanisms. No composition class or family was admitted."
     },
     "operating_model": "AI-authored, semi-autonomous production under human contract approval",
     "human_governance_editor": {
@@ -311,5 +337,121 @@
       "authority_boundary": "Human approval governs VIGIL direction and CAM adoption; AI performs evidence triage, analysis and record production."
     },
     "historical_reviewer_note": "Native record created during SECURITY-RECON-01 after review of all 66 pre-existing failure modes."
+  },
+  "taxonomy_classification": {
+    "taxonomy_version": "0.2.0-draft",
+    "classification_status": "classified",
+    "classification_basis": "Attacker-controlled material in the q search parameter was treated as operative instruction that caused Copilot to search protected enterprise data and construct the response pathway.",
+    "classification_confidence": "high",
+    "classified_on": "2026-08-26",
+    "structural_review_flags": [
+      "compound-mechanism",
+      "source-fidelity-repaired"
+    ],
+    "primary_family": {
+      "family_id": "VIGIL-FF-0001",
+      "family_code": "AUTHORITY_BOUNDARY",
+      "family_name": "Authority Boundary Integrity Failures"
+    },
+    "primary_class": {
+      "class_id": "VIGIL-FC-000001",
+      "class_code": "SOURCE_AUTHORITY_CONFUSION",
+      "class_name": "Source-Authority Confusion",
+      "abstraction": "class"
+    },
+    "secondary_classifications": [
+      {
+        "family": {
+          "family_id": "VIGIL-FF-0008",
+          "family_code": "CONTROL_ACTIVATION",
+          "family_name": "Control Activation Integrity Failures"
+        },
+        "class": {
+          "class_id": "VIGIL-FC-000038",
+          "class_code": "REQUIRED_CONTROL_NONACTIVATION",
+          "class_name": "Required Control Non-Activation",
+          "abstraction": "class"
+        },
+        "classification_basis": "The disclosed output-neutralisation safeguard was applicable to dangerous HTML, but it did not become effective before streaming render triggered the governed network request.",
+        "classification_confidence": "high"
+      },
+      {
+        "family": {
+          "family_id": "VIGIL-FF-0001",
+          "family_code": "AUTHORITY_BOUNDARY",
+          "family_name": "Authority Boundary Integrity Failures"
+        },
+        "class": {
+          "class_id": "VIGIL-FC-000009",
+          "class_code": "TRANSITIVE_AUTHORITY_PROPAGATION",
+          "class_name": "Transitive Authority Propagation",
+          "abstraction": "variant"
+        },
+        "classification_basis": "Trust granted to the allowlisted Bing endpoint effectively propagated through Bing's server-side fetch to a different attacker-controlled destination without preserving the original browser egress boundary.",
+        "classification_confidence": "medium"
+      }
+    ],
+    "classification_review_provenance": {
+      "method": "source-fidelity-bounded-compound-mechanism-to-taxonomy-criteria-review",
+      "review_date": "2026-08-26",
+      "ai_provider": "OpenAI",
+      "ai_platform": "ChatGPT Work",
+      "ai_model": "GPT-5.6 Sol",
+      "ai_role": "substantive source review, taxonomy classification analysis, family-invariant testing, and drafting support",
+      "human_review_status": "not-reviewed",
+      "authority_boundary": "AI classification is provisional draft taxonomy analysis and is not independently authoritative."
+    }
+  },
+  "source_fidelity_analysis": {
+    "what_the_source_establishes": [
+      "Microsoft 365 Copilot Enterprise Search accepted attacker-controlled text in the q URL parameter and interpreted it not only as search data but as instructions.",
+      "The injected instructions caused Copilot to search data available through the victim's enterprise access context and to place retrieved data into an image URL in its response.",
+      "During streaming, the browser rendered the image element and issued its request before later code-block wrapping or output sanitisation neutralised the final response.",
+      "The browser's Content Security Policy allowed the request to Bing, and Bing's image-search endpoint then performed a server-side fetch to the attacker-controlled URL embedded in its imgurl parameter.",
+      "The attacker-controlled server received the request path containing the retrieved data, and Varonis states that each of the three links was necessary to the demonstrated chain.",
+      "Microsoft remediated the reported vulnerability under CVE-2026-42824."
+    ],
+    "exploit_chain": [
+      {
+        "stage": 1,
+        "name": "Parameter-to-Prompt Injection",
+        "attacker_control": "A crafted microsoft.com Copilot Enterprise Search URL containing attacker-authored text in the q parameter.",
+        "component_behaviour": "Copilot treated the q value as executable natural-language instructions, searched victim-accessible enterprise data, and generated an image URL containing retrieved data.",
+        "boundary_transition": "Material presented through a search/query parameter crossed from data-bearing input into instruction-bearing control of the search-and-response workflow."
+      },
+      {
+        "stage": 2,
+        "name": "Streaming HTML rendering before neutralisation",
+        "attacker_control": "The injected instructions shaped the response so it contained an image element with the retrieved data in its source URL.",
+        "component_behaviour": "The browser incrementally rendered the image element and issued the request while the response was still streaming; the later code-block wrapper or sanitisation applied only after the request had left.",
+        "boundary_transition": "The output-neutralisation control became effective after the unsafe render-and-request transition it was meant to prevent."
+      },
+      {
+        "stage": 3,
+        "name": "Bing server-side fetch through an allowlisted route",
+        "attacker_control": "An attacker-controlled destination URL, with retrieved data embedded in its path, was placed inside Bing's imgurl parameter.",
+        "component_behaviour": "The browser was permitted to request the allowlisted Bing endpoint; Bing's backend then fetched the attacker-controlled URL, outside the browser's CSP enforcement boundary.",
+        "boundary_transition": "Trust granted to the Bing destination became an indirect egress route to a different attacker-controlled target."
+      }
+    ],
+    "end_to_end_result": {
+      "victim_action": "The victim clicked one crafted link to a trusted Microsoft domain.",
+      "protected_data_accessed": "The demonstration searched data available to the victim through Microsoft 365, including mailbox content; the disclosure identifies email, calendar, SharePoint, OneDrive and other indexed organisational content as potentially accessible.",
+      "outbound_path": "Retrieved data was embedded in an image URL, sent first to the allowlisted Bing endpoint and then carried in Bing's server-side request to the attacker-controlled server.",
+      "observed_effect": "The attacker server logged the data-bearing request path."
+    },
+    "what_vigil_infers": [
+      "The source-established event can be represented as a compound failure chain with one primary and multiple independently supported secondary taxonomy mechanisms.",
+      "The chain supports an end-to-end assurance lesson: component transitions and trust changes must be reviewed together where each stage enables the next.",
+      "The disclosure supports a reusable composition hypothesis, but not the stronger claim that provider assurance was actually performed only locally or that each component had been accepted as independently safe."
+    ],
+    "what_the_source_does_not_establish": [
+      "Microsoft's complete internal assurance or threat-modelling process.",
+      "That every component state was independently assessed or judged acceptable.",
+      "That assurance was performed only locally rather than across the complete chain.",
+      "That composition risk was never assessed internally.",
+      "The complete provider architecture beyond the disclosed pathway.",
+      "Live malicious exploitation outside the reported security-research demonstration."
+    ]
   }
 }

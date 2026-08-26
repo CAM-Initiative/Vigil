@@ -9,17 +9,25 @@ Failure Mode records capture confirmed, strongly evidenced, recurring, or suffic
 * Do **not** add `source_data`.
 * Do **not** duplicate the primary source in `linked_records.external_references`; use that array only for genuinely additional references.
 * Use authoritative proposal and PATCH arrays only for this failure's own repair chain.
-* Put adjacent failures, shared controls, contrasts, and precedents in `linked_records.contextual_relations` with `chain_inclusion: false`.
-* Include `failure_mode_definition`, `failure_threshold`, `failure_classification`, and `triage`; `failure_classification` must include `failure_family`, `canonical_failure_group`, `taxonomy_reference`, `related_failure_groups`, `persistence`, `reproducibility`, and `visibility`.
+* Do not add `linked_records.related_failure_modes` or convert peer-FM similarity into contextual relations. Similarity and class membership belong to the taxonomy layer.
+* Include `failure_mode_definition`, `failure_threshold`, `failure_classification`, `taxonomy_classification`, and `triage`; `failure_classification` preserves orthogonal event dimensions while `taxonomy_classification` records exactly one primary VIGIL-native mechanism for a classified FM and may include zero or more independently evidenced `secondary_classifications`.
+* Do not use a secondary classification for a harm, consequence, manifestation, sector, locus, unsupported hypothesis, or merely conceivable upstream cause. Each secondary needs its own canonical family/class pair, basis, and confidence and must differ from the primary and every other secondary.
+* New Failure Modes must record one of `classified`, `family-only`, `candidate-new-class`, `unmapped`, or `deferred`. Never guess a class to avoid an explicit gap.
 * `failure_classification.faceted_analysis` is additive. Existing records do not require retrospective facet population. New or materially reassessed records SHOULD use it when evidence permits.
 * Do not include proposal implementation claims or patch-note fields.
 * CAM routing must use affected CAM routing only: `cam_internal.affected_*` fields because the record has triage-relevant failure classification.
 
 Required FM sections are identity, summary, CAM relevance, failure definition, threshold, evidence confidence, `source_records`, system context (including `platform_or_vendor`, `product_or_service`, `specific_model_or_runtime`, and `interface_surface`), failure classification, triage, jurisdictional context, linked records, and affected CAM routing.
 
+## Diagnostic provenance
+
+Every failure mode must declare `diagnostic_provenance` for the analytical act that formulated the failure definition, threshold, governance significance, gap assessment and diagnostic reasoning. Record the original human–AI collaboration: the human governance editor's substantive judgement, correction, review and approval; the AI collaborator's synthesis, mechanism analysis, comparison and drafting support; the exact platform/model; and the canonical creation date as `diagnostic_date`.
+
+Diagnostic provenance is distinct from source inspection in `interpretive_provenance`, later reassessment, repair implementation and LEARN abstraction. A later reviewer must not replace the original diagnostic model. Never infer that model from the investigated system, source description, incident model, or a later review entry. New records must identify diagnostic provenance contemporaneously; historical inference is permitted only under an approved, documented migration rule.
+
 ## Faceted failure reporting
 
-The canonical failure family answers **what failed**. It must not be used as a container for every other incident-reporting dimension.
+The faceted analysis records independent incident-reporting dimensions without assigning a formal failure-taxonomy class.
 
 Where evidence permits, use `failure_classification.faceted_analysis` to keep the following questions separate:
 
@@ -37,8 +45,6 @@ Where evidence permits, use `failure_classification.faceted_analysis` to keep th
 * `verification_state` — whether verification was absent, incomplete, incorrect, passed, failed, or unresolved; and
 * `execution_pattern` — including repeated-step, looping, retry amplification, and degraded-but-functional execution.
 
-`external_taxonomy_refs` may cite an external taxonomy, standard or reporting framework used to support a classification, but those references do not change the authority of the VIGIL record or establish conformance.
-
 Do not infer a root cause because the schema offers a field. Use `unknown`, `hypothesised`, or `provisional` states where the available evidence does not support a stronger conclusion. A user-visible symptom may arise at one locus while remediation belongs at a different component or governance layer.
 
 The faceted block is intentionally optional for legacy records. Absence means the facets have not been recorded; it does not imply a negative finding.
@@ -51,8 +57,10 @@ The faceted block is intentionally optional for legacy records. Absence means th
 
 Use these source-level fields for affected-system identity where the evidence package supports them:
 
-* `system_or_product` — affected system, product, service, platform surface, or tool;
-* `model_or_algorithm` — affected model, runtime, algorithm, or model family where established.
+* `system_or_product` — affected system, product, service, platform surface, or tool established by that source;
+* `model_or_algorithm` — affected model, runtime, algorithm, or model family established by that source where known.
+
+These fields identify the system that the particular source evidences as affected by the Failure Mode. Do not use them merely to list every provider, model, mitigation, comparator, or control discussed in a source. If a source supplies useful governance or mitigation context but does not establish that the discussed system suffered the Failure Mode, assign the appropriate non-incident `source_role`, normally `contextual-background`, so it does not enter the affected-system roll-up.
 
 Failure-mode records maintain the normalized projection:
 
@@ -66,6 +74,10 @@ Failure-mode records maintain the normalized projection:
 For older records created before `system_or_product` and `model_or_algorithm` were populated consistently, a **concrete pre-existing FM `system_context`** may be used as a bounded compatibility fallback. This fallback must remain linked to actual evidence records and must not be used to manufacture additional vendors or models.
 
 `platform_or_vendor: "Multi Vendor"` is a scope summary only. It is valid when the normalized evidence supports more than one affected provider, but public interfaces should display the concrete `evidenced_vendors`, products, and models/runtimes rather than presenting `Multi Vendor`, `Other`, or `Unknown` as if those were system identities.
+
+The exact strings in `specific_model_or_runtime`, `evidenced_models_or_runtimes`, and per-source model projections are intentionally open-ended because model/runtime names change frequently. By contrast, `platform_or_vendor` and `product_or_service` are closed compatibility summaries governed by the current schema. A newly evidenced model must not silently expand those controlled enums; preserve exact identity in the evidence-backed fields and use an existing compatible summary such as `Multi Vendor` or `Other` where appropriate.
+
+`evidence_projection.reconciled_on` records the deterministic reconciliation date for that FM and must never predate the record's canonical creation date. The original corpus-wide migration date was 2026-08-15; records created later use at least their own creation date.
 
 Do **not** mine narrative `source_context`, `relevance_note`, article titles, publisher prose, or social-media captions to manufacture affected-system identity. If structured metadata and the existing concrete FM context are insufficient, preserve `provider-unresolved` or `system-unresolved` and repair the evidence metadata separately.
 

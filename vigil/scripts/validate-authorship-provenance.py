@@ -167,6 +167,24 @@ def validate_repository() -> list[str]:
         errors.append(f"{DECLARATION_PATH}: external governance source/requirement provenance differs from the VIGIL default")
     if dataset.get("external_source_authorship_unchanged") is not True:
         errors.append(f"{DECLARATION_PATH}: external-source authorship boundary must be preserved")
+    review_provenance = dataset.get("substantive_review_provenance", {})
+    if review_provenance.get("canonical_field") != "vigil/external_sources/source-registry.json#entries[].substantive_review_provenance":
+        errors.append(f"{DECLARATION_PATH}: external substantive-review provenance canonical field is invalid")
+    for field in ("requires_reviewing_system_identity", "requires_source_scope_reference", "human_assurance_inherited_from_authorship_provenance"):
+        if review_provenance.get(field) is not True:
+            errors.append(f"{DECLARATION_PATH}: substantive-review provenance requires {field}")
+    separation = declaration.get("substantive_review_provenance_rule", {})
+    for field in (
+        "authorship_provenance_is_distinct",
+        "ai_substantive_review_provenance_is_distinct",
+        "human_assurance_provenance_is_distinct",
+    ):
+        if separation.get(field) is not True:
+            errors.append(f"{DECLARATION_PATH}: provenance separation rule requires {field}")
+    if separation.get("routine_metadata_refresh_resets_review_date") is not False:
+        errors.append(f"{DECLARATION_PATH}: metadata refresh must not reset substantive review")
+    if separation.get("source_review_assurance_dataset") != "vigil/external_requirements/source-review-assurance.json":
+        errors.append(f"{DECLARATION_PATH}: human assurance sidecar boundary is invalid")
     generated = declaration.get("generated_artefact_rule", {})
     if generated.get("provenance") != GENERATED:
         errors.append(f"{DECLARATION_PATH}: generated artefact provenance is invalid")

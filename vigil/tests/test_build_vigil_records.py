@@ -59,7 +59,12 @@ class BuildVigilRecordsTest(unittest.TestCase):
         self.assertIn("cam_summary", summaries)
         self.assertNotIn("cam_internal", summaries)
         self.assertIn("affected_instruments", summaries["cam_summary"])
-        self.assertEqual(summaries["classification_summary"]["canonical_failure_group"], "arbitration")
+        self.assertNotIn("canonical_failure_group", summaries["classification_summary"])
+        self.assertNotIn("failure_family", summaries["classification_summary"])
+        self.assertEqual(
+            summaries["classification_summary"]["severity"],
+            record["failure_classification"]["severity"],
+        )
         self.assertIn("failure_mode_definition_summary", summaries)
         self.assertIn("failure_threshold_summary", summaries)
 
@@ -200,6 +205,30 @@ class BuildVigilRecordsTest(unittest.TestCase):
         self.assertEqual(entry["record_state"], record["record_state"])
         self.assertEqual(entry["repair_status"], record["repair_status"]["status"])
         self.assertEqual(entry["monitoring_required"], record["ecosystem_status"]["monitoring_required"])
+        self.assertEqual(
+            entry["diagnostic_provenance_summary"],
+            record["diagnostic_provenance"],
+        )
+
+    def test_failure_registry_has_no_legacy_taxonomy_or_peer_failure_projection(self):
+        retired = {
+            "canonical_failure_group",
+            "failure_family",
+            "failure_subtype",
+            "taxonomy_reference",
+            "related_failure_groups",
+            "related_failure_modes",
+        }
+        records = builder.records_by_registry(builder.load_records())["failure_modes"]
+        registry = builder.type_registry("failure_modes", records)
+        for entry in registry["records"]:
+            with self.subTest(record=entry["id"]):
+                self.assertFalse(retired.intersection(entry))
+
+    def test_research_to_failure_case_links_remain_in_research_projection(self):
+        records = builder.records_by_registry(builder.load_records())["research"]
+        registry = builder.type_registry("research", records)
+        self.assertTrue(any(entry.get("related_failure_modes") for entry in registry["records"]))
 
     def test_failure_aggregate_preserves_declared_triage_history(self):
         record = self.load_record("VIGIL-2026-FM-0002")
@@ -230,9 +259,9 @@ class BuildVigilRecordsTest(unittest.TestCase):
 
             master = builder.build_master_from_type_indexes(index_paths)
             self.assertEqual(master["registry_type"], "vigil_registry_master")
-            self.assertEqual(master["registry_count"], len(builder.TYPE_CONFIG))
-            self.assertEqual(master["record_count"]["proposals"], 0)
-            self.assertEqual(master["record_count"]["patch_notes"], 0)
+            self.assertEqual(master["registry_count"], 3)
+            self.assertNotIn("proposals", master["record_count"])
+            self.assertNotIn("patch_notes", master["record_count"])
             self.assertFalse(any(record.get("record_type") in {"proposal", "patch", "patch_note", "learn"} for record in master["records"]))
 
     def test_uncertainty_values_survive_generated_pruning(self):
@@ -340,9 +369,9 @@ class BuildVigilRecordsTest(unittest.TestCase):
                 master = json.loads(builder.MASTER_OUTPUT_PATH.read_text(encoding="utf-8"))
                 expected_records = len(builder.load_records())
                 self.assertEqual(master["record_count"]["total"], expected_records)
-                self.assertEqual(master["registry_count"], len(builder.TYPE_CONFIG))
-                self.assertEqual(master["record_count"]["proposals"], 0)
-                self.assertEqual(master["record_count"]["patch_notes"], 0)
+                self.assertEqual(master["registry_count"], 3)
+                self.assertNotIn("proposals", master["record_count"])
+                self.assertNotIn("patch_notes", master["record_count"])
                 for deprecated in builder.DEPRECATED_OUTPUT_PATHS:
                     self.assertFalse(deprecated.exists())
             finally:

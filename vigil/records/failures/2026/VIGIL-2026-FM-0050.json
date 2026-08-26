@@ -176,7 +176,6 @@
   },
   "linked_records": {
     "related_observations": [],
-    "related_failure_modes": [],
     "related_proposals": [
       "VIGIL-2026-PROP-0023"
     ],
@@ -208,8 +207,6 @@
   "failure_mode_definition": "A failure mode in which a user possesses a facially valid entitlement to digital or physically possessed content, but access is contingent on the real-time availability of a remote identity, licence, subscription, storefront, publisher or platform-verification service. When that service is unavailable, the system denies use without a proportionate continuity mechanism and without evidence that the entitlement itself is expired, suspended, revoked, fraudulent or otherwise invalid.",
   "failure_threshold": "The threshold is met where: (1) a valid purchased, licensed, installed, downloaded, subscription-entitled or physically possessed content interest exists; (2) a remote verification or identity dependency becomes unavailable; (3) the user is denied practical access because verification cannot complete; and (4) no proportionate cached entitlement, signed offline credential, grace period, local verification or degraded operating pathway is available. A temporary outage does not meet the threshold where the affected function is inherently online-only and no purchased offline-capable content interest is impaired.",
   "failure_classification": {
-    "failure_family": "infrastructure-continuity",
-    "failure_subtype": "mandatory-online-entitlement-verification-without-continuity-fallback",
     "harm_vectors": [
       "loss of practical access to purchased content",
       "loss of access to installed or downloaded content",
@@ -236,32 +233,9 @@
     ],
     "failure_scope": "vendor-specific incident demonstrating a cross-platform architectural pattern",
     "recurrence_pattern": "recurs whenever a central identity or licence-verification service is a mandatory dependency and becomes unavailable",
-    "canonical_failure_group": "infrastructure-continuity",
-    "taxonomy_reference": "CAM-EQ2026-OPERATIONS-003-SUP-01 Appendix B",
-    "related_failure_groups": [
-      "economic-legitimacy",
-      "state-context",
-      "governance",
-      "ux-representation",
-      "security-integrity"
-    ],
     "persistence": "outage-bounded at incident level but structurally persistent until continuity fallback is implemented",
     "reproducibility": "testable by disabling remote entitlement and identity services while attempting to launch valid installed, downloaded, subscription-entitled and disc-based content",
     "visibility": "user-visible through sign-in, library, launch, licence-verification and store failures",
-    "allowed_canonical_failure_group_values": [
-      "execution",
-      "arbitration",
-      "epistemic",
-      "relational",
-      "security-integrity",
-      "state-context",
-      "ux-representation",
-      "governance",
-      "infrastructure-continuity",
-      "classification",
-      "economic-legitimacy",
-      "provisional"
-    ],
     "severity_assessment_basis": "S2: The evidenced pathway supports substantial harm through loss of practical access to purchased content, loss of access to installed or downloaded content, physical-media dependence on remote licence verification within vendor-specific incident demonstrating a cross-platform architectural pattern, without establishing severe widespread or catastrophic impact."
   },
   "triage": {
@@ -371,6 +345,18 @@
       "Address centralised cross-jurisdiction dependency through sovereign-assurance review."
     ]
   },
+  "diagnostic_provenance": {
+    "method": "human-ai-collaborative-analysis",
+    "diagnostic_date": "2026-07-28",
+    "human_role": "substantive governance analysis, contextual judgement, correction, review and approval",
+    "ai_role": "analytical synthesis, mechanism identification, evidence and governance-context comparison, and drafting support",
+    "ai_platform": "OpenAI ChatGPT",
+    "ai_model": "GPT-5.6 Sol",
+    "model_attribution_basis": "inferred from canonical failure-mode creation date and documented ChatGPT model availability",
+    "review_status": "human-reviewed-and-approved",
+    "authority_boundary": "The AI collaborator supported analysis and drafting but was not independently authoritative; the human governance editor reviewed and accepted the diagnosis.",
+    "date_attribution_status": "canonical-creation-date-aligned"
+  },
   "interpretive_provenance": {
     "review_history": [
       {
@@ -450,5 +436,34 @@
       "authority_boundary": "Human editorship governs VIGIL direction and CAM adoption; the AI analytical reviewer performs routine evidence triage, record analysis, and reconciliation."
     },
     "historical_reviewer_note": "No earlier VIGIL review is asserted for this newly created record."
+  },
+  "taxonomy_classification": {
+    "taxonomy_version": "0.2.0-draft",
+    "classification_status": "classified",
+    "classification_basis": "A facially valid content entitlement becomes unavailable solely because remote verification cannot complete and no cached entitlement, grace period, local verification, or degraded access route preserves access.",
+    "classification_confidence": "medium",
+    "classified_on": "2026-08-26",
+    "structural_review_flags": [],
+    "primary_family": {
+      "family_id": "VIGIL-FF-0005",
+      "family_code": "ACCESS_SESSION_STATE",
+      "family_name": "Access & Session State Integrity Failures"
+    },
+    "primary_class": {
+      "class_id": "VIGIL-FC-000048",
+      "class_code": "VERIFICATION_DEPENDENCY_ACCESS_FAILURE",
+      "class_name": "Verification-Dependency Access Failure",
+      "abstraction": "class"
+    },
+    "classification_review_provenance": {
+      "method": "compound-mechanism-record-definition-threshold-to-taxonomy-criteria-review",
+      "review_date": "2026-08-26",
+      "ai_provider": "OpenAI",
+      "ai_platform": "ChatGPT Work",
+      "ai_model": "GPT-5.6 Sol",
+      "ai_role": "substantive taxonomy classification analysis, family-invariant testing, and drafting support",
+      "human_review_status": "not-reviewed",
+      "authority_boundary": "AI classification is provisional draft taxonomy analysis and is not independently authoritative."
+    }
   }
 }

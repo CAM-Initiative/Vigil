@@ -7,6 +7,10 @@ system identity is derived from structured `system_or_product` and
 `model_or_algorithm` source metadata, with a bounded fallback to the FM's existing
 concrete `system_context` for older records that pre-date those source fields.
 Narrative prose is never mined to manufacture vendor/model identity.
+
+The original corpus-wide migration occurred on 2026-08-15. For records created
+after that migration, evidence_projection.reconciled_on is never allowed to
+predate the record's canonical creation date.
 """
 
 from __future__ import annotations
@@ -23,7 +27,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[2]
 FAILURES_ROOT = ROOT / "vigil" / "records" / "failures"
 REVIEW_PATH = ROOT / "vigil" / "docs" / "reviews" / "FM-SYSTEM-CONTEXT-01-evidence-rollup-reconciliation.md"
-RECONCILIATION_DATE = "2026-08-15"
+MIGRATION_DATE = "2026-08-15"
 
 EVIDENCE_ROLES = {
     "incident-evidence",
@@ -55,7 +59,7 @@ PLACEHOLDERS = {
 GENERIC_PLATFORM_VALUES = {"Multi Vendor", "Other", "Unknown", "Not applicable"}
 
 PROVIDER_PATTERNS: list[tuple[str, tuple[str, ...]]] = [
-    ("OpenAI", ("openai", "chatgpt", "codex", "gpt-", "gpt ")),
+    ("OpenAI", ("openai", "chatgpt", "codex", "gpt-", "gpt ", "o4-mini", "o3")),
     ("Anthropic", ("anthropic", "claude")),
     ("Google", ("google", "gemini", "vertex ai", "ai studio")),
     ("Meta", ("meta ai", "llama", "meta")),
@@ -66,6 +70,7 @@ PROVIDER_PATTERNS: list[tuple[str, tuple[str, ...]]] = [
     ("Hugging Face", ("hugging face", "huggingface")),
     ("Mistral", ("mistral", "le chat")),
     ("DeepSeek", ("deepseek",)),
+    ("Alibaba", ("alibaba", "qwen")),
     ("Perplexity", ("perplexity",)),
     ("Cohere", ("cohere",)),
     ("Nvidia", ("nvidia",)),
@@ -100,6 +105,7 @@ PRODUCT_PATTERNS: list[tuple[str, tuple[str, ...]]] = [
     ("Azure OpenAI", ("azure openai",)),
     ("Amazon Bedrock", ("bedrock",)),
     ("Llama", ("llama",)),
+    ("Qwen", ("qwen",)),
     ("Le Chat", ("le chat",)),
     ("Perplexity", ("perplexity",)),
     ("Replit Agent", ("replit agent",)),
@@ -133,6 +139,7 @@ PRODUCT_PROVIDER = {
     "Azure OpenAI": "Microsoft",
     "Amazon Bedrock": "Amazon",
     "Llama": "Meta",
+    "Qwen": "Alibaba",
     "Le Chat": "Mistral",
     "Perplexity": "Perplexity",
     "Replit Agent": "Replit",
@@ -146,6 +153,9 @@ PRODUCT_PROVIDER = {
     "Snapchat": "Snap",
 }
 
+# Only values already admitted by the closed compatibility schema belong here.
+# Evidence-backed arrays are intentionally more expressive and may contain newer
+# providers/products without changing the compatibility summary enums.
 CONCRETE_LEGACY_PROVIDERS = {
     "OpenAI", "xAI", "Anthropic", "Meta", "Google", "DeepSeek", "Kimi", "Sesame",
     "Cohere", "Perplexity", "Mistral", "Microsoft", "GitHub", "TikTok", "Apple",
@@ -213,7 +223,6 @@ def products_from_text(value: Any) -> list[str]:
     for product, patterns in PRODUCT_PATTERNS:
         if any(pattern in text for pattern in patterns):
             add_unique(products, product)
-    # X is too short to use as a generic substring pattern.
     raw = norm(value)
     if raw == "x" or re.search(r"(?:^|[|/,;]\s*)x(?:\s*[|/,;]|$)", raw):
         add_unique(products, "X")
@@ -271,12 +280,7 @@ def source_affected_identity(source: dict[str, Any]) -> tuple[list[str], list[st
 
 
 def context_identity(context: dict[str, Any]) -> tuple[list[str], list[str], list[str]]:
-    """Recover concrete identity from the FM's structured system_context.
-
-    Higher-specificity runtime/model fields take precedence when an earlier
-    reconciliation accidentally wrote an evidence-host platform into the lower
-    compatibility fields.
-    """
+    """Recover concrete identity from the FM's structured system_context."""
     specific = context.get("specific_model_or_runtime")
     model_or_product = context.get("model_or_product")
     product_or_service = context.get("product_or_service")
@@ -292,7 +296,6 @@ def context_identity(context: dict[str, Any]) -> tuple[list[str], list[str], lis
 
     high_products = products_from_text(specific)
     high_providers = providers_from_text(specific)
-
     mid_text = " | ".join(
         str(value) for value in (model_or_product, product_or_service) if meaningful(value)
     )
@@ -320,8 +323,6 @@ def context_identity(context: dict[str, Any]) -> tuple[list[str], list[str], lis
         if platform in CONCRETE_LEGACY_PROVIDERS:
             add_unique(providers, str(platform))
 
-    # Where product identity implies a provider, use it unless doing so conflicts
-    # with a more specific runtime/model provider already established.
     for product in products:
         provider = PRODUCT_PROVIDER.get(product)
         if provider and (not high_providers or provider in high_providers):
@@ -353,6 +354,21 @@ def baseline_context(path: Path, baseline_ref: str | None) -> dict[str, Any] | N
         return None
     context = record.get("system_context") if isinstance(record, dict) else None
     return context if isinstance(context, dict) else None
+
+
+def canonical_record_date(record: dict[str, Any]) -> str:
+    identity = record.get("record_identity")
+    created = identity.get("created") if isinstance(identity, dict) else None
+    recorded = record.get("date_recorded")
+    for value in (created, recorded):
+        if isinstance(value, str) and re.fullmatch(r"\d{4}-\d{2}-\d{2}(?:.*)?", value):
+            return value[:10]
+    return MIGRATION_DATE
+
+
+def record_reconciliation_date(record: dict[str, Any]) -> str:
+    """Return a deterministic projection date that cannot predate the record."""
+    return max(MIGRATION_DATE, canonical_record_date(record))
 
 
 def projection_entry(
@@ -426,8 +442,6 @@ def project_system_context(
         )
 
     fallback_vendors, fallback_products, fallback_models = context_identity(fallback)
-    # A concrete record-level context is a compatibility fallback for older
-    # evidence packages only when the FM still has evidentiary support attached.
     if eligible_sources:
         missing_vendors = [value for value in fallback_vendors if value not in vendors]
         missing_products = [value for value in fallback_products if value not in products]
@@ -464,7 +478,7 @@ def project_system_context(
     context["evidence_projection"] = {
         "basis": "record-local affected-system metadata",
         "method": "structured source affected-system roll-up with record system-context fallback",
-        "reconciled_on": RECONCILIATION_DATE,
+        "reconciled_on": record_reconciliation_date(record),
         "inference_boundary": (
             "Affected provider, product, model, and runtime identity is projected from structured "
             "system_or_product and model_or_algorithm source metadata, with bounded fallback to an "
@@ -477,7 +491,9 @@ def project_system_context(
     if len(vendors) > 1:
         context["platform_or_vendor"] = "Multi Vendor"
     elif len(vendors) == 1:
-        context["platform_or_vendor"] = vendors[0]
+        context["platform_or_vendor"] = (
+            vendors[0] if vendors[0] in CONCRETE_LEGACY_PROVIDERS else "Other"
+        )
     else:
         legacy_platform = fallback.get("platform_or_vendor")
         context["platform_or_vendor"] = (
@@ -490,7 +506,7 @@ def project_system_context(
 
     if len(products) == 1 and products[0] in CANONICAL_SINGLE_PRODUCTS:
         context["product_or_service"] = products[0]
-    elif len(products) > 1:
+    elif products:
         context["product_or_service"] = "Other"
     else:
         legacy_product = fallback.get("product_or_service")
@@ -556,7 +572,7 @@ def render_report(records: list[dict[str, Any]], changed_ids: list[str]) -> str:
     lines = [
         "# FM-SYSTEM-CONTEXT-01 — Evidence-backed system-context reconciliation",
         "",
-        f"**Reconciliation date:** {RECONCILIATION_DATE}",
+        f"**Original migration date:** {MIGRATION_DATE}",
         "",
         "**Scope:** All canonical VIGIL failure-mode records. The projection separates evidence publication/hosting platform from the affected AI/platform system. It does not add external evidence, browse sources, or infer affected-system identity from narrative prose. Layer 1 external requirements are not modified by this reconciliation.",
         "",
@@ -580,13 +596,15 @@ def render_report(records: list[dict[str, Any]], changed_ids: list[str]) -> str:
         "## Projection contract",
         "",
         "- `source_platform` identifies where evidence is hosted or published; it is not an affected-system field.",
-        "- `source_records[].system_or_product` and `source_records[].model_or_algorithm` are the preferred source-level affected-system fields.",
+        "- `source_records[].system_or_product` and `source_records[].model_or_algorithm` are the source-level affected-system fields when that source establishes affected-system identity.",
+        "- Source roles that do not establish the affected system, such as `contextual-background`, are not included in the affected-system roll-up.",
         "- Existing concrete FM `system_context` values provide a bounded compatibility fallback for older evidence packages that pre-date those source fields.",
         "- `evidenced_vendors`, `evidenced_products_or_services`, and `evidenced_models_or_runtimes` are the public-facing normalized roll-ups.",
         "- `evidenced_systems` preserves source traceability and records whether an identity came from source affected-system metadata or the record-context fallback.",
+        "- Detailed model/runtime names are intentionally open-ended; closed compatibility fields remain constrained to the schema's admitted values.",
         "- Narrative `source_context`, `relevance_note`, article titles, and publisher prose are not mined to manufacture system identity.",
         "",
-        "The 2026-08-15 transmutation applied this contract across the then-current FM corpus. Subsequent executions are deterministic freshness checks; the changed-record list below describes only the current execution.",
+        "The 2026-08-15 transmutation applied this contract across the then-current FM corpus. Subsequent records use a deterministic per-record reconciliation date that is never earlier than the record's canonical creation date.",
         "",
         "## Multi-provider failure modes",
         "",

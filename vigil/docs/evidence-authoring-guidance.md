@@ -31,7 +31,11 @@ Where an external source identifies an affected system, populate these structure
 * `system_or_product` — the affected platform, product, service, tool, or system stated by the evidence;
 * `model_or_algorithm` — the affected model, runtime, algorithm, or model family where established.
 
+These fields describe the affected system **established by that source**, not every system, provider, mitigation, comparator, or control discussed in the source. A source that supplies contextual or supplementary governance information without establishing that the discussed system suffered the Failure Mode should use the appropriate `source_role`, normally `contextual-background`; its discussed system must not thereby enter the Failure Mode affected-system projection.
+
 Do not infer either field from the publisher or hosting platform. Where the evidence does not establish a model, use the existing bounded uncertainty convention rather than guessing.
+
+For Failure Modes, detailed model/runtime names in `evidenced_models_or_runtimes`, `evidenced_systems`, and `specific_model_or_runtime` are intentionally open-ended. The compatibility summaries `platform_or_vendor` and `product_or_service` remain constrained to the controlled values admitted by the current schema. Do not expand those closed vocabularies merely to accommodate a newly evidenced model name; use the evidence-backed arrays for exact identities and `Multi Vendor`, `Other`, or another existing compatible summary where appropriate.
 
 ## Source URL status conventions
 

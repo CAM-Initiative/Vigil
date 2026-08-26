@@ -14,6 +14,22 @@ spec.loader.exec_module(validator)
 
 
 class ValidateVigilRecordsTest(unittest.TestCase):
+    def test_canonical_repository_validation_closes_withdrawn_provenance_links(self):
+        self.assertEqual(validator.validate(), 0)
+
+    def test_only_typed_withdrawn_relationships_are_acknowledged(self):
+        record = {
+            "linked_records": {
+                "related_proposals": ["VIGIL-2026-PROP-0001"],
+                "related_patch_notes": ["VIGIL-2026-PATCH-0023"],
+                "related_observations": ["VIGIL-2026-OBS-9999"],
+            }
+        }
+        self.assertEqual(
+            validator.withdrawn_reference_ids(record),
+            {"VIGIL-2026-PROP-0001", "VIGIL-2026-PATCH-0023"},
+        )
+
     def test_valid_fixtures_pass(self):
         self.assertEqual(validator.validate(ROOT / "vigil" / "tests" / "fixtures" / "valid"), 0)
 
@@ -119,48 +135,69 @@ class ValidateVigilRecordsTest(unittest.TestCase):
             finally:
                 validator.RECORDS_ROOT, validator.RECORD_TYPE_DIRS = originals
 
-    def test_fm_requires_canonical_failure_group(self):
+    def test_taxonomy_classified_fm_fixture_is_valid(self):
+        self.assertEqual(
+            self.validate_mutated_fixture("VIGIL-2026-FM-0001.json", lambda record: None),
+            0,
+        )
+
+    def test_fm_rejects_retired_canonical_failure_group(self):
         def mutate(record):
-            record["failure_classification"].pop("canonical_failure_group", None)
+            record["failure_classification"]["canonical_failure_group"] = "governance"
 
         self.assertNotEqual(self.validate_mutated_fixture("VIGIL-2026-FM-0001.json", mutate), 0)
 
-    def test_fm_rejects_unknown_canonical_failure_group(self):
+    def test_fm_rejects_retired_failure_family(self):
         def mutate(record):
-            record["failure_classification"]["canonical_failure_group"] = "legacy-runtime"
+            record["failure_classification"]["failure_family"] = "legacy-runtime"
 
         self.assertNotEqual(self.validate_mutated_fixture("VIGIL-2026-FM-0001.json", mutate), 0)
 
-
-    def test_economic_legitimacy_is_accepted_as_canonical_failure_group(self):
+    def test_fm_rejects_peer_failure_links(self):
         def mutate(record):
-            record["failure_classification"]["canonical_failure_group"] = "economic-legitimacy"
-            record["failure_classification"]["failure_family"] = "economic-legitimacy"
-            record["failure_classification"]["failure_subtype"] = "paid-public-square-legitimacy-gating"
-            record["failure_classification"]["taxonomy_reference"] = "CAM-EQ2026-OPERATIONS-003-SUP-01 Appendix B §3.11"
-
-        self.assertEqual(self.validate_mutated_fixture("VIGIL-2026-FM-0001.json", mutate), 0)
-
-    def test_platform_legitimacy_is_rejected_as_canonical_failure_group(self):
-        def mutate(record):
-            record["failure_classification"]["canonical_failure_group"] = "platform-legitimacy"
+            record["linked_records"]["related_failure_modes"] = ["VIGIL-2026-FM-0002"]
 
         self.assertNotEqual(self.validate_mutated_fixture("VIGIL-2026-FM-0001.json", mutate), 0)
 
-    def test_platform_legitimacy_can_be_local_subtype_under_economic_legitimacy(self):
+    def test_fm_requires_diagnostic_provenance(self):
         def mutate(record):
-            record["failure_classification"]["canonical_failure_group"] = "economic-legitimacy"
-            record["failure_classification"]["failure_family"] = "economic-legitimacy"
-            record["failure_classification"]["failure_subtype"] = "platform-legitimacy"
-            record["failure_classification"]["taxonomy_reference"] = "CAM-EQ2026-OPERATIONS-003-SUP-01 Appendix B §3.11"
-
-        self.assertEqual(self.validate_mutated_fixture("VIGIL-2026-FM-0001.json", mutate), 0)
-
-    def test_fm_requires_failure_family(self):
-        def mutate(record):
-            record["failure_classification"].pop("failure_family", None)
+            record.pop("diagnostic_provenance")
 
         self.assertNotEqual(self.validate_mutated_fixture("VIGIL-2026-FM-0001.json", mutate), 0)
+
+    def test_fm_diagnostic_model_must_match_creation_date(self):
+        def mutate(record):
+            record["diagnostic_provenance"]["ai_model"] = "GPT-5.6 Sol"
+
+        self.assertNotEqual(self.validate_mutated_fixture("VIGIL-2026-FM-0001.json", mutate), 0)
+
+    def test_fm_diagnostic_date_must_match_canonical_creation_date(self):
+        def mutate(record):
+            record["diagnostic_provenance"]["diagnostic_date"] = "2026-06-01"
+
+        self.assertNotEqual(self.validate_mutated_fixture("VIGIL-2026-FM-0001.json", mutate), 0)
+
+    def test_fm_conflicting_creation_dates_require_explicit_anomaly(self):
+        def mutate(record):
+            record["date_recorded"] = "2026-06-01"
+
+        self.assertNotEqual(self.validate_mutated_fixture("VIGIL-2026-FM-0001.json", mutate), 0)
+
+    def test_canonical_fm_diagnostic_provenance_inventory(self):
+        records = []
+        for path in sorted((ROOT / "vigil" / "records" / "failures").rglob("*.json")):
+            with path.open(encoding="utf-8") as handle:
+                records.append(json.load(handle))
+        self.assertEqual(len(records), 71)
+        models = {"GPT-5.5": 0, "GPT-5.6 Sol": 0}
+        conflicts = []
+        for record in records:
+            diagnostic = record["diagnostic_provenance"]
+            models[diagnostic["ai_model"]] += 1
+            if diagnostic["date_attribution_status"] == "creation-date-conflict-recorded":
+                conflicts.append(record["id"])
+        self.assertEqual(models, {"GPT-5.5": 27, "GPT-5.6 Sol": 44})
+        self.assertEqual(conflicts, ["VIGIL-2026-FM-0044", "VIGIL-2026-FM-0048"])
 
     def test_legacy_source_record_keys_are_rejected(self):
         def mutate(record):

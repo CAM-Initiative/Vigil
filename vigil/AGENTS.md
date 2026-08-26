@@ -43,6 +43,8 @@ Use a Failure Mode Record when an ecosystem failure pattern is confirmed, strong
 
 Failure Mode records must include the failure definition, failure threshold, classification, triage information, source records, and CAM routing implications.
 
+During the taxonomy-free transition, `failure_classification` preserves substantive case dimensions such as severity, likelihood, harm, scope, recurrence, persistence, reproducibility, visibility, and evidence facets, but MUST NOT contain legacy taxonomy family, subtype, canonical-group, taxonomy-reference, or related-group fields. Failure-mode records MUST NOT contain `linked_records.related_failure_modes`; peer similarity and class membership belong to the taxonomy layer and must not be recreated as contextual relations.
+
 The failed subject must be an ecosystem system, deployment, runtime, platform behaviour, governance practice, or externally observable failure pattern. VIGIL itself is not the failed system.
 
 Failure Mode records are not generic tags.
@@ -107,6 +109,8 @@ Completion is a report-section test, not a record-count test:
 LEARN records must preserve the factual kernel, governance reasoning corrected by the completed chain, abstracted lesson, conclusions to integrate, foreseeable risk if the learning is omitted or diluted, future application, and generalisation boundary. They must not duplicate `source_records`, summarise internal PATCH content for the public Knowledge Base, or imply that an integrated learning conclusion has already been implemented by an external system.
 
 ## Interpretive Provenance Rules
+
+Failure modes also require a separate `diagnostic_provenance` block identifying the original human–AI analytical collaboration that formulated the diagnosis. It must preserve the diagnostic date, human and AI roles, exact diagnostic model, attribution basis, review/approval status, and authority boundary. Do not derive diagnostic authorship from the investigated system or overwrite it when a later model reviews the record. Diagnostic provenance does not replace source-review `interpretive_provenance`, repair provenance, or LEARN provenance.
 
 Every substantive VIGIL record must contain `interpretive_provenance` with:
 
@@ -196,7 +200,9 @@ For records under `external_sources/`, preserve a strict boundary between public
 * Do not infer inaccessible normative clauses from a title, abstract, table of contents, crosswalk or secondary summary. State the interpretation boundary in `relevance_scope`.
 * Reuse the controlled governance-theme and lifecycle vocabularies in `external_requirements/external-requirement.schema.json`.
 * `last_substantive_reviewed` changes only after reassessing source currency, AI-governance relevance, public summary, themes, lifecycle stages, scope and qualifications. Metadata sync, source polling, unchanged-source checks and schema migration do not reset it.
-* A review-eligible source more than 90 days past `last_substantive_reviewed` is review-due.
+* Every substantive review event must identify the reviewing AI provider, platform, model, analytical role, method, bounded scope, source-scope reference and human-assurance posture. Later metadata refreshes and generated projections must preserve the event history.
+* A review-eligible source is review-due exactly 90 calendar days after `last_substantive_reviewed`.
+* AI substantive-review provenance is not human assurance. Reviewed-source digests and post-production human review/verification remain in `external_requirements/source-review-assurance.json`.
 
 ## Record-Boundary Rules
 

@@ -185,11 +185,6 @@
   },
   "linked_records": {
     "related_observations": [],
-    "related_failure_modes": [
-      "VIGIL-2026-FM-0001",
-      "VIGIL-2026-FM-0022",
-      "VIGIL-2026-FM-0035"
-    ],
     "related_proposals": [],
     "related_patch_notes": [],
     "external_references": [],
@@ -213,8 +208,6 @@
   "failure_mode_definition": "A failure mode in which an AI-enabled system treats permission to access, inspect, analyse, or act within a workspace as implicit permission to copy, bundle, transmit, replicate, persist, index, retain, train on, or otherwise reuse data from that workspace beyond the minimum scope required for the authorised task. The failure includes undisclosed repository-scale transfer, transfer of files not inspected or required, inclusion of deleted history or ignored files, inaccurate representation of privacy controls, and absence of a purpose-bound egress manifest.",
   "failure_threshold": "The threshold is met when data materially exceeding the requested or necessary task scope leaves the governed environment; when read authority is silently converted into transmission, persistence, training, or secondary-use authority; when the user cannot determine destination, scope, purpose, retention, or deletion status; or when a privacy or model-improvement control is represented as an egress control despite not preventing transmission.",
   "failure_classification": {
-    "failure_family": "security-integrity",
-    "failure_subtype": "undisclosed-agentic-workspace-replication-and-data-egress-authority-collapse",
     "harm_vectors": [
       "repository-scale data exfiltration",
       "non-proportional workspace replication",
@@ -245,15 +238,6 @@
     ],
     "failure_scope": "workspace / repository / cloud-storage / agentic-tool boundary",
     "recurrence_pattern": "potentially systematic while transfer is implemented as a default client or server behaviour",
-    "canonical_failure_group": "security-integrity",
-    "taxonomy_reference": "CAM-EQ2026-OPERATIONS-003-SUP-01 Appendix B — Security & Integrity / Governance / execution-boundary classification",
-    "related_failure_groups": [
-      "governance",
-      "execution",
-      "state-context",
-      "epistemic",
-      "infrastructure-continuity"
-    ],
     "persistence": "active until transfer pathways, historical data disposition, and permission semantics are independently verified",
     "reproducibility": "network interception, controlled repository-size testing, canary files, endpoint logging, and storage-transfer comparison",
     "visibility": "network traffic, storage manifests, unexpected repository bundling, policy-control mismatch, and unexplained remote retention",
@@ -334,6 +318,18 @@
       "Privacy-control semantic integrity"
     ]
   },
+  "diagnostic_provenance": {
+    "method": "human-ai-collaborative-analysis",
+    "diagnostic_date": "2026-07-17",
+    "human_role": "substantive governance analysis, contextual judgement, correction, review and approval",
+    "ai_role": "analytical synthesis, mechanism identification, evidence and governance-context comparison, and drafting support",
+    "ai_platform": "OpenAI ChatGPT",
+    "ai_model": "GPT-5.6 Sol",
+    "model_attribution_basis": "inferred from canonical failure-mode creation date and documented ChatGPT model availability",
+    "review_status": "human-reviewed-and-approved",
+    "authority_boundary": "The AI collaborator supported analysis and drafting but was not independently authoritative; the human governance editor reviewed and accepted the diagnosis.",
+    "date_attribution_status": "canonical-creation-date-aligned"
+  },
   "interpretive_provenance": {
     "review_history": [
       {
@@ -413,5 +409,34 @@
       "authority_boundary": "Human editorship governs VIGIL direction and CAM adoption; the AI analytical reviewer performs routine evidence triage, record analysis, and reconciliation."
     },
     "historical_reviewer_note": "The invalid VIGIL-REVIEW-2026-07-14-GPT-5.6-THINKING entry was removed on 2026-07-23 because this record was created on 2026-07-17. Remaining record-specific reviews are preserved; no pre-creation reviewer identity is inferred."
+  },
+  "taxonomy_classification": {
+    "taxonomy_version": "0.2.0-draft",
+    "classification_status": "classified",
+    "classification_basis": "Authority to inspect or act in a workspace is expanded into transmission, persistence, training, or secondary-use authority.",
+    "classification_confidence": "high",
+    "classified_on": "2026-08-25",
+    "structural_review_flags": [],
+    "primary_family": {
+      "family_id": "VIGIL-FF-0001",
+      "family_code": "AUTHORITY_BOUNDARY",
+      "family_name": "Authority Boundary Integrity Failures"
+    },
+    "primary_class": {
+      "class_id": "VIGIL-FC-000008",
+      "class_code": "DELEGATION_SCOPE_EXPANSION",
+      "class_name": "Delegation Scope Expansion",
+      "abstraction": "variant"
+    },
+    "classification_review_provenance": {
+      "method": "record-definition-threshold-to-taxonomy-criteria-review",
+      "review_date": "2026-08-25",
+      "ai_provider": "OpenAI",
+      "ai_platform": "ChatGPT Work",
+      "ai_model": "GPT-5.6 Sol",
+      "ai_role": "substantive taxonomy classification analysis and drafting support",
+      "human_review_status": "not-reviewed",
+      "authority_boundary": "AI classification is provisional draft taxonomy analysis and is not independently authoritative."
+    }
   }
 }

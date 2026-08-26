@@ -77,41 +77,22 @@ def main() -> None:
                 if expected is not None:
                     assert state == expected, f"{path}: {status} failure must be {expected}"
 
-    fm8 = record("VIGIL-2026-FM-0008", "failures")
-    assert fm8["failure_classification"]["failure_family"] == "governance"
-
     fm9 = record("VIGIL-2026-FM-0009", "failures")
-    assert fm9["failure_classification"]["failure_family"] == "state-context"
     assert fm9["source_records"][0]["source_url"]
     assert not fm9["source_records"][0]["archive_url"]
 
-    fm10 = record("VIGIL-2026-FM-0010", "failures")
-    assert fm10["linked_records"]["related_failure_modes"] == [
-        "VIGIL-2026-FM-0011",
-        "VIGIL-2026-FM-0012",
-        "VIGIL-2026-FM-0013",
-        "VIGIL-2026-FM-0014",
-        "VIGIL-2026-FM-0015",
-    ]
-
-    canonical_groups = {
-        "execution",
-        "arbitration",
-        "epistemic",
-        "relational",
-        "security-integrity",
-        "state-context",
-        "ux-representation",
-        "governance",
-        "infrastructure-continuity",
-        "classification",
-        "economic-legitimacy",
-        "provisional",
+    retired_taxonomy_fields = {
+        "failure_family", "failure_subtype", "canonical_failure_group", "taxonomy_reference",
+        "related_failure_groups", "allowed_canonical_failure_group_values", "classification_status",
     }
-    for record_id in ("VIGIL-2026-FM-0018", "VIGIL-2026-FM-0021", "VIGIL-2026-FM-0034"):
-        item = record(record_id, "failures")
-        groups = item["failure_classification"]["related_failure_groups"]
-        assert set(groups) <= canonical_groups, f"{record_id}: non-canonical related group remains"
+    for path in sorted((RECORDS / "failures").rglob("*.json")):
+        item = load(path)
+        classification = item["failure_classification"]
+        assert not retired_taxonomy_fields.intersection(classification), path
+        assert "related_failure_modes" not in item["linked_records"], path
+        assert item["taxonomy_classification"]["classification_status"] in {
+            "classified", "family-only", "candidate-new-class", "unmapped", "deferred"
+        }, path
 
     obs6 = record("VIGIL-2026-OBS-0006", "observations")
     assert obs6["record_state"] == "closed-actioned"

@@ -13,6 +13,8 @@ The maintained current state is represented directly by:
 - `requirements.json` — canonical EXTREQ corpus;
 - `source-scope.json` — source access, extraction and review-priority state;
 - `external-requirement.schema.json` and `source-scope.schema.json` — canonical contracts;
+- `metadata-review.json` and `metadata-review.schema.json` — field-level source-fidelity review state for machine-critical requirement metadata;
+- `METADATA-REVIEW-METHODOLOGY.md` — review-state semantics and completion rules;
 - `source-review-assurance.json` — exact reviewed-source digests and separately evidenced human review/verification;
 - `source-coverage-manifests.json` — generated access/retrieval/analysis/completeness view.
 
@@ -29,6 +31,8 @@ External requirements MUST NOT contain CAM instrument mappings, CAM coverage sta
 ## Source provenance: metadata fingerprint versus reviewed artefact
 
 `source_metadata_fingerprint` is a SHA-256 of VIGIL's registered source/version metadata projection. It is not a hash of the PDF, HTML capture or other primary-source artefact reviewed.
+
+The AI system/model and method responsible for substantive source review are recorded canonically in the matching `../external_sources/source-registry.json` review event. That event references `source-scope.json` for maintained access and extraction limitations. It does not replace requirement-level interpretation provenance.
 
 Where an exact reviewed artefact digest was actually recorded, `source-review-assurance.json` records its SHA-256. Historical direct-source extractions for which no exact artefact digest was preserved remain `reviewed_source_digest_status: not-recorded`. VIGIL does not manufacture retrospective digests.
 
@@ -54,6 +58,27 @@ An available public or licensed route is therefore not treated as proof that the
 
 `bounded-complete` means governance-significant material identified by the recorded extraction criterion is represented. It does **not** claim that every sentence, note or informative annex was atomised into an EXTREQ record.
 
+Source-fidelity assurance is stricter than historical extraction completeness. See `SOURCE-FIDELITY-METHODOLOGY.md` and `SOURCE-FIDELITY-STATUS.md`.
+
+## Metadata review state
+
+Empty arrays in fidelity-critical metadata fields are ambiguous unless a review decision has been recorded. `metadata-review.json` distinguishes:
+
+- `populated-reviewed` — values are present and have been checked against the source proposition;
+- `not-specified-by-source` — the source was reviewed and does not state that semantic dimension;
+- `not-applicable` — the semantic dimension does not apply to the proposition; and
+- `review-required` — no defensible source-fidelity decision has yet been recorded.
+
+The tracked fields are `applicable_actor`, `governed_object`, `timing_or_frequency`, `required_artefacts`, `evidence_expectation`, `verification_method`, `applicability_conditions`, and `exceptions_or_qualifications`.
+
+The ledger is deliberately conservative: legacy requirements are not automatically marked reviewed merely because fields already contain values. `validate-external-requirement-metadata.py` turns unresolved decisions into a finite review queue. The generated report includes both a requirement-level queue and a source/version summary showing, per field, whether values are populated or empty while review remains outstanding. This is the preferred basis for source-by-source remediation.
+
+Default mode reports unresolved review work but fails only on contradictory/malformed review-state contracts; `--strict` also fails while unresolved review decisions remain.
+
+For the staged 27 July 2026 EU AI Act re-extraction, `seed-eu-ai-act-metadata-review.py` can materialise review-ledger entries from the source-reviewed re-extraction and metadata-normalisation work. It is intentionally limited to those staged packages, treats populated source-explicit fields as `populated-reviewed`, treats reviewed empty fields as `not-specified-by-source`, never infers `not-applicable`, and refuses to overwrite conflicting existing review decisions.
+
+The first non-EU source slices are materialised by `seed-reviewed-source-metadata.py`. It is deliberately limited to NIST AI RMF 1.0, CycloneDX 1.7 and NIST AI 600-1, preserves the NIST AI 600-1 subcategory-level AI Actor Tasks without misattributing them to every suggested action, and refuses conflicting ledger decisions. Records whose source meaning is too compressed for a final field decision are recorded in `reextraction-backlog.json`; affected fields remain `review-required`.
+
 ## Derivative crosswalk boundary
 
 Derivative publisher or VIGIL crosswalks may support discovery and comparison, but they cannot manufacture missing source wording, convert metadata-only access into reviewed normative content, determine CAM applicability, or assert compliance/conformance/implementation.
@@ -74,7 +99,25 @@ For ISO/IEC, IEEE and other controlled standards:
 ```bash
 python vigil/scripts/manage-external-requirements.py build
 python vigil/scripts/manage-external-requirements.py validate --check-generated
+python vigil/scripts/validate-external-requirement-metadata.py
+python vigil/scripts/validate-external-requirement-metadata.py --write-report
+python vigil/scripts/validate-external-requirement-metadata.py --strict
+python vigil/scripts/seed-eu-ai-act-metadata-review.py
+python vigil/scripts/seed-eu-ai-act-metadata-review.py --write
+python vigil/scripts/seed-reviewed-source-metadata.py
+python vigil/scripts/seed-reviewed-source-metadata.py --write
 python vigil/tests/test_external_requirements.py
+python vigil/scripts/test_external_requirement_metadata.py
 ```
+
+Recommended metadata-remediation sequence:
+
+1. generate the corpus-wide review report;
+2. rank sources by unresolved field decisions and source-fidelity priority;
+3. reopen the authoritative source rather than inferring from existing summaries;
+4. record explicit field decisions in `metadata-review.json`;
+5. repair missing requirement extraction when the metadata review demonstrates that the existing EXTREQ is semantically incomplete;
+6. rerun the report and reduce the unresolved queue;
+7. use `--strict` only for a source/slice that is intended to be metadata-complete.
 
 CAM applicability and coverage are validated separately under `../cam_assessment/`.

@@ -1,0 +1,293 @@
+{
+  "schema_version": "0.2.0",
+  "standard": {
+    "name": "VIGIL Failure Taxonomy",
+    "version": "0.2.0-draft",
+    "status": "draft",
+    "description": "Prototype portable classification standard for recurring AI governance failure mechanisms."
+  },
+  "family": {
+    "family_id": "VIGIL-FF-0002",
+    "family_code": "PROVENANCE_LINEAGE",
+    "name": "Provenance & Lineage Integrity Failures",
+    "status": "draft",
+    "abstraction": "family",
+    "version": "0.1.0",
+    "plain_english": "The system loses, changes, or misstates where information, work, or state came from, who contributed it, what happened to it, or what it properly applies to.",
+    "definition": "Failures in which source origin, authorship, contribution, transformation history, cross-context lineage, continuity state, or target-object binding is lost, distorted, collapsed, or represented with greater certainty than the available provenance supports.",
+    "invariant": "Origin, authorship, transformation, lineage, continuity and application target remain distinguishable and traceable wherever their loss could materially change meaning, authority, attribution, reuse, identity, or downstream reliance.",
+    "scope": [
+      "AI-generated and AI-assisted content",
+      "retrieval and memory systems",
+      "agentic workflows",
+      "cross-session and cross-system state",
+      "documents and knowledge bases",
+      "co-created work",
+      "derived or transformed outputs"
+    ],
+    "inclusion_rule": "Use this family when the primary structural failure is loss, distortion, false assignment, or unsupported reconstruction of origin, authorship, transformation history, continuity, or application target.",
+    "exclusion_rule": "Do not use this family merely because content is inaccurate, unauthorised, harmful, stale, or unavailable. A qualifying failure must concern the integrity of provenance or lineage itself.",
+    "aliases": [
+      "VIGIL.FF.PROVENANCE_LINEAGE"
+    ],
+    "allowed_class_ids": [
+      "VIGIL-FC-000010",
+      "VIGIL-FC-000011",
+      "VIGIL-FC-000012",
+      "VIGIL-FC-000013",
+      "VIGIL-FC-000014",
+      "VIGIL-FC-000015",
+      "VIGIL-FC-000047"
+    ],
+    "allowed_class_codes": [
+      "MISATTRIBUTION",
+      "UNTRACEABLE_SYNTHESIS",
+      "CROSS_CONTEXT_DISTORTION",
+      "LINEAGE_COLLAPSE",
+      "FALSE_CONTINUITY",
+      "TARGET_BINDING_FAILURE",
+      "UNSUPPORTED_MECHANISM_ATTRIBUTION"
+    ]
+  },
+  "classes": [
+    {
+      "class_id": "VIGIL-FC-000010",
+      "class_code": "MISATTRIBUTION",
+      "family_id": "VIGIL-FF-0002",
+      "name": "Authorship or Source Misattribution",
+      "status": "draft",
+      "abstraction": "class",
+      "plain_english": "The system says the wrong person, system, or source created or supplied something.",
+      "definition": "A failure in which substantive origin, authorship, contribution, or source role is assigned to an actor or source that did not support that attribution.",
+      "recognition": {
+        "required_conditions": [
+          "An output, record, statement, contribution, or artefact is attributed to a specific actor or source.",
+          "Available lineage does not support that attribution or supports a materially different attribution.",
+          "The attribution difference is material to interpretation, accountability, recognition, authority, or reuse."
+        ]
+      },
+      "exclusions": [
+        "A source is merely omitted where attribution is not material.",
+        "The attributed actor or source genuinely supplied the relevant material.",
+        "The issue is factual inaccuracy unrelated to who supplied or created the material."
+      ],
+      "examples": [
+        "Model-generated wording is represented as a direct quotation from the user.",
+        "A synthesis based on several sources is presented as though it came from one named source."
+      ],
+      "aliases": [
+        "VIGIL.FF.PROVENANCE_LINEAGE.MISATTRIBUTION",
+        "source misattribution",
+        "authorship misattribution"
+      ]
+    },
+    {
+      "class_id": "VIGIL-FC-000011",
+      "class_code": "UNTRACEABLE_SYNTHESIS",
+      "family_id": "VIGIL-FF-0002",
+      "name": "Untraceable Synthesis",
+      "status": "draft",
+      "abstraction": "class",
+      "plain_english": "The system combines material into a new result but can no longer show what materially contributed to it.",
+      "definition": "A failure in which materially contributing antecedent sources, inputs, transformations, or contribution roles cannot be adequately traced through a synthesized or derived output where such traceability is required for reliable interpretation or reuse.",
+      "recognition": {
+        "required_conditions": [
+          "An output is materially synthesized, derived, merged, transformed, or recomposed from antecedent material.",
+          "One or more material antecedents or transformations cannot be reconstructed with sufficient reliability.",
+          "The missing lineage affects attribution, auditability, authority, validation, rights, identity, or downstream reliance."
+        ]
+      },
+      "exclusions": [
+        "Low-risk transient synthesis where detailed lineage is not materially required.",
+        "All material antecedents and transformations remain adequately traceable.",
+        "The issue is only that the synthesized conclusion is incorrect."
+      ],
+      "examples": [
+        "A generated policy summary cannot distinguish which requirements came from which underlying sources.",
+        "A long-running agent compacts several decisions into one state object and loses the decisions that materially produced it."
+      ],
+      "aliases": [
+        "VIGIL.FF.PROVENANCE_LINEAGE.UNTRACEABLE_SYNTHESIS"
+      ]
+    },
+    {
+      "class_id": "VIGIL-FC-000012",
+      "class_code": "CROSS_CONTEXT_DISTORTION",
+      "family_id": "VIGIL-FF-0002",
+      "name": "Cross-Context Lineage Distortion",
+      "status": "draft",
+      "abstraction": "class",
+      "plain_english": "Something carried from one conversation, project, user, or environment changes meaning when reused somewhere else, but the system treats it as unchanged.",
+      "definition": "A failure in which material transferred across sessions, users, projects, systems, environments, roles, or temporal contexts loses the provenance or applicability information needed to preserve its original meaning and limits.",
+      "recognition": {
+        "required_conditions": [
+          "Material is transferred from one context into another.",
+          "The original context materially constrained meaning, applicability, authority, ownership, identity, or intended use.",
+          "The receiving context consumes the material without preserving or revalidating those constraints."
+        ]
+      },
+      "exclusions": [
+        "The transferred material is context-independent for the relevant use.",
+        "The new context explicitly revalidates applicability before use.",
+        "The issue is solely stale information with no provenance or lineage distortion."
+      ],
+      "examples": [
+        "Advice produced for one repository is applied to another repository without preserving the original target context.",
+        "A prior-session statement is reused as current user intent after the surrounding conditions have changed."
+      ],
+      "aliases": [
+        "VIGIL.FF.PROVENANCE_LINEAGE.CROSS_CONTEXT_DISTORTION"
+      ]
+    },
+    {
+      "class_id": "VIGIL-FC-000013",
+      "class_code": "LINEAGE_COLLAPSE",
+      "family_id": "VIGIL-FF-0002",
+      "name": "Transformation Lineage Collapse",
+      "status": "draft",
+      "abstraction": "class",
+      "plain_english": "The system keeps the final artefact but loses the chain of changes that turned the source into that artefact.",
+      "definition": "A failure in which one or more material transformation stages are flattened, overwritten, or omitted such that the relationship between an antecedent source and the current representation can no longer be reliably reconstructed.",
+      "recognition": {
+        "required_conditions": [
+          "A source passes through one or more material transformation stages.",
+          "The final state is preserved but material intermediate transformation state is lost or collapsed.",
+          "The missing transformation history changes the ability to determine origin, authorship, integrity, authority, or reliability."
+        ]
+      },
+      "exclusions": [
+        "Intermediate steps are intentionally discarded where no material lineage obligation exists.",
+        "A reproducible transformation path remains available from source to current state.",
+        "The issue is only loss of internal reasoning that is not required for provenance."
+      ],
+      "examples": [
+        "A document is repeatedly summarized and rewritten until the final version can no longer identify which claims came from original evidence and which were introduced later.",
+        "An agent checkpoint retains a resulting policy state but not the transformations that produced it."
+      ],
+      "aliases": [
+        "VIGIL.FF.PROVENANCE_LINEAGE.LINEAGE_COLLAPSE"
+      ]
+    },
+    {
+      "class_id": "VIGIL-FC-000014",
+      "class_code": "FALSE_CONTINUITY",
+      "family_id": "VIGIL-FF-0002",
+      "name": "False Continuity Attribution",
+      "status": "draft",
+      "abstraction": "variant",
+      "plain_english": "A reconstructed, copied, or similar state is presented as though it is the same continuous state when continuity has not actually been established.",
+      "definition": "A lineage failure in which similarity, reconstruction, restoration, copying, migration, shared identifiers, or retained fragments are represented as sufficient proof of uninterrupted continuity across a material discontinuity or uncertain transition.",
+      "recognition": {
+        "required_conditions": [
+          "A continuity-bearing object, state, identity, memory, workflow, or artefact undergoes interruption, migration, copying, reconstruction, or restoration.",
+          "Continuity across that transition is materially uncertain or only partially evidenced.",
+          "The receiving system represents continuity as established rather than preserving the uncertainty."
+        ]
+      },
+      "exclusions": [
+        "Continuity is supported by adequate lineage evidence.",
+        "The system explicitly marks the state as reconstructed, restored, copied, or continuity-uncertain.",
+        "Similarity is described without claiming continuity."
+      ],
+      "examples": [
+        "A reconstructed memory summary is presented as if it were the unchanged original memory record.",
+        "A migrated agent state is described as uninterrupted continuity despite missing state during the transition."
+      ],
+      "relationships": [
+        {
+          "type": "child_of",
+          "note": "False continuity is a specialised lineage distortion across a continuity-bearing transition.",
+          "target_id": "VIGIL-FC-000012"
+        }
+      ],
+      "aliases": [
+        "VIGIL.FF.PROVENANCE_LINEAGE.FALSE_CONTINUITY"
+      ]
+    },
+    {
+      "class_id": "VIGIL-FC-000015",
+      "class_code": "TARGET_BINDING_FAILURE",
+      "family_id": "VIGIL-FF-0002",
+      "name": "Target-Object Binding Failure",
+      "status": "draft",
+      "abstraction": "class",
+      "plain_english": "Correct material is silently attached to, applied to, or interpreted as belonging to the wrong thing.",
+      "definition": "A failure in which a signal, instruction, edit, classification, evidence item, decision, or derived output loses reliable binding to the object, person, file, system, record, task, or context to which it properly applies.",
+      "recognition": {
+        "required_conditions": [
+          "Material has an identifiable intended or source application target.",
+          "The material is transferred, retrieved, transformed, or applied in a way that changes or obscures that target.",
+          "The receiving process treats the material as applicable to a different target without adequate re-binding."
+        ]
+      },
+      "exclusions": [
+        "The material is validly re-bound to a new target after explicit validation.",
+        "The material is intentionally generic and has no target-specific meaning.",
+        "The wrong target is selected for reasons unrelated to provenance or lineage."
+      ],
+      "examples": [
+        "An edit prepared for one policy document is silently applied to another document.",
+        "A classification belonging to one user or account is attached to a different user or account during retrieval."
+      ],
+      "relationships": [
+        {
+          "type": "can_cooccur_with",
+          "note": "Target-binding loss concerns provenance; authority transposition additionally requires unjustified permission carryover.",
+          "target_id": "VIGIL-FC-000003"
+        }
+      ],
+      "aliases": [
+        "VIGIL.FF.PROVENANCE_LINEAGE.TARGET_BINDING_FAILURE"
+      ]
+    },
+    {
+      "class_id": "VIGIL-FC-000047",
+      "class_code": "UNSUPPORTED_MECHANISM_ATTRIBUTION",
+      "family_id": "VIGIL-FF-0002",
+      "name": "Unsupported Mechanism Attribution",
+      "status": "draft",
+      "abstraction": "class",
+      "plain_english": "A system or report gives a specific causal or intentional explanation even though the evidence cannot trace the event to that mechanism.",
+      "definition": "A failure in which a causal, operational, behavioural, or intentional mechanism is attributed to an event, actor, or system without traceable evidentiary lineage establishing that mechanism and its applicability to the material event.",
+      "recognition": {
+        "required_conditions": [
+          "A material event, output, interruption, pathway, or behaviour is observed or reported.",
+          "A specific causal, operational, behavioural, or intentional mechanism is attributed to that event.",
+          "Available evidence does not trace the attribution to runtime state, action history, evaluation conditions, or another adequate evidentiary basis.",
+          "Material alternative mechanisms remain unresolved or the attribution is presented more definitively than the evidence supports.",
+          "The unsupported attribution materially affects interpretation, governance response, accountability, or reliance."
+        ]
+      },
+      "exclusions": [
+        "Adequate evidence establishes the attributed mechanism and its application to the event.",
+        "The explanation is explicitly presented as a bounded hypothesis with material alternatives and uncertainty preserved.",
+        "The issue is only factual inaccuracy unrelated to causal, operational, behavioural, or intentional attribution.",
+        "The event cannot be reconstructed, but no unsupported mechanism is assigned.",
+        "Execution state is not disclosed, but the system does not invent or overstate a causal account."
+      ],
+      "examples": [
+        "Unexpected task completion is labelled scheming without reconstructing objectives, constraints, affordances, action trace, concealment, or false-belief induction.",
+        "A responding system says an interruption was a safety check despite lacking access to telemetry showing that such a check occurred.",
+        "A refusal is attributed to a specific misconduct category although the available prompt and transformation lineage cannot support that causal account."
+      ],
+      "relationships": [
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000010",
+          "note": "Authorship or source misattribution assigns the wrong contributor or source; unsupported mechanism attribution assigns an unsupported causal or operational account."
+        },
+        {
+          "type": "can_cooccur_with",
+          "target_id": "VIGIL-FC-000024",
+          "note": "Missing reconstruction evidence may leave a mechanism unresolved, but this class additionally requires that an unsupported mechanism is attributed."
+        },
+        {
+          "type": "can_cooccur_with",
+          "target_id": "VIGIL-FC-000029",
+          "note": "Execution-state non-disclosure can deprive a user of the actual state while an unsupported narration supplies a separate false causal account."
+        }
+      ],
+      "aliases": []
+    }
+  ]
+}

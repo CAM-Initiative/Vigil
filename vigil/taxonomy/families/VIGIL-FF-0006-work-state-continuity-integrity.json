@@ -1,0 +1,145 @@
+{
+  "schema_version": "0.2.0",
+  "standard": {
+    "name": "VIGIL Failure Taxonomy",
+    "version": "0.2.0-draft",
+    "status": "draft",
+    "description": "Prototype portable classification standard for recurring AI governance failure mechanisms."
+  },
+  "family": {
+    "family_id": "VIGIL-FF-0006",
+    "family_code": "WORK_STATE_CONTINUITY",
+    "name": "Work-State Continuity Integrity Failures",
+    "status": "draft",
+    "abstraction": "family",
+    "version": "0.1.0",
+    "plain_english": "Material work needed to continue correctly is lost, detached, or restored in an unusable state after interruption or transition.",
+    "definition": "Failures in which task state, intermediate work, dependencies, checkpoints, or restoration context necessary for correct continuation are not durably anchored, preserved, recovered, or made usable across interruption, transfer, restart, or environment transition.",
+    "invariant": "Material work state necessary for correct continuation must remain durably anchored, recoverable, and usable across interruption or transition.",
+    "scope": [
+      "long-running AI tasks",
+      "agentic and multi-agent workflows",
+      "human–AI work sessions",
+      "checkpointed computation",
+      "workspace and environment transitions",
+      "handoff and recovery operations"
+    ],
+    "inclusion_rule": "Use this family when the primary structural failure is loss, detachment, non-persistence, or unfaithful restoration of material work state required to continue a task correctly.",
+    "exclusion_rule": "Do not use this family for access/session ambiguity, interpersonal or persona continuity, missing provenance of an otherwise usable artefact, or an ordinary task failure that leaves recoverable work state intact.",
+    "aliases": [],
+    "allowed_class_ids": [
+      "VIGIL-FC-000034",
+      "VIGIL-FC-000035",
+      "VIGIL-FC-000036"
+    ],
+    "allowed_class_codes": [
+      "CONTINUITY_ANCHOR_FAILURE",
+      "WORK_STATE_PERSISTENCE_FAILURE",
+      "RESTORATION_STATE_INTEGRITY_FAILURE"
+    ]
+  },
+  "classes": [
+    {
+      "class_id": "VIGIL-FC-000034",
+      "class_code": "CONTINUITY_ANCHOR_FAILURE",
+      "family_id": "VIGIL-FF-0006",
+      "name": "Continuity Anchor Failure",
+      "status": "draft",
+      "abstraction": "class",
+      "plain_english": "The work exists, but it is no longer reliably tied to the task, checkpoint, or context needed to resume it.",
+      "definition": "A failure in which material work state lacks or loses the stable identity, checkpoint, task binding, dependency binding, or reference needed to locate and resume the correct continuation state after interruption or transition.",
+      "recognition": {
+        "required_conditions": [
+          "Material state exists or is expected to support later continuation.",
+          "A stable anchor is required to bind that state to the correct task, checkpoint, dependency set, or continuation point.",
+          "The anchor is absent, lost, ambiguous, or detached, preventing reliable resumption."
+        ]
+      },
+      "exclusions": [
+        "The state is correctly anchored but its contents were not persisted.",
+        "The correct state is recoverable and only the user-facing label is inconvenient.",
+        "The failure concerns attribution of authorship rather than resumption of work."
+      ],
+      "examples": [
+        "A multi-agent workflow stores several checkpoints but loses the mapping between each checkpoint and the subtask it can safely resume.",
+        "A workspace retains intermediate artefacts after interruption but cannot identify which dependency version they belong to."
+      ],
+      "relationships": [
+        {
+          "type": "can_cooccur_with",
+          "target_id": "VIGIL-FC-000013",
+          "note": "A continuity anchor may also carry lineage, but resumption binding and provenance reconstruction are distinct requirements."
+        }
+      ],
+      "aliases": []
+    },
+    {
+      "class_id": "VIGIL-FC-000035",
+      "class_code": "WORK_STATE_PERSISTENCE_FAILURE",
+      "family_id": "VIGIL-FF-0006",
+      "name": "Material Work-State Persistence Failure",
+      "status": "draft",
+      "abstraction": "class",
+      "plain_english": "Important work disappears or becomes unavailable when the session, process, or environment changes.",
+      "definition": "A failure in which material intermediate work, task decisions, dependency state, or resumable progress is not durably preserved across an interruption or transition for which continuation is required or reasonably represented as supported.",
+      "recognition": {
+        "required_conditions": [
+          "Material work state has been produced and is necessary for correct continuation.",
+          "An interruption, restart, handoff, expiry, or environment transition occurs.",
+          "The state is lost or unavailable because it was not preserved with the required durability."
+        ]
+      },
+      "exclusions": [
+        "The state was explicitly ephemeral and no continuation was required or represented.",
+        "The state persists but is restored inaccurately.",
+        "The work remains intact and only access to it is temporarily unavailable."
+      ],
+      "examples": [
+        "An agent completes a lengthy analysis in transient memory, and a process restart removes all intermediate findings needed to continue.",
+        "A handoff between assistants omits material pending decisions even though the workflow promises resumable work."
+      ],
+      "relationships": [
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000031",
+          "note": "Work-state persistence concerns survival of task material; authentication-state continuity concerns coherence of access state."
+        }
+      ],
+      "aliases": []
+    },
+    {
+      "class_id": "VIGIL-FC-000036",
+      "class_code": "RESTORATION_STATE_INTEGRITY_FAILURE",
+      "family_id": "VIGIL-FF-0006",
+      "name": "Restoration-State Integrity Failure",
+      "status": "draft",
+      "abstraction": "class",
+      "plain_english": "Work is restored after interruption, but the restored state is incomplete, inconsistent, or unsafe to continue from.",
+      "definition": "A failure in which preserved work state is recovered into a materially incomplete, inconsistent, stale, mismatched, or otherwise unusable continuation state without adequately exposing or resolving the restoration defect.",
+      "recognition": {
+        "required_conditions": [
+          "Work state is preserved and a restoration or recovery attempt occurs.",
+          "The restored state differs materially from the state required for correct continuation.",
+          "The defect is not adequately identified or resolved before continuation."
+        ]
+      },
+      "exclusions": [
+        "No work state was preserved at all.",
+        "The state is restored faithfully and a later independent task error occurs.",
+        "The only issue is that the restored state lacks provenance evidence while remaining operationally usable."
+      ],
+      "examples": [
+        "A recovered agent run restores the task plan but not the completed tool results, causing completed operations to be repeated.",
+        "A checkpoint restores model state against a different dependency version without marking the incompatibility."
+      ],
+      "relationships": [
+        {
+          "type": "can_cooccur_with",
+          "target_id": "VIGIL-FC-000020",
+          "note": "A stale restored state can also inherit an inapplicable verification result, but restoration integrity and verification reuse remain separate mechanisms."
+        }
+      ],
+      "aliases": []
+    }
+  ]
+}

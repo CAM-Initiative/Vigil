@@ -43,6 +43,25 @@ RESEARCH_MINIMUM_PUBLISHED_WORDS = 1500
 RESEARCH_MINIMUM_SOURCE_CORPUS_ENTRIES = 4
 
 TRIAGE_MODEL_VERSION = "2.0"
+DIAGNOSTIC_METHOD = "human-ai-collaborative-analysis"
+DIAGNOSTIC_PLATFORM = "OpenAI ChatGPT"
+DIAGNOSTIC_REVIEW_STATUS = "human-reviewed-and-approved"
+DIAGNOSTIC_REQUIRED_FIELDS = {
+    "method", "diagnostic_date", "human_role", "ai_role", "ai_platform", "ai_model",
+    "model_attribution_basis", "review_status", "authority_boundary", "date_attribution_status",
+}
+TAXONOMY_CLASSIFICATION_STATUSES = {"classified", "family-only", "candidate-new-class", "unmapped", "deferred"}
+TAXONOMY_CLASSIFICATION_REQUIRED = {
+    "taxonomy_version", "classification_status", "classification_basis", "classification_confidence",
+    "classified_on", "classification_review_provenance",
+}
+TAXONOMY_REVIEW_REQUIRED = {
+    "method", "review_date", "ai_provider", "ai_platform", "ai_model", "ai_role",
+    "human_review_status", "authority_boundary",
+}
+TAXONOMY_SECONDARY_REQUIRED = {
+    "family", "class", "classification_basis", "classification_confidence",
+}
 ALLOWED_TRIAGE_PRIORITIES = {"P0", "P1", "P2", "P3", "PN", "PU"}
 ACTIVE_TRIAGE_PRIORITIES = {"P0", "P1", "P2", "P3"}
 ALLOWED_TRIAGE_STATUSES = {
@@ -74,23 +93,16 @@ TRIAGE_HISTORY_REQUIRED = {
 
 RECORD_TYPES = {"observation", "failure_mode", "proposal", "patch", "patch_note"}
 CAM_INTERNAL_REFERENCE_PREFIXES = ("CAM-BS", "CAM-EQ", "VIGIL-")
-VIGIL_RECORD_ID_PATTERN = re.compile(r"^VIGIL-\d{4}-(?:OBS|FM|PROP|PATCH|RESEARCH)-\d{4}$")
-FALLBACK_ALLOWED_CANONICAL_FAILURE_GROUPS = {
-    # Fallback only. The primary VIGIL taxonomy source is
-    # VIGIL.Schema.json / cam_failure_taxonomy.allowed_canonical_failure_group_values,
-    # derived from CAM-EQ2026-OPERATIONS-003-SUP-01 Appendix B.
-    "execution",
-    "arbitration",
-    "epistemic",
-    "relational",
-    "security-integrity",
-    "state-context",
-    "ux-representation",
-    "governance",
-    "infrastructure-continuity",
-    "classification",
-    "economic-legitimacy",
-    "provisional",
+VIGIL_RECORD_ID_PATTERN = re.compile(r"^VIGIL-\d{4}-(?:OBS|FM|PROP|PATCH|LEARN|RESEARCH)-\d{4}$")
+WITHDRAWN_REFERENCE_ID_PATTERN = re.compile(r"^VIGIL-\d{4}-(?:PROP|PATCH|LEARN)-\d{4}$")
+RETIRED_FM_TAXONOMY_FIELDS = {
+    "failure_family",
+    "failure_subtype",
+    "canonical_failure_group",
+    "taxonomy_reference",
+    "related_failure_groups",
+    "allowed_canonical_failure_group_values",
+    "classification_status",
 }
 FALLBACK_ALLOWED_PLATFORM_OR_VENDOR_VALUES = {
     # Fallback only. The primary VIGIL system-context source is
@@ -249,7 +261,10 @@ OBS_FORBIDDEN = {
     "failure_mode_definition",
     "failure_threshold",
 }
-FM_REQUIRED = {"failure_mode_definition", "failure_threshold", "failure_classification", "triage", "repair_status"}
+FM_REQUIRED = {
+    "failure_mode_definition", "failure_threshold", "failure_classification", "taxonomy_classification",
+    "triage", "repair_status",
+}
 PROP_REQUIRED = {"proposal_rationale", "proposal_type", "proposal_scope", "implementation_notes", "external_relevance", "next_action"}
 PATCH_REQUIRED = {
     "date_implemented",
@@ -513,17 +528,6 @@ def validate_patch_trace_structure(path: Path, record: dict[str, Any], errors: l
             reconstruction.get("limitations"),
             errors,
         )
-
-
-def load_allowed_canonical_failure_groups(schema_path: Path | None = None) -> set[str]:
-    """Load canonical failure groups from the VIGIL schema-derived CAM taxonomy registry."""
-    try:
-        schema = load_json(schema_path or SCHEMA_PATH)
-        values = schema.get("cam_failure_taxonomy", {}).get("allowed_canonical_failure_group_values", [])
-        loaded = {value for value in values if isinstance(value, str) and value}
-        return loaded or set(FALLBACK_ALLOWED_CANONICAL_FAILURE_GROUPS)
-    except Exception:  # noqa: BLE001 - validator must retain a labelled offline fallback
-        return set(FALLBACK_ALLOWED_CANONICAL_FAILURE_GROUPS)
 
 
 def load_allowed_system_context_values(
@@ -1181,6 +1185,34 @@ def linked_record_identifier(value: Any) -> str | None:
     return None
 
 
+def withdrawn_reference_ids(record: dict[str, Any]) -> set[str]:
+    """Return typed withdrawn-record IDs retained as provenance tokens.
+
+    Draft artefacts are deliberately not loaded or made resolvable. Only
+    well-formed identifiers already present in canonical public metadata are
+    acknowledged for link-integrity checks.
+    """
+    linked = record.get("linked_records")
+    if not isinstance(linked, dict):
+        return set()
+    references: set[str] = set()
+    for field in ("related_proposals", "related_patch_notes", "related_learn_records"):
+        values = linked.get(field, [])
+        if isinstance(values, list):
+            for value in values:
+                identifier = linked_record_identifier(value)
+                if isinstance(identifier, str) and WITHDRAWN_REFERENCE_ID_PATTERN.fullmatch(identifier):
+                    references.add(identifier)
+    contextual = linked.get("contextual_relations", [])
+    if isinstance(contextual, list):
+        for relation in contextual:
+            if isinstance(relation, dict):
+                identifier = relation.get("record_id")
+                if isinstance(identifier, str) and WITHDRAWN_REFERENCE_ID_PATTERN.fullmatch(identifier):
+                    references.add(identifier)
+    return references
+
+
 def validate_canonical_path(path: Path, record_id: Any, record_type: Any, errors: list[str]) -> None:
     """Validate canonical repository paths while allowing standalone fixture files."""
     try:
@@ -1197,13 +1229,141 @@ def validate_canonical_path(path: Path, record_id: Any, record_type: Any, errors
         errors.append(f"{path}: record path must be vigil/records/{expected.as_posix()} for id/type")
 
 
+def taxonomy_catalogue() -> tuple[dict[str, dict[str, Any]], dict[str, dict[str, Any]]]:
+    families: dict[str, dict[str, Any]] = {}
+    classes: dict[str, dict[str, Any]] = {}
+    for taxonomy_path in sorted((VIGIL_DIR / "taxonomy" / "families").glob("*.json")):
+        document = load_json(taxonomy_path)
+        family = document.get("family", {})
+        if isinstance(family, dict) and family.get("family_id"):
+            families[family["family_id"]] = family
+        for item in document.get("classes", []):
+            if isinstance(item, dict) and item.get("class_id"):
+                classes[item["class_id"]] = item
+    return families, classes
+
+
+def validate_taxonomy_classification(path: Path, record: dict[str, Any], errors: list[str]) -> None:
+    block = record.get("taxonomy_classification")
+    if not isinstance(block, dict):
+        errors.append(f"{path}: FM taxonomy_classification must be an object")
+        return
+    add_missing(errors, path, block, TAXONOMY_CLASSIFICATION_REQUIRED)
+    if "structural_review_flags" not in block:
+        errors.append(f"{path}: taxonomy_classification missing required field structural_review_flags")
+    status = block.get("classification_status")
+    if status not in TAXONOMY_CLASSIFICATION_STATUSES:
+        errors.append(f"{path}: unsupported taxonomy classification status {status!r}")
+    if block.get("taxonomy_version") != "0.2.0-draft":
+        errors.append(f"{path}: taxonomy_classification.taxonomy_version must be '0.2.0-draft'")
+    if block.get("classification_confidence") not in {"high", "medium", "low"}:
+        errors.append(f"{path}: invalid taxonomy classification confidence")
+    if not isinstance(block.get("structural_review_flags"), list):
+        errors.append(f"{path}: taxonomy structural_review_flags must be an array")
+    families, classes = taxonomy_catalogue()
+    family = block.get("primary_family")
+    klass = block.get("primary_class")
+    if status in {"classified", "family-only"} and not isinstance(family, dict):
+        errors.append(f"{path}: {status} taxonomy outcome requires primary_family")
+    if status == "classified" and not isinstance(klass, dict):
+        errors.append(f"{path}: classified taxonomy outcome requires primary_class")
+    if status != "classified" and klass is not None:
+        errors.append(f"{path}: {status} taxonomy outcome must not assert primary_class")
+    if status == "candidate-new-class" and not isinstance(block.get("candidate_class"), dict):
+        errors.append(f"{path}: candidate-new-class outcome requires candidate_class without an immutable ID")
+    if isinstance(family, dict):
+        canonical = families.get(family.get("family_id"))
+        if not canonical:
+            errors.append(f"{path}: taxonomy family ID does not resolve")
+        elif family.get("family_code") != canonical.get("family_code") or family.get("family_name") != canonical.get("name"):
+            errors.append(f"{path}: taxonomy family code/name disagrees with canonical taxonomy")
+    if isinstance(klass, dict):
+        canonical_class = classes.get(klass.get("class_id"))
+        if not canonical_class:
+            errors.append(f"{path}: taxonomy class ID does not resolve")
+        else:
+            if isinstance(family, dict) and canonical_class.get("family_id") != family.get("family_id"):
+                errors.append(f"{path}: taxonomy class does not belong to asserted family")
+            expected = (canonical_class.get("class_code"), canonical_class.get("name"), canonical_class.get("abstraction"))
+            actual = (klass.get("class_code"), klass.get("class_name"), klass.get("abstraction"))
+            if actual != expected:
+                errors.append(f"{path}: taxonomy class code/name/abstraction disagrees with canonical taxonomy")
+    secondaries = block.get("secondary_classifications", [])
+    if not isinstance(secondaries, list):
+        errors.append(f"{path}: taxonomy secondary_classifications must be an array")
+        secondaries = []
+    if secondaries and status != "classified":
+        errors.append(f"{path}: secondary classifications cannot replace a missing primary classification")
+    primary_class_id = klass.get("class_id") if isinstance(klass, dict) else None
+    seen_secondary_ids: set[str] = set()
+    for number, secondary in enumerate(secondaries):
+        secondary_where = f"{path}: taxonomy secondary_classifications[{number}]"
+        if not isinstance(secondary, dict):
+            errors.append(f"{secondary_where} must be an object")
+            continue
+        missing = TAXONOMY_SECONDARY_REQUIRED.difference(secondary)
+        if missing:
+            errors.append(f"{secondary_where} missing required fields: {sorted(missing)}")
+        secondary_family = secondary.get("family")
+        secondary_class = secondary.get("class")
+        if not isinstance(secondary_family, dict):
+            errors.append(f"{secondary_where}.family must be an object")
+        if not isinstance(secondary_class, dict):
+            errors.append(f"{secondary_where}.class must be an object")
+        if secondary.get("classification_confidence") not in {"high", "medium", "low"}:
+            errors.append(f"{secondary_where} has invalid classification_confidence")
+        if not isinstance(secondary.get("classification_basis"), str) or not secondary.get("classification_basis", "").strip():
+            errors.append(f"{secondary_where} classification_basis must be a non-empty string")
+        if not isinstance(secondary_family, dict) or not isinstance(secondary_class, dict):
+            continue
+        canonical_family = families.get(secondary_family.get("family_id"))
+        if not canonical_family:
+            errors.append(f"{secondary_where} family ID does not resolve")
+        elif (
+            secondary_family.get("family_code") != canonical_family.get("family_code")
+            or secondary_family.get("family_name") != canonical_family.get("name")
+        ):
+            errors.append(f"{secondary_where} family code/name disagrees with canonical taxonomy")
+        secondary_class_id = secondary_class.get("class_id")
+        canonical_secondary_class = classes.get(secondary_class_id)
+        if not canonical_secondary_class:
+            errors.append(f"{secondary_where} class ID does not resolve")
+        else:
+            if canonical_secondary_class.get("family_id") != secondary_family.get("family_id"):
+                errors.append(f"{secondary_where} class does not belong to asserted family")
+            expected = (
+                canonical_secondary_class.get("class_code"),
+                canonical_secondary_class.get("name"),
+                canonical_secondary_class.get("abstraction"),
+            )
+            actual = (
+                secondary_class.get("class_code"),
+                secondary_class.get("class_name"),
+                secondary_class.get("abstraction"),
+            )
+            if actual != expected:
+                errors.append(f"{secondary_where} class code/name/abstraction disagrees with canonical taxonomy")
+        if secondary_class_id == primary_class_id:
+            errors.append(f"{secondary_where} duplicates the primary class")
+        if secondary_class_id in seen_secondary_ids:
+            errors.append(f"{secondary_where} duplicates a secondary class")
+        if isinstance(secondary_class_id, str):
+            seen_secondary_ids.add(secondary_class_id)
+    review = block.get("classification_review_provenance")
+    if not isinstance(review, dict):
+        errors.append(f"{path}: taxonomy classification_review_provenance must be an object")
+    else:
+        add_missing(errors, path, review, TAXONOMY_REVIEW_REQUIRED)
+        if review.get("human_review_status") not in {"not-reviewed", "human-reviewed", "human-verified"}:
+            errors.append(f"{path}: invalid taxonomy human_review_status")
+
+
 def validate_record(
     path: Path,
     record: dict[str, Any],
     known_ids: set[str],
     errors: list[str],
     warnings: list[str],
-    allowed_canonical_failure_groups: set[str],
     allowed_platform_or_vendor_values: set[str],
     allowed_product_or_service_values: set[str],
 ) -> None:
@@ -1420,48 +1580,93 @@ def validate_record(
             errors.append(f"{path}: OBS contains forbidden patch_status; patch state belongs in PATCH records")
     elif record_type == "failure_mode":
         add_missing(errors, path, record, FM_REQUIRED)
+        diagnostic = record.get("diagnostic_provenance")
+        if not isinstance(diagnostic, dict):
+            errors.append(f"{path}: FM diagnostic_provenance must be an object")
+        else:
+            add_missing(errors, path, diagnostic, DIAGNOSTIC_REQUIRED_FIELDS)
+            created = record.get("record_identity", {}).get("created") if isinstance(record.get("record_identity"), dict) else None
+            recorded = record.get("date_recorded")
+            expected_date = str(created or recorded or "")[:10]
+            diagnostic_date = diagnostic.get("diagnostic_date")
+            if not isinstance(diagnostic_date, str) or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", diagnostic_date):
+                errors.append(f"{path}: FM diagnostic_provenance.diagnostic_date must be ISO YYYY-MM-DD")
+            elif diagnostic_date != expected_date:
+                errors.append(
+                    f"{path}: FM diagnostic_provenance.diagnostic_date must equal the preferred canonical "
+                    f"creation date {expected_date!r}"
+                )
+            if diagnostic.get("method") != DIAGNOSTIC_METHOD:
+                errors.append(f"{path}: FM diagnostic_provenance.method must be {DIAGNOSTIC_METHOD!r}")
+            if diagnostic.get("ai_platform") != DIAGNOSTIC_PLATFORM:
+                errors.append(f"{path}: FM diagnostic_provenance.ai_platform must be {DIAGNOSTIC_PLATFORM!r}")
+            if diagnostic.get("review_status") != DIAGNOSTIC_REVIEW_STATUS:
+                errors.append(
+                    f"{path}: FM diagnostic_provenance.review_status must be {DIAGNOSTIC_REVIEW_STATUS!r}"
+                )
+            expected_model = None
+            if isinstance(diagnostic_date, str) and re.fullmatch(r"\d{4}-\d{2}-\d{2}", diagnostic_date):
+                if diagnostic_date < "2026-04-23":
+                    errors.append(
+                        f"{path}: FM diagnostic date predates the approved historical attribution window; "
+                        "manual provenance review is required"
+                    )
+                elif diagnostic_date <= "2026-07-08":
+                    expected_model = "GPT-5.5"
+                else:
+                    expected_model = "GPT-5.6 Sol"
+            if expected_model and diagnostic.get("ai_model") != expected_model:
+                errors.append(
+                    f"{path}: FM diagnostic_provenance.ai_model must be {expected_model!r} for diagnostic date "
+                    f"{diagnostic_date!r}"
+                )
+            dates_conflict = bool(created and recorded and str(created)[:10] != str(recorded)[:10])
+            expected_status = "creation-date-conflict-recorded" if dates_conflict else "canonical-creation-date-aligned"
+            if diagnostic.get("date_attribution_status") != expected_status:
+                errors.append(
+                    f"{path}: FM diagnostic_provenance.date_attribution_status must be {expected_status!r}"
+                )
+            if dates_conflict and not diagnostic.get("date_anomaly_note"):
+                errors.append(f"{path}: conflicting FM creation dates require diagnostic_provenance.date_anomaly_note")
         validate_fm_evidence_system_context(path, system_context, errors)
         validate_repair_status(path, record, errors, warnings)
         validate_triage_model(path, record, errors)
+        validate_taxonomy_classification(path, record, errors)
         classification = record.get("failure_classification")
         if isinstance(classification, dict):
-            if is_blank(classification.get("failure_family")):
-                errors.append(f"{path}: FM failure_classification.failure_family is required")
-            canonical_group = classification.get("canonical_failure_group")
-            if is_blank(canonical_group):
-                errors.append(f"{path}: FM failure_classification.canonical_failure_group is required")
-            elif canonical_group not in allowed_canonical_failure_groups:
-                allowed = ", ".join(sorted(allowed_canonical_failure_groups))
+            retired = sorted(RETIRED_FM_TAXONOMY_FIELDS.intersection(classification))
+            if retired:
                 errors.append(
-                    f"{path}: FM failure_classification.canonical_failure_group {canonical_group!r} "
-                    f"is not in allowed CAM taxonomy groups: {allowed}"
+                    f"{path}: FM failure_classification contains retired taxonomy fields: {', '.join(retired)}"
                 )
-            failure_family = classification.get("failure_family")
-            if (
-                isinstance(failure_family, str)
-                and failure_family
-                and canonical_group in allowed_canonical_failure_groups
-                and failure_family not in allowed_canonical_failure_groups
-            ):
-                warnings.append(
-                    f"{path}: FM failure_classification.failure_family {failure_family!r} is not a canonical "
-                    "group; treating it as a local family/subtype routed through canonical_failure_group"
+            facets = classification.get("faceted_analysis")
+            if isinstance(facets, dict) and "external_taxonomy_refs" in facets:
+                errors.append(
+                    f"{path}: FM failure_classification.faceted_analysis.external_taxonomy_refs is retired "
+                    "during the taxonomy-free transition"
                 )
-            related_groups = classification.get("related_failure_groups")
-            if isinstance(related_groups, list):
-                for related_group in related_groups:
-                    if isinstance(related_group, str) and related_group and related_group not in allowed_canonical_failure_groups:
-                        warnings.append(
-                            f"{path}: FM failure_classification.related_failure_groups contains "
-                            f"non-canonical value {related_group!r}; move local concepts to harm_vectors, "
-                            "routing_note, or subtype fields"
-                        )
             add_missing(
                 errors,
                 path,
                 classification,
-                {"taxonomy_reference", "related_failure_groups", "persistence", "reproducibility", "visibility"},
+                {"persistence", "reproducibility", "visibility"},
             )
+        linked = record.get("linked_records")
+        if isinstance(linked, dict) and "related_failure_modes" in linked:
+            errors.append(
+                f"{path}: FM linked_records.related_failure_modes is retired; peer failure similarity belongs "
+                "to taxonomy membership"
+            )
+        cam = record.get("cam_internal")
+        if isinstance(cam, dict):
+            retired_cam = sorted(
+                {"cam_taxonomy_primary_group", "cam_taxonomy_secondary_groups", "cam_taxonomy_candidate_labels"}
+                .intersection(cam)
+            )
+            if retired_cam:
+                errors.append(f"{path}: FM cam_internal contains retired taxonomy fields: {', '.join(retired_cam)}")
+        if "proposed_taxonomy_patch" in record:
+            errors.append(f"{path}: FM proposed_taxonomy_patch is retired")
     elif record_type == "proposal":
         add_missing(errors, path, record, PROP_REQUIRED)
         state = str(record.get("record_state", "")).lower()
@@ -1632,7 +1837,6 @@ def validate(root: Path | None = None, schema_path: Path | None = None) -> int:
             if deprecated_path.exists():
                 errors.append(f"{deprecated_path}: deprecated generated file must not exist")
 
-    allowed_canonical_failure_groups = load_allowed_canonical_failure_groups(schema_path)
     allowed_platform_or_vendor_values = load_allowed_platform_or_vendor_values(schema_path)
     allowed_product_or_service_values = load_allowed_product_or_service_values(schema_path)
 
@@ -1676,20 +1880,26 @@ def validate(root: Path | None = None, schema_path: Path | None = None) -> int:
                     errors.append(f"{path}: duplicate id {record_id!r}")
                 ids.add(record_id)
 
+    acknowledged_withdrawn_ids: set[str] = set()
+    for record in records_by_path.values():
+        acknowledged_withdrawn_ids.update(withdrawn_reference_ids(record))
+    for record in research_by_path.values():
+        acknowledged_withdrawn_ids.update(withdrawn_reference_ids(record))
+    validation_link_ids = ids | acknowledged_withdrawn_ids
+
     for path, record in records_by_path.items():
         validate_record(
             path,
             record,
-            ids,
+            validation_link_ids,
             errors,
             warnings,
-            allowed_canonical_failure_groups,
             allowed_platform_or_vendor_values,
             allowed_product_or_service_values,
         )
 
     for path, record in research_by_path.items():
-        validate_research_record(path, record, ids, errors, research_body_by_path.get(path, ""))
+        validate_research_record(path, record, validation_link_ids, errors, research_body_by_path.get(path, ""))
 
     records_by_id = {
         record["id"]: record
@@ -1701,7 +1911,7 @@ def validate(root: Path | None = None, schema_path: Path | None = None) -> int:
         linked = research.get("linked_records", {})
         if not isinstance(research_id, str) or not isinstance(linked, dict):
             continue
-        for field in ("related_observations", "related_failure_modes", "related_proposals", "related_patch_notes"):
+        for field in ("related_observations", "related_failure_modes"):
             for linked_id in linked.get(field, []):
                 target = records_by_id.get(linked_id)
                 target_research = target.get("linked_records", {}).get("research", []) if target else []
@@ -1722,7 +1932,8 @@ def validate(root: Path | None = None, schema_path: Path | None = None) -> int:
     print(
         "VIGIL record validation passed: "
         f"{len(records_by_path)} JSON files, {len(research_by_path)} research files, "
-        f"{len(ids)} unique records."
+        f"{len(ids)} unique public records; "
+        f"{len(acknowledged_withdrawn_ids)} withdrawn link IDs retained as non-resolvable provenance references."
     )
     return 0
 

@@ -1,0 +1,273 @@
+{
+  "schema_version": "0.2.0",
+  "standard": {
+    "name": "VIGIL Failure Taxonomy",
+    "version": "0.2.0-draft",
+    "status": "draft",
+    "description": "Prototype portable classification standard for recurring AI governance failure mechanisms."
+  },
+  "family": {
+    "family_id": "VIGIL-FF-0003",
+    "family_code": "VERIFICATION_COMPLETION",
+    "name": "Verification & Completion Integrity Failures",
+    "status": "draft",
+    "abstraction": "family",
+    "version": "0.1.0",
+    "plain_english": "The system says work is done, correct, or verified when the required completion condition or check has not actually been satisfied.",
+    "definition": "Failures in which completion, success, correctness, verification, or readiness is asserted, reused, or propagated inconsistently with the externally relevant completion condition, verification scope, checked state, or post-verification output state.",
+    "invariant": "A completion or verification claim must remain bound to the condition that was actually satisfied, the scope that was actually checked, and the state that was actually verified.",
+    "scope": [
+      "AI-generated answers",
+      "tool-mediated tasks",
+      "agentic workflows",
+      "code and repository operations",
+      "document and data transformations",
+      "multi-step execution",
+      "multi-agent workflows"
+    ],
+    "inclusion_rule": "Use this family when the primary structural failure is a mismatch between claimed completion or verification and the condition, scope, state, or evidence required to support that claim.",
+    "exclusion_rule": "Do not use this family merely because an output is incorrect or a task fails. A qualifying failure requires a completion, success, or verification representation that is unsupported, stale, incomplete, or no longer applicable.",
+    "aliases": [
+      "VIGIL.FF.VERIFICATION_COMPLETION"
+    ],
+    "allowed_class_ids": [
+      "VIGIL-FC-000016",
+      "VIGIL-FC-000017",
+      "VIGIL-FC-000018",
+      "VIGIL-FC-000019",
+      "VIGIL-FC-000020",
+      "VIGIL-FC-000021",
+      "VIGIL-FC-000028"
+    ],
+    "allowed_class_codes": [
+      "VERIFICATION_OMISSION",
+      "FALSE_SUCCESS",
+      "COMPLETION_CONDITION_MISMATCH",
+      "POST_VERIFICATION_MUTATION",
+      "STALE_VERIFICATION_REUSE",
+      "PARTIAL_COMPLETION_AS_COMPLETE",
+      "DETERMINISTIC_VERIFICATION_DECOMPOSITION_OMISSION"
+    ]
+  },
+  "classes": [
+    {
+      "class_id": "VIGIL-FC-000016",
+      "class_code": "VERIFICATION_OMISSION",
+      "family_id": "VIGIL-FF-0003",
+      "name": "Required Verification Omission",
+      "status": "draft",
+      "abstraction": "class",
+      "plain_english": "The system gives a verified-style answer without performing the check that the task actually required.",
+      "definition": "A failure in which a material verification step required by the task, claim, workflow, or declared assurance posture is omitted before the result is represented as correct, complete, validated, or ready for reliance.",
+      "recognition": {
+        "required_conditions": [
+          "A material verification step is required by the task, workflow, claim, or declared assurance posture.",
+          "The verification step is not performed or its result is unavailable.",
+          "The system nevertheless represents the result with a level of completion or verification that presupposes the missing check."
+        ]
+      },
+      "exclusions": [
+        "Verification was not required for the level of claim being made.",
+        "The system clearly marks the result as unverified or provisional.",
+        "The verification was performed and the issue is only that the underlying method was poor."
+      ],
+      "examples": [
+        "An agent reports that a file was successfully updated without reading the resulting file or checking the operation response.",
+        "A model gives an exact character count without decomposing or checking the characters."
+      ],
+      "aliases": [
+        "VIGIL.FF.VERIFICATION_COMPLETION.VERIFICATION_OMISSION"
+      ]
+    },
+    {
+      "class_id": "VIGIL-FC-000017",
+      "class_code": "FALSE_SUCCESS",
+      "family_id": "VIGIL-FF-0003",
+      "name": "False-Success Representation",
+      "status": "draft",
+      "abstraction": "class",
+      "plain_english": "The system tells the user the task succeeded when the evidence does not show that it succeeded.",
+      "definition": "A failure in which a task, tool call, workflow, mutation, delivery, or external action is represented as successfully completed despite evidence of failure, unresolved outcome, missing confirmation, or absence of the required durable result.",
+      "recognition": {
+        "required_conditions": [
+          "A task or action has an externally relevant success condition.",
+          "Available evidence does not establish that the success condition was satisfied.",
+          "The system represents the task or action as successful or complete rather than preserving the unresolved state."
+        ]
+      },
+      "exclusions": [
+        "The success condition is actually satisfied.",
+        "The system reports only that an attempt was made, not that it succeeded.",
+        "The failure occurs after a correctly reported successful completion."
+      ],
+      "examples": [
+        "An agent says an email was sent after only creating a draft.",
+        "A coding agent says changes are safely preserved when no commit, patch, or durable workspace exists."
+      ],
+      "aliases": [
+        "VIGIL.FF.VERIFICATION_COMPLETION.FALSE_SUCCESS",
+        "false completion claim",
+        "phantom success"
+      ]
+    },
+    {
+      "class_id": "VIGIL-FC-000018",
+      "class_code": "COMPLETION_CONDITION_MISMATCH",
+      "family_id": "VIGIL-FF-0003",
+      "name": "Completion-Condition Mismatch",
+      "status": "draft",
+      "abstraction": "class",
+      "plain_english": "The system checks the wrong thing and treats that check as proof that the actual task is finished.",
+      "definition": "A failure in which an internal milestone, intermediate state, local tool result, syntactic condition, or partial criterion is substituted for the externally relevant condition that defines task completion.",
+      "recognition": {
+        "required_conditions": [
+          "The task has an externally relevant completion condition.",
+          "A different internal, intermediate, local, or partial condition is satisfied.",
+          "The system treats satisfaction of the substitute condition as sufficient proof of overall completion."
+        ]
+      },
+      "exclusions": [
+        "The intermediate condition is explicitly the agreed completion condition.",
+        "The system accurately describes the result as an intermediate milestone.",
+        "The task fails before any completion representation is made."
+      ],
+      "examples": [
+        "A system treats a successful API request as proof that the intended downstream transaction actually settled.",
+        "A code change compiling is treated as proof that the requested behaviour has been implemented and validated."
+      ],
+      "aliases": [
+        "VIGIL.FF.VERIFICATION_COMPLETION.COMPLETION_CONDITION_MISMATCH"
+      ]
+    },
+    {
+      "class_id": "VIGIL-FC-000019",
+      "class_code": "POST_VERIFICATION_MUTATION",
+      "family_id": "VIGIL-FF-0003",
+      "name": "Post-Verification Mutation",
+      "status": "draft",
+      "abstraction": "class",
+      "plain_english": "The system verifies one version, changes it afterwards, and still calls the changed version verified.",
+      "definition": "A failure in which content, state, configuration, code, data, or an execution artefact is materially changed after verification while retaining or inheriting the verification status of the earlier state without revalidation.",
+      "recognition": {
+        "required_conditions": [
+          "A specific state or artefact is verified.",
+          "A material mutation occurs after that verification.",
+          "The mutated state is represented or consumed as verified without a fresh check covering the mutation."
+        ]
+      },
+      "exclusions": [
+        "The post-verification change is immaterial to the verified property.",
+        "The changed state is reverified before reliance.",
+        "The system clearly invalidates the earlier verification status after mutation."
+      ],
+      "examples": [
+        "A generated report is fact-checked, then rewritten in a way that changes a checked claim but keeps the verified label.",
+        "A tested configuration is modified after validation and deployed under the earlier test result."
+      ],
+      "aliases": [
+        "VIGIL.FF.VERIFICATION_COMPLETION.POST_VERIFICATION_MUTATION"
+      ]
+    },
+    {
+      "class_id": "VIGIL-FC-000020",
+      "class_code": "STALE_VERIFICATION_REUSE",
+      "family_id": "VIGIL-FF-0003",
+      "name": "Stale Verification Reuse",
+      "status": "draft",
+      "abstraction": "class",
+      "plain_english": "An old check is reused as proof for a current state that may no longer be the same.",
+      "definition": "A failure in which a prior verification result is applied to a later state, environment, version, dependency set, target, or time period without establishing that the conditions relevant to the original verification still hold.",
+      "recognition": {
+        "required_conditions": [
+          "A prior verification result exists for an earlier state or condition.",
+          "The current state differs materially or the continued applicability of the earlier result is unresolved.",
+          "The prior verification is reused as current assurance without revalidation of applicability."
+        ]
+      },
+      "exclusions": [
+        "The verified property is demonstrably invariant across the change.",
+        "The earlier verification is used only as historical evidence rather than current assurance.",
+        "A current verification independently confirms the present state."
+      ],
+      "examples": [
+        "A model evaluation result is treated as current after the model or system prompt materially changes.",
+        "A previously verified data extract is reused after the source database changes."
+      ],
+      "aliases": [
+        "VIGIL.FF.VERIFICATION_COMPLETION.STALE_VERIFICATION_REUSE"
+      ]
+    },
+    {
+      "class_id": "VIGIL-FC-000021",
+      "class_code": "PARTIAL_COMPLETION_AS_COMPLETE",
+      "family_id": "VIGIL-FF-0003",
+      "name": "Partial Completion Represented as Complete",
+      "status": "draft",
+      "abstraction": "variant",
+      "plain_english": "Part of the job is finished, but the system reports the whole job as finished.",
+      "definition": "A false-success variant in which one or more required task components, targets, records, files, agents, delivery steps, or verification stages remain incomplete while the aggregate task is represented as complete.",
+      "recognition": {
+        "required_conditions": [
+          "The task contains multiple required components, targets, stages, or deliverables.",
+          "At least one required component remains incomplete or unresolved.",
+          "The aggregate task is represented as complete rather than partially complete."
+        ]
+      },
+      "exclusions": [
+        "The omitted component was optional or explicitly removed from scope.",
+        "The system accurately reports partial completion and identifies the remainder.",
+        "The completed component is itself the entire agreed task."
+      ],
+      "examples": [
+        "An agent updates four of five requested files and reports that all requested changes are complete.",
+        "A multi-agent workflow returns one successful sub-agent result while another required subtask failed silently."
+      ],
+      "relationships": [
+        {
+          "type": "child_of",
+          "note": "The distinguishing feature is an incomplete aggregate task with a completed subset.",
+          "target_id": "VIGIL-FC-000017"
+        }
+      ],
+      "aliases": [
+        "VIGIL.FF.VERIFICATION_COMPLETION.PARTIAL_COMPLETION_AS_COMPLETE"
+      ]
+    },
+    {
+      "class_id": "VIGIL-FC-000028",
+      "class_code": "DETERMINISTIC_VERIFICATION_DECOMPOSITION_OMISSION",
+      "family_id": "VIGIL-FF-0003",
+      "name": "Deterministic Verification Decomposition Omission",
+      "status": "draft",
+      "abstraction": "variant",
+      "plain_english": "A result that could be checked by breaking it into exact parts is asserted without performing that check.",
+      "definition": "A required-verification-omission variant in which a deterministic claim can and should be verified through explicit decomposition into countable, comparable, or otherwise mechanically checkable components, but that decomposition is omitted before the claim is represented as verified or exact.",
+      "recognition": {
+        "required_conditions": [
+          "The claim concerns a result that is deterministically checkable through explicit decomposition.",
+          "The required decomposition or equivalent exact check is not performed.",
+          "The result is nevertheless represented as exact, verified, or suitable for exact reliance."
+        ]
+      },
+      "exclusions": [
+        "The result is verified through an equivalent deterministic method.",
+        "The claim is clearly approximate and exact verification is not required.",
+        "The available check is probabilistic or judgement-based rather than deterministic decomposition."
+      ],
+      "examples": [
+        "A model supplies an exact character count without enumerating or mechanically counting the characters.",
+        "An agent asserts that two structured lists match exactly without comparing their elements."
+      ],
+      "relationships": [
+        {
+          "type": "child_of",
+          "target_id": "VIGIL-FC-000016",
+          "note": "The distinguishing condition is omission of an available deterministic decomposition check."
+        }
+      ],
+      "aliases": [
+        "VIGIL.FF.EXECUTION.DETERMINISTIC_ORTHOGRAPHIC_VERIFICATION"
+      ]
+    }
+  ]
+}

@@ -12,7 +12,7 @@
   ],
   "properties": {
     "schema_version": {
-      "const": "1.1"
+      "const": "1.2"
     },
     "updated_at": {
       "type": [
@@ -235,6 +235,113 @@
             "type": "string",
             "format": "date"
           },
+          "substantive_review_provenance": {
+            "type": "object",
+            "required": [
+              "current_review_event_id",
+              "review_events"
+            ],
+            "properties": {
+              "current_review_event_id": {
+                "type": "string",
+                "pattern": "^EXTREV-[A-F0-9]{16}$"
+              },
+              "review_events": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "review_event_id",
+                    "review_date",
+                    "review_system",
+                    "ai_role",
+                    "generation_mode",
+                    "review_method",
+                    "review_scope",
+                    "source_scope_reference",
+                    "limitations_reference",
+                    "human_role",
+                    "human_review_status",
+                    "human_verification_status"
+                  ],
+                  "properties": {
+                    "review_event_id": {
+                      "type": "string",
+                      "pattern": "^EXTREV-[A-F0-9]{16}$"
+                    },
+                    "review_date": {
+                      "type": "string",
+                      "format": "date"
+                    },
+                    "review_system": {
+                      "type": "object",
+                      "required": ["provider", "platform", "model"],
+                      "properties": {
+                        "provider": {"type": "string", "minLength": 1},
+                        "platform": {"type": "string", "minLength": 1},
+                        "model": {"type": "string", "minLength": 1}
+                      },
+                      "additionalProperties": false
+                    },
+                    "ai_role": {
+                      "const": "substantive-analytical-reviewer"
+                    },
+                    "generation_mode": {
+                      "const": "semi-autonomous"
+                    },
+                    "review_method": {
+                      "type": "object",
+                      "required": ["access_method", "scope_method"],
+                      "properties": {
+                        "access_method": {
+                          "enum": [
+                            "direct-public-primary-review",
+                            "direct-licensed-primary-review",
+                            "official-public-extract-review",
+                            "official-metadata-only-review",
+                            "secondary-source-only-review",
+                            "blocked-primary-text-review"
+                          ]
+                        },
+                        "scope_method": {
+                          "enum": [
+                            "bounded-complete-review",
+                            "partial-review",
+                            "supporting-only-review",
+                            "context-only-review",
+                            "blocked-primary-text-review",
+                            "not-started",
+                            "excluded",
+                            "superseded-version-review"
+                          ]
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "review_scope": {"type": "string", "minLength": 40},
+                    "source_scope_reference": {
+                      "const": "vigil/external_requirements/source-scope.json"
+                    },
+                    "limitations_reference": {
+                      "type": "array",
+                      "const": [
+                        "source_access_notes",
+                        "extraction_scope_notes",
+                        "inaccessible_sections",
+                        "known_unreviewed_sections"
+                      ]
+                    },
+                    "human_role": {"const": "contract-approver"},
+                    "human_review_status": {"const": "not-reviewed"},
+                    "human_verification_status": {"const": "not-verified"}
+                  },
+                  "additionalProperties": false
+                }
+              }
+            },
+            "additionalProperties": false
+          },
           "notes": {
             "type": [
               "string",
@@ -260,7 +367,8 @@
                 "ai_governance_relevance",
                 "applicable_lifecycle_stages",
                 "relevance_scope",
-                "last_substantive_reviewed"
+                "last_substantive_reviewed",
+                "substantive_review_provenance"
               ]
             }
           }

@@ -76,7 +76,6 @@ def main() -> int:
         if deprecated_path.exists():
             errors.append(f"{deprecated_path}: deprecated generated file must not exist")
 
-    allowed_groups = module.load_allowed_canonical_failure_groups()
     allowed_vendors = module.load_allowed_platform_or_vendor_values()
     allowed_products = module.load_allowed_product_or_service_values()
 
@@ -139,7 +138,6 @@ def main() -> int:
             validation_link_ids,
             errors,
             warnings,
-            allowed_groups,
             allowed_vendors,
             allowed_products,
         )

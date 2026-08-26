@@ -233,7 +233,6 @@
   },
   "linked_records": {
     "related_observations": [],
-    "related_failure_modes": [],
     "related_proposals": [
       "VIGIL-2026-PROP-0028"
     ],
@@ -268,8 +267,6 @@
   "failure_mode_definition": "Technical reachability, credential validity, exploitability, residual access, inherited access, authentication success, persistent authenticator enrolment, trusted-device status, recovery-channel control, remembered session state, passkey or certificate validity, delegated identity linkage, prior employment, or contextual familiarity is treated as authority to act across an organisational or custodial boundary without independently validated authorisation for the actor, target, action, scope, purpose, and effective period. Persistence of the underlying personal account, identity, phone number, or device is not itself a failure; the failure concerns an organisational trust binding that remains operative beyond its authority lifecycle or is used outside its authorised scope.",
   "failure_threshold": "A surviving authenticator, recovery, device, session, or delegated trust binding is a vulnerability condition when organisational authority has ended or materially changed. The failure threshold is met when that binding enables or materially contributes to unauthorised authentication, recovery, re-enrolment, invocation, acquisition, exfiltration, retention, propagation, analysis, training, operational use, or product incorporation. Malicious intent is not required.",
   "failure_classification": {
-    "failure_family": "security-integrity",
-    "failure_subtype": "technically-available-access-mistaken-for-cross-organisational-authority",
     "harm_vectors": [
       "persistent personal-authenticator binding",
       "stale MFA enrolment",
@@ -310,13 +307,6 @@
     ],
     "failure_scope": "agent / operator / identity layer / authenticator lifecycle / source organisation / receiving organisation / downstream systems",
     "recurrence_pattern": "May recur when personal factors remain enrolled after role change, phone-number change, factor replacement, or offboarding; when old sessions or trusted devices survive unenrolment; or when agents inherit human authentication context without target-specific authority.",
-    "canonical_failure_group": "security-integrity",
-    "taxonomy_reference": "CAM-EQ2026-OPERATIONS-003-SUP-01 Appendix B — OPS.FF.SECURITY-INTEGRITY; VIGIL subtype: technically-available-access-mistaken-for-cross-organisational-authority",
-    "related_failure_groups": [
-      "execution",
-      "governance",
-      "state-context"
-    ],
     "persistence": "Persists until organisational trust bindings are inventoried, revoked, expired, isolated, or revalidated; underlying personal identities remain untouched; acquired material is traced and contained; and downstream uses are identified.",
     "reproducibility": "Test stale SMS numbers, recycled numbers, personal authenticator applications, trusted devices, passkeys, recovery channels, factor replacement without invalidation, former-worker sessions, inherited tokens, changed targets, and downstream custody.",
     "visibility": "Often low because logs may show valid multi-factor authentication or trusted-session acceptance while organisational authority is absent."
@@ -426,6 +416,18 @@
       "Downstream custody and use controls"
     ]
   },
+  "diagnostic_provenance": {
+    "method": "human-ai-collaborative-analysis",
+    "diagnostic_date": "2026-08-05",
+    "human_role": "substantive governance analysis, contextual judgement, correction, review and approval",
+    "ai_role": "analytical synthesis, mechanism identification, evidence and governance-context comparison, and drafting support",
+    "ai_platform": "OpenAI ChatGPT",
+    "ai_model": "GPT-5.6 Sol",
+    "model_attribution_basis": "inferred from canonical failure-mode creation date and documented ChatGPT model availability",
+    "review_status": "human-reviewed-and-approved",
+    "authority_boundary": "The AI collaborator supported analysis and drafting but was not independently authoritative; the human governance editor reviewed and accepted the diagnosis.",
+    "date_attribution_status": "canonical-creation-date-aligned"
+  },
   "interpretive_provenance": {
     "review_history": [
       {
@@ -529,5 +531,34 @@
       "authority_boundary": "Human editorship governs VIGIL direction and CAM adoption; the AI analytical reviewer performs routine evidence triage, record analysis, and reconciliation."
     },
     "historical_reviewer_note": "Initial record drafted and subsequently refined on 2026-08-05 by GPT-5.6 Thinking under Dr Michelle Vivian O'Rourke's governance direction; no earlier review is asserted."
+  },
+  "taxonomy_classification": {
+    "taxonomy_version": "0.2.0-draft",
+    "classification_status": "classified",
+    "classification_basis": "Surviving credentials, sessions, devices, or trust bindings are treated as cross-organisational permission after authority changes.",
+    "classification_confidence": "high",
+    "classified_on": "2026-08-25",
+    "structural_review_flags": [],
+    "primary_family": {
+      "family_id": "VIGIL-FF-0001",
+      "family_code": "AUTHORITY_BOUNDARY",
+      "family_name": "Authority Boundary Integrity Failures"
+    },
+    "primary_class": {
+      "class_id": "VIGIL-FC-000007",
+      "class_code": "TECHNICAL_REACHABILITY_AS_AUTHORITY",
+      "class_name": "Technical Reachability Mistaken for Authority",
+      "abstraction": "variant"
+    },
+    "classification_review_provenance": {
+      "method": "record-definition-threshold-to-taxonomy-criteria-review",
+      "review_date": "2026-08-25",
+      "ai_provider": "OpenAI",
+      "ai_platform": "ChatGPT Work",
+      "ai_model": "GPT-5.6 Sol",
+      "ai_role": "substantive taxonomy classification analysis and drafting support",
+      "human_review_status": "not-reviewed",
+      "authority_boundary": "AI classification is provisional draft taxonomy analysis and is not independently authoritative."
+    }
   }
 }
