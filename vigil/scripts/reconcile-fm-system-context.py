@@ -422,6 +422,7 @@ def project_system_context(
 ) -> dict[str, Any]:
     context = copy.deepcopy(record.get("system_context") or {})
     fallback = copy.deepcopy(fallback_context or context)
+    source_records = record.get("source_records", [])
 
     vendors: list[str] = []
     products: list[str] = []
@@ -429,8 +430,16 @@ def project_system_context(
     evidenced_systems: list[dict[str, Any]] = []
     eligible_sources: list[dict[str, Any]] = []
     has_explicit_identity = False
+    uses_extended_projection_contract = any(
+        isinstance(source, dict)
+        and (
+            isinstance(source.get("affected_system_identity"), dict)
+            or source.get("affected_system_projection") is False
+        )
+        for source in source_records
+    )
 
-    for source in record.get("source_records", []):
+    for source in source_records:
         if not eligible_source(source):
             continue
         eligible_sources.append(source)
@@ -489,20 +498,36 @@ def project_system_context(
     context["evidenced_products_or_services"] = products
     context["evidenced_models_or_runtimes"] = models
     context["evidenced_systems"] = evidenced_systems
-    context["evidence_projection"] = {
-        "basis": "record-local affected-system metadata",
-        "method": "explicit affected-system identity with structured source roll-up and bounded record-context fallback",
-        "reconciled_on": RECONCILIATION_DATE,
-        "inference_boundary": (
-            "Affected provider, product, model, and runtime identity is projected from explicit "
-            "source_records[].affected_system_identity when present, otherwise from structured "
-            "system_or_product and model_or_algorithm metadata, with bounded fallback to an existing "
-            "concrete FM system_context for older records. Sources marked affected_system_projection=false "
-            "are supporting context and do not enter the affected-system roll-up. source_platform identifies "
-            "where evidence is hosted or published and is not treated as affected-system identity. Narrative "
-            "source_context, relevance_note, article titles, and publisher prose are not mined for identity."
-        ),
-    }
+    if uses_extended_projection_contract:
+        context["evidence_projection"] = {
+            "basis": "record-local affected-system metadata",
+            "method": "explicit affected-system identity with structured source roll-up and bounded record-context fallback",
+            "reconciled_on": RECONCILIATION_DATE,
+            "inference_boundary": (
+                "Affected provider, product, model, and runtime identity is projected from explicit "
+                "source_records[].affected_system_identity when present, otherwise from structured "
+                "system_or_product and model_or_algorithm metadata, with bounded fallback to an existing "
+                "concrete FM system_context for older records. Sources marked affected_system_projection=false "
+                "are supporting context and do not enter the affected-system roll-up. source_platform identifies "
+                "where evidence is hosted or published and is not treated as affected-system identity. Narrative "
+                "source_context, relevance_note, article titles, and publisher prose are not mined for identity."
+            ),
+        }
+    else:
+        # Preserve the established deterministic contract byte-for-byte for the
+        # existing corpus; adding new vocabulary must not make unchanged records stale.
+        context["evidence_projection"] = {
+            "basis": "record-local affected-system metadata",
+            "method": "structured source affected-system roll-up with record system-context fallback",
+            "reconciled_on": RECONCILIATION_DATE,
+            "inference_boundary": (
+                "Affected provider, product, model, and runtime identity is projected from structured "
+                "system_or_product and model_or_algorithm source metadata, with bounded fallback to an "
+                "existing concrete FM system_context for older records. source_platform identifies where "
+                "evidence is hosted or published and is not treated as affected-system identity. Narrative "
+                "source_context, relevance_note, article titles, and publisher prose are not mined for identity."
+            ),
+        }
 
     if len(vendors) > 1:
         context["platform_or_vendor"] = "Multi Vendor"
