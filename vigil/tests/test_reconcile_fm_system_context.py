@@ -14,10 +14,19 @@ MODULE = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(MODULE)
 
 
-def source(platform: str, system: str = "", model: str = "", *, title: str = "Source", url: str = "https://example.invalid/source", context: str = "") -> dict:
+def source(
+    platform: str,
+    system: str = "",
+    model: str = "",
+    *,
+    title: str = "Source",
+    url: str = "https://example.invalid/source",
+    context: str = "",
+    role: str = "incident-evidence",
+) -> dict:
     return {
         "source_residence": "external",
-        "source_role": "incident-evidence",
+        "source_role": role,
         "source_platform": platform,
         "system_or_product": system,
         "model_or_algorithm": model,
@@ -27,10 +36,17 @@ def source(platform: str, system: str = "", model: str = "", *, title: str = "So
     }
 
 
-def base_record(sources: list[dict], context: dict | None = None) -> dict:
+def base_record(
+    sources: list[dict],
+    context: dict | None = None,
+    *,
+    created: str = "2026-08-15",
+) -> dict:
     return {
         "id": "VIGIL-2026-FM-9999",
         "record_type": "failure_mode",
+        "date_recorded": created,
+        "record_identity": {"created": created},
         "source_records": sources,
         "system_context": context or {
             "platform_or_vendor": "Multi Vendor",
@@ -155,51 +171,58 @@ def test_uncertainty_is_not_a_model_and_provider_cluster_survives() -> None:
     assert "evidence_source_platform" not in fallback[0]
 
 
-def test_qwen_maps_to_alibaba() -> None:
+def test_qwen_maps_to_alibaba_without_expanding_closed_compatibility_enums() -> None:
     record = base_record([source("Research paper", "Qwen models", "Qwen3 235B")])
     projected = MODULE.project_system_context(record)
     assert projected["evidenced_vendors"] == ["Alibaba"]
     assert projected["evidenced_products_or_services"] == ["Qwen"]
-    assert projected["platform_or_vendor"] == "Alibaba"
-    assert projected["product_or_service"] == "Qwen"
+    assert projected["evidenced_models_or_runtimes"] == ["Qwen3 235B"]
+    assert projected["platform_or_vendor"] == "Other"
+    assert projected["product_or_service"] == "Other"
 
 
-def test_explicit_affected_identity_is_authoritative_and_disables_legacy_fallback() -> None:
-    primary = source("Nature Communications", "mixed model evaluation", "prose summary")
-    primary["affected_system_identity"] = {
-        "providers_or_vendors": ["OpenAI", "Anthropic", "Google", "Meta", "xAI", "DeepSeek", "Alibaba"],
-        "products_or_services": [],
-        "models_or_runtimes": ["GPT-4o", "Claude 4 Sonnet", "Gemini 2.5 Flash", "Qwen3 235B"],
-    }
-    record = base_record(
-        [primary],
-        context={
-            "platform_or_vendor": "Multi Vendor",
-            "vendor_cluster": ["OpenAI", "Anthropic"],
-            "primary_evidenced_vendors": ["OpenAI", "Anthropic"],
-            "product_or_service": "Other",
-            "specific_model_or_runtime": "Legacy prose runtime label",
-            "model_or_product": "stateful systems",
-            "interface_surface": "multi-turn",
-        },
+def test_contextual_background_does_not_enter_affected_system_rollup() -> None:
+    primary = source("Nature Communications", "ChatGPT", "GPT-4o", title="Primary", role="research-evidence")
+    contextual = source(
+        "OpenAI",
+        "OpenAI API safety systems and Private Safety Processing",
+        "Private Safety Processing",
+        title="Contextual provider material",
+        role="contextual-background",
     )
-    projected = MODULE.project_system_context(record)
-    assert projected["evidenced_vendors"] == ["OpenAI", "Anthropic", "Google", "Meta", "xAI", "DeepSeek", "Alibaba"]
-    assert projected["evidenced_models_or_runtimes"] == ["GPT-4o", "Claude 4 Sonnet", "Gemini 2.5 Flash", "Qwen3 235B"]
-    assert "Legacy prose runtime label" not in projected["evidenced_models_or_runtimes"]
-    assert projected["evidenced_systems"][0]["projection_basis"] == "source-explicit-affected-system-identity"
-    assert projected["evidence_projection"]["method"] == "explicit affected-system identity with structured source roll-up and bounded record-context fallback"
-
-
-def test_supporting_source_can_opt_out_of_affected_system_projection() -> None:
-    primary = source("Research paper", "ChatGPT", "GPT-4o", title="Primary")
-    supporting = source("Provider announcement", "OpenAI API safety systems", "Private Safety Processing", title="Supporting")
-    supporting["affected_system_projection"] = False
-    projected = MODULE.project_system_context(base_record([primary, supporting]))
+    projected = MODULE.project_system_context(base_record([primary, contextual]))
     assert projected["evidenced_vendors"] == ["OpenAI"]
     assert projected["evidenced_models_or_runtimes"] == ["GPT-4o"]
     assert [item["source_title"] for item in projected["evidenced_systems"]] == ["Primary"]
-    assert projected["evidence_projection"]["method"] == "explicit affected-system identity with structured source roll-up and bounded record-context fallback"
+
+
+def test_target_model_list_remains_open_ended_and_traceable() -> None:
+    targets = (
+        "GPT-4o; DeepSeek-V3; Llama 3.1 70B; Llama 4 Maverik; o4-mini; "
+        "Claude 4 Sonnet; Gemini 2.5 Flash; Grok 3; Qwen3 30B"
+    )
+    record = base_record([
+        source(
+            "Nature Communications",
+            "Nine target language models evaluated against autonomous adversarial LRM attacks",
+            targets,
+            role="research-evidence",
+        )
+    ], created="2026-08-25")
+    projected = MODULE.project_system_context(record)
+    assert projected["evidence_scope"] == "multi-provider"
+    assert projected["evidenced_vendors"] == ["OpenAI", "Anthropic", "Google", "Meta", "xAI", "DeepSeek", "Alibaba"]
+    assert projected["evidenced_models_or_runtimes"] == targets.split("; ")
+    assert "Qwen" in projected["evidenced_products_or_services"]
+    assert projected["platform_or_vendor"] == "Multi Vendor"
+    assert projected["product_or_service"] == "Other"
+
+
+def test_reconciliation_date_does_not_predate_record_creation() -> None:
+    old = base_record([source("Vendor documentation", "ChatGPT", "GPT-5")], created="2026-07-01")
+    new = base_record([source("Vendor documentation", "ChatGPT", "GPT-5")], created="2026-08-25")
+    assert MODULE.project_system_context(old)["evidence_projection"]["reconciled_on"] == "2026-08-15"
+    assert MODULE.project_system_context(new)["evidence_projection"]["reconciled_on"] == "2026-08-25"
 
 
 def test_reconciliation_is_idempotent() -> None:
@@ -215,9 +238,10 @@ def main() -> int:
     test_x_affected_system_can_use_record_context_fallback()
     test_specific_model_beats_polluted_host_compatibility_fields()
     test_uncertainty_is_not_a_model_and_provider_cluster_survives()
-    test_qwen_maps_to_alibaba()
-    test_explicit_affected_identity_is_authoritative_and_disables_legacy_fallback()
-    test_supporting_source_can_opt_out_of_affected_system_projection()
+    test_qwen_maps_to_alibaba_without_expanding_closed_compatibility_enums()
+    test_contextual_background_does_not_enter_affected_system_rollup()
+    test_target_model_list_remains_open_ended_and_traceable()
+    test_reconciliation_date_does_not_predate_record_creation()
     test_reconciliation_is_idempotent()
     print("FM system-context reconciliation tests passed.")
     return 0
