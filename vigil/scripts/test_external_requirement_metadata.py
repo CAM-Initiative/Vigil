@@ -68,16 +68,17 @@ def main():
     assert isinstance(ledger["entries"], list)
     ids = [entry["requirement_id"] for entry in ledger["entries"]]
     assert len(ids) == len(set(ids))
-    assert len(ids) == 432
+    assert len(ids) == 506
 
     backlog_schema = json.loads((REQ / "reextraction-backlog.schema.json").read_text(encoding="utf-8"))
     backlog = json.loads((REQ / "reextraction-backlog.json").read_text(encoding="utf-8"))
     assert backlog_schema["properties"]["schema_version"]["const"] == "1.0"
     backlog_ids = [entry["current_requirement_id"] for entry in backlog["entries"]]
-    assert len(backlog_ids) == len(set(backlog_ids)) == 81
+    assert len(backlog_ids) == len(set(backlog_ids)) == 87
     assert sum(entry["external_source_id"] == "NIST-AI-600-1" for entry in backlog["entries"]) == 60
     assert sum(entry["external_source_id"] == "CYCLONEDX-SPEC" for entry in backlog["entries"]) == 1
     assert sum(entry["external_source_id"] == "IMDA-AGENTIC-AI-MGF" for entry in backlog["entries"]) == 20
+    assert sum(entry["external_source_id"] == "NIST-SP-800-218A" for entry in backlog["entries"]) == 6
 
     validator = (SCRIPTS / "validate-external-requirement-metadata.py").read_text(encoding="utf-8")
     assert '"source_summary"' in validator
@@ -97,6 +98,7 @@ def main():
     reviewed_seeder = (SCRIPTS / "seed-reviewed-source-metadata.py").read_text(encoding="utf-8")
     assert "NIST_GAI_CONSTITUENT_BACKLOG" in reviewed_seeder
     assert "IMDA_BACKLOG" in reviewed_seeder
+    assert "NIST_218A_BACKLOG" in reviewed_seeder
     assert "AI Actor Tasks (subcategory-level)" in reviewed_seeder
     assert "manual reconciliation required" in reviewed_seeder
     assert "--write" in reviewed_seeder
