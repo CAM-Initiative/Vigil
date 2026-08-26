@@ -71,7 +71,11 @@ Empty arrays in fidelity-critical metadata fields are ambiguous unless a review 
 
 The tracked fields are `applicable_actor`, `governed_object`, `timing_or_frequency`, `required_artefacts`, `evidence_expectation`, `verification_method`, `applicability_conditions`, and `exceptions_or_qualifications`.
 
-The initial ledger is deliberately conservative: legacy requirements are not automatically marked reviewed merely because fields already contain values. `validate-external-requirement-metadata.py` turns those unresolved decisions into a finite review queue. Default mode reports unresolved review work but fails only on contradictory/malformed review-state contracts; `--strict` also fails while unresolved review decisions remain.
+The ledger is deliberately conservative: legacy requirements are not automatically marked reviewed merely because fields already contain values. `validate-external-requirement-metadata.py` turns unresolved decisions into a finite review queue. The generated report includes both a requirement-level queue and a source/version summary showing, per field, whether values are populated or empty while review remains outstanding. This is the preferred basis for source-by-source remediation.
+
+Default mode reports unresolved review work but fails only on contradictory/malformed review-state contracts; `--strict` also fails while unresolved review decisions remain.
+
+For the staged 27 July 2026 EU AI Act re-extraction, `seed-eu-ai-act-metadata-review.py` can materialise review-ledger entries from the source-reviewed re-extraction and metadata-normalisation work. It is intentionally limited to those staged packages, treats populated source-explicit fields as `populated-reviewed`, treats reviewed empty fields as `not-specified-by-source`, never infers `not-applicable`, and refuses to overwrite conflicting existing review decisions.
 
 ## Derivative crosswalk boundary
 
@@ -96,8 +100,20 @@ python vigil/scripts/manage-external-requirements.py validate --check-generated
 python vigil/scripts/validate-external-requirement-metadata.py
 python vigil/scripts/validate-external-requirement-metadata.py --write-report
 python vigil/scripts/validate-external-requirement-metadata.py --strict
+python vigil/scripts/seed-eu-ai-act-metadata-review.py
+python vigil/scripts/seed-eu-ai-act-metadata-review.py --write
 python vigil/tests/test_external_requirements.py
 python vigil/scripts/test_external_requirement_metadata.py
 ```
+
+Recommended metadata-remediation sequence:
+
+1. generate the corpus-wide review report;
+2. rank sources by unresolved field decisions and source-fidelity priority;
+3. reopen the authoritative source rather than inferring from existing summaries;
+4. record explicit field decisions in `metadata-review.json`;
+5. repair missing requirement extraction when the metadata review demonstrates that the existing EXTREQ is semantically incomplete;
+6. rerun the report and reduce the unresolved queue;
+7. use `--strict` only for a source/slice that is intended to be metadata-complete.
 
 CAM applicability and coverage are validated separately under `../cam_assessment/`.
