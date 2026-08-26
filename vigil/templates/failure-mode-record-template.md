@@ -57,8 +57,10 @@ The faceted block is intentionally optional for legacy records. Absence means th
 
 Use these source-level fields for affected-system identity where the evidence package supports them:
 
-* `system_or_product` — affected system, product, service, platform surface, or tool;
-* `model_or_algorithm` — affected model, runtime, algorithm, or model family where established.
+* `system_or_product` — affected system, product, service, platform surface, or tool established by that source;
+* `model_or_algorithm` — affected model, runtime, algorithm, or model family established by that source where known.
+
+These fields identify the system that the particular source evidences as affected by the Failure Mode. Do not use them merely to list every provider, model, mitigation, comparator, or control discussed in a source. If a source supplies useful governance or mitigation context but does not establish that the discussed system suffered the Failure Mode, assign the appropriate non-incident `source_role`, normally `contextual-background`, so it does not enter the affected-system roll-up.
 
 Failure-mode records maintain the normalized projection:
 
@@ -72,6 +74,10 @@ Failure-mode records maintain the normalized projection:
 For older records created before `system_or_product` and `model_or_algorithm` were populated consistently, a **concrete pre-existing FM `system_context`** may be used as a bounded compatibility fallback. This fallback must remain linked to actual evidence records and must not be used to manufacture additional vendors or models.
 
 `platform_or_vendor: "Multi Vendor"` is a scope summary only. It is valid when the normalized evidence supports more than one affected provider, but public interfaces should display the concrete `evidenced_vendors`, products, and models/runtimes rather than presenting `Multi Vendor`, `Other`, or `Unknown` as if those were system identities.
+
+The exact strings in `specific_model_or_runtime`, `evidenced_models_or_runtimes`, and per-source model projections are intentionally open-ended because model/runtime names change frequently. By contrast, `platform_or_vendor` and `product_or_service` are closed compatibility summaries governed by the current schema. A newly evidenced model must not silently expand those controlled enums; preserve exact identity in the evidence-backed fields and use an existing compatible summary such as `Multi Vendor` or `Other` where appropriate.
+
+`evidence_projection.reconciled_on` records the deterministic reconciliation date for that FM and must never predate the record's canonical creation date. The original corpus-wide migration date was 2026-08-15; records created later use at least their own creation date.
 
 Do **not** mine narrative `source_context`, `relevance_note`, article titles, publisher prose, or social-media captions to manufacture affected-system identity. If structured metadata and the existing concrete FM context are insufficient, preserve `provider-unresolved` or `system-unresolved` and repair the evidence metadata separately.
 
