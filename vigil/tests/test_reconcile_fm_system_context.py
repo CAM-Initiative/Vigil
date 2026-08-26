@@ -55,6 +55,7 @@ def test_multi_provider_rollup_uses_affected_system_fields() -> None:
     assert "Claude Code" in projected["evidenced_products_or_services"]
     assert projected["evidenced_models_or_runtimes"] == ["Claude", "Claude Code"]
     assert projected["platform_or_vendor"] == "Multi Vendor"
+    assert projected["evidence_projection"]["method"] == "structured source affected-system roll-up with record system-context fallback"
 
 
 def test_evidence_host_is_not_affected_vendor() -> None:
@@ -187,6 +188,7 @@ def test_explicit_affected_identity_is_authoritative_and_disables_legacy_fallbac
     assert projected["evidenced_models_or_runtimes"] == ["GPT-4o", "Claude 4 Sonnet", "Gemini 2.5 Flash", "Qwen3 235B"]
     assert "Legacy prose runtime label" not in projected["evidenced_models_or_runtimes"]
     assert projected["evidenced_systems"][0]["projection_basis"] == "source-explicit-affected-system-identity"
+    assert projected["evidence_projection"]["method"] == "explicit affected-system identity with structured source roll-up and bounded record-context fallback"
 
 
 def test_supporting_source_can_opt_out_of_affected_system_projection() -> None:
@@ -197,6 +199,7 @@ def test_supporting_source_can_opt_out_of_affected_system_projection() -> None:
     assert projected["evidenced_vendors"] == ["OpenAI"]
     assert projected["evidenced_models_or_runtimes"] == ["GPT-4o"]
     assert [item["source_title"] for item in projected["evidenced_systems"]] == ["Primary"]
+    assert projected["evidence_projection"]["method"] == "explicit affected-system identity with structured source roll-up and bounded record-context fallback"
 
 
 def test_reconciliation_is_idempotent() -> None:
