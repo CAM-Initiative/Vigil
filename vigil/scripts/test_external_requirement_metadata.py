@@ -6,6 +6,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 REQ = ROOT / "external_requirements"
+SCRIPTS = ROOT / "scripts"
 FIELDS = {
     "applicable_actor",
     "governed_object",
@@ -36,6 +37,19 @@ def main():
     assert isinstance(ledger["entries"], list)
     ids = [entry["requirement_id"] for entry in ledger["entries"]]
     assert len(ids) == len(set(ids))
+
+    validator = (SCRIPTS / "validate-external-requirement-metadata.py").read_text(encoding="utf-8")
+    assert '"source_summary"' in validator
+    assert '"field_observation"' in validator
+    assert "--write-report" in validator
+    assert "--strict" in validator
+
+    seeder = (SCRIPTS / "seed-eu-ai-act-metadata-review.py").read_text(encoding="utf-8")
+    assert '"direct-primary-text"' in seeder
+    assert '"not-specified-by-source"' in seeder
+    assert "manual reconciliation required" in seeder
+    assert "--write" in seeder
+
     print("External requirement metadata-review contract regression passed")
 
 
