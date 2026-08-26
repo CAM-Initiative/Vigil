@@ -11,6 +11,7 @@ REQUIREMENTS = REQ / "requirements.json"
 REGISTRY = SOURCES / "source-registry.json"
 SCOPE = REQ / "source-scope.json"
 REEXTRACTIONS = REQ / "reextractions"
+METADATA_NORMALIZATION = REEXTRACTIONS / "EU-AI-ACT-2026-07-27-metadata-normalization.json"
 
 
 def load(path): return json.loads(Path(path).read_text(encoding="utf-8"))
@@ -30,7 +31,23 @@ def parent_for(clause):
     if clause.startswith("Article 15"): return "Article 15 — Accuracy, robustness and cybersecurity"
     raise ValueError(f"unsupported staged EU AI Act clause: {clause}")
 
-def expand(candidate, source, scope, package):
+def apply_metadata_overlay(candidate, overrides):
+    normalized = dict(candidate)
+    override = overrides.get(candidate["requirement_id"], {})
+    allowed = {
+        "applicable_actor", "governed_object", "lifecycle_stage", "evidence_expectation",
+        "timing_or_frequency", "required_artefacts", "verification_method",
+        "applicability_conditions", "exceptions_or_qualifications"
+    }
+    unexpected = set(override) - allowed
+    if unexpected:
+        raise ValueError(f"unsupported metadata override fields for {candidate['requirement_id']}: {sorted(unexpected)}")
+    for key, value in override.items():
+        normalized[key] = value
+    return normalized
+
+def expand(candidate, source, scope, package, overrides):
+    candidate = apply_metadata_overlay(candidate, overrides)
     clause, identity = candidate["clause_or_control"], candidate["identity_key"]
     expected = requirement_id(source["vigil_source_id"], source["source_version"], clause, identity)
     if candidate["requirement_id"] != expected:
@@ -63,19 +80,24 @@ def expand(candidate, source, scope, package):
         "interpretation_provenance": {
             "basis":"direct-primary-text","content_origin":"ai-authored","generated_by":"ai","generation_mode":"semi-autonomous",
             "human_role":"contract-approver","human_authorship":False,"human_review_status":"not-reviewed","human_verification_status":"not-verified",
-            "source_analysis_method":"Semantic-atomicity re-extraction from the authoritative consolidated EUR-Lex text under SOURCE-FIDELITY-METHODOLOGY.md.",
+            "source_analysis_method":"Semantic-atomicity re-extraction from the authoritative consolidated EUR-Lex text under SOURCE-FIDELITY-METHODOLOGY.md, with source-explicit metadata normalization.",
             "source_locator":source["official_locator"],"source_metadata_fingerprint":source["source_metadata_fingerprint"],
             "reviewed_source_digest":None,"reviewed_source_digest_algorithm":None,"reviewed_source_digest_status":"not-recorded"},
         "assurance_provenance": [],
         "review_limitations": ["Consolidated EUR-Lex text is a documentation tool; authentic amending acts remain the legal source of record."]}
 
 def migrate(check_only):
-    package_paths = sorted(REEXTRACTIONS.glob("EU-AI-ACT-2026-07-27-*.json"))
+    package_paths = sorted(
+        path for path in REEXTRACTIONS.glob("EU-AI-ACT-2026-07-27-*.json")
+        if path.name != METADATA_NORMALIZATION.name
+    )
     if not package_paths: raise ValueError("no staged EU AI Act re-extraction packages found")
     packages = [load(path) for path in package_paths]
+    normalization = load(METADATA_NORMALIZATION)
+    overrides = normalization.get("overrides", {})
     req_doc, registry, scopes = load(REQUIREMENTS), load(REGISTRY)["entries"], load(SCOPE)["entries"]
     requirements = req_doc["requirements"]; by_id = {x["requirement_id"]: x for x in requirements}
-    all_retired, replacements = set(), []
+    all_retired, replacements, staged_ids = set(), [], set()
     for package in packages:
         key = source_key(package["source"])
         source = next((x for x in registry if source_key(x) == key), None)
@@ -90,7 +112,11 @@ def migrate(check_only):
             if current is None: raise ValueError(f"retired requirement absent: {item['requirement_id']}")
             if source_key(current) != key: raise ValueError(f"retired requirement belongs to another source: {item['requirement_id']}")
         all_retired.update(retired)
-        replacements.extend(expand(x, source, scope, package) for x in package["requirements"])
+        staged_ids.update(x["requirement_id"] for x in package["requirements"])
+        replacements.extend(expand(x, source, scope, package, overrides) for x in package["requirements"])
+    orphan_overrides = sorted(set(overrides) - staged_ids)
+    if orphan_overrides:
+        raise ValueError(f"metadata normalization references non-staged requirement IDs: {orphan_overrides}")
     replacement_ids = [x["requirement_id"] for x in replacements]
     if len(replacement_ids) != len(set(replacement_ids)): raise ValueError("duplicate replacement IDs")
     collisions = sorted((set(replacement_ids) & set(by_id)) - all_retired)
@@ -99,7 +125,7 @@ def migrate(check_only):
     migrated.sort(key=lambda x: x["requirement_id"])
     req_doc["requirements"], req_doc["requirement_count"] = migrated, len(migrated)
     req_doc["updated_at"] = max(x["reviewed_at"] for x in packages)
-    print(f"EU AI Act staged migration valid: retire {len(all_retired)}, add {len(replacements)}, resulting count {len(migrated)}")
+    print(f"EU AI Act staged migration valid: retire {len(all_retired)}, add {len(replacements)}, apply {len(overrides)} metadata normalizations, resulting count {len(migrated)}")
     if check_only: return
     REQUIREMENTS.write_text(json.dumps(req_doc, indent=2, ensure_ascii=False)+"\n", encoding="utf-8")
     print(f"Wrote {REQUIREMENTS}")
