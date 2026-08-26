@@ -6,7 +6,7 @@ This deterministic inventory records the reconciled current model 2.0 state. Sev
 
 ## Scope and boundary
 
-All 70 current failure-mode records are included. VIGIL's record-boundary contract forbids failure-mode triage in OBS and PROP/PATCH records, so those classes are not given synthetic triage state.
+All 71 current failure-mode records are included. VIGIL's record-boundary contract forbids failure-mode triage in OBS and PROP/PATCH records, so those classes are not given synthetic triage state.
 
 ## Headline findings
 
@@ -23,7 +23,7 @@ All 70 current failure-mode records are included. VIGIL's record-boundary contra
 | --- | --- |
 | PN | 25 |
 | P2 | 24 |
-| P1 | 15 |
+| P1 | 16 |
 | P0 | 3 |
 | P3 | 3 |
 
@@ -32,7 +32,7 @@ All 70 current failure-mode records are included. VIGIL's record-boundary contra
 | Status | Count |
 | --- | --- |
 | monitoring | 29 |
-| action-required | 23 |
+| action-required | 24 |
 | under-assessment | 10 |
 | verification-pending | 8 |
 
@@ -40,7 +40,7 @@ All 70 current failure-mode records are included. VIGIL's record-boundary contra
 
 | Severity | Count |
 | --- | --- |
-| S1 | 34 |
+| S1 | 35 |
 | S2 | 23 |
 | S3 | 11 |
 | S4 | 1 |
@@ -54,7 +54,7 @@ All current failure modes use model 2.0 severity values `S0`, `S1`, `S2`, `S3`, 
 | --- | --- | --- |
 | monitoring | PN | 21 |
 | active | P2 | 20 |
-| active | P1 | 15 |
+| active | P1 | 16 |
 | active | PN | 4 |
 | monitoring | P2 | 4 |
 | active | P0 | 3 |
@@ -66,7 +66,7 @@ All current failure modes use model 2.0 severity values `S0`, `S1`, `S2`, `S3`, 
 | Repair status | Priority | Count |
 | --- | --- | --- |
 | repaired | PN | 21 |
-| unrepaired | P1 | 14 |
+| unrepaired | P1 | 15 |
 | unrepaired | P2 | 13 |
 | partially-repaired | P2 | 7 |
 | partially-repaired | PN | 4 |
@@ -82,7 +82,7 @@ All current failure modes use model 2.0 severity values `S0`, `S1`, `S2`, `S3`, 
 | --- | --- | --- |
 | True | PN | 25 |
 | True | P2 | 24 |
-| True | P1 | 15 |
+| True | P1 | 16 |
 | True | P0 | 3 |
 | True | P3 | 3 |
 
@@ -158,12 +158,13 @@ Flags are regression diagnostics. `repaired-with-active-priority-review` identif
 | VIGIL-2026-FM-0062 | active | P0 | action-required | S1 | unrepaired | active | true | Review current CAM identity, essential-service non-denial, degraded-verification, contestability and economic-legitimacy doctrine before creating any proposal; explicitly compare FM-0038, FM-0039, FM-0050 and PROP-0023. | — | — | false | — |
 | VIGIL-2026-FM-0063 | active | P0 | action-required | S1 | unrepaired | active | true | Conduct an exact CAM coverage review for clinical non-substitution, escalation, uncertainty, emergency routing and qualified-care boundaries; do not presume a new patch. | — | — | false | — |
 | VIGIL-2026-FM-0064 | active | P0 | action-required | S1 | unrepaired | active | true | Treat minor-derived and adult non-consensual manifestations as subtypes; review existing CAM minor-safety, NCII, identifiable-person deepfake and identity-integrity doctrine before considering any proposal. | — | — | false | — |
-| VIGIL-2026-FM-0065 | active | P1 | action-required | S2 | unrepaired | active | true | Test SECURITY-002 and adjacent source-authority controls for factual synthesis and retrieval corroboration, explicitly distinguishing this epistemic-poisoning mechanism from FM-0019 refusal-trigger poisoning, before opening any proposal. | — | — | false | — |
+| VIGIL-2026-FM-0065 | active | P1 | action-required | S2 | unrepaired | active | true | Compare additional native evidence before admitting an epistemic-warrant family; test source-quality, proposition-support, independence, contradiction and corroboration controls without treating synthetic origin as an automatic quality defect. | — | — | false | — |
 | VIGIL-2026-FM-0066 | active | P2 | monitoring | S1 | partially-repaired | active | true | Monitor canonical disposition of Caelestis commit 4b93c3e0b0722040da64ef490e7115d9fcb0109c and future evidence of capability-linked safeguard continuity across access surfaces. | VIGIL-2026-PATCH-0038 | — | false | — |
 | VIGIL-2026-FM-0067 | active | PN | monitoring | S1 | partially-repaired | active | true | Monitor recurrence, verify implementation conformance across affected architectures, and reconcile branch-only Caelestis coverage if adopted on main. | VIGIL-2026-PATCH-0039 | — | false | — |
 | VIGIL-2026-FM-0068 | active | PN | monitoring | S1 | partially-repaired | active | true | Monitor recurrence, verify implementation conformance across affected architectures, and reconcile branch-only Caelestis coverage if adopted on main. | VIGIL-2026-PATCH-0040 | — | false | — |
 | VIGIL-2026-FM-0069 | active | PN | monitoring | S1 | partially-repaired | active | true | Monitor recurrence, verify implementation conformance across affected architectures, and reconcile branch-only Caelestis coverage if adopted on main. | VIGIL-2026-PATCH-0041 | — | false | — |
 | VIGIL-2026-FM-0070 | active | PN | monitoring | S1 | partially-repaired | active | true | Monitor recurrence, verify implementation conformance across affected architectures, and reconcile branch-only Caelestis coverage if adopted on main. | VIGIL-2026-PATCH-0042 | — | false | — |
+| VIGIL-2026-FM-0071 | active | P1 | action-required | S1 | unrepaired | active | true | Perform a bounded Caelestis coverage review for trajectory-level safety and authority invariance, course-of-conduct assessment, preservation of prior refusal/boundary state and revalidation under adaptive multi-turn pressure before opening any proposal. | — | — | false | — |
 
 ## Reconciliation result
 
