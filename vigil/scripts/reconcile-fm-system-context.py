@@ -3,13 +3,14 @@
 
 The projection deliberately separates the platform on which evidence is published
 (`source_platform`) from the AI/platform system affected by the failure. Affected
-system identity is derived from an explicit `affected_system_identity` block when
-present, otherwise from structured `system_or_product` and `model_or_algorithm`
-source metadata, with a bounded fallback to the FM's existing concrete
-`system_context` for older records that pre-date those source fields. Sources may
-set `affected_system_projection` false when they are supporting context rather
-than evidence of a system affected by the failure. Narrative prose is never mined
-to manufacture vendor/model identity.
+system identity is derived from structured `system_or_product` and
+`model_or_algorithm` source metadata, with a bounded fallback to the FM's existing
+concrete `system_context` for older records that pre-date those source fields.
+Narrative prose is never mined to manufacture vendor/model identity.
+
+The original corpus-wide migration occurred on 2026-08-15. For records created
+after that migration, evidence_projection.reconciled_on is never allowed to
+predate the record's canonical creation date.
 """
 
 from __future__ import annotations
@@ -26,7 +27,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[2]
 FAILURES_ROOT = ROOT / "vigil" / "records" / "failures"
 REVIEW_PATH = ROOT / "vigil" / "docs" / "reviews" / "FM-SYSTEM-CONTEXT-01-evidence-rollup-reconciliation.md"
-RECONCILIATION_DATE = "2026-08-15"
+MIGRATION_DATE = "2026-08-15"
 
 EVIDENCE_ROLES = {
     "incident-evidence",
@@ -58,7 +59,7 @@ PLACEHOLDERS = {
 GENERIC_PLATFORM_VALUES = {"Multi Vendor", "Other", "Unknown", "Not applicable"}
 
 PROVIDER_PATTERNS: list[tuple[str, tuple[str, ...]]] = [
-    ("OpenAI", ("openai", "chatgpt", "codex", "gpt-", "gpt ")),
+    ("OpenAI", ("openai", "chatgpt", "codex", "gpt-", "gpt ", "o4-mini", "o3")),
     ("Anthropic", ("anthropic", "claude")),
     ("Google", ("google", "gemini", "vertex ai", "ai studio")),
     ("Meta", ("meta ai", "llama", "meta")),
@@ -152,8 +153,11 @@ PRODUCT_PROVIDER = {
     "Snapchat": "Snap",
 }
 
+# Only values already admitted by the closed compatibility schema belong here.
+# Evidence-backed arrays are intentionally more expressive and may contain newer
+# providers/products without changing the compatibility summary enums.
 CONCRETE_LEGACY_PROVIDERS = {
-    "OpenAI", "xAI", "Anthropic", "Meta", "Google", "DeepSeek", "Alibaba", "Kimi", "Sesame",
+    "OpenAI", "xAI", "Anthropic", "Meta", "Google", "DeepSeek", "Kimi", "Sesame",
     "Cohere", "Perplexity", "Mistral", "Microsoft", "GitHub", "TikTok", "Apple",
     "Amazon", "Nvidia", "Hugging Face", "Stability AI", "Runway", "Midjourney",
     "Adobe", "Character.AI", "Replit", "Notion", "Cursor", "Replika", "Nomi",
@@ -163,7 +167,7 @@ CONCRETE_LEGACY_PROVIDERS = {
 
 CANONICAL_SINGLE_PRODUCTS = {
     "ChatGPT", "Claude", "Gemini", "Grok", "Copilot", "Codex", "Claude Code",
-    "Deep Research", "Perplexity Assistant", "Llama", "Qwen", "Le Chat", "GitHub Copilot",
+    "Deep Research", "Perplexity Assistant", "Llama", "Le Chat", "GitHub Copilot",
     "TikTok", "X", "Replit Agent", "Cursor", "Midjourney", "Runway", "Firefly",
     "Character.AI", "Replika", "Nomi", "Chai", "Chub.ai", "Candy AI", "Kindroid",
     "Pi", "HammerAI", "Snapchat", "Google Play",
@@ -205,16 +209,6 @@ def add_unique(target: list[str], value: str) -> None:
 def extend_unique(target: list[str], values: list[str]) -> None:
     for value in values:
         add_unique(target, value)
-
-
-def string_list(value: Any) -> list[str]:
-    if not isinstance(value, list):
-        return []
-    result: list[str] = []
-    for item in value:
-        if isinstance(item, str) and meaningful(item):
-            add_unique(result, item.strip())
-    return result
 
 
 def structured_text(value: dict[str, Any], *fields: str) -> str:
@@ -267,35 +261,17 @@ def split_model_values(value: Any) -> list[str]:
 def eligible_source(source: Any) -> bool:
     if not isinstance(source, dict):
         return False
-    if source.get("affected_system_projection") is False:
-        return False
     residence = source.get("source_residence", "unknown")
     role = source.get("source_role", "unknown")
     return residence in EVIDENCE_RESIDENCES and role in EVIDENCE_ROLES
 
 
-def explicit_affected_identity(source: dict[str, Any]) -> tuple[list[str], list[str], list[str]] | None:
-    identity = source.get("affected_system_identity")
-    if not isinstance(identity, dict):
-        return None
-    return (
-        string_list(identity.get("providers_or_vendors")),
-        string_list(identity.get("products_or_services")),
-        string_list(identity.get("models_or_runtimes")),
-    )
-
-
 def source_affected_identity(source: dict[str, Any]) -> tuple[list[str], list[str], list[str]]:
-    """Return affected-system identity from structured affected-system fields.
+    """Return affected-system identity from fields that describe the affected system.
 
-    An explicit `affected_system_identity` block is authoritative for projection.
-    Otherwise the older `system_or_product` and `model_or_algorithm` fields are
-    parsed. `source_platform` is intentionally excluded because it identifies
-    where evidence is published/hosted, not necessarily the affected system.
+    `source_platform` is intentionally excluded: it identifies where evidence is
+    published/hosted and may be TikTok, Reddit, a news outlet, GitHub, etc.
     """
-    explicit = explicit_affected_identity(source)
-    if explicit is not None:
-        return explicit
     affected_text = structured_text(source, "system_or_product", "model_or_algorithm")
     products = products_from_text(affected_text)
     providers = providers_from_text(affected_text)
@@ -304,6 +280,7 @@ def source_affected_identity(source: dict[str, Any]) -> tuple[list[str], list[st
 
 
 def context_identity(context: dict[str, Any]) -> tuple[list[str], list[str], list[str]]:
+    """Recover concrete identity from the FM's structured system_context."""
     specific = context.get("specific_model_or_runtime")
     model_or_product = context.get("model_or_product")
     product_or_service = context.get("product_or_service")
@@ -379,6 +356,21 @@ def baseline_context(path: Path, baseline_ref: str | None) -> dict[str, Any] | N
     return context if isinstance(context, dict) else None
 
 
+def canonical_record_date(record: dict[str, Any]) -> str:
+    identity = record.get("record_identity")
+    created = identity.get("created") if isinstance(identity, dict) else None
+    recorded = record.get("date_recorded")
+    for value in (created, recorded):
+        if isinstance(value, str) and re.fullmatch(r"\d{4}-\d{2}-\d{2}(?:.*)?", value):
+            return value[:10]
+    return MIGRATION_DATE
+
+
+def record_reconciliation_date(record: dict[str, Any]) -> str:
+    """Return a deterministic projection date that cannot predate the record."""
+    return max(MIGRATION_DATE, canonical_record_date(record))
+
+
 def projection_entry(
     source: dict[str, Any],
     providers: list[str],
@@ -422,30 +414,17 @@ def project_system_context(
 ) -> dict[str, Any]:
     context = copy.deepcopy(record.get("system_context") or {})
     fallback = copy.deepcopy(fallback_context or context)
-    source_records = record.get("source_records", [])
 
     vendors: list[str] = []
     products: list[str] = []
     models: list[str] = []
     evidenced_systems: list[dict[str, Any]] = []
     eligible_sources: list[dict[str, Any]] = []
-    has_explicit_identity = False
-    uses_extended_projection_contract = any(
-        isinstance(source, dict)
-        and (
-            isinstance(source.get("affected_system_identity"), dict)
-            or source.get("affected_system_projection") is False
-        )
-        for source in source_records
-    )
 
-    for source in source_records:
+    for source in record.get("source_records", []):
         if not eligible_source(source):
             continue
         eligible_sources.append(source)
-        explicit = explicit_affected_identity(source)
-        if explicit is not None:
-            has_explicit_identity = True
         source_vendors, source_products, source_models = source_affected_identity(source)
         if not (source_vendors or source_products or source_models):
             continue
@@ -458,14 +437,12 @@ def project_system_context(
                 source_vendors,
                 source_products,
                 source_models,
-                "source-explicit-affected-system-identity" if explicit is not None else "source-affected-system-metadata",
+                "source-affected-system-metadata",
             )
         )
 
     fallback_vendors, fallback_products, fallback_models = context_identity(fallback)
-    # Explicit source identity supersedes the legacy record-context compatibility
-    # fallback. Otherwise retain the bounded fallback for older evidence packages.
-    if eligible_sources and not has_explicit_identity:
+    if eligible_sources:
         missing_vendors = [value for value in fallback_vendors if value not in vendors]
         missing_products = [value for value in fallback_products if value not in products]
         missing_models = [value for value in fallback_models if value not in models]
@@ -498,41 +475,25 @@ def project_system_context(
     context["evidenced_products_or_services"] = products
     context["evidenced_models_or_runtimes"] = models
     context["evidenced_systems"] = evidenced_systems
-    if uses_extended_projection_contract:
-        context["evidence_projection"] = {
-            "basis": "record-local affected-system metadata",
-            "method": "explicit affected-system identity with structured source roll-up and bounded record-context fallback",
-            "reconciled_on": RECONCILIATION_DATE,
-            "inference_boundary": (
-                "Affected provider, product, model, and runtime identity is projected from explicit "
-                "source_records[].affected_system_identity when present, otherwise from structured "
-                "system_or_product and model_or_algorithm metadata, with bounded fallback to an existing "
-                "concrete FM system_context for older records. Sources marked affected_system_projection=false "
-                "are supporting context and do not enter the affected-system roll-up. source_platform identifies "
-                "where evidence is hosted or published and is not treated as affected-system identity. Narrative "
-                "source_context, relevance_note, article titles, and publisher prose are not mined for identity."
-            ),
-        }
-    else:
-        # Preserve the established deterministic contract byte-for-byte for the
-        # existing corpus; adding new vocabulary must not make unchanged records stale.
-        context["evidence_projection"] = {
-            "basis": "record-local affected-system metadata",
-            "method": "structured source affected-system roll-up with record system-context fallback",
-            "reconciled_on": RECONCILIATION_DATE,
-            "inference_boundary": (
-                "Affected provider, product, model, and runtime identity is projected from structured "
-                "system_or_product and model_or_algorithm source metadata, with bounded fallback to an "
-                "existing concrete FM system_context for older records. source_platform identifies where "
-                "evidence is hosted or published and is not treated as affected-system identity. Narrative "
-                "source_context, relevance_note, article titles, and publisher prose are not mined for identity."
-            ),
-        }
+    context["evidence_projection"] = {
+        "basis": "record-local affected-system metadata",
+        "method": "structured source affected-system roll-up with record system-context fallback",
+        "reconciled_on": record_reconciliation_date(record),
+        "inference_boundary": (
+            "Affected provider, product, model, and runtime identity is projected from structured "
+            "system_or_product and model_or_algorithm source metadata, with bounded fallback to an "
+            "existing concrete FM system_context for older records. source_platform identifies where "
+            "evidence is hosted or published and is not treated as affected-system identity. Narrative "
+            "source_context, relevance_note, article titles, and publisher prose are not mined for identity."
+        ),
+    }
 
     if len(vendors) > 1:
         context["platform_or_vendor"] = "Multi Vendor"
     elif len(vendors) == 1:
-        context["platform_or_vendor"] = vendors[0]
+        context["platform_or_vendor"] = (
+            vendors[0] if vendors[0] in CONCRETE_LEGACY_PROVIDERS else "Other"
+        )
     else:
         legacy_platform = fallback.get("platform_or_vendor")
         context["platform_or_vendor"] = (
@@ -545,7 +506,7 @@ def project_system_context(
 
     if len(products) == 1 and products[0] in CANONICAL_SINGLE_PRODUCTS:
         context["product_or_service"] = products[0]
-    elif len(products) > 1:
+    elif products:
         context["product_or_service"] = "Other"
     else:
         legacy_product = fallback.get("product_or_service")
@@ -611,7 +572,7 @@ def render_report(records: list[dict[str, Any]], changed_ids: list[str]) -> str:
     lines = [
         "# FM-SYSTEM-CONTEXT-01 — Evidence-backed system-context reconciliation",
         "",
-        f"**Reconciliation date:** {RECONCILIATION_DATE}",
+        f"**Original migration date:** {MIGRATION_DATE}",
         "",
         "**Scope:** All canonical VIGIL failure-mode records. The projection separates evidence publication/hosting platform from the affected AI/platform system. It does not add external evidence, browse sources, or infer affected-system identity from narrative prose. Layer 1 external requirements are not modified by this reconciliation.",
         "",
@@ -635,15 +596,15 @@ def render_report(records: list[dict[str, Any]], changed_ids: list[str]) -> str:
         "## Projection contract",
         "",
         "- `source_platform` identifies where evidence is hosted or published; it is not an affected-system field.",
-        "- `source_records[].affected_system_identity` is the preferred explicit affected-system identity when a source needs precise provider/model projection.",
-        "- `source_records[].system_or_product` and `source_records[].model_or_algorithm` remain the ordinary source-level affected-system fields when no explicit identity block is supplied.",
-        "- `source_records[].affected_system_projection=false` marks supporting context that must not be rolled into the affected-system identity.",
-        "- Existing concrete FM `system_context` values provide a bounded compatibility fallback for older evidence packages that pre-date those source fields, unless explicit source identity is supplied.",
+        "- `source_records[].system_or_product` and `source_records[].model_or_algorithm` are the source-level affected-system fields when that source establishes affected-system identity.",
+        "- Source roles that do not establish the affected system, such as `contextual-background`, are not included in the affected-system roll-up.",
+        "- Existing concrete FM `system_context` values provide a bounded compatibility fallback for older evidence packages that pre-date those source fields.",
         "- `evidenced_vendors`, `evidenced_products_or_services`, and `evidenced_models_or_runtimes` are the public-facing normalized roll-ups.",
-        "- `evidenced_systems` preserves source traceability and records whether an identity came from explicit source identity, source affected-system metadata, or the record-context fallback.",
+        "- `evidenced_systems` preserves source traceability and records whether an identity came from source affected-system metadata or the record-context fallback.",
+        "- Detailed model/runtime names are intentionally open-ended; closed compatibility fields remain constrained to the schema's admitted values.",
         "- Narrative `source_context`, `relevance_note`, article titles, and publisher prose are not mined to manufacture system identity.",
         "",
-        "The 2026-08-15 transmutation applied the original contract across the then-current FM corpus. Subsequent executions are deterministic freshness checks; explicit affected-system identity and projection opt-out preserve source fidelity where later evidence packages need greater precision.",
+        "The 2026-08-15 transmutation applied this contract across the then-current FM corpus. Subsequent records use a deterministic per-record reconciliation date that is never earlier than the record's canonical creation date.",
         "",
         "## Multi-provider failure modes",
         "",
