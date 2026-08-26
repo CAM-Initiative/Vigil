@@ -22,7 +22,7 @@ A historical `complete` source with no explicit fidelity assurance is conservati
 | EU AI Act consolidated 27 July 2026 | partial | requires-reextraction | partial | Article-level records demonstrably compress independently assessable legal propositions; Article 10 and Article 13 stress tests are recorded under `fidelity-stress-tests/`. |
 | NIST AI RMF 1.0 | complete | assured | complete | Source-native Core subcategories provide a defensible outcome-level granularity for the audited sample. |
 | NIST AI 600-1 Generative AI Profile | complete | provisional | partial | Suggested-action identities are useful, but sampled source-defined actions contain material constituent propositions that need explicit preservation. |
-| CycloneDX 1.7 ML-BOM | complete | assured | complete | Sampled requirement boundaries already separate materially distinct recommendation, prohibition/conformance, descriptive and identifier-constraint propositions. |
+| CycloneDX 1.7 ML-BOM | complete | provisional | partial | Three reviewed ML-BOM propositions retain defensible boundaries; `modelCard.bom-ref` collapses mandatory uniqueness and recommended reserved-prefix constraints into one mandatory record and is queued for deterministic re-extraction. |
 
 ## All other historically complete sources
 

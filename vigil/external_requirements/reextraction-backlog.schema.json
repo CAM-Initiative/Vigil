@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/CAM-Initiative/Vigil/vigil/external_requirements/reextraction-backlog.schema.json",
+  "title": "VIGIL External Requirement Re-extraction Backlog",
+  "type": "object",
+  "required": ["schema_version", "updated_at", "entries"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "updated_at": {"type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$"},
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "current_requirement_id",
+          "vigil_source_id",
+          "external_source_id",
+          "source_version",
+          "clause_or_control",
+          "reason",
+          "detected_fidelity_defects",
+          "affected_metadata_dimensions",
+          "review_status",
+          "source_access_basis",
+          "recommended_repair"
+        ],
+        "properties": {
+          "current_requirement_id": {"type": "string", "pattern": "^EXTREQ-[A-F0-9]{16}$"},
+          "vigil_source_id": {"type": "string", "pattern": "^EXT-[A-F0-9]{12}$"},
+          "external_source_id": {"type": "string", "minLength": 1},
+          "source_version": {"type": "string", "minLength": 1},
+          "clause_or_control": {"type": "string", "minLength": 1},
+          "reason": {"type": "string", "minLength": 1},
+          "detected_fidelity_defects": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "compound-normative-propositions",
+                "actor-loss",
+                "condition-loss",
+                "timing-loss",
+                "exception-loss",
+                "output-or-artefact-loss",
+                "modality-loss",
+                "constituent-semantics-loss",
+                "locator-too-coarse"
+              ]
+            }
+          },
+          "affected_metadata_dimensions": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "applicable_actor",
+                "governed_object",
+                "timing_or_frequency",
+                "required_artefacts",
+                "evidence_expectation",
+                "verification_method",
+                "applicability_conditions",
+                "exceptions_or_qualifications"
+              ]
+            }
+          },
+          "review_status": {
+            "enum": ["queued", "in-review", "staged", "resolved", "blocked-source-access"]
+          },
+          "source_access_basis": {
+            "enum": [
+              "direct-public-primary",
+              "direct-licensed-primary",
+              "official-public-extract",
+              "primary-source-unavailable"
+            ]
+          },
+          "recommended_repair": {
+            "enum": [
+              "constituent-enrichment-preserve-identity",
+              "semantic-decomposition-with-identity-migration"
+            ]
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

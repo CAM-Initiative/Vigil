@@ -126,6 +126,8 @@ def validate() -> tuple[list[str], list[str], dict]:
     retired_ids: set[str] = set()
     staged_requirement_count = 0
     for path in sorted(REEXTRACTION_DIR.glob("*.json")) if REEXTRACTION_DIR.exists() else []:
+        if path.name.endswith("-metadata-normalization.json"):
+            continue
         package = load(path)
         source = package.get("source", {})
         key = source_key(source)

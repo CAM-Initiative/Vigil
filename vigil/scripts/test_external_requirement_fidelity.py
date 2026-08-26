@@ -15,7 +15,7 @@ class ExternalRequirementFidelityTests(unittest.TestCase):
         errors, warnings, summary = module.validate()
         self.assertEqual(errors, [])
         self.assertGreaterEqual(summary["historical_complete_sources"], 2)
-        self.assertEqual(summary["fidelity_assured_effective_complete_sources"], 2)
+        self.assertEqual(summary["fidelity_assured_effective_complete_sources"], 1)
         self.assertGreaterEqual(summary["effective_partial_due_fidelity"], 1)
         self.assertTrue(any("effective downgrade" in warning for warning in warnings))
 
@@ -30,14 +30,14 @@ class ExternalRequirementFidelityTests(unittest.TestCase):
         self.assertEqual(target["fidelity_status"], "requires-reextraction")
         self.assertEqual(target["effective_extraction_status"], "partial")
 
-    def test_nist_rmf_and_cyclonedx_are_explicitly_assured(self):
+    def test_reviewed_source_fidelity_dispositions_are_explicit(self):
         fidelity = module.load(module.FIDELITY_PATH)
         status = {
             (entry["external_source_id"], entry["source_version"]): entry["fidelity_status"]
             for entry in fidelity["entries"]
         }
         self.assertEqual(status[("NIST-AI-100-1", "1.0")], "assured")
-        self.assertEqual(status[("CYCLONEDX-SPEC", "1.7")], "assured")
+        self.assertEqual(status[("CYCLONEDX-SPEC", "1.7")], "provisional")
         self.assertEqual(status[("NIST-AI-600-1", "2024")], "provisional")
 
 
