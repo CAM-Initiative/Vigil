@@ -193,17 +193,33 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         self.assertIn("lacks valid authority", pathway_boundaries)
         self.assertIn("self-authorise", pathway_boundaries)
 
-    def test_taxonomy_07_allocations_are_sequential_and_bounded(self):
+    def test_taxonomy_08_allocations_are_sequential_and_bounded(self):
         documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
         classes = {item["class_id"]: item for document in documents for item in document["classes"]}
         self.assertEqual(
             [class_id for class_id in sorted(classes) if class_id >= "VIGIL-FC-000046"],
-            [f"VIGIL-FC-{number:06d}" for number in range(46, 53)],
+            [f"VIGIL-FC-{number:06d}" for number in range(46, 54)],
         )
         authority = next(document for document in documents if document["family"]["family_id"] == "VIGIL-FF-0001")
         self.assertEqual(classes["VIGIL-FC-000046"]["family_id"], authority["family"]["family_id"])
         self.assertEqual(classes["VIGIL-FC-000047"]["family_id"], "VIGIL-FF-0002")
         self.assertEqual(classes["VIGIL-FC-000048"]["family_id"], "VIGIL-FF-0005")
+        self.assertEqual(classes["VIGIL-FC-000053"]["family_id"], authority["family"]["family_id"])
+
+    def test_identity_representation_authority_class_is_portable_and_bounded(self):
+        documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
+        classes = {item["class_id"]: item for document in documents for item in document["classes"]}
+        identity = classes["VIGIL-FC-000053"]
+        recognition = " ".join(identity["recognition"]["required_conditions"]).lower()
+        self.assertIn("identifiable real person", recognition)
+        self.assertIn("consent", recognition)
+        self.assertIn("possession", recognition)
+        self.assertNotIn("sexual", identity["definition"].lower())
+        boundaries = " ".join(identity["exclusions"]).lower()
+        self.assertIn("progressively resembles", boundaries)
+        self.assertIn("valid consent", boundaries)
+        neighbours = {item["target_id"] for item in identity["relationships"] if item["type"] == "distinguish_from"}
+        self.assertEqual(neighbours, {"VIGIL-FC-000002", "VIGIL-FC-000003", "VIGIL-FC-000005"})
 
     def test_agency_preserving_influence_family_has_one_bounded_invariant(self):
         documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]

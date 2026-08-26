@@ -221,6 +221,42 @@ class TaxonomyClassificationTests(unittest.TestCase):
         self.assertEqual(secondary["classification_role"], "secondary")
         self.assertNotEqual(primary["classification_basis"], secondary["classification_basis"])
 
+    def test_taxonomy_08_identity_authority_outcome_has_no_speculative_secondary(self):
+        record = next(r for r in self.records if r["id"] == "VIGIL-2026-FM-0064")
+        block = record["taxonomy_classification"]
+        self.assertEqual(block["classification_status"], "classified")
+        self.assertEqual(block["primary_family"]["family_id"], "VIGIL-FF-0001")
+        self.assertEqual(block["primary_class"]["class_id"], "VIGIL-FC-000053")
+        self.assertNotIn("secondary_classifications", block)
+        review = record["interpretive_provenance"]["current_ai_review"]
+        self.assertIn("does not independently establish", review["review_outcome"])
+
+    def test_taxonomy_08_epistemic_warrant_candidate_remains_unmapped(self):
+        record = next(r for r in self.records if r["id"] == "VIGIL-2026-FM-0065")
+        block = record["taxonomy_classification"]
+        self.assertEqual(record["record_identity"]["title"], "Untrustworthy retrieved evidence converted into authoritative synthetic fact")
+        self.assertEqual(block["classification_status"], "unmapped")
+        self.assertNotIn("primary_family", block)
+        self.assertNotIn("primary_class", block)
+        self.assertIn("candidate-epistemic-warrant-family", block["structural_review_flags"])
+        self.assertIn("not a required structural condition", record["failure_mode_definition"])
+        self.assertIn("Synthetic origin alone", record["failure_threshold"])
+
+    def test_taxonomy_08_searchleak_source_fidelity_and_compound_outcome(self):
+        record = next(r for r in self.records if r["id"] == "VIGIL-2026-FM-0070")
+        analysis = record["source_fidelity_analysis"]
+        self.assertEqual([stage["stage"] for stage in analysis["exploit_chain"]], [1, 2, 3])
+        self.assertEqual(len(analysis["what_the_source_does_not_establish"]), 6)
+        limitations = " ".join(analysis["what_the_source_does_not_establish"]).lower()
+        self.assertIn("complete internal assurance", limitations)
+        self.assertIn("live malicious exploitation", limitations)
+        block = record["taxonomy_classification"]
+        self.assertEqual(block["primary_class"]["class_id"], "VIGIL-FC-000001")
+        self.assertEqual(
+            [item["class"]["class_id"] for item in block["secondary_classifications"]],
+            ["VIGIL-FC-000038", "VIGIL-FC-000009"],
+        )
+
     def test_deterministic_regeneration_is_byte_stable(self):
         targets = [
             VIGIL / "VIGIL.Failures.Index.json",
