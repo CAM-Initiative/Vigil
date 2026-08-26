@@ -23,7 +23,11 @@ def parent_for(clause):
     if clause.startswith("Article 4a"): return "Article 4a — Processing of special categories of personal data for bias detection and correction"
     if clause.startswith("Article 9"): return "Article 9 — Risk management system"
     if clause.startswith("Article 10"): return "Article 10 — Data and data governance"
+    if clause.startswith("Article 11"): return "Article 11 — Technical documentation"
+    if clause.startswith("Article 12"): return "Article 12 — Record-keeping"
     if clause.startswith("Article 13"): return "Article 13 — Transparency and provision of information to deployers"
+    if clause.startswith("Article 14"): return "Article 14 — Human oversight"
+    if clause.startswith("Article 15"): return "Article 15 — Accuracy, robustness and cybersecurity"
     raise ValueError(f"unsupported staged EU AI Act clause: {clause}")
 
 def expand(candidate, source, scope, package):
@@ -31,6 +35,7 @@ def expand(candidate, source, scope, package):
     expected = requirement_id(source["vigil_source_id"], source["source_version"], clause, identity)
     if candidate["requirement_id"] != expected:
         raise ValueError(f"non-deterministic candidate {candidate['requirement_id']}; expected {expected}")
+    summary = candidate["requirement_summary"]
     return {
         "requirement_id": candidate["requirement_id"], "identity_key": identity,
         "vigil_source_id": source["vigil_source_id"], "external_source_id": source["external_source_id"],
@@ -41,15 +46,19 @@ def expand(candidate, source, scope, package):
         "parent_section_or_group": parent_for(clause), "source_access_status": scope["source_access_status"],
         "source_review_date": package["reviewed_at"],
         "source_access_notes": "Authoritative consolidated public text directly reviewed on EUR-Lex for semantic re-extraction.",
-        "requirement_summary": candidate["requirement_summary"],
+        "requirement_summary": summary,
         "requirement_posture": candidate.get("requirement_posture", "mandatory-normative"),
-        "expectation_type": candidate["expectation_type"], "normative_force": "binding-law",
+        "expectation_type": candidate.get("expectation_type", "positive-duty"), "normative_force": "binding-law",
         "alignment_relationship": "compliance", "applicable_actor": candidate["applicable_actor"],
         "governed_object": candidate["governed_object"], "lifecycle_stage": candidate["lifecycle_stage"],
-        "governance_expectation": candidate["governance_expectation"], "evidence_expectation": candidate["evidence_expectation"],
-        "timing_or_frequency": candidate["timing_or_frequency"], "required_artefacts": candidate["required_artefacts"],
-        "verification_method": candidate["verification_method"], "applicability_conditions": candidate["applicability_conditions"],
-        "exceptions_or_qualifications": candidate["exceptions_or_qualifications"], "governance_concepts": candidate["governance_concepts"],
+        "governance_expectation": candidate.get("governance_expectation", summary),
+        "evidence_expectation": candidate.get("evidence_expectation", []),
+        "timing_or_frequency": candidate.get("timing_or_frequency", []),
+        "required_artefacts": candidate.get("required_artefacts", []),
+        "verification_method": candidate.get("verification_method", []),
+        "applicability_conditions": candidate.get("applicability_conditions", ["Applies to high-risk AI systems subject to the cited provision."]),
+        "exceptions_or_qualifications": candidate.get("exceptions_or_qualifications", []),
+        "governance_concepts": candidate["governance_concepts"],
         "source_defined_tags": [], "related_external_requirements": [], "interpretation_status": "reviewed-analytical-summary",
         "interpretation_provenance": {
             "basis":"direct-primary-text","content_origin":"ai-authored","generated_by":"ai","generation_mode":"semi-autonomous",
