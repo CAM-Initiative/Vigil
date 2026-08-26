@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 """Apply staged semantic-atomicity replacements for the consolidated EU AI Act.
 
-This migration is intentionally source-specific. It retires coarse immutable EXTREQ
-identities only when an approved re-extraction package supplies deterministic
-replacement identities. It does not mark the source fidelity-assured; the wider Act
-must still be reviewed under SOURCE-FIDELITY-METHODOLOGY.md.
+The migration retires coarse immutable EXTREQ identities only when an approved
+source-specific re-extraction package supplies deterministic replacements. Applying
+these packages does not make the wider Act fidelity-assured.
 """
 
 from __future__ import annotations
@@ -20,7 +19,10 @@ SOURCES = ROOT / "external_sources"
 REQUIREMENTS = REQ / "requirements.json"
 REGISTRY = SOURCES / "source-registry.json"
 SCOPE = REQ / "source-scope.json"
-PACKAGE = REQ / "reextractions" / "EU-AI-ACT-2026-07-27-articles-10-13.json"
+PACKAGES = [
+    REQ / "reextractions" / "EU-AI-ACT-2026-07-27-article-4a.json",
+    REQ / "reextractions" / "EU-AI-ACT-2026-07-27-articles-10-13.json",
+]
 
 
 def load(path: Path):
@@ -36,14 +38,22 @@ def source_key(value):
     return value["vigil_source_id"], value["source_version"]
 
 
+def parent_for(clause: str) -> str:
+    if clause.startswith("Article 4a"):
+        return "Article 4a — Processing of special categories of personal data for bias detection and correction"
+    if clause.startswith("Article 10"):
+        return "Article 10 — Data and data governance"
+    if clause.startswith("Article 13"):
+        return "Article 13 — Transparency and provision of information to deployers"
+    raise ValueError(f"unsupported staged EU AI Act clause: {clause}")
+
+
 def expand(candidate, source, scope, package):
     clause = candidate["clause_or_control"]
     identity = candidate["identity_key"]
     expected = requirement_id(source["vigil_source_id"], source["source_version"], clause, identity)
     if candidate["requirement_id"] != expected:
         raise ValueError(f"non-deterministic candidate identity {candidate['requirement_id']}; expected {expected}")
-
-    parent = "Article 10 — Data and data governance" if clause.startswith("Article 10") else "Article 13 — Transparency and provision of information to deployers"
     return {
         "requirement_id": candidate["requirement_id"],
         "identity_key": identity,
@@ -58,12 +68,12 @@ def expand(candidate, source, scope, package):
         "source_role": scope["source_role"],
         "authoritative_locator": source["official_locator"],
         "clause_or_control": clause,
-        "parent_section_or_group": parent,
+        "parent_section_or_group": parent_for(clause),
         "source_access_status": scope["source_access_status"],
         "source_review_date": package["reviewed_at"],
         "source_access_notes": "Authoritative consolidated public text directly reviewed on EUR-Lex for semantic re-extraction.",
         "requirement_summary": candidate["requirement_summary"],
-        "requirement_posture": "mandatory-normative",
+        "requirement_posture": candidate.get("requirement_posture", "mandatory-normative"),
         "expectation_type": candidate["expectation_type"],
         "normative_force": "binding-law",
         "alignment_relationship": "compliance",
@@ -105,47 +115,57 @@ def expand(candidate, source, scope, package):
 
 
 def migrate(check_only: bool) -> None:
-    package = load(PACKAGE)
+    packages = [load(path) for path in PACKAGES]
     req_doc = load(REQUIREMENTS)
     registry = load(REGISTRY)["entries"]
     scopes = load(SCOPE)["entries"]
-
-    key = source_key(package["source"])
-    source = next((item for item in registry if source_key(item) == key), None)
-    scope = next((item for item in scopes if source_key(item) == key), None)
-    if source is None or scope is None:
-        raise ValueError(f"EU AI Act source/version not registered: {key}")
-    if source["external_source_id"] != package["source"]["external_source_id"]:
-        raise ValueError("re-extraction package external_source_id differs from registry")
-    if source["source_metadata_fingerprint"] != package["source"]["source_metadata_fingerprint"]:
-        raise ValueError("re-extraction package source fingerprint differs from registry")
-
     requirements = req_doc["requirements"]
     by_id = {item["requirement_id"]: item for item in requirements}
-    retired = {item["requirement_id"] for item in package["retired_requirements"]}
-    missing = sorted(retired - set(by_id))
-    if missing:
-        raise ValueError(f"retired requirement IDs absent from canonical corpus: {missing}")
-    for item in package["retired_requirements"]:
-        current = by_id[item["requirement_id"]]
-        if current["vigil_source_id"] != key[0] or current["source_version"] != key[1]:
-            raise ValueError(f"retired identity belongs to another source/version: {item['requirement_id']}")
 
-    replacements = [expand(item, source, scope, package) for item in package["requirements"]]
-    replacement_ids = [item["requirement_id"] for item in replacements]
+    all_retired = set()
+    all_replacements = []
+    reviewed_at = max(package["reviewed_at"] for package in packages)
+
+    for package in packages:
+        key = source_key(package["source"])
+        source = next((item for item in registry if source_key(item) == key), None)
+        scope = next((item for item in scopes if source_key(item) == key), None)
+        if source is None or scope is None:
+            raise ValueError(f"EU AI Act source/version not registered: {key}")
+        if source["external_source_id"] != package["source"]["external_source_id"]:
+            raise ValueError("re-extraction package external_source_id differs from registry")
+        if source["source_metadata_fingerprint"] != package["source"]["source_metadata_fingerprint"]:
+            raise ValueError("re-extraction package source fingerprint differs from registry")
+
+        retired = {item["requirement_id"] for item in package["retired_requirements"]}
+        if all_retired & retired:
+            raise ValueError("a retired requirement appears in more than one re-extraction package")
+        missing = sorted(retired - set(by_id))
+        if missing:
+            raise ValueError(f"retired requirement IDs absent from canonical corpus: {missing}")
+        for item in package["retired_requirements"]:
+            current = by_id[item["requirement_id"]]
+            if current["vigil_source_id"] != key[0] or current["source_version"] != key[1]:
+                raise ValueError(f"retired identity belongs to another source/version: {item['requirement_id']}")
+
+        replacements = [expand(item, source, scope, package) for item in package["requirements"]]
+        all_retired.update(retired)
+        all_replacements.extend(replacements)
+
+    replacement_ids = [item["requirement_id"] for item in all_replacements]
     if len(replacement_ids) != len(set(replacement_ids)):
-        raise ValueError("duplicate replacement requirement IDs")
-    collisions = sorted((set(replacement_ids) & set(by_id)) - retired)
+        raise ValueError("duplicate replacement requirement IDs across staged packages")
+    collisions = sorted((set(replacement_ids) & set(by_id)) - all_retired)
     if collisions:
         raise ValueError(f"replacement identities collide with existing requirements: {collisions}")
 
-    migrated = [item for item in requirements if item["requirement_id"] not in retired] + replacements
+    migrated = [item for item in requirements if item["requirement_id"] not in all_retired] + all_replacements
     migrated.sort(key=lambda item: item["requirement_id"])
     req_doc["requirements"] = migrated
     req_doc["requirement_count"] = len(migrated)
-    req_doc["updated_at"] = package["reviewed_at"]
+    req_doc["updated_at"] = reviewed_at
 
-    print(f"EU AI Act migration valid: retire {len(retired)}, add {len(replacements)}, resulting count {len(migrated)}")
+    print(f"EU AI Act staged migration valid: retire {len(all_retired)}, add {len(all_replacements)}, resulting count {len(migrated)}")
     if check_only:
         return
     REQUIREMENTS.write_text(json.dumps(req_doc, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
@@ -157,7 +177,7 @@ def migrate(check_only: bool) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--check-only", action="store_true", help="Validate the staged migration without writing requirements.json")
+    parser.add_argument("--check-only", action="store_true", help="Validate staged migrations without writing requirements.json")
     args = parser.parse_args()
     migrate(args.check_only)
 
