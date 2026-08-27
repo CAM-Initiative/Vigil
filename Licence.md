@@ -1,9 +1,9 @@
 # VIGIL Licence and Reuse Terms
 
 **Project:** VIGIL — Evidence-to-Repair Governance Ledger (Digital Ecosystem Health Register)
-**Maintainer:** Aeon Governance Lab
+**Maintainer:** Dr Michelle O'Rourke
 **Related Governance Corpus:** Caelestis Architecture Model (CAM)
-**Copyright:** © 2026 Aeon Governance Lab. All rights reserved except as expressly licensed below.
+**Copyright:** © 2026 Dr Michelle O'Rourke. All rights reserved except as expressly licensed below.
 
 ## 1. Purpose
 
@@ -30,7 +30,7 @@ The full legal text of the CC BY-NC-SA 4.0 licence is available from Creative Co
 
 Any permitted reuse of VIGIL material must include clear attribution to:
 
-**VIGIL — Evidence-to-Repair Governance Ledger, Aeon Governance Lab, derived from the Caelestis Architecture Model governance corpus.**
+**VIGIL — Evidence-to-Repair Governance Ledger, Dr Michelle O'Rourke, derived from the Caelestis Architecture Model governance corpus.**
 
 Where a specific record is reused or cited, attribution should include:
 
@@ -43,11 +43,11 @@ Where a specific record is reused or cited, attribution should include:
 
 Suggested citation format:
 
-> Aeon Governance Lab. “VIGIL — Evidence-to-Repair Governance Ledger: [Record ID], [Record Title or Summary].” VIGIL, 2026. Derived from the Caelestis Architecture Model governance corpus. [Canonical URL]
+> Dr Michelle O'Rourke. “VIGIL — Evidence-to-Repair Governance Ledger: [Record ID], [Record Title or Summary].” VIGIL, 2026. Derived from the Caelestis Architecture Model governance corpus. [Canonical URL]
 
 ## 4. Commercial Use Requires Permission
 
-Commercial use is not permitted without prior written permission from Aeon Governance Lab.
+Commercial use is not permitted without prior written permission from Dr Michelle O'Rourke.
 
 Commercial use includes, but is not limited to:
 
@@ -58,7 +58,7 @@ Commercial use includes, but is not limited to:
 * use as training, evaluation, benchmarking, or enrichment data for commercial AI systems, models, agents, classifiers, datasets, or analytics pipelines;
 * use by or on behalf of a commercial entity where the VIGIL material materially supports a paid service, internal product, client deliverable, or revenue-generating activity.
 
-Commercial licensing enquiries should be directed to Aeon Governance Lab.
+Commercial licensing enquiries should be directed to Dr Michelle O'Rourke.
 
 ## 5. Bulk Extraction, Scraping, and Dataset Reconstruction
 
@@ -72,7 +72,7 @@ Any systematic extraction, replication, indexing, model-ingestion, dataset publi
 
 VIGIL contains structured records, schema fields, indexes, taxonomy classifications, and source-to-repair linkages.
 
-To the extent that database rights, compilation rights, copyright, or other rights apply to the structure, selection, arrangement, taxonomy, schema design, metadata, or record compilation, those rights are reserved by Aeon Governance Lab except as expressly permitted by this licence.
+To the extent that database rights, compilation rights, copyright, or other rights apply to the structure, selection, arrangement, taxonomy, schema design, metadata, or record compilation, those rights are reserved by Dr Michelle O'Rourke except as expressly permitted by this licence.
 
 No licence is granted to remove attribution, obscure provenance, strip record identifiers, or use VIGIL materials in a way that misrepresents authorship, source lineage, governance status, or record meaning.
 
@@ -82,7 +82,7 @@ VIGIL records may reference, describe, quote, link to, or summarise third-party 
 
 Third-party materials remain subject to their own rights, licences, platform terms, and legal restrictions.
 
-Inclusion of a source reference in VIGIL does not imply ownership of that third-party material by Aeon Governance Lab.
+Inclusion of a source reference in VIGIL does not imply ownership of that third-party material by Dr Michelle O'Rourke.
 
 ## 8. No Warranty
 
@@ -102,7 +102,7 @@ Records, classifications, failure modes, proposals, and patch notes are governan
 
 Users must not reuse VIGIL material in a way that:
 
-* falsely implies endorsement by Aeon Governance Lab, CAM, VIGIL, or the human custodian-of-record;
+* falsely implies endorsement by Dr Michelle O'Rourke, CAM, VIGIL, or the human custodian-of-record;
 * misrepresents a draft, proposal, observation, inactive record, or unresolved failure mode as an adopted governance determination;
 * removes or obscures provenance metadata;
 * alters record meaning while presenting the altered material as canonical;
@@ -113,13 +113,13 @@ Users must not reuse VIGIL material in a way that:
 
 VIGIL is related to and derived from the Caelestis Architecture Model governance corpus.
 
-Reuse of VIGIL material must not imply that the user has authority to modify, represent, certify, or speak on behalf of CAM, VIGIL, Aeon Governance Lab, or any associated stewardship office.
+Reuse of VIGIL material must not imply that the user has authority to modify, represent, certify, or speak on behalf of CAM, VIGIL, Dr Michelle O'Rourke, or any associated stewardship office.
 
 Canonical CAM instruments, constitutional materials, annexes, schedules, appendices, and related governance documents may be subject to separate authorship notices, licence terms, provenance rules, or repository-specific restrictions.
 
 ## 12. Future Licence Updates
 
-Aeon Governance Lab may update these licence and reuse terms as VIGIL develops.
+Dr Michelle O'Rourke may update these licence and reuse terms as VIGIL develops.
 
 Future updates may clarify commercial licensing, database reuse, API access, machine-readable attribution, model-training restrictions, research exemptions, citation requirements, or repository-specific rights.
 
@@ -129,5 +129,5 @@ Existing uses remain subject to the terms that applied at the time of access unl
 
 For permission requests, commercial licensing, formal citation questions, research reuse, or governance collaboration, contact:
 
-**Aeon Governance Lab**
+**Dr Michelle O'Rourke**
 research@cam-initiative.org
