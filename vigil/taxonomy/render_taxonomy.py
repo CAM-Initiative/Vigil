@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate complete human-readable VIGIL Failure Taxonomy references."""
+"""Generate complete human-readable VIGIL Observatory Failure Taxonomy references."""
 
 from __future__ import annotations
 
@@ -12,6 +12,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 INDEX = ROOT / "VIGIL.FailureTaxonomy.Index.json"
 CASE_EXAMPLES = ROOT / "generated" / "VIGIL.FailureTaxonomy.CaseFileExamples.json"
+FULL_HTML_NAME = "VIGIL.FailureTaxonomy.FullReference.html"
+FULL_PDF_NAME = "VIGIL.Observatory.FailureTaxonomy.FullReference.pdf"
 
 
 def load(path: Path) -> dict:
@@ -113,7 +115,7 @@ def case_examples_html(examples: list[dict]) -> str:
             + "</li>"
         )
     return (
-        f"<details class=\"case-files\"><summary><strong>VIGIL Case File classifications ({len(rows)})</strong>"
+        f"<details class=\"case-files\"><summary><strong>VIGIL Observatory Case File classifications ({len(rows)})</strong>"
         "</summary><ul>" + "".join(rows) + "</ul></details>"
     )
 
@@ -167,7 +169,7 @@ def family_html(data: dict, heading_level: int = 1, case_examples: dict[str, lis
     aliases = "".join(f"<li><code>{esc(x)}</code></li>" for x in family.get("aliases", []))
     return f"""
 <section class="family" id="{esc(anchor(family['family_id']))}">
-<section class="hero"><p class="eyebrow">VIGIL Failure Taxonomy · Technical Standard</p><{tag}>{esc(family['name'])}</{tag}><p class="plain">{esc(family['plain_english'])}</p>
+<section class="hero"><p class="eyebrow">VIGIL Observatory Failure Taxonomy · Technical Reference</p><{tag}>{esc(family['name'])}</{tag}><p class="plain">{esc(family['plain_english'])}</p>
 <p><strong>Immutable ID:</strong> <code>{esc(family['family_id'])}</code> · <strong>Semantic code:</strong> <code>{esc(family['family_code'])}</code> · <strong>Version:</strong> {esc(family['version'])} · <strong>Status:</strong> {esc(family['status'])}</p>
 <h2>Technical definition</h2><p>{esc(family['definition'])}</p><h2>Governing invariant</h2><p class="invariant">{esc(family['invariant'])}</p>
 <h2>Classification boundary</h2><div class="grid"><section><h3>Include when</h3><p>{esc(family['inclusion_rule'])}</p></section><section><h3>Exclude when</h3><p>{esc(family['exclusion_rule'])}</p></section></div>
@@ -176,13 +178,21 @@ def family_html(data: dict, heading_level: int = 1, case_examples: dict[str, lis
 
 
 STYLE = """
-:root{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#171717;background:#f5f5f4}body{margin:0;line-height:1.55}main{max-width:1100px;margin:auto;padding:36px 20px 80px}.hero,.card,.contents{background:#fff;border:1px solid #d6d3d1;border-radius:16px;padding:26px;margin-bottom:20px}h1{font-size:clamp(2rem,5vw,3.2rem);line-height:1.05}h3{font-size:1.4rem;margin:.4rem 0}code{background:#f5f5f4;border:1px solid #e7e5e4;border-radius:5px;padding:2px 5px;overflow-wrap:anywhere}.plain{background:#fafaf9;padding:14px 16px;border-radius:10px;font-size:1.06rem}.invariant{border-left:4px solid #44403c;background:#fafaf9;padding:12px 16px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.grid section{background:#fafaf9;border-radius:10px;padding:14px}.top{display:flex;justify-content:space-between;gap:20px;align-items:start}.pill{font-size:.73rem;border:1px solid #d6d3d1;border-radius:999px;padding:3px 8px;text-transform:uppercase;letter-spacing:.05em}.eyebrow{text-transform:uppercase;letter-spacing:.08em;font-size:.78rem;font-weight:700}.family+.family{border-top:3px solid #a8a29e;padding-top:52px;margin-top:52px}.contents a{color:#1c4b69}@media(max-width:760px){.grid{grid-template-columns:1fr}.top{display:block}}
+:root{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#171717;background:#f5f5f4}body{margin:0;line-height:1.55}main{max-width:1100px;margin:auto;padding:36px 20px 80px}.hero,.card,.contents,.publication-frontmatter{background:#fff;border:1px solid #d6d3d1;border-radius:16px;padding:26px;margin-bottom:20px}h1{font-size:clamp(2rem,5vw,3.2rem);line-height:1.05}h3{font-size:1.4rem;margin:.4rem 0}code{background:#f5f5f4;border:1px solid #e7e5e4;border-radius:5px;padding:2px 5px;overflow-wrap:anywhere}.plain{background:#fafaf9;padding:14px 16px;border-radius:10px;font-size:1.06rem}.invariant{border-left:4px solid #44403c;background:#fafaf9;padding:12px 16px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.grid section{background:#fafaf9;border-radius:10px;padding:14px}.top{display:flex;justify-content:space-between;gap:20px;align-items:start}.pill{font-size:.73rem;border:1px solid #d6d3d1;border-radius:999px;padding:3px 8px;text-transform:uppercase;letter-spacing:.05em}.eyebrow{text-transform:uppercase;letter-spacing:.08em;font-size:.78rem;font-weight:700}.family+.family{border-top:3px solid #a8a29e;padding-top:52px;margin-top:52px}.contents a{color:#1c4b69}.publication-frontmatter h1{max-width:760px}.publication-meta{display:grid;grid-template-columns:auto 1fr;gap:6px 16px}.publication-note{margin-top:28px;padding-top:18px;border-top:1px solid #d6d3d1;color:#57534e}@media(max-width:760px){.grid{grid-template-columns:1fr}.top{display:block}}
+"""
+
+PRINT_STYLE = """
+@page{size:A4;margin:18mm 16mm 20mm;@bottom-center{content:"VIGIL Observatory Failure Taxonomy · " counter(page);font-size:8pt;color:#78716c}}
+@page:first{margin:20mm}
+html,body{background:#fff!important}body{font-size:9.5pt;line-height:1.48}main{max-width:none;padding:0}.publication-frontmatter{min-height:245mm;display:flex;flex-direction:column;justify-content:center;box-sizing:border-box;border:0;padding:0;page-break-after:always}.publication-frontmatter h1{font-size:30pt;margin:.3em 0}.publication-frontmatter h2{font-size:14pt;font-weight:500}.publication-meta{margin-top:24mm}.publication-note{margin-top:auto}.contents{border:0;padding:0;page-break-after:always}.contents h1{font-size:22pt}.family{page-break-before:always;border-top:0!important;padding-top:0!important;margin-top:0!important}.family>.hero{border:0;padding:0;margin:0 0 8mm}.card{break-inside:auto;border:1px solid #d6d3d1;border-radius:6px;padding:5mm;margin:0 0 5mm}.card h3{font-size:15pt}.grid{grid-template-columns:1fr 1fr;gap:4mm}.grid section{break-inside:avoid}.top{break-inside:avoid}.case-files{break-inside:auto}a{color:#171717;text-decoration:none}details{display:block}details>summary{list-style:none}details>*{display:block!important}
 """
 
 
-def document(title: str, body: str) -> str:
+def document(title: str, body: str, *, publication: bool = False) -> str:
+    print_style = f"<style>{PRINT_STYLE}</style>" if publication else ""
+    publication_class = " class=\"publication\"" if publication else ""
     return f"""<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{esc(title)}</title><style>{STYLE}</style></head><body><main>{body}</main></body></html>
+<html lang="en"{publication_class}><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{esc(title)}</title><style>{STYLE}</style>{print_style}</head><body><main>{body}</main></body></html>
 """
 
 
@@ -198,13 +208,37 @@ def load_catalogue(index_path: Path = INDEX) -> list[dict]:
 def load_case_examples(path: Path = CASE_EXAMPLES) -> dict[str, list[dict]]:
     if not path.exists():
         return {}
-    document = load(path)
-    classes = document.get("classes", {})
+    source = load(path)
+    classes = source.get("classes", {})
     return classes if isinstance(classes, dict) else {}
 
 
-def combined_html(families: list[dict], case_examples: dict[str, list[dict]] | None = None) -> str:
-    contents = ["<section class=\"contents\"><h1>VIGIL Failure Taxonomy</h1><p>Full reference book</p><h2>Contents</h2><ol>"]
+def publication_frontmatter(index: dict, families: list[dict]) -> str:
+    standard = index.get("standard", {})
+    class_count = sum(len(data.get("classes", [])) for data in families)
+    return f"""
+<section class="publication-frontmatter">
+  <p class="eyebrow">VIGIL Observatory · Technical Reference Manual</p>
+  <h1>AI Governance Failure Taxonomy</h1>
+  <h2>Structural classification of AI governance failure mechanisms</h2>
+  <dl class="publication-meta">
+    <dt><strong>Edition</strong></dt><dd>Full Reference Manual</dd>
+    <dt><strong>Version</strong></dt><dd>{esc(standard.get('version', 'Unversioned'))}</dd>
+    <dt><strong>Status</strong></dt><dd>{esc(standard.get('status', 'Unspecified')).title()}</dd>
+    <dt><strong>Families</strong></dt><dd>{len(families)}</dd>
+    <dt><strong>Failure classes</strong></dt><dd>{class_count}</dd>
+    <dt><strong>Author and rights holder</strong></dt><dd>Dr Michelle O'Rourke</dd>
+  </dl>
+  <div class="publication-note">
+    <p><strong>Copyright © 2026 Dr Michelle O'Rourke. All rights reserved.</strong></p>
+    <p>This compiled reference manual, including its compilation, editorial arrangement, design and presentation, may not be reproduced or redistributed in whole or substantial part without permission. Underlying VIGIL Observatory taxonomy content remains publicly referenceable and reusable under the VIGIL Observatory Licence and Reuse Terms. Third-party materials remain subject to their respective rights and licence conditions.</p>
+  </div>
+</section>"""
+
+
+def combined_html(families: list[dict], case_examples: dict[str, list[dict]] | None = None, *, publication: bool = False) -> str:
+    index = load(INDEX)
+    contents = ["<section class=\"contents\"><h1>VIGIL Observatory Failure Taxonomy</h1><p>Full Reference Manual</p><h2>Contents</h2><ol>"]
     for data in families:
         family = data["family"]
         contents.append(f"<li><a href=\"#{esc(anchor(family['family_id']))}\">{esc(family['name'])}</a><ul>")
@@ -214,25 +248,39 @@ def combined_html(families: list[dict], case_examples: dict[str, list[dict]] | N
         )
         contents.append("</ul></li>")
     contents.append("</ol></section>")
+    frontmatter = publication_frontmatter(index, families) if publication else ""
     return document(
-        "VIGIL Failure Taxonomy — Full Reference",
-        "".join(contents) + "".join(family_html(d, 1, case_examples) for d in families),
+        "VIGIL Observatory Failure Taxonomy — Full Reference Manual",
+        frontmatter + "".join(contents) + "".join(family_html(d, 1, case_examples) for d in families),
+        publication=publication,
     )
 
 
-def generate_catalogue(output_dir: Path) -> None:
+def write_pdf(html_text: str, output: Path) -> None:
+    try:
+        from weasyprint import HTML
+    except ImportError as exc:
+        raise SystemExit(
+            "PDF generation requires WeasyPrint. Install with `python -m pip install weasyprint`."
+        ) from exc
+    output.parent.mkdir(parents=True, exist_ok=True)
+    HTML(string=html_text, base_url=str(ROOT)).write_pdf(str(output))
+
+
+def generate_catalogue(output_dir: Path, *, pdf: bool = False) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
     families = load_catalogue()
     case_examples = load_case_examples()
+    index = load(INDEX)
     for data in families:
         family_id = data["family"]["family_id"]
-        index = load(INDEX)
         entry = next(item for item in index["families"] if item["family_id"] == family_id)
         stem = Path(entry["file"]).stem
         (output_dir / f"{stem}.html").write_text(html_family(data, case_examples), encoding="utf-8")
-    (output_dir / "VIGIL.FailureTaxonomy.FullReference.html").write_text(
-        combined_html(families, case_examples), encoding="utf-8"
-    )
+    full_html = combined_html(families, case_examples)
+    (output_dir / FULL_HTML_NAME).write_text(full_html, encoding="utf-8")
+    if pdf:
+        write_pdf(combined_html(families, case_examples, publication=True), output_dir / FULL_PDF_NAME)
 
 
 def main() -> None:
@@ -242,12 +290,15 @@ def main() -> None:
     parser.add_argument("--output", type=Path)
     parser.add_argument("--catalogue", action="store_true", help="generate every family page and the full reference book")
     parser.add_argument("--output-dir", type=Path)
+    parser.add_argument("--pdf", action="store_true", help="also generate the full-reference PDF (requires WeasyPrint)")
     args = parser.parse_args()
     if args.catalogue:
         if args.input or args.format or args.output or not args.output_dir:
             parser.error("--catalogue requires --output-dir and no single-file arguments")
-        generate_catalogue(args.output_dir)
+        generate_catalogue(args.output_dir, pdf=args.pdf)
         return
+    if args.pdf:
+        parser.error("--pdf is only supported with --catalogue")
     if not args.input or not args.format or not args.output:
         parser.error("single-family rendering requires input, --format and --output")
     data = load(args.input)
