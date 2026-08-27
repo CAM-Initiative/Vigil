@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import html
 import json
+import os
 import re
 from pathlib import Path
 
@@ -257,6 +258,9 @@ def combined_html(families: list[dict], case_examples: dict[str, list[dict]] | N
 
 
 def write_pdf(html_text: str, output: Path) -> None:
+    # Stabilise embedded font timestamps so identical canonical input produces
+    # byte-identical publication output. Callers may supply another fixed epoch.
+    os.environ.setdefault("SOURCE_DATE_EPOCH", "0")
     try:
         from weasyprint import HTML
     except ImportError as exc:

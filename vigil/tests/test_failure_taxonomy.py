@@ -193,6 +193,68 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         self.assertIn("lacks valid authority", pathway_boundaries)
         self.assertIn("self-authorise", pathway_boundaries)
 
+    def test_family_prose_semantic_roles_are_explicit(self):
+        schema = json.loads(MODULE.SCHEMA_PATH.read_text(encoding="utf-8"))
+        properties = schema["$defs"]["family"]["properties"]
+        self.assertIn("failure condition", properties["plain_english"]["description"])
+        self.assertIn("bounded failure set", properties["definition"]["description"])
+        self.assertIn("Positive bounded structural property", properties["invariant"]["description"])
+        guidance = (self.root / "README.md").read_text(encoding="utf-8")
+        self.assertIn("### Semantic roles of family prose", guidance)
+        self.assertIn("Parent prose must be re-tested whenever a class is added", guidance)
+
+    def test_observability_parent_encompasses_authorised_evidence_access(self):
+        documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
+        family = next(item["family"] for item in documents if item["family"]["family_id"] == "VIGIL-FF-0004")
+        parent_prose = " ".join(
+            family[field] for field in ("plain_english", "definition", "invariant", "inclusion_rule", "exclusion_rule")
+        ).lower()
+        for boundary in ("authorised", "accessible", "evidence-production", "access pathway"):
+            self.assertIn(boundary, parent_prose)
+        self.assertIn("does not create or enlarge investigative authority", parent_prose)
+
+    def test_access_session_parent_encompasses_verification_dependency(self):
+        documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
+        access = next(item for item in documents if item["family"]["family_id"] == "VIGIL-FF-0005")
+        self.assertEqual(
+            [item["class_id"] for item in access["classes"]],
+            ["VIGIL-FC-000031", "VIGIL-FC-000032", "VIGIL-FC-000033", "VIGIL-FC-000048"],
+        )
+        parent_prose = " ".join(
+            access["family"][field]
+            for field in ("plain_english", "definition", "invariant", "inclusion_rule", "exclusion_rule")
+        ).lower()
+        for boundary in ("verification", "practically", "fallback", "valid or unresolved access"):
+            self.assertIn(boundary, parent_prose)
+
+    def test_governance_reach_parent_covers_route_bypass_and_operative_signal_reach(self):
+        documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
+        reach = next(item for item in documents if item["family"]["family_id"] == "VIGIL-FF-0007")
+        family = reach["family"]
+        self.assertIn("VIGIL-FC-000041", family["allowed_class_ids"])
+        self.assertNotIn("only after", family["inclusion_rule"].lower())
+        parent_prose = " ".join(
+            family[field] for field in ("plain_english", "definition", "invariant", "inclusion_rule")
+        ).lower()
+        for boundary in ("bypasses", "required governance route", "operative control state", "reach"):
+            self.assertIn(boundary, parent_prose)
+
+    def test_control_activation_parent_describes_failure_conditions(self):
+        documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
+        activation = next(item for item in documents if item["family"]["family_id"] == "VIGIL-FF-0008")
+        family = activation["family"]
+        plain = family["plain_english"].lower()
+        self.assertIn("fails to activate", plain)
+        self.assertIn("activates without valid conditions", plain)
+        definition = family["definition"].lower()
+        for boundary in (
+            "cannot be determined in time",
+            "does not become operative",
+            "becomes operative when its valid activation conditions are not satisfied",
+            "authority required to activate",
+        ):
+            self.assertIn(boundary, definition)
+
     def test_taxonomy_08_allocations_are_sequential_and_bounded(self):
         documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
         classes = {item["class_id"]: item for document in documents for item in document["classes"]}

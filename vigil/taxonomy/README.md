@@ -77,6 +77,16 @@ Every family defines its immutable ID, semantic code, canonical name, version, s
 
 Every class or variant defines its immutable ID, semantic code, current family ID, canonical name, abstraction, status, plain-English explanation, technical definition, recognition criteria, exclusions, examples, aliases, typed relationships where relevant, and optional external mappings or supersession metadata.
 
+### Semantic roles of family prose
+
+The three principal family fields are complementary and must not be used as interchangeable summaries:
+
+- `plain_english` describes the recognisable **failure condition** in accessible language. It must say how the family is not working; a sentence that states only the healthy or required condition belongs in `invariant`.
+- `definition` gives the technical boundary of the **bounded failure set**. It must encompass every admitted child mechanism, distinguish neighbouring families, and avoid becoming either an incident example or a normative aspiration.
+- `invariant` states the positive **bounded structural property that must hold**. Every admitted child class must be a distinct way that this same property fails.
+
+Parent prose must be re-tested whenever a class is added, moved, narrowed, or widened. A valid child cannot be left outside the parent's `plain_english`, `definition`, `invariant`, and inclusion boundary merely because its immutable membership is machine-valid. Conversely, parent wording must not be broadened to import mechanisms that remain assigned to another family.
+
 Definitions must not contain incident-specific values. Severity, harm, persistence, reproducibility, visibility, incident status, evidence confidence, jurisdiction, vendor/model, manifestation, locus, repair side, propagation, observability state, evidence state, and repair status remain orthogonal event dimensions.
 
 ## Relationships
@@ -105,7 +115,7 @@ python vigil/taxonomy/render_taxonomy.py \
   --pdf
 ```
 
-The PDF is a publication projection of the same canonical family JSON used by the HTML renderer. It is intentionally generated rather than hand-edited. The current publication layer supplies stable front matter, version/status metadata, family/class pagination, a contents section, page numbering, and publication-rights text; visual branding and cover artwork may be evolved without changing the underlying taxonomy contract.
+The PDF is a publication projection of the same canonical family JSON used by the HTML renderer. It is intentionally generated rather than hand-edited. The current publication layer supplies stable front matter, version/status metadata, family/class pagination, a contents section, page numbering, and publication-rights text; visual branding and cover artwork may be evolved without changing the underlying taxonomy contract. The renderer defaults `SOURCE_DATE_EPOCH` to `0` for reproducible embedded-font timestamps; a publication environment may override it with another fixed epoch.
 
 `.github/workflows/taxonomy-publications.yml` automatically rebuilds the HTML and PDF projections when the taxonomy index, family/class definitions, Case File example projection, or renderer changes. On push, verified generated outputs are committed back to the current branch. The workflow rejects missing, empty, or non-PDF publication output before commit.
 
