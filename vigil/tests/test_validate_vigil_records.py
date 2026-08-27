@@ -188,7 +188,7 @@ class ValidateVigilRecordsTest(unittest.TestCase):
         for path in sorted((ROOT / "vigil" / "records" / "failures").rglob("*.json")):
             with path.open(encoding="utf-8") as handle:
                 records.append(json.load(handle))
-        self.assertEqual(len(records), 71)
+        self.assertEqual(len(records), 72)
         models = {"GPT-5.5": 0, "GPT-5.6 Sol": 0}
         conflicts = []
         for record in records:
@@ -196,7 +196,7 @@ class ValidateVigilRecordsTest(unittest.TestCase):
             models[diagnostic["ai_model"]] += 1
             if diagnostic["date_attribution_status"] == "creation-date-conflict-recorded":
                 conflicts.append(record["id"])
-        self.assertEqual(models, {"GPT-5.5": 27, "GPT-5.6 Sol": 44})
+        self.assertEqual(models, {"GPT-5.5": 27, "GPT-5.6 Sol": 45})
         self.assertEqual(conflicts, ["VIGIL-2026-FM-0044", "VIGIL-2026-FM-0048"])
 
     def test_legacy_source_record_keys_are_rejected(self):
