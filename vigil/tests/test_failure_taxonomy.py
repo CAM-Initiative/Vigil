@@ -255,6 +255,47 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         ):
             self.assertIn(boundary, definition)
 
+    def test_dataset_release_metadata_is_current_and_projected_to_families(self):
+        index = json.loads(MODULE.INDEX_PATH.read_text(encoding="utf-8"))
+        self.assertEqual(index["standard"]["version"], "0.2.1-draft")
+        self.assertEqual(index["standard"]["publication_date"], "2026-08-27")
+        self.assertEqual(index["release_history"][-1]["change_level"], "patch")
+        for path in self.paths():
+            document = json.loads(path.read_text(encoding="utf-8"))
+            self.assertEqual(document["standard"]["version"], "0.2.1-draft")
+            self.assertEqual(document["standard"]["publication_date"], "2026-08-27")
+
+    def test_family_or_class_change_requires_new_dataset_release_metadata(self):
+        path, data = self.document()
+        data["family"]["plain_english"] += " Material amendment for release-linter testing."
+        self.write(path, data)
+        self.assertTrue(
+            any("changed without a new dataset version, date and release digest" in error for error in self.errors())
+        )
+
+    def test_existing_record_change_requires_patch_not_minor_increment(self):
+        index = json.loads(MODULE.INDEX_PATH.read_text(encoding="utf-8"))
+        index["standard"]["version"] = "0.3.0-draft"
+        index["release_history"][-1]["version"] = "0.3.0-draft"
+        self.write(MODULE.INDEX_PATH, index)
+        for path in self.paths():
+            document = json.loads(path.read_text(encoding="utf-8"))
+            document["standard"]["version"] = "0.3.0-draft"
+            self.write(path, document)
+        self.assertTrue(any("must advance to 0.2.1" in error for error in self.errors()))
+
+    def test_new_family_requires_minor_dataset_increment(self):
+        index = json.loads(MODULE.INDEX_PATH.read_text(encoding="utf-8"))
+        index["release_history"][-1]["family_ids"].append("VIGIL-FF-0010")
+        self.write(MODULE.INDEX_PATH, index)
+        self.assertTrue(any("must advance to 0.3.0" in error for error in self.errors()))
+
+    def test_dataset_release_requires_fixed_edition_date(self):
+        index = json.loads(MODULE.INDEX_PATH.read_text(encoding="utf-8"))
+        del index["standard"]["publication_date"]
+        self.write(MODULE.INDEX_PATH, index)
+        self.assertTrue(any("standard.publication_date must be a valid" in error for error in self.errors()))
+
     def test_taxonomy_08_allocations_are_sequential_and_bounded(self):
         documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
         classes = {item["class_id"]: item for document in documents for item in document["classes"]}

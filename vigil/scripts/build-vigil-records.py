@@ -59,6 +59,7 @@ OUTPUT_PATHS = {
 }
 MASTER_OUTPUT_PATH = VIGIL_DIR / "VIGIL.Registry.Index.json"
 TAXONOMY_EXAMPLES_PATH = VIGIL_DIR / "taxonomy" / "generated" / "VIGIL.FailureTaxonomy.CaseFileExamples.json"
+TAXONOMY_INDEX_PATH = VIGIL_DIR / "taxonomy" / "VIGIL.FailureTaxonomy.Index.json"
 DEPRECATED_OUTPUT_PATHS = [
     VIGIL_DIR / "VIGIL.ActiveRecords.json",
     VIGIL_DIR / "VIGIL.ClosedRecords.json",
@@ -819,9 +820,11 @@ def taxonomy_examples(records: list[dict[str, Any]]) -> dict[str, Any]:
                 })
             if secondary_class.get("class_id"):
                 classes.setdefault(secondary_class["class_id"], []).append(secondary_example)
+    taxonomy_index = json.loads(TAXONOMY_INDEX_PATH.read_text(encoding="utf-8"))
     return {
         "generated_notice": NOTICE,
-        "taxonomy_version": "0.2.0-draft",
+        "taxonomy_version": taxonomy_index["standard"]["version"],
+        "taxonomy_publication_date": taxonomy_index["standard"]["publication_date"],
         "normative_status": "non-normative reverse mapping",
         "generated_from": ["vigil/records/failures/2026/"],
         "families": {key: value for key, value in sorted(families.items())},

@@ -7,6 +7,7 @@ import argparse
 import html
 import json
 import os
+from datetime import date
 import re
 from pathlib import Path
 
@@ -217,6 +218,12 @@ def load_case_examples(path: Path = CASE_EXAMPLES) -> dict[str, list[dict]]:
 def publication_frontmatter(index: dict, families: list[dict]) -> str:
     standard = index.get("standard", {})
     class_count = sum(len(data.get("classes", [])) for data in families)
+    publication_date = standard.get("publication_date")
+    try:
+        parsed_date = date.fromisoformat(publication_date)
+        edition_date = f"{parsed_date.day} {parsed_date.strftime('%B %Y')}"
+    except (TypeError, ValueError):
+        edition_date = "Unspecified"
     return f"""
 <section class="publication-frontmatter">
   <p class="eyebrow">VIGIL Observatory · Technical Reference Manual</p>
@@ -226,6 +233,7 @@ def publication_frontmatter(index: dict, families: list[dict]) -> str:
     <dt><strong>Edition</strong></dt><dd>Full Reference Manual</dd>
     <dt><strong>Version</strong></dt><dd>{esc(standard.get('version', 'Unversioned'))}</dd>
     <dt><strong>Status</strong></dt><dd>{esc(standard.get('status', 'Unspecified')).title()}</dd>
+    <dt><strong>Edition date</strong></dt><dd>{esc(edition_date)}</dd>
     <dt><strong>Families</strong></dt><dd>{len(families)}</dd>
     <dt><strong>Failure classes</strong></dt><dd>{class_count}</dd>
     <dt><strong>Author and rights holder</strong></dt><dd>Dr Michelle O'Rourke</dd>

@@ -13,6 +13,7 @@ from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parents[2]
 VIGIL_DIR = ROOT / "vigil"
+TAXONOMY_INDEX_PATH = VIGIL_DIR / "taxonomy" / "VIGIL.FailureTaxonomy.Index.json"
 RECORDS_ROOT = VIGIL_DIR / "records"
 SCHEMA_PATH = VIGIL_DIR / "VIGIL.Schema.json"
 DEPRECATED_OUTPUT_PATHS = [
@@ -1243,6 +1244,16 @@ def taxonomy_catalogue() -> tuple[dict[str, dict[str, Any]], dict[str, dict[str,
     return families, classes
 
 
+def supported_taxonomy_versions() -> set[str]:
+    index = load_json(TAXONOMY_INDEX_PATH)
+    releases = index.get("release_history", []) if isinstance(index, dict) else []
+    return {
+        release["version"]
+        for release in releases
+        if isinstance(release, dict) and isinstance(release.get("version"), str)
+    }
+
+
 def validate_taxonomy_classification(path: Path, record: dict[str, Any], errors: list[str]) -> None:
     block = record.get("taxonomy_classification")
     if not isinstance(block, dict):
@@ -1254,8 +1265,11 @@ def validate_taxonomy_classification(path: Path, record: dict[str, Any], errors:
     status = block.get("classification_status")
     if status not in TAXONOMY_CLASSIFICATION_STATUSES:
         errors.append(f"{path}: unsupported taxonomy classification status {status!r}")
-    if block.get("taxonomy_version") != "0.2.0-draft":
-        errors.append(f"{path}: taxonomy_classification.taxonomy_version must be '0.2.0-draft'")
+    allowed_versions = supported_taxonomy_versions()
+    if block.get("taxonomy_version") not in allowed_versions:
+        errors.append(
+            f"{path}: taxonomy_classification.taxonomy_version must identify a published taxonomy dataset version"
+        )
     if block.get("classification_confidence") not in {"high", "medium", "low"}:
         errors.append(f"{path}: invalid taxonomy classification confidence")
     if not isinstance(block.get("structural_review_flags"), list):

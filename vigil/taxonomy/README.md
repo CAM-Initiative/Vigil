@@ -89,6 +89,20 @@ Parent prose must be re-tested whenever a class is added, moved, narrowed, or wi
 
 Definitions must not contain incident-specific values. Severity, harm, persistence, reproducibility, visibility, incident status, evidence confidence, jurisdiction, vendor/model, manifestation, locus, repair side, propagation, observability state, evidence state, and repair status remain orthogonal event dimensions.
 
+## Dataset and publication versioning
+
+The version in `VIGIL.FailureTaxonomy.Index.json` is the version of the complete downloadable taxonomy dataset and Full Reference Manual. It is distinct from the version of an individual family record and from the historical taxonomy version recorded on a Failure Mode classification decision.
+
+Dataset releases follow these rules:
+
+- an amendment, addition, movement, deprecation, or other change to an existing family or class collection increments the third digit;
+- admission of a new failure family increments the second digit and resets the third digit to zero;
+- the first digit is reserved for a deliberately approved, materially incompatible re-foundation of the taxonomy and is never inferred from routine record maintenance;
+- every dataset release records a fixed ISO `publication_date`; generation must not substitute the current clock date;
+- historical Failure Mode classification stamps remain unchanged unless the mappings are substantively re-adjudicated.
+
+The index `release_history` records the canonical family/class content digest, family-ID set, class count, change level, dataset version, and publication date. Taxonomy validation rejects changed canonical family/class content unless the release history, dataset version, and publication date have been advanced consistently. It also rejects a patch increment for a newly admitted family and a minor increment for an ordinary existing-record change.
+
 ## Relationships
 
 Supported relationship types are `child_of`, `parent_of`, `peer_of`, `distinguish_from`, `can_cooccur_with`, `may_result_in`, and `may_be_result_of`. Targets use `VIGIL-FC-NNNNNN`, never a mutable compound semantic path.
@@ -115,7 +129,7 @@ python vigil/taxonomy/render_taxonomy.py \
   --pdf
 ```
 
-The PDF is a publication projection of the same canonical family JSON used by the HTML renderer. It is intentionally generated rather than hand-edited. The current publication layer supplies stable front matter, version/status metadata, family/class pagination, a contents section, page numbering, and publication-rights text; visual branding and cover artwork may be evolved without changing the underlying taxonomy contract. The renderer defaults `SOURCE_DATE_EPOCH` to `0` for reproducible embedded-font timestamps; a publication environment may override it with another fixed epoch.
+The PDF is a publication projection of the same canonical family JSON used by the HTML renderer. It is intentionally generated rather than hand-edited. The current publication layer supplies stable front matter, dataset version, fixed edition date, status metadata, family/class pagination, a contents section, page numbering, and publication-rights text; visual branding and cover artwork may be evolved without changing the underlying taxonomy contract. The renderer defaults `SOURCE_DATE_EPOCH` to `0` for reproducible embedded-font timestamps; a publication environment may override it with another fixed epoch.
 
 `.github/workflows/taxonomy-publications.yml` automatically rebuilds the HTML and PDF projections when the taxonomy index, family/class definitions, Case File example projection, or renderer changes. On push, verified generated outputs are committed back to the current branch. The workflow rejects missing, empty, or non-PDF publication output before commit.
 
