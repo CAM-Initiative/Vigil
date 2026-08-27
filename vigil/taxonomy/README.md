@@ -1,4 +1,4 @@
-# VIGIL Failure Taxonomy — Technical Standard
+# VIGIL Observatory Failure Taxonomy — Technical Standard
 
 This directory contains a portable, machine-readable technical reference for AI-governance failure mechanisms. It is separate from incident, severity, harm, evidence-confidence, triage, jurisdiction, vendor, repair-state, and other event metadata.
 
@@ -20,12 +20,13 @@ families/
 generated/
   one complete HTML page per family
   VIGIL.FailureTaxonomy.FullReference.html
+  VIGIL.Observatory.FailureTaxonomy.FullReference.pdf
 migration/
   Caelestis.LegacyFailure.MigrationLedger.json
   Caelestis.LegacyFailure.InventoryReview.md
 ```
 
-Family JSON is canonical. HTML and Markdown references are generated projections. The migration ledger is non-normative source-analysis evidence and is not a dependency of the portable taxonomy.
+Family JSON is canonical. HTML, Markdown, and PDF references are generated projections. The migration ledger is non-normative source-analysis evidence and is not a dependency of the portable taxonomy.
 
 `generated/VIGIL.FailureTaxonomy.CaseFileExamples.json` is a non-normative reverse mapping derived from canonical Failure Mode `taxonomy_classification` blocks. It lets public interfaces discover Case File examples for immutable family and class IDs without embedding incident-specific record IDs in portable taxonomy definitions. Each projected example declares whether the mapping is the Failure Mode's primary structural mechanism or an independently evidenced secondary mechanism.
 
@@ -86,13 +87,27 @@ A variant has exactly one in-family class parent. Definitions are not duplicated
 
 ## Generation
 
-Generate every complete family page and the combined full-reference book:
+Generate every complete family page and the combined full-reference HTML:
 
 ```bash
 python vigil/taxonomy/render_taxonomy.py \
   --catalogue \
   --output-dir vigil/taxonomy/generated
 ```
+
+Generate the HTML catalogue and the downloadable VIGIL Observatory Full Reference PDF:
+
+```bash
+python -m pip install weasyprint
+python vigil/taxonomy/render_taxonomy.py \
+  --catalogue \
+  --output-dir vigil/taxonomy/generated \
+  --pdf
+```
+
+The PDF is a publication projection of the same canonical family JSON used by the HTML renderer. It is intentionally generated rather than hand-edited. The current publication layer supplies stable front matter, version/status metadata, family/class pagination, a contents section, page numbering, and publication-rights text; visual branding and cover artwork may be evolved without changing the underlying taxonomy contract.
+
+`.github/workflows/taxonomy-publications.yml` automatically rebuilds the HTML and PDF projections when the taxonomy index, family/class definitions, Case File example projection, or renderer changes. On push, verified generated outputs are committed back to the current branch. The workflow rejects missing, empty, or non-PDF publication output before commit.
 
 Generate one Markdown family reference when needed:
 
