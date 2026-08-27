@@ -338,6 +338,6 @@ VIGIL is publicly accessible for citation, research, journalism, policy analysis
 
 Unless otherwise stated, VIGIL record text, summaries, schema documentation, and public-facing governance notes are licensed under **CC BY-NC-SA 4.0**.
 
-Commercial use, bulk extraction, dataset reconstruction, model-training use, or integration into paid products requires prior written permission from Aeon Governance Lab.
+Commercial use, bulk extraction, dataset reconstruction, model-training use, or integration into paid products requires prior written permission from Dr Michelle O'Rourke.
 
-See [LICENSE.md](./LICENSE.md).
+See [Licence.md](./Licence.md).
