@@ -31,7 +31,6 @@ jobs:
         run: |
           python - <<'PY'
           from pathlib import Path
-          import re
           import textwrap
 
           path = Path("vigil/taxonomy/render_taxonomy.py")
@@ -155,8 +154,8 @@ jobs:
               raise SystemExit("Refusing publication repair: publication_frontmatter block was not found")
           text = text[:fm_start] + new_frontmatter.rstrip() + text[fm_end:]
 
-          old_contents = '<section class="contents"><h1>VIGIL Observatory Failure Taxonomy</h1><p>Full Reference Manual</p><h2>Contents</h2><ol>'
-          new_contents = '<section class="contents"><h1>Governance Failure Taxonomy</h1><p>Technical Reference</p><h2>Contents</h2><ol>'
+          old_contents = 'VIGIL Observatory Failure Taxonomy</h1><p>Full Reference Manual'
+          new_contents = 'Governance Failure Taxonomy</h1><p>Technical Reference'
           if old_contents not in text:
               raise SystemExit("Refusing publication repair: contents title anchor was not found")
           text = text.replace(old_contents, new_contents, 1)
