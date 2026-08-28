@@ -8,6 +8,8 @@ import sys
 from pathlib import Path
 from typing import Any
 
+from external_requirements_io import load_requirements_document
+
 
 ROOT = Path(__file__).resolve().parents[2]
 VIGIL = ROOT / "vigil"
@@ -191,7 +193,7 @@ def validate_repository() -> list[str]:
     if generated.get("upstream_provenance_reference_required") is not True:
         errors.append(f"{DECLARATION_PATH}: generated artefacts must reference upstream provenance")
 
-    requirements = load(VIGIL / "external_requirements" / "requirements.json")
+    requirements = load_requirements_document()
     for record in requirements.get("requirements", []):
         provenance = record.get("interpretation_provenance")
         label = f"{record.get('requirement_id', 'unknown requirement')}.interpretation_provenance"
@@ -211,6 +213,7 @@ def validate_repository() -> list[str]:
 
     for relative in (
         "external_sources/source-registry.json",
+        "external_requirements/requirements/manifest.json",
         "external_requirements/requirements.json",
         "external_requirements/derivative-crosswalks.json",
     ):

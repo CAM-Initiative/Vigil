@@ -5,11 +5,17 @@ from __future__ import annotations
 
 import copy
 import importlib.util
+import sys
+import tempfile
 import unittest
 from collections import Counter
 from pathlib import Path
+from unittest import mock
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.append(str(ROOT / "scripts"))
+import external_requirements_io as REQUIREMENTS_IO  # noqa: E402
+
 SCRIPT = ROOT / "scripts" / "manage-external-requirements.py"
 SPEC = importlib.util.spec_from_file_location("external_requirements", SCRIPT)
 MODULE = importlib.util.module_from_spec(SPEC)
@@ -22,7 +28,7 @@ class ExternalRequirementsTests(unittest.TestCase):
     def setUpClass(cls) -> None:
         cls.registry_entries = MODULE.load_json(MODULE.REGISTRY_PATH)["entries"]
         cls.scope_entries = MODULE.load_json(MODULE.SCOPE_PATH)["entries"]
-        cls.requirements = MODULE.load_json(MODULE.REQUIREMENTS_PATH)["requirements"]
+        cls.requirements = MODULE.load_requirements_document()["requirements"]
         cls.coverage = MODULE.load_json(MODULE.COVERAGE_PATH)["manifests"]
 
     def validate_requirements(self, requirements=None, scope_entries=None):
@@ -41,6 +47,59 @@ class ExternalRequirementsTests(unittest.TestCase):
         for path, expected in outputs.items():
             self.assertTrue(path.exists(), path)
             self.assertEqual(path.read_text(encoding="utf-8"), expected, path)
+
+    def test_source_version_shards_are_canonical_and_deterministic(self):
+        paths = REQUIREMENTS_IO.iter_shard_paths()
+        self.assertEqual(len(paths), 18)
+        self.assertEqual(
+            [record["requirement_id"] for record in self.requirements],
+            sorted(record["requirement_id"] for record in self.requirements),
+        )
+        for path in paths:
+            records = REQUIREMENTS_IO.load_json(path)
+            self.assertTrue(records, path)
+            self.assertEqual(
+                [record["requirement_id"] for record in records],
+                sorted(record["requirement_id"] for record in records),
+                path,
+            )
+            self.assertTrue(all(
+                record["external_source_id"] == path.parent.name
+                and record["source_version"] == path.stem
+                for record in records
+            ), path)
+
+    def test_generated_aggregate_is_exact_projection_of_shards(self):
+        self.assertTrue(REQUIREMENTS_IO.aggregate_is_current())
+        aggregate = REQUIREMENTS_IO.load_json(REQUIREMENTS_IO.REQUIREMENTS_AGGREGATE_PATH)
+        self.assertEqual(aggregate, REQUIREMENTS_IO.load_requirements_document())
+        self.assertEqual(aggregate["requirement_count"], len(self.requirements))
+
+    def test_shard_loader_rejects_corpus_wide_duplicate_ids(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary) / "requirements"
+            manifest = root / "manifest.json"
+            manifest.parent.mkdir(parents=True)
+            manifest.write_text(REQUIREMENTS_IO.json_text({
+                "schema_version": "1.2",
+                "updated_at": "2026-08-28",
+                "authorship_provenance": {},
+            }), encoding="utf-8")
+            requirement_id = "EXTREQ-0000000000000000"
+            for source_id in ("SOURCE-A", "SOURCE-B"):
+                path = root / source_id / "1.0.json"
+                path.parent.mkdir(parents=True)
+                path.write_text(REQUIREMENTS_IO.json_text([{
+                    "requirement_id": requirement_id,
+                    "external_source_id": source_id,
+                    "source_version": "1.0",
+                }]), encoding="utf-8")
+            with (
+                mock.patch.object(REQUIREMENTS_IO, "REQUIREMENTS_ROOT", root),
+                mock.patch.object(REQUIREMENTS_IO, "REQUIREMENTS_MANIFEST_PATH", manifest),
+            ):
+                with self.assertRaisesRegex(ValueError, "duplicate requirement_id"):
+                    REQUIREMENTS_IO.load_requirements()
 
     def test_requirement_identity_survives_editorial_summary_change(self):
         item = self.requirements[0]

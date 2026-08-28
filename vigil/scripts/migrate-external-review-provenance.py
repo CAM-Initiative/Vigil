@@ -9,10 +9,11 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Any
 
+from external_requirements_io import load_requirements_document
+
 ROOT = Path(__file__).resolve().parents[1]
 REGISTRY_PATH = ROOT / "external_sources" / "source-registry.json"
 SCOPE_PATH = ROOT / "external_requirements" / "source-scope.json"
-REQUIREMENTS_PATH = ROOT / "external_requirements" / "requirements.json"
 
 REVIEW_SYSTEM = {"provider": "OpenAI", "platform": "ChatGPT", "model": "GPT-5.6 Sol"}
 ACCESS_METHOD = {
@@ -87,7 +88,7 @@ def migrate() -> dict[str, int]:
         for item in load(SCOPE_PATH)["entries"]
     }
     extraction_dates: dict[tuple[str, str], set[str]] = defaultdict(set)
-    for requirement in load(REQUIREMENTS_PATH)["requirements"]:
+    for requirement in load_requirements_document()["requirements"]:
         extraction_dates[(requirement["vigil_source_id"], requirement["source_version"])].add(
             requirement["source_review_date"]
         )

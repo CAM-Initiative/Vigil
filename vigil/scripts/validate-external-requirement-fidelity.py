@@ -14,10 +14,11 @@ import json
 from pathlib import Path
 import sys
 
+from external_requirements_io import load_requirements_document
+
 ROOT = Path(__file__).resolve().parents[2]
 EXTREQ = ROOT / "vigil" / "external_requirements"
 SCOPE_PATH = EXTREQ / "source-scope.json"
-REQ_PATH = EXTREQ / "requirements.json"
 FIDELITY_PATH = EXTREQ / "source-fidelity.json"
 STRESS_DIR = EXTREQ / "fidelity-stress-tests"
 REEXTRACTION_DIR = EXTREQ / "reextractions"
@@ -44,7 +45,7 @@ def validate() -> tuple[list[str], list[str], dict]:
     errors: list[str] = []
     warnings: list[str] = []
     scope = load(SCOPE_PATH)
-    requirements = load(REQ_PATH)
+    requirements = load_requirements_document()
     fidelity = load(FIDELITY_PATH)
     scope_entries = {source_key(item): item for item in scope.get("entries", [])}
     req_entries = requirements.get("requirements", requirements if isinstance(requirements, list) else [])

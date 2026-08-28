@@ -4,11 +4,13 @@
 from __future__ import annotations
 
 import importlib.util
+import sys
 import unittest
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.append(str(ROOT / "scripts"))
 SCRIPT = ROOT / "scripts" / "validate-authorship-provenance.py"
 SPEC = importlib.util.spec_from_file_location("authorship_provenance", SCRIPT)
 MODULE = importlib.util.module_from_spec(SPEC)

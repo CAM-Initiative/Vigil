@@ -4,10 +4,15 @@ from __future__ import annotations
 import argparse, hashlib, json
 from pathlib import Path
 
+from external_requirements_io import (
+    REQUIREMENTS_ROOT,
+    load_requirements_document,
+    write_requirements_document,
+)
+
 ROOT = Path(__file__).resolve().parents[1]
 REQ = ROOT / "external_requirements"
 SOURCES = ROOT / "external_sources"
-REQUIREMENTS = REQ / "requirements.json"
 REGISTRY = SOURCES / "source-registry.json"
 SCOPE = REQ / "source-scope.json"
 REEXTRACTIONS = REQ / "reextractions"
@@ -95,7 +100,7 @@ def migrate(check_only):
     packages = [load(path) for path in package_paths]
     normalization = load(METADATA_NORMALIZATION)
     overrides = normalization.get("overrides", {})
-    req_doc, registry, scopes = load(REQUIREMENTS), load(REGISTRY)["entries"], load(SCOPE)["entries"]
+    req_doc, registry, scopes = load_requirements_document(), load(REGISTRY)["entries"], load(SCOPE)["entries"]
     requirements = req_doc["requirements"]; by_id = {x["requirement_id"]: x for x in requirements}
     all_retired, replacements, staged_ids = set(), [], set()
     for package in packages:
@@ -127,8 +132,8 @@ def migrate(check_only):
     req_doc["updated_at"] = max(x["reviewed_at"] for x in packages)
     print(f"EU AI Act staged migration valid: retire {len(all_retired)}, add {len(replacements)}, apply {len(overrides)} metadata normalizations, resulting count {len(migrated)}")
     if check_only: return
-    REQUIREMENTS.write_text(json.dumps(req_doc, indent=2, ensure_ascii=False)+"\n", encoding="utf-8")
-    print(f"Wrote {REQUIREMENTS}")
+    write_requirements_document(req_doc)
+    print(f"Wrote canonical EXTREQ shards under {REQUIREMENTS_ROOT}")
     print("Next: manage-external-requirements.py build; validate --check-generated; validate-external-requirement-fidelity.py")
 
 def main():

@@ -136,7 +136,7 @@ Across all 72 registered versions, extraction states are:
 
 ## 8. Deterministic outputs and validation coverage
 
-Maintained truth consists of the Layer 0 ledger, Layer 1 scope decisions and `requirements.json`. The manager deterministically builds:
+Maintained truth now consists of the Layer 0 ledger, Layer 1 scope decisions and the source/version shards under `external_requirements/requirements/`. The manager deterministically builds the backward-compatible `requirements.json` aggregate and:
 
 - `requirements-index.json`;
 - `completeness-report.json`;

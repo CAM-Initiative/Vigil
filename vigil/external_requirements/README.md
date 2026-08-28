@@ -10,7 +10,8 @@ VIGIL's extraction, abstraction, classification and crosswalk preparation are AI
 
 The maintained current state is represented directly by:
 
-- `requirements.json` — canonical EXTREQ corpus;
+- `requirements/manifest.json` and `requirements/<external_source_id>/<source_version>.json` — canonical EXTREQ corpus metadata and source/version shards;
+- `requirements.json` — deterministically generated aggregate retained for backward compatibility and dataset packaging;
 - `source-scope.json` — source access, extraction and review-priority state;
 - `external-requirement.schema.json` and `source-scope.schema.json` — canonical contracts;
 - `metadata-review.json` and `metadata-review.schema.json` — field-level source-fidelity review state for machine-critical requirement metadata;
@@ -19,6 +20,8 @@ The maintained current state is represented directly by:
 - `source-coverage-manifests.json` — generated access/retrieval/analysis/completeness view.
 
 Historical baseline/effective replay machinery is not part of the current architecture. Git history preserves prior states.
+
+Each shard is a JSON array containing only the records for the source/version named by its path. Records within a shard and the generated aggregate are sorted by `requirement_id`. `../scripts/external_requirements_io.py` is the shared read/write boundary; validators, seeders and migrations must not read or rewrite the aggregate as canonical state.
 
 ## Semantic separation
 

@@ -5,9 +5,10 @@ import argparse, json
 from collections import Counter, defaultdict
 from pathlib import Path
 
+from external_requirements_io import load_requirements_document
+
 ROOT = Path(__file__).resolve().parents[1]
 REQ = ROOT / "external_requirements"
-CANONICAL = REQ / "requirements.json"
 LEDGER = REQ / "metadata-review.json"
 BACKLOG = REQ / "reextraction-backlog.json"
 SOURCE_SCOPE = REQ / "source-scope.json"
@@ -72,7 +73,7 @@ def source_key(record):
 
 
 def validate(strict: bool, write_report: bool) -> int:
-    canonical = load(CANONICAL).get("requirements", [])
+    canonical = load_requirements_document().get("requirements", [])
     staged = staged_records()
     ledger_doc = load(LEDGER)
     entries = ledger_doc.get("entries", [])

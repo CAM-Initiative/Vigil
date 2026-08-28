@@ -13,9 +13,14 @@ import json
 import re
 from pathlib import Path
 
+from external_requirements_io import (
+    REQUIREMENTS_ROOT,
+    load_requirements_document,
+    write_requirements_document,
+)
+
 ROOT = Path(__file__).resolve().parents[1]
 REQ = ROOT / "external_requirements"
-REQUIREMENTS = REQ / "requirements.json"
 LEDGER = REQ / "metadata-review.json"
 BACKLOG = REQ / "reextraction-backlog.json"
 
@@ -571,7 +576,7 @@ def backlog_entries(records: list[dict]) -> list[dict]:
 
 
 def seed(write: bool) -> int:
-    req_doc = load(REQUIREMENTS)
+    req_doc = load_requirements_document()
     ledger = load(LEDGER)
     records = req_doc["requirements"]
     by_id = {record["requirement_id"]: record for record in records}
@@ -664,10 +669,10 @@ def seed(write: bool) -> int:
         f"{len(selected)} requirements; {seeded} new ledger entries; {len(backlog)} backlog entries"
     )
     if write:
-        REQUIREMENTS.write_text(json.dumps(req_doc, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+        write_requirements_document(req_doc)
         LEDGER.write_text(json.dumps(output_ledger, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
         BACKLOG.write_text(json.dumps(output_backlog, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-        print(f"Wrote {REQUIREMENTS}")
+        print(f"Wrote canonical EXTREQ shards under {REQUIREMENTS_ROOT}")
         print(f"Wrote {LEDGER}")
         print(f"Wrote {BACKLOG}")
     return 0

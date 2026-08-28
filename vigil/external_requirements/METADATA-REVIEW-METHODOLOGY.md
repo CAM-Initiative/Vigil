@@ -9,7 +9,7 @@ The external-requirements corpus must distinguish between:
 3. metadata that was reviewed and is not applicable to the represented proposition; and
 4. metadata that has not yet received a source-fidelity decision.
 
-An empty array in `requirements.json` does not, by itself, establish which of those states applies.
+An empty array in a canonical source/version requirement shard does not, by itself, establish which of those states applies.
 
 The companion `metadata-review.json` ledger records that decision state without rewriting legacy requirement records merely to manufacture completeness.
 
