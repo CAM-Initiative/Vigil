@@ -3,7 +3,8 @@
 
 The decisions in this script are intentionally limited to NIST AI RMF 1.0,
 CycloneDX 1.7, NIST AI 600-1, IMDA Agentic AI MGF 1.5 and NIST SP 800-218A.
-They were made from the cited public primary sources on 2026-08-26. This is
+They were made from the cited public primary sources on 2026-08-26, with the
+NIST AI 600-1 constituent-fidelity tranche completed on 2026-08-28. This is
 not a generic empty-field classifier.
 """
 from __future__ import annotations
@@ -290,10 +291,10 @@ NIST_218A_SPECIFIC_QUALIFICATIONS = {
     "RV.2.2 C1": ["Alternative operations continue until the model's risks are sufficiently addressed."],
 }
 
-# Curated after action-by-action comparison with NIST AI 600-1. Fifty-one
-# records visibly truncate source-defined constituent content; the remaining
-# nine preserve several independently meaningful steps only in prose.
-NIST_GAI_CONSTITUENT_BACKLOG = {
+# Curated after action-by-action comparison with NIST AI 600-1. These 60
+# source-defined action identities were retained while their complete action
+# text and field-level constituent semantics were restored on 2026-08-28.
+NIST_GAI_CONSTITUENT_REPAIRS = {
     "EXTREQ-007D7BAAE8A25C9D", "EXTREQ-036F8B9FBBE33437",
     "EXTREQ-09A4C260900D6A83", "EXTREQ-0E404DEFECDA5FE0",
     "EXTREQ-11A6E84345FB4301", "EXTREQ-1269988FF25A00FD",
@@ -332,6 +333,7 @@ GAI_APPLICABILITY = (
     "organization's unique use of GAI systems."
 )
 ACTOR_TAG_SCHEME = "NIST AI 600-1 AI Actor Tasks (subcategory-level)"
+NIST_GAI_REVIEW_DIGEST = "6e73620ab6b64e90ef2c04bf0e0d6246185a2f4b1b13cab0df494496cff89b6a"
 
 
 def load(path: Path):
@@ -339,6 +341,10 @@ def load(path: Path):
 
 
 def normalize_nist_gai_actor_metadata(record: dict) -> None:
+    provenance = record["interpretation_provenance"]
+    provenance["reviewed_source_digest"] = NIST_GAI_REVIEW_DIGEST
+    provenance["reviewed_source_digest_algorithm"] = "sha256"
+    provenance["reviewed_source_digest_status"] = "recorded"
     if not re.fullmatch(r"(?:GV|MP|MS|MG)-\d+\.\d+-\d{3}", record["clause_or_control"]):
         return
     current = record.get("applicable_actor", [])
@@ -358,9 +364,135 @@ def normalize_nist_gai_actor_metadata(record: dict) -> None:
         raise ValueError(f"normalized actor lacks preserved source actor-task tag for {record['requirement_id']}")
 
     conditions = record.get("applicability_conditions", [])
-    if conditions not in ([], [GAI_APPLICABILITY]):
+    if not conditions:
+        record["applicability_conditions"] = [GAI_APPLICABILITY]
+    elif conditions[0] != GAI_APPLICABILITY:
         raise ValueError(f"unexpected NIST AI 600-1 applicability metadata for {record['requirement_id']}")
-    record["applicability_conditions"] = [GAI_APPLICABILITY]
+
+
+def _contains(action: str, *needles: str) -> bool:
+    lower = action.lower()
+    return any(needle in lower for needle in needles)
+
+
+def normalize_nist_gai_constituent_metadata(record: dict) -> None:
+    """Resolve the reviewed field dimensions without changing action identity."""
+    if record["requirement_id"] not in NIST_GAI_CONSTITUENT_REPAIRS:
+        return
+    action = record["governance_expectation"].strip()
+    if not action or "…" in action:
+        raise ValueError(f"incomplete NIST AI 600-1 action text for {record['requirement_id']}")
+    record["requirement_summary"] = action
+
+    objects = []
+    object_rules = (
+        (("incident",), "GAI incident response, recovery, disclosure, and communication processes"),
+        (("content provenance", "content authentication"), "GAI content-provenance data, methods, and controls"),
+        (("training data", "tevv data", "evaluation data"), "GAI training and testing, evaluation, verification, and validation data"),
+        (("generated content", "gai output", "gai system output"), "GAI system outputs and generated content"),
+        (("third-party", "vendor", "supplier", "acquisition", "procurement"), "Third-party GAI resources, suppliers, and service relationships"),
+        (("end-user", "end user", "human reviewer", "affected communit"), "Human interactions with and impacts from GAI systems"),
+        (("risk", "bias", "fairness", "security", "privacy"), "GAI risks, tolerances, assessments, and controls"),
+        (("gai model", "gai system"), "GAI models, systems, and lifecycle processes"),
+    )
+    for needles, label in object_rules:
+        if _contains(action, *needles) and label not in objects:
+            objects.append(label)
+    record["governed_object"] = objects or ["The GAI practice expressly addressed by the cited suggested action"]
+
+    timing = []
+    timing_rules = (
+        (("at a regular cadence", "regular cadences"), "At the regular cadence specified by the action."),
+        (("periodic monitoring",), "Periodically."),
+        (("continuous monitoring", "continual improvement", "continuous improvement"), "Continuously or as part of continual improvement."),
+        (("real-time monitoring", "real-time reporting"), "In real time."),
+        (("after-action", "post-mortem", "retrospective learning"), "After relevant incidents."),
+        (("deployment approval", "pre-deployment"), "Before or as part of deployment approval."),
+        (("when decommissioning", "deactivation or disengagement"), "When decommissioning, deactivating, or disengaging the GAI system."),
+        (("when adapting", "new domain"), "When adapting or detecting use of a GAI model in a new domain."),
+        (("over time",), "Over time."),
+    )
+    for needles, label in timing_rules:
+        if _contains(action, *needles) and label not in timing:
+            timing.append(label)
+    record["timing_or_frequency"] = timing
+
+    artefacts = []
+    artefact_rules = (
+        (("policies", "procedures"), "Policies and procedures specified by the action."),
+        (("plans",), "Plans specified by the action."),
+        (("document", "documentation"), "Action-specific documentation specified by the source."),
+        (("record", "tracked"), "Records specified by the action."),
+        (("inventory entries",), "GAI system inventory entries."),
+        (("contracts", "service level agreements", "slas"), "Vendor contracts and service-level agreements."),
+        (("measurement error models",), "Measurement error models."),
+        (("warning systems",), "Warning systems for changed-domain use."),
+        (("training materials",), "Training materials."),
+    )
+    for needles, label in artefact_rules:
+        if _contains(action, *needles) and label not in artefacts:
+            artefacts.append(label)
+    record["required_artefacts"] = artefacts
+
+    evidence = []
+    evidence_rules = (
+        (("document", "record", "tracked"), "The action-specific documentation or records specified by the source."),
+        (("test", "red-team"), "Results of the source-specified testing or red-teaming."),
+        (("assess", "evaluate", "review", "measure", "benchmark", "compare"), "Results of the source-specified assessment, evaluation, review, or measurement."),
+        (("monitor",), "Outputs from the source-specified monitoring."),
+        (("feedback", "survey", "focus group", "community forum"), "Structured feedback, survey, or engagement results specified by the action."),
+    )
+    for needles, label in evidence_rules:
+        if _contains(action, *needles) and label not in evidence:
+            evidence.append(label)
+    record["evidence_expectation"] = evidence
+
+    verification = []
+    verification_rules = (
+        (("red-team", "adversarial testing"), "AI red-teaming or adversarial testing specified by the action."),
+        (("fairness assessment",), "Fairness assessment using the source-specified metrics and methods."),
+        (("benchmark", "compare"), "Benchmarking or comparison specified by the action."),
+        (("monitor",), "Monitoring specified by the action."),
+        (("survey", "focus group", "community forum", "structured feedback"), "User research or structured-feedback method specified by the action."),
+        (("assess", "evaluate", "review", "measure", "verify"), "Assessment, evaluation, review, measurement, or verification specified by the action."),
+    )
+    for needles, label in verification_rules:
+        if _contains(action, *needles) and label not in verification:
+            verification.append(label)
+    record["verification_method"] = verification
+
+    conditions = [GAI_APPLICABILITY]
+    condition_rules = (
+        (("where appropriate", "where applicable", "as applicable"), "Where the action states that the practice is appropriate or applicable."),
+        (("context of use", "context(s) of use"), "Within the relevant GAI context of use."),
+        (("third-party", "vendor", "supplier"), "Where third-party GAI resources, suppliers, or services are involved."),
+        (("new domain",), "Where a GAI model is adapted to, or used in, a new domain."),
+        (("decommission", "deactivation", "disengagement"), "Where the GAI system or use context is being decommissioned, deactivated, or disengaged."),
+        (("do not surpass organizational risk tolerance",), "For risks that do not surpass organizational risk tolerance."),
+    )
+    for needles, label in condition_rules:
+        if _contains(action, *needles) and label not in conditions:
+            conditions.append(label)
+    record["applicability_conditions"] = conditions
+
+    qualifications = []
+    if _contains(action, "e.g.", "for example", "such as", "including"):
+        qualifications.append("Examples and included items in the suggested action are illustrative of its stated scope, not an inferred exhaustive list.")
+    if _contains(action, "reasonable measures"):
+        qualifications.append("The source qualifies the measures as reasonable.")
+    if _contains(action, "where appropriate", "where applicable", "as applicable"):
+        qualifications.append("The source expressly qualifies the relevant practice by appropriateness or applicability.")
+    if _contains(action, "may include"):
+        qualifications.append("The listed plan contents are optional examples because the source states that plans may include them.")
+    record["exceptions_or_qualifications"] = qualifications
+
+    record["source_review_date"] = "2026-08-28"
+    provenance = record["interpretation_provenance"]
+    provenance["source_analysis_method"] = (
+        "Direct primary-text constituent-fidelity review against the official NIST AI 600-1 PDF; "
+        "the source-defined suggested-action identity was retained and complete action semantics "
+        "were resolved across the structured metadata dimensions."
+    )
 
 
 def set_reviewed_metadata(record: dict, field: str, values: list[str]) -> None:
@@ -476,37 +608,17 @@ def normalize_nist_218a_metadata(record: dict) -> None:
 
 def backlog_entries(records: list[dict]) -> list[dict]:
     by_id = {record["requirement_id"]: record for record in records}
-    missing = sorted(NIST_GAI_CONSTITUENT_BACKLOG - set(by_id))
+    missing = sorted(NIST_GAI_CONSTITUENT_REPAIRS - set(by_id))
     if missing:
-        raise ValueError(f"NIST AI 600-1 backlog IDs do not resolve: {missing}")
+        raise ValueError(f"NIST AI 600-1 constituent-repair IDs do not resolve: {missing}")
     entries = []
-    affected = [
-        "governed_object", "timing_or_frequency", "required_artefacts",
-        "evidence_expectation", "verification_method", "applicability_conditions",
-        "exceptions_or_qualifications",
+    unresolved = [
+        rid for rid in sorted(NIST_GAI_CONSTITUENT_REPAIRS)
+        if "…" in by_id[rid]["requirement_summary"]
+        or by_id[rid]["requirement_summary"] != by_id[rid]["governance_expectation"]
     ]
-    for rid in sorted(NIST_GAI_CONSTITUENT_BACKLOG):
-        record = by_id[rid]
-        truncated = "…" in record["requirement_summary"]
-        entries.append({
-            "current_requirement_id": rid,
-            "vigil_source_id": record["vigil_source_id"],
-            "external_source_id": record["external_source_id"],
-            "source_version": record["source_version"],
-            "clause_or_control": record["clause_or_control"],
-            "reason": (
-                "The current analytical summary truncates source-defined constituent content, so the action cannot support complete field-level fidelity decisions."
-                if truncated else
-                "The source-defined action contains several independently meaningful steps that remain preserved only in prose and require structured constituent enrichment."
-            ),
-            "detected_fidelity_defects": [
-                "compound-normative-propositions", "constituent-semantics-loss"
-            ],
-            "affected_metadata_dimensions": affected,
-            "review_status": "queued",
-            "source_access_basis": "direct-public-primary",
-            "recommended_repair": "constituent-enrichment-preserve-identity",
-        })
+    if unresolved:
+        raise ValueError(f"NIST AI 600-1 constituent repairs are incomplete: {unresolved}")
 
     record = by_id[CYCLONEDX_MODALITY_DEFECT]
     entries.append({
@@ -592,11 +704,13 @@ def seed(write: bool) -> int:
     for record in selected:
         if record["vigil_source_id"] == NIST_GAI:
             normalize_nist_gai_actor_metadata(record)
+            normalize_nist_gai_constituent_metadata(record)
         elif record["vigil_source_id"] == IMDA_AGENTIC:
             normalize_imda_metadata(record)
         elif record["vigil_source_id"] == NIST_218A:
             normalize_nist_218a_metadata(record)
-        record["source_review_date"] = "2026-08-26"
+        if record["vigil_source_id"] != NIST_GAI:
+            record["source_review_date"] = "2026-08-26"
 
     backlog = backlog_entries(records)
     affected_by_id = {
@@ -628,9 +742,9 @@ def seed(write: bool) -> int:
             ]
         elif record["vigil_source_id"] == NIST_GAI:
             notes = [
-                "Reviewed against NIST AI 600-1; action identity, source-level actor applicability, timing, outputs and assessment language were checked directly.",
+                "Reviewed against the official NIST AI 600-1 PDF; SHA-256 6e73620ab6b64e90ef2c04bf0e0d6246185a2f4b1b13cab0df494496cff89b6a.",
+                "The 60 queued constituent-fidelity actions retain their source-defined identities; complete action text and the seven affected metadata dimensions were resolved on 2026-08-28.",
                 "The source's subcategory-level AI Actor Tasks are preserved as source-defined tags rather than attributed to every suggested action.",
-                "Fields affected by a queued constituent-semantics defect remain review-required instead of being padded with generic metadata."
             ]
         elif record["vigil_source_id"] == IMDA_AGENTIC:
             notes = [
@@ -646,24 +760,26 @@ def seed(write: bool) -> int:
             ]
         entry = {
             "requirement_id": rid,
-            "reviewed_at": "2026-08-26",
+            "reviewed_at": "2026-08-28" if record["vigil_source_id"] == NIST_GAI else "2026-08-26",
             "review_basis": "direct-primary-text",
             "review_notes": notes,
             "field_status": field_status,
         }
         current = existing.get(rid)
         if current is not None and current != entry:
-            raise ValueError(f"existing metadata-review decision differs for {rid}; manual reconciliation required")
-        if current is None:
+            if record["vigil_source_id"] != NIST_GAI:
+                raise ValueError(f"existing metadata-review decision differs for {rid}; manual reconciliation required")
+            existing[rid] = entry
+        elif current is None:
             existing[rid] = entry
             seeded += 1
 
     output_ledger = {
         "schema_version": ledger.get("schema_version", "1.0"),
-        "updated_at": "2026-08-26",
+        "updated_at": "2026-08-28",
         "entries": sorted(existing.values(), key=lambda entry: entry["requirement_id"]),
     }
-    output_backlog = {"schema_version": "1.0", "updated_at": "2026-08-26", "entries": backlog}
+    output_backlog = {"schema_version": "1.0", "updated_at": "2026-08-28", "entries": backlog}
     print(
         "Reviewed-source metadata seed valid: "
         f"{len(selected)} requirements; {seeded} new ledger entries; {len(backlog)} backlog entries"

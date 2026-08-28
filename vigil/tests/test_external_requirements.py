@@ -202,9 +202,14 @@ class ExternalRequirementsTests(unittest.TestCase):
             self.assertEqual(provenance["review_date"], "2026-08-24")
             self.assertEqual(provenance["next_substantive_review"], "2026-11-22")
 
-    def test_empty_assurance_overlay_does_not_invent_human_assurance(self):
+    def test_recorded_source_digest_does_not_invent_human_assurance(self):
         overlay = MODULE.load_json(MODULE.REVIEW_ASSURANCE_PATH)
-        self.assertEqual(overlay["source_reviews"], [])
+        nist_gai = next(
+            review for review in overlay["source_reviews"]
+            if review["external_source_id"] == "NIST-AI-600-1"
+        )
+        self.assertEqual(nist_gai["reviewed_source_digest"]["algorithm"], "sha256")
+        self.assertEqual(nist_gai["assurance_provenance"], [])
         self.assertTrue(all(record["assurance_provenance"] == [] for record in self.requirements))
         self.assertTrue(all(
             item["substantive_review_provenance"]["human_review_status"] == "not-reviewed"

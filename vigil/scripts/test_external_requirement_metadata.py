@@ -74,11 +74,37 @@ def main():
     backlog = json.loads((REQ / "reextraction-backlog.json").read_text(encoding="utf-8"))
     assert backlog_schema["properties"]["schema_version"]["const"] == "1.0"
     backlog_ids = [entry["current_requirement_id"] for entry in backlog["entries"]]
-    assert len(backlog_ids) == len(set(backlog_ids)) == 87
-    assert sum(entry["external_source_id"] == "NIST-AI-600-1" for entry in backlog["entries"]) == 60
+    assert len(backlog_ids) == len(set(backlog_ids)) == 27
+    assert sum(entry["external_source_id"] == "NIST-AI-600-1" for entry in backlog["entries"]) == 0
     assert sum(entry["external_source_id"] == "CYCLONEDX-SPEC" for entry in backlog["entries"]) == 1
     assert sum(entry["external_source_id"] == "IMDA-AGENTIC-AI-MGF" for entry in backlog["entries"]) == 20
     assert sum(entry["external_source_id"] == "NIST-SP-800-218A" for entry in backlog["entries"]) == 6
+
+    nist_gai = json.loads((REQ / "requirements" / "NIST-AI-600-1" / "2024.json").read_text(encoding="utf-8"))
+    nist_gai_by_id = {record["requirement_id"]: record for record in nist_gai}
+    reviewed_module = load_script("seed-reviewed-source-metadata.py")
+    repairs = reviewed_module.NIST_GAI_CONSTITUENT_REPAIRS
+    assert len(repairs) == 60
+    assert repairs <= set(nist_gai_by_id)
+    review_by_id = {entry["requirement_id"]: entry for entry in ledger["entries"]}
+    generic_values = {
+        "Generative AI system and associated risk-management practices",
+        "Documentation expressly specified by the cited requirement or control.",
+        "Documented output or record specified by the cited action.",
+        "Monitoring output or review record specified by the cited action.",
+    }
+    for rid in repairs:
+        record = nist_gai_by_id[rid]
+        assert "…" not in record["requirement_summary"]
+        assert record["requirement_summary"] == record["governance_expectation"]
+        assert record["source_review_date"] == "2026-08-28"
+        assert record["interpretation_provenance"]["reviewed_source_digest"] == reviewed_module.NIST_GAI_REVIEW_DIGEST
+        assert all(
+            value not in generic_values
+            for field in FIELDS
+            for value in record.get(field, [])
+        )
+        assert all(review_by_id[rid]["field_status"][field] != "review-required" for field in FIELDS)
 
     validator = (SCRIPTS / "validate-external-requirement-metadata.py").read_text(encoding="utf-8")
     assert '"source_summary"' in validator
@@ -96,7 +122,7 @@ def main():
     assert "--write" in seeder
 
     reviewed_seeder = (SCRIPTS / "seed-reviewed-source-metadata.py").read_text(encoding="utf-8")
-    assert "NIST_GAI_CONSTITUENT_BACKLOG" in reviewed_seeder
+    assert "NIST_GAI_CONSTITUENT_REPAIRS" in reviewed_seeder
     assert "IMDA_BACKLOG" in reviewed_seeder
     assert "NIST_218A_BACKLOG" in reviewed_seeder
     assert "AI Actor Tasks (subcategory-level)" in reviewed_seeder
