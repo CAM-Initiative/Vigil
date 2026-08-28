@@ -41,18 +41,41 @@ CYCLONEDX = "EXT-13FB945E8A06"
 NIST_GAI = "EXT-DE4FDB52698E"
 IMDA_AGENTIC = "EXT-3CCBC407EAC8"
 NIST_218A = "EXT-65F7658B8B04"
-CYCLONEDX_MODALITY_DEFECT = "EXTREQ-FA1B882FFAD54D93"
+CYCLONEDX_MODALITY_REPAIRS = {
+    "EXTREQ-FA1B882FFAD54D93", "EXTREQ-F2C81603A7B306F6"
+}
+CYCLONEDX_REVIEW_DIGEST = "df472ef4aaf593904c479293723a1a5c191d6672715c93b3c0b5c318f3914221"
 
 IMDA_SCOPE = (
     "The framework applies to organizations looking to deploy agentic AI, "
     "whether they develop agents in-house or use third-party agentic solutions."
 )
 
-# Direct review of IMDA MGF 1.5 found eight semantically over-compressed 2.1
-# records and twelve records whose section-level locator masks the actual
-# subsection proposition. Affected fields stay unresolved; the canonical
-# records are not silently repaired in this metadata pass.
-IMDA_BACKLOG = {
+IMDA_REVIEW_DIGEST = "2636e19ff1c86e862394d2fc900592e97b83c04cc35e3c8443108114b7f1dfba"
+IMDA_FIDELITY_REPAIRS = {
+    "EXTREQ-094BAEC3B9534B43", "EXTREQ-14B4DA1E7646754E",
+    "EXTREQ-6A5C3FF914A66FFD", "EXTREQ-08FE5D118B5A6EE0",
+    "EXTREQ-10507618F9C18B1A", "EXTREQ-329CA68B17B42CCB",
+    "EXTREQ-3B91F9DF01838676", "EXTREQ-3E386D665B98BDEA",
+    "EXTREQ-4253F163EB11C1C9", "EXTREQ-47EE577CC52EF131",
+    "EXTREQ-50FBD66AC83B727A", "EXTREQ-5513796D63BEB71E",
+    "EXTREQ-7B1019B56EF6F868", "EXTREQ-82D791A7B54305B0",
+    "EXTREQ-844AFD2FC9FB59FD", "EXTREQ-84F679C261C5C817",
+    "EXTREQ-8E40B24DA599E4D5", "EXTREQ-90553A3F265B9C63",
+    "EXTREQ-99712BA8308E32FF", "EXTREQ-B8ACB627BDA3A2CD",
+    "EXTREQ-C36DCD607690CE69", "EXTREQ-590563A599CC235C",
+    "EXTREQ-8643F34ADBB5C239", "EXTREQ-99E97A9DFCB368EE",
+    "EXTREQ-F3EBD6E34FEFE18E", "EXTREQ-F477502DEE0603FE",
+    "EXTREQ-39B1C084B42C32CC",
+}
+IMDA_RETIRED_IDS = {
+    "EXTREQ-1F35B4A263EF7055", "EXTREQ-24F5ABCB4CAFC499",
+    "EXTREQ-2DC8F2B745E464D5", "EXTREQ-DB1BC74DC84D4718",
+    "EXTREQ-DCFA4FF526B6439C", "EXTREQ-DFAE10B7FA4CAEEF",
+    "EXTREQ-FE078DDB1FABA3AF",
+}
+
+IMDA_RESOLVED_BACKLOG = {
     "EXTREQ-14B4DA1E7646754E": (
         ["compound-normative-propositions", "constituent-semantics-loss", "locator-too-coarse"],
         ["governed_object", "timing_or_frequency", "required_artefacts", "evidence_expectation", "verification_method", "applicability_conditions", "exceptions_or_qualifications"],
@@ -168,7 +191,7 @@ NIST_218A_GLOBAL_QUALIFICATIONS = [
     "Deployment and operation of AI systems and most of the data governance and management life cycle are outside the Profile's scope.",
 ]
 
-NIST_218A_BACKLOG = {
+NIST_218A_REPAIRS = {
     "EXTREQ-0D340334BF013176": (
         ["constituent-semantics-loss", "condition-loss"],
         ["required_artefacts", "evidence_expectation", "applicability_conditions", "exceptions_or_qualifications"],
@@ -206,6 +229,7 @@ NIST_218A_BACKLOG = {
         "semantic-decomposition-with-identity-migration",
     ),
 }
+NIST_218A_REVIEW_DIGEST = "e088c8bc75716824dae7c36a987f408364638561d381ed001b5c12254a7b10d8"
 
 NIST_218A_TIMING = {
     "PO.2.1 R1": ["Throughout the software development life cycle."],
@@ -238,6 +262,7 @@ NIST_218A_ARTEFACTS = {
     "PS.3.1 R2": ["Documented justification for AI model selection retained with release information."],
     "PS.3.1 R3": ["Documentation of the training process, including data preprocessing and model architecture."],
     "PS.3.2 R1": ["Provenance records for the AI model, its components and derivatives, and the libraries, frameworks, and pipelines used to build it."],
+    "PS.3.2 R2": ["Tracking records for AI models trained on sensitive data and the resulting access-control determination."],
     "PS.3.2 C1": ["Disclosure of the provenance of training, testing, fine-tuning, and aligning data."],
     "PW.1.1 R1": ["AI model security risk model incorporating relevant vulnerability and threat types."],
     "PW.1.1 C1": ["Updated risk model for future model versions and derivatives."],
@@ -255,16 +280,36 @@ NIST_218A_ARTEFACTS = {
     "RV.2.2 R2": ["Criteria and processes for stopping model use and rolling back to a previous version and its components."],
 }
 NIST_218A_EVIDENCE = dict(NIST_218A_ARTEFACTS)
+NIST_218A_EVIDENCE["PW.7.1 C1"] = ["AI model code scan results, where the consideration is adopted."]
+
+NIST_218A_OBJECTS = {
+    "PO.1.2 R1": ["AI model development security requirements and the organizational policies supporting them"],
+    "PS.1.1 R1": ["AI models, model weights, pipelines, reward models, and other model elements requiring confidentiality, integrity, or availability protection"],
+    "PS.3.2 R2": ["AI models trained on sensitive data and access controls for those models"],
+    "PW.1.1 R1": ["AI model security risk models and AI model-specific vulnerabilities and threats"],
+    "PW.3.1 R2": ["Training, testing, fine-tuning, and aligning data for an AI model"],
+    "PW.7.1 R1": ["Code review and analysis policies or guidelines for AI model code and related components"],
+    "PW.7.1 C1": ["AI model code"],
+}
+
+NIST_218A_SPECIFIC_CONDITIONS = {
+    "PS.1.1 R1": ["For AI model elements whose confidentiality, integrity, or availability needs protection."],
+    "PS.3.2 R2": ["For AI models trained on sensitive data; access restrictions are evaluated against existing access to the sensitive training data."],
+}
 
 NIST_218A_VERIFICATION = {
     "PO.3.2 R2": ["Security verification of toolchains at a risk-commensurate frequency."],
     "PO.4.1 C1": ["Human review and approval of software security checks beyond risk-based thresholds."],
     "PS.2.1 R1": ["Cryptographic hash or digital-signature verification."],
     "PS.2.1 R2": ["Digital-signature verification."],
+    "PS.3.2 R2": ["Determination of whether model access should be restricted to individuals already authorized to access the sensitive training data."],
+    "PW.1.1 R1": ["AI model security risk modeling that incorporates relevant AI model-specific vulnerability and threat types."],
     "PW.3.1 R1": ["Verification of known provenance and data integrity before use."],
+    "PW.3.1 R2": ["Analysis and alteration of model-development data using appropriate methods such as anomaly and bias detection, cleaning, curation, filtering, sanitization, fact-checking, and noise reduction."],
     "PW.4.4 R1": ["Integrity, provenance, and security verification before use."],
     "PW.4.4 R2": ["Vulnerability and malicious-content scanning and testing before use."],
     "PW.7.2 R1": ["Scanning for malware, vulnerabilities, backdoors, and other security issues under organizational review policies."],
+    "PW.7.1 C1": ["Scanning AI model code in addition to testing the AI models."],
     "PW.8.1 R1": ["Unit, integration, penetration, red-team, use-case, or adversarial testing, as selected by the organization."],
     "PW.8.1 C1": ["Automated regression testing in the development pipeline where possible."],
     "PW.8.2 R1": ["Vulnerability testing under organizational code-testing policies or guidelines."],
@@ -283,8 +328,11 @@ NIST_218A_SPECIFIC_QUALIFICATIONS = {
     "PS.1.2 C1": ["Future storage is considered only if feasible."],
     "PS.1.3 R2": ["The confidentiality monitoring recommendation applies only to closed models."],
     "PW.1.1 C1": ["The consideration applies after release to future model versions and derivatives."],
+    "PW.1.1 R1": ["The listed AI model-specific vulnerability and threat types are source-provided examples and are not exhaustive."],
     "PW.1.1 C2": ["The consideration concerns critical paths for significant security decisions without a human in the loop."],
     "PW.3.1 R1": ["Provenance is verified when known."],
+    "PW.3.1 R2": ["The listed analysis and alteration methods are source-provided examples and are not exhaustive."],
+    "PW.7.1 C1": ["Scanning is a consideration rather than a recommendation and supplements testing of the AI models."],
     "PW.8.1 C1": ["Pipeline automation is considered where possible."],
     "RV.1.1 R2": ["For this recommendation, users are AI system producers and acquirers using an AI model."],
     "RV.1.2 R2": ["A human is involved as needed rather than by default for every scan or test."],
@@ -505,8 +553,24 @@ def set_reviewed_metadata(record: dict, field: str, values: list[str]) -> None:
 
 
 def normalize_imda_metadata(record: dict) -> None:
-    set_reviewed_metadata(record, "applicability_conditions", [IMDA_SCOPE])
+    provenance = record["interpretation_provenance"]
+    provenance["reviewed_source_digest"] = IMDA_REVIEW_DIGEST
+    provenance["reviewed_source_digest_algorithm"] = "sha256"
+    provenance["reviewed_source_digest_status"] = "recorded"
+    conditions = record.get("applicability_conditions", [])
+    if not conditions:
+        record["applicability_conditions"] = [IMDA_SCOPE]
+    elif conditions[0] != IMDA_SCOPE:
+        raise ValueError(f"unexpected IMDA applicability scope for {record['requirement_id']}")
     rid = record["requirement_id"]
+    if rid in IMDA_FIDELITY_REPAIRS:
+        if record["requirement_summary"] != record["governance_expectation"]:
+            raise ValueError(f"IMDA fidelity repair is incomplete: {rid}")
+        provenance["source_analysis_method"] = (
+            "Direct primary-text constituent-fidelity review of IMDA Model AI Governance "
+            "Framework for Agentic AI version 1.5; source-defined subsection propositions, "
+            "conditions, outputs, and illustrative qualifications were represented separately."
+        )
     if rid == "EXTREQ-4B28B179BF91F130":
         set_reviewed_metadata(
             record,
@@ -523,7 +587,7 @@ def normalize_imda_metadata(record: dict) -> None:
             record,
             "verification_method",
             [
-                "Pre-deployment testing of complete workflows, individual and multi-agent behavior, realistic environments, varied datasets and repeated runs."
+                "Test complete workflows, individual and multi-agent behavior, realistic environments, varied datasets, and repeated runs."
             ],
         )
     elif rid == "EXTREQ-C867BF4ECD4B5161":
@@ -532,6 +596,20 @@ def normalize_imda_metadata(record: dict) -> None:
             "verification_method",
             ["Threat modelling supported by taint tracing of workflows, interactions and untrusted-data flows."],
         )
+
+
+def normalize_cyclonedx_metadata(record: dict) -> None:
+    provenance = record["interpretation_provenance"]
+    provenance["reviewed_source_digest"] = CYCLONEDX_REVIEW_DIGEST
+    provenance["reviewed_source_digest_algorithm"] = "sha256"
+    provenance["reviewed_source_digest_status"] = "recorded"
+    if record["requirement_id"] in CYCLONEDX_MODALITY_REPAIRS:
+        provenance["source_analysis_method"] = (
+            "Direct modality review of modelCard.bom-ref in the CycloneDX 1.7 JSON schema "
+            "at release commit 4b3f59453366e27c8073fd24e98bf21ef8892c8e."
+        )
+        if record["requirement_summary"] != record["governance_expectation"]:
+            raise ValueError(f"CycloneDX bom-ref repair is incomplete: {record['requirement_id']}")
 
 
 NIST_218A_LEGACY_METADATA = {
@@ -580,7 +658,20 @@ def set_curated_nist_218a_metadata(record: dict, field: str, values: list[str]) 
 def normalize_nist_218a_metadata(record: dict) -> None:
     rid = record["requirement_id"]
     clause = record["clause_or_control"]
-    affected = set(NIST_218A_BACKLOG.get(rid, ([], [], "", ""))[1])
+
+    provenance = record["interpretation_provenance"]
+    provenance["reviewed_source_digest"] = NIST_218A_REVIEW_DIGEST
+    provenance["reviewed_source_digest_algorithm"] = "sha256"
+    provenance["reviewed_source_digest_status"] = "recorded"
+    if rid in NIST_218A_REPAIRS or clause == "PW.7.1 C1":
+        if "…" in record["governance_expectation"]:
+            raise ValueError(f"incomplete NIST SP 800-218A source text for {rid}")
+        record["requirement_summary"] = record["governance_expectation"]
+        provenance["source_analysis_method"] = (
+            "Direct primary-text fidelity review against the official NIST SP 800-218A PDF; "
+            "source-defined recommendation and consideration identities, conditions, qualifications, "
+            "outputs, and methods were resolved without attributing non-normative notes as requirements."
+        )
 
     current_actor = record.get("applicable_actor", [])
     expected_actors = [["AI model producer"], [NIST_218A_ACTOR]]
@@ -588,12 +679,25 @@ def normalize_nist_218a_metadata(record: dict) -> None:
         raise ValueError(f"unexpected NIST SP 800-218A actor metadata for {rid}")
     record["applicable_actor"] = [NIST_218A_ACTOR]
 
-    set_reviewed_metadata(record, "applicability_conditions", [NIST_218A_SCOPE])
+    conditions = [NIST_218A_SCOPE] + NIST_218A_SPECIFIC_CONDITIONS.get(clause, [])
+    current_conditions = record.get("applicability_conditions", [])
+    if current_conditions not in ([], [NIST_218A_SCOPE], conditions):
+        raise ValueError(f"unexpected NIST SP 800-218A applicability metadata for {rid}")
+    record["applicability_conditions"] = conditions
     qualifications = NIST_218A_GLOBAL_QUALIFICATIONS + NIST_218A_SPECIFIC_QUALIFICATIONS.get(clause, [])
     current_qualifications = record.get("exceptions_or_qualifications", [])
-    if current_qualifications not in ([], qualifications):
+    if current_qualifications not in ([], NIST_218A_GLOBAL_QUALIFICATIONS, qualifications):
         raise ValueError(f"unexpected NIST SP 800-218A qualifications for {rid}")
     record["exceptions_or_qualifications"] = qualifications
+
+    objects = NIST_218A_OBJECTS.get(clause)
+    if objects:
+        current_objects = record.get("governed_object", [])
+        if current_objects not in (
+            ["Generative AI or dual-use foundation model development practice"], objects
+        ):
+            raise ValueError(f"unexpected NIST SP 800-218A governed object for {rid}")
+        record["governed_object"] = objects
 
     curated = {
         "timing_or_frequency": NIST_218A_TIMING.get(clause, []),
@@ -602,8 +706,7 @@ def normalize_nist_218a_metadata(record: dict) -> None:
         "verification_method": NIST_218A_VERIFICATION.get(clause, []),
     }
     for field, values in curated.items():
-        if field not in affected:
-            set_curated_nist_218a_metadata(record, field, values)
+        set_curated_nist_218a_metadata(record, field, values)
 
 
 def backlog_entries(records: list[dict]) -> list[dict]:
@@ -620,70 +723,34 @@ def backlog_entries(records: list[dict]) -> list[dict]:
     if unresolved:
         raise ValueError(f"NIST AI 600-1 constituent repairs are incomplete: {unresolved}")
 
-    record = by_id[CYCLONEDX_MODALITY_DEFECT]
-    entries.append({
-        "current_requirement_id": record["requirement_id"],
-        "vigil_source_id": record["vigil_source_id"],
-        "external_source_id": record["external_source_id"],
-        "source_version": record["source_version"],
-        "clause_or_control": record["clause_or_control"],
-        "reason": (
-            "The current record combines the mandatory bom-ref uniqueness rule with the "
-            "recommended reserved-prefix constraint and represents both as mandatory."
-        ),
-        "detected_fidelity_defects": [
-            "compound-normative-propositions", "modality-loss"
-        ],
-        "affected_metadata_dimensions": ["exceptions_or_qualifications"],
-        "review_status": "queued",
-        "source_access_basis": "direct-public-primary",
-        "recommended_repair": "semantic-decomposition-with-identity-migration",
-    })
+    missing_cyclonedx = sorted(CYCLONEDX_MODALITY_REPAIRS - set(by_id))
+    if missing_cyclonedx:
+        raise ValueError(f"CycloneDX bom-ref modality repairs do not resolve: {missing_cyclonedx}")
 
-    migrate = {
-        "EXTREQ-14B4DA1E7646754E", "EXTREQ-2DC8F2B745E464D5",
-        "EXTREQ-DB1BC74DC84D4718", "EXTREQ-1F35B4A263EF7055",
-        "EXTREQ-DCFA4FF526B6439C", "EXTREQ-DFAE10B7FA4CAEEF",
-        "EXTREQ-FE078DDB1FABA3AF", "EXTREQ-24F5ABCB4CAFC499",
-    }
-    for rid, (defects, affected, reason) in sorted(IMDA_BACKLOG.items()):
-        record = by_id.get(rid)
-        if record is None or record.get("vigil_source_id") != IMDA_AGENTIC:
-            raise ValueError(f"IMDA backlog ID does not resolve to the reviewed source: {rid}")
-        entries.append({
-            "current_requirement_id": rid,
-            "vigil_source_id": record["vigil_source_id"],
-            "external_source_id": record["external_source_id"],
-            "source_version": record["source_version"],
-            "clause_or_control": record["clause_or_control"],
-            "reason": reason,
-            "detected_fidelity_defects": defects,
-            "affected_metadata_dimensions": affected,
-            "review_status": "queued",
-            "source_access_basis": "direct-public-primary",
-            "recommended_repair": (
-                "semantic-decomposition-with-identity-migration"
-                if rid in migrate else
-                "constituent-enrichment-preserve-identity"
-            ),
-        })
-    for rid, (defects, affected, reason, repair) in sorted(NIST_218A_BACKLOG.items()):
-        record = by_id.get(rid)
-        if record is None or record.get("vigil_source_id") != NIST_218A:
-            raise ValueError(f"NIST SP 800-218A backlog ID does not resolve: {rid}")
-        entries.append({
-            "current_requirement_id": rid,
-            "vigil_source_id": record["vigil_source_id"],
-            "external_source_id": record["external_source_id"],
-            "source_version": record["source_version"],
-            "clause_or_control": record["clause_or_control"],
-            "reason": reason,
-            "detected_fidelity_defects": defects,
-            "affected_metadata_dimensions": affected,
-            "review_status": "queued",
-            "source_access_basis": "direct-public-primary",
-            "recommended_repair": repair,
-        })
+    missing_imda = sorted(IMDA_FIDELITY_REPAIRS - set(by_id))
+    if missing_imda:
+        raise ValueError(f"IMDA fidelity-repair IDs do not resolve: {missing_imda}")
+    unresolved_imda = [
+        rid for rid in sorted(IMDA_FIDELITY_REPAIRS)
+        if by_id[rid].get("vigil_source_id") != IMDA_AGENTIC
+        or by_id[rid]["requirement_summary"] != by_id[rid]["governance_expectation"]
+        or by_id[rid].get("clause_or_control") not in {"2.1.1", "2.1.2", "2.2", "2.2.1", "2.2.2", "2.3", "2.3.1", "2.3.2", "2.3.3", "2.4", "2.4.2", "2.4.3"}
+    ]
+    if unresolved_imda:
+        raise ValueError(f"IMDA fidelity repairs are incomplete: {unresolved_imda}")
+    missing_218a = sorted(set(NIST_218A_REPAIRS) - set(by_id))
+    if missing_218a:
+        raise ValueError(f"NIST SP 800-218A repair IDs do not resolve: {missing_218a}")
+    c1 = by_id.get("EXTREQ-1FFE1710582A469A")
+    if c1 is None or c1.get("clause_or_control") != "PW.7.1 C1":
+        raise ValueError("NIST SP 800-218A PW.7.1 C1 migration is incomplete")
+    unresolved_218a = [
+        rid for rid in sorted(set(NIST_218A_REPAIRS) | {c1["requirement_id"]})
+        if "…" in by_id[rid]["requirement_summary"]
+        or by_id[rid]["requirement_summary"] != by_id[rid]["governance_expectation"]
+    ]
+    if unresolved_218a:
+        raise ValueError(f"NIST SP 800-218A repairs are incomplete: {unresolved_218a}")
     return sorted(entries, key=lambda entry: entry["current_requirement_id"])
 
 
@@ -698,18 +765,22 @@ def seed(write: bool) -> int:
         source: sum(record["vigil_source_id"] == source for record in selected)
         for source in reviewed_sources
     }
-    if counts != {NIST_RMF: 71, CYCLONEDX: 4, NIST_GAI: 223, IMDA_AGENTIC: 32, NIST_218A: 74}:
+    if counts != {NIST_RMF: 71, CYCLONEDX: 5, NIST_GAI: 223, IMDA_AGENTIC: 39, NIST_218A: 75}:
         raise ValueError(f"unexpected reviewed source population: {counts}")
 
     for record in selected:
         if record["vigil_source_id"] == NIST_GAI:
             normalize_nist_gai_actor_metadata(record)
             normalize_nist_gai_constituent_metadata(record)
+        elif record["vigil_source_id"] == CYCLONEDX:
+            normalize_cyclonedx_metadata(record)
         elif record["vigil_source_id"] == IMDA_AGENTIC:
             normalize_imda_metadata(record)
         elif record["vigil_source_id"] == NIST_218A:
             normalize_nist_218a_metadata(record)
-        if record["vigil_source_id"] != NIST_GAI:
+        if record["vigil_source_id"] in {CYCLONEDX, IMDA_AGENTIC, NIST_218A}:
+            record["source_review_date"] = "2026-08-28"
+        elif record["vigil_source_id"] != NIST_GAI:
             record["source_review_date"] = "2026-08-26"
 
     backlog = backlog_entries(records)
@@ -717,7 +788,10 @@ def seed(write: bool) -> int:
         entry["current_requirement_id"]: set(entry["affected_metadata_dimensions"])
         for entry in backlog
     }
-    existing = {entry["requirement_id"]: entry for entry in ledger.get("entries", [])}
+    existing = {
+        entry["requirement_id"]: entry for entry in ledger.get("entries", [])
+        if entry["requirement_id"] not in IMDA_RETIRED_IDS
+    }
     seeded = 0
     for record in selected:
         rid = record["requirement_id"]
@@ -738,7 +812,8 @@ def seed(write: bool) -> int:
         elif record["vigil_source_id"] == CYCLONEDX:
             notes = [
                 "Reviewed against the CycloneDX 1.7 JSON schema at release commit 4b3f59453366e27c8073fd24e98bf21ef8892c8e.",
-                "Normative modality, component-type applicability, model-card structure and bom-ref constraints were checked directly."
+                "The model-card bom-ref MUST uniqueness rule retains its identity; the distinct SHOULD reserved-prefix constraint now has its own deterministic identity.",
+                "The reviewed schema artefact SHA-256 is df472ef4aaf593904c479293723a1a5c191d6672715c93b3c0b5c318f3914221."
             ]
         elif record["vigil_source_id"] == NIST_GAI:
             notes = [
@@ -750,24 +825,26 @@ def seed(write: bool) -> int:
             notes = [
                 "Reviewed against IMDA Model AI Governance Framework for Agentic AI version 1.5, published 20 May 2026 and updated 5 June 2026.",
                 "The official PDF was retrieved directly from IMDA; SHA-256 2636e19ff1c86e862394d2fc900592e97b83c04cc35e3c8443108114b7f1dfba.",
-                "The framework-wide deployment scope is source-explicit; fields affected by over-compression or a section-level locator remain review-required pending deterministic re-extraction."
+                "The 20 queued fidelity defects were resolved on 2026-08-28; 12 source identities were enriched and eight compound abstractions were decomposed with seven deterministic constituent identities added.",
+                "Source-defined subsection applicability, outputs, methods and qualifications are represented without attributing illustrative examples as mandatory requirements."
             ]
         else:
             notes = [
                 "Reviewed against NIST SP 800-218A, July 2024, together with its task context and source-wide scope and adaptation rules.",
                 "The official NIST PDF was retrieved through DOI 10.6028/NIST.SP.800-218A; SHA-256 e088c8bc75716824dae7c36a987f408364638561d381ed001b5c12254a7b10d8.",
-                "Source-native recommendation and consideration identities were retained except where a queued record collapses modalities; mechanically inferred evidence was removed or replaced only with source-express outputs and methods."
+                "The five truncated propositions were enriched with identity preserved; PW.7.1 R1 retains its identity and the distinct C1 consideration now has its own deterministic identity.",
+                "Source-native modalities, conditions, qualifications, outputs, and methods were resolved without converting non-normative notes into requirements."
             ]
         entry = {
             "requirement_id": rid,
-            "reviewed_at": "2026-08-28" if record["vigil_source_id"] == NIST_GAI else "2026-08-26",
+            "reviewed_at": "2026-08-28" if record["vigil_source_id"] in {CYCLONEDX, NIST_GAI, IMDA_AGENTIC, NIST_218A} else "2026-08-26",
             "review_basis": "direct-primary-text",
             "review_notes": notes,
             "field_status": field_status,
         }
         current = existing.get(rid)
         if current is not None and current != entry:
-            if record["vigil_source_id"] != NIST_GAI:
+            if record["vigil_source_id"] not in {CYCLONEDX, NIST_GAI, IMDA_AGENTIC, NIST_218A}:
                 raise ValueError(f"existing metadata-review decision differs for {rid}; manual reconciliation required")
             existing[rid] = entry
         elif current is None:
