@@ -5,7 +5,8 @@ The decisions in this script are intentionally limited to NIST AI RMF 1.0,
 CycloneDX 1.7, NIST AI 600-1, IMDA Agentic AI MGF 1.5, NIST SP 800-218A,
 and SDOS Runtime Governance Framework v1.10.
 They were made from the cited public primary sources on 2026-08-26, with the
-NIST AI 600-1 constituent-fidelity tranche completed on 2026-08-28. This is
+NIST AI 600-1 constituent-fidelity tranche and the NIST AI 100-2e2025
+metadata tranche completed on 2026-08-28. This is
 not a generic empty-field classifier.
 """
 from __future__ import annotations
@@ -43,6 +44,18 @@ NIST_GAI = "EXT-DE4FDB52698E"
 IMDA_AGENTIC = "EXT-3CCBC407EAC8"
 NIST_218A = "EXT-65F7658B8B04"
 SDOS = "EXT-8FEA9674D97A"
+NIST_AML = "EXT-2B2B0FF7FBE9"
+NIST_AML_REVIEW_DIGEST = "4811fb6ad73f9c9121843ab77e029b5adc6f2c86d33c2fc5b2099ef133847646"
+NIST_AML_ACTOR = (
+    "Individual or group responsible for designing, developing, deploying, "
+    "evaluating, or governing AI systems"
+)
+NIST_AML_QUALIFICATIONS = [
+    "NIST AI 100-2e2025 is voluntary guidance and does not establish or supersede any law, regulation, legal requirement, or legal defense.",
+    "The taxonomy, terminology, attack coverage, and mitigation discussion are not exhaustive and are intended as a starting point for shared understanding.",
+    "The report does not recommend a risk-tolerance level because acceptable risk is contextual and specific to applications and use cases.",
+    "Attack techniques, mitigations, and their effectiveness evolve; mitigations may involve security, accuracy, fairness, privacy, and computational-cost trade-offs.",
+]
 CYCLONEDX_MODALITY_REPAIRS = {
     "EXTREQ-FA1B882FFAD54D93", "EXTREQ-F2C81603A7B306F6"
 }
@@ -731,6 +744,33 @@ def normalize_sdos_metadata(record: dict) -> None:
     record["source_review_date"] = "2026-08-28"
 
 
+def normalize_nist_aml_metadata(record: dict) -> None:
+    """Resolve the 22 represented NIST AI 100-2e2025 metadata decisions."""
+    rid = record["requirement_id"]
+    current_actor = record.get("applicable_actor", [])
+    if current_actor not in (["AI security and risk-management practitioner"], [NIST_AML_ACTOR]):
+        raise ValueError(f"unexpected NIST AI 100-2 actor metadata for {rid}: {current_actor!r}")
+    record["applicable_actor"] = [NIST_AML_ACTOR]
+    current_qualifications = record.get("exceptions_or_qualifications", [])
+    if current_qualifications not in ([], NIST_AML_QUALIFICATIONS):
+        raise ValueError(f"unexpected NIST AI 100-2 qualifications for {rid}")
+    record["exceptions_or_qualifications"] = NIST_AML_QUALIFICATIONS
+    record["source_review_date"] = "2026-08-28"
+    provenance = record["interpretation_provenance"]
+    provenance.update({
+        "source_analysis_method": (
+            "Direct field-level comparison against the official March 2025 NIST AI "
+            "100-2e2025 PDF. The represented taxonomy definitions and cross-cutting "
+            "security propositions retain their established identities; metadata is "
+            "populated only where supported by the cited text and document-wide scope."
+        ),
+        "source_locator": "https://doi.org/10.6028/NIST.AI.100-2e2025",
+        "reviewed_source_digest": NIST_AML_REVIEW_DIGEST,
+        "reviewed_source_digest_algorithm": "sha256",
+        "reviewed_source_digest_status": "recorded",
+    })
+
+
 def backlog_entries(records: list[dict]) -> list[dict]:
     by_id = {record["requirement_id"]: record for record in records}
     missing = sorted(NIST_GAI_CONSTITUENT_REPAIRS - set(by_id))
@@ -781,13 +821,13 @@ def seed(write: bool) -> int:
     ledger = load(LEDGER)
     records = req_doc["requirements"]
     by_id = {record["requirement_id"]: record for record in records}
-    reviewed_sources = {NIST_RMF, CYCLONEDX, NIST_GAI, IMDA_AGENTIC, NIST_218A, SDOS}
+    reviewed_sources = {NIST_RMF, CYCLONEDX, NIST_GAI, IMDA_AGENTIC, NIST_218A, SDOS, NIST_AML}
     selected = [record for record in records if record["vigil_source_id"] in reviewed_sources]
     counts = {
         source: sum(record["vigil_source_id"] == source for record in selected)
         for source in reviewed_sources
     }
-    if counts != {NIST_RMF: 71, CYCLONEDX: 5, NIST_GAI: 223, IMDA_AGENTIC: 39, NIST_218A: 75, SDOS: 24}:
+    if counts != {NIST_RMF: 71, CYCLONEDX: 5, NIST_GAI: 223, IMDA_AGENTIC: 39, NIST_218A: 75, SDOS: 24, NIST_AML: 22}:
         raise ValueError(f"unexpected reviewed source population: {counts}")
 
     for record in selected:
@@ -802,7 +842,9 @@ def seed(write: bool) -> int:
             normalize_nist_218a_metadata(record)
         elif record["vigil_source_id"] == SDOS:
             normalize_sdos_metadata(record)
-        if record["vigil_source_id"] in {CYCLONEDX, IMDA_AGENTIC, NIST_218A, SDOS}:
+        elif record["vigil_source_id"] == NIST_AML:
+            normalize_nist_aml_metadata(record)
+        if record["vigil_source_id"] in {CYCLONEDX, IMDA_AGENTIC, NIST_218A, SDOS, NIST_AML}:
             record["source_review_date"] = "2026-08-28"
         elif record["vigil_source_id"] != NIST_GAI:
             record["source_review_date"] = "2026-08-26"
@@ -859,16 +901,23 @@ def seed(write: bool) -> int:
                 "The five truncated propositions were enriched with identity preserved; PW.7.1 R1 retains its identity and the distinct C1 consideration now has its own deterministic identity.",
                 "Source-native modalities, conditions, qualifications, outputs, and methods were resolved without converting non-normative notes into requirements."
             ]
-        else:
+        elif record["vigil_source_id"] == SDOS:
             notes = [
                 "Reviewed against the complete public SDOS Runtime Governance Framework v1.10 control catalogue dated 12 May 2026.",
                 "The retrieved primary HTML artefact SHA-256 is 547bfa9615f137429871951e2beb8de8f306ed8ae4995e6ef95dfcfbcc23c52b.",
                 "All 24 source-native control identities were retained; source-explicit timing, evidence, applicability, qualifications, and related-control links were resolved on 2026-08-28.",
                 "The records treat SDOS as an owner-authored private-sector framework and do not convert alignment mappings into certification or independent compliance claims."
             ]
+        else:
+            notes = [
+                "Reviewed against the official March 2025 NIST AI 100-2e2025 PDF; SHA-256 4811fb6ad73f9c9121843ab77e029b5adc6f2c86d33c2fc5b2099ef133847646.",
+                "All 22 represented taxonomy definitions and cross-cutting security propositions retain their established identities.",
+                "Empty timing, artefact, evidence, and verification fields are resolved as source-silent rather than inferred from attack descriptions or examples.",
+                "Document-wide voluntary, non-exhaustive, contextual-risk, and evolving-threat limitations are preserved as qualifications."
+            ]
         entry = {
             "requirement_id": rid,
-            "reviewed_at": "2026-08-28" if record["vigil_source_id"] in {CYCLONEDX, NIST_GAI, IMDA_AGENTIC, NIST_218A, SDOS} else "2026-08-26",
+            "reviewed_at": "2026-08-28" if record["vigil_source_id"] in {CYCLONEDX, NIST_GAI, IMDA_AGENTIC, NIST_218A, SDOS, NIST_AML} else "2026-08-26",
             "review_basis": "direct-primary-text",
             "review_notes": notes,
             "field_status": field_status,

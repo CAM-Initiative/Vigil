@@ -15,6 +15,7 @@ A first-class source is effectively complete for clause-level use only when its 
 | EU AI Act consolidated 27 July 2026 | partial | requires-reextraction | partial | Article-level records compress independently assessable legal propositions; staged stress-test packages remain separate. |
 | NIST AI RMF 1.0 | complete | assured | complete | Source-native Core subcategories retain defensible outcome-level granularity. |
 | AAM SDOS Runtime Governance 1.10 | complete | assured | complete | Twenty-four source-native controls retain identity with source-explicit metadata and related-control links. |
+| NIST AI 100-2e2025 | complete | assured | complete | Twenty-two represented taxonomy and cross-cutting security propositions retain identity with explicit document-wide qualifications and source-silent metadata decisions. |
 | NIST AI 600-1 Generative AI Profile | complete | assured | complete | Sixty suggested actions retain identity with complete constituent semantics and source-supported metadata. |
 | CycloneDX 1.7 ML-BOM | complete | assured | complete | Five propositions represent the distinct MUST uniqueness and SHOULD reserved-prefix modalities. |
 | IMDA Agentic AI MGF 1.5 | complete | assured | complete | Thirty-nine records resolve all 20 queued fidelity defects with deterministic subsection decomposition. |
@@ -26,4 +27,4 @@ Until individually re-audited under `SOURCE-FIDELITY-METHODOLOGY.md`, every othe
 
 ## Next reprocessing order
 
-The next public-primary tranche is NIST AI 100-2 E2025, followed by NIST AI 100-4 (2024), NIST SP 1270 (2022), and SPDX AI Profile 3.0.1. Licensed IEEE sources should be reviewed only from the lawfully accessible primary texts already recorded by the repository. Blocked-access sources remain blocked and are not inferred from metadata.
+The next public-primary tranche is NIST AI 100-4 (2024), followed by NIST SP 1270 (2022) and SPDX AI Profile 3.0.1. Licensed IEEE sources should be reviewed only from the lawfully accessible primary texts already recorded by the repository. Blocked-access sources remain blocked and are not inferred from metadata.
