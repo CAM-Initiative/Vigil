@@ -68,7 +68,7 @@ def main():
     assert isinstance(ledger["entries"], list)
     ids = [entry["requirement_id"] for entry in ledger["entries"]]
     assert len(ids) == len(set(ids))
-    assert len(ids) == 515
+    assert len(ids) == 539
 
     backlog_schema = json.loads((REQ / "reextraction-backlog.schema.json").read_text(encoding="utf-8"))
     backlog = json.loads((REQ / "reextraction-backlog.json").read_text(encoding="utf-8"))
@@ -79,6 +79,21 @@ def main():
     assert sum(entry["external_source_id"] == "CYCLONEDX-SPEC" for entry in backlog["entries"]) == 0
     assert sum(entry["external_source_id"] == "IMDA-AGENTIC-AI-MGF" for entry in backlog["entries"]) == 0
     assert sum(entry["external_source_id"] == "NIST-SP-800-218A" for entry in backlog["entries"]) == 0
+    assert sum(entry["external_source_id"] == "AAM-SDOS-RUNTIME-GOVERNANCE" for entry in backlog["entries"]) == 0
+
+    sdos = json.loads((REQ / "requirements" / "AAM-SDOS-RUNTIME-GOVERNANCE" / "1.10.json").read_text(encoding="utf-8"))
+    sdos_by_control = {record["clause_or_control"]: record for record in sdos}
+    assert len(sdos) == 24
+    assert all(record["source_review_date"] == "2026-08-28" for record in sdos)
+    assert all(
+        record["interpretation_provenance"]["reviewed_source_digest"]
+        == "547bfa9615f137429871951e2beb8de8f306ed8ae4995e6ef95dfcfbcc23c52b"
+        for record in sdos
+    )
+    assert all(record["related_external_requirements"] for record in sdos)
+    assert all(record["governed_object"] != ["agentic AI runtime governance system"] for record in sdos)
+    assert "explicit re-authorization" in sdos_by_control["SDOS-IN-02"]["timing_or_frequency"][0]
+    assert any("correctness guarantee" in value for value in sdos_by_control["SDOS-DE-01"]["exceptions_or_qualifications"])
 
     nist_218a = json.loads((REQ / "requirements" / "NIST-SP-800-218A" / "2024.json").read_text(encoding="utf-8"))
     nist_218a_by_clause = {record["clause_or_control"]: record for record in nist_218a}
@@ -166,10 +181,12 @@ def main():
     assert "NIST_GAI_CONSTITUENT_REPAIRS" in reviewed_seeder
     assert "IMDA_FIDELITY_REPAIRS" in reviewed_seeder
     assert "NIST_218A_REPAIRS" in reviewed_seeder
+    assert "SDOS_REVIEW_DIGEST" in reviewed_seeder
     assert (SCRIPTS / "migrate-nist-218a-pw71.py").is_file()
     assert "CYCLONEDX_MODALITY_REPAIRS" in reviewed_seeder
     assert (SCRIPTS / "migrate-cyclonedx-bom-ref-modality.py").is_file()
     assert (SCRIPTS / "migrate-imda-agentic-fidelity.py").is_file()
+    assert (SCRIPTS / "migrate-sdos-runtime-fidelity.py").is_file()
     assert "AI Actor Tasks (subcategory-level)" in reviewed_seeder
     assert "manual reconciliation required" in reviewed_seeder
     assert "--write" in reviewed_seeder

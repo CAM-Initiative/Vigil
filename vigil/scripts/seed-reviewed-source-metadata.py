@@ -2,7 +2,8 @@
 """Apply and seed the directly reviewed non-EU metadata slices.
 
 The decisions in this script are intentionally limited to NIST AI RMF 1.0,
-CycloneDX 1.7, NIST AI 600-1, IMDA Agentic AI MGF 1.5 and NIST SP 800-218A.
+CycloneDX 1.7, NIST AI 600-1, IMDA Agentic AI MGF 1.5, NIST SP 800-218A,
+and SDOS Runtime Governance Framework v1.10.
 They were made from the cited public primary sources on 2026-08-26, with the
 NIST AI 600-1 constituent-fidelity tranche completed on 2026-08-28. This is
 not a generic empty-field classifier.
@@ -41,6 +42,7 @@ CYCLONEDX = "EXT-13FB945E8A06"
 NIST_GAI = "EXT-DE4FDB52698E"
 IMDA_AGENTIC = "EXT-3CCBC407EAC8"
 NIST_218A = "EXT-65F7658B8B04"
+SDOS = "EXT-8FEA9674D97A"
 CYCLONEDX_MODALITY_REPAIRS = {
     "EXTREQ-FA1B882FFAD54D93", "EXTREQ-F2C81603A7B306F6"
 }
@@ -230,6 +232,7 @@ NIST_218A_REPAIRS = {
     ),
 }
 NIST_218A_REVIEW_DIGEST = "e088c8bc75716824dae7c36a987f408364638561d381ed001b5c12254a7b10d8"
+SDOS_REVIEW_DIGEST = "547bfa9615f137429871951e2beb8de8f306ed8ae4995e6ef95dfcfbcc23c52b"
 
 NIST_218A_TIMING = {
     "PO.2.1 R1": ["Throughout the software development life cycle."],
@@ -709,6 +712,25 @@ def normalize_nist_218a_metadata(record: dict) -> None:
         set_curated_nist_218a_metadata(record, field, values)
 
 
+def normalize_sdos_metadata(record: dict) -> None:
+    """Validate the separately applied source-native SDOS fidelity migration."""
+    rid = record["requirement_id"]
+    provenance = record["interpretation_provenance"]
+    if provenance.get("reviewed_source_digest") != SDOS_REVIEW_DIGEST:
+        raise ValueError(f"SDOS reviewed-source digest is missing for {rid}")
+    if provenance.get("reviewed_source_digest_algorithm") != "sha256":
+        raise ValueError(f"SDOS reviewed-source digest algorithm is invalid for {rid}")
+    if provenance.get("reviewed_source_digest_status") != "recorded":
+        raise ValueError(f"SDOS reviewed-source digest status is invalid for {rid}")
+    if record.get("governed_object") == ["agentic AI runtime governance system"]:
+        raise ValueError(f"SDOS generic governed-object metadata remains for {rid}")
+    if not record.get("timing_or_frequency") or not record.get("verification_method"):
+        raise ValueError(f"SDOS source-specific timing or verification metadata is missing for {rid}")
+    if not record.get("related_external_requirements"):
+        raise ValueError(f"SDOS source-defined related-control links are missing for {rid}")
+    record["source_review_date"] = "2026-08-28"
+
+
 def backlog_entries(records: list[dict]) -> list[dict]:
     by_id = {record["requirement_id"]: record for record in records}
     missing = sorted(NIST_GAI_CONSTITUENT_REPAIRS - set(by_id))
@@ -759,13 +781,13 @@ def seed(write: bool) -> int:
     ledger = load(LEDGER)
     records = req_doc["requirements"]
     by_id = {record["requirement_id"]: record for record in records}
-    reviewed_sources = {NIST_RMF, CYCLONEDX, NIST_GAI, IMDA_AGENTIC, NIST_218A}
+    reviewed_sources = {NIST_RMF, CYCLONEDX, NIST_GAI, IMDA_AGENTIC, NIST_218A, SDOS}
     selected = [record for record in records if record["vigil_source_id"] in reviewed_sources]
     counts = {
         source: sum(record["vigil_source_id"] == source for record in selected)
         for source in reviewed_sources
     }
-    if counts != {NIST_RMF: 71, CYCLONEDX: 5, NIST_GAI: 223, IMDA_AGENTIC: 39, NIST_218A: 75}:
+    if counts != {NIST_RMF: 71, CYCLONEDX: 5, NIST_GAI: 223, IMDA_AGENTIC: 39, NIST_218A: 75, SDOS: 24}:
         raise ValueError(f"unexpected reviewed source population: {counts}")
 
     for record in selected:
@@ -778,7 +800,9 @@ def seed(write: bool) -> int:
             normalize_imda_metadata(record)
         elif record["vigil_source_id"] == NIST_218A:
             normalize_nist_218a_metadata(record)
-        if record["vigil_source_id"] in {CYCLONEDX, IMDA_AGENTIC, NIST_218A}:
+        elif record["vigil_source_id"] == SDOS:
+            normalize_sdos_metadata(record)
+        if record["vigil_source_id"] in {CYCLONEDX, IMDA_AGENTIC, NIST_218A, SDOS}:
             record["source_review_date"] = "2026-08-28"
         elif record["vigil_source_id"] != NIST_GAI:
             record["source_review_date"] = "2026-08-26"
@@ -828,23 +852,30 @@ def seed(write: bool) -> int:
                 "The 20 queued fidelity defects were resolved on 2026-08-28; 12 source identities were enriched and eight compound abstractions were decomposed with seven deterministic constituent identities added.",
                 "Source-defined subsection applicability, outputs, methods and qualifications are represented without attributing illustrative examples as mandatory requirements."
             ]
-        else:
+        elif record["vigil_source_id"] == NIST_218A:
             notes = [
                 "Reviewed against NIST SP 800-218A, July 2024, together with its task context and source-wide scope and adaptation rules.",
                 "The official NIST PDF was retrieved through DOI 10.6028/NIST.SP.800-218A; SHA-256 e088c8bc75716824dae7c36a987f408364638561d381ed001b5c12254a7b10d8.",
                 "The five truncated propositions were enriched with identity preserved; PW.7.1 R1 retains its identity and the distinct C1 consideration now has its own deterministic identity.",
                 "Source-native modalities, conditions, qualifications, outputs, and methods were resolved without converting non-normative notes into requirements."
             ]
+        else:
+            notes = [
+                "Reviewed against the complete public SDOS Runtime Governance Framework v1.10 control catalogue dated 12 May 2026.",
+                "The retrieved primary HTML artefact SHA-256 is 547bfa9615f137429871951e2beb8de8f306ed8ae4995e6ef95dfcfbcc23c52b.",
+                "All 24 source-native control identities were retained; source-explicit timing, evidence, applicability, qualifications, and related-control links were resolved on 2026-08-28.",
+                "The records treat SDOS as an owner-authored private-sector framework and do not convert alignment mappings into certification or independent compliance claims."
+            ]
         entry = {
             "requirement_id": rid,
-            "reviewed_at": "2026-08-28" if record["vigil_source_id"] in {CYCLONEDX, NIST_GAI, IMDA_AGENTIC, NIST_218A} else "2026-08-26",
+            "reviewed_at": "2026-08-28" if record["vigil_source_id"] in {CYCLONEDX, NIST_GAI, IMDA_AGENTIC, NIST_218A, SDOS} else "2026-08-26",
             "review_basis": "direct-primary-text",
             "review_notes": notes,
             "field_status": field_status,
         }
         current = existing.get(rid)
         if current is not None and current != entry:
-            if record["vigil_source_id"] not in {CYCLONEDX, NIST_GAI, IMDA_AGENTIC, NIST_218A}:
+            if record["vigil_source_id"] not in {CYCLONEDX, NIST_GAI, IMDA_AGENTIC, NIST_218A, SDOS}:
                 raise ValueError(f"existing metadata-review decision differs for {rid}; manual reconciliation required")
             existing[rid] = entry
         elif current is None:
