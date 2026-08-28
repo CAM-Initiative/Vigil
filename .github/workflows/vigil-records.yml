@@ -13,6 +13,16 @@ on:
       - "vigil/**"
       - ".github/workflows/vigil-records.yml"
       - ".gitignore"
+  workflow_dispatch:
+    inputs:
+      action:
+        description: "Manual maintenance action"
+        required: true
+        default: "validate"
+        type: choice
+        options:
+          - validate
+          - reconcile-fm-system-context
 
 concurrency:
   group: vigil-records-${{ github.ref }}
@@ -23,6 +33,7 @@ permissions:
 
 jobs:
   validate-build:
+    if: github.event_name != 'workflow_dispatch' || inputs.action == 'validate'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -143,4 +154,50 @@ jobs:
               echo "Branch advanced while this run was building generated files; a newer workflow run owns generated-output refresh."
               exit 0
             fi
+          fi
+
+  reconcile-fm-system-context:
+    if: github.event_name == 'workflow_dispatch' && inputs.action == 'reconcile-fm-system-context'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: true
+          show-progress: false
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.x"
+
+      - name: Test FM system-context reconciler
+        run: python vigil/tests/test_reconcile_fm_system_context.py
+
+      - name: Reconcile stale FM system context
+        run: |
+          python vigil/scripts/reconcile-fm-system-context.py
+          python vigil/scripts/reconcile-fm-system-context.py --check
+
+      - name: Verify reconciliation scope
+        shell: bash
+        run: |
+          unexpected="$(git diff --name-only | grep -Ev '^vigil/records/failures/.+\.json$' || true)"
+          if [ -n "$unexpected" ]; then
+            echo "Reconciliation changed files outside failure-mode JSON records:"
+            printf '%s\n' "$unexpected"
+            exit 1
+          fi
+          echo "Reconciliation scope is limited to failure-mode JSON records."
+          git diff --stat -- vigil/records/failures
+
+      - name: Commit reconciled failure-mode records
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add vigil/records/failures
+          if git diff --cached --quiet; then
+            echo "No stale FM system-context records found."
+          else
+            git commit -m "Reconcile failure-mode system context"
+            git push origin "HEAD:${{ github.ref_name }}"
           fi
