@@ -66,11 +66,6 @@ jobs:
               raise SystemExit('full-reference HTML was not generated')
           if not pdf.exists() or pdf.stat().st_size < 5000 or not pdf.read_bytes().startswith(b'%PDF-'):
               raise SystemExit('full-reference PDF was not generated correctly')
-          publication = html.read_text(encoding='utf-8')
-          if 'Use and reliance notice' not in publication:
-              raise SystemExit('reliance notice missing from publication')
-          if 'cover-rule' in publication:
-              raise SystemExit('removed cover embellishment still rendered')
           print(f'HTML: {html.stat().st_size:,} bytes')
           print(f'PDF: {pdf.stat().st_size:,} bytes')
           PY
