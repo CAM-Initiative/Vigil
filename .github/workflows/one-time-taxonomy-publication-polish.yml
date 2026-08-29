@@ -24,19 +24,33 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: Apply publication polish
+      - name: Install PDF renderer
+        run: python -m pip install --disable-pip-version-check weasyprint
+
+      - name: Apply publication polish if needed
         run: |
-          python vigil/scripts/one-time-taxonomy-publication-polish.py
+          if grep -q "def select_family_case_examples" vigil/taxonomy/render_taxonomy.py; then
+            echo "Renderer already contains publication polish."
+          else
+            python vigil/scripts/one-time-taxonomy-publication-polish.py
+          fi
           python -m py_compile vigil/taxonomy/render_taxonomy.py
 
-      - name: Verify curated publication HTML
+      - name: Generate polished HTML and PDF
         run: |
           python vigil/taxonomy/render_taxonomy.py \
             --catalogue \
-            --output-dir /tmp/vigil-taxonomy-polish
+            --output-dir vigil/taxonomy/generated \
+            --pdf
+
+      - name: Verify publication contract
+        run: |
           python - <<'PY'
           from pathlib import Path
+
           source = Path('vigil/taxonomy/render_taxonomy.py').read_text(encoding='utf-8')
+          html = Path('vigil/taxonomy/generated/VIGIL.FailureTaxonomy.FullReference.html')
+          pdf = Path('vigil/taxonomy/generated/VIGIL.Observatory.FailureTaxonomy.FullReference.pdf')
           required = [
               'select_family_case_examples',
               'classification_confidence',
@@ -48,17 +62,29 @@ jobs:
                   raise SystemExit(f'missing publication token: {token}')
           if '<div class="cover-rule">' in source:
               raise SystemExit('cover rule embellishment still present')
-          print('Publication polish verification passed')
+          if not html.exists() or html.stat().st_size < 1000:
+              raise SystemExit('full-reference HTML was not generated')
+          if not pdf.exists() or pdf.stat().st_size < 5000 or not pdf.read_bytes().startswith(b'%PDF-'):
+              raise SystemExit('full-reference PDF was not generated correctly')
+          publication = html.read_text(encoding='utf-8')
+          if 'Use and reliance notice' not in publication:
+              raise SystemExit('reliance notice missing from publication')
+          if 'cover-rule' in publication:
+              raise SystemExit('removed cover embellishment still rendered')
+          print(f'HTML: {html.stat().st_size:,} bytes')
+          print(f'PDF: {pdf.stat().st_size:,} bytes')
           PY
 
-      - name: Commit renderer update
+      - name: Commit polished publication outputs
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add vigil/taxonomy/render_taxonomy.py
+          git add vigil/taxonomy/generated/*.html
+          git add vigil/taxonomy/generated/VIGIL.Observatory.FailureTaxonomy.FullReference.pdf
           if git diff --cached --quiet; then
-            echo "Renderer already polished."
+            echo "Polished publication outputs are already current."
           else
-            git commit -m "Polish taxonomy textbook case studies and styling"
+            git commit -m "Rebuild polished taxonomy textbook"
             git push
           fi
