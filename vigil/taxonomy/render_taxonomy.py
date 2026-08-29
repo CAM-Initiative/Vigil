@@ -131,7 +131,9 @@ def case_study_context(example: dict) -> dict[str, str]:
         return {}
     record = load(record_path)
     system_context = record.get("system_context") if isinstance(record.get("system_context"), dict) else {}
-    identity = record.get("record_identity") if isinstance(record.get("record_identity"), dict) else {}
+    source_records = record.get("source_records")
+    if not isinstance(source_records, list):
+        source_records = []
     provider = str(system_context.get("platform_or_vendor") or "").strip()
     if not provider:
         vendors = system_context.get("evidenced_vendors")
@@ -142,8 +144,27 @@ def case_study_context(example: dict) -> dict[str, str]:
         products = system_context.get("evidenced_products_or_services")
         if isinstance(products, list) and products:
             product = str(products[0]).strip()
-    recorded = record.get("date_recorded") or identity.get("created")
-    return {"provider": provider, "product": product, "date": publication_date(recorded)}
+    evidence_source = next(
+        (
+            source
+            for source in source_records
+            if isinstance(source, dict)
+            and source.get("source_date")
+            and "evidence" in str(source.get("source_role", "")).lower()
+        ),
+        None,
+    )
+    if evidence_source is None:
+        evidence_source = next(
+            (
+                source
+                for source in source_records
+                if isinstance(source, dict) and source.get("source_date")
+            ),
+            None,
+        )
+    source_date = evidence_source.get("source_date") if evidence_source else None
+    return {"provider": provider, "product": product, "date": publication_date(source_date)}
 
 
 def case_examples_html(examples: list[dict]) -> str:
