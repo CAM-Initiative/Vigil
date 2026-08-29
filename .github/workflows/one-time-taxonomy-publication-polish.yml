@@ -1,0 +1,64 @@
+name: One-time taxonomy publication polish
+
+on:
+  push:
+    branches:
+      - agent/hugging-face-authority-reconciliation
+    paths:
+      - ".github/workflows/one-time-taxonomy-publication-polish.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  polish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: true
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.x"
+
+      - name: Apply publication polish
+        run: |
+          python vigil/scripts/one-time-taxonomy-publication-polish.py
+          python -m py_compile vigil/taxonomy/render_taxonomy.py
+
+      - name: Verify curated publication HTML
+        run: |
+          python vigil/taxonomy/render_taxonomy.py \
+            --catalogue \
+            --output-dir /tmp/vigil-taxonomy-polish
+          python - <<'PY'
+          from pathlib import Path
+          source = Path('vigil/taxonomy/render_taxonomy.py').read_text(encoding='utf-8')
+          required = [
+              'select_family_case_examples',
+              'classification_confidence',
+              'Use and reliance notice',
+              '#022c1b',
+          ]
+          for token in required:
+              if token not in source:
+                  raise SystemExit(f'missing publication token: {token}')
+          if '<div class="cover-rule">' in source:
+              raise SystemExit('cover rule embellishment still present')
+          print('Publication polish verification passed')
+          PY
+
+      - name: Commit renderer update
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add vigil/taxonomy/render_taxonomy.py
+          if git diff --cached --quiet; then
+            echo "Renderer already polished."
+          else
+            git commit -m "Polish taxonomy textbook case studies and styling"
+            git push
+          fi
