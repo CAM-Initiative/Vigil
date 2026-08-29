@@ -15,7 +15,7 @@ class ExternalRequirementFidelityTests(unittest.TestCase):
         errors, warnings, summary = module.validate()
         self.assertEqual(errors, [])
         self.assertGreaterEqual(summary["historical_complete_sources"], 2)
-        self.assertEqual(summary["fidelity_assured_effective_complete_sources"], 7)
+        self.assertEqual(summary["fidelity_assured_effective_complete_sources"], 8)
         self.assertGreaterEqual(summary["effective_partial_due_fidelity"], 1)
         self.assertTrue(any("effective downgrade" in warning for warning in warnings))
 
@@ -43,6 +43,7 @@ class ExternalRequirementFidelityTests(unittest.TestCase):
         self.assertEqual(status[("IMDA-AGENTIC-AI-MGF", "2026-05")], "assured")
         self.assertEqual(status[("AAM-SDOS-RUNTIME-GOVERNANCE", "1.10")], "assured")
         self.assertEqual(status[("NIST-AI-100-2", "E2025")], "assured")
+        self.assertEqual(status[("NIST-AI-100-4", "2024")], "assured")
 
 
 if __name__ == "__main__":

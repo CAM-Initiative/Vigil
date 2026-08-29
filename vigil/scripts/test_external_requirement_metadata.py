@@ -68,7 +68,7 @@ def main():
     assert isinstance(ledger["entries"], list)
     ids = [entry["requirement_id"] for entry in ledger["entries"]]
     assert len(ids) == len(set(ids))
-    assert len(ids) == 561
+    assert len(ids) == 579
 
     backlog_schema = json.loads((REQ / "reextraction-backlog.schema.json").read_text(encoding="utf-8"))
     backlog = json.loads((REQ / "reextraction-backlog.json").read_text(encoding="utf-8"))
@@ -81,6 +81,20 @@ def main():
     assert sum(entry["external_source_id"] == "NIST-SP-800-218A" for entry in backlog["entries"]) == 0
     assert sum(entry["external_source_id"] == "AAM-SDOS-RUNTIME-GOVERNANCE" for entry in backlog["entries"]) == 0
     assert sum(entry["external_source_id"] == "NIST-AI-100-2" for entry in backlog["entries"]) == 0
+    assert sum(entry["external_source_id"] == "NIST-AI-100-4" for entry in backlog["entries"]) == 0
+
+    nist_synthetic = json.loads((REQ / "requirements" / "NIST-AI-100-4" / "2024.json").read_text(encoding="utf-8"))
+    synthetic_by_id = {record["requirement_id"]: record for record in nist_synthetic}
+    assert len(nist_synthetic) == 18
+    assert all(record["source_review_date"] == "2026-08-29" for record in nist_synthetic)
+    assert all(
+        record["interpretation_provenance"]["reviewed_source_digest"]
+        == "a387a4977db70d65cdbc178c8b0cb8aa5dedb85fa80d6f473c244e2767a4fd54"
+        for record in nist_synthetic
+    )
+    assert synthetic_by_id["EXTREQ-5215ABF2B855226E"]["clause_or_control"] == "4.2–4.2.2"
+    assert synthetic_by_id["EXTREQ-907032FF4258B625"]["clause_or_control"] == "4.2.3"
+    assert synthetic_by_id["EXTREQ-5806C7417A46D033"]["clause_or_control"] == "4.3"
 
     nist_aml = json.loads((REQ / "requirements" / "NIST-AI-100-2" / "E2025.json").read_text(encoding="utf-8"))
     assert len(nist_aml) == 22

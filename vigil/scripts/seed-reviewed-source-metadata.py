@@ -12,6 +12,7 @@ not a generic empty-field classifier.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import re
 from pathlib import Path
@@ -46,6 +47,65 @@ NIST_218A = "EXT-65F7658B8B04"
 SDOS = "EXT-8FEA9674D97A"
 NIST_AML = "EXT-2B2B0FF7FBE9"
 NIST_AML_REVIEW_DIGEST = "4811fb6ad73f9c9121843ab77e029b5adc6f2c86d33c2fc5b2099ef133847646"
+NIST_SYNTHETIC = "EXT-5BC2AAEAF1D3"
+NIST_SYNTHETIC_REVIEW_DIGEST = "a387a4977db70d65cdbc178c8b0cb8aa5dedb85fa80d6f473c244e2767a4fd54"
+NIST_SYNTHETIC_ACTOR = (
+    "AI actor responsible for developing, deploying, evaluating, governing, or distributing synthetic-content systems or content"
+)
+NIST_SYNTHETIC_QUALIFICATIONS = [
+    "NIST AI 100-4 is an informative technical overview and does not prescribe a single implementation or establish a legal requirement.",
+    "No digital-content-transparency technique is a comprehensive solution; value and performance depend on use case, content modality, context, threat model, and deployment conditions.",
+    "Provenance, detection, labeling, and harm-reduction techniques have technical and social limitations and may require complementary institutional and social measures.",
+    "Examples of commercial entities, products, tools, and standards are informational and do not imply NIST or U.S. Government endorsement.",
+]
+NIST_SYNTHETIC_METADATA = {
+    "EXTREQ-099DA7FEE8B4FA5B": dict(clause="3.2.2", objects=["Synthetic-content detector performance across image, video, audio, and text modalities"], methods=["Evaluate each relevant modality using representative modality-specific datasets, generators, transformations, languages, noises, and post-processing conditions."], conditions=["Applies separately to each content modality and intended operating context."]),
+    "EXTREQ-0D7674AE86203795": dict(clause="4.1.1", objects=["Digital-watermark insertion and detection technique"], evidence=["Watermark detection, robustness, security, distortion, and content-quality evaluation results."], methods=["Measure unmodified detection accuracy, robustness and security under benign modifications and adversarial attacks, and distortion or quality relative to unwatermarked content."]),
+    "EXTREQ-186C86FE281E860C": dict(clause="4.3", objects=["Digital-content-transparency evaluation and its reported interpretation"], artefacts=["Reproducible evaluation package containing relevant datasets, human scores or reasoning, experimental setup, tools, code, results, and contextual limitations."], evidence=["Context-specific, reproducible and adversarial evaluation results."], methods=["Assess relevant trustworthiness characteristics, use-context error consequences, reproducibility, and the adequacy of tested attacks."], conditions=["Interpret performance only within the evaluated use context, dataset, base rate, error costs, and attack assumptions."]),
+    "EXTREQ-2620CC880816E0AA": dict(clause="4.1.1", objects=["Digital-watermark insertion and detection technique"], evidence=["Watermark detection, robustness, security, distortion, and content-quality evaluation results."], methods=["Measure detection accuracy, modification and attack robustness, forgery and removal resistance, and perceptual or semantic distortion."]),
+    "EXTREQ-4F010C47F9C62E1B": dict(clause="3.1.1", objects=["Digital-watermark design and deployment choice"], methods=["Compare modality fit, detection accuracy, robustness, security, distortion, capacity, efficiency, and workflow disruption against the intended purpose and threat model."], conditions=["Select attributes and trade-offs for the intended modality, use case, adversary, and distribution workflow."]),
+    "EXTREQ-5AF6358B9779F629": dict(clause="3.1.2", objects=["Content provenance metadata describing origins, history, edits, actors, tools, and assertions"], artefacts=["Machine-readable content provenance metadata or linked provenance manifest."], evidence=["Persisted and retrievable provenance assertions associated with the content."], conditions=["Metadata fields, linked repositories, and interoperability scheme depend on the content workflow and use context."]),
+    "EXTREQ-60BF7AEFF7197F32": dict(clause="5.1–5.2", objects=["Training data and user inputs that may enable generation of AI-generated CSAM or non-consensual intimate imagery"], evidence=["Training-data and input-filter performance, including false-positive and false-negative results."], methods=["Evaluate classifiers and filters against representative harmful, benign, adversarial, transformed, and context-dependent inputs."], conditions=["Controls must be calibrated to applicable law, content context, user population, model modality, and the risk of blocking lawful or benign content."]),
+    "EXTREQ-682FAE43211BF2E5": dict(clause="3.1.2.3–3.1.2.6", objects=["Metadata-recording and provenance infrastructure across creation, distribution, storage, and retrieval"], evidence=["Harms-modeling and effectiveness assessment covering privacy, security, persistence, interoperability, and scale."], methods=["Assess privacy leakage, signature and key compromise, metadata removal or corruption, interoperability loss, storage and lookup scale, and repository dependence."], conditions=["Assessment depends on whether metadata is embedded, externally linked, signed, retained by intermediaries, and available to intended verifiers."]),
+    "EXTREQ-6A2B9DC64F484C69": dict(clause="3.3–3.3.2", objects=["User-facing synthetic-content or provenance label and disclosure experience"], evidence=["Sociotechnical user-study results across relevant demographics, modalities, interfaces, and contexts."], methods=["Evaluate notice, comprehension, uncertainty communication, accessibility, persistence, trust effects, and decision outcomes with representative users."], conditions=["Label design and interpretation depend on audience, modality, interface, purpose, use context, and the credibility of the provenance source."]),
+    "EXTREQ-796C04374B5C3821": dict(clause="5.6–5.6.1", objects=["GAI-system capability and safeguards concerning AI-generated CSAM and non-consensual intimate imagery"], timing=["Across development and before deployment, with reassessment as attack prompts and model capabilities evolve."], artefacts=["Red-team and safeguard test plan and results."], evidence=["Adversarial test results covering known and novel attempts, safeguard bypasses, and residual capability."], methods=["Use structured red-team testing, including known harmful prompts and broader exploit discovery, paired where possible with defensive remediation and retesting."], conditions=["Testing must account for applicable law, reviewer safety, resource constraints, and the risk that testing itself generates unlawful content."]),
+    "EXTREQ-7DC6D7D79FCBA97C": dict(clause="5.3–5.4", objects=["Generated outputs and distributed content that may be AI-generated CSAM or non-consensual intimate imagery"], evidence=["Output-filter and hash-matching performance, including evasion, collision, privacy, and classification-error findings."], methods=["Evaluate output filters and cryptographic or perceptual hash matching under benign transformations, adversarial modification, contextual ambiguity, and false-match conditions."], conditions=["Hashing requires confirmed and appropriately classified content, secure coordination, applicable reporting practices, and human review where context or consent is ambiguous."]),
+    "EXTREQ-84F34D646103BA32": dict(clause="3.1.2.2–3.1.2.3", objects=["Signed provenance assertion, issuer identity, trust chain, and associated content binding"], artefacts=["Cryptographically signed provenance manifest or metadata assertion and validation material."], evidence=["Signature, certificate or trust-chain validation result and content-binding integrity result."], methods=["Validate issuer credentials, signatures, trust-chain state, manifest-content binding, revocation or compromise state, and harms identified through threat modeling."], conditions=["Cryptographic authentication establishes integrity and signer attribution only within the applicable trust infrastructure; it does not establish that the signed claim is substantively true."]),
+    "EXTREQ-9274B86BB12469A6": dict(clause="4.1.2 and 4.2.1", objects=["Metadata-recording scheme and provenance-data detection or interpretation process"], evidence=["Harms-modeling and quantitative effectiveness results for metadata recording, validation, persistence, and interpretation."], methods=["Test whether metadata is retained and detectable, then validate or interpret detected assertions and assess both intended benefits and potential harms."], conditions=["Metadata detection is distinct from validation: presence alone does not establish authenticity, integrity, accuracy, or trustworthy interpretation."]),
+    "EXTREQ-B3289E675798517A": dict(clause="7", objects=["Layered digital-content-transparency and synthetic-content harm-reduction strategy"], methods=["Assess complementary provenance tracking, detection, labeling, governance, and social measures across the content value chain and relevant lifecycle stages."], conditions=["Technique selection and combination must reflect the use case, context, modality, actors, organizational goals, and legal and ethical considerations."]),
+    "EXTREQ-C24EAF5B23AFD789": dict(clause="4.2–4.2.2", objects=["Automated synthetic-content detector and its decision threshold"], artefacts=["Detector evaluation dataset, experimental setup, performance results, threshold selection, and uncertainty report."], evidence=["Performance results on representative authentic and synthetic data, unseen generators, benign distortions, and adversarial modifications."], methods=["Measure suitable classification metrics, including false-positive-sensitive metrics where harms warrant, and test generalization beyond training generators and distributions."], conditions=["Evaluation data should reflect the intended content distribution, cultural context, language, generator population, sample size, transformations, and adversarial setting."]),
+    "EXTREQ-D150E7A7FBB4C157": dict(clause="3.2–3.2.2", objects=["Synthetic-content detection output used in a technical or human decision process"], artefacts=["Documented detector operating context, decision threshold, uncertainty, and known limitations."], evidence=["Context-specific detector performance and failure-mode evidence."], methods=["Compare detector performance across relevant generators, modalities, transformations, partial-synthesis cases, languages, and adversarial conditions."], conditions=["Use only within documented operating conditions and with recognition that absence of provenance, detector score, or human judgment may be erroneous."]),
+    "EXTREQ-D8E2C24720261043": dict(clause="4.2.3", objects=["Human-assisted synthetic-content detection system, interface, and decision process"], evidence=["Human or combined human-model classification performance, task time, and subjective difficulty results."], methods=["Compare assisted and unassisted human performance with representative users, interfaces, content, and decision contexts."], conditions=["Evaluation design depends on whether humans supply training annotations, validate model outputs, or make the final classification decision."]),
+    "EXTREQ-E3EB5E45D3F5DAA8": dict(clause="3.3–3.3.2", objects=["User-facing label or disclosure communicating synthetic origin, manipulation, provenance, or uncertainty"], evidence=["User research on notice, comprehension, trust, uncertainty, accessibility, and behavior."], methods=["Test label terminology, tone, information density, modality, placement, persistence, accessibility, and uncertainty communication with intended audiences."], conditions=["Labels should be calibrated to their process-based or impact-based purpose and the relevant audience, modality, interface, and stakes."]),
+}
+NIST_SYNTHETIC_IDENTITY_TO_LEGACY = {
+    "modality-specific-detection": "EXTREQ-099DA7FEE8B4FA5B",
+    "watermark-test": "EXTREQ-0D7674AE86203795",
+    "evaluation-limitations": "EXTREQ-186C86FE281E860C",
+    "watermark-evaluation": "EXTREQ-2620CC880816E0AA",
+    "watermark-selection": "EXTREQ-4F010C47F9C62E1B",
+    "metadata-recording": "EXTREQ-5AF6358B9779F629",
+    "harm-reduction-input-controls": "EXTREQ-60BF7AEFF7197F32",
+    "metadata-privacy-security": "EXTREQ-682FAE43211BF2E5",
+    "label-usability": "EXTREQ-6A2B9DC64F484C69",
+    "harm-reduction-red-team": "EXTREQ-796C04374B5C3821",
+    "harm-reduction-output-controls": "EXTREQ-7DC6D7D79FCBA97C",
+    "metadata-authentication": "EXTREQ-84F34D646103BA32",
+    "metadata-provenance-test": "EXTREQ-9274B86BB12469A6",
+    "layered-transparency": "EXTREQ-B3289E675798517A",
+    "detector-test": "EXTREQ-C24EAF5B23AFD789",
+    "content-detection": "EXTREQ-D150E7A7FBB4C157",
+    "human-assisted-test": "EXTREQ-D8E2C24720261043",
+    "content-labels": "EXTREQ-E3EB5E45D3F5DAA8",
+}
+
+
+def deterministic_requirement_id(record: dict, clause: str) -> str:
+    seed = "|".join((
+        record["vigil_source_id"], record["source_version"], clause.strip(),
+        record["identity_key"].strip(),
+    ))
+    return "EXTREQ-" + hashlib.sha256(seed.encode("utf-8")).hexdigest()[:16].upper()
 NIST_AML_ACTOR = (
     "Individual or group responsible for designing, developing, deploying, "
     "evaluating, or governing AI systems"
@@ -771,6 +831,44 @@ def normalize_nist_aml_metadata(record: dict) -> None:
     })
 
 
+def normalize_nist_synthetic_metadata(record: dict) -> None:
+    """Repair locators and resolve the represented NIST AI 100-4 metadata."""
+    rid = record["requirement_id"]
+    legacy_id = NIST_SYNTHETIC_IDENTITY_TO_LEGACY.get(record["identity_key"])
+    data = NIST_SYNTHETIC_METADATA.get(legacy_id)
+    if data is None:
+        raise ValueError(f"unreviewed NIST AI 100-4 requirement: {rid}")
+    current_actor = record.get("applicable_actor", [])
+    if current_actor not in (["Synthetic-content system developer or deployer"], [NIST_SYNTHETIC_ACTOR]):
+        raise ValueError(f"unexpected NIST AI 100-4 actor metadata for {rid}")
+    record.update({
+        "requirement_id": deterministic_requirement_id(record, data["clause"]),
+        "clause_or_control": data["clause"],
+        "source_review_date": "2026-08-29",
+        "applicable_actor": [NIST_SYNTHETIC_ACTOR],
+        "governed_object": data["objects"],
+        "timing_or_frequency": data.get("timing", []),
+        "required_artefacts": data.get("artefacts", []),
+        "evidence_expectation": data.get("evidence", []),
+        "verification_method": data.get("methods", []),
+        "applicability_conditions": data.get("conditions", []),
+        "exceptions_or_qualifications": NIST_SYNTHETIC_QUALIFICATIONS,
+    })
+    provenance = record["interpretation_provenance"]
+    provenance.update({
+        "source_analysis_method": (
+            "Direct field-level and locator comparison against the official November 2024 "
+            "NIST AI 100-4 PDF. Established identities were retained while incorrect or "
+            "coarse section references and generic metadata were replaced with source-specific "
+            "objects, evidence, methods, conditions, and qualifications."
+        ),
+        "source_locator": "https://doi.org/10.6028/NIST.AI.100-4",
+        "reviewed_source_digest": NIST_SYNTHETIC_REVIEW_DIGEST,
+        "reviewed_source_digest_algorithm": "sha256",
+        "reviewed_source_digest_status": "recorded",
+    })
+
+
 def backlog_entries(records: list[dict]) -> list[dict]:
     by_id = {record["requirement_id"]: record for record in records}
     missing = sorted(NIST_GAI_CONSTITUENT_REPAIRS - set(by_id))
@@ -821,13 +919,13 @@ def seed(write: bool) -> int:
     ledger = load(LEDGER)
     records = req_doc["requirements"]
     by_id = {record["requirement_id"]: record for record in records}
-    reviewed_sources = {NIST_RMF, CYCLONEDX, NIST_GAI, IMDA_AGENTIC, NIST_218A, SDOS, NIST_AML}
+    reviewed_sources = {NIST_RMF, CYCLONEDX, NIST_GAI, IMDA_AGENTIC, NIST_218A, SDOS, NIST_AML, NIST_SYNTHETIC}
     selected = [record for record in records if record["vigil_source_id"] in reviewed_sources]
     counts = {
         source: sum(record["vigil_source_id"] == source for record in selected)
         for source in reviewed_sources
     }
-    if counts != {NIST_RMF: 71, CYCLONEDX: 5, NIST_GAI: 223, IMDA_AGENTIC: 39, NIST_218A: 75, SDOS: 24, NIST_AML: 22}:
+    if counts != {NIST_RMF: 71, CYCLONEDX: 5, NIST_GAI: 223, IMDA_AGENTIC: 39, NIST_218A: 75, SDOS: 24, NIST_AML: 22, NIST_SYNTHETIC: 18}:
         raise ValueError(f"unexpected reviewed source population: {counts}")
 
     for record in selected:
@@ -844,7 +942,11 @@ def seed(write: bool) -> int:
             normalize_sdos_metadata(record)
         elif record["vigil_source_id"] == NIST_AML:
             normalize_nist_aml_metadata(record)
-        if record["vigil_source_id"] in {CYCLONEDX, IMDA_AGENTIC, NIST_218A, SDOS, NIST_AML}:
+        elif record["vigil_source_id"] == NIST_SYNTHETIC:
+            normalize_nist_synthetic_metadata(record)
+        if record["vigil_source_id"] == NIST_SYNTHETIC:
+            record["source_review_date"] = "2026-08-29"
+        elif record["vigil_source_id"] in {CYCLONEDX, IMDA_AGENTIC, NIST_218A, SDOS, NIST_AML}:
             record["source_review_date"] = "2026-08-28"
         elif record["vigil_source_id"] != NIST_GAI:
             record["source_review_date"] = "2026-08-26"
@@ -854,9 +956,13 @@ def seed(write: bool) -> int:
         entry["current_requirement_id"]: set(entry["affected_metadata_dimensions"])
         for entry in backlog
     }
+    nist_synthetic_legacy_ids = set(NIST_SYNTHETIC_IDENTITY_TO_LEGACY.values()) - {
+        "EXTREQ-4F010C47F9C62E1B", "EXTREQ-5AF6358B9779F629"
+    }
     existing = {
         entry["requirement_id"]: entry for entry in ledger.get("entries", [])
         if entry["requirement_id"] not in IMDA_RETIRED_IDS
+        and entry["requirement_id"] not in nist_synthetic_legacy_ids
     }
     seeded = 0
     for record in selected:
@@ -908,16 +1014,23 @@ def seed(write: bool) -> int:
                 "All 24 source-native control identities were retained; source-explicit timing, evidence, applicability, qualifications, and related-control links were resolved on 2026-08-28.",
                 "The records treat SDOS as an owner-authored private-sector framework and do not convert alignment mappings into certification or independent compliance claims."
             ]
-        else:
+        elif record["vigil_source_id"] == NIST_AML:
             notes = [
                 "Reviewed against the official March 2025 NIST AI 100-2e2025 PDF; SHA-256 4811fb6ad73f9c9121843ab77e029b5adc6f2c86d33c2fc5b2099ef133847646.",
                 "All 22 represented taxonomy definitions and cross-cutting security propositions retain their established identities.",
                 "Empty timing, artefact, evidence, and verification fields are resolved as source-silent rather than inferred from attack descriptions or examples.",
                 "Document-wide voluntary, non-exhaustive, contextual-risk, and evolving-threat limitations are preserved as qualifications."
             ]
+        else:
+            notes = [
+                "Reviewed against the official November 2024 NIST AI 100-4 PDF; SHA-256 a387a4977db70d65cdbc178c8b0cb8aa5dedb85fa80d6f473c244e2767a4fd54.",
+                "All 18 represented synthetic-content transparency and harm-reduction propositions retain their established identities.",
+                "Incorrect and overly coarse section references were repaired to the source's actual subsection structure, including Sections 4.1.1, 4.1.2, 4.2.1–4.2.3, and 4.3.",
+                "Generic metadata was replaced with source-specific objects, evidence, evaluation methods, applicability conditions, and document-wide limitations."
+            ]
         entry = {
             "requirement_id": rid,
-            "reviewed_at": "2026-08-28" if record["vigil_source_id"] in {CYCLONEDX, NIST_GAI, IMDA_AGENTIC, NIST_218A, SDOS, NIST_AML} else "2026-08-26",
+            "reviewed_at": "2026-08-29" if record["vigil_source_id"] == NIST_SYNTHETIC else ("2026-08-28" if record["vigil_source_id"] in {CYCLONEDX, NIST_GAI, IMDA_AGENTIC, NIST_218A, SDOS, NIST_AML} else "2026-08-26"),
             "review_basis": "direct-primary-text",
             "review_notes": notes,
             "field_status": field_status,
