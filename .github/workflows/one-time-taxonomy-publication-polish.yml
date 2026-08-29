@@ -70,6 +70,13 @@ jobs:
           print(f'PDF: {pdf.stat().st_size:,} bytes')
           PY
 
+      - name: Upload PDF for visual verification
+        uses: actions/upload-artifact@v4
+        with:
+          name: polished-taxonomy-pdf
+          path: vigil/taxonomy/generated/VIGIL.Observatory.FailureTaxonomy.FullReference.pdf
+          if-no-files-found: error
+
       - name: Commit polished publication outputs
         run: |
           git config user.name "github-actions[bot]"
