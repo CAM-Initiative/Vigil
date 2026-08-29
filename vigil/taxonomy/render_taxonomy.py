@@ -686,7 +686,11 @@ def publication_frontmatter(index: dict, families: list[dict]) -> str:
     <dt>Publication date</dt><dd>{esc(edition_date)}</dd>
     <dt>Failure families</dt><dd>{len(families)}</dd>
     <dt>Failure classes</dt><dd>{class_count}</dd>
-    <dt>Author and rights holder</dt><dd>Dr Michelle O'Rourke</dd>
+    <dt>Publisher</dt><dd>CAM Initiative</dd>
+    <dt>Governance editor</dt><dd>Dr M.V. O'Rourke</dd>
+    <dt>Business entity</dt><dd>Phoenix Covenant Pty Ltd</dd>
+    <dt>ABN</dt><dd>14 692 195 529</dd>
+    <dt>Rights holder</dt><dd>Dr Michelle O'Rourke</dd>
   </dl>
   <div class="imprint-rule"></div>
   <p>This technical reference provides the maintained classification structure for governance failure families and failure classes, including classification boundaries and recognition criteria.</p>
