@@ -36,17 +36,23 @@ jobs:
           python vigil/taxonomy/render_taxonomy.py --catalogue --output-dir /tmp/taxonomy-textbook-test --pdf
           python - <<'PY'
           from pathlib import Path
-          html = Path('/tmp/taxonomy-textbook-test/VIGIL.FailureTaxonomy.FullReference.html')
+          import runpy
+
           pdf = Path('/tmp/taxonomy-textbook-test/VIGIL.Observatory.FailureTaxonomy.FullReference.pdf')
-          if not html.exists() or not pdf.exists() or not pdf.read_bytes().startswith(b'%PDF-'):
+          if not pdf.exists() or not pdf.read_bytes().startswith(b'%PDF-'):
               raise SystemExit('Textbook publication did not generate correctly')
-          text = html.read_text(encoding='utf-8')
+
+          module = runpy.run_path('vigil/taxonomy/render_taxonomy.py')
+          families = module['load_catalogue']()
+          examples = module['load_case_examples']()
+          publication_html = module['combined_html'](families, examples, publication=True)
+
           required = ['Chapter 1', 'Scope &amp; chapter map', '1.1', 'Case Studies', 'What happened']
-          missing = [item for item in required if item not in text]
+          missing = [item for item in required if item not in publication_html]
           if missing:
               raise SystemExit(f'Missing textbook markers: {missing}')
           forbidden = ['VIGIL Observatory Case File classifications', 'Design intent', 'Design note']
-          present = [item for item in forbidden if item in text]
+          present = [item for item in forbidden if item in publication_html]
           if present:
               raise SystemExit(f'Historical/prototype labels remain: {present}')
           print(f'PDF: {pdf.stat().st_size:,} bytes')
