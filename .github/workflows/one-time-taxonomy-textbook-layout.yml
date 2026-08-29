@@ -11,7 +11,7 @@ permissions:
   contents: write
 
 jobs:
-  repair:
+  rebuild-publication:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -27,49 +27,40 @@ jobs:
       - name: Install PDF renderer
         run: python -m pip install --disable-pip-version-check weasyprint
 
-      - name: Use evidence-source publication date
-        run: python vigil/scripts/one-time-taxonomy-textbook-layout.py
-
-      - name: Generate and verify full textbook
+      - name: Rebuild canonical textbook publication
         run: |
-          rm -rf /tmp/taxonomy-textbook-test
-          python vigil/taxonomy/render_taxonomy.py --catalogue --output-dir /tmp/taxonomy-textbook-test --pdf
+          python vigil/taxonomy/render_taxonomy.py \
+            --catalogue \
+            --output-dir vigil/taxonomy/generated \
+            --pdf
+
+      - name: Verify evidence-source date and publication output
+        run: |
           python - <<'PY'
           from pathlib import Path
           import runpy
 
-          pdf = Path('/tmp/taxonomy-textbook-test/VIGIL.Observatory.FailureTaxonomy.FullReference.pdf')
-          if not pdf.exists() or not pdf.read_bytes().startswith(b'%PDF-'):
-              raise SystemExit('Textbook publication did not generate correctly')
-
           module = runpy.run_path('vigil/taxonomy/render_taxonomy.py')
           context = module['case_study_context']({'failure_mode_id': 'VIGIL-2026-FM-0071'})
           if context.get('date') != '5 February 2026':
-              raise SystemExit(f"FM-0071 case-study date did not come from first evidence source: {context!r}")
+              raise SystemExit(f"Unexpected FM-0071 publication date: {context!r}")
 
-          renderer = Path('vigil/taxonomy/render_taxonomy.py').read_text(encoding='utf-8')
-          marker = renderer[renderer.index('def case_study_context'):renderer.index('def case_examples_html')]
-          if 'date_recorded' in marker or 'retrieved_date' in marker or 'record_identity' in marker:
-              raise SystemExit('Case-study context still depends on record/retrieval date')
-          if 'source_date' not in marker or 'source_role' not in marker:
-              raise SystemExit('Case-study context does not use source publication metadata')
+          pdf = Path('vigil/taxonomy/generated/VIGIL.Observatory.FailureTaxonomy.FullReference.pdf')
+          if not pdf.exists() or not pdf.read_bytes().startswith(b'%PDF-'):
+              raise SystemExit('Canonical textbook PDF is invalid')
           print(f"FM-0071 publication date: {context['date']}")
-          print(f'PDF: {pdf.stat().st_size:,} bytes')
+          print(f"PDF: {pdf.stat().st_size:,} bytes")
           PY
 
-      - name: Verify bounded source change
-        run: |
-          changed="$(git diff --name-only)"
-          if [ "$changed" != "vigil/taxonomy/render_taxonomy.py" ]; then
-            echo "Unexpected changed files:"
-            printf '%s\n' "$changed"
-            exit 1
-          fi
-
-      - name: Commit textbook date correction
+      - name: Commit regenerated publication outputs
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add vigil/taxonomy/render_taxonomy.py
-          git commit -m "Use evidence publication dates in taxonomy case studies"
-          git push
+          git add vigil/taxonomy/generated/*.html
+          git add vigil/taxonomy/generated/VIGIL.Observatory.FailureTaxonomy.FullReference.pdf
+          if git diff --cached --quiet; then
+            echo "Generated taxonomy publication is already current."
+          else
+            git commit -m "Rebuild taxonomy textbook with evidence publication dates"
+            git push
+          fi
