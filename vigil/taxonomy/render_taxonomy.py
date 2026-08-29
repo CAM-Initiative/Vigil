@@ -122,7 +122,23 @@ def publication_date(value: object) -> str:
         return str(value)
 
 
-def case_study_context(example: dict) -> dict[str, str]:
+def _case_date(value: object) -> date:
+    try:
+        return date.fromisoformat(str(value))
+    except (TypeError, ValueError):
+        return date.min
+
+
+def _compact_names(values: list[object]) -> str:
+    names = [str(value).strip() for value in values if str(value).strip()]
+    if not names:
+        return ""
+    if len(names) <= 3:
+        return ", ".join(names)
+    return ", ".join(names[:3]) + f" + {len(names) - 3} more"
+
+
+def case_study_context(example: dict) -> dict[str, object]:
     failure_mode_id = str(example.get("failure_mode_id", ""))
     if not failure_mode_id:
         return {}
@@ -134,37 +150,105 @@ def case_study_context(example: dict) -> dict[str, str]:
     source_records = record.get("source_records")
     if not isinstance(source_records, list):
         source_records = []
-    provider = str(system_context.get("platform_or_vendor") or "").strip()
-    if not provider:
-        vendors = system_context.get("evidenced_vendors")
-        if isinstance(vendors, list) and vendors:
-            provider = str(vendors[0]).strip()
-    product = str(system_context.get("product_or_service") or "").strip()
-    if not product:
-        products = system_context.get("evidenced_products_or_services")
-        if isinstance(products, list) and products:
-            product = str(products[0]).strip()
-    evidence_source = next(
-        (
-            source
-            for source in source_records
-            if isinstance(source, dict)
-            and source.get("source_date")
-            and "evidence" in str(source.get("source_role", "")).lower()
-        ),
-        None,
-    )
-    if evidence_source is None:
-        evidence_source = next(
-            (
-                source
-                for source in source_records
-                if isinstance(source, dict) and source.get("source_date")
-            ),
-            None,
-        )
+
+    placeholder_vendors = {
+        "", "unknown", "unknown vendor", "unknown provider", "other", "not applicable",
+        "n/a", "provider unresolved", "provider-unresolved", "system unresolved", "system-unresolved",
+        "multi vendor", "multi-vendor",
+    }
+    summary_provider = str(system_context.get("platform_or_vendor") or "").strip()
+    vendors = system_context.get("evidenced_vendors")
+    concrete_vendors = vendors if isinstance(vendors, list) else []
+    vendor_known = summary_provider.lower() not in placeholder_vendors or bool(concrete_vendors)
+    if summary_provider and summary_provider.lower() not in placeholder_vendors:
+        provider = summary_provider
+    else:
+        provider = _compact_names(concrete_vendors)
+
+    summary_product = str(system_context.get("product_or_service") or "").strip()
+    product_placeholders = {"", "unknown", "other", "not applicable", "n/a", "multi product", "multi-product"}
+    products = system_context.get("evidenced_products_or_services")
+    concrete_products = products if isinstance(products, list) else []
+    if summary_product and summary_product.lower() not in product_placeholders:
+        product = summary_product
+    else:
+        product = _compact_names(concrete_products)
+
+    evidence_sources = [
+        source for source in source_records
+        if isinstance(source, dict)
+        and source.get("source_date")
+        and "evidence" in str(source.get("source_role", "")).lower()
+    ]
+    dated_sources = [source for source in source_records if isinstance(source, dict) and source.get("source_date")]
+    source_pool = evidence_sources or dated_sources
+    evidence_source = max(source_pool, key=lambda source: _case_date(source.get("source_date")), default=None)
     source_date = evidence_source.get("source_date") if evidence_source else None
-    return {"provider": provider, "product": product, "date": publication_date(source_date)}
+
+    failure_classification = record.get("failure_classification") if isinstance(record.get("failure_classification"), dict) else {}
+    severity = str(failure_classification.get("severity") or "SU").upper()
+    return {
+        "provider": provider,
+        "product": product,
+        "date": publication_date(source_date),
+        "source_date": str(source_date or ""),
+        "severity": severity,
+        "vendor_known": vendor_known,
+    }
+
+
+def _severity_rank(value: object) -> int:
+    return {"S0": 0, "S1": 1, "S2": 2, "S3": 3, "S4": 4, "SU": 5}.get(str(value).upper(), 6)
+
+
+def select_family_case_examples(data: dict, case_examples: dict[str, list[dict]]) -> dict[str, list[dict]]:
+    """Select at most three publication-grade exemplars for one failure family.
+
+    Eligibility is deliberately stricter than the underlying VIGIL reverse mapping:
+    high-confidence taxonomy fit and a known affected vendor are required. Ranking is
+    severity first, then newest evidence publication date, with deterministic ID ties.
+    """
+    candidates: list[dict] = []
+    for class_index, item in enumerate(data.get("classes", [])):
+        class_id = str(item.get("class_id", ""))
+        for example in case_examples.get(class_id, []):
+            if str(example.get("classification_confidence", "")).lower() != "high":
+                continue
+            context = case_study_context(example)
+            if not context.get("vendor_known"):
+                continue
+            candidates.append({
+                "class_id": class_id,
+                "class_index": class_index,
+                "example": example,
+                "context": context,
+                "role_rank": 0 if str(example.get("classification_role", "primary")).lower() == "primary" else 1,
+            })
+
+    # A single FM can map to more than one class. It should occupy only one of the
+    # family-wide three Case Study slots; prefer its primary mapping when available.
+    best_by_failure: dict[str, dict] = {}
+    for candidate in candidates:
+        failure_mode_id = str(candidate["example"].get("failure_mode_id", ""))
+        previous = best_by_failure.get(failure_mode_id)
+        candidate_key = (candidate["role_rank"], candidate["class_index"])
+        previous_key = (previous["role_rank"], previous["class_index"]) if previous else None
+        if previous is None or candidate_key < previous_key:
+            best_by_failure[failure_mode_id] = candidate
+
+    ranked = sorted(
+        best_by_failure.values(),
+        key=lambda candidate: (
+            _severity_rank(candidate["context"].get("severity")),
+            -_case_date(candidate["context"].get("source_date")).toordinal(),
+            str(candidate["example"].get("failure_mode_id", "")),
+        ),
+    )[:3]
+
+    selected: dict[str, list[dict]] = {}
+    for candidate in ranked:
+        selected.setdefault(candidate["class_id"], []).append(candidate["example"])
+    return selected
 
 
 def case_examples_html(examples: list[dict]) -> str:
@@ -172,17 +256,19 @@ def case_examples_html(examples: list[dict]) -> str:
         return ""
     studies = []
     for example in examples:
-        role = str(example.get("classification_role", "primary")).title()
-        confidence = str(example.get("classification_confidence", "unknown")).title()
         basis = str(example.get("classification_basis", "")).strip()
         context = case_study_context(example)
-        meta = " · ".join(esc(value) for value in (context.get("provider"), context.get("product"), context.get("date")) if value)
+        meta = " · ".join(
+            esc(value)
+            for value in (context.get("provider"), context.get("product"), context.get("date"))
+            if value
+        )
         studies.append(
             "<article class=\"case-study\">"
             f"<h5>{esc(example.get('title', ''))}</h5>"
             + (f"<p class=\"case-study-meta\">{meta}</p>" if meta else "")
             + (f"<p class=\"case-study-what\"><strong>What happened</strong><br>{esc(basis)}</p>" if basis else "")
-            + f"<p class=\"case-study-ref\"><code>{esc(example.get('failure_mode_id', ''))}</code> · {esc(role)} classification · {esc(confidence)} confidence</p>"
+            + f"<p class=\"case-study-ref\"><code>{esc(example.get('failure_mode_id', ''))}</code></p>"
             + "</article>"
         )
     return "<section class=\"case-studies\"><h4>Case Studies</h4>" + "".join(studies) + "</section>"
@@ -241,7 +327,8 @@ def publication_family_html(data: dict, chapter_number: int, case_examples: dict
         suffix = " · Variant" if str(item.get("abstraction", "")).lower() == "variant" else ""
         chapter_rows.append(f"<li><span class=\"chapter-item-number\">{esc(number)}</span><span class=\"chapter-item-title\">{esc(item['name'])}</span><span class=\"chapter-item-id\"><code>{esc(item['class_id'])}</code>{suffix}</span></li>")
     aliases = " · ".join(f"<code>{esc(x)}</code>" for x in family.get("aliases", [])) or "None recorded"
-    classes = "".join(publication_class_html(item, f"{chapter_number}.{index}", class_lookup, (case_examples or {}).get(item["class_id"], [])) for index, item in enumerate(data["classes"], start=1))
+    selected_case_examples = select_family_case_examples(data, case_examples or {})
+    classes = "".join(publication_class_html(item, f"{chapter_number}.{index}", class_lookup, selected_case_examples.get(item["class_id"], [])) for index, item in enumerate(data["classes"], start=1))
     return f"""
 <section class="book-family" id="{esc(anchor(family['family_id']))}">
   <section class="chapter-opener">
@@ -324,7 +411,7 @@ STYLE = """
 
 PRINT_STYLE = """
 @page{size:A4;margin:18mm 16mm 18mm;
-  @top-left{content:"CAM INITIATIVE | GOVERNANCE FAILURE TAXONOMY";font-size:7.2pt;color:#0b4a3b;letter-spacing:.07em;font-weight:600}
+  @top-left{content:"CAM INITIATIVE | GOVERNANCE FAILURE TAXONOMY";font-size:7.2pt;color:#022c1b;letter-spacing:.07em;font-weight:600}
   @top-right{content:"TECHNICAL REFERENCE";font-size:7.2pt;color:#78716c;letter-spacing:.06em}
   @bottom-left{content:"cam-initiative.org";font-size:7.2pt;color:#78716c}
   @bottom-right{content:"Page " counter(page);font-size:7.2pt;color:#78716c}
@@ -335,18 +422,17 @@ html,body{background:#fff!important}body{font-size:9.5pt;line-height:1.48}main{m
 .publication-frontmatter{page:cover;height:297mm;min-height:0;position:relative;overflow:hidden;box-sizing:border-box;background:#f7f3e9!important;border:0!important;border-radius:0!important;padding:0!important;margin:0!important;page-break-after:always}
 .cover-masthead{position:absolute;top:0;left:0;width:210mm;height:auto;display:block}
 .cover-body{position:absolute;left:25mm;right:18mm;top:94mm}
-.cover-title{font-family:Georgia,"Times New Roman",serif;font-size:35pt;line-height:.98;text-transform:uppercase;color:#073f34;letter-spacing:.012em;margin:0 0 7mm;font-weight:500;max-width:155mm}
-.cover-rule{display:flex;align-items:center;gap:4mm;margin:0 0 6mm;width:138mm}.cover-rule:before,.cover-rule:after{content:"";height:.45pt;background:#b8943f;flex:1}.cover-rule span{width:2mm;height:2mm;background:#b8943f;border-radius:50%}
+.cover-title{font-family:Georgia,"Times New Roman",serif;font-size:35pt;line-height:.98;text-transform:uppercase;color:#022c1b;letter-spacing:.012em;margin:0 0 7mm;font-weight:500;max-width:155mm}
 .cover-subtitle{font-family:Georgia,"Times New Roman",serif;font-size:18pt;line-height:1.1;color:#a47d27;margin:0 0 4mm;font-weight:500}
-.cover-descriptors{font-family:Georgia,"Times New Roman",serif;font-size:10.5pt;color:#17231f;margin:0;letter-spacing:.01em}.cover-descriptors .dot{color:#b8943f;padding:0 2.2mm}
-.cover-band{position:absolute;left:0;right:0;bottom:0;height:63mm;background:#063d32;color:#fff;border-top:1.1mm solid #b8943f;overflow:hidden;padding:9mm 16mm 8mm;box-sizing:border-box}
+.cover-descriptors{font-family:Georgia,"Times New Roman",serif;font-size:10.5pt;color:#17231f;margin:0;letter-spacing:.01em}
+.cover-band{position:absolute;left:0;right:0;bottom:0;height:63mm;background:#022c1b;color:#fff;overflow:hidden;padding:9mm 16mm 8mm;box-sizing:border-box}
 .cover-footer-art{position:absolute;left:0;right:0;bottom:0;width:210mm;height:auto;opacity:.72;z-index:0}.cover-band-content{position:relative;z-index:1;height:100%}
-.cover-meta{display:flex;gap:0;align-items:flex-start}.cover-meta-block{padding:0 9mm 0 0;margin-right:9mm;border-right:.35pt solid rgba(214,177,84,.75);min-width:31mm}.cover-meta-block:last-child{border-right:0;margin-right:0}.cover-meta-label{font-size:6.8pt;text-transform:uppercase;letter-spacing:.09em;color:#d7b35b;font-weight:700;margin-bottom:2mm}.cover-meta-value{font-family:Georgia,"Times New Roman",serif;font-size:15pt;color:#fff;line-height:1}
+.cover-meta{display:flex;gap:0;align-items:flex-start}.cover-meta-block{padding:0 9mm 0 0;margin-right:9mm;min-width:31mm}.cover-meta-block:last-child{border-right:0;margin-right:0}.cover-meta-label{font-size:6.8pt;text-transform:uppercase;letter-spacing:.09em;color:#d7b35b;font-weight:700;margin-bottom:2mm}.cover-meta-value{font-family:Georgia,"Times New Roman",serif;font-size:15pt;color:#fff;line-height:1}
 .cover-publisher{position:absolute;left:0;bottom:1mm}.cover-publisher strong{display:block;color:#d7b35b;font-size:11pt;letter-spacing:.07em;text-transform:uppercase}.cover-publisher span{font-size:8.5pt;color:#fff}
-.publication-imprint{page:imprint;min-height:249mm;page-break-after:always;display:flex;flex-direction:column;color:#2a2a2a}.imprint-kicker{color:#0b4a3b;text-transform:uppercase;letter-spacing:.08em;font-size:7.5pt;font-weight:700;margin-bottom:4mm}.publication-imprint h1{font-family:Georgia,"Times New Roman",serif;color:#073f34;font-size:22pt;font-weight:500;margin:0 0 13mm}.publication-meta{display:grid;grid-template-columns:42mm 1fr;gap:3mm 6mm;margin:0}.publication-meta dt{color:#6f6657}.publication-meta dd{margin:0;font-weight:600}.imprint-rule{height:.6pt;background:#b8943f;width:100%;margin:14mm 0 8mm}.copyright{margin-top:auto;font-size:9pt;color:#504a40}.copyright strong{color:#073f34}.website{margin-top:2mm;color:#0b4a3b}
-.contents{border:0;padding:0;page-break-after:always}.contents h1{font-family:Georgia,"Times New Roman",serif;font-size:22pt;color:#073f34;font-weight:500}.contents h2{color:#0b4a3b}.contents a{color:#073f34}
-.family{page-break-before:always;border-top:0!important;padding-top:0!important;margin-top:0!important}.family>.hero{border:0;padding:0;margin:0 0 8mm}.family>.hero h1,.family>.hero h2{font-family:Georgia,"Times New Roman",serif;color:#073f34;font-weight:500}.family>.hero .eyebrow{color:#0b4a3b}.card{break-inside:auto;border:1px solid #c8d1c8;border-radius:6px;padding:5mm;margin:0 0 5mm}.card h3{font-family:Georgia,"Times New Roman",serif;font-size:15pt;color:#073f34;font-weight:500}.plain{background:#eef4e8!important;border-left:2.2pt solid #b8943f;border-radius:0!important}.invariant{background:#f6f4eb!important;border-left:2.2pt solid #073f34!important}.grid{grid-template-columns:1fr 1fr;gap:4mm}.grid section{break-inside:avoid;background:#f6f4eb!important}.top{break-inside:avoid}.case-files{break-inside:auto}a{color:#073f34;text-decoration:none}details{display:block}details>summary{list-style:none}details>*{display:block!important}
-.chapter-opener{break-before:page;break-after:page}.chapter-opener h1{font-family:Georgia,"Times New Roman",serif;font-size:30pt;line-height:1.02;color:#073f34;font-weight:500;margin:3mm 0 7mm;max-width:165mm}.chapter-kicker,.class-kicker{text-transform:uppercase;letter-spacing:.11em;font-size:8pt;font-weight:700;color:#b8943f;margin:0 0 3mm}.chapter-lead{background:#eef4e8!important;border-left:2.2pt solid #b8943f;padding:4mm 5mm;font-family:Georgia,"Times New Roman",serif;font-size:13pt;line-height:1.28;margin:0 0 4mm}.chapter-meta,.class-meta{font-size:8pt;color:#6f6657;margin:0 0 6mm}.chapter-opener h2,.chapter-map h2,.book-class h2,.book-class h3{font-family:Georgia,"Times New Roman",serif;color:#073f34;font-weight:500}.chapter-opener h2{font-size:16pt;margin:5mm 0 2mm}.chapter-opener .grid h3{font-family:Helvetica,Arial,sans-serif;font-size:12pt;color:#171717;font-weight:700}.chapter-map{break-after:page}.chapter-map h2{font-size:23pt;margin:0 0 6mm}.chapter-map h3{font-size:13pt;color:#073f34;margin:5mm 0 2mm}.chapter-map-note{font-size:8.5pt;color:#6f6657}.chapter-list{list-style:none;padding:0;margin:3mm 0 7mm}.chapter-list li{display:grid;grid-template-columns:13mm 1fr 55mm;gap:3mm;border-bottom:.35pt solid #ddd8ca;padding:2.5mm 0;align-items:start}.chapter-item-number{font-weight:700;color:#b8943f}.chapter-item-title{font-weight:600}.chapter-item-id{font-size:7.4pt;color:#6f6657;text-align:right}.book-class{break-before:page}.class-title{font-size:23pt;line-height:1.08;margin:0 0 2mm}.class-meta{margin-bottom:4mm}.variant-parent{font-family:Georgia,"Times New Roman",serif;font-style:italic;color:#6f6657;margin:-1mm 0 4mm}.book-class>.plain{font-size:11pt;line-height:1.32;padding:4mm 5mm;margin:0 0 5mm}.book-class h3{font-size:13pt;margin:5mm 0 2mm}.book-class .grid h3{font-family:Helvetica,Arial,sans-serif;font-size:10pt;font-weight:700;color:#171717;margin:0 0 2mm}.criteria-grid{break-inside:avoid}.book-class ul{margin-top:1.5mm}.case-studies{margin-top:7mm}.case-studies>h4{font-family:Georgia,"Times New Roman",serif;font-size:15pt;color:#073f34;font-weight:500;margin:0 0 3mm}.case-study{border-top:.7pt solid #b8943f;padding:4mm 0 3mm;break-inside:avoid}.case-study h5{font-family:Georgia,"Times New Roman",serif;font-size:11.5pt;line-height:1.2;color:#073f34;margin:0 0 1mm}.case-study-meta{font-size:8pt;color:#6f6657;margin:0 0 2.5mm}.case-study-what{font-size:9.5pt;line-height:1.4;margin:0 0 2.5mm}.case-study-what strong{color:#073f34}.case-study-ref{font-size:7.5pt;color:#78716c;margin:0}.book-family code,.book-class code{font-size:.88em}.book-family+.book-family{border:0!important;padding:0!important;margin:0!important}
+.publication-imprint{page:imprint;min-height:249mm;page-break-after:always;display:flex;flex-direction:column;color:#2a2a2a}.imprint-kicker{color:#022c1b;text-transform:uppercase;letter-spacing:.08em;font-size:7.5pt;font-weight:700;margin-bottom:4mm}.publication-imprint h1{font-family:Georgia,"Times New Roman",serif;color:#022c1b;font-size:22pt;font-weight:500;margin:0 0 13mm}.publication-meta{display:grid;grid-template-columns:42mm 1fr;gap:3mm 6mm;margin:0}.publication-meta dt{color:#6f6657}.publication-meta dd{margin:0;font-weight:600}.imprint-rule{height:.6pt;background:#b8943f;width:100%;margin:14mm 0 8mm}.reliance-notice{margin-top:auto;padding-top:6mm;border-top:.6pt solid #d8d5cc}.reliance-notice h2{font-family:Helvetica,Arial,sans-serif;font-size:9pt;font-weight:700;color:#022c1b;margin:0 0 2.5mm}.reliance-notice p{font-size:8.3pt;line-height:1.45;color:#504a40;margin:0}.copyright{margin-top:5mm;font-size:9pt;color:#504a40}.copyright strong{color:#022c1b}.website{margin-top:2mm;color:#022c1b}
+.contents{border:0;padding:0;page-break-after:always}.contents h1{font-family:Georgia,"Times New Roman",serif;font-size:22pt;color:#022c1b;font-weight:500}.contents h2{color:#022c1b}.contents a{color:#022c1b}
+.family{page-break-before:always;border-top:0!important;padding-top:0!important;margin-top:0!important}.family>.hero{border:0;padding:0;margin:0 0 8mm}.family>.hero h1,.family>.hero h2{font-family:Georgia,"Times New Roman",serif;color:#022c1b;font-weight:500}.family>.hero .eyebrow{color:#022c1b}.card{break-inside:auto;border:1px solid #c8d1c8;border-radius:6px;padding:5mm;margin:0 0 5mm}.card h3{font-family:Georgia,"Times New Roman",serif;font-size:15pt;color:#022c1b;font-weight:500}.plain{background:#eef4e8!important;border-left:3pt solid #022c1b;border-radius:0!important}.invariant{background:#f6f4eb!important;border-left:2.2pt solid #022c1b!important}.grid{grid-template-columns:1fr 1fr;gap:4mm}.grid section{break-inside:avoid;background:#f6f4eb!important}.top{break-inside:avoid}.case-files{break-inside:auto}a{color:#022c1b;text-decoration:none}details{display:block}details>summary{list-style:none}details>*{display:block!important}
+.chapter-opener{break-before:page;break-after:page}.chapter-opener h1{font-family:Georgia,"Times New Roman",serif;font-size:30pt;line-height:1.02;color:#022c1b;font-weight:500;margin:3mm 0 7mm;max-width:165mm}.chapter-kicker,.class-kicker{text-transform:uppercase;letter-spacing:.11em;font-size:8pt;font-weight:700;color:#b8943f;margin:0 0 3mm}.chapter-lead{background:#eef4e8!important;border-left:3pt solid #022c1b;padding:4mm 5mm;font-family:Georgia,"Times New Roman",serif;font-size:13pt;line-height:1.28;margin:0 0 4mm}.chapter-meta,.class-meta{font-size:8pt;color:#6f6657;margin:0 0 6mm}.chapter-opener h2,.chapter-map h2,.book-class h2,.book-class h3{font-family:Georgia,"Times New Roman",serif;color:#022c1b;font-weight:500}.chapter-opener h2{font-size:16pt;margin:5mm 0 2mm}.chapter-opener .grid h3{font-family:Helvetica,Arial,sans-serif;font-size:12pt;color:#171717;font-weight:700}.chapter-map{break-after:page}.chapter-map h2{font-size:23pt;margin:0 0 6mm}.chapter-map h3{font-size:13pt;color:#022c1b;margin:5mm 0 2mm}.chapter-map-note{font-size:8.5pt;color:#6f6657}.chapter-list{list-style:none;padding:0;margin:3mm 0 7mm}.chapter-list li{display:grid;grid-template-columns:13mm 1fr 55mm;gap:3mm;border-bottom:.35pt solid #ddd8ca;padding:2.5mm 0;align-items:start}.chapter-item-number{font-weight:700;color:#b8943f}.chapter-item-title{font-weight:600}.chapter-item-id{font-size:7.4pt;color:#6f6657;text-align:right}.book-class{break-before:page}.class-title{font-size:23pt;line-height:1.08;margin:0 0 2mm}.class-meta{margin-bottom:4mm}.variant-parent{font-family:Georgia,"Times New Roman",serif;font-style:italic;color:#6f6657;margin:-1mm 0 4mm}.book-class>.plain{font-size:11pt;line-height:1.32;padding:4mm 5mm;margin:0 0 5mm}.book-class h3{font-size:13pt;margin:5mm 0 2mm}.book-class .grid h3{font-family:Helvetica,Arial,sans-serif;font-size:10pt;font-weight:700;color:#171717;margin:0 0 2mm}.criteria-grid{break-inside:avoid}.book-class ul{margin-top:1.5mm}.case-studies{margin-top:7mm}.case-studies>h4{font-family:Georgia,"Times New Roman",serif;font-size:15pt;color:#022c1b;font-weight:500;margin:0 0 3mm}.case-study{border-top:.7pt solid #b8943f;padding:4mm 0 3mm;break-inside:avoid}.case-study h5{font-family:Georgia,"Times New Roman",serif;font-size:11.5pt;line-height:1.2;color:#022c1b;margin:0 0 1mm}.case-study-meta{font-size:8pt;color:#6f6657;margin:0 0 2.5mm}.case-study-what{font-size:9.5pt;line-height:1.4;margin:0 0 2.5mm}.case-study-what strong{color:#022c1b}.case-study-ref{font-size:7.5pt;color:#78716c;margin:0}.book-family code,.book-class code{font-size:.88em}.book-family+.book-family{border:0!important;padding:0!important;margin:0!important}
 """
 
 
@@ -393,9 +479,8 @@ def publication_frontmatter(index: dict, families: list[dict]) -> str:
   <img class="cover-masthead" src="{esc(BRAND_HEADER_URL)}" alt="">
   <div class="cover-body">
     <h1 class="cover-title">Governance<br>Failure<br>Taxonomy</h1>
-    <div class="cover-rule"><span></span></div>
     <h2 class="cover-subtitle">Technical Reference</h2>
-    <p class="cover-descriptors">Failure Families<span class="dot">•</span>Failure Classes<span class="dot">•</span><br>Classification Boundaries<span class="dot">•</span>Recognition Criteria</p>
+    <p class="cover-descriptors">Failure Families · Failure Classes<br>Classification Boundaries · Recognition Criteria</p>
   </div>
   <footer class="cover-band">
     <img class="cover-footer-art" src="{esc(BRAND_FOOTER_URL)}" alt="">
@@ -424,6 +509,10 @@ def publication_frontmatter(index: dict, families: list[dict]) -> str:
   </dl>
   <div class="imprint-rule"></div>
   <p>This technical reference provides the maintained classification structure for governance failure families and failure classes, including classification boundaries and recognition criteria.</p>
+  <section class="reliance-notice">
+    <h2>Use and reliance notice</h2>
+    <p>This report is provided for research and informational purposes. It does not constitute legal, regulatory, security, assurance, certification, risk, or other professional advice, and should not be relied upon as a substitute for independent assessment. Third parties remain responsible for verifying the cited source material, the current state of the underlying VIGIL Observatory records and taxonomy, the applicability of the analysis to their circumstances, and any decision or action taken in reliance on this report.</p>
+  </section>
   <div class="copyright"><strong>Copyright © 2026 Dr Michelle O'Rourke.</strong><div class="website">cam-initiative.org</div></div>
 </section>"""
 
