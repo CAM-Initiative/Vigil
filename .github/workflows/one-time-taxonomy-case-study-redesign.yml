@@ -27,9 +27,9 @@ jobs:
       - name: Install PDF renderer
         run: python -m pip install --disable-pip-version-check weasyprint
 
-      - name: Apply redesign
+      - name: Refine Case Study evidence focus
         run: |
-          python -c "import re; exec(open('vigil/scripts/one-time-taxonomy-case-study-redesign.py', encoding='utf-8').read())"
+          python vigil/scripts/one-time-taxonomy-case-study-source-focus.py
           python -m py_compile vigil/taxonomy/render_taxonomy.py
 
       - name: Generate redesigned publication
@@ -56,6 +56,8 @@ jobs:
               'Multi-vendor evidence',
               'coverage across distinct failure classes',
               'font-family:Helvetica,Arial,sans-serif',
+              'def _source_quality',
+              'def _focused_excerpt',
           ]
           for token in required:
               if token not in source:
@@ -79,7 +81,7 @@ jobs:
                   for example in class_examples:
                       context = renderer.case_study_context(example)
                       rows.append(
-                          f"{example.get('failure_mode_id')}:{class_id}:{context.get('severity')}:{context.get('system_label')}:{context.get('source_date')}"
+                          f"{example.get('failure_mode_id')}:{class_id}:{context.get('severity')}:{context.get('system_label')}:{context.get('source_publisher')}:{context.get('source_date')}"
                       )
               total += len(rows)
               print(f"  {family['family']['family_id']}: {len(rows)} -> " + (' | '.join(rows) if rows else 'none'))
@@ -96,7 +98,7 @@ jobs:
       - name: Upload PDF for visual verification
         uses: actions/upload-artifact@v4
         with:
-          name: redesigned-taxonomy-pdf
+          name: redesigned-taxonomy-pdf-v2
           path: vigil/taxonomy/generated/VIGIL.Observatory.FailureTaxonomy.FullReference.pdf
           if-no-files-found: error
 
@@ -110,6 +112,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "Redesigned publication already current."
           else
-            git commit -m "Redesign taxonomy case studies and publication imprint"
+            git commit -m "Refine taxonomy case-study evidence focus"
             git push
           fi
