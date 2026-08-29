@@ -1,6 +1,6 @@
 # External Requirement Source-Fidelity Status
 
-Review date: 2026-08-28
+Review date: 2026-08-29
 
 The external-requirements corpus contains 854 canonical EXTREQ records across 81 registered source versions. Historical `extraction_status` remains preserved in `source-scope.json`; it is not, by itself, a claim of clause-level semantic fidelity.
 
@@ -17,6 +17,7 @@ A first-class source is effectively complete for clause-level use only when its 
 | AAM SDOS Runtime Governance 1.10 | complete | assured | complete | Twenty-four source-native controls retain identity with source-explicit metadata and related-control links. |
 | NIST AI 100-2e2025 | complete | assured | complete | Twenty-two represented taxonomy and cross-cutting security propositions retain identity with explicit document-wide qualifications and source-silent metadata decisions. |
 | NIST AI 100-4 | complete | assured | complete | Eighteen represented transparency and harm-reduction propositions have source-specific metadata; two identities are retained and 16 migrate deterministically to corrected locators. |
+| NIST SP 1270 | complete | assured | complete | Fourteen represented socio-technical bias-management propositions have source-specific metadata; 12 identities are retained and two migrate deterministically from Conclusions to operative guidance sections. |
 | NIST AI 600-1 Generative AI Profile | complete | assured | complete | Sixty suggested actions retain identity with complete constituent semantics and source-supported metadata. |
 | CycloneDX 1.7 ML-BOM | complete | assured | complete | Five propositions represent the distinct MUST uniqueness and SHOULD reserved-prefix modalities. |
 | IMDA Agentic AI MGF 1.5 | complete | assured | complete | Thirty-nine records resolve all 20 queued fidelity defects with deterministic subsection decomposition. |
@@ -28,4 +29,4 @@ Until individually re-audited under `SOURCE-FIDELITY-METHODOLOGY.md`, every othe
 
 ## Next reprocessing order
 
-The next public-primary tranche is NIST SP 1270 (2022), followed by SPDX AI Profile 3.0.1. Licensed IEEE sources should be reviewed only from the lawfully accessible primary texts already recorded by the repository. Blocked-access sources remain blocked and are not inferred from metadata.
+The next public-primary tranche is SPDX AI Profile 3.0.1. Licensed IEEE sources should be reviewed only from the lawfully accessible primary texts already recorded by the repository. Blocked-access sources remain blocked and are not inferred from metadata.

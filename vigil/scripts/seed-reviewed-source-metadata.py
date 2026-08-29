@@ -98,6 +98,42 @@ NIST_SYNTHETIC_IDENTITY_TO_LEGACY = {
     "human-assisted-test": "EXTREQ-D8E2C24720261043",
     "content-labels": "EXTREQ-E3EB5E45D3F5DAA8",
 }
+NIST_BIAS = "EXT-1BE47AB84994"
+NIST_BIAS_REVIEW_DIGEST = "334042ba11ed24d7446cc31967e6e1eb4921f50a17eec4eb14ef1bff078f1e09"
+NIST_BIAS_ACTOR = (
+    "Individual or group responsible for designing, developing, deploying, evaluating, or governing AI systems"
+)
+NIST_BIAS_QUALIFICATIONS = [
+    "NIST SP 1270 is voluntary recommended practice and does not establish or supersede a law, regulation, legal requirement, or legal defense.",
+    "The publication is preliminary guidance and a roadmap for future work; it does not provide a complete procedure or guarantee zero bias.",
+    "Zero risk of bias is not achievable, and bias management must account for interacting systemic, statistical or computational, and human factors in context.",
+    "Specific measures, metrics, controls, and acceptable residual risk depend on the use case, affected populations, operational context, and applicable legal requirements.",
+]
+NIST_BIAS_METADATA = {
+    "tevv-disaggregated": dict(clause="3.2.2", objects=["AI-system performance and bias outcomes for relevant groups and subgroups"], evidence=["Disaggregated, context-relevant performance and bias analysis."], methods=["Compare performance and error measures across relevant groups, intersections, and operational contexts rather than relying only on aggregate metrics."], conditions=["Select groups, metrics, and disaggregation levels for the intended use, affected populations, legal context, and available representative data."]),
+    "bias-feedback-loop": dict(clause="3.4.1", objects=["Deployed AI system, bias incidents, user feedback, and organizational bias-management practices"], timing=["During deployment and monitoring, when feedback or potential harms are reported, and when incidents reveal failed designs."], artefacts=["Bias-incident and feedback records and resulting remediation or design-change record."], evidence=["Traceable use of monitoring, recourse, incident, and stakeholder information in remediation and future design decisions."], methods=["Review monitoring alerts, recourse reports, and shared incident information; trace resulting remediation and changes to datasets, designs, controls, or organizational practice."], conditions=["Feedback and monitoring depend on lawful, privacy-appropriate collection of relevant data and accessible recourse channels."]),
+    "governance-accountability": dict(clause="3.4.1", objects=["Organizational responsibility and accountability for AI bias risks and harms"], artefacts=["Documented roles, responsibilities, escalation paths, and accountability assignments."], evidence=["Named teams or individuals with responsibility distributed across relevant lifecycle functions."], methods=["Review governance assignments and confirm responsibility is embedded across teams involved in training, deployment, monitoring, and oversight."]),
+    "socio-technical-bias": dict(clause="2.1", objects=["AI system and its interacting institutional, computational, and human context"], methods=["Analyze systemic, statistical or computational, and human bias categories together, including their interactions across the AI lifecycle."], conditions=["The relevant contributors and harms depend on the system, institution, affected communities, and deployment context."]),
+    "tevv-limitations": dict(clause="3.2.2", objects=["AI-system test, evaluation, validation, and verification assumptions and results"], artefacts=["TEVV report documenting assumptions, uncertainty, limitations, performance targets, and residual bias risks."], evidence=["Context-specific evaluation results and documented limitations or uncertainty."], methods=["Evaluate performance against desired targets and acceptable bias levels using representative data, relevant fairness measures, and uncertainty analysis."], conditions=["Metrics and conclusions are limited to the evaluated task, data, groups, operating context, and applicable legal constraints."]),
+    "governance-resources": dict(clause="3.4.1", objects=["Organizational capacity for AI-bias governance and oversight"], artefacts=["Governance structure documenting multidisciplinary roles, authority, resources, and review functions."], evidence=["Demonstrated competence, independence or effective challenge, and resources across the lines of accountability."], methods=["Assess whether governance participants have sufficient expertise, authority, incentives, and resources to challenge development, test, audit, and remediate systems."]),
+    "dataset-context": dict(clause="3.1.2", objects=["Dataset proposed for an AI application, domain, and task"], artefacts=["Dataset documentation covering purpose, origin, composition, collection context, limitations, and intended-use fitness."], evidence=["Documented dataset suitability assessment for the intended socio-technical context."], methods=["Assess statistical representation, socio-technical deployment context, and human-factor interactions across the lifecycle."], conditions=["Fitness and fairness measures are application-, domain-, task-, population-, and context-specific."]),
+    "affected-perspectives": dict(clause="3.3.2", objects=["AI-system impact and bias assessment"], timing=["During design and evaluation and at a reasonable cadence as an iterative system, context, or outcomes change."], artefacts=["Impact assessment and stakeholder-engagement record."], evidence=["Input from affected people, end users, practitioners, subject-matter experts, and relevant interdisciplinary professionals."], methods=["Use multi-stakeholder engagement to identify context-specific harms, power differences, use patterns, and changes that development teams may overlook."], conditions=["Stakeholder selection should reflect the affected population, deployment setting, relevant expertise, and dimensions along which bias is a concern."]),
+    "dataset-representation": dict(clause="3.1.2", objects=["Dataset representation, measurement, variables, labels, missingness, and sampling choices"], evidence=["Representation and measurement analysis for relevant groups, including limitations and potential harms."], methods=["Use appropriate imbalance, disaggregation, causal, and data-quality analyses, supplemented by socio-technical assessment of what and whom the data count or omit."], conditions=["Techniques and relevant groups depend on dataset structure, intended use, affected populations, and context; statistical balance alone is insufficient."]),
+    "dataset-provenance": dict(clause="3.1.2", objects=["Dataset sources and curation, cleaning, annotation, exclusion, imputation, and transformation decisions"], artefacts=["Dataset provenance and intervention record documenting sources, transformations, exclusions, assumptions, and known bias limitations."], evidence=["Traceable documentation of human and technical choices that may affect representation, transparency, or bias."], methods=["Review the dataset lifecycle and documentation for collection and processing biases, missingness, annotation effects, transformations, and cross-dataset distribution differences."]),
+    "periodic-bias-review": dict(clause="3.3.2 and 3.4.1", objects=["AI-system impact assessment, model performance, and bias-risk controls"], timing=["At a reasonable cadence throughout iterative development and operation, and after material changes in data, model, context, or use."], artefacts=["Updated impact assessment, audit or review record, and resulting change-management record."], evidence=["Periodic review results showing current impacts, performance, bias risks, and any remediation."], methods=["Repeat impact assessment and ongoing audit or review; compare current data, context, performance, and impacts with prior assumptions and targets."], conditions=["Cadence and depth should reflect system evolution, risk, use context, affected populations, and organizational policy."]),
+    "tevv-context": dict(clause="3.2.2", objects=["AI-system TEVV design for its intended tasks, users, affected populations, and foreseeable operating conditions"], artefacts=["Context-specific TEVV plan defining datasets, groups, metrics, thresholds, assumptions, and anticipated uses."], evidence=["Evaluation results on representative data and relevant operational, group, and contextual conditions."], methods=["Design TEVV jointly with deploying organizations and evaluate algorithms, data, fairness measures, uncertainty, and downstream consequences in context."], conditions=["The TEVV design must reflect the intended task, jurisdiction, industry, affected groups, foreseeable use, and consequences of errors."]),
+    "human-factors": dict(clause="3.3.2", objects=["Human-AI configuration, organizational decision process, user interaction, and associated bias risks"], evidence=["Human-factors and impact-assessment findings, including automation effects and relevant stakeholder experience."], methods=["Evaluate cognitive and group biases, automation reliance, decision context, organizational incentives, user interpretation, and human-AI configuration with relevant stakeholders."], conditions=["Assessment depends on who develops, operates, relies on, is affected by, or can contest the system and on the stakes of the decision context."]),
+    "governance-documentation": dict(clause="3.4.1", objects=["AI-bias governance decisions, model and dataset assumptions, evaluations, and mitigation activities"], artefacts=["Standardized model and governance documentation recording mechanisms, assumptions, data choices, evaluation results, responsibilities, and mitigation rationale."], evidence=["Complete, interpretable, traceable records supporting oversight, maintenance, accountability, and corrective action."], methods=["Review documentation against organizational policies and templates for completeness, interpretability, ownership, and traceability through development, testing, deployment, and remediation."]),
+}
+NIST_BIAS_IDENTITY_TO_LEGACY = {
+    "tevv-disaggregated": "EXTREQ-3030E7F375A5181E", "bias-feedback-loop": "EXTREQ-3A093EAED4EAA4D9",
+    "governance-accountability": "EXTREQ-493C6B32A0178925", "socio-technical-bias": "EXTREQ-6075BA538E7FF7DC",
+    "tevv-limitations": "EXTREQ-82F46ABCA356F77A", "governance-resources": "EXTREQ-A41EFC122FFC8011",
+    "dataset-context": "EXTREQ-A8838A7EEACC7806", "affected-perspectives": "EXTREQ-AAA2E27CDF760D9C",
+    "dataset-representation": "EXTREQ-CDC73A6E25F4BCF4", "dataset-provenance": "EXTREQ-D0558126D6950EAE",
+    "periodic-bias-review": "EXTREQ-EB0560CA27811B15", "tevv-context": "EXTREQ-EB3AEF59D55DBA7E",
+    "human-factors": "EXTREQ-F24D556CF1E1E201", "governance-documentation": "EXTREQ-FD2E9DE61D27AD9A",
+}
 
 
 def deterministic_requirement_id(record: dict, clause: str) -> str:
@@ -869,6 +905,41 @@ def normalize_nist_synthetic_metadata(record: dict) -> None:
     })
 
 
+def normalize_nist_bias_metadata(record: dict) -> None:
+    """Repair locators and resolve the represented NIST SP 1270 metadata."""
+    data = NIST_BIAS_METADATA.get(record["identity_key"])
+    if data is None:
+        raise ValueError(f"unreviewed NIST SP 1270 requirement: {record['requirement_id']}")
+    current_actor = record.get("applicable_actor", [])
+    if current_actor not in (["AI risk-management organization"], [NIST_BIAS_ACTOR]):
+        raise ValueError(f"unexpected NIST SP 1270 actor metadata for {record['requirement_id']}")
+    record.update({
+        "requirement_id": deterministic_requirement_id(record, data["clause"]),
+        "clause_or_control": data["clause"],
+        "source_review_date": "2026-08-29",
+        "applicable_actor": [NIST_BIAS_ACTOR],
+        "governed_object": data["objects"],
+        "timing_or_frequency": data.get("timing", []),
+        "required_artefacts": data.get("artefacts", []),
+        "evidence_expectation": data.get("evidence", []),
+        "verification_method": data.get("methods", []),
+        "applicability_conditions": data.get("conditions", []),
+        "exceptions_or_qualifications": NIST_BIAS_QUALIFICATIONS,
+    })
+    record["interpretation_provenance"].update({
+        "source_analysis_method": (
+            "Direct field-level and locator comparison against the official March 2022 NIST SP 1270 PDF. "
+            "Established proposition identities were retained while two coarse Conclusions references were "
+            "migrated to the operative guidance sections and generic metadata was replaced with source-specific "
+            "objects, timing, artefacts, evidence, methods, conditions, and qualifications."
+        ),
+        "source_locator": "https://doi.org/10.6028/NIST.SP.1270",
+        "reviewed_source_digest": NIST_BIAS_REVIEW_DIGEST,
+        "reviewed_source_digest_algorithm": "sha256",
+        "reviewed_source_digest_status": "recorded",
+    })
+
+
 def backlog_entries(records: list[dict]) -> list[dict]:
     by_id = {record["requirement_id"]: record for record in records}
     missing = sorted(NIST_GAI_CONSTITUENT_REPAIRS - set(by_id))
@@ -919,13 +990,13 @@ def seed(write: bool) -> int:
     ledger = load(LEDGER)
     records = req_doc["requirements"]
     by_id = {record["requirement_id"]: record for record in records}
-    reviewed_sources = {NIST_RMF, CYCLONEDX, NIST_GAI, IMDA_AGENTIC, NIST_218A, SDOS, NIST_AML, NIST_SYNTHETIC}
+    reviewed_sources = {NIST_RMF, CYCLONEDX, NIST_GAI, IMDA_AGENTIC, NIST_218A, SDOS, NIST_AML, NIST_SYNTHETIC, NIST_BIAS}
     selected = [record for record in records if record["vigil_source_id"] in reviewed_sources]
     counts = {
         source: sum(record["vigil_source_id"] == source for record in selected)
         for source in reviewed_sources
     }
-    if counts != {NIST_RMF: 71, CYCLONEDX: 5, NIST_GAI: 223, IMDA_AGENTIC: 39, NIST_218A: 75, SDOS: 24, NIST_AML: 22, NIST_SYNTHETIC: 18}:
+    if counts != {NIST_RMF: 71, CYCLONEDX: 5, NIST_GAI: 223, IMDA_AGENTIC: 39, NIST_218A: 75, SDOS: 24, NIST_AML: 22, NIST_SYNTHETIC: 18, NIST_BIAS: 14}:
         raise ValueError(f"unexpected reviewed source population: {counts}")
 
     for record in selected:
@@ -944,7 +1015,9 @@ def seed(write: bool) -> int:
             normalize_nist_aml_metadata(record)
         elif record["vigil_source_id"] == NIST_SYNTHETIC:
             normalize_nist_synthetic_metadata(record)
-        if record["vigil_source_id"] == NIST_SYNTHETIC:
+        elif record["vigil_source_id"] == NIST_BIAS:
+            normalize_nist_bias_metadata(record)
+        if record["vigil_source_id"] in {NIST_SYNTHETIC, NIST_BIAS}:
             record["source_review_date"] = "2026-08-29"
         elif record["vigil_source_id"] in {CYCLONEDX, IMDA_AGENTIC, NIST_218A, SDOS, NIST_AML}:
             record["source_review_date"] = "2026-08-28"
@@ -959,10 +1032,15 @@ def seed(write: bool) -> int:
     nist_synthetic_legacy_ids = set(NIST_SYNTHETIC_IDENTITY_TO_LEGACY.values()) - {
         "EXTREQ-4F010C47F9C62E1B", "EXTREQ-5AF6358B9779F629"
     }
+    nist_bias_legacy_ids = {
+        NIST_BIAS_IDENTITY_TO_LEGACY["bias-feedback-loop"],
+        NIST_BIAS_IDENTITY_TO_LEGACY["periodic-bias-review"],
+    }
     existing = {
         entry["requirement_id"]: entry for entry in ledger.get("entries", [])
         if entry["requirement_id"] not in IMDA_RETIRED_IDS
         and entry["requirement_id"] not in nist_synthetic_legacy_ids
+        and entry["requirement_id"] not in nist_bias_legacy_ids
     }
     seeded = 0
     for record in selected:
@@ -1021,16 +1099,23 @@ def seed(write: bool) -> int:
                 "Empty timing, artefact, evidence, and verification fields are resolved as source-silent rather than inferred from attack descriptions or examples.",
                 "Document-wide voluntary, non-exhaustive, contextual-risk, and evolving-threat limitations are preserved as qualifications."
             ]
-        else:
+        elif record["vigil_source_id"] == NIST_SYNTHETIC:
             notes = [
                 "Reviewed against the official November 2024 NIST AI 100-4 PDF; SHA-256 a387a4977db70d65cdbc178c8b0cb8aa5dedb85fa80d6f473c244e2767a4fd54.",
                 "All 18 represented synthetic-content transparency and harm-reduction propositions retain their established identities.",
                 "Incorrect and overly coarse section references were repaired to the source's actual subsection structure, including Sections 4.1.1, 4.1.2, 4.2.1–4.2.3, and 4.3.",
                 "Generic metadata was replaced with source-specific objects, evidence, evaluation methods, applicability conditions, and document-wide limitations."
             ]
+        else:
+            notes = [
+                "Reviewed against the official March 2022 NIST SP 1270 PDF; SHA-256 334042ba11ed24d7446cc31967e6e1eb4921f50a17eec4eb14ef1bff078f1e09.",
+                "All 14 represented socio-technical bias-management propositions retain their established identity keys.",
+                "The feedback-loop and periodic-review records were migrated from the non-operative Conclusions locator to Sections 3.4.1 and 3.3.2 and 3.4.1, respectively.",
+                "Generic metadata was replaced with source-specific objects, timing, artefacts, evidence, methods, applicability conditions, and document-wide voluntary and preliminary-guidance limitations."
+            ]
         entry = {
             "requirement_id": rid,
-            "reviewed_at": "2026-08-29" if record["vigil_source_id"] == NIST_SYNTHETIC else ("2026-08-28" if record["vigil_source_id"] in {CYCLONEDX, NIST_GAI, IMDA_AGENTIC, NIST_218A, SDOS, NIST_AML} else "2026-08-26"),
+            "reviewed_at": "2026-08-29" if record["vigil_source_id"] in {NIST_SYNTHETIC, NIST_BIAS} else ("2026-08-28" if record["vigil_source_id"] in {CYCLONEDX, NIST_GAI, IMDA_AGENTIC, NIST_218A, SDOS, NIST_AML} else "2026-08-26"),
             "review_basis": "direct-primary-text",
             "review_notes": notes,
             "field_status": field_status,
@@ -1046,7 +1131,7 @@ def seed(write: bool) -> int:
 
     output_ledger = {
         "schema_version": ledger.get("schema_version", "1.0"),
-        "updated_at": "2026-08-28",
+        "updated_at": "2026-08-29",
         "entries": sorted(existing.values(), key=lambda entry: entry["requirement_id"]),
     }
     output_backlog = {"schema_version": "1.0", "updated_at": "2026-08-28", "entries": backlog}

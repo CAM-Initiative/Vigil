@@ -68,7 +68,7 @@ def main():
     assert isinstance(ledger["entries"], list)
     ids = [entry["requirement_id"] for entry in ledger["entries"]]
     assert len(ids) == len(set(ids))
-    assert len(ids) == 579
+    assert len(ids) == 593
 
     backlog_schema = json.loads((REQ / "reextraction-backlog.schema.json").read_text(encoding="utf-8"))
     backlog = json.loads((REQ / "reextraction-backlog.json").read_text(encoding="utf-8"))
@@ -82,6 +82,17 @@ def main():
     assert sum(entry["external_source_id"] == "AAM-SDOS-RUNTIME-GOVERNANCE" for entry in backlog["entries"]) == 0
     assert sum(entry["external_source_id"] == "NIST-AI-100-2" for entry in backlog["entries"]) == 0
     assert sum(entry["external_source_id"] == "NIST-AI-100-4" for entry in backlog["entries"]) == 0
+    assert sum(entry["external_source_id"] == "NIST-SP-1270" for entry in backlog["entries"]) == 0
+
+    nist_bias = json.loads((REQ / "requirements" / "NIST-SP-1270" / "2022.json").read_text(encoding="utf-8"))
+    bias_by_key = {record["identity_key"]: record for record in nist_bias}
+    assert len(nist_bias) == 14
+    assert all(record["source_review_date"] == "2026-08-29" for record in nist_bias)
+    assert all(record["interpretation_provenance"]["reviewed_source_digest"] == "334042ba11ed24d7446cc31967e6e1eb4921f50a17eec4eb14ef1bff078f1e09" for record in nist_bias)
+    assert bias_by_key["bias-feedback-loop"]["requirement_id"] == "EXTREQ-781D501071BA131E"
+    assert bias_by_key["bias-feedback-loop"]["clause_or_control"] == "3.4.1"
+    assert bias_by_key["periodic-bias-review"]["requirement_id"] == "EXTREQ-DECFB6D5BF3EC91C"
+    assert bias_by_key["periodic-bias-review"]["clause_or_control"] == "3.3.2 and 3.4.1"
 
     nist_synthetic = json.loads((REQ / "requirements" / "NIST-AI-100-4" / "2024.json").read_text(encoding="utf-8"))
     synthetic_by_id = {record["requirement_id"]: record for record in nist_synthetic}
