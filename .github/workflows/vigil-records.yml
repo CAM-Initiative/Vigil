@@ -65,14 +65,6 @@ jobs:
       - name: Check FM system-context reconciliation
         run: python vigil/scripts/reconcile-fm-system-context.py --check
 
-      - name: Test VIGIL triage inventory
-        run: python vigil/tests/test_audit_vigil_triage.py
-
-      - name: Rebuild and verify VIGIL triage inventory
-        run: |
-          python vigil/scripts/audit-vigil-triage.py
-          python vigil/scripts/audit-vigil-triage.py --check
-
       - name: Test VIGIL lifecycle validator
         run: python vigil/tests/test_validate_vigil_lifecycle.py
 
@@ -146,13 +138,11 @@ jobs:
             vigil/VIGIL.Failures.Index.json \
             vigil/VIGIL.Observations.Index.json \
             vigil/VIGIL.Research.Index.json \
-            vigil/VIGIL.Registry.Index.json \
-            vigil/docs/2026-triage-model-inventory.json \
-            vigil/docs/2026-triage-model-inventory.md
+            vigil/VIGIL.Registry.Index.json
           if git diff --cached --quiet; then
             echo "No generated VIGIL output changes to commit."
           else
-            git commit -m "Rebuild public VIGIL registry indexes and generated outputs"
+            git commit -m "Rebuild public VIGIL registry indexes"
             if ! git push; then
               echo "Branch advanced while this run was building generated files; a newer workflow run owns generated-output refresh."
               exit 0
