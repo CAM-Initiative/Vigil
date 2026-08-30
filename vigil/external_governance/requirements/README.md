@@ -21,7 +21,7 @@ The maintained current state is represented directly by:
 
 Historical baseline/effective replay machinery is not part of the current architecture. Git history preserves prior states.
 
-Each shard is a JSON array containing only the records for the source/version named by its path. Records within a shard and the generated aggregate are sorted by `requirement_id`. `../scripts/external_requirements_io.py` is the shared read/write boundary; validators, seeders and migrations must not read or rewrite the aggregate as canonical state.
+Each shard is a JSON array containing only the records for the source/version named by its path. Records within a shard and the generated aggregate are sorted by `requirement_id`. `../../scripts/external_requirements_io.py` is the shared read/write boundary; validators, seeders and migrations must not read or rewrite the aggregate as canonical state.
 
 ## Semantic separation
 
@@ -29,13 +29,13 @@ The governance flow is:
 
 `external source -> external requirement -> CAM applicability/coverage assessment -> VIGIL routing/repair`
 
-External requirements MUST NOT contain CAM instrument mappings, CAM coverage states or CAM conformance findings. Those judgements belong in `../cam_assessment/` and must be assessed against a specific CAM corpus commit.
+External requirements MUST NOT contain CAM instrument mappings, CAM coverage states or CAM conformance findings. Those judgements belong in `../../cam_assessment/` and must be assessed against a specific CAM corpus commit.
 
 ## Source provenance: metadata fingerprint versus reviewed artefact
 
 `source_metadata_fingerprint` is a SHA-256 of VIGIL's registered source/version metadata projection. It is not a hash of the PDF, HTML capture or other primary-source artefact reviewed.
 
-The AI system/model and method responsible for substantive source review are recorded canonically in the matching `../external_sources/source-registry.json` review event. That event references `source-scope.json` for maintained access and extraction limitations. It does not replace requirement-level interpretation provenance.
+The AI system/model and method responsible for substantive source review are recorded canonically in the matching `../sources/source-registry.json` review event. That event references `source-scope.json` for maintained access and extraction limitations. It does not replace requirement-level interpretation provenance.
 
 Where an exact reviewed artefact digest was actually recorded, `source-review-assurance.json` records its SHA-256. Historical direct-source extractions for which no exact artefact digest was preserved remain `reviewed_source_digest_status: not-recorded`. VIGIL does not manufacture retrospective digests.
 
@@ -123,4 +123,4 @@ Recommended metadata-remediation sequence:
 6. rerun the report and reduce the unresolved queue;
 7. use `--strict` only for a source/slice that is intended to be metadata-complete.
 
-CAM applicability and coverage are validated separately under `../cam_assessment/`.
+CAM applicability and coverage are validated separately under `../../cam_assessment/`.
