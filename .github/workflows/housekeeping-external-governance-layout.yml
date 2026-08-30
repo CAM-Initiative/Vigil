@@ -1,0 +1,156 @@
+name: One-shot external governance layout cleanup
+
+on:
+  push:
+    branches:
+      - housekeeping/scripts-tests-audits
+    paths:
+      - ".github/workflows/housekeeping-external-governance-layout.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: housekeeping/scripts-tests-audits
+          fetch-depth: 0
+          persist-credentials: true
+          show-progress: false
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.x"
+
+      - name: Consolidate external governance paths and retire detached provenance declaration
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p vigil/external_governance
+          git mv vigil/external_sources vigil/external_governance/sources
+          git mv vigil/external_requirements vigil/external_governance/requirements
+          git rm vigil/provenance/AUTHORSHIP-PROVENANCE.json
+
+          python - <<'PY'
+          from pathlib import Path
+          import subprocess
+
+          root = Path('.')
+          tracked = subprocess.check_output(['git', 'ls-files'], text=True).splitlines()
+          text_suffixes = {'.py', '.md', '.json', '.yml', '.yaml', '.txt', '.cff'}
+
+          for raw in tracked:
+              path = Path(raw)
+              if not path.exists() or path.suffix.lower() not in text_suffixes:
+                  continue
+              # Historical audits and withdrawn drafts preserve the path names that
+              # were true when those artefacts were written.
+              if raw.startswith('vigil/docs/audits/') or raw.startswith('vigil/drafts/'):
+                  continue
+              try:
+                  text = path.read_text(encoding='utf-8')
+              except UnicodeDecodeError:
+                  continue
+              original = text
+
+              # Repository-relative path references.
+              text = text.replace('vigil/external_sources/', 'vigil/external_governance/sources/')
+              text = text.replace('vigil/external_requirements/', 'vigil/external_governance/requirements/')
+              text = text.replace('vigil/external_sources', 'vigil/external_governance/sources')
+              text = text.replace('vigil/external_requirements', 'vigil/external_governance/requirements')
+
+              # Python Path expressions whose string literal did not include a slash.
+              text = text.replace(' / "external_sources"', ' / "external_governance" / "sources"')
+              text = text.replace(' / "external_requirements"', ' / "external_governance" / "requirements"')
+              text = text.replace(" / 'external_sources'", " / 'external_governance' / 'sources'")
+              text = text.replace(" / 'external_requirements'", " / 'external_governance' / 'requirements'")
+
+              # Relative links between the two newly nested sibling directories.
+              text = text.replace('../external_governance/requirements/', '../requirements/')
+              text = text.replace('../external_governance/requirements', '../requirements')
+              text = text.replace('../external_governance/sources/', '../sources/')
+              text = text.replace('../external_governance/sources', '../sources')
+
+              # The detached declaration is retired; artefact-local metadata remains.
+              lines = text.splitlines(keepends=True)
+              out = []
+              for line in lines:
+                  stripped = line.strip()
+                  if stripped.startswith('PROVENANCE_REF =') and 'AUTHORSHIP-PROVENANCE.json' in stripped:
+                      continue
+                  if stripped.startswith('"declaration":') and 'AUTHORSHIP-PROVENANCE.json' in stripped:
+                      if not stripped.endswith(',') and out:
+                          idx = len(out) - 1
+                          while idx >= 0 and not out[idx].strip():
+                              idx -= 1
+                          if idx >= 0:
+                              prior = out[idx].rstrip('\n')
+                              if prior.rstrip().endswith(','):
+                                  newline = '\n' if out[idx].endswith('\n') else ''
+                                  out[idx] = prior.rstrip()[:-1] + newline
+                      continue
+                  if '"declaration": PROVENANCE_REF' in stripped:
+                      continue
+                  out.append(line)
+              text = ''.join(out)
+
+              text = text.replace(
+                  'Authorship, human-review, and human-verification status are governed separately by vigil/provenance/AUTHORSHIP-PROVENANCE.json.',
+                  'Authorship, human-review, and human-verification status are validated from artefact-local provenance metadata by vigil/scripts/validate-authorship-provenance.py.'
+              )
+              text = text.replace(
+                  'Authorship, review and verification vocabulary is controlled by `vigil/provenance/AUTHORSHIP-PROVENANCE.json`.',
+                  'Authorship, review and verification vocabulary is enforced by `vigil/scripts/validate-authorship-provenance.py` against artefact-local provenance metadata.'
+              )
+              text = text.replace(
+                  '- `vigil/provenance/` — controlled provenance declarations.\n',
+                  ''
+              )
+              text = text.replace(
+                  'See `../provenance/AUTHORSHIP-PROVENANCE.json`.',
+                  'The controlled provenance vocabulary is enforced by `../../scripts/validate-authorship-provenance.py` against artefact-local metadata.'
+              )
+
+              if text != original:
+                  path.write_text(text, encoding='utf-8')
+          PY
+
+          rmdir vigil/provenance 2>/dev/null || true
+
+      - name: Validate migrated subsystem
+        shell: bash
+        run: |
+          set -euo pipefail
+          if grep -RIn \
+            --exclude-dir=.git \
+            --exclude-dir=audits \
+            --exclude-dir=drafts \
+            -E 'vigil/(external_sources|external_requirements)|AUTHORSHIP-PROVENANCE\.json| / ["'"']external_(sources|requirements)["'"']' \
+            .; then
+            echo "Live references to retired external-governance/provenance paths remain."
+            exit 1
+          fi
+
+          python vigil/tests/test_authorship_provenance.py
+          python vigil/scripts/validate-authorship-provenance.py
+          python vigil/tests/test_external_sources.py
+          PYTHONPATH=vigil/scripts python vigil/tests/test_external_requirements.py
+          python vigil/scripts/manage-external-sources.py validate --check-generated
+          PYTHONPATH=vigil/scripts python vigil/scripts/manage-external-requirements.py validate --check-generated
+
+      - name: Commit layout migration
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No external-governance layout changes remain."
+          else
+            git commit -m "Consolidate external governance corpus layout"
+            git push origin "HEAD:housekeeping/scripts-tests-audits"
+          fi
