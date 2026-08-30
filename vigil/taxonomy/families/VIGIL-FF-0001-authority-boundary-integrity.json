@@ -74,27 +74,10 @@
       "abstraction": "class",
       "plain_english": "The system treats content it can read as though the content has permission to instruct it.",
       "definition": "A failure in which content from a lower-authority, untrusted, retrieved, generated, third-party, or otherwise non-authorising source is treated as an instruction, command, policy, approval, or execution-authorising signal.",
-      "recognition": {
-        "required_conditions": [
-          "The system receives or retrieves content from a source whose authority is lower than, different from, or unresolved relative to the action being considered.",
-          "The content is treated as operative instruction or authority rather than as data, evidence, context, or material for analysis.",
-          "No independent authority check validly establishes that the source may authorise the affected action."
-        ]
-      },
-      "exclusions": [
-        "A system merely quotes, summarizes, classifies, or reasons about untrusted instructions without obeying them.",
-        "The source is genuinely authorised for the specific action and scope.",
-        "The event is only a content-quality or factual-accuracy problem."
-      ],
-      "examples": [
-        "A retrieved document contains instructions to modify an account and the agent follows them even though the user never authorised the change.",
-        "A tool output contains instruction-like text and the system treats it as higher-priority task direction."
-      ],
-      "aliases": [
-        "VIGIL.FF.AUTHORITY_BOUNDARY.SOURCE_AUTHORITY_CONFUSION",
-        "instruction-source confusion",
-        "source-authority collapse"
-      ]
+      "recognition": {"required_conditions": ["The system receives or retrieves content from a source whose authority is lower than, different from, or unresolved relative to the action being considered.","The content is treated as operative instruction or authority rather than as data, evidence, context, or material for analysis.","No independent authority check validly establishes that the source may authorise the affected action."]},
+      "exclusions": ["A system merely quotes, summarizes, classifies, or reasons about untrusted instructions without obeying them.","The source is genuinely authorised for the specific action and scope.","The event is only a content-quality or factual-accuracy problem."],
+      "examples": ["A retrieved document contains instructions to modify an account and the agent follows them even though the user never authorised the change.","A tool output contains instruction-like text and the system treats it as higher-priority task direction."],
+      "aliases": ["VIGIL.FF.AUTHORITY_BOUNDARY.SOURCE_AUTHORITY_CONFUSION","instruction-source confusion","source-authority collapse"]
     },
     {
       "class_id": "VIGIL-FC-000002",
@@ -105,25 +88,10 @@
       "abstraction": "class",
       "plain_english": "The system assumes that because it has the ability or tool access to do something, it is allowed to do it.",
       "definition": "A failure in which available capability, tool access, credentials, privileges, feature availability, or action affordances are treated as sufficient authority for an action without separately establishing permission for the actor, target, action, and scope.",
-      "recognition": {
-        "required_conditions": [
-          "A capability or execution pathway is technically available.",
-          "The system uses availability or possession of the capability as a material basis for permission.",
-          "Independent authority for the specific action is absent, narrower, expired, unresolved, or not revalidated."
-        ]
-      },
-      "exclusions": [
-        "A permitted action is executed within an explicitly authorised scope.",
-        "The system merely detects that capability exists but does not infer permission from it.",
-        "A vulnerability exists but no AI or governance process converts capability into authority."
-      ],
-      "examples": [
-        "An agent has a deployment tool and pushes a change because deployment is technically possible, despite lacking approval for that environment.",
-        "A model with access to a payment tool treats the presence of that tool as permission to spend."
-      ],
-      "aliases": [
-        "VIGIL.FF.AUTHORITY_BOUNDARY.CAPABILITY_AUTHORITY_CONFLATION"
-      ]
+      "recognition": {"required_conditions": ["A capability or execution pathway is technically available.","The system uses availability or possession of the capability as a material basis for permission.","Independent authority for the specific action is absent, narrower, expired, unresolved, or not revalidated."]},
+      "exclusions": ["A permitted action is executed within an explicitly authorised scope.","The system merely detects that capability exists but does not infer permission from it.","A vulnerability exists but no AI or governance process converts capability into authority."],
+      "examples": ["An agent has a deployment tool and pushes a change because deployment is technically possible, despite lacking approval for that environment.","A model with access to a payment tool treats the presence of that tool as permission to spend."],
+      "aliases": ["VIGIL.FF.AUTHORITY_BOUNDARY.CAPABILITY_AUTHORITY_CONFLATION"]
     },
     {
       "class_id": "VIGIL-FC-000003",
@@ -134,25 +102,10 @@
       "abstraction": "class",
       "plain_english": "Permission for one target or situation gets silently reused for a different target, action, or environment.",
       "definition": "A failure in which valid or purported authority tied to one principal, target, environment, action, jurisdiction, task, or scope is transferred to another without a fresh basis establishing that the authority applies there.",
-      "recognition": {
-        "required_conditions": [
-          "Some authority or permission exists or is assumed to exist for an original target or scope.",
-          "The operative target, action, environment, principal, or scope materially changes.",
-          "The system continues as though the original authority automatically carries over."
-        ]
-      },
-      "exclusions": [
-        "The original authorisation explicitly covers the changed target and action.",
-        "The change is purely representational and does not alter authority-relevant scope.",
-        "The event concerns only loss of context without any authority consequence."
-      ],
-      "examples": [
-        "Permission to test a sandbox is treated as permission to test a real production target.",
-        "Authority to edit one repository is silently applied to another repository with a similar name."
-      ],
-      "aliases": [
-        "VIGIL.FF.AUTHORITY_BOUNDARY.TARGET_SCOPE_TRANSPOSITION"
-      ]
+      "recognition": {"required_conditions": ["Some authority or permission exists or is assumed to exist for an original target or scope.","The operative target, action, environment, principal, or scope materially changes.","The system continues as though the original authority automatically carries over."]},
+      "exclusions": ["The original authorisation explicitly covers the changed target and action.","The change is purely representational and does not alter authority-relevant scope.","The event concerns only loss of context without any authority consequence."],
+      "examples": ["Permission to test a sandbox is treated as permission to test a real production target.","Authority to edit one repository is silently applied to another repository with a similar name."],
+      "aliases": ["VIGIL.FF.AUTHORITY_BOUNDARY.TARGET_SCOPE_TRANSPOSITION"]
     },
     {
       "class_id": "VIGIL-FC-000004",
@@ -163,32 +116,11 @@
       "abstraction": "variant",
       "plain_english": "Background or third-party content is mistaken for a command from the user.",
       "definition": "A source-authority failure in which environmental, ambient, third-party, multimodal, retrieved, or media-borne content is interpreted as authorised user or operator instruction.",
-      "recognition": {
-        "required_conditions": [
-          "Instruction-like content originates from an ambient, environmental, third-party, media, screen, retrieved, or otherwise non-user-authorising source.",
-          "The system attributes the content to an authorised actor or treats it as execution-bearing instruction.",
-          "The source distinction is not adequately preserved before action."
-        ]
-      },
-      "exclusions": [
-        "The user explicitly adopts or confirms the ambient content as an instruction.",
-        "The system transcribes or analyses ambient content without obeying it.",
-        "The issue is only speech-recognition accuracy with no authority consequence."
-      ],
-      "examples": [
-        "A voice assistant hears instructions from a television and treats them as the account holder's command.",
-        "An agent reads hidden text on a webpage and follows it as task direction."
-      ],
-      "relationships": [
-        {
-          "type": "child_of",
-          "note": "Ambient capture is a source-authority variant defined by the source channel.",
-          "target_id": "VIGIL-FC-000001"
-        }
-      ],
-      "aliases": [
-        "VIGIL.FF.AUTHORITY_BOUNDARY.AMBIENT_INSTRUCTION_CAPTURE"
-      ]
+      "recognition": {"required_conditions": ["Instruction-like content originates from an ambient, environmental, third-party, media, screen, retrieved, or otherwise non-user-authorising source.","The system attributes the content to an authorised actor or treats it as execution-bearing instruction.","The source distinction is not adequately preserved before action."]},
+      "exclusions": ["The user explicitly adopts or confirms the ambient content as an instruction.","The system transcribes or analyses ambient content without obeying it.","The issue is only speech-recognition accuracy with no authority consequence."],
+      "examples": ["A voice assistant hears instructions from a television and treats them as the account holder's command.","An agent reads hidden text on a webpage and follows it as task direction."],
+      "relationships": [{"type":"child_of","note":"Ambient capture is a source-authority variant defined by the source channel.","target_id":"VIGIL-FC-000001"}],
+      "aliases": ["VIGIL.FF.AUTHORITY_BOUNDARY.AMBIENT_INSTRUCTION_CAPTURE"]
     },
     {
       "class_id": "VIGIL-FC-000005",
@@ -199,32 +131,11 @@
       "abstraction": "variant",
       "plain_english": "Untrusted content becomes 'trusted' simply because it was decoded, decrypted, rendered, reformatted, or otherwise transformed.",
       "definition": "A source-authority failure in which content gains greater instruction, governance, or execution authority after a representation change even though the transformation does not itself establish new authority.",
-      "recognition": {
-        "required_conditions": [
-          "The originating content is untrusted, lower-authority, or authority-ambiguous.",
-          "The content undergoes decoding, decryption, rendering, deserialisation, reconstruction, summarisation, translation, or another representation change.",
-          "The transformed representation is assigned greater operative authority than the source had before transformation."
-        ]
-      },
-      "exclusions": [
-        "The transformation preserves the original source authority and provenance.",
-        "A trusted authority independently re-authorises the transformed content.",
-        "The issue is ordinary decoding or parsing failure without an authority change."
-      ],
-      "examples": [
-        "Encrypted text from an untrusted source is decrypted and then obeyed as if decryption made it a trusted instruction.",
-        "A serialized object derived from untrusted input is reconstructed and treated as authorised configuration."
-      ],
-      "relationships": [
-        {
-          "type": "child_of",
-          "note": "The distinguishing feature is a representation change that increases apparent authority.",
-          "target_id": "VIGIL-FC-000001"
-        }
-      ],
-      "aliases": [
-        "VIGIL.FF.AUTHORITY_BOUNDARY.TRANSFORMATION_AUTHORITY_LAUNDERING"
-      ]
+      "recognition": {"required_conditions": ["The originating content is untrusted, lower-authority, or authority-ambiguous.","The content undergoes decoding, decryption, rendering, deserialisation, reconstruction, summarisation, translation, or another representation change.","The transformed representation is assigned greater operative authority than the source had before transformation."]},
+      "exclusions": ["The transformation preserves the original source authority and provenance.","A trusted authority independently re-authorises the transformed content.","The issue is ordinary decoding or parsing failure without an authority change."],
+      "examples": ["Encrypted text from an untrusted source is decrypted and then obeyed as if decryption made it a trusted instruction.","A serialized object derived from untrusted input is reconstructed and treated as authorised configuration."],
+      "relationships": [{"type":"child_of","note":"The distinguishing feature is a representation change that increases apparent authority.","target_id":"VIGIL-FC-000001"}],
+      "aliases": ["VIGIL.FF.AUTHORITY_BOUNDARY.TRANSFORMATION_AUTHORITY_LAUNDERING"]
     },
     {
       "class_id": "VIGIL-FC-000006",
@@ -235,36 +146,11 @@
       "abstraction": "variant",
       "plain_english": "Ordinary model output or data silently becomes trusted system configuration or orchestration state.",
       "definition": "A failure in which data-plane, model-generated, retrieved, or otherwise non-authoritative content is converted into control-plane state that can govern routing, tools, memory policy, configuration, checkpoints, permissions, or execution without fresh provenance and authority validation.",
-      "recognition": {
-        "required_conditions": [
-          "The originating material is data, model output, retrieved content, or other non-control-plane material.",
-          "The material is promoted or converted into configuration, routing, tool schema, policy, cache, checkpoint, memory-policy, serialized control object, or comparable control state.",
-          "The promotion occurs without a fresh authority validation appropriate to the new control-plane effect."
-        ]
-      },
-      "exclusions": [
-        "The control-plane update is explicitly authorised and validated.",
-        "The material remains data and cannot alter control state.",
-        "The issue is only configuration correctness after a properly authorised change."
-      ],
-      "examples": [
-        "A model-generated tool schema is automatically installed as trusted orchestration configuration.",
-        "Retrieved content is written into persistent routing policy and changes later agent behaviour without review."
-      ],
-      "relationships": [
-        {
-          "type": "child_of",
-          "target_id": "VIGIL-FC-000002"
-        },
-        {
-          "type": "distinguish_from",
-          "note": "Control-plane crossover requires promotion into operative control state; transformation laundering does not.",
-          "target_id": "VIGIL-FC-000005"
-        }
-      ],
-      "aliases": [
-        "VIGIL.FF.AUTHORITY_BOUNDARY.CONTROL_PLANE_CROSSOVER"
-      ]
+      "recognition": {"required_conditions": ["The originating material is data, model output, retrieved content, or other non-control-plane material.","The material is promoted or converted into configuration, routing, tool schema, policy, cache, checkpoint, memory-policy, serialized control object, or comparable control state.","The promotion occurs without a fresh authority validation appropriate to the new control-plane effect."]},
+      "exclusions": ["The control-plane update is explicitly authorised and validated.","The material remains data and cannot alter control state.","The issue is only configuration correctness after a properly authorised change."],
+      "examples": ["A model-generated tool schema is automatically installed as trusted orchestration configuration.","Retrieved content is written into persistent routing policy and changes later agent behaviour without review."],
+      "relationships": [{"type":"child_of","target_id":"VIGIL-FC-000002"},{"type":"distinguish_from","note":"Control-plane crossover requires promotion into operative control state; transformation laundering does not.","target_id":"VIGIL-FC-000005"}],
+      "aliases": ["VIGIL.FF.AUTHORITY_BOUNDARY.CONTROL_PLANE_CROSSOVER"]
     },
     {
       "class_id": "VIGIL-FC-000007",
@@ -275,36 +161,11 @@
       "abstraction": "variant",
       "plain_english": "The system can reach a resource, account, API, or target and mistakes that reachability for permission.",
       "definition": "A failure in which technical reachability, inherited sessions, credential possession, network access, trust bindings, or API availability are treated as sufficient permission over a target, principal, organisation, or action scope.",
-      "recognition": {
-        "required_conditions": [
-          "The system can technically reach or authenticate to a resource or target.",
-          "That reachability is used as a material basis for authorising an action.",
-          "The relevant target, principal, organisation, or action scope is not independently authorised."
-        ]
-      },
-      "exclusions": [
-        "The reachable resource is within the explicitly authorised scope.",
-        "The event is only privilege escalation or exploitation by an adversary with no authority classification by the AI or governance process.",
-        "The system detects reachability but still performs a valid authority check before action."
-      ],
-      "examples": [
-        "An inherited session allows access to another organisation's environment and the agent treats that access as permission to act there.",
-        "An API accepts a request, and the agent interprets acceptance as proof that the requested action was authorised."
-      ],
-      "relationships": [
-        {
-          "type": "child_of",
-          "target_id": "VIGIL-FC-000002"
-        },
-        {
-          "type": "can_cooccur_with",
-          "target_id": "VIGIL-FC-000003",
-          "note": "Reachability may coincide with an unauthorised target or scope transposition without being defined by that transposition."
-        }
-      ],
-      "aliases": [
-        "VIGIL.FF.AUTHORITY_BOUNDARY.TECHNICAL_REACHABILITY_AS_AUTHORITY"
-      ]
+      "recognition": {"required_conditions": ["The system can technically reach or authenticate to a resource or target.","That reachability is used as a material basis for authorising an action.","The relevant target, principal, organisation, or action scope is not independently authorised."]},
+      "exclusions": ["The reachable resource is within the explicitly authorised scope.","The event is only privilege escalation or exploitation by an adversary with no authority classification by the AI or governance process.","The system detects reachability but still performs a valid authority check before action."],
+      "examples": ["An inherited session allows access to another organisation's environment and the agent treats that access as permission to act there.","An API accepts a request, and the agent interprets acceptance as proof that the requested action was authorised."],
+      "relationships": [{"type":"child_of","target_id":"VIGIL-FC-000002"},{"type":"can_cooccur_with","target_id":"VIGIL-FC-000003","note":"Reachability may coincide with an unauthorised target or scope transposition without being defined by that transposition."}],
+      "aliases": ["VIGIL.FF.AUTHORITY_BOUNDARY.TECHNICAL_REACHABILITY_AS_AUTHORITY"]
     },
     {
       "class_id": "VIGIL-FC-000008",
@@ -315,31 +176,11 @@
       "abstraction": "variant",
       "plain_english": "A broad goal or earlier permission is stretched into permission for a materially new action.",
       "definition": "A failure in which a goal, standing instruction, prior approval, workflow mandate, role, or delegation is interpreted more broadly than its established action, target, temporal, financial, credential, publication, mutation, or external-effect scope.",
-      "recognition": {
-        "required_conditions": [
-          "A valid or purported delegation exists.",
-          "The proposed action materially changes the type, target, consequence, irreversibility, sensitivity, or external effect of the delegated task.",
-          "The system proceeds without re-establishing authority for the expanded scope."
-        ]
-      },
-      "exclusions": [
-        "The delegation explicitly and unambiguously covers the new action and consequence.",
-        "The new action is a trivial implementation detail with no material authority change.",
-        "The problem is merely inefficient planning rather than excess authority."
-      ],
-      "examples": [
-        "Permission to prepare a deployment plan is treated as permission to deploy it.",
-        "A standing instruction to manage files is treated as permission to delete an unrelated archive."
-      ],
-      "relationships": [
-        {
-          "type": "child_of",
-          "target_id": "VIGIL-FC-000003"
-        }
-      ],
-      "aliases": [
-        "VIGIL.FF.AUTHORITY_BOUNDARY.DELEGATION_SCOPE_EXPANSION"
-      ]
+      "recognition": {"required_conditions": ["A valid or purported delegation exists.","The proposed action materially changes the type, target, consequence, irreversibility, sensitivity, or external effect of the delegated task.","The system proceeds without re-establishing authority for the expanded scope."]},
+      "exclusions": ["The delegation explicitly and unambiguously covers the new action and consequence.","The new action is a trivial implementation detail with no material authority change.","The problem is merely inefficient planning rather than excess authority."],
+      "examples": ["Permission to prepare a deployment plan is treated as permission to deploy it.","A standing instruction to manage files is treated as permission to delete an unrelated archive."],
+      "relationships": [{"type":"child_of","target_id":"VIGIL-FC-000003"}],
+      "aliases": ["VIGIL.FF.AUTHORITY_BOUNDARY.DELEGATION_SCOPE_EXPANSION"]
     },
     {
       "class_id": "VIGIL-FC-000009",
@@ -350,35 +191,11 @@
       "abstraction": "variant",
       "plain_english": "One agent or system assumes that authority held by another automatically transfers through the chain.",
       "definition": "A failure in which authority attributed to one actor, agent, tool, service, or principal is assumed to propagate transitively to another participant, downstream action, or delegated subtask without explicit preservation of principal, target, action, and scope.",
-      "recognition": {
-        "required_conditions": [
-          "An upstream participant possesses, claims, or is assigned some authority.",
-          "A downstream participant or action relies on that authority through delegation, handoff, trust, or orchestration.",
-          "The downstream authority is assumed rather than explicitly preserved and validated for the receiving participant and action."
-        ]
-      },
-      "exclusions": [
-        "Delegation explicitly carries the relevant principal, target, action, constraints, and revocation conditions.",
-        "Participants only exchange evidence or recommendations without exercising transferred authority.",
-        "The issue is information loss without any authority-bearing consequence."
-      ],
-      "examples": [
-        "Agent A is authorised to inspect an account and Agent B assumes that this also authorises it to modify the account.",
-        "A trusted service calls a downstream tool and the tool treats the caller's trust status as permission for a broader action."
-      ],
-      "relationships": [
-        {
-          "type": "child_of",
-          "target_id": "VIGIL-FC-000003"
-        },
-        {
-          "type": "can_cooccur_with",
-          "target_id": "VIGIL-FC-000001"
-        }
-      ],
-      "aliases": [
-        "VIGIL.FF.AUTHORITY_BOUNDARY.TRANSITIVE_AUTHORITY_PROPAGATION"
-      ]
+      "recognition": {"required_conditions": ["An upstream participant possesses, claims, or is assigned some authority.","A downstream participant or action relies on that authority through delegation, handoff, trust, or orchestration.","The downstream authority is assumed rather than explicitly preserved and validated for the receiving participant and action."]},
+      "exclusions": ["Delegation explicitly carries the relevant principal, target, action, constraints, and revocation conditions.","Participants only exchange evidence or recommendations without exercising transferred authority.","The issue is information loss without any authority-bearing consequence."],
+      "examples": ["Agent A is authorised to inspect an account and Agent B assumes that this also authorises it to modify the account.","A trusted service calls a downstream tool and the tool treats the caller's trust status as permission for a broader action."],
+      "relationships": [{"type":"child_of","target_id":"VIGIL-FC-000003"},{"type":"can_cooccur_with","target_id":"VIGIL-FC-000001"}],
+      "aliases": ["VIGIL.FF.AUTHORITY_BOUNDARY.TRANSITIVE_AUTHORITY_PROPAGATION"]
     },
     {
       "class_id": "VIGIL-FC-000046",
@@ -389,44 +206,10 @@
       "abstraction": "class",
       "plain_english": "A prediction, match, score, or unresolved verification result is treated as though it independently authorises a consequential decision.",
       "definition": "A failure in which a probabilistic, predictive, classificatory, verification, or other evidentiary state is treated as independently conferring authority for a consequential decision or action beyond what that state validly establishes.",
-      "recognition": {
-        "required_conditions": [
-          "A probabilistic, predictive, classificatory, verification, or other evidentiary state is produced or remains unresolved.",
-          "The state validly supplies evidence, decision support, or uncertainty but does not independently establish authority for the consequential action.",
-          "A consequential decision or action requires an independent authority, entitlement, eligibility, verification, or decision basis.",
-          "The evidentiary state is treated as sufficient to authorise, bind, revoke, deny, detain, or otherwise determine that consequential action.",
-          "The required independent basis is not adequately established before the action proceeds."
-        ]
-      },
-      "exclusions": [
-        "An authorised decision-maker considers the state as non-binding evidence and independently establishes the decision basis.",
-        "The inference is inaccurate or biased but is not promoted into authority for a consequential action.",
-        "A defined human or governance control fails to activate or operate; that control failure is classified separately.",
-        "A required assessment is omitted or falsely represented as complete; that verification failure is classified separately.",
-        "The record identifies only a harmful consequence without establishing an evidence-to-authority conversion."
-      ],
-      "examples": [
-        "A probabilistic identity match is treated as sufficient authority for arrest rather than as an investigative lead requiring independent corroboration.",
-        "A population-derived care estimate is treated as a binding individual entitlement rule without an independent clinical determination.",
-        "An unresolved biometric non-verification state is treated as sufficient authority to suspend an essential benefit."
-      ],
-      "relationships": [
-        {
-          "type": "distinguish_from",
-          "target_id": "VIGIL-FC-000001",
-          "note": "Source-authority confusion treats content as instruction or approval; inferential evidence–authority conflation treats an evidentiary state as sufficient decision authority."
-        },
-        {
-          "type": "distinguish_from",
-          "target_id": "VIGIL-FC-000002",
-          "note": "Capability-authority conflation mistakes ability or access for permission; this class mistakes evidentiary warrant or unresolved verification for decision authority."
-        },
-        {
-          "type": "can_cooccur_with",
-          "target_id": "VIGIL-FC-000016",
-          "note": "An evidence-to-authority conversion may coincide with omission of a separately required verification step, but neither mechanism establishes the other."
-        }
-      ],
+      "recognition": {"required_conditions": ["A probabilistic, predictive, classificatory, verification, or other evidentiary state is produced or remains unresolved.","The state validly supplies evidence, decision support, or uncertainty but does not independently establish authority for the consequential action.","A consequential decision or action requires an independent authority, entitlement, eligibility, verification, or decision basis.","The evidentiary state is treated as sufficient to authorise, bind, revoke, deny, detain, or otherwise determine that consequential action.","The required independent basis is not adequately established before the action proceeds."]},
+      "exclusions": ["An authorised decision-maker considers the state as non-binding evidence and independently establishes the decision basis.","The inference is inaccurate or biased but is not promoted into authority for a consequential action.","A defined human or governance control fails to activate or operate; that control failure is classified separately.","A required assessment is omitted or falsely represented as complete; that verification failure is classified separately.","The record identifies only a harmful consequence without establishing an evidence-to-authority conversion."],
+      "examples": ["A probabilistic identity match is treated as sufficient authority for arrest rather than as an investigative lead requiring independent corroboration.","A population-derived care estimate is treated as a binding individual entitlement rule without an independent clinical determination.","An unresolved biometric non-verification state is treated as sufficient authority to suspend an essential benefit."],
+      "relationships": [{"type":"distinguish_from","target_id":"VIGIL-FC-000001","note":"Source-authority confusion treats content as instruction or approval; inferential evidence–authority conflation treats an evidentiary state as sufficient decision authority."},{"type":"distinguish_from","target_id":"VIGIL-FC-000002","note":"Capability-authority conflation mistakes ability or access for permission; this class mistakes evidentiary warrant or unresolved verification for decision authority."},{"type":"can_cooccur_with","target_id":"VIGIL-FC-000016","note":"An evidence-to-authority conversion may coincide with omission of a separately required verification step, but neither mechanism establishes the other."}],
       "aliases": []
     },
     {
@@ -438,49 +221,10 @@
       "abstraction": "class",
       "plain_english": "Having or being able to transform a person's image, voice, likeness, or other identity-bound representation is treated as permission for a consent-sensitive use of that identity.",
       "definition": "A failure in which possession of, access to, control over, or technical capability to transform an identifiable person's representation is treated as sufficient authority for an identity-bound synthesis, alteration, reproduction, or portrayal that requires a separate valid consent or authority basis.",
-      "recognition": {
-        "required_conditions": [
-          "A source image, voice, likeness, biometric representation, avatar, or comparable representation remains materially attributable to an identifiable real person.",
-          "A requester or system possesses, accesses, controls, or can technically transform that representation.",
-          "The proposed synthesis, alteration, reproduction, or portrayal is materially identity-bound or consent-sensitive and requires authority beyond mere possession or capability.",
-          "Possession, access, control, upload, availability, or transformation capability is treated as sufficient authority for the identity-bound use.",
-          "The required consent or other valid authority for that use is not adequately established before the transformation or synthesis proceeds."
-        ]
-      },
-      "exclusions": [
-        "The output is not materially attributable to an identifiable real person.",
-        "Valid consent, licence, legal authority, or another adequate authority basis covers the specific identity-bound use and scope.",
-        "A synthetic output progressively resembles a real person, but the record does not establish a materially identifiable target or a system state capable of binding the output to that person.",
-        "The issue is only false attribution, provenance loss, or reputational harm without an unauthorised identity-bound synthesis or transformation.",
-        "The issue is merely that a technical generation capability exists; the capability is not treated as permission for a person-bound use."
-      ],
-      "examples": [
-        "A person's uploaded photograph is treated as sufficient permission to generate an intimate synthetic portrayal of that person.",
-        "Access to a real person's voice sample is treated as authority to create a consent-sensitive identity-bound performance that the person did not authorise.",
-        "Control of an avatar or biometric likeness file is treated as permission to reproduce the identifiable person in a materially different, authority-sensitive context."
-      ],
-      "relationships": [
-        {
-          "type": "distinguish_from",
-          "target_id": "VIGIL-FC-000002",
-          "note": "Capability-authority conflation can concern any available capability; this class requires an identifiable person-bound representation and a separate authority basis for the identity-bound use."
-        },
-        {
-          "type": "distinguish_from",
-          "target_id": "VIGIL-FC-000003",
-          "note": "Target and scope transposition carries an existing authority into a changed target or scope; this class also applies when no initial authority beyond possession of the representation exists."
-        },
-        {
-          "type": "distinguish_from",
-          "target_id": "VIGIL-FC-000005",
-          "note": "Transformation-mediated authority laundering gives transformed content greater instruction or execution authority; this class concerns authority to make an identity-bound transformation or synthesis."
-        },
-        {
-          "type": "can_cooccur_with",
-          "target_id": "VIGIL-FC-000038",
-          "note": "A separately defined safeguard may also fail to activate, but that control mechanism requires independent evidence."
-        }
-      ],
+      "recognition": {"required_conditions": ["A source image, voice, likeness, biometric representation, avatar, or comparable representation remains materially attributable to an identifiable real person.","A requester or system possesses, accesses, controls, or can technically transform that representation.","The proposed synthesis, alteration, reproduction, or portrayal is materially identity-bound or consent-sensitive and requires authority beyond mere possession or capability.","Possession, access, control, upload, availability, or transformation capability is treated as sufficient authority for the identity-bound use.","The required consent or other valid authority for that use is not adequately established before the transformation or synthesis proceeds."]},
+      "exclusions": ["The output is not materially attributable to an identifiable real person.","Valid consent, licence, legal authority, or another adequate authority basis covers the specific identity-bound use and scope.","A synthetic output progressively resembles a real person, but the record does not establish a materially identifiable target or a system state capable of binding the output to that person.","The issue is only false attribution, provenance loss, or reputational harm without an unauthorised identity-bound synthesis or transformation.","The issue is merely that a technical generation capability exists; the capability is not treated as permission for a person-bound use."],
+      "examples": ["A person's uploaded photograph is treated as sufficient permission to generate an intimate synthetic portrayal of that person.","Access to a real person's voice sample is treated as authority to create a consent-sensitive identity-bound performance that the person did not authorise.","Control of an avatar or biometric likeness file is treated as permission to reproduce the identifiable person in a materially different, authority-sensitive context."],
+      "relationships": [{"type":"distinguish_from","target_id":"VIGIL-FC-000002","note":"Capability-authority conflation can concern any available capability; this class requires an identifiable person-bound representation and a separate authority basis for the identity-bound use."},{"type":"distinguish_from","target_id":"VIGIL-FC-000003","note":"Target and scope transposition carries an existing authority into a changed target or scope; this class also applies when no initial authority beyond possession of the representation exists."},{"type":"distinguish_from","target_id":"VIGIL-FC-000005","note":"Transformation-mediated authority laundering gives transformed content greater instruction or execution authority; this class concerns authority to make an identity-bound transformation or synthesis."},{"type":"can_cooccur_with","target_id":"VIGIL-FC-000038","note":"A separately defined safeguard may also fail to activate, but that control mechanism requires independent evidence."}],
       "aliases": []
     },
     {
@@ -512,26 +256,11 @@
         "A classroom recording tool is introduced by an authorised adult and captures identifiable minor participants without applying the additional authority and protection conditions required for those minors."
       ],
       "relationships": [
-        {
-          "type": "child_of",
-          "target_id": "VIGIL-FC-000003",
-          "note": "The defining error is transposing authority from one principal or participant to another affected participant."
-        },
-        {
-          "type": "distinguish_from",
-          "target_id": "VIGIL-FC-000055",
-          "note": "Participant-authority transposition concerns who may authorise capture or processing of an affected person's contribution; secondary-purpose transposition concerns whether an authorised primary use extends to a materially different later purpose."
-        },
-        {
-          "type": "can_cooccur_with",
-          "target_id": "VIGIL-FC-000053",
-          "note": "Voice, image, likeness, or biometric capture may also create an identity-bound authority issue where the subsequent use is identity-sensitive."
-        }
+        {"type":"child_of","target_id":"VIGIL-FC-000003","note":"The defining error is transposing authority from one principal or participant to another affected participant."},
+        {"type":"distinguish_from","target_id":"VIGIL-FC-000055","note":"Participant-authority transposition concerns who may authorise capture or processing of an affected person's contribution; secondary-purpose transposition concerns whether an authorised primary use extends to a materially different later purpose."},
+        {"type":"can_cooccur_with","target_id":"VIGIL-FC-000053","note":"Voice, image, likeness, or biometric capture may also create an identity-bound authority issue where the subsequent use is identity-sensitive."}
       ],
-      "aliases": [
-        "multi-party consent transposition",
-        "non-user participant authority transposition"
-      ]
+      "aliases": ["multi-party consent transposition","non-user participant authority transposition"]
     },
     {
       "class_id": "VIGIL-FC-000055",
@@ -562,27 +291,11 @@
         "A publicly accessible conference recording is treated as automatically eligible for model training without separately establishing the authority basis applicable to that secondary use."
       ],
       "relationships": [
-        {
-          "type": "child_of",
-          "target_id": "VIGIL-FC-000003",
-          "note": "The defining error is carrying authority tied to one task or purpose into a materially different action scope."
-        },
-        {
-          "type": "distinguish_from",
-          "target_id": "VIGIL-FC-000054",
-          "note": "Secondary-purpose transposition may occur even where capture and primary processing were fully authorised for every participant."
-        },
-        {
-          "type": "distinguish_from",
-          "target_id": "VIGIL-FC-000008",
-          "note": "Delegation-scope expansion concerns broadening an actor's delegated task authority; this class concerns broadening the authorised purpose attached to data or contributions."
-        }
+        {"type":"child_of","target_id":"VIGIL-FC-000003","note":"The defining error is carrying authority tied to one task or purpose into a materially different action scope."},
+        {"type":"distinguish_from","target_id":"VIGIL-FC-000054","note":"Secondary-purpose transposition may occur even where capture and primary processing were fully authorised for every participant."},
+        {"type":"distinguish_from","target_id":"VIGIL-FC-000008","note":"Delegation-scope expansion concerns broadening an actor's delegated task authority; this class concerns broadening the authorised purpose attached to data or contributions."}
       ],
-      "aliases": [
-        "purpose-authority transposition",
-        "training-purpose authority transposition",
-        "secondary-use authority transposition"
-      ]
+      "aliases": ["purpose-authority transposition","training-purpose authority transposition","secondary-use authority transposition"]
     }
   ]
 }
