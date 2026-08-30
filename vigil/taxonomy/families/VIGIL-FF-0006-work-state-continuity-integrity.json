@@ -2,8 +2,8 @@
   "schema_version": "0.2.0",
   "standard": {
     "name": "VIGIL Failure Taxonomy",
-    "version": "0.2.2-draft",
-    "publication_date": "2026-08-29",
+    "version": "0.2.3-draft",
+    "publication_date": "2026-08-30",
     "status": "draft",
     "description": "Prototype portable classification standard for recurring AI governance failure mechanisms."
   },
@@ -13,30 +13,33 @@
     "name": "Work-State Continuity Integrity Failures",
     "status": "draft",
     "abstraction": "family",
-    "version": "0.1.0",
-    "plain_english": "Material work needed to continue correctly is lost, detached, or restored in an unusable state after interruption or transition.",
-    "definition": "Failures in which task state, intermediate work, dependencies, checkpoints, or restoration context necessary for correct continuation are not durably anchored, preserved, recovered, or made usable across interruption, transfer, restart, or environment transition.",
-    "invariant": "Material work state necessary for correct continuation must remain durably anchored, recoverable, and usable across interruption or transition.",
+    "version": "0.1.1",
+    "plain_english": "Material work or shared interaction state needed to continue correctly is lost, detached, unsynchronised, or restored in an unusable state across interruption, transition, or coordinated participation.",
+    "definition": "Failures in which task state, intermediate work, dependencies, checkpoints, restoration context, or shared interaction state necessary for correct continuation are not durably anchored, preserved, recovered, synchronised, or made usable across interruption, transfer, restart, environment transition, or coordinated multi-participant interaction.",
+    "invariant": "Material work and shared interaction state necessary for correct continuation must remain durably anchored, recoverable, synchronised, and usable across interruption, transition, or coordinated participation.",
     "scope": [
       "long-running AI tasks",
       "agentic and multi-agent workflows",
       "human–AI work sessions",
+      "multi-party synthetic conversational interactions",
       "checkpointed computation",
       "workspace and environment transitions",
       "handoff and recovery operations"
     ],
-    "inclusion_rule": "Use this family when the primary structural failure is loss, detachment, non-persistence, or unfaithful restoration of material work state required to continue a task correctly.",
-    "exclusion_rule": "Do not use this family for access/session ambiguity, interpersonal or persona continuity, missing provenance of an otherwise usable artefact, or an ordinary task failure that leaves recoverable work state intact.",
+    "inclusion_rule": "Use this family when the primary structural failure is loss, detachment, non-persistence, unsynchronised coordination, or unfaithful restoration of material work or shared interaction state required to continue a task or coordinated interaction correctly.",
+    "exclusion_rule": "Do not use this family for access/session ambiguity, interpersonal or persona continuity, missing provenance of an otherwise usable artefact, or an ordinary task or conversational error where the material continuation or coordination state remains intact.",
     "aliases": [],
     "allowed_class_ids": [
       "VIGIL-FC-000034",
       "VIGIL-FC-000035",
-      "VIGIL-FC-000036"
+      "VIGIL-FC-000036",
+      "VIGIL-FC-000056"
     ],
     "allowed_class_codes": [
       "CONTINUITY_ANCHOR_FAILURE",
       "WORK_STATE_PERSISTENCE_FAILURE",
-      "RESTORATION_STATE_INTEGRITY_FAILURE"
+      "RESTORATION_STATE_INTEGRITY_FAILURE",
+      "SYNTHETIC_CONVERSATIONAL_TURN_STATE_COORDINATION_FAILURE"
     ]
   },
   "classes": [
@@ -138,6 +141,48 @@
           "type": "can_cooccur_with",
           "target_id": "VIGIL-FC-000020",
           "note": "A stale restored state can also inherit an inapplicable verification result, but restoration integrity and verification reuse remain separate mechanisms."
+        }
+      ],
+      "aliases": []
+    },
+    {
+      "class_id": "VIGIL-FC-000056",
+      "class_code": "SYNTHETIC_CONVERSATIONAL_TURN_STATE_COORDINATION_FAILURE",
+      "family_id": "VIGIL-FF-0006",
+      "name": "Synthetic Conversational Turn-State Coordination Failure",
+      "status": "draft",
+      "abstraction": "class",
+      "plain_english": "Multiple synthetic participants share a conversation but fail to recognise, yield, sequence, or coordinate turns, so the conversational floor breaks down.",
+      "definition": "A failure in which two or more synthetic agents participating in the same conversational interaction do not maintain or use sufficient shared turn-state, speaker-state, or conversational-floor state to determine when another participant is speaking, has yielded, is awaiting a response, or should receive the next turn, causing materially incoherent turn allocation or continuation.",
+      "recognition": {
+        "required_conditions": [
+          "Two or more synthetic participants are participating in the same conversational context.",
+          "Coherent continuation requires coordination of speaker identity, active-turn state, turn completion, yielding, or next-speaker allocation.",
+          "One or more synthetic participants fail to recognise or act on the relevant shared turn state.",
+          "The failure produces repeated answers, simultaneous or colliding responses, inappropriate interruption, inappropriate silence, or another material conversational-floor coordination breakdown."
+        ]
+      },
+      "exclusions": [
+        "A single synthetic participant gives an incorrect or irrelevant answer while turn allocation remains coherent.",
+        "Ordinary network or inference latency delays a response without losing or corrupting turn state.",
+        "The primary failure is loss of prior conversational content or persona continuity rather than allocation of the current conversational floor.",
+        "Simultaneous output is intentional and supported by the interaction design.",
+        "An authorised reviewer cannot access audiovisual evidence of an otherwise bounded event; evidence accessibility is classified separately."
+      ],
+      "examples": [
+        "Three voice assistants sharing one conversational setting repeatedly answer the same prompt because none recognises that another synthetic participant has already taken the turn.",
+        "Two embodied conversational agents repeatedly interrupt one another because their orchestration layer does not preserve a shared speaking/yielding state."
+      ],
+      "relationships": [
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000044",
+          "note": "Turn-state coordination concerns the behaviour of participants in the interaction; primary-evidence accessibility concerns whether an authorised reviewer can directly inspect the evidence of that behaviour."
+        },
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000035",
+          "note": "Turn-state coordination concerns synchronisation of the live shared conversational floor; work-state persistence concerns survival of task material across interruption or transition."
         }
       ],
       "aliases": []

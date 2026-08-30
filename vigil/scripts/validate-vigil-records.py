@@ -82,6 +82,15 @@ PN_FORBIDDEN_STATUSES = {"action-required", "repair-in-progress", "verification-
 CLOSED_TRIAGE_STATUSES = {"closed-actioned", "closed-no-action", "superseded"}
 CLOSED_RECORD_STATES = {"closed", "closed-actioned", "closed-no-action", "superseded"}
 ALLOWED_SEVERITIES = {"S0", "S1", "S2", "S3", "S4", "SU"}
+INCIDENT_SEVERITY_STATUSES = {"provisionally-migrated", "incident-assessed", "requires-incident-review"}
+CANONICAL_INCIDENT_SOURCE_TYPES = {
+    "incident database entry", "news article", "official announcement", "incident report",
+    "technical report", "technical analysis", "platform status report", "product documentation",
+    "product changelog", "research paper", "investigation report", "government report",
+    "legal filing or decision", "press release", "social media post", "first-person account",
+    "interaction record", "repository record", "governance record", "standards document",
+    "observation record", "web page",
+}
 TRIAGE_HISTORY_REQUIRED = {
     "date",
     "from",
@@ -272,7 +281,7 @@ FM_REQUIRED = {
     "triage", "repair_status",
 }
 INCIDENT_REQUIRED = {
-    "incident_identity", "vigil_assessment", "taxonomy_classification", "preferred_evidence",
+    "incident_identity", "vigil_assessment", "severity_assessment", "taxonomy_classification", "preferred_evidence",
     "legacy_provenance", "diagnostic_provenance",
     "interpretive_provenance",
 }
@@ -1509,6 +1518,28 @@ def validate_incident(path: Path, record: dict[str, Any], errors: list[str]) -> 
         ):
             errors.append(f"{path}: vigil_assessment.assessment_boundaries must be a non-empty string array")
 
+
+    severity_assessment = record.get("severity_assessment")
+    if not isinstance(severity_assessment, dict):
+        errors.append(f"{path}: severity_assessment must be an object")
+    else:
+        for field in ("severity", "assessment_status", "assessment_basis", "assessed_on", "legacy_sources"):
+            if field not in severity_assessment:
+                errors.append(f"{path}: severity_assessment missing required field {field}")
+        if severity_assessment.get("severity") not in ALLOWED_SEVERITIES:
+            errors.append(f"{path}: severity_assessment.severity is not canonical")
+        if severity_assessment.get("assessment_status") not in INCIDENT_SEVERITY_STATUSES:
+            errors.append(f"{path}: severity_assessment.assessment_status is not canonical")
+        if not is_non_empty_string(severity_assessment.get("assessment_basis")):
+            errors.append(f"{path}: severity_assessment.assessment_basis must be a non-empty string")
+        if not isinstance(severity_assessment.get("assessed_on"), str) or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", severity_assessment["assessed_on"]):
+            errors.append(f"{path}: severity_assessment.assessed_on must be an ISO date")
+        legacy_sources = severity_assessment.get("legacy_sources")
+        if not isinstance(legacy_sources, list) or any(not isinstance(item, str) for item in legacy_sources):
+            errors.append(f"{path}: severity_assessment.legacy_sources must be a string array")
+        if severity_assessment.get("assessment_status") == "requires-incident-review" and severity_assessment.get("severity") != "SU":
+            errors.append(f"{path}: requires-incident-review severity must remain SU")
+
     source_urls = {
         item.get("source_url") for item in record.get("source_records", []) if isinstance(item, dict)
     }
@@ -1638,6 +1669,12 @@ def validate_record(
                 mapping = {"title": "source_title", "url": "source_url", "platform": "source_platform"}
                 replacements = ", ".join(f"{key}->{mapping[key]}" for key in legacy_keys)
                 errors.append(f"{path}: source_records[{index}] uses legacy source key(s): {replacements}")
+            if record_type == "incident":
+                source_type = source.get("source_type")
+                if source_type not in CANONICAL_INCIDENT_SOURCE_TYPES:
+                    errors.append(f"{path}: source_records[{index}].source_type {source_type!r} is not a canonical publication genre")
+                if "legacy_source_type" in source and not is_non_empty_string(source.get("legacy_source_type")):
+                    errors.append(f"{path}: source_records[{index}].legacy_source_type must be a non-empty string when present")
             if not source.get("source_url") and source.get("archive_url"):
                 warnings.append(f"{path}: source_records[{index}] source_url is blank but archive_url is present")
 

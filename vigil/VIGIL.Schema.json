@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://example.invalid/cam/vigil/VIGIL.Schema.json",
-  "version": "4.0-incident-registry-pilot",
+  "version": "4.1-incident-public-data-quality",
   "purpose": "Authoritative schema-rules contract for VIGIL as a public evidence-to-repair observatory for incidents, observations, research artefacts, legacy failure modes, proposals, and implemented patch notes. During INCIDENT-01 stabilisation, first-class Incident records coexist with retained legacy FM and OBS records. Source evidence remains embedded in the relevant record; ecosystem persistence, CAM repair, and implementation verification are represented separately. Interpretive provenance identifies AI source analysis, capability profile, source modality, primary-artefact access, review limitations, and historical authority context. Authorship, human-review, and human-verification status are governed separately by vigil/scripts/validate-authorship-provenance.py.",
   "source_evidence_rules": {
     "individual_records": [
@@ -301,6 +301,7 @@
         "incident_identity",
         "summary",
         "vigil_assessment",
+        "severity_assessment",
         "evidence_confidence",
         "source_records",
         "preferred_evidence",
@@ -348,7 +349,54 @@
         "repair_status",
         "ecosystem_status",
         "corpus_coverage"
-      ]
+      ],
+      "severity_assessment_required_fields": [
+        "severity",
+        "assessment_status",
+        "assessment_basis",
+        "assessed_on",
+        "legacy_sources"
+      ],
+      "severity_values": [
+        "S0",
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "SU"
+      ],
+      "severity_assessment_status_values": [
+        "provisionally-migrated",
+        "incident-assessed",
+        "requires-incident-review"
+      ],
+      "severity_rule": "Incident severity is an occurrence-level assessment, independent of taxonomy classification and workflow priority. Legacy FM severity may be carried forward only as provisional continuity evidence. Conflicting or absent legacy severity remains SU until incident-level review.",
+      "source_type_values": [
+        "incident database entry",
+        "news article",
+        "official announcement",
+        "incident report",
+        "technical report",
+        "technical analysis",
+        "platform status report",
+        "product documentation",
+        "product changelog",
+        "research paper",
+        "investigation report",
+        "government report",
+        "legal filing or decision",
+        "press release",
+        "social media post",
+        "first-person account",
+        "interaction record",
+        "repository record",
+        "governance record",
+        "standards document",
+        "observation record",
+        "web page"
+      ],
+      "source_type_rule": "source_type identifies the publication or artefact genre. Publisher authority, hosting platform, evidence role, source residence, modality and primary-artefact access remain separate fields. A migrated non-canonical value is retained only in legacy_source_type.",
+      "public_narrative_rule": "summary states what happened; vigil_assessment.factual_basis states what the preserved evidence establishes; taxonomy classification basis and migration/process notes must not be substituted for either field."
     },
     "proposal": {
       "id_prefix": "PROP",

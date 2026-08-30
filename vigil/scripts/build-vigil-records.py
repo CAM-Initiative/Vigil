@@ -440,6 +440,7 @@ def generated_summaries(record: dict[str, Any]) -> dict[str, Any]:
         summaries.update(
             {
                 "incident_identity_summary": dict_summary(record, "incident_identity"),
+                "severity_assessment_summary": dict_summary(record, "severity_assessment"),
                 "taxonomy_classification_summary": dict_summary(record, "taxonomy_classification"),
                 "preferred_evidence_summary": dict_summary(record, "preferred_evidence"),
                 "external_incident_references": record.get("external_incident_references", []),
@@ -663,6 +664,9 @@ def list_metadata(record: dict[str, Any]) -> dict[str, Any]:
         preferred = record.get("preferred_evidence", {})
         metadata.update(
             {
+                "severity": record.get("severity_assessment", {}).get("severity", ""),
+                "severity_assessment_status": record.get("severity_assessment", {}).get("assessment_status", ""),
+                "severity_assessment_basis": record.get("severity_assessment", {}).get("assessment_basis", ""),
                 "classification_status": taxonomy.get("classification_status", ""),
                 "primary_classification": taxonomy.get("primary_classification", {}),
                 "secondary_classifications": taxonomy.get("secondary_classifications", []),

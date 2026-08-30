@@ -21,6 +21,106 @@ OUTPUT = RECORDS / "incidents"
 MIGRATION_DATE = "2026-08-30"
 TAXONOMY_VERSION = "0.2.2-draft"
 
+CANONICAL_INCIDENT_SOURCE_TYPES = {
+    "incident database entry", "news article", "official announcement", "incident report",
+    "technical report", "technical analysis", "platform status report", "product documentation",
+    "product changelog", "research paper", "investigation report", "government report",
+    "legal filing or decision", "press release", "social media post", "first-person account",
+    "interaction record", "repository record", "governance record", "standards document",
+    "observation record", "web page",
+}
+
+
+def normalise_source_type(item: dict[str, Any]) -> dict[str, Any]:
+    old = str(item.get("source_type", "")).strip()
+    if old in CANONICAL_INCIDENT_SOURCE_TYPES:
+        return item
+    url = str(item.get("source_url", "")).lower()
+    title = str(item.get("source_title", "")).lower()
+    publisher = str(item.get("author_or_publisher", "")).lower()
+    if "incidentdatabase.ai/" in url or "oecd.ai/en/incidents/" in url or "aiaaic.org/aiaaic-repository" in url:
+        new = "incident database entry"
+    elif "status.openai.com/" in url or old == "platform-status-page":
+        new = "platform status report"
+    elif old == "news-report" or old.startswith("news-report /") or old.startswith("technical-news-report") or "reuters" in publisher or "mimikama" in publisher:
+        new = "news article"
+    elif old == "social-platform-observation" or old.startswith("social-platform observation") or any(host in url for host in ("x.com/", "tiktok.com/", "vt.tiktok.com/")):
+        new = "social media post"
+    elif old == "authenticated-platform-task-record" or "chatgpt.com/codex/" in url or "chatgpt.com/g/" in url:
+        new = "interaction record"
+    elif old == "standards-source":
+        new = "standards document"
+    elif old == "governance-note":
+        new = "governance record"
+    elif old == "repository-source" or "github.com/" in url:
+        new = "repository record"
+    elif old == "follow-up-observation":
+        new = "observation record"
+    elif old == "first-party user report":
+        new = "first-person account"
+    elif old == "first-party incident report":
+        new = "incident report"
+    elif old == "official-product-changelog":
+        new = "product changelog"
+    elif old == "research-source":
+        new = "technical analysis"
+    elif old == "third-party-report":
+        new = "press release" if "nurses association" in publisher or "/press/" in url else "news article"
+    elif old == "platform-behaviour-observation":
+        new = "first-person account" if "affinda" in publisher else "interaction record"
+    elif old == "official-source":
+        if "technical report" in title or url.endswith(".pdf"):
+            new = "technical report"
+        elif "incident" in title or "intrusion" in title or "disclosure" in title:
+            new = "incident report"
+        elif "claude fable" in title or "switched models" in title:
+            new = "product documentation"
+        else:
+            new = "official announcement"
+    elif old in {"AI incident database record", "incident-database record", "incident-and-hazard-monitor entry"}:
+        new = "incident database entry"
+    else:
+        new = "web page"
+    if old and old != new and not item.get("legacy_source_type"):
+        item["legacy_source_type"] = old
+    item["source_type"] = new
+    return item
+
+
+def incident_severity_assessment(ids: list[str]) -> dict[str, Any]:
+    pairs: list[tuple[str, str]] = []
+    for record_id in ids:
+        record = load_legacy(record_id)
+        severity = record.get("failure_classification", {}).get("severity")
+        if severity:
+            pairs.append((record_id, str(severity)))
+    severities = list(dict.fromkeys(severity for _, severity in pairs))
+    legacy_sources = list(dict.fromkeys(record_id for record_id, _ in pairs))
+    if len(severities) == 1:
+        noun = "assessment" if len(pairs) == 1 else "assessments"
+        return {
+            "severity": severities[0],
+            "assessment_status": "provisionally-migrated",
+            "assessment_basis": f"Provisionally carried forward from the legacy failure-mode severity {noun} for {', '.join(record_id for record_id, _ in pairs)}. The value is retained for continuity and remains subject to incident-level review.",
+            "assessed_on": MIGRATION_DATE,
+            "legacy_sources": legacy_sources,
+        }
+    if len(severities) > 1:
+        return {
+            "severity": "SU",
+            "assessment_status": "requires-incident-review",
+            "assessment_basis": f"Conflicting legacy severities ({', '.join(severities)}) contribute to this Incident. No single severity is inferred until an incident-level review reconciles the affected occurrence.",
+            "assessed_on": MIGRATION_DATE,
+            "legacy_sources": legacy_sources,
+        }
+    return {
+        "severity": "SU",
+        "assessment_status": "requires-incident-review",
+        "assessment_basis": "No legacy failure-mode severity is available for safe carry-forward. Incident severity remains explicitly unassessed pending review.",
+        "assessed_on": MIGRATION_DATE,
+        "legacy_sources": [],
+    }
+
 
 def load_legacy(record_id: str) -> dict[str, Any]:
     kind = "failures" if "-FM-" in record_id else "observations"
@@ -30,6 +130,7 @@ def load_legacy(record_id: str) -> dict[str, Any]:
 
 def source(record_id: str, index: int) -> dict[str, Any]:
     item = copy.deepcopy(load_legacy(record_id)["source_records"][index])
+    item = normalise_source_type(item)
     item["migration_source_provenance"] = {
         "legacy_id": record_id,
         "legacy_source_position": index + 1,
@@ -234,7 +335,7 @@ def incident(
             "title": title,
             "created": MIGRATION_DATE,
             "updated": MIGRATION_DATE,
-            "version": "0.2.0-migration",
+            "version": "0.2.1-migration",
         },
         "incident_identity": {
             "historical_event_name": event_name,
@@ -250,6 +351,7 @@ def incident(
             "significance_to_cam": significance,
             "assessment_boundaries": boundaries,
         },
+        "severity_assessment": incident_severity_assessment(legacy_ids),
         "evidence_confidence": primary.get("evidence_confidence", "unknown"),
         "source_records": dedupe_sources(sources),
         "preferred_evidence": {
@@ -450,6 +552,157 @@ def bounded_incident(spec: dict[str, Any]) -> dict[str, Any]:
         jurisdiction=copy.deepcopy(primary["jurisdictional_context"]),
         external=external_references(selected), state=spec.get("state", "active"),
     )
+
+
+def reconcile_turn_taking_incident(record: dict[str, Any]) -> dict[str, Any]:
+    """Apply the human-directed semantic correction for the three-voice Incident.
+
+    The legacy FM-0033 record is about primary-evidence accessibility. Its first
+    source also preserves a different historical occurrence: three ChatGPT voice
+    instances failing to coordinate a shared conversational floor. INCIDENT-01
+    therefore preserves FM-0033 under legacy_governance_state but classifies the
+    bounded historical occurrence by its own behavioural mechanism.
+    """
+    record["summary"] = (
+        "The human reporter describes three ChatGPT instances, apparently combining Advanced and Live Voice "
+        "across three devices, responding independently with identical or slightly varied answers rather than "
+        "recognising a shared synthetic conversational floor. The primary audiovisual artefact could not be "
+        "directly inspected by the reviewing AI system, so timing, overlap, prosody and complete turn sequence "
+        "remain bounded by the preserved human description and link metadata."
+    )
+    record["vigil_assessment"] = {
+        "factual_basis": (
+            "The selected evidence reports three ChatGPT voice instances in a shared conversational setting "
+            "responding independently with identical or slightly varied answers rather than recognising that "
+            "another synthetic participant had already taken the conversational turn. Direct audiovisual review "
+            "was unavailable to the reviewing AI system."
+        ),
+        "governance_interpretation": (
+            "The substantive governance failure is a synthetic conversational turn-state coordination failure: "
+            "multiple synthetic participants appear not to share or act on sufficient speaker, yielding, or "
+            "conversational-floor state to coordinate who should respond next. The inability of the reviewing AI "
+            "to inspect the primary video is an evidentiary limitation on this assessment, not the primary failure "
+            "demonstrated by the incident."
+        ),
+        "significance_to_cam": (
+            "For CAM, the occurrence indicates that multi-agent or multi-instance conversational systems need an "
+            "explicit shared interaction-state mechanism for speaker identity, active-turn state, turn completion, "
+            "yielding, and next-speaker allocation. Evidence-access limitations remain separately relevant to "
+            "auditability but should not replace the behavioural failure being classified."
+        ),
+        "assessment_boundaries": [
+            "No governed native playback of the externally hosted video was available to the reviewing AI system.",
+            "Timing, overlap, prosody, gesture, latency, and complete interaction sequence could not be independently verified.",
+            "The evidence supports a bounded turn-taking coordination assessment but does not establish the precise internal orchestration mechanism that produced the behaviour.",
+            "Incident admission does not determine legal liability or establish every disputed claim as final fact.",
+        ],
+    }
+    source_record = record["source_records"][0]
+    source_record["system_or_product"] = "ChatGPT voice interaction demonstrated through externally hosted behavioural evidence"
+    source_record["model_or_algorithm"] = "Advanced Voice and Live Voice reported; exact deployed model/runtime unresolved"
+    source_record["deployment_context"] = "Three ChatGPT voice instances operating across three devices in a shared conversational demonstration."
+    source_record["relevance_note"] = (
+        "Incident-specific evidence of a multi-synthetic-participant conversational turn-state coordination failure; "
+        "direct audiovisual access limitations constrain but do not define the substantive incident classification."
+    )
+    record["system_context"] = {
+        "system_type": "multi-instance conversational AI voice system",
+        "platform_or_vendor": "OpenAI",
+        "vendor_cluster": ["OpenAI"],
+        "primary_evidenced_vendors": ["OpenAI"],
+        "product_or_service": "ChatGPT",
+        "specific_model_or_runtime": "Advanced Voice and Live Voice reported; exact deployed model/runtime unresolved",
+        "interface_surface": "three-device shared voice conversation",
+        "model_or_product": "ChatGPT voice systems",
+        "interaction_mode": "multi-party synthetic voice conversation",
+        "embodiment_status": "not applicable",
+        "deployment_context": "Three ChatGPT voice instances operating across three devices in a shared conversational demonstration.",
+        "user_role": "human participant coordinating a multi-system voice interaction",
+        "affected_population": "users and operators relying on coherent multi-agent or multi-instance conversational turn-taking",
+        "evidence_scope": "reported-provider-and-product / exact runtime unresolved",
+        "evidenced_vendors": ["OpenAI"],
+        "evidenced_products_or_services": ["ChatGPT"],
+        "evidenced_models_or_runtimes": [],
+        "evidenced_systems": ["ChatGPT voice systems"],
+        "evidence_projection": {
+            "basis": "incident-selected source affected-system metadata and incident-specific human description",
+            "method": "curated source-position projection from preserved legacy metadata with correction of migration-era reviewer-environment leakage",
+            "reconciled_on": MIGRATION_DATE,
+            "inference_boundary": (
+                "OpenAI and ChatGPT are identified by the incident description; the exact deployed model/runtime and "
+                "precise mixture of Advanced and Live Voice remain unresolved. The reviewing AI environment and "
+                "external hosting platform are evidence-chain context, not the affected-system identity."
+            ),
+        },
+        "comparative_vendor_notes": {},
+    }
+    record["jurisdictional_context"]["regulatory_surface"] = [
+        "AI governance", "multi-agent coordination", "conversational AI",
+        "interaction-state integrity", "multimodal AI", "auditability",
+    ]
+    record["jurisdictional_context"]["sector"] = "consumer conversational AI / multi-agent voice interaction"
+    record["taxonomy_classification"] = {
+        "taxonomy_version": "0.2.3-draft",
+        "classification_status": "classified",
+        "classification_basis": (
+            "The incident is classified by the substantive behaviour under review: multiple synthetic conversational "
+            "participants reportedly failed to recognise and coordinate a shared conversational floor, producing "
+            "repeated responses. The separate inability of the reviewing AI to inspect the primary audiovisual "
+            "artefact is retained as an evidence-access limitation rather than as the incident's primary Failure Class."
+        ),
+        "primary_classification": {
+            "family_id": "VIGIL-FF-0006",
+            "class_id": "VIGIL-FC-000056",
+            "classification_basis": (
+                "In this Incident, three synthetic ChatGPT voice participants reportedly responded independently with identical or "
+                "slightly varied answers rather than recognising that another synthetic participant had already "
+                "taken the turn, evidencing failure to maintain or use sufficient shared speaker, yielding, or "
+                "conversational-floor state."
+            ),
+            "classification_confidence": "medium",
+        },
+        "secondary_classifications": [],
+        "classification_review_provenance": {
+            "method": "human-directed incident-to-taxonomy semantic reconciliation",
+            "review_date": MIGRATION_DATE,
+            "reviewer": "Dr Michelle Vivian O'Rourke with OpenAI GPT-5.6 Sol drafting support",
+            "review_status": "human-directed taxonomy correction",
+            "authority_boundary": (
+                "The incident is classified against the new canonical turn-state coordination class. Legacy FM-0033 "
+                "evidence-access analysis remains preserved under legacy_governance_state and is not treated as the "
+                "incident's primary behavioural classification."
+            ),
+        },
+    }
+    record["cam_internal"]["affected_domains"] = ["OPERATIONS", "LATTICE", "AEON"]
+    record["cam_internal"]["governance_layer"] = "multi-agent conversational coordination / shared interaction-state continuity / turn allocation"
+    record["cam_internal"]["proposal_needed"] = "to be assessed against existing multi-agent and interaction-state controls"
+    record["cam_internal"]["routing_note"] = [
+        "The substantive incident concerns synthetic conversational turn-state coordination; evidence-access limitations are retained as assessment boundaries rather than the primary taxonomy classification.",
+        "The original external source URL must remain preserved even when a local copy or later interpretation becomes available.",
+    ]
+    record["cam_internal"]["validator_or_automation_impact"] = "taxonomy and Incident classification updated; downstream Case Study publication should resolve through VIGIL-FC-000056"
+    review = {
+        "review_id": "VIGIL-REVIEW-2026-08-30-INCIDENT-000078-TURN-STATE",
+        "reviewer_type": "human-directed AI-assisted taxonomy review",
+        "reviewer_platform": "OpenAI ChatGPT",
+        "reviewer_model": "GPT-5.6 Sol",
+        "review_date": MIGRATION_DATE,
+        "review_scope": "Correction of incident-level taxonomy classification from evidence-access failure to synthetic conversational turn-state coordination failure.",
+        "capability_profile": {
+            "direct_text_analysis": True,
+            "direct_repository_analysis": True,
+            "web_link_and_metadata_review": False,
+        },
+        "known_limitations": [
+            "The primary audiovisual artefact was not directly inspected by the AI reviewer.",
+            "The exact internal orchestration mechanism and deployed voice runtimes remain unresolved.",
+        ],
+        "review_outcome": "Primary classification corrected to VIGIL-FC-000056; FC-000044 retained only as a distinguish-from evidence-access concept and legacy provenance.",
+    }
+    record["interpretive_provenance"]["review_history"].append(review)
+    record["interpretive_provenance"]["current_ai_review"] = review
+    return record
 
 
 MAJORITY_EVENTS: list[dict[str, Any]] = [
@@ -701,7 +954,11 @@ def build() -> list[dict[str, Any]]:
             jurisdiction=copy.deepcopy(fm38["jurisdictional_context"]),
             external=[aiid_reference(aiid, src["source_url"])],
         ))
-    records.extend(bounded_incident(spec) for spec in MAJORITY_EVENTS)
+    for spec in MAJORITY_EVENTS:
+        record = bounded_incident(spec)
+        if record["id"] == "VIGIL-INC-000078":
+            record = reconcile_turn_taking_incident(record)
+        records.append(record)
     return records
 
 
