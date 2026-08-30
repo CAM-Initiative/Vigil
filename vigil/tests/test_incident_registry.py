@@ -116,5 +116,21 @@ class IncidentRegistryTest(unittest.TestCase):
         self.assertIn("--taxonomy-examples-only", workflow)
 
 
+    def test_incidents_publish_severity_and_canonical_source_genres(self):
+        allowed_source_types = validator.CANONICAL_INCIDENT_SOURCE_TYPES
+        for incident in self.incidents.values():
+            severity = incident.get("severity_assessment", {})
+            self.assertIn(severity.get("severity"), validator.ALLOWED_SEVERITIES)
+            self.assertIn(severity.get("assessment_status"), validator.INCIDENT_SEVERITY_STATUSES)
+            self.assertTrue(severity.get("assessment_basis"))
+            self.assertTrue(all(source.get("source_type") in allowed_source_types for source in incident["source_records"]))
+
+    def test_public_incident_narrative_is_not_taxonomy_process_text(self):
+        for incident in self.incidents.values():
+            self.assertTrue(incident.get("summary"))
+            self.assertTrue(incident.get("vigil_assessment", {}).get("factual_basis"))
+            self.assertNotEqual(incident["summary"], incident["taxonomy_classification"]["classification_basis"])
+
+
 if __name__ == "__main__":
     unittest.main()

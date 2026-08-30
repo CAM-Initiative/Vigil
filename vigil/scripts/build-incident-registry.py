@@ -21,6 +21,106 @@ OUTPUT = RECORDS / "incidents"
 MIGRATION_DATE = "2026-08-30"
 TAXONOMY_VERSION = "0.2.2-draft"
 
+CANONICAL_INCIDENT_SOURCE_TYPES = {
+    "incident database entry", "news article", "official announcement", "incident report",
+    "technical report", "technical analysis", "platform status report", "product documentation",
+    "product changelog", "research paper", "investigation report", "government report",
+    "legal filing or decision", "press release", "social media post", "first-person account",
+    "interaction record", "repository record", "governance record", "standards document",
+    "observation record", "web page",
+}
+
+
+def normalise_source_type(item: dict[str, Any]) -> dict[str, Any]:
+    old = str(item.get("source_type", "")).strip()
+    if old in CANONICAL_INCIDENT_SOURCE_TYPES:
+        return item
+    url = str(item.get("source_url", "")).lower()
+    title = str(item.get("source_title", "")).lower()
+    publisher = str(item.get("author_or_publisher", "")).lower()
+    if "incidentdatabase.ai/" in url or "oecd.ai/en/incidents/" in url or "aiaaic.org/aiaaic-repository" in url:
+        new = "incident database entry"
+    elif "status.openai.com/" in url or old == "platform-status-page":
+        new = "platform status report"
+    elif old == "news-report" or old.startswith("news-report /") or old.startswith("technical-news-report") or "reuters" in publisher or "mimikama" in publisher:
+        new = "news article"
+    elif old == "social-platform-observation" or old.startswith("social-platform observation") or any(host in url for host in ("x.com/", "tiktok.com/", "vt.tiktok.com/")):
+        new = "social media post"
+    elif old == "authenticated-platform-task-record" or "chatgpt.com/codex/" in url or "chatgpt.com/g/" in url:
+        new = "interaction record"
+    elif old == "standards-source":
+        new = "standards document"
+    elif old == "governance-note":
+        new = "governance record"
+    elif old == "repository-source" or "github.com/" in url:
+        new = "repository record"
+    elif old == "follow-up-observation":
+        new = "observation record"
+    elif old == "first-party user report":
+        new = "first-person account"
+    elif old == "first-party incident report":
+        new = "incident report"
+    elif old == "official-product-changelog":
+        new = "product changelog"
+    elif old == "research-source":
+        new = "technical analysis"
+    elif old == "third-party-report":
+        new = "press release" if "nurses association" in publisher or "/press/" in url else "news article"
+    elif old == "platform-behaviour-observation":
+        new = "first-person account" if "affinda" in publisher else "interaction record"
+    elif old == "official-source":
+        if "technical report" in title or url.endswith(".pdf"):
+            new = "technical report"
+        elif "incident" in title or "intrusion" in title or "disclosure" in title:
+            new = "incident report"
+        elif "claude fable" in title or "switched models" in title:
+            new = "product documentation"
+        else:
+            new = "official announcement"
+    elif old in {"AI incident database record", "incident-database record", "incident-and-hazard-monitor entry"}:
+        new = "incident database entry"
+    else:
+        new = "web page"
+    if old and old != new and not item.get("legacy_source_type"):
+        item["legacy_source_type"] = old
+    item["source_type"] = new
+    return item
+
+
+def incident_severity_assessment(ids: list[str]) -> dict[str, Any]:
+    pairs: list[tuple[str, str]] = []
+    for record_id in ids:
+        record = load_legacy(record_id)
+        severity = record.get("failure_classification", {}).get("severity")
+        if severity:
+            pairs.append((record_id, str(severity)))
+    severities = list(dict.fromkeys(severity for _, severity in pairs))
+    legacy_sources = list(dict.fromkeys(record_id for record_id, _ in pairs))
+    if len(severities) == 1:
+        noun = "assessment" if len(pairs) == 1 else "assessments"
+        return {
+            "severity": severities[0],
+            "assessment_status": "provisionally-migrated",
+            "assessment_basis": f"Provisionally carried forward from the legacy failure-mode severity {noun} for {', '.join(record_id for record_id, _ in pairs)}. The value is retained for continuity and remains subject to incident-level review.",
+            "assessed_on": MIGRATION_DATE,
+            "legacy_sources": legacy_sources,
+        }
+    if len(severities) > 1:
+        return {
+            "severity": "SU",
+            "assessment_status": "requires-incident-review",
+            "assessment_basis": f"Conflicting legacy severities ({', '.join(severities)}) contribute to this Incident. No single severity is inferred until an incident-level review reconciles the affected occurrence.",
+            "assessed_on": MIGRATION_DATE,
+            "legacy_sources": legacy_sources,
+        }
+    return {
+        "severity": "SU",
+        "assessment_status": "requires-incident-review",
+        "assessment_basis": "No legacy failure-mode severity is available for safe carry-forward. Incident severity remains explicitly unassessed pending review.",
+        "assessed_on": MIGRATION_DATE,
+        "legacy_sources": [],
+    }
+
 
 def load_legacy(record_id: str) -> dict[str, Any]:
     kind = "failures" if "-FM-" in record_id else "observations"
@@ -30,6 +130,7 @@ def load_legacy(record_id: str) -> dict[str, Any]:
 
 def source(record_id: str, index: int) -> dict[str, Any]:
     item = copy.deepcopy(load_legacy(record_id)["source_records"][index])
+    item = normalise_source_type(item)
     item["migration_source_provenance"] = {
         "legacy_id": record_id,
         "legacy_source_position": index + 1,
@@ -234,7 +335,7 @@ def incident(
             "title": title,
             "created": MIGRATION_DATE,
             "updated": MIGRATION_DATE,
-            "version": "0.2.0-migration",
+            "version": "0.2.1-migration",
         },
         "incident_identity": {
             "historical_event_name": event_name,
@@ -250,6 +351,7 @@ def incident(
             "significance_to_cam": significance,
             "assessment_boundaries": boundaries,
         },
+        "severity_assessment": incident_severity_assessment(legacy_ids),
         "evidence_confidence": primary.get("evidence_confidence", "unknown"),
         "source_records": dedupe_sources(sources),
         "preferred_evidence": {
