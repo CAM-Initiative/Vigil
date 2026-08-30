@@ -1,5 +1,5 @@
 name: VIGIL Observatory taxonomy publications
-# Publication styling consumes Registry-pinned CAM brand assets via render_taxonomy.py.
+# Publication styling consumes repository-pinned CAM brand assets via render_taxonomy.py.
 
 on:
   push:
@@ -9,14 +9,22 @@ on:
       - "vigil/taxonomy/VIGIL.FailureTaxonomy.Index.json"
       - "vigil/taxonomy/families/**"
       - "vigil/taxonomy/generated/VIGIL.FailureTaxonomy.CaseFileExamples.json"
+      - "vigil/records/incidents/**"
+      - "vigil/VIGIL.Incidents.Index.json"
+      - "vigil/scripts/build-vigil-records.py"
       - "vigil/taxonomy/render_taxonomy.py"
+      - "vigil/taxonomy/assets/**"
       - ".github/workflows/taxonomy-publications.yml"
   pull_request:
     paths:
       - "vigil/taxonomy/VIGIL.FailureTaxonomy.Index.json"
       - "vigil/taxonomy/families/**"
       - "vigil/taxonomy/generated/VIGIL.FailureTaxonomy.CaseFileExamples.json"
+      - "vigil/records/incidents/**"
+      - "vigil/VIGIL.Incidents.Index.json"
+      - "vigil/scripts/build-vigil-records.py"
       - "vigil/taxonomy/render_taxonomy.py"
+      - "vigil/taxonomy/assets/**"
       - ".github/workflows/taxonomy-publications.yml"
   workflow_dispatch:
 
@@ -83,9 +91,12 @@ jobs:
           fi
 
       - name: Install PDF renderer
-        run: python -m pip install --disable-pip-version-check weasyprint
+        run: python -m pip install --disable-pip-version-check weasyprint==69.0
 
-      - name: Generate HTML and review-only PDF references
+      - name: Rebuild Incident Case File projection
+        run: python vigil/scripts/build-vigil-records.py --taxonomy-examples-only
+
+      - name: Generate HTML and PDF publications
         run: |
           python vigil/taxonomy/render_taxonomy.py \
             --catalogue \
@@ -106,11 +117,8 @@ jobs:
           if not pdf.read_bytes().startswith(b"%PDF-"):
               raise SystemExit("Generated taxonomy publication is not a valid PDF stream")
           print(f"HTML: {html.stat().st_size:,} bytes")
-          print(f"PDF review build: {pdf.stat().st_size:,} bytes")
+          print(f"PDF: {pdf.stat().st_size:,} bytes")
           PY
-
-      - name: Remove unreleased PDF review build
-        run: rm -f vigil/taxonomy/generated/VIGIL.Observatory.FailureTaxonomy.FullReference.pdf
 
       - name: Verify generated publications are current
         if: github.event_name == 'pull_request'
@@ -126,12 +134,14 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          # The PDF remains review-only until an explicit publication decision is made.
-          git add vigil/taxonomy/generated/*.html
+          git add \
+            vigil/taxonomy/generated/VIGIL.FailureTaxonomy.CaseFileExamples.json \
+            vigil/taxonomy/generated/*.html \
+            vigil/taxonomy/generated/*.pdf
           if git diff --cached --quiet; then
             echo "No taxonomy publication changes to commit."
           else
-            git commit -m "Rebuild VIGIL Observatory taxonomy HTML publications"
+            git commit -m "Rebuild VIGIL Observatory taxonomy publications"
             if ! git push; then
               echo "Branch advanced while taxonomy publications were building; a newer run owns generated-output refresh."
               exit 0

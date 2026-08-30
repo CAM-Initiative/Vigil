@@ -96,6 +96,25 @@ class IncidentRegistryTest(unittest.TestCase):
         validator.validate_incident(Path(record["id"] + ".json"), record, errors)
         self.assertTrue(any("secondary classifications require a primary" in error for error in errors))
 
+    def test_taxonomy_case_projection_is_incident_native(self):
+        projection = load(
+            VIGIL / "taxonomy" / "generated" / "VIGIL.FailureTaxonomy.CaseFileExamples.json"
+        )
+        examples = [item for rows in projection["classes"].values() for item in rows]
+        self.assertTrue(examples)
+        self.assertTrue(all(item["incident_id"] in self.incidents for item in examples))
+        self.assertTrue(all("failure_mode_id" not in item for item in examples))
+        self.assertEqual(projection["generated_from"], ["vigil/records/incidents/"])
+
+    def test_taxonomy_publication_workflow_retains_pdf(self):
+        workflow = (ROOT / ".github" / "workflows" / "taxonomy-publications.yml").read_text(
+            encoding="utf-8"
+        )
+        pdf_path = "vigil/taxonomy/generated/VIGIL.Observatory.FailureTaxonomy.FullReference.pdf"
+        self.assertNotIn(f"rm -f {pdf_path}", workflow)
+        self.assertIn("vigil/taxonomy/generated/*.pdf", workflow)
+        self.assertIn("--taxonomy-examples-only", workflow)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -28,6 +28,10 @@ class TaxonomyClassificationTests(unittest.TestCase):
         cls.records = []
         for path in sorted((VIGIL / "records" / "failures" / "2026").glob("*.json")):
             cls.records.append(json.loads(path.read_text(encoding="utf-8")))
+        cls.incidents = [
+            json.loads(path.read_text(encoding="utf-8"))
+            for path in sorted((VIGIL / "records" / "incidents").glob("*.json"))
+        ]
         cls.failures_index = json.loads((VIGIL / "VIGIL.Failures.Index.json").read_text(encoding="utf-8"))
         cls.registry_index = json.loads((VIGIL / "VIGIL.Registry.Index.json").read_text(encoding="utf-8"))
 
@@ -208,18 +212,24 @@ class TaxonomyClassificationTests(unittest.TestCase):
     def test_reverse_mapping_contains_only_canonical_classifications(self):
         projection = json.loads((VIGIL / "taxonomy" / "generated" / "VIGIL.FailureTaxonomy.CaseFileExamples.json").read_text(encoding="utf-8"))
         projected = {
-            item["failure_mode_id"]
+            item["incident_id"]
             for rows in projection["classes"].values()
             for item in rows
             if item["classification_role"] == "primary"
         }
-        exact = {r["id"] for r in self.records if r["taxonomy_classification"]["classification_status"] == "classified"}
+        exact = {
+            record["id"]
+            for record in self.incidents
+            if record["taxonomy_classification"]["classification_status"]
+            in {"classified", "provisionally-classified"}
+            and record["taxonomy_classification"].get("primary_classification")
+        }
         self.assertEqual(projected, exact)
 
     def test_generated_examples_preserve_primary_secondary_distinction(self):
         projection = json.loads((VIGIL / "taxonomy" / "generated" / "VIGIL.FailureTaxonomy.CaseFileExamples.json").read_text(encoding="utf-8"))
-        primary = next(item for item in projection["classes"]["VIGIL-FC-000046"] if item["failure_mode_id"] == "VIGIL-2026-FM-0062")
-        secondary = next(item for item in projection["classes"]["VIGIL-FC-000048"] if item["failure_mode_id"] == "VIGIL-2026-FM-0062")
+        primary = next(item for item in projection["classes"]["VIGIL-FC-000002"] if item["incident_id"] == "VIGIL-INC-000003")
+        secondary = next(item for item in projection["classes"]["VIGIL-FC-000009"] if item["incident_id"] == "VIGIL-INC-000003")
         self.assertEqual(primary["classification_role"], "primary")
         self.assertEqual(secondary["classification_role"], "secondary")
         self.assertNotEqual(primary["classification_basis"], secondary["classification_basis"])
