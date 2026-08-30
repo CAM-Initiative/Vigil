@@ -134,6 +134,45 @@ NIST_BIAS_IDENTITY_TO_LEGACY = {
     "periodic-bias-review": "EXTREQ-EB0560CA27811B15", "tevv-context": "EXTREQ-EB3AEF59D55DBA7E",
     "human-factors": "EXTREQ-F24D556CF1E1E201", "governance-documentation": "EXTREQ-FD2E9DE61D27AD9A",
 }
+SPDX = "EXT-71B4139453FA"
+SPDX_REVIEW_DIGEST = "a581d62e18bab652752ee3d0e5508cf46fbc20361cc99ba539fafb781daa6197"
+SPDX_ACTOR = "Producer of an SPDX 3.0.1 element collection using the AI Profile"
+SPDX_QUALIFICATIONS = [
+    "SPDX 3.0.1 is a voluntary technical specification; these records describe AI Profile data-model and conformance requirements, not legal or regulatory compliance.",
+    "AI-specific AIPackage properties with minCount zero are optional and their availability does not establish the truth, adequacy, or independent verification of the recorded information.",
+    "AI Profile conformance is assessed for an element collection and requires the source-defined types, cardinalities, and relationship endpoints.",
+]
+SPDX_METADATA = {
+    "concluded-license-relationship": dict(
+        objects=["Each /AI/AIPackage in an SPDX 3.0.1 AI Profile element collection"],
+        artefacts=["Exactly one /Core/Relationship of type hasConcludedLicense from the AIPackage to a /SimpleLicensing/AnyLicenseInfo element."],
+        evidence=["A relationship whose type, from endpoint, to endpoint, and cardinality satisfy the AI Profile conformance rule."],
+        methods=["For every AIPackage, validate that exactly one hasConcludedLicense relationship has that package as from and an AnyLicenseInfo element as to."],
+        conditions=["Applies to every /AI/AIPackage when an element collection is evaluated for SPDX 3.0.1 AI Profile conformance."],
+    ),
+    "declared-license-relationship": dict(
+        objects=["Each /AI/AIPackage in an SPDX 3.0.1 AI Profile element collection"],
+        artefacts=["Exactly one /Core/Relationship of type hasDeclaredLicense from the AIPackage to a /SimpleLicensing/AnyLicenseInfo element."],
+        evidence=["A relationship whose type, from endpoint, to endpoint, and cardinality satisfy the AI Profile conformance rule."],
+        methods=["For every AIPackage, validate that exactly one hasDeclaredLicense relationship has that package as from and an AnyLicenseInfo element as to."],
+        conditions=["Applies to every /AI/AIPackage when an element collection is evaluated for SPDX 3.0.1 AI Profile conformance."],
+    ),
+    "ai-package-required-properties": dict(
+        objects=["/AI/AIPackage element and its inherited /Core and /Software properties"],
+        artefacts=["Serialized AIPackage containing spdxId, creationInfo, name, releaseTime, suppliedBy, downloadLocation, packageVersion, and primaryPurpose."],
+        evidence=["All inherited and externally restricted properties with minCount one are present with values of the specified types."],
+        methods=["Validate the AIPackage against the SPDX 3.0.1 model, including inherited property types and the AIPackage minCount restrictions."],
+        conditions=["Applies to every instantiated /AI/AIPackage."],
+    ),
+    "ai-package-governance-properties": dict(
+        summary="An AI package may record AI-specific information including autonomy, domain, energy consumption, hyperparameters, training and application information, limitations, metrics and thresholds, preprocessing, explainability, safety risk assessment, standards compliance, model type and use of sensitive personal information.",
+        objects=["Optional AI-specific metadata properties of an /AI/AIPackage"],
+        artefacts=["Serialized optional AIPackage property values using their source-defined types and cardinalities."],
+        evidence=["Any supplied optional AI metadata is encoded under the corresponding AIPackage property with a conforming value and cardinality."],
+        methods=["Validate supplied optional properties against the SPDX 3.0.1 AI model property types and maximum cardinalities."],
+        conditions=["Each property is included only when the producer elects to represent that information; properties with minCount zero may be absent."],
+    ),
+}
 
 
 def deterministic_requirement_id(record: dict, clause: str) -> str:
@@ -940,6 +979,42 @@ def normalize_nist_bias_metadata(record: dict) -> None:
     })
 
 
+def normalize_spdx_metadata(record: dict) -> None:
+    """Resolve the four represented SPDX 3.0.1 AI Profile propositions."""
+    data = SPDX_METADATA.get(record["identity_key"])
+    if data is None:
+        raise ValueError(f"unreviewed SPDX 3.0.1 requirement: {record['requirement_id']}")
+    current_actor = record.get("applicable_actor", [])
+    if current_actor not in (["SPDX document producer"], [SPDX_ACTOR]):
+        raise ValueError(f"unexpected SPDX actor metadata for {record['requirement_id']}")
+    if "summary" in data:
+        record["requirement_summary"] = data["summary"]
+        record["governance_expectation"] = data["summary"]
+    record.update({
+        "source_review_date": "2026-08-30",
+        "applicable_actor": [SPDX_ACTOR],
+        "governed_object": data["objects"],
+        "timing_or_frequency": [],
+        "required_artefacts": data["artefacts"],
+        "evidence_expectation": data["evidence"],
+        "verification_method": data["methods"],
+        "applicability_conditions": data["conditions"],
+        "exceptions_or_qualifications": SPDX_QUALIFICATIONS,
+    })
+    record["interpretation_provenance"].update({
+        "source_analysis_method": (
+            "Direct field-level comparison against the SPDX 3.0.1 AI model at release commit "
+            "a745f63e8643d5ae0f0851fcfa6836085308f80b. The four source-defined proposition "
+            "identities were retained; AIPackage properties, cardinalities, conformance endpoints, "
+            "artefacts, evidence, verification methods, conditions, and qualifications were resolved."
+        ),
+        "source_locator": "https://github.com/spdx/spdx-3-model/tree/3.0.1/model/AI",
+        "reviewed_source_digest": SPDX_REVIEW_DIGEST,
+        "reviewed_source_digest_algorithm": "sha256",
+        "reviewed_source_digest_status": "recorded",
+    })
+
+
 def backlog_entries(records: list[dict]) -> list[dict]:
     by_id = {record["requirement_id"]: record for record in records}
     missing = sorted(NIST_GAI_CONSTITUENT_REPAIRS - set(by_id))
@@ -990,13 +1065,13 @@ def seed(write: bool) -> int:
     ledger = load(LEDGER)
     records = req_doc["requirements"]
     by_id = {record["requirement_id"]: record for record in records}
-    reviewed_sources = {NIST_RMF, CYCLONEDX, NIST_GAI, IMDA_AGENTIC, NIST_218A, SDOS, NIST_AML, NIST_SYNTHETIC, NIST_BIAS}
+    reviewed_sources = {NIST_RMF, CYCLONEDX, NIST_GAI, IMDA_AGENTIC, NIST_218A, SDOS, NIST_AML, NIST_SYNTHETIC, NIST_BIAS, SPDX}
     selected = [record for record in records if record["vigil_source_id"] in reviewed_sources]
     counts = {
         source: sum(record["vigil_source_id"] == source for record in selected)
         for source in reviewed_sources
     }
-    if counts != {NIST_RMF: 71, CYCLONEDX: 5, NIST_GAI: 223, IMDA_AGENTIC: 39, NIST_218A: 75, SDOS: 24, NIST_AML: 22, NIST_SYNTHETIC: 18, NIST_BIAS: 14}:
+    if counts != {NIST_RMF: 71, CYCLONEDX: 5, NIST_GAI: 223, IMDA_AGENTIC: 39, NIST_218A: 75, SDOS: 24, NIST_AML: 22, NIST_SYNTHETIC: 18, NIST_BIAS: 14, SPDX: 4}:
         raise ValueError(f"unexpected reviewed source population: {counts}")
 
     for record in selected:
@@ -1017,7 +1092,11 @@ def seed(write: bool) -> int:
             normalize_nist_synthetic_metadata(record)
         elif record["vigil_source_id"] == NIST_BIAS:
             normalize_nist_bias_metadata(record)
-        if record["vigil_source_id"] in {NIST_SYNTHETIC, NIST_BIAS}:
+        elif record["vigil_source_id"] == SPDX:
+            normalize_spdx_metadata(record)
+        if record["vigil_source_id"] == SPDX:
+            record["source_review_date"] = "2026-08-30"
+        elif record["vigil_source_id"] in {NIST_SYNTHETIC, NIST_BIAS}:
             record["source_review_date"] = "2026-08-29"
         elif record["vigil_source_id"] in {CYCLONEDX, IMDA_AGENTIC, NIST_218A, SDOS, NIST_AML}:
             record["source_review_date"] = "2026-08-28"
@@ -1106,16 +1185,23 @@ def seed(write: bool) -> int:
                 "Incorrect and overly coarse section references were repaired to the source's actual subsection structure, including Sections 4.1.1, 4.1.2, 4.2.1–4.2.3, and 4.3.",
                 "Generic metadata was replaced with source-specific objects, evidence, evaluation methods, applicability conditions, and document-wide limitations."
             ]
-        else:
+        elif record["vigil_source_id"] == NIST_BIAS:
             notes = [
                 "Reviewed against the official March 2022 NIST SP 1270 PDF; SHA-256 334042ba11ed24d7446cc31967e6e1eb4921f50a17eec4eb14ef1bff078f1e09.",
                 "All 14 represented socio-technical bias-management propositions retain their established identity keys.",
                 "The feedback-loop and periodic-review records were migrated from the non-operative Conclusions locator to Sections 3.4.1 and 3.3.2 and 3.4.1, respectively.",
                 "Generic metadata was replaced with source-specific objects, timing, artefacts, evidence, methods, applicability conditions, and document-wide voluntary and preliminary-guidance limitations."
             ]
+        else:
+            notes = [
+                "Reviewed against the SPDX 3.0.1 AI model at release commit a745f63e8643d5ae0f0851fcfa6836085308f80b; deterministic model/AI archive SHA-256 a581d62e18bab652752ee3d0e5508cf46fbc20361cc99ba539fafb781daa6197.",
+                "All four represented AI Profile identities retain their established deterministic IDs.",
+                "The optional AIPackage record now preserves the complete source-defined AI property set, including energy consumption, hyperparameters, and model type.",
+                "Required property cardinalities and both exact-one licensing relationship constraints now carry source-specific artefact, evidence, verification, applicability, and technical-conformance qualifications."
+            ]
         entry = {
             "requirement_id": rid,
-            "reviewed_at": "2026-08-29" if record["vigil_source_id"] in {NIST_SYNTHETIC, NIST_BIAS} else ("2026-08-28" if record["vigil_source_id"] in {CYCLONEDX, NIST_GAI, IMDA_AGENTIC, NIST_218A, SDOS, NIST_AML} else "2026-08-26"),
+            "reviewed_at": "2026-08-30" if record["vigil_source_id"] == SPDX else ("2026-08-29" if record["vigil_source_id"] in {NIST_SYNTHETIC, NIST_BIAS} else ("2026-08-28" if record["vigil_source_id"] in {CYCLONEDX, NIST_GAI, IMDA_AGENTIC, NIST_218A, SDOS, NIST_AML} else "2026-08-26")),
             "review_basis": "direct-primary-text",
             "review_notes": notes,
             "field_status": field_status,
@@ -1131,7 +1217,7 @@ def seed(write: bool) -> int:
 
     output_ledger = {
         "schema_version": ledger.get("schema_version", "1.0"),
-        "updated_at": "2026-08-29",
+        "updated_at": "2026-08-30",
         "entries": sorted(existing.values(), key=lambda entry: entry["requirement_id"]),
     }
     output_backlog = {"schema_version": "1.0", "updated_at": "2026-08-28", "entries": backlog}

@@ -68,7 +68,7 @@ def main():
     assert isinstance(ledger["entries"], list)
     ids = [entry["requirement_id"] for entry in ledger["entries"]]
     assert len(ids) == len(set(ids))
-    assert len(ids) == 593
+    assert len(ids) == 597
 
     backlog_schema = json.loads((REQ / "reextraction-backlog.schema.json").read_text(encoding="utf-8"))
     backlog = json.loads((REQ / "reextraction-backlog.json").read_text(encoding="utf-8"))
@@ -83,6 +83,16 @@ def main():
     assert sum(entry["external_source_id"] == "NIST-AI-100-2" for entry in backlog["entries"]) == 0
     assert sum(entry["external_source_id"] == "NIST-AI-100-4" for entry in backlog["entries"]) == 0
     assert sum(entry["external_source_id"] == "NIST-SP-1270" for entry in backlog["entries"]) == 0
+    assert sum(entry["external_source_id"] == "SPDX-SPEC" for entry in backlog["entries"]) == 0
+
+    spdx = json.loads((REQ / "requirements" / "SPDX-SPEC" / "3.0.1.json").read_text(encoding="utf-8"))
+    spdx_by_key = {record["identity_key"]: record for record in spdx}
+    assert len(spdx) == 4
+    assert all(record["source_review_date"] == "2026-08-30" for record in spdx)
+    assert all(record["interpretation_provenance"]["reviewed_source_digest"] == "a581d62e18bab652752ee3d0e5508cf46fbc20361cc99ba539fafb781daa6197" for record in spdx)
+    assert all(record["verification_method"] for record in spdx)
+    assert "energy consumption" in spdx_by_key["ai-package-governance-properties"]["requirement_summary"]
+    assert "exactly one" in spdx_by_key["declared-license-relationship"]["verification_method"][0]
 
     nist_bias = json.loads((REQ / "requirements" / "NIST-SP-1270" / "2022.json").read_text(encoding="utf-8"))
     bias_by_key = {record["identity_key"]: record for record in nist_bias}
