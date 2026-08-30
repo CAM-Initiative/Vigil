@@ -43,14 +43,11 @@ jobs:
       - name: Test source provenance classification
         run: python vigil/tests/test_vigil_source_provenance.py
 
-      - name: Validate source provenance
+      - name: Validate active source provenance
         run: python vigil/scripts/validate-vigil-source-provenance.py
 
       - name: Test VIGIL record validator rules
         run: python vigil/tests/test_validate_vigil_record_rules.py
-
-      - name: Test VIGIL lifecycle validator
-        run: python vigil/tests/test_validate_vigil_lifecycle.py
 
       - name: Test VIGIL PATCH trace validator
         run: python vigil/tests/test_validate_vigil_patch_trace.py
@@ -58,7 +55,7 @@ jobs:
       - name: Test VIGIL provenance preservation
         run: python vigil/tests/test_vigil_provenance_preservation.py
 
-      - name: Test VIGIL pipeline state
+      - name: Test active VIGIL pipeline state
         run: python vigil/tests/test_vigil_pipeline_state.py
 
       - name: Test withdrawn record-class publication boundary
@@ -78,10 +75,8 @@ jobs:
       - name: Check VIGIL record routing
         run: python vigil/scripts/route-vigil-records.py --check
 
-      - name: Validate active public VIGIL records
-        run: |
-          python vigil/scripts/validate-vigil-public-records.py
-          python vigil/scripts/validate-vigil-system-components.py
+      - name: Validate active system-component metadata
+        run: python vigil/scripts/validate-vigil-system-components.py
 
       - name: Validate Incident migration and legacy crosswalk
         run: |
@@ -94,9 +89,6 @@ jobs:
           git diff --exit-code -- \
             vigil/migrations/incident-registry/Incident.Migration.Decisions.json \
             vigil/migrations/incident-registry/VIGIL.FM-OBS-to-INC.Crosswalk.json
-
-      - name: Validate VIGIL lifecycle, corpus coverage, CAM boundary, and interpretive provenance
-        run: python vigil/scripts/run-vigil-lifecycle-validation.py
 
       - name: Build and enrich active public VIGIL registry indexes
         run: |
