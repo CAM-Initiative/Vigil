@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Focused regression checks for source-provenance classification and origin detection."""
+"""Focused regression checks for current source-provenance classification semantics."""
 
 from __future__ import annotations
 
@@ -7,26 +7,17 @@ import importlib.util
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-SCRIPTS = ROOT / "vigil" / "scripts"
-MIGRATION_PATH = SCRIPTS / "migrate-vigil-source-provenance.py"
-VALIDATOR_PATH = SCRIPTS / "validate-vigil-source-provenance.py"
+MODULE_PATH = ROOT / "vigil" / "scripts" / "source_provenance.py"
 
-
-def load_module(path: Path, name: str):
-    spec = importlib.util.spec_from_file_location(name, path)
-    assert spec and spec.loader
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    return module
-
-
-migration = load_module(MIGRATION_PATH, "source_provenance_migration")
-validator = load_module(VALIDATOR_PATH, "source_provenance_validator")
+spec = importlib.util.spec_from_file_location("source_provenance", MODULE_PATH)
+assert spec and spec.loader
+provenance = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(provenance)
 
 
 def classify(source, record_type="failure_mode"):
-    residence = migration.classify_residence(source)
-    role = migration.classify_role(source, record_type, residence)
+    residence = provenance.classify_residence(source)
+    role = provenance.classify_role(source, record_type, residence)
     return residence, role
 
 
@@ -73,9 +64,6 @@ def main() -> int:
         "source_type": "other",
     }, "observation") == ("user-supplied", "direct-testimony")
 
-    # Source origin is determined from identity/provenance fields. VIGIL's own
-    # interpretive commentary must not convert an external source into an
-    # internal source merely because it says how VIGIL uses the source.
     external_with_vigil_commentary = {
         "source_title": "Incident 1661: external incident registry entry",
         "author_or_publisher": "AI Incident Database",
@@ -85,7 +73,7 @@ def main() -> int:
         "relevance_note": "VIGIL uses this external registry entry as corroboration only.",
         "source_context": "VIGIL preserves the source's stated incident metadata without strengthening it.",
     }
-    assert validator.origin_markers(external_with_vigil_commentary) == (False, False)
+    assert provenance.origin_markers(external_with_vigil_commentary) == (False, False)
 
     vigil_cross_reference = {
         "source_title": "VIGIL-2026-FM-0044 — linked failure mode",
@@ -94,7 +82,7 @@ def main() -> int:
         "source_platform": "VIGIL",
         "source_type": "linked-failure-mode",
     }
-    assert validator.origin_markers(vigil_cross_reference) == (True, True)
+    assert provenance.origin_markers(vigil_cross_reference) == (True, True)
 
     vigil_review_session = {
         "source_title": "Three ChatGPT systems repeat responses without synthetic turn-taking",
@@ -103,7 +91,8 @@ def main() -> int:
         "source_platform": "TikTok",
         "source_type": "platform-behaviour-observation",
     }
-    assert validator.origin_markers(vigil_review_session) == (True, True)
+    assert provenance.origin_markers(vigil_review_session) == (True, True)
+    assert provenance.classify_residence(vigil_review_session) == "vigil-internal"
 
     vigil_governance_note = {
         "source_title": "VIGIL maintainer discussion of repeated user reports",
@@ -112,7 +101,7 @@ def main() -> int:
         "source_platform": "ChatGPT",
         "source_type": "governance-note",
     }
-    assert validator.origin_markers(vigil_governance_note) == (True, False)
+    assert provenance.origin_markers(vigil_governance_note) == (True, False)
 
     relayed_external_report = {
         "source_title": "User-reported ChatGPT refusal screenshot",
@@ -121,7 +110,8 @@ def main() -> int:
         "source_platform": "X",
         "source_type": "social-platform-observation",
     }
-    assert validator.origin_markers(relayed_external_report) == (False, False)
+    assert provenance.origin_markers(relayed_external_report) == (False, False)
+    assert provenance.classify_residence(relayed_external_report) == "external"
 
     cam_governance_source = {
         "source_title": "Current Caelestis SECURITY instrument",
@@ -130,7 +120,7 @@ def main() -> int:
         "source_platform": "GitHub",
         "source_type": "repository-source",
     }
-    looks_vigil, looks_cam = validator.origin_markers(cam_governance_source)
+    looks_vigil, looks_cam = provenance.origin_markers(cam_governance_source)
     assert not looks_vigil
     assert looks_cam
 
