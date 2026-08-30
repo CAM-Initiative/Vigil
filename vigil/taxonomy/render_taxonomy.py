@@ -338,12 +338,21 @@ def case_study_context(example: dict) -> dict[str, object]:
 
     failure_classification = record.get("failure_classification") if isinstance(record.get("failure_classification"), dict) else {}
     severity = str(failure_classification.get("severity") or "SU").upper()
+    source_url = ""
+    source_quality = -999
+    if evidence_source:
+        source_url = str(evidence_source.get("source_url") or evidence_source.get("archive_url") or "").strip()
+        source_quality = _source_quality(evidence_source)
+    vendor_key = "|".join(vendors) if vendors else str(system_context.get("platform_or_vendor") or "").strip().lower()
     return {
         "system_label": system_label,
+        "vendor_key": vendor_key,
         "date": publication_date(source_date),
         "source_date": str(source_date or ""),
         "source_publisher": source_label,
         "source_title": source_title,
+        "source_url": source_url,
+        "source_quality": source_quality,
         "case_context": case_context,
         "severity": severity,
         "vendor_known": vendor_known,
@@ -355,74 +364,76 @@ def _severity_rank(value: object) -> int:
 
 
 def _candidate_rank(candidate: dict) -> tuple[int, int, int, int, str]:
+    """Publication ranking: primary mapping, severity, recency, then source quality."""
     return (
+        candidate["role_rank"],
         _severity_rank(candidate["context"].get("severity")),
         -_case_date(candidate["context"].get("source_date")).toordinal(),
-        candidate["role_rank"],
-        candidate["class_index"],
+        -int(candidate["context"].get("source_quality", -999)),
         str(candidate["example"].get("failure_mode_id", "")),
     )
 
 
-def select_family_case_examples(data: dict, case_examples: dict[str, list[dict]]) -> dict[str, list[dict]]:
-    """Select at most three publication-grade exemplars for one failure family.
+def select_class_case_examples(data: dict, case_examples: dict[str, list[dict]]) -> dict[str, list[dict]]:
+    """Select up to three publication-grade exemplars for every failure class.
 
-    High-confidence taxonomy fit and a known affected vendor remain eligibility gates.
-    Severity is a ranking signal rather than a hard threshold. Selection first favours
-    coverage across distinct failure classes, then severity and newest evidence date.
+    Eligibility gates are intentionally stricter than the underlying VIGIL corpus:
+    taxonomy mapping confidence must be High and an affected vendor/system must be known.
+    Within each class, primary mappings rank before secondary mappings, followed by
+    severity, newest substantive evidence publication date and evidence-source quality.
+    A first pass favours different affected-system/vendor contexts before filling any
+    remaining slots from the next-best qualifying cases.
     """
-    candidates: list[dict] = []
-    for class_index, item in enumerate(data.get("classes", [])):
+    selected: dict[str, list[dict]] = {}
+    for item in data.get("classes", []):
         class_id = str(item.get("class_id", ""))
+        candidates: list[dict] = []
+        seen_failure_modes: set[str] = set()
         for example in case_examples.get(class_id, []):
             if str(example.get("classification_confidence", "")).lower() != "high":
+                continue
+            failure_mode_id = str(example.get("failure_mode_id", ""))
+            if not failure_mode_id or failure_mode_id in seen_failure_modes:
                 continue
             context = case_study_context(example)
             if not context.get("vendor_known"):
                 continue
+            seen_failure_modes.add(failure_mode_id)
             candidates.append({
-                "class_id": class_id,
-                "class_index": class_index,
                 "example": example,
                 "context": context,
                 "role_rank": 0 if str(example.get("classification_role", "primary")).lower() == "primary" else 1,
             })
 
-    by_class: dict[str, list[dict]] = {}
-    for candidate in candidates:
-        by_class.setdefault(candidate["class_id"], []).append(candidate)
-    for class_candidates in by_class.values():
-        class_candidates.sort(key=_candidate_rank)
+        candidates.sort(key=_candidate_rank)
+        chosen: list[dict] = []
+        used_vendor_keys: set[str] = set()
 
-    champions = sorted((items[0] for items in by_class.values() if items), key=_candidate_rank)
-    selected_candidates: list[dict] = []
-    used_failure_modes: set[str] = set()
-
-    # Prefer distinct classes so the examples illuminate the class they sit beneath.
-    for candidate in champions:
-        failure_mode_id = str(candidate["example"].get("failure_mode_id", ""))
-        if failure_mode_id in used_failure_modes:
-            continue
-        selected_candidates.append(candidate)
-        used_failure_modes.add(failure_mode_id)
-        if len(selected_candidates) == 3:
-            break
-
-    # If a family has fewer than three eligible class champions, fill remaining slots
-    # from the best remaining high-confidence, known-vendor cases without duplicating FMs.
-    if len(selected_candidates) < 3:
-        for candidate in sorted(candidates, key=_candidate_rank):
-            failure_mode_id = str(candidate["example"].get("failure_mode_id", ""))
-            if failure_mode_id in used_failure_modes:
+        # First pass: favour diversity of affected-system/vendor context.
+        for candidate in candidates:
+            vendor_key = str(candidate["context"].get("vendor_key") or candidate["context"].get("system_label") or "")
+            if vendor_key and vendor_key in used_vendor_keys:
                 continue
-            selected_candidates.append(candidate)
-            used_failure_modes.add(failure_mode_id)
-            if len(selected_candidates) == 3:
+            chosen.append(candidate)
+            if vendor_key:
+                used_vendor_keys.add(vendor_key)
+            if len(chosen) == 3:
                 break
 
-    selected: dict[str, list[dict]] = {}
-    for candidate in selected_candidates:
-        selected.setdefault(candidate["class_id"], []).append(candidate["example"])
+        # Second pass: fill unused slots from the remaining best-ranked cases.
+        if len(chosen) < 3:
+            chosen_ids = {str(candidate["example"].get("failure_mode_id", "")) for candidate in chosen}
+            for candidate in candidates:
+                failure_mode_id = str(candidate["example"].get("failure_mode_id", ""))
+                if failure_mode_id in chosen_ids:
+                    continue
+                chosen.append(candidate)
+                chosen_ids.add(failure_mode_id)
+                if len(chosen) == 3:
+                    break
+
+        if chosen:
+            selected[class_id] = [candidate["example"] for candidate in chosen]
     return selected
 
 
@@ -436,19 +447,32 @@ def case_examples_html(examples: list[dict]) -> str:
         meta_parts = []
         if context.get("system_label"):
             meta_parts.append(str(context["system_label"]))
-        if context.get("source_publisher") and str(context["source_publisher"]) not in meta_parts:
-            meta_parts.append(str(context["source_publisher"]))
         if context.get("date"):
             meta_parts.append(str(context["date"]))
         meta = " · ".join(esc(value) for value in meta_parts if value)
         case_context = str(context.get("case_context") or "").strip()
+        source_title = str(context.get("source_title") or context.get("source_publisher") or "Primary evidence source").strip()
+        source_publisher = str(context.get("source_publisher") or "").strip()
+        source_url = str(context.get("source_url") or "").strip()
+        source_label = source_title
+        if source_publisher and source_publisher.lower() not in source_title.lower():
+            source_label = f"{source_title} — {source_publisher}"
+        source_html = ""
+        if source_url:
+            source_html = (
+                "<p class=\"case-study-source\"><strong>Source:</strong> "
+                f"{esc(source_label)}<br><a href=\"{esc(source_url)}\">{esc(source_url)}</a></p>"
+            )
+        elif source_label:
+            source_html = f"<p class=\"case-study-source\"><strong>Source:</strong> {esc(source_label)}</p>"
         studies.append(
             "<article class=\"case-study\">"
             f"<h5>{esc(example.get('title', ''))}</h5>"
             + (f"<p class=\"case-study-meta\">{meta}</p>" if meta else "")
             + (f"<p class=\"case-study-context\">{esc(case_context)}</p>" if case_context else "")
             + (f"<p class=\"case-study-basis\"><strong>Relevance to this class:</strong> {esc(basis)}</p>" if basis else "")
-            + f"<p class=\"case-study-ref\"><code>{esc(example.get('failure_mode_id', ''))}</code></p>"
+            + source_html
+            + f"<p class=\"case-study-ref\"><strong>VIGIL record:</strong> <code>{esc(example.get('failure_mode_id', ''))}</code></p>"
             + "</article>"
         )
     heading = "Case Study" if len(studies) == 1 else "Case Studies"
@@ -499,17 +523,29 @@ def publication_class_html(item: dict, section_number: str, class_lookup: dict[s
 
 def publication_family_html(data: dict, chapter_number: int, case_examples: dict[str, list[dict]] | None = None) -> str:
     family = data["family"]
-    scope = "".join(f"<li>{esc(x)}</li>" for x in family["scope"])
     chapter_rows = []
     class_lookup: dict[str, tuple[str, str]] = {}
     for index, item in enumerate(data["classes"], start=1):
         number = f"{chapter_number}.{index}"
         class_lookup[item["class_id"]] = (number, item["name"])
         suffix = " · Variant" if str(item.get("abstraction", "")).lower() == "variant" else ""
-        chapter_rows.append(f"<li><span class=\"chapter-item-number\">{esc(number)}</span><span class=\"chapter-item-title\">{esc(item['name'])}</span><span class=\"chapter-item-id\"><code>{esc(item['class_id'])}</code>{suffix}</span></li>")
-    aliases = " · ".join(f"<code>{esc(x)}</code>" for x in family.get("aliases", [])) or "None recorded"
-    selected_case_examples = select_family_case_examples(data, case_examples or {})
-    classes = "".join(publication_class_html(item, f"{chapter_number}.{index}", class_lookup, selected_case_examples.get(item["class_id"], [])) for index, item in enumerate(data["classes"], start=1))
+        chapter_rows.append(
+            f"<li><span class=\"chapter-item-number\">{esc(number)}</span>"
+            f"<span class=\"chapter-item-title\">{esc(item['name'])}</span>"
+            f"<span class=\"chapter-item-id\"><code>{esc(item['class_id'])}</code>{suffix}</span></li>"
+        )
+    aliases = " · ".join(f"<code>{esc(x)}</code>" for x in family.get("aliases", []))
+    alias_html = f"<p class=\"chapter-aliases\"><strong>Prior codes and aliases:</strong> {aliases}</p>" if aliases else ""
+    selected_case_examples = select_class_case_examples(data, case_examples or {})
+    classes = "".join(
+        publication_class_html(
+            item,
+            f"{chapter_number}.{index}",
+            class_lookup,
+            selected_case_examples.get(item["class_id"], []),
+        )
+        for index, item in enumerate(data["classes"], start=1)
+    )
     return f"""
 <section class="book-family" id="{esc(anchor(family['family_id']))}">
   <section class="chapter-opener">
@@ -517,13 +553,9 @@ def publication_family_html(data: dict, chapter_number: int, case_examples: dict
     <h1>{esc(family['name'])}</h1>
     <p class="chapter-lead">{esc(family['plain_english'])}</p>
     <p class="chapter-meta"><code>{esc(family['family_id'])}</code> · <code>{esc(family['family_code'])}</code> · Version {esc(family['version'])} · {esc(str(family['status']).title())}</p>
-  </section>
-  <section class="chapter-map">
-    <p class="chapter-kicker">Chapter {chapter_number}</p><h2>Outline</h2>
-    <h3>Scope</h3><ul>{scope}</ul>
-    <h3>In this chapter</h3>
+    <h2 class="chapter-outline-title">In this chapter</h2>
     <ol class="chapter-list">{''.join(chapter_rows)}</ol>
-    <h3>Reference metadata</h3><p><strong>Failure family:</strong> <code>{esc(family['family_id'])}</code><br><strong>Semantic code:</strong> <code>{esc(family['family_code'])}</code><br><strong>Prior codes and aliases:</strong> {aliases}</p>
+    {alias_html}
   </section>
   <section class="chapter-overview">
     <p class="chapter-kicker">Chapter {chapter_number} · Failure family overview</p>
@@ -615,10 +647,10 @@ html,body{background:#fff!important}body{font-size:9.5pt;line-height:1.48}main{m
 .cover-footer-art{position:absolute;left:0;right:0;bottom:0;width:210mm;height:auto;opacity:.72;z-index:0}.cover-band-content{position:relative;z-index:1;height:100%}
 .cover-meta{display:flex;gap:0;align-items:flex-start}.cover-meta-block{padding:0 9mm 0 0;margin-right:9mm;min-width:31mm}.cover-meta-block:last-child{border-right:0;margin-right:0}.cover-meta-label{font-size:6.8pt;text-transform:uppercase;letter-spacing:.09em;color:#d7b35b;font-weight:700;margin-bottom:2mm}.cover-meta-value{font-family:Georgia,"Times New Roman",serif;font-size:15pt;color:#fff;line-height:1}
 .cover-publisher{position:absolute;left:0;bottom:1mm}.cover-publisher strong{display:block;color:#d7b35b;font-size:11pt;letter-spacing:.07em;text-transform:uppercase}.cover-publisher span{font-size:8.5pt;color:#fff}
-.publication-imprint{page:imprint;min-height:249mm;page-break-after:always;display:flex;flex-direction:column;color:#2a2a2a;font-family:Helvetica,Arial,sans-serif}.imprint-kicker{font-family:Helvetica,Arial,sans-serif;color:#022c1b;text-transform:uppercase;letter-spacing:.08em;font-size:7.5pt;font-weight:700;margin-bottom:4mm}.publication-imprint h1{font-family:Helvetica,Arial,sans-serif;color:#022c1b;font-size:22pt;font-weight:700;margin:0 0 9mm}.publication-meta{display:grid;grid-template-columns:42mm 1fr;gap:2.1mm 6mm;margin:0;font-family:Helvetica,Arial,sans-serif}.publication-meta dt{color:#6f6657}.publication-meta dd{margin:0;font-weight:600}.imprint-rule{height:.6pt;background:#b8943f;width:100%;margin:8mm 0 5mm}.publication-imprint>p{font-family:Helvetica,Arial,sans-serif}.reliance-notice{margin-top:auto;padding-top:4mm;border-top:.6pt solid #d8d5cc;font-family:Helvetica,Arial,sans-serif}.reliance-notice h2{font-family:Helvetica,Arial,sans-serif;font-size:9pt;font-weight:700;color:#022c1b;margin:0 0 2.5mm}.reliance-notice p{font-family:Helvetica,Arial,sans-serif;font-size:8.3pt;line-height:1.45;color:#504a40;margin:0}.publisher-block{margin-top:5mm;padding-top:4mm;border-top:.6pt solid #d8d5cc;font-family:Helvetica,Arial,sans-serif}.publisher-block h2{font-family:Helvetica,Arial,sans-serif;font-size:9pt;font-weight:700;color:#022c1b;margin:0 0 2.5mm}.publisher-block p{font-family:Helvetica,Arial,sans-serif;font-size:8.5pt;line-height:1.5;color:#504a40;margin:0}.publisher-block strong{color:#022c1b}
-.contents{border:0;padding:0;page-break-after:always}.contents h1{font-family:Georgia,"Times New Roman",serif;font-size:22pt;color:#022c1b;font-weight:500}.contents h2{color:#022c1b}.contents a{color:#022c1b}
+.publication-imprint{page:imprint;min-height:249mm;page-break-after:always;display:flex;flex-direction:column;color:#2a2a2a;font-family:Helvetica,Arial,sans-serif}.imprint-kicker{font-family:Helvetica,Arial,sans-serif;color:#022c1b;text-transform:uppercase;letter-spacing:.08em;font-size:7.5pt;font-weight:700;margin-bottom:4mm}.publication-imprint h1{font-family:Helvetica,Arial,sans-serif;color:#022c1b;font-size:22pt;font-weight:700;margin:0 0 9mm}.publication-meta{display:grid;grid-template-columns:42mm 1fr;gap:2.1mm 6mm;margin:0;font-family:Helvetica,Arial,sans-serif}.publication-meta dt{color:#6f6657}.publication-meta dd{margin:0;font-weight:600}.imprint-rule{height:.6pt;background:#b8943f;width:100%;margin:8mm 0 5mm}.publication-imprint>p{font-family:Helvetica,Arial,sans-serif}.reliance-notice{margin-top:auto;padding-top:4mm;border-top:.6pt solid #d8d5cc;font-family:Helvetica,Arial,sans-serif}.reliance-notice h2{font-family:Helvetica,Arial,sans-serif;font-size:9pt;font-weight:700;color:#022c1b;margin:0 0 2.5mm}.reliance-notice p{font-family:Helvetica,Arial,sans-serif;font-size:8.3pt;line-height:1.45;color:#504a40;margin:0}.publisher-block{margin-top:5mm;padding-top:4mm;border-top:.6pt solid #d8d5cc;font-family:Helvetica,Arial,sans-serif}.publisher-block h2{font-family:Helvetica,Arial,sans-serif;font-size:9pt;font-weight:700;color:#022c1b;margin:0 0 2.5mm}.publisher-block p{font-family:Helvetica,Arial,sans-serif;font-size:8.5pt;line-height:1.5;color:#504a40;margin:0}.publisher-block strong{color:#022c1b}.publisher-block .ai-disclosure{margin-top:3mm;font-size:8pt;line-height:1.42;color:#504a40}
+.contents{border:0;padding:0;page-break-after:always}.contents h1{font-family:Georgia,"Times New Roman",serif;font-size:22pt;color:#022c1b;font-weight:500}.contents h2{color:#022c1b}.contents a{color:#022c1b}.book-contents ol{list-style:none;padding:0;margin:9mm 0 0}.book-contents li{margin:0 0 4.5mm}.book-contents a{display:flex;align-items:baseline;gap:3mm;text-decoration:none}.contents-chapter-number{font-family:Helvetica,Arial,sans-serif;font-weight:700;color:#b8943f;width:8mm}.contents-family-title{font-family:Georgia,"Times New Roman",serif;font-size:12.5pt;color:#022c1b}.contents-leader{flex:1;border-bottom:.5pt dotted #b9b4a9;transform:translateY(-1.5mm);min-width:8mm}.book-contents a::after{content:target-counter(attr(href), page);font-family:Helvetica,Arial,sans-serif;font-size:9pt;color:#6f6657;margin-left:1mm}
 .family{page-break-before:always;border-top:0!important;padding-top:0!important;margin-top:0!important}.family>.hero{border:0;padding:0;margin:0 0 8mm}.family>.hero h1,.family>.hero h2{font-family:Georgia,"Times New Roman",serif;color:#022c1b;font-weight:500}.family>.hero .eyebrow{color:#022c1b}.card{break-inside:auto;border:1px solid #c8d1c8;border-radius:6px;padding:5mm;margin:0 0 5mm}.card h3{font-family:Georgia,"Times New Roman",serif;font-size:15pt;color:#022c1b;font-weight:500}.plain{background:#eef4e8!important;border-left:3pt solid #022c1b;border-radius:0!important}.invariant{background:#f6f4eb!important;border-left:2.2pt solid #022c1b!important}.grid{grid-template-columns:1fr 1fr;gap:4mm}.grid section{break-inside:avoid;background:#f6f4eb!important}.top{break-inside:avoid}.case-files{break-inside:auto}a{color:#022c1b;text-decoration:none}details{display:block}details>summary{list-style:none}details>*{display:block!important}
-.chapter-opener{break-before:page;break-after:page}.chapter-opener h1{font-family:Georgia,"Times New Roman",serif;font-size:30pt;line-height:1.02;color:#022c1b;font-weight:500;margin:3mm 0 7mm;max-width:165mm}.chapter-kicker,.class-kicker{text-transform:uppercase;letter-spacing:.11em;font-size:8pt;font-weight:700;color:#b8943f;margin:0 0 3mm}.chapter-lead{background:#eef4e8!important;border-left:3pt solid #022c1b;padding:4mm 5mm;font-family:Georgia,"Times New Roman",serif;font-size:13pt;line-height:1.28;margin:0 0 4mm}.chapter-meta,.class-meta{font-size:8pt;color:#6f6657;margin:0 0 6mm}.chapter-opener h2,.chapter-map h2,.chapter-overview h2,.chapter-overview h3,.book-class h2,.book-class h3{font-family:Georgia,"Times New Roman",serif;color:#022c1b;font-weight:500}.chapter-opener h2{font-size:16pt;margin:5mm 0 2mm}.chapter-opener .grid h3{font-family:Helvetica,Arial,sans-serif;font-size:12pt;color:#171717;font-weight:700}.chapter-map{break-after:page}.chapter-map h2{font-size:23pt;margin:0 0 6mm}.chapter-map h3{font-size:13pt;color:#022c1b;margin:5mm 0 2mm}.chapter-overview{break-after:page}.chapter-overview h2{font-size:16pt;margin:5mm 0 2mm}.chapter-overview .grid h3{font-family:Helvetica,Arial,sans-serif;font-size:10pt;font-weight:700;color:#171717;margin:0 0 2mm}.chapter-list{list-style:none;padding:0;margin:3mm 0 7mm}.chapter-list li{display:grid;grid-template-columns:13mm 1fr 55mm;gap:3mm;border-bottom:.35pt solid #ddd8ca;padding:2.5mm 0;align-items:start}.chapter-item-number{font-weight:700;color:#b8943f}.chapter-item-title{font-weight:600}.chapter-item-id{font-size:7.4pt;color:#6f6657;text-align:right}.book-class{break-before:page}.class-title{font-size:23pt;line-height:1.08;margin:0 0 2mm}.class-meta{margin-bottom:4mm}.variant-parent{font-family:Georgia,"Times New Roman",serif;font-style:italic;color:#6f6657;margin:-1mm 0 4mm}.book-class>.plain{font-size:11pt;line-height:1.32;padding:4mm 5mm;margin:0 0 5mm}.book-class h3{font-size:13pt;margin:5mm 0 2mm}.book-class .grid h3{font-family:Helvetica,Arial,sans-serif;font-size:10pt;font-weight:700;color:#171717;margin:0 0 2mm}.criteria-grid{break-inside:avoid}.book-class ul{margin-top:1.5mm}.case-studies{margin-top:7mm}.case-studies>h4{font-family:Georgia,"Times New Roman",serif;font-size:15pt;color:#022c1b;font-weight:500;margin:0 0 3mm}.case-study{background:#eef4e8;border-left:3pt solid #022c1b;border-radius:2mm;padding:4mm 5mm;margin:0 0 4mm;break-inside:avoid}.case-study h5{font-family:Georgia,"Times New Roman",serif;font-size:11.5pt;line-height:1.2;color:#022c1b;margin:0 0 1.2mm}.case-study-meta{font-family:Helvetica,Arial,sans-serif;font-size:8pt;color:#6f6657;margin:0 0 3mm}.case-study-context{font-family:Helvetica,Arial,sans-serif;font-size:9.5pt;line-height:1.45;margin:0 0 3mm;color:#2f302d}.case-study-basis{font-family:Helvetica,Arial,sans-serif;font-size:9pt;line-height:1.4;margin:0;padding-top:3mm;border-top:.45pt solid #c7d5c9;color:#3f463f}.case-study-basis strong{color:#022c1b}.case-study-ref{font-family:Helvetica,Arial,sans-serif;font-size:7.5pt;color:#78716c;margin:3mm 0 0}.book-family code,.book-class code{font-size:.88em}.book-family+.book-family{border:0!important;padding:0!important;margin:0!important}
+.chapter-opener{break-before:page;break-after:page}.chapter-opener h1{font-family:Georgia,"Times New Roman",serif;font-size:30pt;line-height:1.02;color:#022c1b;font-weight:500;margin:3mm 0 7mm;max-width:165mm}.chapter-kicker,.class-kicker{text-transform:uppercase;letter-spacing:.11em;font-size:8pt;font-weight:700;color:#b8943f;margin:0 0 3mm}.chapter-lead{background:#eef4e8!important;border-left:3pt solid #022c1b;padding:4mm 5mm;font-family:Georgia,"Times New Roman",serif;font-size:13pt;line-height:1.28;margin:0 0 4mm}.chapter-meta,.class-meta{font-size:8pt;color:#6f6657;margin:0 0 6mm}.chapter-opener h2,.chapter-overview h2,.chapter-overview h3,.book-class h2,.book-class h3{font-family:Georgia,"Times New Roman",serif;color:#022c1b;font-weight:500}.chapter-opener h2{font-size:16pt;margin:5mm 0 2mm}.chapter-outline-title{font-family:Helvetica,Arial,sans-serif!important;font-size:13pt!important;font-weight:700!important;margin:7mm 0 2mm!important}.chapter-aliases{font-size:7.8pt;color:#6f6657;margin:4mm 0 0}.chapter-opener .grid h3{font-family:Helvetica,Arial,sans-serif;font-size:12pt;color:#171717;font-weight:700}.chapter-overview{break-after:page}.chapter-overview h2{font-size:16pt;margin:5mm 0 2mm}.chapter-overview .grid h3{font-family:Helvetica,Arial,sans-serif;font-size:10pt;font-weight:700;color:#171717;margin:0 0 2mm}.chapter-list{list-style:none;padding:0;margin:3mm 0 7mm}.chapter-list li{display:grid;grid-template-columns:13mm 1fr 55mm;gap:3mm;border-bottom:.35pt solid #ddd8ca;padding:2.5mm 0;align-items:start}.chapter-item-number{font-weight:700;color:#b8943f}.chapter-item-title{font-weight:600}.chapter-item-id{font-size:7.4pt;color:#6f6657;text-align:right}.book-class{break-before:page}.class-title{font-size:23pt;line-height:1.08;margin:0 0 2mm}.class-meta{margin-bottom:4mm}.variant-parent{font-family:Georgia,"Times New Roman",serif;font-style:italic;color:#6f6657;margin:-1mm 0 4mm}.book-class>.plain{font-size:11pt;line-height:1.32;padding:4mm 5mm;margin:0 0 5mm}.book-class h3{font-size:13pt;margin:5mm 0 2mm}.book-class .grid h3{font-family:Helvetica,Arial,sans-serif;font-size:10pt;font-weight:700;color:#171717;margin:0 0 2mm}.criteria-grid{break-inside:avoid}.book-class ul{margin-top:1.5mm}.case-studies{margin-top:7mm}.case-studies>h4{font-family:Georgia,"Times New Roman",serif;font-size:15pt;color:#022c1b;font-weight:500;margin:0 0 3mm}.case-study{background:#eef4e8;border-left:3pt solid #022c1b;border-radius:2mm;padding:4mm 5mm;margin:0 0 4mm;break-inside:avoid}.case-study h5{font-family:Georgia,"Times New Roman",serif;font-size:11.5pt;line-height:1.2;color:#022c1b;margin:0 0 1.2mm}.case-study-meta{font-family:Helvetica,Arial,sans-serif;font-size:8pt;color:#6f6657;margin:0 0 3mm}.case-study-context{font-family:Helvetica,Arial,sans-serif;font-size:9.5pt;line-height:1.45;margin:0 0 3mm;color:#2f302d}.case-study-basis{font-family:Helvetica,Arial,sans-serif;font-size:9pt;line-height:1.4;margin:0;padding-top:3mm;border-top:.45pt solid #c7d5c9;color:#3f463f}.case-study-basis strong{color:#022c1b}.case-study-source{font-family:Helvetica,Arial,sans-serif;font-size:8pt;line-height:1.35;margin:3mm 0 0;color:#504a40;overflow-wrap:anywhere}.case-study-source strong{color:#022c1b}.case-study-source a{color:#315f50;text-decoration:underline;overflow-wrap:anywhere}.case-study-ref{font-family:Helvetica,Arial,sans-serif;font-size:7.5pt;color:#78716c;margin:3mm 0 0}.book-family code,.book-class code{font-size:.88em}.book-family+.book-family{border:0!important;padding:0!important;margin:0!important}
 """
 
 
@@ -700,22 +732,35 @@ def publication_frontmatter(index: dict, families: list[dict]) -> str:
   </section>
   <section class="publisher-block">
     <h2>Publisher</h2>
-    <p><strong>CAM Initiative</strong><br>Business entity: Phoenix Covenant Pty Ltd<br>ABN 14 692 195 529<br>cam-initiative.org</p>
+    <p><strong>CAM Initiative</strong><br>Phoenix Covenant Pty Ltd · ABN 14 692 195 529<br>Reviewer: Dr M.V. O'Rourke<br>cam-initiative.org</p>
+    <p class="ai-disclosure"><strong>Generative AI disclosure.</strong> This publication was prepared with the assistance of generative AI tools for research, synthesis and drafting. The reviewer has reviewed the substantive claims, references and classifications and accepts responsibility for the accuracy and content of the text. Where generative AI is used in the preparation or maintenance of VIGIL data, the specific model used is captured in the applicable metadata records.</p>
   </section>
 </section>"""
 
 def combined_html(families: list[dict], case_examples: dict[str, list[dict]] | None = None, *, publication: bool = False) -> str:
     index = load(INDEX)
-    contents = ["<section class=\"contents\"><h1>Contents</h1><ol>"]
-    for chapter_number, data in enumerate(families, start=1):
-        family = data["family"]
-        contents.append(f"<li><a href=\"#{esc(anchor(family['family_id']))}\"><strong>{esc(family['name'])}</strong></a><ul>")
-        contents.extend(
-            f"<li><a href=\"#{esc(anchor(item['class_id']))}\">{chapter_number}.{class_number} {esc(item['name'])}</a></li>"
-            for class_number, item in enumerate(data["classes"], start=1)
-        )
-        contents.append("</ul></li>")
-    contents.append("</ol></section>")
+    if publication:
+        contents = ["<section class=\"contents book-contents\"><h1>Contents</h1><ol>"]
+        for chapter_number, data in enumerate(families, start=1):
+            family = data["family"]
+            contents.append(
+                f"<li><a href=\"#{esc(anchor(family['family_id']))}\">"
+                f"<span class=\"contents-chapter-number\">{chapter_number}</span>"
+                f"<span class=\"contents-family-title\">{esc(family['name'])}</span>"
+                "<span class=\"contents-leader\"></span></a></li>"
+            )
+        contents.append("</ol></section>")
+    else:
+        contents = ["<section class=\"contents\"><h1>Contents</h1><ol>"]
+        for chapter_number, data in enumerate(families, start=1):
+            family = data["family"]
+            contents.append(f"<li><a href=\"#{esc(anchor(family['family_id']))}\"><strong>{esc(family['name'])}</strong></a><ul>")
+            contents.extend(
+                f"<li><a href=\"#{esc(anchor(item['class_id']))}\">{chapter_number}.{class_number} {esc(item['name'])}</a></li>"
+                for class_number, item in enumerate(data["classes"], start=1)
+            )
+            contents.append("</ul></li>")
+        contents.append("</ol></section>")
     frontmatter = publication_frontmatter(index, families) if publication else ""
     family_body = (
         "".join(publication_family_html(data, chapter_number, case_examples) for chapter_number, data in enumerate(families, start=1))
