@@ -18,7 +18,7 @@ Source registration records what an external instrument is, its bounded relevanc
 
 Public source knowledge fields SHALL be written as durable governance knowledge for an external reader who has no access to the authoring conversation, repository work plan, migration context, maintenance workflow or agent handoff. Internal curation, review tasking, reconciliation, branch, validator and workflow language SHALL NOT appear in public narrative fields.
 
-The controlled theme and lifecycle vocabularies are shared with `../external_requirements/external-requirement.schema.json`. A public summary may describe only what the available official source text, official metadata, official abstract or other authoritative publisher material supports. It must not reconstruct inaccessible clauses or imply legal applicability.
+The controlled theme and lifecycle vocabularies are shared with `../requirements/external-requirement.schema.json`. A public summary may describe only what the available official source text, official metadata, official abstract or other authoritative publisher material supports. It must not reconstruct inaccessible clauses or imply legal applicability.
 
 ## Substantive review freshness
 
@@ -26,7 +26,7 @@ Every review-eligible source requires a `last_substantive_reviewed` date and a s
 
 A substantive review checks source/version currency, newer or consolidated text, changed AI-governance relevance, relevant authoritative guidance, the public summary, thematic classification, lifecycle applicability, relevance scope and material applicability qualifications. A material metadata change reopens `review_state`; it does not silently claim that the substantive review was completed.
 
-Review events reference the matching source/version in `../external_requirements/source-scope.json` for the maintained source-access posture, extraction scope, inaccessible sections and known unreviewed sections. This avoids duplicating source-specific limitations. AI substantive review is distinct from authorship provenance and from post-production human assurance. Human review, source verification and reviewed-artefact digests remain separately evidenced in `../external_requirements/source-review-assurance.json`.
+Review events reference the matching source/version in `../requirements/source-scope.json` for the maintained source-access posture, extraction scope, inaccessible sections and known unreviewed sections. This avoids duplicating source-specific limitations. AI substantive review is distinct from authorship provenance and from post-production human assurance. Human review, source verification and reviewed-artefact digests remain separately evidenced in `../requirements/source-review-assurance.json`.
 
 ## Source authority
 
@@ -40,7 +40,7 @@ Each source/version has an internal `vigil_source_id` plus a publisher-native `c
 
 `source_metadata_fingerprint` is a SHA-256 of VIGIL's material source-metadata projection. It supports deterministic source/version change detection. It is **not** a digest of a reviewed PDF, HTML capture, licensed standard file or other primary artefact.
 
-Exact reviewed-source artefact digests belong in `../external_requirements/source-review-assurance.json`. Historical reviewed artefacts for which no digest was recorded remain `not-recorded`; VIGIL does not manufacture retrospective digests.
+Exact reviewed-source artefact digests belong in `../requirements/source-review-assurance.json`. Historical reviewed artefacts for which no digest was recorded remain `not-recorded`; VIGIL does not manufacture retrospective digests.
 
 ## Files
 
@@ -49,7 +49,7 @@ Exact reviewed-source artefact digests belong in `../external_requirements/sourc
 - `source-registry.json` — maintained current source/version registry.
 - `source-review-queue.json` — generated source-review queue.
 - `SOURCE-CATALOGUE.md` — generated human-readable current source catalogue.
-- `../scripts/manage-external-sources.py` — deterministic source registry maintenance and generation.
+- `../../scripts/manage-external-sources.py` — deterministic source registry maintenance and generation.
 
 ## Commands
 
@@ -64,4 +64,4 @@ For normalized observations from an official-source adapter:
 python vigil/scripts/manage-external-sources.py ingest --source <source-id> --input /path/to/items.json
 ```
 
-Semantic external-requirement extraction belongs under `../external_requirements/`. CAM applicability and coverage assessment belongs under `../cam_assessment/`.
+Semantic external-requirement extraction belongs under `../requirements/`. CAM applicability and coverage assessment belongs under `../../cam_assessment/`.
