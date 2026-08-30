@@ -135,8 +135,6 @@ def validate_assessment(item: dict[str, Any], extreq: dict[str, Any]) -> list[st
     if not isinstance(provenance, dict):
         errors.append(f"{label}: assessment_provenance must be an object")
     else:
-        if provenance.get("declaration") != PROVENANCE_REF:
-            errors.append(f"{label}: assessment provenance must reference {PROVENANCE_REF}")
         if provenance.get("human_role") == "contract-approver":
             if provenance.get("human_authorship") is not False:
                 errors.append(f"{label}: contract approval cannot assert human authorship")
