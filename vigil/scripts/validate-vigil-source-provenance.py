@@ -4,54 +4,15 @@
 from __future__ import annotations
 
 import json
-import re
 from pathlib import Path
 from typing import Any
+
+from source_provenance import origin_markers, text
 
 SCRIPT_PATH = Path(__file__).resolve()
 VIGIL_ROOT = SCRIPT_PATH.parents[1]
 RECORDS_ROOT = VIGIL_ROOT / "records"
 SCHEMA_PATH = VIGIL_ROOT / "VIGIL.Schema.json"
-
-VIGIL_ID_RE = re.compile(r"^VIGIL-\d{4}-(?:OBS|FM|PROP|PATCH|RESEARCH|LEARN)-\d{4}\b", re.I)
-CAM_HINTS = (
-    "cam initiative",
-    "cam-initiative",
-    "caelestis",
-    "cam governance catalogue",
-    "cam-governance-catalogue",
-    "cam-initiative.org",
-    "office of the planetary custodian",
-)
-VIGIL_HINTS = ("vigil", "cam-initiative/vigil")
-
-
-def text(value: Any) -> str:
-    if value is None:
-        return ""
-    if isinstance(value, (str, int, float, bool)):
-        return str(value).strip()
-    return ""
-
-
-def source_text(source: dict[str, Any]) -> str:
-    return " | ".join(
-        text(source.get(field)).lower()
-        for field in (
-            "source_title",
-            "author_or_publisher",
-            "source_url",
-            "archive_url",
-            "source_platform",
-            "system_or_product",
-            "model_or_algorithm",
-            "deployment_context",
-            "source_context",
-            "relevance_note",
-            "source_type",
-            "source_url_status",
-        )
-    )
 
 
 def main() -> int:
@@ -88,8 +49,6 @@ def main() -> int:
                 continue
             residence = text(source.get("source_residence"))
             role = text(source.get("source_role"))
-            title = text(source.get("source_title"))
-            haystack = source_text(source)
 
             if residence not in allowed_residences:
                 errors.append(f"{location} invalid source_residence {residence!r}")
@@ -98,12 +57,11 @@ def main() -> int:
             if residence == "unknown" or role == "unknown":
                 errors.append(f"{location} unresolved source provenance is not permitted in canonical records")
 
-            looks_vigil = VIGIL_ID_RE.match(title) is not None or any(hint in haystack for hint in VIGIL_HINTS)
-            looks_cam = any(hint in haystack for hint in CAM_HINTS)
+            looks_vigil, looks_cam = origin_markers(source)
             if residence == "external" and (looks_vigil or looks_cam):
                 errors.append(f"{location} is marked external but identifies CAM/VIGIL origin")
-            if residence == "vigil-internal" and not looks_vigil:
-                errors.append(f"{location} is marked vigil-internal without a VIGIL origin marker")
+            if residence == "vigil-internal" and not (looks_vigil or looks_cam):
+                errors.append(f"{location} is marked vigil-internal without a CAM/VIGIL origin marker")
             if residence == "cam-internal" and not looks_cam:
                 errors.append(f"{location} is marked cam-internal without a CAM/Caelestis origin marker")
             if role == "record-cross-reference" and residence != "vigil-internal":

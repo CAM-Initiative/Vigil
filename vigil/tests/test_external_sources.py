@@ -52,7 +52,7 @@ class ExternalSourceRegistryTests(unittest.TestCase):
                     "ai_role": "substantive-analytical-reviewer", "generation_mode": "semi-autonomous",
                     "review_method": {"access_method": "official-metadata-only-review", "scope_method": "blocked-primary-text-review"},
                     "review_scope": "A bounded test review.",
-                    "source_scope_reference": "vigil/external_requirements/source-scope.json",
+                    "source_scope_reference": "vigil/external_governance/requirements/source-scope.json",
                     "limitations_reference": ["source_access_notes"], "human_role": "contract-approver",
                     "human_review_status": "not-reviewed", "human_verification_status": "not-verified"
                 }]

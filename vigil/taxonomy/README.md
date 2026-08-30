@@ -1,4 +1,4 @@
-# VIGIL Failure Taxonomy — Technical Standard
+# VIGIL Observatory Failure Taxonomy — Technical Standard
 
 This directory contains a portable, machine-readable technical reference for AI-governance failure mechanisms. It is separate from incident, severity, harm, evidence-confidence, triage, jurisdiction, vendor, repair-state, and other event metadata.
 
@@ -20,12 +20,13 @@ families/
 generated/
   one complete HTML page per family
   VIGIL.FailureTaxonomy.FullReference.html
+  VIGIL.Observatory.FailureTaxonomy.FullReference.pdf
 migration/
   Caelestis.LegacyFailure.MigrationLedger.json
   Caelestis.LegacyFailure.InventoryReview.md
 ```
 
-Family JSON is canonical. HTML and Markdown references are generated projections. The migration ledger is non-normative source-analysis evidence and is not a dependency of the portable taxonomy.
+Family JSON is canonical. HTML, Markdown, and PDF references are generated projections. The migration ledger is non-normative source-analysis evidence and is not a dependency of the portable taxonomy.
 
 `generated/VIGIL.FailureTaxonomy.CaseFileExamples.json` is a non-normative reverse mapping derived from canonical Failure Mode `taxonomy_classification` blocks. It lets public interfaces discover Case File examples for immutable family and class IDs without embedding incident-specific record IDs in portable taxonomy definitions. Each projected example declares whether the mapping is the Failure Mode's primary structural mechanism or an independently evidenced secondary mechanism.
 
@@ -76,7 +77,31 @@ Every family defines its immutable ID, semantic code, canonical name, version, s
 
 Every class or variant defines its immutable ID, semantic code, current family ID, canonical name, abstraction, status, plain-English explanation, technical definition, recognition criteria, exclusions, examples, aliases, typed relationships where relevant, and optional external mappings or supersession metadata.
 
+### Semantic roles of family prose
+
+The three principal family fields are complementary and must not be used as interchangeable summaries:
+
+- `plain_english` describes the recognisable **failure condition** in accessible language. It must say how the family is not working; a sentence that states only the healthy or required condition belongs in `invariant`.
+- `definition` gives the technical boundary of the **bounded failure set**. It must encompass every admitted child mechanism, distinguish neighbouring families, and avoid becoming either an incident example or a normative aspiration.
+- `invariant` states the positive **bounded structural property that must hold**. Every admitted child class must be a distinct way that this same property fails.
+
+Parent prose must be re-tested whenever a class is added, moved, narrowed, or widened. A valid child cannot be left outside the parent's `plain_english`, `definition`, `invariant`, and inclusion boundary merely because its immutable membership is machine-valid. Conversely, parent wording must not be broadened to import mechanisms that remain assigned to another family.
+
 Definitions must not contain incident-specific values. Severity, harm, persistence, reproducibility, visibility, incident status, evidence confidence, jurisdiction, vendor/model, manifestation, locus, repair side, propagation, observability state, evidence state, and repair status remain orthogonal event dimensions.
+
+## Dataset and publication versioning
+
+The version in `VIGIL.FailureTaxonomy.Index.json` is the version of the complete downloadable taxonomy dataset and Full Reference Manual. It is distinct from the version of an individual family record and from the historical taxonomy version recorded on a Failure Mode classification decision.
+
+Dataset releases follow these rules:
+
+- an amendment, addition, movement, deprecation, or other change to an existing family or class collection increments the third digit;
+- admission of a new failure family increments the second digit and resets the third digit to zero;
+- the first digit is reserved for a deliberately approved, materially incompatible re-foundation of the taxonomy and is never inferred from routine record maintenance;
+- every dataset release records a fixed ISO `publication_date`; generation must not substitute the current clock date;
+- historical Failure Mode classification stamps remain unchanged unless the mappings are substantively re-adjudicated.
+
+The index `release_history` records the canonical family/class content digest, family-ID set, class count, change level, dataset version, and publication date. Taxonomy validation rejects changed canonical family/class content unless the release history, dataset version, and publication date have been advanced consistently. It also rejects a patch increment for a newly admitted family and a minor increment for an ordinary existing-record change.
 
 ## Relationships
 
@@ -86,13 +111,27 @@ A variant has exactly one in-family class parent. Definitions are not duplicated
 
 ## Generation
 
-Generate every complete family page and the combined full-reference book:
+Generate every complete family page and the combined full-reference HTML:
 
 ```bash
 python vigil/taxonomy/render_taxonomy.py \
   --catalogue \
   --output-dir vigil/taxonomy/generated
 ```
+
+Generate the HTML catalogue and the downloadable VIGIL Observatory Full Reference PDF:
+
+```bash
+python -m pip install weasyprint
+python vigil/taxonomy/render_taxonomy.py \
+  --catalogue \
+  --output-dir vigil/taxonomy/generated \
+  --pdf
+```
+
+The PDF is a publication projection of the same canonical family JSON used by the HTML renderer. It is intentionally generated rather than hand-edited. The current publication layer supplies stable front matter, dataset version, fixed edition date, status metadata, family/class pagination, a contents section, page numbering, and publication-rights text; visual branding and cover artwork may be evolved without changing the underlying taxonomy contract. The renderer defaults `SOURCE_DATE_EPOCH` to `0` for reproducible embedded-font timestamps; a publication environment may override it with another fixed epoch.
+
+`.github/workflows/taxonomy-publications.yml` automatically rebuilds the HTML and PDF projections when the taxonomy index, family/class definitions, Case File example projection, or renderer changes. On push, verified generated outputs are committed back to the current branch. The workflow rejects missing, empty, or non-PDF publication output before commit.
 
 Generate one Markdown family reference when needed:
 

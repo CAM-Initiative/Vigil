@@ -17,12 +17,19 @@ from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any
 
+from external_requirements_io import (
+    REQUIREMENTS_AGGREGATE_PATH,
+    load_json,
+    load_requirements_document,
+    render_requirements_document,
+)
+
 ROOT = Path(__file__).resolve().parents[1]
-SOURCES = ROOT / "external_sources"
-REQ = ROOT / "external_requirements"
+SOURCES = ROOT / "external_governance" / "sources"
+REQ = ROOT / "external_governance" / "requirements"
 REGISTRY_PATH = SOURCES / "source-registry.json"
 SCOPE_PATH = REQ / "source-scope.json"
-REQUIREMENTS_PATH = REQ / "requirements.json"
+REQUIREMENTS_PATH = REQUIREMENTS_AGGREGATE_PATH
 INDEX_PATH = REQ / "requirements-index.json"
 COMPLETENESS_PATH = REQ / "completeness-report.json"
 CATALOGUE_PATH = REQ / "EXTERNAL-AI-GOVERNANCE-REQUIREMENTS.md"
@@ -33,7 +40,6 @@ COVERAGE_PATH = REQ / "source-coverage-manifests.json"
 CROSSWALKS_PATH = REQ / "derivative-crosswalks.json"
 CROSSWALK_INDEX_PATH = REQ / "derivative-crosswalk-index.json"
 CROSSWALK_VIEW_PATH = REQ / "DERIVATIVE-CROSSWALKS.md"
-PROVENANCE_REF = "vigil/provenance/AUTHORSHIP-PROVENANCE.json"
 
 DEFAULT_PROVENANCE = {
     "content_origin": "ai-authored",
@@ -42,7 +48,6 @@ DEFAULT_PROVENANCE = {
     "human_authorship": False,
     "human_review_status": "not-reviewed",
     "human_verification_status": "not-verified",
-    "declaration": PROVENANCE_REF,
 }
 GENERATED_BASE = {
     "content_origin": "deterministically-generated",
@@ -51,7 +56,6 @@ GENERATED_BASE = {
     "human_authorship": False,
     "human_review_status": "not-reviewed",
     "human_verification_status": "not-verified",
-    "declaration": PROVENANCE_REF,
 }
 
 SOURCE_ROLES = {
@@ -140,10 +144,6 @@ FORBIDDEN_INTERNAL_FIELDS = {
 
 def generated(upstream: list[str]) -> dict[str, Any]:
     return {**GENERATED_BASE, "upstream_provenance": upstream}
-
-
-def load_json(path: Path) -> Any:
-    return json.loads(path.read_text(encoding="utf-8"))
 
 
 def json_text(value: Any) -> str:
@@ -524,7 +524,7 @@ def coverage_manifest(
         "source_retrieval_state": "retrieved" if direct and reqs else ("not-established" if direct else "not-retrieved"),
         "analysis_state": status,
         "substantive_review_provenance": {
-            "canonical_source": "vigil/external_sources/source-registry.json",
+            "canonical_source": "vigil/external_governance/sources/source-registry.json",
             "current_review_event_id": current_id,
             "review_date": current["review_date"],
             "next_substantive_review": next_review,
@@ -583,8 +583,8 @@ def build_outputs(
     reviewed_at: str,
 ) -> dict[Path, str]:
     upstream = [
-        "vigil/external_sources/source-registry.json", "vigil/external_requirements/source-scope.json",
-        "vigil/external_requirements/requirements.json", "vigil/external_requirements/source-review-assurance.json",
+        "vigil/external_governance/sources/source-registry.json", "vigil/external_governance/requirements/source-scope.json",
+        "vigil/external_governance/requirements/requirements/", "vigil/external_governance/requirements/source-review-assurance.json",
     ]
     sorted_requirements = sorted(requirements, key=lambda x: x["requirement_id"])
     by_source: dict[tuple[str, str], list[dict[str, Any]]] = defaultdict(list)
@@ -592,7 +592,7 @@ def build_outputs(
         by_source[source_key(req)].append(req)
     index = {
         "schema_version": "1.2",
-        "generated_from": "requirements.json",
+        "generated_from": "requirements/",
         "generated_at": reviewed_at,
         "authorship_provenance": generated(upstream),
         "requirement_count": len(sorted_requirements),
@@ -700,7 +700,7 @@ def build_outputs(
     for row in sorted(blocked, key=lambda x: (priority_order[x["review_priority"]], x["title"], x["source_version"])):
         priority_lines.append(f"| `{row['review_priority']}` | {row['title']} | `{row['source_version']}` | {row['review_priority_rationale'].replace('|', chr(92) + '|')} | {row['source_access_status']} | {row['next_action'].replace('|', chr(92) + '|')} |")
     priority_lines.append("")
-    crosswalk_upstream = ["vigil/external_requirements/derivative-crosswalks.json"]
+    crosswalk_upstream = ["vigil/external_governance/requirements/derivative-crosswalks.json"]
     xindex = {
         "schema_version": "1.0", "generated_at": reviewed_at, "authorship_provenance": generated(crosswalk_upstream),
         "crosswalk_count": len(crosswalks), "mapping_row_count": sum(len(x.get("mappings", [])) for x in crosswalks),
@@ -741,7 +741,7 @@ def load_and_validate() -> tuple[dict[Path, str], list[str]]:
     errors: list[str] = []
     registry = load_json(REGISTRY_PATH)
     scope_doc = load_json(SCOPE_PATH)
-    req_doc = load_json(REQUIREMENTS_PATH)
+    req_doc = load_requirements_document()
     crosswalk_doc = load_json(CROSSWALKS_PATH)
     if registry.get("schema_version") != "1.2":
         errors.append("source-registry schema_version must be 1.2")
@@ -766,6 +766,7 @@ def load_and_validate() -> tuple[dict[Path, str], list[str]]:
     validate_requirements(requirements, registry_by_key, scope_by_key, reviews, errors)
     crosswalks = validate_crosswalks(crosswalk_doc, errors)
     outputs = build_outputs(registry_by_key, scopes, requirements, reviews, crosswalks, reviewed_at)
+    outputs[REQUIREMENTS_PATH] = render_requirements_document()
     return outputs, errors
 
 
@@ -787,7 +788,7 @@ def validate(check_generated: bool = False) -> None:
                 errors.append(f"generated output is stale: {path}")
     if errors:
         raise ValueError("\n".join(errors))
-    requirements = load_json(REQUIREMENTS_PATH)["requirements"]
+    requirements = load_requirements_document()["requirements"]
     sources = load_json(REGISTRY_PATH)["entries"]
     print(f"External requirements valid: {len(sources)} source versions, {len(requirements)} requirements")
 

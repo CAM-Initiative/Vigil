@@ -4,10 +4,12 @@ from __future__ import annotations
 
 import copy
 import importlib.util
+import sys
 import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.append(str(ROOT / "scripts"))
 SCRIPT = ROOT / "scripts" / "validate-cam-assessments.py"
 SPEC = importlib.util.spec_from_file_location("cam_assessment", SCRIPT)
 MODULE = importlib.util.module_from_spec(SPEC)
@@ -18,7 +20,7 @@ SPEC.loader.exec_module(MODULE)
 class CamAssessmentTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls.requirements_doc = MODULE.load(MODULE.REQUIREMENTS)
+        cls.requirements_doc = MODULE.load_requirements_document()
         cls.extreq = cls.requirements_doc["requirements"][0]
 
     def fixture(self) -> dict:

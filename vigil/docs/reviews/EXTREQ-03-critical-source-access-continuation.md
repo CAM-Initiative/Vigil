@@ -35,4 +35,4 @@ No critical source was upgraded to `direct-public-primary` or `direct-licensed-p
 
 No EXTREQ record was created or amended from preview/sample text, metadata, abstracts or a derivative source. No copyrighted standard text was copied into VIGIL.
 
-The correct next action remains lawful licensed or otherwise publisher-authorized access to the eight critical standards, followed by bounded primary-text extraction and exact reviewed-source SHA-256 recording in `vigil/external_requirements/source-review-assurance.json` where the reviewed artefact can lawfully be held for review.
+The correct next action remains lawful licensed or otherwise publisher-authorized access to the eight critical standards, followed by bounded primary-text extraction and exact reviewed-source SHA-256 recording in `vigil/external_governance/requirements/source-review-assurance.json` where the reviewed artefact can lawfully be held for review.

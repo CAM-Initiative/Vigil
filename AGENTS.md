@@ -8,7 +8,7 @@ VIGIL is a public evidence-to-repair ledger for AI ecosystem observations, resea
 
 VIGIL records are evidentiary records, not placeholders. They preserve source metadata, evidence posture, classification context, repair routing, and implementation history. VIGIL does not itself amend CAM/Caelestis doctrine.
 
-VIGIL's default production provenance is AI-authored and semi-autonomous under human contract approval. Repository acceptance or publication does not establish human authorship, review, or verification. Follow `vigil/provenance/AUTHORSHIP-PROVENANCE.json`; an explicit, evidenced artefact-level override takes precedence over that default.
+VIGIL's default production provenance is AI-authored and semi-autonomous under human contract approval. Repository acceptance or publication does not establish human authorship, review, or verification. Follow `vigil/scripts/validate-authorship-provenance.py`; an explicit, evidenced artefact-level override takes precedence over that default.
 
 ## Required agent workflow
 

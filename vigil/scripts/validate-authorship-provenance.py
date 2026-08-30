@@ -8,11 +8,11 @@ import sys
 from pathlib import Path
 from typing import Any
 
+from external_requirements_io import load_requirements_document
+
 
 ROOT = Path(__file__).resolve().parents[2]
 VIGIL = ROOT / "vigil"
-DECLARATION_PATH = VIGIL / "provenance" / "AUTHORSHIP-PROVENANCE.json"
-DECLARATION_REF = "vigil/provenance/AUTHORSHIP-PROVENANCE.json"
 
 VOCABULARY = {
     "content_origin": {
@@ -67,6 +67,20 @@ GENERATED = {
     "human_verification_status": "not-verified",
 }
 
+# These rules are part of the executable provenance contract. They are kept
+# beside the validator rather than duplicated in a repository-level metadata
+# declaration. Artefact-local provenance remains authoritative for overrides.
+INHERITANCE_RULES = {
+    "default_applies_when_override_absent": True,
+    "explicit_artefact_override_precedence": True,
+    "explicit_artefact_override_field": "authorship_provenance",
+    "absence_of_override_means_human_review": False,
+    "repository_acceptance_means_human_review": False,
+    "repository_publication_means_human_review": False,
+    "repository_acceptance_means_human_verification": False,
+    "legacy_interpretive_provenance_is_authorship_override": False,
+}
+
 
 def load(path: Path) -> dict[str, Any]:
     value = json.loads(path.read_text(encoding="utf-8"))
@@ -79,7 +93,6 @@ def validate_provenance(
     provenance: object,
     label: str,
     *,
-    require_declaration: bool = False,
     require_upstream: bool = False,
 ) -> list[str]:
     errors: list[str] = []
@@ -115,8 +128,6 @@ def validate_provenance(
     if provenance.get("generation_mode") == "deterministic-generation" and origin != "deterministically-generated":
         errors.append(f"{label}: deterministic-generation requires deterministically-generated origin")
 
-    if require_declaration and provenance.get("declaration") != DECLARATION_REF:
-        errors.append(f"{label}: declaration must reference {DECLARATION_REF}")
     upstream = provenance.get("upstream_provenance")
     if require_upstream and (
         not isinstance(upstream, list)
@@ -129,69 +140,8 @@ def validate_provenance(
 
 def validate_repository() -> list[str]:
     errors: list[str] = []
-    declaration = load(DECLARATION_PATH)
-    if declaration.get("default_provenance") != DEFAULT:
-        errors.append(f"{DECLARATION_PATH}: default_provenance differs from the VIGIL default")
 
-    declared_vocab = declaration.get("controlled_vocabulary")
-    if not isinstance(declared_vocab, dict):
-        errors.append(f"{DECLARATION_PATH}: controlled_vocabulary must be an object")
-    else:
-        for field, expected in VOCABULARY.items():
-            actual = declared_vocab.get(field)
-            if not isinstance(actual, dict) or set(actual) != expected:
-                errors.append(f"{DECLARATION_PATH}: controlled vocabulary mismatch for {field}")
-
-    inheritance = declaration.get("inheritance_rules", {})
-    expected_false = {
-        "absence_of_override_means_human_review",
-        "repository_acceptance_means_human_review",
-        "repository_publication_means_human_review",
-        "repository_acceptance_means_human_verification",
-    }
-    for field in expected_false:
-        if inheritance.get(field) is not False:
-            errors.append(f"{DECLARATION_PATH}: {field} must be false")
-    for field in ("default_applies_when_override_absent", "explicit_artefact_override_precedence"):
-        if inheritance.get(field) is not True:
-            errors.append(f"{DECLARATION_PATH}: {field} must be true")
-    if inheritance.get("explicit_artefact_override_field") != "authorship_provenance":
-        errors.append(f"{DECLARATION_PATH}: explicit override field must be authorship_provenance")
-    if inheritance.get("legacy_interpretive_provenance_is_authorship_override") is not False:
-        errors.append(f"{DECLARATION_PATH}: legacy interpretive provenance must not override authorship provenance")
-
-    dataset = declaration.get("dataset_declarations", {}).get(
-        "external-governance-sources-and-requirements", {}
-    )
-    if dataset.get("provenance") != DEFAULT:
-        errors.append(f"{DECLARATION_PATH}: external governance source/requirement provenance differs from the VIGIL default")
-    if dataset.get("external_source_authorship_unchanged") is not True:
-        errors.append(f"{DECLARATION_PATH}: external-source authorship boundary must be preserved")
-    review_provenance = dataset.get("substantive_review_provenance", {})
-    if review_provenance.get("canonical_field") != "vigil/external_sources/source-registry.json#entries[].substantive_review_provenance":
-        errors.append(f"{DECLARATION_PATH}: external substantive-review provenance canonical field is invalid")
-    for field in ("requires_reviewing_system_identity", "requires_source_scope_reference", "human_assurance_inherited_from_authorship_provenance"):
-        if review_provenance.get(field) is not True:
-            errors.append(f"{DECLARATION_PATH}: substantive-review provenance requires {field}")
-    separation = declaration.get("substantive_review_provenance_rule", {})
-    for field in (
-        "authorship_provenance_is_distinct",
-        "ai_substantive_review_provenance_is_distinct",
-        "human_assurance_provenance_is_distinct",
-    ):
-        if separation.get(field) is not True:
-            errors.append(f"{DECLARATION_PATH}: provenance separation rule requires {field}")
-    if separation.get("routine_metadata_refresh_resets_review_date") is not False:
-        errors.append(f"{DECLARATION_PATH}: metadata refresh must not reset substantive review")
-    if separation.get("source_review_assurance_dataset") != "vigil/external_requirements/source-review-assurance.json":
-        errors.append(f"{DECLARATION_PATH}: human assurance sidecar boundary is invalid")
-    generated = declaration.get("generated_artefact_rule", {})
-    if generated.get("provenance") != GENERATED:
-        errors.append(f"{DECLARATION_PATH}: generated artefact provenance is invalid")
-    if generated.get("upstream_provenance_reference_required") is not True:
-        errors.append(f"{DECLARATION_PATH}: generated artefacts must reference upstream provenance")
-
-    requirements = load(VIGIL / "external_requirements" / "requirements.json")
+    requirements = load_requirements_document()
     for record in requirements.get("requirements", []):
         provenance = record.get("interpretation_provenance")
         label = f"{record.get('requirement_id', 'unknown requirement')}.interpretation_provenance"
@@ -210,35 +160,29 @@ def validate_repository() -> list[str]:
                 errors.append(f"{label}: source_analysis_method must be non-empty")
 
     for relative in (
-        "external_sources/source-registry.json",
-        "external_requirements/requirements.json",
-        "external_requirements/derivative-crosswalks.json",
+        "external_governance/sources/source-registry.json",
+        "external_governance/requirements/requirements/manifest.json",
+        "external_governance/requirements/requirements.json",
+        "external_governance/requirements/derivative-crosswalks.json",
     ):
         document = load(VIGIL / relative)
         provenance = document.get("authorship_provenance")
-        errors.extend(validate_provenance(provenance, relative, require_declaration=True))
+        errors.extend(validate_provenance(provenance, relative))
         if isinstance(provenance, dict):
             for field, value in DEFAULT.items():
                 if provenance.get(field) != value:
                     errors.append(f"{relative}: {field} must be {value!r}")
 
     for relative in (
-        "external_sources/source-review-queue.json",
-        "external_requirements/requirements-index.json",
-        "external_requirements/completeness-report.json",
-        "external_requirements/source-coverage-manifests.json",
-        "external_requirements/derivative-crosswalk-index.json",
+        "external_governance/sources/source-review-queue.json",
+        "external_governance/requirements/requirements-index.json",
+        "external_governance/requirements/completeness-report.json",
+        "external_governance/requirements/source-coverage-manifests.json",
+        "external_governance/requirements/derivative-crosswalk-index.json",
     ):
         document = load(VIGIL / relative)
         provenance = document.get("authorship_provenance")
-        errors.extend(
-            validate_provenance(
-                provenance,
-                relative,
-                require_declaration=True,
-                require_upstream=True,
-            )
-        )
+        errors.extend(validate_provenance(provenance, relative, require_upstream=True))
         if isinstance(provenance, dict):
             for field, value in GENERATED.items():
                 if provenance.get(field) != value:
@@ -247,22 +191,12 @@ def validate_repository() -> list[str]:
     for relative in (
         "VIGIL.Failures.Index.json",
         "VIGIL.Observations.Index.json",
-        "VIGIL.Proposals.Index.json",
-        "VIGIL.PatchNotes.Index.json",
         "VIGIL.Research.Index.json",
-        "VIGIL.Learn.Index.json",
         "VIGIL.Registry.Index.json",
     ):
         document = load(VIGIL / relative)
         provenance = document.get("authorship_provenance")
-        errors.extend(
-            validate_provenance(
-                provenance,
-                relative,
-                require_declaration=True,
-                require_upstream=True,
-            )
-        )
+        errors.extend(validate_provenance(provenance, relative, require_upstream=True))
         if isinstance(provenance, dict):
             for field, value in GENERATED.items():
                 if provenance.get(field) != value:

@@ -1,0 +1,168 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/CAM-Initiative/Vigil/vigil/external_governance/requirements/source-scope.schema.json",
+  "title": "VIGIL External AI-Governance Source Scope",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "reviewed_at",
+    "entries"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.2"
+    },
+    "reviewed_at": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "vigil_source_id",
+          "external_source_id",
+          "source_version",
+          "canonical_source_identifier",
+          "source_role",
+          "source_access_status",
+          "access_checked_at",
+          "access_locator",
+          "source_access_notes",
+          "extraction_status",
+          "extraction_scope_notes",
+          "inaccessible_sections",
+          "known_unreviewed_sections",
+          "next_action",
+          "review_priority",
+          "review_priority_rationale",
+          "maintainer_action_required",
+          "maintainer_action"
+        ],
+        "properties": {
+          "vigil_source_id": {
+            "type": "string",
+            "pattern": "^EXT-[A-F0-9]{12}$"
+          },
+          "external_source_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source_version": {
+            "type": "string",
+            "minLength": 1
+          },
+          "canonical_source_identifier": {
+            "type": "object",
+            "required": [
+              "scheme",
+              "value"
+            ],
+            "properties": {
+              "scheme": {
+                "type": "string",
+                "minLength": 1
+              },
+              "value": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "additionalProperties": false
+          },
+          "source_role": {
+            "enum": [
+              "primary-ai-governance",
+              "supporting-external-authority",
+              "context-or-discovery",
+              "excluded-from-current-scope"
+            ]
+          },
+          "source_access_status": {
+            "enum": [
+              "direct-public-primary",
+              "direct-licensed-primary",
+              "official-public-extract",
+              "official-metadata-only",
+              "secondary-source-only",
+              "source-unavailable"
+            ]
+          },
+          "access_checked_at": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          },
+          "access_locator": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source_access_notes": {
+            "type": "string",
+            "minLength": 1
+          },
+          "extraction_status": {
+            "enum": [
+              "not-started",
+              "in-progress",
+              "partial",
+              "complete",
+              "blocked-access",
+              "supporting-only",
+              "context-only",
+              "excluded",
+              "superseded-version"
+            ]
+          },
+          "extraction_scope_notes": {
+            "type": "string",
+            "minLength": 1
+          },
+          "inaccessible_sections": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "known_unreviewed_sections": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "next_action": {
+            "type": "string",
+            "minLength": 1
+          },
+          "maintainer_action_required": {
+            "type": "boolean"
+          },
+          "maintainer_action": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "review_priority": {
+            "enum": [
+              "critical-governance-source",
+              "high-value-governance-source",
+              "supporting-specialist-source",
+              "low-immediate-priority"
+            ]
+          },
+          "review_priority_rationale": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

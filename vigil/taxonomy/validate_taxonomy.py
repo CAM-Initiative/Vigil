@@ -4,9 +4,11 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import re
 import sys
+from datetime import date
 from pathlib import Path
 from typing import Any
 
@@ -25,6 +27,9 @@ MIGRATION_DISPOSITIONS = {
     "HARM_OR_CONSEQUENCE_AXIS", "MANIFESTATION_OR_LOCUS_AXIS", "OTHER_ORTHOGONAL_AXIS",
     "NOT_A_FAILURE_MECHANISM", "REQUIRES_REVIEW",
 }
+VERSION_PATTERN = re.compile(r"^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(-draft)?$")
+DATE_PATTERN = re.compile(r"^[0-9]{4}-[0-9]{2}-[0-9]{2}$")
+SHA256_PATTERN = re.compile(r"^sha256:[0-9a-f]{64}$")
 
 
 def load_json(path: Path) -> tuple[Any | None, list[str]]:
@@ -32,6 +37,152 @@ def load_json(path: Path) -> tuple[Any | None, list[str]]:
         return json.loads(path.read_text(encoding="utf-8")), []
     except Exception as exc:
         return None, [f"{path}: invalid JSON: {exc}"]
+
+
+def catalogue_content_digest(loaded: list[tuple[Path, dict]]) -> str:
+    """Hash canonical family/class content without dataset-release metadata."""
+    payload = [
+        {"family": data.get("family"), "classes": data.get("classes", [])}
+        for _, data in sorted(
+            loaded,
+            key=lambda row: str(row[1].get("family", {}).get("family_id", row[0])),
+        )
+    ]
+    encoded = json.dumps(
+        payload,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    return f"sha256:{hashlib.sha256(encoded).hexdigest()}"
+
+
+def parse_version(value: Any) -> tuple[int, int, int, bool] | None:
+    if not isinstance(value, str):
+        return None
+    match = VERSION_PATTERN.fullmatch(value)
+    if match is None:
+        return None
+    return int(match[1]), int(match[2]), int(match[3]), bool(match[4])
+
+
+def valid_calendar_date(value: Any) -> bool:
+    if not isinstance(value, str) or DATE_PATTERN.fullmatch(value) is None:
+        return False
+    try:
+        date.fromisoformat(value)
+    except ValueError:
+        return False
+    return True
+
+
+def validate_release_history(
+    index: dict,
+    loaded: list[tuple[Path, dict]],
+    family_ids: set[str],
+    class_ids: set[str],
+) -> list[str]:
+    """Enforce dataset/book versioning for canonical taxonomy-content changes."""
+    errors: list[str] = []
+    standard = index.get("standard")
+    if not isinstance(standard, dict):
+        return [f"{INDEX_PATH}: standard must be an object"]
+
+    version = standard.get("version")
+    publication_date = standard.get("publication_date")
+    if parse_version(version) is None:
+        errors.append(f"{INDEX_PATH}: standard.version must be semantic version text, optionally suffixed '-draft'")
+    if not valid_calendar_date(publication_date):
+        errors.append(f"{INDEX_PATH}: standard.publication_date must be a valid YYYY-MM-DD date")
+
+    releases = index.get("release_history")
+    if not isinstance(releases, list) or len(releases) < 2:
+        return errors + [f"{INDEX_PATH}: release_history must contain a legacy baseline and current dataset release"]
+
+    parsed: list[tuple[int, int, int, bool] | None] = []
+    for number, release in enumerate(releases):
+        where = f"{INDEX_PATH}: release_history[{number}]"
+        if not isinstance(release, dict):
+            errors.append(f"{where} must be an object")
+            parsed.append(None)
+            continue
+        release_version = parse_version(release.get("version"))
+        parsed.append(release_version)
+        if release_version is None:
+            errors.append(f"{where}.version must be semantic version text, optionally suffixed '-draft'")
+        release_date = release.get("publication_date")
+        if number == 0 and release.get("legacy_undated") is True:
+            if release_date is not None:
+                errors.append(f"{where}.publication_date must be null for the legacy undated baseline")
+        elif not valid_calendar_date(release_date):
+            errors.append(f"{where}.publication_date must be a valid YYYY-MM-DD date")
+        if release.get("change_level") not in {"baseline", "patch", "minor", "major"}:
+            errors.append(f"{where}.change_level is not recognised")
+        if SHA256_PATTERN.fullmatch(str(release.get("content_digest", ""))) is None:
+            errors.append(f"{where}.content_digest must be a lowercase SHA-256 digest")
+        values = release.get("family_ids")
+        if not isinstance(values, list) or values != sorted(set(values)):
+            errors.append(f"{where}.family_ids must be a sorted unique array")
+        if not isinstance(release.get("class_count"), int) or release.get("class_count", 0) < 1:
+            errors.append(f"{where}.class_count must be a positive integer")
+
+    for number in range(1, len(releases)):
+        previous = releases[number - 1]
+        current = releases[number]
+        previous_version = parsed[number - 1]
+        current_version = parsed[number]
+        if not isinstance(previous, dict) or not isinstance(current, dict):
+            continue
+        if previous_version is None or current_version is None:
+            continue
+        if previous_version[3] != current_version[3]:
+            errors.append(f"{INDEX_PATH}: release_history[{number}] must preserve the draft suffix state")
+        previous_families = set(previous.get("family_ids", []))
+        current_families = set(current.get("family_ids", []))
+        if not previous_families.issubset(current_families):
+            expected_level = "major"
+            expected_version = (previous_version[0] + 1, 0, 0)
+        elif current_families != previous_families:
+            expected_level = "minor"
+            expected_version = (previous_version[0], previous_version[1] + 1, 0)
+        elif current.get("content_digest") != previous.get("content_digest"):
+            expected_level = "patch"
+            expected_version = (previous_version[0], previous_version[1], previous_version[2] + 1)
+        else:
+            errors.append(f"{INDEX_PATH}: release_history[{number}] records a new release without a family/class content change")
+            continue
+        if current.get("change_level") != expected_level:
+            errors.append(
+                f"{INDEX_PATH}: release_history[{number}].change_level must be {expected_level!r}"
+            )
+        if current_version[:3] != expected_version:
+            expected_text = ".".join(str(part) for part in expected_version)
+            errors.append(
+                f"{INDEX_PATH}: release_history[{number}].version must advance to {expected_text}"
+            )
+
+    current = releases[-1] if isinstance(releases[-1], dict) else {}
+    digest = catalogue_content_digest(loaded)
+    if current.get("version") != version:
+        errors.append(f"{INDEX_PATH}: standard.version must equal the current release_history version")
+    if current.get("publication_date") != publication_date:
+        errors.append(f"{INDEX_PATH}: standard.publication_date must equal the current release_history date")
+    if current.get("content_digest") != digest:
+        errors.append(
+            f"{INDEX_PATH}: canonical family/class content changed without a new dataset version, date and release digest"
+        )
+    if current.get("family_ids") != sorted(family_ids):
+        errors.append(f"{INDEX_PATH}: current release family_ids do not match the canonical catalogue")
+    if current.get("class_count") != len(class_ids):
+        errors.append(f"{INDEX_PATH}: current release class_count does not match the canonical catalogue")
+
+    for path, data in loaded:
+        family_standard = data.get("standard", {})
+        if family_standard.get("version") != version:
+            errors.append(f"{path}: standard.version must equal the dataset/book version {version!r}")
+        if family_standard.get("publication_date") != publication_date:
+            errors.append(f"{path}: standard.publication_date must equal the dataset/book publication date")
+    return errors
 
 
 def resolve_ref(schema_root: dict, ref: str) -> dict:
@@ -369,6 +520,8 @@ def validate_catalogue(paths: list[Path]) -> tuple[list[str], int]:
             parents = [r for r in item.get("relationships", []) if r.get("type") == "child_of"]
             if len(parents) != 1:
                 errors.append(f"{path}: variant {class_id} must declare exactly one child_of relationship")
+
+    errors.extend(validate_release_history(index, loaded, set(family_by_id), set(class_by_id)))
 
     supersession_targets: dict[str, str] = {}
     for identifier, (_, value) in {**family_by_id, **class_by_id}.items():
