@@ -36,12 +36,18 @@ jobs:
 
           python - <<'PY'
           from pathlib import Path
+          import json
           import subprocess
 
+          helper = '.github/workflows/housekeeping-external-governance-layout.yml'
           tracked = subprocess.check_output(['git', 'ls-files'], text=True).splitlines()
           text_suffixes = {'.py', '.md', '.json', '.yml', '.yaml', '.txt', '.cff'}
+          old_provenance = 'vigil/provenance/AUTHORSHIP-PROVENANCE.json'
+          new_provenance = 'vigil/scripts/validate-authorship-provenance.py'
 
           for raw in tracked:
+              if raw == helper:
+                  continue
               path = Path(raw)
               if not path.exists() or path.suffix.lower() not in text_suffixes:
                   continue
@@ -74,6 +80,8 @@ jobs:
                   stripped = line.strip()
                   if stripped.startswith('PROVENANCE_REF =') and 'AUTHORSHIP-PROVENANCE.json' in stripped:
                       continue
+                  if raw == '.github/workflows/external-governance.yml' and old_provenance in line:
+                      continue
                   if stripped.startswith('"declaration":') and 'AUTHORSHIP-PROVENANCE.json' in stripped:
                       if not stripped.endswith(',') and out:
                           idx = len(out) - 1
@@ -91,10 +99,6 @@ jobs:
               text = ''.join(out)
 
               text = text.replace(
-                  'Authorship, human-review, and human-verification status are governed separately by vigil/provenance/AUTHORSHIP-PROVENANCE.json.',
-                  'Authorship, human-review, and human-verification status are validated from artefact-local provenance metadata by vigil/scripts/validate-authorship-provenance.py.'
-              )
-              text = text.replace(
                   'Authorship, review and verification vocabulary is controlled by `vigil/provenance/AUTHORSHIP-PROVENANCE.json`.',
                   'Authorship, review and verification vocabulary is enforced by `vigil/scripts/validate-authorship-provenance.py` against artefact-local provenance metadata.'
               )
@@ -103,9 +107,42 @@ jobs:
                   'See `../provenance/AUTHORSHIP-PROVENANCE.json`.',
                   'The controlled provenance vocabulary is enforced by `../../scripts/validate-authorship-provenance.py` against artefact-local metadata.'
               )
+              text = text.replace(old_provenance, new_provenance)
 
               if text != original:
                   path.write_text(text, encoding='utf-8')
+
+          def strip_declaration_contract(value):
+              if isinstance(value, dict):
+                  required = value.get('required')
+                  if isinstance(required, list):
+                      value['required'] = [item for item in required if item != 'declaration']
+                  properties = value.get('properties')
+                  if isinstance(properties, dict):
+                      properties.pop('declaration', None)
+                  for child in list(value.values()):
+                      strip_declaration_contract(child)
+              elif isinstance(value, list):
+                  for child in value:
+                      strip_declaration_contract(child)
+
+          for raw in (
+              'vigil/cam_assessment/assessment.schema.json',
+              'vigil/external_governance/requirements/source-review-assurance.schema.json',
+          ):
+              path = Path(raw)
+              data = json.loads(path.read_text(encoding='utf-8'))
+              strip_declaration_contract(data)
+              path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+
+          # Keep the focused pipeline regression aligned with the canonical schema purpose.
+          pipeline = Path('vigil/tests/test_vigil_pipeline_state.py')
+          text = pipeline.read_text(encoding='utf-8')
+          text = text.replace(
+              'human-review, and human-verification status are governed separately by "\n    "vigil/scripts/validate-authorship-provenance.py."',
+              'human-review, and human-verification status are governed separately by "\n    "vigil/scripts/validate-authorship-provenance.py."'
+          )
+          pipeline.write_text(text, encoding='utf-8')
           PY
 
           rmdir vigil/provenance 2>/dev/null || true
@@ -118,6 +155,7 @@ jobs:
           from pathlib import Path
           import subprocess
 
+          helper = '.github/workflows/housekeeping-external-governance-layout.yml'
           forbidden = (
               'vigil/external_sources',
               'vigil/external_requirements',
@@ -130,7 +168,7 @@ jobs:
           tracked = subprocess.check_output(['git', 'ls-files'], text=True).splitlines()
           findings = []
           for raw in tracked:
-              if raw.startswith('vigil/docs/audits/') or raw.startswith('vigil/drafts/'):
+              if raw == helper or raw.startswith('vigil/docs/audits/') or raw.startswith('vigil/drafts/'):
                   continue
               path = Path(raw)
               if not path.exists():
@@ -155,6 +193,7 @@ jobs:
           PYTHONPATH=vigil/scripts python vigil/tests/test_external_requirements.py
           python vigil/scripts/manage-external-sources.py validate --check-generated
           PYTHONPATH=vigil/scripts python vigil/scripts/manage-external-requirements.py validate --check-generated
+          python vigil/tests/test_vigil_pipeline_state.py
 
       - name: Commit layout migration
         shell: bash
