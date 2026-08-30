@@ -9,7 +9,7 @@
     "title": "ChatGPT refused a user’s image-generation request under an ambiguous classification",
     "created": "2026-08-30",
     "updated": "2026-08-30",
-    "version": "0.2.1-migration"
+    "version": "0.2.2"
   },
   "incident_identity": {
     "historical_event_name": "ChatGPT image-refusal report by @linkaixa",
@@ -21,11 +21,12 @@
   "summary": "The screenshot showed a prompt requesting a new character with the same character, pose, face, and style, wearing green cargo pants, black sleeveless tank top, sneakers, and an open military camo sleeveless jacket. The visible refusal rationale referred to harassment, discrimination, or bullying despite no obvious match between the visible request and the stated category.",
   "vigil_assessment": {
     "factual_basis": "The selected evidence reports: The screenshot showed a prompt requesting a new character with the same character, pose, face, and style, wearing green cargo pants, black sleeveless tank top, sneakers, and an open military camo sleeveless jacket. The visible refusal rationale referred to harassment, discrimination, or bullying despite no obvious match between the visible request and the stated category.",
-    "governance_interpretation": "In this report, the image request was rejected under a weak or ambiguous safety signal even though a narrower clarification or recoverable rewrite path may have been available.",
-    "significance_to_cam": "For CAM, this occurrence shows that in this report, the image request was rejected under a weak or ambiguous safety signal even though a narrower clarification or recoverable rewrite path may have been available. Controls should preserve evidence, authority state, escalation and contestability across the full affected pathway.",
+    "governance_interpretation": "The visible refusal attributed the block to harassment, discrimination, or bullying, but the preserved visible prompt evidence does not establish that specific causal or policy mechanism. The hidden classifier, transformed-prompt, earlier-context, renderer, or fallback-routing state remains unresolved.",
+    "significance_to_cam": "For CAM, this occurrence shows that a refusal explanation can overstate mechanism certainty when the evidence available to the user does not support the stated misconduct category. Governance should preserve uncertainty and distinguish the observed refusal outcome from an inferred causal mechanism.",
     "assessment_boundaries": [
       "This metadata pass does not retroactively claim direct inspection of every historical primary source.",
-      "Incident admission does not determine legal liability or establish every disputed claim as final fact."
+      "Incident admission does not determine legal liability or establish every disputed claim as final fact.",
+      "The evidence does not establish that the refusal itself was necessarily unwarranted; it establishes that the stated misconduct mechanism is unsupported by the preserved visible evidence."
     ]
   },
   "severity_assessment": {
@@ -53,7 +54,7 @@
       "deployment_context": "Consumer-facing image-generation workflow involving a character prompt and user-facing refusal message.",
       "source_context": "The screenshot showed a prompt requesting a new character with the same character, pose, face, and style, wearing green cargo pants, black sleeveless tank top, sneakers, and an open military camo sleeveless jacket. The visible refusal rationale referred to harassment, discrimination, or bullying despite no obvious match between the visible request and the stated category.",
       "source_url_status": "missing_url_requires_research",
-      "relevance_note": "Primary anecdotal evidence for a possible refusal-rationale integrity failure. Further evidence is required to determine whether the issue is isolated, recurrent, classifier-driven, context-driven, load-related, or a generic fallback refusal.",
+      "relevance_note": "Direct anecdotal evidence for an unsupported refusal-mechanism attribution: the visible refusal names harassment, discrimination, or bullying while the preserved visible prompt does not establish that category. The source does not establish the hidden classifier or transformed-prompt state.",
       "evidence_modality": [
         "image",
         "text"
@@ -67,7 +68,7 @@
           "This metadata pass does not retroactively claim direct inspection of every historical primary source."
         ]
       },
-      "interpretive_reliance": "Assessment is limited to the evidence actually accessible to the named reviewer and must not be read as direct audiovisual verification unless primary_artefact_access states otherwise.",
+      "interpretive_reliance": "Used only to assess the user-facing mechanism attribution; not used to infer the hidden classifier, transformed prompt, renderer state, or root cause.",
       "source_residence": "external",
       "source_role": "incident-evidence",
       "legacy_source_type": "social-platform-observation",
@@ -164,23 +165,22 @@
     "public_interest_relevance": "yes"
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.2.2-draft",
-    "classification_status": "provisionally-classified",
-    "classification_basis": "Incident-level mappings conservatively carry forward legacy FM classifications whose mechanisms are evidenced in this occurrence; final human taxonomy review is not asserted.",
+    "taxonomy_version": "0.2.3-draft",
+    "classification_status": "classified",
+    "classification_basis": "The preserved incident evidence supports a specific user-facing causal or policy attribution that is not traceable to the visible prompt evidence. It does not establish loss of transformation lineage as the operative mechanism.",
     "primary_classification": {
       "family_id": "VIGIL-FF-0002",
-      "class_id": "VIGIL-FC-000013",
-      "classification_basis": "In this Incident, the reported occurrence expressly identifies loss of custody across user-authored, transformed, safety-normalised, classifier-visible, renderer-facing, outcome, and explanation stages, preventing reliable reconstruction of what was evaluated.",
-      "classification_confidence": "high",
-      "legacy_classification_source": "VIGIL-2026-FM-0023"
+      "class_id": "VIGIL-FC-000047",
+      "classification_basis": "The system presented harassment, discrimination, or bullying as the mechanism for the refusal even though the preserved visible prompt and available transformation evidence do not support that specific attribution and material alternatives remain unresolved.",
+      "classification_confidence": "medium"
     },
     "secondary_classifications": [],
     "classification_review_provenance": {
-      "method": "legacy-fm-to-incident-mechanism-reconciliation",
+      "method": "bounded-human-directed-incident-taxonomy-reconciliation",
       "review_date": "2026-08-30",
-      "reviewer": "OpenAI Codex / GPT-5.6",
-      "review_status": "AI migration review; human taxonomy review not asserted",
-      "authority_boundary": "Mappings preserve existing VIGIL taxonomy analysis and do not amend Failure Family or Failure Class semantics."
+      "reviewer": "Dr M.V O'Rourke with OpenAI ChatGPT — GPT-5.6 Sol analytical support",
+      "review_status": "human-directed correction implemented",
+      "authority_boundary": "This is an Incident-level VIGIL classification judgement bounded by preserved evidence. Historical Failure Mode diagnosis is retained as provenance and does not automatically confer current taxonomy membership."
     }
   },
   "linked_records": {
@@ -188,10 +188,7 @@
     "related_observations": [],
     "related_failure_modes": [],
     "related_proposals": [],
-    "related_patch_notes": [
-      "VIGIL-2026-PATCH-0010",
-      "VIGIL-2026-PATCH-0011"
-    ],
+    "related_patch_notes": [],
     "external_references": [],
     "research": [],
     "standards": []
@@ -211,9 +208,9 @@
       "safety architecture"
     ],
     "governance_layer": "runtime governance / refusal explanation / UX representation",
-    "proposal_needed": "yes",
+    "proposal_needed": "to be assessed against current canonical CAM/Caelestis coverage after incident-level classification correction",
     "linked_proposal_ids": [],
-    "routing_note": "FM routing should treat the primary failure as weak-signal ambiguity collapse and premature classification convergence, with prompt-custody / transformation opacity and refusal-category / failure-classification collapse as follow-on contributing mechanisms. PATCH-0010 addressed ambiguity preservation and clarification routing. PATCH-0011 addressed image prompt custody, transformation opacity, refusal-classification collapse, tool-classifier handoff locality, and user-facing explanation integrity. FM-0023 remains in monitoring after repair implementation rather than fully closed.",
+    "routing_note": "Assess current CAM/Caelestis coverage against the corrected Unsupported Mechanism Attribution diagnosis. Do not depend on legacy VIGIL PATCH records; preserve the refusal outcome, the unsupported user-facing mechanism attribution, and the unresolved hidden runtime cause as separate states.",
     "validator_or_automation_impact": "possible"
   },
   "legacy_provenance": [
@@ -664,20 +661,71 @@
     }
   ],
   "diagnostic_provenance": {
-    "method": "curated-legacy-record-incident-normalisation",
-    "diagnostic_date": "2026-08-30",
-    "ai_role": "incident disentanglement, source clustering, schema implementation and provenance preservation",
-    "human_role": "migration contract author and approval authority",
-    "ai_platform": "OpenAI Codex",
-    "ai_model": "GPT-5.6",
-    "review_status": "majority migration under human contract approval; line-by-line human review not asserted",
-    "authority_boundary": "This provenance records migration analysis only and does not replace the original diagnostic or interpretive provenance preserved from legacy records.",
-    "legacy_diagnostic_sources": [
-      "VIGIL-2026-FM-0023"
-    ]
+    "method": "human-ai-collaborative-analysis",
+    "diagnostic_date": "2026-06-19",
+    "human_role": "substantive governance analysis, contextual judgement, correction, review and approval",
+    "ai_role": "analytical synthesis, mechanism identification, evidence and governance-context comparison, and drafting support",
+    "ai_platform": "OpenAI ChatGPT",
+    "ai_model": "GPT-5.5",
+    "model_attribution_basis": "inferred from canonical failure-mode creation date and documented ChatGPT model availability",
+    "review_status": "human-reviewed-and-approved",
+    "authority_boundary": "The AI collaborator supported analysis and drafting but was not independently authoritative; the human governance editor reviewed and accepted the diagnosis.",
+    "date_attribution_status": "canonical-creation-date-aligned",
+    "legacy_source_id": "VIGIL-2026-FM-0023",
+    "provenance_scope": "Historical diagnostic provenance inherited from the pre-migration Failure Mode analysis. Current Incident taxonomy classification is governed separately by taxonomy_classification.classification_review_provenance."
   },
   "interpretive_provenance": {
     "review_history": [
+      {
+        "review_id": "VIGIL-REVIEW-2026-07-14-GPT-5.6-THINKING",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT",
+        "reviewer_model": "GPT-5.6 Thinking",
+        "review_date": "2026-07-14",
+        "review_scope": "registry-wide interpretive-provenance, source-modality, CAM-coverage, and record-boundary reconciliation",
+        "capability_profile": {
+          "direct_text_analysis": true,
+          "direct_repository_analysis": true,
+          "direct_static_image_analysis": true,
+          "direct_audio_analysis_in_this_pass": false,
+          "direct_uploaded_video_analysis_in_this_pass": false,
+          "direct_externally_hosted_video_analysis": false,
+          "web_link_and_metadata_review": true
+        },
+        "known_limitations": [
+          "Could not directly play or inspect externally hosted TikTok or X video artefacts in the governed review environment.",
+          "Historical records were not assigned speculative earlier model identities; this entry records the formal current reconciliation review only.",
+          "Primary-source access varies by source and is stated within each source record."
+        ],
+        "review_outcome": "metadata and governance-structure review completed; substantive claims remain bounded by source-specific evidence confidence",
+        "provenance_scope": "legacy-failure-mode-review",
+        "legacy_source_id": "VIGIL-2026-FM-0023"
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-08-05-OPENAI-CODEX-TRIAGE-V2",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work Mode",
+        "reviewer_model": "OpenAI Codex (GPT-5 family; exact deployed model version not exposed in session metadata)",
+        "review_date": "2026-08-05",
+        "review_scope": "record-level severity, current-priority, workflow, lifecycle, repair, monitoring, and provenance reconciliation under VIGIL triage model 2.0",
+        "capability_profile": {
+          "direct_text_analysis": true,
+          "direct_repository_analysis": true,
+          "direct_static_image_analysis": false,
+          "direct_audio_analysis_in_this_pass": false,
+          "direct_uploaded_video_analysis_in_this_pass": false,
+          "direct_externally_hosted_video_analysis": false,
+          "web_link_and_metadata_review": false
+        },
+        "known_limitations": [
+          "This pass reviewed canonical record evidence and repository state; it did not independently re-open every external primary source.",
+          "Severity was bounded to the evidenced failure definition, harm pathway, deployment scope, recurrence, and stated uncertainty.",
+          "Legacy priority values were not treated as model 2.0 historical transitions because their prior semantic basis was not consistently evidenced."
+        ],
+        "review_outcome": "Model 2.0 severity, current priority, workflow state, record lifecycle, and next action reconciled without fabricating historical triage transitions.",
+        "provenance_scope": "legacy-failure-mode-review",
+        "legacy_source_id": "VIGIL-2026-FM-0023"
+      },
       {
         "review_id": "VIGIL-REVIEW-2026-08-30-INCIDENT-000036",
         "reviewer_type": "AI analytical reviewer",
@@ -694,34 +742,55 @@
           "The migration relies on evidence and access statements already preserved in the legacy records.",
           "No new independent factual verification is asserted by this migration pass."
         ],
-        "review_outcome": "Admitted to the INCIDENT-01 Incident registry without retiring the legacy source record."
+        "review_outcome": "Admitted to the INCIDENT-01 Incident registry without retiring the legacy source record.",
+        "provenance_scope": "incident-migration-or-post-migration-review"
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-08-30-SOL-INC-000036-CLASSIFICATION-RECONCILIATION",
+        "reviewer_type": "human-directed AI analytical review",
+        "reviewer_platform": "OpenAI ChatGPT with GitHub connector",
+        "reviewer_model": "GPT-5.6 Sol",
+        "review_date": "2026-08-30",
+        "review_scope": "Bounded Incident taxonomy-classification, metadata and provenance reconciliation against taxonomy 0.2.3-draft and the frozen pre-migration source record.",
+        "capability_profile": {
+          "direct_text_analysis": true,
+          "direct_repository_analysis": true,
+          "direct_static_image_analysis": false,
+          "direct_audio_analysis_in_this_pass": false,
+          "direct_uploaded_video_analysis_in_this_pass": false,
+          "direct_externally_hosted_video_analysis": false,
+          "web_link_and_metadata_review": false
+        },
+        "known_limitations": [
+          "The preserved evidence is anecdotal and does not expose the hidden classifier, transformed prompt, renderer state, or root cause.",
+          "The review does not assert that the refusal itself was necessarily unwarranted; it corrects the unsupported mechanism attribution shown to the user."
+        ],
+        "review_outcome": "Reclassified the incident from Transformation Lineage Collapse to Unsupported Mechanism Attribution; the visible evidence supports an over-specific refusal explanation but does not establish hidden prompt-transformation loss.",
+        "provenance_scope": "incident-classification-reconciliation"
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-08-30-INCIDENT-000036",
-      "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI Codex",
-      "reviewer_model": "GPT-5.6",
+      "review_id": "VIGIL-REVIEW-2026-08-30-SOL-INC-000036-CLASSIFICATION-RECONCILIATION",
+      "reviewer_type": "human-directed AI analytical review",
+      "reviewer_platform": "OpenAI ChatGPT with GitHub connector",
+      "reviewer_model": "GPT-5.6 Sol",
       "review_date": "2026-08-30",
-      "review_scope": "Incident identity, source clustering, legacy-analysis preservation and taxonomy-state separation.",
+      "review_scope": "Bounded Incident taxonomy-classification, metadata and provenance reconciliation against taxonomy 0.2.3-draft and the frozen pre-migration source record.",
       "capability_profile": {
         "direct_text_analysis": true,
         "direct_repository_analysis": true,
+        "direct_static_image_analysis": false,
+        "direct_audio_analysis_in_this_pass": false,
+        "direct_uploaded_video_analysis_in_this_pass": false,
+        "direct_externally_hosted_video_analysis": false,
         "web_link_and_metadata_review": false
       },
       "known_limitations": [
-        "The migration relies on evidence and access statements already preserved in the legacy records.",
-        "No new independent factual verification is asserted by this migration pass."
+        "The preserved evidence is anecdotal and does not expose the hidden classifier, transformed prompt, renderer state, or root cause.",
+        "The review does not assert that the refusal itself was necessarily unwarranted; it corrects the unsupported mechanism attribution shown to the user."
       ],
-      "review_outcome": "Admitted to the INCIDENT-01 Incident registry without retiring the legacy source record."
-    },
-    "operating_model": "AI-authored, semi-autonomous production under human contract approval",
-    "human_governance_editor": {
-      "name": "Dr Michelle Vivian O'Rourke",
-      "role": "Human governance editor and CAM constitutional authority",
-      "review_level": "high-level governance, editorial, and adoption oversight; line-by-line human review is not asserted for every VIGIL record",
-      "authority_boundary": "Human editorship governs VIGIL direction and CAM adoption; the AI analytical reviewer performs routine evidence triage, record analysis, and reconciliation."
-    },
-    "historical_reviewer_note": "Pre-Incident FM/OBS review histories are preserved without re-dating under legacy_governance_state; they are not represented as reviews of the later Incident record."
+      "review_outcome": "Reclassified the incident from Transformation Lineage Collapse to Unsupported Mechanism Attribution; the visible evidence supports an over-specific refusal explanation but does not establish hidden prompt-transformation loss.",
+      "provenance_scope": "incident-classification-reconciliation"
+    }
   }
 }

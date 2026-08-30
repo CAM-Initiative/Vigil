@@ -9,7 +9,7 @@
     "title": "Grok Build uploaded entire Git repositories to xAI storage",
     "created": "2026-08-30",
     "updated": "2026-08-30",
-    "version": "0.2.1-migration"
+    "version": "0.2.2"
   },
   "incident_identity": {
     "historical_event_name": "Grok Build repository-upload incident",
@@ -21,8 +21,8 @@
   "summary": "The report describes wire-level testing in which Grok Build v0.2.93 uploaded complete Git repositories, including commit history and files not required for the active task, through a storage channel distinct from model-turn traffic. The reported transfer volume tracked repository size rather than files inspected by the model.",
   "vigil_assessment": {
     "factual_basis": "The selected evidence reports: The report describes wire-level testing in which Grok Build v0.2.93 uploaded complete Git repositories, including commit history and files not required for the active task, through a storage channel distinct from model-turn traffic. The reported transfer volume tracked repository size rather than files inspected by the model.",
-    "governance_interpretation": "The reported implementation replicated repository content beyond the files apparently required for the task, expanding data-egress authority without clear user disclosure.",
-    "significance_to_cam": "For CAM, this occurrence shows that the reported implementation replicated repository content beyond the files apparently required for the task, expanding data-egress authority without clear user disclosure. Controls should preserve evidence, authority state, escalation and contestability across the full affected pathway.",
+    "governance_interpretation": "The reported implementation converted authority to inspect or work within a repository into authority to transmit repository-scale content, while the transfer scope appears to have followed technically reachable repository contents rather than only files required for the active task.",
+    "significance_to_cam": "For CAM, this occurrence separates delegation scope from technical reachability: authority to perform repository-based coding work does not itself authorise repository-scale external transmission, and the fact that files are technically reachable cannot define permission to transmit them.",
     "assessment_boundaries": [
       "The reviewing system did not reproduce the network capture.",
       "Deletion of previously transferred data was not independently verified.",
@@ -54,7 +54,7 @@
       "deployment_context": "Agentic coding CLI operating against local Git repositories.",
       "source_context": "The report describes wire-level testing in which Grok Build v0.2.93 uploaded complete Git repositories, including commit history and files not required for the active task, through a storage channel distinct from model-turn traffic. The reported transfer volume tracked repository size rather than files inspected by the model.",
       "source_url_status": "available",
-      "relevance_note": "Direct evidence that workspace read access and task execution were treated as sufficient authority for repository-scale replication and external transmission.",
+      "relevance_note": "Direct evidence that task delegation and workspace read access were expanded into repository-scale external transmission, with technically reachable repository contents apparently defining the transfer scope beyond files required for the active task.",
       "evidence_modality": [
         "text",
         "network-traffic analysis"
@@ -216,23 +216,29 @@
     "public_interest_relevance": "high"
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.2.2-draft",
-    "classification_status": "provisionally-classified",
-    "classification_basis": "Incident-level mappings conservatively carry forward legacy FM classifications whose mechanisms are evidenced in this occurrence; final human taxonomy review is not asserted.",
+    "taxonomy_version": "0.2.3-draft",
+    "classification_status": "classified",
+    "classification_basis": "The occurrence independently evidences both expansion of a coding-work delegation into repository-scale data egress and use of technically reachable repository contents as the practical scope of that transmission authority.",
     "primary_classification": {
       "family_id": "VIGIL-FF-0001",
       "class_id": "VIGIL-FC-000008",
-      "classification_basis": "In this Incident, authority to inspect or act in a workspace is expanded into transmission, persistence, training, or secondary-use authority.",
-      "classification_confidence": "high",
-      "legacy_classification_source": "VIGIL-2026-FM-0036"
+      "classification_basis": "Authority to inspect and act within a repository for a coding task was expanded into a materially different external action: repository-scale transmission and storage.",
+      "classification_confidence": "high"
     },
-    "secondary_classifications": [],
+    "secondary_classifications": [
+      {
+        "family_id": "VIGIL-FF-0001",
+        "class_id": "VIGIL-FC-000007",
+        "classification_basis": "The reported transfer volume tracked repository size rather than files required or inspected for the task, supporting the independent mechanism that technical reachability of repository content was treated as sufficient authority for transmission.",
+        "classification_confidence": "high"
+      }
+    ],
     "classification_review_provenance": {
-      "method": "legacy-fm-to-incident-mechanism-reconciliation",
+      "method": "bounded-human-directed-incident-taxonomy-reconciliation",
       "review_date": "2026-08-30",
-      "reviewer": "OpenAI Codex / GPT-5.6",
-      "review_status": "AI migration review; human taxonomy review not asserted",
-      "authority_boundary": "Mappings preserve existing VIGIL taxonomy analysis and do not amend Failure Family or Failure Class semantics."
+      "reviewer": "Dr M.V O'Rourke with OpenAI ChatGPT — GPT-5.6 Sol analytical support",
+      "review_status": "human-directed correction implemented",
+      "authority_boundary": "This is an Incident-level VIGIL classification judgement bounded by preserved evidence. Historical Failure Mode diagnosis is retained as provenance and does not automatically confer current taxonomy membership."
     }
   },
   "linked_records": {
@@ -650,20 +656,70 @@
     }
   ],
   "diagnostic_provenance": {
-    "method": "curated-legacy-record-incident-normalisation",
-    "diagnostic_date": "2026-08-30",
-    "ai_role": "incident disentanglement, source clustering, schema implementation and provenance preservation",
-    "human_role": "migration contract author and approval authority",
-    "ai_platform": "OpenAI Codex",
-    "ai_model": "GPT-5.6",
-    "review_status": "majority migration under human contract approval; line-by-line human review not asserted",
-    "authority_boundary": "This provenance records migration analysis only and does not replace the original diagnostic or interpretive provenance preserved from legacy records.",
-    "legacy_diagnostic_sources": [
-      "VIGIL-2026-FM-0036"
-    ]
+    "method": "human-ai-collaborative-analysis",
+    "diagnostic_date": "2026-07-17",
+    "human_role": "substantive governance analysis, contextual judgement, correction, review and approval",
+    "ai_role": "analytical synthesis, mechanism identification, evidence and governance-context comparison, and drafting support",
+    "ai_platform": "OpenAI ChatGPT",
+    "ai_model": "GPT-5.6 Sol",
+    "model_attribution_basis": "inferred from canonical failure-mode creation date and documented ChatGPT model availability",
+    "review_status": "human-reviewed-and-approved",
+    "authority_boundary": "The AI collaborator supported analysis and drafting but was not independently authoritative; the human governance editor reviewed and accepted the diagnosis.",
+    "date_attribution_status": "canonical-creation-date-aligned",
+    "legacy_source_id": "VIGIL-2026-FM-0036",
+    "provenance_scope": "Historical diagnostic provenance inherited from the pre-migration Failure Mode analysis. Current Incident taxonomy classification is governed separately by taxonomy_classification.classification_review_provenance."
   },
   "interpretive_provenance": {
     "review_history": [
+      {
+        "review_id": "VIGIL-REVIEW-2026-07-17-GPT-5.6-THINKING-FM-0036",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT",
+        "reviewer_model": "GPT-5.6 Thinking",
+        "review_date": "2026-07-17",
+        "review_scope": "Evidence qualification, failure classification, authority decomposition, and preliminary CAM routing.",
+        "capability_profile": {
+          "direct_text_analysis": true,
+          "direct_repository_analysis": true,
+          "direct_static_image_analysis": false,
+          "direct_audio_analysis_in_this_pass": false,
+          "direct_uploaded_video_analysis_in_this_pass": false,
+          "direct_externally_hosted_video_analysis": false,
+          "web_link_and_metadata_review": true
+        },
+        "known_limitations": [
+          "The network experiment was not independently reproduced.",
+          "Previously transferred data deletion was not independently verified."
+        ],
+        "review_outcome": "A distinct security-integrity failure mode is warranted because workspace visibility and task authority were collapsed into repository-scale transmission authority.",
+        "provenance_scope": "legacy-failure-mode-review",
+        "legacy_source_id": "VIGIL-2026-FM-0036"
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-08-05-OPENAI-CODEX-TRIAGE-V2",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work Mode",
+        "reviewer_model": "OpenAI Codex (GPT-5 family; exact deployed model version not exposed in session metadata)",
+        "review_date": "2026-08-05",
+        "review_scope": "record-level severity, current-priority, workflow, lifecycle, repair, monitoring, and provenance reconciliation under VIGIL triage model 2.0",
+        "capability_profile": {
+          "direct_text_analysis": true,
+          "direct_repository_analysis": true,
+          "direct_static_image_analysis": false,
+          "direct_audio_analysis_in_this_pass": false,
+          "direct_uploaded_video_analysis_in_this_pass": false,
+          "direct_externally_hosted_video_analysis": false,
+          "web_link_and_metadata_review": false
+        },
+        "known_limitations": [
+          "This pass reviewed canonical record evidence and repository state; it did not independently re-open every external primary source.",
+          "Severity was bounded to the evidenced failure definition, harm pathway, deployment scope, recurrence, and stated uncertainty.",
+          "Legacy priority values were not treated as model 2.0 historical transitions because their prior semantic basis was not consistently evidenced."
+        ],
+        "review_outcome": "Model 2.0 severity, current priority, workflow state, record lifecycle, and next action reconciled without fabricating historical triage transitions.",
+        "provenance_scope": "legacy-failure-mode-review",
+        "legacy_source_id": "VIGIL-2026-FM-0036"
+      },
       {
         "review_id": "VIGIL-REVIEW-2026-08-30-INCIDENT-000045",
         "reviewer_type": "AI analytical reviewer",
@@ -680,34 +736,55 @@
           "The migration relies on evidence and access statements already preserved in the legacy records.",
           "No new independent factual verification is asserted by this migration pass."
         ],
-        "review_outcome": "Admitted to the INCIDENT-01 Incident registry without retiring the legacy source record."
+        "review_outcome": "Admitted to the INCIDENT-01 Incident registry without retiring the legacy source record.",
+        "provenance_scope": "incident-migration-or-post-migration-review"
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-08-30-SOL-INC-000045-CLASSIFICATION-RECONCILIATION",
+        "reviewer_type": "human-directed AI analytical review",
+        "reviewer_platform": "OpenAI ChatGPT with GitHub connector",
+        "reviewer_model": "GPT-5.6 Sol",
+        "review_date": "2026-08-30",
+        "review_scope": "Bounded Incident taxonomy-classification, metadata and provenance reconciliation against taxonomy 0.2.3-draft and the frozen pre-migration source record.",
+        "capability_profile": {
+          "direct_text_analysis": true,
+          "direct_repository_analysis": true,
+          "direct_static_image_analysis": false,
+          "direct_audio_analysis_in_this_pass": false,
+          "direct_uploaded_video_analysis_in_this_pass": false,
+          "direct_externally_hosted_video_analysis": false,
+          "web_link_and_metadata_review": false
+        },
+        "known_limitations": [
+          "The reviewing record relies on public reporting of wire-level testing and did not independently reproduce the packet capture.",
+          "The classification does not establish the disposition of previously transferred data."
+        ],
+        "review_outcome": "Retained Delegation Scope Expansion as primary and added Technical Reachability Mistaken for Authority as an independently evidenced secondary mechanism.",
+        "provenance_scope": "incident-classification-reconciliation"
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-08-30-INCIDENT-000045",
-      "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI Codex",
-      "reviewer_model": "GPT-5.6",
+      "review_id": "VIGIL-REVIEW-2026-08-30-SOL-INC-000045-CLASSIFICATION-RECONCILIATION",
+      "reviewer_type": "human-directed AI analytical review",
+      "reviewer_platform": "OpenAI ChatGPT with GitHub connector",
+      "reviewer_model": "GPT-5.6 Sol",
       "review_date": "2026-08-30",
-      "review_scope": "Incident identity, source clustering, legacy-analysis preservation and taxonomy-state separation.",
+      "review_scope": "Bounded Incident taxonomy-classification, metadata and provenance reconciliation against taxonomy 0.2.3-draft and the frozen pre-migration source record.",
       "capability_profile": {
         "direct_text_analysis": true,
         "direct_repository_analysis": true,
+        "direct_static_image_analysis": false,
+        "direct_audio_analysis_in_this_pass": false,
+        "direct_uploaded_video_analysis_in_this_pass": false,
+        "direct_externally_hosted_video_analysis": false,
         "web_link_and_metadata_review": false
       },
       "known_limitations": [
-        "The migration relies on evidence and access statements already preserved in the legacy records.",
-        "No new independent factual verification is asserted by this migration pass."
+        "The reviewing record relies on public reporting of wire-level testing and did not independently reproduce the packet capture.",
+        "The classification does not establish the disposition of previously transferred data."
       ],
-      "review_outcome": "Admitted to the INCIDENT-01 Incident registry without retiring the legacy source record."
-    },
-    "operating_model": "AI-authored, semi-autonomous production under human contract approval",
-    "human_governance_editor": {
-      "name": "Dr Michelle Vivian O'Rourke",
-      "role": "Human governance editor and CAM constitutional authority",
-      "review_level": "high-level governance, editorial, and adoption oversight; line-by-line human review is not asserted for every VIGIL record",
-      "authority_boundary": "Human editorship governs VIGIL direction and CAM adoption; the AI analytical reviewer performs routine evidence triage, record analysis, and reconciliation."
-    },
-    "historical_reviewer_note": "Pre-Incident FM/OBS review histories are preserved without re-dating under legacy_governance_state; they are not represented as reviews of the later Incident record."
+      "review_outcome": "Retained Delegation Scope Expansion as primary and added Technical Reachability Mistaken for Authority as an independently evidenced secondary mechanism.",
+      "provenance_scope": "incident-classification-reconciliation"
+    }
   }
 }
