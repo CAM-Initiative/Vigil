@@ -110,7 +110,7 @@ python vigil/scripts/seed-eu-ai-act-metadata-review.py --write
 python vigil/scripts/seed-reviewed-source-metadata.py
 python vigil/scripts/seed-reviewed-source-metadata.py --write
 python vigil/tests/test_external_requirements.py
-python vigil/scripts/test_external_requirement_metadata.py
+python vigil/tests/test_external_requirement_metadata.py
 ```
 
 Recommended metadata-remediation sequence:

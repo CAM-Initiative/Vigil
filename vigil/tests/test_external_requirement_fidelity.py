@@ -3,7 +3,8 @@ from pathlib import Path
 import unittest
 
 
-SCRIPT = Path(__file__).with_name("validate-external-requirement-fidelity.py")
+ROOT = Path(__file__).resolve().parents[2]
+SCRIPT = ROOT / "vigil" / "scripts" / "validate-external-requirement-fidelity.py"
 spec = importlib.util.spec_from_file_location("validate_external_requirement_fidelity", SCRIPT)
 module = importlib.util.module_from_spec(spec)
 assert spec.loader is not None

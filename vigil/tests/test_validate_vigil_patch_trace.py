@@ -9,7 +9,8 @@ import tempfile
 import unittest
 from pathlib import Path
 
-MODULE_PATH = Path(__file__).with_name("validate-vigil-patch-trace.py")
+ROOT = Path(__file__).resolve().parents[2]
+MODULE_PATH = ROOT / "vigil" / "scripts" / "validate-vigil-patch-trace.py"
 SPEC = importlib.util.spec_from_file_location("validate_vigil_patch_trace", MODULE_PATH)
 if SPEC is None or SPEC.loader is None:
     raise RuntimeError("Unable to load VIGIL PATCH trace validator")

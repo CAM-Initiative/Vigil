@@ -51,13 +51,13 @@ jobs:
           python vigil/scripts/enrich-vigil-indexes.py
 
       - name: Test source provenance classification
-        run: python vigil/scripts/test_vigil_source_provenance.py
+        run: python vigil/tests/test_vigil_source_provenance.py
 
       - name: Validate source provenance
         run: python vigil/scripts/validate-vigil-source-provenance.py
 
-      - name: Test VIGIL record validator
-        run: python vigil/scripts/test_validate_vigil_records.py
+      - name: Test VIGIL record validator rules
+        run: python vigil/tests/test_validate_vigil_record_rules.py
 
       - name: Test FM system-context reconciliation
         run: python vigil/tests/test_reconcile_fm_system_context.py
@@ -74,16 +74,19 @@ jobs:
           python vigil/scripts/audit-vigil-triage.py --check
 
       - name: Test VIGIL lifecycle validator
-        run: python vigil/scripts/test_validate_vigil_lifecycle.py
+        run: python vigil/tests/test_validate_vigil_lifecycle.py
 
       - name: Test VIGIL PATCH trace validator
-        run: python vigil/scripts/test_validate_vigil_patch_trace.py
+        run: python vigil/tests/test_validate_vigil_patch_trace.py
 
       - name: Test VIGIL provenance preservation
-        run: python vigil/scripts/test_vigil_provenance_preservation.py
+        run: python vigil/tests/test_vigil_provenance_preservation.py
 
       - name: Test VIGIL pipeline state
-        run: python vigil/scripts/test_vigil_pipeline_state.py
+        run: python vigil/tests/test_vigil_pipeline_state.py
+
+      - name: Test withdrawn LEARN publication boundary
+        run: python vigil/tests/test_validate_vigil_learn_records.py
 
       - name: Test and validate VIGIL authorship provenance
         run: |

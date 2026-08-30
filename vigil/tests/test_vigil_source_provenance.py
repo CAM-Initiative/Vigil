@@ -6,8 +6,8 @@ from __future__ import annotations
 import importlib.util
 from pathlib import Path
 
-SCRIPT_PATH = Path(__file__).resolve()
-MIGRATION_PATH = SCRIPT_PATH.with_name("migrate-vigil-source-provenance.py")
+ROOT = Path(__file__).resolve().parents[2]
+MIGRATION_PATH = ROOT / "vigil" / "scripts" / "migrate-vigil-source-provenance.py"
 
 spec = importlib.util.spec_from_file_location("source_provenance_migration", MIGRATION_PATH)
 assert spec and spec.loader

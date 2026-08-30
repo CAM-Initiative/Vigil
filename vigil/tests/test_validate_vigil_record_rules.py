@@ -6,7 +6,8 @@ import sys
 import unittest
 from pathlib import Path
 
-MODULE_PATH = Path(__file__).with_name("validate-vigil-records.py")
+ROOT = Path(__file__).resolve().parents[2]
+MODULE_PATH = ROOT / "vigil" / "scripts" / "validate-vigil-records.py"
 SPEC = importlib.util.spec_from_file_location("validate_vigil_records", MODULE_PATH)
 if SPEC is None or SPEC.loader is None:
     raise RuntimeError("Unable to load VIGIL validator")
