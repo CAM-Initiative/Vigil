@@ -709,7 +709,7 @@ def combined_html(families: list[dict], case_examples: dict[str, list[dict]] | N
     contents = ["<section class=\"contents\"><h1>Contents</h1><ol>"]
     for chapter_number, data in enumerate(families, start=1):
         family = data["family"]
-        contents.append(f"<li><a href=\"#{esc(anchor(family['family_id']))}\"><strong>{chapter_number}. {esc(family['name'])}</strong></a><ul>")
+        contents.append(f"<li><a href=\"#{esc(anchor(family['family_id']))}\"><strong>{esc(family['name'])}</strong></a><ul>")
         contents.extend(
             f"<li><a href=\"#{esc(anchor(item['class_id']))}\">{chapter_number}.{class_number} {esc(item['name'])}</a></li>"
             for class_number, item in enumerate(data["classes"], start=1)
