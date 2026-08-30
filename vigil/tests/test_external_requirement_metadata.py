@@ -228,11 +228,14 @@ def main():
     assert "IMDA_FIDELITY_REPAIRS" in reviewed_seeder
     assert "NIST_218A_REPAIRS" in reviewed_seeder
     assert "SDOS_REVIEW_DIGEST" in reviewed_seeder
-    assert (SCRIPTS / "migrate-nist-218a-pw71.py").is_file()
     assert "CYCLONEDX_MODALITY_REPAIRS" in reviewed_seeder
-    assert (SCRIPTS / "migrate-cyclonedx-bom-ref-modality.py").is_file()
-    assert (SCRIPTS / "migrate-imda-agentic-fidelity.py").is_file()
-    assert (SCRIPTS / "migrate-sdos-runtime-fidelity.py").is_file()
+    retired_migrations = {
+        "migrate-nist-218a-pw71.py",
+        "migrate-cyclonedx-bom-ref-modality.py",
+        "migrate-imda-agentic-fidelity.py",
+        "migrate-sdos-runtime-fidelity.py",
+    }
+    assert all(not (SCRIPTS / name).exists() for name in retired_migrations)
     assert "AI Actor Tasks (subcategory-level)" in reviewed_seeder
     assert "manual reconciliation required" in reviewed_seeder
     assert "--write" in reviewed_seeder
