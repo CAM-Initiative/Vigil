@@ -1,0 +1,41 @@
+name: Temporary bounded Incident reconciliation runner
+
+on:
+  push:
+    branches:
+      - agent/bounded-incident-classification-provenance-repair
+
+permissions:
+  contents: write
+
+jobs:
+  reconcile:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Execute corrected bounded reconciliation
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import textwrap
+
+          source = Path('.github/workflows/temp-bounded-incident-classification-provenance.yml')
+          text = source.read_text(encoding='utf-8')
+          marker = '        run: |\n'
+          script = textwrap.dedent(text.split(marker, 1)[1])
+          script = script.replace(
+              'git rm .github/workflows/temp-bounded-incident-classification-provenance.yml',
+              'git rm .github/workflows/temp-bounded-incident-classification-provenance.yml .github/workflows/temp-bounded-incident-classification-provenance-v2.yml'
+          )
+          script = script.replace(
+              '        vigil/records/incidents/VIGIL-INC-000064.json \\\n        .github/workflows/temp-bounded-incident-classification-provenance.yml',
+              '        vigil/records/incidents/VIGIL-INC-000064.json'
+          )
+          Path('/tmp/bounded-reconcile.sh').write_text(script, encoding='utf-8')
+          PY
+          bash /tmp/bounded-reconcile.sh
