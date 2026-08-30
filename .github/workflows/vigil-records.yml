@@ -38,7 +38,6 @@ jobs:
     steps:
       - uses: actions/checkout@v6
         with:
-          ref: ${{ github.event_name == 'pull_request' && github.head_ref || github.ref }}
           persist-credentials: true
           show-progress: false
 
@@ -62,27 +61,6 @@ jobs:
 
       - name: Test FM system-context reconciliation
         run: python vigil/tests/test_reconcile_fm_system_context.py
-
-      - name: Reconcile stale FM system context on housekeeping branch
-        if: github.event_name == 'pull_request' && github.head_ref == 'housekeeping/scripts-tests-audits'
-        shell: bash
-        run: |
-          python vigil/scripts/reconcile-fm-system-context.py
-          python vigil/scripts/reconcile-fm-system-context.py --check
-          unexpected="$(git diff --name-only | grep -Ev '^vigil/records/failures/.+\.json$' || true)"
-          if [ -n "$unexpected" ]; then
-            echo "Reconciliation changed files outside failure-mode JSON records:"
-            printf '%s\n' "$unexpected"
-            exit 1
-          fi
-          git diff --stat -- vigil/records/failures
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add vigil/records/failures
-          if ! git diff --cached --quiet; then
-            git commit -m "Reconcile failure-mode system context after housekeeping"
-            git push origin "HEAD:${{ github.head_ref }}"
-          fi
 
       - name: Check FM system-context reconciliation
         run: python vigil/scripts/reconcile-fm-system-context.py --check
