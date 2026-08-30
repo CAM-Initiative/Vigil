@@ -38,7 +38,6 @@ jobs:
           from pathlib import Path
           import subprocess
 
-          root = Path('.')
           tracked = subprocess.check_output(['git', 'ls-files'], text=True).splitlines()
           text_suffixes = {'.py', '.md', '.json', '.yml', '.yaml', '.txt', '.cff'}
 
@@ -46,8 +45,6 @@ jobs:
               path = Path(raw)
               if not path.exists() or path.suffix.lower() not in text_suffixes:
                   continue
-              # Historical audits and withdrawn drafts preserve the path names that
-              # were true when those artefacts were written.
               if raw.startswith('vigil/docs/audits/') or raw.startswith('vigil/drafts/'):
                   continue
               try:
@@ -56,25 +53,21 @@ jobs:
                   continue
               original = text
 
-              # Repository-relative path references.
               text = text.replace('vigil/external_sources/', 'vigil/external_governance/sources/')
               text = text.replace('vigil/external_requirements/', 'vigil/external_governance/requirements/')
               text = text.replace('vigil/external_sources', 'vigil/external_governance/sources')
               text = text.replace('vigil/external_requirements', 'vigil/external_governance/requirements')
 
-              # Python Path expressions whose string literal did not include a slash.
               text = text.replace(' / "external_sources"', ' / "external_governance" / "sources"')
               text = text.replace(' / "external_requirements"', ' / "external_governance" / "requirements"')
               text = text.replace(" / 'external_sources'", " / 'external_governance' / 'sources'")
               text = text.replace(" / 'external_requirements'", " / 'external_governance' / 'requirements'")
 
-              # Relative links between the two newly nested sibling directories.
               text = text.replace('../external_governance/requirements/', '../requirements/')
               text = text.replace('../external_governance/requirements', '../requirements')
               text = text.replace('../external_governance/sources/', '../sources/')
               text = text.replace('../external_governance/sources', '../sources')
 
-              # The detached declaration is retired; artefact-local metadata remains.
               lines = text.splitlines(keepends=True)
               out = []
               for line in lines:
@@ -105,10 +98,7 @@ jobs:
                   'Authorship, review and verification vocabulary is controlled by `vigil/provenance/AUTHORSHIP-PROVENANCE.json`.',
                   'Authorship, review and verification vocabulary is enforced by `vigil/scripts/validate-authorship-provenance.py` against artefact-local provenance metadata.'
               )
-              text = text.replace(
-                  '- `vigil/provenance/` — controlled provenance declarations.\n',
-                  ''
-              )
+              text = text.replace('- `vigil/provenance/` — controlled provenance declarations.\n', '')
               text = text.replace(
                   'See `../provenance/AUTHORSHIP-PROVENANCE.json`.',
                   'The controlled provenance vocabulary is enforced by `../../scripts/validate-authorship-provenance.py` against artefact-local metadata.'
@@ -124,15 +114,40 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          if grep -RIn \
-            --exclude-dir=.git \
-            --exclude-dir=audits \
-            --exclude-dir=drafts \
-            -E 'vigil/(external_sources|external_requirements)|AUTHORSHIP-PROVENANCE\.json| / ["'"']external_(sources|requirements)["'"']' \
-            .; then
-            echo "Live references to retired external-governance/provenance paths remain."
-            exit 1
-          fi
+          python - <<'PY'
+          from pathlib import Path
+          import subprocess
+
+          forbidden = (
+              'vigil/external_sources',
+              'vigil/external_requirements',
+              'AUTHORSHIP-PROVENANCE.json',
+              ' / "external_sources"',
+              ' / "external_requirements"',
+              " / 'external_sources'",
+              " / 'external_requirements'",
+          )
+          tracked = subprocess.check_output(['git', 'ls-files'], text=True).splitlines()
+          findings = []
+          for raw in tracked:
+              if raw.startswith('vigil/docs/audits/') or raw.startswith('vigil/drafts/'):
+                  continue
+              path = Path(raw)
+              if not path.exists():
+                  continue
+              try:
+                  text = path.read_text(encoding='utf-8')
+              except UnicodeDecodeError:
+                  continue
+              for needle in forbidden:
+                  if needle in text:
+                      findings.append(f'{raw}: {needle}')
+          if findings:
+              print('Live references to retired external-governance/provenance paths remain:')
+              for item in findings:
+                  print(f'  {item}')
+              raise SystemExit(1)
+          PY
 
           python vigil/tests/test_authorship_provenance.py
           python vigil/scripts/validate-authorship-provenance.py
