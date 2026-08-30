@@ -1,406 +1,239 @@
 # VIGIL Maintainer Guide
 
-## Purpose
+## Purpose and authority boundary
 
-VIGIL is a public workflow, observation, failure-mode, proposal, and patch-note registry for preserving AI governance signals, triaging failure patterns, developing CAM-specific repair proposals, and recording implemented CAM changes.
+VIGIL is a public evidence-to-repair observatory for AI governance evidence, research, failure modes, taxonomy, external-governance requirements, and CAM applicability assessment.
 
-VIGIL is subordinate to CAM's constitutional and operational order. VIGIL does not create doctrine, amend adopted instruments, determine liability, or verify final factual truth.
+VIGIL does **not** create CAM constitutional authority, amend adopted CAM/Caelestis instruments, determine legal liability, or establish final factual truth. Repository maintenance is not a CAM governance patch and must not be represented as a VIGIL PATCH record.
 
-A VIGIL record may inform CAM governance work, but it is not itself a CAM amendment.
+The operating model is AI-authored, semi-autonomous production under human contract approval unless an artefact-level provenance declaration states otherwise. Authorship, review and verification vocabulary is enforced by `vigil/scripts/validate-authorship-provenance.py` against artefact-local provenance metadata.
 
-## Registry Philosophy
+## Current publication boundary
 
-VIGIL separates four different activities that must not be collapsed:
-
-```text
-OBS   preserves observed signals and source evidence.
-FM    records and triages confirmed or strongly evidenced failure modes.
-PROP  develops CAM-specific governance repair logic.
-PATCH records implemented CAM changes.
-```
-
-The registry is source-data-first and record-class-specific.
-
-External users should be able to understand a VIGIL record from its source data, system context, jurisdictional context, and record type without needing to understand CAM instrument numbering.
-
-CAM routing remains important, but it is internal maintainer metadata.
-
-## Current Record Classes
-
-### OBS — Observation Record
-
-An Observation Record captures an observed signal, event, report, source item, public development, platform behaviour, system behaviour, jurisdictional development, or early warning input that may be relevant to AI governance, robotics governance, platform governance, UX safety, public legitimacy, or CAM.
-
-Observation records are not automatically failure modes.
-
-Use OBS when:
-
-* something relevant has been observed;
-* evidence may be incomplete, emerging, disputed, or provisional;
-* the record should preserve source evidence before governance meaning is fully known;
-* the record may later inform a Failure Mode or Proposal record.
-
-OBS records must not include failure-mode triage or CAM repair logic.
-
-### FM — Failure Mode Record
-
-A Failure Mode Record captures a confirmed, strongly evidenced, recurring, or clearly triage-worthy failure pattern.
-
-Use FM when:
-
-* a system behaviour has failed in a recognizable way;
-* harm, risk, procedural breakdown, safety degradation, or governance instability is evident;
-* the same pattern may recur across systems, platforms, contexts, or jurisdictions;
-* the issue requires triage, mitigation, classification, escalation, or CAM proposal development.
-
-FM records must include failure definition, failure threshold, classification, triage, evidence, and routing implications.
-
-### PROP — Proposal Record
-
-A Proposal Record captures CAM-specific governance development, repair recommendation, amendment logic, template improvement, registry change, interface update, validator change, automation improvement, doctrinal clarification, or operational design proposal.
-
-Use PROP when:
-
-* CAM governance development is being proposed;
-* an observation or failure mode suggests CAM may need repair, expansion, or clarification;
-* a registry, template, validator, automation, interface, or instrument should be updated;
-* a governance idea needs to be preserved before implementation.
-
-PROP records must not claim implementation.
-
-### PATCH — Patch Note Record
-
-A Patch Note Record captures an implemented CAM-specific change, repair, update, amendment, registry correction, template update, schema update, validator update, automation update, interface update, crosswalk update, or documentation change.
-
-Use PATCH only when:
-
-* a change has actually been implemented;
-* maintainers need a public and machine-readable record of what changed and why;
-* a proposal has been adopted or partially implemented;
-* a failure mode has resulted in a concrete repair.
-
-PATCH records must distinguish completed work from remaining work.
-
-## Template Files
-
-Approved record templates are stored under `vigil/templates/`.
+The canonical **public record corpus** is limited to:
 
 ```text
-observation-record-template.md
-observation-record-template.json
-
-failure-mode-record-template.md
-failure-mode-record-template.json
-
-proposal-record-tempate.md
-proposal-record-tempate.json
-
-patch-note-record-template.md
-patch-note-record-template.json
+vigil/records/
+  observations/
+  failures/
+  research/
 ```
 
-The Markdown templates define the human-readable meaning of each record type.
+These are the only record classes loaded by the public registry builder and public record validators.
 
-The JSON templates define the machine-readable skeletons.
+The following historical/design record classes are currently **withdrawn from publication** and retained under `vigil/drafts/`:
 
-If a filename typo exists in the repository, preserve the existing filename until a deliberate rename patch updates all references.
+```text
+vigil/drafts/proposals/
+vigil/drafts/patches/
+vigil/drafts/learn/
+```
 
-## Schema Rules
+Retained draft files preserve identifiers and historical work. They are not public registry inputs, must not be resolved by public interfaces, and must not be treated as published proposals, verified implementation authority, or validated learning closure.
 
-The canonical schema-rules contract is:
+Do not recreate `vigil/records/proposals/`, `vigil/records/patches/` or `vigil/records/learn/` without an explicit architecture decision that reactivates those classes.
+
+## Canonical subsystem boundaries
+
+Maintain these as separate authoritative surfaces:
+
+- `vigil/records/` — public OBS, FM and RESEARCH records.
+- `vigil/taxonomy/` — the VIGIL Observatory failure taxonomy and its generated publications.
+- `vigil/external_governance/sources/` — registered external-source identity and review state.
+- `vigil/external_governance/requirements/` — authoritative external-governance requirement shards and generated projections.
+- `vigil/cam_assessment/` — CAM applicability/coverage assessment against a named corpus state.
+- `vigil/drafts/` — retained non-public record classes.
+- `vigil/docs/reviews/` — bounded implementation/reconciliation reviews that remain useful as work records.
+- `vigil/docs/audits/` — retained non-normative historical audit and transition evidence.
+
+Do not mix these authority layers merely because they are related.
+
+## Schema and validation authority
+
+The sole canonical record-rules contract for VIGIL records is:
 
 ```text
 vigil/VIGIL.Schema.json
 ```
 
-This file replaces the previous schema file as the authoritative rules contract for record-class validation and schema generation.
+`VIGIL.Schema.json` is a machine-readable VIGIL rules contract. It is not a CAM instrument and is not itself a record.
 
-Maintainers should treat it as a source of implementation requirements for JSON Schema files, validation scripts, test fixtures, and index generation.
+Operational enforcement is provided by `vigil/scripts/validate-vigil-records.py` and the specialised validators under `vigil/scripts/`. The validator and tests must implement the canonical contract; they must not create a second competing ontology.
 
-Do not use schema work to redesign record ontology.
+Subsystem schemas remain authoritative only for their own bounded subsystems, for example:
 
-## Decision Model
+- `vigil/taxonomy/VIGIL.FailureTaxonomy.Schema.json` for taxonomy records;
+- `vigil/external_governance/requirements/*.schema.json` for external-requirement state;
+- `vigil/external_governance/sources/source-registry.schema.json` for the source registry;
+- `vigil/cam_assessment/assessment.schema.json` for CAM assessment records.
 
-### Use OBS when the record is a signal.
+Do **not** reintroduce a parallel VIGIL record-class schema tree under `vigil/schemas/`. Historical class-specific schemas were retired because they duplicated and drifted from `VIGIL.Schema.json`.
 
-Examples:
+A new schema surface requires an explicit authority statement, a consumer, validator coverage, tests, and an update to this guide in the same change.
 
-* a news report about agentic AI deployment;
-* a public platform behaviour that may matter later;
-* a jurisdictional development;
-* an unverified social media observation;
-* an early warning source item;
-* a relevant but not-yet-triaged system behaviour.
+## Taxonomy dataset/book versioning
 
-### Use FM when the record is a failure.
+`vigil/taxonomy/VIGIL.FailureTaxonomy.Index.json` carries the portable taxonomy dataset/book version and publication date. `vigil/taxonomy/validate_taxonomy.py` enforces this contract from the canonical family/class content digest.
 
-Examples:
+When canonical family or class content changes:
 
-* a confirmed or strongly evidenced system failure;
-* a recurring failure pattern;
-* a safety breakdown;
-* a procedural or governance collapse;
-* a failure that requires triage;
-* an operational harm pattern.
+- an update to existing admitted family/class content advances the **third** semantic-version digit (`patch`);
+- admission of a new failure family advances the **second** digit and resets the third digit (`minor`);
+- removal or restructuring of admitted family membership is a **major** change and advances the first digit according to the validator's release-history rules;
+- the current release-history entry, content digest, family list, class count, version and publication date must all agree; and
+- every family file's dataset/book version and publication date must agree with the index.
 
-### Use PROP when the record is a CAM proposal.
+A renderer, stylesheet, layout, PDF/HTML presentation, or other publication-only change that does not alter canonical family/class content does not by itself create a new taxonomy dataset release.
 
-Examples:
+Do not manually weaken or bypass this rule. If taxonomy validation reports that canonical family/class content changed without a new version/date/release digest, update the release metadata as part of the same substantive taxonomy change.
 
-* proposed instrument amendment;
-* proposed template repair;
-* proposed schema repair;
-* proposed validator repair;
-* proposed interface update;
-* proposed automation update;
-* proposed doctrinal clarification.
-
-### Use PATCH when the record is an implemented change.
-
-Examples:
-
-* implemented schema update;
-* implemented template update;
-* implemented validator update;
-* implemented interface update;
-* implemented CAM instrument repair;
-* implemented registry correction;
-* implemented automation change.
-
-## Source Preservation Rules
+## Source evidence rules
 
 Source evidence is load-bearing.
 
-Maintainers must:
+For individual VIGIL records:
 
-* preserve rich source records in `source_records`;
-* preserve machine-readable source mirrors in `source_data.sources` where required;
-* keep source title, author/publisher/account, date, URL, archive URL, retrieved date, source type, source platform, system/product, model/algorithm, deployment context, source context, URL status, and relevance note where available;
-* never flatten rich source data into a single URL field;
-* never replace known source values with placeholders;
-* never invent missing source values.
+- `source_records` is the **only** canonical source-evidence block;
+- `source_data` and `source_data.sources` are forbidden;
+- preserve source identity, date, URL, retrieval state, source type/platform, affected system metadata, evidence modality, primary-artefact access, interpretive reliance, source residence and source role where the contract requires them;
+- preserve uncertainty and access limitations explicitly;
+- do not flatten rich evidence into a URL-only representation;
+- do not invent source values or retrospective verification;
+- distinguish external evidence from CAM-internal and VIGIL-internal provenance.
 
-If source data is unknown, use explicit placeholder values such as:
+Interpretive commentary may mention VIGIL or CAM without changing the origin of an external source. Source residence must be determined from source identity and provenance, not from VIGIL's own relevance note.
 
-```text
-unknown
-to be assessed
-to be confirmed
-not applicable
-TODO
-```
+## Public record classes
 
-depending on the template.
+### OBS — Observation
 
-## CAM Internal Routing
+Use OBS for a material unresolved governance proposition or early-warning signal that is not already adequately represented by an existing FM or RESEARCH record. OBS is not a duplicate evidence container for an existing record.
 
-CAM routing fields are internal maintainer metadata.
+### FM — Failure Mode
 
-Use different routing language by record class:
+Use FM for a confirmed, strongly evidenced, recurring, or sufficiently clear ecosystem failure pattern requiring diagnosis, classification, triage, monitoring or repair assessment. FM is the authoritative public diagnostic record for the failure definition and threshold.
 
-```text
-OBS   → related_or_similar_* fields
-FM    → affected_* fields
-PROP  → target_* fields
-PATCH → changed_* fields
-```
+VIGIL taxonomy classification is stored separately from event-level `failure_classification` dimensions. Peer class membership belongs to the taxonomy layer, not `linked_records.related_failure_modes`.
 
-This distinction matters.
+### RESEARCH — Research Record
 
-An observation may be relevant to CAM without affecting a CAM instrument.
+Use RESEARCH for substantive non-binding analysis that independently warrants publication and supports an evidence-to-repair pathway. Published research must meet the quality contract in `VIGIL.Schema.json`.
 
-A failure mode may affect or implicate CAM governance areas.
+Short source summaries belong in `source_records` or, when genuinely unresolved and independently material, in OBS.
 
-A proposal may target CAM instruments or infrastructure.
+## Withdrawn PROP, PATCH and LEARN classes
 
-A patch note records what actually changed.
+PROP, PATCH and LEARN files retained under `vigil/drafts/` are historical/design material only while their architecture is under review.
 
-## Field-Boundary Rules
+Public validators, registry builders, interfaces and lifecycle checks must not load or resolve draft records. Historical references to withdrawn IDs may remain where they are part of the provenance of an existing public record, but the target remains intentionally non-public.
 
-Maintainers must preserve field boundaries.
+Repository maintenance, schema changes, validator fixes, housekeeping, migration scripts and generated-index rebuilds belong in Git commits, pull requests, audits and reviews—not in VIGIL PROP or PATCH records.
 
-OBS records must not contain:
+## Generated public outputs
+
+The current public generated indexes are:
 
 ```text
-failure_classification
-triage
-proposal_scope
-proposal_rationale
-implementation_notes
-change_classification
-change_details
-implementation_verification
-impact_summary
-remaining_work
-date_implemented
+vigil/VIGIL.Failures.Index.json
+vigil/VIGIL.Observations.Index.json
+vigil/VIGIL.Research.Index.json
+vigil/VIGIL.Registry.Index.json
 ```
 
-FM records must contain:
+They are derived outputs. Do not edit them manually.
+
+Build them with:
+
+```bash
+python vigil/scripts/build-vigil-public-records.py
+python vigil/scripts/enrich-vigil-indexes.py
+```
+
+Do not use the legacy internal builder as a publication command and do not recreate withdrawn-class indexes.
+
+## Scripts and tests
+
+`vigil/scripts/` is for current executable infrastructure: builders, validators, managers, routers, active auditors, active seeders and explicitly retained maintenance tools.
+
+`vigil/tests/` is the only home for executable tests.
+
+A completed one-off `apply-*`, `migrate-*`, reconciliation or seeding script must be dispositioned when its work closes. It may remain live only where at least one of the following is true:
+
+1. current CI/tests depend on it;
+2. current recovery or repeatable maintenance procedures require it;
+3. it remains the authorised way to reproduce a maintained transformation; or
+4. a current review explicitly records why it is still operational.
+
+Otherwise delete it and rely on Git history plus any retained audit/review record.
+
+The legacy taxonomy migration assurance ledger at `vigil/taxonomy/migration/Caelestis.LegacyFailure.MigrationLedger.json` is currently **LIVE validation evidence** because `validate_taxonomy.py` checks its migration-disposition integrity. Its presence does not make Caelestis migration semantics part of the portable taxonomy: the ledger itself declares `portable_taxonomy_dependency: false`. The remaining completed taxonomy migration review/classification artefacts belong under `vigil/docs/audits/taxonomy/migration/`.
+
+## Audit, review and generated artefact discipline
+
+Do not leave completed audit reports beside canonical schemas, datasets, taxonomy families or live executable code.
+
+Use:
+
+- `vigil/docs/reviews/` for bounded reviews that remain operationally useful;
+- `vigil/docs/audits/` for retained historical audit, transition and assurance evidence;
+- subsystem `generated/` directories only for deterministic current outputs;
+- Git history for obsolete working debris that has no continuing evidentiary value.
+
+The audit archive is non-normative. Historical transition documents do not remain operative merely because they are retained.
+
+## Mandatory housekeeping closure
+
+Housekeeping is part of every substantive VIGIL pass.
+
+Before declaring a work item complete, disposition every new or touched supporting artefact as one of:
 
 ```text
-failure_mode_definition
-failure_threshold
-failure_classification
-triage
+LIVE       current executable/canonical infrastructure
+GENERATED  deterministic current output
+REVIEW     bounded current work/reconciliation record
+AUDIT      retained non-normative historical evidence
+DRAFT      explicitly non-public retained design/record material
+RETIRE     delete; Git history is sufficient
 ```
 
-PROP records must contain:
+No file may remain in a canonical or executable directory merely because that is where it happened to be created.
 
-```text
-proposal_rationale
-proposal_type
-proposal_scope
-implementation_notes
-external_relevance
-next_action
+When a schema, field, record class, workflow, migration architecture or taxonomy structure is superseded, remove or relocate the superseded artefacts in the same bounded maintenance programme unless a documented dependency prevents retirement.
+
+## Safe change sequence
+
+For infrastructure changes:
+
+1. verify the exact branch head and inspect concurrent changes;
+2. identify the canonical authority and all current consumers before editing;
+3. update the canonical contract/source first;
+4. update validators, builders and tests in the same bounded change;
+5. update documentation and path references;
+6. run the focused tests and validators;
+7. run the public builders and full relevant CI surface;
+8. inspect generated diffs;
+9. disposition temporary migration/audit/reconciliation artefacts; and
+10. record any deliberately deferred cleanup explicitly.
+
+Do not weaken validation merely to make a branch green. Do not overwrite uncertainty. Do not silently reconcile concurrent branch divergence. Do not reset, rebase, force-push or rewrite shared history as a housekeeping technique.
+
+## Core validation commands
+
+```bash
+python vigil/tests/test_vigil_source_provenance.py
+python vigil/scripts/validate-vigil-source-provenance.py
+python vigil/tests/test_validate_vigil_record_rules.py
+python vigil/tests/test_validate_vigil_records.py -b
+python vigil/scripts/validate-vigil-public-records.py
+python vigil/scripts/validate-vigil-system-components.py
+python vigil/scripts/run-vigil-lifecycle-validation.py
+python vigil/scripts/build-vigil-public-records.py
+python vigil/scripts/enrich-vigil-indexes.py
+python vigil/taxonomy/validate_taxonomy.py
 ```
 
-PATCH records must contain:
+External-governance and taxonomy work must additionally run the validators/tests owned by those subsystems.
 
-```text
-date_implemented
-change_classification
-change_details
-implementation_verification
-impact_summary
-remaining_work
-```
+## Maintenance principle
 
-## Linked Records
-
-VIGIL records may link to related records, but linking must not invent a lifecycle.
-
-OBS records may link to:
-
-```text
-related observations
-external references
-research
-standards
-```
-
-FM records may link to:
-
-```text
-related observations
-related failure modes
-related proposals
-related patch notes
-external references
-research
-standards
-```
-
-PROP records may link to:
-
-```text
-related observations
-related failure modes
-related proposals
-related patch notes
-external references
-research
-standards
-```
-
-PATCH records may link to:
-
-```text
-related observations
-related failure modes
-related proposals
-related patch notes
-external references
-research
-standards
-commits
-pull requests
-issues
-```
-
-A proposal must not list itself as a patch note.
-
-A patch note must not claim to implement a proposal unless implementation actually occurred.
-
-## External Ingestion
-
-Third parties should be able to consume VIGIL records without knowing CAM.
-
-Public-facing fields should prioritise:
-
-```text
-record identity
-record type
-source records
-source data
-system context
-jurisdictional context
-evidence confidence
-failure classification, for FM only
-triage, for FM only
-proposal scope, for PROP only
-change details, for PATCH only
-linked records
-```
-
-CAM-specific fields are available for maintainers but should not be required to understand the public meaning of a record.
-
-## Automation Notes
-
-* Individual record files under `vigil/records/` are the source of truth.
-* `python vigil/scripts/route-vigil-records.py` routes records into open, cluster, or closed folders.
-* `python vigil/scripts/validate-vigil-records.py` validates individual records.
-* `python vigil/scripts/build-vigil-records.py` generates aggregate JSON outputs.
-* `vigil/VIGIL.ActiveRecords.json` is the canonical active/live aggregate for interface ingestion.
-* `vigil/VIGIL.ClosedRecords.json` is the archival aggregate for closed records.
-* `vigil/VIGIL.Records.Index.json` is the canonical lightweight global registry index.
-* `vigil/VIGIL.Schema.json` is the canonical schema-rules contract.
-* `.github/workflows/vigil-records.yml` runs VIGIL validation/build automation in GitHub Actions, if present.
-
-## Generated JSON Outputs
-
-Do not manually edit generated aggregates:
-
-```text
-vigil/VIGIL.ActiveRecords.json
-vigil/VIGIL.ClosedRecords.json
-vigil/VIGIL.Records.Index.json
-```
-
-Generated outputs must be rebuilt from individual record files.
-
-No `VIGIL.Records.json` legacy aggregate should be reintroduced unless explicitly required for downstream compatibility.
-
-## Maintenance Rules
-
-```text
-Do not delete source evidence.
-Do not overwrite uncertainty with certainty.
-Do not flatten source records.
-Do not make CAM instruments the primary public classification layer.
-Do not create a failure mode from a weak signal.
-Do not create a proposal when only an observation exists.
-Do not create a patch note unless implementation occurred.
-Do not claim validation passed unless it was run.
-Do not mutate adopted CAM instruments from a VIGIL pass unless separately instructed.
-Preserve stable IDs.
-Prefer additive migrations over destructive rewrites.
-Prefer small, inspectable changes.
-```
-
-## Safe Change Sequence
-
-When changing VIGIL infrastructure:
-
-```text
-1. Update templates manually.
-2. Update schema rules.
-3. Update validators and tests.
-4. Validate with fixtures.
-5. Migrate one record of each class.
-6. Rebuild indexes.
-7. Review generated outputs.
-8. Only then consider broader migration.
-```
-
-Do not redesign schema, migrate records, and update the interface in the same pass.
+The repository should make the current architecture obvious from its directory structure. Historical evidence may be preserved, but historical machinery must not masquerade as live authority.

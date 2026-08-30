@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/CAM-Initiative/Vigil/vigil/external_governance/requirements/metadata-review.schema.json",
+  "title": "VIGIL External Requirement Metadata Review Ledger",
+  "type": "object",
+  "required": ["schema_version", "updated_at", "entries"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "updated_at": {"type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$"},
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "requirement_id",
+          "reviewed_at",
+          "review_basis",
+          "field_status"
+        ],
+        "properties": {
+          "requirement_id": {"type": "string", "pattern": "^EXTREQ-[A-F0-9]{16}$"},
+          "reviewed_at": {"type": ["string", "null"], "pattern": "^\\d{4}-\\d{2}-\\d{2}$"},
+          "review_basis": {
+            "enum": [
+              "direct-primary-text",
+              "licensed-primary-text",
+              "official-public-extract",
+              "not-reviewed"
+            ]
+          },
+          "review_notes": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+          "field_status": {
+            "type": "object",
+            "required": [
+              "applicable_actor",
+              "governed_object",
+              "timing_or_frequency",
+              "required_artefacts",
+              "evidence_expectation",
+              "verification_method",
+              "applicability_conditions",
+              "exceptions_or_qualifications"
+            ],
+            "properties": {
+              "applicable_actor": {"$ref": "#/$defs/status"},
+              "governed_object": {"$ref": "#/$defs/status"},
+              "timing_or_frequency": {"$ref": "#/$defs/status"},
+              "required_artefacts": {"$ref": "#/$defs/status"},
+              "evidence_expectation": {"$ref": "#/$defs/status"},
+              "verification_method": {"$ref": "#/$defs/status"},
+              "applicability_conditions": {"$ref": "#/$defs/status"},
+              "exceptions_or_qualifications": {"$ref": "#/$defs/status"}
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "$defs": {
+    "status": {
+      "enum": [
+        "populated-reviewed",
+        "not-specified-by-source",
+        "not-applicable",
+        "review-required"
+      ]
+    }
+  },
+  "additionalProperties": false
+}

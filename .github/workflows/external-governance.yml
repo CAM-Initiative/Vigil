@@ -5,31 +5,37 @@ on:
     branches:
       - main
     paths:
-      - "vigil/external_sources/**"
-      - "vigil/external_requirements/**"
+      - "vigil/external_governance/sources/**"
+      - "vigil/external_governance/requirements/**"
       - "vigil/cam_assessment/**"
-      - "vigil/provenance/AUTHORSHIP-PROVENANCE.json"
       - "vigil/scripts/manage-external-sources.py"
       - "vigil/scripts/manage-external-requirements.py"
+      - "vigil/scripts/external_requirements_io.py"
       - "vigil/scripts/validate-cam-assessments.py"
       - "vigil/scripts/validate-authorship-provenance.py"
       - "vigil/tests/test_external_sources.py"
       - "vigil/tests/test_external_requirements.py"
+      - "vigil/tests/test_external_requirement_fidelity.py"
+      - "vigil/tests/test_external_requirement_metadata.py"
+      - "vigil/tests/test_eu_ai_act_reextraction.py"
       - "vigil/tests/test_cam_assessments.py"
       - "vigil/tests/test_authorship_provenance.py"
       - ".github/workflows/external-governance.yml"
   pull_request:
     paths:
-      - "vigil/external_sources/**"
-      - "vigil/external_requirements/**"
+      - "vigil/external_governance/sources/**"
+      - "vigil/external_governance/requirements/**"
       - "vigil/cam_assessment/**"
-      - "vigil/provenance/AUTHORSHIP-PROVENANCE.json"
       - "vigil/scripts/manage-external-sources.py"
       - "vigil/scripts/manage-external-requirements.py"
+      - "vigil/scripts/external_requirements_io.py"
       - "vigil/scripts/validate-cam-assessments.py"
       - "vigil/scripts/validate-authorship-provenance.py"
       - "vigil/tests/test_external_sources.py"
       - "vigil/tests/test_external_requirements.py"
+      - "vigil/tests/test_external_requirement_fidelity.py"
+      - "vigil/tests/test_external_requirement_metadata.py"
+      - "vigil/tests/test_eu_ai_act_reextraction.py"
       - "vigil/tests/test_cam_assessments.py"
       - "vigil/tests/test_authorship_provenance.py"
       - ".github/workflows/external-governance.yml"
@@ -59,10 +65,15 @@ jobs:
           python vigil/scripts/manage-external-sources.py validate --check-generated
           python vigil/tests/test_external_sources.py
       - name: Build and validate external requirements
+        env:
+          PYTHONPATH: vigil/scripts
         run: |
           python vigil/scripts/manage-external-requirements.py build
           python vigil/scripts/manage-external-requirements.py validate --check-generated
           python vigil/tests/test_external_requirements.py
+          python vigil/tests/test_external_requirement_fidelity.py
+          python vigil/tests/test_external_requirement_metadata.py
+          python vigil/tests/test_eu_ai_act_reextraction.py
       - name: Validate CAM assessments
         run: |
           python vigil/tests/test_cam_assessments.py
@@ -75,18 +86,19 @@ jobs:
         if: github.event_name == 'pull_request'
         run: |
           if ! git diff --quiet -- \
-            vigil/external_sources/source-review-queue.json \
-            vigil/external_sources/SOURCE-CATALOGUE.md \
-            vigil/external_requirements/requirements-index.json \
-            vigil/external_requirements/completeness-report.json \
-            vigil/external_requirements/source-coverage-manifests.json \
-            vigil/external_requirements/EXTERNAL-AI-GOVERNANCE-REQUIREMENTS.md \
-            vigil/external_requirements/SOURCE-ACCESS-LIMITATIONS.md \
-            vigil/external_requirements/BLOCKED-SOURCE-PRIORITIES.md \
-            vigil/external_requirements/derivative-crosswalk-index.json \
-            vigil/external_requirements/DERIVATIVE-CROSSWALKS.md; then
+            vigil/external_governance/sources/source-review-queue.json \
+            vigil/external_governance/sources/SOURCE-CATALOGUE.md \
+            vigil/external_governance/requirements/requirements.json \
+            vigil/external_governance/requirements/requirements-index.json \
+            vigil/external_governance/requirements/completeness-report.json \
+            vigil/external_governance/requirements/source-coverage-manifests.json \
+            vigil/external_governance/requirements/EXTERNAL-AI-GOVERNANCE-REQUIREMENTS.md \
+            vigil/external_governance/requirements/SOURCE-ACCESS-LIMITATIONS.md \
+            vigil/external_governance/requirements/BLOCKED-SOURCE-PRIORITIES.md \
+            vigil/external_governance/requirements/derivative-crosswalk-index.json \
+            vigil/external_governance/requirements/DERIVATIVE-CROSSWALKS.md; then
             echo "External governance generated outputs are stale."
-            git diff --stat -- vigil/external_sources vigil/external_requirements
+            git diff --stat -- vigil/external_governance/sources vigil/external_governance/requirements
             exit 1
           fi
       - name: Commit generated outputs
@@ -95,16 +107,17 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add \
-            vigil/external_sources/source-review-queue.json \
-            vigil/external_sources/SOURCE-CATALOGUE.md \
-            vigil/external_requirements/requirements-index.json \
-            vigil/external_requirements/completeness-report.json \
-            vigil/external_requirements/source-coverage-manifests.json \
-            vigil/external_requirements/EXTERNAL-AI-GOVERNANCE-REQUIREMENTS.md \
-            vigil/external_requirements/SOURCE-ACCESS-LIMITATIONS.md \
-            vigil/external_requirements/BLOCKED-SOURCE-PRIORITIES.md \
-            vigil/external_requirements/derivative-crosswalk-index.json \
-            vigil/external_requirements/DERIVATIVE-CROSSWALKS.md
+            vigil/external_governance/sources/source-review-queue.json \
+            vigil/external_governance/sources/SOURCE-CATALOGUE.md \
+            vigil/external_governance/requirements/requirements.json \
+            vigil/external_governance/requirements/requirements-index.json \
+            vigil/external_governance/requirements/completeness-report.json \
+            vigil/external_governance/requirements/source-coverage-manifests.json \
+            vigil/external_governance/requirements/EXTERNAL-AI-GOVERNANCE-REQUIREMENTS.md \
+            vigil/external_governance/requirements/SOURCE-ACCESS-LIMITATIONS.md \
+            vigil/external_governance/requirements/BLOCKED-SOURCE-PRIORITIES.md \
+            vigil/external_governance/requirements/derivative-crosswalk-index.json \
+            vigil/external_governance/requirements/DERIVATIVE-CROSSWALKS.md
           if git diff --cached --quiet; then
             echo "External governance generated outputs already current."
           else

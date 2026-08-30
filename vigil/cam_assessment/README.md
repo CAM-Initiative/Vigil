@@ -4,8 +4,8 @@ This directory records the separate assessment of whether an external `EXTREQ-*`
 
 It is deliberately separate from:
 
-- `vigil/external_sources/` — external-source identity, version, lifecycle and source-review workflow; and
-- `vigil/external_requirements/` — external requirement meaning, authority semantics, access and extraction state.
+- `vigil/external_governance/sources/` — external-source identity, version, lifecycle and source-review workflow; and
+- `vigil/external_governance/requirements/` — external requirement meaning, authority semantics, access and extraction state.
 
 ## Boundary
 

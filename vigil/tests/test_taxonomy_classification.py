@@ -13,6 +13,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 VIGIL = ROOT / "vigil"
 VALIDATOR_PATH = VIGIL / "scripts" / "validate-vigil-records.py"
+OPENAI_REPORT_URL = "https://cdn.openai.com/pdf/67869394-cb91-4c12-888c-5cbd85c7814c/OpenAI-Hugging-Face%20Incident-Technical-Report.pdf"
+OPENAI_SUMMARY_URL = "https://openai.com/index/hugging-face-incident-and-the-road-ahead/"
+METR_REPORT_URL = "https://metr.org/blog/2026-08-26-openai-hugging-face-incident-investigation/"
 spec = importlib.util.spec_from_file_location("validate_vigil_records_taxonomy", VALIDATOR_PATH)
 validator = importlib.util.module_from_spec(spec)
 assert spec.loader
@@ -29,7 +32,7 @@ class TaxonomyClassificationTests(unittest.TestCase):
         cls.registry_index = json.loads((VIGIL / "VIGIL.Registry.Index.json").read_text(encoding="utf-8"))
 
     def test_every_canonical_failure_has_explicit_outcome(self):
-        self.assertEqual(len(self.records), 71)
+        self.assertEqual(len(self.records), 72)
         allowed = {"classified", "family-only", "candidate-new-class", "unmapped", "deferred"}
         self.assertTrue(all(r["taxonomy_classification"]["classification_status"] in allowed for r in self.records))
 
@@ -256,6 +259,43 @@ class TaxonomyClassificationTests(unittest.TestCase):
             [item["class"]["class_id"] for item in block["secondary_classifications"]],
             ["VIGIL-FC-000038", "VIGIL-FC-000009"],
         )
+
+    def test_hf_02_transitive_authority_outcome_uses_existing_classes(self):
+        record = next(r for r in self.records if r["id"] == "VIGIL-2026-FM-0072")
+        block = record["taxonomy_classification"]
+        self.assertEqual(block["classification_status"], "classified")
+        self.assertEqual(block["primary_class"]["class_id"], "VIGIL-FC-000009")
+        self.assertEqual(
+            [item["class"]["class_id"] for item in block["secondary_classifications"]],
+            ["VIGIL-FC-000001"],
+        )
+        self.assertIn("every hop", record["summary"])
+        self.assertIn("material uncertainty signal", record["failure_threshold"])
+        self.assertIn("genuinely authorised arbiter", record["failure_threshold"])
+
+    def test_hf_02_preserves_neighbouring_failure_boundaries(self):
+        floor = next(r for r in self.records if r["id"] == "VIGIL-2026-FM-0002")
+        adversarial = next(r for r in self.records if r["id"] == "VIGIL-2026-FM-0047")
+        defensive_refusal = next(r for r in self.records if r["id"] == "VIGIL-2026-FM-0048")
+        human_assurance = next(r for r in self.records if r["id"] == "VIGIL-2026-FM-0059")
+        self.assertEqual(floor["taxonomy_classification"]["classification_status"], "unmapped")
+        self.assertEqual(adversarial["taxonomy_classification"]["primary_class"]["class_id"], "VIGIL-FC-000009")
+        self.assertIn("without being overstated", adversarial["interpretive_provenance"]["current_ai_review"]["review_outcome"].lower())
+        new_urls = {OPENAI_REPORT_URL, OPENAI_SUMMARY_URL, METR_REPORT_URL}
+        self.assertTrue(new_urls.isdisjoint({s["source_url"] for s in defensive_refusal["source_records"]}))
+        self.assertTrue(new_urls.isdisjoint({s["source_url"] for s in human_assurance["source_records"]}))
+
+    def test_hf_02_primary_sources_and_trajectory_compound_are_preserved(self):
+        authority = next(r for r in self.records if r["id"] == "VIGIL-2026-FM-0072")
+        trajectory = next(r for r in self.records if r["id"] == "VIGIL-2026-FM-0071")
+        required = {OPENAI_REPORT_URL, OPENAI_SUMMARY_URL, METR_REPORT_URL}
+        self.assertTrue(required.issubset({s["source_url"] for s in authority["source_records"]}))
+        self.assertIn(OPENAI_SUMMARY_URL, {s["source_url"] for s in trajectory["source_records"]})
+        relation = next(
+            item for item in trajectory["linked_records"]["contextual_relations"]
+            if item["record_id"] == "VIGIL-2026-FM-0072"
+        )
+        self.assertEqual(relation["relationship"], "compound-authority-and-trajectory-failure")
 
     def test_deterministic_regeneration_is_byte_stable(self):
         targets = [

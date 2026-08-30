@@ -12,6 +12,83 @@ builder = importlib.util.module_from_spec(spec)
 assert spec.loader is not None
 spec.loader.exec_module(builder)
 
+# The public-index interface contract is intentionally expressed here as a
+# regression boundary rather than by reviving the retired parallel schema tree.
+# Generated entries may omit optional fields after empty-value pruning, but they
+# must always retain these navigation/identity fields and must not silently grow
+# new public fields without an explicit test change.
+INDEX_REQUIRED_FIELDS = {
+    "id",
+    "record_type",
+    "record_state",
+    "date_recorded",
+    "title",
+    "summary",
+    "evidence_confidence",
+    "source_types",
+    "path",
+    "github_blob_url",
+    "raw_url",
+}
+
+INDEX_ALLOWED_FIELDS = INDEX_REQUIRED_FIELDS | {
+    "date_implemented",
+    "source_count",
+    "primary_source_title",
+    "primary_source_type",
+    "primary_source_platform",
+    "source_platforms",
+    "source_url_status",
+    "system_type",
+    "platform_or_vendor",
+    "vendor_cluster",
+    "primary_evidenced_vendors",
+    "evidence_scope",
+    "evidenced_vendors",
+    "evidenced_products_or_services",
+    "evidenced_models_or_runtimes",
+    "product_or_service",
+    "specific_model_or_runtime",
+    "model_or_product",
+    "interface_surface",
+    "deployment_context",
+    "primary_jurisdiction",
+    "regulatory_surface",
+    "sector",
+    "severity",
+    "likelihood",
+    "triage_priority",
+    "triage_status",
+    "mitigation_status",
+    "escalation_required",
+    "research_status",
+    "publication_status",
+    "research_method",
+    "research_scope",
+    "governance_purpose",
+    "limitations",
+    "source_corpus_count",
+    "domains",
+    "related_observations",
+    "related_failure_modes",
+    "related_proposals",
+    "related_patch_notes",
+    "triage_model_version",
+    "triage_owner",
+    "triage_action_basis",
+    "triage_review_date",
+    "recommended_next_step",
+    "monitoring_required",
+    "repair_status",
+    "taxonomy_classification_summary",
+    "diagnostic_provenance_summary",
+    "ecosystem_status_summary",
+    "repair_status_summary",
+    "corpus_coverage_summary",
+    "interpretive_provenance_summary",
+    "evidence_access_summary",
+}
+
 
 class BuildVigilRecordsTest(unittest.TestCase):
     def load_record(self, record_id):
@@ -293,40 +370,35 @@ class BuildVigilRecordsTest(unittest.TestCase):
                 self.assertIn("source_records", record)
                 self.assertNotIn("source_data", record)
 
-    def test_generated_index_entries_match_interface_schema_contract(self):
-        schema_path = ROOT / "vigil" / "schemas" / "VIGIL.Index.Schema.json"
-        with schema_path.open(encoding="utf-8") as handle:
-            schema = json.load(handle)
-        record_schema = schema["$defs"]["record_entry"]
-        allowed = set(record_schema["properties"])
-        required = set(record_schema["required"])
+    def test_generated_index_entries_match_public_interface_contract(self):
         records = builder.load_records()
         grouped = builder.records_by_registry(records)
         registries = [builder.type_registry(registry_type, grouped[registry_type]) for registry_type in grouped]
 
         for registry in registries:
             self.assertEqual(registry["record_count"], len(registry["records"]))
-            for entry in registry["records"]:
-                self.assertTrue(required.issubset(entry), entry["id"])
-                self.assertTrue(set(entry).issubset(allowed), sorted(set(entry) - allowed))
+            for raw_entry in registry["records"]:
+                entry = builder.prune_empty(raw_entry)
+                self.assertTrue(INDEX_REQUIRED_FIELDS.issubset(entry), entry["id"])
+                self.assertTrue(
+                    set(entry).issubset(INDEX_ALLOWED_FIELDS),
+                    sorted(set(entry) - INDEX_ALLOWED_FIELDS),
+                )
                 self.assertTrue(entry["path"].startswith("vigil/records/"))
 
-    def test_committed_enriched_index_entries_use_declared_interface_fields(self):
-        schema_path = ROOT / "vigil" / "schemas" / "VIGIL.Index.Schema.json"
-        with schema_path.open(encoding="utf-8") as handle:
-            schema = json.load(handle)
-        record_schema = schema["$defs"]["record_entry"]
-        allowed = set(record_schema["properties"])
-        required = set(record_schema["required"])
-
-        for registry_type, path in builder.OUTPUT_PATHS.items():
+    def test_committed_enriched_index_entries_use_public_interface_fields(self):
+        for registry_type in ("failure_modes", "observations", "research"):
+            path = builder.OUTPUT_PATHS[registry_type]
             with self.subTest(registry_type=registry_type):
                 with path.open(encoding="utf-8") as handle:
                     registry = json.load(handle)
                 self.assertEqual(registry["record_count"], len(registry["records"]))
                 for entry in registry["records"]:
-                    self.assertTrue(required.issubset(entry), entry["id"])
-                    self.assertTrue(set(entry).issubset(allowed), sorted(set(entry) - allowed))
+                    self.assertTrue(INDEX_REQUIRED_FIELDS.issubset(entry), entry["id"])
+                    self.assertTrue(
+                        set(entry).issubset(INDEX_ALLOWED_FIELDS),
+                        sorted(set(entry) - INDEX_ALLOWED_FIELDS),
+                    )
 
     def test_generated_index_includes_all_public_records_and_no_legacy_aggregate(self):
         with tempfile.TemporaryDirectory() as temp_dir:

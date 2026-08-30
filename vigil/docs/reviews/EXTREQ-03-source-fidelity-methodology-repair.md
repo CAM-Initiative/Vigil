@@ -24,7 +24,7 @@ The defect is methodological rather than universal. NIST AI RMF Core subcategory
 
 Completed.
 
-`vigil/external_requirements/SOURCE-FIDELITY-METHODOLOGY.md` now defines:
+`vigil/external_governance/requirements/SOURCE-FIDELITY-METHODOLOGY.md` now defines:
 
 - independently assessable proposition as the primary atomicity test;
 - source-defined compound actions as a separate case;
@@ -64,7 +64,7 @@ The push surface available during this review did not expose a workflow run for 
 
 Completed as a non-canonical migration prototype.
 
-`vigil/external_requirements/fidelity-stress-tests/EU-AI-ACT-2026-07-27.json` decomposes the current coarse Article 10 and Article 13 records into materially distinguishable propositions and records why the existing records fail the new atomicity test.
+`vigil/external_governance/requirements/fidelity-stress-tests/EU-AI-ACT-2026-07-27.json` decomposes the current coarse Article 10 and Article 13 records into materially distinguishable propositions and records why the existing records fail the new atomicity test.
 
 No replacement EXTREQ IDs were allocated during the stress test. The coarse identities should only be retired after the full source-level decomposition is reviewed and deterministic replacement identities can be allocated consistently.
 

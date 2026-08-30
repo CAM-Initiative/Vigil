@@ -72,7 +72,7 @@ Four coarse canonical identities are staged for retirement:
 
 They are replaced by **63 deterministic candidate identities** across three re-extraction packages.
 
-The canonical `requirements.json` has not been partially hand-edited through the connector. `vigil/scripts/migrate-eu-ai-act-atomic-reextraction.py` discovers the staged EU AI Act packages, verifies source fingerprints and retired identities, expands the candidates into canonical EXTREQ shape, performs deterministic-ID/collision checks, and writes the replacement transaction against the full local corpus.
+The canonical source/version shard has not been partially hand-edited through the connector. `vigil/scripts/migrate-eu-ai-act-atomic-reextraction.py` discovers the staged EU AI Act packages, verifies source fingerprints and retired identities, expands the candidates into canonical EXTREQ shape, performs deterministic-ID/collision checks, and writes the replacement transaction through the shared sharded-corpus I/O layer before regenerating `requirements.json`.
 
 That migration must then be followed by the normal external-requirements build, generated-output validation and source-fidelity validation. This preserves the identity transaction as an atomic validator-backed operation.
 

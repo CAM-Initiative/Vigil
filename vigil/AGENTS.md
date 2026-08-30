@@ -1,295 +1,206 @@
 # VIGIL Agent Instructions
 
-VIGIL is a public ecosystem observation, failure-mode, CAM proposal, and CAM patch-note registry. It is subordinate to CAM's existing constitutional and operational order.
+VIGIL is a public evidence-to-repair observatory for AI governance evidence, research, failure modes, taxonomy, external requirements and CAM applicability assessment.
 
-VIGIL does not create doctrine, amend adopted instruments, determine liability, or verify final factual truth. Do not treat a VIGIL record as a CAM amendment.
+VIGIL does **not** create CAM/Caelestis doctrine, amend adopted instruments, determine liability, or establish final factual truth. Do not treat a VIGIL record, repository commit, schema change, validator change, migration, audit or generated output as a CAM amendment.
 
-VIGIL records preserve structured governance evidence and workflow state. CAM instruments remain authoritative only through the normal Caelestis amendment, validation, and adoption process.
+VIGIL operates by default as AI-authored, semi-autonomous production under human contract approval. Use `vigil/scripts/validate-authorship-provenance.py` for the controlled authorship, review and verification vocabulary. Contract approval does not imply human authorship, source verification or line-by-line review.
 
-VIGIL operates by default as **AI-authored, semi-autonomous production under human contract approval**. The named AI system performs substantive evidence triage, record analysis, source comparison, reconciliation, monitoring, and record production. The default human role is `contract-approver`: establishing or approving objectives and boundaries, authorising repository actions and progression decisions, and retaining any separately established CAM constitutional or adoption authority. Contract approval does not establish human authorship, substantive review, source verification, or line-by-line inspection. Use [`provenance/AUTHORSHIP-PROVENANCE.json`](provenance/AUTHORSHIP-PROVENANCE.json) for the controlled vocabulary, inheritance rules, and any evidenced artefact-level exception.
+## Current publication boundary
 
-> No VIGIL record without date, source state, evidence confidence, CAM relevance, interpretive provenance, and next action or implemented-CAM-change explanation.
-
-## Record Classes
-
-VIGIL currently recognises six primary record classes:
+The only public VIGIL record classes are:
 
 ```text
-OBS   — Material unresolved ecosystem governance observation / early warning record
-RESEARCH — Non-binding research artefact that may originate an evidence-to-repair chain
-FM    — Ecosystem Failure Mode / triage record
-PROP  — CAM/Caelestis proposal record
-PATCH — Implemented or directly pre-existing CAM/Caelestis patch note
-LEARN — Published, bounded learning closure for a section-complete chain
+OBS       observation / early-warning record
+FM        failure-mode / triage record
+RESEARCH  substantive non-binding research record
 ```
 
-### OBS — Observation Record
-
-Use an Observation Record only when the record preserves a material unresolved governance proposition that is not adequately represented by an existing failure mode, proposal, or patch.
-
-Source evidence for an existing record belongs in that record's canonical `source_records` block. An incident, article, status-page entry, or report does not become an OBS merely because it is new.
-
-Observation records must state the governance significance and material uncertainty. They must not contain failure-mode triage, CAM repair logic, patch instructions, curator tasking, or directions such as ‘add this incident to’ another record.
-
-### RESEARCH — Research Record
-
-Use a Research Record for a substantive research artefact that supplies the evidence basis for a failure mode, proposal, or repair pathway and would otherwise make a separate observation duplicative.
-
-Research records are non-binding. They may originate an evidence-to-repair chain in place of, or alongside, an observation, but CAM authority arises only through an implemented PATCH. A proposal may supply diagnosis and response design where one was required; it is not mandatory where the authoritative FM and/or PATCH already populates that report section. Markdown research records must carry the required structured front matter and reciprocal links to the VIGIL records they support.
-
-### FM — Failure Mode Record
-
-Use a Failure Mode Record when an ecosystem failure pattern is confirmed, strongly evidenced, recurring, or sufficiently clear to require triage.
-
-Failure Mode records must include the failure definition, failure threshold, classification, triage information, source records, and CAM routing implications.
-
-During the taxonomy-free transition, `failure_classification` preserves substantive case dimensions such as severity, likelihood, harm, scope, recurrence, persistence, reproducibility, visibility, and evidence facets, but MUST NOT contain legacy taxonomy family, subtype, canonical-group, taxonomy-reference, or related-group fields. Failure-mode records MUST NOT contain `linked_records.related_failure_modes`; peer similarity and class membership belong to the taxonomy layer and must not be recreated as contextual relations.
-
-The failed subject must be an ecosystem system, deployment, runtime, platform behaviour, governance practice, or externally observable failure pattern. VIGIL itself is not the failed system.
-
-Failure Mode records are not generic tags.
-
-### Triage State Boundaries
-
-Use this doctrine for every failure-mode triage decision:
-
-> Current triage priority is mutable operational state. Historical urgency is provenance. Failure severity is classification. Triage status is workflow. Ecosystem monitoring is continuing external observation.
-
-* Model 2.0 severity uses only `S0`, `S1`, `S2`, `S3`, `S4`, and `SU`. Rate the greatest reasonably supported harm within the stated evidence and deployment scope; do not use an unconstrained imaginable worst case.
-* `failure_classification.severity` describes the failure and is not reduced merely because CAM repaired its own corpus. `SU` requires a stated assessment gap and next step.
-* Model 2.0 priority uses only `P0`, `P1`, `P2`, `P3`, `PN`, and `PU`. `PN` means no active queue priority; `PU` means urgency is not yet assessed.
-* `triage.triage_priority` describes the urgency of the next required CAM/VIGIL action now. It must not preserve historical urgency, severity, public importance, or passive monitoring as queue priority.
-* `triage.triage_status` is the canonical workflow-status field and uses the controlled workflow vocabulary in `VIGIL.Schema.json`; do not add a duplicate `workflow_status` field.
-* `record_state` remains the record lifecycle. `ecosystem_status.monitoring_required` remains continuing external observation and does not automatically justify P0–P3.
-* New and reconciled FM records declare `triage.model_version: "2.0"`. Legacy records remain in diagnostic migration mode until Pass 3 review.
-* Preserve evidenced transitions in append-only `triage_history`; never fabricate a legacy transition. Identify the analytical reviewer and governance authority accurately rather than defaulting to a generic “VIGIL maintainers” actor.
-* Use `vigil/docs/2026-triage-model-inventory.json` as the migration review surface. Do not mass-map descriptive severity, uncontrolled priority, or free-text workflow values.
-
-
-### PROP — Proposal Record
-
-Use a Proposal Record when CAM/Caelestis governance development, doctrine amendment, runtime safeguard, architecture primitive, or operational design is being proposed. VIGIL repository maintenance, schema housekeeping, validator maintenance, index rebuilding, and workflow administration are not CAM proposals.
-
-Proposal records may be linked to observations or failure modes, but may also exist without them.
-
-Proposal records must not claim that a patch has already been implemented.
-
-Each proposal should identify no more than one authoritative primary failure mode by default.
-Governance-origin and research-origin proposals may have no primary failure mode. Adjacent failures,
-precedents, and separate workstreams belong in typed, non-transitive
-`linked_records.contextual_relations`.
-
-### PATCH — Patch Note Record
-
-Use a Patch Note Record only when a CAM/Caelestis change has actually been implemented, or when a retrospective patch note identifies direct pre-existing CAM/Caelestis coverage for a failure that VIGIL had not previously linked.
-
-Patch notes record the actual CAM/Caelestis control content, where it changed or originated, why it governs the failure, what evidence or proposal prompted the repair or crosswalk, and how corpus implementation was verified.
-
-Patch notes must distinguish completed CAM work from remaining ecosystem or runtime work.
-
-A PATCH resolves one primary failure mode by default. Multiple resolved failure modes require an
-explicit `repair_scope` exception rationale and a separate verification outcome for every failure.
-Mere adjacency, shared subject matter, or use of the same corpus instrument does not establish a
-multi-failure repair.
-
-VIGIL schemas, validators, indexes, workflows, migrations, reconciliation passes, and repository administration are never PATCH targets.
-
-### LEARN — Learning Closure Record
-
-Use a LEARN record only when Sections 01–05 already contain sufficient authoritative content and the LEARN record can supply Section 06 without creating new incident evidence, failure classification, proposal authority, or repair claims.
-
-Completion is a report-section test, not a record-count test:
-
-* OBS is optional where FM or RESEARCH supplies Section 01.
-* PROP is optional where FM diagnosis and/or PATCH response rationale supplies Section 04.
-* FM remains authoritative for Section 03.
-* PATCH remains authoritative for Section 05.
-* LEARN remains authoritative only for Section 06.
-
-LEARN records must preserve the factual kernel, governance reasoning corrected by the completed chain, abstracted lesson, conclusions to integrate, foreseeable risk if the learning is omitted or diluted, future application, and generalisation boundary. They must not duplicate `source_records`, summarise internal PATCH content for the public Knowledge Base, or imply that an integrated learning conclusion has already been implemented by an external system.
-
-## Interpretive Provenance Rules
-
-Failure modes also require a separate `diagnostic_provenance` block identifying the original human–AI analytical collaboration that formulated the diagnosis. It must preserve the diagnostic date, human and AI roles, exact diagnostic model, attribution basis, review/approval status, and authority boundary. Do not derive diagnostic authorship from the investigated system or overwrite it when a later model reviews the record. Diagnostic provenance does not replace source-review `interpretive_provenance`, repair provenance, or LEARN provenance.
-
-Every substantive VIGIL record must contain `interpretive_provenance` with:
-
-* an append-only `review_history`;
-* a `current_ai_review` identifying the reviewing platform, exact model/version, date, scope, capability profile, known limitations, and outcome;
-* the operating model of AI-led analysis with high-level human governance editorship;
-* the named human governance editor and authority boundary; and
-* a note preserving unknown historical reviewer identity rather than inventing it.
-
-Rules:
-
-* Do not overwrite prior reviews when a newer AI model re-examines a record.
-* Do not retroactively assign an earlier model identity unless the record or source proves it.
-* A review date MUST NOT predate `record_identity.created` or, where that field is unavailable, `date_recorded`.
-* Record templates MUST use explicit placeholders and MUST NOT seed a real historical review identity or date into a newly created record.
-* A later model may disagree with an earlier interpretation; preserve both reviews and identify the evidence and capability differences.
-* Distinguish AI analytical review from human governance editorship and CAM adoption authority.
-* Do not attribute routine analysis to “VIGIL maintainer” where a named AI system performed the work.
-* Reviewer capability is part of the evidence chain. State whether the reviewer could directly analyse text, images, audio, uploaded video, or externally hosted video.
-
-## Template Files
-
-Use the approved templates before creating or modifying records:
+Canonical public records are stored only under:
 
 ```text
-vigil/templates/observation-record-template.md
-vigil/templates/observation-record-template.json
-
-vigil/templates/failure-mode-record-template.md
-vigil/templates/failure-mode-record-template.json
-
-vigil/templates/proposal-record-tempate.md
-vigil/templates/proposal-record-tempate.json
-
-vigil/templates/patch-note-record-template.md
-vigil/templates/patch-note-record-template.json
-
-vigil/templates/research-record-template.md
+vigil/records/observations/
+vigil/records/failures/
+vigil/records/research/
 ```
 
-If the proposal template filename is later corrected from `tempate` to `template`, update this file and any scripts or references in the same administrative commit, not as a VIGIL PATCH record.
+PROP, PATCH and LEARN files are currently withdrawn from publication and retained under:
 
-## Schema Rules
+```text
+vigil/drafts/proposals/
+vigil/drafts/patches/
+vigil/drafts/learn/
+```
 
-The canonical schema-rules contract is:
+Public validators, registry builders, lifecycle checks and interfaces must not load or resolve files from `vigil/drafts/`. Existing withdrawn IDs may remain as historical provenance text in public records, but their targets are intentionally non-public.
+
+Do not create or restore public PROP/PATCH/LEARN records without explicit maintainer instruction that reactivates the record class.
+
+## OBS — Observation
+
+Create or update OBS only for a material unresolved governance proposition that is not already adequately represented by an existing FM or RESEARCH record.
+
+Source evidence for an existing record belongs in that record's canonical `source_records`. Do not create an OBS merely because a new article, incident, status-page entry or report has appeared.
+
+OBS must preserve evidence, uncertainty, governance significance and next action. It must not contain failure-mode triage or pretend a repair has been implemented.
+
+## FM — Failure Mode
+
+Use FM when an ecosystem failure pattern is confirmed, strongly evidenced, recurring, or sufficiently clear to require diagnosis, taxonomy classification, triage, monitoring or CAM coverage/repair assessment.
+
+FM must define both the failure and its recognition threshold. The failed subject is an ecosystem system, deployment, runtime, platform behaviour, governance practice or externally observable failure pattern. VIGIL itself is not the failed system.
+
+`failure_classification` contains event/case dimensions such as severity, likelihood, harms, scope, recurrence, persistence, reproducibility and visibility.
+
+`taxonomy_classification` contains VIGIL Observatory taxonomy membership. Peer class membership belongs to the taxonomy layer. Do not recreate it through `linked_records.related_failure_modes`.
+
+### Triage boundaries
+
+Use this distinction consistently:
+
+> Failure severity is classification. Triage priority is current action urgency. Triage status is workflow. Ecosystem monitoring is continuing external observation.
+
+Model 2.0 controlled values are defined in `vigil/VIGIL.Schema.json`. Do not invent alternative severity, priority or workflow vocabularies.
+
+Preserve real triage transitions in append-only `triage_history`; do not fabricate legacy transitions.
+
+## RESEARCH — Research Record
+
+Use RESEARCH only for substantive analysis that independently warrants publication.
+
+Published research must meet the quality contract in `vigil/VIGIL.Schema.json`, including scope/method, source corpus, findings, counter-evidence, limitations, governance implications, open questions and bibliography/primary sources.
+
+Short, single-source or lightly synthesised material belongs in an existing record's `source_records` or, where it is a distinct unresolved proposition, in OBS.
+
+## Source evidence rules
+
+For individual VIGIL records:
+
+- `source_records` is the **only** canonical source-evidence block;
+- do not add `source_data` or `source_data.sources`;
+- preserve the original source URL and available archive/retrieval information;
+- preserve evidence modality and whether the named reviewer directly inspected the primary artefact;
+- a transcript, screenshot, summary or human description is not equivalent to direct audiovisual/behavioural review;
+- preserve `source_residence` and `source_role` so external evidence, CAM-internal provenance and VIGIL-internal cross-reference provenance remain distinct;
+- interpretive commentary may mention VIGIL/CAM without changing the source's actual origin;
+- do not invent sources, dates, legal claims, access claims, direct-review claims, severity or harm outcomes;
+- keep uncertainty and limitations visible.
+
+## Interpretive and diagnostic provenance
+
+Every substantive public record must preserve the provenance required by its schema contract.
+
+For FM, `diagnostic_provenance` identifies the human–AI collaboration that formulated the diagnosis. Later interpretive review must not overwrite the original diagnostic collaborator.
+
+`interpretive_provenance.review_history` is append-only. A later model may disagree with an earlier interpretation, but both reviews and their capability/access boundaries must remain visible.
+
+AI substantive review is not human review or human verification.
+
+## Failure taxonomy
+
+The canonical VIGIL Observatory failure taxonomy is under `vigil/taxonomy/`.
+
+Use the taxonomy index/schema and canonical family/class identifiers. Do not revive retired CAM taxonomy fields inside FM `failure_classification` and do not infer a new canonical class ID without the taxonomy admission process.
+
+Generated taxonomy HTML/PDF is a projection, not a second source of truth.
+
+Historical taxonomy audits under `vigil/docs/audits/taxonomy/` are non-normative transition evidence.
+
+## External sources and external requirements
+
+Preserve the separation:
+
+```text
+external source
+  -> external requirement
+  -> CAM applicability / coverage assessment
+  -> VIGIL routing / repair analysis
+```
+
+For `vigil/external_governance/sources/`, public narrative fields must describe the external source for an external reader. Do not leak internal tasking, branches, review queues or migration plans into public source descriptions.
+
+For `vigil/external_governance/requirements/`, do not infer inaccessible normative clauses from titles, abstracts, tables of contents, summaries or derivative crosswalks. Preserve source-fidelity state and review provenance explicitly.
+
+External requirement inclusion does not establish that CAM is bound by, has adopted, conforms to or complies with the source instrument.
+
+## Schema authority
+
+The sole canonical VIGIL record-rules contract is:
 
 ```text
 vigil/VIGIL.Schema.json
 ```
 
-This file is a schema-rules contract for VIGIL record classes. It is not a CAM instrument and must not be represented as a PATCH target.
+Do not create a competing VIGIL record ontology under `vigil/schemas/` or elsewhere.
 
-Agents must implement or validate records according to the approved record-class templates and schema rules. Do not infer new record classes, rename fields, flatten source records, or relax validation without explicit instruction.
+Subsystem schemas remain scoped to their own surfaces, including the taxonomy, external requirements, external source registry and CAM assessment.
 
-Published RESEARCH records must satisfy the research quality contract in `VIGIL.Schema.json`.
-Short, single-source or lightly synthesised material belongs in an existing record's
-`source_records` or in an OBS where a distinct unresolved governance proposition exists.
-Do not promote a source summary to RESEARCH merely because it has a valid front matter block.
+Schema changes must update the validator/tests and documentation in the same bounded change. Do not weaken validation simply to make a branch pass.
 
-## Source Evidence Rules
+## Public record automation
 
-When working in `vigil/`:
+The source of truth is the individual public record files under `vigil/records/`.
 
-* Preserve date, source, retrieval path, source state, evidence confidence, CAM relevance, and next action or implementation explanation for every VIGIL record.
-* Preserve rich source packages in `source_records`.
-* `source_records` is the only canonical source-evidence block in individual records.
-* Source evidence must be embedded in the substantive FM, OBS, PROP, or PATCH it supports; do not create an OBS solely to duplicate or route evidence into an existing record.
-* Do not add `source_data` or `source_data.sources` to individual records.
-* Do not flatten rich source records into a single URL field.
-* Every source must identify `evidence_modality`, `primary_artefact_access`, and `interpretive_reliance`.
-* Preserve the original source URL even where a local copy, transcript, screenshot, or later mirror becomes available.
-* A transcript, screenshot, summary, or human description is not equivalent to direct audiovisual or behavioural review.
-* State explicitly whether the named AI reviewer directly inspected the primary artefact.
-* Mark public reports, social-media observations, automated search results, and third-party claims provisional unless corroborated.
-* Do not invent sources, URLs, citations, dates, legal claims, jurisdictions, severity, harm outcomes, or direct-access claims.
-* If a source is missing, use a clear TODO, `unknown`, or `not applicable` field according to the relevant template.
-* Keep uncertainty visible.
+Current public generated indexes are:
 
-## External source public-knowledge rules
+```text
+vigil/VIGIL.Failures.Index.json
+vigil/VIGIL.Observations.Index.json
+vigil/VIGIL.Research.Index.json
+vigil/VIGIL.Registry.Index.json
+```
 
-For records under `external_sources/`, preserve a strict boundary between public knowledge and internal curation metadata.
+Do not manually edit them and do not recreate withdrawn-class indexes.
 
-* `public_summary`, `ai_governance_relevance`, `applicable_lifecycle_stages`, `relevance_scope` and `last_substantive_reviewed` are the canonical public source-knowledge fields.
-* `notes` is optional internal curation/provenance metadata and MUST NOT be used as a public source description.
-* Public source knowledge SHALL address an external reader with no access to repository plans, migrations, review queues, validators, branches, agent handoffs or authoring conversations.
-* Public narrative fields MUST NOT contain internal tasking, workflow, reconciliation or project-specific corpus language.
-* Do not infer inaccessible normative clauses from a title, abstract, table of contents, crosswalk or secondary summary. State the interpretation boundary in `relevance_scope`.
-* Reuse the controlled governance-theme and lifecycle vocabularies in `external_requirements/external-requirement.schema.json`.
-* `last_substantive_reviewed` changes only after reassessing source currency, AI-governance relevance, public summary, themes, lifecycle stages, scope and qualifications. Metadata sync, source polling, unchanged-source checks and schema migration do not reset it.
-* Every substantive review event must identify the reviewing AI provider, platform, model, analytical role, method, bounded scope, source-scope reference and human-assurance posture. Later metadata refreshes and generated projections must preserve the event history.
-* A review-eligible source is review-due exactly 90 calendar days after `last_substantive_reviewed`.
-* AI substantive-review provenance is not human assurance. Reviewed-source digests and post-production human review/verification remain in `external_requirements/source-review-assurance.json`.
+Use:
 
-## Record-Boundary Rules
+```bash
+python vigil/scripts/build-vigil-public-records.py
+python vigil/scripts/enrich-vigil-indexes.py
+```
 
-Agents must preserve record-class boundaries:
+Core validation includes:
 
-* Do not put failure-mode triage in an OBS record.
-* Do not put CAM proposal logic in an OBS record.
-* Do not put patch-note claims in a PROP record.
-* Do not create a PATCH record unless implemented or direct pre-existing CAM/Caelestis coverage has been verified.
-* Do not treat CAM-related instruments as affected by an OBS record; use related/similar routing language for observations.
-* Do not treat an FM record as a mere tag.
-* Do not mutate adopted CAM instruments from inside a VIGIL pass unless separately instructed.
+```bash
+python vigil/tests/test_vigil_source_provenance.py
+python vigil/scripts/validate-vigil-source-provenance.py
+python vigil/tests/test_validate_vigil_record_rules.py
+python vigil/tests/test_validate_vigil_records.py -b
+python vigil/scripts/validate-vigil-public-records.py
+python vigil/scripts/validate-vigil-system-components.py
+python vigil/scripts/run-vigil-lifecycle-validation.py
+```
 
-## Observatory Boundary
+Use the external-governance and taxonomy validators/tests when those subsystems are touched.
 
-VIGIL is the observatory, not the governed ecosystem system and not the patched corpus.
+## Repository housekeeping
 
-* A failure mode must describe an ecosystem system, deployment, runtime, platform behaviour, governance practice, or externally observable failure pattern. VIGIL may appear as the evidence registry or source publisher, but VIGIL itself MUST NOT be the failed system.
-* A PATCH record must document implemented or directly pre-existing CAM/Caelestis doctrine, taxonomy, runtime governance, or architecture coverage. VIGIL schemas, validators, indexes, workflows, migrations, and repository maintenance MUST NOT be represented as PATCH records.
-* A retrospective PATCH is permitted only where it identifies the actual CAM/Caelestis control content, effective origin, relevant sections, and the failure records that content governs.
-* Repository audits, reconciliation passes, migrations, validation changes, and generated-index rebuilds belong in commits, pull-request descriptions, maintenance notes, and record metadata—not in PATCH records.
-* VIGIL records do not create CAM authority. CAM instruments remain authoritative only through the Caelestis amendment, validation, and adoption process.
+Housekeeping is part of every substantive pass.
 
-## CAM Routing Rules
+- executable tests belong under `vigil/tests/`, never `vigil/scripts/`;
+- completed audits/transition reports do not remain beside canonical schemas, data or live code;
+- `vigil/docs/reviews/` is for bounded reviews that remain operationally useful;
+- `vigil/docs/audits/` is for retained non-normative historical audit/transition evidence;
+- completed one-off `apply-*`, `migrate-*`, reconciliation and seeding scripts must be reviewed for retirement when their output is canonical and independently validated;
+- delete obsolete working debris when Git history is sufficient;
+- update path references, workflows and documented commands in the same administrative change.
 
-CAM routing metadata is internal.
+Use the full maintenance and artefact-disposition contract in `vigil/MAINTAINERS.md`.
 
-For OBS records, use related/similar CAM routing language.
+## Implementation discipline
 
-For FM records, affected CAM routing may be used where the external failure is triage-relevant.
+Before writing:
 
-For PROP records, use target CAM/Caelestis routing language.
+1. verify the exact branch head and inspect concurrent changes;
+2. identify the canonical authority and current consumers;
+3. preserve stable IDs and source evidence;
+4. make the smallest coherent change;
+5. update tests/validators/docs with the authority change;
+6. run relevant validation and inspect generated diffs; and
+7. disposition temporary migration/audit artefacts before closure.
 
-For PATCH records, use changed, implemented, or directly pre-existing CAM/Caelestis routing language.
+Do not reset, rebase, merge, cherry-pick, force-push or rewrite shared branch history as a cleanup technique unless explicitly instructed.
 
-Do not make CAM affected instruments the primary public classification layer.
+Do not broad-rewrite existing records merely because a deterministic migration is possible. Do not erase uncertainty to satisfy a validator. Do not update the CAM interface or adopted CAM instruments from a VIGIL maintenance pass unless separately instructed.
 
-## Record Automation Rules
-
-* The source of truth is the individual JSON record files under `vigil/records/`.
-* Do not manually edit generated registry indexes:
-  * `vigil/VIGIL.Failures.Index.json`
-  * `vigil/VIGIL.Observations.Index.json`
-  * `vigil/VIGIL.Proposals.Index.json`
-  * `vigil/VIGIL.PatchNotes.Index.json`
-  * `vigil/VIGIL.Research.Index.json`
-  * `vigil/VIGIL.Registry.Index.json`
-* Do not recreate deprecated generated aggregate files:
-  * `vigil/VIGIL.ActiveRecords.json`
-  * `vigil/VIGIL.ClosedRecords.json`
-  * `vigil/VIGIL.Records.Index.json`
-  * `vigil/VIGIL.Records.json`
-* Add or modify individual record files under `vigil/records/`.
-* Each individual record file must contain one record object, not an aggregate wrapper.
-* Run `python vigil/scripts/route-vigil-records.py` to move misplaced records to the correct canonical type/year folder.
-* Record files belong under `vigil/records/<record_type>/<year>/`; record state belongs inside `record_state`, not in the filesystem path.
-* Run `python vigil/scripts/validate-vigil-records.py` before rebuilding.
-* Run `python vigil/scripts/run-vigil-lifecycle-validation.py` to validate lifecycle, corpus coverage, patch provenance, proposal resolution, the VIGIL/CAM observatory boundary, and interpretive provenance.
-* Rebuild generated registry indexes with `python vigil/scripts/build-vigil-records.py` and `python vigil/scripts/enrich-vigil-indexes.py` after changing records.
-* Use the type-specific registry indexes for interface/live ingestion.
-* Use `vigil/VIGIL.Registry.Index.json` as the master registry composed from the generated type indexes.
-* Keep placeholder/example records clearly marked as scaffolding in generated registry records.
-
-## Implementation Discipline
-
-Prefer small, inspectable changes.
-
-Do not perform broad deterministic rewrites of existing records unless explicitly instructed.
-
-Do not migrate content and redesign schema in the same pass unless the maintainer has expressly approved the combined reconciliation.
-
-Do not repair schema by weakening validation.
-
-Do not repair record content by deleting uncertainty.
-
-Do not update the CAM Interface layer from a VIGIL pass unless separately instructed.
-
-When in doubt, stop and report the uncertainty rather than inventing a mapping.
-
-## Corpus Coverage Reconciliation
-
-Every failure mode must preserve a `corpus_coverage` assessment against a named repository, ref, commit, and date.
-
-* `implemented-repair` means a linked patch records an implemented CAM/Caelestis repair and the CAM-side failure status is repaired.
-* `retrospective-coverage` means current canonical CAM/Caelestis doctrine materially governed the failure before VIGIL linked it.
-* `partial-coverage` means relevant CAM/Caelestis controls exist but a named primitive, implementation requirement, or conformance condition remains missing.
-* `no-confirmed-coverage` means a corpus assessment was performed and no sufficient direct current-corpus control was confirmed; it is distinct from `verification-pending`, which means the assessment remains incomplete.
-* External adoption, runtime conformance, ecosystem persistence, and legal compliance remain separate from CAM coverage.
-* Retrospective patches must state the actual CAM/Caelestis control content and distinguish doctrine reviewed, amended, and relied upon without amendment.
-* Corpus coverage audits are VIGIL maintenance and metadata reconciliation; they are not PATCH events.
+When a material ambiguity cannot be resolved from authoritative repository/source evidence, preserve the uncertainty rather than inventing a mapping.
