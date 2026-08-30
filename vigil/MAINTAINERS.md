@@ -72,6 +72,22 @@ Do **not** reintroduce a parallel VIGIL record-class schema tree under `vigil/sc
 
 A new schema surface requires an explicit authority statement, a consumer, validator coverage, tests, and an update to this guide in the same change.
 
+## Taxonomy dataset/book versioning
+
+`vigil/taxonomy/VIGIL.FailureTaxonomy.Index.json` carries the portable taxonomy dataset/book version and publication date. `vigil/taxonomy/validate_taxonomy.py` enforces this contract from the canonical family/class content digest.
+
+When canonical family or class content changes:
+
+- an update to existing admitted family/class content advances the **third** semantic-version digit (`patch`);
+- admission of a new failure family advances the **second** digit and resets the third digit (`minor`);
+- removal or restructuring of admitted family membership is a **major** change and advances the first digit according to the validator's release-history rules;
+- the current release-history entry, content digest, family list, class count, version and publication date must all agree; and
+- every family file's dataset/book version and publication date must agree with the index.
+
+A renderer, stylesheet, layout, PDF/HTML presentation, or other publication-only change that does not alter canonical family/class content does not by itself create a new taxonomy dataset release.
+
+Do not manually weaken or bypass this rule. If taxonomy validation reports that canonical family/class content changed without a new version/date/release digest, update the release metadata as part of the same substantive taxonomy change.
+
 ## Source evidence rules
 
 Source evidence is load-bearing.
@@ -151,6 +167,8 @@ A completed one-off `apply-*`, `migrate-*`, reconciliation or seeding script mus
 
 Otherwise delete it and rely on Git history plus any retained audit/review record.
 
+The legacy taxonomy migration assurance ledger at `vigil/taxonomy/migration/Caelestis.LegacyFailure.MigrationLedger.json` is currently **LIVE validation evidence** because `validate_taxonomy.py` checks its migration-disposition integrity. Its presence does not make Caelestis migration semantics part of the portable taxonomy: the ledger itself declares `portable_taxonomy_dependency: false`. The remaining completed taxonomy migration review/classification artefacts belong under `vigil/docs/audits/taxonomy/migration/`.
+
 ## Audit, review and generated artefact discipline
 
 Do not leave completed audit reports beside canonical schemas, datasets, taxonomy families or live executable code.
@@ -212,6 +230,7 @@ python vigil/scripts/validate-vigil-system-components.py
 python vigil/scripts/run-vigil-lifecycle-validation.py
 python vigil/scripts/build-vigil-public-records.py
 python vigil/scripts/enrich-vigil-indexes.py
+python vigil/taxonomy/validate_taxonomy.py
 ```
 
 External-governance and taxonomy work must additionally run the validators/tests owned by those subsystems.
