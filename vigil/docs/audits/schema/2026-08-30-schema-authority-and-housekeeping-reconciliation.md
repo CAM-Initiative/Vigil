@@ -46,15 +46,29 @@ Executable regression tests were consolidated under `vigil/tests/`. No executabl
 
 Completed one-off `apply-*` and `migrate-*` scripts were retired after checking their current dependencies. Where a completed migration contained logic still needed by current validation, that logic was extracted into permanent infrastructure rather than retaining the migration as a live tool. Source-provenance classification is the principal example: reusable classification logic now lives in `vigil/scripts/source_provenance.py`.
 
-Git history preserves the retired migration implementations. Completed historical migration ledgers and reviews that remain useful as evidence are retained under `vigil/docs/audits/` rather than beside canonical taxonomy or runtime data.
+Git history preserves the retired migration implementations. Completed historical migration ledgers and reviews that remain useful as evidence are retained under `vigil/docs/audits/` rather than beside canonical taxonomy or runtime data, unless a documented current validator dependency still makes an artefact LIVE.
 
 ## Audit artefact disposition
 
 Completed taxonomy, external-requirements, record-consistency, evidence-integrity, and migration artefacts were moved to bounded directories under `vigil/docs/audits/`.
 
-The historical Caelestis legacy-failure inventory, migration ledger, and VIGIL failure-mode taxonomy-classification ledger are retained under `vigil/docs/audits/taxonomy/migration/`. They are migration evidence, not portable taxonomy authority.
+The historical Caelestis legacy-failure inventory review and VIGIL failure-mode taxonomy-classification ledger are retained under `vigil/docs/audits/taxonomy/migration/`. They are migration evidence, not portable taxonomy authority.
+
+`vigil/taxonomy/migration/Caelestis.LegacyFailure.MigrationLedger.json` remains in the taxonomy subsystem because the current taxonomy validator checks its migration-disposition integrity. It is therefore classified **LIVE validation evidence** for this repository state. The ledger declares `portable_taxonomy_dependency: false`; its validation role must not be interpreted as making Caelestis migration semantics part of the portable taxonomy.
 
 Implementation/reconciliation reviews that remain useful as current work records continue separately under `vigil/docs/reviews/`.
+
+## Taxonomy dataset/book release guard
+
+The taxonomy validator already enforces the dataset/book release discipline. It hashes canonical family/class content and requires the current release history, semantic version, publication date, content digest, family list and class count to remain synchronized.
+
+Its release-history rules require:
+
+- third-digit (`patch`) advancement for admitted family/class content changes that do not alter family membership;
+- second-digit (`minor`) advancement when a new family is admitted; and
+- first-digit (`major`) advancement for family removal/restructuring conditions represented by the validator.
+
+Renderer/layout/publication-only changes that do not alter canonical family/class content do not themselves create a new dataset release.
 
 ## Source-provenance repair
 
@@ -73,6 +87,10 @@ The repository's deterministic FM system-context reconciler was run against the 
 Active external-requirements metadata-review seeders and managers remain live because source-by-source metadata assurance is still in progress. Completed source-specific migration scripts were retired only after their durable repair maps and assertions were confirmed in permanent reviewed-source metadata tooling and regression tests.
 
 Regression tests were updated to assert the current durable repair contract and, where appropriate, the absence of retired migration files rather than requiring obsolete scripts to remain present.
+
+## Authorship/assurance validator alignment
+
+The shared authorship-provenance validator was reconciled to the current publication boundary. It validates the four current public generated indexes—Failures, Observations, Research, and Registry—and no longer requires withdrawn PROP/PATCH/LEARN indexes to exist merely for provenance validation.
 
 ## Publication-work preservation
 
