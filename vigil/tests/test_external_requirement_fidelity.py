@@ -1,10 +1,13 @@
 import importlib.util
 from pathlib import Path
+import sys
 import unittest
 
 
 ROOT = Path(__file__).resolve().parents[2]
-SCRIPT = ROOT / "vigil" / "scripts" / "validate-external-requirement-fidelity.py"
+SCRIPTS = ROOT / "vigil" / "scripts"
+SCRIPT = SCRIPTS / "validate-external-requirement-fidelity.py"
+sys.path.insert(0, str(SCRIPTS))
 spec = importlib.util.spec_from_file_location("validate_external_requirement_fidelity", SCRIPT)
 module = importlib.util.module_from_spec(spec)
 assert spec.loader is not None
