@@ -12,6 +12,7 @@ on:
       - "vigil/records/incidents/**"
       - "vigil/VIGIL.Incidents.Index.json"
       - "vigil/scripts/build-vigil-records.py"
+      - "vigil/taxonomy/filter_publication_case_examples.py"
       - "vigil/taxonomy/render_taxonomy.py"
       - "vigil/taxonomy/assets/**"
       - ".github/workflows/taxonomy-publications.yml"
@@ -23,6 +24,7 @@ on:
       - "vigil/records/incidents/**"
       - "vigil/VIGIL.Incidents.Index.json"
       - "vigil/scripts/build-vigil-records.py"
+      - "vigil/taxonomy/filter_publication_case_examples.py"
       - "vigil/taxonomy/render_taxonomy.py"
       - "vigil/taxonomy/assets/**"
       - ".github/workflows/taxonomy-publications.yml"
@@ -95,6 +97,11 @@ jobs:
 
       - name: Rebuild Incident Case File projection
         run: python vigil/scripts/build-vigil-records.py --taxonomy-examples-only
+
+      - name: Apply textbook case-study evidence exclusions
+        run: |
+          python vigil/taxonomy/filter_publication_case_examples.py
+          python vigil/taxonomy/filter_publication_case_examples.py --check
 
       - name: Generate HTML and PDF publications
         run: |
