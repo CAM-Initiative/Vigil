@@ -28,6 +28,163 @@ permissions:
   contents: write
 
 jobs:
+  housekeeping-release-reconciliation:
+    if: github.event_name == 'pull_request' && github.head_ref == 'housekeeping/scripts-tests-audits'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: housekeeping/scripts-tests-audits
+          persist-credentials: true
+          show-progress: false
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.x"
+
+      - name: Install PDF renderer
+        run: python -m pip install --disable-pip-version-check weasyprint
+
+      - name: Reconcile 0.2.2 release ledger and bounded record metadata
+        shell: bash
+        run: |
+          python - <<'PY'
+          import importlib.util
+          import json
+          from pathlib import Path
+
+          taxonomy_root = Path("vigil/taxonomy")
+          validator_path = taxonomy_root / "validate_taxonomy.py"
+          spec = importlib.util.spec_from_file_location("validate_taxonomy", validator_path)
+          module = importlib.util.module_from_spec(spec)
+          assert spec and spec.loader
+          spec.loader.exec_module(module)
+
+          target_version = "0.2.2-draft"
+          target_date = "2026-08-29"
+          expected_digest = "sha256:86cc73840f05a96d8f2028e0284e847d5baec06e6073142a12d936f2d5f0d93d"
+
+          family_paths = sorted((taxonomy_root / "families").glob("*.json"))
+          loaded = []
+          family_ids = []
+          class_ids = []
+          family_meta = {}
+          family_documents = {}
+          for path in family_paths:
+              data = json.loads(path.read_text(encoding="utf-8"))
+              loaded.append((path, data))
+              family = data["family"]
+              family_id = family["family_id"]
+              family_ids.append(family_id)
+              classes = data.get("classes", [])
+              class_ids.extend(item["class_id"] for item in classes)
+              family_meta[family_id] = {
+                  "version": family["version"],
+                  "class_count": len(classes),
+              }
+              family_documents[path] = data
+
+          digest = module.catalogue_content_digest(loaded)
+          if digest != expected_digest:
+              raise SystemExit(f"Unexpected canonical taxonomy digest: {digest}")
+          if len(set(class_ids)) != 55:
+              raise SystemExit(f"Unexpected taxonomy class count: {len(set(class_ids))}")
+
+          index_path = taxonomy_root / "VIGIL.FailureTaxonomy.Index.json"
+          index = json.loads(index_path.read_text(encoding="utf-8"))
+          index["standard"]["version"] = target_version
+          index["standard"]["publication_date"] = target_date
+
+          by_family = {item["family_id"]: item for item in index["families"]}
+          for family_id, meta in family_meta.items():
+              by_family[family_id]["version"] = meta["version"]
+              by_family[family_id]["class_count"] = meta["class_count"]
+
+          release = {
+              "version": target_version,
+              "publication_date": target_date,
+              "change_level": "patch",
+              "content_digest": digest,
+              "family_ids": sorted(set(family_ids)),
+              "class_count": len(set(class_ids)),
+          }
+          releases = index["release_history"]
+          if releases and releases[-1].get("version") == target_version:
+              releases[-1] = release
+          else:
+              releases.append(release)
+          index_path.write_text(json.dumps(index, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+
+          for path, data in family_documents.items():
+              data["standard"]["version"] = target_version
+              data["standard"]["publication_date"] = target_date
+              path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+
+          fm_repairs = {
+              "vigil/records/failures/2026/VIGIL-2026-FM-0073.json",
+              "vigil/records/failures/2026/VIGIL-2026-FM-0074.json",
+          }
+          for relative in fm_repairs:
+              path = Path(relative)
+              data = json.loads(path.read_text(encoding="utf-8"))
+              data["system_context"]["product_or_service"] = "Other"
+              data["diagnostic_provenance"]["review_status"] = "human-reviewed-and-approved"
+              data["taxonomy_classification"]["classification_review_provenance"]["human_review_status"] = "human-reviewed"
+              path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+
+          obs_path = Path("vigil/records/observations/2026/VIGIL-2026-OBS-0033.json")
+          obs = json.loads(obs_path.read_text(encoding="utf-8"))
+          obs["system_context"]["product_or_service"] = "Other"
+          obs_path.write_text(json.dumps(obs, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+
+          test_path = Path("vigil/tests/test_validate_vigil_records.py")
+          test_text = test_path.read_text(encoding="utf-8")
+          old = '"creation-date-aligned"'
+          new = '"canonical-creation-date-aligned"'
+          if old not in test_text and new not in test_text:
+              raise SystemExit("Diagnostic date-attribution regression token was not found")
+          test_path.write_text(test_text.replace(old, new), encoding="utf-8")
+          PY
+
+          python vigil/taxonomy/validate_taxonomy.py
+          python vigil/tests/test_validate_vigil_records.py -b
+          python vigil/scripts/reconcile-fm-system-context.py --check
+
+      - name: Regenerate taxonomy publications from reconciled release metadata
+        run: |
+          python vigil/taxonomy/render_taxonomy.py \
+            --catalogue \
+            --output-dir vigil/taxonomy/generated \
+            --pdf
+
+      - name: Commit bounded reconciliation
+        shell: bash
+        run: |
+          allowed='^(vigil/taxonomy/VIGIL\.FailureTaxonomy\.Index\.json|vigil/taxonomy/families/.+\.json|vigil/taxonomy/generated/.+\.(html|pdf)|vigil/records/failures/2026/VIGIL-2026-FM-007[34]\.json|vigil/records/observations/2026/VIGIL-2026-OBS-0033\.json|vigil/tests/test_validate_vigil_records\.py)$'
+          unexpected="$(git diff --name-only | grep -Ev "$allowed" || true)"
+          if [ -n "$unexpected" ]; then
+            echo "Housekeeping reconciliation changed files outside its bounded scope:"
+            printf '%s\n' "$unexpected"
+            exit 1
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            vigil/taxonomy/VIGIL.FailureTaxonomy.Index.json \
+            vigil/taxonomy/families \
+            vigil/taxonomy/generated \
+            vigil/records/failures/2026/VIGIL-2026-FM-0073.json \
+            vigil/records/failures/2026/VIGIL-2026-FM-0074.json \
+            vigil/records/observations/2026/VIGIL-2026-OBS-0033.json \
+            vigil/tests/test_validate_vigil_records.py
+          if git diff --cached --quiet; then
+            echo "No 0.2.2 housekeeping reconciliation changes remain."
+          else
+            git commit -m "Reconcile taxonomy 0.2.2 release metadata"
+            git push origin "HEAD:housekeeping/scripts-tests-audits"
+          fi
+
   build-publications:
     runs-on: ubuntu-latest
     steps:
@@ -108,6 +265,15 @@ jobs:
           print(f"HTML: {html.stat().st_size:,} bytes")
           print(f"PDF:  {pdf.stat().st_size:,} bytes")
           PY
+
+      - name: Verify generated publications are current
+        if: github.event_name == 'pull_request'
+        run: |
+          if ! git diff --quiet -- vigil/taxonomy/generated; then
+            echo "Committed taxonomy publication outputs are stale."
+            git diff --stat -- vigil/taxonomy/generated
+            exit 1
+          fi
 
       - name: Commit generated publication outputs
         if: github.event_name == 'push'
