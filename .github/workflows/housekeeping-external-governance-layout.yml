@@ -108,6 +108,10 @@ jobs:
                   'The controlled provenance vocabulary is enforced by `../../scripts/validate-authorship-provenance.py` against artefact-local metadata.'
               )
               text = text.replace(old_provenance, new_provenance)
+              text = text.replace(
+                  'See `{PROVENANCE_REF}`.',
+                  'See `vigil/scripts/validate-authorship-provenance.py`.'
+              )
 
               if text != original:
                   path.write_text(text, encoding='utf-8')
@@ -134,15 +138,6 @@ jobs:
               data = json.loads(path.read_text(encoding='utf-8'))
               strip_declaration_contract(data)
               path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
-
-          # Keep the focused pipeline regression aligned with the canonical schema purpose.
-          pipeline = Path('vigil/tests/test_vigil_pipeline_state.py')
-          text = pipeline.read_text(encoding='utf-8')
-          text = text.replace(
-              'human-review, and human-verification status are governed separately by "\n    "vigil/scripts/validate-authorship-provenance.py."',
-              'human-review, and human-verification status are governed separately by "\n    "vigil/scripts/validate-authorship-provenance.py."'
-          )
-          pipeline.write_text(text, encoding='utf-8')
           PY
 
           rmdir vigil/provenance 2>/dev/null || true
