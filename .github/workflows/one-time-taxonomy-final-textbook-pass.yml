@@ -45,7 +45,7 @@ jobs:
           python - <<'PY'
           import importlib.util
           from pathlib import Path
-          import fitz
+          import pymupdf
 
           module_path = Path('vigil/taxonomy/render_taxonomy.py')
           spec = importlib.util.spec_from_file_location('taxonomy_renderer', module_path)
@@ -98,25 +98,29 @@ jobs:
           print(f'Classes with >=1 Case Study: {covered_classes}')
           print(f'Total selected Case Studies: {total_cases}')
           print(f'Distribution: {distribution}')
-          if any(count > 3 for count in distribution if isinstance(count, int)):
+          if max(distribution) > 3:
               raise SystemExit('a class exceeded the three-Case-Study publication cap')
 
           pdf = Path('vigil/taxonomy/generated/VIGIL.Observatory.FailureTaxonomy.FullReference.pdf')
           if not pdf.exists() or pdf.stat().st_size < 5000 or not pdf.read_bytes().startswith(b'%PDF-'):
               raise SystemExit('taxonomy PDF was not generated correctly')
-          doc = fitz.open(pdf)
+          doc = pymupdf.open(pdf)
           if len(doc) < 20:
               raise SystemExit('taxonomy PDF unexpectedly short')
-          # Confirm internal TOC links and external Case Study URLs survive into the PDF.
+          # WeasyPrint may encode same-document targets as GOTO or NAMED links.
           internal = 0
           external = 0
+          link_kinds = {}
           for page in doc:
               for link in page.get_links():
-                  if link.get('kind') == fitz.LINK_GOTO:
+                  kind = link.get('kind')
+                  link_kinds[kind] = link_kinds.get(kind, 0) + 1
+                  if kind in (pymupdf.LINK_GOTO, pymupdf.LINK_NAMED):
                       internal += 1
-                  elif link.get('kind') == fitz.LINK_URI and link.get('uri'):
+                  elif kind == pymupdf.LINK_URI and link.get('uri'):
                       external += 1
           print(f'PDF pages: {len(doc)}')
+          print(f'Link kinds: {link_kinds}')
           print(f'Internal links: {internal}')
           print(f'External links: {external}')
           if internal < 9:
