@@ -87,6 +87,15 @@ INDEX_ALLOWED_FIELDS = INDEX_REQUIRED_FIELDS | {
     "corpus_coverage_summary",
     "interpretive_provenance_summary",
     "evidence_access_summary",
+    "classification_status",
+    "primary_classification",
+    "secondary_classifications",
+    "occurred_from",
+    "occurred_to",
+    "date_precision",
+    "preferred_evidence_url",
+    "external_incident_references",
+    "legacy_provenance",
 }
 
 
@@ -205,7 +214,7 @@ class BuildVigilRecordsTest(unittest.TestCase):
 
         self.assertEqual(
             set(grouped),
-            {"failure_modes", "observations", "proposals", "patch_notes", "research"},
+            {"incidents", "failure_modes", "observations", "proposals", "patch_notes", "research"},
         )
         self.assertEqual(grouped["proposals"], [])
         self.assertEqual(grouped["patch_notes"], [])
@@ -336,7 +345,7 @@ class BuildVigilRecordsTest(unittest.TestCase):
 
             master = builder.build_master_from_type_indexes(index_paths)
             self.assertEqual(master["registry_type"], "vigil_registry_master")
-            self.assertEqual(master["registry_count"], 3)
+            self.assertEqual(master["registry_count"], 4)
             self.assertNotIn("proposals", master["record_count"])
             self.assertNotIn("patch_notes", master["record_count"])
             self.assertFalse(any(record.get("record_type") in {"proposal", "patch", "patch_note", "learn"} for record in master["records"]))
@@ -387,7 +396,7 @@ class BuildVigilRecordsTest(unittest.TestCase):
                 self.assertTrue(entry["path"].startswith("vigil/records/"))
 
     def test_committed_enriched_index_entries_use_public_interface_fields(self):
-        for registry_type in ("failure_modes", "observations", "research"):
+        for registry_type in ("incidents", "failure_modes", "observations", "research"):
             path = builder.OUTPUT_PATHS[registry_type]
             with self.subTest(registry_type=registry_type):
                 with path.open(encoding="utf-8") as handle:

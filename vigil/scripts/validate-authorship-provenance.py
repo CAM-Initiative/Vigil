@@ -67,9 +67,6 @@ GENERATED = {
     "human_verification_status": "not-verified",
 }
 
-# These rules are part of the executable provenance contract. They are kept
-# beside the validator rather than duplicated in a repository-level metadata
-# declaration. Artefact-local provenance remains authoritative for overrides.
 INHERITANCE_RULES = {
     "default_applies_when_override_absent": True,
     "explicit_artefact_override_precedence": True,
@@ -189,7 +186,7 @@ def validate_repository() -> list[str]:
                     errors.append(f"{relative}: {field} must be {value!r}")
 
     for relative in (
-        "VIGIL.Failures.Index.json",
+        "VIGIL.Incidents.Index.json",
         "VIGIL.Observations.Index.json",
         "VIGIL.Research.Index.json",
         "VIGIL.Registry.Index.json",

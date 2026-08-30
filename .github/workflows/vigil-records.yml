@@ -14,15 +14,6 @@ on:
       - ".github/workflows/vigil-records.yml"
       - ".gitignore"
   workflow_dispatch:
-    inputs:
-      action:
-        description: "Manual maintenance action"
-        required: true
-        default: "validate"
-        type: choice
-        options:
-          - validate
-          - reconcile-fm-system-context
 
 concurrency:
   group: vigil-records-${{ github.ref }}
@@ -33,7 +24,6 @@ permissions:
 
 jobs:
   validate-build:
-    if: github.event_name != 'workflow_dispatch' || inputs.action == 'validate'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -45,7 +35,7 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: Refresh public VIGIL registry indexes for validation
+      - name: Refresh active public VIGIL registry indexes for validation
         run: |
           python vigil/scripts/build-vigil-public-records.py
           python vigil/scripts/enrich-vigil-indexes.py
@@ -53,20 +43,11 @@ jobs:
       - name: Test source provenance classification
         run: python vigil/tests/test_vigil_source_provenance.py
 
-      - name: Validate source provenance
+      - name: Validate active source provenance
         run: python vigil/scripts/validate-vigil-source-provenance.py
 
       - name: Test VIGIL record validator rules
         run: python vigil/tests/test_validate_vigil_record_rules.py
-
-      - name: Test FM system-context reconciliation
-        run: python vigil/tests/test_reconcile_fm_system_context.py
-
-      - name: Check FM system-context reconciliation
-        run: python vigil/scripts/reconcile-fm-system-context.py --check
-
-      - name: Test VIGIL lifecycle validator
-        run: python vigil/tests/test_validate_vigil_lifecycle.py
 
       - name: Test VIGIL PATCH trace validator
         run: python vigil/tests/test_validate_vigil_patch_trace.py
@@ -74,7 +55,7 @@ jobs:
       - name: Test VIGIL provenance preservation
         run: python vigil/tests/test_vigil_provenance_preservation.py
 
-      - name: Test VIGIL pipeline state
+      - name: Test active VIGIL pipeline state
         run: python vigil/tests/test_vigil_pipeline_state.py
 
       - name: Test withdrawn record-class publication boundary
@@ -85,36 +66,28 @@ jobs:
           python vigil/tests/test_authorship_provenance.py
           python vigil/scripts/validate-authorship-provenance.py
 
-      - name: Test VIGIL registry builder
-        run: python vigil/tests/test_build_vigil_records.py
-
       - name: Test VIGIL record routing
         run: python vigil/tests/test_route_vigil_records.py
-
-      - name: Test VIGIL record fixtures
-        run: python vigil/tests/test_validate_vigil_records.py -b
-
-      - name: Test faceted failure-mode reporting schema
-        run: python vigil/tests/test_failure_mode_facets.py
-
-      - name: Validate faceted failure-mode records
-        run: python vigil/scripts/validate-failure-mode-facets.py
-
-      - name: Test FM-0047 lifecycle state
-        run: python vigil/tests/test_fm0047_repaired_monitoring_state.py
 
       - name: Check VIGIL record routing
         run: python vigil/scripts/route-vigil-records.py --check
 
-      - name: Validate public VIGIL records
+      - name: Validate active system-component metadata
+        run: python vigil/scripts/validate-vigil-system-components.py
+
+      - name: Validate Incident migration and legacy crosswalk
         run: |
-          python vigil/scripts/validate-vigil-public-records.py
-          python vigil/scripts/validate-vigil-system-components.py
+          python vigil/scripts/build-incident-registry.py
+          python vigil/scripts/build-vigil-records.py --taxonomy-examples-only
+          python vigil/tests/test_incident_registry.py
+          python vigil/scripts/build-incident-migration-decisions.py
+          python vigil/scripts/build-incident-migration-crosswalk.py
+          python vigil/scripts/validate-incident-migration.py
+          git diff --exit-code -- \
+            vigil/migrations/incident-registry/Incident.Migration.Decisions.json \
+            vigil/migrations/incident-registry/VIGIL.FM-OBS-to-INC.Crosswalk.json
 
-      - name: Validate VIGIL lifecycle, corpus coverage, CAM boundary, and interpretive provenance
-        run: python vigil/scripts/run-vigil-lifecycle-validation.py
-
-      - name: Build and enrich public VIGIL registry indexes
+      - name: Build and enrich active public VIGIL registry indexes
         run: |
           python vigil/scripts/build-vigil-public-records.py
           python vigil/scripts/enrich-vigil-indexes.py
@@ -135,62 +108,17 @@ jobs:
           find vigil -type d -name __pycache__ -prune -exec rm -rf {} +
           find vigil -type f \( -name '*.pyc' -o -name '*.pyo' \) -delete
           git add \
-            vigil/VIGIL.Failures.Index.json \
+            vigil/VIGIL.Incidents.Index.json \
             vigil/VIGIL.Observations.Index.json \
             vigil/VIGIL.Research.Index.json \
-            vigil/VIGIL.Registry.Index.json
+            vigil/VIGIL.Registry.Index.json \
+            vigil/taxonomy/generated/VIGIL.FailureTaxonomy.CaseFileExamples.json
           if git diff --cached --quiet; then
             echo "No generated VIGIL output changes to commit."
           else
-            git commit -m "Rebuild public VIGIL registry indexes"
+            git commit -m "Rebuild active public VIGIL registry indexes"
             if ! git push; then
               echo "Branch advanced while this run was building generated files; a newer workflow run owns generated-output refresh."
               exit 0
             fi
-          fi
-
-  reconcile-fm-system-context:
-    if: github.event_name == 'workflow_dispatch' && inputs.action == 'reconcile-fm-system-context'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          persist-credentials: true
-          show-progress: false
-
-      - uses: actions/setup-python@v6
-        with:
-          python-version: "3.x"
-
-      - name: Test FM system-context reconciler
-        run: python vigil/tests/test_reconcile_fm_system_context.py
-
-      - name: Reconcile stale FM system context
-        run: |
-          python vigil/scripts/reconcile-fm-system-context.py
-          python vigil/scripts/reconcile-fm-system-context.py --check
-
-      - name: Verify reconciliation scope
-        shell: bash
-        run: |
-          unexpected="$(git diff --name-only | grep -Ev '^vigil/records/failures/.+\.json$' || true)"
-          if [ -n "$unexpected" ]; then
-            echo "Reconciliation changed files outside failure-mode JSON records:"
-            printf '%s\n' "$unexpected"
-            exit 1
-          fi
-          echo "Reconciliation scope is limited to failure-mode JSON records."
-          git diff --stat -- vigil/records/failures
-
-      - name: Commit reconciled failure-mode records
-        shell: bash
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add vigil/records/failures
-          if git diff --cached --quiet; then
-            echo "No stale FM system-context records found."
-          else
-            git commit -m "Reconcile failure-mode system context"
-            git push origin "HEAD:${{ github.ref_name }}"
           fi

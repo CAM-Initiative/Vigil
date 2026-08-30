@@ -14,16 +14,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 INDEX = ROOT / "VIGIL.FailureTaxonomy.Index.json"
 CASE_EXAMPLES = ROOT / "generated" / "VIGIL.FailureTaxonomy.CaseFileExamples.json"
-FAILURE_RECORDS = ROOT.parent / "records" / "failures" / "2026"
-BRAND_REGISTRY_COMMIT = "b442cd01a8cc2e2623fccfb1748b9409588a9681"
-BRAND_HEADER_URL = (
-    "https://raw.githubusercontent.com/CAM-Initiative/Registry/"
-    f"{BRAND_REGISTRY_COMMIT}/Branding/CAM%20Initiative/CAM%20INITIATIVE%20HEADER.png"
-)
-BRAND_FOOTER_URL = (
-    "https://raw.githubusercontent.com/CAM-Initiative/Registry/"
-    f"{BRAND_REGISTRY_COMMIT}/Branding/CAM%20Initiative/CAM_INITIATIVE_FOOTER_EMERALD.png"
-)
+INCIDENT_RECORDS = ROOT.parent / "records" / "incidents"
+BRAND_HEADER_URL = "../assets/CAM_INITIATIVE_HEADER.png"
+BRAND_FOOTER_URL = "../assets/CAM_INITIATIVE_FOOTER_EMERALD.png"
 FULL_HTML_NAME = "VIGIL.FailureTaxonomy.FullReference.html"
 FULL_PDF_NAME = "VIGIL.Observatory.FailureTaxonomy.FullReference.pdf"
 
@@ -127,6 +120,16 @@ def _case_date(value: object) -> date:
         return date.fromisoformat(str(value))
     except (TypeError, ValueError):
         return date.min
+
+
+def incident_date_label(identity: dict) -> str:
+    occurred_from = identity.get("occurred_from")
+    occurred_to = identity.get("occurred_to")
+    start = publication_date(occurred_from)
+    end = publication_date(occurred_to)
+    if start and end and occurred_from != occurred_to:
+        return f"{start} to {end}"
+    return start or end
 
 
 def _clean_values(values: object, placeholders: set[str]) -> list[str]:
@@ -273,10 +276,10 @@ def _multi_value_label(values: list[str], single_fallback: str) -> tuple[str, bo
 
 
 def case_study_context(example: dict) -> dict[str, object]:
-    failure_mode_id = str(example.get("failure_mode_id", ""))
-    if not failure_mode_id:
+    incident_id = str(example.get("incident_id", ""))
+    if not incident_id:
         return {}
-    record_path = FAILURE_RECORDS / f"{failure_mode_id}.json"
+    record_path = INCIDENT_RECORDS / f"{incident_id}.json"
     if not record_path.exists():
         return {}
     record = load(record_path)
@@ -297,16 +300,21 @@ def case_study_context(example: dict) -> dict[str, object]:
         vendor_known = False
 
     source_pool = [source for source in source_records if isinstance(source, dict)]
-    evidence_source = max(
-        source_pool,
-        key=lambda source: (
-            _source_quality(source),
-            _case_date(source.get("source_date")).toordinal(),
-        ),
-        default=None,
+    preferred = record.get("preferred_evidence") if isinstance(record.get("preferred_evidence"), dict) else {}
+    preferred_url = str(preferred.get("source_url") or "").strip()
+    evidence_source = next(
+        (source for source in source_pool if preferred_url and source.get("source_url") == preferred_url),
+        None,
     )
-    source_date = evidence_source.get("source_date") if evidence_source else None
-
+    if evidence_source is None:
+        evidence_source = max(
+            source_pool,
+            key=lambda source: (
+                _source_quality(source),
+                _case_date(source.get("source_date")).toordinal(),
+            ),
+            default=None,
+        )
     source_context = ""
     source_label = ""
     source_title = ""
@@ -328,49 +336,38 @@ def case_study_context(example: dict) -> dict[str, object]:
             source_label = str(evidence_source.get("source_type") or "Evidence source").replace("-", " ").title()
         source_title = str(evidence_source.get("source_title") or evidence_source.get("title") or "").strip()
 
-    case_context = _focused_excerpt(
-        source_context
-        or record.get("summary")
-        or record.get("failure_mode_definition")
-        or record.get("failure_threshold"),
-        example,
-    )
+    assessment = record.get("vigil_assessment") if isinstance(record.get("vigil_assessment"), dict) else {}
+    case_context = _focused_excerpt(record.get("summary") or assessment.get("factual_basis") or source_context, example)
 
-    failure_classification = record.get("failure_classification") if isinstance(record.get("failure_classification"), dict) else {}
-    severity = str(failure_classification.get("severity") or "SU").upper()
     source_url = ""
     source_quality = -999
     if evidence_source:
         source_url = str(evidence_source.get("source_url") or evidence_source.get("archive_url") or "").strip()
         source_quality = _source_quality(evidence_source)
     vendor_key = "|".join(vendors) if vendors else str(system_context.get("platform_or_vendor") or "").strip().lower()
+    incident_identity = record.get("incident_identity") if isinstance(record.get("incident_identity"), dict) else {}
+    occurred_from = incident_identity.get("occurred_from")
     return {
         "system_label": system_label,
         "vendor_key": vendor_key,
-        "date": publication_date(source_date),
-        "source_date": str(source_date or ""),
+        "date": incident_date_label(incident_identity),
+        "occurred_from": str(occurred_from or ""),
         "source_publisher": source_label,
         "source_title": source_title,
         "source_url": source_url,
         "source_quality": source_quality,
         "case_context": case_context,
-        "severity": severity,
         "vendor_known": vendor_known,
     }
 
 
-def _severity_rank(value: object) -> int:
-    return {"S0": 0, "S1": 1, "S2": 2, "S3": 3, "S4": 4, "SU": 5}.get(str(value).upper(), 6)
-
-
-def _candidate_rank(candidate: dict) -> tuple[int, int, int, int, str]:
-    """Publication ranking: primary mapping, severity, recency, then source quality."""
+def _candidate_rank(candidate: dict) -> tuple[int, int, int, str]:
+    """Publication ranking: primary mapping, incident recency, then source quality."""
     return (
         candidate["role_rank"],
-        _severity_rank(candidate["context"].get("severity")),
-        -_case_date(candidate["context"].get("source_date")).toordinal(),
+        -_case_date(candidate["context"].get("occurred_from")).toordinal(),
         -int(candidate["context"].get("source_quality", -999)),
-        str(candidate["example"].get("failure_mode_id", "")),
+        str(candidate["example"].get("incident_id", "")),
     )
 
 
@@ -380,7 +377,7 @@ def select_class_case_examples(data: dict, case_examples: dict[str, list[dict]])
     Eligibility gates are intentionally stricter than the underlying VIGIL corpus:
     taxonomy mapping confidence must be High and an affected vendor/system must be known.
     Within each class, primary mappings rank before secondary mappings, followed by
-    severity, newest substantive evidence publication date and evidence-source quality.
+    newest incident date and evidence-source quality.
     A first pass favours different affected-system/vendor contexts before filling any
     remaining slots from the next-best qualifying cases.
     """
@@ -388,17 +385,17 @@ def select_class_case_examples(data: dict, case_examples: dict[str, list[dict]])
     for item in data.get("classes", []):
         class_id = str(item.get("class_id", ""))
         candidates: list[dict] = []
-        seen_failure_modes: set[str] = set()
+        seen_incidents: set[str] = set()
         for example in case_examples.get(class_id, []):
             if str(example.get("classification_confidence", "")).lower() != "high":
                 continue
-            failure_mode_id = str(example.get("failure_mode_id", ""))
-            if not failure_mode_id or failure_mode_id in seen_failure_modes:
+            incident_id = str(example.get("incident_id", ""))
+            if not incident_id or incident_id in seen_incidents:
                 continue
             context = case_study_context(example)
             if not context.get("vendor_known"):
                 continue
-            seen_failure_modes.add(failure_mode_id)
+            seen_incidents.add(incident_id)
             candidates.append({
                 "example": example,
                 "context": context,
@@ -422,13 +419,13 @@ def select_class_case_examples(data: dict, case_examples: dict[str, list[dict]])
 
         # Second pass: fill unused slots from the remaining best-ranked cases.
         if len(chosen) < 3:
-            chosen_ids = {str(candidate["example"].get("failure_mode_id", "")) for candidate in chosen}
+            chosen_ids = {str(candidate["example"].get("incident_id", "")) for candidate in chosen}
             for candidate in candidates:
-                failure_mode_id = str(candidate["example"].get("failure_mode_id", ""))
-                if failure_mode_id in chosen_ids:
+                incident_id = str(candidate["example"].get("incident_id", ""))
+                if incident_id in chosen_ids:
                     continue
                 chosen.append(candidate)
-                chosen_ids.add(failure_mode_id)
+                chosen_ids.add(incident_id)
                 if len(chosen) == 3:
                     break
 
@@ -472,7 +469,7 @@ def case_examples_html(examples: list[dict]) -> str:
             + (f"<p class=\"case-study-context\">{esc(case_context)}</p>" if case_context else "")
             + (f"<p class=\"case-study-basis\"><strong>Relevance to this class:</strong> {esc(basis)}</p>" if basis else "")
             + source_html
-            + f"<p class=\"case-study-ref\"><strong>VIGIL record:</strong> <code>{esc(example.get('failure_mode_id', ''))}</code></p>"
+            + f"<p class=\"case-study-ref\"><strong>VIGIL Incident:</strong> <code>{esc(example.get('incident_id', ''))}</code></p>"
             + "</article>"
         )
     heading = "Case Study" if len(studies) == 1 else "Case Studies"
@@ -782,10 +779,16 @@ def write_pdf(html_text: str, output: Path) -> None:
         from weasyprint import HTML
     except ImportError as exc:
         raise SystemExit(
-            "PDF generation requires WeasyPrint. Install with `python -m pip install weasyprint`."
+            "PDF generation requires WeasyPrint. Install with `python -m pip install weasyprint==69.0`."
         ) from exc
     output.parent.mkdir(parents=True, exist_ok=True)
-    HTML(string=html_text, base_url=str(ROOT)).write_pdf(str(output))
+    HTML(
+        string=html_text,
+        base_url=str(ROOT / "generated"),
+    ).write_pdf(
+        str(output),
+        pdf_identifier=False,
+    )
 
 
 def generate_catalogue(output_dir: Path, *, pdf: bool = False) -> None:

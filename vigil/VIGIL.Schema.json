@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://example.invalid/cam/vigil/VIGIL.Schema.json",
-  "version": "3.4-component-role-system-context",
-  "purpose": "Authoritative schema-rules contract for VIGIL as a public evidence-to-repair observatory for observations, research artefacts, failure modes, proposals, and implemented patch notes. Source evidence remains embedded in the relevant record; ecosystem persistence, CAM repair, and implementation verification are represented separately. Interpretive provenance identifies AI source analysis, capability profile, source modality, primary-artefact access, review limitations, and historical authority context. Authorship, human-review, and human-verification status are governed separately by vigil/scripts/validate-authorship-provenance.py.",
+  "version": "4.0-incident-registry-pilot",
+  "purpose": "Authoritative schema-rules contract for VIGIL as a public evidence-to-repair observatory for incidents, observations, research artefacts, legacy failure modes, proposals, and implemented patch notes. During INCIDENT-01 stabilisation, first-class Incident records coexist with retained legacy FM and OBS records. Source evidence remains embedded in the relevant record; ecosystem persistence, CAM repair, and implementation verification are represented separately. Interpretive provenance identifies AI source analysis, capability profile, source modality, primary-artefact access, review limitations, and historical authority context. Authorship, human-review, and human-verification status are governed separately by vigil/scripts/validate-authorship-provenance.py.",
   "source_evidence_rules": {
     "individual_records": [
       "source_records is the only canonical source-evidence block in individual records.",
@@ -288,6 +288,68 @@
       "repair_basis_interpretation": "repair_status.repair_basis identifies what establishes an actual CAM-side repair. Corpus coverage states such as no-confirmed-coverage and partial-coverage belong only in corpus_coverage.classification.",
       "corpus_coverage_interpretation": "no-confirmed-coverage means a corpus assessment was performed and no sufficient direct current-corpus control was confirmed. verification-pending means the assessment remains incomplete. A missing corpus_coverage block is invalid rather than equivalent to either state."
     },
+    "incident": {
+      "id_prefix": "VIGIL-INC-",
+      "description": "A bounded historical occurrence preserving both source-supported facts and VIGIL's governed interpretation. Incident identity is independent of event year and independent of taxonomy-classification completion.",
+      "storage_path": "vigil/records/incidents/VIGIL-INC-NNNNNN.json",
+      "required_top_level_fields": [
+        "id",
+        "record_type",
+        "record_state",
+        "date_recorded",
+        "record_identity",
+        "incident_identity",
+        "summary",
+        "vigil_assessment",
+        "evidence_confidence",
+        "source_records",
+        "preferred_evidence",
+        "external_incident_references",
+        "system_context",
+        "jurisdictional_context",
+        "taxonomy_classification",
+        "linked_records",
+        "cam_internal",
+        "legacy_provenance",
+        "diagnostic_provenance",
+        "interpretive_provenance"
+      ],
+      "identity_rule": "The immutable VIGIL-INC-NNNNNN identity and plain-English historical event title identify the occurrence. Event dates belong in incident_identity and never in the canonical ID.",
+      "interpretation_rule": "summary and vigil_assessment.factual_basis preserve the historical account; vigil_assessment.governance_interpretation preserves VIGIL analysis; taxonomy_classification preserves reusable class mappings; provenance fields preserve review authority and limitations.",
+      "date_precision_values": [
+        "exact-day",
+        "date-range",
+        "month",
+        "year",
+        "reported-date",
+        "unknown"
+      ],
+      "classification_status_values": [
+        "unclassified",
+        "provisionally-classified",
+        "classified",
+        "classification-disputed",
+        "requires-human-review"
+      ],
+      "classification_rule": "Unclassified and requires-human-review Incidents assert no primary or secondary class. Provisionally classified, classified and disputed Incidents require one primary mapping and may carry independently evidenced secondary mappings. Every asserted mapping carries its own classification basis and confidence. Incident existence is never conditional on classification completion.",
+      "external_incident_relationship_values": [
+        "same-incident",
+        "related-incident",
+        "broader-event",
+        "narrower-event",
+        "supporting-registry-entry"
+      ],
+      "source_authority_rule": "All discovery chronology remains in source_records. preferred_evidence selects one preserved source by URL and records the selection basis and date; source order or publication date alone does not determine authority.",
+      "legacy_rule": "legacy_provenance records every FM or OBS whose evidence or governed interpretation materially contributes to the Incident. The deterministic migration crosswalk remains the corpus-wide disposition authority during stabilisation.",
+      "optional_lifecycle_fields": [
+        "failure_classification",
+        "triage",
+        "triage_history",
+        "repair_status",
+        "ecosystem_status",
+        "corpus_coverage"
+      ]
+    },
     "proposal": {
       "id_prefix": "PROP",
       "description": "CAM-specific proposal record.",
@@ -450,6 +512,7 @@
   "$defs": {
     "record_type": {
       "enum": [
+        "incident",
         "observation",
         "failure_mode",
         "proposal",
@@ -715,6 +778,7 @@
   "cam_internal_rules": {
     "description": "cam_internal describes CAM routing, targets, affected areas, or changed components.",
     "record_type_preferred_instrument_fields": {
+      "incident": "affected_instruments",
       "observation": "related_or_similar_instruments",
       "failure_mode": "affected_instruments",
       "proposal": "target_instruments",
@@ -741,6 +805,7 @@
       "raw_url"
     ],
     "type_specific_list_fields": [
+      "incident date precision, taxonomy-classification state, preferred evidence, external-registry references, and legacy provenance",
       "failure severity, likelihood, classification, and triage filter fields",
       "proposal type/status filter fields",
       "patch/change type/status and verification filter fields",
@@ -797,6 +862,7 @@
       "superseded": "A successor record now carries the active governance work."
     },
     "class_rules": {
+      "incident": "Incident workflow state is independent of taxonomy-classification state. A factual Incident may remain active or monitoring while unclassified, provisionally classified, disputed, or awaiting human review.",
       "failure_mode": "Unrepaired or partially-repaired failures are active; repaired failures are monitoring; not-actionable failures are closed-no-action; superseded failures are superseded.",
       "proposal": "Open or routed proposals are active; resolved-by-patch proposals are closed-actioned; closed-no-action, deferred, and superseded resolution states map directly.",
       "patch": "Canonical-main and historical-canonical patch records may be closed-actioned. Branch-only and unverified patch records remain active. Ecosystem monitoring remains on linked failure or observation records.",

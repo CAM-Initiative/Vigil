@@ -11,11 +11,12 @@ ROOT = Path(__file__).resolve().parents[2]
 VIGIL = ROOT / "vigil"
 RECORDS = VIGIL / "records"
 
-# Only currently published record classes are enrichment inputs. PROP, PATCH and
-# LEARN material is retained under vigil/drafts and must not be loaded here.
+# Only active published record classes are enrichment inputs. Legacy Failure Mode
+# records are preserved for migration provenance but are no longer an active
+# registry/enrichment surface.
 INDEXES = {
+    "incidents": VIGIL / "VIGIL.Incidents.Index.json",
     "observations": VIGIL / "VIGIL.Observations.Index.json",
-    "failures": VIGIL / "VIGIL.Failures.Index.json",
 }
 
 
@@ -129,17 +130,9 @@ def enrich_index(path: Path, source_records: dict[str, dict[str, Any]], fields: 
 
 
 def main() -> None:
+    enrich_index(INDEXES["incidents"], records_by_id("incidents"), {})
     enrich_index(INDEXES["observations"], records_by_id("observations"), {})
-    enrich_index(
-        INDEXES["failures"],
-        records_by_id("failures"),
-        {
-            "ecosystem_status_summary": "ecosystem_status",
-            "repair_status_summary": "repair_status",
-            "corpus_coverage_summary": "corpus_coverage",
-        },
-    )
-    print("Enriched public VIGIL indexes with lifecycle, reviewer, and evidence-access summaries.")
+    print("Enriched active public VIGIL indexes with reviewer and evidence-access summaries.")
 
 
 if __name__ == "__main__":

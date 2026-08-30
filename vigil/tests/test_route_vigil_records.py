@@ -12,6 +12,14 @@ spec.loader.exec_module(router)
 
 
 class RouteVigilRecordsTest(unittest.TestCase):
+    def test_incident_uses_year_independent_public_directory(self):
+        self.assertEqual(
+            router.target_directory(
+                {"id": "VIGIL-INC-000001", "record_type": "incident", "record_state": "active"}
+            ),
+            router.RECORDS_ROOT / "incidents",
+        )
+
     def test_json_decode_error_reports_path_message_line_and_column(self):
         with tempfile.TemporaryDirectory() as temp_dir:
             path = Path(temp_dir) / "bad-record.json"

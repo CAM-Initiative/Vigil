@@ -13,6 +13,7 @@ ROOT = Path(__file__).resolve().parents[2]
 VIGIL_DIR = ROOT / "vigil"
 RECORDS_ROOT = VIGIL_DIR / "records"
 TYPE_DIR = {
+    "incident": "incidents",
     "observation": "observations",
     "failure_mode": "failures",
 }
@@ -68,6 +69,11 @@ def target_directory(record: dict[str, Any]) -> Path | None:
             f"{record.get('id')!r}: withdrawn record type {record_type!r} must not appear under vigil/records"
         )
     folder = TYPE_DIR.get(record_type)
+    if record_type == "incident":
+        record_id = record.get("id")
+        if folder is None or not isinstance(record_id, str) or not record_id.startswith("VIGIL-INC-"):
+            return None
+        return RECORDS_ROOT / folder
     year = id_year(record)
     if folder is None or year is None:
         return None

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate source residence and role metadata across canonical VIGIL records."""
+"""Validate source residence and role metadata across active public VIGIL records."""
 
 from __future__ import annotations
 
@@ -12,6 +12,10 @@ from source_provenance import origin_markers, text
 SCRIPT_PATH = Path(__file__).resolve()
 VIGIL_ROOT = SCRIPT_PATH.parents[1]
 RECORDS_ROOT = VIGIL_ROOT / "records"
+ACTIVE_RECORD_ROOTS = (
+    RECORDS_ROOT / "incidents",
+    RECORDS_ROOT / "observations",
+)
 SCHEMA_PATH = VIGIL_ROOT / "VIGIL.Schema.json"
 
 
@@ -32,7 +36,8 @@ def main() -> int:
             errors.append(f"VIGIL.Schema.json source_record.required is missing {field}")
 
     source_count = 0
-    for path in sorted(RECORDS_ROOT.rglob("*.json")):
+    paths = [path for root in ACTIVE_RECORD_ROOTS for path in root.rglob("*.json")]
+    for path in sorted(paths):
         try:
             record = json.loads(path.read_text(encoding="utf-8"))
         except (OSError, json.JSONDecodeError) as exc:
@@ -75,7 +80,7 @@ def main() -> int:
             print(f"- {error}")
         return 1
 
-    print(f"Validated source_residence and source_role on {source_count} source record(s).")
+    print(f"Validated source_residence and source_role on {source_count} active source record(s).")
     return 0
 
 

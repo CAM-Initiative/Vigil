@@ -23,6 +23,7 @@ DEPRECATED_OUTPUT_PATHS = [
     VIGIL_DIR / "VIGIL.Records.json",
 ]
 DEFAULT_RECORD_TYPE_DIRS = [
+    RECORDS_ROOT / "incidents",
     RECORDS_ROOT / "observations",
     RECORDS_ROOT / "failures",
     RECORDS_ROOT / "proposals",
@@ -92,9 +93,11 @@ TRIAGE_HISTORY_REQUIRED = {
     "next_review",
 }
 
-RECORD_TYPES = {"observation", "failure_mode", "proposal", "patch", "patch_note"}
+RECORD_TYPES = {"incident", "observation", "failure_mode", "proposal", "patch", "patch_note"}
 CAM_INTERNAL_REFERENCE_PREFIXES = ("CAM-BS", "CAM-EQ", "VIGIL-")
-VIGIL_RECORD_ID_PATTERN = re.compile(r"^VIGIL-\d{4}-(?:OBS|FM|PROP|PATCH|LEARN|RESEARCH)-\d{4}$")
+VIGIL_RECORD_ID_PATTERN = re.compile(
+    r"^(?:VIGIL-INC-\d{6}|VIGIL-\d{4}-(?:OBS|FM|PROP|PATCH|LEARN|RESEARCH)-\d{4})$"
+)
 WITHDRAWN_REFERENCE_ID_PATTERN = re.compile(r"^VIGIL-\d{4}-(?:PROP|PATCH|LEARN)-\d{4}$")
 RETIRED_FM_TAXONOMY_FIELDS = {
     "failure_family",
@@ -219,6 +222,7 @@ FM_EVIDENCE_PROJECTION_REQUIRED = {
     "inference_boundary",
 }
 ID_PREFIX = {
+    "incident": "INC",
     "observation": "OBS",
     "failure_mode": "FM",
     "proposal": "PROP",
@@ -226,6 +230,7 @@ ID_PREFIX = {
     "patch_note": "PATCH",
 }
 TYPE_DIR = {
+    "incident": "incidents",
     "observation": "observations",
     "failure_mode": "failures",
     "proposal": "proposals",
@@ -265,6 +270,20 @@ OBS_FORBIDDEN = {
 FM_REQUIRED = {
     "failure_mode_definition", "failure_threshold", "failure_classification", "taxonomy_classification",
     "triage", "repair_status",
+}
+INCIDENT_REQUIRED = {
+    "incident_identity", "vigil_assessment", "taxonomy_classification", "preferred_evidence",
+    "legacy_provenance", "diagnostic_provenance",
+    "interpretive_provenance",
+}
+INCIDENT_CLASSIFICATION_STATUSES = {
+    "unclassified", "provisionally-classified", "classified", "classification-disputed",
+    "requires-human-review",
+}
+INCIDENT_DATE_PRECISIONS = {"exact-day", "date-range", "month", "year", "reported-date", "unknown"}
+INCIDENT_EXTERNAL_RELATIONSHIPS = {
+    "same-incident", "related-incident", "broader-event", "narrower-event",
+    "supporting-registry-entry",
 }
 PROP_REQUIRED = {"proposal_rationale", "proposal_type", "proposal_scope", "implementation_notes", "external_relevance", "next_action"}
 PATCH_REQUIRED = {
@@ -1222,6 +1241,11 @@ def validate_canonical_path(path: Path, record_id: Any, record_type: Any, errors
         return
     if not isinstance(record_id, str) or record_type not in TYPE_DIR:
         return
+    if record_type == "incident":
+        expected = Path("incidents") / f"{record_id}.json"
+        if relative != expected:
+            errors.append(f"{path}: record path must be vigil/records/{expected.as_posix()} for id/type")
+        return
     parts = record_id.split("-")
     if len(parts) < 4:
         return
@@ -1372,6 +1396,182 @@ def validate_taxonomy_classification(path: Path, record: dict[str, Any], errors:
             errors.append(f"{path}: invalid taxonomy human_review_status")
 
 
+def validate_incident_taxonomy_classification(
+    path: Path, record: dict[str, Any], errors: list[str]
+) -> None:
+    block = record.get("taxonomy_classification")
+    if not isinstance(block, dict):
+        errors.append(f"{path}: Incident taxonomy_classification must be an object")
+        return
+    required = {
+        "taxonomy_version", "classification_status", "classification_basis",
+        "classification_review_provenance", "primary_classification", "secondary_classifications",
+    }
+    missing = sorted(required.difference(block))
+    if missing:
+        errors.append(f"{path}: Incident taxonomy_classification missing fields: {', '.join(missing)}")
+        return
+    status = block.get("classification_status")
+    if status not in INCIDENT_CLASSIFICATION_STATUSES:
+        errors.append(f"{path}: unsupported Incident classification status {status!r}")
+    if block.get("taxonomy_version") not in supported_taxonomy_versions():
+        errors.append(f"{path}: Incident taxonomy_version must identify a published taxonomy dataset version")
+    if not is_non_empty_string(block.get("classification_basis")):
+        errors.append(f"{path}: Incident classification_basis must be a non-empty string")
+    primary = block.get("primary_classification")
+    secondaries = block.get("secondary_classifications")
+    if not isinstance(secondaries, list):
+        errors.append(f"{path}: Incident secondary_classifications must be an array")
+        secondaries = []
+    resolved_status = status in {"provisionally-classified", "classified", "classification-disputed"}
+    if resolved_status and not isinstance(primary, dict):
+        errors.append(f"{path}: {status} Incident requires primary_classification")
+    if not resolved_status and primary is not None:
+        errors.append(f"{path}: {status} Incident must not assert primary_classification")
+    if secondaries and not isinstance(primary, dict):
+        errors.append(f"{path}: Incident secondary classifications require a primary classification")
+
+    families, classes = taxonomy_catalogue()
+    mappings = ([primary] if isinstance(primary, dict) else []) + secondaries
+    seen: set[str] = set()
+    for index, mapping in enumerate(mappings):
+        where = (
+            "primary_classification"
+            if index == 0 and isinstance(primary, dict)
+            else f"secondary_classifications[{index - 1}]"
+        )
+        if not isinstance(mapping, dict):
+            errors.append(f"{path}: taxonomy_classification.{where} must be an object")
+            continue
+        for field in ("family_id", "class_id", "classification_basis", "classification_confidence"):
+            if not is_non_empty_string(mapping.get(field)):
+                errors.append(f"{path}: taxonomy_classification.{where}.{field} must be a non-empty string")
+        family = families.get(mapping.get("family_id"))
+        klass = classes.get(mapping.get("class_id"))
+        if family is None:
+            errors.append(f"{path}: taxonomy_classification.{where}.family_id does not resolve")
+        if klass is None:
+            errors.append(f"{path}: taxonomy_classification.{where}.class_id does not resolve")
+        elif klass.get("family_id") != mapping.get("family_id"):
+            errors.append(f"{path}: taxonomy_classification.{where} class does not belong to family")
+        class_id = mapping.get("class_id")
+        if isinstance(class_id, str) and class_id in seen:
+            errors.append(f"{path}: taxonomy_classification duplicates class {class_id}")
+        if isinstance(class_id, str):
+            seen.add(class_id)
+        if mapping.get("classification_confidence") not in {"high", "medium", "low"}:
+            errors.append(f"{path}: taxonomy_classification.{where} has invalid classification_confidence")
+    review = block.get("classification_review_provenance")
+    if not isinstance(review, dict):
+        errors.append(f"{path}: Incident classification_review_provenance must be an object")
+    else:
+        for field in ("method", "review_date", "reviewer", "review_status", "authority_boundary"):
+            if not is_non_empty_string(review.get(field)):
+                errors.append(f"{path}: Incident classification_review_provenance.{field} must be a non-empty string")
+
+
+def validate_incident(path: Path, record: dict[str, Any], errors: list[str]) -> None:
+    add_missing(errors, path, record, INCIDENT_REQUIRED)
+    if "external_incident_references" not in record:
+        errors.append(f"{path}: missing required fields: external_incident_references")
+    record_id = record.get("id")
+    if not isinstance(record_id, str) or not re.fullmatch(r"VIGIL-INC-\d{6}", record_id):
+        errors.append(f"{path}: Incident id must use VIGIL-INC-NNNNNN")
+
+    identity = record.get("incident_identity")
+    if not isinstance(identity, dict):
+        errors.append(f"{path}: incident_identity must be an object")
+    else:
+        for field in ("historical_event_name", "date_precision", "date_basis"):
+            if not is_non_empty_string(identity.get(field)):
+                errors.append(f"{path}: incident_identity.{field} must be a non-empty string")
+        if identity.get("date_precision") not in INCIDENT_DATE_PRECISIONS:
+            errors.append(f"{path}: incident_identity.date_precision is not canonical")
+        for field in ("occurred_from", "occurred_to"):
+            value = identity.get(field)
+            if value is not None and (
+                not isinstance(value, str) or not re.fullmatch(r"\d{4}(?:-\d{2})?(?:-\d{2})?", value)
+            ):
+                errors.append(f"{path}: incident_identity.{field} must be null or an ISO partial/full date")
+        if identity.get("date_precision") != "unknown" and identity.get("occurred_from") is None:
+            errors.append(f"{path}: known Incident date precision requires occurred_from")
+
+    assessment = record.get("vigil_assessment")
+    if not isinstance(assessment, dict):
+        errors.append(f"{path}: vigil_assessment must be an object")
+    else:
+        for field in ("factual_basis", "governance_interpretation", "significance_to_cam"):
+            if not is_non_empty_string(assessment.get(field)):
+                errors.append(f"{path}: vigil_assessment.{field} must be a non-empty string")
+        boundaries = assessment.get("assessment_boundaries")
+        if not isinstance(boundaries, list) or not boundaries or any(
+            not is_non_empty_string(item) for item in boundaries
+        ):
+            errors.append(f"{path}: vigil_assessment.assessment_boundaries must be a non-empty string array")
+
+    source_urls = {
+        item.get("source_url") for item in record.get("source_records", []) if isinstance(item, dict)
+    }
+    preferred = record.get("preferred_evidence")
+    if not isinstance(preferred, dict):
+        errors.append(f"{path}: preferred_evidence must be an object")
+    else:
+        for field in ("source_url", "selection_basis", "selected_on"):
+            if not is_non_empty_string(preferred.get(field)):
+                errors.append(f"{path}: preferred_evidence.{field} must be a non-empty string")
+        if preferred.get("source_url") not in source_urls:
+            errors.append(f"{path}: preferred_evidence.source_url must identify a preserved source_record")
+
+    external = record.get("external_incident_references")
+    if not isinstance(external, list):
+        errors.append(f"{path}: external_incident_references must be an array")
+    else:
+        seen_external: set[tuple[str, str]] = set()
+        for index, reference in enumerate(external):
+            where = f"external_incident_references[{index}]"
+            if not isinstance(reference, dict):
+                errors.append(f"{path}: {where} must be an object")
+                continue
+            for field in ("registry", "external_id", "url", "relationship", "reviewed_on"):
+                if not is_non_empty_string(reference.get(field)):
+                    errors.append(f"{path}: {where}.{field} must be a non-empty string")
+            if reference.get("relationship") not in INCIDENT_EXTERNAL_RELATIONSHIPS:
+                errors.append(f"{path}: {where}.relationship is not canonical")
+            key = (
+                str(reference.get("registry", "")).casefold(),
+                str(reference.get("external_id", "")).casefold(),
+            )
+            if key in seen_external:
+                errors.append(f"{path}: duplicate external incident reference {key}")
+            seen_external.add(key)
+
+    legacy = record.get("legacy_provenance")
+    if not isinstance(legacy, list) or not legacy:
+        errors.append(f"{path}: legacy_provenance must be a non-empty array")
+    else:
+        seen_legacy: set[str] = set()
+        for index, item in enumerate(legacy):
+            where = f"legacy_provenance[{index}]"
+            if not isinstance(item, dict):
+                errors.append(f"{path}: {where} must be an object")
+                continue
+            legacy_id = item.get("legacy_id")
+            if not isinstance(legacy_id, str) or not re.fullmatch(
+                r"VIGIL-\d{4}-(?:FM|OBS)-\d{4}", legacy_id
+            ):
+                errors.append(f"{path}: {where}.legacy_id must be a legacy FM or OBS id")
+            if legacy_id in seen_legacy:
+                errors.append(f"{path}: duplicate legacy provenance id {legacy_id}")
+            if isinstance(legacy_id, str):
+                seen_legacy.add(legacy_id)
+            if item.get("legacy_type") not in {"failure_mode", "observation"}:
+                errors.append(f"{path}: {where}.legacy_type is not canonical")
+            if not is_non_empty_string(item.get("relationship")):
+                errors.append(f"{path}: {where}.relationship must be a non-empty string")
+
+    validate_incident_taxonomy_classification(path, record, errors)
+
+
 def validate_record(
     path: Path,
     record: dict[str, Any],
@@ -1405,11 +1605,14 @@ def validate_record(
     if record_type not in RECORD_TYPES:
         errors.append(f"{path}: invalid record_type {record_type!r}")
     elif record_id:
-        expected = f"VIGIL-"
         prefix = ID_PREFIX[record_type]
-        parts = str(record_id).split("-")
-        if len(parts) < 3 or not str(record_id).startswith(expected) or parts[2] != prefix:
-            errors.append(f"{path}: ID prefix must be {prefix!r} for record_type {record_type!r}")
+        if record_type == "incident":
+            if not re.fullmatch(r"VIGIL-INC-\d{6}", str(record_id)):
+                errors.append(f"{path}: ID must use VIGIL-INC-NNNNNN for record_type 'incident'")
+        else:
+            parts = str(record_id).split("-")
+            if len(parts) < 3 or not str(record_id).startswith("VIGIL-") or parts[2] != prefix:
+                errors.append(f"{path}: ID prefix must be {prefix!r} for record_type {record_type!r}")
 
     identity = record.get("record_identity")
     if not isinstance(identity, dict):
@@ -1447,6 +1650,7 @@ def validate_record(
             if isinstance(ref, dict) and (ref.get("url") in primary_urls or ref.get("source_url") in primary_urls):
                 errors.append(f"{path}: linked_records.external_references[{index}] duplicates a primary source_records URL")
         for field in (
+            "related_incidents",
             "related_observations",
             "related_failure_modes",
             "related_proposals",
@@ -1564,6 +1768,7 @@ def validate_record(
     cam = record.get("cam_internal")
     if isinstance(cam, dict):
         preferred_route = {
+            "incident": "affected_instruments",
             "observation": "related_or_similar_instruments",
             "failure_mode": "affected_instruments",
             "proposal": "target_instruments",
@@ -1573,6 +1778,7 @@ def validate_record(
         if preferred_route is not None and preferred_route in cam and not isinstance(cam.get(preferred_route), list):
             errors.append(f"{path}: cam_internal.{preferred_route} must be an array when present")
         deprecated_routes = {
+            "incident": ("target_instruments", "changed_instruments"),
             "observation": ("affected_instruments", "target_instruments", "changed_instruments"),
             "failure_mode": ("target_instruments", "changed_instruments"),
             "proposal": ("affected_instruments", "changed_instruments"),
@@ -1586,7 +1792,9 @@ def validate_record(
                     f"prefer cam_internal.{preferred_route}"
                 )
 
-    if record_type == "observation":
+    if record_type == "incident":
+        validate_incident(path, record, errors)
+    elif record_type == "observation":
         present = sorted(field for field in OBS_FORBIDDEN if field in record)
         if present:
             errors.append(f"{path}: OBS contains forbidden record-class fields: {', '.join(present)}")

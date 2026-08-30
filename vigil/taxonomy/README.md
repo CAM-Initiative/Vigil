@@ -28,9 +28,9 @@ migration/
 
 Family JSON is canonical. HTML, Markdown, and PDF references are generated projections. The migration ledger is non-normative source-analysis evidence and is not a dependency of the portable taxonomy.
 
-`generated/VIGIL.FailureTaxonomy.CaseFileExamples.json` is a non-normative reverse mapping derived from canonical Failure Mode `taxonomy_classification` blocks. It lets public interfaces discover Case File examples for immutable family and class IDs without embedding incident-specific record IDs in portable taxonomy definitions. Each projected example declares whether the mapping is the Failure Mode's primary structural mechanism or an independently evidenced secondary mechanism.
+`generated/VIGIL.FailureTaxonomy.CaseFileExamples.json` is a non-normative reverse mapping derived from canonical Incident `taxonomy_classification` blocks. It lets public interfaces discover Case File examples for immutable family and class IDs without embedding incident-specific record IDs in portable taxonomy definitions. Each projected example declares whether the mapping is the Incident's primary structural mechanism or an independently evidenced secondary mechanism. Unclassified Incidents remain valid registry records but do not enter this classification projection until a primary classification exists.
 
-Canonical Failure Mode classification preserves one principal mechanism in the existing `primary_family` and `primary_class` objects. The optional `secondary_classifications` array records zero or more additional, independently evidenced structural mechanisms. A secondary classification is not a harm, consequence, manifestation, sector, locus, hypothesis, or merely conceivable upstream cause. Primary and secondary class IDs must be distinct, and every duplicated family/class label must resolve to the canonical taxonomy.
+Canonical Incident classification preserves one principal mechanism in `primary_classification`. The optional `secondary_classifications` array records zero or more additional, independently evidenced structural mechanisms. A secondary classification is not a harm, consequence, manifestation, sector, locus, hypothesis, or merely conceivable upstream cause. Primary and secondary class IDs must be distinct and resolve to the canonical taxonomy.
 
 ## Taxonomic boundary
 
@@ -122,16 +122,16 @@ python vigil/taxonomy/render_taxonomy.py \
 Generate the HTML catalogue and the downloadable VIGIL Observatory Full Reference PDF:
 
 ```bash
-python -m pip install weasyprint
+python -m pip install weasyprint==69.0
 python vigil/taxonomy/render_taxonomy.py \
   --catalogue \
   --output-dir vigil/taxonomy/generated \
   --pdf
 ```
 
-The PDF is a publication projection of the same canonical family JSON used by the HTML renderer. It is intentionally generated rather than hand-edited. The current publication layer supplies stable front matter, dataset version, fixed edition date, status metadata, family/class pagination, a contents section, page numbering, and publication-rights text; visual branding and cover artwork may be evolved without changing the underlying taxonomy contract. The renderer defaults `SOURCE_DATE_EPOCH` to `0` for reproducible embedded-font timestamps; a publication environment may override it with another fixed epoch.
+The PDF is a publication projection of the same canonical family JSON used by the HTML renderer. It is intentionally generated rather than hand-edited. The current publication layer supplies stable front matter, dataset version, fixed edition date, status metadata, family/class pagination, a contents section, page numbering, and publication-rights text; visual branding and cover artwork may be evolved without changing the underlying taxonomy contract. Registry-sourced CAM header and footer images are pinned under `assets/` so publication generation does not depend on live network retrieval. The renderer defaults `SOURCE_DATE_EPOCH` to `0` for reproducible embedded-font timestamps; a publication environment may override it with another fixed epoch.
 
-`.github/workflows/taxonomy-publications.yml` automatically rebuilds the HTML and PDF projections when the taxonomy index, family/class definitions, Case File example projection, or renderer changes. On push, verified generated outputs are committed back to the current branch. The workflow rejects missing, empty, or non-PDF publication output before commit.
+`.github/workflows/taxonomy-publications.yml` automatically rebuilds the HTML and PDF projections when the taxonomy index, family/class definitions, Incident-backed Case File example projection, Incident records, projection builder, or renderer changes. The PDF is a retained, ongoing publication asset: after validation it remains in `vigil/taxonomy/generated/` and is committed alongside the HTML outputs. The workflow rejects missing, empty, or non-PDF publication output before commit.
 
 Generate one Markdown family reference when needed:
 

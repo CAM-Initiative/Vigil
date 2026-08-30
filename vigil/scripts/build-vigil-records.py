@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import argparse
 import json
 from pathlib import Path
 from typing import Any
@@ -14,6 +15,12 @@ REPOSITORY = "CAM-Initiative/Vigil"
 DEFAULT_BRANCH = "main"
 
 TYPE_CONFIG: dict[str, dict[str, str]] = {
+    "incidents": {
+        "directory": "incidents",
+        "output": "VIGIL.Incidents.Index.json",
+        "record_type": "incident",
+        "category_name": "incident",
+    },
     "failure_modes": {
         "directory": "failures",
         "output": "VIGIL.Failures.Index.json",
@@ -47,6 +54,7 @@ TYPE_CONFIG: dict[str, dict[str, str]] = {
 }
 RECORD_TYPE_DIRS = [RECORDS_ROOT / config["directory"] for config in TYPE_CONFIG.values()]
 RECORD_TYPE_TO_REGISTRY = {
+    "incident": "incidents",
     "failure_mode": "failure_modes",
     "observation": "observations",
     "proposal": "proposals",
@@ -428,7 +436,16 @@ def generated_summaries(record: dict[str, Any]) -> dict[str, Any]:
         "jurisdiction_summary": jurisdiction_summary(record),
     }
 
-    if record_type == "observation":
+    if record_type == "incident":
+        summaries.update(
+            {
+                "incident_identity_summary": dict_summary(record, "incident_identity"),
+                "taxonomy_classification_summary": dict_summary(record, "taxonomy_classification"),
+                "preferred_evidence_summary": dict_summary(record, "preferred_evidence"),
+                "external_incident_references": record.get("external_incident_references", []),
+            }
+        )
+    elif record_type == "observation":
         summaries.update(
             {
                 "possible_taxonomy_mapping_summary": possible_taxonomy_mapping_summary(record),
@@ -640,6 +657,23 @@ def list_metadata(record: dict[str, Any]) -> dict[str, Any]:
                 "taxonomy_classification_summary": taxonomy_classification_summary(record),
             }
         )
+    elif record.get("record_type") == "incident":
+        taxonomy = record.get("taxonomy_classification", {})
+        incident_identity = record.get("incident_identity", {})
+        preferred = record.get("preferred_evidence", {})
+        metadata.update(
+            {
+                "classification_status": taxonomy.get("classification_status", ""),
+                "primary_classification": taxonomy.get("primary_classification", {}),
+                "secondary_classifications": taxonomy.get("secondary_classifications", []),
+                "occurred_from": incident_identity.get("occurred_from", ""),
+                "occurred_to": incident_identity.get("occurred_to", ""),
+                "date_precision": incident_identity.get("date_precision", ""),
+                "preferred_evidence_url": preferred.get("source_url", ""),
+                "external_incident_references": record.get("external_incident_references", []),
+                "legacy_provenance": record.get("legacy_provenance", []),
+            }
+        )
     return metadata
 
 
@@ -772,38 +806,52 @@ def remove_deprecated_outputs() -> None:
 def taxonomy_examples(records: list[dict[str, Any]]) -> dict[str, Any]:
     classes: dict[str, list[dict[str, str]]] = {}
     families: dict[str, list[dict[str, str]]] = {}
+    taxonomy_index = json.loads(TAXONOMY_INDEX_PATH.read_text(encoding="utf-8"))
+    class_names: dict[str, str] = {}
+    for family_ref in taxonomy_index.get("families", []):
+        if not isinstance(family_ref, dict) or not family_ref.get("file"):
+            continue
+        family_record = json.loads(
+            (TAXONOMY_INDEX_PATH.parent / str(family_ref["file"])).read_text(encoding="utf-8")
+        )
+        for klass in family_record.get("classes", []):
+            if isinstance(klass, dict) and klass.get("class_id"):
+                class_names[str(klass["class_id"])] = str(klass.get("name", ""))
+
     for record in records:
-        if record.get("record_type") != "failure_mode":
+        if record.get("record_type") != "incident":
             continue
         block = record.get("taxonomy_classification")
         if not isinstance(block, dict):
             continue
-        base_example = {"failure_mode_id": str(record.get("id", "")), "title": record_title(record)}
-        family = block.get("primary_family")
-        klass = block.get("primary_class")
-        if isinstance(family, dict) and family.get("family_id"):
+        if block.get("classification_status") not in {"classified", "provisionally-classified"}:
+            continue
+        base_example = {"incident_id": str(record.get("id", "")), "title": record_title(record)}
+        primary = block.get("primary_classification")
+        if isinstance(primary, dict) and primary.get("family_id") and primary.get("class_id"):
+            family_id = str(primary["family_id"])
+            class_id = str(primary["class_id"])
             example = {
                 **base_example,
                 "classification_role": "primary",
-                "class_id": str(klass.get("class_id", "")) if isinstance(klass, dict) else "",
-                "class_name": str(klass.get("class_name", "")) if isinstance(klass, dict) else "",
-                "classification_confidence": str(block.get("classification_confidence", "")),
-                "classification_basis": str(block.get("classification_basis", "")),
+                "class_id": class_id,
+                "class_name": class_names.get(class_id, ""),
+                "classification_confidence": str(primary.get("classification_confidence", "")),
+                "classification_basis": str(primary.get("classification_basis", "")),
             }
-            families.setdefault(family["family_id"], []).append(example)
-        if isinstance(klass, dict) and klass.get("class_id"):
-            classes.setdefault(klass["class_id"], []).append({
+            families.setdefault(family_id, []).append(example)
+            classes.setdefault(class_id, []).append({
                 **base_example,
                 "classification_role": "primary",
-                "classification_confidence": str(block.get("classification_confidence", "")),
-                "classification_basis": str(block.get("classification_basis", "")),
+                "classification_confidence": str(primary.get("classification_confidence", "")),
+                "classification_basis": str(primary.get("classification_basis", "")),
             })
         for secondary in block.get("secondary_classifications", []):
             if not isinstance(secondary, dict):
                 continue
-            secondary_family = secondary.get("family")
-            secondary_class = secondary.get("class")
-            if not isinstance(secondary_family, dict) or not isinstance(secondary_class, dict):
+            family_id = str(secondary.get("family_id", ""))
+            class_id = str(secondary.get("class_id", ""))
+            if not family_id or not class_id:
                 continue
             secondary_example = {
                 **base_example,
@@ -811,24 +859,30 @@ def taxonomy_examples(records: list[dict[str, Any]]) -> dict[str, Any]:
                 "classification_confidence": str(secondary.get("classification_confidence", "")),
                 "classification_basis": str(secondary.get("classification_basis", "")),
             }
-            if secondary_family.get("family_id"):
-                families.setdefault(secondary_family["family_id"], []).append({
-                    **secondary_example,
-                    "class_id": str(secondary_class.get("class_id", "")),
-                    "class_name": str(secondary_class.get("class_name", "")),
-                })
-            if secondary_class.get("class_id"):
-                classes.setdefault(secondary_class["class_id"], []).append(secondary_example)
-    taxonomy_index = json.loads(TAXONOMY_INDEX_PATH.read_text(encoding="utf-8"))
+            families.setdefault(family_id, []).append({
+                **secondary_example,
+                "class_id": class_id,
+                "class_name": class_names.get(class_id, ""),
+            })
+            classes.setdefault(class_id, []).append(secondary_example)
+
+    for examples in [*families.values(), *classes.values()]:
+        examples.sort(key=lambda item: (item["incident_id"], item["classification_role"]))
     return {
         "generated_notice": NOTICE,
         "taxonomy_version": taxonomy_index["standard"]["version"],
         "taxonomy_publication_date": taxonomy_index["standard"]["publication_date"],
         "normative_status": "non-normative reverse mapping",
-        "generated_from": ["vigil/records/failures/2026/"],
+        "generated_from": ["vigil/records/incidents/"],
         "families": {key: value for key, value in sorted(families.items())},
         "classes": {key: value for key, value in sorted(classes.items())},
     }
+
+
+def build_taxonomy_examples() -> None:
+    all_records = load_records()
+    write_json(TAXONOMY_EXAMPLES_PATH, taxonomy_examples(all_records))
+    print(f"Wrote {TAXONOMY_EXAMPLES_PATH}.")
 
 
 def build() -> None:
@@ -848,4 +902,11 @@ def build() -> None:
 
 
 if __name__ == "__main__":
-    build()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--taxonomy-examples-only",
+        action="store_true",
+        help="Rebuild only the Incident-backed taxonomy Case File projection.",
+    )
+    args = parser.parse_args()
+    build_taxonomy_examples() if args.taxonomy_examples_only else build()

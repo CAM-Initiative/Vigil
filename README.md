@@ -6,10 +6,11 @@ VIGIL preserves what has been observed, what evidence supports it, how a failure
 
 ## Current public record boundary
 
-The canonical public record corpus is intentionally narrow:
+The canonical public record corpus is intentionally narrow. During INCIDENT-01 stabilisation it is:
 
 ```text
 vigil/records/
+  incidents/
   observations/
   failures/
   research/
@@ -17,8 +18,9 @@ vigil/records/
 
 Public record classes are:
 
+- **INC — Incident:** a bounded historical occurrence preserving facts, evidence, VIGIL interpretation, provenance, external-registry crosswalks and independently governed taxonomy-classification state.
 - **OBS — Observation:** a material unresolved governance proposition or early-warning signal.
-- **FM — Failure Mode:** a confirmed or strongly evidenced ecosystem failure pattern with a defined recognition threshold, taxonomy classification, triage state and repair/coverage assessment.
+- **FM — Failure Mode:** the legacy diagnostic/triage record retained during Incident migration stabilisation.
 - **RESEARCH — Research Record:** substantive non-binding analysis that independently warrants publication and may support an evidence-to-repair pathway.
 
 Historical/design PROP, PATCH and LEARN records are withdrawn from publication and retained under `vigil/drafts/`. Their identifiers and files are preserved as history, but they are excluded from public validation, registry generation and interface resolution. Presence under `drafts/` does not establish publication, implementation authority, adoption, or validated learning closure.
@@ -27,17 +29,15 @@ See [`vigil/drafts/README.md`](vigil/drafts/README.md) for the withdrawal bounda
 
 ## Public evidence-to-repair model
 
-The current public workflow is conditional rather than a compulsory record chain:
+The target Incident architecture separates historical occurrences from reusable taxonomy semantics:
 
 ```text
-External evidence ─┬─> OBS ──> FM
-                   ├─> FM
-                   └─> RESEARCH ──> FM
-
-FM ──> CAM coverage / repair assessment / monitoring
+Failure Family ──> Failure Class <── Incident ──> Evidence Sources
+                                      │
+                                      └──> CAM coverage / repair assessment / monitoring
 ```
 
-An observation is not required where the evidence already supports a failure mode or substantive research record. A research record is not required for every failure. Public VIGIL records preserve the evidence and diagnosis; CAM authority arises only through the separate CAM/Caelestis governance process.
+Incidents own the many-to-many classification relationship and may remain unclassified while taxonomy reconciliation is pending. During stabilisation, legacy FM/OBS records remain published beside INC and are governed by the complete migration crosswalk. Public VIGIL records preserve evidence and diagnosis; CAM authority arises only through the separate CAM/Caelestis governance process.
 
 Historical PROP/PATCH/LEARN identifiers may remain in public-record provenance where they reflect the history of an existing record, but their retained files are not public registry targets while those classes are withdrawn.
 
@@ -97,6 +97,7 @@ Individual files under `vigil/records/` are the source of truth for public VIGIL
 Current generated public indexes are:
 
 ```text
+vigil/VIGIL.Incidents.Index.json
 vigil/VIGIL.Failures.Index.json
 vigil/VIGIL.Observations.Index.json
 vigil/VIGIL.Research.Index.json
