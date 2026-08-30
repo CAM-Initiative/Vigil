@@ -195,7 +195,7 @@ class ValidateVigilRecordsTest(unittest.TestCase):
                 self.assertIn(diagnostic.get("ai_model"), {"GPT-5.5", "GPT-5.6 Sol"})
                 self.assertIn(
                     diagnostic.get("date_attribution_status"),
-                    {"creation-date-aligned", "creation-date-conflict-recorded"},
+                    {"canonical-creation-date-aligned", "creation-date-conflict-recorded"},
                 )
 
     def test_legacy_source_record_keys_are_rejected(self):
