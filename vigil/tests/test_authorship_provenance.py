@@ -35,8 +35,7 @@ class AuthorshipProvenanceTests(unittest.TestCase):
                 self.assertTrue(any(expected in error for error in errors), errors)
 
     def test_publication_does_not_upgrade_review(self) -> None:
-        declaration = MODULE.load(MODULE.DECLARATION_PATH)
-        rules = declaration["inheritance_rules"]
+        rules = MODULE.INHERITANCE_RULES
         self.assertFalse(rules["repository_publication_means_human_review"])
         self.assertFalse(rules["repository_acceptance_means_human_review"])
         self.assertFalse(rules["repository_acceptance_means_human_verification"])
@@ -50,8 +49,7 @@ class AuthorshipProvenanceTests(unittest.TestCase):
         self.assertTrue(any("upstream_provenance" in error for error in errors), errors)
 
     def test_explicit_override_precedes_inherited_default(self) -> None:
-        declaration = MODULE.load(MODULE.DECLARATION_PATH)
-        rules = declaration["inheritance_rules"]
+        rules = MODULE.INHERITANCE_RULES
         self.assertTrue(rules["explicit_artefact_override_precedence"])
         self.assertTrue(rules["default_applies_when_override_absent"])
         self.assertFalse(rules["absence_of_override_means_human_review"])
