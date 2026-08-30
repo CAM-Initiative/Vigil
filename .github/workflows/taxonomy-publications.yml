@@ -28,63 +28,6 @@ permissions:
   contents: write
 
 jobs:
-  housekeeping-format-repair:
-    if: github.event_name == 'pull_request' && github.head_ref == 'housekeeping/scripts-tests-audits'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          ref: housekeeping/scripts-tests-audits
-          fetch-depth: 0
-          persist-credentials: true
-          show-progress: false
-
-      - uses: actions/setup-python@v6
-        with:
-          python-version: "3.x"
-
-      - name: Restore pre-reconciliation compact formatting
-        shell: bash
-        run: |
-          git show 4ca9d9016dd102d347daf5f3a297882181d3b1c2:vigil/taxonomy/families/VIGIL-FF-0001-authority-boundary-integrity.json \
-            > vigil/taxonomy/families/VIGIL-FF-0001-authority-boundary-integrity.json
-          git show 4ca9d9016dd102d347daf5f3a297882181d3b1c2:vigil/records/observations/2026/VIGIL-2026-OBS-0033.json \
-            > vigil/records/observations/2026/VIGIL-2026-OBS-0033.json
-          python - <<'PY'
-          from pathlib import Path
-
-          path = Path("vigil/records/observations/2026/VIGIL-2026-OBS-0033.json")
-          text = path.read_text(encoding="utf-8")
-          old = '"product_or_service": "ChatGPT; Perplexity Answer Engine; public web retrieval ecosystem"'
-          new = '"product_or_service": "Other"'
-          if old not in text:
-              raise SystemExit("OBS-0033 aggregate product field was not found in the preserved source formatting")
-          path.write_text(text.replace(old, new, 1), encoding="utf-8")
-          PY
-          python vigil/taxonomy/validate_taxonomy.py
-          python vigil/tests/test_validate_vigil_records.py -b
-
-      - name: Commit format-only cleanup
-        shell: bash
-        run: |
-          unexpected="$(git diff --name-only | grep -Ev '^(vigil/taxonomy/families/VIGIL-FF-0001-authority-boundary-integrity\.json|vigil/records/observations/2026/VIGIL-2026-OBS-0033\.json)$' || true)"
-          if [ -n "$unexpected" ]; then
-            echo "Formatting cleanup changed unexpected files:"
-            printf '%s\n' "$unexpected"
-            exit 1
-          fi
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add \
-            vigil/taxonomy/families/VIGIL-FF-0001-authority-boundary-integrity.json \
-            vigil/records/observations/2026/VIGIL-2026-OBS-0033.json
-          if git diff --cached --quiet; then
-            echo "No formatting cleanup remains."
-          else
-            git commit -m "Preserve taxonomy and observation source formatting"
-            git push origin "HEAD:housekeeping/scripts-tests-audits"
-          fi
-
   build-publications:
     runs-on: ubuntu-latest
     steps:
