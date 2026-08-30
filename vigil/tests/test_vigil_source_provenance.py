@@ -96,6 +96,33 @@ def main() -> int:
     }
     assert validator.origin_markers(vigil_cross_reference) == (True, True)
 
+    vigil_review_session = {
+        "source_title": "Three ChatGPT systems repeat responses without synthetic turn-taking",
+        "author_or_publisher": "CAM Initiative / VIGIL review session",
+        "source_url": "https://vt.tiktok.com/example/",
+        "source_platform": "TikTok",
+        "source_type": "platform-behaviour-observation",
+    }
+    assert validator.origin_markers(vigil_review_session) == (True, True)
+
+    vigil_governance_note = {
+        "source_title": "VIGIL maintainer discussion of repeated user reports",
+        "author_or_publisher": "Maintainer discussion",
+        "source_url": "https://chatgpt.com/example",
+        "source_platform": "ChatGPT",
+        "source_type": "governance-note",
+    }
+    assert validator.origin_markers(vigil_governance_note) == (True, False)
+
+    relayed_external_report = {
+        "source_title": "User-reported ChatGPT refusal screenshot",
+        "author_or_publisher": "Third-party user report relayed to VIGIL maintainer",
+        "source_url": "https://x.com/example/status/1",
+        "source_platform": "X",
+        "source_type": "social-platform-observation",
+    }
+    assert validator.origin_markers(relayed_external_report) == (False, False)
+
     cam_governance_source = {
         "source_title": "Current Caelestis SECURITY instrument",
         "author_or_publisher": "CAM Initiative",

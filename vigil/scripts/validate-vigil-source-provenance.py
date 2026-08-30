@@ -14,6 +14,7 @@ RECORDS_ROOT = VIGIL_ROOT / "records"
 SCHEMA_PATH = VIGIL_ROOT / "VIGIL.Schema.json"
 
 VIGIL_ID_RE = re.compile(r"^VIGIL-\d{4}-(?:OBS|FM|PROP|PATCH|RESEARCH|LEARN)-\d{4}\b", re.I)
+VIGIL_AUTHOR_RE = re.compile(r"^(?:cam initiative\s*/\s*)?vigil(?:\b|\s*/)", re.I)
 CAM_HINTS = (
     "cam initiative",
     "cam-initiative",
@@ -24,6 +25,7 @@ CAM_HINTS = (
     "office of the planetary custodian",
 )
 VIGIL_URL_HINTS = ("cam-initiative/vigil", "/vigil/", "cam-initiative.org/vigil")
+VIGIL_INTERNAL_SOURCE_TYPES = {"governance-note", "linked-failure-mode"}
 
 
 def text(value: Any) -> str:
@@ -53,16 +55,22 @@ def identity_text(source: dict[str, Any]) -> str:
 def origin_markers(source: dict[str, Any]) -> tuple[bool, bool]:
     """Classify CAM/VIGIL origin from source identity, not relevance/interpretation prose."""
     title = text(source.get("source_title"))
-    author = text(source.get("author_or_publisher")).lower()
+    author = text(source.get("author_or_publisher"))
     platform = text(source.get("source_platform")).lower()
+    source_type = text(source.get("source_type")).lower()
     source_url = text(source.get("source_url")).lower()
     archive_url = text(source.get("archive_url")).lower()
     identity = identity_text(source)
 
+    title_is_internal_vigil = (
+        source_type in VIGIL_INTERNAL_SOURCE_TYPES
+        and title.lower().startswith("vigil ")
+    )
     looks_vigil = (
         VIGIL_ID_RE.match(title) is not None
-        or author == "vigil"
+        or VIGIL_AUTHOR_RE.match(author) is not None
         or platform == "vigil"
+        or title_is_internal_vigil
         or any(hint in source_url or hint in archive_url for hint in VIGIL_URL_HINTS)
     )
     looks_cam = any(hint in identity for hint in CAM_HINTS)
@@ -114,8 +122,11 @@ def main() -> int:
             looks_vigil, looks_cam = origin_markers(source)
             if residence == "external" and (looks_vigil or looks_cam):
                 errors.append(f"{location} is marked external but identifies CAM/VIGIL origin")
-            if residence == "vigil-internal" and not looks_vigil:
-                errors.append(f"{location} is marked vigil-internal without a VIGIL origin marker")
+            # VIGIL-internal provenance can be authored by the CAM Initiative when the
+            # artefact is a VIGIL drafting/review source. CAM-internal is reserved for
+            # CAM/Caelestis governance material rather than every CAM-authored note.
+            if residence == "vigil-internal" and not (looks_vigil or looks_cam):
+                errors.append(f"{location} is marked vigil-internal without a CAM/VIGIL origin marker")
             if residence == "cam-internal" and not looks_cam:
                 errors.append(f"{location} is marked cam-internal without a CAM/Caelestis origin marker")
             if role == "record-cross-reference" and residence != "vigil-internal":
