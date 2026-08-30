@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Focused tests for deterministic source provenance classification."""
+"""Focused regression checks for source-provenance classification and origin detection."""
 
 from __future__ import annotations
 
@@ -7,12 +7,21 @@ import importlib.util
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-MIGRATION_PATH = ROOT / "vigil" / "scripts" / "migrate-vigil-source-provenance.py"
+SCRIPTS = ROOT / "vigil" / "scripts"
+MIGRATION_PATH = SCRIPTS / "migrate-vigil-source-provenance.py"
+VALIDATOR_PATH = SCRIPTS / "validate-vigil-source-provenance.py"
 
-spec = importlib.util.spec_from_file_location("source_provenance_migration", MIGRATION_PATH)
-assert spec and spec.loader
-migration = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(migration)
+
+def load_module(path: Path, name: str):
+    spec = importlib.util.spec_from_file_location(name, path)
+    assert spec and spec.loader
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+migration = load_module(MIGRATION_PATH, "source_provenance_migration")
+validator = load_module(VALIDATOR_PATH, "source_provenance_validator")
 
 
 def classify(source, record_type="failure_mode"):
@@ -64,7 +73,41 @@ def main() -> int:
         "source_type": "other",
     }, "observation") == ("user-supplied", "direct-testimony")
 
-    print("Source provenance classification tests passed.")
+    # Source origin is determined from identity/provenance fields. VIGIL's own
+    # interpretive commentary must not convert an external source into an
+    # internal source merely because it says how VIGIL uses the source.
+    external_with_vigil_commentary = {
+        "source_title": "Incident 1661: external incident registry entry",
+        "author_or_publisher": "AI Incident Database",
+        "source_url": "https://incidentdatabase.ai/cite/1661/",
+        "source_platform": "AI Incident Database",
+        "source_type": "incident-database record",
+        "relevance_note": "VIGIL uses this external registry entry as corroboration only.",
+        "source_context": "VIGIL preserves the source's stated incident metadata without strengthening it.",
+    }
+    assert validator.origin_markers(external_with_vigil_commentary) == (False, False)
+
+    vigil_cross_reference = {
+        "source_title": "VIGIL-2026-FM-0044 — linked failure mode",
+        "author_or_publisher": "VIGIL",
+        "source_url": "https://github.com/CAM-Initiative/Vigil/blob/main/example.json",
+        "source_platform": "VIGIL",
+        "source_type": "linked-failure-mode",
+    }
+    assert validator.origin_markers(vigil_cross_reference) == (True, True)
+
+    cam_governance_source = {
+        "source_title": "Current Caelestis SECURITY instrument",
+        "author_or_publisher": "CAM Initiative",
+        "source_url": "https://github.com/CAM-Initiative/Caelestis/blob/main/example.md",
+        "source_platform": "GitHub",
+        "source_type": "repository-source",
+    }
+    looks_vigil, looks_cam = validator.origin_markers(cam_governance_source)
+    assert not looks_vigil
+    assert looks_cam
+
+    print("Source provenance classification and origin-detection tests passed.")
     return 0
 
 

@@ -23,7 +23,7 @@ CAM_HINTS = (
     "cam-initiative.org",
     "office of the planetary custodian",
 )
-VIGIL_HINTS = ("vigil", "cam-initiative/vigil")
+VIGIL_URL_HINTS = ("cam-initiative/vigil", "/vigil/", "cam-initiative.org/vigil")
 
 
 def text(value: Any) -> str:
@@ -34,7 +34,8 @@ def text(value: Any) -> str:
     return ""
 
 
-def source_text(source: dict[str, Any]) -> str:
+def identity_text(source: dict[str, Any]) -> str:
+    """Return source-origin fields only, excluding VIGIL interpretive commentary."""
     return " | ".join(
         text(source.get(field)).lower()
         for field in (
@@ -43,15 +44,29 @@ def source_text(source: dict[str, Any]) -> str:
             "source_url",
             "archive_url",
             "source_platform",
-            "system_or_product",
-            "model_or_algorithm",
-            "deployment_context",
-            "source_context",
-            "relevance_note",
             "source_type",
             "source_url_status",
         )
     )
+
+
+def origin_markers(source: dict[str, Any]) -> tuple[bool, bool]:
+    """Classify CAM/VIGIL origin from source identity, not relevance/interpretation prose."""
+    title = text(source.get("source_title"))
+    author = text(source.get("author_or_publisher")).lower()
+    platform = text(source.get("source_platform")).lower()
+    source_url = text(source.get("source_url")).lower()
+    archive_url = text(source.get("archive_url")).lower()
+    identity = identity_text(source)
+
+    looks_vigil = (
+        VIGIL_ID_RE.match(title) is not None
+        or author == "vigil"
+        or platform == "vigil"
+        or any(hint in source_url or hint in archive_url for hint in VIGIL_URL_HINTS)
+    )
+    looks_cam = any(hint in identity for hint in CAM_HINTS)
+    return looks_vigil, looks_cam
 
 
 def main() -> int:
@@ -88,8 +103,6 @@ def main() -> int:
                 continue
             residence = text(source.get("source_residence"))
             role = text(source.get("source_role"))
-            title = text(source.get("source_title"))
-            haystack = source_text(source)
 
             if residence not in allowed_residences:
                 errors.append(f"{location} invalid source_residence {residence!r}")
@@ -98,8 +111,7 @@ def main() -> int:
             if residence == "unknown" or role == "unknown":
                 errors.append(f"{location} unresolved source provenance is not permitted in canonical records")
 
-            looks_vigil = VIGIL_ID_RE.match(title) is not None or any(hint in haystack for hint in VIGIL_HINTS)
-            looks_cam = any(hint in haystack for hint in CAM_HINTS)
+            looks_vigil, looks_cam = origin_markers(source)
             if residence == "external" and (looks_vigil or looks_cam):
                 errors.append(f"{location} is marked external but identifies CAM/VIGIL origin")
             if residence == "vigil-internal" and not looks_vigil:

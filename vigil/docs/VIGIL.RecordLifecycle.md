@@ -1,162 +1,160 @@
 # VIGIL Record Lifecycle and Routing Model
 
-VIGIL is an evidence-to-repair governance ledger. It preserves source evidence, research artefacts, classification/routing state, proposals, repairs, and source trail for observations, research records, failure modes, proposals, and patch records.
+VIGIL is a public evidence-to-repair observatory. Its public record lifecycle preserves evidence, research, failure diagnosis, taxonomy classification, triage state, ecosystem state and CAM-side coverage/repair assessment without making VIGIL itself a source of CAM authority.
 
-This lifecycle is **conditional, not mandatory**. A record may begin as an observation, research artefact, failure mode, proposal, or patch depending on the evidence and governance state. The arrows below describe common routing pathways and conditional transitions, not a compulsory sequence.
+The lifecycle is **conditional, not mandatory**. A matter may begin as an OBS, FM or RESEARCH record depending on the evidence and analytical state.
 
-VIGIL records are not binding CAM doctrine. CAM adoption, amendment, and authoritative interpretation remain governed by CAM instruments and CAM amendment processes. Generated registry files are derived outputs from individual records and must not be manually edited.
+## Publication boundary
 
-## Observation records
-
-Observation records preserve source evidence, early warning signals, platform behaviours, incidents, anomalies, public claims, research leads, or governance-relevant events.
-
-They answer:
-
-* What was observed?
-* Where did the evidence come from?
-* What system, platform, or product was involved?
-* Why might this matter?
-* Does this resemble a known failure mode?
-* What is the next review action?
-
-Observation records are source-data-first. They must not contain full failure classification, proposal logic, or patch implementation logic. They may include possible taxonomy mapping, related/similar CAM routing, or related/similar failure references where classification is not settled.
-
-## Research records
-
-Research records preserve substantive, non-binding research artefacts that may supply the evidence basis for a failure mode, proposal, or repair pathway without requiring a duplicative observation.
-
-They answer:
-
-* What research question was examined?
-* What method and evidentiary posture were used?
-* What governance conclusion or uncertainty follows?
-* Which VIGIL failure mode, proposal, or patch does the research support?
-
-An evidence-to-repair chain may originate in an Observation, Research record, or both. Research records do not create CAM authority. Authority arises only through the linked proposal and implemented PATCH. Links must be reciprocal through `linked_records.research`.
-
-## Failure mode records
-
-Failure mode records define a recurrent, structural, or governance-significant pattern of failure.
-
-They answer:
-
-* What is the failure pattern?
-* What threshold makes it this failure mode?
-* Which CAM taxonomy family does it route through?
-* What harms, interests, or governance layers are implicated?
-* What triage path is required?
-
-Failure mode records must align with the CAM Runtime & Governance Failure Taxonomy in `CAM-EQ2026-OPERATIONS-003-SUP-01`.
-
-If a failure does not fit a known canonical taxonomy family, it must not invent a new canonical group. It should either:
-
-* route under the closest existing canonical group with a local or provisional subtype;
-* use `provisional` only where justified; and
-* create or link to a proposal for taxonomy extension when canonical coverage may need amendment.
-
-Local concepts, harm vectors, and proposed subtypes may be recorded, but canonical-only fields must use canonical taxonomy values from the VIGIL schema-derived CAM taxonomy registry.
-
-## Proposal records
-
-Proposal records are for suggested governance, taxonomy, schema, validator, interface, workflow, or CAM corpus changes.
-
-They answer:
-
-* What should be changed?
-* Why is a change needed?
-* What instrument, schema, or workflow is affected?
-* What decision or review is required?
-* What would count as acceptance or next action?
-
-A proposal is needed when:
-
-* the taxonomy lacks an adequate family or subtype;
-* the schema needs new fields or constraints;
-* the validator needs new checks;
-* a CAM instrument may need amendment;
-* a UX/interface repair is needed but not yet implemented; or
-* the repair pathway is not yet adopted or implemented.
-
-Proposal records must not claim implementation as complete. Implemented work belongs in a patch or patch-note record.
-
-## Patch / patch-note records
-
-Patch records document implemented or recorded repair actions.
-
-They answer:
-
-* What changed?
-* When was it implemented or recorded?
-* What failure, proposal, or issue does it repair?
-* What evidence verifies implementation?
-* What impact does it have?
-* What remains open?
-
-A patch is appropriate when the corrective action is sufficiently defined and recorded, or where a placeholder patch is replaced with a substantive repair record.
-
-Patch records must contain implementation evidence and the required fields:
-
-* `date_implemented`
-* `change_classification`
-* `change_details`
-* `implementation_verification`
-* `impact_summary`
-* `remaining_work`
-
-A VIGIL patch can record a repair pathway without itself amending CAM doctrine. If CAM adoption or amendment is required, that remaining work must be preserved explicitly.
-
-## Lifecycle examples
+Current public record classes are stored only under:
 
 ```text
-Observation → Failure Mode → Proposal → Patch
-Observation → Proposal → Patch
-Research → Failure Mode → Proposal → Patch
-Research → Proposal → Patch
-Failure Mode → Proposal
-Failure Mode → Patch
-Patch → Remaining Work / Future Proposal
-Observation → Monitoring / Closed No Action
+vigil/records/observations/
+vigil/records/failures/
+vigil/records/research/
 ```
 
-These examples are routing patterns. They do not require every observation to become a failure mode, every failure mode to become a proposal, or every proposal to become a patch.
+PROP, PATCH and LEARN records are currently withdrawn from publication and retained under `vigil/drafts/`. Public builders, validators, lifecycle checks and interfaces must not load or resolve those draft files.
 
-## Authoritative repair scope and contextual relationships
+Historical PROP/PATCH/LEARN identifiers may remain in the provenance of a public record where they document prior repository history. That does not make the retained draft target public or authoritative.
 
-The default repair chain is narrow:
+## OBS — Observation
+
+OBS preserves a material unresolved governance proposition, early-warning signal, incident or system behaviour that is not already adequately represented by an existing FM or RESEARCH record.
+
+An OBS should answer:
+
+- what was observed;
+- what evidence supports the observation;
+- what system or deployment is implicated;
+- why the proposition is governance-relevant;
+- what remains uncertain; and
+- what review or routing action comes next.
+
+OBS must not contain full failure-mode diagnosis or triage merely because a source appears important. Evidence that only strengthens an existing FM belongs in that FM's `source_records`, not in a duplicative OBS.
+
+## RESEARCH — Research Record
+
+RESEARCH preserves substantive non-binding analysis that independently warrants publication and may supply evidence, comparison or synthesis for one or more VIGIL records.
+
+A published RESEARCH record should answer:
+
+- what question was examined;
+- what method and source corpus were used;
+- what findings and counter-evidence were identified;
+- what limitations remain; and
+- what governance significance follows without overstating authority.
+
+Published RESEARCH must satisfy the quality contract in `vigil/VIGIL.Schema.json`.
+
+Short, single-source or lightly synthesised material belongs in an existing record's `source_records` or, where it is a distinct unresolved proposition, in OBS.
+
+## FM — Failure Mode
+
+FM is the authoritative public diagnostic record for an ecosystem failure pattern.
+
+An FM should answer:
+
+- what failed;
+- what threshold distinguishes the failure from adjacent behaviour;
+- what evidence supports the diagnosis;
+- how the case maps to the VIGIL Observatory failure taxonomy;
+- what harms, interests, scope and recurrence characteristics are supported;
+- what triage state applies now;
+- whether the ecosystem failure remains active or recurring; and
+- what CAM-side coverage or repair state has been established.
+
+Failure-mode `failure_classification` contains event/case dimensions such as severity, likelihood, harm, scope, recurrence, persistence, reproducibility and visibility.
+
+VIGIL-native taxonomy membership belongs in `taxonomy_classification`. Peer class membership is a taxonomy-layer relationship and must not be recreated through `linked_records.related_failure_modes`.
+
+The canonical taxonomy is under `vigil/taxonomy/`. Historical CAM failure-taxonomy references do not override the current VIGIL taxonomy architecture.
+
+## Public routing patterns
+
+Common public routing patterns include:
 
 ```text
-Evidence → primary failure mode → proposal → PATCH
+OBS -> FM
+RESEARCH -> FM
+OBS -> RESEARCH
+FM -> monitoring
+FM -> CAM coverage assessment
+FM -> CAM repair assessment
 ```
 
-Research and observations may supply evidence. A proposal or PATCH ordinarily has no more than one
-`repair_scope.primary_failure_mode`. Other relevant records belong in
-`linked_records.contextual_relations`, where `chain_inclusion` must be `false`.
+A new source may also be added directly to an existing FM without creating another record.
 
-Contextual relationships are visible but non-transitive. They may identify an adjacent control,
-contrast, supporting mechanism, shared corpus area, implementation precedent, separate workstream,
-or governance context. They must not be traversed as evidence that a proposal or PATCH resolves the
-contextual record.
+No sequence is compulsory. An observation does not need to become a failure mode; a failure mode does not need a research record; and public VIGIL does not manufacture a proposal or patch record merely to make a chain look complete.
 
-A PATCH may resolve multiple failure modes only as an explicit exception. The PATCH must:
+## Repair and coverage state
 
-* identify one primary failure mode and each additional resolved failure mode;
-* explain why a single repair inseparably closes the failures together; and
-* provide a separate verification result for every failure mode.
+FM keeps CAM-side repair and ecosystem state separate.
 
-A governance-origin or research-origin proposal may have no primary failure mode. It must not be
-forced into an artificial failure chain merely to complete a sequence.
+- `repair_status` describes the CAM-side governance response.
+- `corpus_coverage` records what current CAM/Caelestis corpus content was assessed and what coverage state was established.
+- `ecosystem_status` describes whether the external failure remains active, recurring, improving, externally resolved or unknown.
 
-`linked_records.related_failure_modes` is authoritative only when it matches `repair_scope`. A
-record cannot appear in both an authoritative linked-record array and `contextual_relations`.
-“Related” never means “repaired together.”
+A CAM-side repair does not prove that an external vendor/system has adopted the repair or that the ecosystem failure has ceased.
 
+Historical patch IDs may remain in FM provenance where they document how a repair state was established. While PATCH files remain withdrawn under `vigil/drafts/`, public interfaces must not resolve those IDs as public records.
 
-## Linked standards and CAM routing
+## Record state and triage state
 
-`linked_records.standards` is reserved for external standards, regulatory instruments, formal standards-body materials, and widely recognised external governance references such as ISO, IEEE, NIST, OECD, the EU AI Act, the Digital Services Act, W3C, or C2PA.
+`record_state` is the lifecycle state of the VIGIL record.
 
-CAM instruments are internal CAM governance instruments, not external standards references. CAM instrument identifiers such as `CAM-BS...` or `CAM-EQ...` belong in `cam_internal` routing fields: related/similar routing for observations, affected routing for failure modes, target routing for proposals, and changed routing for patches.
+For failure modes, `triage.triage_status` is the operational workflow state and `triage.triage_priority` is the urgency of the next VIGIL/CAM action. Severity is a property of the failure; priority is not a proxy for severity.
 
-## Registry and source-of-truth rule
+`ecosystem_status.monitoring_required` is continuing external observation and does not itself justify an active P0–P3 queue priority.
 
-Individual JSON records and Markdown research records with structured front matter under `vigil/records/` are the source of truth. The generated registry indexes are derived outputs and should be rebuilt with the VIGIL build script after record changes. Do not manually edit generated registry files.
+Allowed values are controlled by `vigil/VIGIL.Schema.json` and enforced by the validators. Do not create alternative lifecycle/status vocabularies in documentation or interfaces.
+
+## Source-evidence rule
+
+For individual public records, `source_records` is the only canonical source-evidence block.
+
+A source may be:
+
+- external evidence;
+- CAM-internal governance/provenance material; or
+- VIGIL-internal record cross-reference provenance.
+
+These residences and roles must remain explicit. VIGIL interpretive prose about an external source does not convert that external source into a VIGIL-internal source.
+
+## Linked records
+
+Links must preserve authority boundaries.
+
+OBS, FM and RESEARCH may cross-reference other public records where the relevant schema permits it. A link does not automatically create a lifecycle transition, repair relationship, causal claim or taxonomy relationship.
+
+Withdrawn PROP/PATCH/LEARN identifiers may appear as historical provenance but are intentionally non-resolvable while those classes remain under `vigil/drafts/`.
+
+CAM instruments are not external standards. CAM/Caelestis identifiers belong in the appropriate `cam_internal` routing/coverage fields rather than being misrepresented as external standards references.
+
+## Source of truth and generated indexes
+
+Individual public record files under `vigil/records/` are the source of truth.
+
+Current generated public indexes are:
+
+```text
+vigil/VIGIL.Failures.Index.json
+vigil/VIGIL.Observations.Index.json
+vigil/VIGIL.Research.Index.json
+vigil/VIGIL.Registry.Index.json
+```
+
+Build them with:
+
+```bash
+python vigil/scripts/build-vigil-public-records.py
+python vigil/scripts/enrich-vigil-indexes.py
+```
+
+Do not manually edit generated indexes and do not recreate withdrawn-class indexes as though those classes were public.
+
+## Authority boundary
+
+VIGIL records preserve evidence and analysis. They do not amend CAM/Caelestis instruments.
+
+CAM authority arises only through the separate CAM/Caelestis governance, validation and adoption process. Repository housekeeping, schema changes, validators, migrations, index rebuilds and audit work are maintenance activity and do not create VIGIL PROP or PATCH authority.

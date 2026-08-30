@@ -21,7 +21,6 @@ For external sources, records should include:
 
 Use `source_records` as the canonical evidence block. Do not add `source_data`, `source_data.sources`, or flattened one-off URL fields to individual records.
 
-
 ### Evidence source platform versus affected system
 
 `source_platform` is **source provenance**: it identifies the platform, publication surface, repository, status page, social network, or other location through which the evidence is supplied. It does not, by itself, identify the AI/platform system affected by the failure. A TikTok video about ChatGPT therefore has `source_platform: "TikTok"` while the affected system remains OpenAI / ChatGPT.
@@ -93,8 +92,7 @@ Keep `product_or_service` to one canonical compatibility value. For genuinely mu
 
 ## Published research quality
 
-A RESEARCH record is a substantive analytical artefact, not a container for a report summary.
-Before setting `publication_status: "published"`, the record must:
+A RESEARCH record is a substantive analytical artefact, not a container for a report summary. Before setting `publication_status: "published"`, the record must:
 
 * answer a bounded research question;
 * describe its scope, source-selection method and exclusions;
@@ -106,20 +104,17 @@ Before setting `publication_status: "published"`, the record must:
 * provide a public bibliography and structured `source_corpus`; and
 * qualify the basis of `corroborated` where all evidence comes from one institutional publisher.
 
-The validator enforces a minimum floor for structure, length and source traceability. Those
-checks do not prove research quality. Human editorial review and substantive comparison of
-claims against the cited sources remain necessary.
+The validator enforces a minimum floor for structure, length and source traceability. Those checks do not prove research quality. Human editorial review and substantive comparison of claims against the cited sources remain necessary.
 
-Short single-source material should normally be added to the `source_records` of the record it
-evidences. Use an OBS only where the material establishes a distinct unresolved governance
-proposition. Do not create RESEARCH merely to raise the apparent status of a source note.
+Short single-source material should normally be added to the `source_records` of the record it evidences. Use an OBS only where the material establishes a distinct unresolved governance proposition. Do not create RESEARCH merely to raise the apparent status of a source note.
 
-## Related audit material
+## Related guidance and audit material
 
 See also:
 
-* `vigil/docs/2026-evidence-integrity-audit.md`
-* `vigil/docs/VIGIL.AuthoringGuidance.md`
+* `vigil/docs/audits/records/2026-evidence-integrity-audit.md`
+* `vigil/MAINTAINERS.md`
+* `vigil/AGENTS.md`
 * root `AGENTS.md`
 * `CONTRIBUTING.md`
 * `SECURITY.md`

@@ -85,7 +85,7 @@ jobs:
       - name: Test VIGIL pipeline state
         run: python vigil/tests/test_vigil_pipeline_state.py
 
-      - name: Test withdrawn LEARN publication boundary
+      - name: Test withdrawn record-class publication boundary
         run: python vigil/tests/test_validate_vigil_learn_records.py
 
       - name: Test and validate VIGIL authorship provenance
@@ -127,11 +127,11 @@ jobs:
           python vigil/scripts/build-vigil-public-records.py
           python vigil/scripts/enrich-vigil-indexes.py
 
-      - name: Verify source records and contracts were not mutated
+      - name: Verify source records and canonical record contract were not mutated
         run: |
-          if ! git diff --quiet -- vigil/records vigil/templates vigil/schemas vigil/VIGIL.Schema.json vigil/VIGIL.Learn.Schema.json; then
-            echo "Validation/build automation modified governed source records or contracts."
-            git diff --name-status -- vigil/records vigil/templates vigil/schemas vigil/VIGIL.Schema.json vigil/VIGIL.Learn.Schema.json
+          if ! git diff --quiet -- vigil/records vigil/templates vigil/VIGIL.Schema.json; then
+            echo "Validation/build automation modified governed source records or the canonical record contract."
+            git diff --name-status -- vigil/records vigil/templates vigil/VIGIL.Schema.json
             exit 1
           fi
 
