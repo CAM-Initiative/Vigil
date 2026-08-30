@@ -4,7 +4,7 @@ from __future__ import annotations
 import hashlib, json
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
-DIR=ROOT/"external_requirements"/"reextractions"
+DIR=ROOT/"external_governance"/"requirements"/"reextractions"
 NORMALIZATION=DIR/"EU-AI-ACT-2026-07-27-metadata-normalization.json"
 def rid(s,v,c,i): return "EXTREQ-"+hashlib.sha256("|".join((s,v,c.strip(),i.strip())).encode()).hexdigest()[:16].upper()
 def main():
