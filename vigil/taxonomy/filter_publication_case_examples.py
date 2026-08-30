@@ -127,7 +127,7 @@ def main() -> None:
 
     filtered, excluded_incidents = filter_examples(data)
     CASE_EXAMPLES.write_text(
-        json.dumps(filtered, indent=2, ensure_ascii=False) + "\n",
+        json.dumps(filtered, indent=2, ensure_ascii=False, sort_keys=True) + "\n",
         encoding="utf-8",
     )
     assert_no_excluded_examples(filtered)

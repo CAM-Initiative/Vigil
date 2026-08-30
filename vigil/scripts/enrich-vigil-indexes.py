@@ -18,6 +18,7 @@ INDEXES = {
     "incidents": VIGIL / "VIGIL.Incidents.Index.json",
     "observations": VIGIL / "VIGIL.Observations.Index.json",
 }
+MASTER_INDEX = VIGIL / "VIGIL.Registry.Index.json"
 
 
 def load(path: Path) -> Any:
@@ -25,7 +26,15 @@ def load(path: Path) -> Any:
 
 
 def write(path: Path, value: Any) -> None:
-    path.write_text(json.dumps(value, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    path.write_text(
+        json.dumps(
+            value,
+            indent=2,
+            ensure_ascii=False,
+            sort_keys=path.name in {"VIGIL.Incidents.Index.json", "VIGIL.Registry.Index.json"},
+        ) + "\n",
+        encoding="utf-8",
+    )
 
 
 def records_by_id(directory: str) -> dict[str, dict[str, Any]]:
@@ -132,6 +141,18 @@ def enrich_index(path: Path, source_records: dict[str, dict[str, Any]], fields: 
 def main() -> None:
     enrich_index(INDEXES["incidents"], records_by_id("incidents"), {})
     enrich_index(INDEXES["observations"], records_by_id("observations"), {})
+    master = load(MASTER_INDEX)
+    enriched_entries: dict[str, dict[str, Any]] = {}
+    for path in INDEXES.values():
+        for entry in load(path).get("records", []):
+            if isinstance(entry, dict) and isinstance(entry.get("id"), str):
+                enriched_entries[entry["id"]] = entry
+    master["records"] = [
+        enriched_entries.get(str(entry.get("id", "")), entry)
+        for entry in master.get("records", [])
+        if isinstance(entry, dict)
+    ]
+    write(MASTER_INDEX, master)
     print("Enriched active public VIGIL indexes with reviewer and evidence-access summaries.")
 
 

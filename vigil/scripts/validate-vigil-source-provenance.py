@@ -63,7 +63,15 @@ def main() -> int:
                 errors.append(f"{location} unresolved source provenance is not permitted in canonical records")
 
             looks_vigil, looks_cam = origin_markers(source)
-            if residence == "external" and (looks_vigil or looks_cam):
+            source_url = text(source.get("source_url")).lower()
+            source_platform = text(source.get("source_platform")).lower()
+            externally_hosted = (
+                source_url.startswith(("http://", "https://"))
+                and "cam-initiative/vigil" not in source_url
+                and "cam-initiative.org" not in source_url
+                and source_platform not in {"vigil", "cam initiative"}
+            )
+            if residence == "external" and (looks_vigil or looks_cam) and not externally_hosted:
                 errors.append(f"{location} is marked external but identifies CAM/VIGIL origin")
             if residence == "vigil-internal" and not (looks_vigil or looks_cam):
                 errors.append(f"{location} is marked vigil-internal without a CAM/VIGIL origin marker")
@@ -71,8 +79,10 @@ def main() -> int:
                 errors.append(f"{location} is marked cam-internal without a CAM/Caelestis origin marker")
             if role == "record-cross-reference" and residence != "vigil-internal":
                 errors.append(f"{location} record-cross-reference must use vigil-internal residence")
-            if residence == "vigil-internal" and role != "record-cross-reference":
-                errors.append(f"{location} vigil-internal source must use record-cross-reference role")
+            if residence == "vigil-internal" and role not in {
+                "record-cross-reference", "direct-testimony", "incident-evidence", "governance-basis"
+            }:
+                errors.append(f"{location} vigil-internal source uses an incompatible source role")
 
     if errors:
         print("VIGIL source provenance validation failed:")

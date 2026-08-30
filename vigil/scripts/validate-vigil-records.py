@@ -289,6 +289,19 @@ INCIDENT_CLASSIFICATION_STATUSES = {
     "unclassified", "provisionally-classified", "classified", "classification-disputed",
     "requires-human-review",
 }
+INCIDENT_EVIDENCE_STATUSES = {
+    "verified",
+    "independently-corroborated",
+    "independent-reporting",
+    "registry-reported",
+    "first-party-reported",
+    "allegation-on-record",
+    "internal-observation",
+    "user-reported",
+    "disputed",
+    "unverified",
+    "not-assessed",
+}
 INCIDENT_DATE_PRECISIONS = {"exact-day", "date-range", "month", "year", "reported-date", "unknown"}
 INCIDENT_EXTERNAL_RELATIONSHIPS = {
     "same-incident", "related-incident", "broader-event", "narrower-event",
@@ -1552,6 +1565,12 @@ def validate_incident(path: Path, record: dict[str, Any], errors: list[str]) -> 
                 errors.append(f"{path}: preferred_evidence.{field} must be a non-empty string")
         if preferred.get("source_url") not in source_urls:
             errors.append(f"{path}: preferred_evidence.source_url must identify a preserved source_record")
+        preferred_matches = [
+            source for source in record.get("source_records", [])
+            if isinstance(source, dict) and source.get("source_url") == preferred.get("source_url")
+        ]
+        if len(preferred_matches) != 1:
+            errors.append(f"{path}: preferred_evidence.source_url must identify exactly one source_record")
 
     external = record.get("external_incident_references")
     if not isinstance(external, list):
@@ -1616,6 +1635,8 @@ def validate_record(
     record_type = record.get("record_type")
 
     common_required = set(REQUIRED_COMMON)
+    if record_type == "incident":
+        common_required.discard("evidence_confidence")
     # Temporary patch scaffolds may intentionally carry an empty source_records array;
     # source_records still must be present and typed as an array below.
     if record_type in {"patch", "patch_note"} and str(record.get("record_state", "")).lower() == "scaffolding":
@@ -1675,6 +1696,15 @@ def validate_record(
                     errors.append(f"{path}: source_records[{index}].source_type {source_type!r} is not a canonical publication genre")
                 if "legacy_source_type" in source and not is_non_empty_string(source.get("legacy_source_type")):
                     errors.append(f"{path}: source_records[{index}].legacy_source_type must be a non-empty string when present")
+                status = source.get("evidence_status")
+                if status not in INCIDENT_EVIDENCE_STATUSES:
+                    errors.append(
+                        f"{path}: source_records[{index}].evidence_status {status!r} is not canonical"
+                    )
+                if not is_non_empty_string(source.get("evidence_status_basis")):
+                    errors.append(
+                        f"{path}: source_records[{index}].evidence_status_basis must be a non-empty string"
+                    )
             if not source.get("source_url") and source.get("archive_url"):
                 warnings.append(f"{path}: source_records[{index}] source_url is blank but archive_url is present")
 
@@ -1830,6 +1860,14 @@ def validate_record(
                 )
 
     if record_type == "incident":
+        if "evidence_confidence" in record:
+            errors.append(
+                f"{path}: Incident evidence_confidence is retired; assess each source_record with "
+                "evidence_status and evidence_status_basis"
+            )
+        for generated_field in ("evidence_statuses", "preferred_evidence_status"):
+            if generated_field in record:
+                errors.append(f"{path}: {generated_field} is generated and must not be manually authored")
         validate_incident(path, record, errors)
     elif record_type == "observation":
         present = sorted(field for field in OBS_FORBIDDEN if field in record)

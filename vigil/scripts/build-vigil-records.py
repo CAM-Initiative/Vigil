@@ -494,7 +494,15 @@ def write_json(path: Path, data: Any) -> None:
     pruned = prune_empty(data)
     if isinstance(data, dict) and "records" in data and isinstance(pruned, dict):
         pruned.setdefault("records", [])
-    path.write_text(json.dumps(pruned, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    sort_keys = path.name in {
+        "VIGIL.Incidents.Index.json",
+        "VIGIL.Registry.Index.json",
+        "VIGIL.FailureTaxonomy.CaseFileExamples.json",
+    }
+    path.write_text(
+        json.dumps(pruned, indent=2, ensure_ascii=False, sort_keys=sort_keys) + "\n",
+        encoding="utf-8",
+    )
 
 
 def canonical_sources(record: dict[str, Any]) -> list[dict[str, Any]]:
@@ -509,7 +517,7 @@ def source_summary(record: dict[str, Any]) -> dict[str, Any]:
     platforms = sorted(
         {source.get("source_platform") for source in sources if source.get("source_platform")}
     )
-    return {
+    summary = {
         "source_count": len(sources),
         "primary_source_title": primary.get("source_title", ""),
         "primary_source_type": primary.get("source_type", ""),
@@ -521,12 +529,46 @@ def source_summary(record: dict[str, Any]) -> dict[str, Any]:
         "source_types": types,
         "source_platforms": platforms,
         "source_url_status": primary.get("source_url_status", ""),
-        "evidence_confidence": record.get("evidence_confidence", ""),
     }
+    if record.get("record_type") == "incident":
+        summary.update(
+            {
+                "evidence_statuses": evidence_statuses(record),
+                "preferred_evidence_status": preferred_evidence_status(record),
+            }
+        )
+    else:
+        summary["evidence_confidence"] = record.get("evidence_confidence", "")
+    return summary
 
 
 def source_types(record: dict[str, Any]) -> list[str]:
     return sorted({source.get("source_type") for source in canonical_sources(record) if source.get("source_type")})
+
+
+def evidence_statuses(record: dict[str, Any]) -> list[str]:
+    """Return the deterministic source-level evidence facets for an Incident."""
+    return sorted(
+        {
+            str(source["evidence_status"])
+            for source in canonical_sources(record)
+            if source.get("evidence_status")
+        }
+    )
+
+
+def preferred_evidence_status(record: dict[str, Any]) -> str:
+    """Derive the preferred source status from preferred_evidence.source_url."""
+    preferred = record.get("preferred_evidence")
+    if not isinstance(preferred, dict):
+        return ""
+    preferred_url = preferred.get("source_url")
+    matches = [
+        source.get("evidence_status", "")
+        for source in canonical_sources(record)
+        if source.get("source_url") == preferred_url
+    ]
+    return str(matches[0]) if len(matches) == 1 else ""
 
 
 def record_path(record: dict[str, Any]) -> str:
@@ -674,6 +716,8 @@ def list_metadata(record: dict[str, Any]) -> dict[str, Any]:
                 "occurred_to": incident_identity.get("occurred_to", ""),
                 "date_precision": incident_identity.get("date_precision", ""),
                 "preferred_evidence_url": preferred.get("source_url", ""),
+                "evidence_statuses": evidence_statuses(record),
+                "preferred_evidence_status": preferred_evidence_status(record),
                 "external_incident_references": record.get("external_incident_references", []),
                 "legacy_provenance": record.get("legacy_provenance", []),
             }
@@ -691,7 +735,11 @@ def index_record(record: dict[str, Any]) -> dict[str, Any]:
         "date_implemented": record.get("date_implemented", ""),
         "title": record_title(record),
         "summary": record.get("summary", ""),
-        "evidence_confidence": record.get("evidence_confidence", ""),
+        **(
+            {}
+            if record.get("record_type") == "incident"
+            else {"evidence_confidence": record.get("evidence_confidence", "")}
+        ),
         "source_types": source_types(record),
         **list_metadata(record),
         "path": path,

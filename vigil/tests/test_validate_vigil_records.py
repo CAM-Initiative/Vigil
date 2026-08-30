@@ -53,6 +53,44 @@ class ValidateVigilRecordsTest(unittest.TestCase):
             path.write_text(json.dumps(record), encoding="utf-8")
             return validator.validate(path, schema_path=schema_path)
 
+    def validate_mutated_incident(self, mutate):
+        fixture = ROOT / "vigil" / "records" / "incidents" / "VIGIL-INC-000001.json"
+        with fixture.open(encoding="utf-8") as handle:
+            record = json.load(handle)
+        mutate(record)
+        with tempfile.TemporaryDirectory() as temp_dir:
+            path = Path(temp_dir) / f"{record['id']}.json"
+            path.write_text(json.dumps(record), encoding="utf-8")
+            return validator.validate(path)
+
+    def test_incident_source_evidence_status_contract(self):
+        self.assertEqual(self.validate_mutated_incident(lambda record: None), 0)
+
+        def remove_status(record):
+            record["source_records"][0].pop("evidence_status")
+
+        def remove_basis(record):
+            record["source_records"][0].pop("evidence_status_basis")
+
+        def narrative_status(record):
+            record["source_records"][0]["evidence_status"] = "credible reporting with caveats"
+
+        def revive_incident_confidence(record):
+            record["evidence_confidence"] = "medium"
+
+        self.assertNotEqual(self.validate_mutated_incident(remove_status), 0)
+        self.assertNotEqual(self.validate_mutated_incident(remove_basis), 0)
+        self.assertNotEqual(self.validate_mutated_incident(narrative_status), 0)
+        self.assertNotEqual(self.validate_mutated_incident(revive_incident_confidence), 0)
+
+    def test_incident_evidence_status_vocabulary_matches_schema(self):
+        with (ROOT / "vigil" / "VIGIL.Schema.json").open(encoding="utf-8") as handle:
+            schema = json.load(handle)
+        self.assertEqual(
+            validator.INCIDENT_EVIDENCE_STATUSES,
+            set(schema["record_classes"]["incident"]["evidence_status_values"]),
+        )
+
     def adopt_triage_v2(self, record, priority="P2", status="action-required", severity="S2"):
         record["failure_classification"]["severity"] = severity
         record["failure_classification"]["severity_assessment_basis"] = (

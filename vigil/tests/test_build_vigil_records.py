@@ -24,7 +24,6 @@ INDEX_REQUIRED_FIELDS = {
     "date_recorded",
     "title",
     "summary",
-    "evidence_confidence",
     "source_types",
     "path",
     "github_blob_url",
@@ -32,6 +31,9 @@ INDEX_REQUIRED_FIELDS = {
 }
 
 INDEX_ALLOWED_FIELDS = INDEX_REQUIRED_FIELDS | {
+    "evidence_confidence",
+    "evidence_statuses",
+    "preferred_evidence_status",
     "date_implemented",
     "source_count",
     "primary_source_title",
@@ -56,6 +58,8 @@ INDEX_ALLOWED_FIELDS = INDEX_REQUIRED_FIELDS | {
     "regulatory_surface",
     "sector",
     "severity",
+    "severity_assessment_status",
+    "severity_assessment_basis",
     "likelihood",
     "triage_priority",
     "triage_status",
@@ -250,6 +254,22 @@ class BuildVigilRecordsTest(unittest.TestCase):
         record.pop("summary")
         self.assertEqual(builder.index_record(record)["title"], "VIGIL-2026-OBS-9999")
 
+    def test_incident_evidence_facets_are_derived_from_sources_and_preferred_url(self):
+        record = self.load_record("VIGIL-INC-000003")
+        entry = builder.index_record(record)
+        expected = sorted({source["evidence_status"] for source in record["source_records"]})
+        preferred_url = record["preferred_evidence"]["source_url"]
+        preferred = next(
+            source for source in record["source_records"] if source["source_url"] == preferred_url
+        )
+        self.assertEqual(entry["evidence_statuses"], expected)
+        self.assertEqual(entry["preferred_evidence_status"], preferred["evidence_status"])
+        self.assertNotIn("evidence_confidence", entry)
+        summary = builder.source_summary(record)
+        self.assertEqual(summary["evidence_statuses"], expected)
+        self.assertEqual(summary["preferred_evidence_status"], preferred["evidence_status"])
+        self.assertNotIn("evidence_confidence", summary)
+
     def test_generated_index_entries_include_required_interface_fields(self):
         records = builder.load_records()
         grouped = builder.records_by_registry(records)
@@ -260,7 +280,6 @@ class BuildVigilRecordsTest(unittest.TestCase):
             "date_recorded",
             "title",
             "summary",
-            "evidence_confidence",
             "source_types",
             "source_count",
             "primary_source_title",
@@ -278,6 +297,12 @@ class BuildVigilRecordsTest(unittest.TestCase):
             registry = builder.type_registry(registry_type, registry_records)
             for entry in registry["records"]:
                 self.assertTrue(required.issubset(entry), entry["id"])
+                if entry["record_type"] == "incident":
+                    self.assertIn("evidence_statuses", entry)
+                    self.assertIn("preferred_evidence_status", entry)
+                    self.assertNotIn("evidence_confidence", entry)
+                else:
+                    self.assertIn("evidence_confidence", entry)
                 self.assertTrue(entry["path"].startswith("vigil/records/"), entry["id"])
                 self.assertIn("/vigil/records/", entry["raw_url"])
 
@@ -389,6 +414,12 @@ class BuildVigilRecordsTest(unittest.TestCase):
             for raw_entry in registry["records"]:
                 entry = builder.prune_empty(raw_entry)
                 self.assertTrue(INDEX_REQUIRED_FIELDS.issubset(entry), entry["id"])
+                if entry["record_type"] == "incident":
+                    self.assertNotIn("evidence_confidence", entry)
+                    self.assertIn("evidence_statuses", entry)
+                    self.assertIn("preferred_evidence_status", entry)
+                else:
+                    self.assertIn("evidence_confidence", entry)
                 self.assertTrue(
                     set(entry).issubset(INDEX_ALLOWED_FIELDS),
                     sorted(set(entry) - INDEX_ALLOWED_FIELDS),
@@ -396,7 +427,7 @@ class BuildVigilRecordsTest(unittest.TestCase):
                 self.assertTrue(entry["path"].startswith("vigil/records/"))
 
     def test_committed_enriched_index_entries_use_public_interface_fields(self):
-        for registry_type in ("incidents", "failure_modes", "observations", "research"):
+        for registry_type in ("incidents", "observations", "research"):
             path = builder.OUTPUT_PATHS[registry_type]
             with self.subTest(registry_type=registry_type):
                 with path.open(encoding="utf-8") as handle:
@@ -404,6 +435,12 @@ class BuildVigilRecordsTest(unittest.TestCase):
                 self.assertEqual(registry["record_count"], len(registry["records"]))
                 for entry in registry["records"]:
                     self.assertTrue(INDEX_REQUIRED_FIELDS.issubset(entry), entry["id"])
+                    if entry["record_type"] == "incident":
+                        self.assertNotIn("evidence_confidence", entry)
+                        self.assertIn("evidence_statuses", entry)
+                        self.assertIn("preferred_evidence_status", entry)
+                    else:
+                        self.assertIn("evidence_confidence", entry)
                     self.assertTrue(
                         set(entry).issubset(INDEX_ALLOWED_FIELDS),
                         sorted(set(entry) - INDEX_ALLOWED_FIELDS),
