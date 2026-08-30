@@ -71,6 +71,11 @@ Migration is never inferred from source count or record type. Human review is re
 only for eleven genuinely ambiguous record boundaries and three isolated sources
 inside otherwise assessed records.
 
+The taxonomy publication has now been cut over to the Incident-backed Case File
+projection. Classified and provisionally classified Incidents supply publication Case
+Studies; unclassified Incidents remain valid registry records without being forced into
+a Failure Class solely for publication coverage.
+
 ## Retirement boundary
 
-This tranche does not retire FM or OBS, cut over taxonomy-book Case Studies, alter catalogue routing, collapse Failure Classes, or modify Caelestis. Those steps require a later reviewed migration state and proof that evidence and VIGIL interpretation have not been lost.
+This tranche does not retire FM or OBS, alter catalogue routing, collapse Failure Classes, or modify Caelestis. Legacy FM/OBS retirement, redirects and catalogue routing remain later reviewed steps that require proof that evidence and VIGIL interpretation have not been lost. The taxonomy-book Case Study cutover is already implemented on this branch and does not imply retirement of the retained legacy datasets.
