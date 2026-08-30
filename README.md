@@ -1,6 +1,6 @@
 # VIGIL
 
-**VIGIL** is the CAM Initiative's public evidence-to-repair observatory for AI governance evidence, research, failure modes, taxonomy, external requirements, and CAM applicability assessment.
+**VIGIL** is the CAM Initiative's public evidence-to-repair observatory for AI governance evidence, research, failure modes, taxonomy, external governance requirements, and CAM applicability assessment.
 
 VIGIL preserves what has been observed, what evidence supports it, how a failure is diagnosed and classified, what remains uncertain, and how CAM-side coverage or repair state is assessed. It does **not** create binding CAM doctrine, amend adopted CAM/Caelestis instruments, determine liability, or establish final factual truth.
 
@@ -21,17 +21,9 @@ Public record classes are:
 - **FM — Failure Mode:** a confirmed or strongly evidenced ecosystem failure pattern with a defined recognition threshold, taxonomy classification, triage state and repair/coverage assessment.
 - **RESEARCH — Research Record:** substantive non-binding analysis that independently warrants publication and may support an evidence-to-repair pathway.
 
-The following historical/design record classes are currently **withdrawn from publication** and retained under `vigil/drafts/`:
+Historical/design PROP, PATCH and LEARN records are withdrawn from publication and retained under `vigil/drafts/`. Their identifiers and files are preserved as history, but they are excluded from public validation, registry generation and interface resolution. Presence under `drafts/` does not establish publication, implementation authority, adoption, or validated learning closure.
 
-```text
-vigil/drafts/proposals/
-vigil/drafts/patches/
-vigil/drafts/learn/
-```
-
-Their existing IDs and files are preserved, but they are excluded from public validation, registry generation and interface resolution. Presence under `drafts/` does not establish publication, implementation authority, adoption, or validated learning closure.
-
-See [`vigil/drafts/README.md`](vigil/drafts/README.md) for the withdrawal boundary.
+See [`vigil/drafts/README.md`](vigil/drafts/README.md) for the withdrawal boundary and [`vigil/MAINTAINERS.md`](vigil/MAINTAINERS.md) for current lifecycle, routing and maintenance rules.
 
 ## Public evidence-to-repair model
 
@@ -49,42 +41,28 @@ An observation is not required where the evidence already supports a failure mod
 
 Historical PROP/PATCH/LEARN identifiers may remain in public-record provenance where they reflect the history of an existing record, but their retained files are not public registry targets while those classes are withdrawn.
 
-For lifecycle and routing rules, see [`vigil/docs/VIGIL.RecordLifecycle.md`](vigil/docs/VIGIL.RecordLifecycle.md).
-
 ## Source evidence
 
 For individual VIGIL records, `source_records` is the only canonical source-evidence block.
 
-Do not add `source_data` or `source_data.sources` to records. Preserve source identity, dates, URLs, source/retrieval state, evidence modality, primary-artefact access, interpretive reliance, source residence and source role according to the record contract. Keep uncertainty and access limitations visible.
-
-Evidence authoring guidance is in [`vigil/docs/evidence-authoring-guidance.md`](vigil/docs/evidence-authoring-guidance.md).
+Do not add `source_data` or `source_data.sources` to records. Preserve source identity, dates, URLs, source/retrieval state, evidence modality, primary-artefact access, interpretive reliance, source residence and source role according to `vigil/VIGIL.Schema.json` and the specialised validators. Keep uncertainty and access limitations visible.
 
 ## Failure taxonomy
 
-The VIGIL Observatory failure taxonomy is maintained separately under:
+The VIGIL Observatory failure taxonomy is maintained separately under `vigil/taxonomy/`.
 
-```text
-vigil/taxonomy/
-```
-
-Canonical taxonomy data consists of the taxonomy index/schema and family records. Human-readable HTML/PDF publications under `vigil/taxonomy/generated/` are deterministic projections.
-
-Historical taxonomy construction, transition and assurance audits are retained under:
-
-```text
-vigil/docs/audits/taxonomy/
-```
-
-They are non-normative history, not competing taxonomy authority.
+Canonical taxonomy data consists of the taxonomy index/schema and family records. Human-readable HTML/PDF publications under `vigil/taxonomy/generated/` are deterministic projections. Historical taxonomy construction, transition and assurance audits are retained under `vigil/docs/audits/taxonomy/`; they are non-normative history, not competing taxonomy authority.
 
 ## External governance corpus
 
-VIGIL maintains separate external-governance layers:
+External governance is one subsystem with two separate authority layers:
 
 ```text
-vigil/external_governance/sources/       source identity and review state
-vigil/external_governance/requirements/  extracted external requirements and source-fidelity state
-vigil/cam_assessment/         CAM applicability/coverage assessment
+vigil/external_governance/
+  sources/        source identity, lifecycle and review state
+  requirements/   extracted governance requirements and source-fidelity state
+
+vigil/cam_assessment/   CAM applicability/coverage assessment
 ```
 
 The governing flow is:
@@ -96,7 +74,9 @@ external source
   -> VIGIL routing or repair analysis
 ```
 
-External requirements do not themselves establish that CAM is legally bound by, has adopted, or conforms to the source instrument.
+The corpus includes legislation, regulatory material, standards, frameworks, specifications and other authoritative governance sources. External requirements do not themselves establish that CAM is legally bound by, has adopted, or conforms to a source instrument.
+
+See [`vigil/external_governance/README.md`](vigil/external_governance/README.md) for the subsystem boundary.
 
 ## Schema and validation authority
 
@@ -108,7 +88,7 @@ vigil/VIGIL.Schema.json
 
 It is enforced by `vigil/scripts/validate-vigil-records.py` and specialised validators. Historical parallel class-specific VIGIL schemas are not a second authority and must not be reintroduced.
 
-Subsystem schemas remain scoped to their own data surfaces, including the taxonomy, external-requirements, external-source and CAM-assessment schemas.
+Subsystem schemas remain scoped to their own data surfaces, including the taxonomy, external-governance sources, external-governance requirements and CAM-assessment schemas.
 
 ## Source of truth and generated indexes
 
@@ -156,35 +136,33 @@ Key VIGIL directories are:
 
 ```text
 vigil/
-  records/                public OBS/FM/RESEARCH source records
-  drafts/                 retained non-public PROP/PATCH/LEARN records
-  taxonomy/               canonical failure taxonomy + generated publications
-  external_sources/       external-source registry
-  external_requirements/  external requirement corpus
-  cam_assessment/         CAM applicability/coverage assessment
-  provenance/             authorship and assurance declarations
-  templates/              authoring templates
-  scripts/                current executable maintenance infrastructure
-  tests/                  executable tests
-  docs/reviews/           bounded current review/reconciliation records
-  docs/audits/            retained non-normative historical audits
+  records/                  public OBS/FM/RESEARCH source records
+  drafts/                   retained non-public PROP/PATCH/LEARN records
+  taxonomy/                 canonical failure taxonomy + generated publications
+  external_governance/
+    sources/                external governance source registry
+    requirements/           external governance requirement corpus
+  cam_assessment/           CAM applicability/coverage assessment
+  templates/                live authoring templates
+  scripts/                  current executable maintenance infrastructure
+  tests/                    executable tests
+  docs/reviews/             bounded current review/reconciliation records
+  docs/audits/              retained non-normative historical audits
 ```
 
-Executable tests belong under `vigil/tests/`, not `vigil/scripts/`.
+Executable tests belong under `vigil/tests/`, not `vigil/scripts/`. Withdrawn record classes must not retain active-looking public templates or publication machinery.
 
 ## Maintenance discipline
 
 Repository housekeeping is part of normal VIGIL maintenance. Completed transition reports, migrations, one-off scripts and review artefacts must be dispositioned when work closes rather than accumulating beside current canonical data.
 
-The maintainer contract, including schema authority, artefact disposition and safe-change sequence, is in [`vigil/MAINTAINERS.md`](vigil/MAINTAINERS.md).
-
-The audit archive contract is in [`vigil/docs/audits/README.md`](vigil/docs/audits/README.md).
+The maintainer contract, including schema authority, artefact disposition and safe-change sequence, is in [`vigil/MAINTAINERS.md`](vigil/MAINTAINERS.md). The audit archive contract is in [`vigil/docs/audits/README.md`](vigil/docs/audits/README.md).
 
 ## Authorship and review disclosure
 
 VIGIL is predominantly AI-authored and semi-autonomously maintained under human contract approval. Unless an artefact expressly states otherwise, repository inclusion or publication does not imply human authorship, substantive human review or independent human verification.
 
-The authoritative machine-readable declaration and controlled vocabulary are in [`vigil/scripts/validate-authorship-provenance.py`](vigil/scripts/validate-authorship-provenance.py).
+The executable provenance contract and controlled vocabulary are enforced by [`vigil/scripts/validate-authorship-provenance.py`](vigil/scripts/validate-authorship-provenance.py) against artefact-local provenance metadata.
 
 ## Relationship to CAM
 
