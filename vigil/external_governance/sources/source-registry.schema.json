@@ -1,0 +1,381 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/CAM-Initiative/Vigil/vigil/external_governance/sources/source-registry.schema.json",
+  "title": "VIGIL External Governance Source Registry",
+  "description": "Canonical registry of external governance source identity, version, lifecycle, public governance knowledge, metadata fingerprint and source-review workflow state. It does not record CAM applicability or coverage.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "updated_at",
+    "authorship_provenance",
+    "entries"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.2"
+    },
+    "updated_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "authorship_provenance": {
+      "type": "object"
+    },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "vigil_source_id",
+          "external_source_id",
+          "source_version",
+          "canonical_identifier",
+          "issuer",
+          "jurisdiction",
+          "source_class",
+          "source_lifecycle_state",
+          "official_locator",
+          "upstream_source_id",
+          "source_metadata_fingerprint",
+          "change_state",
+          "review_state",
+          "review_eligible",
+          "first_seen",
+          "last_seen"
+        ],
+        "properties": {
+          "vigil_source_id": {
+            "type": "string",
+            "pattern": "^EXT-[A-F0-9]{12}$"
+          },
+          "external_source_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source_version": {
+            "type": "string",
+            "minLength": 1
+          },
+          "canonical_identifier": {
+            "type": "object",
+            "required": [
+              "scheme",
+              "value"
+            ],
+            "properties": {
+              "scheme": {
+                "type": "string",
+                "minLength": 1
+              },
+              "value": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "additionalProperties": false
+          },
+          "title": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "issuer": {
+            "type": "string",
+            "minLength": 1
+          },
+          "jurisdiction": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source_class": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source_lifecycle_state": {
+            "type": "string",
+            "minLength": 1
+          },
+          "publication_date": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "effective_date": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "official_locator": {
+            "type": "string",
+            "minLength": 1
+          },
+          "upstream_source_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "upstream_record_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "upstream_release": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "source_metadata_fingerprint": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "change_state": {
+            "enum": [
+              "new",
+              "changed",
+              "superseded",
+              "withdrawn",
+              "unchanged"
+            ]
+          },
+          "review_state": {
+            "enum": [
+              "unassigned",
+              "review-required",
+              "reviewed",
+              "superseded-before-review"
+            ]
+          },
+          "review_eligible": {
+            "type": "boolean"
+          },
+          "first_seen": {
+            "type": "string",
+            "minLength": 1
+          },
+          "last_seen": {
+            "type": "string",
+            "minLength": 1
+          },
+          "public_summary": {
+            "type": "string",
+            "minLength": 200
+          },
+          "ai_governance_relevance": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "accountability",
+                "ai-literacy",
+                "assurance",
+                "change-management",
+                "conformity",
+                "data-governance",
+                "documentation",
+                "environmental-impact",
+                "fairness-bias",
+                "human-oversight",
+                "impact-assessment",
+                "incident-governance",
+                "inventory",
+                "lifecycle-governance",
+                "monitoring",
+                "privacy",
+                "provenance",
+                "risk-management",
+                "robustness",
+                "safety",
+                "security",
+                "supply-chain",
+                "testing-evaluation",
+                "traceability",
+                "transparency",
+                "worker-affected-person-rights"
+              ]
+            }
+          },
+          "applicable_lifecycle_stages": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "governance",
+                "design",
+                "development",
+                "data-acquisition",
+                "training",
+                "testing-evaluation",
+                "conformity-assessment",
+                "placing-on-market",
+                "deployment",
+                "operation-use",
+                "monitoring",
+                "incident-response",
+                "change-management",
+                "retirement",
+                "supply-chain",
+                "cross-lifecycle",
+                "not-specified"
+              ]
+            }
+          },
+          "relevance_scope": {
+            "type": "string",
+            "minLength": 40
+          },
+          "last_substantive_reviewed": {
+            "type": "string",
+            "format": "date"
+          },
+          "substantive_review_provenance": {
+            "type": "object",
+            "required": [
+              "current_review_event_id",
+              "review_events"
+            ],
+            "properties": {
+              "current_review_event_id": {
+                "type": "string",
+                "pattern": "^EXTREV-[A-F0-9]{16}$"
+              },
+              "review_events": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "review_event_id",
+                    "review_date",
+                    "review_system",
+                    "ai_role",
+                    "generation_mode",
+                    "review_method",
+                    "review_scope",
+                    "source_scope_reference",
+                    "limitations_reference",
+                    "human_role",
+                    "human_review_status",
+                    "human_verification_status"
+                  ],
+                  "properties": {
+                    "review_event_id": {
+                      "type": "string",
+                      "pattern": "^EXTREV-[A-F0-9]{16}$"
+                    },
+                    "review_date": {
+                      "type": "string",
+                      "format": "date"
+                    },
+                    "review_system": {
+                      "type": "object",
+                      "required": ["provider", "platform", "model"],
+                      "properties": {
+                        "provider": {"type": "string", "minLength": 1},
+                        "platform": {"type": "string", "minLength": 1},
+                        "model": {"type": "string", "minLength": 1}
+                      },
+                      "additionalProperties": false
+                    },
+                    "ai_role": {
+                      "const": "substantive-analytical-reviewer"
+                    },
+                    "generation_mode": {
+                      "const": "semi-autonomous"
+                    },
+                    "review_method": {
+                      "type": "object",
+                      "required": ["access_method", "scope_method"],
+                      "properties": {
+                        "access_method": {
+                          "enum": [
+                            "direct-public-primary-review",
+                            "direct-licensed-primary-review",
+                            "official-public-extract-review",
+                            "official-metadata-only-review",
+                            "secondary-source-only-review",
+                            "blocked-primary-text-review"
+                          ]
+                        },
+                        "scope_method": {
+                          "enum": [
+                            "bounded-complete-review",
+                            "partial-review",
+                            "supporting-only-review",
+                            "context-only-review",
+                            "blocked-primary-text-review",
+                            "not-started",
+                            "excluded",
+                            "superseded-version-review"
+                          ]
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "review_scope": {"type": "string", "minLength": 40},
+                    "source_scope_reference": {
+                      "const": "vigil/external_governance/requirements/source-scope.json"
+                    },
+                    "limitations_reference": {
+                      "type": "array",
+                      "const": [
+                        "source_access_notes",
+                        "extraction_scope_notes",
+                        "inaccessible_sections",
+                        "known_unreviewed_sections"
+                      ]
+                    },
+                    "human_role": {"const": "contract-approver"},
+                    "human_review_status": {"const": "not-reviewed"},
+                    "human_verification_status": {"const": "not-verified"}
+                  },
+                  "additionalProperties": false
+                }
+              }
+            },
+            "additionalProperties": false
+          },
+          "notes": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "review_eligible": {
+                  "const": true
+                }
+              },
+              "required": [
+                "review_eligible"
+              ]
+            },
+            "then": {
+              "required": [
+                "public_summary",
+                "ai_governance_relevance",
+                "applicable_lifecycle_stages",
+                "relevance_scope",
+                "last_substantive_reviewed",
+                "substantive_review_provenance"
+              ]
+            }
+          }
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

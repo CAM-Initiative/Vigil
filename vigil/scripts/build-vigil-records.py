@@ -77,7 +77,6 @@ GENERATED_PROVENANCE = {
     "human_authorship": False,
     "human_review_status": "not-reviewed",
     "human_verification_status": "not-verified",
-    "declaration": "vigil/provenance/AUTHORSHIP-PROVENANCE.json",
 }
 PRESERVE_EMPTY_KEYS = {
     "title",

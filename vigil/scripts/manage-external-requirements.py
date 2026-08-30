@@ -25,8 +25,8 @@ from external_requirements_io import (
 )
 
 ROOT = Path(__file__).resolve().parents[1]
-SOURCES = ROOT / "external_sources"
-REQ = ROOT / "external_requirements"
+SOURCES = ROOT / "external_governance" / "sources"
+REQ = ROOT / "external_governance" / "requirements"
 REGISTRY_PATH = SOURCES / "source-registry.json"
 SCOPE_PATH = REQ / "source-scope.json"
 REQUIREMENTS_PATH = REQUIREMENTS_AGGREGATE_PATH
@@ -40,7 +40,6 @@ COVERAGE_PATH = REQ / "source-coverage-manifests.json"
 CROSSWALKS_PATH = REQ / "derivative-crosswalks.json"
 CROSSWALK_INDEX_PATH = REQ / "derivative-crosswalk-index.json"
 CROSSWALK_VIEW_PATH = REQ / "DERIVATIVE-CROSSWALKS.md"
-PROVENANCE_REF = "vigil/provenance/AUTHORSHIP-PROVENANCE.json"
 
 DEFAULT_PROVENANCE = {
     "content_origin": "ai-authored",
@@ -49,7 +48,6 @@ DEFAULT_PROVENANCE = {
     "human_authorship": False,
     "human_review_status": "not-reviewed",
     "human_verification_status": "not-verified",
-    "declaration": PROVENANCE_REF,
 }
 GENERATED_BASE = {
     "content_origin": "deterministically-generated",
@@ -58,7 +56,6 @@ GENERATED_BASE = {
     "human_authorship": False,
     "human_review_status": "not-reviewed",
     "human_verification_status": "not-verified",
-    "declaration": PROVENANCE_REF,
 }
 
 SOURCE_ROLES = {
@@ -527,7 +524,7 @@ def coverage_manifest(
         "source_retrieval_state": "retrieved" if direct and reqs else ("not-established" if direct else "not-retrieved"),
         "analysis_state": status,
         "substantive_review_provenance": {
-            "canonical_source": "vigil/external_sources/source-registry.json",
+            "canonical_source": "vigil/external_governance/sources/source-registry.json",
             "current_review_event_id": current_id,
             "review_date": current["review_date"],
             "next_substantive_review": next_review,
@@ -586,8 +583,8 @@ def build_outputs(
     reviewed_at: str,
 ) -> dict[Path, str]:
     upstream = [
-        "vigil/external_sources/source-registry.json", "vigil/external_requirements/source-scope.json",
-        "vigil/external_requirements/requirements/", "vigil/external_requirements/source-review-assurance.json",
+        "vigil/external_governance/sources/source-registry.json", "vigil/external_governance/requirements/source-scope.json",
+        "vigil/external_governance/requirements/requirements/", "vigil/external_governance/requirements/source-review-assurance.json",
     ]
     sorted_requirements = sorted(requirements, key=lambda x: x["requirement_id"])
     by_source: dict[tuple[str, str], list[dict[str, Any]]] = defaultdict(list)
@@ -703,7 +700,7 @@ def build_outputs(
     for row in sorted(blocked, key=lambda x: (priority_order[x["review_priority"]], x["title"], x["source_version"])):
         priority_lines.append(f"| `{row['review_priority']}` | {row['title']} | `{row['source_version']}` | {row['review_priority_rationale'].replace('|', chr(92) + '|')} | {row['source_access_status']} | {row['next_action'].replace('|', chr(92) + '|')} |")
     priority_lines.append("")
-    crosswalk_upstream = ["vigil/external_requirements/derivative-crosswalks.json"]
+    crosswalk_upstream = ["vigil/external_governance/requirements/derivative-crosswalks.json"]
     xindex = {
         "schema_version": "1.0", "generated_at": reviewed_at, "authorship_provenance": generated(crosswalk_upstream),
         "crosswalk_count": len(crosswalks), "mapping_row_count": sum(len(x.get("mappings", [])) for x in crosswalks),

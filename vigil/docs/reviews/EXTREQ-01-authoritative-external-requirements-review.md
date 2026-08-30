@@ -31,7 +31,7 @@ The pre-existing `VIGIL-2026-FM-0058` and renumbered capability-transition propo
 
 ## 2. Layer 0 ledger state and correction
 
-The existing `vigil/external_sources/` ledger remains the authority for source identity, version, publisher, lifecycle, official locator, fingerprint and coarse alignment workflow state. EXTREQ-01 does not replace or overload it.
+The existing `vigil/external_governance/sources/` ledger remains the authority for source identity, version, publisher, lifecycle, official locator, fingerprint and coarse alignment workflow state. EXTREQ-01 does not replace or overload it.
 
 The starting ledger contained 71 source versions. Review found that the EU AI Act entry represented only the original 12 July 2024 text while EUR-Lex identified a current consolidated version dated 27 July 2026. The original source version was preserved historically and the current consolidation was added as a second version under the same stable VIGIL source identity. The Layer 0 baseline now contains 72 source versions.
 

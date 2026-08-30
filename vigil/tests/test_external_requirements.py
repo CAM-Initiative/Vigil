@@ -195,7 +195,7 @@ class ExternalRequirementsTests(unittest.TestCase):
     def test_generated_coverage_preserves_current_review_model_and_clock(self):
         for item in self.coverage:
             provenance = item["substantive_review_provenance"]
-            self.assertEqual(provenance["canonical_source"], "vigil/external_sources/source-registry.json")
+            self.assertEqual(provenance["canonical_source"], "vigil/external_governance/sources/source-registry.json")
             self.assertEqual(provenance["review_system"], {
                 "provider": "OpenAI", "platform": "ChatGPT", "model": "GPT-5.6 Sol"
             })
@@ -242,14 +242,14 @@ class ExternalRequirementsTests(unittest.TestCase):
 
     def test_transitional_architecture_is_not_operational(self):
         obsolete = [
-            ROOT / "external_sources" / "effective-ledger.json",
-            ROOT / "external_sources" / "ledger.json",
-            ROOT / "external_sources" / "EFFECTIVE-GOVERNANCE-SOURCES.md",
-            ROOT / "external_sources" / "EXTERNAL-GOVERNANCE-SOURCES.md",
-            ROOT / "external_requirements" / "effective-requirements.json",
-            ROOT / "external_requirements" / "effective-external-requirement.schema.json",
-            ROOT / "external_requirements" / "extension-transitions.json",
-            ROOT / "external_requirements" / "extensions",
+            ROOT / "external_governance" / "sources" / "effective-ledger.json",
+            ROOT / "external_governance" / "sources" / "ledger.json",
+            ROOT / "external_governance" / "sources" / "EFFECTIVE-GOVERNANCE-SOURCES.md",
+            ROOT / "external_governance" / "sources" / "EXTERNAL-GOVERNANCE-SOURCES.md",
+            ROOT / "external_governance" / "requirements" / "effective-requirements.json",
+            ROOT / "external_governance" / "requirements" / "effective-external-requirement.schema.json",
+            ROOT / "external_governance" / "requirements" / "extension-transitions.json",
+            ROOT / "external_governance" / "requirements" / "extensions",
             ROOT / "scripts" / "manage-external-requirements-effective.py",
             ROOT / "scripts" / "manage-external-requirements-extended.py",
         ]

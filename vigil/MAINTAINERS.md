@@ -6,7 +6,7 @@ VIGIL is a public evidence-to-repair observatory for AI governance evidence, res
 
 VIGIL does **not** create CAM constitutional authority, amend adopted CAM/Caelestis instruments, determine legal liability, or establish final factual truth. Repository maintenance is not a CAM governance patch and must not be represented as a VIGIL PATCH record.
 
-The operating model is AI-authored, semi-autonomous production under human contract approval unless an artefact-level provenance declaration states otherwise. Authorship, review and verification vocabulary is controlled by `vigil/provenance/AUTHORSHIP-PROVENANCE.json`.
+The operating model is AI-authored, semi-autonomous production under human contract approval unless an artefact-level provenance declaration states otherwise. Authorship, review and verification vocabulary is enforced by `vigil/scripts/validate-authorship-provenance.py` against artefact-local provenance metadata.
 
 ## Current publication boundary
 
@@ -39,10 +39,9 @@ Maintain these as separate authoritative surfaces:
 
 - `vigil/records/` — public OBS, FM and RESEARCH records.
 - `vigil/taxonomy/` — the VIGIL Observatory failure taxonomy and its generated publications.
-- `vigil/external_sources/` — registered external-source identity and review state.
-- `vigil/external_requirements/` — authoritative external-governance requirement shards and generated projections.
+- `vigil/external_governance/sources/` — registered external-source identity and review state.
+- `vigil/external_governance/requirements/` — authoritative external-governance requirement shards and generated projections.
 - `vigil/cam_assessment/` — CAM applicability/coverage assessment against a named corpus state.
-- `vigil/provenance/` — controlled provenance declarations.
 - `vigil/drafts/` — retained non-public record classes.
 - `vigil/docs/reviews/` — bounded implementation/reconciliation reviews that remain useful as work records.
 - `vigil/docs/audits/` — retained non-normative historical audit and transition evidence.
@@ -64,8 +63,8 @@ Operational enforcement is provided by `vigil/scripts/validate-vigil-records.py`
 Subsystem schemas remain authoritative only for their own bounded subsystems, for example:
 
 - `vigil/taxonomy/VIGIL.FailureTaxonomy.Schema.json` for taxonomy records;
-- `vigil/external_requirements/*.schema.json` for external-requirement state;
-- `vigil/external_sources/source-registry.schema.json` for the source registry;
+- `vigil/external_governance/requirements/*.schema.json` for external-requirement state;
+- `vigil/external_governance/sources/source-registry.schema.json` for the source registry;
 - `vigil/cam_assessment/assessment.schema.json` for CAM assessment records.
 
 Do **not** reintroduce a parallel VIGIL record-class schema tree under `vigil/schemas/`. Historical class-specific schemas were retired because they duplicated and drifted from `VIGIL.Schema.json`.

@@ -11,7 +11,7 @@ from typing import Any
 
 
 VIGIL_ROOT = Path(__file__).resolve().parents[1]
-EXTERNAL_REQUIREMENTS_ROOT = VIGIL_ROOT / "external_requirements"
+EXTERNAL_REQUIREMENTS_ROOT = VIGIL_ROOT / "external_governance" / "requirements"
 REQUIREMENTS_ROOT = EXTERNAL_REQUIREMENTS_ROOT / "requirements"
 REQUIREMENTS_MANIFEST_PATH = REQUIREMENTS_ROOT / "manifest.json"
 REQUIREMENTS_AGGREGATE_PATH = EXTERNAL_REQUIREMENTS_ROOT / "requirements.json"

@@ -24,7 +24,7 @@ from external_requirements_io import (
 )
 
 ROOT = Path(__file__).resolve().parents[1]
-REQ = ROOT / "external_requirements"
+REQ = ROOT / "external_governance" / "requirements"
 LEDGER = REQ / "metadata-review.json"
 BACKLOG = REQ / "reextraction-backlog.json"
 

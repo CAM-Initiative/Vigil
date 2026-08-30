@@ -82,8 +82,8 @@ They are non-normative history, not competing taxonomy authority.
 VIGIL maintains separate external-governance layers:
 
 ```text
-vigil/external_sources/       source identity and review state
-vigil/external_requirements/  extracted external requirements and source-fidelity state
+vigil/external_governance/sources/       source identity and review state
+vigil/external_governance/requirements/  extracted external requirements and source-fidelity state
 vigil/cam_assessment/         CAM applicability/coverage assessment
 ```
 
@@ -184,7 +184,7 @@ The audit archive contract is in [`vigil/docs/audits/README.md`](vigil/docs/audi
 
 VIGIL is predominantly AI-authored and semi-autonomously maintained under human contract approval. Unless an artefact expressly states otherwise, repository inclusion or publication does not imply human authorship, substantive human review or independent human verification.
 
-The authoritative machine-readable declaration and controlled vocabulary are in [`vigil/provenance/AUTHORSHIP-PROVENANCE.json`](vigil/provenance/AUTHORSHIP-PROVENANCE.json).
+The authoritative machine-readable declaration and controlled vocabulary are in [`vigil/scripts/validate-authorship-provenance.py`](vigil/scripts/validate-authorship-provenance.py).
 
 ## Relationship to CAM
 

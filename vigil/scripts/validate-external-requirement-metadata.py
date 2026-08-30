@@ -8,7 +8,7 @@ from pathlib import Path
 from external_requirements_io import load_requirements_document
 
 ROOT = Path(__file__).resolve().parents[1]
-REQ = ROOT / "external_requirements"
+REQ = ROOT / "external_governance" / "requirements"
 LEDGER = REQ / "metadata-review.json"
 BACKLOG = REQ / "reextraction-backlog.json"
 SOURCE_SCOPE = REQ / "source-scope.json"

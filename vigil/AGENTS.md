@@ -4,7 +4,7 @@ VIGIL is a public evidence-to-repair observatory for AI governance evidence, res
 
 VIGIL does **not** create CAM/Caelestis doctrine, amend adopted instruments, determine liability, or establish final factual truth. Do not treat a VIGIL record, repository commit, schema change, validator change, migration, audit or generated output as a CAM amendment.
 
-VIGIL operates by default as AI-authored, semi-autonomous production under human contract approval. Use `vigil/provenance/AUTHORSHIP-PROVENANCE.json` for the controlled authorship, review and verification vocabulary. Contract approval does not imply human authorship, source verification or line-by-line review.
+VIGIL operates by default as AI-authored, semi-autonomous production under human contract approval. Use `vigil/scripts/validate-authorship-provenance.py` for the controlled authorship, review and verification vocabulary. Contract approval does not imply human authorship, source verification or line-by-line review.
 
 ## Current publication boundary
 
@@ -117,9 +117,9 @@ external source
   -> VIGIL routing / repair analysis
 ```
 
-For `vigil/external_sources/`, public narrative fields must describe the external source for an external reader. Do not leak internal tasking, branches, review queues or migration plans into public source descriptions.
+For `vigil/external_governance/sources/`, public narrative fields must describe the external source for an external reader. Do not leak internal tasking, branches, review queues or migration plans into public source descriptions.
 
-For `vigil/external_requirements/`, do not infer inaccessible normative clauses from titles, abstracts, tables of contents, summaries or derivative crosswalks. Preserve source-fidelity state and review provenance explicitly.
+For `vigil/external_governance/requirements/`, do not infer inaccessible normative clauses from titles, abstracts, tables of contents, summaries or derivative crosswalks. Preserve source-fidelity state and review provenance explicitly.
 
 External requirement inclusion does not establish that CAM is bound by, has adopted, conforms to or complies with the source instrument.
 

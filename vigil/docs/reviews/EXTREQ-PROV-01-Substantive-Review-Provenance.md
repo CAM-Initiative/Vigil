@@ -8,7 +8,7 @@ The August 2026 EXTREQ programme recorded review dates and source-specific acces
 
 ## Canonical representation
 
-`vigil/external_sources/source-registry.json` owns a chronological `substantive_review_provenance.review_events` history for each source version. Each event records the reviewing provider, platform and model; AI role; generation mode; access and scope method; bounded review scope; human role; and human review and verification states. Source-specific access, inaccessible material and extraction limitations remain canonical in `vigil/external_requirements/source-scope.json` and are referenced rather than duplicated.
+`vigil/external_governance/sources/source-registry.json` owns a chronological `substantive_review_provenance.review_events` history for each source version. Each event records the reviewing provider, platform and model; AI role; generation mode; access and scope method; bounded review scope; human role; and human review and verification states. Source-specific access, inaccessible material and extraction limitations remain canonical in `vigil/external_governance/requirements/source-scope.json` and are referenced rather than duplicated.
 
 The current review event is projected deterministically into source review queues, public source catalogues and source coverage manifests. The next substantive-review date is derived as exactly 90 calendar days after the event date; metadata refreshes do not reset that clock.
 
@@ -18,7 +18,7 @@ The migration covers the 81 source versions substantively reassessed in the Augu
 
 ## Human assurance boundary
 
-AI substantive-review provenance is distinct from authorship provenance and post-production human assurance. The migrated events retain the historical posture: human role `contract-approver`, substantive review `not-reviewed`, and independent source verification `not-verified`. `vigil/external_requirements/source-review-assurance.json` remains the canonical sidecar for separately evidenced human assurance and reviewed-source artefact digests; it is not used to store AI analytical-review provenance.
+AI substantive-review provenance is distinct from authorship provenance and post-production human assurance. The migrated events retain the historical posture: human role `contract-approver`, substantive review `not-reviewed`, and independent source verification `not-verified`. `vigil/external_governance/requirements/source-review-assurance.json` remains the canonical sidecar for separately evidenced human assurance and reviewed-source artefact digests; it is not used to store AI analytical-review provenance.
 
 Future substantive review events must record model identity contemporaneously. Unknown identity must be represented explicitly where permitted by the applicable schema and must never be silently inferred from unrelated repository activity.
 

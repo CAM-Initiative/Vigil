@@ -7,7 +7,7 @@ import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-REQ = ROOT / "external_requirements"
+REQ = ROOT / "external_governance" / "requirements"
 SCRIPTS = ROOT / "scripts"
 FIELDS = {
     "applicable_actor",

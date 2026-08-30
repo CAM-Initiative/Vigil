@@ -28,7 +28,7 @@ PROVENANCE_PURPOSE = (
     "Interpretive provenance identifies AI source analysis, capability profile, source modality, "
     "primary-artefact access, review limitations, and historical authority context. Authorship, "
     "human-review, and human-verification status are governed separately by "
-    "vigil/provenance/AUTHORSHIP-PROVENANCE.json."
+    "vigil/scripts/validate-authorship-provenance.py."
 )
 
 

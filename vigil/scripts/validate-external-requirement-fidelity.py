@@ -17,7 +17,7 @@ import sys
 from external_requirements_io import load_requirements_document
 
 ROOT = Path(__file__).resolve().parents[2]
-EXTREQ = ROOT / "vigil" / "external_requirements"
+EXTREQ = ROOT / "vigil" / "external_governance" / "requirements"
 SCOPE_PATH = EXTREQ / "source-scope.json"
 FIDELITY_PATH = EXTREQ / "source-fidelity.json"
 STRESS_DIR = EXTREQ / "fidelity-stress-tests"

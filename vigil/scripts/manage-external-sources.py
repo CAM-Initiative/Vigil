@@ -17,13 +17,12 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
-EXT = ROOT / "external_sources"
+EXT = ROOT / "external_governance" / "sources"
 MATRIX_PATH = EXT / "source-matrix.json"
 REGISTRY_PATH = EXT / "source-registry.json"
-SOURCE_SCOPE_PATH = ROOT / "external_requirements" / "source-scope.json"
+SOURCE_SCOPE_PATH = ROOT / "external_governance" / "requirements" / "source-scope.json"
 QUEUE_PATH = EXT / "source-review-queue.json"
 CATALOGUE_PATH = EXT / "SOURCE-CATALOGUE.md"
-PROVENANCE_REF = "vigil/provenance/AUTHORSHIP-PROVENANCE.json"
 
 DEFAULT_PROVENANCE = {
     "content_origin": "ai-authored",
@@ -32,7 +31,6 @@ DEFAULT_PROVENANCE = {
     "human_authorship": False,
     "human_review_status": "not-reviewed",
     "human_verification_status": "not-verified",
-    "declaration": PROVENANCE_REF,
 }
 GENERATED_PROVENANCE = {
     "content_origin": "deterministically-generated",
@@ -41,8 +39,7 @@ GENERATED_PROVENANCE = {
     "human_authorship": False,
     "human_review_status": "not-reviewed",
     "human_verification_status": "not-verified",
-    "declaration": PROVENANCE_REF,
-    "upstream_provenance": ["vigil/external_sources/source-registry.json"],
+    "upstream_provenance": ["vigil/external_governance/sources/source-registry.json"],
 }
 
 REVIEW_STATES = {"unassigned", "review-required", "reviewed", "superseded-before-review"}
@@ -342,7 +339,7 @@ def render_catalogue(registry: dict[str, Any] | None = None) -> str:
         "The metadata fingerprint is a SHA-256 of material source identity and lifecycle metadata. It is not a digest of a reviewed PDF, HTML capture or licensed standard artefact.",
         "",
         "## Authorship provenance", "",
-        f"This catalogue is deterministically generated from `source-registry.json`. No human review or verification is implied. See `{PROVENANCE_REF}`.", "",
+        f"This catalogue is deterministically generated from `source-registry.json`. No human review or verification is implied. See `vigil/scripts/validate-authorship-provenance.py`.", "",
     ]
     return "\n".join(lines)
 

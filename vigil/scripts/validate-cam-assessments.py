@@ -15,7 +15,6 @@ from external_requirements_io import load_requirements_document
 ROOT = Path(__file__).resolve().parents[1]
 CAM_ASSESSMENT = ROOT / "cam_assessment"
 ASSESSMENTS = CAM_ASSESSMENT / "assessments.json"
-PROVENANCE_REF = "vigil/provenance/AUTHORSHIP-PROVENANCE.json"
 
 FORCE = {
     "binding-law",
@@ -40,7 +39,6 @@ DEFAULT_PROVENANCE = {
     "human_authorship": False,
     "human_review_status": "not-reviewed",
     "human_verification_status": "not-verified",
-    "declaration": PROVENANCE_REF,
 }
 
 def load(path: Path) -> dict[str, Any]:
