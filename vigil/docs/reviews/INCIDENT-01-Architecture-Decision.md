@@ -1,6 +1,6 @@
 # INCIDENT-01 Architecture Decision
 
-**Status:** pilot stabilisation
+**Status:** majority-migration stabilisation
 **Baseline:** `fc0f53df8de476a74e5ebfb536ed77e215121880`
 **Branch:** `agent/incident-registry-migration`
 **Date:** 2026-08-30
@@ -29,7 +29,7 @@ Incident taxonomy classification uses `unclassified`, `provisionally-classified`
 
 `unclassified` and `requires-human-review` assert no primary or secondary class. Other states require one primary mapping; each primary or secondary mapping carries its own basis and confidence.
 
-The Hanover Institute pilot (`VIGIL-INC-000002`) proves the boundary: its occurrence and evidence are sufficient for Incident identity while Failure Class reconciliation remains deliberately unresolved.
+The Hanover Institute Incident (`VIGIL-INC-000002`) proves the boundary: its occurrence and evidence are sufficient for Incident identity while Failure Class reconciliation remains deliberately unresolved.
 
 ## Dual-dataset stabilisation
 
@@ -39,9 +39,18 @@ The migration initially publishes:
 INC + legacy FM + legacy OBS + RESEARCH
 ```
 
-No FM or OBS source record is deleted or rewritten by the pilot. The complete disposition crosswalk is generated at `vigil/migrations/incident-registry/VIGIL.FM-OBS-to-INC.Crosswalk.json` from `Incident.Migration.Decisions.json`.
+No FM or OBS source record is deleted or rewritten by the migration. The complete disposition crosswalk is generated at `vigil/migrations/incident-registry/VIGIL.FM-OBS-to-INC.Crosswalk.json` from `Incident.Migration.Decisions.json`.
 
 The crosswalk supports one-to-one, one-to-many, partial, non-incident and human-review dispositions, and accounts separately for every legacy source entry.
+
+The deterministic migration rebuild order is:
+
+```bash
+python vigil/scripts/build-incident-registry.py
+python vigil/scripts/build-incident-migration-decisions.py
+python vigil/scripts/build-incident-migration-crosswalk.py
+python vigil/scripts/validate-incident-migration.py
+```
 
 ## Evidence authority
 
@@ -49,11 +58,18 @@ The crosswalk supports one-to-one, one-to-many, partial, non-incident and human-
 
 External incident databases remain cross-references rather than VIGIL identity authorities. Their registry name, identifier, URL, relationship and review date are structured under `external_incident_references`.
 
-## Pilot scope
+## Majority-migration scope
 
-The eight-record pilot exercises one FM to one Incident, one OBS to an unclassified Incident, many legacy FMs consolidated into one historical Incident with multiple class mappings, mixed controlled research and distinct incidents disentangled without manufacturing a research Incident, one FM decomposed into four named-person incidents, and one OBS expressly retained as non-incident.
+The original eight-record pilot established the schema and migration mechanics. The
+majority pass now contains 78 Incidents and explicit semantic decisions for all 106
+legacy records and 348 source entries. It exercises one-to-one migration,
+cross-record source clustering, multi-Incident decomposition, multiple Failure Class
+mappings, research/non-Incident dispositions, and deliberately unresolved Incident
+classification.
 
-Bulk migration is not authorised by source count or record type. Remaining semantic decisions stay explicit as `requires-human-review` until reviewed.
+Migration is never inferred from source count or record type. Human review is retained
+only for eleven genuinely ambiguous record boundaries and three isolated sources
+inside otherwise assessed records.
 
 ## Retirement boundary
 

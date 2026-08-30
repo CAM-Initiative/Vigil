@@ -113,10 +113,14 @@ jobs:
 
       - name: Validate Incident migration and crosswalk
         run: |
+          python vigil/scripts/build-incident-registry.py
           python vigil/tests/test_incident_registry.py
+          python vigil/scripts/build-incident-migration-decisions.py
           python vigil/scripts/build-incident-migration-crosswalk.py
           python vigil/scripts/validate-incident-migration.py
-          git diff --exit-code -- vigil/migrations/incident-registry/VIGIL.FM-OBS-to-INC.Crosswalk.json
+          git diff --exit-code -- \
+            vigil/migrations/incident-registry/Incident.Migration.Decisions.json \
+            vigil/migrations/incident-registry/VIGIL.FM-OBS-to-INC.Crosswalk.json
 
       - name: Validate VIGIL lifecycle, corpus coverage, CAM boundary, and interpretive provenance
         run: python vigil/scripts/run-vigil-lifecycle-validation.py

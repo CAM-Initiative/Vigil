@@ -273,7 +273,7 @@ FM_REQUIRED = {
 }
 INCIDENT_REQUIRED = {
     "incident_identity", "vigil_assessment", "taxonomy_classification", "preferred_evidence",
-    "external_incident_references", "legacy_provenance", "diagnostic_provenance",
+    "legacy_provenance", "diagnostic_provenance",
     "interpretive_provenance",
 }
 INCIDENT_CLASSIFICATION_STATUSES = {
@@ -1472,6 +1472,8 @@ def validate_incident_taxonomy_classification(
 
 def validate_incident(path: Path, record: dict[str, Any], errors: list[str]) -> None:
     add_missing(errors, path, record, INCIDENT_REQUIRED)
+    if "external_incident_references" not in record:
+        errors.append(f"{path}: missing required fields: external_incident_references")
     record_id = record.get("id")
     if not isinstance(record_id, str) or not re.fullmatch(r"VIGIL-INC-\d{6}", record_id):
         errors.append(f"{path}: Incident id must use VIGIL-INC-NNNNNN")

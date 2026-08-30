@@ -37,7 +37,8 @@ def incidents() -> dict[str, dict[str, Any]]:
 
 
 def source_successors(
-    legacy_id: str, source_url: str, successor_ids: list[str], incident_records: dict[str, dict[str, Any]]
+    legacy_id: str, source_position: int, source_url: str,
+    successor_ids: list[str], incident_records: dict[str, dict[str, Any]]
 ) -> list[str]:
     output = []
     for incident_id in successor_ids:
@@ -46,7 +47,12 @@ def source_successors(
             if not isinstance(item, dict) or item.get("source_url") != source_url:
                 continue
             origins = [item.get("migration_source_provenance"), *item.get("additional_legacy_source_origins", [])]
-            if any(isinstance(origin, dict) and origin.get("legacy_id") == legacy_id for origin in origins):
+            if any(
+                isinstance(origin, dict)
+                and origin.get("legacy_id") == legacy_id
+                and origin.get("legacy_source_position") == source_position
+                for origin in origins
+            ):
                 output.append(incident_id)
                 break
     return output
@@ -62,24 +68,33 @@ def main() -> int:
         legacy_id = record["id"]
         decision = {**default, **overrides.get(legacy_id, {})}
         successors = list(decision.get("successor_incidents", []))
+        explicit_source_dispositions = decision.get("source_dispositions", {})
         source_dispositions = []
         for index, item in enumerate(record.get("source_records", [])):
             url = item.get("source_url", "") if isinstance(item, dict) else ""
-            migrated_to = source_successors(legacy_id, url, successors, incident_records)
+            migrated_to = source_successors(legacy_id, index + 1, url, successors, incident_records)
+            explicit = explicit_source_dispositions.get(str(index + 1), {})
             if migrated_to:
                 disposition = "migrated-to-incident"
+                decision_basis = "Preserved in the listed successor Incident source chronology."
+            elif explicit:
+                disposition = explicit["disposition"]
+                decision_basis = explicit["decision_basis"]
             elif decision["migration_status"] == "non-incident-not-migrated":
                 disposition = "non-incident-not-migrated"
+                decision_basis = decision["decision_basis"]
             elif decision["migration_status"] == "requires-human-review":
                 disposition = "requires-human-review"
+                decision_basis = decision["decision_basis"]
             else:
-                disposition = "retained-in-legacy-pending-disentanglement"
+                raise ValueError(f"{legacy_id} source {index + 1} lacks an explicit migration disposition")
             source_dispositions.append({
                 "legacy_source_position": index + 1,
                 "source_title": item.get("source_title", "") if isinstance(item, dict) else "",
                 "source_url": url,
                 "disposition": disposition,
                 "successor_incidents": migrated_to,
+                "decision_basis": decision_basis,
             })
         entries.append({
             "legacy_id": legacy_id,
@@ -95,7 +110,7 @@ def main() -> int:
         "migration_id": decisions["migration_id"],
         "migration_state": decisions["migration_state"],
         "baseline_commit": decisions["baseline_commit"],
-        "generated_notice": "Deterministically generated from the complete legacy FM/OBS corpus, Incident pilot records and Incident.Migration.Decisions.json.",
+        "generated_notice": "Deterministically generated from the complete legacy FM/OBS corpus, curated Incident records and Incident.Migration.Decisions.json.",
         "legacy_record_count": len(entries),
         "incident_record_count": len(incident_records),
         "entries": entries,

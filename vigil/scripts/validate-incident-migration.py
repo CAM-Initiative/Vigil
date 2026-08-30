@@ -13,6 +13,21 @@ ROOT = Path(__file__).resolve().parents[2]
 VIGIL = ROOT / "vigil"
 RECORDS = VIGIL / "records"
 CROSSWALK = VIGIL / "migrations" / "incident-registry" / "VIGIL.FM-OBS-to-INC.Crosswalk.json"
+MIGRATION_STATUSES = {
+    "migrated-to-incident", "decomposed", "partially-migrated",
+    "non-incident-not-migrated", "requires-human-review",
+}
+SOURCE_DISPOSITIONS = {
+    "migrated-to-incident", "non-incident-not-migrated", "requires-human-review",
+    "absorbed-elsewhere", "duplicate-of-incident",
+}
+LEGACY_GOVERNANCE_FIELDS = {
+    "summary", "why_it_matters_to_CAM", "failure_mode_definition", "failure_threshold",
+    "failure_classification", "triage", "triage_history", "repair_status", "ecosystem_status",
+    "corpus_coverage", "diagnostic_provenance", "possible_taxonomy_mapping", "next_action",
+    "interpretive_provenance", "taxonomy_classification", "cam_internal", "system_context",
+    "jurisdictional_context", "evidence_confidence", "linked_records",
+}
 
 
 def load(path: Path) -> Any:
@@ -60,6 +75,8 @@ def main() -> int:
             continue
         if not entry.get("inventory_assessment") or not entry.get("migration_status") or not entry.get("decision_basis"):
             errors.append(f"{legacy_id}: incomplete disposition decision")
+        if entry.get("migration_status") not in MIGRATION_STATUSES:
+            errors.append(f"{legacy_id}: non-canonical migration_status {entry.get('migration_status')}")
         successors = entry.get("successor_incidents")
         if not isinstance(successors, list):
             errors.append(f"{legacy_id}: successor_incidents must be an array")
@@ -80,6 +97,10 @@ def main() -> int:
                 errors.append(f"{legacy_id}: source disposition order mismatch at {position}")
             if not disposition.get("disposition"):
                 errors.append(f"{legacy_id}: source disposition {position} is blank")
+            elif disposition.get("disposition") not in SOURCE_DISPOSITIONS:
+                errors.append(f"{legacy_id}: source disposition {position} is not canonical")
+            if not disposition.get("decision_basis"):
+                errors.append(f"{legacy_id}: source disposition {position} lacks a decision basis")
             migrated_to = disposition.get("successor_incidents", [])
             if not isinstance(migrated_to, list):
                 errors.append(f"{legacy_id}: source disposition {position} successors must be an array")
@@ -88,6 +109,11 @@ def main() -> int:
                 errors.append(f"{legacy_id}: source disposition {position} points outside record successors")
             if disposition.get("disposition") == "migrated-to-incident" and not migrated_to:
                 errors.append(f"{legacy_id}: migrated source disposition {position} has no successor")
+            if (
+                disposition.get("disposition") == "requires-human-review"
+                and entry.get("migration_status") != "requires-human-review"
+            ):
+                warnings.append(f"{legacy_id} source {position}: semantic source review remains pending")
         if entry.get("migration_status") == "requires-human-review":
             warnings.append(f"{legacy_id}: semantic migration review remains pending")
 
@@ -119,6 +145,15 @@ def main() -> int:
             if previous and previous != incident_id:
                 errors.append(f"external incident identity {key} is duplicated by {previous} and {incident_id}")
             external_ids[key] = incident_id
+        taxonomy = record.get("taxonomy_classification", {})
+        mappings = [taxonomy.get("primary_classification"), *taxonomy.get("secondary_classifications", [])]
+        for mapping in mappings:
+            if isinstance(mapping, dict) and not str(mapping.get("classification_basis", "")).startswith("In this Incident,"):
+                errors.append(f"{incident_id}: classification mapping basis is not Incident-specific")
+        preserved_by_legacy = {
+            item.get("legacy_id"): item.get("preserved_analysis", {})
+            for item in record.get("legacy_governance_state", []) if isinstance(item, dict)
+        }
         for provenance in record.get("legacy_provenance", []):
             if not isinstance(provenance, dict):
                 continue
@@ -128,6 +163,30 @@ def main() -> int:
                 errors.append(f"{incident_id}: legacy provenance {legacy_id} has no crosswalk entry")
             elif incident_id not in entry.get("successor_incidents", []):
                 errors.append(f"{incident_id}: crosswalk does not reciprocate legacy provenance {legacy_id}")
+            preserved = preserved_by_legacy.get(legacy_id)
+            if not isinstance(preserved, dict):
+                errors.append(f"{incident_id}: legacy governance state missing for {legacy_id}")
+            elif legacy_id in legacy:
+                for field in LEGACY_GOVERNANCE_FIELDS:
+                    if field in legacy[legacy_id] and preserved.get(field) != legacy[legacy_id][field]:
+                        errors.append(f"{incident_id}: legacy governance field {legacy_id}.{field} was not preserved exactly")
+        current_interpretation = str(record.get("vigil_assessment", {}).get("governance_interpretation", "")).strip()
+        current_incident_text = " ".join([
+            str(record.get("summary", "")),
+            str(record.get("vigil_assessment", {}).get("factual_basis", "")),
+            current_interpretation,
+        ])
+        if re.search(r"\b(?:VIGIL-\d{4}-)?(?:FM|OBS)-\d{4}\b", current_incident_text):
+            errors.append(f"{incident_id}: current Incident narrative contains legacy FM/OBS process language")
+        if current_interpretation.casefold().startswith("a failure mode in which"):
+            errors.append(f"{incident_id}: current governance interpretation remains failure-mode pattern language")
+        for preserved in record.get("legacy_governance_state", []):
+            legacy_definition = str(
+                preserved.get("preserved_analysis", {}).get("failure_mode_definition", "")
+                if isinstance(preserved, dict) else ""
+            ).strip()
+            if legacy_definition and current_interpretation == legacy_definition:
+                errors.append(f"{incident_id}: current governance interpretation duplicates legacy failure-mode definition")
 
     if crosswalk.get("migration_state") == "reconciled" and warnings:
         errors.append("reconciled migration state cannot retain requires-human-review dispositions")
@@ -140,7 +199,7 @@ def main() -> int:
         "Incident migration validation passed: "
         f"{len(incidents)} Incidents, {len(legacy)} legacy dispositions, "
         f"{sum(len(item.get('source_records', [])) for item in legacy.values())} legacy sources accounted for; "
-        f"{len(warnings)} semantic reviews remain pending in pilot state."
+        f"{len(warnings)} genuinely ambiguous record/source reviews remain pending in {crosswalk.get('migration_state')} state."
     )
     return 0
 

@@ -22,7 +22,33 @@ Legacy `FM-0071` combines controlled jailbreak research, provider control materi
 
 ## Shared incidents across adjacent classes
 
-Legacy `FM-0073` and `FM-0074` share external meeting-assistant incidents but diagnose different authority failures: participant consent and secondary-purpose authority. During full migration, those events should become single Incidents with multiple mappings where both mechanisms are evidenced. Their shared evidence is not, by itself, a reason to collapse the classes.
+Legacy `FM-0073` and `FM-0074` share external meeting-assistant incidents but diagnose different authority failures: participant consent and secondary-purpose authority. `VIGIL-INC-000067` and `VIGIL-INC-000069` now carry both mappings without duplicating either occurrence. Their shared evidence is not, by itself, a reason to collapse the classes.
+
+## Access-state manifestation variants
+
+`FM-0008` decomposes into provider incidents involving SSO, account creation, model
+capacity, client-specific errors, app/RBAC coupling, quota depletion and broader
+outage symptoms. Later taxonomy review should test whether those manifestations select
+one reusable access-state class or whether any current parent/variant distinction
+predicts materially different recognition criteria and controls. The Incident split
+now preserves the manifestations without requiring separate FM identities.
+
+## Synthetic authority across consequential boundaries
+
+Six successor Incidents from `FM-0040` distinguish payment fraud, hiring checks,
+financial identity checks, phishing artefacts and long-running interpersonal
+catfishing. This is evidence that event manifestation belongs primarily in Incident
+identity. Review should test whether any taxonomy variants inherited from those
+domains remain independently classification-significant once the common
+representation-to-authority transition is held constant.
+
+## Research-only legacy mechanisms
+
+Several FMs currently carry controlled studies or vulnerability demonstrations but no
+affected historical occurrence, including `FM-0042`, `FM-0043`, `FM-0057`, and
+`FM-0067`–`FM-0069`. Their non-Incident dispositions do not establish that their
+classes are redundant. Later review should instead test whether the taxonomy supports
+direct research evidence without manufacturing an Incident layer.
 
 ## Later review test
 

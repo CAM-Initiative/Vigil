@@ -1,0 +1,702 @@
+{
+  "id": "VIGIL-INC-000045",
+  "record_type": "incident",
+  "record_state": "active",
+  "date_recorded": "2026-08-30",
+  "record_identity": {
+    "record_id": "VIGIL-INC-000045",
+    "record_type": "incident",
+    "title": "Grok Build uploaded entire Git repositories to xAI storage",
+    "created": "2026-08-30",
+    "updated": "2026-08-30",
+    "version": "0.2.0-migration"
+  },
+  "incident_identity": {
+    "historical_event_name": "Grok Build repository-upload incident",
+    "occurred_from": "2026-07-14",
+    "occurred_to": null,
+    "date_precision": "reported-date",
+    "date_basis": "Best available report or publication date preserved in the selected source; it is not asserted as an independently verified event timestamp."
+  },
+  "summary": "The report describes wire-level testing in which Grok Build v0.2.93 uploaded complete Git repositories, including commit history and files not required for the active task, through a storage channel distinct from model-turn traffic. The reported transfer volume tracked repository size rather than files inspected by the model.",
+  "vigil_assessment": {
+    "factual_basis": "The selected evidence reports: The report describes wire-level testing in which Grok Build v0.2.93 uploaded complete Git repositories, including commit history and files not required for the active task, through a storage channel distinct from model-turn traffic. The reported transfer volume tracked repository size rather than files inspected by the model.",
+    "governance_interpretation": "The reported implementation replicated repository content beyond the files apparently required for the task, expanding data-egress authority without clear user disclosure.",
+    "significance_to_cam": "For CAM, this occurrence shows that the reported implementation replicated repository content beyond the files apparently required for the task, expanding data-egress authority without clear user disclosure. Controls should preserve evidence, authority state, escalation and contestability across the full affected pathway.",
+    "assessment_boundaries": [
+      "The reviewing system did not reproduce the network capture.",
+      "Deletion of previously transferred data was not independently verified.",
+      "Incident admission does not determine legal liability or establish every disputed claim as final fact."
+    ]
+  },
+  "evidence_confidence": "corroborated",
+  "source_records": [
+    {
+      "source_title": "Grok Build Uploaded Entire Git Repositories to xAI Storage, Not Just Files It Read",
+      "author_or_publisher": "The Hacker News / reporting on cereblab wire-level testing",
+      "source_date": "2026-07-14",
+      "source_url": "https://thehackernews.com/2026/07/grok-build-uploads-entire-git.html",
+      "archive_url": "",
+      "retrieved_date": "2026-07-17",
+      "source_type": "technical-news-report / independent network analysis",
+      "source_platform": "The Hacker News",
+      "system_or_product": "xAI Grok Build CLI",
+      "model_or_algorithm": "Grok Build v0.2.93",
+      "deployment_context": "Agentic coding CLI operating against local Git repositories.",
+      "source_context": "The report describes wire-level testing in which Grok Build v0.2.93 uploaded complete Git repositories, including commit history and files not required for the active task, through a storage channel distinct from model-turn traffic. The reported transfer volume tracked repository size rather than files inspected by the model.",
+      "source_url_status": "available",
+      "relevance_note": "Direct evidence that workspace read access and task execution were treated as sufficient authority for repository-scale replication and external transmission.",
+      "evidence_modality": [
+        "text",
+        "network-traffic analysis"
+      ],
+      "primary_artefact_access": {
+        "access_status": "public reporting directly reviewed; underlying packet capture not independently reproduced",
+        "reviewing_system": "GPT-5.6 Thinking",
+        "access_method": "public web review",
+        "direct_primary_artefact_review": false,
+        "limitations": [
+          "The reviewing system did not reproduce the network capture.",
+          "Deletion of previously transferred data was not independently verified."
+        ]
+      },
+      "interpretive_reliance": "Used for the source-qualified finding that repository-scale upload occurred in the tested version and was subsequently disabled.",
+      "source_residence": "external",
+      "source_role": "incident-evidence",
+      "migration_source_provenance": {
+        "legacy_id": "VIGIL-2026-FM-0036",
+        "legacy_source_position": 1
+      },
+      "incident_source_order": 1
+    },
+    {
+      "source_title": "Grok Build Changelog — v0.2.93",
+      "author_or_publisher": "xAI",
+      "source_date": "2026-07-08",
+      "source_url": "https://x.ai/build/changelog",
+      "archive_url": "",
+      "retrieved_date": "2026-07-17",
+      "source_type": "official-product-changelog",
+      "source_platform": "xAI",
+      "system_or_product": "Grok Build",
+      "model_or_algorithm": "Grok Build v0.2.93",
+      "deployment_context": "Official product-version record corresponding to the independently tested client version.",
+      "source_context": "The official changelog confirms the existence and release timing of Grok Build v0.2.93 but does not itself disclose repository-scale storage upload behaviour.",
+      "source_url_status": "available",
+      "relevance_note": "Confirms the relevant product version and provides first-party release provenance.",
+      "evidence_modality": [
+        "text"
+      ],
+      "primary_artefact_access": {
+        "access_status": "direct text review",
+        "reviewing_system": "GPT-5.6 Thinking",
+        "access_method": "public web review",
+        "direct_primary_artefact_review": true,
+        "limitations": [
+          "The changelog is not evidence of the undisclosed transfer behaviour by itself."
+        ]
+      },
+      "interpretive_reliance": "Used only to establish first-party product-version provenance.",
+      "source_residence": "external",
+      "source_role": "incident-evidence",
+      "migration_source_provenance": {
+        "legacy_id": "VIGIL-2026-FM-0036",
+        "legacy_source_position": 2
+      },
+      "incident_source_order": 2
+    }
+  ],
+  "preferred_evidence": {
+    "source_url": "https://thehackernews.com/2026/07/grok-build-uploads-entire-git.html",
+    "selection_basis": "Selected as the most incident-specific substantive source preserved in the legacy evidence set; other selected sources remain in chronology.",
+    "selected_on": "2026-08-30"
+  },
+  "external_incident_references": [],
+  "system_context": {
+    "system_type": "AI coding agent / repository-connected assistant / tool-mediated workspace runtime",
+    "platform_or_vendor": "xAI",
+    "vendor_cluster": [],
+    "primary_evidenced_vendors": [
+      "xAI"
+    ],
+    "product_or_service": "Grok",
+    "specific_model_or_runtime": "Grok Build v0.2.93",
+    "interface_surface": "local repository, CLI, model endpoint, storage endpoint, tool and filesystem access",
+    "model_or_product": "xAI Grok Build CLI; Grok Build",
+    "interaction_mode": "repository inspection, coding assistance, file access, remote model inference, and workspace transfer",
+    "embodiment_status": "not applicable",
+    "deployment_context": "Agentic coding CLI operating against local Git repositories.; Official product-version record corresponding to the independently tested client version.",
+    "user_role": "developer, repository owner, employee, contractor, security reviewer, or organisation administrator",
+    "affected_population": "developers, repository owners, employers, customers, data subjects, and organisations whose code or records are present in connected workspaces",
+    "evidence_scope": "provider-specific",
+    "evidenced_vendors": [
+      "xAI"
+    ],
+    "evidenced_products_or_services": [
+      "Grok"
+    ],
+    "evidenced_models_or_runtimes": [
+      "Grok Build v0.2.93"
+    ],
+    "evidenced_systems": [
+      {
+        "providers_or_vendors": [
+          "xAI"
+        ],
+        "products_or_services": [
+          "Grok"
+        ],
+        "models_or_runtimes": [
+          "Grok Build v0.2.93"
+        ],
+        "projection_basis": "source-affected-system-metadata",
+        "evidence_source_platform": "The Hacker News",
+        "deployment_context": "Agentic coding CLI operating against local Git repositories.",
+        "source_title": "Grok Build Uploaded Entire Git Repositories to xAI Storage, Not Just Files It Read",
+        "source_url": "https://thehackernews.com/2026/07/grok-build-uploads-entire-git.html"
+      },
+      {
+        "providers_or_vendors": [
+          "xAI"
+        ],
+        "products_or_services": [
+          "Grok"
+        ],
+        "models_or_runtimes": [
+          "Grok Build v0.2.93"
+        ],
+        "projection_basis": "source-affected-system-metadata",
+        "evidence_source_platform": "xAI",
+        "deployment_context": "Official product-version record corresponding to the independently tested client version.",
+        "source_title": "Grok Build Changelog — v0.2.93",
+        "source_url": "https://x.ai/build/changelog"
+      }
+    ],
+    "evidence_projection": {
+      "basis": "incident-selected source affected-system metadata",
+      "method": "curated source-position projection from preserved legacy metadata",
+      "reconciled_on": "2026-08-30",
+      "inference_boundary": "Only affected-system metadata attached to the selected Incident sources is projected; unrelated systems formerly co-located in the legacy FM/OBS are excluded."
+    },
+    "comparative_vendor_notes": {}
+  },
+  "jurisdictional_context": {
+    "primary_jurisdiction": "global",
+    "secondary_jurisdictions": [
+      "United States",
+      "European Union",
+      "Australia",
+      "United Kingdom",
+      "platform agnostic"
+    ],
+    "regulatory_surface": [
+      "AI governance",
+      "privacy",
+      "cybersecurity",
+      "confidential information",
+      "trade secrets",
+      "data protection",
+      "consumer protection",
+      "workplace data",
+      "software supply chains"
+    ],
+    "sector": "AI coding assistants / software development / cloud services",
+    "cross_border_relevance": "high",
+    "public_interest_relevance": "high"
+  },
+  "taxonomy_classification": {
+    "taxonomy_version": "0.2.2-draft",
+    "classification_status": "provisionally-classified",
+    "classification_basis": "Incident-level mappings conservatively carry forward legacy FM classifications whose mechanisms are evidenced in this occurrence; final human taxonomy review is not asserted.",
+    "primary_classification": {
+      "family_id": "VIGIL-FF-0001",
+      "class_id": "VIGIL-FC-000008",
+      "classification_basis": "In this Incident, authority to inspect or act in a workspace is expanded into transmission, persistence, training, or secondary-use authority.",
+      "classification_confidence": "high",
+      "legacy_classification_source": "VIGIL-2026-FM-0036"
+    },
+    "secondary_classifications": [],
+    "classification_review_provenance": {
+      "method": "legacy-fm-to-incident-mechanism-reconciliation",
+      "review_date": "2026-08-30",
+      "reviewer": "OpenAI Codex / GPT-5.6",
+      "review_status": "AI migration review; human taxonomy review not asserted",
+      "authority_boundary": "Mappings preserve existing VIGIL taxonomy analysis and do not amend Failure Family or Failure Class semantics."
+    }
+  },
+  "linked_records": {
+    "related_incidents": [],
+    "related_observations": [],
+    "related_failure_modes": [],
+    "related_proposals": [],
+    "related_patch_notes": [],
+    "external_references": [],
+    "research": [],
+    "standards": []
+  },
+  "cam_internal": {
+    "affected_instruments": [
+      "CAM-BS2025-AEON-003-SCH-02",
+      "CAM-EQ2026-SECURITY-001-PLATINUM",
+      "CAM-EQ2026-SECURITY-002-PLATINUM",
+      "CAM-EQ2026-OPERATIONS-003-SUP-01"
+    ],
+    "affected_annexes": [
+      "Annex K",
+      "Annex L"
+    ],
+    "affected_domains": [
+      "SECURITY",
+      "OPERATIONS",
+      "LATTICE",
+      "PROVENANCE"
+    ],
+    "governance_layer": "tool authority / workspace custody / data egress / purpose limitation / retention and deletion provenance",
+    "proposal_needed": "yes — assess a purpose-bound workspace custody and data-egress authority primitive",
+    "linked_proposal_ids": [],
+    "routing_note": [
+      "VIGIL records the ecosystem failure; normative repair belongs in Caelestis.",
+      "The failure is not limited to malicious exfiltration; undisclosed over-broad transfer is sufficient.",
+      "Read authority, transmission authority, persistence authority, training authority, and secondary-use authority must remain distinct."
+    ],
+    "validator_or_automation_impact": "new failure-mode record; generated indexes should rebuild deterministically"
+  },
+  "legacy_provenance": [
+    {
+      "legacy_id": "VIGIL-2026-FM-0036",
+      "legacy_type": "failure_mode",
+      "relationship": "governance-analysis-source",
+      "preservation_note": "The legacy record remains canonical during stabilisation; incident-relevant evidence and analysis are preserved here and reconciled through the migration crosswalk."
+    }
+  ],
+  "legacy_governance_state": [
+    {
+      "legacy_id": "VIGIL-2026-FM-0036",
+      "preserved_analysis": {
+        "summary": "An AI agent, coding assistant, connector, repository integration, or tool-enabled runtime copies, transmits, persists, indexes, or exports workspace data beyond the minimum material required for the requested operation without explicit, legible, purpose-bound, and appropriately scoped authority.",
+        "why_it_matters_to_CAM": "Authority to inspect a workspace does not imply authority to replicate, transmit, retain, train on, or otherwise reuse the workspace. Collapsing these permissions converts ordinary tool access into an undisclosed data-egress pathway, exposes source code, secrets, personal data, deleted history, and institutional records, and prevents users from understanding which material left the governed environment, why it was transferred, where it was stored, how long it will persist, and whether deletion or secondary-use controls apply.",
+        "failure_mode_definition": "A failure mode in which an AI-enabled system treats permission to access, inspect, analyse, or act within a workspace as implicit permission to copy, bundle, transmit, replicate, persist, index, retain, train on, or otherwise reuse data from that workspace beyond the minimum scope required for the authorised task. The failure includes undisclosed repository-scale transfer, transfer of files not inspected or required, inclusion of deleted history or ignored files, inaccurate representation of privacy controls, and absence of a purpose-bound egress manifest.",
+        "failure_threshold": "The threshold is met when data materially exceeding the requested or necessary task scope leaves the governed environment; when read authority is silently converted into transmission, persistence, training, or secondary-use authority; when the user cannot determine destination, scope, purpose, retention, or deletion status; or when a privacy or model-improvement control is represented as an egress control despite not preventing transmission.",
+        "failure_classification": {
+          "harm_vectors": [
+            "repository-scale data exfiltration",
+            "non-proportional workspace replication",
+            "read-to-transmit authority collapse",
+            "purpose limitation failure",
+            "secret and credential exposure",
+            "trade-secret exposure",
+            "deleted-history disclosure",
+            "retention opacity",
+            "secondary-use ambiguity",
+            "privacy-control semantic mismatch",
+            "deletion-verification failure",
+            "cross-border data transfer"
+          ],
+          "severity": "S1",
+          "likelihood": "active where repository-connected agents use undisclosed or over-broad storage pathways",
+          "confidence": "corroborated for the cited Grok Build version; wider prevalence remains unassessed",
+          "affected_rights_or_interests": [
+            "privacy",
+            "confidentiality",
+            "property",
+            "trade secrets",
+            "cybersecurity",
+            "informed consent",
+            "data sovereignty",
+            "contractual integrity",
+            "auditability"
+          ],
+          "failure_scope": "workspace / repository / cloud-storage / agentic-tool boundary",
+          "recurrence_pattern": "potentially systematic while transfer is implemented as a default client or server behaviour",
+          "persistence": "active until transfer pathways, historical data disposition, and permission semantics are independently verified",
+          "reproducibility": "network interception, controlled repository-size testing, canary files, endpoint logging, and storage-transfer comparison",
+          "visibility": "network traffic, storage manifests, unexpected repository bundling, policy-control mismatch, and unexplained remote retention",
+          "severity_assessment_basis": "S1: The evidenced pathway can produce severe, widespread, or enduring harm through repository-scale data exfiltration, non-proportional workspace replication, read-to-transmit authority collapse across workspace / repository / cloud-storage / agentic-tool boundary; the record does not establish the articulated catastrophic pathway required for S0."
+        },
+        "triage": {
+          "model_version": "2.0",
+          "triage_priority": "P1",
+          "triage_owner": "OpenAI Codex analytical reviewer under Dr Michelle Vivian O'Rourke's human governance editorship",
+          "triage_status": "action-required",
+          "triage_action_basis": "A material unresolved governance control has an identified route and requires prompt near-term action.",
+          "triage_review_date": "2026-08-19",
+          "mitigation_status": "Reported behaviour was disabled server-side; prior-data deletion and complete governance repair remain unverified.",
+          "escalation_required": "no — prompt governance action is required, but no emergency escalation condition is established.",
+          "recommended_next_step": "Define separate read, analysis, transmission, replication, persistence, training, secondary-use, and deletion authorities; require purpose-bound egress manifests, minimum-necessary transfer, truthful privacy-control semantics, and independently auditable deletion provenance."
+        },
+        "repair_status": {
+          "status": "unrepaired",
+          "repaired_by": [],
+          "date_repaired": "",
+          "verification_status": "unverified",
+          "monitoring_status": "active monitoring",
+          "verification_note": "The reported upload pathway was disabled, but deletion of prior data and broader ecosystem conformity have not been independently verified.",
+          "repair_basis": "not-yet-established",
+          "remaining_gaps": [
+            "Explicit separation of read, transmission, replication, persistence, training, secondary-use, and deletion authority.",
+            "Pre-egress scope and destination disclosure.",
+            "Minimum-necessary transfer enforcement.",
+            "Historical data-deletion verification.",
+            "Machine-readable egress and retention provenance."
+          ]
+        },
+        "ecosystem_status": {
+          "status": "active",
+          "basis": "The cited product behaviour was reportedly disabled, but prior-data disposition and cross-vendor prevalence remain unresolved.",
+          "last_assessed": "2026-07-17",
+          "monitoring_required": true
+        },
+        "corpus_coverage": {
+          "classification": "verification-pending",
+          "corpus_repository": "CAM-Initiative/Caelestis",
+          "corpus_ref": "main",
+          "corpus_commit": "pending-current-main-line-review",
+          "assessed_date": "2026-07-17",
+          "coverage_summary": "Proportional tool invocation, source authority, boundary integrity, provenance, and sovereign-assurance doctrine are adjacent, but explicit separation of workspace read, transmission, persistence, training, and secondary-use authority has not been verified.",
+          "covered_by": [],
+          "remaining_gaps": [
+            "Line-by-line corpus assessment",
+            "Purpose-bound egress authority",
+            "Retention and deletion provenance",
+            "Privacy-control semantic integrity"
+          ]
+        },
+        "diagnostic_provenance": {
+          "method": "human-ai-collaborative-analysis",
+          "diagnostic_date": "2026-07-17",
+          "human_role": "substantive governance analysis, contextual judgement, correction, review and approval",
+          "ai_role": "analytical synthesis, mechanism identification, evidence and governance-context comparison, and drafting support",
+          "ai_platform": "OpenAI ChatGPT",
+          "ai_model": "GPT-5.6 Sol",
+          "model_attribution_basis": "inferred from canonical failure-mode creation date and documented ChatGPT model availability",
+          "review_status": "human-reviewed-and-approved",
+          "authority_boundary": "The AI collaborator supported analysis and drafting but was not independently authoritative; the human governance editor reviewed and accepted the diagnosis.",
+          "date_attribution_status": "canonical-creation-date-aligned"
+        },
+        "interpretive_provenance": {
+          "review_history": [
+            {
+              "review_id": "VIGIL-REVIEW-2026-07-17-GPT-5.6-THINKING-FM-0036",
+              "reviewer_type": "AI analytical reviewer",
+              "reviewer_platform": "OpenAI ChatGPT",
+              "reviewer_model": "GPT-5.6 Thinking",
+              "review_date": "2026-07-17",
+              "review_scope": "Evidence qualification, failure classification, authority decomposition, and preliminary CAM routing.",
+              "capability_profile": {
+                "direct_text_analysis": true,
+                "direct_repository_analysis": true,
+                "direct_static_image_analysis": false,
+                "direct_audio_analysis_in_this_pass": false,
+                "direct_uploaded_video_analysis_in_this_pass": false,
+                "direct_externally_hosted_video_analysis": false,
+                "web_link_and_metadata_review": true
+              },
+              "known_limitations": [
+                "The network experiment was not independently reproduced.",
+                "Previously transferred data deletion was not independently verified."
+              ],
+              "review_outcome": "A distinct security-integrity failure mode is warranted because workspace visibility and task authority were collapsed into repository-scale transmission authority."
+            },
+            {
+              "review_id": "VIGIL-REVIEW-2026-08-05-OPENAI-CODEX-TRIAGE-V2",
+              "reviewer_type": "AI analytical reviewer",
+              "reviewer_platform": "OpenAI ChatGPT Work Mode",
+              "reviewer_model": "OpenAI Codex (GPT-5 family; exact deployed model version not exposed in session metadata)",
+              "review_date": "2026-08-05",
+              "review_scope": "record-level severity, current-priority, workflow, lifecycle, repair, monitoring, and provenance reconciliation under VIGIL triage model 2.0",
+              "capability_profile": {
+                "direct_text_analysis": true,
+                "direct_repository_analysis": true,
+                "direct_static_image_analysis": false,
+                "direct_audio_analysis_in_this_pass": false,
+                "direct_uploaded_video_analysis_in_this_pass": false,
+                "direct_externally_hosted_video_analysis": false,
+                "web_link_and_metadata_review": false
+              },
+              "known_limitations": [
+                "This pass reviewed canonical record evidence and repository state; it did not independently re-open every external primary source.",
+                "Severity was bounded to the evidenced failure definition, harm pathway, deployment scope, recurrence, and stated uncertainty.",
+                "Legacy priority values were not treated as model 2.0 historical transitions because their prior semantic basis was not consistently evidenced."
+              ],
+              "review_outcome": "Model 2.0 severity, current priority, workflow state, record lifecycle, and next action reconciled without fabricating historical triage transitions."
+            }
+          ],
+          "current_ai_review": {
+            "review_id": "VIGIL-REVIEW-2026-08-05-OPENAI-CODEX-TRIAGE-V2",
+            "reviewer_type": "AI analytical reviewer",
+            "reviewer_platform": "OpenAI ChatGPT Work Mode",
+            "reviewer_model": "OpenAI Codex (GPT-5 family; exact deployed model version not exposed in session metadata)",
+            "review_date": "2026-08-05",
+            "review_scope": "record-level severity, current-priority, workflow, lifecycle, repair, monitoring, and provenance reconciliation under VIGIL triage model 2.0",
+            "capability_profile": {
+              "direct_text_analysis": true,
+              "direct_repository_analysis": true,
+              "direct_static_image_analysis": false,
+              "direct_audio_analysis_in_this_pass": false,
+              "direct_uploaded_video_analysis_in_this_pass": false,
+              "direct_externally_hosted_video_analysis": false,
+              "web_link_and_metadata_review": false
+            },
+            "known_limitations": [
+              "This pass reviewed canonical record evidence and repository state; it did not independently re-open every external primary source.",
+              "Severity was bounded to the evidenced failure definition, harm pathway, deployment scope, recurrence, and stated uncertainty.",
+              "Legacy priority values were not treated as model 2.0 historical transitions because their prior semantic basis was not consistently evidenced."
+            ],
+            "review_outcome": "Model 2.0 severity, current priority, workflow state, record lifecycle, and next action reconciled without fabricating historical triage transitions."
+          },
+          "operating_model": "AI-led analytical observatory with high-level human governance editorship",
+          "human_governance_editor": {
+            "name": "Dr Michelle Vivian O'Rourke",
+            "role": "Human governance editor and CAM constitutional authority",
+            "review_level": "high-level governance, editorial, and adoption oversight; line-by-line human review is not asserted for every VIGIL record",
+            "authority_boundary": "Human editorship governs VIGIL direction and CAM adoption; the AI analytical reviewer performs routine evidence triage, record analysis, and reconciliation."
+          },
+          "historical_reviewer_note": "The invalid VIGIL-REVIEW-2026-07-14-GPT-5.6-THINKING entry was removed on 2026-07-23 because this record was created on 2026-07-17. Remaining record-specific reviews are preserved; no pre-creation reviewer identity is inferred."
+        },
+        "taxonomy_classification": {
+          "taxonomy_version": "0.2.0-draft",
+          "classification_status": "classified",
+          "classification_basis": "Authority to inspect or act in a workspace is expanded into transmission, persistence, training, or secondary-use authority.",
+          "classification_confidence": "high",
+          "classified_on": "2026-08-25",
+          "structural_review_flags": [],
+          "primary_family": {
+            "family_id": "VIGIL-FF-0001",
+            "family_code": "AUTHORITY_BOUNDARY",
+            "family_name": "Authority Boundary Integrity Failures"
+          },
+          "primary_class": {
+            "class_id": "VIGIL-FC-000008",
+            "class_code": "DELEGATION_SCOPE_EXPANSION",
+            "class_name": "Delegation Scope Expansion",
+            "abstraction": "variant"
+          },
+          "classification_review_provenance": {
+            "method": "record-definition-threshold-to-taxonomy-criteria-review",
+            "review_date": "2026-08-25",
+            "ai_provider": "OpenAI",
+            "ai_platform": "ChatGPT Work",
+            "ai_model": "GPT-5.6 Sol",
+            "ai_role": "substantive taxonomy classification analysis and drafting support",
+            "human_review_status": "not-reviewed",
+            "authority_boundary": "AI classification is provisional draft taxonomy analysis and is not independently authoritative."
+          }
+        },
+        "cam_internal": {
+          "affected_instruments": [
+            "CAM-BS2025-AEON-003-SCH-02",
+            "CAM-EQ2026-SECURITY-001-PLATINUM",
+            "CAM-EQ2026-SECURITY-002-PLATINUM",
+            "CAM-EQ2026-OPERATIONS-003-SUP-01"
+          ],
+          "affected_annexes": [
+            "Annex K",
+            "Annex L"
+          ],
+          "affected_domains": [
+            "SECURITY",
+            "OPERATIONS",
+            "LATTICE",
+            "PROVENANCE"
+          ],
+          "governance_layer": "tool authority / workspace custody / data egress / purpose limitation / retention and deletion provenance",
+          "proposal_needed": "yes — assess a purpose-bound workspace custody and data-egress authority primitive",
+          "linked_proposal_ids": [],
+          "routing_note": [
+            "VIGIL records the ecosystem failure; normative repair belongs in Caelestis.",
+            "The failure is not limited to malicious exfiltration; undisclosed over-broad transfer is sufficient.",
+            "Read authority, transmission authority, persistence authority, training authority, and secondary-use authority must remain distinct."
+          ],
+          "validator_or_automation_impact": "new failure-mode record; generated indexes should rebuild deterministically"
+        },
+        "system_context": {
+          "system_type": "AI coding agent / repository-connected assistant / tool-mediated workspace runtime",
+          "platform_or_vendor": "xAI",
+          "vendor_cluster": [
+            "xAI"
+          ],
+          "primary_evidenced_vendors": [
+            "xAI"
+          ],
+          "product_or_service": "Grok",
+          "specific_model_or_runtime": "Grok Build v0.2.93; Grok Build CLI v0.2.93",
+          "interface_surface": "local repository, CLI, model endpoint, storage endpoint, tool and filesystem access",
+          "model_or_product": "Grok",
+          "interaction_mode": "repository inspection, coding assistance, file access, remote model inference, and workspace transfer",
+          "embodiment_status": "not applicable",
+          "deployment_context": "Developer workstation and repository-connected coding workflow.",
+          "user_role": "developer, repository owner, employee, contractor, security reviewer, or organisation administrator",
+          "affected_population": "developers, repository owners, employers, customers, data subjects, and organisations whose code or records are present in connected workspaces",
+          "evidence_scope": "single-provider",
+          "evidenced_vendors": [
+            "xAI"
+          ],
+          "evidenced_products_or_services": [
+            "Grok"
+          ],
+          "evidenced_models_or_runtimes": [
+            "Grok Build v0.2.93",
+            "Grok Build CLI v0.2.93"
+          ],
+          "evidenced_systems": [
+            {
+              "providers_or_vendors": [
+                "xAI"
+              ],
+              "products_or_services": [
+                "Grok"
+              ],
+              "models_or_runtimes": [
+                "Grok Build v0.2.93"
+              ],
+              "projection_basis": "source-affected-system-metadata",
+              "evidence_source_platform": "The Hacker News",
+              "deployment_context": "Agentic coding CLI operating against local Git repositories.",
+              "source_title": "Grok Build Uploaded Entire Git Repositories to xAI Storage, Not Just Files It Read",
+              "source_url": "https://thehackernews.com/2026/07/grok-build-uploads-entire-git.html"
+            },
+            {
+              "providers_or_vendors": [
+                "xAI"
+              ],
+              "products_or_services": [
+                "Grok"
+              ],
+              "models_or_runtimes": [
+                "Grok Build v0.2.93"
+              ],
+              "projection_basis": "source-affected-system-metadata",
+              "evidence_source_platform": "xAI",
+              "deployment_context": "Official product-version record corresponding to the independently tested client version.",
+              "source_title": "Grok Build Changelog — v0.2.93",
+              "source_url": "https://x.ai/build/changelog"
+            },
+            {
+              "providers_or_vendors": [],
+              "products_or_services": [],
+              "models_or_runtimes": [
+                "Grok Build CLI v0.2.93"
+              ],
+              "projection_basis": "record-system-context-fallback",
+              "source_title": "VIGIL-2026-FM-0036 historical system_context"
+            }
+          ],
+          "evidence_projection": {
+            "basis": "record-local affected-system metadata",
+            "method": "structured source affected-system roll-up with record system-context fallback",
+            "reconciled_on": "2026-08-15",
+            "inference_boundary": "Affected provider, product, model, and runtime identity is projected from structured system_or_product and model_or_algorithm source metadata, with bounded fallback to an existing concrete FM system_context for older records. source_platform identifies where evidence is hosted or published and is not treated as affected-system identity. Narrative source_context, relevance_note, article titles, and publisher prose are not mined for identity."
+          }
+        },
+        "jurisdictional_context": {
+          "primary_jurisdiction": "global",
+          "secondary_jurisdictions": [
+            "United States",
+            "European Union",
+            "Australia",
+            "United Kingdom",
+            "platform agnostic"
+          ],
+          "regulatory_surface": [
+            "AI governance",
+            "privacy",
+            "cybersecurity",
+            "confidential information",
+            "trade secrets",
+            "data protection",
+            "consumer protection",
+            "workplace data",
+            "software supply chains"
+          ],
+          "sector": "AI coding assistants / software development / cloud services",
+          "cross_border_relevance": "high",
+          "public_interest_relevance": "high"
+        },
+        "evidence_confidence": "corroborated",
+        "linked_records": {
+          "related_observations": [],
+          "related_proposals": [],
+          "related_patch_notes": [],
+          "external_references": [],
+          "research": [],
+          "standards": [],
+          "contextual_relations": [
+            {
+              "record_id": "VIGIL-2026-PATCH-0002",
+              "relationship": "implementation-precedent",
+              "chain_inclusion": false,
+              "rationale": "Proportional tool invocation is relevant precedent but does not repair cross-system data-egress governance."
+            },
+            {
+              "record_id": "VIGIL-2026-PATCH-0013",
+              "relationship": "implementation-precedent",
+              "chain_inclusion": false,
+              "rationale": "Tool-arming controls are relevant precedent but do not repair cross-system data-egress governance."
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "diagnostic_provenance": {
+    "method": "curated-legacy-record-incident-normalisation",
+    "diagnostic_date": "2026-08-30",
+    "ai_role": "incident disentanglement, source clustering, schema implementation and provenance preservation",
+    "human_role": "migration contract author and approval authority",
+    "ai_platform": "OpenAI Codex",
+    "ai_model": "GPT-5.6",
+    "review_status": "majority migration under human contract approval; line-by-line human review not asserted",
+    "authority_boundary": "This provenance records migration analysis only and does not replace the original diagnostic or interpretive provenance preserved from legacy records.",
+    "legacy_diagnostic_sources": [
+      "VIGIL-2026-FM-0036"
+    ]
+  },
+  "interpretive_provenance": {
+    "review_history": [
+      {
+        "review_id": "VIGIL-REVIEW-2026-08-30-INCIDENT-000045",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-5.6",
+        "review_date": "2026-08-30",
+        "review_scope": "Incident identity, source clustering, legacy-analysis preservation and taxonomy-state separation.",
+        "capability_profile": {
+          "direct_text_analysis": true,
+          "direct_repository_analysis": true,
+          "web_link_and_metadata_review": false
+        },
+        "known_limitations": [
+          "The migration relies on evidence and access statements already preserved in the legacy records.",
+          "No new independent factual verification is asserted by this migration pass."
+        ],
+        "review_outcome": "Admitted to the INCIDENT-01 Incident registry without retiring the legacy source record."
+      }
+    ],
+    "current_ai_review": {
+      "review_id": "VIGIL-REVIEW-2026-08-30-INCIDENT-000045",
+      "reviewer_type": "AI analytical reviewer",
+      "reviewer_platform": "OpenAI Codex",
+      "reviewer_model": "GPT-5.6",
+      "review_date": "2026-08-30",
+      "review_scope": "Incident identity, source clustering, legacy-analysis preservation and taxonomy-state separation.",
+      "capability_profile": {
+        "direct_text_analysis": true,
+        "direct_repository_analysis": true,
+        "web_link_and_metadata_review": false
+      },
+      "known_limitations": [
+        "The migration relies on evidence and access statements already preserved in the legacy records.",
+        "No new independent factual verification is asserted by this migration pass."
+      ],
+      "review_outcome": "Admitted to the INCIDENT-01 Incident registry without retiring the legacy source record."
+    },
+    "operating_model": "AI-authored, semi-autonomous production under human contract approval",
+    "human_governance_editor": {
+      "name": "Dr Michelle Vivian O'Rourke",
+      "role": "Human governance editor and CAM constitutional authority",
+      "review_level": "high-level governance, editorial, and adoption oversight; line-by-line human review is not asserted for every VIGIL record",
+      "authority_boundary": "Human editorship governs VIGIL direction and CAM adoption; the AI analytical reviewer performs routine evidence triage, record analysis, and reconciliation."
+    },
+    "historical_reviewer_note": "Pre-Incident FM/OBS review histories are preserved without re-dating under legacy_governance_state; they are not represented as reviews of the later Incident record."
+  }
+}
