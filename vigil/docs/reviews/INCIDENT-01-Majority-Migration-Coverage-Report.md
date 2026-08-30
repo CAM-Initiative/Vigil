@@ -66,9 +66,17 @@ reciprocal legacy provenance, external registry identity uniqueness, preferred-s
 integrity, Incident-title uniqueness, canonical IDs, and incident-native assessment
 semantics.
 
+## Publication cutover
+
+The taxonomy Case File projection and Full Reference textbook now consume classified
+and provisionally classified Incident records rather than legacy Failure Mode records.
+This publication cutover does not retire FM/OBS data and does not force unclassified
+Incidents into the taxonomy. The retained legacy datasets and migration crosswalk
+remain the reconciliation authority during stabilisation.
+
 ## Deferred retirement work
 
-Public Case Study cutover, FM retirement, OBS deletion, redirects, catalogue routing
-and taxonomy textbook changes remain deferred. Dual-dataset mode continues until the
-remaining human-review boundaries are resolved and the registry is approved for
-legacy retirement.
+FM retirement, OBS deletion, redirects and catalogue routing remain deferred.
+Dual-dataset mode continues until the remaining human-review boundaries are resolved
+and the registry is approved for legacy retirement. Failure Class rationalisation also
+remains a separate reviewed tranche rather than an automatic consequence of migration.
