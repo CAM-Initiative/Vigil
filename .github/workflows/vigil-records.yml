@@ -111,6 +111,13 @@ jobs:
           python vigil/scripts/validate-vigil-public-records.py
           python vigil/scripts/validate-vigil-system-components.py
 
+      - name: Validate Incident migration and crosswalk
+        run: |
+          python vigil/tests/test_incident_registry.py
+          python vigil/scripts/build-incident-migration-crosswalk.py
+          python vigil/scripts/validate-incident-migration.py
+          git diff --exit-code -- vigil/migrations/incident-registry/VIGIL.FM-OBS-to-INC.Crosswalk.json
+
       - name: Validate VIGIL lifecycle, corpus coverage, CAM boundary, and interpretive provenance
         run: python vigil/scripts/run-vigil-lifecycle-validation.py
 
@@ -135,6 +142,7 @@ jobs:
           find vigil -type d -name __pycache__ -prune -exec rm -rf {} +
           find vigil -type f \( -name '*.pyc' -o -name '*.pyo' \) -delete
           git add \
+            vigil/VIGIL.Incidents.Index.json \
             vigil/VIGIL.Failures.Index.json \
             vigil/VIGIL.Observations.Index.json \
             vigil/VIGIL.Research.Index.json \

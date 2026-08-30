@@ -12,6 +12,7 @@ ROOT = Path(__file__).resolve().parents[2]
 VIGIL_DIR = ROOT / "vigil"
 SCHEMA_PATH = VIGIL_DIR / "VIGIL.Schema.json"
 RECORD_ROOTS = (
+    VIGIL_DIR / "records" / "incidents",
     VIGIL_DIR / "records" / "observations",
     VIGIL_DIR / "records" / "failures",
 )

@@ -48,16 +48,16 @@ def main() -> None:
         assert (DRAFTS / withdrawn).exists(), f"{withdrawn} draft archive is missing"
 
     master = load(VIGIL / "VIGIL.Registry.Index.json")
-    assert set(master.get("registries", {})) == {"failure_modes", "observations", "research"}
+    assert set(master.get("registries", {})) == {"incidents", "failure_modes", "observations", "research"}
     counts = master.get("record_count", {})
-    assert set(counts) == {"failure_modes", "observations", "research", "total"}
+    assert set(counts) == {"incidents", "failure_modes", "observations", "research", "total"}
     assert not any(
         isinstance(item, dict)
         and item.get("record_type") in {"proposal", "patch", "patch_note", "learn"}
         for item in master.get("records", [])
     ), "withdrawn record classes must not appear in the public master registry"
 
-    for folder in ("observations", "failures"):
+    for folder in ("incidents", "observations", "failures"):
         for path in sorted((RECORDS / folder).rglob("*.json")):
             item = load(path)
             state = item.get("record_state")
@@ -80,6 +80,10 @@ def main() -> None:
     fm9 = record("VIGIL-2026-FM-0009", "failures")
     assert fm9["source_records"][0]["source_url"]
     assert not fm9["source_records"][0]["archive_url"]
+
+    incident = load(RECORDS / "incidents" / "VIGIL-INC-000002.json")
+    assert incident["taxonomy_classification"]["classification_status"] == "unclassified"
+    assert incident["taxonomy_classification"]["primary_classification"] is None
 
     retired_taxonomy_fields = {
         "failure_family", "failure_subtype", "canonical_failure_group", "taxonomy_reference",

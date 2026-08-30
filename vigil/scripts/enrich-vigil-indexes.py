@@ -14,6 +14,7 @@ RECORDS = VIGIL / "records"
 # Only currently published record classes are enrichment inputs. PROP, PATCH and
 # LEARN material is retained under vigil/drafts and must not be loaded here.
 INDEXES = {
+    "incidents": VIGIL / "VIGIL.Incidents.Index.json",
     "observations": VIGIL / "VIGIL.Observations.Index.json",
     "failures": VIGIL / "VIGIL.Failures.Index.json",
 }
@@ -129,6 +130,7 @@ def enrich_index(path: Path, source_records: dict[str, dict[str, Any]], fields: 
 
 
 def main() -> None:
+    enrich_index(INDEXES["incidents"], records_by_id("incidents"), {})
     enrich_index(INDEXES["observations"], records_by_id("observations"), {})
     enrich_index(
         INDEXES["failures"],

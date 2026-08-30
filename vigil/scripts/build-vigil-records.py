@@ -14,6 +14,12 @@ REPOSITORY = "CAM-Initiative/Vigil"
 DEFAULT_BRANCH = "main"
 
 TYPE_CONFIG: dict[str, dict[str, str]] = {
+    "incidents": {
+        "directory": "incidents",
+        "output": "VIGIL.Incidents.Index.json",
+        "record_type": "incident",
+        "category_name": "incident",
+    },
     "failure_modes": {
         "directory": "failures",
         "output": "VIGIL.Failures.Index.json",
@@ -47,6 +53,7 @@ TYPE_CONFIG: dict[str, dict[str, str]] = {
 }
 RECORD_TYPE_DIRS = [RECORDS_ROOT / config["directory"] for config in TYPE_CONFIG.values()]
 RECORD_TYPE_TO_REGISTRY = {
+    "incident": "incidents",
     "failure_mode": "failure_modes",
     "observation": "observations",
     "proposal": "proposals",
@@ -428,7 +435,16 @@ def generated_summaries(record: dict[str, Any]) -> dict[str, Any]:
         "jurisdiction_summary": jurisdiction_summary(record),
     }
 
-    if record_type == "observation":
+    if record_type == "incident":
+        summaries.update(
+            {
+                "incident_identity_summary": dict_summary(record, "incident_identity"),
+                "taxonomy_classification_summary": dict_summary(record, "taxonomy_classification"),
+                "preferred_evidence_summary": dict_summary(record, "preferred_evidence"),
+                "external_incident_references": record.get("external_incident_references", []),
+            }
+        )
+    elif record_type == "observation":
         summaries.update(
             {
                 "possible_taxonomy_mapping_summary": possible_taxonomy_mapping_summary(record),
@@ -638,6 +654,23 @@ def list_metadata(record: dict[str, Any]) -> dict[str, Any]:
                 "monitoring_required": ecosystem.get("monitoring_required", ""),
                 "repair_status": repair.get("status", ""),
                 "taxonomy_classification_summary": taxonomy_classification_summary(record),
+            }
+        )
+    elif record.get("record_type") == "incident":
+        taxonomy = record.get("taxonomy_classification", {})
+        incident_identity = record.get("incident_identity", {})
+        preferred = record.get("preferred_evidence", {})
+        metadata.update(
+            {
+                "classification_status": taxonomy.get("classification_status", ""),
+                "primary_classification": taxonomy.get("primary_classification", {}),
+                "secondary_classifications": taxonomy.get("secondary_classifications", []),
+                "occurred_from": incident_identity.get("occurred_from", ""),
+                "occurred_to": incident_identity.get("occurred_to", ""),
+                "date_precision": incident_identity.get("date_precision", ""),
+                "preferred_evidence_url": preferred.get("source_url", ""),
+                "external_incident_references": record.get("external_incident_references", []),
+                "legacy_provenance": record.get("legacy_provenance", []),
             }
         )
     return metadata

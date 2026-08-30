@@ -3,7 +3,8 @@
 
 PROP, PATCH and LEARN records are currently retained under ``vigil/drafts`` and are
 not publication inputs. This wrapper deliberately constrains the legacy registry
-builder to OBS, FM and RESEARCH without loading or resolving draft material.
+builder to INC, OBS, FM and RESEARCH without loading or resolving draft material.
+FM and OBS remain published during Incident migration stabilisation.
 """
 
 from __future__ import annotations
@@ -27,7 +28,7 @@ def load_builder() -> Any:
 
 def main() -> int:
     builder = load_builder()
-    public_registry_types = ("failure_modes", "observations", "research")
+    public_registry_types = ("incidents", "failure_modes", "observations", "research")
 
     builder.TYPE_CONFIG = {
         registry_type: builder.TYPE_CONFIG[registry_type]
@@ -38,6 +39,7 @@ def main() -> int:
         for registry_type in public_registry_types
     ]
     builder.RECORD_TYPE_TO_REGISTRY = {
+        "incident": "incidents",
         "failure_mode": "failure_modes",
         "observation": "observations",
         "research": "research",

@@ -8,17 +8,19 @@ VIGIL operates by default as AI-authored, semi-autonomous production under human
 
 ## Current publication boundary
 
-The only public VIGIL record classes are:
+The public VIGIL record classes during INCIDENT-01 stabilisation are:
 
 ```text
+INC       bounded historical Incident record
 OBS       observation / early-warning record
-FM        failure-mode / triage record
+FM        legacy failure-mode / triage record retained during migration
 RESEARCH  substantive non-binding research record
 ```
 
 Canonical public records are stored only under:
 
 ```text
+vigil/records/incidents/
 vigil/records/observations/
 vigil/records/failures/
 vigil/records/research/
@@ -33,6 +35,8 @@ vigil/drafts/learn/
 ```
 
 Public validators, registry builders, lifecycle checks and interfaces must not load or resolve files from `vigil/drafts/`. Existing withdrawn IDs may remain as historical provenance text in public records, but their targets are intentionally non-public.
+
+INCIDENT-01 operates in dual-dataset mode. Do not delete or silently rewrite FM/OBS records. Incident identity is independent of taxonomy-classification completion; an Incident may validly remain unclassified while its historical occurrence and evidence are preserved. The deterministic FM/OBS disposition authority is under `vigil/migrations/incident-registry/`.
 
 Do not create or restore public PROP/PATCH/LEARN records without explicit maintainer instruction that reactivates the record class.
 
@@ -144,6 +148,7 @@ The source of truth is the individual public record files under `vigil/records/`
 Current public generated indexes are:
 
 ```text
+vigil/VIGIL.Incidents.Index.json
 vigil/VIGIL.Failures.Index.json
 vigil/VIGIL.Observations.Index.json
 vigil/VIGIL.Research.Index.json

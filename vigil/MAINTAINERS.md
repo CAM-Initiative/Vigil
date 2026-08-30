@@ -10,16 +10,17 @@ The operating model is AI-authored, semi-autonomous production under human contr
 
 ## Current publication boundary
 
-The canonical **public record corpus** is limited to:
+The canonical **public record corpus** during INCIDENT-01 stabilisation is:
 
 ```text
 vigil/records/
+  incidents/
   observations/
   failures/
   research/
 ```
 
-These are the only record classes loaded by the public registry builder and public record validators.
+These are the only record classes loaded by the public registry builder and public record validators. FM and OBS remain legacy public datasets until the Incident crosswalk is reconciled and retirement is separately approved.
 
 The following historical/design record classes are currently **withdrawn from publication** and retained under `vigil/drafts/`:
 
@@ -37,7 +38,8 @@ Do not recreate `vigil/records/proposals/`, `vigil/records/patches/` or `vigil/r
 
 Maintain these as separate authoritative surfaces:
 
-- `vigil/records/` — public OBS, FM and RESEARCH records.
+- `vigil/records/` — public INC plus retained legacy OBS/FM and RESEARCH records.
+- `vigil/migrations/incident-registry/` — live INCIDENT-01 decisions and deterministic FM/OBS disposition evidence.
 - `vigil/taxonomy/` — the VIGIL Observatory failure taxonomy and its generated publications.
 - `vigil/external_governance/sources/` — registered external-source identity and review state.
 - `vigil/external_governance/requirements/` — authoritative external-governance requirement shards and generated projections.
@@ -134,6 +136,7 @@ Repository maintenance, schema changes, validator fixes, housekeeping, migration
 The current public generated indexes are:
 
 ```text
+vigil/VIGIL.Incidents.Index.json
 vigil/VIGIL.Failures.Index.json
 vigil/VIGIL.Observations.Index.json
 vigil/VIGIL.Research.Index.json
