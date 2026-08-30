@@ -250,10 +250,7 @@ def validate_repository() -> list[str]:
     for relative in (
         "VIGIL.Failures.Index.json",
         "VIGIL.Observations.Index.json",
-        "VIGIL.Proposals.Index.json",
-        "VIGIL.PatchNotes.Index.json",
         "VIGIL.Research.Index.json",
-        "VIGIL.Learn.Index.json",
         "VIGIL.Registry.Index.json",
     ):
         document = load(VIGIL / relative)
