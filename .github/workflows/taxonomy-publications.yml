@@ -3,6 +3,8 @@ name: VIGIL Observatory taxonomy publications
 
 on:
   push:
+    branches:
+      - main
     paths:
       - "vigil/taxonomy/VIGIL.FailureTaxonomy.Index.json"
       - "vigil/taxonomy/families/**"
@@ -37,6 +39,48 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.x"
+
+      - name: Validate taxonomy contract and release ledger
+        shell: bash
+        run: |
+          set +e
+          python vigil/taxonomy/validate_taxonomy.py
+          status=$?
+          set -e
+          if [ "$status" -ne 0 ]; then
+            python - <<'PY'
+          import importlib.util
+          import json
+          from pathlib import Path
+
+          path = Path("vigil/taxonomy/validate_taxonomy.py")
+          spec = importlib.util.spec_from_file_location("validate_taxonomy", path)
+          module = importlib.util.module_from_spec(spec)
+          assert spec and spec.loader
+          spec.loader.exec_module(module)
+
+          loaded = []
+          family_ids = set()
+          class_ids = set()
+          for family_path in sorted(Path("vigil/taxonomy/families").glob("*.json")):
+              data = json.loads(family_path.read_text(encoding="utf-8"))
+              loaded.append((family_path, data))
+              family = data.get("family", {})
+              family_id = family.get("family_id")
+              if family_id:
+                  family_ids.add(family_id)
+              for item in data.get("classes", []):
+                  class_id = item.get("class_id") if isinstance(item, dict) else None
+                  if class_id:
+                      class_ids.add(class_id)
+
+          print("Current canonical taxonomy release state:")
+          print(f"  content_digest: {module.catalogue_content_digest(loaded)}")
+          print(f"  family_ids: {sorted(family_ids)}")
+          print(f"  class_count: {len(class_ids)}")
+          PY
+            exit "$status"
+          fi
 
       - name: Install PDF renderer
         run: python -m pip install --disable-pip-version-check weasyprint
