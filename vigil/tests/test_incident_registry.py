@@ -111,14 +111,15 @@ class IncidentRegistryTest(unittest.TestCase):
             encoding="utf-8"
         )
         self.assertNotIn("Verify generated publications are current", workflow)
+        self.assertNotIn("generated/*.html", workflow)
+        self.assertNotIn("Generate HTML publication for pull-request validation", workflow)
         self.assertIn("--taxonomy-examples-only", workflow)
-        self.assertIn("Generate HTML publication for pull-request validation", workflow)
         self.assertIn("Install PDF renderer on main publication build", workflow)
         self.assertIn("weasyprint==69.0", workflow)
-        self.assertIn("Generate HTML and PDF publications on main", workflow)
+        self.assertIn("Generate maintained PDF publication on main", workflow)
+        self.assertIn("Verify maintained PDF publication on main", workflow)
         self.assertIn("--pdf", workflow)
-        self.assertIn("generated/*.html", workflow)
-        self.assertIn("generated/*.pdf", workflow)
+        self.assertIn("VIGIL.Observatory.FailureTaxonomy.FullReference.pdf", workflow)
         self.assertIn("if: github.event_name != 'pull_request'", workflow)
 
     def test_incidents_publish_severity_and_canonical_source_genres(self):
