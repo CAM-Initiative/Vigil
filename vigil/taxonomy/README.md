@@ -18,15 +18,14 @@ families/
   VIGIL-FF-0008-control-activation-integrity.json
   VIGIL-FF-0009-agency-preserving-influence-integrity.json
 generated/
-  one complete HTML page per family
-  VIGIL.FailureTaxonomy.FullReference.html
+  VIGIL.FailureTaxonomy.CaseFileExamples.json
   VIGIL.Observatory.FailureTaxonomy.FullReference.pdf
 migration/
   Caelestis.LegacyFailure.MigrationLedger.json
   Caelestis.LegacyFailure.InventoryReview.md
 ```
 
-Family JSON is canonical. HTML and Markdown references are generated projections. The migration ledger is non-normative source-analysis evidence and is not a dependency of the portable taxonomy.
+Family JSON is canonical. The maintained PDF is a generated publication projection. Generated HTML is not a VIGIL publication asset; HTML emitted by the renderer is transient build material only. The migration ledger is non-normative source-analysis evidence and is not a dependency of the portable taxonomy.
 
 `generated/VIGIL.FailureTaxonomy.CaseFileExamples.json` is a non-normative reverse mapping derived from canonical Incident `taxonomy_classification` blocks. It lets public interfaces discover Case File examples for immutable family and class IDs without embedding incident-specific record IDs in portable taxonomy definitions. Each projected example declares whether the mapping is the Incident's primary structural mechanism or an independently evidenced secondary mechanism. Unclassified Incidents remain valid registry records but do not enter this classification projection until a primary classification exists.
 
@@ -111,15 +110,7 @@ A variant has exactly one in-family class parent. Definitions are not duplicated
 
 ## Generation
 
-Generate every complete family page and the combined full-reference HTML locally:
-
-```bash
-python vigil/taxonomy/render_taxonomy.py \
-  --catalogue \
-  --output-dir vigil/taxonomy/generated
-```
-
-Generate the maintained Full Reference HTML and PDF publication set with:
+Generate the maintained Full Reference PDF with:
 
 ```bash
 python vigil/taxonomy/render_taxonomy.py \
@@ -128,7 +119,7 @@ python vigil/taxonomy/render_taxonomy.py \
   --pdf
 ```
 
-HTML and PDF publications are deterministic projections of the canonical family JSON. They are generated rather than hand-edited. Pull requests validate the taxonomy contract, rebuild the Incident-backed Case File projection, apply evidence exclusions, and prove that the HTML publication renders cleanly without requiring branch-local generated publication artefacts to match committed outputs. After changes land on `main`, the publication workflow uses the repository's established PDF renderer to regenerate, validate, and commit the refreshed HTML and PDF assets. The maintained PDF therefore remains a durable publication asset without becoming a pull-request staleness gate or a second source of truth.
+The PDF is a deterministic projection of the canonical family JSON and is generated rather than hand-edited. The renderer may emit HTML internally while composing the PDF, but those files are transient build material and are not committed publication assets. Pull requests validate the taxonomy contract, rebuild the Incident-backed Case File projection, and apply evidence exclusions without requiring publication regeneration. After changes land on `main`, the publication workflow uses the repository's established PDF renderer to regenerate, validate, and commit the refreshed PDF asset.
 
 Generate one Markdown family reference when needed:
 
