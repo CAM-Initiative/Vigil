@@ -106,16 +106,20 @@ class IncidentRegistryTest(unittest.TestCase):
         self.assertTrue(all("failure_mode_id" not in item for item in examples))
         self.assertEqual(projection["generated_from"], ["vigil/records/incidents/"])
 
-    def test_taxonomy_publication_workflow_is_html_only(self):
+    def test_taxonomy_publication_workflow_keeps_pdf_main_owned(self):
         workflow = (ROOT / ".github" / "workflows" / "taxonomy-publications.yml").read_text(
             encoding="utf-8"
         )
-        self.assertNotIn("--pdf", workflow)
-        self.assertNotIn("*.pdf", workflow)
-        self.assertNotIn("weasyprint", workflow)
         self.assertNotIn("Verify generated publications are current", workflow)
         self.assertIn("--taxonomy-examples-only", workflow)
+        self.assertIn("Generate HTML publication for pull-request validation", workflow)
+        self.assertIn("Install PDF renderer on main publication build", workflow)
+        self.assertIn("weasyprint==69.0", workflow)
+        self.assertIn("Generate HTML and PDF publications on main", workflow)
+        self.assertIn("--pdf", workflow)
         self.assertIn("generated/*.html", workflow)
+        self.assertIn("generated/*.pdf", workflow)
+        self.assertIn("if: github.event_name != 'pull_request'", workflow)
 
     def test_incidents_publish_severity_and_canonical_source_genres(self):
         allowed_source_types = validator.CANONICAL_INCIDENT_SOURCE_TYPES
