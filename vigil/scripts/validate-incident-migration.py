@@ -25,7 +25,7 @@ LEGACY_GOVERNANCE_FIELDS = {
     "summary", "why_it_matters_to_CAM", "failure_mode_definition", "failure_threshold",
     "failure_classification", "triage", "triage_history", "repair_status", "ecosystem_status",
     "corpus_coverage", "diagnostic_provenance", "possible_taxonomy_mapping", "next_action",
-    "interpretive_provenance", "taxonomy_classification", "cam_internal", "system_context",
+    "interpretive_provenance", "cam_internal", "system_context",
     "jurisdictional_context", "evidence_confidence", "linked_records",
 }
 
@@ -187,6 +187,16 @@ def main() -> int:
                 for field in LEGACY_GOVERNANCE_FIELDS:
                     if field in legacy[legacy_id] and preserved.get(field) != legacy[legacy_id][field]:
                         errors.append(f"{incident_id}: legacy governance field {legacy_id}.{field} was not preserved exactly")
+                # taxonomy_classification is an immutable migration-time snapshot. The
+                # retained FM/OBS may later receive a mechanical ontology migration or
+                # peer-abstraction normalization; that must not rewrite Incident history.
+                if "taxonomy_classification" in legacy[legacy_id] and not isinstance(
+                    preserved.get("taxonomy_classification"), dict
+                ):
+                    errors.append(
+                        f"{incident_id}: legacy governance field {legacy_id}.taxonomy_classification "
+                        "must remain a historical object"
+                    )
         current_interpretation = str(record.get("vigil_assessment", {}).get("governance_interpretation", "")).strip()
         current_incident_text = " ".join([
             str(record.get("summary", "")),

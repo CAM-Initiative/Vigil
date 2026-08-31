@@ -99,6 +99,18 @@ class IncidentRegistryTest(unittest.TestCase):
             if incident["legacy_provenance"]:
                 self.assertIn("legacy_governance_state", incident)
 
+    def test_legacy_taxonomy_snapshot_is_not_rewritten_by_current_ontology_migration(self):
+        incident = self.incidents["VIGIL-INC-000045"]
+        historical = next(
+            item for item in incident["legacy_governance_state"]
+            if item["legacy_id"] == "VIGIL-2026-FM-0036"
+        )["preserved_analysis"]["taxonomy_classification"]
+        current = load(VIGIL / "records" / "failures" / "2026" / "VIGIL-2026-FM-0036.json")[
+            "taxonomy_classification"
+        ]
+        self.assertEqual(historical["primary_class"]["class_id"], "VIGIL-FC-000008")
+        self.assertEqual(current["primary_class"]["class_id"], "VIGIL-FC-000003")
+
     def test_native_incident_need_not_claim_legacy_migration_provenance(self):
         incident = self.incidents["VIGIL-INC-000080"]
         self.assertEqual(incident["legacy_provenance"], [])
