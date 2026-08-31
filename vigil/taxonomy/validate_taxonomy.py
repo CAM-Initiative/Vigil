@@ -81,8 +81,18 @@ def validate_release_history(
     loaded: list[tuple[Path, dict]],
     family_ids: set[str],
     class_ids: set[str],
+    *,
+    enforce_current_release: bool = True,
 ) -> list[str]:
-    """Enforce dataset/book versioning for canonical taxonomy-content changes."""
+    """Validate release history and, for published builds, current-release alignment.
+
+    Working branches intentionally remain stamped with the last published dataset
+    release while canonical family/class content is being edited. Historical
+    release-ledger integrity is always enforced. Exact alignment of the latest
+    release digest/family set/class count with the working catalogue is enforced
+    only when ``enforce_current_release`` is true (for example on ``main`` after
+    publication metadata has been prepared).
+    """
     errors: list[str] = []
     standard = index.get("standard")
     if not isinstance(standard, dict):
@@ -162,19 +172,21 @@ def validate_release_history(
             )
 
     current = releases[-1] if isinstance(releases[-1], dict) else {}
-    digest = catalogue_content_digest(loaded)
     if current.get("version") != version:
         errors.append(f"{INDEX_PATH}: standard.version must equal the current release_history version")
     if current.get("publication_date") != publication_date:
         errors.append(f"{INDEX_PATH}: standard.publication_date must equal the current release_history date")
-    if current.get("content_digest") != digest:
-        errors.append(
-            f"{INDEX_PATH}: canonical family/class content changed without a new dataset version, date and release digest"
-        )
-    if current.get("family_ids") != sorted(family_ids):
-        errors.append(f"{INDEX_PATH}: current release family_ids do not match the canonical catalogue")
-    if current.get("class_count") != len(class_ids):
-        errors.append(f"{INDEX_PATH}: current release class_count does not match the canonical catalogue")
+
+    if enforce_current_release:
+        digest = catalogue_content_digest(loaded)
+        if current.get("content_digest") != digest:
+            errors.append(
+                f"{INDEX_PATH}: canonical family/class content changed without a published dataset release"
+            )
+        if current.get("family_ids") != sorted(family_ids):
+            errors.append(f"{INDEX_PATH}: current release family_ids do not match the canonical catalogue")
+        if current.get("class_count") != len(class_ids):
+            errors.append(f"{INDEX_PATH}: current release class_count does not match the canonical catalogue")
 
     for path, data in loaded:
         family_standard = data.get("standard", {})
@@ -350,7 +362,11 @@ def validate_migration_ledger(family_ids: set[str], class_ids: set[str]) -> list
     return errors
 
 
-def validate_catalogue(paths: list[Path]) -> tuple[list[str], int]:
+def validate_catalogue(
+    paths: list[Path],
+    *,
+    enforce_current_release: bool = True,
+) -> tuple[list[str], int]:
     errors: list[str] = []
     schema, schema_load_errors = load_json(SCHEMA_PATH)
     index, index_load_errors = load_json(INDEX_PATH)
@@ -521,7 +537,15 @@ def validate_catalogue(paths: list[Path]) -> tuple[list[str], int]:
             if len(parents) != 1:
                 errors.append(f"{path}: variant {class_id} must declare exactly one child_of relationship")
 
-    errors.extend(validate_release_history(index, loaded, set(family_by_id), set(class_by_id)))
+    errors.extend(
+        validate_release_history(
+            index,
+            loaded,
+            set(family_by_id),
+            set(class_by_id),
+            enforce_current_release=enforce_current_release,
+        )
+    )
 
     supersession_targets: dict[str, str] = {}
     for identifier, (_, value) in {**family_by_id, **class_by_id}.items():
@@ -559,14 +583,26 @@ def validate_catalogue(paths: list[Path]) -> tuple[list[str], int]:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("paths", nargs="*", type=Path, help="all family files; defaults to the indexed catalogue")
+    parser.add_argument(
+        "--published-release",
+        action="store_true",
+        help="require canonical taxonomy content to match the latest published release metadata; use on main publication builds",
+    )
     args = parser.parse_args()
     paths = args.paths or sorted(FAMILIES_DIR.glob("*.json"))
-    errors, class_count = validate_catalogue(paths)
+    errors, class_count = validate_catalogue(
+        paths,
+        enforce_current_release=args.published_release,
+    )
     if errors:
         for error in errors:
             print(f"ERROR: {error}")
         sys.exit(1)
-    print(f"Validated {len(paths)} family file(s) against JSON Schema: {class_count} classes; catalogue integrity OK")
+    mode = "published-release" if args.published_release else "working-branch"
+    print(
+        f"Validated {len(paths)} family file(s) against JSON Schema: {class_count} classes; "
+        f"catalogue integrity OK ({mode} mode)"
+    )
 
 
 if __name__ == "__main__":
