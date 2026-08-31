@@ -35,8 +35,9 @@ class IncidentRegistryTest(unittest.TestCase):
         cls.by_legacy = {entry["legacy_id"]: entry for entry in cls.crosswalk["entries"]}
 
     def test_incident_ids_are_year_independent_and_unique(self):
-        self.assertEqual(len(self.incidents), 79)
+        self.assertGreaterEqual(len(self.incidents), 79)
         self.assertTrue(all(identifier.startswith("VIGIL-INC-") for identifier in self.incidents))
+        self.assertEqual(len(self.incidents), len({record["id"] for record in self.incidents.values()}))
 
     def test_external_registry_array_may_be_empty_but_must_exist(self):
         record = json.loads(json.dumps(self.incidents["VIGIL-INC-000009"]))
@@ -94,8 +95,15 @@ class IncidentRegistryTest(unittest.TestCase):
         for incident in self.incidents.values():
             self.assertFalse(forbidden.intersection(incident))
             self.assertTrue(set(incident.get("cam_internal", {})).issubset(validator.INCIDENT_CAM_INTERNAL_ALLOWED))
-            self.assertIn("legacy_governance_state", incident)
             self.assertIn("legacy_provenance", incident)
+            if incident["legacy_provenance"]:
+                self.assertIn("legacy_governance_state", incident)
+
+    def test_native_incident_need_not_claim_legacy_migration_provenance(self):
+        incident = self.incidents["VIGIL-INC-000080"]
+        self.assertEqual(incident["legacy_provenance"], [])
+        self.assertNotIn("legacy_governance_state", incident)
+        self.assertEqual(incident["taxonomy_classification"]["classification_status"], "unclassified")
 
     def test_incident_validator_rejects_reintroduced_current_repair_state(self):
         record = json.loads(json.dumps(self.incidents["VIGIL-INC-000001"]))
