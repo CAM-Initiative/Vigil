@@ -108,7 +108,7 @@ The canonical VIGIL Observatory failure taxonomy is under `vigil/taxonomy/`.
 
 Use the taxonomy index/schema and canonical family/class identifiers. Do not revive retired CAM taxonomy fields inside FM `failure_classification` and do not infer a new canonical class ID without the taxonomy admission process.
 
-Generated taxonomy HTML is a projection, not a second source of truth. The repository does not maintain a required PDF publication contract.
+Generated taxonomy HTML/PDF are publication projections, not a second source of truth. Pull-request validation must not require committed publication artefacts to match branch-local regeneration; the main-branch publication workflow owns refreshed HTML/PDF generation and commit after source changes land.
 
 Historical taxonomy audits under `vigil/docs/audits/taxonomy/` are non-normative transition evidence.
 

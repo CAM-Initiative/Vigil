@@ -20,6 +20,7 @@ families/
 generated/
   one complete HTML page per family
   VIGIL.FailureTaxonomy.FullReference.html
+  VIGIL.Observatory.FailureTaxonomy.FullReference.pdf
 migration/
   Caelestis.LegacyFailure.MigrationLedger.json
   Caelestis.LegacyFailure.InventoryReview.md
@@ -110,7 +111,7 @@ A variant has exactly one in-family class parent. Definitions are not duplicated
 
 ## Generation
 
-Generate every complete family page and the combined full-reference HTML:
+Generate every complete family page and the combined full-reference HTML locally:
 
 ```bash
 python vigil/taxonomy/render_taxonomy.py \
@@ -118,9 +119,16 @@ python vigil/taxonomy/render_taxonomy.py \
   --output-dir vigil/taxonomy/generated
 ```
 
-HTML publications are deterministic projections of the canonical family JSON. They are generated rather than hand-edited. The publication workflow validates the taxonomy contract, rebuilds the Incident-backed Case File projection, applies evidence exclusions, regenerates HTML, and verifies that the Full Reference HTML is non-empty. On `main`, the workflow commits refreshed HTML outputs. Pull requests validate regeneration without requiring generated publication files to be pre-committed on the branch.
+Generate the maintained Full Reference HTML and PDF publication set with:
 
-The repository no longer maintains a PDF publication contract. PDF rendering may remain available as an optional local renderer capability, but PDF artefacts are not a required, validated, or automatically committed publication surface.
+```bash
+python vigil/taxonomy/render_taxonomy.py \
+  --catalogue \
+  --output-dir vigil/taxonomy/generated \
+  --pdf
+```
+
+HTML and PDF publications are deterministic projections of the canonical family JSON. They are generated rather than hand-edited. Pull requests validate the taxonomy contract, rebuild the Incident-backed Case File projection, apply evidence exclusions, and prove that the HTML publication renders cleanly without requiring branch-local generated publication artefacts to match committed outputs. After changes land on `main`, the publication workflow uses the repository's established PDF renderer to regenerate, validate, and commit the refreshed HTML and PDF assets. The maintained PDF therefore remains a durable publication asset without becoming a pull-request staleness gate or a second source of truth.
 
 Generate one Markdown family reference when needed:
 
