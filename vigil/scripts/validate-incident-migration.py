@@ -38,8 +38,7 @@ def main() -> int:
     errors: list[str] = []
     warnings: list[str] = []
     legacy_paths = sorted((RECORDS / "failures").rglob("*.json")) + sorted(
-        (RECORDS / "observations").rglob("*.json")
-    )
+        (RECORDS / "observations").rglob("*.json"))
     legacy = {load(path)["id"]: load(path) for path in legacy_paths}
     incident_paths = sorted((RECORDS / "incidents").glob("*.json"))
     incidents = {load(path)["id"]: load(path) for path in incident_paths}
@@ -49,6 +48,7 @@ def main() -> int:
         errors.append("crosswalk.entries must be an array")
         entries = []
     by_legacy: dict[str, dict[str, Any]] = {}
+    migration_linked_incident_ids: set[str] = set()
     for entry in entries:
         if not isinstance(entry, dict):
             errors.append("crosswalk entry must be an object")
@@ -58,6 +58,11 @@ def main() -> int:
             errors.append(f"duplicate crosswalk entry for {legacy_id}")
         if isinstance(legacy_id, str):
             by_legacy[legacy_id] = entry
+        successors = entry.get("successor_incidents", [])
+        if isinstance(successors, list):
+            migration_linked_incident_ids.update(
+                successor for successor in successors if isinstance(successor, str)
+            )
     missing = sorted(set(legacy) - set(by_legacy))
     extra = sorted(set(by_legacy) - set(legacy))
     if missing:
@@ -66,8 +71,8 @@ def main() -> int:
         errors.append(f"crosswalk contains unknown legacy records: {', '.join(extra)}")
     if crosswalk.get("legacy_record_count") != len(legacy):
         errors.append("crosswalk legacy_record_count does not match corpus")
-    if crosswalk.get("incident_record_count") != len(incidents):
-        errors.append("crosswalk incident_record_count does not match corpus")
+    if crosswalk.get("incident_record_count") != len(migration_linked_incident_ids):
+        errors.append("crosswalk incident_record_count does not match migration-linked Incident set")
 
     for legacy_id, record in legacy.items():
         entry = by_legacy.get(legacy_id)
@@ -209,7 +214,8 @@ def main() -> int:
         return 1
     print(
         "Incident migration validation passed: "
-        f"{len(incidents)} Incidents, {len(legacy)} legacy dispositions, "
+        f"{len(incidents)} current Incidents, {len(migration_linked_incident_ids)} migration-linked Incidents, "
+        f"{len(legacy)} legacy dispositions, "
         f"{sum(len(item.get('source_records', [])) for item in legacy.values())} legacy sources accounted for; "
         f"{len(warnings)} genuinely ambiguous record/source reviews remain pending in {crosswalk.get('migration_state')} state."
     )
