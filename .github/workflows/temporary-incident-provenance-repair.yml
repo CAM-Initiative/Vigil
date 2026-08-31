@@ -1,0 +1,108 @@
+name: Temporary Incident provenance repair
+
+on:
+  push:
+    branches:
+      - agent/bounded-incident-classification-provenance-repair
+    paths:
+      - ".github/workflows/temporary-incident-provenance-repair.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: agent/bounded-incident-classification-provenance-repair
+          persist-credentials: true
+          show-progress: false
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.x"
+
+      - name: Remove pre-creation reviews from Incident review history
+        run: |
+          python - <<'PY'
+          from __future__ import annotations
+
+          import json
+          from datetime import date
+          from pathlib import Path
+
+          root = Path("vigil/records/incidents")
+          changed = []
+
+          def contains_review_id(value, review_id: str) -> bool:
+              if isinstance(value, dict):
+                  if value.get("review_id") == review_id:
+                      return True
+                  return any(contains_review_id(item, review_id) for item in value.values())
+              if isinstance(value, list):
+                  return any(contains_review_id(item, review_id) for item in value)
+              return False
+
+          for path in sorted(root.glob("VIGIL-INC-*.json")):
+              record = json.loads(path.read_text(encoding="utf-8"))
+              identity = record.get("record_identity", {})
+              created_value = identity.get("created") or record.get("date_recorded")
+              if not created_value:
+                  continue
+              created = date.fromisoformat(str(created_value)[:10])
+              provenance = record.get("interpretive_provenance")
+              if not isinstance(provenance, dict):
+                  continue
+              history = provenance.get("review_history")
+              if not isinstance(history, list):
+                  continue
+
+              retained = []
+              removed = []
+              for review in history:
+                  if not isinstance(review, dict) or not review.get("review_date"):
+                      retained.append(review)
+                      continue
+                  review_date = date.fromisoformat(str(review["review_date"])[:10])
+                  if review_date < created:
+                      removed.append(review)
+                  else:
+                      retained.append(review)
+
+              if not removed:
+                  continue
+
+              legacy_state = record.get("legacy_governance_state", [])
+              for review in removed:
+                  review_id = str(review.get("review_id") or "")
+                  if not review_id or not contains_review_id(legacy_state, review_id):
+                      raise SystemExit(
+                          f"{path}: refusing to remove {review_id or '<missing review id>'}; "
+                          "historical review is not already preserved in legacy_governance_state"
+                      )
+
+              provenance["review_history"] = retained
+              path.write_text(json.dumps(record, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+              changed.append((path.as_posix(), [item.get("review_id") for item in removed]))
+
+          if not changed:
+              raise SystemExit("No Incident provenance repairs were required")
+
+          print("Repaired Incident-level provenance while preserving historical review payloads:")
+          for path, review_ids in changed:
+              print(f"- {path}: {', '.join(str(item) for item in review_ids)}")
+          PY
+
+      - name: Verify provenance preservation tests
+        run: python vigil/tests/test_vigil_provenance_preservation.py
+
+      - name: Commit bounded provenance repair
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add vigil/records/incidents
+          git commit -m "fix: separate Incident review chronology from historical provenance"
+          git push origin HEAD:agent/bounded-incident-classification-provenance-repair
