@@ -115,7 +115,7 @@ def main() -> int:
         "migration_id": decisions["migration_id"],
         "migration_state": decisions["migration_state"],
         "baseline_commit": decisions["baseline_commit"],
-        "generated_notice": "Deterministically generated from the complete legacy FM/OBS corpus, curated migration-linked Incident records and Incident.Migration.Decisions.json. Native post-migration Incidents are outside this historical crosswalk.",
+        "generated_notice": "Deterministically generated from the complete legacy FM/OBS corpus, curated Incident records and Incident.Migration.Decisions.json.",
         "legacy_record_count": len(entries),
         "incident_record_count": len(migrated_incident_ids),
         "entries": entries,
