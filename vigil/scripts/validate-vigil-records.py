@@ -285,6 +285,23 @@ INCIDENT_REQUIRED = {
     "legacy_provenance", "diagnostic_provenance",
     "interpretive_provenance",
 }
+INCIDENT_FORBIDDEN = {
+    "corpus_coverage",
+    "repair_status",
+    "remaining_gaps",
+    "proposal_needed",
+    "patch_note_needed",
+}
+INCIDENT_CAM_INTERNAL_ALLOWED = {
+    "governance_layer",
+    "routing_note",
+    "cam_relevance",
+    "cam_failure_type",
+    "cam_observed_failure",
+    "cam_internal_failure_statement",
+    "cam_expected_control",
+    "cam_compliance_status",
+}
 INCIDENT_CLASSIFICATION_STATUSES = {
     "unclassified", "provisionally-classified", "classified", "classification-disputed",
     "requires-human-review",
@@ -1637,6 +1654,7 @@ def validate_record(
     common_required = set(REQUIRED_COMMON)
     if record_type == "incident":
         common_required.discard("evidence_confidence")
+        common_required.discard("cam_internal")
     # Temporary patch scaffolds may intentionally carry an empty source_records array;
     # source_records still must be present and typed as an array below.
     if record_type in {"patch", "patch_note"} and str(record.get("record_state", "")).lower() == "scaffolding":
@@ -1835,7 +1853,6 @@ def validate_record(
     cam = record.get("cam_internal")
     if isinstance(cam, dict):
         preferred_route = {
-            "incident": "affected_instruments",
             "observation": "related_or_similar_instruments",
             "failure_mode": "affected_instruments",
             "proposal": "target_instruments",
@@ -1845,7 +1862,6 @@ def validate_record(
         if preferred_route is not None and preferred_route in cam and not isinstance(cam.get(preferred_route), list):
             errors.append(f"{path}: cam_internal.{preferred_route} must be an array when present")
         deprecated_routes = {
-            "incident": ("target_instruments", "changed_instruments"),
             "observation": ("affected_instruments", "target_instruments", "changed_instruments"),
             "failure_mode": ("target_instruments", "changed_instruments"),
             "proposal": ("affected_instruments", "changed_instruments"),
@@ -1860,6 +1876,22 @@ def validate_record(
                 )
 
     if record_type == "incident":
+        present = sorted(field for field in INCIDENT_FORBIDDEN if field in record)
+        if present:
+            errors.append(
+                f"{path}: Incident contains current CAM corpus-gap or repair-layer fields: {', '.join(present)}"
+            )
+        incident_cam = record.get("cam_internal")
+        if incident_cam is not None:
+            if not isinstance(incident_cam, dict) or not incident_cam:
+                errors.append(f"{path}: Incident cam_internal must be a non-empty object when present")
+            else:
+                forbidden_cam = sorted(set(incident_cam).difference(INCIDENT_CAM_INTERNAL_ALLOWED))
+                if forbidden_cam:
+                    errors.append(
+                        f"{path}: Incident cam_internal contains CAM corpus-gap or repair-routing fields: "
+                        f"{', '.join(forbidden_cam)}"
+                    )
         if "evidence_confidence" in record:
             errors.append(
                 f"{path}: Incident evidence_confidence is retired; assess each source_record with "

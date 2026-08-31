@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -81,6 +82,28 @@ class IncidentRegistryTest(unittest.TestCase):
                 for item in preserved
             }
             self.assertNotIn(current, definitions)
+
+    def test_current_incidents_exclude_cam_repair_state_without_erasing_legacy_provenance(self):
+        forbidden = {
+            "corpus_coverage",
+            "repair_status",
+            "remaining_gaps",
+            "proposal_needed",
+            "patch_note_needed",
+        }
+        for incident in self.incidents.values():
+            self.assertFalse(forbidden.intersection(incident))
+            self.assertTrue(set(incident.get("cam_internal", {})).issubset(validator.INCIDENT_CAM_INTERNAL_ALLOWED))
+            self.assertIn("legacy_governance_state", incident)
+            self.assertIn("legacy_provenance", incident)
+
+    def test_incident_validator_rejects_reintroduced_current_repair_state(self):
+        record = json.loads(json.dumps(self.incidents["VIGIL-INC-000001"]))
+        record["cam_internal"]["proposal_needed"] = "yes"
+        with tempfile.TemporaryDirectory() as temp_dir:
+            path = Path(temp_dir) / f"{record['id']}.json"
+            path.write_text(json.dumps(record), encoding="utf-8")
+            self.assertNotEqual(validator.validate(path), 0)
 
     def test_incident_validator_rejects_secondary_without_primary(self):
         record = json.loads(json.dumps(self.incidents["VIGIL-INC-000002"]))

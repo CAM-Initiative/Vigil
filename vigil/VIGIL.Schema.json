@@ -214,7 +214,7 @@
         "authority_boundary",
         "date_attribution_status"
       ],
-      "diagnostic_provenance_rule": "Diagnostic provenance identifies the human-AI collaboration that formulated the failure definition, recognition threshold, governance significance, gap assessment and diagnostic reasoning. It is distinct from source review, later interpretive review, repair and learning provenance. New failure modes must declare it explicitly. Historical attribution may use the approved creation-date rule, but a later reviewer must never replace the original diagnostic collaborator.",
+      "diagnostic_provenance_rule": "Diagnostic provenance identifies the human-AI collaboration that formulated the failure definition, recognition threshold, governance significance and diagnostic reasoning. It is distinct from source review, CAM corpus-gap or repair assessment, later interpretive review, repair and learning provenance. New failure modes must declare it explicitly. Historical attribution may use the approved creation-date rule, but a later reviewer must never replace the original diagnostic collaborator.",
       "historical_diagnostic_model_attribution": {
         "2026-04-23_through_2026-07-08": "OpenAI GPT-5.5",
         "2026-07-09_onward": "OpenAI GPT-5.6 Sol",
@@ -312,7 +312,6 @@
         "jurisdictional_context",
         "taxonomy_classification",
         "linked_records",
-        "cam_internal",
         "legacy_provenance",
         "diagnostic_provenance",
         "interpretive_provenance"
@@ -320,7 +319,12 @@
       "forbidden_top_level_fields": [
         "evidence_confidence",
         "evidence_statuses",
-        "preferred_evidence_status"
+        "preferred_evidence_status",
+        "corpus_coverage",
+        "repair_status",
+        "remaining_gaps",
+        "proposal_needed",
+        "patch_note_needed"
       ],
       "identity_rule": "The immutable VIGIL-INC-NNNNNN identity and plain-English historical event title identify the occurrence. Event dates belong in incident_identity and never in the canonical ID.",
       "interpretation_rule": "summary and vigil_assessment.factual_basis preserve the historical account; vigil_assessment.governance_interpretation preserves VIGIL analysis; taxonomy_classification preserves reusable class mappings; provenance fields preserve review authority and limitations.",
@@ -371,10 +375,20 @@
         "failure_classification",
         "triage",
         "triage_history",
-        "repair_status",
-        "ecosystem_status",
-        "corpus_coverage"
+        "ecosystem_status"
       ],
+      "repair_layer_boundary": "An Incident preserves historical evidence, occurrence-level diagnosis and taxonomy classification. Current CAM corpus coverage, gap, proposal, patch, repair and implementation state are downstream mutable assessments and must not be authored as Incident-native fields. cam_internal is optional and, when present on an Incident, is limited to bounded diagnostic context that does not assess CAM corpus coverage or repair state. Historical repair material may remain only inside explicitly bounded legacy or migration provenance and must not be projected as current Incident state.",
+      "incident_cam_internal_allowed_fields": [
+        "governance_layer",
+        "routing_note",
+        "cam_relevance",
+        "cam_failure_type",
+        "cam_observed_failure",
+        "cam_internal_failure_statement",
+        "cam_expected_control",
+        "cam_compliance_status"
+      ],
+      "incident_cam_internal_forbidden_semantics": "Incident cam_internal may preserve a neutral governance-layer label, occurrence/taxonomy boundary note, or bounded CAM diagnostic statement. It must not contain affected/related CAM instrument routing, corpus coverage, remaining gaps, proposal or patch need/linkage, recommended CAM amendments, repair or implementation state, or validator/automation impact.",
       "severity_assessment_required_fields": [
         "severity",
         "assessment_status",
@@ -679,8 +693,7 @@
         "record_identity",
         "summary",
         "source_records",
-        "linked_records",
-        "cam_internal"
+        "linked_records"
       ]
     },
     "source_residence": {
@@ -865,9 +878,8 @@
     }
   },
   "cam_internal_rules": {
-    "description": "cam_internal describes CAM routing, targets, affected areas, or changed components.",
+    "description": "For observations, failure modes, proposals and patches, cam_internal describes CAM routing, targets, affected areas, or changed components. On Incidents it is optional and narrowed to bounded diagnostic context that cannot encode current CAM corpus coverage or repair state.",
     "record_type_preferred_instrument_fields": {
-      "incident": "affected_instruments",
       "observation": "related_or_similar_instruments",
       "failure_mode": "affected_instruments",
       "proposal": "target_instruments",
@@ -926,7 +938,7 @@
     }
   },
   "linked_records_rules": {
-    "standards": "linked_records.standards is reserved for external standards, laws, regulatory instruments, technical standards, and external governance references. CAM instrument IDs such as CAM-BS* and CAM-EQ* belong in cam_internal routing fields, using related/similar for observations, affected for failure modes, target for proposals, and changed for patches.",
+    "standards": "linked_records.standards is reserved for external standards, laws, regulatory instruments, technical standards, and external governance references. CAM instrument IDs such as CAM-BS* and CAM-EQ* belong in downstream CAM assessment or in cam_internal routing fields on record classes that retain that repair-layer routing, using related/similar for observations, affected for failure modes, target for proposals, and changed for patches. Incidents do not carry current CAM routing.",
     "research": "linked_records.research contains VIGIL research artefact IDs. An evidence-to-repair chain may originate in an Observation, Research record, or both. Research is evidentiary and non-binding; authority arises only through the linked proposal and implemented PATCH.",
     "reciprocity": "Research front-matter links to observations, failure modes, proposals, or patch notes must be reciprocated by the target record in linked_records.research.",
     "repair_scope": "A proposal or PATCH has zero or one primary failure mode by default. A governance-origin or research-origin proposal may have none. Multiple resolved failure modes are an explicit exception requiring a rationale; a PATCH must also provide one verification result per resolved failure.",
