@@ -20,13 +20,12 @@ families/
 generated/
   one complete HTML page per family
   VIGIL.FailureTaxonomy.FullReference.html
-  VIGIL.Observatory.FailureTaxonomy.FullReference.pdf
 migration/
   Caelestis.LegacyFailure.MigrationLedger.json
   Caelestis.LegacyFailure.InventoryReview.md
 ```
 
-Family JSON is canonical. HTML, Markdown, and PDF references are generated projections. The migration ledger is non-normative source-analysis evidence and is not a dependency of the portable taxonomy.
+Family JSON is canonical. HTML and Markdown references are generated projections. The migration ledger is non-normative source-analysis evidence and is not a dependency of the portable taxonomy.
 
 `generated/VIGIL.FailureTaxonomy.CaseFileExamples.json` is a non-normative reverse mapping derived from canonical Incident `taxonomy_classification` blocks. It lets public interfaces discover Case File examples for immutable family and class IDs without embedding incident-specific record IDs in portable taxonomy definitions. Each projected example declares whether the mapping is the Incident's primary structural mechanism or an independently evidenced secondary mechanism. Unclassified Incidents remain valid registry records but do not enter this classification projection until a primary classification exists.
 
@@ -91,7 +90,7 @@ Definitions must not contain incident-specific values. Severity, harm, persisten
 
 ## Dataset and publication versioning
 
-The version in `VIGIL.FailureTaxonomy.Index.json` is the version of the complete downloadable taxonomy dataset and Full Reference Manual. It is distinct from the version of an individual family record and from the historical taxonomy version recorded on a Failure Mode classification decision.
+The version in `VIGIL.FailureTaxonomy.Index.json` is the version of the complete downloadable taxonomy dataset and Full Reference Manual. It is distinct from the version of an individual family record and from the historical taxonomy version recorded on a prior classification decision.
 
 Dataset releases follow these rules:
 
@@ -99,7 +98,7 @@ Dataset releases follow these rules:
 - admission of a new failure family increments the second digit and resets the third digit to zero;
 - the first digit is reserved for a deliberately approved, materially incompatible re-foundation of the taxonomy and is never inferred from routine record maintenance;
 - every dataset release records a fixed ISO `publication_date`; generation must not substitute the current clock date;
-- historical Failure Mode classification stamps remain unchanged unless the mappings are substantively re-adjudicated.
+- historical classification stamps remain unchanged unless the mappings are substantively re-adjudicated.
 
 The index `release_history` records the canonical family/class content digest, family-ID set, class count, change level, dataset version, and publication date. Taxonomy validation rejects changed canonical family/class content unless the release history, dataset version, and publication date have been advanced consistently. It also rejects a patch increment for a newly admitted family and a minor increment for an ordinary existing-record change.
 
@@ -119,19 +118,9 @@ python vigil/taxonomy/render_taxonomy.py \
   --output-dir vigil/taxonomy/generated
 ```
 
-Generate the HTML catalogue and the downloadable VIGIL Observatory Full Reference PDF:
+HTML publications are deterministic projections of the canonical family JSON. They are generated rather than hand-edited. The publication workflow validates the taxonomy contract, rebuilds the Incident-backed Case File projection, applies evidence exclusions, regenerates HTML, and verifies that the Full Reference HTML is non-empty. On `main`, the workflow commits refreshed HTML outputs. Pull requests validate regeneration without requiring generated publication files to be pre-committed on the branch.
 
-```bash
-python -m pip install weasyprint==69.0
-python vigil/taxonomy/render_taxonomy.py \
-  --catalogue \
-  --output-dir vigil/taxonomy/generated \
-  --pdf
-```
-
-The PDF is a publication projection of the same canonical family JSON used by the HTML renderer. It is intentionally generated rather than hand-edited. The current publication layer supplies stable front matter, dataset version, fixed edition date, status metadata, family/class pagination, a contents section, page numbering, and publication-rights text; visual branding and cover artwork may be evolved without changing the underlying taxonomy contract. Registry-sourced CAM header and footer images are pinned under `assets/` so publication generation does not depend on live network retrieval. The renderer defaults `SOURCE_DATE_EPOCH` to `0` for reproducible embedded-font timestamps; a publication environment may override it with another fixed epoch.
-
-`.github/workflows/taxonomy-publications.yml` automatically rebuilds the HTML and PDF projections when the taxonomy index, family/class definitions, Incident-backed Case File example projection, Incident records, projection builder, or renderer changes. The PDF is a retained, ongoing publication asset: after validation it remains in `vigil/taxonomy/generated/` and is committed alongside the HTML outputs. The workflow rejects missing, empty, or non-PDF publication output before commit.
+The repository no longer maintains a PDF publication contract. PDF rendering may remain available as an optional local renderer capability, but PDF artefacts are not a required, validated, or automatically committed publication surface.
 
 Generate one Markdown family reference when needed:
 
