@@ -32,7 +32,6 @@ class TaxonomyClassificationTests(unittest.TestCase):
             json.loads(path.read_text(encoding="utf-8"))
             for path in sorted((VIGIL / "records" / "incidents").glob("*.json"))
         ]
-        cls.failures_index = json.loads((VIGIL / "VIGIL.Failures.Index.json").read_text(encoding="utf-8"))
         cls.registry_index = json.loads((VIGIL / "VIGIL.Registry.Index.json").read_text(encoding="utf-8"))
 
     def test_every_canonical_failure_has_explicit_outcome(self):
@@ -212,34 +211,9 @@ class TaxonomyClassificationTests(unittest.TestCase):
         validator.validate_taxonomy_classification(Path("test.json"), record, errors)
         self.assertTrue(any("does not belong" in error for error in errors), errors)
 
-    def test_generated_summaries_match_canonical_records(self):
-        canonical = {r["id"]: r["taxonomy_classification"] for r in self.records}
-        for index in (self.failures_index, self.registry_index):
-            for entry in index["records"]:
-                if entry.get("record_type") != "failure_mode":
-                    continue
-                block = canonical[entry["id"]]
-                family = block.get("primary_family", {})
-                klass = block.get("primary_class", {})
-                expected = {
-                    "taxonomy_version": block["taxonomy_version"],
-                    "classification_status": block["classification_status"],
-                    "family_id": family.get("family_id", ""), "family_name": family.get("family_name", ""),
-                    "class_id": klass.get("class_id", ""), "class_name": klass.get("class_name", ""),
-                    "abstraction": klass.get("abstraction", ""),
-                }
-                secondary_summaries = []
-                for secondary in block.get("secondary_classifications", []):
-                    secondary_summaries.append({
-                        "family_id": secondary["family"]["family_id"],
-                        "family_name": secondary["family"]["family_name"],
-                        "class_id": secondary["class"]["class_id"],
-                        "class_name": secondary["class"]["class_name"],
-                        "abstraction": secondary["class"]["abstraction"],
-                    })
-                if secondary_summaries:
-                    expected["secondary_classifications"] = secondary_summaries
-                self.assertEqual(entry["taxonomy_classification_summary"], {k: v for k, v in expected.items() if v})
+    def test_retired_failure_mode_index_is_not_reintroduced(self):
+        self.assertFalse((VIGIL / "VIGIL.Failures.Index.json").exists())
+        self.assertFalse(any(entry.get("record_type") == "failure_mode" for entry in self.registry_index["records"]))
 
     def test_reverse_mapping_contains_only_canonical_classifications(self):
         projection = json.loads((VIGIL / "taxonomy" / "generated" / "VIGIL.FailureTaxonomy.CaseFileExamples.json").read_text(encoding="utf-8"))
@@ -341,13 +315,15 @@ class TaxonomyClassificationTests(unittest.TestCase):
 
     def test_deterministic_regeneration_is_byte_stable(self):
         targets = [
-            VIGIL / "VIGIL.Failures.Index.json",
+            VIGIL / "VIGIL.Incidents.Index.json",
             VIGIL / "VIGIL.Registry.Index.json",
             VIGIL / "taxonomy" / "generated" / "VIGIL.FailureTaxonomy.CaseFileExamples.json",
         ]
-        subprocess.run(["python", str(VIGIL / "scripts" / "build-vigil-records.py")], cwd=ROOT, check=True, capture_output=True, text=True)
+        subprocess.run(["python", str(VIGIL / "scripts" / "build-vigil-public-records.py")], cwd=ROOT, check=True, capture_output=True, text=True)
+        subprocess.run(["python", str(VIGIL / "scripts" / "enrich-vigil-indexes.py")], cwd=ROOT, check=True, capture_output=True, text=True)
         first = {path: path.read_bytes() for path in targets}
-        subprocess.run(["python", str(VIGIL / "scripts" / "build-vigil-records.py")], cwd=ROOT, check=True, capture_output=True, text=True)
+        subprocess.run(["python", str(VIGIL / "scripts" / "build-vigil-public-records.py")], cwd=ROOT, check=True, capture_output=True, text=True)
+        subprocess.run(["python", str(VIGIL / "scripts" / "enrich-vigil-indexes.py")], cwd=ROOT, check=True, capture_output=True, text=True)
         self.assertEqual(first, {path: path.read_bytes() for path in targets})
 
 
