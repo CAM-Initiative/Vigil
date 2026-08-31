@@ -36,7 +36,7 @@ class TaxonomyClassificationTests(unittest.TestCase):
         cls.registry_index = json.loads((VIGIL / "VIGIL.Registry.Index.json").read_text(encoding="utf-8"))
 
     def test_every_canonical_failure_has_explicit_outcome(self):
-        self.assertEqual(len(self.records), 72)
+        self.assertEqual(len(self.records), 74)
         allowed = {"classified", "family-only", "candidate-new-class", "unmapped", "deferred"}
         self.assertTrue(all(r["taxonomy_classification"]["classification_status"] in allowed for r in self.records))
 
@@ -102,6 +102,25 @@ class TaxonomyClassificationTests(unittest.TestCase):
         validator.validate_taxonomy_classification(Path("duplicate-secondary.json"), record, errors)
         self.assertTrue(any("duplicates a secondary class" in error for error in errors), errors)
 
+    def test_retired_subtype_cannot_duplicate_canonical_parent(self):
+        record = copy.deepcopy(next(r for r in self.records if r["id"] == "VIGIL-2026-FM-0036"))
+        block = record["taxonomy_classification"]
+        block["secondary_classifications"] = [{
+            "family": copy.deepcopy(block["primary_family"]),
+            "class": {
+                "class_id": "VIGIL-FC-000008",
+                "class_code": "DELEGATION_SCOPE_EXPANSION",
+                "class_name": "Delegation Scope Expansion",
+                "abstraction": "variant",
+            },
+            "classification_basis": "Invalid duplicate-subtype regression fixture.",
+            "classification_confidence": block["classification_confidence"],
+        }]
+        errors = []
+        validator.validate_taxonomy_classification(Path("retired-subtype.json"), record, errors)
+        self.assertTrue(any("uses retired subtype VIGIL-FC-000008" in error for error in errors), errors)
+        self.assertTrue(any("duplicates one mechanism" in error for error in errors), errors)
+
     def test_secondary_cannot_replace_primary(self):
         record = copy.deepcopy(next(r for r in self.records if r["id"] == "VIGIL-2026-FM-0062"))
         block = record["taxonomy_classification"]
@@ -140,10 +159,23 @@ class TaxonomyClassificationTests(unittest.TestCase):
 
     def test_classification_ledger_class_ids_resolve(self):
         _, classes = validator.taxonomy_catalogue()
-        ledger = json.loads((VIGIL / "taxonomy" / "migration" / "VIGIL.FailureMode.TaxonomyClassificationLedger.json").read_text(encoding="utf-8"))
+        retired = validator.retired_taxonomy_class_successors()
+        ledger = json.loads(
+            (
+                VIGIL
+                / "docs"
+                / "audits"
+                / "taxonomy"
+                / "migration"
+                / "VIGIL.FailureMode.TaxonomyClassificationLedger.json"
+            ).read_text(encoding="utf-8")
+        )
         for entry in ledger["entries"]:
             if entry["class_id"]:
-                self.assertIn(entry["class_id"], classes, entry["failure_mode_id"])
+                self.assertTrue(
+                    entry["class_id"] in classes or entry["class_id"] in retired,
+                    entry["failure_mode_id"],
+                )
 
     def test_evidence_accessibility_family_only_records_are_reconciled(self):
         expected = {

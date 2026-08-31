@@ -79,16 +79,25 @@ class TaxonomyReleaseModeTests(unittest.TestCase):
     def test_main_release_preparation_bumps_once_for_whole_tranche(self):
         index_before = json.loads(PREP.INDEX_PATH.read_text(encoding="utf-8"))
         previous = index_before["release_history"][-1]["version"]
-        parsed = VALIDATOR.parse_version(previous)
-        self.assertIsNotNone(parsed)
-        major, minor, patch, draft = parsed
-        expected = f"{major}.{minor}.{patch + 1}{'-draft' if draft else ''}"
+        previous_families = set(index_before["release_history"][-1]["family_ids"])
+        current_families = {
+            json.loads(path.read_text(encoding="utf-8"))["family"]["family_id"] for path in self.paths()
+        }
+        expected, expected_level = PREP.next_release_version(previous, previous_families, current_families)
 
         self.mutate_family_content()
         self.assertTrue(PREP.prepare_release("2026-08-31"))
         index_after = json.loads(PREP.INDEX_PATH.read_text(encoding="utf-8"))
         self.assertEqual(index_after["standard"]["version"], expected)
+        self.assertEqual(index_after["release_history"][-1]["change_level"], expected_level)
         self.assertEqual(len(index_after["release_history"]), len(index_before["release_history"]) + 1)
+        self.assertTrue(
+            all(
+                mapping["retirement_release_status"] == "published"
+                and mapping["retired_in_version"] == expected
+                for mapping in index_after["retired_class_mappings"]
+            )
+        )
 
         self.assertFalse(PREP.prepare_release("2026-08-31"))
         index_second = json.loads(PREP.INDEX_PATH.read_text(encoding="utf-8"))

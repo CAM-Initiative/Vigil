@@ -17,6 +17,7 @@ families/
   VIGIL-FF-0007-governance-control-reach-integrity.json
   VIGIL-FF-0008-control-activation-integrity.json
   VIGIL-FF-0009-agency-preserving-influence-integrity.json
+  VIGIL-FF-0010-infrastructural-authority-integrity.json
 generated/
   VIGIL.FailureTaxonomy.CaseFileExamples.json
   VIGIL.Observatory.FailureTaxonomy.FullReference.pdf
@@ -41,9 +42,9 @@ Broad organisational containers such as governance, UX, safety, security, or AI-
 
 The hierarchy is:
 
-**Failure Taxonomy → Failure Family → Failure Class → Variant where justified**
+**Failure Taxonomy → Failure Family → selectable Failure Class → non-selectable subtype or recognition pattern where justified**
 
-One JSON file contains one bounded family. Classes and variants remain inside that file.
+One JSON file contains one bounded family. Selectable classes remain peer records in `classes`. A narrower manifestation of the same mechanism is embedded under its canonical class in `subtypes`; it is not independently selectable and does not appear in the family's allowed-class lists.
 
 ## Immutable identity and semantic codes
 
@@ -74,7 +75,7 @@ Family filenames use `<family_id>-<human-readable-slug>.json`. The immutable ID 
 
 Every family defines its immutable ID, semantic code, canonical name, version, status, abstraction, plain-English explanation, technical definition, governing invariant, scope, inclusion rule, exclusion rule, aliases, and allowed class IDs/codes.
 
-Every class or variant defines its immutable ID, semantic code, current family ID, canonical name, abstraction, status, plain-English explanation, technical definition, recognition criteria, exclusions, examples, aliases, typed relationships where relevant, and optional external mappings or supersession metadata.
+Every selectable class defines its immutable ID, semantic code, current family ID, canonical name, class abstraction, status, plain-English explanation, technical definition, recognition criteria, exclusions, examples, aliases, typed relationships where relevant, and optional external mappings or supersession metadata. An embedded subtype preserves its semantic name, explanation, definition, recognition criteria, exclusions, examples, aliases and any historical retired class ID/code without becoming a peer class.
 
 ### Semantic roles of family prose
 
@@ -104,9 +105,9 @@ The index `release_history` records the canonical family/class content digest, f
 
 ## Relationships
 
-Supported relationship types are `child_of`, `parent_of`, `peer_of`, `distinguish_from`, `can_cooccur_with`, `may_result_in`, and `may_be_result_of`. Targets use `VIGIL-FC-NNNNNN`, never a mutable compound semantic path.
+Supported peer-class relationship types are `peer_of`, `distinguish_from`, `can_cooccur_with`, `may_result_in`, and `may_be_result_of`. Targets use current selectable `VIGIL-FC-NNNNNN` identifiers, never a mutable compound semantic path or a retired subtype ID.
 
-A variant has exactly one in-family class parent. Definitions are not duplicated merely to express co-occurrence or distinction.
+A subtype is nested directly under exactly one canonical class and cannot be emitted as an independent primary or secondary classification. Current peer classes use relationships only for genuine distinction, co-occurrence or directional effects; a narrower manifestation is not modeled as a `child_of` peer.
 
 ## Generation
 
@@ -146,7 +147,7 @@ Run catalogue-wide schema and integrity validation:
 python vigil/taxonomy/validate_taxonomy.py
 ```
 
-The validator checks every family against the JSON Schema and enforces duplicate-ID/code detection, family membership, variant parentage, relationship targets, duplicate relationships, allowed-list drift, index/file agreement, filename identity, removed-ID references, mandatory descriptions, same-kind supersession, and supersession-chain integrity.
+The validator checks every family against the JSON Schema and enforces duplicate-ID/code detection, family membership, selectable-class abstraction, non-selectable subtype ownership, deterministic retired-ID successor mappings, current relationship targets, duplicate relationships, allowed-list drift, index/file agreement, filename identity, removed-ID reservation, mandatory descriptions, same-kind supersession, and supersession-chain integrity.
 
 ## Portability
 

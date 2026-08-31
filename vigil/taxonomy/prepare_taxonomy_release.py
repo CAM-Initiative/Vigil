@@ -85,6 +85,10 @@ def prepare_release(publication_date: str) -> bool:
     releases.append(release)
     index["standard"]["version"] = new_version
     index["standard"]["publication_date"] = publication_date
+    for mapping in index.get("retired_class_mappings", []):
+        if isinstance(mapping, dict) and mapping.get("retirement_release_status") == "pending-main-publication":
+            mapping["retirement_release_status"] = "published"
+            mapping["retired_in_version"] = new_version
     write_json(INDEX_PATH, index)
 
     for path, data in loaded:

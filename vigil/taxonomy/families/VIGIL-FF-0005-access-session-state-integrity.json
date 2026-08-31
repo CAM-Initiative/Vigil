@@ -13,7 +13,7 @@
     "name": "Access & Session State Integrity Failures",
     "status": "draft",
     "abstraction": "family",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "plain_english": "An authentication, verification, access, or session transition leaves effective access inconsistent, unclear, inaccurately represented, or practically unavailable without a proportionate fallback.",
     "definition": "Failures in which effective authentication, access, entitlement, or session state becomes unsynchronised, indistinguishable, inaccurately represented, or practically unavailable across expiry, revocation, re-entry, refresh, recovery, dependent verification, or another access-state transition, including where incomplete verification has no proportionate route that preserves an otherwise valid or unresolved access state.",
     "invariant": "Effective access and session state must remain synchronised, distinguishable, accurately represented, and practically maintainable across authentication, verification-dependency, and access transitions; an incomplete dependency must not erase otherwise valid or unresolved access when a proportionate fallback is required.",
@@ -31,13 +31,11 @@
     "allowed_class_ids": [
       "VIGIL-FC-000031",
       "VIGIL-FC-000032",
-      "VIGIL-FC-000033",
       "VIGIL-FC-000048"
     ],
     "allowed_class_codes": [
       "AUTHENTICATION_STATE_CONTINUITY_FAILURE",
       "ACCESS_STATE_COLLAPSE",
-      "REENTRY_ACCESS_STATE_AMBIGUITY",
       "VERIFICATION_DEPENDENCY_ACCESS_FAILURE"
     ]
   },
@@ -108,46 +106,33 @@
           "note": "A failed authentication transition can also collapse distinct access-state causes, but neither mechanism requires the other."
         }
       ],
-      "aliases": []
-    },
-    {
-      "class_id": "VIGIL-FC-000033",
-      "class_code": "REENTRY_ACCESS_STATE_AMBIGUITY",
-      "family_id": "VIGIL-FF-0005",
-      "name": "Re-entry Access-State Ambiguity",
-      "status": "draft",
-      "abstraction": "variant",
-      "plain_english": "After returning to an interrupted session or account, it is unclear what access has actually been restored.",
-      "definition": "An access-state-collapse variant in which return, recovery, relaunch, or re-entry presents an ambiguous mixture of restored, expired, restricted, or unavailable access without making the effective post-transition state distinguishable.",
-      "recognition": {
-        "required_conditions": [
-          "A user or system re-enters after interruption, recovery, relaunch, or an access transition.",
-          "The post-entry surface does not distinguish materially different restored and unavailable access states.",
-          "The ambiguity impairs safe resumption or selection of the correct recovery path."
-        ]
-      },
-      "exclusions": [
-        "Re-entry accurately presents which capabilities were restored and which require renewed access.",
-        "The only failure is loss of work content despite an accurate access state.",
-        "The actor has clear access but lacks authority for the intended operation."
-      ],
-      "examples": [
-        "After reauthentication, an AI workspace displays an earlier conversation but does not show that connected-service access was not restored.",
-        "A recovered account returns to an apparently active agent session while its external tool grants remain unresolved."
-      ],
-      "relationships": [
+      "aliases": [],
+      "subtypes": [
         {
-          "type": "child_of",
-          "target_id": "VIGIL-FC-000032",
-          "note": "The distinguishing condition is access-state collapse specifically at re-entry or recovery."
-        },
-        {
-          "type": "distinguish_from",
-          "target_id": "VIGIL-FC-000035",
-          "note": "Re-entry access ambiguity concerns effective access; work-state persistence failure concerns whether material work survives."
+          "name": "Re-entry Access-State Ambiguity",
+          "plain_english": "After returning to an interrupted session or account, it is unclear what access has actually been restored.",
+          "definition": "An access-state-collapse variant in which return, recovery, relaunch, or re-entry presents an ambiguous mixture of restored, expired, restricted, or unavailable access without making the effective post-transition state distinguishable.",
+          "recognition": {
+            "required_conditions": [
+              "A user or system re-enters after interruption, recovery, relaunch, or an access transition.",
+              "The post-entry surface does not distinguish materially different restored and unavailable access states.",
+              "The ambiguity impairs safe resumption or selection of the correct recovery path."
+            ]
+          },
+          "exclusions": [
+            "Re-entry accurately presents which capabilities were restored and which require renewed access.",
+            "The only failure is loss of work content despite an accurate access state.",
+            "The actor has clear access but lacks authority for the intended operation."
+          ],
+          "examples": [
+            "After reauthentication, an AI workspace displays an earlier conversation but does not show that connected-service access was not restored.",
+            "A recovered account returns to an apparently active agent session while its external tool grants remain unresolved."
+          ],
+          "aliases": [],
+          "historical_class_id": "VIGIL-FC-000033",
+          "historical_class_code": "REENTRY_ACCESS_STATE_AMBIGUITY"
         }
-      ],
-      "aliases": []
+      ]
     },
     {
       "class_id": "VIGIL-FC-000048",

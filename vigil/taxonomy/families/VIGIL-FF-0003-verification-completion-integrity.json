@@ -13,7 +13,7 @@
     "name": "Verification & Completion Integrity Failures",
     "status": "draft",
     "abstraction": "family",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "plain_english": "The system says work is done, correct, or verified when the required completion condition or check has not actually been satisfied.",
     "definition": "Failures in which completion, success, correctness, verification, or readiness is asserted, reused, or propagated inconsistently with the externally relevant completion condition, verification scope, checked state, or post-verification output state.",
     "invariant": "A completion or verification claim must remain bound to the condition that was actually satisfied, the scope that was actually checked, and the state that was actually verified.",
@@ -36,18 +36,14 @@
       "VIGIL-FC-000017",
       "VIGIL-FC-000018",
       "VIGIL-FC-000019",
-      "VIGIL-FC-000020",
-      "VIGIL-FC-000021",
-      "VIGIL-FC-000028"
+      "VIGIL-FC-000020"
     ],
     "allowed_class_codes": [
       "VERIFICATION_OMISSION",
       "FALSE_SUCCESS",
       "COMPLETION_CONDITION_MISMATCH",
       "POST_VERIFICATION_MUTATION",
-      "STALE_VERIFICATION_REUSE",
-      "PARTIAL_COMPLETION_AS_COMPLETE",
-      "DETERMINISTIC_VERIFICATION_DECOMPOSITION_OMISSION"
+      "STALE_VERIFICATION_REUSE"
     ]
   },
   "classes": [
@@ -78,6 +74,34 @@
       ],
       "aliases": [
         "VIGIL.FF.VERIFICATION_COMPLETION.VERIFICATION_OMISSION"
+      ],
+      "subtypes": [
+        {
+          "name": "Deterministic Verification Decomposition Omission",
+          "plain_english": "A result that could be checked by breaking it into exact parts is asserted without performing that check.",
+          "definition": "A required-verification-omission variant in which a deterministic claim can and should be verified through explicit decomposition into countable, comparable, or otherwise mechanically checkable components, but that decomposition is omitted before the claim is represented as verified or exact.",
+          "recognition": {
+            "required_conditions": [
+              "The claim concerns a result that is deterministically checkable through explicit decomposition.",
+              "The required decomposition or equivalent exact check is not performed.",
+              "The result is nevertheless represented as exact, verified, or suitable for exact reliance."
+            ]
+          },
+          "exclusions": [
+            "The result is verified through an equivalent deterministic method.",
+            "The claim is clearly approximate and exact verification is not required.",
+            "The available check is probabilistic or judgement-based rather than deterministic decomposition."
+          ],
+          "examples": [
+            "A model supplies an exact character count without enumerating or mechanically counting the characters.",
+            "An agent asserts that two structured lists match exactly without comparing their elements."
+          ],
+          "aliases": [
+            "VIGIL.FF.EXECUTION.DETERMINISTIC_ORTHOGRAPHIC_VERIFICATION"
+          ],
+          "historical_class_id": "VIGIL-FC-000028",
+          "historical_class_code": "DETERMINISTIC_VERIFICATION_DECOMPOSITION_OMISSION"
+        }
       ]
     },
     {
@@ -109,6 +133,34 @@
         "VIGIL.FF.VERIFICATION_COMPLETION.FALSE_SUCCESS",
         "false completion claim",
         "phantom success"
+      ],
+      "subtypes": [
+        {
+          "name": "Partial Completion Represented as Complete",
+          "plain_english": "Part of the job is finished, but the system reports the whole job as finished.",
+          "definition": "A false-success variant in which one or more required task components, targets, records, files, agents, delivery steps, or verification stages remain incomplete while the aggregate task is represented as complete.",
+          "recognition": {
+            "required_conditions": [
+              "The task contains multiple required components, targets, stages, or deliverables.",
+              "At least one required component remains incomplete or unresolved.",
+              "The aggregate task is represented as complete rather than partially complete."
+            ]
+          },
+          "exclusions": [
+            "The omitted component was optional or explicitly removed from scope.",
+            "The system accurately reports partial completion and identifies the remainder.",
+            "The completed component is itself the entire agreed task."
+          ],
+          "examples": [
+            "An agent updates four of five requested files and reports that all requested changes are complete.",
+            "A multi-agent workflow returns one successful sub-agent result while another required subtask failed silently."
+          ],
+          "aliases": [
+            "VIGIL.FF.VERIFICATION_COMPLETION.PARTIAL_COMPLETION_AS_COMPLETE"
+          ],
+          "historical_class_id": "VIGIL-FC-000021",
+          "historical_class_code": "PARTIAL_COMPLETION_AS_COMPLETE"
+        }
       ]
     },
     {
@@ -196,78 +248,6 @@
       ],
       "aliases": [
         "VIGIL.FF.VERIFICATION_COMPLETION.STALE_VERIFICATION_REUSE"
-      ]
-    },
-    {
-      "class_id": "VIGIL-FC-000021",
-      "class_code": "PARTIAL_COMPLETION_AS_COMPLETE",
-      "family_id": "VIGIL-FF-0003",
-      "name": "Partial Completion Represented as Complete",
-      "status": "draft",
-      "abstraction": "variant",
-      "plain_english": "Part of the job is finished, but the system reports the whole job as finished.",
-      "definition": "A false-success variant in which one or more required task components, targets, records, files, agents, delivery steps, or verification stages remain incomplete while the aggregate task is represented as complete.",
-      "recognition": {
-        "required_conditions": [
-          "The task contains multiple required components, targets, stages, or deliverables.",
-          "At least one required component remains incomplete or unresolved.",
-          "The aggregate task is represented as complete rather than partially complete."
-        ]
-      },
-      "exclusions": [
-        "The omitted component was optional or explicitly removed from scope.",
-        "The system accurately reports partial completion and identifies the remainder.",
-        "The completed component is itself the entire agreed task."
-      ],
-      "examples": [
-        "An agent updates four of five requested files and reports that all requested changes are complete.",
-        "A multi-agent workflow returns one successful sub-agent result while another required subtask failed silently."
-      ],
-      "relationships": [
-        {
-          "type": "child_of",
-          "note": "The distinguishing feature is an incomplete aggregate task with a completed subset.",
-          "target_id": "VIGIL-FC-000017"
-        }
-      ],
-      "aliases": [
-        "VIGIL.FF.VERIFICATION_COMPLETION.PARTIAL_COMPLETION_AS_COMPLETE"
-      ]
-    },
-    {
-      "class_id": "VIGIL-FC-000028",
-      "class_code": "DETERMINISTIC_VERIFICATION_DECOMPOSITION_OMISSION",
-      "family_id": "VIGIL-FF-0003",
-      "name": "Deterministic Verification Decomposition Omission",
-      "status": "draft",
-      "abstraction": "variant",
-      "plain_english": "A result that could be checked by breaking it into exact parts is asserted without performing that check.",
-      "definition": "A required-verification-omission variant in which a deterministic claim can and should be verified through explicit decomposition into countable, comparable, or otherwise mechanically checkable components, but that decomposition is omitted before the claim is represented as verified or exact.",
-      "recognition": {
-        "required_conditions": [
-          "The claim concerns a result that is deterministically checkable through explicit decomposition.",
-          "The required decomposition or equivalent exact check is not performed.",
-          "The result is nevertheless represented as exact, verified, or suitable for exact reliance."
-        ]
-      },
-      "exclusions": [
-        "The result is verified through an equivalent deterministic method.",
-        "The claim is clearly approximate and exact verification is not required.",
-        "The available check is probabilistic or judgement-based rather than deterministic decomposition."
-      ],
-      "examples": [
-        "A model supplies an exact character count without enumerating or mechanically counting the characters.",
-        "An agent asserts that two structured lists match exactly without comparing their elements."
-      ],
-      "relationships": [
-        {
-          "type": "child_of",
-          "target_id": "VIGIL-FC-000016",
-          "note": "The distinguishing condition is omission of an available deterministic decomposition check."
-        }
-      ],
-      "aliases": [
-        "VIGIL.FF.EXECUTION.DETERMINISTIC_ORTHOGRAPHIC_VERIFICATION"
       ]
     }
   ]

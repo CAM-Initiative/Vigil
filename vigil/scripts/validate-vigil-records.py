@@ -1307,6 +1307,35 @@ def taxonomy_catalogue() -> tuple[dict[str, dict[str, Any]], dict[str, dict[str,
     return families, classes
 
 
+def retired_taxonomy_class_successors() -> dict[str, str]:
+    index = load_json(TAXONOMY_INDEX_PATH)
+    rows = index.get("retired_class_mappings", []) if isinstance(index, dict) else []
+    return {
+        row["retired_id"]: row["successor_id"]
+        for row in rows
+        if isinstance(row, dict)
+        and isinstance(row.get("retired_id"), str)
+        and isinstance(row.get("successor_id"), str)
+    }
+
+
+def validate_no_retired_subtype_duplication(
+    path: Path, class_ids: list[Any], errors: list[str], *, label: str
+) -> None:
+    successors = retired_taxonomy_class_successors()
+    asserted = {class_id for class_id in class_ids if isinstance(class_id, str)}
+    for retired_id in sorted(asserted & successors.keys()):
+        successor_id = successors[retired_id]
+        errors.append(
+            f"{path}: {label} uses retired subtype {retired_id}; use canonical successor {successor_id}"
+        )
+        if successor_id in asserted:
+            errors.append(
+                f"{path}: {label} duplicates one mechanism as retired subtype {retired_id} "
+                f"and canonical parent {successor_id}"
+            )
+
+
 def supported_taxonomy_versions() -> set[str]:
     index = load_json(TAXONOMY_INDEX_PATH)
     releases = index.get("release_history", []) if isinstance(index, dict) else []
@@ -1372,6 +1401,16 @@ def validate_taxonomy_classification(path: Path, record: dict[str, Any], errors:
     if secondaries and status != "classified":
         errors.append(f"{path}: secondary classifications cannot replace a missing primary classification")
     primary_class_id = klass.get("class_id") if isinstance(klass, dict) else None
+    validate_no_retired_subtype_duplication(
+        path,
+        [primary_class_id] + [
+            secondary.get("class", {}).get("class_id")
+            for secondary in secondaries
+            if isinstance(secondary, dict) and isinstance(secondary.get("class"), dict)
+        ],
+        errors,
+        label="taxonomy classification",
+    )
     seen_secondary_ids: set[str] = set()
     for number, secondary in enumerate(secondaries):
         secondary_where = f"{path}: taxonomy secondary_classifications[{number}]"
@@ -1472,6 +1511,12 @@ def validate_incident_taxonomy_classification(
 
     families, classes = taxonomy_catalogue()
     mappings = ([primary] if isinstance(primary, dict) else []) + secondaries
+    validate_no_retired_subtype_duplication(
+        path,
+        [mapping.get("class_id") for mapping in mappings if isinstance(mapping, dict)],
+        errors,
+        label="Incident taxonomy classification",
+    )
     seen: set[str] = set()
     for index, mapping in enumerate(mappings):
         where = (

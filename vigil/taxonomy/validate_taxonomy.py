@@ -18,7 +18,7 @@ INDEX_PATH = ROOT / "VIGIL.FailureTaxonomy.Index.json"
 FAMILIES_DIR = ROOT / "families"
 MIGRATION_LEDGER = ROOT / "migration" / "Caelestis.LegacyFailure.MigrationLedger.json"
 RELATION_TYPES = {
-    "child_of", "parent_of", "peer_of", "distinguish_from",
+    "peer_of", "distinguish_from",
     "can_cooccur_with", "may_result_in", "may_be_result_of",
 }
 MIGRATION_DISPOSITIONS = {
@@ -268,7 +268,9 @@ def schema_errors(value: Any, schema: dict, schema_root: dict, location: str = "
     return errors
 
 
-def validate_migration_ledger(family_ids: set[str], class_ids: set[str]) -> list[str]:
+def validate_migration_ledger(
+    family_ids: set[str], class_ids: set[str], historical_class_ids: set[str]
+) -> list[str]:
     errors: list[str] = []
     ledger, load_errors = load_json(MIGRATION_LEDGER)
     errors.extend(load_errors)
@@ -328,7 +330,7 @@ def validate_migration_ledger(family_ids: set[str], class_ids: set[str]) -> list
                 errors.append(f"{where}: unknown candidate family ID {family_candidate['family_id']}")
         class_candidate = item.get("candidate_class")
         if isinstance(class_candidate, dict) and "class_id" in class_candidate:
-            if class_candidate["class_id"] not in class_ids:
+            if class_candidate["class_id"] not in class_ids | historical_class_ids:
                 errors.append(f"{where}: unknown candidate class ID {class_candidate['class_id']}")
     decisions = ledger.get("taxonomy_03_decisions")
     if decisions is not None:
@@ -349,7 +351,7 @@ def validate_migration_ledger(family_ids: set[str], class_ids: set[str]) -> list
                 item_where = f"{where}.existing_family_additions[{number}]"
                 if item.get("family_id") not in family_ids:
                     errors.append(f"{item_where}: unknown family ID {item.get('family_id')}")
-                if item.get("class_id") not in class_ids:
+                if item.get("class_id") not in class_ids | historical_class_ids:
                     errors.append(f"{item_where}: unknown class ID {item.get('class_id')}")
                 if not item.get("evidence_entries"):
                     errors.append(f"{item_where}: evidence_entries must be non-empty")
@@ -503,10 +505,85 @@ def validate_catalogue(
     if not isinstance(removed, list) or len(removed) != len(set(removed)):
         errors.append(f"{INDEX_PATH}: removed_ids must be a unique array")
         removed = []
+    elif removed != sorted(removed):
+        errors.append(f"{INDEX_PATH}: removed_ids must be sorted")
     allocated_ids = set(family_by_id) | set(class_by_id)
     for removed_id in removed:
         if removed_id in allocated_ids:
             errors.append(f"{INDEX_PATH}: removed ID {removed_id} is still allocated")
+
+    retirement_rows = index.get("retired_class_mappings", [])
+    if not isinstance(retirement_rows, list):
+        errors.append(f"{INDEX_PATH}: retired_class_mappings must be an array")
+        retirement_rows = []
+    retirement_by_id: dict[str, dict] = {}
+    required_retirement_fields = {
+        "retired_id", "retired_code", "retired_name", "successor_id",
+        "disposition", "retirement_release_status",
+    }
+    for number, row in enumerate(retirement_rows):
+        where = f"{INDEX_PATH}: retired_class_mappings[{number}]"
+        if not isinstance(row, dict):
+            errors.append(f"{where} must be an object")
+            continue
+        missing = required_retirement_fields - row.keys()
+        if missing:
+            errors.append(f"{where} missing fields: {', '.join(sorted(missing))}")
+        retired_id = row.get("retired_id")
+        successor_id = row.get("successor_id")
+        if retired_id in retirement_by_id:
+            errors.append(f"{where}: duplicate retired_id {retired_id}")
+        elif isinstance(retired_id, str):
+            retirement_by_id[retired_id] = row
+        if retired_id not in removed:
+            errors.append(f"{where}: retired_id {retired_id!r} is absent from removed_ids")
+        if successor_id not in class_by_id:
+            errors.append(f"{where}: successor_id {successor_id!r} is not a selectable class")
+        if row.get("disposition") != "folded-as-non-selectable-subtype":
+            errors.append(f"{where}: unsupported retirement disposition {row.get('disposition')!r}")
+        release_status = row.get("retirement_release_status")
+        retired_in_version = row.get("retired_in_version")
+        if release_status == "pending-main-publication":
+            if retired_in_version is not None:
+                errors.append(f"{where}: pending retirement must not claim retired_in_version")
+            if enforce_current_release:
+                errors.append(f"{where}: published release cannot retain pending retirement metadata")
+        elif release_status == "published":
+            if parse_version(retired_in_version) is None:
+                errors.append(f"{where}: published retirement requires retired_in_version")
+            elif retired_in_version != index.get("standard", {}).get("version"):
+                errors.append(f"{where}: retired_in_version must equal the current published taxonomy version")
+        else:
+            errors.append(f"{where}: unsupported retirement_release_status {release_status!r}")
+    if set(retirement_by_id) != set(removed):
+        errors.append(f"{INDEX_PATH}: every removed ID must have exactly one retired_class_mappings entry")
+
+    subtype_owner: dict[str, str] = {}
+    for parent_id, (path, item) in class_by_id.items():
+        subtypes = item.get("subtypes", [])
+        if not isinstance(subtypes, list):
+            continue
+        for number, subtype in enumerate(subtypes):
+            if not isinstance(subtype, dict):
+                continue
+            historical_id = subtype.get("historical_class_id")
+            where = f"{path}: {parent_id}.subtypes[{number}]"
+            if historical_id in subtype_owner:
+                errors.append(f"{where}: historical class ID {historical_id} already belongs to {subtype_owner[historical_id]}")
+            elif isinstance(historical_id, str):
+                subtype_owner[historical_id] = parent_id
+            mapping = retirement_by_id.get(historical_id)
+            if mapping is None:
+                errors.append(f"{where}: historical class ID {historical_id!r} has no retirement mapping")
+                continue
+            if mapping.get("successor_id") != parent_id:
+                errors.append(f"{where}: retirement successor must be containing class {parent_id}")
+            if mapping.get("retired_code") != subtype.get("historical_class_code"):
+                errors.append(f"{where}: historical class code disagrees with retirement mapping")
+            if mapping.get("retired_name") != subtype.get("name"):
+                errors.append(f"{where}: historical class name disagrees with retirement mapping")
+    if set(subtype_owner) != set(removed):
+        errors.append(f"{INDEX_PATH}: every removed class ID must be preserved once as a non-selectable subtype")
 
     for path, item, relation in relation_rows:
         source_id = item.get("class_id")
@@ -522,21 +599,6 @@ def validate_catalogue(
         if target is None:
             errors.append(f"{path}: {source_id} references missing class {target_id!r}")
             continue
-        if relation_type == "child_of":
-            parent = target[1]
-            if item.get("abstraction") != "variant":
-                errors.append(f"{path}: only a variant may use child_of ({source_id})")
-            if parent.get("abstraction") != "class":
-                errors.append(f"{path}: variant parent {target_id} must be a class")
-            if parent.get("family_id") != item.get("family_id"):
-                errors.append(f"{path}: variant {source_id} cannot have a parent in another family")
-
-    for class_id, (path, item) in class_by_id.items():
-        if item.get("abstraction") == "variant":
-            parents = [r for r in item.get("relationships", []) if r.get("type") == "child_of"]
-            if len(parents) != 1:
-                errors.append(f"{path}: variant {class_id} must declare exactly one child_of relationship")
-
     errors.extend(
         validate_release_history(
             index,
@@ -575,7 +637,7 @@ def validate_catalogue(
             seen.add(current)
             current = supersession_targets[current]
 
-    errors.extend(validate_migration_ledger(set(family_by_id), set(class_by_id)))
+    errors.extend(validate_migration_ledger(set(family_by_id), set(class_by_id), set(removed)))
 
     return errors, sum(len(data.get("classes", [])) for _, data in loaded)
 
