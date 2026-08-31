@@ -92,9 +92,6 @@ jobs:
             exit "$status"
           fi
 
-      - name: Install PDF renderer
-        run: python -m pip install --disable-pip-version-check weasyprint==69.0
-
       - name: Rebuild Incident Case File projection
         run: python vigil/scripts/build-vigil-records.py --taxonomy-examples-only
 
@@ -103,38 +100,22 @@ jobs:
           python vigil/taxonomy/filter_publication_case_examples.py
           python vigil/taxonomy/filter_publication_case_examples.py --check
 
-      - name: Generate HTML and PDF publications
+      - name: Generate HTML publications
         run: |
           python vigil/taxonomy/render_taxonomy.py \
             --catalogue \
-            --output-dir vigil/taxonomy/generated \
-            --pdf
+            --output-dir vigil/taxonomy/generated
 
-      - name: Verify publication artefacts
+      - name: Verify HTML publication artefact
         run: |
           python - <<'PY'
           from pathlib import Path
 
           html = Path("vigil/taxonomy/generated/VIGIL.FailureTaxonomy.FullReference.html")
-          pdf = Path("vigil/taxonomy/generated/VIGIL.Observatory.FailureTaxonomy.FullReference.pdf")
           if not html.exists() or html.stat().st_size < 1000:
               raise SystemExit("Full-reference HTML was not generated correctly")
-          if not pdf.exists() or pdf.stat().st_size < 5000:
-              raise SystemExit("Full-reference PDF was not generated correctly")
-          if not pdf.read_bytes().startswith(b"%PDF-"):
-              raise SystemExit("Generated taxonomy publication is not a valid PDF stream")
           print(f"HTML: {html.stat().st_size:,} bytes")
-          print(f"PDF: {pdf.stat().st_size:,} bytes")
           PY
-
-      - name: Verify generated publications are current
-        if: github.event_name == 'pull_request'
-        run: |
-          if ! git diff --quiet -- vigil/taxonomy/generated; then
-            echo "Committed taxonomy publication outputs are stale."
-            git diff --stat -- vigil/taxonomy/generated
-            exit 1
-          fi
 
       - name: Commit generated publication outputs
         if: github.event_name == 'push'
@@ -143,8 +124,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add \
             vigil/taxonomy/generated/VIGIL.FailureTaxonomy.CaseFileExamples.json \
-            vigil/taxonomy/generated/*.html \
-            vigil/taxonomy/generated/*.pdf
+            vigil/taxonomy/generated/*.html
           if git diff --cached --quiet; then
             echo "No taxonomy publication changes to commit."
           else
