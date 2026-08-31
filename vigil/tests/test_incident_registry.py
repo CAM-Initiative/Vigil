@@ -34,7 +34,7 @@ class IncidentRegistryTest(unittest.TestCase):
         cls.by_legacy = {entry["legacy_id"]: entry for entry in cls.crosswalk["entries"]}
 
     def test_incident_ids_are_year_independent_and_unique(self):
-        self.assertEqual(len(self.incidents), 78)
+        self.assertEqual(len(self.incidents), 79)
         self.assertTrue(all(identifier.startswith("VIGIL-INC-") for identifier in self.incidents))
 
     def test_external_registry_array_may_be_empty_but_must_exist(self):
@@ -106,15 +106,16 @@ class IncidentRegistryTest(unittest.TestCase):
         self.assertTrue(all("failure_mode_id" not in item for item in examples))
         self.assertEqual(projection["generated_from"], ["vigil/records/incidents/"])
 
-    def test_taxonomy_publication_workflow_retains_pdf(self):
+    def test_taxonomy_publication_workflow_is_html_only(self):
         workflow = (ROOT / ".github" / "workflows" / "taxonomy-publications.yml").read_text(
             encoding="utf-8"
         )
-        pdf_path = "vigil/taxonomy/generated/VIGIL.Observatory.FailureTaxonomy.FullReference.pdf"
-        self.assertNotIn(f"rm -f {pdf_path}", workflow)
-        self.assertIn("vigil/taxonomy/generated/*.pdf", workflow)
+        self.assertNotIn("--pdf", workflow)
+        self.assertNotIn("*.pdf", workflow)
+        self.assertNotIn("weasyprint", workflow)
+        self.assertNotIn("Verify generated publications are current", workflow)
         self.assertIn("--taxonomy-examples-only", workflow)
-
+        self.assertIn("generated/*.html", workflow)
 
     def test_incidents_publish_severity_and_canonical_source_genres(self):
         allowed_source_types = validator.CANONICAL_INCIDENT_SOURCE_TYPES
