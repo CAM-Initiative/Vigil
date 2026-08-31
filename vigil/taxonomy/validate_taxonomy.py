@@ -181,7 +181,7 @@ def validate_release_history(
         digest = catalogue_content_digest(loaded)
         if current.get("content_digest") != digest:
             errors.append(
-                f"{INDEX_PATH}: canonical family/class content changed without a published dataset release"
+                f"{INDEX_PATH}: canonical family/class content changed without a new dataset version, date and release digest (published dataset release required)"
             )
         if current.get("family_ids") != sorted(family_ids):
             errors.append(f"{INDEX_PATH}: current release family_ids do not match the canonical catalogue")
