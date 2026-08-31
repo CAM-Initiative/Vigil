@@ -147,9 +147,21 @@ def main() -> int:
             external_ids[key] = incident_id
         taxonomy = record.get("taxonomy_classification", {})
         mappings = [taxonomy.get("primary_classification"), *taxonomy.get("secondary_classifications", [])]
+        if taxonomy.get("classification_status") == "classified":
+            occurrence_basis = str(taxonomy.get("classification_basis", "")).strip()
+            provenance = taxonomy.get("classification_review_provenance", {})
+            authority_boundary = (
+                str(provenance.get("authority_boundary", "")).strip()
+                if isinstance(provenance, dict)
+                else ""
+            )
+            if not occurrence_basis:
+                errors.append(f"{incident_id}: classified Incident lacks an occurrence-level classification basis")
+            if "occurrence" not in (occurrence_basis + " " + authority_boundary).casefold():
+                errors.append(f"{incident_id}: classification provenance does not establish occurrence-level scope")
         for mapping in mappings:
-            if isinstance(mapping, dict) and not str(mapping.get("classification_basis", "")).startswith("In this Incident,"):
-                errors.append(f"{incident_id}: classification mapping basis is not Incident-specific")
+            if isinstance(mapping, dict) and not str(mapping.get("classification_basis", "")).strip():
+                errors.append(f"{incident_id}: classification mapping lacks a substantive basis")
         preserved_by_legacy = {
             item.get("legacy_id"): item.get("preserved_analysis", {})
             for item in record.get("legacy_governance_state", []) if isinstance(item, dict)
