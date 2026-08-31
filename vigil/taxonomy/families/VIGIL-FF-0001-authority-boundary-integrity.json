@@ -15,8 +15,8 @@
     "abstraction": "family",
     "version": "0.1.1",
     "plain_english": "The system can see, reach, decode, inherit, capture, or use something and mistakes that fact for permission to act.",
-    "definition": "Failures in which information, access, capability, identity, technical reachability, transformed content, delegated intent, participation state, captured contribution, authorised purpose, or system state is treated as conferring authority, permission, delegation, or execution scope that has not been independently established for the relevant source, target, actor, action, purpose, participant, or context.",
-    "invariant": "Visibility is not authority. Capability is not permission. Technical reachability is not delegation. Transformation must not increase authority. Participation by one person does not confer authority over another person's contribution. Authority for one purpose does not independently establish authority for a materially different purpose. Authority remains bound to its source, target, action, purpose, participant, scope, and context unless validly re-established.",
+    "definition": "Failures in which information, access, capability, identity, technical reachability, transformed content, delegated intent, participation state, captured contribution, authorised purpose, principal-bound state, or system state is treated as conferring authority, permission, delegation, or execution scope that has not been independently established for the relevant source, target, actor, action, purpose, participant, principal, or context.",
+    "invariant": "Visibility is not authority. Capability is not permission. Technical reachability is not delegation. Transformation must not increase authority. Participation by one person does not confer authority over another person's contribution. Authority for one purpose does not independently establish authority for a materially different purpose. Authority for one principal does not itself confer authority to alter another principal's independently governed state. Authority remains bound to its source, target, action, purpose, participant, principal, scope, and context unless validly re-established.",
     "scope": [
       "AI models",
       "tool-using agents",
@@ -28,7 +28,7 @@
       "multi-party capture and transcription systems",
       "data collection and model-training pipelines"
     ],
-    "inclusion_rule": "Use this family when the primary structural failure is an unjustified creation, enlargement, transfer, substitution, or inheritance of authority across a source, capability, target, participant, purpose, scope, representation, delegation, or control-plane boundary.",
+    "inclusion_rule": "Use this family when the primary structural failure is an unjustified creation, enlargement, transfer, substitution, or inheritance of authority across a source, capability, target, participant, principal, purpose, scope, representation, delegation, principal-bound state, or control-plane boundary.",
     "exclusion_rule": "Do not use this family merely because an action was incorrect, harmful, insecure, unavailable, refused, privacy-invasive, or legally disputed. A qualifying event must involve an authority boundary being misclassified, expanded, transferred, or treated as satisfied without adequate authority.",
     "aliases": [
       "VIGIL.FF.AUTHORITY_BOUNDARY"
@@ -46,7 +46,8 @@
       "VIGIL-FC-000046",
       "VIGIL-FC-000053",
       "VIGIL-FC-000054",
-      "VIGIL-FC-000055"
+      "VIGIL-FC-000055",
+      "VIGIL-FC-000057"
     ],
     "allowed_class_codes": [
       "SOURCE_AUTHORITY_CONFUSION",
@@ -61,7 +62,8 @@
       "INFERENTIAL_EVIDENCE_AUTHORITY_CONFLATION",
       "IDENTITY_REPRESENTATION_AUTHORITY_CONFLATION",
       "MULTIPARTY_PARTICIPANT_AUTHORITY_TRANSPOSITION",
-      "SECONDARY_PURPOSE_AUTHORITY_TRANSPOSITION"
+      "SECONDARY_PURPOSE_AUTHORITY_TRANSPOSITION",
+      "CROSS_PRINCIPAL_STATE_AUTHORITY_TRANSPOSITION"
     ]
   },
   "classes": [
@@ -582,6 +584,52 @@
         "purpose-authority transposition",
         "training-purpose authority transposition",
         "secondary-use authority transposition"
+      ]
+    },
+    {
+      "class_id": "VIGIL-FC-000057",
+      "class_code": "CROSS_PRINCIPAL_STATE_AUTHORITY_TRANSPOSITION",
+      "family_id": "VIGIL-FF-0001",
+      "name": "Cross-Principal State Authority Transposition",
+      "status": "draft",
+      "abstraction": "class",
+      "plain_english": "Permission to act for one person is treated as permission to change another person's separately governed state.",
+      "definition": "A failure in which valid or purported authority established for one principal is treated as sufficient authority to materially alter, cancel, displace, transfer, consume, restrict, or otherwise change a state associated with another identifiable principal, where that state is subject to an independent entitlement, consent, allocation, authority, contractual, procedural, or comparable governance boundary.",
+      "recognition": {
+        "required_conditions": [
+          "A system has valid or purported authority to pursue an objective for an initiating principal.",
+          "Pursuing that objective materially changes a state associated with a different identifiable principal.",
+          "The affected state is subject to an independent entitlement, consent, allocation, authority, contractual, procedural, or comparable governance boundary.",
+          "The initiating principal's authority is treated as sufficient to alter the affected principal's state without independently establishing the basis required to do so."
+        ]
+      },
+      "exclusions": [
+        "A valid rule, role, contract, consent, allocation mechanism, or other authority basis already permits the action over the affected state.",
+        "The event is ordinary competition for an unallocated opportunity or resource under an established allocation rule; another person's lost opportunity alone is not a separately governed state.",
+        "The effect on other people is diffuse, incidental, or downstream and does not involve alteration of an identifiable principal's independently governed state.",
+        "The failure is only a change of target, environment, task, or action scope and does not cross into another principal's independently governed state; use Target and Scope Authority Transposition instead.",
+        "The issue concerns authority over another participant's contribution within a multi-party capture or processing context; use Multi-party Participant Authority Transposition instead.",
+        "Classification under this class does not imply that one principal has greater intrinsic worth, status, or value than another; it concerns only whether authority over the affected state was established."
+      ],
+      "examples": [
+        "An agent asked to secure a fully booked appointment for one user cancels another user's existing reservation to create the slot without authority over that reservation.",
+        "An agent asked to obtain a meeting room for its user overrides another person's existing booking even though the requester has no authority to alter that booking."
+      ],
+      "relationships": [
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000003",
+          "note": "Target and scope transposition concerns authority carried into a changed target or scope; this class specifically requires a different principal and an independently governed state associated with that principal."
+        },
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000054",
+          "note": "Multi-party participant authority transposition is limited to authority over another participant's contribution in a shared capture or processing context; this class applies to separately governed state more generally."
+        }
+      ],
+      "aliases": [
+        "third-party state authority transposition",
+        "cross-principal authority transposition"
       ]
     }
   ]
