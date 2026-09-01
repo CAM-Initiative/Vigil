@@ -240,6 +240,33 @@ class TaxonomyClassificationTests(unittest.TestCase):
         self.assertEqual(secondary["classification_role"], "secondary")
         self.assertNotEqual(primary["classification_basis"], secondary["classification_basis"])
 
+    def test_incident_confidence_contract_is_taxonomy_fit_not_source_status(self):
+        schema = json.loads((VIGIL / "VIGIL.Schema.json").read_text(encoding="utf-8"))
+        rule = schema["record_classes"]["incident"]["classification_confidence_rule"]
+        self.assertIn("fit the asserted Failure Class", rule)
+        self.assertIn("must not be mechanically inferred from source evidence status", rule)
+        self.assertIn("strongly corroborated evidence does not automatically justify high", rule)
+
+    def test_incident_confidence_priority_outcomes_preserve_separate_axes(self):
+        incidents = {record["id"]: record for record in self.incidents}
+        self.assertEqual(
+            incidents["VIGIL-INC-000010"]["taxonomy_classification"]["primary_classification"]["classification_confidence"],
+            "high",
+        )
+        self.assertEqual(
+            incidents["VIGIL-INC-000010"]["source_records"][0]["evidence_status"],
+            "user-reported",
+        )
+        self.assertEqual(
+            incidents["VIGIL-INC-000009"]["taxonomy_classification"]["classification_status"],
+            "provisionally-classified",
+        )
+        self.assertIsNone(incidents["VIGIL-INC-000028"]["taxonomy_classification"]["primary_classification"])
+        self.assertEqual(
+            incidents["VIGIL-INC-000056"]["taxonomy_classification"]["primary_classification"]["class_id"],
+            "VIGIL-FC-000057",
+        )
+
     def test_taxonomy_08_identity_authority_outcome_has_no_speculative_secondary(self):
         record = next(r for r in self.records if r["id"] == "VIGIL-2026-FM-0064")
         block = record["taxonomy_classification"]
