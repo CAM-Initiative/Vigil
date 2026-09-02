@@ -169,7 +169,7 @@ class IncidentRegistryTest(unittest.TestCase):
         allowed_source_types = validator.CANONICAL_INCIDENT_SOURCE_TYPES
         for incident in self.incidents.values():
             severity = incident.get("severity_assessment", {})
-            self.assertIn(severity.get("severity"), validator.ALLOWED_SEVERITIES)
+            self.assertIn(severity.get("severity"), validator.INCIDENT_ALLOWED_SEVERITIES)
             self.assertIn(severity.get("assessment_status"), validator.INCIDENT_SEVERITY_STATUSES)
             self.assertTrue(severity.get("assessment_basis"))
             self.assertTrue(all(source.get("source_type") in allowed_source_types for source in incident["source_records"]))
