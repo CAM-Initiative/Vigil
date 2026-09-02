@@ -339,4 +339,195 @@ class ValidateVigilRecordsTest(unittest.TestCase):
 
         self.assertNotEqual(self.validate_mutated_fixture("VIGIL-2026-OBS-0001.json", mutate), 0)
 
-    def test_system_context_rejects_noncanonical_platform_or_vendor(s
+    def test_system_context_rejects_noncanonical_platform_or_vendor(self):
+        def mutate(record):
+            record["system_context"]["platform_or_vendor"] = "OpenAI ChatGPT"
+
+        self.assertNotEqual(self.validate_mutated_fixture("VIGIL-2026-OBS-0001.json", mutate), 0)
+
+    def test_system_context_rejects_noncanonical_product_or_service(self):
+        def mutate(record):
+            record["system_context"]["product_or_service"] = "ChatGPT Advanced Voice Mode"
+
+        self.assertNotEqual(self.validate_mutated_fixture("VIGIL-2026-OBS-0001.json", mutate), 0)
+
+    def test_system_context_rejects_legacy_field_names(self):
+        def mutate(record):
+            record["system_context"]["product_family"] = "OpenAI"
+            record["system_context"]["specific_model"] = "ChatGPT"
+
+        self.assertNotEqual(self.validate_mutated_fixture("VIGIL-2026-OBS-0001.json", mutate), 0)
+
+    def test_linked_records_standards_rejects_cam_instrument_ids(self):
+        def mutate(record):
+            record["linked_records"]["standards"] = ["CAM-EQ2026-OPERATIONS-003-SUP-01"]
+
+        self.assertNotEqual(self.validate_mutated_fixture("VIGIL-2026-PROP-0001.json", mutate), 0)
+
+    def test_linked_records_standards_rejects_cam_instrument_dict_ids(self):
+        def mutate(record):
+            record["linked_records"]["standards"] = [{"standard_id": "CAM-BS2026-AEON-013-PLATINUM"}]
+
+        self.assertNotEqual(self.validate_mutated_fixture("VIGIL-2026-PROP-0001.json", mutate), 0)
+
+    def test_prop_rejects_patch_status_and_empty_scope(self):
+        def mutate(record):
+            record["patch_status"] = "implemented"
+            record["proposal_scope"] = {}
+
+        self.assertNotEqual(self.validate_mutated_fixture("VIGIL-2026-PROP-0001.json", mutate), 0)
+
+    def test_obs_rejects_patch_status(self):
+        def mutate(record):
+            record["cam_internal"]["patch_status"] = "open"
+
+        self.assertNotEqual(self.validate_mutated_fixture("VIGIL-2026-OBS-0001.json", mutate), 0)
+
+    def test_patch_rejects_missing_required_implementation_fields(self):
+        def mutate(record):
+            for field in (
+                "decision_trace",
+                "corpus_implementation",
+                "record_reconstruction",
+                "change_classification",
+                "change_details",
+                "implementation_verification",
+                "impact_summary",
+                "remaining_work",
+            ):
+                record.pop(field, None)
+
+        self.assertNotEqual(self.validate_mutated_fixture("VIGIL-2026-PATCH-0001.json", mutate), 0)
+
+    def test_patch_accepts_required_implementation_fields(self):
+        self.assertEqual(self.validate_mutated_fixture("VIGIL-2026-PATCH-0001.json", lambda record: None), 0)
+
+    def test_patch_rejects_empty_changed_implementation_fields(self):
+        def mutate(record):
+            record["change_details"] = {}
+            record["implementation_verification"] = {}
+
+        self.assertNotEqual(self.validate_mutated_fixture("VIGIL-2026-PATCH-0001.json", mutate), 0)
+
+    def test_model_2_triage_accepts_every_controlled_priority(self):
+        cases = (
+            ("P0", "action-required"),
+            ("P1", "action-required"),
+            ("P2", "action-required"),
+            ("P3", "action-required"),
+            ("PN", "monitoring"),
+            ("PU", "under-assessment"),
+        )
+        for priority, status in cases:
+            with self.subTest(priority=priority):
+                def mutate(record, priority=priority, status=status):
+                    self.adopt_triage_v2(record, priority=priority, status=status)
+                    if priority == "P0":
+                        record["triage"]["escalation_required"] = "Immediate escalation to the governance editor."
+                    if priority == "PU":
+                        record["triage"]["triage_assessment_gap"] = "Ownership and actionability are unresolved."
+
+                self.assertEqual(self.validate_mutated_fixture("VIGIL-2026-FM-0001.json", mutate), 0)
+
+    def test_model_2_rejects_legacy_and_malformed_priority_values(self):
+        for value in ("High", "Medium", "Low", "Urgent", "Critical", "p0", "P-0", "P4", "none", "to be assessed"):
+            with self.subTest(priority=value):
+                def mutate(record, value=value):
+                    self.adopt_triage_v2(record)
+                    record["triage"]["triage_priority"] = value
+
+                self.assertNotEqual(self.validate_mutated_fixture("VIGIL-2026-FM-0001.json", mutate), 0)
+
+    def test_model_2_rejects_descriptive_and_unknown_severity(self):
+        for value in ("critical", "high", "medium-high", "to be assessed", "SX"):
+            with self.subTest(severity=value):
+                def mutate(record, value=value):
+                    self.adopt_triage_v2(record, severity=value)
+
+                self.assertNotEqual(self.validate_mutated_fixture("VIGIL-2026-FM-0001.json", mutate), 0)
+
+    def test_model_2_su_requires_assessment_gap(self):
+        def invalid(record):
+            self.adopt_triage_v2(record, severity="SU")
+
+        def valid(record):
+            self.adopt_triage_v2(record, severity="SU")
+            record["failure_classification"]["severity_assessment_gap"] = "The affected scope is unresolved."
+
+        self.assertNotEqual(self.validate_mutated_fixture("VIGIL-2026-FM-0001.json", invalid), 0)
+        self.assertEqual(self.validate_mutated_fixture("VIGIL-2026-FM-0001.json", valid), 0)
+
+    def test_model_2_active_priority_requires_next_step(self):
+        def mutate(record):
+            self.adopt_triage_v2(record, priority="P2")
+            record["triage"]["recommended_next_step"] = ""
+
+        self.assertNotEqual(self.validate_mutated_fixture("VIGIL-2026-FM-0001.json", mutate), 0)
+
+    def test_model_2_pn_rejects_active_workflow_and_closed_requires_pn(self):
+        def pn_active(record):
+            self.adopt_triage_v2(record, priority="PN", status="repair-in-progress")
+
+        def closed_active(record):
+            self.adopt_triage_v2(record, priority="P2", status="closed-actioned")
+
+        self.assertNotEqual(self.validate_mutated_fixture("VIGIL-2026-FM-0001.json", pn_active), 0)
+        self.assertNotEqual(self.validate_mutated_fixture("VIGIL-2026-FM-0001.json", closed_active), 0)
+
+    def test_model_2_elevated_monitoring_requires_trigger_and_intervention(self):
+        def invalid(record):
+            self.adopt_triage_v2(record, priority="P1", status="monitoring")
+
+        def valid(record):
+            self.adopt_triage_v2(record, priority="P1", status="monitoring")
+            record["triage"]["active_escalation_trigger"] = "A confirmed recurrence in the monitored runtime."
+            record["triage"]["intervention_pathway"] = "Escalate for immediate evidence capture and containment review."
+
+        self.assertNotEqual(self.validate_mutated_fixture("VIGIL-2026-FM-0001.json", invalid), 0)
+        self.assertEqual(self.validate_mutated_fixture("VIGIL-2026-FM-0001.json", valid), 0)
+
+    def test_model_2_repaired_urgent_record_requires_unresolved_condition(self):
+        def invalid(record):
+            self.adopt_triage_v2(record, priority="P1")
+            record["repair_status"]["status"] = "repaired"
+            record["repair_status"]["repaired_by"] = ["VIGIL-2026-PATCH-9999"]
+            record["repair_status"]["date_repaired"] = "2026-08-05"
+            record["repair_status"]["repair_basis"] = "patch-implemented"
+            record["linked_records"]["related_patch_notes"] = ["VIGIL-2026-PATCH-9999"]
+
+        def valid(record):
+            self.adopt_triage_v2(record, priority="P1")
+            record["repair_status"]["status"] = "repaired"
+            record["repair_status"]["repaired_by"] = ["VIGIL-2026-PATCH-9999"]
+            record["repair_status"]["date_repaired"] = "2026-08-05"
+            record["repair_status"]["repair_basis"] = "patch-implemented"
+            record["linked_records"]["related_patch_notes"] = ["VIGIL-2026-PATCH-9999"]
+            record["triage"]["urgent_condition"] = "Time-sensitive implementation verification remains incomplete."
+
+        self.assertNotEqual(self.validate_mutated_fixture("VIGIL-2026-FM-0001.json", invalid), 0)
+        self.assertEqual(self.validate_mutated_fixture("VIGIL-2026-FM-0001.json", valid), 0)
+
+    def test_model_2_triage_history_requires_transition_provenance(self):
+        def invalid(record):
+            self.adopt_triage_v2(record)
+            record["triage_history"] = [{"from": "P0", "to": "P2"}]
+
+        def valid(record):
+            self.adopt_triage_v2(record)
+            record["triage_history"] = [{
+                "date": "2026-08-05",
+                "from": "P0",
+                "to": "P2",
+                "reason": "Immediate containment completed.",
+                "action_basis": "Planned verification remains.",
+                "trigger": "Containment evidence reviewed.",
+                "assessed_by": "AI analytical reviewer under human governance editorship",
+                "next_review": "2026-08-12",
+            }]
+
+        self.assertNotEqual(self.validate_mutated_fixture("VIGIL-2026-FM-0001.json", invalid), 0)
+        self.assertEqual(self.validate_mutated_fixture("VIGIL-2026-FM-0001.json", valid), 0)
+
+
+if __name__ == "__main__":
+    unittest.main()

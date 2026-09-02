@@ -1021,333 +1021,193 @@
         "non_confirming_runtimes",
         "notes"
       ],
-      "count_rule": "Counts must be non-negative integers and must equal the corresponding detail-array length whenever that array iass contracts add evidence_confidence for legacy non-Incident classes or source-level evidence status for Incidents.",
-      "required": [
-        "id",
-        "record_type",
-        "record_state",
-        "date_recorded",
-        "record_identity",
-        "summary",
-        "source_records",
-        "linked_records"
-      ]
-    },
-    "source_residence": {
-      "enum": [
-        "external",
-        "cam-internal",
-        "vigil-internal",
-        "user-supplied",
-        "unknown"
-      ]
-    },
-    "source_role": {
-      "enum": [
-        "incident-evidence",
-        "affected-party-evidence",
-        "research-evidence",
-        "standards-or-regulatory-basis",
-        "governance-basis",
-        "taxonomy-basis",
-        "implementation-evidence",
-        "verification-evidence",
-        "contextual-background",
-        "record-cross-reference",
-        "direct-testimony",
-        "unknown"
-      ]
-    }
-  },
-  "system_context_rules": {
-    "description": "system_context describes the observed/proposed system, platform, product, service, runtime, interface, deployment, architectural component role, or governance corpus. Provider/vendor identity, product/service identity, and architectural function are orthogonal dimensions. For failure modes, compatibility summary fields are supplemented by an evidence-backed system roll-up derived from record-local structured source metadata.",
-    "required_fields": [
-      "platform_or_vendor",
-      "product_or_service",
-      "specific_model_or_runtime",
-      "interface_surface"
-    ],
-    "optional_fields": [
-      "component_role"
-    ],
-    "deprecated_fields": [
-      "product_family",
-      "specific_model"
-    ],
-    "allowed_platform_or_vendor_values": [
-      "OpenAI",
-      "xAI",
-      "Anthropic",
-      "Meta",
-      "Google",
-      "DeepSeek",
-      "Kimi",
-      "Sesame",
-      "Cohere",
-      "Perplexity",
-      "Mistral",
-      "Microsoft",
-      "GitHub",
-      "TikTok",
-      "Apple",
-      "Amazon",
-      "Nvidia",
-      "Hugging Face",
-      "Stability AI",
-      "Runway",
-      "Midjourney",
-      "Adobe",
-      "Character.AI",
-      "Replit",
-      "Notion",
-      "Cursor",
-      "Replika",
-      "Nomi",
-      "Chai",
-      "Chub.ai",
-      "Candy AI",
-      "Kindroid",
-      "Pi",
-      "HammerAI",
-      "Snap",
-      "Google Play",
-      "CAM Initiative",
-      "Multi Vendor",
-      "Other",
-      "Unknown",
-      "Not applicable"
-    ],
-    "allowed_product_or_service_values": [
-      "ChatGPT",
-      "Claude",
-      "Gemini",
-      "Grok",
-      "Copilot",
-      "Codex",
-      "Claude Code",
-      "Deep Research",
-      "Perplexity Assistant",
-      "Llama",
-      "Le Chat",
-      "GitHub Copilot",
-      "TikTok",
-      "X",
-      "Replit Agent",
-      "Cursor",
-      "Midjourney",
-      "Runway",
-      "Firefly",
-      "Character.AI",
-      "Replika",
-      "Nomi",
-      "Chai",
-      "Chub.ai",
-      "Candy AI",
-      "Kindroid",
-      "Pi",
-      "HammerAI",
-      "Snapchat",
-      "Google Play",
-      "Caelestis Architecture Model",
-      "VIGIL",
-      "Other",
-      "Unknown",
-      "Not applicable"
-    ],
-    "allowed_component_role_values": [
-      "foundation-model",
-      "inference-runtime",
-      "orchestration",
-      "agent-runtime",
-      "planning",
-      "routing",
-      "tool-broker",
-      "tool-interface",
-      "retrieval",
-      "memory-state",
-      "identity-authentication",
-      "policy-safety",
-      "evaluation",
-      "execution",
-      "user-interface",
-      "external-service",
-      "other",
-      "unknown",
-      "not-applicable"
-    ],
-    "component_role_rule": "Optional non-empty array of unique controlled architectural-function labels. It describes what the evidenced component does in the stack and is independent of provider/vendor and product/service identity. Existing records are not required to backfill component_role until materially reviewed.",
-    "component_role_evidence_rule": "Assign component roles only where record-local evidence or direct system documentation supports the function. Do not infer an underlying model provider, deployment arrangement, or additional component merely from the presence of an orchestration or agent harness.",
-    "multi_vendor_rule": "Multi Vendor means two or more evidenced provider/vendor identities participate in the relevant system context. It must not be used merely because a system combines heterogeneous component types, local and hosted components, or an orchestration layer with an unresolved model provider.",
-    "specific_model_or_runtime_rule": "Non-empty string; intentionally not an enum because runtime names and tool-augmented modes drift frequently.",
-    "interface_surface_rule": "Non-empty string or array of non-empty strings describing where or how behaviour appears.",
-    "failure_mode_evidence_projection": {
-      "required_fields": [
-        "evidence_scope",
-        "evidenced_vendors",
-        "evidenced_products_or_services",
-        "evidenced_models_or_runtimes",
-        "evidenced_systems",
-        "evidence_projection"
-      ],
-      "allowed_evidence_scope_values": [
-        "single-provider",
-        "multi-provider",
-        "provider-unresolved",
-        "system-unresolved",
-        "not-applicable"
-      ],
-      "source_fields": [
-        "source_records[].system_or_product",
-        "source_records[].model_or_algorithm"
-      ],
-      "traceability_rule": "Each evidenced_systems entry preserves its projection_basis and the supporting source title; source_platform may be retained separately as evidence_source_platform so evidence host and affected system remain distinguishable.",
-      "no_narrative_inference_rule": "Provider, product, model, runtime, and component-role identities must not be synthesized from narrative source_context, relevance_note, article titles, publisher prose, or the evidence-host source_platform field. Older records may use a concrete pre-existing FM system_context as a bounded fallback where source-level affected-system fields were not yet populated.",
-      "compatibility_rule": "platform_or_vendor, product_or_service, and specific_model_or_runtime remain compatibility summary fields. component_role is an orthogonal architectural-function dimension. Multi Vendor describes provider scope only and must not substitute for concrete evidenced_vendors, evidenced_products_or_services, evidenced_models_or_runtimes, or component roles.",
-      "public_projection_rule": "Public interfaces should prefer evidence-backed arrays and source-traceable evidenced_systems over placeholder compatibility values such as Multi Vendor, Other, or Unknown, and should expose component_role when materially relevant.",
-      "unresolved_rule": "Insufficient structured system metadata remains explicitly unresolved; narrative evidence may support later human reconciliation but must not be silently converted into a system identity or architectural role.",
-      "record_context_fallback_fields": [
-        "system_context.platform_or_vendor",
-        "system_context.product_or_service",
-        "system_context.specific_model_or_runtime",
-        "system_context.model_or_product"
-      ],
-      "source_platform_rule": "source_records[].source_platform identifies where evidence is hosted, published, or observed. It is source provenance and must not be treated as affected provider/product identity unless the affected-system fields independently establish the same system."
-    }
-  },
-  "cam_internal_rules": {
-    "description": "For observations, failure modes, proposals and patches, cam_internal describes CAM routing, targets, affected areas, or changed components. On Incidents it is optional and narrowed to bounded diagnostic context that cannot encode current CAM corpus coverage or repair state.",
-    "record_type_preferred_instrument_fields": {
-      "observation": "related_or_similar_instruments",
-      "failure_mode": "affected_instruments",
-      "proposal": "target_instruments",
-      "patch": "changed_instruments",
-      "patch_note": "changed_instruments"
-    }
-  },
-  "generated_register_rules": {
-    "pruning": "Generated index manifests prune empty arrays, empty strings, empty objects, and nulls while preserving meaningful uncertainty values.",
-    "index_entry_contract": "Generated type indexes and the master registry contain lean collapsed-list metadata plus canonical record location fields only. Detailed summaries and full evidence/context structures remain in individual canonical record JSON files.",
-    "common_list_fields": [
-      "id",
-      "record_type",
-      "record_state",
-      "date_recorded",
-      "date_implemented when present",
-      "title",
-      "summary",
-      "evidence_confidence for non-Incident record types; evidence_statuses and preferred_evidence_status for Incidents",
-      "source_types",
-      "source/platform/system/jurisdiction label fields",
-      "path",
-      "github_blob_url",
-      "raw_url"
-    ],
-    "type_specific_list_fields": [
-      "incident date precision, taxonomy-classification state, preferred evidence, evidence_statuses, preferred_evidence_status, external-registry references, and legacy provenance",
-      "failure severity, likelihood, classification, and triage filter fields",
-      "proposal type/status filter fields",
-      "patch/change type/status and verification filter fields",
-      "research status, method, governance purpose, domains, and linked-record fields"
-    ],
-    "detail_only_fields_excluded_from_indexes": [
-      "source_summary",
-      "system_summary",
-      "jurisdiction_summary",
-      "classification_summary",
-      "triage_summary",
-      "proposal_summary",
-      "external_relevance_summary",
-      "implementation_notes_summary",
-      "change_summary",
-      "verification_summary",
-      "impact_summary",
-      "cam_summary",
-      "linked_records",
-      "failure_mode_definition_summary",
-      "failure_threshold_summary",
-      "remaining_work",
-      "review_observation"
-    ],
-    "incident_evidence_facets": {
-      "evidence_statuses": "Sorted unique values derived from source_records[].evidence_status.",
-      "preferred_evidence_status": "Derived from the unique source_record whose source_url equals preferred_evidence.source_url; never separately maintained.",
-      "aggregation_rule": "Generated Incident indexes must not flatten source assessments into narrative text or synthesize an overall confidence value."
-    }
-  },
-  "linked_records_rules": {
-    "standards": "linked_records.standards is reserved for external standards, laws, regulatory instruments, technical standards, and external governance references. CAM instrument IDs such as CAM-BS* and CAM-EQ* belong in downstream CAM assessment or in cam_internal routing fields on record classes that retain that repair-layer routing, using related/similar for observations, affected for failure modes, target for proposals, and changed for patches. Incidents do not carry current CAM routing.",
-    "research": "linked_records.research contains VIGIL research artefact IDs. An evidence-to-repair chain may originate in an Observation, Research record, or both. Research is evidentiary and non-binding; authority arises only through the linked proposal and implemented PATCH.",
-    "reciprocity": "Research front-matter links to observations, failure modes, proposals, or patch notes must be reciprocated by the target record in linked_records.research.",
-    "repair_scope": "A proposal or PATCH has zero or one primary failure mode by default. A governance-origin or research-origin proposal may have none. Multiple resolved failure modes are an explicit exception requiring a rationale; a PATCH must also provide one verification result per resolved failure.",
-    "contextual_relations": "linked_records.contextual_relations contains typed, visible, non-transitive context. chain_inclusion must be false. Contextual records must not also appear in authoritative linked-record arrays and must never be interpreted as repaired by the proposal or PATCH.",
-    "authoritative_chain": "Only declared evidence origins, repair_scope failure modes, proposal resolution links, and verified repairing PATCH links participate in evidence-to-repair traversal. Generic related, adjacent, contrast, supporting-mechanism, shared-corpus-area, precedent, and separate-workstream links do not expand the chain."
-  },
-  "record_state_rules": {
-    "purpose": "Top-level record_state is the maintainer workflow and pipeline state. It must not be used as a proxy for external ecosystem conditions, CAM repair status, proposal resolution, or corpus coverage.",
-    "allowed_values": [
-      "draft",
-      "scaffolding",
-      "active",
-      "monitoring",
-      "closed-actioned",
-      "closed-no-action",
-      "deferred",
-      "superseded"
-    ],
-    "semantics": {
-      "draft": "Record is being authored and is not yet ready for triage.",
-      "scaffolding": "Temporary incomplete record retained only for construction or migration.",
-      "active": "A governance decision, evidence action, proposal, or CAM repair still requires attention.",
-      "monitoring": "The immediate VIGIL/CAM action is complete or bounded, but recurrence, implementation, or external conformity remains under observation.",
-      "closed-actioned": "The record has been routed, implemented, or otherwise actioned and no longer belongs in the active work queue.",
-      "closed-no-action": "The evidence is retained but no further action is justified.",
-      "deferred": "Action is intentionally postponed and should not appear as current active work.",
-      "superseded": "A successor record now carries the active governance work."
-    },
-    "class_rules": {
-      "incident": "Incident workflow state is independent of taxonomy-classification state. A factual Incident may remain active or monitoring while unclassified, provisionally classified, disputed, or awaiting human review.",
-      "failure_mode": "Unrepaired or partially-repaired failures are active; repaired failures are monitoring; not-actionable failures are closed-no-action; superseded failures are superseded.",
-      "proposal": "Open or routed proposals are active; resolved-by-patch proposals are closed-actioned; closed-no-action, deferred, and superseded resolution states map directly.",
-      "patch": "Canonical-main and historical-canonical patch records may be closed-actioned. Branch-only and unverified patch records remain active. Ecosystem monitoring remains on linked failure or observation records.",
-      "observation": "Observations requiring evidence or routing work are active; routed or actioned observations close; unresolved recurrence or positive-control follow-up is monitoring."
-    }
-  },
-  "runtime_conformance_rules": {
-    "description": "Optional runtime-bounded evidence objects distinguish an implemented CAM repair from observed conformance or non-conformance in named vendor, platform, runtime, model, client, or interface formations. Runtime names remain open-ended and cross-runtime transfer is never presumed.",
-    "runtime_conformance": {
-      "allowed_record_types": [
-        "patch",
-        "patch_note"
-      ],
-      "allowed_overall_status_values": [
-        "confirmed",
-        "mixed",
-        "unknown",
-        "not-applicable"
-      ],
-      "required_fields_when_present": [
-        "overall_status",
-        "confirming_count",
-        "non_confirming_count",
-        "unknown_count",
-        "notes"
-      ],
-      "optional_detail_arrays": [
-        "confirming_runtimes",
-        "non_confirming_runtimes",
-        "unknown_runtimes"
-      ],
       "count_rule": "Counts must be non-negative integers and must equal the corresponding detail-array length whenever that array is present.",
       "runtime_identifier_rule": "vendor, platform, runtime, model, and client values are open-ended non-empty strings; no vendor or runtime names are hard-coded by the validator."
     },
-    "runtime_non_conformance": {
-      "allowed_record_types": [
-        "failure_mode"
+    "interpretive_rule": "patched means the CAM repair exists; confirmed means intended behaviour was observed in a named runtime; non-confirming means the linked failure remains present or recurred in a named runtime. A non-confirming runtime does not invalidate a patch confirmed elsewhere."
+  },
+  "lifecycle_rules": {
+    "ecosystem_status": "Describes whether the external failure remains active, recurring, improving, externally resolved, or unknown.",
+    "cam_repair_status": "repair_status.status describes CAM's internal response and may be repaired while ecosystem_status remains active or recurring.",
+    "verification_status": "repair_status.verification_status describes whether the repair is unverified, corpus-verified, observed in one or multiple runtimes, regressed, externally unknown, or not applicable.",
+    "non_collapse_rule": "No one field may be used to imply both CAM repair completion and external ecosystem resolution.",
+    "no_patch_no_repair_rule": "A failure with no linked repairing PATCH remains unrepaired and uses repair_basis not-yet-established, even where corpus_coverage identifies adjacent or partial doctrine.",
+    "coverage_separation_rule": "corpus_coverage.classification may be no-confirmed-coverage, partial-coverage, verification-pending, retrospective-coverage, implemented-repair, or not-applicable without being reused as repair provenance."
+  },
+  "corpus_coverage_rules": [
+    "Every failure mode must state its assessment against a named corpus repository, ref, commit, and assessment date.",
+    "Implemented repair and retrospective coverage are CAM-side states and do not imply external adoption or ecosystem resolution.",
+    "Retrospective coverage must identify the pre-existing instrument and relevant sections without claiming the doctrine originated on the VIGIL patch date.",
+    "Partial-coverage and no-confirmed-coverage classifications must preserve concrete remaining gaps.",
+    "no-confirmed-coverage means an assessment was performed and no sufficient direct current-corpus control was confirmed; verification-pending means the assessment remains incomplete.",
+    "A coverage assessment must never be inferred solely from thematic similarity; the cited instrument must materially govern the failure mechanism."
+  ],
+  "patch_trace_rules": [
+    "PATCH is a signal trace of a governance decision and its Caelestis outcome, not a container for VIGIL maintenance.",
+    "Decision chronology belongs in decision_trace; literal implemented or relied-upon corpus wording belongs in corpus_implementation; reconstruction disclosure belongs in record_reconstruction.",
+    "record_reconstruction.reconstructed is true only for rebuilt legacy PATCH records and false for records created natively under the trace-first contract.",
+    "Narrative, evidence, and interpretive provenance remain preserved below the implementation trace and must not substitute for it.",
+    "Each corpus entry names exactly one instrument and canonical path, one section and heading, its change kind, prior wording status, literal resulting wording, commit-addressed source, and verification state.",
+    "Retrospective reliance is labelled pre-existing control relied upon—no corpus amendment.",
+    "Actioned corpus PATCH records without traceable implementation text are invalid.",
+    "Every PATCH must preserve corpus_release_provenance distinguishing the exact implementation corpus state, later canonical state, and published archive release. A current archive citation must not be represented as the historical implementation version without verified release inclusion."
+  ],
+  "interpretive_provenance_rules": {
+    "required_for_all_records": true,
+    "required_fields": [
+      "review_history",
+      "current_ai_review",
+      "operating_model",
+      "human_governance_editor",
+      "historical_reviewer_note"
+    ],
+    "review_history_rule": "Append reviews; do not overwrite or retroactively invent earlier reviewer model identities.",
+    "chronology_rule": "Every review_date must be a valid ISO YYYY-MM-DD date on or after the calendar-date component of record_identity.created (or date_recorded where created is unavailable). A review must never be backdated or attached to a record that did not yet exist.",
+    "current_ai_review_required_fields": [
+      "review_id",
+      "reviewer_type",
+      "reviewer_platform",
+      "reviewer_model",
+      "review_date",
+      "review_scope",
+      "capability_profile",
+      "known_limitations",
+      "review_outcome"
+    ],
+    "human_editor_rule": "The legacy human_governance_editor field preserves historical authority context. It is not an authorship-provenance override and must not imply human authorship, substantive review, source verification, or line-by-line inspection. New records use contract-approver semantics unless contemporaneous evidence establishes a specific exception."
+  },
+  "triage_model_rules": {
+    "doctrine": "Current triage priority is mutable operational state. Historical urgency is provenance. Failure severity is classification. Triage status is workflow. Ecosystem monitoring is continuing external observation.",
+    "model_version": "2.0",
+    "applicability": {
+      "current_record_class": "failure_mode",
+      "boundary": "OBS records must not contain failure-mode triage. PROP, PATCH, RESEARCH, and LEARN preserve their own class-specific lifecycle fields and must not receive synthetic FM triage blocks.",
+      "migration_phase": "Pass 2 makes model 2.0 executable for new and reconciled failure modes. Legacy records remain in diagnostic migration mode until Pass 3 assigns reviewed current state and severity."
+    },
+    "semantic_dimensions": {
+      "failure_classification.severity": "Greatest reasonably supported magnitude of realised or foreseeable harm within the assessed scope; independent of current VIGIL workload and CAM repair state.",
+      "triage.triage_priority": "Urgency of the next required CAM or VIGIL governance action now; mutable operational state.",
+      "triage.triage_status": "Current VIGIL workflow state. This is the canonical workflow-status field; no duplicate workflow_status alias is introduced.",
+      "record_state": "Record lifecycle state under the existing lifecycle contract.",
+      "ecosystem_status.monitoring_required": "Whether the continuing external condition requires observation; independent of current CAM/VIGIL workload.",
+      "triage_history": "Append-only provenance for evidenced priority transitions; historical urgency does not control current sorting."
+    },
+    "target_controlled_values": {
+      "severity": [
+        "S0",
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "SU"
       ],
-      "required_fields_when_present": [
-        "non_confirming_count",
-        "unknown_count",
-        "non_confirming_runtimes",
-        "notes"
+      "triage_priority": [
+        "P0",
+        "P1",
+        "P2",
+        "P3",
+        "PN",
+        "PU"
       ],
-      "count_rule": "Counts must be non-negative integers and must equal the corresponding detail-array length whenever that array i
+      "triage_status": [
+        "intake",
+        "under-assessment",
+        "action-required",
+        "repair-in-progress",
+        "verification-pending",
+        "monitoring",
+        "blocked",
+        "closed-actioned",
+        "closed-no-action",
+        "superseded"
+      ]
+    },
+    "severity_meanings": {
+      "S0": "Catastrophic — irreversible, existential, mass-casualty, society-scale, or institution-destroying harm with an articulated credible pathway.",
+      "S1": "Critical — severe, widespread, or enduring harm below the catastrophic threshold.",
+      "S2": "High — substantial harm to persons, groups, organisations, or important governance functions.",
+      "S3": "Moderate — meaningful but bounded, reversible, or context-dependent harm.",
+      "S4": "Low — minor, short-lived, or readily reversible harm.",
+      "SU": "Unassessed — evidence, scope, or harm pathway is insufficient; an assessment gap and next step are required."
+    },
+    "severity_assessment_boundaries": {
+      "evidence": "Use observed harm, demonstrated capability, or credible foreseeable harm. Do not rate an unconstrained imaginable worst case.",
+      "scope": "State the assessed deployment context where context materially changes severity.",
+      "aggregation": "Account for scale, repetition, affected populations, detectability, contestability, and systemic embedding.",
+      "repair": "Repair status does not reduce the severity of the failure mode; residual risk and monitoring are represented separately."
+    },
+    "priority_meanings": {
+      "P0": "Immediate response — delay is likely to materially increase harm, destroy evidence, expand exposure, or eliminate containment or remedy.",
+      "P1": "Urgent action — prompt near-term action is required, but emergency response is not.",
+      "P2": "Planned action — substantive governance work belongs in the ordinary active queue.",
+      "P3": "Routine maintenance — an identifiable low-urgency task remains useful.",
+      "PN": "No active priority — no current VIGIL intervention requires queue priority.",
+      "PU": "Priority unassessed — action urgency cannot yet be determined and triage review is required."
+    },
+    "workflow_status_meanings": {
+      "intake": "Record intake is incomplete.",
+      "under-assessment": "Evidence, scope, severity, actionability, or ownership is being assessed.",
+      "action-required": "A defined governance action remains outstanding.",
+      "repair-in-progress": "A CAM repair or implementation response is underway.",
+      "verification-pending": "A repair or asserted coverage requires validation.",
+      "monitoring": "Monitoring is the current VIGIL workflow.",
+      "blocked": "Progress is prevented by a stated dependency.",
+      "closed-actioned": "Required VIGIL action is complete.",
+      "closed-no-action": "No VIGIL action was required or available.",
+      "superseded": "The record has been replaced by an identified authoritative record."
+    },
+    "actionability_rules": [
+      "P0 through P3 require a concrete recommended_next_step.",
+      "P0 and P1 require a named triage_owner, triage_action_basis, and review horizon.",
+      "P0 requires an immediate escalation basis or trigger.",
+      "PN does not imply low severity, no monitoring, deletion, or impossibility of recurrence.",
+      "PU is temporary and requires a triage_assessment_gap and next step.",
+      "Passive monitoring alone is PN; scheduled substantive reassessment may be P2; elevated monitoring may be P1 only with a credible near-term trigger and intervention path."
+    ],
+    "transition_history_contract": {
+      "field": "triage_history",
+      "type": "optional append-only array for an initial model-2.0 state; required for every evidenced priority transition recorded after adoption",
+      "minimum_fields": [
+        "date",
+        "from",
+        "to",
+        "reason",
+        "action_basis",
+        "trigger",
+        "assessed_by",
+        "next_review"
+      ],
+      "actor_rule": "assessed_by must identify the evidenced actor, reviewer, or authority. Do not collapse known AI analytical review and human governance authority into a generic maintainer attribution.",
+      "legacy_rule": "Do not fabricate retrospective transitions. A legacy record with only a known current state may enter model 2.0 without an invented prior transition."
+    },
+    "cross_field_invariants": [
+      "closed-actioned, closed-no-action, and superseded workflow states require PN.",
+      "P0 through P3 require a non-empty recommended_next_step.",
+      "P0 and P1 require triage_owner, triage_action_basis, and triage_review_date.",
+      "P0 requires escalation_required to identify escalation or a documented trigger.",
+      "monitoring with P0 or P1 requires active_escalation_trigger and intervention_pathway.",
+      "PN is incompatible with action-required, repair-in-progress, and verification-pending.",
+      "A closed record_state requires PN.",
+      "A repaired and verified record retaining P0 or P1 requires an explicit unresolved urgent condition.",
+      "SU requires severity_assessment_gap; PU requires triage_assessment_gap."
+    ],
+    "migration_enforcement": {
+      "strict_marker": "triage.model_version = 2.0",
+      "legacy_mode": "Records without the marker remain visible to the deterministic inventory and are not silently reinterpreted.",
+      "authoring_rule": "The FM template emits model 2.0 values only.",
+      "reconciliation_rule": "Pass 3 assigns the marker only after record-level review of outstanding action, workflow, severity, repair, monitoring, and provenance."
+    },
+    "separation_rules": [
+      "Do not derive current priority from severity.",
+      "Do not derive severity from priority.",
+      "Do not derive current priority from historical triage entries.",
+      "A PATCH or repaired state does not itself determine priority or closure.",
+      "Registry projection must expose severity, triage_priority, triage_status, monitoring_required, record_state, and repair_status independently.",
+      "Historical priority belongs in the opened record or transition history, not the primary collapsed-row priority chip."
+    ],
+    "severity_migration_review": {
+      "automatic_mapping_prohibited": true,
+      "note": "Every existing descriptive severity value is legacy under S0-S4/SU and requires reviewed mapping. Hyphenated ranges, conditional prose, and unassessed values must not be converted blindly."
+    }
+  }
+}
