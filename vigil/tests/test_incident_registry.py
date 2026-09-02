@@ -171,7 +171,12 @@ class IncidentRegistryTest(unittest.TestCase):
             severity = incident.get("severity_assessment", {})
             self.assertIn(severity.get("severity"), validator.INCIDENT_ALLOWED_SEVERITIES)
             self.assertIn(severity.get("assessment_status"), validator.INCIDENT_SEVERITY_STATUSES)
-            self.assertTrue(severity.get("assessment_basis"))
+            self.assertNotIn("assessment_basis", severity)
+            if severity.get("severity") == "SU":
+                self.assertTrue(severity.get("assessment_gap"))
+                self.assertFalse(set(validator.INCIDENT_STRUCTURED_SEVERITY_FIELDS).intersection(severity))
+            else:
+                self.assertTrue(all(severity.get(field) for field in validator.INCIDENT_STRUCTURED_SEVERITY_FIELDS))
             self.assertTrue(all(source.get("source_type") in allowed_source_types for source in incident["source_records"]))
 
     def test_public_incident_narrative_is_not_taxonomy_process_text(self):

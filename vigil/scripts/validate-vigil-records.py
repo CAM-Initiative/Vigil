@@ -97,6 +97,26 @@ INCIDENT_GENERIC_SEVERITY_BASES = (
     "reflects severe, widespread, or enduring harm",
     "explain the incident-level severity determination",
 )
+INCIDENT_STRUCTURED_SEVERITY_FIELDS = (
+    "materialised_consequence",
+    "affected_scope",
+    "seriousness_and_persistence",
+    "quantitative_information",
+    "evidentiary_limits",
+    "band_rationale",
+)
+INCIDENT_GENERIC_AFFECTED_SCOPE = (
+    "the assessment is confined to the people, systems, organisations, service cohort",
+    "people and organisations directly affected by this occurrence",
+)
+INCIDENT_GENERIC_STRUCTURED_TEXT = (
+    "state the consequence or harm that actually materialised",
+    "state the record-specific people, systems, organisations",
+    "explain the seriousness, duration, persistence",
+    "preserve supported counts, loss, duration",
+    "state the occurrence-specific limits on causal mechanism",
+    "explain why s3 is supported over s2 and s4",
+)
 CANONICAL_INCIDENT_SOURCE_TYPES = {
     "incident database entry", "news article", "official announcement", "incident report",
     "technical report", "technical analysis", "platform status report", "product documentation",
@@ -1614,30 +1634,53 @@ def validate_incident(path: Path, record: dict[str, Any], errors: list[str]) -> 
     if not isinstance(severity_assessment, dict):
         errors.append(f"{path}: severity_assessment must be an object")
     else:
-        for field in ("severity", "assessment_status", "assessment_basis", "assessed_on", "legacy_sources"):
+        for field in ("severity", "assessment_status", "assessed_on", "legacy_sources"):
             if field not in severity_assessment:
                 errors.append(f"{path}: severity_assessment missing required field {field}")
         severity = severity_assessment.get("severity")
         status = severity_assessment.get("assessment_status")
-        basis = severity_assessment.get("assessment_basis")
         if severity not in INCIDENT_ALLOWED_SEVERITIES:
             errors.append(f"{path}: severity_assessment.severity is not canonical")
         if status not in INCIDENT_SEVERITY_STATUSES:
             errors.append(f"{path}: severity_assessment.assessment_status is not canonical")
-        if not is_non_empty_string(basis):
-            errors.append(f"{path}: severity_assessment.assessment_basis must be a non-empty string")
+        if "assessment_basis" in severity_assessment:
+            errors.append(f"{path}: severity_assessment.assessment_basis is compatibility output, not canonical authored analysis")
+        if severity == "SU":
+            gap = severity_assessment.get("assessment_gap")
+            if not is_non_empty_string(gap):
+                errors.append(f"{path}: SU severity_assessment requires a non-empty assessment_gap")
+            for field in INCIDENT_STRUCTURED_SEVERITY_FIELDS:
+                if field in severity_assessment:
+                    errors.append(f"{path}: SU severity_assessment must not fabricate assessed field {field}")
         else:
-            basis_lower = basis.lower()
-            if any(phrase in basis_lower for phrase in INCIDENT_GENERIC_SEVERITY_BASES):
-                errors.append(f"{path}: severity_assessment.assessment_basis is generic or template-derived")
-            if severity in INCIDENT_ADJACENT_SEVERITIES:
-                if severity not in basis:
-                    errors.append(f"{path}: severity_assessment.assessment_basis must identify the selected band")
-                for adjacent in INCIDENT_ADJACENT_SEVERITIES[severity]:
-                    if adjacent not in basis:
-                        errors.append(f"{path}: severity_assessment.assessment_basis must distinguish adjacent band {adjacent}")
-            if severity == "SU" and "SU" not in basis:
-                errors.append(f"{path}: SU assessment_basis must identify the unassessed band")
+            if "assessment_gap" in severity_assessment:
+                errors.append(f"{path}: assessed severity_assessment must not retain assessment_gap")
+            for field in INCIDENT_STRUCTURED_SEVERITY_FIELDS:
+                if not is_non_empty_string(severity_assessment.get(field)):
+                    errors.append(f"{path}: assessed severity_assessment.{field} must be a non-empty string")
+                elif any(
+                    phrase in severity_assessment[field].casefold()
+                    for phrase in INCIDENT_GENERIC_STRUCTURED_TEXT
+                ):
+                    errors.append(f"{path}: severity_assessment.{field} is generic template text")
+            scope = severity_assessment.get("affected_scope")
+            if isinstance(scope, str) and any(
+                phrase in scope.casefold() for phrase in INCIDENT_GENERIC_AFFECTED_SCOPE
+            ):
+                errors.append(f"{path}: severity_assessment.affected_scope is generic or template-derived")
+            rationale = severity_assessment.get("band_rationale")
+            if isinstance(rationale, str):
+                rationale_lower = rationale.casefold()
+                if any(phrase in rationale_lower for phrase in INCIDENT_GENERIC_SEVERITY_BASES):
+                    errors.append(f"{path}: severity_assessment.band_rationale is generic or template-derived")
+                if re.search(r"\bS[1-4]\s+because\s+(?:this|it)\s+is\s+(?:an?\s+)?S[1-4]\b", rationale, re.IGNORECASE):
+                    errors.append(f"{path}: severity_assessment.band_rationale is circular")
+                if severity in INCIDENT_ADJACENT_SEVERITIES:
+                    if severity not in rationale:
+                        errors.append(f"{path}: severity_assessment.band_rationale must identify the selected band")
+                    for adjacent in INCIDENT_ADJACENT_SEVERITIES[severity]:
+                        if adjacent not in rationale:
+                            errors.append(f"{path}: severity_assessment.band_rationale must distinguish adjacent band {adjacent}")
         if not isinstance(severity_assessment.get("assessed_on"), str) or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", severity_assessment["assessed_on"]):
             errors.append(f"{path}: severity_assessment.assessed_on must be an ISO date")
         legacy_sources = severity_assessment.get("legacy_sources")

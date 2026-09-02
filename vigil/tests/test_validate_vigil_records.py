@@ -94,28 +94,51 @@ class ValidateVigilRecordsTest(unittest.TestCase):
     def test_incident_severity_rejects_generic_circular_and_incoherent_assessments(self):
         self.assertEqual(self.validate_mutated_incident(lambda record: None), 0)
 
-        def generic(record):
+        def legacy_blob(record):
             record["severity_assessment"]["assessment_basis"] = "S2 reflects high impact or risk in this occurrence."
 
         def missing_adjacent_boundary(record):
-            record["severity_assessment"].update({
-                "severity": "S2",
-                "assessment_status": "incident-assessed",
-                "assessment_basis": "S2 records the reported consequence without a boundary explanation.",
-            })
+            record["severity_assessment"]["band_rationale"] = (
+                "S2 is assigned because the consequence was substantial."
+            )
+
+        def generic_scope(record):
+            record["severity_assessment"]["affected_scope"] = (
+                "The assessment is confined to the people, systems, organisations, service cohort, "
+                "and time period expressly identified in this occurrence."
+            )
+
+        def missing_component(record):
+            record["severity_assessment"].pop("quantitative_information")
+
+        def circular_rationale(record):
+            record["severity_assessment"]["band_rationale"] = (
+                "S2 because this is an S2 incident; S2 is different from S1 and S3."
+            )
+
+        def template_text(record):
+            record["severity_assessment"]["materialised_consequence"] = (
+                "State the consequence or harm that actually materialised in this occurrence."
+            )
 
         def invalid_incident_s0(record):
             record["severity_assessment"]["severity"] = "S0"
 
         def su_without_review(record):
-            record["severity_assessment"].update({
+            record["severity_assessment"] = {
                 "severity": "SU",
                 "assessment_status": "incident-assessed",
-                "assessment_basis": "SU: occurrence-level harm and affected scope remain unknown pending primary evidence review.",
-            })
+                "assessment_gap": "Occurrence-level harm and affected scope remain unknown pending primary evidence review.",
+                "assessed_on": "2026-09-02",
+                "legacy_sources": [],
+            }
 
-        self.assertNotEqual(self.validate_mutated_incident(generic), 0)
+        self.assertNotEqual(self.validate_mutated_incident(legacy_blob), 0)
         self.assertNotEqual(self.validate_mutated_incident(missing_adjacent_boundary), 0)
+        self.assertNotEqual(self.validate_mutated_incident(generic_scope), 0)
+        self.assertNotEqual(self.validate_mutated_incident(missing_component), 0)
+        self.assertNotEqual(self.validate_mutated_incident(circular_rationale), 0)
+        self.assertNotEqual(self.validate_mutated_incident(template_text), 0)
         self.assertNotEqual(self.validate_mutated_incident(invalid_incident_s0), 0)
         self.assertNotEqual(self.validate_mutated_incident(su_without_review), 0)
 

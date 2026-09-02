@@ -393,9 +393,19 @@
       "severity_assessment_required_fields": [
         "severity",
         "assessment_status",
-        "assessment_basis",
         "assessed_on",
         "legacy_sources"
+      ],
+      "severity_assessment_incident_assessed_fields": [
+        "materialised_consequence",
+        "affected_scope",
+        "seriousness_and_persistence",
+        "quantitative_information",
+        "evidentiary_limits",
+        "band_rationale"
+      ],
+      "severity_assessment_unassessed_fields": [
+        "assessment_gap"
       ],
       "severity_values": [
         "S1",
@@ -417,7 +427,8 @@
         "S4": "Low: the occurrence materialised only minor, short-lived, localised or readily remedied inconvenience, expense, presentation error, coordination defect or service impairment.",
         "SU": "Unassessed: the evidence cannot support a defensible occurrence-level band or cannot distinguish the relevant adjacent bands. Taxonomy importance, alleged potential and hypothetical worst-case harm do not cure that gap."
       },
-      "assessment_basis_rule": "Every incident-assessed record states the materialised harm or consequence, affected scope, seriousness, reversibility or persistence where relevant, available quantitative information, evidentiary limits, and why the selected band is appropriate rather than each adjacent band. The basis must be occurrence-specific, not empty, circular, generic, copied from a Failure Class or inferred from legacy severity. SU requires requires-incident-review and a concrete description of the evidence needed to assign a band.",
+      "severity_analysis_rule": "The structured severity fields are substantive occurrence-level Incident diagnosis. They are not source metadata, diagnostic provenance, taxonomy metadata or workflow metadata. Every incident-assessed record separately states the materialised consequence, affected scope, seriousness and persistence or reversibility, available quantitative information, evidentiary limits, and a record-specific adjacent-band rationale. The fields must not be empty, circular, generic, copied from a Failure Class or inferred from legacy severity. SU requires requires-incident-review and a concrete assessment_gap naming the missing occurrence evidence needed to assign a band; assessed substantive fields must not be fabricated for SU.",
+      "assessment_basis_compatibility_rule": "assessment_basis is retired from canonical Incident authoring. Generated public indexes may expose severity_assessment_basis as a deterministic compatibility projection assembled from the canonical structured fields. It is not an independently authored second source of truth.",
       "source_type_values": [
         "incident database entry",
         "news article",

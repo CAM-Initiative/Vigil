@@ -58,6 +58,7 @@ INDEX_ALLOWED_FIELDS = INDEX_REQUIRED_FIELDS | {
     "regulatory_surface",
     "sector",
     "severity",
+    "severity_assessment",
     "severity_assessment_status",
     "severity_assessment_basis",
     "likelihood",
@@ -109,6 +110,21 @@ class BuildVigilRecordsTest(unittest.TestCase):
         self.assertEqual(len(matches), 1, record_id)
         with matches[0].open(encoding="utf-8") as handle:
             return json.load(handle)
+
+    def test_incident_compatibility_basis_is_derived_from_structured_analysis(self):
+        record = self.load_record("VIGIL-INC-000001")
+        basis = builder.severity_assessment_basis(record)
+        self.assertTrue(basis.startswith("S2: Materialised consequence:"))
+        self.assertIn("Affected scope:", basis)
+        self.assertIn("Seriousness and persistence:", basis)
+        self.assertIn("Quantitative information:", basis)
+        self.assertIn("Evidentiary limits:", basis)
+        self.assertIn("Band rationale:", basis)
+        self.assertNotIn("assessment_basis", record["severity_assessment"])
+
+        entry = builder.index_record(record)
+        self.assertEqual(entry["severity_assessment"], record["severity_assessment"])
+        self.assertEqual(entry["severity_assessment_basis"], basis)
 
     def test_recursive_discovery_under_type_year_folders(self):
         with tempfile.TemporaryDirectory() as temp_dir:

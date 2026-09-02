@@ -575,6 +575,31 @@ def preferred_evidence_status(record: dict[str, Any]) -> str:
     return str(matches[0]) if len(matches) == 1 else ""
 
 
+def severity_assessment_basis(record: dict[str, Any]) -> str:
+    """Build the temporary public compatibility rationale from canonical fields."""
+    assessment = record.get("severity_assessment")
+    if not isinstance(assessment, dict):
+        return ""
+    severity = str(assessment.get("severity", ""))
+    if severity == "SU":
+        gap = assessment.get("assessment_gap")
+        return f"SU: {gap}" if isinstance(gap, str) and gap.strip() else ""
+    labels = (
+        ("Materialised consequence", "materialised_consequence"),
+        ("Affected scope", "affected_scope"),
+        ("Seriousness and persistence", "seriousness_and_persistence"),
+        ("Quantitative information", "quantitative_information"),
+        ("Evidentiary limits", "evidentiary_limits"),
+        ("Band rationale", "band_rationale"),
+    )
+    components = [
+        f"{label}: {assessment[field]}"
+        for label, field in labels
+        if isinstance(assessment.get(field), str) and assessment[field].strip()
+    ]
+    return f"{severity}: " + " ".join(components) if components else ""
+
+
 def record_path(record: dict[str, Any]) -> str:
     source_path = record.get("__source_path")
     if isinstance(source_path, Path):
@@ -711,8 +736,9 @@ def list_metadata(record: dict[str, Any]) -> dict[str, Any]:
         metadata.update(
             {
                 "severity": record.get("severity_assessment", {}).get("severity", ""),
+                "severity_assessment": record.get("severity_assessment", {}),
                 "severity_assessment_status": record.get("severity_assessment", {}).get("assessment_status", ""),
-                "severity_assessment_basis": record.get("severity_assessment", {}).get("assessment_basis", ""),
+                "severity_assessment_basis": severity_assessment_basis(record),
                 "classification_status": taxonomy.get("classification_status", ""),
                 "primary_classification": taxonomy.get("primary_classification", {}),
                 "secondary_classifications": taxonomy.get("secondary_classifications", []),

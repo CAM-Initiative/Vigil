@@ -43,7 +43,7 @@ No FM or OBS source record is deleted or rewritten by the migration. The complet
 
 The crosswalk supports one-to-one, one-to-many, partial, non-incident and human-review dispositions, and accounts separately for every legacy source entry.
 
-The deterministic migration rebuild order is:
+The deterministic migration rebuild order used for INCIDENT-01 was:
 
 ```bash
 python vigil/scripts/build-incident-registry.py
@@ -51,6 +51,11 @@ python vigil/scripts/build-incident-migration-decisions.py
 python vigil/scripts/build-incident-migration-crosswalk.py
 python vigil/scripts/validate-incident-migration.py
 ```
+
+The one-off `build-incident-registry.py` authoring script was retired after the
+canonical Incident corpus was independently reconciled. Git history preserves that
+migration mechanism; running it against the current corpus would overwrite later
+occurrence-level assessment work.
 
 ## Evidence authority
 
