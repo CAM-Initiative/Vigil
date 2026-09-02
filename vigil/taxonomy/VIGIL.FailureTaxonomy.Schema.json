@@ -82,7 +82,7 @@
         "family_id": {"$ref": "#/$defs/family_id"},
         "name": {"type": "string", "minLength": 1},
         "status": {"$ref": "#/$defs/status"},
-        "abstraction": {"type": "string", "enum": ["class", "variant"]},
+        "abstraction": {"type": "string", "const": "class", "description": "Selectable canonical governance-failure mechanism. Narrower manifestations belong in subtypes and are not peer class records."},
         "plain_english": {"type": "string", "minLength": 1},
         "definition": {"type": "string", "minLength": 1},
         "recognition": {
@@ -95,15 +95,41 @@
         "exclusions": {"$ref": "#/$defs/non_empty_strings"},
         "examples": {"$ref": "#/$defs/non_empty_strings"},
         "aliases": {"$ref": "#/$defs/aliases"},
+        "subtypes": {"type": "array", "items": {"$ref": "#/$defs/subtype"}, "minItems": 1},
         "relationships": {"type": "array", "items": {"$ref": "#/$defs/relationship"}},
         "external_mappings": {"type": "array", "items": {"$ref": "#/$defs/external_mapping"}},
         "supersession": {"$ref": "#/$defs/supersession"}
       }
     },
+    "subtype": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name", "plain_english", "definition", "recognition", "exclusions", "examples", "aliases",
+        "historical_class_id", "historical_class_code"
+      ],
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "plain_english": {"type": "string", "minLength": 1},
+        "definition": {"type": "string", "minLength": 1},
+        "recognition": {
+          "type": "object", "additionalProperties": false, "required": ["required_conditions"],
+          "properties": {
+            "required_conditions": {"$ref": "#/$defs/non_empty_strings"},
+            "indicators": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true}
+          }
+        },
+        "exclusions": {"$ref": "#/$defs/non_empty_strings"},
+        "examples": {"$ref": "#/$defs/non_empty_strings"},
+        "aliases": {"$ref": "#/$defs/aliases"},
+        "historical_class_id": {"$ref": "#/$defs/class_id"},
+        "historical_class_code": {"$ref": "#/$defs/semantic_code"}
+      }
+    },
     "relationship": {
       "type": "object", "additionalProperties": false, "required": ["type", "target_id"],
       "properties": {
-        "type": {"type": "string", "enum": ["child_of", "parent_of", "peer_of", "distinguish_from", "can_cooccur_with", "may_result_in", "may_be_result_of"]},
+        "type": {"type": "string", "enum": ["peer_of", "distinguish_from", "can_cooccur_with", "may_result_in", "may_be_result_of"]},
         "target_id": {"$ref": "#/$defs/class_id"},
         "note": {"type": "string"}
       }

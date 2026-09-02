@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://example.invalid/cam/vigil/VIGIL.Schema.json",
-  "version": "4.1-incident-public-data-quality",
+  "version": "4.2-incident-source-evidence-status",
   "purpose": "Authoritative schema-rules contract for VIGIL as a public evidence-to-repair observatory for incidents, observations, research artefacts, legacy failure modes, proposals, and implemented patch notes. During INCIDENT-01 stabilisation, first-class Incident records coexist with retained legacy FM and OBS records. Source evidence remains embedded in the relevant record; ecosystem persistence, CAM repair, and implementation verification are represented separately. Interpretive provenance identifies AI source analysis, capability profile, source modality, primary-artefact access, review limitations, and historical authority context. Authorship, human-review, and human-verification status are governed separately by vigil/scripts/validate-authorship-provenance.py.",
   "source_evidence_rules": {
     "individual_records": [
@@ -17,6 +17,9 @@
       "A transcript, screenshot, summary, or human description must not be represented as equivalent to direct audiovisual or interaction review.",
       "Each source record must state source_residence so external incident evidence is distinguishable from CAM/VIGIL provenance.",
       "Each source record must state source_role so evidence, governance basis, taxonomy basis, implementation evidence, verification evidence, and record cross-references are not rendered interchangeably.",
+      "Every Incident source record must state a controlled evidence_status and a concise evidence_status_basis explaining the claim-relative assignment.",
+      "source_type describes the artefact, source_residence its origin, source_role why it is used, primary_artefact_access what was reviewed, and evidence_status its evidentiary relationship to the cited proposition; these dimensions must remain separate.",
+      "Incident evidence_status is claim-relative and must not be inferred from publisher reputation alone or replaced with low, medium, high, percentages, scores, or narrative prose.",
       "External-evidence interfaces must require source_residence external; absence of a VIGIL identifier is not sufficient evidence of external residence.",
       "CAM-internal and VIGIL-internal sources remain valid provenance but must not be rendered as external incident evidence."
     ],
@@ -197,7 +200,7 @@
         "classification_basis",
         "classification_confidence"
       ],
-      "taxonomy_classification_rule": "VIGIL-native taxonomy classification is distinct from failure_classification event dimensions. Classified records require exactly one canonical primary family and class. They may additionally carry zero or more independently evidenced secondary_classifications, each with a canonical family/class pair, its own basis and confidence, and a class ID distinct from the primary and every other secondary. Family-only records identify no class; candidate-new-class records allocate no ID; unmapped and deferred records remain explicit valid outcomes and cannot use secondary classes to replace a missing primary.",
+      "taxonomy_classification_rule": "VIGIL-native taxonomy classification is distinct from failure_classification event dimensions. Classified records require exactly one selectable canonical primary family and class. They may additionally carry zero or more independently evidenced selectable canonical secondary_classifications, each with a canonical family/class pair, its own basis and confidence, and a class ID distinct from the primary and every other secondary. Named subtypes and recognition patterns refine their containing class and must not be assigned as peer classes or duplicated alongside their canonical parent. Family-only records identify no class; candidate-new-class records allocate no ID; unmapped and deferred records remain explicit valid outcomes and cannot use secondary classes to replace a missing primary.",
       "source_fidelity_analysis_rule": "An FM may carry source_fidelity_analysis when a compressed technical account requires a human-readable decomposition. The analysis must distinguish source-established facts, VIGIL inference, source limitations and any ordered component transitions. It must not strengthen evidence confidence, infer undisclosed architecture or assurance practice, or replace source_records as the canonical evidence block.",
       "diagnostic_provenance_required_fields": [
         "method",
@@ -211,7 +214,7 @@
         "authority_boundary",
         "date_attribution_status"
       ],
-      "diagnostic_provenance_rule": "Diagnostic provenance identifies the human-AI collaboration that formulated the failure definition, recognition threshold, governance significance, gap assessment and diagnostic reasoning. It is distinct from source review, later interpretive review, repair and learning provenance. New failure modes must declare it explicitly. Historical attribution may use the approved creation-date rule, but a later reviewer must never replace the original diagnostic collaborator.",
+      "diagnostic_provenance_rule": "Diagnostic provenance identifies the human-AI collaboration that formulated the failure definition, recognition threshold, governance significance and diagnostic reasoning. It is distinct from source review, CAM corpus-gap or repair assessment, later interpretive review, repair and learning provenance. New failure modes must declare it explicitly. Historical attribution may use the approved creation-date rule, but a later reviewer must never replace the original diagnostic collaborator.",
       "historical_diagnostic_model_attribution": {
         "2026-04-23_through_2026-07-08": "OpenAI GPT-5.5",
         "2026-07-09_onward": "OpenAI GPT-5.6 Sol",
@@ -302,7 +305,6 @@
         "summary",
         "vigil_assessment",
         "severity_assessment",
-        "evidence_confidence",
         "source_records",
         "preferred_evidence",
         "external_incident_references",
@@ -310,10 +312,19 @@
         "jurisdictional_context",
         "taxonomy_classification",
         "linked_records",
-        "cam_internal",
         "legacy_provenance",
         "diagnostic_provenance",
         "interpretive_provenance"
+      ],
+      "forbidden_top_level_fields": [
+        "evidence_confidence",
+        "evidence_statuses",
+        "preferred_evidence_status",
+        "corpus_coverage",
+        "repair_status",
+        "remaining_gaps",
+        "proposal_needed",
+        "patch_note_needed"
       ],
       "identity_rule": "The immutable VIGIL-INC-NNNNNN identity and plain-English historical event title identify the occurrence. Event dates belong in incident_identity and never in the canonical ID.",
       "interpretation_rule": "summary and vigil_assessment.factual_basis preserve the historical account; vigil_assessment.governance_interpretation preserves VIGIL analysis; taxonomy_classification preserves reusable class mappings; provenance fields preserve review authority and limitations.",
@@ -332,7 +343,8 @@
         "classification-disputed",
         "requires-human-review"
       ],
-      "classification_rule": "Unclassified and requires-human-review Incidents assert no primary or secondary class. Provisionally classified, classified and disputed Incidents require one primary mapping and may carry independently evidenced secondary mappings. Every asserted mapping carries its own classification basis and confidence. Incident existence is never conditional on classification completion.",
+      "classification_rule": "Unclassified and requires-human-review Incidents assert no primary or secondary class. Provisionally classified, classified and disputed Incidents require one selectable canonical primary mapping and may carry independently evidenced selectable canonical secondary mappings. Named subtypes and recognition patterns refine the containing class and are not independently assignable or duplicable beside that parent. Every asserted mapping carries its own classification basis and confidence. Incident existence is never conditional on classification completion.",
+      "classification_confidence_rule": "classification_confidence evaluates confidence that the available occurrence facts fit the asserted Failure Class. It must not be mechanically inferred from source evidence status, source count, publisher identity, primary-artefact accessibility, reproduction status, corroboration, or absence of root-cause information. A source-level user-reported, first-party-reported, registry-reported, unverified, or other bounded evidence status does not automatically require medium or low taxonomy confidence; strongly corroborated evidence does not automatically justify high taxonomy confidence.",
       "external_incident_relationship_values": [
         "same-incident",
         "related-incident",
@@ -341,15 +353,43 @@
         "supporting-registry-entry"
       ],
       "source_authority_rule": "All discovery chronology remains in source_records. preferred_evidence selects one preserved source by URL and records the selection basis and date; source order or publication date alone does not determine authority.",
-      "legacy_rule": "legacy_provenance records every FM or OBS whose evidence or governed interpretation materially contributes to the Incident. The deterministic migration crosswalk remains the corpus-wide disposition authority during stabilisation.",
+      "source_record_required_fields": [
+        "evidence_status",
+        "evidence_status_basis"
+      ],
+      "evidence_status_values": [
+        "verified",
+        "independently-corroborated",
+        "independent-reporting",
+        "registry-reported",
+        "first-party-reported",
+        "allegation-on-record",
+        "internal-observation",
+        "user-reported",
+        "disputed",
+        "unverified",
+        "not-assessed"
+      ],
+      "evidence_status_rule": "Evidence status is assessed for each source and the proposition for which it is cited. It is not a publisher reputation score or an Incident-level confidence aggregate. evidence_status accepts only the controlled enum; evidence_status_basis explains the bounded assignment. Incident-level evidence_confidence is retired and forbidden.",
+      "legacy_rule": "legacy_provenance records every FM or OBS whose evidence or governed interpretation materially contributes to the Incident. It is an explicit empty array for a native Incident with no legacy contributor. The deterministic migration crosswalk remains the corpus-wide disposition authority during stabilisation.",
       "optional_lifecycle_fields": [
         "failure_classification",
         "triage",
         "triage_history",
-        "repair_status",
-        "ecosystem_status",
-        "corpus_coverage"
+        "ecosystem_status"
       ],
+      "repair_layer_boundary": "An Incident preserves historical evidence, occurrence-level diagnosis and taxonomy classification. Current CAM corpus coverage, gap, proposal, patch, repair and implementation state are downstream mutable assessments and must not be authored as Incident-native fields. cam_internal is optional and, when present on an Incident, is limited to bounded diagnostic context that does not assess CAM corpus coverage or repair state. Historical repair material may remain only inside explicitly bounded legacy or migration provenance and must not be projected as current Incident state.",
+      "incident_cam_internal_allowed_fields": [
+        "governance_layer",
+        "routing_note",
+        "cam_relevance",
+        "cam_failure_type",
+        "cam_observed_failure",
+        "cam_internal_failure_statement",
+        "cam_expected_control",
+        "cam_compliance_status"
+      ],
+      "incident_cam_internal_forbidden_semantics": "Incident cam_internal may preserve a neutral governance-layer label, occurrence/taxonomy boundary note, or bounded CAM diagnostic statement. It must not contain affected/related CAM instrument routing, corpus coverage, remaining gaps, proposal or patch need/linkage, recommended CAM amendments, repair or implementation state, or validator/automation impact.",
       "severity_assessment_required_fields": [
         "severity",
         "assessment_status",
@@ -358,7 +398,6 @@
         "legacy_sources"
       ],
       "severity_values": [
-        "S0",
         "S1",
         "S2",
         "S3",
@@ -370,7 +409,15 @@
         "incident-assessed",
         "requires-incident-review"
       ],
-      "severity_rule": "Incident severity is an occurrence-level assessment, independent of taxonomy classification and workflow priority. Legacy FM severity may be carried forward only as provisional continuity evidence. Conflicting or absent legacy severity remains SU until incident-level review.",
+      "severity_rule": "Incident severity rates the maximum occurrence-level harm or consequence supported by the preserved evidence: S1 critical materialised harm; S2 high materialised harm; S3 moderate, bounded materialised harm; S4 low, minor and readily remediable materialised harm; SU no defensible band. It is independent of taxonomy classification, source evidence status, workflow priority, publisher, notoriety, CAM importance and hypothetical worst-case capability. Legacy FM severity is provenance only and never determines the Incident band.",
+      "severity_meanings": {
+        "S1": "Critical: the occurrence materialised death, grave injury, grave or enduring deprivation of liberty or essential care, severe sexual or child-safety harm, very large realised loss, destructive loss of critical assets, or comparably grave and persistent rights or societal harm.",
+        "S2": "High: the occurrence materialised substantial harm to a person, group, organisation or important function, including significant financial, property, privacy, rights, health or operational consequences, but the supported scope, seriousness or reversibility remains below S1.",
+        "S3": "Moderate: the occurrence materialised meaningful but bounded harm, disruption, expense, privacy or dignitary impact that is limited in scope, substantially reversible, or not shown to be grave; it exceeds minor inconvenience or negligible consequence.",
+        "S4": "Low: the occurrence materialised only minor, short-lived, localised or readily remedied inconvenience, expense, presentation error, coordination defect or service impairment.",
+        "SU": "Unassessed: the evidence cannot support a defensible occurrence-level band or cannot distinguish the relevant adjacent bands. Taxonomy importance, alleged potential and hypothetical worst-case harm do not cure that gap."
+      },
+      "assessment_basis_rule": "Every incident-assessed record states the materialised harm or consequence, affected scope, seriousness, reversibility or persistence where relevant, available quantitative information, evidentiary limits, and why the selected band is appropriate rather than each adjacent band. The basis must be occurrence-specific, not empty, circular, generic, copied from a Failure Class or inferred from legacy severity. SU requires requires-incident-review and a concrete description of the evidence needed to assign a band.",
       "source_type_values": [
         "incident database entry",
         "news article",
@@ -581,6 +628,22 @@
         "maintainer-reported implemented"
       ]
     },
+    "incident_evidence_status": {
+      "description": "Claim-relative evidentiary status for one canonical Incident source record. Narrative assessments belong in evidence_status_basis; numeric or ordinal confidence values are forbidden.",
+      "enum": [
+        "verified",
+        "independently-corroborated",
+        "independent-reporting",
+        "registry-reported",
+        "first-party-reported",
+        "allegation-on-record",
+        "internal-observation",
+        "user-reported",
+        "disputed",
+        "unverified",
+        "not-assessed"
+      ]
+    },
     "source_type": {
       "enum": [
         "linked-observation",
@@ -629,6 +692,7 @@
       ]
     },
     "vigil_record": {
+      "description": "Common structural minimum. Record-class contracts add evidence_confidence for legacy non-Incident classes or source-level evidence status for Incidents.",
       "required": [
         "id",
         "record_type",
@@ -636,10 +700,8 @@
         "date_recorded",
         "record_identity",
         "summary",
-        "evidence_confidence",
         "source_records",
-        "linked_records",
-        "cam_internal"
+        "linked_records"
       ]
     },
     "source_residence": {
@@ -824,9 +886,8 @@
     }
   },
   "cam_internal_rules": {
-    "description": "cam_internal describes CAM routing, targets, affected areas, or changed components.",
+    "description": "For observations, failure modes, proposals and patches, cam_internal describes CAM routing, targets, affected areas, or changed components. On Incidents it is optional and narrowed to bounded diagnostic context that cannot encode current CAM corpus coverage or repair state.",
     "record_type_preferred_instrument_fields": {
-      "incident": "affected_instruments",
       "observation": "related_or_similar_instruments",
       "failure_mode": "affected_instruments",
       "proposal": "target_instruments",
@@ -845,7 +906,7 @@
       "date_implemented when present",
       "title",
       "summary",
-      "evidence_confidence",
+      "evidence_confidence for non-Incident record types; evidence_statuses and preferred_evidence_status for Incidents",
       "source_types",
       "source/platform/system/jurisdiction label fields",
       "path",
@@ -853,7 +914,7 @@
       "raw_url"
     ],
     "type_specific_list_fields": [
-      "incident date precision, taxonomy-classification state, preferred evidence, external-registry references, and legacy provenance",
+      "incident date precision, taxonomy-classification state, preferred evidence, evidence_statuses, preferred_evidence_status, external-registry references, and legacy provenance",
       "failure severity, likelihood, classification, and triage filter fields",
       "proposal type/status filter fields",
       "patch/change type/status and verification filter fields",
@@ -877,10 +938,15 @@
       "failure_threshold_summary",
       "remaining_work",
       "review_observation"
-    ]
+    ],
+    "incident_evidence_facets": {
+      "evidence_statuses": "Sorted unique values derived from source_records[].evidence_status.",
+      "preferred_evidence_status": "Derived from the unique source_record whose source_url equals preferred_evidence.source_url; never separately maintained.",
+      "aggregation_rule": "Generated Incident indexes must not flatten source assessments into narrative text or synthesize an overall confidence value."
+    }
   },
   "linked_records_rules": {
-    "standards": "linked_records.standards is reserved for external standards, laws, regulatory instruments, technical standards, and external governance references. CAM instrument IDs such as CAM-BS* and CAM-EQ* belong in cam_internal routing fields, using related/similar for observations, affected for failure modes, target for proposals, and changed for patches.",
+    "standards": "linked_records.standards is reserved for external standards, laws, regulatory instruments, technical standards, and external governance references. CAM instrument IDs such as CAM-BS* and CAM-EQ* belong in downstream CAM assessment or in cam_internal routing fields on record classes that retain that repair-layer routing, using related/similar for observations, affected for failure modes, target for proposals, and changed for patches. Incidents do not carry current CAM routing.",
     "research": "linked_records.research contains VIGIL research artefact IDs. An evidence-to-repair chain may originate in an Observation, Research record, or both. Research is evidentiary and non-binding; authority arises only through the linked proposal and implemented PATCH.",
     "reciprocity": "Research front-matter links to observations, failure modes, proposals, or patch notes must be reciprocated by the target record in linked_records.research.",
     "repair_scope": "A proposal or PATCH has zero or one primary failure mode by default. A governance-origin or research-origin proposal may have none. Multiple resolved failure modes are an explicit exception requiring a rationale; a PATCH must also provide one verification result per resolved failure.",

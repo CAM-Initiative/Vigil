@@ -82,7 +82,21 @@ PN_FORBIDDEN_STATUSES = {"action-required", "repair-in-progress", "verification-
 CLOSED_TRIAGE_STATUSES = {"closed-actioned", "closed-no-action", "superseded"}
 CLOSED_RECORD_STATES = {"closed", "closed-actioned", "closed-no-action", "superseded"}
 ALLOWED_SEVERITIES = {"S0", "S1", "S2", "S3", "S4", "SU"}
+INCIDENT_ALLOWED_SEVERITIES = {"S1", "S2", "S3", "S4", "SU"}
 INCIDENT_SEVERITY_STATUSES = {"provisionally-migrated", "incident-assessed", "requires-incident-review"}
+INCIDENT_ADJACENT_SEVERITIES = {
+    "S1": {"S2"},
+    "S2": {"S1", "S3"},
+    "S3": {"S2", "S4"},
+    "S4": {"S3"},
+}
+INCIDENT_GENERIC_SEVERITY_BASES = (
+    "reflects high impact or risk",
+    "reflects material but bounded harm",
+    "reflects limited or low-impact harm",
+    "reflects severe, widespread, or enduring harm",
+    "explain the incident-level severity determination",
+)
 CANONICAL_INCIDENT_SOURCE_TYPES = {
     "incident database entry", "news article", "official announcement", "incident report",
     "technical report", "technical analysis", "platform status report", "product documentation",
@@ -282,12 +296,42 @@ FM_REQUIRED = {
 }
 INCIDENT_REQUIRED = {
     "incident_identity", "vigil_assessment", "severity_assessment", "taxonomy_classification", "preferred_evidence",
-    "legacy_provenance", "diagnostic_provenance",
+    "diagnostic_provenance",
     "interpretive_provenance",
+}
+INCIDENT_FORBIDDEN = {
+    "corpus_coverage",
+    "repair_status",
+    "remaining_gaps",
+    "proposal_needed",
+    "patch_note_needed",
+}
+INCIDENT_CAM_INTERNAL_ALLOWED = {
+    "governance_layer",
+    "routing_note",
+    "cam_relevance",
+    "cam_failure_type",
+    "cam_observed_failure",
+    "cam_internal_failure_statement",
+    "cam_expected_control",
+    "cam_compliance_status",
 }
 INCIDENT_CLASSIFICATION_STATUSES = {
     "unclassified", "provisionally-classified", "classified", "classification-disputed",
     "requires-human-review",
+}
+INCIDENT_EVIDENCE_STATUSES = {
+    "verified",
+    "independently-corroborated",
+    "independent-reporting",
+    "registry-reported",
+    "first-party-reported",
+    "allegation-on-record",
+    "internal-observation",
+    "user-reported",
+    "disputed",
+    "unverified",
+    "not-assessed",
 }
 INCIDENT_DATE_PRECISIONS = {"exact-day", "date-range", "month", "year", "reported-date", "unknown"}
 INCIDENT_EXTERNAL_RELATIONSHIPS = {
@@ -1277,6 +1321,35 @@ def taxonomy_catalogue() -> tuple[dict[str, dict[str, Any]], dict[str, dict[str,
     return families, classes
 
 
+def retired_taxonomy_class_successors() -> dict[str, str]:
+    index = load_json(TAXONOMY_INDEX_PATH)
+    rows = index.get("retired_class_mappings", []) if isinstance(index, dict) else []
+    return {
+        row["retired_id"]: row["successor_id"]
+        for row in rows
+        if isinstance(row, dict)
+        and isinstance(row.get("retired_id"), str)
+        and isinstance(row.get("successor_id"), str)
+    }
+
+
+def validate_no_retired_subtype_duplication(
+    path: Path, class_ids: list[Any], errors: list[str], *, label: str
+) -> None:
+    successors = retired_taxonomy_class_successors()
+    asserted = {class_id for class_id in class_ids if isinstance(class_id, str)}
+    for retired_id in sorted(asserted & successors.keys()):
+        successor_id = successors[retired_id]
+        errors.append(
+            f"{path}: {label} uses retired subtype {retired_id}; use canonical successor {successor_id}"
+        )
+        if successor_id in asserted:
+            errors.append(
+                f"{path}: {label} duplicates one mechanism as retired subtype {retired_id} "
+                f"and canonical parent {successor_id}"
+            )
+
+
 def supported_taxonomy_versions() -> set[str]:
     index = load_json(TAXONOMY_INDEX_PATH)
     releases = index.get("release_history", []) if isinstance(index, dict) else []
@@ -1342,6 +1415,16 @@ def validate_taxonomy_classification(path: Path, record: dict[str, Any], errors:
     if secondaries and status != "classified":
         errors.append(f"{path}: secondary classifications cannot replace a missing primary classification")
     primary_class_id = klass.get("class_id") if isinstance(klass, dict) else None
+    validate_no_retired_subtype_duplication(
+        path,
+        [primary_class_id] + [
+            secondary.get("class", {}).get("class_id")
+            for secondary in secondaries
+            if isinstance(secondary, dict) and isinstance(secondary.get("class"), dict)
+        ],
+        errors,
+        label="taxonomy classification",
+    )
     seen_secondary_ids: set[str] = set()
     for number, secondary in enumerate(secondaries):
         secondary_where = f"{path}: taxonomy secondary_classifications[{number}]"
@@ -1442,6 +1525,12 @@ def validate_incident_taxonomy_classification(
 
     families, classes = taxonomy_catalogue()
     mappings = ([primary] if isinstance(primary, dict) else []) + secondaries
+    validate_no_retired_subtype_duplication(
+        path,
+        [mapping.get("class_id") for mapping in mappings if isinstance(mapping, dict)],
+        errors,
+        label="Incident taxonomy classification",
+    )
     seen: set[str] = set()
     for index, mapping in enumerate(mappings):
         where = (
@@ -1481,6 +1570,8 @@ def validate_incident_taxonomy_classification(
 
 def validate_incident(path: Path, record: dict[str, Any], errors: list[str]) -> None:
     add_missing(errors, path, record, INCIDENT_REQUIRED)
+    if "legacy_provenance" not in record:
+        errors.append(f"{path}: missing required fields: legacy_provenance")
     if "external_incident_references" not in record:
         errors.append(f"{path}: missing required fields: external_incident_references")
     record_id = record.get("id")
@@ -1526,19 +1617,36 @@ def validate_incident(path: Path, record: dict[str, Any], errors: list[str]) -> 
         for field in ("severity", "assessment_status", "assessment_basis", "assessed_on", "legacy_sources"):
             if field not in severity_assessment:
                 errors.append(f"{path}: severity_assessment missing required field {field}")
-        if severity_assessment.get("severity") not in ALLOWED_SEVERITIES:
+        severity = severity_assessment.get("severity")
+        status = severity_assessment.get("assessment_status")
+        basis = severity_assessment.get("assessment_basis")
+        if severity not in INCIDENT_ALLOWED_SEVERITIES:
             errors.append(f"{path}: severity_assessment.severity is not canonical")
-        if severity_assessment.get("assessment_status") not in INCIDENT_SEVERITY_STATUSES:
+        if status not in INCIDENT_SEVERITY_STATUSES:
             errors.append(f"{path}: severity_assessment.assessment_status is not canonical")
-        if not is_non_empty_string(severity_assessment.get("assessment_basis")):
+        if not is_non_empty_string(basis):
             errors.append(f"{path}: severity_assessment.assessment_basis must be a non-empty string")
+        else:
+            basis_lower = basis.lower()
+            if any(phrase in basis_lower for phrase in INCIDENT_GENERIC_SEVERITY_BASES):
+                errors.append(f"{path}: severity_assessment.assessment_basis is generic or template-derived")
+            if severity in INCIDENT_ADJACENT_SEVERITIES:
+                if severity not in basis:
+                    errors.append(f"{path}: severity_assessment.assessment_basis must identify the selected band")
+                for adjacent in INCIDENT_ADJACENT_SEVERITIES[severity]:
+                    if adjacent not in basis:
+                        errors.append(f"{path}: severity_assessment.assessment_basis must distinguish adjacent band {adjacent}")
+            if severity == "SU" and "SU" not in basis:
+                errors.append(f"{path}: SU assessment_basis must identify the unassessed band")
         if not isinstance(severity_assessment.get("assessed_on"), str) or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", severity_assessment["assessed_on"]):
             errors.append(f"{path}: severity_assessment.assessed_on must be an ISO date")
         legacy_sources = severity_assessment.get("legacy_sources")
         if not isinstance(legacy_sources, list) or any(not isinstance(item, str) for item in legacy_sources):
             errors.append(f"{path}: severity_assessment.legacy_sources must be a string array")
-        if severity_assessment.get("assessment_status") == "requires-incident-review" and severity_assessment.get("severity") != "SU":
+        if status == "requires-incident-review" and severity != "SU":
             errors.append(f"{path}: requires-incident-review severity must remain SU")
+        if severity == "SU" and status != "requires-incident-review":
+            errors.append(f"{path}: SU severity must require incident review")
 
     source_urls = {
         item.get("source_url") for item in record.get("source_records", []) if isinstance(item, dict)
@@ -1552,6 +1660,12 @@ def validate_incident(path: Path, record: dict[str, Any], errors: list[str]) -> 
                 errors.append(f"{path}: preferred_evidence.{field} must be a non-empty string")
         if preferred.get("source_url") not in source_urls:
             errors.append(f"{path}: preferred_evidence.source_url must identify a preserved source_record")
+        preferred_matches = [
+            source for source in record.get("source_records", [])
+            if isinstance(source, dict) and source.get("source_url") == preferred.get("source_url")
+        ]
+        if len(preferred_matches) != 1:
+            errors.append(f"{path}: preferred_evidence.source_url must identify exactly one source_record")
 
     external = record.get("external_incident_references")
     if not isinstance(external, list):
@@ -1577,8 +1691,8 @@ def validate_incident(path: Path, record: dict[str, Any], errors: list[str]) -> 
             seen_external.add(key)
 
     legacy = record.get("legacy_provenance")
-    if not isinstance(legacy, list) or not legacy:
-        errors.append(f"{path}: legacy_provenance must be a non-empty array")
+    if not isinstance(legacy, list):
+        errors.append(f"{path}: legacy_provenance must be an array")
     else:
         seen_legacy: set[str] = set()
         for index, item in enumerate(legacy):
@@ -1616,6 +1730,9 @@ def validate_record(
     record_type = record.get("record_type")
 
     common_required = set(REQUIRED_COMMON)
+    if record_type == "incident":
+        common_required.discard("evidence_confidence")
+        common_required.discard("cam_internal")
     # Temporary patch scaffolds may intentionally carry an empty source_records array;
     # source_records still must be present and typed as an array below.
     if record_type in {"patch", "patch_note"} and str(record.get("record_state", "")).lower() == "scaffolding":
@@ -1675,6 +1792,15 @@ def validate_record(
                     errors.append(f"{path}: source_records[{index}].source_type {source_type!r} is not a canonical publication genre")
                 if "legacy_source_type" in source and not is_non_empty_string(source.get("legacy_source_type")):
                     errors.append(f"{path}: source_records[{index}].legacy_source_type must be a non-empty string when present")
+                status = source.get("evidence_status")
+                if status not in INCIDENT_EVIDENCE_STATUSES:
+                    errors.append(
+                        f"{path}: source_records[{index}].evidence_status {status!r} is not canonical"
+                    )
+                if not is_non_empty_string(source.get("evidence_status_basis")):
+                    errors.append(
+                        f"{path}: source_records[{index}].evidence_status_basis must be a non-empty string"
+                    )
             if not source.get("source_url") and source.get("archive_url"):
                 warnings.append(f"{path}: source_records[{index}] source_url is blank but archive_url is present")
 
@@ -1805,7 +1931,6 @@ def validate_record(
     cam = record.get("cam_internal")
     if isinstance(cam, dict):
         preferred_route = {
-            "incident": "affected_instruments",
             "observation": "related_or_similar_instruments",
             "failure_mode": "affected_instruments",
             "proposal": "target_instruments",
@@ -1815,7 +1940,6 @@ def validate_record(
         if preferred_route is not None and preferred_route in cam and not isinstance(cam.get(preferred_route), list):
             errors.append(f"{path}: cam_internal.{preferred_route} must be an array when present")
         deprecated_routes = {
-            "incident": ("target_instruments", "changed_instruments"),
             "observation": ("affected_instruments", "target_instruments", "changed_instruments"),
             "failure_mode": ("target_instruments", "changed_instruments"),
             "proposal": ("affected_instruments", "changed_instruments"),
@@ -1830,6 +1954,30 @@ def validate_record(
                 )
 
     if record_type == "incident":
+        present = sorted(field for field in INCIDENT_FORBIDDEN if field in record)
+        if present:
+            errors.append(
+                f"{path}: Incident contains current CAM corpus-gap or repair-layer fields: {', '.join(present)}"
+            )
+        incident_cam = record.get("cam_internal")
+        if incident_cam is not None:
+            if not isinstance(incident_cam, dict) or not incident_cam:
+                errors.append(f"{path}: Incident cam_internal must be a non-empty object when present")
+            else:
+                forbidden_cam = sorted(set(incident_cam).difference(INCIDENT_CAM_INTERNAL_ALLOWED))
+                if forbidden_cam:
+                    errors.append(
+                        f"{path}: Incident cam_internal contains CAM corpus-gap or repair-routing fields: "
+                        f"{', '.join(forbidden_cam)}"
+                    )
+        if "evidence_confidence" in record:
+            errors.append(
+                f"{path}: Incident evidence_confidence is retired; assess each source_record with "
+                "evidence_status and evidence_status_basis"
+            )
+        for generated_field in ("evidence_statuses", "preferred_evidence_status"):
+            if generated_field in record:
+                errors.append(f"{path}: {generated_field} is generated and must not be manually authored")
         validate_incident(path, record, errors)
     elif record_type == "observation":
         present = sorted(field for field in OBS_FORBIDDEN if field in record)

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import copy
 import importlib.util
 import json
 import shutil
@@ -43,7 +44,10 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         path.write_text(json.dumps(value, indent=2) + "\n", encoding="utf-8")
 
     def errors(self):
-        return MODULE.validate_catalogue(self.paths())[0]
+        return MODULE.validate_catalogue(self.paths(), enforce_current_release=False)[0]
+
+    def published_errors(self):
+        return MODULE.validate_catalogue(self.paths(), enforce_current_release=True)[0]
 
     def test_current_catalogue_validates(self):
         self.assertEqual(self.errors(), [])
@@ -64,21 +68,19 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         self.write(path, data)
         self.assertTrue(any("references missing class" in error for error in self.errors()))
 
-    def test_variant_parent_must_be_one_in_family_class(self):
+    def test_subtype_historical_id_must_map_to_containing_class(self):
         path, data = self.document()
-        variant = next(item for item in data["classes"] if item["abstraction"] == "variant")
-        variant["relationships"] = [
-            {"type": "child_of", "target_id": "VIGIL-FC-000010"}
-        ]
+        parent = next(item for item in data["classes"] if item.get("subtypes"))
+        parent["subtypes"][0]["historical_class_id"] = "VIGIL-FC-000007"
         self.write(path, data)
-        self.assertTrue(any("cannot have a parent in another family" in error for error in self.errors()))
+        self.assertTrue(any("retirement successor must be containing class" in error for error in self.errors()))
 
     def test_reclassified_immutable_ids_are_preserved_in_activation_family(self):
         documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
         activation = next(item for item in documents if item["family"]["family_id"] == "VIGIL-FF-0008")
         self.assertEqual(
             [item["class_id"] for item in activation["classes"]],
-            ["VIGIL-FC-000037", "VIGIL-FC-000038", "VIGIL-FC-000039", "VIGIL-FC-000043"],
+            ["VIGIL-FC-000037", "VIGIL-FC-000038", "VIGIL-FC-000043"],
         )
 
     def test_unwarranted_activation_is_a_peer_class_with_bounded_exclusions(self):
@@ -100,12 +102,13 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         self.write(path, data)
         self.assertTrue(any("has family_id" in error and "expected" in error for error in self.errors()))
 
-    def test_reclassified_variant_parent_remains_in_same_family(self):
+    def test_retired_control_suppression_is_preserved_as_non_selectable_subtype(self):
         path = next(path for path in self.paths() if "VIGIL-FF-0008" in path.name)
         data = json.loads(path.read_text(encoding="utf-8"))
-        variant = next(item for item in data["classes"] if item["class_id"] == "VIGIL-FC-000039")
-        parent = next(rel for rel in variant["relationships"] if rel["type"] == "child_of")
-        self.assertEqual(parent["target_id"], "VIGIL-FC-000038")
+        parent = next(item for item in data["classes"] if item["class_id"] == "VIGIL-FC-000038")
+        subtype = next(item for item in parent["subtypes"] if item["historical_class_id"] == "VIGIL-FC-000039")
+        self.assertEqual(subtype["name"], "Control Authority Suppression")
+        self.assertNotIn("VIGIL-FC-000039", data["family"]["allowed_class_ids"])
         self.assertEqual(self.errors(), [])
 
     def test_reclassification_relationships_resolve_across_family_boundary(self):
@@ -218,7 +221,7 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         access = next(item for item in documents if item["family"]["family_id"] == "VIGIL-FF-0005")
         self.assertEqual(
             [item["class_id"] for item in access["classes"]],
-            ["VIGIL-FC-000031", "VIGIL-FC-000032", "VIGIL-FC-000033", "VIGIL-FC-000048"],
+            ["VIGIL-FC-000031", "VIGIL-FC-000032", "VIGIL-FC-000048"],
         )
         parent_prose = " ".join(
             access["family"][field]
@@ -255,40 +258,55 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         ):
             self.assertIn(boundary, definition)
 
-    def test_dataset_release_metadata_is_current_and_projected_to_families(self):
+    def test_working_branch_preserves_last_published_metadata_in_families(self):
         index = json.loads(MODULE.INDEX_PATH.read_text(encoding="utf-8"))
-        self.assertEqual(index["standard"]["version"], "0.2.1-draft")
-        self.assertEqual(index["standard"]["publication_date"], "2026-08-27")
+        self.assertEqual(index["standard"]["version"], "0.2.3-draft")
+        self.assertEqual(index["standard"]["publication_date"], "2026-08-30")
         self.assertEqual(index["release_history"][-1]["change_level"], "patch")
         for path in self.paths():
             document = json.loads(path.read_text(encoding="utf-8"))
-            self.assertEqual(document["standard"]["version"], "0.2.1-draft")
-            self.assertEqual(document["standard"]["publication_date"], "2026-08-27")
+            self.assertEqual(document["standard"]["version"], "0.2.3-draft")
+            self.assertEqual(document["standard"]["publication_date"], "2026-08-30")
 
     def test_family_or_class_change_requires_new_dataset_release_metadata(self):
         path, data = self.document()
         data["family"]["plain_english"] += " Material amendment for release-linter testing."
         self.write(path, data)
         self.assertTrue(
-            any("changed without a new dataset version, date and release digest" in error for error in self.errors())
+            any(
+                "changed without a new dataset version, date and release digest" in error
+                for error in self.published_errors()
+            )
         )
 
     def test_existing_record_change_requires_patch_not_minor_increment(self):
         index = json.loads(MODULE.INDEX_PATH.read_text(encoding="utf-8"))
-        index["standard"]["version"] = "0.3.0-draft"
-        index["release_history"][-1]["version"] = "0.3.0-draft"
+        previous = index["release_history"][-1]
+        release = copy.deepcopy(previous)
+        release["version"] = "0.4.0-draft"
+        release["change_level"] = "minor"
+        release["content_digest"] = "sha256:" + "f" * 64
+        index["release_history"].append(release)
+        index["standard"]["version"] = "0.4.0-draft"
         self.write(MODULE.INDEX_PATH, index)
         for path in self.paths():
             document = json.loads(path.read_text(encoding="utf-8"))
-            document["standard"]["version"] = "0.3.0-draft"
+            document["standard"]["version"] = "0.4.0-draft"
             self.write(path, document)
-        self.assertTrue(any("must advance to 0.2.1" in error for error in self.errors()))
+        self.assertTrue(any("must advance to 0.2.4" in error for error in self.published_errors()))
 
     def test_new_family_requires_minor_dataset_increment(self):
         index = json.loads(MODULE.INDEX_PATH.read_text(encoding="utf-8"))
-        index["release_history"][-1]["family_ids"].append("VIGIL-FF-0010")
+        previous = index["release_history"][-1]
+        release = copy.deepcopy(previous)
+        release["version"] = "0.3.1-draft"
+        release["change_level"] = "patch"
+        release["content_digest"] = "sha256:" + "e" * 64
+        release["family_ids"].append("VIGIL-FF-0011")
+        index["release_history"].append(release)
+        index["standard"]["version"] = "0.3.1-draft"
         self.write(MODULE.INDEX_PATH, index)
-        self.assertTrue(any("must advance to 0.3.0" in error for error in self.errors()))
+        self.assertTrue(any("must advance to 0.3.0" in error for error in self.published_errors()))
 
     def test_dataset_release_requires_fixed_edition_date(self):
         index = json.loads(MODULE.INDEX_PATH.read_text(encoding="utf-8"))
@@ -296,18 +314,35 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         self.write(MODULE.INDEX_PATH, index)
         self.assertTrue(any("standard.publication_date must be a valid" in error for error in self.errors()))
 
-    def test_taxonomy_08_allocations_are_sequential_and_bounded(self):
+    def test_allocations_through_current_branch_head_are_sequential_and_bounded(self):
         documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
         classes = {item["class_id"]: item for document in documents for item in document["classes"]}
         self.assertEqual(
             [class_id for class_id in sorted(classes) if class_id >= "VIGIL-FC-000046"],
-            [f"VIGIL-FC-{number:06d}" for number in range(46, 54)],
+            [f"VIGIL-FC-{number:06d}" for number in range(46, 62)],
         )
         authority = next(document for document in documents if document["family"]["family_id"] == "VIGIL-FF-0001")
         self.assertEqual(classes["VIGIL-FC-000046"]["family_id"], authority["family"]["family_id"])
         self.assertEqual(classes["VIGIL-FC-000047"]["family_id"], "VIGIL-FF-0002")
         self.assertEqual(classes["VIGIL-FC-000048"]["family_id"], "VIGIL-FF-0005")
         self.assertEqual(classes["VIGIL-FC-000053"]["family_id"], authority["family"]["family_id"])
+
+    def test_selectable_classes_and_non_selectable_subtypes_are_disjoint(self):
+        index = json.loads(MODULE.INDEX_PATH.read_text(encoding="utf-8"))
+        documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
+        selectable = {item["class_id"] for document in documents for item in document["classes"]}
+        self.assertEqual(len(selectable), 54)
+        self.assertTrue(all(item["abstraction"] == "class" for document in documents for item in document["classes"]))
+        subtypes = {
+            subtype["historical_class_id"]: item["class_id"]
+            for document in documents
+            for item in document["classes"]
+            for subtype in item.get("subtypes", [])
+        }
+        mappings = {row["retired_id"]: row["successor_id"] for row in index["retired_class_mappings"]}
+        self.assertEqual(subtypes, mappings)
+        self.assertEqual(set(index["removed_ids"]), set(mappings))
+        self.assertTrue(selectable.isdisjoint(mappings))
 
     def test_identity_representation_authority_class_is_portable_and_bounded(self):
         documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]

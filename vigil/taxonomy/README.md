@@ -17,16 +17,16 @@ families/
   VIGIL-FF-0007-governance-control-reach-integrity.json
   VIGIL-FF-0008-control-activation-integrity.json
   VIGIL-FF-0009-agency-preserving-influence-integrity.json
+  VIGIL-FF-0010-infrastructural-authority-integrity.json
 generated/
-  one complete HTML page per family
-  VIGIL.FailureTaxonomy.FullReference.html
+  VIGIL.FailureTaxonomy.CaseFileExamples.json
   VIGIL.Observatory.FailureTaxonomy.FullReference.pdf
 migration/
   Caelestis.LegacyFailure.MigrationLedger.json
   Caelestis.LegacyFailure.InventoryReview.md
 ```
 
-Family JSON is canonical. HTML, Markdown, and PDF references are generated projections. The migration ledger is non-normative source-analysis evidence and is not a dependency of the portable taxonomy.
+Family JSON is canonical. The maintained PDF is a generated publication projection. Generated HTML is not a VIGIL publication asset; HTML emitted by the renderer is transient build material only. The migration ledger is non-normative source-analysis evidence and is not a dependency of the portable taxonomy.
 
 `generated/VIGIL.FailureTaxonomy.CaseFileExamples.json` is a non-normative reverse mapping derived from canonical Incident `taxonomy_classification` blocks. It lets public interfaces discover Case File examples for immutable family and class IDs without embedding incident-specific record IDs in portable taxonomy definitions. Each projected example declares whether the mapping is the Incident's primary structural mechanism or an independently evidenced secondary mechanism. Unclassified Incidents remain valid registry records but do not enter this classification projection until a primary classification exists.
 
@@ -42,9 +42,9 @@ Broad organisational containers such as governance, UX, safety, security, or AI-
 
 The hierarchy is:
 
-**Failure Taxonomy → Failure Family → Failure Class → Variant where justified**
+**Failure Taxonomy → Failure Family → selectable Failure Class → non-selectable subtype or recognition pattern where justified**
 
-One JSON file contains one bounded family. Classes and variants remain inside that file.
+One JSON file contains one bounded family. Selectable classes remain peer records in `classes`. A narrower manifestation of the same mechanism is embedded under its canonical class in `subtypes`; it is not independently selectable and does not appear in the family's allowed-class lists.
 
 ## Immutable identity and semantic codes
 
@@ -75,7 +75,7 @@ Family filenames use `<family_id>-<human-readable-slug>.json`. The immutable ID 
 
 Every family defines its immutable ID, semantic code, canonical name, version, status, abstraction, plain-English explanation, technical definition, governing invariant, scope, inclusion rule, exclusion rule, aliases, and allowed class IDs/codes.
 
-Every class or variant defines its immutable ID, semantic code, current family ID, canonical name, abstraction, status, plain-English explanation, technical definition, recognition criteria, exclusions, examples, aliases, typed relationships where relevant, and optional external mappings or supersession metadata.
+Every selectable class defines its immutable ID, semantic code, current family ID, canonical name, class abstraction, status, plain-English explanation, technical definition, recognition criteria, exclusions, examples, aliases, typed relationships where relevant, and optional external mappings or supersession metadata. An embedded subtype preserves its semantic name, explanation, definition, recognition criteria, exclusions, examples, aliases and any historical retired class ID/code without becoming a peer class.
 
 ### Semantic roles of family prose
 
@@ -91,7 +91,7 @@ Definitions must not contain incident-specific values. Severity, harm, persisten
 
 ## Dataset and publication versioning
 
-The version in `VIGIL.FailureTaxonomy.Index.json` is the version of the complete downloadable taxonomy dataset and Full Reference Manual. It is distinct from the version of an individual family record and from the historical taxonomy version recorded on a Failure Mode classification decision.
+The version in `VIGIL.FailureTaxonomy.Index.json` is the version of the complete downloadable taxonomy dataset and Full Reference Manual. It is distinct from the version of an individual family record and from the historical taxonomy version recorded on a prior classification decision.
 
 Dataset releases follow these rules:
 
@@ -99,39 +99,28 @@ Dataset releases follow these rules:
 - admission of a new failure family increments the second digit and resets the third digit to zero;
 - the first digit is reserved for a deliberately approved, materially incompatible re-foundation of the taxonomy and is never inferred from routine record maintenance;
 - every dataset release records a fixed ISO `publication_date`; generation must not substitute the current clock date;
-- historical Failure Mode classification stamps remain unchanged unless the mappings are substantively re-adjudicated.
+- historical classification stamps remain unchanged unless the mappings are substantively re-adjudicated.
 
 The index `release_history` records the canonical family/class content digest, family-ID set, class count, change level, dataset version, and publication date. Taxonomy validation rejects changed canonical family/class content unless the release history, dataset version, and publication date have been advanced consistently. It also rejects a patch increment for a newly admitted family and a minor increment for an ordinary existing-record change.
 
 ## Relationships
 
-Supported relationship types are `child_of`, `parent_of`, `peer_of`, `distinguish_from`, `can_cooccur_with`, `may_result_in`, and `may_be_result_of`. Targets use `VIGIL-FC-NNNNNN`, never a mutable compound semantic path.
+Supported peer-class relationship types are `peer_of`, `distinguish_from`, `can_cooccur_with`, `may_result_in`, and `may_be_result_of`. Targets use current selectable `VIGIL-FC-NNNNNN` identifiers, never a mutable compound semantic path or a retired subtype ID.
 
-A variant has exactly one in-family class parent. Definitions are not duplicated merely to express co-occurrence or distinction.
+A subtype is nested directly under exactly one canonical class and cannot be emitted as an independent primary or secondary classification. Current peer classes use relationships only for genuine distinction, co-occurrence or directional effects; a narrower manifestation is not modeled as a `child_of` peer.
 
 ## Generation
 
-Generate every complete family page and the combined full-reference HTML:
+Generate the maintained Full Reference PDF with:
 
 ```bash
-python vigil/taxonomy/render_taxonomy.py \
-  --catalogue \
-  --output-dir vigil/taxonomy/generated
-```
-
-Generate the HTML catalogue and the downloadable VIGIL Observatory Full Reference PDF:
-
-```bash
-python -m pip install weasyprint==69.0
 python vigil/taxonomy/render_taxonomy.py \
   --catalogue \
   --output-dir vigil/taxonomy/generated \
   --pdf
 ```
 
-The PDF is a publication projection of the same canonical family JSON used by the HTML renderer. It is intentionally generated rather than hand-edited. The current publication layer supplies stable front matter, dataset version, fixed edition date, status metadata, family/class pagination, a contents section, page numbering, and publication-rights text; visual branding and cover artwork may be evolved without changing the underlying taxonomy contract. Registry-sourced CAM header and footer images are pinned under `assets/` so publication generation does not depend on live network retrieval. The renderer defaults `SOURCE_DATE_EPOCH` to `0` for reproducible embedded-font timestamps; a publication environment may override it with another fixed epoch.
-
-`.github/workflows/taxonomy-publications.yml` automatically rebuilds the HTML and PDF projections when the taxonomy index, family/class definitions, Incident-backed Case File example projection, Incident records, projection builder, or renderer changes. The PDF is a retained, ongoing publication asset: after validation it remains in `vigil/taxonomy/generated/` and is committed alongside the HTML outputs. The workflow rejects missing, empty, or non-PDF publication output before commit.
+The PDF is a deterministic projection of the canonical family JSON and is generated rather than hand-edited. The renderer may emit HTML internally while composing the PDF, but those files are transient build material and are not committed publication assets. Pull requests validate the taxonomy contract, rebuild the Incident-backed Case File projection, and apply evidence exclusions without requiring publication regeneration. After changes land on `main`, the publication workflow uses the repository's established PDF renderer to regenerate, validate, and commit the refreshed PDF asset.
 
 Generate one Markdown family reference when needed:
 
@@ -158,7 +147,7 @@ Run catalogue-wide schema and integrity validation:
 python vigil/taxonomy/validate_taxonomy.py
 ```
 
-The validator checks every family against the JSON Schema and enforces duplicate-ID/code detection, family membership, variant parentage, relationship targets, duplicate relationships, allowed-list drift, index/file agreement, filename identity, removed-ID references, mandatory descriptions, same-kind supersession, and supersession-chain integrity.
+The validator checks every family against the JSON Schema and enforces duplicate-ID/code detection, family membership, selectable-class abstraction, non-selectable subtype ownership, deterministic retired-ID successor mappings, current relationship targets, duplicate relationships, allowed-list drift, index/file agreement, filename identity, removed-ID reservation, mandatory descriptions, same-kind supersession, and supersession-chain integrity.
 
 ## Portability
 

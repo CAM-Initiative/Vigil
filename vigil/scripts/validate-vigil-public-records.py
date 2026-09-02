@@ -15,6 +15,7 @@ validation.
 from __future__ import annotations
 
 import importlib.util
+import json
 import re
 import sys
 from pathlib import Path
@@ -24,6 +25,8 @@ ROOT = Path(__file__).resolve().parents[2]
 VIGIL_DIR = ROOT / "vigil"
 MODULE_PATH = VIGIL_DIR / "scripts" / "validate-vigil-records.py"
 WITHDRAWN_REFERENCE_ID = re.compile(r"^VIGIL-\d{4}-(?:PROP|PATCH|LEARN)-\d{4}$")
+INCIDENT_INDEX = VIGIL_DIR / "VIGIL.Incidents.Index.json"
+MASTER_INDEX = VIGIL_DIR / "VIGIL.Registry.Index.json"
 
 
 def load_module() -> Any:
@@ -65,6 +68,50 @@ def withdrawn_reference_ids(record: dict[str, Any]) -> set[str]:
                 references.add(record_id)
 
     return references
+
+
+def validate_generated_incident_evidence_facets(
+    records_by_id: dict[str, dict[str, Any]], errors: list[str], index_path: Path | None = None
+) -> None:
+    """Validate generated Incident evidence facets against canonical sources."""
+    path = index_path or INCIDENT_INDEX
+    try:
+        index = json.loads(path.read_text(encoding="utf-8"))
+    except Exception as exc:  # noqa: BLE001
+        errors.append(f"{path}: unable to read generated Incident index: {exc}")
+        return
+    entries = {
+        entry.get("id"): entry
+        for entry in index.get("records", [])
+        if isinstance(entry, dict) and isinstance(entry.get("id"), str)
+    }
+    incidents = {
+        record_id: record
+        for record_id, record in records_by_id.items()
+        if record.get("record_type") == "incident"
+    }
+    for record_id, record in incidents.items():
+        entry = entries.get(record_id)
+        if entry is None:
+            errors.append(f"{path}: missing generated entry for {record_id}")
+            continue
+        sources = [item for item in record.get("source_records", []) if isinstance(item, dict)]
+        expected_statuses = sorted(
+            {str(item["evidence_status"]) for item in sources if item.get("evidence_status")}
+        )
+        if entry.get("evidence_statuses") != expected_statuses:
+            errors.append(
+                f"{path}: {record_id} evidence_statuses disagree with canonical source_records"
+            )
+        preferred_url = record.get("preferred_evidence", {}).get("source_url")
+        matches = [item for item in sources if item.get("source_url") == preferred_url]
+        expected_preferred = matches[0].get("evidence_status") if len(matches) == 1 else None
+        if entry.get("preferred_evidence_status") != expected_preferred:
+            errors.append(
+                f"{path}: {record_id} preferred_evidence_status disagrees with preferred_evidence"
+            )
+        if "evidence_confidence" in entry:
+            errors.append(f"{path}: {record_id} retains retired Incident evidence_confidence")
 
 
 def main() -> int:
@@ -156,6 +203,10 @@ def main() -> int:
         for record in public_records_by_path.values()
         if isinstance(record.get("id"), str)
     }
+    for generated_index in (INCIDENT_INDEX, MASTER_INDEX):
+        validate_generated_incident_evidence_facets(
+            public_records_by_id, errors, index_path=generated_index
+        )
 
     for path, research in public_research_by_path.items():
         research_id = research.get("id")

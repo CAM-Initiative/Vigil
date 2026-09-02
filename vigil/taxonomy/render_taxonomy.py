@@ -89,6 +89,23 @@ def markdown_family(data: dict, level: int = 1) -> str:
         out.extend(f"- {x}" for x in item["examples"])
         if item.get("aliases"):
             out.extend(["", f"**Prior codes / aliases:** {'; '.join(f'`{x}`' for x in item['aliases'])}"])
+        if item.get("subtypes"):
+            out.extend(["", f"{h}## Non-selectable subtypes and recognition patterns", ""])
+            for subtype in item["subtypes"]:
+                out.extend([
+                    f"{h}### {subtype['name']}", "",
+                    f"**Historical class ID:** `{subtype['historical_class_id']}`  ",
+                    f"**Historical semantic code:** `{subtype['historical_class_code']}`", "",
+                    f"**Plain English:** {subtype['plain_english']}", "",
+                    subtype["definition"], "", "**Recognition criteria**", "",
+                ])
+                out.extend(f"- {x}" for x in subtype["recognition"]["required_conditions"])
+                out.extend(["", "**Exclusions**", ""])
+                out.extend(f"- {x}" for x in subtype["exclusions"])
+                out.extend(["", "**Illustrative examples**", ""])
+                out.extend(f"- {x}" for x in subtype["examples"])
+                if subtype.get("aliases"):
+                    out.extend(["", f"**Historical aliases:** {'; '.join(f'`{x}`' for x in subtype['aliases'])}"])
         if item.get("relationships"):
             out.extend(["", f"{h}## Relationships", ""])
             for relation in item["relationships"]:
@@ -498,23 +515,16 @@ def publication_class_html(item: dict, section_number: str, class_lookup: dict[s
             f"<li>{esc(m['scheme'])} <code>{esc(m['identifier'])}</code> ({esc(m['relationship'])})" + (f" — {esc(m['note'])}" if m.get("note") else "") + "</li>"
             for m in item["external_mappings"]
         ) + "</ul>"
-    parent_note = ""
-    if str(item.get("abstraction", "")).lower() == "variant":
-        relation = next((r for r in item.get("relationships", []) if str(r.get("type", "")).lower().replace("_", " ") == "child of"), None)
-        if relation:
-            parent = class_lookup.get(str(relation.get("target_id", "")))
-            if parent:
-                parent_note = f"<p class=\"variant-parent\">Variant of {esc(parent[0])} {esc(parent[1])}</p>"
+    subtypes = subtype_html(item, heading="h3")
     return f"""
 <section class="book-class" id="{esc(anchor(item['class_id']))}">
   <p class="class-kicker">{esc(section_number)} · {esc(str(item['abstraction']).upper())}</p>
   <h2 class="class-title">{esc(item['name'])}</h2>
   <p class="class-meta"><code>{esc(item['class_id'])}</code> · <code>{esc(item['class_code'])}</code> · {esc(str(item['status']).title())}</p>
-  {parent_note}
   <p class="plain"><strong>Plain English:</strong> {esc(item['plain_english'])}</p>
   <h3>Technical definition</h3><p>{esc(item['definition'])}</p>
   <div class="grid criteria-grid"><section><h3>Recognition criteria</h3><ul>{recognition}</ul>{indicators}</section><section><h3>Exclusions</h3><ul>{exclusions}</ul></section></div>
-  <h3>Illustrative examples</h3><ul>{illustrative_examples}</ul>{aliases}{relationships}{mappings}{case_examples_html(case_examples or [])}
+  <h3>Illustrative examples</h3><ul>{illustrative_examples}</ul>{subtypes}{aliases}{relationships}{mappings}{case_examples_html(case_examples or [])}
 </section>"""
 
 
@@ -525,11 +535,10 @@ def publication_family_html(data: dict, chapter_number: int, case_examples: dict
     for index, item in enumerate(data["classes"], start=1):
         number = f"{chapter_number}.{index}"
         class_lookup[item["class_id"]] = (number, item["name"])
-        suffix = " · Variant" if str(item.get("abstraction", "")).lower() == "variant" else ""
         chapter_rows.append(
             f"<li><span class=\"chapter-item-number\">{esc(number)}</span>"
             f"<span class=\"chapter-item-title\">{esc(item['name'])}</span>"
-            f"<span class=\"chapter-item-id\"><code>{esc(item['class_id'])}</code>{suffix}</span></li>"
+            f"<span class=\"chapter-item-id\"><code>{esc(item['class_id'])}</code></span></li>"
         )
     aliases = " · ".join(f"<code>{esc(x)}</code>" for x in family.get("aliases", []))
     alias_html = f"<p class=\"chapter-aliases\"><strong>Prior codes and aliases:</strong> {aliases}</p>" if aliases else ""
@@ -591,14 +600,40 @@ def class_html(item: dict, case_examples: list[dict] | None = None) -> str:
             + (f" — {esc(m['note'])}" if m.get("note") else "") + "</li>"
             for m in item["external_mappings"]
         ) + "</ul>"
+    subtypes = subtype_html(item, heading="h4")
     return f"""
 <article class="card" id="{esc(anchor(item['class_id']))}">
   <div class="top"><div><span class="pill">{esc(item['abstraction'])}</span><h3>{esc(item['name'])}</h3><p><code>{esc(item['class_id'])}</code> · <code>{esc(item['class_code'])}</code></p></div><span class="pill">{esc(item['status'])}</span></div>
   <p class="plain"><strong>Plain English:</strong> {esc(item['plain_english'])}</p>
   <h4>Technical definition</h4><p>{esc(item['definition'])}</p>
   <div class="grid"><section><h4>Recognition criteria</h4><ul>{recognition}</ul>{indicators}</section><section><h4>Exclusions</h4><ul>{exclusions}</ul></section></div>
-  <h4>Illustrative examples</h4><ul>{illustrative_examples}</ul>{aliases}{relationships}{mappings}{case_examples_html(case_examples or [])}
+  <h4>Illustrative examples</h4><ul>{illustrative_examples}</ul>{subtypes}{aliases}{relationships}{mappings}{case_examples_html(case_examples or [])}
 </article>"""
+
+
+def subtype_html(item: dict, *, heading: str) -> str:
+    rows = []
+    for subtype in item.get("subtypes", []):
+        recognition = "".join(f"<li>{esc(value)}</li>" for value in subtype["recognition"]["required_conditions"])
+        exclusions = "".join(f"<li>{esc(value)}</li>" for value in subtype["exclusions"])
+        examples = "".join(f"<li>{esc(value)}</li>" for value in subtype["examples"])
+        aliases = "".join(f"<li><code>{esc(value)}</code></li>" for value in subtype.get("aliases", []))
+        rows.append(
+            '<section class="subtype">'
+            f"<{heading}>{esc(subtype['name'])}</{heading}>"
+            f"<p><strong>Historical identifier:</strong> <code>{esc(subtype['historical_class_id'])}</code> · "
+            f"<code>{esc(subtype['historical_class_code'])}</code></p>"
+            f"<p class=\"plain\"><strong>Plain English:</strong> {esc(subtype['plain_english'])}</p>"
+            f"<p>{esc(subtype['definition'])}</p>"
+            f"<strong>Recognition criteria</strong><ul>{recognition}</ul>"
+            f"<strong>Exclusions</strong><ul>{exclusions}</ul>"
+            f"<strong>Illustrative examples</strong><ul>{examples}</ul>"
+            + (f"<strong>Historical aliases</strong><ul>{aliases}</ul>" if aliases else "")
+            + "</section>"
+        )
+    if not rows:
+        return ""
+    return '<section class="subtypes"><h3>Non-selectable subtypes and recognition patterns</h3>' + "".join(rows) + "</section>"
 
 
 def family_html(data: dict, heading_level: int = 1, case_examples: dict[str, list[dict]] | None = None) -> str:

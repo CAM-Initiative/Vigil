@@ -96,7 +96,9 @@ Every substantive public record must preserve the provenance required by its sch
 
 For FM, `diagnostic_provenance` identifies the human–AI collaboration that formulated the diagnosis. Later interpretive review must not overwrite the original diagnostic collaborator.
 
-`interpretive_provenance.review_history` is append-only. A later model may disagree with an earlier interpretation, but both reviews and their capability/access boundaries must remain visible.
+`interpretive_provenance.review_history` is append-only for reviews of the current record. A review in an Incident's current review history must not predate that Incident's creation. Historical pre-Incident review payloads inherited during migration remain self-contained historical provenance under `legacy_governance_state` with their original dates; do not falsify dates or require the continued existence of the superseded source record for those payloads to remain intelligible.
+
+A legacy FM/OBS identifier retained inside migrated Incident provenance is a historical provenance token, not a live resolution dependency. Future retirement of legacy record files must not erase the embedded historical review payload or make the Incident dependent on resolving the retired record.
 
 AI substantive review is not human review or human verification.
 
@@ -106,7 +108,7 @@ The canonical VIGIL Observatory failure taxonomy is under `vigil/taxonomy/`.
 
 Use the taxonomy index/schema and canonical family/class identifiers. Do not revive retired CAM taxonomy fields inside FM `failure_classification` and do not infer a new canonical class ID without the taxonomy admission process.
 
-Generated taxonomy HTML/PDF is a projection, not a second source of truth.
+The maintained taxonomy PDF is a generated publication projection, not a second source of truth. VIGIL does not maintain generated HTML publication assets; any HTML emitted by the renderer is transient build material only. Pull-request validation must not require generated publication artefacts to match branch-local regeneration. The main-branch publication workflow owns refreshed PDF generation and commit after source changes land.
 
 Historical taxonomy audits under `vigil/docs/audits/taxonomy/` are non-normative transition evidence.
 

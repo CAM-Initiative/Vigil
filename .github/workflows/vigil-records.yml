@@ -75,9 +75,10 @@ jobs:
       - name: Validate active system-component metadata
         run: python vigil/scripts/validate-vigil-system-components.py
 
-      - name: Validate Incident migration and legacy crosswalk
+      - name: Validate preserved Incident migration and legacy crosswalk
         run: |
-          python vigil/scripts/build-incident-registry.py
+          # Canonical Incident records are now the governed source of truth. The legacy
+          # INCIDENT-01 builder must not regenerate or overwrite reconciled Incidents.
           python vigil/scripts/build-vigil-records.py --taxonomy-examples-only
           python vigil/tests/test_incident_registry.py
           python vigil/scripts/build-incident-migration-decisions.py

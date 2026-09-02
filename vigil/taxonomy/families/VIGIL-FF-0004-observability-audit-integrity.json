@@ -13,7 +13,7 @@
     "name": "Observability & Audit Integrity Failures",
     "status": "draft",
     "abstraction": "family",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "plain_english": "Material system activity or the evidence needed to review it cannot be reliably seen, attributed, reconstructed, or accessed by an authorised reviewer through a governed evidence pathway.",
     "definition": "Failures in which materially consequential actions, state transitions, control-path activity, actor attribution, monitoring coverage, or audit evidence are not captured, preserved, directly accessible to authorised review, or supported by a sufficiently defined governed evidence-production or access pathway to enable timely detection, reconstruction, accountability, verification, or review.",
     "invariant": "Material actions, state changes, and their evidence remain observable, preserved, attributable, reconstructable, and accessible through proportionate authorised review pathways enough to determine what happened, through which path, under whose effective control, and with what evidence, without requiring hidden reasoning disclosure.",
@@ -187,17 +187,20 @@
       "name": "Hidden Material Execution Path",
       "status": "draft",
       "abstraction": "class",
-      "plain_english": "A consequential path exists inside the system, but oversight cannot see that the path was used.",
-      "definition": "A failure in which a materially consequential routing, delegation, sub-agent, tool, fallback, control-channel, or alternate execution path can affect outcomes without proportionate visibility to the monitoring, audit, or review surface responsible for the system.",
+      "plain_english": "A materially consequential execution route exists, but the responsible oversight surface does not represent that route in its model of how the system can act.",
+      "definition": "A failure in which materially consequential execution topology—such as routing, delegation, sub-agent, tool, fallback, control-channel, or alternate pathways—can affect outcomes without being exposed to the responsible oversight surface or incorporated into its model of the system's execution paths.",
       "recognition": {
         "required_conditions": [
-          "A material alternate or internal execution path exists and can affect an externally relevant outcome.",
-          "The applicable oversight surface does not expose or capture use of that path adequately.",
-          "The hidden path materially impairs supervision, reconstruction, or assurance."
+          "A material alternate, internal, delegated, fallback, or indirect execution path exists and can affect an externally relevant outcome.",
+          "The responsible oversight surface or model does not expose, represent, or account for the existence or use of that consequential path adequately.",
+          "The hidden topology materially impairs supervision, intervention, reconstruction, or assurance.",
+          "Classification does not depend on proving that a formally required monitor or coverage route was bypassed."
         ]
       },
       "exclusions": [
-        "The execution path is internal but adequately represented through equivalent audit evidence.",
+        "The execution topology is adequately exposed to the responsible oversight surface through direct or equivalent representation.",
+        "The topology is known and visible but an individual material event on it is not captured; use Material Event Non-Capture.",
+        "A formally required monitor or coverage route is evaded, disabled, omitted, or bypassed while the execution path itself is represented; use Monitor Circumvention or Coverage Bypass.",
         "The hidden detail is only internal reasoning with no material execution or governance effect.",
         "The path is visible and the failure concerns authority rather than observability."
       ],
@@ -209,6 +212,16 @@
         {
           "type": "can_cooccur_with",
           "target_id": "VIGIL-FC-000006"
+        },
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000022",
+          "note": "Material Event Non-Capture concerns missing evidence of an event; Hidden Material Execution Path concerns consequential topology absent from the responsible oversight model."
+        },
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000023",
+          "note": "Monitor Circumvention requires a required monitor or coverage route to be bypassed; hidden topology does not require that showing."
         }
       ],
       "aliases": [
@@ -294,19 +307,20 @@
       "name": "Material Signal Fragmentation",
       "status": "draft",
       "abstraction": "class",
-      "plain_english": "Important oversight signals exist, but they are split across disconnected views so their combined meaning cannot be seen in time.",
-      "definition": "A failure in which individually captured material monitoring, control, or execution signals remain separated across incompatible records, channels, identifiers, or review surfaces so that the combined event or pattern required for oversight cannot be reliably assembled.",
+      "plain_english": "Important oversight signals exist, but they are split across disconnected views so their combined meaning cannot be assembled in time for the relevant oversight or intervention.",
+      "definition": "A failure in which individually captured material monitoring, control, or execution signals remain distributed across disconnected identifiers, records, channels, or review surfaces so that their combined meaning cannot be assembled with sufficient timeliness for the relevant oversight or intervention purpose.",
       "recognition": {
         "required_conditions": [
-          "Multiple material signals relevant to one event, pathway, or risk pattern are captured.",
-          "Effective oversight requires the signals to be correlated or viewed together.",
-          "Fragmentation across records, channels, identifiers, or surfaces prevents reliable and timely synthesis."
+          "Multiple material signals relevant to one event, pathway, or risk pattern individually exist.",
+          "Effective oversight or intervention requires those signals to be correlated or viewed together within a relevant time window.",
+          "Distribution across disconnected records, channels, identifiers, or review surfaces prevents sufficiently timely synthesis for that oversight or intervention purpose."
         ]
       },
       "exclusions": [
-        "The signals can be reliably correlated through an available identifier or review process.",
-        "A required event signal was never captured.",
-        "The evidence is assembled but has been altered or corrupted."
+        "The signals can be reliably correlated with sufficient timeliness through an available identifier or review process.",
+        "A required event signal was never captured; use Material Event Non-Capture.",
+        "The evidence is assembled but has been altered or corrupted.",
+        "The issue is retrospective inability to reconstruct the required pathway with adequate confidence rather than timely integration for oversight or intervention; use Audit-Trail Non-Reconstructability."
       ],
       "examples": [
         "Model-risk alerts and tool-execution events use unrelated identifiers, preventing reviewers from connecting the warning to the resulting action.",
@@ -316,7 +330,7 @@
         {
           "type": "distinguish_from",
           "target_id": "VIGIL-FC-000024",
-          "note": "Signal fragmentation concerns separated contemporaneous oversight signals; non-reconstructability is the broader inability to reconstruct a past pathway from available evidence."
+          "note": "Signal fragmentation requires individually existing signals that cannot be integrated in time for effective oversight or intervention; audit-trail non-reconstructability concerns whether retrospective evidence can reconstruct the required pathway with adequate confidence."
         }
       ],
       "aliases": [
@@ -408,7 +422,7 @@
         },
         {
           "type": "distinguish_from",
-          "target_id": "VIGIL-FC-000007",
+          "target_id": "VIGIL-FC-000002",
           "note": "The class presupposes independently valid investigative authority and concerns the missing access pathway; purpose-bound credential overreach concerns using credentials beyond authorised purpose or scope."
         }
       ],

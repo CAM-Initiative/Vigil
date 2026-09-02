@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -34,8 +35,9 @@ class IncidentRegistryTest(unittest.TestCase):
         cls.by_legacy = {entry["legacy_id"]: entry for entry in cls.crosswalk["entries"]}
 
     def test_incident_ids_are_year_independent_and_unique(self):
-        self.assertEqual(len(self.incidents), 78)
+        self.assertGreaterEqual(len(self.incidents), 79)
         self.assertTrue(all(identifier.startswith("VIGIL-INC-") for identifier in self.incidents))
+        self.assertEqual(len(self.incidents), len({record["id"] for record in self.incidents.values()}))
 
     def test_external_registry_array_may_be_empty_but_must_exist(self):
         record = json.loads(json.dumps(self.incidents["VIGIL-INC-000009"]))
@@ -82,6 +84,47 @@ class IncidentRegistryTest(unittest.TestCase):
             }
             self.assertNotIn(current, definitions)
 
+    def test_current_incidents_exclude_cam_repair_state_without_erasing_legacy_provenance(self):
+        forbidden = {
+            "corpus_coverage",
+            "repair_status",
+            "remaining_gaps",
+            "proposal_needed",
+            "patch_note_needed",
+        }
+        for incident in self.incidents.values():
+            self.assertFalse(forbidden.intersection(incident))
+            self.assertTrue(set(incident.get("cam_internal", {})).issubset(validator.INCIDENT_CAM_INTERNAL_ALLOWED))
+            self.assertIn("legacy_provenance", incident)
+            if incident["legacy_provenance"]:
+                self.assertIn("legacy_governance_state", incident)
+
+    def test_legacy_taxonomy_snapshot_is_not_rewritten_by_current_ontology_migration(self):
+        incident = self.incidents["VIGIL-INC-000045"]
+        historical = next(
+            item for item in incident["legacy_governance_state"]
+            if item["legacy_id"] == "VIGIL-2026-FM-0036"
+        )["preserved_analysis"]["taxonomy_classification"]
+        current = load(VIGIL / "records" / "failures" / "2026" / "VIGIL-2026-FM-0036.json")[
+            "taxonomy_classification"
+        ]
+        self.assertEqual(historical["primary_class"]["class_id"], "VIGIL-FC-000008")
+        self.assertEqual(current["primary_class"]["class_id"], "VIGIL-FC-000003")
+
+    def test_native_incident_need_not_claim_legacy_migration_provenance(self):
+        incident = self.incidents["VIGIL-INC-000080"]
+        self.assertEqual(incident["legacy_provenance"], [])
+        self.assertNotIn("legacy_governance_state", incident)
+        self.assertEqual(incident["taxonomy_classification"]["classification_status"], "unclassified")
+
+    def test_incident_validator_rejects_reintroduced_current_repair_state(self):
+        record = json.loads(json.dumps(self.incidents["VIGIL-INC-000001"]))
+        record["cam_internal"]["proposal_needed"] = "yes"
+        with tempfile.TemporaryDirectory() as temp_dir:
+            path = Path(temp_dir) / f"{record['id']}.json"
+            path.write_text(json.dumps(record), encoding="utf-8")
+            self.assertNotEqual(validator.validate(path), 0)
+
     def test_incident_validator_rejects_secondary_without_primary(self):
         record = json.loads(json.dumps(self.incidents["VIGIL-INC-000002"]))
         record["taxonomy_classification"]["secondary_classifications"] = [
@@ -106,21 +149,27 @@ class IncidentRegistryTest(unittest.TestCase):
         self.assertTrue(all("failure_mode_id" not in item for item in examples))
         self.assertEqual(projection["generated_from"], ["vigil/records/incidents/"])
 
-    def test_taxonomy_publication_workflow_retains_pdf(self):
+    def test_taxonomy_publication_workflow_keeps_pdf_main_owned(self):
         workflow = (ROOT / ".github" / "workflows" / "taxonomy-publications.yml").read_text(
             encoding="utf-8"
         )
-        pdf_path = "vigil/taxonomy/generated/VIGIL.Observatory.FailureTaxonomy.FullReference.pdf"
-        self.assertNotIn(f"rm -f {pdf_path}", workflow)
-        self.assertIn("vigil/taxonomy/generated/*.pdf", workflow)
+        self.assertNotIn("Verify generated publications are current", workflow)
+        self.assertNotIn("generated/*.html", workflow)
+        self.assertNotIn("Generate HTML publication for pull-request validation", workflow)
         self.assertIn("--taxonomy-examples-only", workflow)
-
+        self.assertIn("Install PDF renderer on main publication build", workflow)
+        self.assertIn("weasyprint==69.0", workflow)
+        self.assertIn("Generate maintained PDF publication on main", workflow)
+        self.assertIn("Verify maintained PDF publication on main", workflow)
+        self.assertIn("--pdf", workflow)
+        self.assertIn("VIGIL.Observatory.FailureTaxonomy.FullReference.pdf", workflow)
+        self.assertIn("if: github.event_name != 'pull_request'", workflow)
 
     def test_incidents_publish_severity_and_canonical_source_genres(self):
         allowed_source_types = validator.CANONICAL_INCIDENT_SOURCE_TYPES
         for incident in self.incidents.values():
             severity = incident.get("severity_assessment", {})
-            self.assertIn(severity.get("severity"), validator.ALLOWED_SEVERITIES)
+            self.assertIn(severity.get("severity"), validator.INCIDENT_ALLOWED_SEVERITIES)
             self.assertIn(severity.get("assessment_status"), validator.INCIDENT_SEVERITY_STATUSES)
             self.assertTrue(severity.get("assessment_basis"))
             self.assertTrue(all(source.get("source_type") in allowed_source_types for source in incident["source_records"]))

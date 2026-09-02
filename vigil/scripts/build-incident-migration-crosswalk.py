@@ -64,10 +64,12 @@ def main() -> int:
     overrides = decisions["decisions"]
     incident_records = incidents()
     entries = []
+    migrated_incident_ids: set[str] = set()
     for path, record in legacy_records():
         legacy_id = record["id"]
         decision = {**default, **overrides.get(legacy_id, {})}
         successors = list(decision.get("successor_incidents", []))
+        migrated_incident_ids.update(successors)
         explicit_source_dispositions = decision.get("source_dispositions", {})
         source_dispositions = []
         for index, item in enumerate(record.get("source_records", [])):
@@ -106,17 +108,23 @@ def main() -> int:
             "decision_basis": decision["decision_basis"],
             "source_dispositions": source_dispositions,
         })
+    missing_successors = sorted(migrated_incident_ids - set(incident_records))
+    if missing_successors:
+        raise ValueError(f"migration decisions reference missing Incident records: {', '.join(missing_successors)}")
     payload = {
         "migration_id": decisions["migration_id"],
         "migration_state": decisions["migration_state"],
         "baseline_commit": decisions["baseline_commit"],
         "generated_notice": "Deterministically generated from the complete legacy FM/OBS corpus, curated Incident records and Incident.Migration.Decisions.json.",
         "legacy_record_count": len(entries),
-        "incident_record_count": len(incident_records),
+        "incident_record_count": len(migrated_incident_ids),
         "entries": entries,
     }
     OUTPUT.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    print(f"Built Incident migration crosswalk for {len(entries)} legacy records and {len(incident_records)} Incidents.")
+    print(
+        f"Built Incident migration crosswalk for {len(entries)} legacy records and "
+        f"{len(migrated_incident_ids)} migration-linked Incidents."
+    )
     return 0
 
 

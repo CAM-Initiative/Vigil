@@ -25,7 +25,7 @@ LEGACY_GOVERNANCE_FIELDS = {
     "summary", "why_it_matters_to_CAM", "failure_mode_definition", "failure_threshold",
     "failure_classification", "triage", "triage_history", "repair_status", "ecosystem_status",
     "corpus_coverage", "diagnostic_provenance", "possible_taxonomy_mapping", "next_action",
-    "interpretive_provenance", "taxonomy_classification", "cam_internal", "system_context",
+    "interpretive_provenance", "cam_internal", "system_context",
     "jurisdictional_context", "evidence_confidence", "linked_records",
 }
 
@@ -38,8 +38,7 @@ def main() -> int:
     errors: list[str] = []
     warnings: list[str] = []
     legacy_paths = sorted((RECORDS / "failures").rglob("*.json")) + sorted(
-        (RECORDS / "observations").rglob("*.json")
-    )
+        (RECORDS / "observations").rglob("*.json"))
     legacy = {load(path)["id"]: load(path) for path in legacy_paths}
     incident_paths = sorted((RECORDS / "incidents").glob("*.json"))
     incidents = {load(path)["id"]: load(path) for path in incident_paths}
@@ -49,6 +48,7 @@ def main() -> int:
         errors.append("crosswalk.entries must be an array")
         entries = []
     by_legacy: dict[str, dict[str, Any]] = {}
+    migration_linked_incident_ids: set[str] = set()
     for entry in entries:
         if not isinstance(entry, dict):
             errors.append("crosswalk entry must be an object")
@@ -58,6 +58,11 @@ def main() -> int:
             errors.append(f"duplicate crosswalk entry for {legacy_id}")
         if isinstance(legacy_id, str):
             by_legacy[legacy_id] = entry
+        successors = entry.get("successor_incidents", [])
+        if isinstance(successors, list):
+            migration_linked_incident_ids.update(
+                successor for successor in successors if isinstance(successor, str)
+            )
     missing = sorted(set(legacy) - set(by_legacy))
     extra = sorted(set(by_legacy) - set(legacy))
     if missing:
@@ -66,8 +71,8 @@ def main() -> int:
         errors.append(f"crosswalk contains unknown legacy records: {', '.join(extra)}")
     if crosswalk.get("legacy_record_count") != len(legacy):
         errors.append("crosswalk legacy_record_count does not match corpus")
-    if crosswalk.get("incident_record_count") != len(incidents):
-        errors.append("crosswalk incident_record_count does not match corpus")
+    if crosswalk.get("incident_record_count") != len(migration_linked_incident_ids):
+        errors.append("crosswalk incident_record_count does not match migration-linked Incident set")
 
     for legacy_id, record in legacy.items():
         entry = by_legacy.get(legacy_id)
@@ -147,9 +152,21 @@ def main() -> int:
             external_ids[key] = incident_id
         taxonomy = record.get("taxonomy_classification", {})
         mappings = [taxonomy.get("primary_classification"), *taxonomy.get("secondary_classifications", [])]
+        if taxonomy.get("classification_status") == "classified":
+            occurrence_basis = str(taxonomy.get("classification_basis", "")).strip()
+            provenance = taxonomy.get("classification_review_provenance", {})
+            authority_boundary = (
+                str(provenance.get("authority_boundary", "")).strip()
+                if isinstance(provenance, dict)
+                else ""
+            )
+            if not occurrence_basis:
+                errors.append(f"{incident_id}: classified Incident lacks an occurrence-level classification basis")
+            if "occurrence" not in (occurrence_basis + " " + authority_boundary).casefold():
+                errors.append(f"{incident_id}: classification provenance does not establish occurrence-level scope")
         for mapping in mappings:
-            if isinstance(mapping, dict) and not str(mapping.get("classification_basis", "")).startswith("In this Incident,"):
-                errors.append(f"{incident_id}: classification mapping basis is not Incident-specific")
+            if isinstance(mapping, dict) and not str(mapping.get("classification_basis", "")).strip():
+                errors.append(f"{incident_id}: classification mapping lacks a substantive basis")
         preserved_by_legacy = {
             item.get("legacy_id"): item.get("preserved_analysis", {})
             for item in record.get("legacy_governance_state", []) if isinstance(item, dict)
@@ -170,6 +187,16 @@ def main() -> int:
                 for field in LEGACY_GOVERNANCE_FIELDS:
                     if field in legacy[legacy_id] and preserved.get(field) != legacy[legacy_id][field]:
                         errors.append(f"{incident_id}: legacy governance field {legacy_id}.{field} was not preserved exactly")
+                # taxonomy_classification is an immutable migration-time snapshot. The
+                # retained FM/OBS may later receive a mechanical ontology migration or
+                # peer-abstraction normalization; that must not rewrite Incident history.
+                if "taxonomy_classification" in legacy[legacy_id] and not isinstance(
+                    preserved.get("taxonomy_classification"), dict
+                ):
+                    errors.append(
+                        f"{incident_id}: legacy governance field {legacy_id}.taxonomy_classification "
+                        "must remain a historical object"
+                    )
         current_interpretation = str(record.get("vigil_assessment", {}).get("governance_interpretation", "")).strip()
         current_incident_text = " ".join([
             str(record.get("summary", "")),
@@ -197,7 +224,8 @@ def main() -> int:
         return 1
     print(
         "Incident migration validation passed: "
-        f"{len(incidents)} Incidents, {len(legacy)} legacy dispositions, "
+        f"{len(incidents)} current Incidents, {len(migration_linked_incident_ids)} migration-linked Incidents, "
+        f"{len(legacy)} legacy dispositions, "
         f"{sum(len(item.get('source_records', [])) for item in legacy.values())} legacy sources accounted for; "
         f"{len(warnings)} genuinely ambiguous record/source reviews remain pending in {crosswalk.get('migration_state')} state."
     )
