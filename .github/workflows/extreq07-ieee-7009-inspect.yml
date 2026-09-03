@@ -1,57 +1,127 @@
-name: EXTREQ-07 IEEE 7009 inspection
+name: EXTREQ-07 IEEE 7009 bounded fidelity repair
 
 on:
   push:
     branches:
       - agent/extreq-05-ieee-7014-1-fidelity-review
     paths:
+      - vigil/scripts/extreq07_ieee_7009_fidelity.py
       - .github/workflows/extreq07-ieee-7009-inspect.yml
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
-  inspect:
+  repair-and-validate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+        with:
+          ref: agent/extreq-05-ieee-7014-1-fidelity-review
+          fetch-depth: 0
       - uses: actions/setup-python@v6
         with:
           python-version: '3.x'
-      - name: Print compact IEEE 7009 corpus inventory
+
+      - name: Apply bounded IEEE 7009 fidelity repair
+        env:
+          PYTHONPATH: vigil/scripts
+        run: python vigil/scripts/extreq07_ieee_7009_fidelity.py --write
+
+      - name: Advance durable IEEE 7009 regression expectations
         run: |
           python - <<'PY'
-          import json
           from pathlib import Path
-          p=Path('vigil/external_governance/requirements/requirements/IEEE-7009/2024.json')
-          records=json.loads(p.read_text())
-          print(f'COUNT={len(records)}')
-          for r in records:
-              print('\t'.join([r['requirement_id'], r['clause_or_control'], r['identity_key'], r['requirement_summary']]))
-          ledger=json.loads(Path('vigil/external_governance/requirements/metadata-review.json').read_text())
-          ids={r['requirement_id'] for r in records}
-          entries=[e for e in ledger['entries'] if e['requirement_id'] in ids]
-          print(f'LEDGER_COUNT={len(entries)}')
-          from collections import Counter
-          c=Counter()
-          for e in entries:
-              for k,v in e['field_status'].items(): c[(k,v)] += 1
-          for (k,v),n in sorted(c.items()): print(f'STATUS\t{k}\t{v}\t{n}')
+
+          p = Path('vigil/tests/test_external_requirement_metadata.py')
+          s = p.read_text()
+          s = s.replace('assert len(ids) == 722', 'assert len(ids) == 789')
+          s = s.replace(
+              'assert len(backlog_ids) == len(set(backlog_ids)) == 0',
+              'assert len(backlog_ids) == len(set(backlog_ids)) == 4\n    assert sum(entry["external_source_id"] == "IEEE-7009" for entry in backlog["entries"]) == 4'
+          )
+          needle = '    nist_bias = json.loads((REQ / "requirements" / "NIST-SP-1270" / "2022.json").read_text(encoding="utf-8"))\n'
+          block = '''    ieee7009 = json.loads((REQ / "requirements" / "IEEE-7009" / "2024.json").read_text(encoding="utf-8"))
+          ieee7009_by_id = {record["requirement_id"]: record for record in ieee7009}
+          assert len(ieee7009) == 67
+          assert all(record["source_review_date"] == "2026-09-03" for record in ieee7009)
+          assert all(record["interpretation_provenance"]["reviewed_source_digest"] == "9fb640fd57202fcc1c90aec0b6b767bf5c4621bfdefa7911c5e102425a83b133" for record in ieee7009)
+          coarse_successors = {
+              "EXTREQ-528978BC3EB32446": {"EXTREQ-8204FA30873DD481", "EXTREQ-5306FB227197570A", "EXTREQ-95307E8CDBC1B4BE"},
+              "EXTREQ-BBE358DBC3A6FD24": {"EXTREQ-09AC3C68DD3B9DA0", "EXTREQ-3197D476F0F03090"},
+              "EXTREQ-C2FC30A1E260F4C1": {"EXTREQ-3CCDC8232F3887B6", "EXTREQ-1D3ECE3F78BA0638", "EXTREQ-81F4A4D7227B1970"},
+              "EXTREQ-4041B6E279EF30CC": {"EXTREQ-4A98B446C4E83ECE", "EXTREQ-D400D6712209533C", "EXTREQ-2E3CBE869A1E2400"},
+          }
+          for legacy_id, successor_ids in coarse_successors.items():
+              assert legacy_id in ieee7009_by_id
+              assert set(ieee7009_by_id[legacy_id]["related_external_requirements"]) == successor_ids
+          assert ieee7009_by_id["EXTREQ-BA54F8982F880F93"]["clause_or_control"] == "9.3"
+          assert ieee7009_by_id["EXTREQ-BA54F8982F880F93"]["requirement_posture"] == "definitional"
+          review_by_id = {entry["requirement_id"]: entry for entry in ledger["entries"]}
+          unresolved_on_coarse = {"timing_or_frequency", "required_artefacts", "evidence_expectation", "verification_method", "exceptions_or_qualifications"}
+          for record in ieee7009:
+              statuses = review_by_id[record["requirement_id"]]["field_status"]
+              if record["requirement_id"] in coarse_successors:
+                  assert {field for field, status in statuses.items() if status == "review-required"} == unresolved_on_coarse
+              else:
+                  assert all(status != "review-required" for status in statuses.values())
+
+          '''
+          # Undo workflow YAML indentation embedded in the triple-quoted shell block.
+          block = '\n'.join(line[10:] if line.startswith('          ') else line for line in block.splitlines()) + '\n'
+          if needle not in s:
+              raise SystemExit('IEEE 7009 metadata regression insertion point missing')
+          if 'coarse_successors = {' not in s:
+              s = s.replace(needle, block + needle)
+          p.write_text(s)
+
+          p = Path('vigil/tests/test_external_requirement_fidelity.py')
+          s = p.read_text()
+          needle = '        self.assertEqual(status[("IEEE-7014.1", "2026")], "assured")\n'
+          if needle not in s:
+              raise SystemExit('IEEE 7009 fidelity regression insertion point missing')
+          if 'status[("IEEE-7009", "2024")]' not in s:
+              s = s.replace(needle, '        self.assertEqual(status[("IEEE-7009", "2024")], "requires-reextraction")\n' + needle)
+          p.write_text(s)
           PY
-      - name: Prepare review context artifact
+
+      - name: Rebuild metadata review report
+        env:
+          PYTHONPATH: vigil/scripts
+        run: python vigil/scripts/validate-external-requirement-metadata.py --write-report
+
+      - name: Validate source fidelity
+        env:
+          PYTHONPATH: vigil/scripts
+        run: python vigil/scripts/validate-external-requirement-fidelity.py
+
+      - name: Rebuild external requirement projections
+        run: python vigil/scripts/manage-external-requirements.py build
+
+      - name: Validate generated projections
+        run: python vigil/scripts/manage-external-requirements.py validate --check-generated
+
+      - name: Run metadata regression
+        env:
+          PYTHONPATH: vigil/scripts
+        run: python vigil/tests/test_external_requirement_metadata.py
+
+      - name: Run fidelity regression
+        env:
+          PYTHONPATH: vigil/scripts
+        run: python vigil/tests/test_external_requirement_fidelity.py
+
+      - name: Run external governance tests
+        run: python -m unittest vigil/tests/test_external_requirements.py vigil/tests/test_external_sources.py
+
+      - name: Commit repaired corpus and durable regressions
         run: |
-          mkdir -p extreq07-context/vigil/scripts extreq07-context/vigil/tests extreq07-context/vigil/external_governance
-          cp -R vigil/external_governance/requirements extreq07-context/vigil/external_governance/
-          cp vigil/scripts/external_requirements_io.py extreq07-context/vigil/scripts/
-          cp vigil/scripts/manage-external-requirements.py extreq07-context/vigil/scripts/
-          cp vigil/scripts/validate-external-requirement-metadata.py extreq07-context/vigil/scripts/
-          cp vigil/scripts/validate-external-requirement-fidelity.py extreq07-context/vigil/scripts/
-          cp vigil/tests/test_external_requirement_metadata.py extreq07-context/vigil/tests/
-          cp vigil/tests/test_external_requirement_fidelity.py extreq07-context/vigil/tests/
-          cp vigil/tests/test_external_requirements.py extreq07-context/vigil/tests/
-          cp vigil/tests/test_external_sources.py extreq07-context/vigil/tests/
-      - uses: actions/upload-artifact@v4
-        with:
-          name: extreq07-context
-          path: extreq07-context
-          if-no-files-found: error
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add vigil/external_governance/requirements vigil/tests/test_external_requirement_metadata.py vigil/tests/test_external_requirement_fidelity.py
+          if git diff --cached --quiet; then
+            echo "No IEEE 7009 corpus changes to commit."
+          else
+            git commit -m "EXTREQ-07: commit IEEE 7009 bounded fidelity repair"
+            git push origin HEAD:agent/extreq-05-ieee-7014-1-fidelity-review
+          fi
