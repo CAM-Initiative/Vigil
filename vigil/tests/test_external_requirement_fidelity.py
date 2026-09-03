@@ -51,6 +51,7 @@ class ExternalRequirementFidelityTests(unittest.TestCase):
         self.assertEqual(status[("NIST-SP-1270", "2022")], "assured")
         self.assertEqual(status[("SPDX-SPEC", "3.0.1")], "assured")
         self.assertEqual(status[("IEEE-7000", "2021")], "assured")
+        self.assertEqual(status[("IEEE-7009", "2024")], "requires-reextraction")
         self.assertEqual(status[("IEEE-7014.1", "2026")], "assured")
 
 
