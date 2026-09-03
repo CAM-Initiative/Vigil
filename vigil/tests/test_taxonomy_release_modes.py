@@ -80,6 +80,12 @@ class TaxonomyReleaseModeTests(unittest.TestCase):
         index_before = json.loads(PREP.INDEX_PATH.read_text(encoding="utf-8"))
         previous = index_before["release_history"][-1]["version"]
         previous_families = set(index_before["release_history"][-1]["family_ids"])
+        retirement_state_before = {
+            mapping["retired_id"]: (
+                mapping["retirement_release_status"], mapping.get("retired_in_version")
+            )
+            for mapping in index_before["retired_class_mappings"]
+        }
         current_families = {
             json.loads(path.read_text(encoding="utf-8"))["family"]["family_id"] for path in self.paths()
         }
@@ -91,12 +97,14 @@ class TaxonomyReleaseModeTests(unittest.TestCase):
         self.assertEqual(index_after["standard"]["version"], expected)
         self.assertEqual(index_after["release_history"][-1]["change_level"], expected_level)
         self.assertEqual(len(index_after["release_history"]), len(index_before["release_history"]) + 1)
-        self.assertTrue(
-            all(
-                mapping["retirement_release_status"] == "published"
-                and mapping["retired_in_version"] == expected
+        self.assertEqual(
+            {
+                mapping["retired_id"]: (
+                    mapping["retirement_release_status"], mapping.get("retired_in_version")
+                )
                 for mapping in index_after["retired_class_mappings"]
-            )
+            },
+            retirement_state_before,
         )
 
         self.assertFalse(PREP.prepare_release("2026-08-31"))

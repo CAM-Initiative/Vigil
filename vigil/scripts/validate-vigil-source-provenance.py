@@ -12,10 +12,7 @@ from source_provenance import origin_markers, text
 SCRIPT_PATH = Path(__file__).resolve()
 VIGIL_ROOT = SCRIPT_PATH.parents[1]
 RECORDS_ROOT = VIGIL_ROOT / "records"
-ACTIVE_RECORD_ROOTS = (
-    RECORDS_ROOT / "incidents",
-    RECORDS_ROOT / "observations",
-)
+ACTIVE_RECORD_ROOTS = (RECORDS_ROOT / "incidents",)
 SCHEMA_PATH = VIGIL_ROOT / "VIGIL.Schema.json"
 
 

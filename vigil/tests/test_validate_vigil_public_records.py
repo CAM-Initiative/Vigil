@@ -35,6 +35,7 @@ class ValidateVigilPublicRecordsTest(unittest.TestCase):
 
             path.write_text(json.dumps({"records": [{
                 "id": record["id"],
+                "record_type": "incident",
                 "evidence_statuses": ["independent-reporting", "registry-reported"],
                 "preferred_evidence_status": "registry-reported",
             }]}), encoding="utf-8")
@@ -44,6 +45,7 @@ class ValidateVigilPublicRecordsTest(unittest.TestCase):
 
             path.write_text(json.dumps({"records": [{
                 "id": record["id"],
+                "record_type": "incident",
                 "evidence_statuses": ["registry-reported"],
                 "preferred_evidence_status": "verified",
                 "evidence_confidence": "high",

@@ -1,174 +1,105 @@
 # VIGIL
 
-**VIGIL** is the CAM Initiative's public evidence-to-repair observatory for AI governance evidence, research, failure modes, taxonomy, external governance requirements, and CAM applicability assessment.
+**VIGIL** is the CAM Initiative's Incident-centred public observatory for AI governance evidence and occurrence-level diagnosis.
 
-VIGIL preserves what has been observed, what evidence supports it, how a failure is diagnosed and classified, what remains uncertain, and how CAM-side coverage or repair state is assessed. It does **not** create binding CAM doctrine, amend adopted CAM/Caelestis instruments, determine liability, or establish final factual truth.
+VIGIL preserves what happened, the evidence supporting the occurrence, the bounded VIGIL diagnosis, structured severity, taxonomy classification, uncertainty and provenance. It does **not** create CAM/Caelestis doctrine, determine liability or establish final factual truth.
 
-## Current public record boundary
+## Active public corpus
 
-The canonical public record corpus is intentionally narrow. During INCIDENT-01 stabilisation it is:
-
-```text
-vigil/records/
-  incidents/
-  observations/
-  failures/
-  research/
-```
-
-Public record classes are:
-
-- **INC — Incident:** a bounded historical occurrence preserving facts, evidence, VIGIL interpretation, provenance, external-registry crosswalks and independently governed taxonomy-classification state.
-- **OBS — Observation:** a material unresolved governance proposition or early-warning signal.
-- **FM — Failure Mode:** the legacy diagnostic/triage record retained during Incident migration stabilisation.
-- **RESEARCH — Research Record:** substantive non-binding analysis that independently warrants publication and may support an evidence-to-repair pathway.
-
-Historical/design PROP, PATCH and LEARN records are withdrawn from publication and retained under `vigil/drafts/`. Their identifiers and files are preserved as history, but they are excluded from public validation, registry generation and interface resolution. Presence under `drafts/` does not establish publication, implementation authority, adoption, or validated learning closure.
-
-See [`vigil/drafts/README.md`](vigil/drafts/README.md) for the withdrawal boundary and [`vigil/MAINTAINERS.md`](vigil/MAINTAINERS.md) for current lifecycle, routing and maintenance rules.
-
-## Public evidence-to-repair model
-
-The target Incident architecture separates historical occurrences from reusable taxonomy semantics:
+The sole active public record class is:
 
 ```text
-Failure Family ──> Failure Class <── Incident ──> Evidence Sources
-                                      │
-                                      └──> CAM coverage / repair assessment / monitoring
+vigil/records/incidents/   INC — bounded occurrence-level Incident records
 ```
 
-Incidents own the many-to-many classification relationship and may remain unclassified while taxonomy reconciliation is pending. During stabilisation, legacy FM/OBS records remain published beside INC and are governed by the complete migration crosswalk. Public VIGIL records preserve evidence and diagnosis; CAM authority arises only through the separate CAM/Caelestis governance process.
+FM, OBS, RESEARCH, PROP, PATCH and LEARN are retired record classes. Their historical files remain recoverable through Git history and `stabilization/pre-fm-schema-migration`; they are not active records, publication inputs or resolution targets.
 
-Historical PROP/PATCH/LEARN identifiers may remain in public-record provenance where they reflect the history of an existing record, but their retained files are not public registry targets while those classes are withdrawn.
+Migrated Incidents retain historical provenance where it explains their derivation. A legacy identifier embedded in `legacy_provenance`, `legacy_governance_state`, migration-source metadata or historical links is a provenance token only and does not require a live retired record.
 
-## Source evidence
-
-For individual VIGIL records, `source_records` is the only canonical source-evidence block.
-
-Do not add `source_data` or `source_data.sources` to records. Preserve source identity, dates, URLs, source/retrieval state, evidence modality, primary-artefact access, interpretive reliance, source residence and source role according to `vigil/VIGIL.Schema.json` and the specialised validators. Keep uncertainty and access limitations visible.
-
-## Failure taxonomy
-
-The VIGIL Observatory failure taxonomy is maintained separately under `vigil/taxonomy/`.
-
-Canonical taxonomy data consists of the taxonomy index/schema and family records. Human-readable HTML/PDF publications under `vigil/taxonomy/generated/` are deterministic projections. Historical taxonomy construction, transition and assurance audits are retained under `vigil/docs/audits/taxonomy/`; they are non-normative history, not competing taxonomy authority.
-
-## External governance corpus
-
-External governance is one subsystem with two separate authority layers:
+## Incident model
 
 ```text
-vigil/external_governance/
-  sources/        source identity, lifecycle and review state
-  requirements/   extracted governance requirements and source-fidelity state
-
-vigil/cam_assessment/   CAM applicability/coverage assessment
+Evidence sources ──> Incident ──> Failure Class ──> Failure Family
+                         │
+                         └──> separate CAM applicability assessment
 ```
 
-The governing flow is:
+An Incident may remain unclassified. Severity is occurrence-level harm analysis and remains independent of taxonomy classification, source prestige, workflow priority and hypothetical worst-case harm.
 
-```text
-external source
-  -> external requirement
-  -> CAM applicability / coverage assessment
-  -> VIGIL routing or repair analysis
-```
+For individual Incidents, `source_records` is the only canonical source-evidence block. Preserve source identity, dates, URLs, evidence modality, primary-artefact access, source residence, source role, evidence status and limitations.
 
-The corpus includes legislation, regulatory material, standards, frameworks, specifications and other authoritative governance sources. External requirements do not themselves establish that CAM is legally bound by, has adopted, or conforms to a source instrument.
+## Retained subsystems
 
-See [`vigil/external_governance/README.md`](vigil/external_governance/README.md) for the subsystem boundary.
+The following are separate from the Incident record corpus and remain active:
 
-## Schema and validation authority
+- `vigil/taxonomy/` — VIGIL Observatory failure taxonomy and generated publications.
+- `vigil/external_governance/` — external source registry and requirement corpus.
+- `vigil/cam_assessment/` — CAM applicability and coverage assessment.
 
-The sole canonical VIGIL **record-rules contract** is:
+External requirement inclusion does not establish that CAM is bound by, has adopted or conforms to an instrument.
 
-```text
-vigil/VIGIL.Schema.json
-```
+## Schema and generated outputs
 
-It is enforced by `vigil/scripts/validate-vigil-records.py` and specialised validators. Historical parallel class-specific VIGIL schemas are not a second authority and must not be reintroduced.
+The sole active VIGIL record contract is `vigil/VIGIL.Schema.json`. Subsystem schemas remain scoped to their own data.
 
-Subsystem schemas remain scoped to their own data surfaces, including the taxonomy, external-governance sources, external-governance requirements and CAM-assessment schemas.
-
-## Source of truth and generated indexes
-
-Individual files under `vigil/records/` are the source of truth for public VIGIL records.
-
-Current generated public indexes are:
+Generated public record outputs are:
 
 ```text
 vigil/VIGIL.Incidents.Index.json
-vigil/VIGIL.Failures.Index.json
-vigil/VIGIL.Observations.Index.json
-vigil/VIGIL.Research.Index.json
 vigil/VIGIL.Registry.Index.json
+vigil/taxonomy/generated/VIGIL.FailureTaxonomy.CaseFileExamples.json
 ```
-
-Do not edit generated indexes manually.
 
 Build them with:
 
 ```bash
 python vigil/scripts/build-vigil-public-records.py
-python vigil/scripts/enrich-vigil-indexes.py
 ```
 
-Withdrawn-class indexes and the old `VIGIL.ActiveRecords.json`, `VIGIL.ClosedRecords.json`, `VIGIL.Records.Index.json` and `VIGIL.Records.json` aggregate architecture are not current public outputs.
+Do not edit generated indexes manually. The master registry exposes one registry: `incidents`.
 
 ## Validation
 
-Core record validation:
-
 ```bash
-python vigil/tests/test_vigil_source_provenance.py
-python vigil/scripts/validate-vigil-source-provenance.py
+python vigil/scripts/build-vigil-public-records.py
+python vigil/tests/test_build_vigil_records.py
 python vigil/tests/test_validate_vigil_record_rules.py
-python vigil/tests/test_validate_vigil_records.py -b
+python vigil/tests/test_validate_vigil_records.py
+python vigil/tests/test_validate_vigil_public_records.py
+python vigil/tests/test_vigil_pipeline_state.py
+python vigil/scripts/validate-vigil-records.py
 python vigil/scripts/validate-vigil-public-records.py
+python vigil/scripts/validate-vigil-source-provenance.py
+python vigil/scripts/validate-vigil-interpretive-provenance.py
 python vigil/scripts/validate-vigil-system-components.py
-python vigil/scripts/run-vigil-lifecycle-validation.py
+python vigil/scripts/validate-authorship-provenance.py
 ```
 
-External-governance and taxonomy work have additional subsystem-specific tests and validators.
+Taxonomy, external-governance and CAM-assessment changes require their own subsystem validators.
 
 ## Repository organisation
 
-Key VIGIL directories are:
-
 ```text
 vigil/
-  records/                  public OBS/FM/RESEARCH source records
-  drafts/                   retained non-public PROP/PATCH/LEARN records
-  taxonomy/                 canonical failure taxonomy + generated publications
-  external_governance/
-    sources/                external governance source registry
-    requirements/           external governance requirement corpus
-  cam_assessment/           CAM applicability/coverage assessment
-  templates/                live authoring templates
-  scripts/                  current executable maintenance infrastructure
-  tests/                    executable tests
-  docs/reviews/             bounded current review/reconciliation records
-  docs/audits/              retained non-normative historical audits
+  records/incidents/       canonical Incident corpus
+  taxonomy/                failure taxonomy
+  external_governance/     external sources and requirements
+  cam_assessment/          CAM applicability assessment
+  templates/               Incident authoring template
+  scripts/                 live builders and validators
+  tests/                   executable tests
+  docs/reviews/            bounded current reviews
+  docs/audits/             non-normative historical audits
 ```
 
-Executable tests belong under `vigil/tests/`, not `vigil/scripts/`. Withdrawn record classes must not retain active-looking public templates or publication machinery.
+See [`vigil/MAINTAINERS.md`](vigil/MAINTAINERS.md) for authority boundaries and maintenance rules.
 
-## Maintenance discipline
+## Authorship and relationship to CAM
 
-Repository housekeeping is part of normal VIGIL maintenance. Completed transition reports, migrations, one-off scripts and review artefacts must be dispositioned when work closes rather than accumulating beside current canonical data.
+VIGIL is predominantly AI-authored and semi-autonomously maintained under human contract approval. Repository inclusion does not imply human authorship, substantive human review or independent verification unless an artefact expressly states otherwise.
 
-The maintainer contract, including schema authority, artefact disposition and safe-change sequence, is in [`vigil/MAINTAINERS.md`](vigil/MAINTAINERS.md). The audit archive contract is in [`vigil/docs/audits/README.md`](vigil/docs/audits/README.md).
+CAM/Caelestis instruments become authoritative only through their own amendment, validation and adoption processes.
 
-## Authorship and review disclosure
+## Licence
 
-VIGIL is predominantly AI-authored and semi-autonomously maintained under human contract approval. Unless an artefact expressly states otherwise, repository inclusion or publication does not imply human authorship, substantive human review or independent human verification.
-
-The executable provenance contract and controlled vocabulary are enforced by [`vigil/scripts/validate-authorship-provenance.py`](vigil/scripts/validate-authorship-provenance.py) against artefact-local provenance metadata.
-
-## Relationship to CAM
-
-VIGIL is an observatory and evidence system. CAM/Caelestis instruments become authoritative only through their own amendment, validation and adoption processes. VIGIL may assess, route or document CAM-side coverage without itself creating that authority.
-
-## Licence and reuse
-
-Unless otherwise stated, VIGIL record text, summaries, schema documentation and public-facing governance notes are licensed under **CC BY-NC-SA 4.0**. See [`Licence.md`](Licence.md) for the repository licence and reuse conditions.
+Unless otherwise stated, VIGIL record text, schema documentation and public governance notes are licensed under **CC BY-NC-SA 4.0**. See [`Licence.md`](Licence.md).
