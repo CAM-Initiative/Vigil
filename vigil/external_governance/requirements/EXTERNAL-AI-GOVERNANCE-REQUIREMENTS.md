@@ -4,7 +4,7 @@ Canonical analytical catalogue derived from registered external governance sourc
 
 - Registered source versions: 81
 - Primary AI-governance source versions: 57
-- Requirement records: 854
+- Requirement records: 858
 
 ## SDOS Runtime Governance Framework — Control Catalog and Reference Document — 1.10
 
@@ -317,7 +317,7 @@ No requirement records are asserted. Primary-source review is blocked by access;
 - Role: `primary-ai-governance`
 - Access: `direct-licensed-primary`
 - Extraction: `complete`
-- Requirements: 55
+- Requirements: 59
 - Review priority: `high-value-governance-source`
 - Next action: Monitor for material source revision.
 
@@ -352,6 +352,7 @@ No requirement records are asserted. Primary-source review is blocked by access;
 | `EXTREQ-5E32FB621DA9B04F` | 7.2(e) | Integrate context exploration with other concept-of-operations tasks. | `mandatory-normative` / `positive-duty` | `voluntary-consensus-standard` | `conformance` | `reviewed-analytical-summary` / `direct-licensed-primary` |
 | `EXTREQ-62268BE160D91FC2` | 8.3(b)(4) | Use additional ethical frameworks relevant to the deployment culture where appropriate. | `mandatory-normative` / `positive-duty` | `voluntary-consensus-standard` | `conformance` | `reviewed-analytical-summary` / `direct-licensed-primary` |
 | `EXTREQ-69277B3287B59C56` | 11.2(b) | Make stakeholder and project communications reflect transparency, accountability and explainability. | `mandatory-normative` / `positive-duty` | `voluntary-consensus-standard` | `conformance` | `reviewed-analytical-summary` / `direct-licensed-primary` |
+| `EXTREQ-6B251B00C962BBBC` | 8.3(e) | Identify and record potential technical and organizational risks and opportunities affecting the values. | `mandatory-normative` / `positive-duty` | `voluntary-consensus-standard` | `conformance` | `reviewed-analytical-summary` / `direct-licensed-primary` |
 | `EXTREQ-74880714BBEBBC22` | 10.2(a) | Demonstrate traceability from ethical design and value dispositions to value-based requirements. | `mandatory-normative` / `positive-duty` | `voluntary-consensus-standard` | `conformance` | `reviewed-analytical-summary` / `direct-licensed-primary` |
 | `EXTREQ-7CCCC0D4227A327D` | 7.3(a) | Describe current operations and represent actual or plausible future use contexts. | `mandatory-normative` / `positive-duty` | `voluntary-consensus-standard` | `conformance` | `reviewed-analytical-summary` / `direct-licensed-primary` |
 | `EXTREQ-80E4F94C5C116E32` | 10.3(e)(1-2) | Verify fulfilment of value-based requirements and validate stakeholder tolerability of residual value risks. | `mandatory-normative` / `positive-duty` | `voluntary-consensus-standard` | `conformance` | `reviewed-analytical-summary` / `direct-licensed-primary` |
@@ -359,12 +360,15 @@ No requirement records are asserted. Primary-source review is blocked by access;
 | `EXTREQ-8B267B0C43564D38` | 10.2(b) | Demonstrate control over the system through design features. | `mandatory-normative` / `positive-duty` | `voluntary-consensus-standard` | `conformance` | `reviewed-analytical-summary` / `direct-licensed-primary` |
 | `EXTREQ-8E38E6B6C4D852D5` | 7.2(d) | Gather relevant social, legal and environmental feasibility information. | `mandatory-normative` / `positive-duty` | `voluntary-consensus-standard` | `conformance` | `reviewed-analytical-summary` / `direct-licensed-primary` |
 | `EXTREQ-90FF3F6723679EF0` | 9.3(b) | Validate ethical value requirements with selected stakeholders, management and the project team. | `mandatory-normative` / `positive-duty` | `voluntary-consensus-standard` | `conformance` | `reviewed-analytical-summary` / `direct-licensed-primary` |
+| `EXTREQ-9F9F312D1F384F0A` | 7.3(h)(3) | Refine the ConOps as information develops on prioritized values, ethical value requirements and ethical risk-based design characteristics. | `mandatory-normative` / `positive-duty` | `voluntary-consensus-standard` | `conformance` | `reviewed-analytical-summary` / `direct-licensed-primary` |
 | `EXTREQ-A030FA1DA70C8EC4` | 7.3(c) | Analyse technical and organisational control and record controls needed to preserve ethical values. | `mandatory-normative` / `positive-duty` | `voluntary-consensus-standard` | `conformance` | `reviewed-analytical-summary` / `direct-licensed-primary` |
 | `EXTREQ-A636A70FECE5871E` | 9.3(e) | Recheck traceability, determine further handling and record approval of value-based requirements. | `mandatory-normative` / `positive-duty` | `voluntary-consensus-standard` | `conformance` | `reviewed-analytical-summary` / `direct-licensed-primary` |
 | `EXTREQ-A682DBC215819C77` | 7.2(b) | Identify lifecycle stakeholders and select representatives. | `mandatory-normative` / `positive-duty` | `voluntary-consensus-standard` | `conformance` | `reviewed-analytical-summary` / `direct-licensed-primary` |
+| `EXTREQ-AA32F6158A98B7E1` | 8.3(f) | Refine prioritized value clusters through conceptual analysis, external value demonstrators, risk and opportunity treatment, and conflict annotation. | `mandatory-normative` / `positive-duty` | `voluntary-consensus-standard` | `conformance` | `reviewed-analytical-summary` / `direct-licensed-primary` |
 | `EXTREQ-B29500CC6AF4EB3B` | 7.3(h) | Record context risks and decide whether explicit value analysis and ethical risk assessment are required. | `mandatory-normative` / `positive-duty` | `voluntary-consensus-standard` | `conformance` | `reviewed-analytical-summary` / `direct-licensed-primary` |
 | `EXTREQ-BE73C0817125F771` | 11.3(b)(2) | Share information about value elicitation, prioritisation, benefits, harms and value clusters. | `mandatory-normative` / `positive-duty` | `voluntary-consensus-standard` | `conformance` | `reviewed-analytical-summary` / `direct-licensed-primary` |
-| `EXTREQ-C3E5B151DB2EE358` | 8.3(d) | Prioritise value clusters and obtain the required stakeholder and management approval. | `mandatory-normative` / `positive-duty` | `voluntary-consensus-standard` | `conformance` | `reviewed-analytical-summary` / `direct-licensed-primary` |
+| `EXTREQ-C3E5B151DB2EE358` | 8.3(d) | Prioritize core values using the stated ethical considerations, compare value priorities with external sources, and record incompatibilities and conflicts affecting prioritization. | `mandatory-normative` / `positive-duty` | `voluntary-consensus-standard` | `conformance` | `reviewed-analytical-summary` / `direct-licensed-primary` |
+| `EXTREQ-C4216CD9308BCAE5` | 8.3(g) | Obtain approval for prioritized values and record the approved value clusters, decision, authority and rationale. | `mandatory-normative` / `positive-duty` | `voluntary-consensus-standard` | `conformance` | `reviewed-analytical-summary` / `direct-licensed-primary` |
 | `EXTREQ-C6E51A1EB0DB2EEF` | 11.2(a) | Make sufficient appropriate information about system ethics available during development and afterward. | `mandatory-normative` / `positive-duty` | `voluntary-consensus-standard` | `conformance` | `reviewed-analytical-summary` / `direct-licensed-primary` |
 | `EXTREQ-D0D2D4F32A13376A` | 10.3(e)(3-7) | Record realised opportunities, enhanced treatments, updated design documentation and final validation results. | `mandatory-normative` / `positive-duty` | `voluntary-consensus-standard` | `conformance` | `reviewed-analytical-summary` / `direct-licensed-primary` |
 | `EXTREQ-D3F5FB8AAD9A7B93` | 9.2(d) | Harmonise value-based requirements with requirements derived from other sources. | `mandatory-normative` / `positive-duty` | `voluntary-consensus-standard` | `conformance` | `reviewed-analytical-summary` / `direct-licensed-primary` |
