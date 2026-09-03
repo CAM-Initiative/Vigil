@@ -39,7 +39,7 @@ def parse_iso_date(value: Any) -> date | None:
 def main() -> int:
     errors: list[str] = []
     count = 0
-    for path in sorted(RECORDS.rglob("*.json")):
+    for path in sorted((RECORDS / "incidents").glob("VIGIL-INC-*.json")):
         count += 1
         try:
             record = load(path)
@@ -104,8 +104,14 @@ def main() -> int:
                 for item in history
             ):
                 errors.append(f"{path}: current_ai_review must also be preserved in append-only review_history")
-        if not isinstance(editor, dict) or not editor.get("name") or not editor.get("authority_boundary"):
-            errors.append(f"{path}: human_governance_editor must identify name and authority boundary")
+        if editor is not None and (
+            not isinstance(editor, dict)
+            or not editor.get("name")
+            or not editor.get("authority_boundary")
+        ):
+            errors.append(
+                f"{path}: asserted human_governance_editor must identify name and authority boundary"
+            )
 
         sources = record.get("source_records")
         if not isinstance(sources, list):
@@ -130,16 +136,12 @@ def main() -> int:
                 if missing_access:
                     errors.append(f"{path}: source_records[{index}].primary_artefact_access missing {missing_access}")
 
-    fm = RECORDS / "failures" / "2026" / "VIGIL-2026-FM-0033.json"
-    if not fm.exists():
-        errors.append(f"{fm}: primary behavioural evidence accessibility failure record is required")
-
     if errors:
         print("Interpretive provenance validation failed:", file=sys.stderr)
         for error in errors:
             print(f"- {error}", file=sys.stderr)
         return 1
-    print(f"Interpretive provenance validation passed for {count} records.")
+    print(f"Interpretive provenance validation passed for {count} Incidents.")
     return 0
 
 

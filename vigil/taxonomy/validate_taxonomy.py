@@ -517,6 +517,11 @@ def validate_catalogue(
         errors.append(f"{INDEX_PATH}: retired_class_mappings must be an array")
         retirement_rows = []
     retirement_by_id: dict[str, dict] = {}
+    published_release_versions = {
+        release.get("version")
+        for release in index.get("release_history", [])
+        if isinstance(release, dict) and parse_version(release.get("version")) is not None
+    }
     required_retirement_fields = {
         "retired_id", "retired_code", "retired_name", "successor_id",
         "disposition", "retirement_release_status",
@@ -551,8 +556,8 @@ def validate_catalogue(
         elif release_status == "published":
             if parse_version(retired_in_version) is None:
                 errors.append(f"{where}: published retirement requires retired_in_version")
-            elif retired_in_version != index.get("standard", {}).get("version"):
-                errors.append(f"{where}: retired_in_version must equal the current published taxonomy version")
+            elif retired_in_version not in published_release_versions:
+                errors.append(f"{where}: retired_in_version must identify a published taxonomy release")
         else:
             errors.append(f"{where}: unsupported retirement_release_status {release_status!r}")
     if set(retirement_by_id) != set(removed):

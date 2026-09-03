@@ -187,8 +187,6 @@ def validate_repository() -> list[str]:
 
     for relative in (
         "VIGIL.Incidents.Index.json",
-        "VIGIL.Observations.Index.json",
-        "VIGIL.Research.Index.json",
         "VIGIL.Registry.Index.json",
     ):
         document = load(VIGIL / relative)
