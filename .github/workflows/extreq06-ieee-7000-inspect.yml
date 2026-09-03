@@ -38,3 +38,20 @@ jobs:
               for k,v in e['field_status'].items(): c[(k,v)] += 1
           for (k,v),n in sorted(c.items()): print(f'STATUS\t{k}\t{v}\t{n}')
           PY
+      - name: Prepare bounded review context artifact
+        run: |
+          mkdir -p extreq06-context/vigil/scripts extreq06-context/vigil/tests extreq06-context/vigil/external_governance
+          cp -R vigil/external_governance/requirements extreq06-context/vigil/external_governance/
+          cp vigil/scripts/external_requirements_io.py extreq06-context/vigil/scripts/
+          cp vigil/scripts/manage-external-requirements.py extreq06-context/vigil/scripts/
+          cp vigil/scripts/validate-external-requirement-metadata.py extreq06-context/vigil/scripts/
+          cp vigil/scripts/validate-external-requirement-fidelity.py extreq06-context/vigil/scripts/
+          cp vigil/tests/test_external_requirement_metadata.py extreq06-context/vigil/tests/
+          cp vigil/tests/test_external_requirement_fidelity.py extreq06-context/vigil/tests/
+          cp vigil/tests/test_external_requirements.py extreq06-context/vigil/tests/
+          cp vigil/tests/test_external_sources.py extreq06-context/vigil/tests/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: extreq06-context
+          path: extreq06-context
+          if-no-files-found: error
