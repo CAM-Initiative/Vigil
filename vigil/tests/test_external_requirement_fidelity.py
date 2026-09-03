@@ -19,7 +19,7 @@ class ExternalRequirementFidelityTests(unittest.TestCase):
         errors, warnings, summary = module.validate()
         self.assertEqual(errors, [])
         self.assertGreaterEqual(summary["historical_complete_sources"], 2)
-        self.assertEqual(summary["fidelity_assured_effective_complete_sources"], 12)
+        self.assertEqual(summary["fidelity_assured_effective_complete_sources"], 13)
         self.assertGreaterEqual(summary["effective_partial_due_fidelity"], 1)
         self.assertTrue(any("effective downgrade" in warning for warning in warnings))
 
@@ -53,6 +53,7 @@ class ExternalRequirementFidelityTests(unittest.TestCase):
         self.assertEqual(status[("IEEE-7000", "2021")], "assured")
         self.assertEqual(status[("IEEE-7009", "2024")], "requires-reextraction")
         self.assertEqual(status[("IEEE-7014.1", "2026")], "assured")
+        self.assertEqual(status[("IEEE-7014", "2024")], "assured")
 
 
 if __name__ == "__main__":

@@ -1,11 +1,11 @@
 # External Requirement Metadata Review Report
 
-- Records assessed: 972
-- Canonical records: 870
+- Records assessed: 990
+- Canonical records: 888
 - Staged records: 102
-- Metadata-complete: 785
-- Records requiring review: 187
-- Unresolved field decisions: 1484
+- Metadata-complete: 844
+- Records requiring review: 146
+- Unresolved field decisions: 1156
 - Records flagged for re-extraction: 4
 - Primary sources blocked by access: 37
 - Contract errors: 0
@@ -14,21 +14,20 @@
 
 | Field | Populated, reviewed | Populated, unreviewed | Empty, unreviewed | Not specified by source | Not applicable |
 |---|---:|---:|---:|---:|---:|
-| `applicable_actor` | 789 | 183 | 0 | 0 | 0 |
-| `governed_object` | 789 | 183 | 0 | 0 | 0 |
-| `timing_or_frequency` | 158 | 4 | 183 | 627 | 0 |
-| `required_artefacts` | 318 | 26 | 161 | 467 | 0 |
-| `evidence_expectation` | 348 | 27 | 160 | 437 | 0 |
-| `verification_method` | 225 | 1 | 186 | 560 | 0 |
-| `applicability_conditions` | 713 | 59 | 124 | 76 | 0 |
-| `exceptions_or_qualifications` | 413 | 26 | 161 | 372 | 0 |
+| `applicable_actor` | 848 | 142 | 0 | 0 | 0 |
+| `governed_object` | 848 | 142 | 0 | 0 | 0 |
+| `timing_or_frequency` | 185 | 4 | 142 | 659 | 0 |
+| `required_artefacts` | 356 | 26 | 120 | 488 | 0 |
+| `evidence_expectation` | 388 | 27 | 119 | 456 | 0 |
+| `verification_method` | 250 | 1 | 145 | 594 | 0 |
+| `applicability_conditions` | 747 | 59 | 83 | 101 | 0 |
+| `exceptions_or_qualifications` | 432 | 26 | 120 | 412 | 0 |
 
 ## Source-level review backlog
 
 | Source/version | Status | Records | Complete | Records requiring review | Unresolved fields | Re-extraction |
 |---|---|---:|---:|---:|---:|---:|
 | `EXT-7DB18E82C9D3|2026-07-27` | `partially-metadata-reviewed` | 183 | 102 | 81 | 648 | 0 |
-| `EXT-8D54F96680C4|2024` | `unreviewed` | 41 | 0 | 41 | 328 | 0 |
 | `EXT-338E4D8BD259|2021` | `unreviewed` | 33 | 0 | 33 | 264 | 0 |
 | `EXT-8E377EF5CE66|2020` | `unreviewed` | 18 | 0 | 18 | 144 | 0 |
 | `EXT-7E4B8ED73AA5|2021` | `unreviewed` | 10 | 0 | 10 | 80 | 0 |
@@ -43,6 +42,7 @@
 | `EXT-6442C7954667|1.0` | `fully-metadata-reviewed` | 71 | 71 | 0 | 0 | 0 |
 | `EXT-65F7658B8B04|2024` | `fully-metadata-reviewed` | 75 | 75 | 0 | 0 | 0 |
 | `EXT-71B4139453FA|3.0.1` | `fully-metadata-reviewed` | 4 | 4 | 0 | 0 | 0 |
+| `EXT-8D54F96680C4|2024` | `fully-metadata-reviewed` | 59 | 59 | 0 | 0 | 0 |
 | `EXT-8FEA9674D97A|1.10` | `fully-metadata-reviewed` | 24 | 24 | 0 | 0 | 0 |
 | `EXT-DE4FDB52698E|2024` | `fully-metadata-reviewed` | 223 | 223 | 0 | 0 | 0 |
 
@@ -100,7 +100,6 @@
 | Requirement | Source/version | Surface | Clause/control | Fields requiring review |
 |---|---|---|---|---|
 | `EXTREQ-01B8131E36339F3E` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 16(a) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
-| `EXTREQ-02D226AB756E319A` | `EXT-8D54F96680C4|2024` | canonical | 4.3.7.2(b) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-05800E1D5E774996` | `EXT-338E4D8BD259|2021` | canonical | Table 2 level 2 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-0644CA6F6AA495DE` | `EXT-338E4D8BD259|2021` | canonical | Table 5 level 3 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-06A1E7B0AA0AF548` | `EXT-7E4B8ED73AA5|2021` | canonical | 4.5 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
@@ -108,8 +107,6 @@
 | `EXTREQ-0BB8EF47B5781DD6` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 20 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-0C261B7C9D349171` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 49 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-0C5664070D141929` | `EXT-338E4D8BD259|2021` | canonical | Table 3 level 2 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
-| `EXTREQ-0EC62DE00B448D8E` | `EXT-8D54F96680C4|2024` | canonical | 4.3.3.2(f-g) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
-| `EXTREQ-0EF26D6D174C2DCE` | `EXT-8D54F96680C4|2024` | canonical | 4.2.3.2(a) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-0F24484F1087258A` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 53(2) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-0FC8A0CA89BD2FB2` | `EXT-338E4D8BD259|2021` | canonical | Table 2 level 3 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-10591B52C510BE45` | `EXT-338E4D8BD259|2021` | canonical | Table 1 level 4 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
@@ -129,28 +126,21 @@
 | `EXTREQ-21E73C2D0453A2A4` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 16(c) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-21F29093ABA98691` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 55(1)(a) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-227DA1B3E5921A89` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 21 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
-| `EXTREQ-23EE57392E75BFB8` | `EXT-8D54F96680C4|2024` | canonical | 4.2.3.2(h) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-242D432FBFE069A9` | `EXT-7E4B8ED73AA5|2021` | canonical | 4.8.1 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
-| `EXTREQ-29B0D0B21F7E80D4` | `EXT-8D54F96680C4|2024` | canonical | 4.3.2.2(i-k) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-2B5EE369056755A2` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 24(3) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-2EBEEBCB2F31532B` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 23(3)–(5) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-329A8988CEEC3078` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 26(1) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-32AA11E91A31D3F8` | `EXT-8E377EF5CE66|2020` | canonical | 4.5(a-c) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-33898CCD26FBF5D5` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 12 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-33CD634F3AF79DE6` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 5(1)(c) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
-| `EXTREQ-34FD56083CEA645E` | `EXT-8D54F96680C4|2024` | canonical | 4.2.2.2(i) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-37DEE649708AFF8D` | `EXT-8E377EF5CE66|2020` | canonical | 4.1.2 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-38D3E64210881558` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 24(2) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
-| `EXTREQ-38FD0063E98199E9` | `EXT-8D54F96680C4|2024` | canonical | 4.3.7.2(a) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-3976A1FD027244DD` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 4 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-3C1CB453631DADED` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 53(1)(a) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
-| `EXTREQ-3DF5DD271DC23C92` | `EXT-8D54F96680C4|2024` | canonical | 4.2.3.2(g) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
-| `EXTREQ-3E6D02A72B66B9DC` | `EXT-8D54F96680C4|2024` | canonical | 4.3.3.2(a-b) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-3EE7DA5CA55C565B` | `EXT-8E377EF5CE66|2020` | canonical | 4.3.2(g) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-3F3FE69853DA2FE6` | `EXT-338E4D8BD259|2021` | canonical | Table 4 level 3 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-4041B6E279EF30CC` | `EXT-564A4CAA4F00|2024` | canonical | 8.3 DIOP4-6 | timing_or_frequency, required_artefacts, evidence_expectation, verification_method, exceptions_or_qualifications |
 | `EXTREQ-41FF8253E509206C` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 50(4) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
-| `EXTREQ-42A1CFE7EF635572` | `EXT-8D54F96680C4|2024` | canonical | 4.3.6.2(c-d) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-441840641394C5F2` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 16(b) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-44406C97B6C3E637` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 25(2) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-44B7BB17CB030468` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 9 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
@@ -158,43 +148,30 @@
 | `EXTREQ-47846A6108E25C91` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 22(3) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-49F6B35CF6AFD623` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 16(i) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-4A3A98EDC233BFD4` | `EXT-338E4D8BD259|2021` | canonical | Table 1 level 2 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
-| `EXTREQ-4AFD90EB3C518B5F` | `EXT-8D54F96680C4|2024` | canonical | 4.3.6.2(b) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-4B2B71D9D528EE21` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 85 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-4DCFB5BB26E9B218` | `EXT-338E4D8BD259|2021` | canonical | Table 1 level 5 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-4F2792F7CDD15A52` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 23(6) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-528978BC3EB32446` | `EXT-564A4CAA4F00|2024` | canonical | 6.1(a-c) | timing_or_frequency, required_artefacts, evidence_expectation, verification_method, exceptions_or_qualifications |
 | `EXTREQ-548AC1A3F63A1A72` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 17 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
-| `EXTREQ-55CAAB7FB9174CAF` | `EXT-8D54F96680C4|2024` | canonical | 4.2.3.2(b) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-586552C57376BC2D` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 23(2) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-59C922EDE7929CC0` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 16(g) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-5AD95A923905AA8A` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 26(6) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-5F0F505015426176` | `EXT-7E4B8ED73AA5|2021` | canonical | 4.7 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-600514CF42FDB56B` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 51 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
-| `EXTREQ-62877173BD54BD9E` | `EXT-8D54F96680C4|2024` | canonical | 4.2.4.2(a) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-62F0BEB115E799F3` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 16(h) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
-| `EXTREQ-64E9E595CFF7DE6A` | `EXT-8D54F96680C4|2024` | canonical | 4.3.5.2(a) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
-| `EXTREQ-65D7E193EE4A942B` | `EXT-8D54F96680C4|2024` | canonical | 4.3.5.2(e-f) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-675318BFE215E4E8` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 26(9) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
-| `EXTREQ-68B1E8EF3CF94A5C` | `EXT-8D54F96680C4|2024` | canonical | 4.3.5.2(b-c) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-6A7DD6148B541E22` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 5(1)(f) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-6C19EF4A43D0C0F5` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 22(3) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-6C76870548CB34A6` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 16(d) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
-| `EXTREQ-6DC66967479E1698` | `EXT-8D54F96680C4|2024` | canonical | 4.2.4.2(b-c) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
-| `EXTREQ-6E38B5BF78558873` | `EXT-8D54F96680C4|2024` | canonical | 4.2.3.2(f) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-6F607445AC449889` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 50(4) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
-| `EXTREQ-7033840016B023BC` | `EXT-8D54F96680C4|2024` | canonical | 4.3.5.2(d) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-70BB4ECD22E7DC60` | `EXT-338E4D8BD259|2021` | canonical | Table 4 level 1 — software-only system | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
-| `EXTREQ-719786837E5A6D9B` | `EXT-8D54F96680C4|2024` | canonical | 4.2.6.2(a-d) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
-| `EXTREQ-71E4BCCCB69D1E91` | `EXT-8D54F96680C4|2024` | canonical | 4.3.2.2(g-h) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-7417A4E295C50432` | `EXT-338E4D8BD259|2021` | canonical | Table 5 level 1 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-7675F4F8753B09FB` | `EXT-338E4D8BD259|2021` | canonical | Table 2 level 1 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-770BD65BD9B3CA90` | `EXT-338E4D8BD259|2021` | canonical | Table 1 level 1 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-7B0BD423DE335511` | `EXT-338E4D8BD259|2021` | canonical | Table 3 level 3 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
-| `EXTREQ-7C34BE7150B572DA` | `EXT-8D54F96680C4|2024` | canonical | 4.3.2.2(l-m) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-7D88308C7CF7ADD5` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 26(11) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-80B95118891500CC` | `EXT-338E4D8BD259|2021` | canonical | 5.2.2 principle | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-86020155B4C4312E` | `EXT-338E4D8BD259|2021` | canonical | Table 3 level 3 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
-| `EXTREQ-8C7DA8D83414FF85` | `EXT-8D54F96680C4|2024` | canonical | 4.2.1.2 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-8CA6181B4ACEE847` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 55(1)(c) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-8CFD73B0887B90DE` | `EXT-7E4B8ED73AA5|2021` | canonical | 4.7 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-8D3D5329349F21FE` | `EXT-338E4D8BD259|2021` | canonical | 5.1.1 general | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
@@ -205,7 +182,6 @@
 | `EXTREQ-8F7D774F70387DA7` | `EXT-338E4D8BD259|2021` | canonical | Table 3 level 1 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-901AD2C0A909E790` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 11 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-913A9450EA2EEC54` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 53(1)(b) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
-| `EXTREQ-915C1C74C7E78C60` | `EXT-8D54F96680C4|2024` | canonical | 4.3.3.2(c) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-916CD10D2C564544` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 50(3) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-93EA8498A82F2B29` | `EXT-7E4B8ED73AA5|2021` | canonical | 4.8 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-97B82927790C4BB0` | `EXT-8E377EF5CE66|2020` | canonical | 4.4.1(d) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
@@ -215,7 +191,6 @@
 | `EXTREQ-9A9130EBEF017065` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 47 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-9C0B78F4EF6D5D8E` | `EXT-8E377EF5CE66|2020` | canonical | 4.3.2(a-c) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-9CAB350B6E590AE9` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 86 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
-| `EXTREQ-9CB430C2CA057762` | `EXT-8D54F96680C4|2024` | canonical | 4.2.3.2(c) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-9E6AAFB1F395E165` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 72 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-9EA13A62F93E8434` | `EXT-338E4D8BD259|2021` | canonical | Table 3 level 5 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-A0CA7876FB096DB6` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 26(5) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
@@ -225,58 +200,42 @@
 | `EXTREQ-A76AF8B41A4206A1` | `EXT-8E377EF5CE66|2020` | canonical | 4.4 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-A85A860E9017EA52` | `EXT-338E4D8BD259|2021` | canonical | Table 1 level 1 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-AA61672EC4CC8220` | `EXT-8E377EF5CE66|2020` | canonical | 4.2(a-e) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
-| `EXTREQ-AAD0CB1FB151574D` | `EXT-8D54F96680C4|2024` | canonical | 4.3.2.2(a) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-AE55A8440D88FE84` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 27 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-AF8A76D4EFEB1FB9` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 50(1) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
-| `EXTREQ-B197A3D8996165B7` | `EXT-8D54F96680C4|2024` | canonical | 4.2.2.2(d-f) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-B283FB077323F944` | `EXT-338E4D8BD259|2021` | canonical | Table 2 level 2 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-B3F4A8947C84C68E` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 50(2) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-B4D008768AC608CD` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 5(1)(g) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-B4F479B7788DC592` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 19 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-B610E9C42CE5AB31` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 25(4) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
-| `EXTREQ-B8D7C1A87AFB24C8` | `EXT-8D54F96680C4|2024` | canonical | 4.1.1.2(a-b) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-BA58D5EA8D913FB5` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 26(4) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-BBE358DBC3A6FD24` | `EXT-564A4CAA4F00|2024` | canonical | 6.1(d-e) | timing_or_frequency, required_artefacts, evidence_expectation, verification_method, exceptions_or_qualifications |
 | `EXTREQ-BC7F1BE216CC6BBE` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 5(1)(d) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
-| `EXTREQ-BF238AD2E0373C07` | `EXT-8D54F96680C4|2024` | canonical | 4.3.2.2(n-p) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-C0D92D72BD0672E1` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 73 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
-| `EXTREQ-C1CBAA44088FE2A3` | `EXT-8D54F96680C4|2024` | canonical | 4.3.1.2(a-c) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-C22E579E045BF08B` | `EXT-8E377EF5CE66|2020` | canonical | 4.1.1 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-C2FC30A1E260F4C1` | `EXT-564A4CAA4F00|2024` | canonical | 8.3 DIOP1-3 | timing_or_frequency, required_artefacts, evidence_expectation, verification_method, exceptions_or_qualifications |
 | `EXTREQ-C4F2EF5560347793` | `EXT-8E377EF5CE66|2020` | canonical | 4.3 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-C8B9D434D49674CA` | `EXT-8E377EF5CE66|2020` | canonical | 4.4.2 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-C94FFF97F30D7A07` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 43 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-CB76B4C437492E66` | `EXT-338E4D8BD259|2021` | canonical | Table 4 level 1 — physical system | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
-| `EXTREQ-CD5CDF96299089DE` | `EXT-8D54F96680C4|2024` | canonical | 4.3.4.2(a-c) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-CE229EBE1EC9F9D1` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 16(f) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-D0403321A5F45CC7` | `EXT-338E4D8BD259|2021` | canonical | Table 2 level 4 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-D1BD418BB435D6A4` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 22(3) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
-| `EXTREQ-D57F5E807D837AF8` | `EXT-8D54F96680C4|2024` | canonical | 4.2.2.2(b-c) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
-| `EXTREQ-D62D5EEFA80787DA` | `EXT-8D54F96680C4|2024` | canonical | 4.3.3.2(d-e) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
-| `EXTREQ-D7520BF14ED60A9B` | `EXT-8D54F96680C4|2024` | canonical | 4.2.5.2(a-c) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-D7A373EB690716A5` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 18 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
-| `EXTREQ-D8BDF2032891259A` | `EXT-8D54F96680C4|2024` | canonical | 4.2.6.2(f-g) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-D9C8EDEEF0027041` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 55(1)(b) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-DC7C4F064C590E5A` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 5(1)(b) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-DE76405345E5C624` | `EXT-338E4D8BD259|2021` | canonical | Table 1 level 5 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-DF16873D107C059C` | `EXT-338E4D8BD259|2021` | canonical | Table 4 level 5 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-DF59795BDC7CE9D9` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 24(1) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-E0D44AFB0EA316DF` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 25(1) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
-| `EXTREQ-E20773A941B61CD4` | `EXT-8D54F96680C4|2024` | canonical | 4.2.6.2(e) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-E3ECA4635E3449E1` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 48 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-E607F0F7C181E4E3` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 8 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-E640D3CE18685E25` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 15 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
-| `EXTREQ-E673B76B9E79C2FA` | `EXT-8D54F96680C4|2024` | canonical | 4.2.2.2(g-h) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-E72CA0C43F6F27E3` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 16(e) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
-| `EXTREQ-E7923A307C756F51` | `EXT-8D54F96680C4|2024` | canonical | 4.2.3.2(d-e) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-EAFAB33E1DFA6E7B` | `EXT-338E4D8BD259|2021` | canonical | Table 3 level 4 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-EB5C85183A904257` | `EXT-8E377EF5CE66|2020` | canonical | 4.5(d) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
-| `EXTREQ-EBAA17D768C656E2` | `EXT-8D54F96680C4|2024` | canonical | 4.3.6.2(a) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-ECFACCF8FFE35B2A` | `EXT-8E377EF5CE66|2020` | canonical | 4.1.1 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-ED35C1381241B41B` | `EXT-7E4B8ED73AA5|2021` | canonical | 4.4 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
-| `EXTREQ-ED9ECFAF64B12C73` | `EXT-8D54F96680C4|2024` | canonical | 4.2.2.2(a) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-EE2EE9364A46462A` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 53(1)(c) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
-| `EXTREQ-F0346554861A7BF3` | `EXT-8D54F96680C4|2024` | canonical | 4.3.2.2(b-f) | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-F11674766C55D801` | `EXT-8E377EF5CE66|2020` | canonical | 4.1.1 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-F30E6B9A906370B9` | `EXT-7DB18E82C9D3|2026-07-27` | canonical | Article 4a | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
 | `EXTREQ-F34E10E503F4CEC8` | `EXT-338E4D8BD259|2021` | canonical | Table 1 level 3 | applicable_actor, governed_object, timing_or_frequency, required_artefacts, evidence_expectation, verification_method, applicability_conditions, exceptions_or_qualifications |
