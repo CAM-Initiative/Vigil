@@ -1,0 +1,40 @@
+name: EXTREQ-06 IEEE 7000 inspection
+
+on:
+  push:
+    branches:
+      - agent/extreq-05-ieee-7014-1-fidelity-review
+    paths:
+      - .github/workflows/extreq06-ieee-7000-inspect.yml
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.x'
+      - name: Print compact IEEE 7000 corpus inventory
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('vigil/external_governance/requirements/requirements/IEEE-7000/2021.json')
+          records=json.loads(p.read_text())
+          print(f'COUNT={len(records)}')
+          for r in records:
+              print('\t'.join([r['requirement_id'], r['clause_or_control'], r['identity_key'], r['requirement_summary']]))
+          ledger=json.loads(Path('vigil/external_governance/requirements/metadata-review.json').read_text())
+          ids={r['requirement_id'] for r in records}
+          entries=[e for e in ledger['entries'] if e['requirement_id'] in ids]
+          print(f'LEDGER_COUNT={len(entries)}')
+          from collections import Counter
+          c=Counter()
+          for e in entries:
+              for k,v in e['field_status'].items(): c[(k,v)] += 1
+          for (k,v),n in sorted(c.items()): print(f'STATUS\t{k}\t{v}\t{n}')
+          PY
