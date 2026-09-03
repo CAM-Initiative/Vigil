@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# EXTREQ-05 rerun after correcting validation paths.
 """One-off EXTREQ-05 metadata-fidelity repair for IEEE 7014.1-2026.
 
 This script does not store IEEE source text. It applies analytical metadata
