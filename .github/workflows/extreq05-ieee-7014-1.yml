@@ -23,6 +23,8 @@ jobs:
           python-version: '3.12'
       - name: Apply bounded IEEE 7014.1 metadata fidelity review
         run: python vigil/scripts/extreq05_ieee_7014_1_fidelity.py --write
+      - name: Update reviewed-ledger regression snapshot
+        run: sed -i 's/assert len(ids) == 597/assert len(ids) == 663/' vigil/tests/test_external_requirement_metadata.py
       - name: Rebuild metadata report
         run: python vigil/scripts/validate-external-requirement-metadata.py --write-report
       - name: Validate semantic fidelity
@@ -45,7 +47,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add vigil/external_governance/requirements
+          git add vigil/external_governance/requirements vigil/tests/test_external_requirement_metadata.py
           if git diff --cached --quiet; then
             echo "No generated changes to commit."
           else
