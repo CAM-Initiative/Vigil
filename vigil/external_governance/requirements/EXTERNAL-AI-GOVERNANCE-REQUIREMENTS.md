@@ -4,7 +4,7 @@ Canonical analytical catalogue derived from registered external governance sourc
 
 - Registered source versions: 81
 - Primary AI-governance source versions: 57
-- Requirement records: 888
+- Requirement records: 884
 
 ## SDOS Runtime Governance Framework — Control Catalog and Reference Document — 1.10
 
@@ -494,7 +494,7 @@ No requirement records are asserted. Supporting authority only; exhaustive first
 - Role: `primary-ai-governance`
 - Access: `direct-licensed-primary`
 - Extraction: `complete`
-- Requirements: 67
+- Requirements: 63
 - Review priority: `high-value-governance-source`
 - Next action: Resolve the four explicitly flagged legacy compound identities only if an identity-retirement migration is approved; otherwise retain them with their linked atomic complements.
 
@@ -514,7 +514,6 @@ No requirement records are asserted. Supporting authority only; exhaustive first
 | `EXTREQ-2FA77114F800FFD6` | 6.5 | Achieve every specified minimum threshold during operation when claiming conformance. | `mandatory-normative` / `positive-duty` | `voluntary-consensus-standard` | `conformance` | `reviewed-analytical-summary` / `direct-licensed-primary` |
 | `EXTREQ-3197D476F0F03090` | 6.1(e) | Provide an operational capability to modify ASOI behavior to preserve freedom from unacceptable risk of harm. | `mandatory-normative` / `positive-duty` | `voluntary-consensus-standard` | `conformance` | `reviewed-analytical-summary` / `direct-licensed-primary` |
 | `EXTREQ-3CCDC8232F3887B6` | 8.3 DIOP1 | Monitor ASOI behavior and issue periodic requests to continue execution. | `mandatory-normative` / `positive-duty` | `voluntary-consensus-standard` | `conformance` | `reviewed-analytical-summary` / `direct-licensed-primary` |
-| `EXTREQ-4041B6E279EF30CC` | 8.3 DIOP4-6 | Select and execute behaviour moderation or modification and evaluate the resulting safety state. | `mandatory-normative` / `positive-duty` | `voluntary-consensus-standard` | `conformance` | `reviewed-analytical-summary` / `direct-licensed-primary` |
 | `EXTREQ-404D2958A3B04035` | 6.1(g) | Enable learning from incidents. | `mandatory-normative` / `positive-duty` | `voluntary-consensus-standard` | `conformance` | `reviewed-analytical-summary` / `direct-licensed-primary` |
 | `EXTREQ-40E657D895DF70D6` | 6.4.1 | Include total loss of ASOI function as an event of interest. | `mandatory-normative` / `positive-duty` | `voluntary-consensus-standard` | `conformance` | `reviewed-analytical-summary` / `direct-licensed-primary` |
 | `EXTREQ-41651DA8786FCCB1` | Annex A.3 / 7009-ASR-002 | Provide means to maintain separation between each designated category of function. | `mandatory-normative` / `positive-duty` | `voluntary-consensus-standard` | `conformance` | `reviewed-analytical-summary` / `direct-licensed-primary` |
@@ -524,7 +523,6 @@ No requirement records are asserted. Supporting authority only; exhaustive first
 | `EXTREQ-51133BB8AB20896C` | 7.3 RAP8 | Monitor regulatory context and revise the plan and behaviour specifications throughout the ASOI lifecycle. | `mandatory-normative` / `positive-duty` | `voluntary-consensus-standard` | `conformance` | `reviewed-analytical-summary` / `direct-licensed-primary` |
 | `EXTREQ-51884251387B7563` | Annex A.3 / 7009-ASR-003 | Provide means to maintain isolation between each designated category of function. | `mandatory-normative` / `positive-duty` | `voluntary-consensus-standard` | `conformance` | `reviewed-analytical-summary` / `direct-licensed-primary` |
 | `EXTREQ-5274483FE162D85C` | Annex A.3 / 7009-ASR-012 | Provide means to detect violations of specified limits on ASOI behavior. | `mandatory-normative` / `positive-duty` | `voluntary-consensus-standard` | `conformance` | `reviewed-analytical-summary` / `direct-licensed-primary` |
-| `EXTREQ-528978BC3EB32446` | 6.1(a-c) | Enable operational monitoring, anomaly detection and identification of anomalies that may create unacceptable risk. | `mandatory-normative` / `positive-duty` | `voluntary-consensus-standard` | `conformance` | `reviewed-analytical-summary` / `direct-licensed-primary` |
 | `EXTREQ-5306FB227197570A` | 6.1(b) | Provide an operational capability to detect anomalous ASOI behavior. | `mandatory-normative` / `positive-duty` | `voluntary-consensus-standard` | `conformance` | `reviewed-analytical-summary` / `direct-licensed-primary` |
 | `EXTREQ-58EFC9CC14133652` | Annex A.3 / 7009-ASR-004 | Provide means to inhibit execution of an individual safety-related function. | `mandatory-normative` / `positive-duty` | `voluntary-consensus-standard` | `conformance` | `reviewed-analytical-summary` / `direct-licensed-primary` |
 | `EXTREQ-5E78FB50E4B39618` | 6.2 | Do not use safety-exempt as the default system or function classification. | `mandatory-normative` / `positive-duty` | `voluntary-consensus-standard` | `conformance` | `reviewed-analytical-summary` / `direct-licensed-primary` |
@@ -550,11 +548,9 @@ No requirement records are asserted. Supporting authority only; exhaustive first
 | `EXTREQ-B774D5182BD2EE50` | Annex A.3 / 7009-ASR-009 | Provide means to inhibit specified function execution when authorization to continue that execution is not available. | `mandatory-normative` / `positive-duty` | `voluntary-consensus-standard` | `conformance` | `reviewed-analytical-summary` / `direct-licensed-primary` |
 | `EXTREQ-BA54F8982F880F93` | 9.3 | Define each property-of-interest specification by its title, definition and definition source, and define each required constituent attribute by its title, definition and definition source. | `definitional` / `definition` | `voluntary-consensus-standard` | `conformance` | `reviewed-analytical-summary` / `direct-licensed-primary` |
 | `EXTREQ-BB877FB01A31A04D` | Annex A.3 / 7009-ASR-010 | Provide means to inhibit specified functions when the authorization required to execute them becomes invalid. | `mandatory-normative` / `positive-duty` | `voluntary-consensus-standard` | `conformance` | `reviewed-analytical-summary` / `direct-licensed-primary` |
-| `EXTREQ-BBE358DBC3A6FD24` | 6.1(d-e) | Enable moderation and modification of system behaviour to preserve freedom from unacceptable risk. | `mandatory-normative` / `positive-duty` | `voluntary-consensus-standard` | `conformance` | `reviewed-analytical-summary` / `direct-licensed-primary` |
 | `EXTREQ-BC8F1C7890FE91F8` | Annex A.3 / 7009-ASR-013 | Provide means to inhibit safety-related functions that are violating specified ASOI behavior limits. | `mandatory-normative` / `positive-duty` | `voluntary-consensus-standard` | `conformance` | `reviewed-analytical-summary` / `direct-licensed-primary` |
 | `EXTREQ-BF5CBCFC5EA003E3` | Annex A.3 / 7009-ASR-005 | Provide means to inhibit execution of an individual safety-exempt function. | `mandatory-normative` / `positive-duty` | `voluntary-consensus-standard` | `conformance` | `reviewed-analytical-summary` / `direct-licensed-primary` |
 | `EXTREQ-BFAD5E43CCBB6BB8` | 9.4(b) | Preserve predictability and temporal predictability as baseline properties. | `mandatory-normative` / `positive-duty` | `voluntary-consensus-standard` | `conformance` | `reviewed-analytical-summary` / `direct-licensed-primary` |
-| `EXTREQ-C2FC30A1E260F4C1` | 8.3 DIOP1-3 | Monitor behaviour, detect and diagnose anomalies, calculate criticality and confidence, and report diagnostic results. | `mandatory-normative` / `positive-duty` | `voluntary-consensus-standard` | `conformance` | `reviewed-analytical-summary` / `direct-licensed-primary` |
 | `EXTREQ-C64032FC58E84CBA` | Annex A.3 / 7009-ASR-011 | Provide means to inhibit specified function execution when no authorization to execute is available. | `mandatory-normative` / `positive-duty` | `voluntary-consensus-standard` | `conformance` | `reviewed-analytical-summary` / `direct-licensed-primary` |
 | `EXTREQ-C6A0F7F3A2C5F240` | 6.2 | Default non-safety-critical systems to safety-related until robust evidence supports another classification. | `mandatory-normative` / `positive-duty` | `voluntary-consensus-standard` | `conformance` | `reviewed-analytical-summary` / `direct-licensed-primary` |
 | `EXTREQ-CDEE090055D9C039` | 8.3 DIOP7 | Report incidents, responses, modifications and the resulting extent of safety. | `mandatory-normative` / `positive-duty` | `voluntary-consensus-standard` | `conformance` | `reviewed-analytical-summary` / `direct-licensed-primary` |

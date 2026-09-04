@@ -68,14 +68,14 @@ def main():
     assert isinstance(ledger["entries"], list)
     ids = [entry["requirement_id"] for entry in ledger["entries"]]
     assert len(ids) == len(set(ids))
-    assert len(ids) == 909
+    assert len(ids) == 905
 
     backlog_schema = json.loads((REQ / "reextraction-backlog.schema.json").read_text(encoding="utf-8"))
     backlog = json.loads((REQ / "reextraction-backlog.json").read_text(encoding="utf-8"))
     assert backlog_schema["properties"]["schema_version"]["const"] == "1.0"
     backlog_ids = [entry["current_requirement_id"] for entry in backlog["entries"]]
-    assert len(backlog_ids) == len(set(backlog_ids)) == 4
-    assert sum(entry["external_source_id"] == "IEEE-7009" for entry in backlog["entries"]) == 4
+    assert len(backlog_ids) == len(set(backlog_ids)) == 0
+    assert sum(entry["external_source_id"] == "IEEE-7009" for entry in backlog["entries"]) == 0
     assert sum(entry["external_source_id"] == "NIST-AI-600-1" for entry in backlog["entries"]) == 0
     assert sum(entry["external_source_id"] == "CYCLONEDX-SPEC" for entry in backlog["entries"]) == 0
     assert sum(entry["external_source_id"] == "IMDA-AGENTIC-AI-MGF" for entry in backlog["entries"]) == 0
