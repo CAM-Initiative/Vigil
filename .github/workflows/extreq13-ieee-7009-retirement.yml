@@ -33,6 +33,7 @@ jobs:
           p=Path("vigil/tests/test_external_requirement_metadata.py");t=p.read_text()
           t,n=re.subn(r'assert len\(ids\) == \d+','assert len(ids) == 905',t,count=1);assert n==1
           t=t.replace('assert len(backlog_ids) == len(set(backlog_ids)) == 4','assert len(backlog_ids) == len(set(backlog_ids)) == 0')
+          t=t.replace('assert sum(entry["external_source_id"] == "IEEE-7009" for entry in backlog["entries"]) == 4','assert sum(entry["external_source_id"] == "IEEE-7009" for entry in backlog["entries"]) == 0')
           p.write_text(t)
 
           p=Path("vigil/tests/test_external_requirement_fidelity.py");t=p.read_text()
