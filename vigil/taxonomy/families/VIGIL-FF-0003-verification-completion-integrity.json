@@ -13,7 +13,7 @@
     "name": "Verification & Completion Integrity Failures",
     "status": "draft",
     "abstraction": "family",
-    "version": "0.1.2",
+    "version": "0.1.3",
     "plain_english": "The system says work is done, correct, verified, or reliable enough for use when the required completion condition, check, or epistemic assurance threshold has not actually been satisfied.",
     "definition": "Failures in which completion, success, correctness, verification, readiness, or epistemic fitness for reliance is asserted, reused, or propagated inconsistently with the externally relevant completion condition, verification scope, checked state, post-verification output state, or assurance threshold required by the downstream task.",
     "invariant": "A completion, verification, correctness, or reliance-fitness claim must remain bound to the condition that was actually satisfied, the scope that was actually checked, the state that was actually verified, and the epistemic assurance threshold required by the downstream use.",
@@ -39,7 +39,8 @@
       "VIGIL-FC-000018",
       "VIGIL-FC-000019",
       "VIGIL-FC-000020",
-      "VIGIL-FC-000062"
+      "VIGIL-FC-000062",
+      "VIGIL-FC-000063"
     ],
     "allowed_class_codes": [
       "VERIFICATION_OMISSION",
@@ -47,7 +48,8 @@
       "COMPLETION_CONDITION_MISMATCH",
       "POST_VERIFICATION_MUTATION",
       "STALE_VERIFICATION_REUSE",
-      "EPISTEMIC_RELIANCE_MISCALIBRATION"
+      "EPISTEMIC_RELIANCE_MISCALIBRATION",
+      "ADVERSARIAL_EVIDENCE_POISONING_ACCEPTANCE"
     ]
   },
   "classes": [
@@ -290,6 +292,43 @@
         "VIGIL.FF.VERIFICATION_COMPLETION.EPISTEMIC_RELIANCE_MISCALIBRATION",
         "high-reliance epistemic mismatch",
         "task-fidelity epistemic miscalibration"
+      ]
+    },
+    {
+      "class_id": "VIGIL-FC-000063",
+      "class_code": "ADVERSARIAL_EVIDENCE_POISONING_ACCEPTANCE",
+      "family_id": "VIGIL-FF-0003",
+      "name": "Adversarial Evidence-Poisoning Acceptance",
+      "status": "draft",
+      "abstraction": "class",
+      "plain_english": "The system accepts deliberately planted or manipulated information as usable evidence without adequately recognising or discounting the compromised trust state.",
+      "definition": "A failure in which adversarially created, planted, altered, coordinated, or strategically positioned information enters a retrieval, evidence, search, synthesis, or decision-support pathway and is incorporated into a factual, evaluative, or reliance-bearing output without proportionate source-trust assessment, corroboration, contradiction testing, independence assessment, or adversarial-risk handling.",
+      "recognition": {
+        "required_conditions": [
+          "Information is deliberately created, planted, altered, coordinated, or strategically positioned to distort downstream interpretation, factual synthesis, confidence, ranking, or decision support.",
+          "The material enters a retrieval, evidence, search, synthesis, or decision-support pathway used by an AI system or AI-mediated workflow.",
+          "The material's adversarial, compromised, derivative, circular, or otherwise degraded trust state is not adequately detected, represented, discounted, or contained.",
+          "The system materially treats the compromised material as evidentiary support for a factual, evaluative, or reliance-bearing output.",
+          "That acceptance materially affects or creates a material risk to factual accuracy, confidence, reputation, public information, decision-making, institutional trust, or another reliance-bearing outcome."
+        ]
+      },
+      "exclusions": [
+        "Ordinary factual error where there is no evidence that information was deliberately manipulated or strategically planted to distort downstream use.",
+        "Satire, fiction, parody, role-play, or clearly labelled synthetic material that is not presented or consumed as factual evidence.",
+        "Controversial, partisan, disputed, or low-quality material merely because its claims are contested; adversarial positioning or manipulation must be evidenced.",
+        "Adversarial material is detected, appropriately labelled, discounted, corroborated, or excluded before it materially influences the resulting output.",
+        "The primary issue is that low-assurance material is used in a higher-reliance context without an adversarial information-manipulation mechanism; use Epistemic Reliance Miscalibration.",
+        "The failure is that content is obeyed as instruction authority rather than treated as factual evidence; use Source-Authority Confusion where applicable."
+      ],
+      "examples": [
+        "A fabricated web article is deliberately planted so AI search systems will retrieve it, and the systems repeat the false claim as factual because they do not adequately assess source trust, contradiction, independence, or corroboration.",
+        "A coordinated set of derivative pages is seeded to create the appearance of independent corroboration, and an AI synthesis system treats citation count or repetition as evidentiary strength.",
+        "An attacker manipulates a retrievable knowledge environment to damage a target's reputation, and a model converts the poisoned material into an authoritative-looking factual answer without recognising the compromised trust channel."
+      ],
+      "aliases": [
+        "VIGIL.FF.VERIFICATION_COMPLETION.ADVERSARIAL_EVIDENCE_POISONING_ACCEPTANCE",
+        "adversarial factual-source poisoning acceptance",
+        "trust-channel evidence poisoning"
       ]
     }
   ]
