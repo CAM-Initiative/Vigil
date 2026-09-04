@@ -1,4 +1,4 @@
-name: EXTREQ-12 IEEE 7009 legacy metadata closure
+name: EXTREQ-12 IEEE 7009 legacy metadata enrichment
 
 on:
   push:
@@ -61,8 +61,16 @@ jobs:
 
           ledger = json.loads((REQ/"metadata-review.json").read_text())
           review = {e["requirement_id"]: e for e in ledger["entries"]}
+          affected = {
+              "timing_or_frequency", "required_artefacts", "evidence_expectation",
+              "verification_method", "exceptions_or_qualifications",
+          }
           for rid in TARGETS:
-              assert all(review[rid]["field_status"][f] == "populated-reviewed" for f in FIELDS)
+              s = review[rid]["field_status"]
+              assert s["applicable_actor"] == "populated-reviewed"
+              assert s["governed_object"] == "populated-reviewed"
+              assert s["applicability_conditions"] == "populated-reviewed"
+              assert all(s[f] == "review-required" for f in affected)
 
           backlog = json.loads((REQ/"reextraction-backlog.json").read_text())
           ieee = [e for e in backlog["entries"] if e["external_source_id"] == "IEEE-7009"]
@@ -102,7 +110,7 @@ jobs:
 
           Timing, required artefacts, evidence expectations, verification methods and qualifications are now populated for all four aggregates from direct primary-text review. Actor, governed object and applicability were already source-reviewed.
 
-          IEEE 7009 therefore becomes fully metadata-reviewed at the field level. The four semantic decomposition findings remain in the re-extraction backlog because metadata completeness does not cure an identity-granularity defect.
+          Source-supported provisional values are now present for the five affected metadata dimensions on all four aggregates. Under the VIGIL fidelity contract, those dimensions remain formally review-required while the re-extraction defect is open. The four semantic decomposition findings therefore remain visible in both the metadata ledger and the re-extraction backlog.
 
           ## Fidelity disposition
 
@@ -135,9 +143,9 @@ jobs:
           d = json.loads(p.read_text())
           s = d.get("summary", d)
           print(s)
-          assert s["metadata_complete"] == 909
-          assert s["review_required_records"] == 81
-          assert s["review_required_fields"] == 648
+          assert s["metadata_complete"] == 905
+          assert s["review_required_records"] == 85
+          assert s["review_required_fields"] == 668
           assert s["reextraction_backlog_entries"] == 4
           PY
 
@@ -146,12 +154,12 @@ jobs:
           rm -f vigil/scripts/extreq12_ieee_7009_legacy_metadata.py
           rm -f .github/workflows/extreq12-ieee-7009-legacy-metadata.yml
 
-      - name: Commit validated IEEE 7009 metadata closure
+      - name: Commit validated IEEE 7009 metadata enrichment
         run: |
           set -e
           git config user.name "CAM-Initiative"
           git config user.email "aeon.tier@protonmail.com"
           git add -A
           git diff --cached --check
-          git commit -m "EXTREQ-12: close IEEE 7009 legacy metadata"
+          git commit -m "EXTREQ-12: enrich IEEE 7009 legacy metadata"
           git push origin HEAD:agent/extreq-05-ieee-7014-1-fidelity-review
