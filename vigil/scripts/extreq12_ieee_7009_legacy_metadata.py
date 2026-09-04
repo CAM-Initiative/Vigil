@@ -115,7 +115,6 @@ for rid, spec in TARGETS.items():
     r = by_id[rid]
     for field, value in spec.items():
         r[field] = list(value)
-    r["source_review_date"] = DATE
     limitations = list(r.get("review_limitations", []))
     note = "Legacy aggregate identity remains active for stability; field-level metadata is now complete, while semantic decomposition remains represented by linked atomic successor records and the explicit re-extraction backlog."
     if note not in limitations:
