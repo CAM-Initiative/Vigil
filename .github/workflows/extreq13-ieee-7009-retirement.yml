@@ -34,12 +34,10 @@ jobs:
           t,n=re.subn(r'assert len\(ids\) == \d+','assert len(ids) == 905',t,count=1);assert n==1;p.write_text(t)
 
           p=Path("vigil/tests/test_external_requirement_fidelity.py");t=p.read_text()
-          t,n=re.subn(r'self\.assertEqual\(summary\["fidelity_assured_effective_complete_sources"\], \d+\)','self.assertEqual(summary["fidelity_assured_effective_complete_sources"], 17)',t,count=1);assert n==1
-          t,n=re.subn(r'self\.assertEqual\(summary\["effective_partial_due_fidelity"\], \d+\)','self.assertEqual(summary["effective_partial_due_fidelity"], 0)',t,count=1);assert n==1
-          if 'status[("IEEE-7009", "2024")]' not in t:
-              needle='        self.assertEqual(status[("IEEE-7007", "2021")], "assured")\n'
-              assert needle in t
-              t=t.replace(needle,needle+'        self.assertEqual(status[("IEEE-7009", "2024")], "assured")\n')
+          t=t.replace('self.assertEqual(summary["fidelity_assured_effective_complete_sources"], 16)','self.assertEqual(summary["fidelity_assured_effective_complete_sources"], 17)')
+          t=t.replace('self.assertGreaterEqual(summary["effective_partial_due_fidelity"], 1)','self.assertEqual(summary["effective_partial_due_fidelity"], 0)')
+          t=t.replace('self.assertTrue(any("effective downgrade" in warning for warning in warnings))','self.assertEqual(warnings, [])')
+          t=t.replace('self.assertEqual(status[("IEEE-7009", "2024")], "requires-reextraction")','self.assertEqual(status[("IEEE-7009", "2024")], "assured")')
           p.write_text(t)
           PY
 
