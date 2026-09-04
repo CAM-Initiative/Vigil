@@ -26,11 +26,18 @@ jobs:
       - name: Apply IEEE 7001 fidelity enrichment
         run: python vigil/scripts/extreq09_ieee_7001_fidelity.py
 
-      - name: Update fidelity regression contract
+      - name: Update regression contracts
         run: |
           python - <<'PY'
           import re
           from pathlib import Path
+
+          mp = Path("vigil/tests/test_external_requirement_metadata.py")
+          mtext = mp.read_text()
+          mtext, mn = re.subn(r'assert len\(ids\) == \d+', 'assert len(ids) == 881', mtext, count=1)
+          assert mn == 1
+          mp.write_text(mtext)
+
           p = Path("vigil/tests/test_external_requirement_fidelity.py")
           text = p.read_text()
           text, n = re.subn(
