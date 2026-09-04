@@ -1,0 +1,104 @@
+name: EXTREQ-11 IEEE 7007 execute
+on:
+  push:
+    branches: [agent/extreq-05-ieee-7014-1-fidelity-review]
+    paths: [.github/workflows/extreq11-ieee-7007-execute.yml]
+permissions:
+  contents: write
+jobs:
+  execute:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: agent/extreq-05-ieee-7014-1-fidelity-review
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.x'
+      - name: Apply IEEE 7007 fidelity review
+        run: python vigil/scripts/extreq11_ieee_7007_fidelity.py
+      - name: Update regression contracts
+        run: |
+          python - <<'PY'
+          import re
+          from pathlib import Path
+          p=Path("vigil/tests/test_external_requirement_metadata.py");t=p.read_text()
+          t,n=re.subn(r'assert len\(ids\) == \d+','assert len(ids) == 909',t,count=1);assert n==1;p.write_text(t)
+          p=Path("vigil/tests/test_external_requirement_fidelity.py");t=p.read_text()
+          t,n=re.subn(r'self\.assertEqual\(summary\["fidelity_assured_effective_complete_sources"\], \d+\)','self.assertEqual(summary["fidelity_assured_effective_complete_sources"], 16)',t,count=1);assert n==1
+          needle='        self.assertEqual(status[("IEEE-7010", "2020")], "assured")\n';assert needle in t
+          if 'status[("IEEE-7007", "2021")]' not in t:t=t.replace(needle,needle+'        self.assertEqual(status[("IEEE-7007", "2021")], "assured")\n')
+          p.write_text(t)
+          PY
+      - name: Add IEEE 7007 regression test
+        run: |
+          cat > vigil/tests/test_ieee_7007_fidelity.py <<'PY'
+          #!/usr/bin/env python3
+          import json
+          from pathlib import Path
+          ROOT=Path(__file__).resolve().parents[1];REQ=ROOT/"external_governance"/"requirements"
+          records=json.loads((REQ/"requirements"/"IEEE-7007"/"2021.json").read_text())
+          DIGEST="8689b98d77141330e380394ce7eef5961c9539227340949357fc860c74e683d7"
+          assert len(records)==10 and len({r["requirement_id"] for r in records})==10
+          assert all(r["requirement_posture"]=="definitional" for r in records)
+          assert all(r["source_review_date"]=="2026-09-04" for r in records)
+          assert all(r["interpretation_provenance"]["reviewed_source_digest"]==DIGEST for r in records)
+          assert all(not r["timing_or_frequency"] and not r["required_artefacts"] and not r["evidence_expectation"] and not r["verification_method"] for r in records)
+          ledger=json.loads((REQ/"metadata-review.json").read_text());by={e["requirement_id"]:e for e in ledger["entries"]}
+          for r in records:
+              s=by[r["requirement_id"]]["field_status"]
+              assert s["applicable_actor"]=="populated-reviewed" and s["governed_object"]=="populated-reviewed"
+              assert s["timing_or_frequency"]=="not-specified-by-source"
+              assert s["required_artefacts"]=="not-specified-by-source"
+              assert s["evidence_expectation"]=="not-specified-by-source"
+              assert s["verification_method"]=="not-specified-by-source"
+              assert s["applicability_conditions"]=="populated-reviewed"
+              assert s["exceptions_or_qualifications"]=="populated-reviewed"
+          fid=json.loads((REQ/"source-fidelity.json").read_text());f=next(e for e in fid["entries"] if e["external_source_id"]=="IEEE-7007" and e["source_version"]=="2021")
+          assert f["fidelity_status"]=="assured" and f["effective_extraction_status"]=="complete"
+          assert set(f["audited_requirement_ids"])=={r["requirement_id"] for r in records}
+          print("IEEE 7007 fidelity regression contract valid")
+          PY
+          python vigil/tests/test_ieee_7007_fidelity.py
+      - name: Write EXTREQ-11 audit note
+        run: |
+          cat > vigil/docs/audits/external-requirements/EXTREQ-11-IEEE-7007-FIDELITY-REVIEW.md <<'MD'
+          # EXTREQ-11 — IEEE 7007-2021 fidelity review
+          **Source:** IEEE Std 7007-2021  
+          **VIGIL source:** EXT-7E4B8ED73AA5  
+          **Review basis:** lawfully accessed licensed primary text  
+          **Review date:** 2026-09-04  
+          **Reviewed source SHA-256:** 8689b98d77141330e380394ce7eef5961c9539227340949357fc860c74e683d7
+
+          ## Disposition
+          Direct source review confirmed the 10 established definitional records as bounded governance-relevant coverage of the ERAS top-level concepts and four relevant ontology subdomains. All stable EXTREQ identities and definitional postures are preserved.
+
+          IEEE 7007 is primarily ontological. VIGIL therefore does not convert ontology concepts into unsupported operational timing, artefact, evidence or verification duties. Those reviewed fields are explicitly recorded as not specified by source.
+
+          ## Provenance
+          Source-supported applicability and qualifications are recorded for each definition, including jurisdictional/legal caveats where the standard itself supplies them. Licensed IEEE text is not stored in VIGIL and no human review or verification is claimed.
+          MD
+      - name: Regenerate and validate
+        run: |
+          set -e
+          PYTHONPATH=vigil/scripts python vigil/scripts/validate-external-requirement-metadata.py --write-report
+          PYTHONPATH=vigil/scripts python vigil/scripts/validate-external-requirement-fidelity.py
+          python vigil/scripts/manage-external-requirements.py build
+          python vigil/scripts/manage-external-requirements.py validate --check-generated
+          python vigil/tests/test_ieee_7007_fidelity.py
+          PYTHONPATH=vigil/scripts python vigil/tests/test_external_requirement_metadata.py
+          python vigil/tests/test_external_requirement_fidelity.py
+          python -m unittest vigil/tests/test_external_requirements.py vigil/tests/test_external_sources.py
+      - name: Remove one-off EXTREQ-11 machinery
+        run: |
+          rm -f vigil/scripts/extreq11_ieee_7007_fidelity.py .github/workflows/extreq11-ieee-7007-execute.yml
+      - name: Commit validated IEEE 7007 tranche
+        run: |
+          set -e
+          git config user.name "CAM-Initiative"
+          git config user.email "aeon.tier@protonmail.com"
+          git add -A
+          git diff --cached --check
+          git commit -m "EXTREQ-11: assure IEEE 7007 fidelity"
+          git push origin HEAD:agent/extreq-05-ieee-7014-1-fidelity-review
