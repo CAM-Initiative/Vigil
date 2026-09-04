@@ -113,6 +113,16 @@ records = [r for r in records if r["requirement_id"] not in RETIREMENTS]
 assert len(records) == 63
 assert not (set(RETIREMENTS) & {r["requirement_id"] for r in records})
 assert all_successors <= {r["requirement_id"] for r in records}
+
+# Remove reverse live-graph links to retired aggregate identities.
+for r in records:
+    related = list(r.get("related_external_requirements", []))
+    r["related_external_requirements"] = [rid for rid in related if rid not in RETIREMENTS]
+assert not any(
+    rid in RETIREMENTS
+    for r in records
+    for rid in r.get("related_external_requirements", [])
+)
 dump(SHARD, records)
 
 # Retired identities are no longer live metadata-review subjects.
