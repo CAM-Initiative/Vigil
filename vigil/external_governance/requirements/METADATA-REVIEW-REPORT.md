@@ -16,12 +16,12 @@
 |---|---:|---:|---:|---:|---:|
 | `applicable_actor` | 909 | 81 | 0 | 0 | 0 |
 | `governed_object` | 909 | 81 | 0 | 0 | 0 |
-| `timing_or_frequency` | 211 | 4 | 81 | 694 | 0 |
-| `required_artefacts` | 405 | 25 | 60 | 500 | 0 |
-| `evidence_expectation` | 439 | 26 | 59 | 466 | 0 |
-| `verification_method` | 301 | 1 | 84 | 604 | 0 |
+| `timing_or_frequency` | 211 | 8 | 77 | 694 | 0 |
+| `required_artefacts` | 405 | 29 | 56 | 500 | 0 |
+| `evidence_expectation` | 439 | 30 | 55 | 466 | 0 |
+| `verification_method` | 301 | 5 | 80 | 604 | 0 |
 | `applicability_conditions` | 808 | 26 | 55 | 101 | 0 |
-| `exceptions_or_qualifications` | 493 | 26 | 59 | 412 | 0 |
+| `exceptions_or_qualifications` | 493 | 30 | 55 | 412 | 0 |
 
 ## Source-level review backlog
 
