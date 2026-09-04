@@ -144,11 +144,19 @@ for rid in TARGETS:
         "Direct IEEE 7009-2024 primary-text review completed field-level metadata for this preserved legacy compound identity.",
         "The identity-level re-extraction finding remains open because linked source-native atomic records are the preferred independent assessment units."
     ]
+    affected = {
+        "timing_or_frequency", "required_artefacts", "evidence_expectation",
+        "verification_method", "exceptions_or_qualifications",
+    }
     e["field_status"] = {
-        f: ("populated-reviewed" if r[f] else "not-specified-by-source")
+        f: (
+            "review-required"
+            if f in affected
+            else ("populated-reviewed" if r[f] else "not-specified-by-source")
+        )
         for f in FIELDS
     }
-    assert all(v != "review-required" for v in e["field_status"].values())
+    assert all(e["field_status"][f] == "review-required" for f in affected)
 ledger["entries"] = sorted(review_by.values(), key=lambda e: e["requirement_id"])
 dump(LEDGER, ledger)
 
@@ -184,4 +192,4 @@ else:
     raise AssertionError("IEEE-7009 fidelity entry missing")
 dump(FIDELITY, fidelity)
 
-print("IEEE 7009 legacy metadata closure valid: four stable aggregate IDs preserved; 20 field decisions closed; four re-extraction flags retained.")
+print("IEEE 7009 legacy metadata enrichment valid: four stable aggregate IDs preserved; 20 source-supported provisional values added; affected field decisions remain review-required while four re-extraction flags remain open.")
