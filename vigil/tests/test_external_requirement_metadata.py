@@ -68,13 +68,14 @@ def main():
     assert isinstance(ledger["entries"], list)
     ids = [entry["requirement_id"] for entry in ledger["entries"]]
     assert len(ids) == len(set(ids))
-    assert len(ids) == 597
+    assert len(ids) == 905
 
     backlog_schema = json.loads((REQ / "reextraction-backlog.schema.json").read_text(encoding="utf-8"))
     backlog = json.loads((REQ / "reextraction-backlog.json").read_text(encoding="utf-8"))
     assert backlog_schema["properties"]["schema_version"]["const"] == "1.0"
     backlog_ids = [entry["current_requirement_id"] for entry in backlog["entries"]]
     assert len(backlog_ids) == len(set(backlog_ids)) == 0
+    assert sum(entry["external_source_id"] == "IEEE-7009" for entry in backlog["entries"]) == 0
     assert sum(entry["external_source_id"] == "NIST-AI-600-1" for entry in backlog["entries"]) == 0
     assert sum(entry["external_source_id"] == "CYCLONEDX-SPEC" for entry in backlog["entries"]) == 0
     assert sum(entry["external_source_id"] == "IMDA-AGENTIC-AI-MGF" for entry in backlog["entries"]) == 0
@@ -93,6 +94,19 @@ def main():
     assert all(record["verification_method"] for record in spdx)
     assert "energy consumption" in spdx_by_key["ai-package-governance-properties"]["requirement_summary"]
     assert "exactly one" in spdx_by_key["declared-license-relationship"]["verification_method"][0]
+
+    ieee7000 = json.loads((REQ / "requirements" / "IEEE-7000" / "2021.json").read_text(encoding="utf-8"))
+    ieee7000_by_id = {record["requirement_id"]: record for record in ieee7000}
+    assert len(ieee7000) == 59
+    assert all(record["source_review_date"] == "2026-09-03" for record in ieee7000)
+    assert all(record["interpretation_provenance"]["reviewed_source_digest"] == "559bdf6648f0d5f70529fd71848f068c92718ca9aa577a7de7abd8dc060b8ef6" for record in ieee7000)
+    assert ieee7000_by_id["EXTREQ-9F9F312D1F384F0A"]["clause_or_control"] == "7.3(h)(3)"
+    assert ieee7000_by_id["EXTREQ-6B251B00C962BBBC"]["clause_or_control"] == "8.3(e)"
+    assert ieee7000_by_id["EXTREQ-AA32F6158A98B7E1"]["clause_or_control"] == "8.3(f)"
+    assert ieee7000_by_id["EXTREQ-C4216CD9308BCAE5"]["clause_or_control"] == "8.3(g)"
+    assert "approval" not in ieee7000_by_id["EXTREQ-C3E5B151DB2EE358"]["requirement_summary"].lower()
+    review_by_id = {entry["requirement_id"]: entry for entry in ledger["entries"]}
+    assert all(review_by_id[record["requirement_id"]]["field_status"][field] != "review-required" for record in ieee7000 for field in FIELDS)
 
     nist_bias = json.loads((REQ / "requirements" / "NIST-SP-1270" / "2022.json").read_text(encoding="utf-8"))
     bias_by_key = {record["identity_key"]: record for record in nist_bias}
