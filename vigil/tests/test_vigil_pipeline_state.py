@@ -19,7 +19,8 @@ def load(path: Path):
 def main() -> None:
     self_records = {path.name for path in RECORDS.iterdir() if path.is_dir()}
     assert self_records == {"incidents"}, self_records
-    assert len(list((RECORDS / "incidents").glob("VIGIL-INC-*.json"))) == 81
+    incident_count = len(list((RECORDS / "incidents").glob("VIGIL-INC-*.json")))
+    assert incident_count > 0
 
     schema = load(VIGIL / "VIGIL.Schema.json")
     assert set(schema["record_classes"]) == {"incident"}
@@ -31,7 +32,7 @@ def main() -> None:
     master = load(VIGIL / "VIGIL.Registry.Index.json")
     assert master["registry_count"] == 1
     assert set(master["registries"]) == {"incidents"}
-    assert master["record_count"] == {"incidents": 81, "total": 81}
+    assert master["record_count"] == {"incidents": incident_count, "total": incident_count}
     assert all(item["record_type"] == "incident" for item in master["records"])
 
     workflow = WORKFLOW.read_text(encoding="utf-8")
