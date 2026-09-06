@@ -6,28 +6,29 @@
   "record_identity": {
     "record_id": "VIGIL-INC-000091",
     "record_type": "incident",
-    "title": "OpenAI routing error caused elevated errors across ChatGPT and Codex on 3 September 2026",
+    "title": "Concurrent ChatGPT, Claude and Grok service outages on 3 September 2026",
     "created": "2026-09-06",
     "updated": "2026-09-06",
-    "version": "0.1.0"
+    "version": "0.1.1"
   },
   "incident_identity": {
-    "historical_event_name": "3 September 2026 ChatGPT and Codex elevated-errors outage",
+    "historical_event_name": "3 September 2026 concurrent ChatGPT, Claude and Grok service outages",
     "occurred_from": "2026-09-03",
     "occurred_to": "2026-09-03",
     "date_precision": "exact-day",
-    "date_basis": "OpenAI Status records the incident on 3 September 2026, with investigation beginning at 14:43 UTC, mitigation by 15:17 UTC and resolution at 16:55 UTC; an OpenAI spokesperson separately attributed user unavailability beginning around 07:43 PT to a routing error."
+    "date_basis": "OpenAI, Anthropic and xAI each reported service-availability incidents on 3 September 2026. OpenAI reported elevated errors across ChatGPT and Codex; Anthropic reported a partial Claude outage affecting Claude.ai, Claude Code, Claude Cowork and the Claude API; xAI reported a Grok models outage across multiple surfaces. The incidents overlapped in time, but the reviewed evidence does not establish a single shared technical cause."
   },
-  "summary": "OpenAI reported elevated errors across ChatGPT and Codex on 3 September 2026. The provider status page listed 15 affected ChatGPT components and four Codex components, and the incident was resolved after roughly two hours. OpenAI separately told The Register that a routing error made ChatGPT and Codex unavailable for some users across platforms. The outage overlapped with availability incidents at Anthropic and xAI, but no common cause is established and this Incident records only the OpenAI occurrence.",
+  "summary": "On 3 September 2026, ChatGPT/Codex, Claude and Grok experienced overlapping service-availability incidents. OpenAI reported elevated errors across ChatGPT and Codex and separately attributed its disruption to a routing error. Anthropic reported a partial Claude outage caused by an infrastructure issue, affecting Claude.ai, Claude Code, Claude Cowork and the Claude API. xAI reported a Grok models outage across multiple surfaces and later attributed its disruption to an outage at its Memphis compute centre. The temporal overlap is material ecosystem evidence, but no reviewed source establishes that the three providers shared one technical cause.",
   "vigil_assessment": {
-    "factual_basis": "OpenAI's public status record establishes a resolved degraded-performance incident affecting ChatGPT and Codex on 3 September 2026, including 15 ChatGPT components and four Codex components. OpenAI stated to The Register that a routing error beginning around 07:43 PT made ChatGPT and Codex unavailable for some users across platforms and that a solution was implemented around 08:17 PT. Independent reporting documented overlapping Claude and Grok outages during the same period but also reported that Cloudflare and the major public-cloud status pages did not show a relevant shared disruption. No evidence presently establishes that the provider outages shared one technical cause.",
-    "governance_interpretation": "This is a bounded service-availability occurrence with a provider-attributed routing mechanism. It is relevant to operational resilience, dependency management and recovery controls, but the current public evidence does not establish a failure mechanism that can be mapped defensibly to a current VIGIL Failure Class without extending beyond the occurrence-level facts. It therefore remains unclassified.",
-    "significance_to_cam": "The occurrence illustrates operational dependence on frontier AI services and the need for resilience, fallback and availability controls where ChatGPT or Codex are embedded in organisational workflows. The contemporaneous but causally unresolved outages at other providers are ecosystem context rather than evidence of a shared dependency failure.",
+    "factual_basis": "OpenAI's public status record establishes degraded performance affecting ChatGPT and Codex on 3 September 2026, and an OpenAI spokesperson separately attributed its disruption to a routing error. Anthropic confirmed a roughly three-hour partial Claude outage affecting Claude.ai, Claude Code, Claude Cowork and the Claude API and attributed its occurrence to an infrastructure issue. xAI's own status pages record a Grok models outage beginning at 13:30 UTC across multiple service surfaces, with traffic restored roughly three and a half hours later; xAI later stated that the disruption followed an outage at its Memphis compute centre. Independent reporting documents that the three provider incidents overlapped in time. Cloudflare and the major public-cloud status pages did not report a relevant shared disruption, and no reviewed evidence establishes one common technical cause across OpenAI, Anthropic and xAI.",
+    "governance_interpretation": "This Incident records the observable ecosystem-level occurrence of three major frontier-AI service providers experiencing overlapping availability failures on the same day. Provider-specific mechanisms differ in the available evidence: OpenAI attributed its disruption to a routing error, Anthropic to an infrastructure issue, and xAI to an outage at its Memphis compute centre. The coincidence is relevant to resilience, concentration, dependency and correlated-failure analysis, but VIGIL does not infer a shared cloud, network, control-plane or infrastructure dependency without evidence. The occurrence therefore remains unclassified against the current Failure Taxonomy.",
+    "significance_to_cam": "The occurrence demonstrates that simultaneous or near-simultaneous loss of access to multiple frontier AI providers can create ecosystem-level resilience risk even where the individual provider failures have different or unresolved causes. It is relevant to organisational fallback design, provider concentration, correlated-outage monitoring and sovereign assurance, while preserving the distinction between temporal correlation and proven common causation.",
     "assessment_boundaries": [
-      "The number of affected users, organisations and transactions is not publicly quantified by OpenAI.",
-      "The provider's public status page does not publish a full root-cause analysis beyond the routing-error statement reported by The Register.",
-      "The overlapping Anthropic and xAI outages are not treated as one incident and no shared cloud, network or control-plane cause is inferred.",
-      "No data-loss, confidentiality, integrity, safety or persistent downstream harm is established by the reviewed sources."
+      "The reviewed evidence establishes overlapping availability incidents at OpenAI, Anthropic and xAI but does not establish that they shared one technical cause.",
+      "OpenAI attributed its disruption to a routing error; Anthropic described an infrastructure issue; xAI later attributed its disruption to an outage at its Memphis compute centre.",
+      "Cloudflare and the major public-cloud status pages did not report a relevant shared disruption during the reviewed window.",
+      "Affected-user counts, aggregate transaction loss and downstream organisational impacts across the three providers are not publicly quantified.",
+      "No data-loss, confidentiality, integrity, safety or persistent downstream harm common to all three providers is established."
     ]
   },
   "source_records": [
@@ -41,14 +42,18 @@
       "source_platform": "OpenAI Status",
       "source_residence": "external",
       "source_role": "incident-evidence",
-      "evidence_modality": ["text"],
+      "evidence_modality": [
+        "text"
+      ],
       "evidence_status": "first-party-reported",
       "evidence_status_basis": "OpenAI's own status page directly confirms the degraded-performance occurrence, affected ChatGPT and Codex components, mitigation and resolution.",
       "primary_artefact_access": {
         "access_method": "direct public status-page review",
         "access_status": "directly reviewed",
         "direct_primary_artefact_review": true,
-        "limitations": ["The status page does not quantify the affected population or provide a complete root-cause analysis."],
+        "limitations": [
+          "The status page does not quantify the affected population or provide a complete root-cause analysis."
+        ],
         "reviewing_system": "OpenAI ChatGPT — GPT-5.6 Sol"
       },
       "incident_source_order": 1,
@@ -69,74 +74,193 @@
       "source_platform": "The Register",
       "source_residence": "external",
       "source_role": "incident-evidence",
-      "evidence_modality": ["text"],
+      "evidence_modality": [
+        "text"
+      ],
       "evidence_status": "independent-reporting",
       "evidence_status_basis": "The Register quotes an OpenAI spokesperson attributing the OpenAI outage to a routing error and independently documents contemporaneous provider outages while preserving uncertainty about any shared cause.",
       "primary_artefact_access": {
         "access_method": "direct public article review",
         "access_status": "directly reviewed",
         "direct_primary_artefact_review": true,
-        "limitations": ["The article is independent reporting rather than a provider postmortem and does not establish a shared cause across providers."],
+        "limitations": [
+          "The article is independent reporting rather than a provider postmortem and does not establish a shared cause across providers."
+        ],
         "reviewing_system": "OpenAI ChatGPT — GPT-5.6 Sol"
       },
       "incident_source_order": 2,
-      "interpretive_reliance": "Used for the provider routing-error statement and to bound the simultaneous-outage context without inferring common causation.",
-      "relevance_note": "Independent corroboration and provider-response context.",
+      "interpretive_reliance": "Used to reconcile the timing and provider statements across the three overlapping outages while preserving causal uncertainty.",
+      "relevance_note": "Independent cross-provider reconciliation of the concurrent outage event.",
       "retrieved_date": "2026-09-06",
-      "source_context": "The Register reported an OpenAI spokesperson's routing-error explanation and separate Anthropic and xAI outages occurring in the same window.",
-      "system_or_product": "ChatGPT and Codex",
+      "source_context": "The Register documented overlapping availability incidents affecting OpenAI, Anthropic and xAI, including provider statements on OpenAI's routing error, Anthropic's infrastructure issue and xAI's later Memphis compute-centre outage, while noting that no shared provider failure had been established.",
+      "system_or_product": "ChatGPT, Codex, Claude and Grok",
+      "model_or_algorithm": "not established"
+    },
+    {
+      "source_title": "Models outage",
+      "author_or_publisher": "xAI",
+      "source_date": "2026-09-03",
+      "source_url": "https://status.x.ai/grok-com/INC25664c15",
+      "source_url_status": "available",
+      "source_type": "platform status report",
+      "source_platform": "xAI Status",
+      "source_residence": "external",
+      "source_role": "incident-evidence",
+      "evidence_modality": [
+        "text"
+      ],
+      "evidence_status": "first-party-reported",
+      "evidence_status_basis": "xAI's own status page directly confirms a Grok models outage beginning on 3 September 2026.",
+      "primary_artefact_access": {
+        "access_method": "direct public status-page review",
+        "access_status": "directly reviewed",
+        "direct_primary_artefact_review": true,
+        "limitations": [
+          "The status page confirms the outage but does not itself provide the full causal chain; xAI's later Memphis compute-centre attribution is preserved through independent reporting of the provider statement."
+        ],
+        "reviewing_system": "OpenAI ChatGPT — GPT-5.6 Sol"
+      },
+      "incident_source_order": 3,
+      "interpretive_reliance": "Primary evidence for the xAI/Grok availability occurrence and affected service surface.",
+      "relevance_note": "Provider-confirmed Grok outage.",
+      "retrieved_date": "2026-09-06",
+      "source_context": "xAI reported a Grok models outage beginning at 13:30 UTC on 3 September 2026, with multiple xAI status surfaces showing the same outage window.",
+      "system_or_product": "Grok",
       "model_or_algorithm": "not established"
     }
   ],
   "preferred_evidence": {
     "source_url": "https://status.openai.com/incidents/01M1KWEDH417T2CF44YYHZDFCR",
-    "selection_basis": "OpenAI's status record is the provider-controlled primary artefact for the occurrence, affected components and resolution; The Register is retained for the routing-error statement and bounded ecosystem context.",
+    "selection_basis": "OpenAI's status record remains the provider-controlled primary artefact for the OpenAI component of the event; xAI's status record is retained as first-party evidence for the Grok component; The Register is retained for cross-provider timing, Anthropic's provider statement, xAI's later Memphis compute-centre attribution and bounded reconciliation of the overlapping occurrence.",
     "selected_on": "2026-09-06"
   },
   "external_incident_references": [],
   "system_context": {
-    "platform_or_vendor": "OpenAI",
-    "product_or_service": "ChatGPT",
+    "platform_or_vendor": "OpenAI, Anthropic and xAI",
+    "product_or_service": "ChatGPT, Codex, Claude and Grok",
     "specific_model_or_runtime": "not established",
-    "interface_surface": ["ChatGPT", "Codex", "web", "mobile", "provider service routing"],
-    "affected_population": "Some ChatGPT and Codex users across platforms; provider did not publish a user count.",
-    "deployment_context": "Public OpenAI hosted services.",
-    "system_type": "frontier AI platform / coding-agent and conversational-AI service availability",
+    "interface_surface": [
+      "ChatGPT",
+      "Codex",
+      "Claude.ai",
+      "Claude Code",
+      "Claude Cowork",
+      "Claude API",
+      "Grok Web",
+      "Grok in X",
+      "Grok mobile",
+      "xAI API",
+      "hosted AI service access"
+    ],
+    "affected_population": "Users of OpenAI, Anthropic and xAI hosted AI services experienced overlapping availability degradation or outage during the 3 September 2026 event window; aggregate affected-user counts were not published.",
+    "deployment_context": "Public hosted frontier-AI services operated independently by OpenAI, Anthropic and xAI.",
+    "system_type": "multi-provider frontier AI service availability occurrence",
     "interaction_mode": "hosted AI service access and task execution",
     "embodiment_status": "non-embodied digital system",
-    "evidence_scope": "provider-confirmed",
-    "evidenced_vendors": ["OpenAI"],
-    "primary_evidenced_vendors": ["OpenAI"],
-    "vendor_cluster": [],
-    "evidenced_products_or_services": ["ChatGPT", "Codex"],
-    "evidenced_models_or_runtimes": ["not established"],
+    "evidence_scope": "mixed provider-confirmed and independently reconciled",
+    "evidenced_vendors": [
+      "OpenAI",
+      "Anthropic",
+      "xAI"
+    ],
+    "primary_evidenced_vendors": [
+      "OpenAI",
+      "Anthropic",
+      "xAI"
+    ],
+    "vendor_cluster": [
+      "OpenAI",
+      "Anthropic",
+      "xAI"
+    ],
+    "evidenced_products_or_services": [
+      "ChatGPT",
+      "Codex",
+      "Claude.ai",
+      "Claude Code",
+      "Claude Cowork",
+      "Claude API",
+      "Grok"
+    ],
+    "evidenced_models_or_runtimes": [
+      "not established"
+    ],
     "evidenced_systems": [
       {
         "source_title": "Elevated errors across ChatGPT and Codex",
         "source_url": "https://status.openai.com/incidents/01M1KWEDH417T2CF44YYHZDFCR",
         "evidence_source_platform": "OpenAI Status",
         "projection_basis": "provider-confirmed status record",
-        "providers_or_vendors": ["OpenAI"],
-        "products_or_services": ["ChatGPT", "Codex"],
-        "models_or_runtimes": ["not established"],
-        "deployment_context": "Public hosted services affected by elevated errors on 3 September 2026."
+        "providers_or_vendors": [
+          "OpenAI"
+        ],
+        "products_or_services": [
+          "ChatGPT",
+          "Codex"
+        ],
+        "models_or_runtimes": [
+          "not established"
+        ],
+        "deployment_context": "Public hosted OpenAI services affected by elevated errors on 3 September 2026."
+      },
+      {
+        "source_title": "ChatGPT, Claude, and Grok all had outages at the same time",
+        "source_url": "https://www.theregister.com/2026/09/03/chatgpt_claude_and_grok_all_had_outages_at_the_same_time/",
+        "evidence_source_platform": "The Register",
+        "projection_basis": "independent reporting quoting Anthropic and reconciling provider outage timing",
+        "providers_or_vendors": [
+          "Anthropic"
+        ],
+        "products_or_services": [
+          "Claude.ai",
+          "Claude Code",
+          "Claude Cowork",
+          "Claude API"
+        ],
+        "models_or_runtimes": [
+          "Sonnet 5",
+          "other models not fully specified"
+        ],
+        "deployment_context": "Anthropic-confirmed partial hosted-service outage on 3 September 2026 attributed by the provider to an infrastructure issue."
+      },
+      {
+        "source_title": "Models outage",
+        "source_url": "https://status.x.ai/grok-com/INC25664c15",
+        "evidence_source_platform": "xAI Status",
+        "projection_basis": "provider-confirmed status record",
+        "providers_or_vendors": [
+          "xAI"
+        ],
+        "products_or_services": [
+          "Grok"
+        ],
+        "models_or_runtimes": [
+          "not established"
+        ],
+        "deployment_context": "Grok models outage on 3 September 2026 across multiple xAI service surfaces; later provider reporting attributed the disruption to an outage at the Memphis compute centre."
       }
     ],
-    "model_or_product": "ChatGPT and Codex",
-    "user_role": "service user, developer or organisation relying on OpenAI hosted services"
+    "model_or_product": "ChatGPT, Codex, Claude and Grok",
+    "user_role": "service user, developer or organisation relying on hosted frontier AI services"
   },
   "jurisdictional_context": {
     "primary_jurisdiction": "not established",
     "secondary_jurisdictions": [],
-    "cross_border_relevance": "yes — OpenAI reported a hosted-service incident affecting users across platforms without limiting the occurrence to one jurisdiction",
-    "public_interest_relevance": "medium",
-    "sector": "AI platform / software service",
-    "regulatory_surface": ["operational resilience", "service availability", "dependency management"]
+    "cross_border_relevance": "yes — the event affected hosted AI services operated by three major providers without evidence limiting the occurrence to one jurisdiction",
+    "public_interest_relevance": "high",
+    "sector": "frontier AI platforms / software services",
+    "regulatory_surface": [
+      "operational resilience",
+      "service availability",
+      "dependency management",
+      "provider concentration",
+      "correlated failure"
+    ]
   },
   "taxonomy_classification": {
     "taxonomy_version": "0.3.0-draft",
     "classification_status": "unclassified",
-    "classification_basis": "The occurrence establishes a routing-related availability failure but the reviewed public evidence does not establish a current VIGIL Failure Class mechanism with sufficient specificity. Availability impact alone is not used to infer taxonomy membership.",
+    "classification_basis": "The occurrence establishes concurrent service-availability failures across three providers, with provider-specific explanations, but the reviewed evidence does not establish a single governed mechanism that maps defensibly to a current VIGIL Failure Class. Temporal correlation and ecosystem impact are not used to infer taxonomy membership.",
     "primary_classification": null,
     "secondary_classifications": [],
     "classification_review_provenance": {
@@ -144,7 +268,7 @@
       "review_date": "2026-09-06",
       "reviewer": "OpenAI ChatGPT / GPT-5.6 Sol under human-directed VIGIL governance",
       "review_status": "incident unclassified — evidence does not establish a governed taxonomy mechanism",
-      "authority_boundary": "Provider-confirmed service failure does not by itself establish taxonomy membership or a shared ecosystem cause."
+      "authority_boundary": "Concurrent provider failures do not establish a shared taxonomy mechanism or common dependency without occurrence-level evidence."
     }
   },
   "linked_records": {
@@ -159,14 +283,14 @@
   },
   "legacy_provenance": [],
   "diagnostic_provenance": {
-    "method": "scheduled ecosystem intake with provider-status confirmation, independent-reporting reconciliation and causal-boundary restraint",
+    "method": "scheduled ecosystem intake followed by human-directed scope amendment using provider-status evidence, independent cross-provider reconciliation and causal-boundary restraint",
     "diagnostic_date": "2026-09-06",
-    "human_role": "standing ingestion contract author and governance-direction authority",
+    "human_role": "governance-direction authority; directed amendment from OpenAI-only framing to the evidenced concurrent three-provider occurrence",
     "ai_role": "source discovery, duplicate reconciliation, factual bounding, severity assessment, taxonomy boundary analysis and repository implementation",
     "ai_platform": "OpenAI ChatGPT",
     "ai_model": "GPT-5.6 Sol",
     "review_status": "automated bounded ingestion under human-authored standing contract",
-    "authority_boundary": "The AI collaborator may admit a provider-confirmed availability occurrence but may not infer a common cause across contemporaneous provider outages or assign taxonomy classes without mechanism evidence."
+    "authority_boundary": "The record may represent the observable concurrent multi-provider occurrence, but neither the AI collaborator nor the human-directed amendment infers a shared cause absent evidence."
   },
   "interpretive_provenance": {
     "review_history": [
@@ -188,37 +312,56 @@
           "No common cause is established for the overlapping Anthropic and xAI outages."
         ],
         "review_outcome": "Admitted as a new canonical Incident with S3 severity and unclassified status; contemporaneous provider outages retained only as bounded context."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-09-06-INC-000091-SCOPE-AMENDMENT",
+        "reviewer_type": "AI analytical reviewer under human direction",
+        "reviewer_platform": "OpenAI ChatGPT",
+        "reviewer_model": "GPT-5.6 Sol",
+        "review_date": "2026-09-06",
+        "review_scope": "Scope amendment from OpenAI-only outage to concurrent OpenAI, Anthropic and xAI availability occurrence; source-specific affected-system reconciliation and causal-boundary review.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_link_and_metadata_review": true
+        },
+        "known_limitations": [
+          "No evidence establishes a common technical cause across all three providers.",
+          "Anthropic's causal description is currently preserved through the provider statement reported by The Register rather than a separately retained first-party status artefact in this record.",
+          "Aggregate affected-user counts and downstream loss are not publicly quantified."
+        ],
+        "review_outcome": "Amended INC-000091 to represent the concurrent ChatGPT/Codex, Claude and Grok outage event while retaining provider-specific mechanisms and unclassified status."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-09-06-ECOSYSTEM-INGESTION-000091",
-      "reviewer_type": "AI analytical reviewer",
+      "review_id": "VIGIL-REVIEW-2026-09-06-INC-000091-SCOPE-AMENDMENT",
+      "reviewer_type": "AI analytical reviewer under human direction",
       "reviewer_platform": "OpenAI ChatGPT",
       "reviewer_model": "GPT-5.6 Sol",
       "review_date": "2026-09-06",
-      "review_scope": "Provider-confirmed availability occurrence, affected-system bounding, severity assessment and taxonomy review.",
+      "review_scope": "Scope amendment from OpenAI-only outage to concurrent OpenAI, Anthropic and xAI availability occurrence; source-specific affected-system reconciliation and causal-boundary review.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
         "web_link_and_metadata_review": true
       },
       "known_limitations": [
-        "No full OpenAI root-cause report was public at review time.",
-        "Affected-user counts were not published.",
-        "No common cause is established for the overlapping Anthropic and xAI outages."
+        "No evidence establishes a common technical cause across all three providers.",
+        "Anthropic's causal description is currently preserved through the provider statement reported by The Register rather than a separately retained first-party status artefact in this record.",
+        "Aggregate affected-user counts and downstream loss are not publicly quantified."
       ],
-      "review_outcome": "Admitted as a new canonical Incident with S3 severity and unclassified status; contemporaneous provider outages retained only as bounded context."
+      "review_outcome": "Amended INC-000091 to represent the concurrent ChatGPT/Codex, Claude and Grok outage event while retaining provider-specific mechanisms and unclassified status."
     }
   },
   "severity_assessment": {
     "severity": "S3",
     "assessment_status": "incident-assessed",
-    "materialised_consequence": "ChatGPT and Codex experienced elevated errors and temporary unavailability for some users across platforms until OpenAI applied mitigation and restored service.",
-    "affected_scope": "OpenAI listed 15 ChatGPT components and four Codex components as affected. The number and geography of affected users and organisations were not quantified.",
-    "seriousness_and_persistence": "The incident materially impaired access to widely used hosted AI services for roughly two hours, but OpenAI reported recovery the same day and no persistent service, data, safety or integrity consequence is established.",
-    "quantitative_information": "OpenAI listed 15 affected ChatGPT components and four Codex components. The public status record spans approximately 14:43–16:55 UTC on 3 September 2026. Affected-user counts and transaction volumes were not published.",
-    "evidentiary_limits": "Public evidence establishes degraded availability and a provider-attributed routing error but not a complete causal chain, affected-user count, economic loss, downstream organisational harm or common cause with other providers' outages.",
-    "band_rationale": "S3 is supported because the occurrence caused material but time-bounded loss of availability across multiple core service components and affected some users across platforms. S2 is not supported because no serious or persistent downstream harm, safety consequence, data compromise or extended systemic disruption is established. S4 would understate the occurrence because provider-confirmed service unavailability affected numerous core ChatGPT and Codex components rather than a trivial or purely cosmetic defect.",
+    "materialised_consequence": "Users experienced overlapping loss or degradation of access to ChatGPT/Codex, Claude and Grok services during the 3 September 2026 event window. OpenAI, Anthropic and xAI each restored their affected services the same day.",
+    "affected_scope": "The occurrence spans three major frontier-AI providers. OpenAI listed 15 ChatGPT components and four Codex components; Anthropic reported impact across Claude.ai, Claude Code, Claude Cowork and the Claude API; xAI status records show a Grok models outage across multiple service surfaces. Aggregate affected-user counts were not published.",
+    "seriousness_and_persistence": "The event materially impaired access to several widely used hosted AI services across three providers during overlapping windows, but the disruptions were time-bounded and the reviewed evidence establishes same-day recovery rather than persistent service, data, safety or integrity harm.",
+    "quantitative_information": "OpenAI's public status record spans approximately 14:43–16:55 UTC and lists 15 ChatGPT components and four Codex components. Anthropic reported a roughly three-hour partial outage with service restored at 16:16 UTC. xAI status records show a Grok models outage beginning at 13:30 UTC and lasting roughly three and a half hours across multiple surfaces.",
+    "evidentiary_limits": "The public record establishes three overlapping provider outages and provider-specific explanations, but not a common causal chain, aggregate affected-user count, economic loss, shared downstream harm or common cloud/network/control-plane dependency.",
+    "band_rationale": "S3 remains appropriate because the occurrence produced material but time-bounded loss of availability across several major hosted AI services and three providers. S2 is not supported because no serious or persistent downstream harm, safety consequence, data compromise or prolonged systemic disruption is established. S4 would understate the event because the affected scope extends beyond a trivial or isolated defect to concurrent disruption of multiple major frontier-AI services.",
     "assessed_on": "2026-09-06",
     "legacy_sources": []
   }
