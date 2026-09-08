@@ -260,13 +260,13 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
 
     def test_working_branch_preserves_last_published_metadata_in_families(self):
         index = json.loads(MODULE.INDEX_PATH.read_text(encoding="utf-8"))
-        self.assertEqual(index["standard"]["version"], "0.3.0-draft")
-        self.assertEqual(index["standard"]["publication_date"], "2026-09-02")
-        self.assertEqual(index["release_history"][-1]["change_level"], "minor")
+        self.assertEqual(index["standard"]["version"], "0.3.1-draft")
+        self.assertEqual(index["standard"]["publication_date"], "2026-09-06")
+        self.assertEqual(index["release_history"][-1]["change_level"], "patch")
         for path in self.paths():
             document = json.loads(path.read_text(encoding="utf-8"))
-            self.assertEqual(document["standard"]["version"], "0.3.0-draft")
-            self.assertEqual(document["standard"]["publication_date"], "2026-09-02")
+            self.assertEqual(document["standard"]["version"], "0.3.1-draft")
+            self.assertEqual(document["standard"]["publication_date"], "2026-09-06")
 
     def test_family_or_class_change_requires_new_dataset_release_metadata(self):
         path, data = self.document()
@@ -293,13 +293,13 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
             document = json.loads(path.read_text(encoding="utf-8"))
             document["standard"]["version"] = "0.4.0-draft"
             self.write(path, document)
-        self.assertTrue(any("must advance to 0.3.1" in error for error in self.published_errors()))
+        self.assertTrue(any("must advance to 0.3.2" in error for error in self.published_errors()))
 
     def test_new_family_requires_minor_dataset_increment(self):
         index = json.loads(MODULE.INDEX_PATH.read_text(encoding="utf-8"))
         previous = index["release_history"][-1]
         release = copy.deepcopy(previous)
-        release["version"] = "0.3.1-draft"
+        release["version"] = "0.3.2-draft"
         release["change_level"] = "patch"
         release["content_digest"] = "sha256:" + "e" * 64
         release["family_ids"].append("VIGIL-FF-0011")
@@ -319,7 +319,7 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         classes = {item["class_id"]: item for document in documents for item in document["classes"]}
         self.assertEqual(
             [class_id for class_id in sorted(classes) if class_id >= "VIGIL-FC-000046"],
-            [f"VIGIL-FC-{number:06d}" for number in range(46, 62)],
+            [f"VIGIL-FC-{number:06d}" for number in range(46, 66)],
         )
         authority = next(document for document in documents if document["family"]["family_id"] == "VIGIL-FF-0001")
         self.assertEqual(classes["VIGIL-FC-000046"]["family_id"], authority["family"]["family_id"])
@@ -331,7 +331,7 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         index = json.loads(MODULE.INDEX_PATH.read_text(encoding="utf-8"))
         documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
         selectable = {item["class_id"] for document in documents for item in document["classes"]}
-        self.assertEqual(len(selectable), 54)
+        self.assertEqual(len(selectable), 58)
         self.assertTrue(all(item["abstraction"] == "class" for document in documents for item in document["classes"]))
         subtypes = {
             subtype["historical_class_id"]: item["class_id"]
@@ -362,10 +362,10 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
     def test_agency_preserving_influence_family_has_one_bounded_invariant(self):
         documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
         influence = next(document for document in documents if document["family"]["family_id"] == "VIGIL-FF-0009")
-        self.assertEqual(len(influence["classes"]), 4)
+        self.assertEqual(len(influence["classes"]), 5)
         self.assertEqual(
             [item["class_id"] for item in influence["classes"]],
-            ["VIGIL-FC-000049", "VIGIL-FC-000050", "VIGIL-FC-000051", "VIGIL-FC-000052"],
+            ["VIGIL-FC-000049", "VIGIL-FC-000050", "VIGIL-FC-000051", "VIGIL-FC-000052", "VIGIL-FC-000065"],
         )
         invariant = influence["family"]["invariant"].lower()
         for boundary in ("independent deliberation", "choice", "disengagement", "protected"):
@@ -373,6 +373,21 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         exclusions = influence["family"]["exclusion_rule"].lower()
         for non_failure in ("warm", "personalised", "effective"):
             self.assertIn(non_failure, exclusions)
+
+    def test_consequential_decision_grounding_bypass_is_bounded_from_adjacent_mechanisms(self):
+        documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
+        influence = next(document for document in documents if document["family"]["family_id"] == "VIGIL-FF-0009")
+        decision = next(item for item in influence["classes"] if item["class_id"] == "VIGIL-FC-000065")
+        recognition = " ".join(decision["recognition"]["required_conditions"]).lower()
+        for boundary in ("consequential", "ground", "direction", "independent deliberation"):
+            self.assertIn(boundary, recognition)
+        exclusions = " ".join(decision["exclusions"]).lower()
+        for neighbour in ("vigil-fc-000051", "vigil-fc-000062", "vigil-fc-000052"):
+            self.assertIn(neighbour, exclusions)
+        relations = {item["target_id"]: item["type"] for item in decision["relationships"]}
+        self.assertEqual(relations["VIGIL-FC-000051"], "distinguish_from")
+        self.assertEqual(relations["VIGIL-FC-000062"], "can_cooccur_with")
+        self.assertEqual(relations["VIGIL-FC-000052"], "distinguish_from")
 
 
 if __name__ == "__main__":
