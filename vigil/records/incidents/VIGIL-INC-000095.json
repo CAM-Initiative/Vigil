@@ -1,0 +1,207 @@
+{
+  "id": "VIGIL-INC-000095",
+  "record_type": "incident",
+  "record_state": "active",
+  "date_recorded": "2026-09-08",
+  "record_identity": {
+    "record_id": "VIGIL-INC-000095",
+    "record_type": "incident",
+    "title": "Compromised Mistral SDK package executed credential-harvesting payload on import",
+    "created": "2026-09-08",
+    "updated": "2026-09-08",
+    "version": "0.1.0"
+  },
+  "incident_identity": {
+    "historical_event_name": "Mini Shai-Hulud / TanStack compromise affecting Mistral SDK releases",
+    "occurred_from": "2026-05-11",
+    "occurred_to": "2026-05-12",
+    "date_precision": "date-range",
+    "date_basis": "Mistral states compromised npm packages were uploaded on 11 May 2026 and the compromised PyPI release on 12 May 2026; affected releases were removed within hours."
+  },
+  "summary": "Mistral reported that the Mini Shai-Hulud supply-chain attack on TanStack resulted in compromised Mistral npm and PyPI SDK versions being published. The compromised PyPI package `mistralai==2.4.6` executed malicious code on import, downloading a background payload that harvested credentials from common locations. Mistral reported no impact to its global infrastructure and removed the affected releases.",
+  "vigil_assessment": {
+    "factual_basis": "Mistral's security advisory identifies affected npm and PyPI versions, publication windows and indicators of compromise. It states that the compromised PyPI release executed a malicious script on Linux at import time and launched a detached process designed to harvest credentials.",
+    "governance_interpretation": "The occurrence is a concrete AI-software supply-chain compromise in which trusted distribution channels carried malicious code into an AI SDK. The current VIGIL taxonomy does not cleanly represent package-signing/distribution provenance compromise as a selectable class without stretching existing provenance classes.",
+    "significance_to_cam": "The occurrence expands VIGIL into AI developer infrastructure and demonstrates that governance of AI systems includes package provenance, third-party build dependencies, release integrity, credential exposure and response obligations.",
+    "assessment_boundaries": [
+      "Mistral reports no impact to its global infrastructure.",
+      "The npm packages were compromised but Mistral reports their malicious code path was non-functional; the PyPI package did execute a credential-harvesting payload.",
+      "The public advisory does not quantify how many customers installed or executed the affected PyPI release or whether credentials were successfully exfiltrated from customer systems."
+    ]
+  },
+  "source_records": [
+    {
+      "source_title": "TanStack supply chain attack affecting Mistral SDK packages",
+      "author_or_publisher": "Mistral AI",
+      "source_date": "2026-05-12",
+      "source_url": "https://docs.mistral.ai/resources/security-advisories/MAI-2026-002",
+      "source_url_status": "available",
+      "source_type": "security advisory",
+      "source_platform": "Mistral Docs",
+      "source_residence": "external",
+      "source_role": "incident-evidence",
+      "evidence_modality": [
+        "text",
+        "indicators of compromise"
+      ],
+      "evidence_status": "first-party-reported",
+      "evidence_status_basis": "Mistral's first-party advisory documents the compromised releases, malicious PyPI import-time payload, indicators of compromise and remediation.",
+      "primary_artefact_access": {
+        "access_method": "direct public source review",
+        "access_status": "directly reviewed",
+        "direct_primary_artefact_review": true,
+        "limitations": [],
+        "reviewing_system": "OpenAI ChatGPT — GPT-5.6 Sol"
+      },
+      "incident_source_order": 1,
+      "interpretive_reliance": "Primary source for affected Mistral SDK versions, publication window, payload behaviour and Mistral's response.",
+      "relevance_note": "Primary source for affected Mistral SDK versions, publication window, payload behaviour and Mistral's response.",
+      "retrieved_date": "2026-09-08",
+      "source_context": "Primary source for affected Mistral SDK versions, publication window, payload behaviour and Mistral's response.",
+      "system_or_product": "Mistral SDK packages",
+      "model_or_algorithm": "not model-specific"
+    }
+  ],
+  "preferred_evidence": {
+    "source_url": "https://docs.mistral.ai/resources/security-advisories/MAI-2026-002",
+    "selection_basis": "Mistral's own security advisory provides the most direct and technically specific evidence for the compromised packages and malicious payload.",
+    "selected_on": "2026-09-08"
+  },
+  "external_incident_references": [],
+  "system_context": {
+    "platform_or_vendor": "Other",
+    "product_or_service": "Other",
+    "specific_model_or_runtime": "not established",
+    "interface_surface": [
+      "PyPI package distribution",
+      "npm package distribution",
+      "SDK import path",
+      "developer environments"
+    ],
+    "affected_population": "Developers and organisations that installed affected Mistral SDK package versions during the exposure window.",
+    "deployment_context": "Public software-package supply chain for Mistral AI SDKs.",
+    "system_type": "AI developer SDK supply-chain distribution",
+    "interaction_mode": "developer installation or import of compromised AI SDK packages",
+    "embodiment_status": "non-embodied digital system",
+    "evidence_scope": "provider-specific",
+    "evidenced_vendors": [
+      "Mistral AI",
+      "TanStack supply chain"
+    ],
+    "primary_evidenced_vendors": [
+      "Mistral AI",
+      "TanStack supply chain"
+    ],
+    "vendor_cluster": [],
+    "evidenced_products_or_services": [
+      "mistralai PyPI SDK",
+      "Mistral npm SDK packages"
+    ],
+    "evidenced_models_or_runtimes": [
+      "not model-specific"
+    ],
+    "evidenced_systems": [],
+    "model_or_product": "Mistral SDK packages",
+    "user_role": "AI developer, platform engineer, security responder or downstream package consumer"
+  },
+  "jurisdictional_context": {
+    "primary_jurisdiction": "global software-package ecosystem",
+    "secondary_jurisdictions": [],
+    "cross_border_relevance": "global package distribution",
+    "public_interest_relevance": "high",
+    "sector": "AI developer infrastructure / software supply chain",
+    "regulatory_surface": [
+      "software supply-chain security",
+      "credential protection",
+      "package provenance",
+      "incident response"
+    ]
+  },
+  "taxonomy_classification": {
+    "taxonomy_version": "0.3.1-draft",
+    "classification_status": "unclassified",
+    "classification_basis": "The event is a real package-distribution and provenance compromise, but the current VIGIL taxonomy does not provide a sufficiently precise selectable class for malicious supply-chain substitution without overextending existing lineage concepts.",
+    "primary_classification": null,
+    "secondary_classifications": [],
+    "classification_review_provenance": {
+      "method": "incident-specific current-taxonomy boundary review",
+      "review_date": "2026-09-08",
+      "reviewer": "OpenAI ChatGPT / GPT-5.6 Sol under human-directed VIGIL governance",
+      "review_status": "incident unclassified",
+      "authority_boundary": "Classification is bounded to the evidenced occurrence and does not determine legal liability, final factual truth, intent beyond the evidence, or broader vendor responsibility."
+    }
+  },
+  "linked_records": {
+    "related_incidents": [],
+    "related_observations": [],
+    "related_failure_modes": [],
+    "related_proposals": [],
+    "related_patch_notes": [],
+    "external_references": [],
+    "research": [],
+    "standards": []
+  },
+  "legacy_provenance": [],
+  "diagnostic_provenance": {
+    "method": "human-directed ecosystem expansion with current and historical external-source reconciliation",
+    "diagnostic_date": "2026-09-08",
+    "human_role": "ecosystem-balance direction and governance approval authority",
+    "ai_role": "source discovery, duplicate reconciliation, factual bounding, taxonomy analysis, severity assessment and repository drafting",
+    "ai_platform": "OpenAI ChatGPT",
+    "ai_model": "GPT-5.6 Sol",
+    "review_status": "human-directed ecosystem ingestion",
+    "authority_boundary": "The AI collaborator may admit externally evidenced occurrences while preserving uncertainty; it may not infer unreported causality, liability, intent, affected population or taxonomy membership."
+  },
+  "interpretive_provenance": {
+    "review_history": [
+      {
+        "review_id": "VIGIL-REVIEW-2026-09-08-ECOSYSTEM-000095",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT",
+        "reviewer_model": "GPT-5.6 Sol",
+        "reviewer_date": "2026-09-08",
+        "review_scope": "External ecosystem Incident admission, evidence reconciliation, affected-system bounding, occurrence-level severity assessment and current-taxonomy review.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_link_and_metadata_review": true
+        },
+        "known_limitations": [
+          "Mistral reports no impact to its global infrastructure.",
+          "The npm packages were compromised but Mistral reports their malicious code path was non-functional; the PyPI package did execute a credential-harvesting payload.",
+          "The public advisory does not quantify how many customers installed or executed the affected PyPI release or whether credentials were successfully exfiltrated from customer systems."
+        ]
+      }
+    ],
+    "current_ai_review": {
+      "review_id": "VIGIL-REVIEW-2026-09-08-ECOSYSTEM-000095",
+      "reviewer_type": "AI analytical reviewer",
+      "reviewer_platform": "OpenAI ChatGPT",
+      "reviewer_model": "GPT-5.6 Sol",
+      "reviewer_date": "2026-09-08",
+      "review_scope": "External ecosystem Incident admission, evidence reconciliation, affected-system bounding, occurrence-level severity assessment and current-taxonomy review.",
+      "capability_profile": {
+        "direct_repository_analysis": true,
+        "direct_text_analysis": true,
+        "web_link_and_metadata_review": true
+      },
+      "known_limitations": [
+        "Mistral reports no impact to its global infrastructure.",
+        "The npm packages were compromised but Mistral reports their malicious code path was non-functional; the PyPI package did execute a credential-harvesting payload.",
+        "The public advisory does not quantify how many customers installed or executed the affected PyPI release or whether credentials were successfully exfiltrated from customer systems."
+      ]
+    }
+  },
+  "severity_assessment": {
+    "severity": "S3",
+    "assessment_status": "incident-assessed",
+    "materialised_consequence": "A malicious Mistral PyPI release was publicly distributed and executed a credential-harvesting background payload when imported on Linux systems.",
+    "affected_scope": "Potentially affected developers and organisations that installed `mistralai==2.4.6`; the number of installations and confirmed compromised downstream systems is not public.",
+    "seriousness_and_persistence": "The malicious package could harvest credentials from developer systems and therefore created material realised execution risk, but public evidence does not establish the scale of successful downstream compromise or persistent customer harm.",
+    "quantitative_information": "Mistral identifies one compromised PyPI release and multiple npm SDK versions; the malicious PyPI package was available for approximately three hours before removal.",
+    "evidentiary_limits": "Mistral reports no impact to its global infrastructure. The npm packages were compromised but Mistral reports their malicious code path was non-functional; the PyPI package did execute a credential-harvesting payload. The public advisory does not quantify how many customers installed or executed the affected PyPI release or whether credentials were successfully exfiltrated from customer systems.",
+    "band_rationale": "S3 rather than S2 is appropriate because a malicious credential-harvesting payload was actually distributed and executable, but confirmed downstream compromise at substantial scale is not established. S3 rather than S4 is appropriate because this exceeded a minor defect: the distributed package executed attacker-controlled credential-harvesting code.",
+    "assessed_on": "2026-09-08",
+    "legacy_sources": []
+  }
+}
