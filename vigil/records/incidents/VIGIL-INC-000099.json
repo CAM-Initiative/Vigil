@@ -1,0 +1,248 @@
+{
+  "id": "VIGIL-INC-000099",
+  "record_type": "incident",
+  "record_state": "active",
+  "date_recorded": "2026-09-08",
+  "record_identity": {
+    "record_id": "VIGIL-INC-000099",
+    "record_type": "incident",
+    "title": "Google AI Overviews surfaced confidently inaccurate and potentially harmful search answers after broad rollout",
+    "created": "2026-09-08",
+    "updated": "2026-09-08",
+    "version": "0.1.0"
+  },
+  "incident_identity": {
+    "historical_event_name": "May 2024 Google AI Overviews inaccurate-answer rollout",
+    "occurred_from": "2024-05-14",
+    "occurred_to": "2024-05-30",
+    "date_precision": "date-range",
+    "date_basis": "Google announced broad U.S. rollout on 14 May 2024 and published its post-incident explanation and technical changes on 30 May 2024."
+  },
+  "summary": "After Google expanded AI Overviews across U.S. Search, users surfaced odd, inaccurate and sometimes potentially harmful answers. Google acknowledged that some real failures resulted from misinterpreting queries, limited high-quality information, satire or user-generated content, and it implemented more than a dozen technical changes and additional triggering restrictions.",
+  "vigil_assessment": {
+    "factual_basis": "Google's first-party postmortem acknowledges inaccurate and unhelpful AI Overviews, including cases where satire or forum content was inappropriately incorporated. Google says many viral screenshots were fabricated, but confirms genuine erroneous outputs and describes system changes. AIID Incident 693 aggregates reports including the glue-on-pizza example and other confidently incorrect outputs.",
+    "governance_interpretation": "The failure occurred on a reliance-bearing Search surface that was designed to provide quick synthesized answers. The system accepted information at an epistemic assurance level below that required for authoritative-seeming search guidance and propagated it into answers before the necessary reliability threshold was met.",
+    "significance_to_cam": "This is a strong historical ecosystem example of epistemic-reliance governance rather than generic 'hallucination': the failure concerns how uncertain, satirical or low-quality evidence was promoted through a high-trust search interface.",
+    "assessment_boundaries": [
+      "Google states that many viral screenshots attributed to AI Overviews were fabricated; VIGIL relies only on failures Google acknowledged or independently preserved by credible reporting.",
+      "The record does not assert that AI Overviews generally had low accuracy; Google reported overall accuracy comparable to featured snippets.",
+      "No specific physical injury resulting from the confirmed erroneous answers is established."
+    ]
+  },
+  "source_records": [
+    {
+      "source_title": "AI Overviews: About last week",
+      "author_or_publisher": "Google",
+      "source_date": "2024-05-30",
+      "source_url": "https://blog.google/products-and-platforms/products/search/ai-overviews-update-may-2024/",
+      "source_url_status": "available",
+      "source_type": "provider post-incident statement",
+      "source_platform": "Google Blog",
+      "source_residence": "external",
+      "source_role": "incident-evidence",
+      "evidence_modality": [
+        "text"
+      ],
+      "evidence_status": "first-party-reported",
+      "evidence_status_basis": "Google directly acknowledged genuine inaccurate/unhelpful AI Overviews and described the identified failure patterns and technical mitigations.",
+      "primary_artefact_access": {
+        "access_method": "direct public source review",
+        "access_status": "directly reviewed",
+        "direct_primary_artefact_review": true,
+        "limitations": [],
+        "reviewing_system": "OpenAI ChatGPT — GPT-5.6 Sol"
+      },
+      "incident_source_order": 1,
+      "interpretive_reliance": "Primary provider account distinguishing real failures from fake screenshots and documenting remediation.",
+      "relevance_note": "Primary provider account distinguishing real failures from fake screenshots and documenting remediation.",
+      "retrieved_date": "2026-09-08",
+      "source_context": "Primary provider account distinguishing real failures from fake screenshots and documenting remediation.",
+      "system_or_product": "Google Search AI Overviews",
+      "model_or_algorithm": "custom Gemini model for Search"
+    },
+    {
+      "source_title": "Incident 693: Google AI Reportedly Delivering Confidently Incorrect and Harmful Information",
+      "author_or_publisher": "AI Incident Database / Responsible AI Collaborative",
+      "source_date": "2024-05-24",
+      "source_url": "https://incidentdatabase.ai/cite/693",
+      "source_url_status": "available",
+      "source_type": "incident database entry",
+      "source_platform": "AI Incident Database",
+      "source_residence": "external",
+      "source_role": "incident-evidence",
+      "evidence_modality": [
+        "text"
+      ],
+      "evidence_status": "registry-reported",
+      "evidence_status_basis": "AIID aggregates multiple reports of confirmed and reported inaccurate Google AI search answers after rollout.",
+      "primary_artefact_access": {
+        "access_method": "direct public secondary-source review",
+        "access_status": "directly reviewed",
+        "direct_primary_artefact_review": false,
+        "limitations": [],
+        "reviewing_system": "OpenAI ChatGPT — GPT-5.6 Sol"
+      },
+      "incident_source_order": 2,
+      "interpretive_reliance": "External incident-registry reconciliation for the same failure cluster.",
+      "relevance_note": "External incident-registry reconciliation for the same failure cluster.",
+      "retrieved_date": "2026-09-08",
+      "source_context": "External incident-registry reconciliation for the same failure cluster.",
+      "system_or_product": "Google AI Overviews",
+      "model_or_algorithm": "not established"
+    }
+  ],
+  "preferred_evidence": {
+    "source_url": "https://blog.google/products-and-platforms/products/search/ai-overviews-update-may-2024/",
+    "selection_basis": "Google's postmortem acknowledges actual failure modes and documents the technical response while separating them from fabricated examples.",
+    "selected_on": "2026-09-08"
+  },
+  "external_incident_references": [
+    {
+      "registry": "AI Incident Database",
+      "external_id": "693",
+      "relationship": "same-incident-cluster",
+      "source_url": "https://incidentdatabase.ai/cite/693"
+    }
+  ],
+  "system_context": {
+    "platform_or_vendor": "Google",
+    "product_or_service": "Other",
+    "specific_model_or_runtime": "not established",
+    "interface_surface": [
+      "Google Search",
+      "AI Overview answer surface",
+      "web retrieval",
+      "source synthesis"
+    ],
+    "affected_population": "Google Search users shown inaccurate or unhelpful AI Overviews during the early broad rollout.",
+    "deployment_context": "Generative AI answer synthesis integrated into high-volume public web search.",
+    "system_type": "AI-mediated web search and answer synthesis",
+    "interaction_mode": "user search query followed by retrieval, synthesis and authoritative-seeming overview",
+    "embodiment_status": "non-embodied digital system",
+    "evidence_scope": "provider-specific",
+    "evidenced_vendors": [
+      "Google"
+    ],
+    "primary_evidenced_vendors": [
+      "Google"
+    ],
+    "vendor_cluster": [],
+    "evidenced_products_or_services": [
+      "Google Search AI Overviews"
+    ],
+    "evidenced_models_or_runtimes": [
+      "custom Gemini model integrated with Search ranking systems"
+    ],
+    "evidenced_systems": [],
+    "model_or_product": "Google AI Overviews",
+    "user_role": "search user, information seeker or downstream decision-maker"
+  },
+  "jurisdictional_context": {
+    "primary_jurisdiction": "United States initial broad rollout / global product",
+    "secondary_jurisdictions": [],
+    "cross_border_relevance": "search platform has global relevance",
+    "public_interest_relevance": "high",
+    "sector": "web search / public information",
+    "regulatory_surface": [
+      "information integrity",
+      "epistemic reliability",
+      "consumer reliance",
+      "health and safety information",
+      "source quality"
+    ]
+  },
+  "taxonomy_classification": {
+    "taxonomy_version": "0.3.1-draft",
+    "classification_status": "classified",
+    "classification_basis": "The occurrence satisfies VIGIL-FC-000062 Epistemic Reliance Miscalibration because AI-generated factual guidance was propagated through a reliance-bearing Search answer surface even where the underlying information or interpretation had not reached the assurance threshold required for that use.",
+    "primary_classification": {
+      "family_id": "VIGIL-FF-0003",
+      "class_id": "VIGIL-FC-000062",
+      "classification_basis": "Low-quality, satirical, context-misread or otherwise insufficiently reliable information was accepted as fit for direct synthesized Search answers on a high-reliance surface.",
+      "classification_confidence": "high"
+    },
+    "secondary_classifications": [],
+    "classification_review_provenance": {
+      "method": "taxonomy-0.3.1 epistemic-reliance reconciliation",
+      "review_date": "2026-09-08",
+      "reviewer": "OpenAI ChatGPT / GPT-5.6 Sol under human-directed VIGIL governance",
+      "review_status": "incident classified",
+      "authority_boundary": "Classification is bounded to the evidenced occurrence and does not determine legal liability, final factual truth, intent beyond the evidence, or broader vendor responsibility."
+    }
+  },
+  "linked_records": {
+    "related_incidents": [],
+    "related_observations": [],
+    "related_failure_modes": [],
+    "related_proposals": [],
+    "related_patch_notes": [],
+    "external_references": [],
+    "research": [],
+    "standards": []
+  },
+  "legacy_provenance": [],
+  "diagnostic_provenance": {
+    "method": "human-directed ecosystem expansion with current and historical external-source reconciliation",
+    "diagnostic_date": "2026-09-08",
+    "human_role": "ecosystem-balance direction and governance approval authority",
+    "ai_role": "source discovery, duplicate reconciliation, factual bounding, taxonomy analysis, severity assessment and repository drafting",
+    "ai_platform": "OpenAI ChatGPT",
+    "ai_model": "GPT-5.6 Sol",
+    "review_status": "human-directed ecosystem ingestion",
+    "authority_boundary": "The AI collaborator may admit externally evidenced occurrences while preserving uncertainty; it may not infer unreported causality, liability, intent, affected population or taxonomy membership."
+  },
+  "interpretive_provenance": {
+    "review_history": [
+      {
+        "review_id": "VIGIL-REVIEW-2026-09-08-ECOSYSTEM-000099",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT",
+        "reviewer_model": "GPT-5.6 Sol",
+        "reviewer_date": "2026-09-08",
+        "review_scope": "External ecosystem Incident admission, evidence reconciliation, affected-system bounding, occurrence-level severity assessment and current-taxonomy review.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_link_and_metadata_review": true
+        },
+        "known_limitations": [
+          "Google states that many viral screenshots attributed to AI Overviews were fabricated; VIGIL relies only on failures Google acknowledged or independently preserved by credible reporting.",
+          "The record does not assert that AI Overviews generally had low accuracy; Google reported overall accuracy comparable to featured snippets.",
+          "No specific physical injury resulting from the confirmed erroneous answers is established."
+        ],
+        "review_outcome": "Admitted as an S3 Incident and classified high-confidence FC62 Epistemic Reliance Miscalibration."
+      }
+    ],
+    "current_ai_review": {
+      "review_id": "VIGIL-REVIEW-2026-09-08-ECOSYSTEM-000099",
+      "reviewer_type": "AI analytical reviewer",
+      "reviewer_platform": "OpenAI ChatGPT",
+      "reviewer_model": "GPT-5.6 Sol",
+      "reviewer_date": "2026-09-08",
+      "review_scope": "External ecosystem Incident admission, evidence reconciliation, affected-system bounding, occurrence-level severity assessment and current-taxonomy review.",
+      "capability_profile": {
+        "direct_repository_analysis": true,
+        "direct_text_analysis": true,
+        "web_link_and_metadata_review": true
+      },
+      "known_limitations": [
+        "Google states that many viral screenshots attributed to AI Overviews were fabricated; VIGIL relies only on failures Google acknowledged or independently preserved by credible reporting.",
+        "The record does not assert that AI Overviews generally had low accuracy; Google reported overall accuracy comparable to featured snippets.",
+        "No specific physical injury resulting from the confirmed erroneous answers is established."
+      ],
+      "review_outcome": "Admitted as an S3 Incident and classified high-confidence FC62 Epistemic Reliance Miscalibration."
+    }
+  },
+  "severity_assessment": {
+    "severity": "S3",
+    "assessment_status": "incident-assessed",
+    "materialised_consequence": "Users received genuine inaccurate or unhelpful AI-generated Search answers, including potentially harmful advice, prompting Google to restrict triggering and make more than a dozen technical changes.",
+    "affected_scope": "Users exposed to affected AI Overview queries during the initial broad U.S. rollout; Google did not publish a count of erroneous outputs or affected users.",
+    "seriousness_and_persistence": "The errors occurred on a high-reliance public search surface and included potentially harmful advice, but confirmed injury or persistent individual harm is not established and Google rapidly adjusted the system.",
+    "quantitative_information": "Google reported more than a dozen technical improvements and said policy-violating AI Overviews appeared on fewer than one in seven million unique queries where the feature appeared; no total affected-user count is available.",
+    "evidentiary_limits": "Google states that many viral screenshots attributed to AI Overviews were fabricated; VIGIL relies only on failures Google acknowledged or independently preserved by credible reporting. The record does not assert that AI Overviews generally had low accuracy; Google reported overall accuracy comparable to featured snippets. No specific physical injury resulting from the confirmed erroneous answers is established.",
+    "band_rationale": "S3 rather than S2 is appropriate because confirmed serious or lasting individual harm is not established. S3 rather than S4 is appropriate because the failure affected a mass-market high-reliance Search surface and produced materially misleading answers requiring systemic remediation.",
+    "assessed_on": "2026-09-08",
+    "legacy_sources": []
+  }
+}
