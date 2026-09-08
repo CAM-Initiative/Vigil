@@ -319,7 +319,7 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         classes = {item["class_id"]: item for document in documents for item in document["classes"]}
         self.assertEqual(
             [class_id for class_id in sorted(classes) if class_id >= "VIGIL-FC-000046"],
-            [f"VIGIL-FC-{number:06d}" for number in range(46, 66)],
+            [f"VIGIL-FC-{number:06d}" for number in range(46, 67)],
         )
         authority = next(document for document in documents if document["family"]["family_id"] == "VIGIL-FF-0001")
         self.assertEqual(classes["VIGIL-FC-000046"]["family_id"], authority["family"]["family_id"])
@@ -331,7 +331,7 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         index = json.loads(MODULE.INDEX_PATH.read_text(encoding="utf-8"))
         documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
         selectable = {item["class_id"] for document in documents for item in document["classes"]}
-        self.assertEqual(len(selectable), 58)
+        self.assertEqual(len(selectable), 59)
         self.assertTrue(all(item["abstraction"] == "class" for document in documents for item in document["classes"]))
         subtypes = {
             subtype["historical_class_id"]: item["class_id"]
@@ -362,10 +362,10 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
     def test_agency_preserving_influence_family_has_one_bounded_invariant(self):
         documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
         influence = next(document for document in documents if document["family"]["family_id"] == "VIGIL-FF-0009")
-        self.assertEqual(len(influence["classes"]), 5)
+        self.assertEqual(len(influence["classes"]), 6)
         self.assertEqual(
             [item["class_id"] for item in influence["classes"]],
-            ["VIGIL-FC-000049", "VIGIL-FC-000050", "VIGIL-FC-000051", "VIGIL-FC-000052", "VIGIL-FC-000065"],
+            ["VIGIL-FC-000049", "VIGIL-FC-000050", "VIGIL-FC-000051", "VIGIL-FC-000052", "VIGIL-FC-000065", "VIGIL-FC-000066"],
         )
         invariant = influence["family"]["invariant"].lower()
         for boundary in ("independent deliberation", "choice", "disengagement", "protected"):
@@ -387,6 +387,22 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         relations = {item["target_id"]: item["type"] for item in decision["relationships"]}
         self.assertEqual(relations["VIGIL-FC-000051"], "distinguish_from")
         self.assertEqual(relations["VIGIL-FC-000062"], "can_cooccur_with")
+        self.assertEqual(relations["VIGIL-FC-000052"], "distinguish_from")
+
+    def test_evaluative_assent_collapse_is_bounded_from_adjacent_mechanisms(self):
+        documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
+        influence = next(document for document in documents if document["family"]["family_id"] == "VIGIL-FF-0009")
+        assent = next(item for item in influence["classes"] if item["class_id"] == "VIGIL-FC-000066")
+        recognition = " ".join(assent["recognition"]["required_conditions"]).lower()
+        for boundary in ("independent evaluation", "agreement", "counterevidence", "independent"):
+            self.assertIn(boundary, recognition)
+        exclusions = " ".join(assent["exclusions"]).lower()
+        for neighbour in ("vigil-fc-000051", "vigil-fc-000062", "vigil-fc-000065", "vigil-fc-000052"):
+            self.assertIn(neighbour, exclusions)
+        relations = {item["target_id"]: item["type"] for item in assent["relationships"]}
+        self.assertEqual(relations["VIGIL-FC-000051"], "distinguish_from")
+        self.assertEqual(relations["VIGIL-FC-000062"], "distinguish_from")
+        self.assertEqual(relations["VIGIL-FC-000065"], "can_cooccur_with")
         self.assertEqual(relations["VIGIL-FC-000052"], "distinguish_from")
 
 
