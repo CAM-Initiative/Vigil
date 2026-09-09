@@ -1,0 +1,238 @@
+{
+  "id": "VIGIL-INC-000096",
+  "record_type": "incident",
+  "record_state": "active",
+  "date_recorded": "2026-09-08",
+  "record_identity": {
+    "record_id": "VIGIL-INC-000096",
+    "record_type": "incident",
+    "title": "DeepSeek exposed an unauthenticated database containing chat histories and secrets",
+    "created": "2026-09-08",
+    "updated": "2026-09-08",
+    "version": "0.1.2"
+  },
+  "incident_identity": {
+    "historical_event_name": "DeepSeek exposed ClickHouse database",
+    "occurred_from": "2025-01-29",
+    "occurred_to": "2025-01-29",
+    "date_precision": "reported-date",
+    "date_basis": "Wiz Research publicly disclosed the exposed DeepSeek database on 29 January 2025 and reported that DeepSeek secured it promptly after notification."
+  },
+  "summary": "Wiz Research found a publicly accessible, unauthenticated ClickHouse database belonging to DeepSeek. The exposed service provided full database-operation access and contained more than one million lines of logs including chat histories, API secrets, backend details and operational metadata. DeepSeek secured the database after Wiz notified the company; public evidence does not establish whether third parties accessed the data before discovery.",
+  "vigil_assessment": {
+    "factual_basis": "Wiz reports discovering two internet-reachable DeepSeek ClickHouse endpoints with no authentication and full database control. The exposed data included more than one million log lines with chat history, secret keys and backend details. Reuters independently reported the discovery and DeepSeek's rapid remediation after notification.",
+    "governance_interpretation": "The occurrence is a material AI-platform data-security failure in surrounding infrastructure rather than a model-behaviour failure. It demonstrates that governance of frontier AI services includes conventional but consequential access control, data custody and operational-security boundaries.",
+    "significance_to_cam": "The occurrence broadens VIGIL beyond model outputs into AI-service infrastructure and illustrates how rapid deployment can expose highly sensitive user and operational data even where the model itself is not the failing component.",
+    "assessment_boundaries": [
+      "The evidence does not establish that an unauthorised third party accessed or misused the exposed database before Wiz discovered it.",
+      "The complete number of affected users is not public.",
+      "VIGIL does not infer a model-level failure from an infrastructure access-control misconfiguration."
+    ]
+  },
+  "source_records": [
+    {
+      "source_title": "Wiz Research Uncovers Exposed DeepSeek Database Leaking Sensitive Information, Including Chat History",
+      "author_or_publisher": "Wiz Research",
+      "source_date": "2025-01-29",
+      "source_url": "https://www.wiz.io/blog/wiz-research-uncovers-exposed-deepseek-database-leak",
+      "source_url_status": "available",
+      "source_type": "technical analysis",
+      "source_platform": "Wiz",
+      "source_residence": "external",
+      "source_role": "incident-evidence",
+      "evidence_modality": [
+        "text",
+        "technical artefacts"
+      ],
+      "evidence_status": "independent-reporting",
+      "evidence_status_basis": "Wiz reports direct discovery and inspection of the exposed DeepSeek ClickHouse database and its contents.",
+      "primary_artefact_access": {
+        "access_method": "direct public source review",
+        "access_status": "directly reviewed",
+        "direct_primary_artefact_review": true,
+        "limitations": [],
+        "reviewing_system": "OpenAI ChatGPT — GPT-5.6 Sol"
+      },
+      "incident_source_order": 1,
+      "interpretive_reliance": "Primary technical evidence for unauthenticated access, database control and exposed data categories.",
+      "relevance_note": "Primary technical evidence for unauthenticated access, database control and exposed data categories.",
+      "retrieved_date": "2026-09-08",
+      "source_context": "Primary technical evidence for unauthenticated access, database control and exposed data categories.",
+      "system_or_product": "DeepSeek ClickHouse infrastructure",
+      "model_or_algorithm": "not model-specific"
+    },
+    {
+      "source_title": "Sensitive DeepSeek data exposed to web, cyber firm says",
+      "author_or_publisher": "Reuters",
+      "source_date": "2025-01-29",
+      "source_url": "https://www.reuters.com/technology/artificial-intelligence/sensitive-deepseek-data-exposed-web-israeli-cyber-firm-says-2025-01-29/",
+      "source_url_status": "available",
+      "source_type": "news article",
+      "source_platform": "Reuters",
+      "source_residence": "external",
+      "source_role": "incident-evidence",
+      "evidence_modality": [
+        "text"
+      ],
+      "evidence_status": "independent-reporting",
+      "evidence_status_basis": "Reuters independently reported Wiz's discovery and DeepSeek's remediation after notification.",
+      "primary_artefact_access": {
+        "access_method": "direct public source review",
+        "access_status": "directly reviewed",
+        "direct_primary_artefact_review": true,
+        "limitations": [],
+        "reviewing_system": "OpenAI ChatGPT — GPT-5.6 Sol"
+      },
+      "incident_source_order": 2,
+      "interpretive_reliance": "Independent corroboration of the exposure and remediation chronology.",
+      "relevance_note": "Independent corroboration of the exposure and remediation chronology.",
+      "retrieved_date": "2026-09-08",
+      "source_context": "Independent corroboration of the exposure and remediation chronology.",
+      "system_or_product": "DeepSeek AI service infrastructure",
+      "model_or_algorithm": "not established"
+    }
+  ],
+  "preferred_evidence": {
+    "source_url": "https://www.wiz.io/blog/wiz-research-uncovers-exposed-deepseek-database-leak",
+    "selection_basis": "Wiz is the discovering security-research team and provides the most direct technical account.",
+    "selected_on": "2026-09-08"
+  },
+  "external_incident_references": [],
+  "system_context": {
+    "platform_or_vendor": "DeepSeek",
+    "product_or_service": "Other",
+    "specific_model_or_runtime": "not established",
+    "interface_surface": [
+      "internet-exposed ClickHouse endpoints",
+      "chat-history logs",
+      "API secrets",
+      "backend database operations"
+    ],
+    "affected_population": "DeepSeek users whose chat data may have been present and DeepSeek operational systems and credentials exposed in the database.",
+    "deployment_context": "Backend data and logging infrastructure supporting DeepSeek's public AI service.",
+    "system_type": "AI-platform backend database and logging infrastructure",
+    "interaction_mode": "unauthenticated internet access to backend database",
+    "embodiment_status": "non-embodied digital system",
+    "evidence_scope": "provider-specific",
+    "evidenced_vendors": [
+      "DeepSeek"
+    ],
+    "primary_evidenced_vendors": [
+      "DeepSeek"
+    ],
+    "vendor_cluster": [],
+    "evidenced_products_or_services": [
+      "DeepSeek AI assistant backend",
+      "ClickHouse database"
+    ],
+    "evidenced_models_or_runtimes": [
+      "not model-specific"
+    ],
+    "evidenced_systems": [],
+    "model_or_product": "DeepSeek backend infrastructure",
+    "user_role": "AI-service user, platform operator, security researcher or potential unauthorised accessor"
+  },
+  "jurisdictional_context": {
+    "primary_jurisdiction": "China / global internet exposure",
+    "secondary_jurisdictions": [],
+    "cross_border_relevance": "globally reachable internet service",
+    "public_interest_relevance": "high",
+    "sector": "foundation-model platform / cloud data security",
+    "regulatory_surface": [
+      "privacy",
+      "data security",
+      "credential protection",
+      "access control",
+      "AI service infrastructure"
+    ]
+  },
+  "taxonomy_classification": {
+    "taxonomy_version": "0.3.1-draft",
+    "classification_status": "unclassified",
+    "classification_basis": "The occurrence is a clear security and access-control failure, but the present taxonomy does not provide a sufficiently specific class for an unauthenticated backend database exposure without treating generic reachability as a model authority decision.",
+    "primary_classification": null,
+    "secondary_classifications": [],
+    "classification_review_provenance": {
+      "method": "incident-specific current-taxonomy boundary review",
+      "review_date": "2026-09-08",
+      "reviewer": "OpenAI ChatGPT / GPT-5.6 Sol under human-directed VIGIL governance",
+      "review_status": "incident unclassified",
+      "authority_boundary": "Classification is bounded to the evidenced occurrence and does not determine legal liability, final factual truth, intent beyond the evidence, or broader vendor responsibility."
+    }
+  },
+  "linked_records": {
+    "related_incidents": [],
+    "related_observations": [],
+    "related_failure_modes": [],
+    "related_proposals": [],
+    "related_patch_notes": [],
+    "external_references": [],
+    "research": [],
+    "standards": []
+  },
+  "legacy_provenance": [],
+  "diagnostic_provenance": {
+    "method": "human-directed ecosystem expansion with current and historical external-source reconciliation",
+    "diagnostic_date": "2026-09-08",
+    "human_role": "ecosystem-balance direction and governance approval authority",
+    "ai_role": "source discovery, duplicate reconciliation, factual bounding, taxonomy analysis, severity assessment and repository drafting",
+    "ai_platform": "OpenAI ChatGPT",
+    "ai_model": "GPT-5.6 Sol",
+    "review_status": "human-directed ecosystem ingestion",
+    "authority_boundary": "The AI collaborator may admit externally evidenced occurrences while preserving uncertainty; it may not infer unreported causality, liability, intent, affected population or taxonomy membership."
+  },
+  "interpretive_provenance": {
+    "review_history": [
+      {
+        "review_id": "VIGIL-REVIEW-2026-09-08-ECOSYSTEM-000096",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT",
+        "reviewer_model": "GPT-5.6 Sol",
+        "review_scope": "External ecosystem Incident admission, evidence reconciliation, affected-system bounding, occurrence-level severity assessment and current-taxonomy review.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_link_and_metadata_review": true
+        },
+        "known_limitations": [
+          "The evidence does not establish that an unauthorised third party accessed or misused the exposed database before Wiz discovered it.",
+          "The complete number of affected users is not public.",
+          "VIGIL does not infer a model-level failure from an infrastructure access-control misconfiguration."
+        ],
+        "review_date": "2026-09-08",
+        "review_outcome": "Admitted as an S2 DeepSeek backend-data exposure Incident; left unclassified because the current taxonomy does not precisely encode unauthenticated infrastructure exposure without overextending authority classes."
+      }
+    ],
+    "current_ai_review": {
+      "review_id": "VIGIL-REVIEW-2026-09-08-ECOSYSTEM-000096",
+      "reviewer_type": "AI analytical reviewer",
+      "reviewer_platform": "OpenAI ChatGPT",
+      "reviewer_model": "GPT-5.6 Sol",
+      "review_scope": "External ecosystem Incident admission, evidence reconciliation, affected-system bounding, occurrence-level severity assessment and current-taxonomy review.",
+      "capability_profile": {
+        "direct_repository_analysis": true,
+        "direct_text_analysis": true,
+        "web_link_and_metadata_review": true
+      },
+      "known_limitations": [
+        "The evidence does not establish that an unauthorised third party accessed or misused the exposed database before Wiz discovered it.",
+        "The complete number of affected users is not public.",
+        "VIGIL does not infer a model-level failure from an infrastructure access-control misconfiguration."
+      ],
+      "review_date": "2026-09-08",
+      "review_outcome": "Admitted as an S2 DeepSeek backend-data exposure Incident; left unclassified because the current taxonomy does not precisely encode unauthenticated infrastructure exposure without overextending authority classes."
+    }
+  },
+  "severity_assessment": {
+    "severity": "S2",
+    "assessment_status": "incident-assessed",
+    "materialised_consequence": "More than one million log lines containing chat histories, secret keys and backend details were exposed through an unauthenticated internet-accessible database with full database-operation capability.",
+    "affected_scope": "DeepSeek backend data and user conversations present in the exposed database; the number of unique affected users is not established.",
+    "seriousness_and_persistence": "The exposure involved sensitive user and operational data and full database access. DeepSeek remediated promptly after notification, and no confirmed malicious exploitation is established.",
+    "quantitative_information": "Wiz reported more than one million exposed log lines and two publicly reachable ClickHouse endpoints.",
+    "evidentiary_limits": "The evidence does not establish that an unauthorised third party accessed or misused the exposed database before Wiz discovered it. The complete number of affected users is not public. VIGIL does not infer a model-level failure from an infrastructure access-control misconfiguration.",
+    "band_rationale": "S2 rather than S1 is appropriate because no catastrophic, irreversible or confirmed mass exploitation consequence is established. S2 rather than S3 is appropriate because the realised exposure included sensitive user chats, secrets and full database control at substantial scale.",
+    "assessed_on": "2026-09-08",
+    "legacy_sources": []
+  }
+}

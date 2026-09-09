@@ -18,6 +18,7 @@ families/
   VIGIL-FF-0008-control-activation-integrity.json
   VIGIL-FF-0009-agency-preserving-influence-integrity.json
   VIGIL-FF-0010-infrastructural-authority-integrity.json
+  VIGIL-FF-0011-value-appropriation-integrity.json
 generated/
   VIGIL.FailureTaxonomy.CaseFileExamples.json
   VIGIL.Observatory.FailureTaxonomy.FullReference.pdf

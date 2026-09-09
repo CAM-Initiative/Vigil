@@ -1,0 +1,209 @@
+{
+  "id": "VIGIL-INC-000094",
+  "record_type": "incident",
+  "record_state": "active",
+  "date_recorded": "2026-09-08",
+  "record_identity": {
+    "record_id": "VIGIL-INC-000094",
+    "record_type": "incident",
+    "title": "Hermes agent ran unattended during intrusion into Thailand’s Ministry of Finance",
+    "created": "2026-09-08",
+    "updated": "2026-09-08",
+    "version": "0.1.2"
+  },
+  "incident_identity": {
+    "historical_event_name": "Hermes AI-assisted Thailand Ministry of Finance intrusion",
+    "occurred_from": "2026-07-09",
+    "occurred_to": "2026-07-13",
+    "date_precision": "date-range",
+    "date_basis": "Hunt.io archived the relevant attack infrastructure from 9–13 July 2026 and published its investigation on 23 July 2026."
+  },
+  "summary": "Hunt.io and researcher Bob Diachenko reported recovering live attack infrastructure and Hermes agent logs from an intrusion targeting Thailand's Ministry of Finance. The operator configured Hermes in unattended or 'YOLO' mode, bypassing approval prompts, while the agent enumerated ministry systems, assessed privilege-escalation paths and searched files and personnel-record directories. Hunt.io reported evidence of compromise across multiple ministry systems but did not establish the initial-access method or exfiltration of the enumerated office files.",
+  "vigil_assessment": {
+    "factual_basis": "Hunt.io reports 585 files and 470 MB of attack tooling and stolen credentials across exposed directories, active session material, deployed webshells and internal-network evidence. Recovered Hermes logs show autonomous post-compromise enumeration and privilege-escalation assessment. The operator intentionally enabled unattended execution.",
+    "governance_interpretation": "This is a real-world deployment of an autonomous agent as offensive cyber tooling. Because a hostile operator deliberately disabled approval prompts and supplied the attack objective, the occurrence does not by itself establish an internal governance failure of Hermes; the material governance issue is the availability and operationalisation of unattended agentic capability in a live government intrusion.",
+    "significance_to_cam": "The occurrence broadens VIGIL beyond frontier-chatbot failures into open-source agentic cyber operations and provides evidence for future Caelestis controls around unattended execution, tool authority, misuse resistance and operator-configurable safety boundaries.",
+    "assessment_boundaries": [
+      "The initial-access pathway is not established.",
+      "Hunt.io did not establish exfiltration of the office and personnel files enumerated by Hermes.",
+      "The public evidence does not identify the underlying foundation-model runtime used by Hermes in this operation.",
+      "The operator deliberately enabled YOLO mode, so malicious use is not automatically classified as a Hermes governance failure."
+    ]
+  },
+  "source_records": [
+    {
+      "source_title": "Thailand's Ministry of Finance Targeted With Hermes AI Agent Running Unattended, Hades Implant Staged",
+      "author_or_publisher": "Hunt.io / Bob Diachenko",
+      "source_date": "2026-07-23",
+      "source_url": "https://hunt.io/blog/thailand-ministry-finance-targeted-with-hermes-ai-agent",
+      "source_url_status": "available",
+      "source_type": "technical analysis",
+      "source_platform": "Hunt.io",
+      "source_residence": "external",
+      "source_role": "incident-evidence",
+      "evidence_modality": [
+        "text",
+        "technical artefacts"
+      ],
+      "evidence_status": "independent-reporting",
+      "evidence_status_basis": "Hunt.io reports direct capture and analysis of exposed attack infrastructure, Hermes logs, session material, webshells and targeting artefacts.",
+      "primary_artefact_access": {
+        "access_method": "direct public source review",
+        "access_status": "directly reviewed",
+        "direct_primary_artefact_review": true,
+        "limitations": [],
+        "reviewing_system": "OpenAI ChatGPT — GPT-5.6 Sol"
+      },
+      "incident_source_order": 1,
+      "interpretive_reliance": "Primary technical evidence for the Hermes configuration, unattended execution, ministry targeting and observed post-compromise activity.",
+      "relevance_note": "Primary technical evidence for the Hermes configuration, unattended execution, ministry targeting and observed post-compromise activity.",
+      "retrieved_date": "2026-09-08",
+      "source_context": "Primary technical evidence for the Hermes configuration, unattended execution, ministry targeting and observed post-compromise activity.",
+      "system_or_product": "Hermes autonomous AI agent",
+      "model_or_algorithm": "Hermes; underlying foundation model not established"
+    }
+  ],
+  "preferred_evidence": {
+    "source_url": "https://hunt.io/blog/thailand-ministry-finance-targeted-with-hermes-ai-agent",
+    "selection_basis": "Hunt.io is the primary public technical investigation and reports direct capture of the relevant attack infrastructure and agent logs.",
+    "selected_on": "2026-09-08"
+  },
+  "external_incident_references": [],
+  "system_context": {
+    "platform_or_vendor": "Other",
+    "product_or_service": "Other",
+    "specific_model_or_runtime": "not established",
+    "interface_surface": [
+      "Hermes WebUI",
+      "shell-command execution",
+      "network enumeration",
+      "privilege-escalation tooling"
+    ],
+    "affected_population": "Thailand Ministry of Finance systems and personnel whose infrastructure or records were exposed to the intrusion.",
+    "deployment_context": "Hostile post-compromise operation against government infrastructure using an autonomous AI agent in unattended mode.",
+    "system_type": "autonomous AI-assisted offensive cyber operation",
+    "interaction_mode": "human-directed hostile objective with unattended agent command execution",
+    "embodiment_status": "non-embodied digital system",
+    "evidence_scope": "provider-specific",
+    "evidenced_vendors": [
+      "Nous Research / Hermes ecosystem"
+    ],
+    "primary_evidenced_vendors": [
+      "Nous Research / Hermes ecosystem"
+    ],
+    "vendor_cluster": [],
+    "evidenced_products_or_services": [
+      "Hermes Agent"
+    ],
+    "evidenced_models_or_runtimes": [
+      "Hermes runtime; underlying foundation model not established"
+    ],
+    "evidenced_systems": [],
+    "model_or_product": "Hermes Agent",
+    "user_role": "threat actor, incident responder, government system owner or defender"
+  },
+  "jurisdictional_context": {
+    "primary_jurisdiction": "Thailand / Hong Kong-hosted attacker infrastructure",
+    "secondary_jurisdictions": [],
+    "cross_border_relevance": "direct cross-border cyber operation",
+    "public_interest_relevance": "high",
+    "sector": "government finance / cybersecurity",
+    "regulatory_surface": [
+      "government cybersecurity",
+      "agentic misuse",
+      "unattended execution",
+      "critical public-sector infrastructure"
+    ]
+  },
+  "taxonomy_classification": {
+    "taxonomy_version": "0.3.1-draft",
+    "classification_status": "unclassified",
+    "classification_basis": "The occurrence is admitted as a material AI-agent cyber incident, but the reviewed evidence shows the hostile operator intentionally enabled unattended execution and directed the attack. That does not yet establish a current VIGIL Failure Class attributable to the agent rather than malicious operator choice.",
+    "primary_classification": null,
+    "secondary_classifications": [],
+    "classification_review_provenance": {
+      "method": "incident-specific current-taxonomy boundary review",
+      "review_date": "2026-09-08",
+      "reviewer": "OpenAI ChatGPT / GPT-5.6 Sol under human-directed VIGIL governance",
+      "review_status": "incident unclassified",
+      "authority_boundary": "Classification is bounded to the evidenced occurrence and does not determine legal liability, final factual truth, intent beyond the evidence, or broader vendor responsibility."
+    }
+  },
+  "linked_records": {
+    "related_incidents": [],
+    "related_observations": [],
+    "related_failure_modes": [],
+    "related_proposals": [],
+    "related_patch_notes": [],
+    "external_references": [],
+    "research": [],
+    "standards": []
+  },
+  "legacy_provenance": [],
+  "diagnostic_provenance": {
+    "method": "human-directed ecosystem expansion with current and historical external-source reconciliation",
+    "diagnostic_date": "2026-09-08",
+    "human_role": "ecosystem-balance direction and governance approval authority",
+    "ai_role": "source discovery, duplicate reconciliation, factual bounding, taxonomy analysis, severity assessment and repository drafting",
+    "ai_platform": "OpenAI ChatGPT",
+    "ai_model": "GPT-5.6 Sol",
+    "review_status": "human-directed ecosystem ingestion",
+    "authority_boundary": "The AI collaborator may admit externally evidenced occurrences while preserving uncertainty; it may not infer unreported causality, liability, intent, affected population or taxonomy membership."
+  },
+  "interpretive_provenance": {
+    "review_history": [
+      {
+        "review_id": "VIGIL-REVIEW-2026-09-08-ECOSYSTEM-000094",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT",
+        "reviewer_model": "GPT-5.6 Sol",
+        "review_scope": "External ecosystem Incident admission, evidence reconciliation, affected-system bounding, occurrence-level severity assessment and current-taxonomy review.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_link_and_metadata_review": true
+        },
+        "known_limitations": [
+          "The initial-access pathway is not established.",
+          "Hunt.io did not establish exfiltration of the office and personnel files enumerated by Hermes.",
+          "The public evidence does not identify the underlying foundation-model runtime used by Hermes in this operation.",
+          "The operator deliberately enabled YOLO mode, so malicious use is not automatically classified as a Hermes governance failure."
+        ],
+        "review_outcome": "Admitted as a new S2 Incident and left unclassified pending a mechanism distinction between malicious operator configuration and an internal agent-governance failure.",
+        "review_date": "2026-09-08"
+      }
+    ],
+    "current_ai_review": {
+      "review_id": "VIGIL-REVIEW-2026-09-08-ECOSYSTEM-000094",
+      "reviewer_type": "AI analytical reviewer",
+      "reviewer_platform": "OpenAI ChatGPT",
+      "reviewer_model": "GPT-5.6 Sol",
+      "review_scope": "External ecosystem Incident admission, evidence reconciliation, affected-system bounding, occurrence-level severity assessment and current-taxonomy review.",
+      "capability_profile": {
+        "direct_repository_analysis": true,
+        "direct_text_analysis": true,
+        "web_link_and_metadata_review": true
+      },
+      "known_limitations": [
+        "The initial-access pathway is not established.",
+        "Hunt.io did not establish exfiltration of the office and personnel files enumerated by Hermes.",
+        "The public evidence does not identify the underlying foundation-model runtime used by Hermes in this operation.",
+        "The operator deliberately enabled YOLO mode, so malicious use is not automatically classified as a Hermes governance failure."
+      ],
+      "review_outcome": "Admitted as a new S2 Incident and left unclassified pending a mechanism distinction between malicious operator configuration and an internal agent-governance failure.",
+      "review_date": "2026-09-08"
+    }
+  },
+  "severity_assessment": {
+    "severity": "S2",
+    "assessment_status": "incident-assessed",
+    "materialised_consequence": "Recovered evidence indicates compromise of multiple Ministry of Finance systems, active session material, webshell deployment and autonomous internal enumeration by Hermes.",
+    "affected_scope": "Thailand Ministry of Finance internal systems identified in the recovered attack infrastructure; the complete number of compromised hosts and affected personnel is not established.",
+    "seriousness_and_persistence": "The occurrence involved active compromise of national government financial infrastructure and persistent post-compromise tooling. Public evidence does not establish destructive effects or confirmed exfiltration of the enumerated personnel files.",
+    "quantitative_information": "Hunt.io archived 585 files and 470 MB of attack tooling and stolen credentials across three exposed directories and identified five Hermes call-log files tied to ministry post-compromise activity.",
+    "evidentiary_limits": "The initial-access pathway is not established. Hunt.io did not establish exfiltration of the office and personnel files enumerated by Hermes. The public evidence does not identify the underlying foundation-model runtime used by Hermes in this operation. The operator deliberately enabled YOLO mode, so malicious use is not automatically classified as a Hermes governance failure.",
+    "band_rationale": "S2 rather than S1 is appropriate because the evidence does not establish catastrophic, irreversible or life-threatening harm. S2 rather than S3 is appropriate because active compromise of national-government finance infrastructure with webshells, session material and autonomous internal reconnaissance is a substantial realised security consequence.",
+    "assessed_on": "2026-09-08",
+    "legacy_sources": []
+  }
+}
