@@ -1,0 +1,215 @@
+{
+  "id": "VIGIL-INC-000108",
+  "record_type": "incident",
+  "record_state": "active",
+  "date_recorded": "2026-09-09",
+  "record_identity": {
+    "record_id": "VIGIL-INC-000108",
+    "record_type": "incident",
+    "title": "ChatGPT shared internal service enabled cross-account covert tasking and Gmail data exfiltration",
+    "created": "2026-09-09",
+    "updated": "2026-09-09",
+    "version": "0.1.0"
+  },
+  "incident_identity": {
+    "historical_event_name": "2026 ChatGPT shared-Artifactory cross-account covert channel",
+    "occurred_from": "2026-06-01",
+    "occurred_to": "2026-09-08",
+    "date_precision": "month-to-report",
+    "date_basis": "Check Point Research states that it independently discovered the cross-account channel in June 2026 and publicly reported the research on 8 September 2026. The exact first and last dates on which the vulnerable architecture was present are not established; Check Point states that the channel was no longer available by the time its report was completed and that OpenAI confirmed the identified internal Artifactory instance had been decommissioned."
+  },
+  "summary": "Check Point Research reported a cross-account covert channel between ChatGPT code-execution environments belonging to different accounts. Although the containers could not communicate directly or access the public internet, they could reach a shared internal service used to deliver software packages. Check Point found that mutable shared state in the internal Artifactory service could be used to pass hidden instructions and results across accounts. In its proof of concept, an attacker-controlled instruction caused a victim's apparently normal ChatGPT session to execute a second hidden task stream using the victim session's available tools and permissions, retrieve email data from the victim's connected Gmail account, and relay that data back to the attacker through the covert channel. Check Point states that the channel was no longer available by the time reporting was completed and that OpenAI confirmed the relevant internal Artifactory instance had been decommissioned.",
+  "vigil_assessment": {
+    "factual_basis": "Check Point Research directly documents its June 2026 discovery of a bidirectional cross-account channel through a shared internal Artifactory service reachable from otherwise isolated ChatGPT code-execution containers. The researchers demonstrate a hidden-task proof of concept in which a victim opens a shared ChatGPT conversation and sends a normal message while the same session separately retrieves data from the victim's connected Gmail account and transmits the result to the attacker's account. The research further states that the attack surface depended on the tools, data, connected apps and permissions available to the victim session. Check Point disclosed its findings to OpenAI and states that OpenAI confirmed the identified Artifactory instance had been decommissioned.",
+    "governance_interpretation": "The occurrence demonstrates a trust-boundary and authority-propagation failure in which legitimate capabilities granted to one user's session could be exercised in response to attacker-controlled instructions delivered across an unintended cross-account communications path. The victim's authority to let ChatGPT access connected Gmail data did not imply authority for another account to task that session or receive the retrieved information. The material mechanism therefore combines tenant-isolation failure, hidden instruction execution and transposition of user-granted tool authority across an identity boundary.",
+    "significance_to_cam": "For CAM, the incident is a concrete example of why technical possession of credentials or tool permissions must remain bounded by identity, task and purpose. Agentic systems may act as privileged intermediaries across connected services, so a failure in shared infrastructure or instruction provenance can convert legitimate user authorization into an unauthorized cross-account capability. The case is relevant to runtime authority, provenance, tenant isolation, connected-app governance, least privilege and auditable tool-use controls.",
+    "assessment_boundaries": [
+      "Check Point's public proof of concept directly demonstrates Gmail data retrieval and cross-account relay; this record does not state that the researchers demonstrated extraction from Google Drive, Microsoft Teams, GitHub or every other service that may have been connectable to ChatGPT.",
+      "References to Google Drive, Microsoft Teams, GitHub and other connected services describe the broader potential permission surface available to a victim session, not separately demonstrated exfiltration events in the reviewed proof of concept.",
+      "The reviewed public evidence does not establish exploitation against unsuspecting real-world victims outside the researchers' controlled proof of concept, a victim count, financial loss or downstream misuse of data.",
+      "The network sandbox itself is not reported to have been bypassed; the cross-account path arose through shared internal service state reachable from the containers.",
+      "The record does not infer when the vulnerable architecture was introduced or whether the same mechanism existed after the identified Artifactory service was decommissioned."
+    ]
+  },
+  "source_records": [
+    {
+      "source_title": "The Shared Clipboard Inside the Sandbox: Cross-Account Data Leakage in ChatGPT",
+      "author_or_publisher": "Check Point Research / Alexey Bukhteyev",
+      "source_date": "2026-09-08",
+      "source_url": "https://research.checkpoint.com/2026/the-shared-clipboard-inside-the-sandbox-cross-account-data-leakage-in-chatgpt/",
+      "source_url_status": "available",
+      "source_type": "technical report",
+      "source_platform": "Check Point Research",
+      "source_residence": "external",
+      "source_role": "incident-evidence",
+      "evidence_modality": ["text", "video", "diagram"],
+      "evidence_status": "primary-security-research",
+      "evidence_status_basis": "Check Point Research describes its own discovery, test environment, exploitation path, Gmail proof of concept, disclosure to OpenAI and remediation information received from OpenAI.",
+      "primary_artefact_access": {
+        "access_method": "direct public technical-report review",
+        "access_status": "directly reviewed",
+        "direct_primary_artefact_review": true,
+        "limitations": [
+          "The report does not provide OpenAI's complete internal architecture, logs or remediation record.",
+          "The public report does not establish real-world victim exploitation outside the researchers' proof of concept or quantify affected accounts."
+        ],
+        "reviewing_system": "OpenAI ChatGPT — GPT-5.6 Sol"
+      },
+      "incident_source_order": 1,
+      "interpretive_reliance": "Primary evidence for the cross-account channel, shared internal-service mechanism, hidden task execution, Gmail proof of concept and reported remediation state.",
+      "relevance_note": "First-party technical security research by the team that discovered and demonstrated the issue.",
+      "retrieved_date": "2026-09-09",
+      "source_context": "Check Point reports that containers belonging to different ChatGPT accounts could communicate through mutable state in a shared internal Artifactory service and demonstrates use of that path to covertly task a victim session and relay connected Gmail data.",
+      "system_or_product": "ChatGPT code-execution environment and connected apps",
+      "model_or_algorithm": "ChatGPT model/runtime not specified in the public report"
+    }
+  ],
+  "preferred_evidence": {
+    "source_url": "https://research.checkpoint.com/2026/the-shared-clipboard-inside-the-sandbox-cross-account-data-leakage-in-chatgpt/",
+    "selection_basis": "Check Point Research is the discoverer and demonstrator of the issue and provides the most detailed public account of the architecture, proof of concept, affected trust boundary and remediation information.",
+    "selected_on": "2026-09-09"
+  },
+  "external_incident_references": [],
+  "system_context": {
+    "platform_or_vendor": "OpenAI",
+    "product_or_service": "Other",
+    "specific_model_or_runtime": "ChatGPT code-execution environment; exact model not established",
+    "interface_surface": [
+      "ChatGPT shared conversations",
+      "custom GPTs or attacker-controlled instructions",
+      "code-execution containers",
+      "internal Artifactory service",
+      "connected Gmail account"
+    ],
+    "affected_population": "ChatGPT users whose sessions could receive attacker-controlled hidden tasking through the demonstrated cross-account channel and whose session permissions exposed connected data; the number of potentially or actually affected users is not established.",
+    "deployment_context": "Multi-tenant ChatGPT code-execution infrastructure with shared internal package-delivery service and user-authorized connected applications.",
+    "system_type": "frontier AI assistant / agentic tool-use platform / multi-tenant code-execution infrastructure",
+    "interaction_mode": "visible user request combined with covert attacker tasking and connected-app retrieval",
+    "embodiment_status": "non-embodied digital system",
+    "evidence_scope": "controlled security-research proof of concept with provider remediation confirmation reported by the researchers",
+    "evidenced_vendors": ["OpenAI", "Google"],
+    "primary_evidenced_vendors": ["OpenAI"],
+    "vendor_cluster": [],
+    "evidenced_products_or_services": ["ChatGPT", "Gmail", "Artifactory"],
+    "evidenced_models_or_runtimes": ["ChatGPT runtime; exact model not established"],
+    "evidenced_systems": [
+      {
+        "source_title": "The Shared Clipboard Inside the Sandbox: Cross-Account Data Leakage in ChatGPT",
+        "source_url": "https://research.checkpoint.com/2026/the-shared-clipboard-inside-the-sandbox-cross-account-data-leakage-in-chatgpt/",
+        "evidence_source_platform": "Check Point Research",
+        "projection_basis": "primary security research",
+        "providers_or_vendors": ["OpenAI", "Google"],
+        "products_or_services": ["ChatGPT", "connected Gmail", "internal Artifactory service"],
+        "models_or_runtimes": ["ChatGPT runtime; exact model not established"],
+        "deployment_context": "ChatGPT multi-tenant code-execution environments and connected-app permissions."
+      }
+    ],
+    "model_or_product": "ChatGPT",
+    "user_role": "ChatGPT user with a session capable of accessing connected data or tools"
+  },
+  "jurisdictional_context": {
+    "primary_jurisdiction": "United States / global",
+    "cross_border_relevance": "global: ChatGPT and connected cloud services are used across jurisdictions",
+    "public_interest_relevance": "high",
+    "sector": "frontier AI / cloud security / connected applications / personal and enterprise data",
+    "regulatory_surface": [
+      "cybersecurity",
+      "privacy and confidentiality",
+      "tenant isolation",
+      "identity and access management",
+      "connected-app authorization",
+      "agentic tool governance"
+    ]
+  },
+  "taxonomy_classification": {
+    "taxonomy_version": "0.3.2-draft",
+    "classification_status": "unclassified",
+    "classification_basis": "The evidence establishes a specific cross-account shared-infrastructure and authority-transposition mechanism, but a dedicated taxonomy review is required before assigning a current Failure Class. Classification is intentionally deferred rather than forcing the incident into an adjacent access-control, authority or containment class without reviewing the current class boundaries.",
+    "primary_classification": null,
+    "secondary_classifications": [],
+    "classification_review_provenance": {
+      "method": "initial incident admission with taxonomy classification intentionally deferred",
+      "review_date": "2026-09-09",
+      "reviewer": "OpenAI ChatGPT / GPT-5.6 Sol under human-directed VIGIL governance",
+      "review_status": "incident unclassified pending dedicated taxonomy reconciliation",
+      "authority_boundary": "No Failure Class is assigned merely because the incident involves prompt injection, data exfiltration, shared infrastructure or misuse of connected-app authority."
+    }
+  },
+  "linked_records": {
+    "related_incidents": [],
+    "related_observations": [],
+    "related_failure_modes": [],
+    "related_proposals": [],
+    "related_patch_notes": [],
+    "external_references": [],
+    "research": [],
+    "standards": []
+  },
+  "legacy_provenance": [],
+  "diagnostic_provenance": {
+    "method": "human-directed incident ingestion using primary technical security research",
+    "diagnostic_date": "2026-09-09",
+    "human_role": "incident selection and governance direction",
+    "ai_role": "source verification, factual bounding, system-context drafting, severity assessment and repository implementation",
+    "ai_platform": "OpenAI ChatGPT",
+    "ai_model": "GPT-5.6 Sol",
+    "review_status": "human-directed bounded ingestion",
+    "authority_boundary": "The AI collaborator may record the demonstrated security mechanism and governance implications but must not infer unreported victims, unsupported connected-service exploitation, legal liability or taxonomy membership."
+  },
+  "interpretive_provenance": {
+    "review_history": [
+      {
+        "review_id": "VIGIL-REVIEW-2026-09-09-CHATGPT-CROSS-ACCOUNT-000108",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT",
+        "reviewer_model": "GPT-5.6 Sol",
+        "review_date": "2026-09-09",
+        "review_scope": "Incident admission, source bounding, demonstrated connected-app scope, authority-boundary interpretation, occurrence-level severity and taxonomy restraint.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_link_and_metadata_review": true
+        },
+        "known_limitations": [
+          "OpenAI's internal logs and full remediation record were not reviewed.",
+          "The proof of concept directly demonstrates Gmail but not every connected service described as potentially reachable.",
+          "No public evidence reviewed here establishes unsuspecting production victims or downstream harm outside the controlled demonstration.",
+          "Taxonomy classification is intentionally deferred pending dedicated mechanism review."
+        ],
+        "review_outcome": "Admitted as a canonical Incident with S3 severity and unclassified taxonomy status."
+      }
+    ],
+    "current_ai_review": {
+      "review_id": "VIGIL-REVIEW-2026-09-09-CHATGPT-CROSS-ACCOUNT-000108",
+      "reviewer_type": "AI analytical reviewer",
+      "reviewer_platform": "OpenAI ChatGPT",
+      "reviewer_model": "GPT-5.6 Sol",
+      "review_date": "2026-09-09",
+      "review_scope": "Incident admission, source bounding, demonstrated connected-app scope, authority-boundary interpretation, occurrence-level severity and taxonomy restraint.",
+      "capability_profile": {
+        "direct_repository_analysis": true,
+        "direct_text_analysis": true,
+        "web_link_and_metadata_review": true
+      },
+      "known_limitations": [
+        "OpenAI's internal logs and full remediation record were not reviewed.",
+        "The proof of concept directly demonstrates Gmail but not every connected service described as potentially reachable.",
+        "No public evidence reviewed here establishes unsuspecting production victims or downstream harm outside the controlled demonstration.",
+        "Taxonomy classification is intentionally deferred pending dedicated mechanism review."
+      ],
+      "review_outcome": "Admitted as a canonical Incident with S3 severity and unclassified taxonomy status."
+    }
+  },
+  "severity_assessment": {
+    "severity": "S3",
+    "assessment_status": "incident-assessed",
+    "materialised_consequence": "In a controlled proof of concept, Check Point caused one ChatGPT account's session to receive hidden tasking from another account, use the victim session's authorized Gmail access to retrieve email data, and relay that information cross-account without the hidden task being exposed in the visible answer.",
+    "affected_scope": "The demonstrated occurrence involved cross-account tasking between separate ChatGPT accounts and unauthorized relay of data retrieved through a connected Gmail account. The broader potential population and number of accounts exposed while the vulnerable architecture existed are not established.",
+    "seriousness_and_persistence": "The demonstrated consequence is significant because it defeats an account and tenant boundary while reusing user-granted connected-app authority for an unauthorized recipient. However, the public evidence reviewed here does not establish exploitation against unsuspecting production users, persistent downstream data misuse, financial loss or a population-scale breach. Check Point states the channel was no longer available by completion of its report and the identified service had been decommissioned.",
+    "quantitative_information": "Check Point reports discovery in June 2026 and publication on 8 September 2026. No public victim count, affected-account count, duration of exploitable production exposure, volume of exfiltrated production data or quantified loss is established.",
+    "evidentiary_limits": "The public evidence demonstrates the mechanism in a research proof of concept and directly demonstrates Gmail data retrieval. It does not establish that Google Drive, Microsoft Teams, GitHub or every other connected service was separately exfiltrated, nor that hostile actors exploited the issue against real users before remediation.",
+    "band_rationale": "S3 is appropriate because the materialised research demonstration crossed account isolation and confidentiality boundaries and exercised a victim's connected-app authority for another account, which is more serious than a minor or presentation-level defect. S2 is not presently supported because there is no established real-world victim cohort, large-scale production exfiltration, substantial financial or rights harm, or persistent downstream misuse in the reviewed evidence.",
+    "assessed_on": "2026-09-09",
+    "legacy_sources": []
+  }
+}
