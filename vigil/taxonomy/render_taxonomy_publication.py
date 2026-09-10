@@ -128,8 +128,14 @@ def combined_html(
 # base.generate_catalogue and base.main resolve this module-global function in render_taxonomy;
 # replace it before delegating so every full-catalogue render uses the bibliography projection.
 base.combined_html = combined_html
+base.STYLE += """
+.taxonomy-bibliography{background:#fff;border:1px solid #d6d3d1;border-radius:16px;padding:26px;margin-top:52px}
+.taxonomy-bibliography h1{color:#022c1b}.taxonomy-bibliography ol{list-style:none;padding:0;margin:20px 0 0}
+.bibliography-entry{display:grid;grid-template-columns:3rem 1fr;gap:.75rem;border-top:1px solid #e7e5e4;padding:14px 0}
+.bibliography-number{font-weight:700;color:#a47d27}.bibliography-citation,.bibliography-support{margin:0}.bibliography-support{margin-top:6px;color:#57534e;font-size:.9em}.bibliography-role{display:inline-block;margin-top:6px;color:#78716c;font-size:.75em;text-transform:uppercase;letter-spacing:.06em}
+"""
 base.PRINT_STYLE += """
-.taxonomy-bibliography{break-before:page;page-break-before:always;margin:0;padding:0}
+.taxonomy-bibliography{break-before:page;page-break-before:always;margin:0;padding:0;border:0;border-radius:0}
 .taxonomy-bibliography h1{font-family:Georgia,\"Times New Roman\",serif;font-size:24pt;line-height:1.08;color:#022c1b;font-weight:500;margin:0 0 4mm}
 .bibliography-intro{font-size:9pt;line-height:1.45;color:#504a40;margin:0 0 6mm;max-width:165mm}
 .taxonomy-bibliography ol{list-style:none;padding:0;margin:0}
