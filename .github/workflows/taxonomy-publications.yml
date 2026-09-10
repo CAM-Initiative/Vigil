@@ -29,6 +29,7 @@ on:
       - "vigil/taxonomy/prepare_taxonomy_release.py"
       - "vigil/taxonomy/validate_taxonomy.py"
       - "vigil/taxonomy/render_taxonomy.py"
+      - "vigil/taxonomy/render_taxonomy_publication.py"
       - "vigil/taxonomy/assets/**"
       - ".github/workflows/taxonomy-publications.yml"
   workflow_dispatch:
@@ -133,7 +134,7 @@ jobs:
       - name: Generate maintained PDF publication on main
         if: github.event_name != 'pull_request'
         run: |
-          python vigil/taxonomy/render_taxonomy.py \
+          python vigil/taxonomy/render_taxonomy_publication.py \
             --catalogue \
             --output-dir vigil/taxonomy/generated \
             --pdf
