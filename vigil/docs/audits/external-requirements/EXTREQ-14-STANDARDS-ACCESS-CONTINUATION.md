@@ -1,7 +1,9 @@
 # EXTREQ-14 — standards access continuation and reconciliation
 
-**Review date:** 2026-09-10  
-**Scope:** current international-standards ingestion state, source-access provenance and remaining work  
+**Review date:** 2026-09-10
+
+**Scope:** current international-standards ingestion state, source-access provenance and remaining work
+
 **Result:** existing clauses and mappings preserved; no new clause-level requirements created
 
 ## Continuation point
