@@ -24,7 +24,9 @@ def _text(value: object) -> str:
 def _reference_key(reference: dict[str, Any]) -> str:
     url = _text(reference.get("url")).rstrip("/").lower()
     if url:
-        return f"url:{url}"
+        # One instrument URL can support distinct provisions with different titles and roles.
+        # De-duplicate repeated citations to the same identified provision, not the whole URL.
+        return f"url:{url}|title:{_text(reference.get('title')).casefold()}"
     return "meta:" + "|".join(
         _text(reference.get(field)).casefold()
         for field in ("publisher", "title", "date")
@@ -59,7 +61,11 @@ def collect_external_references(families: list[dict]) -> list[dict[str, Any]]:
                         "classes": [],
                     }
                     order.append(key)
-                support = {"class_id": class_id, "class_name": class_name}
+                support = {
+                    "class_id": class_id,
+                    "class_name": class_name,
+                    "evidence_note": _text(reference.get("evidence_note")),
+                }
                 if class_id and support not in collected[key]["classes"]:
                     collected[key]["classes"].append(support)
 
@@ -85,8 +91,15 @@ def bibliography_html(families: list[dict]) -> str:
         if url:
             citation += f' <a href="{base.esc(url)}">{base.esc(url)}</a>'
 
-        supports = ", ".join(
-            f"<code>{base.esc(item['class_id'])}</code> — {base.esc(item['class_name'])}"
+        supports = "".join(
+            '<li class="bibliography-support-item">'
+            f"<p><code>{base.esc(item['class_id'])}</code> — {base.esc(item['class_name'])}</p>"
+            + (
+                f'<p class="bibliography-evidence-note">{base.esc(item["evidence_note"])}</p>'
+                if item["evidence_note"]
+                else ""
+            )
+            + "</li>"
             for item in reference["classes"]
         )
         role_html = f'<span class="bibliography-role">{base.esc(base.label(role))}</span>' if role else ""
@@ -94,7 +107,7 @@ def bibliography_html(families: list[dict]) -> str:
             '<li class="bibliography-entry">'
             f'<span class="bibliography-number">[{index}]</span>'
             f'<div><p class="bibliography-citation">{citation}</p>'
-            + (f'<p class="bibliography-support"><strong>Supports:</strong> {supports}</p>' if supports else "")
+            + (f'<p class="bibliography-support-label"><strong>Supports:</strong></p><ul class="bibliography-support">{supports}</ul>' if supports else "")
             + role_html
             + "</div></li>"
         )
@@ -132,7 +145,7 @@ base.STYLE += """
 .taxonomy-bibliography{background:#fff;border:1px solid #d6d3d1;border-radius:16px;padding:26px;margin-top:52px}
 .taxonomy-bibliography h1{color:#022c1b}.taxonomy-bibliography ol{list-style:none;padding:0;margin:20px 0 0}
 .bibliography-entry{display:grid;grid-template-columns:3rem 1fr;gap:.75rem;border-top:1px solid #e7e5e4;padding:14px 0}
-.bibliography-number{font-weight:700;color:#a47d27}.bibliography-citation,.bibliography-support{margin:0}.bibliography-support{margin-top:6px;color:#57534e;font-size:.9em}.bibliography-role{display:inline-block;margin-top:6px;color:#78716c;font-size:.75em;text-transform:uppercase;letter-spacing:.06em}
+.bibliography-number{font-weight:700;color:#a47d27}.bibliography-citation,.bibliography-support-label{margin:0}.bibliography-support-label{margin-top:6px;color:#57534e;font-size:.9em}.bibliography-support{list-style:none;padding:0;margin:2px 0 0;color:#57534e;font-size:.9em}.bibliography-support-item{margin-top:5px}.bibliography-support-item p{margin:0}.bibliography-evidence-note{margin-top:2px!important;color:#78716c}.bibliography-role{display:inline-block;margin-top:6px;color:#78716c;font-size:.75em;text-transform:uppercase;letter-spacing:.06em}
 """
 base.PRINT_STYLE += """
 .taxonomy-bibliography{break-before:page;page-break-before:always;margin:0;padding:0;border:0;border-radius:0}
@@ -142,7 +155,7 @@ base.PRINT_STYLE += """
 .bibliography-entry{display:grid;grid-template-columns:10mm 1fr;gap:2mm;break-inside:avoid;border-top:.35pt solid #ddd8ca;padding:3mm 0}
 .bibliography-number{font-family:Helvetica,Arial,sans-serif;font-size:8pt;color:#b8943f;font-weight:700}
 .bibliography-citation{font-family:Helvetica,Arial,sans-serif;font-size:8.7pt;line-height:1.45;margin:0;color:#2f302d;overflow-wrap:anywhere}
-.bibliography-support{font-family:Helvetica,Arial,sans-serif;font-size:7.8pt;line-height:1.4;margin:1.5mm 0 0;color:#6f6657}
+.bibliography-support-label{font-family:Helvetica,Arial,sans-serif;font-size:7.8pt;line-height:1.4;margin:1.5mm 0 0;color:#6f6657}.bibliography-support{list-style:none;padding:0;font-family:Helvetica,Arial,sans-serif;font-size:7.8pt;line-height:1.4;margin:.5mm 0 0;color:#6f6657}.bibliography-support-item{margin-top:1.4mm}.bibliography-support-item p{margin:0}.bibliography-evidence-note{margin-top:.5mm!important;color:#756f67}
 .bibliography-role{display:inline-block;margin-top:1.5mm;font-family:Helvetica,Arial,sans-serif;font-size:6.8pt;text-transform:uppercase;letter-spacing:.07em;color:#6f6657}
 """
 

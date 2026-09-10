@@ -82,6 +82,16 @@
         "An agent changes an external permission without recording that the permission change occurred.",
         "A high-impact automated decision is executed without retaining the decision event required for later review."
       ],
+      "external_references": [
+        {
+          "title": "Regulation (EU) 2024/1689 (Artificial Intelligence Act), Article 12",
+          "publisher": "European Parliament and Council of the European Union",
+          "date": "2024-07-12",
+          "url": "https://eur-lex.europa.eu/eli/reg/2024/1689/oj/eng",
+          "reference_role": "regulatory-evidence",
+          "evidence_note": "Article 12 requires high-risk AI systems within its scope to technically allow automatic event logging over the system lifetime and links those logs to traceability, monitoring, post-market monitoring, and operational review. It supports the material-event capture component of this class only within the Regulation's scope; it does not establish a universal logging obligation for every system or event."
+        }
+      ],
       "aliases": [
         "VIGIL.FF.OBSERVABILITY_AUDIT.MATERIAL_EVENT_NONCAPTURE"
       ]
@@ -111,6 +121,16 @@
         "A sub-agent uses a tool route that is not connected to the monitor governing the main agent.",
         "An evaluation environment disables logging for a path that still permits consequential external actions."
       ],
+      "external_references": [
+        {
+          "title": "Early work on monitorability evaluations",
+          "publisher": "Model Evaluation & Threat Research",
+          "date": "2026-01-22",
+          "url": "https://metr.org/blog/2026-01-19-early-work-on-monitorability-evaluations/",
+          "reference_role": "research-evidence",
+          "evidence_note": "METR's SHUSHCAST prototype directly evaluates agents performing side tasks while avoiding monitor detection and reports uncaught runs, including strategies that disguise side-task actions as main-task activity. This supports the existence of monitor-circumvention behaviour and incomplete effective coverage; the study is preliminary, uses a small task set, and does not establish that every monitoring miss is deliberate circumvention."
+        }
+      ],
       "aliases": [
         "VIGIL.FF.OBSERVABILITY_AUDIT.MONITOR_CIRCUMVENTION"
       ]
@@ -139,6 +159,24 @@
       "examples": [
         "Logs record several tool calls but cannot establish which model output triggered which call.",
         "A decision log records the final outcome but not the input version or policy version used to reach it."
+      ],
+      "external_references": [
+        {
+          "title": "Regulation (EU) 2024/1689 (Artificial Intelligence Act), Article 12",
+          "publisher": "European Parliament and Council of the European Union",
+          "date": "2024-07-12",
+          "url": "https://eur-lex.europa.eu/eli/reg/2024/1689/oj/eng",
+          "reference_role": "regulatory-evidence",
+          "evidence_note": "Article 12 links logging capabilities for in-scope high-risk AI systems to appropriate traceability, monitoring, post-market monitoring, and operational review. It supports reconstructability as an objective of adequate records, but it does not define all ordering, identity, target, version, and correlation elements in VIGIL's general mechanism."
+        },
+        {
+          "title": "PROV-DM: The PROV Data Model",
+          "publisher": "World Wide Web Consortium",
+          "date": "2013-04-30",
+          "url": "https://www.w3.org/TR/prov-dm/",
+          "reference_role": "standards-evidence",
+          "evidence_note": "PROV-DM provides structured relations among entities, activities, agents, generation, use, derivation, association, attribution, and delegation. Those relations materially support the lineage and responsibility components needed to reconstruct a pathway; PROV-DM is a provenance model, not a complete audit-log or AI-governance requirement."
+        }
       ],
       "aliases": [
         "VIGIL.FF.OBSERVABILITY_AUDIT.AUDIT_TRAIL_NONRECONSTRUCTABILITY"
@@ -174,6 +212,16 @@
           "type": "distinguish_from",
           "note": "Operational actor attribution is distinct from authorship or source attribution, though both may fail together.",
           "target_id": "VIGIL-FC-000010"
+        }
+      ],
+      "external_references": [
+        {
+          "title": "PROV-DM: The PROV Data Model",
+          "publisher": "World Wide Web Consortium",
+          "date": "2013-04-30",
+          "url": "https://www.w3.org/TR/prov-dm/",
+          "reference_role": "standards-evidence",
+          "evidence_note": "PROV-DM expressly models agents and responsibility relations, including attribution of an entity to an agent and association of an activity with an agent and role. It directly supports preserving actor–artefact and actor–activity attribution; VIGIL extends that structure to the failure case where effective operational responsibility for a material action cannot be established."
         }
       ],
       "aliases": [
