@@ -1,8 +1,8 @@
 # External Requirement Source-Fidelity Status
 
-Review date: 2026-08-30
+Review date: 2026-09-10
 
-The external-requirements corpus contains 854 canonical EXTREQ records across 81 registered source versions. Historical `extraction_status` remains preserved in `source-scope.json`; it is not, by itself, a claim of clause-level semantic fidelity.
+The external-requirements corpus contains 884 canonical EXTREQ records across 81 registered source versions. Historical `extraction_status` remains preserved in `source-scope.json`; it is not, by itself, a claim of clause-level semantic fidelity.
 
 ## Effective completion rule
 
@@ -23,11 +23,18 @@ A first-class source is effectively complete for clause-level use only when its 
 | CycloneDX 1.7 ML-BOM | complete | assured | complete | Five propositions represent the distinct MUST uniqueness and SHOULD reserved-prefix modalities. |
 | IMDA Agentic AI MGF 1.5 | complete | assured | complete | Thirty-nine records resolve all 20 queued fidelity defects with deterministic subsection decomposition. |
 | NIST SP 800-218A | complete | assured | complete | Seventy-five source-native recommendation and consideration propositions are represented separately. |
+| IEEE 7000-2021 | complete | assured | complete | Fifty-nine records preserve the reviewed requirements and four repaired omissions from a licensed primary copy. |
+| IEEE 7001-2021 | complete | assured | complete | Thirty-three records provide bounded coverage of the reviewed Clause 5 stakeholder-transparency requirements from a licensed primary copy. |
+| IEEE 7007-2021 | complete | assured | complete | Ten records preserve the reviewed governance-relevant ERAS concepts from a licensed primary copy without inferring operational requirements. |
+| IEEE 7009-2024 | complete | assured | complete | Sixty-three live atomic records and the durable retirement map preserve the reviewed licensed-primary representation. |
+| IEEE 7010-2020 | complete | assured | complete | Eighteen records provide bounded coverage of the reviewed Clause 4 well-being impact-assessment activities from a licensed primary copy. |
+| IEEE 7014-2024 | complete | assured | complete | Fifty-nine records preserve the reviewed mandatory and recommended Clause 4 propositions from a licensed primary copy. |
+| IEEE 7014.1-2026 | complete | assured | complete | Sixty-six records provide bounded coverage of the reviewed Clause 6 recommended practices from a licensed primary copy. |
 
 ## Other historically complete sources
 
 Until individually re-audited under `SOURCE-FIDELITY-METHODOLOGY.md`, every other source carrying historical `extraction_status: complete` remains fidelity-unassured and effectively partial. Existing records remain useful and source-traceable, but absence of an EXTREQ record must not be treated as proof that an unaudited source contains no corresponding obligation.
 
-## Next reprocessing order
+## Continuation boundary
 
-The remaining bounded queue consists of licensed IEEE sources. They should be reviewed only from the lawfully accessible primary texts already recorded by the repository. Blocked-access sources remain blocked and are not inferred from metadata.
+The licensed IEEE first-class queue represented in `source-fidelity.json` is complete. IEEE 2089-2021, 7002-2022, 7005-2021 and 7012-2025 remain deliberately `supporting-only`; their available licensed copies do not by themselves expand the agreed decomposition scope. IEEE 7003-2024 remains `not-started`: its official page identifies a no-cost access programme, but substantive text was not retrieved or verified in the 2026-09-10 continuation environment. IEEE 2863-2026 and the other blocked-access sources remain blocked. No clause content is inferred from metadata, catalogue descriptions or publisher summaries.
