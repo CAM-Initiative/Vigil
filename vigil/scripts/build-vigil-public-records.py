@@ -252,7 +252,11 @@ def build() -> None:
     write(INCIDENT_INDEX, incident_index)
     write(MASTER_INDEX, master)
     write(TAXONOMY_EXAMPLES, taxonomy_examples(records))
-    print(f"Wrote Incident-only VIGIL indexes for {len(entries)} canonical records.")
+    print(
+        f"Wrote lightweight Incident index for {len(entries)} canonical records "
+        f"({INCIDENT_INDEX.stat().st_size} bytes) and registry manifest "
+        f"({MASTER_INDEX.stat().st_size} bytes)."
+    )
 
 
 if __name__ == "__main__":
