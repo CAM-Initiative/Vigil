@@ -13,46 +13,51 @@ spec.loader.exec_module(validator)
 
 
 class ValidateVigilPublicRecordsTest(unittest.TestCase):
-    def test_generated_incident_evidence_facets_must_match_canonical_sources(self):
+    def test_generated_incident_projection_rejects_embedded_detail_fields(self):
         record = {
             "id": "VIGIL-INC-000001",
             "record_type": "incident",
-            "preferred_evidence": {"source_url": "https://example.invalid/preferred"},
-            "source_records": [
-                {
-                    "source_url": "https://example.invalid/preferred",
-                    "evidence_status": "registry-reported",
+            "record_state": "active",
+            "date_recorded": "2026-09-11",
+            "record_identity": {
+                "title": "Canonical Incident",
+                "version": "1.0.0",
+                "updated": "2026-09-11",
+            },
+            "incident_identity": {"occurred_from": "2026-09-10"},
+            "summary": "A bounded Incident summary.",
+            "system_context": {"platform_or_vendor": "Example Provider"},
+            "severity_assessment": {"severity": "S3"},
+            "taxonomy_classification": {
+                "classification_status": "classified",
+                "primary_classification": {
+                    "class_id": "VIGIL-FC-000001",
+                    "family_id": "VIGIL-FF-0001",
                 },
-                {
-                    "source_url": "https://example.invalid/reporting",
-                    "evidence_status": "independent-reporting",
-                },
-            ],
+            },
         }
+
+        expected = validator.expected_projection(record)
+        entry = {
+            **expected,
+            "search_terms": ["Example Provider", "VIGIL-FC-000001"],
+        }
+
         with tempfile.TemporaryDirectory() as temp_dir:
             path = Path(temp_dir) / "VIGIL.Incidents.Index.json"
             validator.INCIDENT_INDEX = path
 
-            path.write_text(json.dumps({"records": [{
-                "id": record["id"],
-                "record_type": "incident",
-                "evidence_statuses": ["independent-reporting", "registry-reported"],
-                "preferred_evidence_status": "registry-reported",
-            }]}), encoding="utf-8")
+            path.write_text(json.dumps({"records": [entry]}), encoding="utf-8")
             errors = []
-            validator.validate_generated_incident_evidence_facets({record["id"]: record}, errors)
+            validator.validate_generated_incident_projection({record["id"]: record}, errors)
             self.assertEqual(errors, [])
 
-            path.write_text(json.dumps({"records": [{
-                "id": record["id"],
-                "record_type": "incident",
-                "evidence_statuses": ["registry-reported"],
-                "preferred_evidence_status": "verified",
-                "evidence_confidence": "high",
-            }]}), encoding="utf-8")
+            entry["severity_assessment"] = record["severity_assessment"]
+            path.write_text(json.dumps({"records": [entry]}), encoding="utf-8")
             errors = []
-            validator.validate_generated_incident_evidence_facets({record["id"]: record}, errors)
-            self.assertEqual(len(errors), 3)
+            validator.validate_generated_incident_projection({record["id"]: record}, errors)
+            self.assertTrue(any("non-index fields" in error for error in errors))
+            self.assertTrue(any("embeds canonical detail field severity_assessment" in error for error in errors))
 
 
 if __name__ == "__main__":
