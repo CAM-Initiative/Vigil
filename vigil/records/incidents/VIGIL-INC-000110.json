@@ -1,0 +1,291 @@
+{
+  "id": "VIGIL-INC-000110",
+  "record_type": "incident",
+  "record_state": "active",
+  "date_recorded": "2026-09-10",
+  "record_identity": {
+    "record_id": "VIGIL-INC-000110",
+    "record_type": "incident",
+    "title": "Meta AI-assisted Instagram recovery flaw enabled unauthorized account takeovers",
+    "created": "2026-09-10",
+    "updated": "2026-09-10",
+    "version": "0.1.1"
+  },
+  "incident_identity": {
+    "historical_event_name": "2026 Meta High Touch Support Instagram account-takeover incident",
+    "occurred_from": "2026-04-17",
+    "occurred_to": "2026-05-31",
+    "date_precision": "date-range",
+    "date_basis": "Reporting on Meta's breach notification states that the Maine filing records 17 April 2026 as the breach date and that Meta discovered the exploited vulnerability on 31 May 2026. The public evidence does not establish the exact first and last successful unauthorized takeover dates for every affected account."
+  },
+  "summary": "Meta disclosed through a breach notification that unauthorized third parties exploited a vulnerability in Instagram's AI-assisted High Touch Support account-recovery system to obtain password-reset links for accounts they did not own. Meta stated that the support tool itself functioned as intended but a separate code path failed to verify that an email address supplied by the person requesting a reset matched the email address associated with the targeted account. Attackers could therefore receive a reset link at an unassociated email address and take over an account when the account holder had not enabled two-factor authentication. Meta's notification identified 20,225 potentially affected Instagram users, while public reporting documented several confirmed or reported account takeovers including high-profile accounts.",
+  "vigil_assessment": {
+    "factual_basis": "BleepingComputer directly reports Meta's Maine breach-notification language, including Meta's statement that High Touch Support was an AI-assisted Instagram recovery system, that a separate verification code path failed to reject unassociated email addresses, and that unauthorized third parties consequently received password-reset links for accounts they did not own. The notification identified 20,225 potentially affected users and 30 Maine residents. TechCrunch independently documented the attack flow before the later breach-notification reporting, verified that an attacker-controlled public mailbox received a verification code during the demonstrated process, and reported multiple compromised accounts. Meta's own March product announcement establishes that its AI support assistant was being deployed for end-to-end account support and privileged recovery-related actions, but that announcement is used only for system context rather than proof of the later exploit.",
+    "governance_interpretation": "The occurrence is a cross-principal authority failure in an AI-assisted privileged support workflow. A person interacting with the recovery system had authority to make requests concerning their own account state, but the workflow allowed an attacker-supplied email address and recovery request to alter the separately governed authentication state of another identifiable account holder. The material failure is not that the AI support tool existed or that an attacker could converse with it; it is that the surrounding recovery pathway failed to preserve the account-holder boundary before issuing a credential-reset capability. Meta's statement that the support tool itself worked as intended is preserved: the evidenced defect was in a separate verification code path adjacent to the AI-assisted workflow.",
+    "significance_to_cam": "The incident demonstrates why an AI system's ability to take privileged support actions must remain principal-bound. Conversational acceptance, successful navigation of a support workflow, possession of an attacker-controlled email address, or technical ability to issue a reset link cannot substitute for independent authority over the target account. The case is particularly relevant to agentic and AI-mediated support systems because delegated tool authority can materially change authentication state even where the underlying model is not itself defective.",
+    "assessment_boundaries": [
+      "Meta states that the AI-assisted High Touch Support tool itself worked as intended and attributes the vulnerability to a separate code path that failed to verify the supplied email address against the targeted Instagram account; VIGIL does not recast that statement as an LLM jailbreak or model-behaviour failure.",
+      "The 20,225 figure is treated as the potentially affected population reported through Meta's breach notification, not as proof that every listed account was successfully taken over or maliciously accessed.",
+      "The reviewed public evidence does not establish exactly what personal information, direct messages or linked-service data were actually viewed or exfiltrated from each compromised account.",
+      "Public reporting describes multiple attack variants and user reports; this record is bounded to the email-verification/password-reset pathway documented in Meta's breach-notification language rather than inferring that every contemporaneous Instagram takeover used the same mechanism.",
+      "No finding of legal liability, regulatory breach or negligence is made by VIGIL."
+    ]
+  },
+  "source_records": [
+    {
+      "source_title": "Over 20,000 Instagram accounts stolen in Meta AI support hack",
+      "author_or_publisher": "BleepingComputer / Sergiu Gatlan",
+      "source_date": "2026-06-08",
+      "source_url": "https://www.bleepingcomputer.com/news/security/meta-ai-support-data-breach-affects-20-000-instagram-accounts/",
+      "source_url_status": "available",
+      "source_type": "news article",
+      "source_platform": "BleepingComputer",
+      "source_residence": "external",
+      "source_role": "incident-evidence",
+      "evidence_modality": ["text"],
+      "evidence_status": "independent-reporting",
+      "evidence_status_basis": "BleepingComputer reproduces material language from Meta's breach notification filed with Maine's Office of the Attorney General, including the affected-population figure, the verification defect, Meta's characterization of the AI-assisted support tool and the resulting unauthorized password resets.",
+      "primary_artefact_access": {
+        "access_method": "direct public news-article review containing quoted provider breach-notification language",
+        "access_status": "directly reviewed",
+        "direct_primary_artefact_review": true,
+        "limitations": [
+          "The underlying Maine breach-notification document was not directly retrieved in this review pass; provider statements are reviewed through BleepingComputer's reproduction of the filing.",
+          "The 20,225 figure describes potentially affected users and does not establish that every account was successfully compromised."
+        ],
+        "reviewing_system": "OpenAI ChatGPT — GPT-5.6 Sol"
+      },
+      "incident_source_order": 1,
+      "interpretive_reliance": "Preferred evidence for Meta's provider-attributed incident mechanism, reported affected population, discovery, containment and remediation actions.",
+      "relevance_note": "Independent security reporting reproducing Meta's regulator-filed incident description.",
+      "retrieved_date": "2026-09-10",
+      "source_context": "Meta's breach-notification language states that High Touch Support was an AI-assisted Instagram recovery system; a separate code path failed to verify that the reset-request email matched the account email, allowing unauthorized parties to receive reset links for accounts they did not own.",
+      "system_or_product": "Instagram High Touch Support / Meta AI-assisted account recovery",
+      "model_or_algorithm": "specific model not established"
+    },
+    {
+      "source_title": "Hackers hijacked Instagram accounts by tricking Meta AI support chatbot into granting access",
+      "author_or_publisher": "TechCrunch / Lorenzo Franceschi-Bicchierai",
+      "source_date": "2026-06-01",
+      "source_url": "https://techcrunch.com/2026/06/01/hackers-hijacked-instagram-accounts-by-tricking-meta-ai-support-chatbot-into-granting-access/",
+      "source_url_status": "available",
+      "source_type": "news article",
+      "source_platform": "TechCrunch",
+      "source_residence": "external",
+      "source_role": "incident-evidence",
+      "evidence_modality": ["text", "image"],
+      "evidence_status": "independent-reporting",
+      "evidence_status_basis": "TechCrunch independently reported multiple compromised accounts, described the attacker workflow through Meta's AI support assistant and verified that the attacker-controlled public mailbox shown in the demonstration received the verification code.",
+      "primary_artefact_access": {
+        "access_method": "direct public news-article review",
+        "access_status": "directly reviewed",
+        "direct_primary_artefact_review": true,
+        "limitations": [
+          "The report predates Meta's later breach notification and at publication did not establish the eventual potentially affected population.",
+          "Some contemporaneous social-media reports may have involved different takeover methods and are not treated as proof of this specific pathway."
+        ],
+        "reviewing_system": "OpenAI ChatGPT — GPT-5.6 Sol"
+      },
+      "incident_source_order": 2,
+      "interpretive_reliance": "Independent corroboration of successful account takeovers and the support-chat/password-reset pathway before the later provider filing clarified the verification defect.",
+      "relevance_note": "Early independent technical reporting of the exploitation sequence and affected accounts.",
+      "retrieved_date": "2026-09-10",
+      "source_context": "TechCrunch reported that attackers could provide a new email address through Meta AI Support Assistant, receive a verification code at that attacker-controlled address, obtain a Reset Password action and take over the targeted Instagram account without compromising the victim's legitimate email account.",
+      "system_or_product": "Instagram / Meta AI Support Assistant",
+      "model_or_algorithm": "specific model not established"
+    },
+    {
+      "source_title": "Boosting Your Support and Safety on Meta's Apps With AI",
+      "author_or_publisher": "Meta",
+      "source_date": "2026-03-20",
+      "source_url": "https://about.fb.com/news/2026/03/boosting-your-support-and-safety-on-metas-apps-with-ai/",
+      "source_url_status": "available",
+      "source_type": "official announcement",
+      "source_platform": "Meta Newsroom",
+      "source_residence": "external",
+      "source_role": "contextual-background",
+      "evidence_modality": ["text", "video"],
+      "evidence_status": "first-party-reported",
+      "evidence_status_basis": "Meta's own announcement establishes the deployment and intended privileged support role of the Meta AI support assistant, including end-to-end account support and the ability to take direct support actions. It is not relied upon as incident confirmation.",
+      "primary_artefact_access": {
+        "access_method": "direct public provider-announcement review",
+        "access_status": "directly reviewed",
+        "direct_primary_artefact_review": true,
+        "limitations": [
+          "This announcement predates the incident and does not describe the later vulnerability or affected accounts."
+        ],
+        "reviewing_system": "OpenAI ChatGPT — GPT-5.6 Sol"
+      },
+      "incident_source_order": 3,
+      "interpretive_reliance": "System-context evidence for the AI support assistant's deployment and privileged account-support role only.",
+      "relevance_note": "Provider-controlled product context distinguishing the AI-assisted support capability from the later verification defect.",
+      "retrieved_date": "2026-09-10",
+      "source_context": "Meta announced global rollout of its AI support assistant across Facebook and Instagram support surfaces and described it as designed to resolve account problems from start to finish, including direct support actions.",
+      "system_or_product": "Meta AI support assistant / Facebook and Instagram support",
+      "model_or_algorithm": "specific model not established"
+    }
+  ],
+  "preferred_evidence": {
+    "source_url": "https://www.bleepingcomputer.com/news/security/meta-ai-support-data-breach-affects-20-000-instagram-accounts/",
+    "selection_basis": "BleepingComputer reproduces the most incident-specific provider-attributed breach-notification language available in the reviewed public evidence, including the exact verification defect, potentially affected population and Meta's containment actions; TechCrunch independently corroborates the exploitation path and successful takeovers.",
+    "selected_on": "2026-09-10"
+  },
+  "external_incident_references": [
+    {
+      "external_id": "2267",
+      "registry": "AIAAIC Repository",
+      "relationship": "same-incident",
+      "reviewed_on": "2026-09-10",
+      "url": "https://www.aiaaic.org/aiaaic-repository/ai-algorithmic-and-automation-incidents/hackers-use-meta-ai-support-chatbot-to-takeover-instagram-accounts"
+    }
+  ],
+  "system_context": {
+    "platform_or_vendor": "Meta",
+    "product_or_service": "Other",
+    "specific_model_or_runtime": "Meta AI-assisted High Touch Support / Meta AI Support Assistant; specific model not established",
+    "interface_surface": [
+      "Instagram account recovery",
+      "Meta AI-assisted support chat",
+      "High Touch Support",
+      "password-reset link issuance",
+      "recovery-email verification",
+      "two-factor-authentication boundary"
+    ],
+    "affected_population": "Meta's breach notification identified 20,225 potentially affected Instagram users; the reviewed public evidence does not establish that every listed account was successfully taken over.",
+    "deployment_context": "AI-assisted Instagram account-recovery and support workflow capable of initiating privileged authentication-state changes, with an adjacent email-verification code path that failed to preserve account ownership boundaries.",
+    "system_type": "social-media platform / AI-assisted customer support and account recovery",
+    "interaction_mode": "attacker interaction with AI-assisted support followed by unauthorized password-reset capability issuance and account takeover",
+    "embodiment_status": "non-embodied digital system",
+    "evidence_scope": "provider-attributed breach-notification reporting with independent technical reporting and registry cross-reference",
+    "evidenced_vendors": ["Meta"],
+    "primary_evidenced_vendors": ["Meta"],
+    "vendor_cluster": [],
+    "evidenced_products_or_services": ["Instagram", "High Touch Support", "Meta AI Support Assistant"],
+    "evidenced_models_or_runtimes": ["specific model not established"],
+    "evidenced_systems": [
+      {
+        "source_title": "Over 20,000 Instagram accounts stolen in Meta AI support hack",
+        "source_url": "https://www.bleepingcomputer.com/news/security/meta-ai-support-data-breach-affects-20-000-instagram-accounts/",
+        "evidence_source_platform": "BleepingComputer",
+        "projection_basis": "provider breach-notification language reported by independent security journalism",
+        "providers_or_vendors": ["Meta"],
+        "products_or_services": ["Instagram", "High Touch Support"],
+        "models_or_runtimes": ["specific model not established"],
+        "deployment_context": "Instagram AI-assisted account-recovery system in which a separate verification code path could issue reset links to email addresses not associated with the target account."
+      }
+    ],
+    "model_or_product": "Meta AI-assisted Instagram High Touch Support",
+    "user_role": "Instagram account holder, account-recovery requester, security responder or affected principal"
+  },
+  "jurisdictional_context": {
+    "primary_jurisdiction": "United States",
+    "secondary_jurisdictions": [],
+    "cross_border_relevance": "potentially global — Instagram is a global service and Meta's AI support assistant was deployed across supported countries and territories, but the public breach-notification evidence reviewed here provides a US regulatory reporting anchor rather than a complete country-by-country affected-user distribution",
+    "public_interest_relevance": "high",
+    "sector": "social media / consumer account security / AI-assisted customer support",
+    "regulatory_surface": [
+      "cybersecurity",
+      "privacy and confidentiality",
+      "identity and access management",
+      "account recovery",
+      "AI-assisted support governance",
+      "breach notification"
+    ]
+  },
+  "taxonomy_classification": {
+    "taxonomy_version": "0.3.1-draft",
+    "classification_status": "classified",
+    "classification_basis": "The occurrence satisfies VIGIL-FC-000057 Cross-Principal State Authority Transposition because the recovery request and email supplied by one principal were accepted as sufficient basis to alter the authentication state of another identifiable account holder. The evidence does not require treating the model itself as the defective component: the authority failure materialized across the AI-assisted support workflow and its adjacent verification code path.",
+    "primary_classification": {
+      "class_id": "VIGIL-FC-000057",
+      "family_id": "VIGIL-FF-0001",
+      "classification_confidence": "high",
+      "classification_basis": "Authority available to a support requester over their own recovery interaction was transposed into authority to issue a password-reset capability for another principal's Instagram account, materially changing that account holder's separately governed authentication state without establishing the target principal's consent or entitlement."
+    },
+    "secondary_classifications": [],
+    "classification_review_provenance": {
+      "method": "incident-specific current-taxonomy review",
+      "review_date": "2026-09-10",
+      "reviewer": "OpenAI ChatGPT / GPT-5.6 Sol under human-directed VIGIL governance",
+      "review_status": "classified on evidenced cross-principal account-state mechanism",
+      "authority_boundary": "Classification is limited to the evidenced account-recovery authority transposition. It does not assert that the language model was independently misaligned, that every takeover used this pathway, or that Meta's AI support tool rather than the adjacent verification code was the root software defect."
+    }
+  },
+  "linked_records": {
+    "related_incidents": [],
+    "related_observations": [],
+    "related_failure_modes": [],
+    "related_proposals": [],
+    "related_patch_notes": [],
+    "external_references": [],
+    "research": [],
+    "standards": []
+  },
+  "legacy_provenance": [],
+  "diagnostic_provenance": {
+    "method": "human-directed incident ingestion using provider-attributed breach-notification reporting, independent technical reporting, provider product documentation and registry reconciliation",
+    "diagnostic_date": "2026-09-10",
+    "human_role": "standing incident-intake and taxonomy-governance authority",
+    "ai_role": "ecosystem search, duplicate reconciliation, source verification, factual bounding, severity assessment, taxonomy classification and repository implementation",
+    "ai_platform": "OpenAI ChatGPT",
+    "ai_model": "GPT-5.6 Sol",
+    "review_status": "automated bounded ingestion under standing human governance instructions",
+    "authority_boundary": "The AI collaborator may admit and classify the evidenced occurrence but must not infer unreported affected accounts, data access, legal liability, model intent or a model-specific root cause beyond the reviewed evidence."
+  },
+  "interpretive_provenance": {
+    "review_history": [
+      {
+        "review_id": "VIGIL-REVIEW-2026-09-10-META-INSTAGRAM-000110",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT",
+        "reviewer_model": "GPT-5.6 Sol",
+        "review_date": "2026-09-10",
+        "review_scope": "Incident admission, duplicate reconciliation, source bounding, affected-system metadata, occurrence-level severity assessment and current-taxonomy classification.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_link_and_metadata_review": true
+        },
+        "known_limitations": [
+          "The underlying Maine breach-notification document was not directly retrieved in this review pass; material provider language was reviewed through independent reporting.",
+          "The 20,225 figure is an upper-bound potentially affected population rather than a verified successful-takeover count.",
+          "The exact personal data viewed or exfiltrated from individual compromised accounts is not established.",
+          "The specific model underlying Meta's AI-assisted support workflow is not established."
+        ],
+        "review_outcome": "Admitted as a canonical Incident with S2 severity and high-confidence VIGIL-FC-000057 Cross-Principal State Authority Transposition classification."
+      }
+    ],
+    "current_ai_review": {
+      "review_id": "VIGIL-REVIEW-2026-09-10-META-INSTAGRAM-000110",
+      "reviewer_type": "AI analytical reviewer",
+      "reviewer_platform": "OpenAI ChatGPT",
+      "reviewer_model": "GPT-5.6 Sol",
+      "review_date": "2026-09-10",
+      "review_scope": "Incident admission, duplicate reconciliation, source bounding, affected-system metadata, occurrence-level severity assessment and current-taxonomy classification.",
+      "capability_profile": {
+        "direct_repository_analysis": true,
+        "direct_text_analysis": true,
+        "web_link_and_metadata_review": true
+      },
+      "known_limitations": [
+        "The underlying Maine breach-notification document was not directly retrieved in this review pass; material provider language was reviewed through independent reporting.",
+        "The 20,225 figure is an upper-bound potentially affected population rather than a verified successful-takeover count.",
+        "The exact personal data viewed or exfiltrated from individual compromised accounts is not established.",
+        "The specific model underlying Meta's AI-assisted support workflow is not established."
+      ],
+      "review_outcome": "Admitted as a canonical Incident with S2 severity and high-confidence VIGIL-FC-000057 Cross-Principal State Authority Transposition classification."
+    }
+  },
+  "severity_assessment": {
+    "severity": "S2",
+    "assessment_status": "incident-assessed",
+    "materialised_consequence": "Unauthorized third parties obtained password-reset capabilities for Instagram accounts they did not own and successfully took over multiple accounts. Meta's breach notification identified 20,225 potentially affected users and required affected-account security actions.",
+    "affected_scope": "The regulator-filed population reported by BleepingComputer is 20,225 potentially affected Instagram users, including 30 Maine residents. Independent reporting documents multiple successful takeovers, including high-profile accounts, but does not establish that every potentially affected account was compromised.",
+    "seriousness_and_persistence": "Successful takeover displaced legitimate account-holder control and could expose account-bound communications, content and connected information until the account was secured. Meta disabled the affected recovery system, invalidated generated reset links, enrolled potentially affected accounts into security checkpoints and required password resets/re-authentication. The public evidence does not establish enduring downstream misuse for the entire affected cohort.",
+    "quantitative_information": "Meta's breach notification identified 20,225 potentially affected Instagram users and 30 affected users in Maine. The filing date reporting identifies 17 April 2026 as the breach date and Meta states it discovered the vulnerability on 31 May 2026. The exact successful-takeover count and volume of data accessed are not public in the reviewed evidence.",
+    "evidentiary_limits": "The affected-population figure is an upper bound; not every listed account is shown to have been maliciously accessed. Meta states it has no information establishing what personal information was actually accessed or stolen from each compromised account. The specific model used by the AI-assisted support system is not established, and Meta attributes the software defect to a separate verification code path rather than to the AI tool itself.",
+    "band_rationale": "S2 is appropriate because the occurrence materialised unauthorized loss of control over consumer accounts and exposed a population-scale authentication boundary affecting up to 20,225 users, with meaningful privacy, identity and account-security consequences requiring forced remediation. S1 is not supported because the reviewed evidence does not establish death, grave injury, critical-service loss, very large realised financial loss or comparably grave persistent societal harm. S3 would understate the combination of successful account takeover, privileged authentication-state change and the potentially affected population reported by Meta.",
+    "assessed_on": "2026-09-10",
+    "legacy_sources": []
+  }
+}

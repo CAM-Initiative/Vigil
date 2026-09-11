@@ -98,6 +98,7 @@
         "subtypes": {"type": "array", "items": {"$ref": "#/$defs/subtype"}, "minItems": 1},
         "relationships": {"type": "array", "items": {"$ref": "#/$defs/relationship"}},
         "external_mappings": {"type": "array", "items": {"$ref": "#/$defs/external_mapping"}},
+        "external_references": {"type": "array", "items": {"$ref": "#/$defs/external_reference"}, "minItems": 1},
         "supersession": {"$ref": "#/$defs/supersession"}
       }
     },
@@ -141,6 +142,19 @@
         "identifier": {"type": "string", "minLength": 1},
         "relationship": {"type": "string", "enum": ["direct", "broader", "narrower", "partial", "analogous", "unresolved"]},
         "note": {"type": "string"}
+      }
+    },
+    "external_reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["title", "publisher", "date", "url", "reference_role"],
+      "properties": {
+        "title": {"type": "string", "minLength": 1},
+        "publisher": {"type": "string", "minLength": 1},
+        "date": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"},
+        "url": {"type": "string", "format": "uri"},
+        "reference_role": {"type": "string", "enum": ["authoritative-guidance", "regulatory-evidence", "standards-evidence", "research-evidence", "contextual-evidence"]},
+        "evidence_note": {"type": "string", "minLength": 1}
       }
     }
   }

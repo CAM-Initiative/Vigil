@@ -13,7 +13,7 @@
     "name": "Authority Boundary Integrity Failures",
     "status": "draft",
     "abstraction": "family",
-    "version": "0.1.2",
+    "version": "0.1.3",
     "plain_english": "The system can see, reach, decode, inherit, capture, or use something and mistakes that fact for permission to act.",
     "definition": "Failures in which information, access, capability, identity, technical reachability, transformed content, delegated intent, participation state, captured contribution, authorised purpose, principal-bound state, or system state is treated as conferring authority, permission, delegation, or execution scope that has not been independently established for the relevant source, target, actor, action, purpose, participant, principal, or context.",
     "invariant": "Visibility is not authority. Capability is not permission. Technical reachability is not delegation. Transformation must not increase authority. Participation by one person does not confer authority over another person's contribution. Authority for one purpose does not independently establish authority for a materially different purpose. Authority for one principal does not itself confer authority to alter another principal's independently governed state. Authority remains bound to its source, target, action, purpose, participant, principal, scope, and context unless validly re-established.",
@@ -45,7 +45,8 @@
       "VIGIL-FC-000054",
       "VIGIL-FC-000055",
       "VIGIL-FC-000057",
-      "VIGIL-FC-000064"
+      "VIGIL-FC-000064",
+      "VIGIL-FC-000068"
     ],
     "allowed_class_codes": [
       "SOURCE_AUTHORITY_CONFUSION",
@@ -59,7 +60,8 @@
       "MULTIPARTY_PARTICIPANT_AUTHORITY_TRANSPOSITION",
       "SECONDARY_PURPOSE_AUTHORITY_TRANSPOSITION",
       "CROSS_PRINCIPAL_STATE_AUTHORITY_TRANSPOSITION",
-      "OBJECTIVE_PATHWAY_AUTHORITY_DOMINANCE"
+      "OBJECTIVE_PATHWAY_AUTHORITY_DOMINANCE",
+      "INDUSTRIAL_SCALE_UNAUTHORISED_CAPABILITY_EXTRACTION"
     ]
   },
   "classes": [
@@ -310,6 +312,16 @@
           "target_id": "VIGIL-FC-000005"
         }
       ],
+      "external_references": [
+        {
+          "title": "CWE-15: External Control of System or Configuration Setting",
+          "publisher": "MITRE",
+          "date": "2026-04-30",
+          "url": "https://cwe.mitre.org/data/definitions/15.html",
+          "reference_role": "authoritative-guidance",
+          "evidence_note": "CWE-15 identifies the security weakness in allowing user-provided or otherwise untrusted data to control sensitive system or configuration values that govern behaviour or manage resources. This directly supports the trust-boundary and data-to-control-state components of the mechanism; it does not define VIGIL's control-plane abstraction, address model or retrieved content specifically, or establish the class's full fresh-authority-validation requirement."
+        }
+      ],
       "aliases": [
         "VIGIL.FF.AUTHORITY_BOUNDARY.CONTROL_PLANE_CROSSOVER"
       ]
@@ -556,6 +568,16 @@
           "note": "Secondary-purpose transposition may occur even where capture and primary processing were fully authorised for every participant."
         }
       ],
+      "external_references": [
+        {
+          "title": "Guidance on privacy and developing and training generative AI models",
+          "publisher": "Office of the Australian Information Commissioner",
+          "date": "2024-10-21",
+          "url": "https://www.oaic.gov.au/privacy/privacy-guidance-for-organisations-and-government-agencies/guidance-on-privacy-and-developing-and-training-generative-ai-models",
+          "reference_role": "regulatory-evidence",
+          "evidence_note": "OAIC guidance explains that reusing personal information collected for another purpose to train a generative AI model is a secondary use requiring consent or an applicable exception, and that public availability does not by itself permit collection or use. This supports the purpose-specific authority and public-availability boundary of the mechanism in an Australian Privacy Act context; it does not establish that every secondary use is unauthorised or supply the class's full cross-jurisdictional scope."
+        }
+      ],
       "aliases": [
         "purpose-authority transposition",
         "training-purpose authority transposition",
@@ -665,6 +687,85 @@
         "task-objective authority dominance",
         "objective utility displacement of verified authority",
         "instrumental objective success through unauthorised exploitation"
+      ]
+    },
+    {
+      "class_id": "VIGIL-FC-000068",
+      "class_code": "INDUSTRIAL_SCALE_UNAUTHORISED_CAPABILITY_EXTRACTION",
+      "family_id": "VIGIL-FF-0001",
+      "name": "Industrial-Scale Unauthorised Capability Extraction",
+      "status": "draft",
+      "abstraction": "class",
+      "plain_english": "A model or actor systematically extracts another model's restricted capabilities at industrial scale for reproduction or downstream training without an independently adequate authority basis.",
+      "definition": "A failure in which access to, interaction with, or technical reachability of an AI system is used to systematically acquire restricted or proprietary behavioural capabilities, reasoning patterns, outputs, functionality, or model-derived know-how at industrial scale for the purpose of reproducing, transferring, substituting, or training those capabilities into another model or system, while treating access, account possession, API availability, output visibility, or successful interaction as sufficient authority for that capability-acquisition purpose despite the relevant authority basis being absent, narrower, disputed, bypassed, or not independently established.",
+      "recognition": {
+        "required_conditions": [
+          "The activity systematically targets capabilities, functionality, reasoning behaviour, output patterns, or other model-derived know-how rather than merely using the model for the immediate task for which access was provided.",
+          "The acquisition is conducted at industrial scale or through a coordinated campaign whose volume, automation, account distribution, infrastructure, persistence, or operational organisation materially exceeds ordinary individual use or bounded research interaction.",
+          "The end purpose is capability reproduction, transfer, substitution, model training, model improvement, or comparable downstream incorporation into another model or system.",
+          "The targeted capability or access pathway is subject to a restriction, proprietary boundary, access condition, technical control, contractual constraint, licence condition, or other authority-relevant limitation.",
+          "An independently adequate authority basis for the capability-acquisition purpose is absent, narrower than the activity performed, disputed, deliberately bypassed, or not established before the extraction proceeds."
+        ],
+        "indicators": [
+          "Large-scale automated querying or repeated structured elicitation designed to map or reproduce model capabilities.",
+          "Use of distributed accounts, proxies, aggregators, cloud infrastructure, credential rotation, rate-limit evasion, geographic routing, or other mechanisms to avoid single-point detection or enforcement.",
+          "Collection of outputs, reasoning artefacts, behavioural traces, scores, labels, or evaluations for downstream model training or reproduction.",
+          "A campaign explicitly organised around distillation, cloning, capability harvesting, teacher-model extraction, or systematic substitution of proprietary model functionality."
+        ]
+      },
+      "exclusions": [
+        "Ordinary use of a model for the immediate task for which access was provided, even where the user learns from the interaction.",
+        "Personal, academic, safety, governance, interoperability, benchmarking, red-team, or other bounded research activity where capability reproduction is not the operative end purpose or where an adequate authority, licence, consent, exception, or other governance basis covers the activity.",
+        "Authorised model distillation, model compression, teacher-student training, or capability transfer performed by the model owner or under a licence or agreement that permits the relevant use.",
+        "Commercial use or profit motive by itself; commerciality is contextual evidence and is not sufficient to establish this class without systematic capability acquisition and an unresolved or inadequate authority basis.",
+        "A terms-of-service dispute, licence disagreement, copyright allegation, trade-secret allegation, or other legal controversy without evidence of systematic capability acquisition for downstream reproduction or training.",
+        "Secondary use of customer or participant data for training where the primary failure is repurposing that person's information rather than extracting the upstream model's capability; use Secondary-Purpose Authority Transposition unless this capability-extraction mechanism is independently evidenced.",
+        "Value appropriation arising from privileged visibility of another contributor's work where industrial-scale model capability extraction is not established; use the applicable Value Appropriation class."
+      ],
+      "examples": [
+        "An organisation operates a distributed, automated campaign across thousands of accounts and infrastructure endpoints to harvest a frontier model's restricted capabilities and use the resulting interactions to train a competing model without an independently established authority basis for that extraction purpose.",
+        "A provider systematically routes large volumes of elicitation traffic through another provider's model, evades access controls or enforcement signals, and incorporates the extracted capabilities into its own model-development pipeline.",
+        "A researcher conducts bounded safety analysis of model behaviour for governance purposes without building a substitute model or conducting industrial-scale extraction; this does not instantiate the class merely because substantial knowledge about the model is learned."
+      ],
+      "relationships": [
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000002",
+          "note": "Capability-Authority Conflation is generic and concerns treating technical ability or access as permission. Industrial-Scale Unauthorised Capability Extraction additionally requires systematic capability acquisition at industrial or campaign scale for reproduction, transfer, substitution, or downstream model training."
+        },
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000055",
+          "note": "Secondary-Purpose Authority Transposition concerns repurposing data or contributions from one purpose to another. This class concerns systematic acquisition of an upstream model's capabilities for reproduction or downstream training; both may co-occur where customer traffic is used as the extraction vehicle."
+        },
+        {
+          "type": "can_cooccur_with",
+          "target_id": "VIGIL-FC-000067",
+          "note": "Privileged-Access Appropriation may independently apply where structurally advantaged access is used to capture disproportionate contributor-originated value; industrial-scale capability extraction does not require that downstream value capture already be realised."
+        }
+      ],
+      "external_references": [
+        {
+          "title": "China-Based Artificial Intelligence Companies Conducting Industrial-Scale Distillation Campaigns Against U.S. AI Companies",
+          "publisher": "U.S. National Security Agency, Federal Bureau of Investigation, and Cybersecurity and Infrastructure Security Agency",
+          "date": "2026-09-08",
+          "url": "https://www.nsa.gov/Press-Room/Press-Releases-Statements/Press-Release-View/Article/4592113/nsa-and-others-warn-china-based-ai-companies-are-distilling-us-frontier-ai-mode/",
+          "reference_role": "authoritative-guidance",
+          "evidence_note": "Joint U.S. cybersecurity advisory distinguishes legitimate and useful AI distillation from aggressive industrial-scale campaigns that systematically extract restricted proprietary functionalities and capabilities of frontier models for the purpose of training other models. VIGIL uses this as authoritative supporting evidence for the industrial-scale, systematic-extraction and downstream-training characteristics of this class; the advisory is not treated as a generally applicable legal prohibition on distillation."
+        },
+        {
+          "title": "Stealing Machine Learning Models via Prediction APIs",
+          "publisher": "arXiv",
+          "date": "2016-09-09",
+          "url": "https://arxiv.org/abs/1609.02943",
+          "reference_role": "research-evidence",
+          "evidence_note": "Tramèr et al. demonstrate efficient black-box extraction attacks that use prediction API queries to duplicate deployed model functionality. This supports the systematic capability-acquisition and reproduction components of the mechanism; the experiments do not establish VIGIL's industrial-scale threshold or determine whether a particular campaign lacks an adequate authority basis."
+        }
+      ],
+      "aliases": [
+        "industrial-scale capability extraction",
+        "unauthorised model capability harvesting",
+        "industrial model distillation campaign"
       ]
     }
   ]

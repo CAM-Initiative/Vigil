@@ -56,6 +56,7 @@ class ValidateIncidentCorpusTests(unittest.TestCase):
 
     def test_unclassified_incident_cannot_assert_mapping(self):
         def mutate(record):
+            record["taxonomy_classification"]["classification_status"] = "unclassified"
             record["taxonomy_classification"]["primary_classification"] = {
                 "family_id": "VIGIL-FF-0001", "class_id": "VIGIL-FC-000001",
                 "classification_basis": "Invalid asserted mapping.", "classification_confidence": "high",

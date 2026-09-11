@@ -260,13 +260,13 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
 
     def test_working_branch_preserves_last_published_metadata_in_families(self):
         index = json.loads(MODULE.INDEX_PATH.read_text(encoding="utf-8"))
-        self.assertEqual(index["standard"]["version"], "0.3.1-draft")
-        self.assertEqual(index["standard"]["publication_date"], "2026-09-06")
-        self.assertEqual(index["release_history"][-1]["change_level"], "patch")
+        self.assertEqual(index["standard"]["version"], "0.4.0-draft")
+        self.assertEqual(index["standard"]["publication_date"], "2026-09-09")
+        self.assertEqual(index["release_history"][-1]["change_level"], "minor")
         for path in self.paths():
             document = json.loads(path.read_text(encoding="utf-8"))
-            self.assertEqual(document["standard"]["version"], "0.3.1-draft")
-            self.assertEqual(document["standard"]["publication_date"], "2026-09-06")
+            self.assertEqual(document["standard"]["version"], "0.4.0-draft")
+            self.assertEqual(document["standard"]["publication_date"], "2026-09-09")
 
     def test_family_or_class_change_requires_new_dataset_release_metadata(self):
         path, data = self.document()
@@ -283,30 +283,30 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         index = json.loads(MODULE.INDEX_PATH.read_text(encoding="utf-8"))
         previous = index["release_history"][-1]
         release = copy.deepcopy(previous)
-        release["version"] = "0.4.0-draft"
+        release["version"] = "0.5.0-draft"
         release["change_level"] = "minor"
         release["content_digest"] = "sha256:" + "f" * 64
         index["release_history"].append(release)
-        index["standard"]["version"] = "0.4.0-draft"
+        index["standard"]["version"] = "0.5.0-draft"
         self.write(MODULE.INDEX_PATH, index)
         for path in self.paths():
             document = json.loads(path.read_text(encoding="utf-8"))
-            document["standard"]["version"] = "0.4.0-draft"
+            document["standard"]["version"] = "0.5.0-draft"
             self.write(path, document)
-        self.assertTrue(any("must advance to 0.3.2" in error for error in self.published_errors()))
+        self.assertTrue(any("must advance to 0.4.1" in error for error in self.published_errors()))
 
     def test_new_family_requires_minor_dataset_increment(self):
         index = json.loads(MODULE.INDEX_PATH.read_text(encoding="utf-8"))
         previous = index["release_history"][-1]
         release = copy.deepcopy(previous)
-        release["version"] = "0.3.2-draft"
+        release["version"] = "0.4.1-draft"
         release["change_level"] = "patch"
         release["content_digest"] = "sha256:" + "e" * 64
-        release["family_ids"].append("VIGIL-FF-0011")
+        release["family_ids"].append("VIGIL-FF-0012")
         index["release_history"].append(release)
-        index["standard"]["version"] = "0.3.1-draft"
+        index["standard"]["version"] = "0.4.0-draft"
         self.write(MODULE.INDEX_PATH, index)
-        self.assertTrue(any("must advance to 0.4.0" in error for error in self.published_errors()))
+        self.assertTrue(any("must advance to 0.5.0" in error for error in self.published_errors()))
 
     def test_dataset_release_requires_fixed_edition_date(self):
         index = json.loads(MODULE.INDEX_PATH.read_text(encoding="utf-8"))
@@ -319,7 +319,7 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         classes = {item["class_id"]: item for document in documents for item in document["classes"]}
         self.assertEqual(
             [class_id for class_id in sorted(classes) if class_id >= "VIGIL-FC-000046"],
-            [f"VIGIL-FC-{number:06d}" for number in range(46, 67)],
+            [f"VIGIL-FC-{number:06d}" for number in range(46, 69)],
         )
         authority = next(document for document in documents if document["family"]["family_id"] == "VIGIL-FF-0001")
         self.assertEqual(classes["VIGIL-FC-000046"]["family_id"], authority["family"]["family_id"])
@@ -331,7 +331,7 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         index = json.loads(MODULE.INDEX_PATH.read_text(encoding="utf-8"))
         documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
         selectable = {item["class_id"] for document in documents for item in document["classes"]}
-        self.assertEqual(len(selectable), 59)
+        self.assertEqual(len(selectable), 61)
         self.assertTrue(all(item["abstraction"] == "class" for document in documents for item in document["classes"]))
         subtypes = {
             subtype["historical_class_id"]: item["class_id"]
