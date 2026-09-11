@@ -15,7 +15,12 @@ INDEX_PATH = ROOT / "VIGIL.FailureTaxonomy.Index.json"
 FAMILIES_DIR = ROOT / "families"
 
 
-def next_release_version(previous: str, previous_families: set[str], current_families: set[str]) -> tuple[str, str]:
+def next_release_version(
+    previous: str,
+    previous_families: set[str],
+    current_families: set[str],
+    release_status: str | None = None,
+) -> tuple[str, str]:
     parsed = validator.parse_version(previous)
     if parsed is None:
         raise ValueError(f"invalid current taxonomy version: {previous!r}")
@@ -29,7 +34,8 @@ def next_release_version(previous: str, previous_families: set[str], current_fam
     else:
         patch += 1
         change_level = "patch"
-    suffix = "-draft" if draft else ""
+    graduating_from_draft = draft and release_status in {"beta", "active"}
+    suffix = "" if graduating_from_draft else "-draft" if draft else ""
     return f"{major}.{minor}.{patch}{suffix}", change_level
 
 
@@ -72,7 +78,12 @@ def prepare_release(publication_date: str) -> bool:
 
     previous_version = current.get("version")
     previous_families = set(current.get("family_ids", []))
-    new_version, change_level = next_release_version(previous_version, previous_families, set(family_ids))
+    new_version, change_level = next_release_version(
+        previous_version,
+        previous_families,
+        set(family_ids),
+        index.get("standard", {}).get("status"),
+    )
 
     release = {
         "version": new_version,
