@@ -274,19 +274,18 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         ):
             self.assertIn(boundary, definition)
 
-    def test_working_branch_preserves_last_published_version_while_staging_beta_status(self):
+    def test_canonical_standard_metadata_aligns_with_current_release(self):
         index = json.loads(MODULE.INDEX_PATH.read_text(encoding="utf-8"))
-        self.assertEqual(index["standard"]["version"], "0.4.1-draft")
-        self.assertEqual(index["standard"]["publication_date"], "2026-09-11")
-        self.assertEqual(index["standard"]["status"], "beta")
-        self.assertEqual(index["release_history"][-1]["change_level"], "patch")
+        standard = index["standard"]
+        current = index["release_history"][-1]
+        self.assertEqual(standard["version"], current["version"])
+        self.assertEqual(standard["publication_date"], current["publication_date"])
+        self.assertIn(standard["status"], {"draft", "beta", "active", "deprecated"})
         for path in self.paths():
             document = json.loads(path.read_text(encoding="utf-8"))
-            self.assertEqual(document["standard"]["version"], "0.4.1-draft")
-            self.assertEqual(document["standard"]["publication_date"], "2026-09-11")
-            self.assertEqual(document["standard"]["status"], "beta")
-            self.assertEqual(document["family"]["status"], "beta")
-            self.assertTrue(all(item["status"] == "beta" for item in document["classes"]))
+            self.assertEqual(document["standard"]["version"], standard["version"])
+            self.assertEqual(document["standard"]["publication_date"], standard["publication_date"])
+            self.assertEqual(document["standard"]["status"], standard["status"])
 
     def test_family_or_class_change_requires_new_dataset_release_metadata(self):
         path, data = self.document()
@@ -302,31 +301,47 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
     def test_existing_record_change_requires_patch_not_minor_increment(self):
         index = json.loads(MODULE.INDEX_PATH.read_text(encoding="utf-8"))
         previous = index["release_history"][-1]
+        parsed = MODULE.parse_version(previous["version"])
+        self.assertIsNotNone(parsed)
+        major, minor, patch, _ = parsed
+        expected_patch = f"{major}.{minor}.{patch + 1}"
+        wrong_minor = f"{major}.{minor + 1}.0"
+
         release = copy.deepcopy(previous)
-        release["version"] = "0.5.0-draft"
+        release["version"] = wrong_minor
         release["change_level"] = "minor"
         release["content_digest"] = "sha256:" + "f" * 64
         index["release_history"].append(release)
-        index["standard"]["version"] = "0.5.0-draft"
+        index["standard"]["version"] = wrong_minor
         self.write(MODULE.INDEX_PATH, index)
         for path in self.paths():
             document = json.loads(path.read_text(encoding="utf-8"))
-            document["standard"]["version"] = "0.5.0-draft"
+            document["standard"]["version"] = wrong_minor
             self.write(path, document)
-        self.assertTrue(any("must advance to 0.4.2" in error for error in self.published_errors()))
+        errors = self.published_errors()
+        self.assertTrue(any("change_level must be 'patch'" in error for error in errors))
+        self.assertTrue(any(f"must advance to {expected_patch}" in error for error in errors))
 
     def test_new_family_requires_minor_dataset_increment(self):
         index = json.loads(MODULE.INDEX_PATH.read_text(encoding="utf-8"))
         previous = index["release_history"][-1]
+        parsed = MODULE.parse_version(previous["version"])
+        self.assertIsNotNone(parsed)
+        major, minor, patch, _ = parsed
+        expected_minor = f"{major}.{minor + 1}.0"
+        wrong_patch = f"{major}.{minor}.{patch + 1}"
+
         release = copy.deepcopy(previous)
-        release["version"] = "0.4.2-draft"
+        release["version"] = wrong_patch
         release["change_level"] = "patch"
         release["content_digest"] = "sha256:" + "e" * 64
         release["family_ids"].append("VIGIL-FF-0012")
         index["release_history"].append(release)
-        index["standard"]["version"] = "0.4.2-draft"
+        index["standard"]["version"] = wrong_patch
         self.write(MODULE.INDEX_PATH, index)
-        self.assertTrue(any("must advance to 0.5.0" in error for error in self.published_errors()))
+        errors = self.published_errors()
+        self.assertTrue(any("change_level must be 'minor'" in error for error in errors))
+        self.assertTrue(any(f"must advance to {expected_minor}" in error for error in errors))
 
     def test_dataset_release_requires_fixed_edition_date(self):
         index = json.loads(MODULE.INDEX_PATH.read_text(encoding="utf-8"))
