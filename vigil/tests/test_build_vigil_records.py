@@ -19,12 +19,27 @@ class IncidentBuilderTests(unittest.TestCase):
         self.assertTrue(paths)
         self.assertTrue(all(BUILDER.load(path)["record_type"] == "incident" for path in paths))
 
-    def test_structured_severity_and_compatibility_projection_are_both_published(self):
+    def test_incident_index_is_a_lightweight_catalogue_projection(self):
         record = BUILDER.load(BUILDER.INCIDENTS / "VIGIL-INC-000081.json")
         entry = BUILDER.incident_entry(BUILDER.INCIDENTS / "VIGIL-INC-000081.json", record)
-        self.assertEqual(entry["severity_assessment"], record["severity_assessment"])
-        self.assertIn("Materialised consequence:", entry["severity_assessment_basis"])
-        self.assertNotIn("assessment_basis", record["severity_assessment"])
+        self.assertEqual(entry["severity"], record["severity_assessment"]["severity"])
+        self.assertEqual(entry["classification_status"], record["taxonomy_classification"]["classification_status"])
+        self.assertEqual(entry["record_version"], record["record_identity"]["version"])
+        self.assertEqual(entry["record_last_updated"], record["record_identity"]["updated"])
+        self.assertIn("search_terms", entry)
+        self.assertTrue(entry["search_terms"])
+        for canonical_detail in (
+            "severity_assessment",
+            "primary_classification",
+            "secondary_classifications",
+            "source_records",
+            "diagnostic_provenance_summary",
+            "interpretive_provenance_summary",
+            "evidence_access_summary",
+            "external_incident_references",
+            "legacy_provenance",
+        ):
+            self.assertNotIn(canonical_detail, entry)
 
     def test_master_registry_is_incident_only(self):
         BUILDER.build()
@@ -33,7 +48,9 @@ class IncidentBuilderTests(unittest.TestCase):
         self.assertEqual(master["registry_count"], 1)
         self.assertEqual(set(master["registries"]), {"incidents"})
         self.assertEqual(master["record_count"], {"incidents": incident_count, "total": incident_count})
-        self.assertTrue(all(item["record_type"] == "incident" for item in master["records"]))
+        self.assertNotIn("records", master)
+        self.assertEqual(master["registries"]["incidents"]["path"], "vigil/VIGIL.Incidents.Index.json")
+        self.assertEqual(master["registries"]["incidents"]["record_count"], incident_count)
 
     def test_taxonomy_examples_are_incident_derived(self):
         BUILDER.build()
