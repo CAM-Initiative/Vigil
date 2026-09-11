@@ -42,6 +42,12 @@ python vigil/scripts/build-vigil-public-records.py
 
 Do not manually edit generated indexes. The public master registry must expose only the Incident registry.
 
+The public indexes are navigation projections, not duplicate record stores:
+
+- `VIGIL.Incidents.Index.json` contains only the fields required for catalogue display, filtering/search, dates, severity/classification state and canonical record routing.
+- Canonical Incident diagnosis, evidence, severity analysis, taxonomy objects and provenance remain only in `vigil/records/incidents/`.
+- `VIGIL.Registry.Index.json` is a registry manifest. It must not duplicate the Incident `records` array.
+
 ## Required workflow
 
 Before editing an Incident, inspect `vigil/VIGIL.Schema.json`, the Incident template, the validator and comparable Incident records. Preserve stable IDs and substantive evidence.
