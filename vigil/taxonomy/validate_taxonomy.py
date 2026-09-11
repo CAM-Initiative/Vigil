@@ -146,7 +146,15 @@ def validate_release_history(
         if previous_version is None or current_version is None:
             continue
         if previous_version[3] != current_version[3]:
-            errors.append(f"{INDEX_PATH}: release_history[{number}] must preserve the draft suffix state")
+            if previous_version[3] and not current_version[3]:
+                # A dataset may graduate once from a -draft prerelease identifier
+                # to an unsuffixed beta/active release. Reintroducing -draft after
+                # graduation is not permitted.
+                pass
+            else:
+                errors.append(
+                    f"{INDEX_PATH}: release_history[{number}] must not reintroduce the draft suffix after graduation"
+                )
         previous_families = set(previous.get("family_ids", []))
         current_families = set(current.get("family_ids", []))
         if not previous_families.issubset(current_families):
@@ -177,6 +185,18 @@ def validate_release_history(
     if current.get("publication_date") != publication_date:
         errors.append(f"{INDEX_PATH}: standard.publication_date must equal the current release_history date")
 
+    status = standard.get("status")
+    allowed_statuses = {"prototype", "draft", "beta", "active", "deprecated"}
+    if status not in allowed_statuses:
+        errors.append(f"{INDEX_PATH}: standard.status is not recognised")
+    current_version = parsed[-1] if parsed else None
+    if current_version is not None:
+        has_draft_suffix = current_version[3]
+        if status == "draft" and not has_draft_suffix:
+            errors.append(f"{INDEX_PATH}: draft taxonomy releases must retain the -draft version suffix")
+        if status in {"beta", "active"} and has_draft_suffix:
+            errors.append(f"{INDEX_PATH}: {status} taxonomy releases must not use the -draft version suffix")
+
     if enforce_current_release:
         digest = catalogue_content_digest(loaded)
         if current.get("content_digest") != digest:
@@ -194,6 +214,8 @@ def validate_release_history(
             errors.append(f"{path}: standard.version must equal the dataset/book version {version!r}")
         if family_standard.get("publication_date") != publication_date:
             errors.append(f"{path}: standard.publication_date must equal the dataset/book publication date")
+        if family_standard.get("status") != status:
+            errors.append(f"{path}: standard.status must equal the dataset/book status {status!r}")
     return errors
 
 
