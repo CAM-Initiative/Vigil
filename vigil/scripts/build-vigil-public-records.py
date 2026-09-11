@@ -96,13 +96,11 @@ def text_terms(*values: Any) -> list[str]:
 
 
 def incident_search_terms(record: dict[str, Any]) -> list[str]:
-    identity = record.get("record_identity") if isinstance(record.get("record_identity"), dict) else {}
     incident = record.get("incident_identity") if isinstance(record.get("incident_identity"), dict) else {}
     system = record.get("system_context") if isinstance(record.get("system_context"), dict) else {}
     jurisdiction = record.get("jurisdictional_context") if isinstance(record.get("jurisdictional_context"), dict) else {}
     taxonomy = record.get("taxonomy_classification") if isinstance(record.get("taxonomy_classification"), dict) else {}
     assessment = record.get("severity_assessment") if isinstance(record.get("severity_assessment"), dict) else {}
-    primary = taxonomy.get("primary_classification") if isinstance(taxonomy.get("primary_classification"), dict) else {}
     secondary = taxonomy.get("secondary_classifications") if isinstance(taxonomy.get("secondary_classifications"), list) else []
     source_list = sources(record)
 
