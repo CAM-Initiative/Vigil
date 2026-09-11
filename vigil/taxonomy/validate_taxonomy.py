@@ -190,7 +190,7 @@ def validate_release_history(
     if status not in allowed_statuses:
         errors.append(f"{INDEX_PATH}: standard.status is not recognised")
     current_version = parsed[-1] if parsed else None
-    if current_version is not None:
+    if enforce_current_release and current_version is not None:
         has_draft_suffix = current_version[3]
         if status == "draft" and not has_draft_suffix:
             errors.append(f"{INDEX_PATH}: draft taxonomy releases must retain the -draft version suffix")
