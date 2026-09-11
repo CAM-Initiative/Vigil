@@ -196,6 +196,22 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         self.assertIn("lacks valid authority", pathway_boundaries)
         self.assertIn("self-authorise", pathway_boundaries)
 
+    def test_secondary_purpose_class_has_portable_class_invariant(self):
+        documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
+        classes = {item["class_id"]: item for document in documents for item in document["classes"]}
+        item = classes["VIGIL-FC-000055"]
+        invariant = item.get("invariant", "")
+        self.assertIn("Authority is purpose-bound", invariant)
+        self.assertIn("materially different secondary purpose", invariant)
+        self.assertIn("must not enlarge or transpose that authority", invariant)
+        self.assertIn("must be revalidated", invariant)
+
+        schema = json.loads(MODULE.SCHEMA_PATH.read_text(encoding="utf-8"))
+        invariant_schema = schema["$defs"]["class"]["properties"]["invariant"]
+        self.assertEqual(invariant_schema["type"], "string")
+        self.assertIn("mechanism-specific structural property", invariant_schema["description"])
+        self.assertNotIn("invariant", schema["$defs"]["class"]["required"])
+
     def test_family_prose_semantic_roles_are_explicit(self):
         schema = json.loads(MODULE.SCHEMA_PATH.read_text(encoding="utf-8"))
         properties = schema["$defs"]["family"]["properties"]
