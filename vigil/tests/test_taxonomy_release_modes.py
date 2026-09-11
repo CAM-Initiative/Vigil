@@ -132,7 +132,12 @@ class TaxonomyReleaseModeTests(unittest.TestCase):
         current_families = {
             json.loads(path.read_text(encoding="utf-8"))["family"]["family_id"] for path in self.paths()
         }
-        expected, expected_level = PREP.next_release_version(previous, previous_families, current_families)
+        expected, expected_level = PREP.next_release_version(
+            previous,
+            previous_families,
+            current_families,
+            index_before["standard"].get("status"),
+        )
 
         self.mutate_family_content()
         self.assertTrue(PREP.prepare_release("2026-08-31"))
