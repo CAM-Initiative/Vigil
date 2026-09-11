@@ -96,7 +96,9 @@ The version in `VIGIL.FailureTaxonomy.Index.json` is the version of the complete
 
 Dataset releases follow these rules:
 
-- an amendment, addition, movement, deprecation, or other change to an existing family or class collection increments the third digit;
+- lifecycle states progress through `prototype`, `draft`, `beta`, `active` and `deprecated` as applicable;
+- `draft` dataset releases use the `-draft` prerelease suffix; a deliberate graduation to `beta` or `active` removes that suffix and it must not later be reintroduced;
+- an amendment, addition, movement, deprecation, lifecycle graduation, or other change to an existing family or class collection increments the third digit;
 - admission of a new failure family increments the second digit and resets the third digit to zero;
 - the first digit is reserved for a deliberately approved, materially incompatible re-foundation of the taxonomy and is never inferred from routine record maintenance;
 - every dataset release records a fixed ISO `publication_date`; generation must not substitute the current clock date;
