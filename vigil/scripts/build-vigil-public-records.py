@@ -107,9 +107,7 @@ def incident_search_terms(record: dict[str, Any]) -> list[str]:
     source_list = sources(record)
 
     return text_terms(
-        identity.get("title"),
         incident.get("historical_event_name"),
-        system.get("platform_or_vendor"),
         system.get("vendor_cluster"),
         system.get("primary_evidenced_vendors"),
         system.get("evidenced_vendors"),
@@ -124,10 +122,7 @@ def incident_search_terms(record: dict[str, Any]) -> list[str]:
         jurisdiction.get("secondary_jurisdictions"),
         jurisdiction.get("sector"),
         jurisdiction.get("regulatory_surface"),
-        taxonomy.get("classification_status"),
         taxonomy.get("taxonomy_version"),
-        primary.get("class_id"),
-        primary.get("family_id"),
         [
             value
             for item in secondary
@@ -135,7 +130,6 @@ def incident_search_terms(record: dict[str, Any]) -> list[str]:
             for value in (item.get("class_id"), item.get("family_id"))
             if value
         ],
-        assessment.get("severity"),
         assessment.get("assessment_status"),
         [
             value
