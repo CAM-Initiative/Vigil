@@ -66,6 +66,21 @@ class TaxonomyPublicationReferenceTests(unittest.TestCase):
         self.assertIn("Supports the first boundary.", rendered)
         self.assertIn("Supports only the second condition.", rendered)
 
+    def test_publication_cover_surfaces_standard_version_and_beta_status(self):
+        index = {
+            "standard": {
+                "version": "0.4.2",
+                "status": "beta",
+                "publication_date": "2026-09-11",
+            }
+        }
+        families = [{"classes": []}]
+        rendered = RENDERER.base.publication_frontmatter(index, families)
+        self.assertIn("VIGIL Failure Taxonomy 0.4.2", rendered)
+        self.assertIn("Status: Beta", rendered)
+        self.assertIn("Governance<br>Failure<br>Taxonomy", rendered)
+        self.assertIn("Technical Reference", rendered)
+
     def test_distinct_provisions_at_one_url_remain_distinct_citations(self):
         families = [
             {
