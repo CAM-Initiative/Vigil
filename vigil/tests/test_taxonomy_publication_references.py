@@ -122,5 +122,33 @@ class TaxonomyPublicationReferenceTests(unittest.TestCase):
         )
 
 
+    def test_subtype_publication_hierarchy_avoids_orphaned_headings_without_forced_pages(self):
+        item = {
+            "subtypes": [
+                {
+                    "name": "Delegation Scope Expansion",
+                    "historical_class_id": "VIGIL-FC-000008",
+                    "historical_class_code": "DELEGATION_SCOPE_EXPANSION",
+                    "plain_english": "A prior permission is stretched into a materially new action.",
+                    "definition": "A bounded subtype definition.",
+                    "recognition": {"required_conditions": ["A required condition is present."]},
+                    "exclusions": ["A bounded exclusion applies."],
+                    "examples": ["A bounded illustrative example."],
+                }
+            ]
+        }
+
+        rendered = RENDERER.base.subtype_html(item, heading="h3")
+        self.assertIn('class="subtypes-heading"', rendered)
+        self.assertIn('class="subtype-title"', rendered)
+
+        print_style = RENDERER.base.PRINT_STYLE
+        self.assertIn(".subtypes-heading{", print_style)
+        self.assertIn("break-after:avoid-page", print_style)
+        self.assertIn(".subtype-title{", print_style)
+        self.assertIn(".subtypes{margin-top:8mm", print_style)
+        self.assertIn("break-before:auto", print_style)
+        self.assertNotIn(".subtypes{break-before:page", print_style)
+
 if __name__ == "__main__":
     unittest.main()
