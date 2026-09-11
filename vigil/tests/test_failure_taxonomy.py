@@ -258,15 +258,19 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         ):
             self.assertIn(boundary, definition)
 
-    def test_working_branch_preserves_last_published_metadata_in_families(self):
+    def test_working_branch_preserves_last_published_version_while_staging_beta_status(self):
         index = json.loads(MODULE.INDEX_PATH.read_text(encoding="utf-8"))
-        self.assertEqual(index["standard"]["version"], "0.4.0-draft")
-        self.assertEqual(index["standard"]["publication_date"], "2026-09-09")
-        self.assertEqual(index["release_history"][-1]["change_level"], "minor")
+        self.assertEqual(index["standard"]["version"], "0.4.1-draft")
+        self.assertEqual(index["standard"]["publication_date"], "2026-09-11")
+        self.assertEqual(index["standard"]["status"], "beta")
+        self.assertEqual(index["release_history"][-1]["change_level"], "patch")
         for path in self.paths():
             document = json.loads(path.read_text(encoding="utf-8"))
-            self.assertEqual(document["standard"]["version"], "0.4.0-draft")
-            self.assertEqual(document["standard"]["publication_date"], "2026-09-09")
+            self.assertEqual(document["standard"]["version"], "0.4.1-draft")
+            self.assertEqual(document["standard"]["publication_date"], "2026-09-11")
+            self.assertEqual(document["standard"]["status"], "beta")
+            self.assertEqual(document["family"]["status"], "beta")
+            self.assertTrue(all(item["status"] == "beta" for item in document["classes"]))
 
     def test_family_or_class_change_requires_new_dataset_release_metadata(self):
         path, data = self.document()
