@@ -33,7 +33,9 @@ def main() -> None:
     assert master["registry_count"] == 1
     assert set(master["registries"]) == {"incidents"}
     assert master["record_count"] == {"incidents": incident_count, "total": incident_count}
-    assert all(item["record_type"] == "incident" for item in master["records"])
+    assert "records" not in master
+    assert master["registries"]["incidents"]["path"] == "vigil/VIGIL.Incidents.Index.json"
+    assert master["registries"]["incidents"]["record_count"] == incident_count
 
     workflow = WORKFLOW.read_text(encoding="utf-8")
     required = {
