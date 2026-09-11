@@ -672,8 +672,10 @@ html,body{background:#fff!important}body{font-size:9.5pt;line-height:1.48}main{m
 .publication-frontmatter{page:cover;height:297mm;min-height:0;position:relative;overflow:hidden;box-sizing:border-box;background:#f7f3e9!important;border:0!important;border-radius:0!important;padding:0!important;margin:0!important;page-break-after:always}
 .cover-masthead{position:absolute;top:0;left:0;width:210mm;height:auto;display:block}
 .cover-body{position:absolute;left:25mm;right:18mm;top:94mm}
+.cover-standard-line{font-family:Helvetica,Arial,sans-serif;font-size:8pt;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:#6f6657;margin:0 0 4mm}
 .cover-title{font-family:Georgia,"Times New Roman",serif;font-size:35pt;line-height:.98;text-transform:uppercase;color:#022c1b;letter-spacing:.012em;margin:0 0 7mm;font-weight:500;max-width:155mm}
-.cover-subtitle{font-family:Georgia,"Times New Roman",serif;font-size:18pt;line-height:1.1;color:#a47d27;margin:0 0 4mm;font-weight:500}
+.cover-subtitle{font-family:Georgia,"Times New Roman",serif;font-size:18pt;line-height:1.1;color:#a47d27;margin:0 0 2.5mm;font-weight:500}
+.cover-status{font-family:Helvetica,Arial,sans-serif;font-size:8.5pt;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#022c1b;margin:0 0 4mm}
 .cover-descriptors{font-family:Georgia,"Times New Roman",serif;font-size:10.5pt;color:#17231f;margin:0;letter-spacing:.01em}
 .cover-band{position:absolute;left:0;right:0;bottom:0;height:63mm;background:#022c1b;color:#fff;overflow:hidden;padding:9mm 16mm 8mm;box-sizing:border-box}
 .cover-footer-art{position:absolute;left:0;right:0;bottom:0;width:210mm;height:auto;opacity:.72;z-index:0}.cover-band-content{position:relative;z-index:1;height:100%}
@@ -728,8 +730,10 @@ def publication_frontmatter(index: dict, families: list[dict]) -> str:
 <section class="publication-frontmatter">
   <img class="cover-masthead" src="{esc(BRAND_HEADER_URL)}" alt="">
   <div class="cover-body">
+    <p class="cover-standard-line">VIGIL Failure Taxonomy {esc(version)}</p>
     <h1 class="cover-title">Governance<br>Failure<br>Taxonomy</h1>
     <h2 class="cover-subtitle">Technical Reference</h2>
+    <p class="cover-status">Status: {esc(status).title()}</p>
     <p class="cover-descriptors">Failure Families · Failure Classes<br>Classification Boundaries · Recognition Criteria</p>
   </div>
   <footer class="cover-band">
