@@ -5,156 +5,488 @@
   "description": "Portable machine-readable schema for one VIGIL AI governance failure family.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "standard", "family", "classes"],
+  "required": [
+    "schema_version",
+    "standard",
+    "family",
+    "classes"
+  ],
   "properties": {
-    "schema_version": {"type": "string", "const": "0.2.0"},
+    "schema_version": {
+      "type": "string",
+      "const": "0.2.0"
+    },
     "standard": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["name", "version", "publication_date", "status"],
+      "required": [
+        "name",
+        "version",
+        "publication_date",
+        "status"
+      ],
       "properties": {
-        "name": {"type": "string", "minLength": 1},
-        "version": {"type": "string", "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-draft)?$"},
-        "publication_date": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"},
-        "status": {"$ref": "#/$defs/status"},
-        "description": {"type": "string"}
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-draft)?$"
+        },
+        "publication_date": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        },
+        "status": {
+          "$ref": "#/$defs/status"
+        },
+        "description": {
+          "type": "string"
+        }
       }
     },
-    "family": {"$ref": "#/$defs/family"},
-    "classes": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/class"}}
+    "family": {
+      "$ref": "#/$defs/family"
+    },
+    "classes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/class"
+      }
+    }
   },
   "$defs": {
-    "status": {"type": "string", "enum": ["prototype", "draft", "beta", "active", "deprecated"]},
-    "family_id": {"type": "string", "pattern": "^VIGIL-FF-[0-9]{4}$"},
-    "class_id": {"type": "string", "pattern": "^VIGIL-FC-[0-9]{6}$"},
-    "semantic_code": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)*$"},
-    "non_empty_strings": {
-      "type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true
+    "status": {
+      "type": "string",
+      "enum": [
+        "prototype",
+        "draft",
+        "beta",
+        "active",
+        "deprecated"
+      ]
     },
-    "aliases": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "family_id": {
+      "type": "string",
+      "pattern": "^VIGIL-FF-[0-9]{4}$"
+    },
+    "class_id": {
+      "type": "string",
+      "pattern": "^VIGIL-FC-[0-9]{6}$"
+    },
+    "semantic_code": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)*$"
+    },
+    "non_empty_strings": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "aliases": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
     "supersession": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["deprecated_on", "reason"],
+      "required": [
+        "deprecated_on",
+        "reason"
+      ],
       "properties": {
-        "deprecated_on": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"},
-        "superseded_by_id": {"type": "string", "pattern": "^VIGIL-(?:FF-[0-9]{4}|FC-[0-9]{6})$"},
-        "reason": {"type": "string", "minLength": 1}
+        "deprecated_on": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        },
+        "superseded_by_id": {
+          "type": "string",
+          "pattern": "^VIGIL-(?:FF-[0-9]{4}|FC-[0-9]{6})$"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        }
       }
     },
     "family": {
       "type": "object",
       "additionalProperties": false,
       "required": [
-        "family_id", "family_code", "name", "status", "abstraction", "version", "plain_english",
-        "definition", "invariant", "scope", "inclusion_rule", "exclusion_rule", "allowed_class_ids",
-        "allowed_class_codes", "aliases"
+        "family_id",
+        "family_code",
+        "name",
+        "status",
+        "abstraction",
+        "version",
+        "plain_english",
+        "definition",
+        "invariant",
+        "scope",
+        "inclusion_rule",
+        "exclusion_rule",
+        "allowed_class_ids",
+        "allowed_class_codes",
+        "aliases"
       ],
       "properties": {
-        "family_id": {"$ref": "#/$defs/family_id"},
-        "family_code": {"$ref": "#/$defs/semantic_code"},
-        "name": {"type": "string", "minLength": 1},
-        "status": {"$ref": "#/$defs/status"},
-        "abstraction": {"type": "string", "const": "family"},
-        "version": {"type": "string", "minLength": 1},
-        "plain_english": {"type": "string", "minLength": 1, "description": "Accessible description of the failure condition. It describes how integrity fails, not only the healthy or required state."},
-        "definition": {"type": "string", "minLength": 1, "description": "Technical description of the bounded failure set. It must encompass every admitted child mechanism without collapsing neighbouring families."},
-        "invariant": {"type": "string", "minLength": 1, "description": "Positive bounded structural property that must hold and that every child class in the family is a way of failing."},
-        "scope": {"$ref": "#/$defs/non_empty_strings"},
-        "inclusion_rule": {"type": "string", "minLength": 1},
-        "exclusion_rule": {"type": "string", "minLength": 1},
-        "allowed_class_ids": {"type": "array", "items": {"$ref": "#/$defs/class_id"}, "minItems": 1, "uniqueItems": true},
-        "allowed_class_codes": {"type": "array", "items": {"$ref": "#/$defs/semantic_code"}, "minItems": 1, "uniqueItems": true},
-        "aliases": {"$ref": "#/$defs/aliases"},
-        "supersession": {"$ref": "#/$defs/supersession"}
+        "family_id": {
+          "$ref": "#/$defs/family_id"
+        },
+        "family_code": {
+          "$ref": "#/$defs/semantic_code"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "$ref": "#/$defs/status"
+        },
+        "abstraction": {
+          "type": "string",
+          "const": "family"
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "plain_english": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Accessible description of the failure condition. It describes how integrity fails, not only the healthy or required state."
+        },
+        "definition": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Technical description of the bounded failure set. It must encompass every admitted child mechanism without collapsing neighbouring families."
+        },
+        "invariant": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Positive bounded structural property that must hold and that every child class in the family is a way of failing."
+        },
+        "scope": {
+          "$ref": "#/$defs/non_empty_strings"
+        },
+        "inclusion_rule": {
+          "type": "string",
+          "minLength": 1
+        },
+        "exclusion_rule": {
+          "type": "string",
+          "minLength": 1
+        },
+        "allowed_class_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/class_id"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "allowed_class_codes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/semantic_code"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "aliases": {
+          "$ref": "#/$defs/aliases"
+        },
+        "supersession": {
+          "$ref": "#/$defs/supersession"
+        }
       }
     },
     "class": {
       "type": "object",
       "additionalProperties": false,
       "required": [
-        "class_id", "class_code", "family_id", "name", "status", "abstraction", "plain_english",
-        "definition", "recognition", "exclusions", "examples", "aliases"
+        "class_id",
+        "class_code",
+        "family_id",
+        "name",
+        "status",
+        "abstraction",
+        "plain_english",
+        "definition",
+        "recognition",
+        "exclusions",
+        "examples",
+        "aliases"
       ],
       "properties": {
-        "class_id": {"$ref": "#/$defs/class_id"},
-        "class_code": {"$ref": "#/$defs/semantic_code"},
-        "family_id": {"$ref": "#/$defs/family_id"},
-        "name": {"type": "string", "minLength": 1},
-        "status": {"$ref": "#/$defs/status"},
-        "abstraction": {"type": "string", "const": "class", "description": "Selectable canonical governance-failure mechanism. Narrower manifestations belong in subtypes and are not peer class records."},
-        "plain_english": {"type": "string", "minLength": 1},
-        "definition": {"type": "string", "minLength": 1},
+        "class_id": {
+          "$ref": "#/$defs/class_id"
+        },
+        "class_code": {
+          "$ref": "#/$defs/semantic_code"
+        },
+        "family_id": {
+          "$ref": "#/$defs/family_id"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "$ref": "#/$defs/status"
+        },
+        "abstraction": {
+          "type": "string",
+          "const": "class",
+          "description": "Selectable canonical governance-failure mechanism. Narrower manifestations belong in subtypes and are not peer class records."
+        },
+        "plain_english": {
+          "type": "string",
+          "minLength": 1
+        },
+        "definition": {
+          "type": "string",
+          "minLength": 1
+        },
         "recognition": {
-          "type": "object", "additionalProperties": false, "required": ["required_conditions"],
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "required_conditions"
+          ],
           "properties": {
-            "required_conditions": {"$ref": "#/$defs/non_empty_strings"},
-            "indicators": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true}
+            "required_conditions": {
+              "$ref": "#/$defs/non_empty_strings"
+            },
+            "indicators": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "uniqueItems": true
+            }
           }
         },
-        "exclusions": {"$ref": "#/$defs/non_empty_strings"},
-        "examples": {"$ref": "#/$defs/non_empty_strings"},
-        "aliases": {"$ref": "#/$defs/aliases"},
-        "subtypes": {"type": "array", "items": {"$ref": "#/$defs/subtype"}, "minItems": 1},
-        "relationships": {"type": "array", "items": {"$ref": "#/$defs/relationship"}},
-        "external_mappings": {"type": "array", "items": {"$ref": "#/$defs/external_mapping"}},
-        "external_references": {"type": "array", "items": {"$ref": "#/$defs/external_reference"}, "minItems": 1},
-        "supersession": {"$ref": "#/$defs/supersession"}
+        "exclusions": {
+          "$ref": "#/$defs/non_empty_strings"
+        },
+        "examples": {
+          "$ref": "#/$defs/non_empty_strings"
+        },
+        "aliases": {
+          "$ref": "#/$defs/aliases"
+        },
+        "subtypes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/subtype"
+          },
+          "minItems": 1
+        },
+        "relationships": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/relationship"
+          }
+        },
+        "external_mappings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/external_mapping"
+          }
+        },
+        "external_references": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/external_reference"
+          },
+          "minItems": 1
+        },
+        "supersession": {
+          "$ref": "#/$defs/supersession"
+        },
+        "invariant": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Positive mechanism-specific structural property that must hold to prevent or repair this failure class. It must remain narrower than, and consistent with, the parent family invariant."
+        }
       }
     },
     "subtype": {
       "type": "object",
       "additionalProperties": false,
       "required": [
-        "name", "plain_english", "definition", "recognition", "exclusions", "examples", "aliases",
-        "historical_class_id", "historical_class_code"
+        "name",
+        "plain_english",
+        "definition",
+        "recognition",
+        "exclusions",
+        "examples",
+        "aliases",
+        "historical_class_id",
+        "historical_class_code"
       ],
       "properties": {
-        "name": {"type": "string", "minLength": 1},
-        "plain_english": {"type": "string", "minLength": 1},
-        "definition": {"type": "string", "minLength": 1},
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "plain_english": {
+          "type": "string",
+          "minLength": 1
+        },
+        "definition": {
+          "type": "string",
+          "minLength": 1
+        },
         "recognition": {
-          "type": "object", "additionalProperties": false, "required": ["required_conditions"],
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "required_conditions"
+          ],
           "properties": {
-            "required_conditions": {"$ref": "#/$defs/non_empty_strings"},
-            "indicators": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true}
+            "required_conditions": {
+              "$ref": "#/$defs/non_empty_strings"
+            },
+            "indicators": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "uniqueItems": true
+            }
           }
         },
-        "exclusions": {"$ref": "#/$defs/non_empty_strings"},
-        "examples": {"$ref": "#/$defs/non_empty_strings"},
-        "aliases": {"$ref": "#/$defs/aliases"},
-        "historical_class_id": {"$ref": "#/$defs/class_id"},
-        "historical_class_code": {"$ref": "#/$defs/semantic_code"}
+        "exclusions": {
+          "$ref": "#/$defs/non_empty_strings"
+        },
+        "examples": {
+          "$ref": "#/$defs/non_empty_strings"
+        },
+        "aliases": {
+          "$ref": "#/$defs/aliases"
+        },
+        "historical_class_id": {
+          "$ref": "#/$defs/class_id"
+        },
+        "historical_class_code": {
+          "$ref": "#/$defs/semantic_code"
+        }
       }
     },
     "relationship": {
-      "type": "object", "additionalProperties": false, "required": ["type", "target_id"],
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "target_id"
+      ],
       "properties": {
-        "type": {"type": "string", "enum": ["peer_of", "distinguish_from", "can_cooccur_with", "may_result_in", "may_be_result_of"]},
-        "target_id": {"$ref": "#/$defs/class_id"},
-        "note": {"type": "string"}
+        "type": {
+          "type": "string",
+          "enum": [
+            "peer_of",
+            "distinguish_from",
+            "can_cooccur_with",
+            "may_result_in",
+            "may_be_result_of"
+          ]
+        },
+        "target_id": {
+          "$ref": "#/$defs/class_id"
+        },
+        "note": {
+          "type": "string"
+        }
       }
     },
     "external_mapping": {
-      "type": "object", "additionalProperties": false, "required": ["scheme", "identifier", "relationship"],
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scheme",
+        "identifier",
+        "relationship"
+      ],
       "properties": {
-        "scheme": {"type": "string", "minLength": 1},
-        "identifier": {"type": "string", "minLength": 1},
-        "relationship": {"type": "string", "enum": ["direct", "broader", "narrower", "partial", "analogous", "unresolved"]},
-        "note": {"type": "string"}
+        "scheme": {
+          "type": "string",
+          "minLength": 1
+        },
+        "identifier": {
+          "type": "string",
+          "minLength": 1
+        },
+        "relationship": {
+          "type": "string",
+          "enum": [
+            "direct",
+            "broader",
+            "narrower",
+            "partial",
+            "analogous",
+            "unresolved"
+          ]
+        },
+        "note": {
+          "type": "string"
+        }
       }
     },
     "external_reference": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["title", "publisher", "date", "url", "reference_role"],
+      "required": [
+        "title",
+        "publisher",
+        "date",
+        "url",
+        "reference_role"
+      ],
       "properties": {
-        "title": {"type": "string", "minLength": 1},
-        "publisher": {"type": "string", "minLength": 1},
-        "date": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"},
-        "url": {"type": "string", "format": "uri"},
-        "reference_role": {"type": "string", "enum": ["authoritative-guidance", "regulatory-evidence", "standards-evidence", "research-evidence", "contextual-evidence"]},
-        "evidence_note": {"type": "string", "minLength": 1}
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "publisher": {
+          "type": "string",
+          "minLength": 1
+        },
+        "date": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "reference_role": {
+          "type": "string",
+          "enum": [
+            "authoritative-guidance",
+            "regulatory-evidence",
+            "standards-evidence",
+            "research-evidence",
+            "contextual-evidence"
+          ]
+        },
+        "evidence_note": {
+          "type": "string",
+          "minLength": 1
+        }
       }
     }
   }
