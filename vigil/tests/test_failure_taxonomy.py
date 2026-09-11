@@ -297,18 +297,18 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
             document = json.loads(path.read_text(encoding="utf-8"))
             document["standard"]["version"] = "0.5.0-draft"
             self.write(path, document)
-        self.assertTrue(any("must advance to 0.4.1" in error for error in self.published_errors()))
+        self.assertTrue(any("must advance to 0.4.2" in error for error in self.published_errors()))
 
     def test_new_family_requires_minor_dataset_increment(self):
         index = json.loads(MODULE.INDEX_PATH.read_text(encoding="utf-8"))
         previous = index["release_history"][-1]
         release = copy.deepcopy(previous)
-        release["version"] = "0.4.1-draft"
+        release["version"] = "0.4.2-draft"
         release["change_level"] = "patch"
         release["content_digest"] = "sha256:" + "e" * 64
         release["family_ids"].append("VIGIL-FF-0012")
         index["release_history"].append(release)
-        index["standard"]["version"] = "0.4.0-draft"
+        index["standard"]["version"] = "0.4.2-draft"
         self.write(MODULE.INDEX_PATH, index)
         self.assertTrue(any("must advance to 0.5.0" in error for error in self.published_errors()))
 
