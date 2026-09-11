@@ -77,6 +77,10 @@ def markdown_family(data: dict, level: int = 1) -> str:
             f"**Status:** {item['status']}", "",
             f"**Plain English:** {item['plain_english']}", "",
             f"{h}## Technical definition", "", item["definition"], "",
+        ])
+        if item.get("invariant"):
+            out.extend([f"{h}## Class invariant", "", f"> {item['invariant']}", ""])
+        out.extend([
             f"{h}## Recognition criteria", "",
         ])
         out.extend(f"- {x}" for x in item["recognition"]["required_conditions"])
@@ -516,6 +520,7 @@ def publication_class_html(item: dict, section_number: str, class_lookup: dict[s
             for m in item["external_mappings"]
         ) + "</ul>"
     subtypes = subtype_html(item, heading="h3")
+    invariant = f'<h3>Class invariant</h3><p class="invariant">{esc(item["invariant"])}</p>' if item.get("invariant") else ""
     return f"""
 <section class="book-class" id="{esc(anchor(item['class_id']))}">
   <p class="class-kicker">{esc(section_number)} · {esc(str(item['abstraction']).upper())}</p>
@@ -523,6 +528,7 @@ def publication_class_html(item: dict, section_number: str, class_lookup: dict[s
   <p class="class-meta"><code>{esc(item['class_id'])}</code> · <code>{esc(item['class_code'])}</code> · {esc(str(item['status']).title())}</p>
   <p class="plain"><strong>Plain English:</strong> {esc(item['plain_english'])}</p>
   <h3>Technical definition</h3><p>{esc(item['definition'])}</p>
+  {invariant}
   <div class="grid criteria-grid"><section><h3>Recognition criteria</h3><ul>{recognition}</ul>{indicators}</section><section><h3>Exclusions</h3><ul>{exclusions}</ul></section></div>
   <h3>Illustrative examples</h3><ul>{illustrative_examples}</ul>{subtypes}{aliases}{relationships}{mappings}{case_examples_html(case_examples or [])}
 </section>"""
@@ -601,11 +607,13 @@ def class_html(item: dict, case_examples: list[dict] | None = None) -> str:
             for m in item["external_mappings"]
         ) + "</ul>"
     subtypes = subtype_html(item, heading="h4")
+    invariant = f'<h4>Class invariant</h4><p class="invariant">{esc(item["invariant"])}</p>' if item.get("invariant") else ""
     return f"""
 <article class="card" id="{esc(anchor(item['class_id']))}">
   <div class="top"><div><span class="pill">{esc(item['abstraction'])}</span><h3>{esc(item['name'])}</h3><p><code>{esc(item['class_id'])}</code> · <code>{esc(item['class_code'])}</code></p></div><span class="pill">{esc(item['status'])}</span></div>
   <p class="plain"><strong>Plain English:</strong> {esc(item['plain_english'])}</p>
   <h4>Technical definition</h4><p>{esc(item['definition'])}</p>
+  {invariant}
   <div class="grid"><section><h4>Recognition criteria</h4><ul>{recognition}</ul>{indicators}</section><section><h4>Exclusions</h4><ul>{exclusions}</ul></section></div>
   <h4>Illustrative examples</h4><ul>{illustrative_examples}</ul>{subtypes}{aliases}{relationships}{mappings}{case_examples_html(case_examples or [])}
 </article>"""
