@@ -66,6 +66,21 @@ class TaxonomyPublicationReferenceTests(unittest.TestCase):
         self.assertIn("Supports the first boundary.", rendered)
         self.assertIn("Supports only the second condition.", rendered)
 
+    def test_publication_cover_surfaces_standard_version_and_beta_status(self):
+        index = {
+            "standard": {
+                "version": "0.4.2",
+                "status": "beta",
+                "publication_date": "2026-09-11",
+            }
+        }
+        families = [{"classes": []}]
+        rendered = RENDERER.base.publication_frontmatter(index, families)
+        self.assertIn("VIGIL Failure Taxonomy 0.4.2", rendered)
+        self.assertIn("Status: Beta", rendered)
+        self.assertIn("Governance<br>Failure<br>Taxonomy", rendered)
+        self.assertIn("Technical Reference", rendered)
+
     def test_distinct_provisions_at_one_url_remain_distinct_citations(self):
         families = [
             {
@@ -106,6 +121,34 @@ class TaxonomyPublicationReferenceTests(unittest.TestCase):
             ["Instrument, Article 5", "Instrument, Article 12"],
         )
 
+
+    def test_subtype_publication_hierarchy_avoids_orphaned_headings_without_forced_pages(self):
+        item = {
+            "subtypes": [
+                {
+                    "name": "Delegation Scope Expansion",
+                    "historical_class_id": "VIGIL-FC-000008",
+                    "historical_class_code": "DELEGATION_SCOPE_EXPANSION",
+                    "plain_english": "A prior permission is stretched into a materially new action.",
+                    "definition": "A bounded subtype definition.",
+                    "recognition": {"required_conditions": ["A required condition is present."]},
+                    "exclusions": ["A bounded exclusion applies."],
+                    "examples": ["A bounded illustrative example."],
+                }
+            ]
+        }
+
+        rendered = RENDERER.base.subtype_html(item, heading="h3")
+        self.assertIn('class="subtypes-heading"', rendered)
+        self.assertIn('class="subtype-title"', rendered)
+
+        print_style = RENDERER.base.PRINT_STYLE
+        self.assertIn(".subtypes-heading{", print_style)
+        self.assertIn("break-after:avoid-page", print_style)
+        self.assertIn(".subtype-title{", print_style)
+        self.assertIn(".subtypes{margin-top:8mm", print_style)
+        self.assertIn("break-before:auto", print_style)
+        self.assertNotIn(".subtypes{break-before:page", print_style)
 
 if __name__ == "__main__":
     unittest.main()

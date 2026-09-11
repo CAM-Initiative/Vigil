@@ -117,6 +117,12 @@ jobs:
             exit "$status"
           fi
 
+      - name: Test taxonomy release and publication contracts
+        run: |
+          python vigil/tests/test_failure_taxonomy.py
+          python vigil/tests/test_taxonomy_release_modes.py
+          python vigil/tests/test_taxonomy_publication_references.py
+
       - name: Rebuild Incident Case File projection
         run: python vigil/scripts/build-vigil-public-records.py
 

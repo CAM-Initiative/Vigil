@@ -76,6 +76,49 @@ class TaxonomyReleaseModeTests(unittest.TestCase):
         strict_errors, _ = VALIDATOR.validate_catalogue(self.paths(), enforce_current_release=True)
         self.assertTrue(any("published dataset release" in error for error in strict_errors))
 
+    def stage_beta_graduation(self):
+        index = json.loads(PREP.INDEX_PATH.read_text(encoding="utf-8"))
+        index["standard"]["status"] = "beta"
+        for entry in index.get("families", []):
+            if entry.get("status") == "draft":
+                entry["status"] = "beta"
+        PREP.INDEX_PATH.write_text(json.dumps(index, indent=2) + "\n", encoding="utf-8")
+
+        for path in self.paths():
+            data = json.loads(path.read_text(encoding="utf-8"))
+            data["standard"]["status"] = "beta"
+            if data["family"].get("status") == "draft":
+                data["family"]["status"] = "beta"
+            for item in data.get("classes", []):
+                if item.get("status") == "draft":
+                    item["status"] = "beta"
+            path.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
+
+    def test_beta_graduation_is_staged_on_working_branch_and_published_without_draft_suffix(self):
+        self.stage_beta_graduation()
+        working_errors, _ = VALIDATOR.validate_catalogue(self.paths(), enforce_current_release=False)
+        self.assertEqual(working_errors, [])
+
+        strict_before, _ = VALIDATOR.validate_catalogue(self.paths(), enforce_current_release=True)
+        self.assertTrue(any("beta taxonomy releases must not use the -draft version suffix" in error for error in strict_before))
+
+        self.assertTrue(PREP.prepare_release("2026-09-11"))
+        index = json.loads(PREP.INDEX_PATH.read_text(encoding="utf-8"))
+        self.assertEqual(index["standard"]["version"], "0.4.2")
+        self.assertEqual(index["standard"]["status"], "beta")
+        self.assertEqual(index["release_history"][-1]["version"], "0.4.2")
+        self.assertEqual(index["release_history"][-1]["change_level"], "patch")
+
+        for path in self.paths():
+            data = json.loads(path.read_text(encoding="utf-8"))
+            self.assertEqual(data["standard"]["version"], "0.4.2")
+            self.assertEqual(data["standard"]["status"], "beta")
+            self.assertEqual(data["family"]["status"], "beta")
+            self.assertTrue(all(item["status"] == "beta" for item in data["classes"]))
+
+        strict_after, _ = VALIDATOR.validate_catalogue(self.paths(), enforce_current_release=True)
+        self.assertEqual(strict_after, [])
+
     def test_main_release_preparation_bumps_once_for_whole_tranche(self):
         index_before = json.loads(PREP.INDEX_PATH.read_text(encoding="utf-8"))
         previous = index_before["release_history"][-1]["version"]
@@ -89,7 +132,12 @@ class TaxonomyReleaseModeTests(unittest.TestCase):
         current_families = {
             json.loads(path.read_text(encoding="utf-8"))["family"]["family_id"] for path in self.paths()
         }
-        expected, expected_level = PREP.next_release_version(previous, previous_families, current_families)
+        expected, expected_level = PREP.next_release_version(
+            previous,
+            previous_families,
+            current_families,
+            index_before["standard"].get("status"),
+        )
 
         self.mutate_family_content()
         self.assertTrue(PREP.prepare_release("2026-08-31"))
