@@ -77,169 +77,104 @@ def sources(record: dict[str, Any]) -> list[dict[str, Any]]:
     return [item for item in value if isinstance(item, dict)] if isinstance(value, list) else []
 
 
-def evidence_statuses(record: dict[str, Any]) -> list[str]:
-    return sorted(
-        {str(item["evidence_status"]) for item in sources(record) if item.get("evidence_status")}
+def text_terms(*values: Any) -> list[str]:
+    """Return a compact, deterministic search vocabulary without embedding source objects."""
+    terms: dict[str, str] = {}
+
+    def collect(value: Any) -> None:
+        if isinstance(value, str):
+            cleaned = value.strip()
+            if cleaned:
+                terms.setdefault(cleaned.casefold(), cleaned)
+        elif isinstance(value, list):
+            for item in value:
+                collect(item)
+
+    for value in values:
+        collect(value)
+    return sorted(terms.values(), key=str.casefold)
+
+
+def incident_search_terms(record: dict[str, Any]) -> list[str]:
+    incident = record.get("incident_identity") if isinstance(record.get("incident_identity"), dict) else {}
+    system = record.get("system_context") if isinstance(record.get("system_context"), dict) else {}
+    jurisdiction = record.get("jurisdictional_context") if isinstance(record.get("jurisdictional_context"), dict) else {}
+    taxonomy = record.get("taxonomy_classification") if isinstance(record.get("taxonomy_classification"), dict) else {}
+    assessment = record.get("severity_assessment") if isinstance(record.get("severity_assessment"), dict) else {}
+    secondary = taxonomy.get("secondary_classifications") if isinstance(taxonomy.get("secondary_classifications"), list) else []
+    source_list = sources(record)
+
+    return text_terms(
+        incident.get("historical_event_name"),
+        system.get("vendor_cluster"),
+        system.get("primary_evidenced_vendors"),
+        system.get("evidenced_vendors"),
+        system.get("evidenced_products_or_services"),
+        system.get("evidenced_models_or_runtimes"),
+        system.get("product_or_service"),
+        system.get("specific_model_or_runtime"),
+        system.get("model_or_product"),
+        system.get("system_type"),
+        system.get("interface_surface"),
+        jurisdiction.get("primary_jurisdiction"),
+        jurisdiction.get("secondary_jurisdictions"),
+        jurisdiction.get("sector"),
+        jurisdiction.get("regulatory_surface"),
+        taxonomy.get("taxonomy_version"),
+        [
+            value
+            for item in secondary
+            if isinstance(item, dict)
+            for value in (item.get("class_id"), item.get("family_id"))
+            if value
+        ],
+        assessment.get("assessment_status"),
+        [
+            value
+            for item in source_list
+            for value in (
+                item.get("source_title"),
+                item.get("author_or_publisher"),
+                item.get("source_platform"),
+                item.get("source_type"),
+            )
+            if value
+        ],
     )
-
-
-def preferred_evidence_status(record: dict[str, Any]) -> str:
-    preferred = record.get("preferred_evidence")
-    if not isinstance(preferred, dict):
-        return ""
-    matches = [
-        item.get("evidence_status", "")
-        for item in sources(record)
-        if item.get("source_url") == preferred.get("source_url")
-    ]
-    return str(matches[0]) if len(matches) == 1 else ""
-
-
-def severity_assessment_basis(record: dict[str, Any]) -> str:
-    """Derive temporary compatibility prose from canonical structured analysis."""
-    assessment = record.get("severity_assessment")
-    if not isinstance(assessment, dict):
-        return ""
-    severity = str(assessment.get("severity", ""))
-    if severity == "SU":
-        gap = assessment.get("assessment_gap")
-        return f"SU: {gap}" if isinstance(gap, str) and gap.strip() else ""
-    labels = (
-        ("Materialised consequence", "materialised_consequence"),
-        ("Affected scope", "affected_scope"),
-        ("Seriousness and persistence", "seriousness_and_persistence"),
-        ("Quantitative information", "quantitative_information"),
-        ("Evidentiary limits", "evidentiary_limits"),
-        ("Band rationale", "band_rationale"),
-    )
-    parts = [
-        f"{label}: {assessment[field]}"
-        for label, field in labels
-        if isinstance(assessment.get(field), str) and assessment[field].strip()
-    ]
-    return f"{severity}: " + " ".join(parts) if parts else ""
-
-
-def review_summary(record: dict[str, Any]) -> dict[str, Any]:
-    provenance = record.get("interpretive_provenance")
-    if not isinstance(provenance, dict):
-        return {}
-    current = provenance.get("current_ai_review")
-    editor = provenance.get("human_governance_editor")
-    output: dict[str, Any] = {
-        "operating_model": "AI-authored, semi-autonomous production under human contract approval",
-        "review_count": len(provenance.get("review_history", []))
-        if isinstance(provenance.get("review_history"), list)
-        else 0,
-    }
-    if isinstance(current, dict):
-        output["ai_reviewer"] = {
-            "platform": current.get("reviewer_platform"),
-            "model": current.get("reviewer_model"),
-            "review_date": current.get("review_date"),
-            "review_scope": current.get("review_scope"),
-            "capability_profile": current.get("capability_profile"),
-            "known_limitations": current.get("known_limitations"),
-        }
-    if isinstance(editor, dict):
-        output["human_contract_approver"] = {
-            "name": editor.get("name"),
-            "role": "contract-approver",
-            "human_authorship": False,
-            "human_review_status": "not-reviewed",
-            "human_verification_status": "not-verified",
-        }
-    return prune(output)
-
-def evidence_access_summary(record: dict[str, Any]) -> dict[str, Any]:
-    modalities: list[str] = []
-    states: list[str] = []
-    direct = 0
-    indirect = 0
-    for item in sources(record):
-        values = item.get("evidence_modality")
-        if isinstance(values, list):
-            modalities.extend(str(value) for value in values)
-        access = item.get("primary_artefact_access")
-        if not isinstance(access, dict):
-            continue
-        if access.get("access_status"):
-            states.append(str(access["access_status"]))
-        if access.get("direct_primary_artefact_review") is True:
-            direct += 1
-        elif access.get("direct_primary_artefact_review") is False:
-            indirect += 1
-    return {
-        "evidence_modalities": sorted(set(modalities)),
-        "primary_artefact_access_states": sorted(set(states)),
-        "direct_primary_artefact_reviews": direct,
-        "indirect_or_unavailable_primary_artefact_reviews": indirect,
-    }
 
 
 def incident_entry(path: Path, record: dict[str, Any]) -> dict[str, Any]:
     identity = record.get("record_identity") if isinstance(record.get("record_identity"), dict) else {}
     incident = record.get("incident_identity") if isinstance(record.get("incident_identity"), dict) else {}
     system = record.get("system_context") if isinstance(record.get("system_context"), dict) else {}
-    jurisdiction = record.get("jurisdictional_context") if isinstance(record.get("jurisdictional_context"), dict) else {}
     taxonomy = record.get("taxonomy_classification") if isinstance(record.get("taxonomy_classification"), dict) else {}
-    preferred = record.get("preferred_evidence") if isinstance(record.get("preferred_evidence"), dict) else {}
     assessment = record.get("severity_assessment") if isinstance(record.get("severity_assessment"), dict) else {}
-    source_list = sources(record)
-    primary = source_list[0] if source_list else {}
-    diagnostic = record.get("diagnostic_provenance")
-    diagnostic_summary = (
-        {
-            key: diagnostic.get(key)
-            for key in (
-                "method", "diagnostic_date", "human_role", "ai_role", "ai_platform", "ai_model",
-                "model_attribution_basis", "review_status", "authority_boundary",
-                "date_attribution_status", "date_anomaly_note",
-            )
-            if diagnostic.get(key) not in (None, "", [], {})
-        }
-        if isinstance(diagnostic, dict)
-        else {}
-    )
+    primary = taxonomy.get("primary_classification") if isinstance(taxonomy.get("primary_classification"), dict) else {}
+    if not primary:
+        legacy_primary_class = taxonomy.get("primary_class")
+        primary = legacy_primary_class if isinstance(legacy_primary_class, dict) else {}
+    primary_family = taxonomy.get("primary_family") if isinstance(taxonomy.get("primary_family"), dict) else {}
     record_path = relative(path)
+
     return prune({
-        "id": record.get("id"), "record_type": record.get("record_type"),
-        "record_state": record.get("record_state"), "date_recorded": record.get("date_recorded"),
+        "id": record.get("id"),
+        "record_type": record.get("record_type"),
+        "record_state": record.get("record_state"),
+        "record_version": identity.get("version"),
+        "record_last_updated": identity.get("updated"),
+        "date_recorded": record.get("date_recorded"),
         "title": identity.get("title") or record.get("summary") or record.get("id"),
-        "summary": record.get("summary"), "source_count": len(source_list),
-        "primary_source_title": primary.get("source_title"),
-        "primary_source_type": primary.get("source_type"),
-        "primary_source_platform": primary.get("source_platform"),
-        "source_platforms": sorted({item.get("source_platform") for item in source_list if item.get("source_platform")}),
-        "source_types": sorted({item.get("source_type") for item in source_list if item.get("source_type")}),
-        "source_url_status": primary.get("source_url_status"),
-        "system_type": system.get("system_type"), "platform_or_vendor": system.get("platform_or_vendor"),
-        "vendor_cluster": system.get("vendor_cluster"), "primary_evidenced_vendors": system.get("primary_evidenced_vendors"),
-        "evidence_scope": system.get("evidence_scope"), "evidenced_vendors": system.get("evidenced_vendors"),
-        "evidenced_products_or_services": system.get("evidenced_products_or_services"),
-        "evidenced_models_or_runtimes": system.get("evidenced_models_or_runtimes"),
-        "product_or_service": system.get("product_or_service"),
-        "specific_model_or_runtime": system.get("specific_model_or_runtime"),
-        "model_or_product": system.get("model_or_product"), "interface_surface": system.get("interface_surface"),
-        "deployment_context": system.get("deployment_context"),
-        "primary_jurisdiction": jurisdiction.get("primary_jurisdiction"),
-        "regulatory_surface": jurisdiction.get("regulatory_surface"), "sector": jurisdiction.get("sector"),
-        "severity": assessment.get("severity"), "severity_assessment": assessment,
-        "severity_assessment_status": assessment.get("assessment_status"),
-        "severity_assessment_basis": severity_assessment_basis(record),
+        "summary": record.get("summary"),
+        "platform_or_vendor": system.get("platform_or_vendor"),
+        "severity": assessment.get("severity"),
         "classification_status": taxonomy.get("classification_status"),
-        "primary_classification": taxonomy.get("primary_classification"),
-        "secondary_classifications": taxonomy.get("secondary_classifications"),
-        "occurred_from": incident.get("occurred_from"), "occurred_to": incident.get("occurred_to"),
-        "date_precision": incident.get("date_precision"), "preferred_evidence_url": preferred.get("source_url"),
-        "evidence_statuses": evidence_statuses(record),
-        "preferred_evidence_status": preferred_evidence_status(record),
-        "external_incident_references": record.get("external_incident_references"),
-        "legacy_provenance": record.get("legacy_provenance"),
-        "diagnostic_provenance_summary": diagnostic_summary,
-        "interpretive_provenance_summary": review_summary(record),
-        "evidence_access_summary": evidence_access_summary(record),
-        "path": record_path, "github_blob_url": github_url(record_path), "raw_url": raw_url(record_path),
+        "primary_class_id": primary.get("class_id"),
+        "primary_family_id": primary.get("family_id") or primary_family.get("family_id"),
+        "occurred_from": incident.get("occurred_from"),
+        "search_terms": incident_search_terms(record),
+        "path": record_path,
+        "github_blob_url": github_url(record_path),
+        "raw_url": raw_url(record_path),
     })
 
 
@@ -305,12 +240,15 @@ def build() -> None:
             "path": index_path, "github_blob_url": github_url(index_path),
             "raw_url": raw_url(index_path), "record_count": len(entries),
         }},
-        "records": entries,
     }
     write(INCIDENT_INDEX, incident_index)
     write(MASTER_INDEX, master)
     write(TAXONOMY_EXAMPLES, taxonomy_examples(records))
-    print(f"Wrote Incident-only VIGIL indexes for {len(entries)} canonical records.")
+    print(
+        f"Wrote lightweight Incident index for {len(entries)} canonical records "
+        f"({INCIDENT_INDEX.stat().st_size} bytes) and registry manifest "
+        f"({MASTER_INDEX.stat().st_size} bytes)."
+    )
 
 
 if __name__ == "__main__":

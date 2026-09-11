@@ -54,7 +54,7 @@ Build all three with:
 python vigil/scripts/build-vigil-public-records.py
 ```
 
-The master registry contains one registry, `incidents`. Do not manually edit generated outputs or recreate retired-class indexes.
+The master registry contains one registry, `incidents`. It is a registry-of-registries manifest and must not duplicate Incident entries. `VIGIL.Incidents.Index.json` is intentionally a lightweight catalogue/search/routing projection; canonical evidence, diagnosis, structured severity, taxonomy detail and provenance remain in the source Incident JSON. Do not manually edit generated outputs or recreate retired-class indexes.
 
 ## Maintenance and validation
 
