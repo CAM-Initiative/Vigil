@@ -356,7 +356,7 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         classes = {item["class_id"]: item for document in documents for item in document["classes"]}
         self.assertEqual(
             [class_id for class_id in sorted(classes) if class_id >= "VIGIL-FC-000046"],
-            [f"VIGIL-FC-{number:06d}" for number in range(46, 69)],
+            [f"VIGIL-FC-{number:06d}" for number in range(46, 71)],
         )
         authority = next(document for document in documents if document["family"]["family_id"] == "VIGIL-FF-0001")
         self.assertEqual(classes["VIGIL-FC-000046"]["family_id"], authority["family"]["family_id"])
@@ -368,7 +368,7 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         index = json.loads(MODULE.INDEX_PATH.read_text(encoding="utf-8"))
         documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
         selectable = {item["class_id"] for document in documents for item in document["classes"]}
-        self.assertEqual(len(selectable), 61)
+        self.assertEqual(len(selectable), 63)
         self.assertTrue(all(item["abstraction"] == "class" for document in documents for item in document["classes"]))
         subtypes = {
             subtype["historical_class_id"]: item["class_id"]
@@ -380,6 +380,27 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         self.assertEqual(subtypes, mappings)
         self.assertEqual(set(index["removed_ids"]), set(mappings))
         self.assertTrue(selectable.isdisjoint(mappings))
+
+    def test_objective_pursuit_integrity_family_has_bounded_peer_mechanisms(self):
+        documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
+        objective = next(document for document in documents if document["family"]["family_id"] == "VIGIL-FF-0012")
+        self.assertEqual(
+            [item["class_id"] for item in objective["classes"]],
+            ["VIGIL-FC-000069", "VIGIL-FC-000070"],
+        )
+        invariant = objective["family"]["invariant"].lower()
+        self.assertIn("intended success condition", invariant)
+        self.assertIn("stopping conditions", invariant)
+
+        classes = {item["class_id"]: item for item in objective["classes"]}
+        reward = classes["VIGIL-FC-000069"]
+        persistence = classes["VIGIL-FC-000070"]
+        self.assertIn("reward", reward["definition"].lower())
+        self.assertIn("intended success condition", reward["definition"].lower())
+        self.assertIn("safe", persistence["plain_english"].lower())
+        self.assertIn("no feasible and admissible completion pathway", persistence["definition"].lower())
+        self.assertTrue(any(ref["publisher"] == "OpenAI" for ref in reward.get("external_references", [])))
+        self.assertTrue(any(ref["publisher"] == "OpenAI" for ref in persistence.get("external_references", [])))
 
     def test_identity_representation_authority_class_is_portable_and_bounded(self):
         documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
