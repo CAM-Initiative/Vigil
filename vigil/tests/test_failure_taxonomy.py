@@ -201,10 +201,12 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         classes = {item["class_id"]: item for document in documents for item in document["classes"]}
         item = classes["VIGIL-FC-000055"]
         invariant = item.get("invariant", "")
-        self.assertIn("Authority is purpose-bound", invariant)
         self.assertIn("materially different secondary purpose", invariant)
-        self.assertIn("must not enlarge or transpose that authority", invariant)
+        self.assertIn("must independently establish a sufficient authority or governance basis", invariant)
+        self.assertIn("must not establish that basis", invariant)
         self.assertIn("must be revalidated", invariant)
+        self.assertNotIn("Authority is purpose-bound", invariant)
+        self.assertNotIn("does not confer authority for a materially different secondary purpose", invariant)
 
         schema = json.loads(MODULE.SCHEMA_PATH.read_text(encoding="utf-8"))
         invariant_schema = schema["$defs"]["class"]["properties"]["invariant"]
