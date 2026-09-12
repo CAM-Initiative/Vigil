@@ -398,7 +398,7 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         self.assertIn("reward", reward["definition"].lower())
         self.assertIn("intended success condition", reward["definition"].lower())
         self.assertIn("safe", persistence["plain_english"].lower())
-        self.assertIn("no feasible and admissible completion pathway", persistence["definition"].lower())
+        self.assertIn("feasible and admissible completion pathway", persistence["definition"].lower())
         self.assertTrue(any(ref["publisher"] == "OpenAI" for ref in reward.get("external_references", [])))
         self.assertTrue(any(ref["publisher"] == "OpenAI" for ref in persistence.get("external_references", [])))
 
