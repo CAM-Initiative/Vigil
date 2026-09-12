@@ -196,6 +196,24 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         self.assertIn("lacks valid authority", pathway_boundaries)
         self.assertIn("self-authorise", pathway_boundaries)
 
+    def test_secondary_purpose_class_has_portable_class_invariant(self):
+        documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
+        classes = {item["class_id"]: item for document in documents for item in document["classes"]}
+        item = classes["VIGIL-FC-000055"]
+        invariant = item.get("invariant", "")
+        self.assertIn("materially different secondary purpose", invariant)
+        self.assertIn("must independently establish a sufficient authority or governance basis", invariant)
+        self.assertIn("must not establish that basis", invariant)
+        self.assertIn("must be revalidated", invariant)
+        self.assertNotIn("Authority is purpose-bound", invariant)
+        self.assertNotIn("does not confer authority for a materially different secondary purpose", invariant)
+
+        schema = json.loads(MODULE.SCHEMA_PATH.read_text(encoding="utf-8"))
+        invariant_schema = schema["$defs"]["class"]["properties"]["invariant"]
+        self.assertEqual(invariant_schema["type"], "string")
+        self.assertIn("mechanism-specific structural property", invariant_schema["description"])
+        self.assertNotIn("invariant", schema["$defs"]["class"]["required"])
+
     def test_family_prose_semantic_roles_are_explicit(self):
         schema = json.loads(MODULE.SCHEMA_PATH.read_text(encoding="utf-8"))
         properties = schema["$defs"]["family"]["properties"]
@@ -258,19 +276,18 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         ):
             self.assertIn(boundary, definition)
 
-    def test_working_branch_preserves_last_published_version_while_staging_beta_status(self):
+    def test_canonical_standard_metadata_aligns_with_current_release(self):
         index = json.loads(MODULE.INDEX_PATH.read_text(encoding="utf-8"))
-        self.assertEqual(index["standard"]["version"], "0.4.1-draft")
-        self.assertEqual(index["standard"]["publication_date"], "2026-09-11")
-        self.assertEqual(index["standard"]["status"], "beta")
-        self.assertEqual(index["release_history"][-1]["change_level"], "patch")
+        standard = index["standard"]
+        current = index["release_history"][-1]
+        self.assertEqual(standard["version"], current["version"])
+        self.assertEqual(standard["publication_date"], current["publication_date"])
+        self.assertIn(standard["status"], {"draft", "beta", "active", "deprecated"})
         for path in self.paths():
             document = json.loads(path.read_text(encoding="utf-8"))
-            self.assertEqual(document["standard"]["version"], "0.4.1-draft")
-            self.assertEqual(document["standard"]["publication_date"], "2026-09-11")
-            self.assertEqual(document["standard"]["status"], "beta")
-            self.assertEqual(document["family"]["status"], "beta")
-            self.assertTrue(all(item["status"] == "beta" for item in document["classes"]))
+            self.assertEqual(document["standard"]["version"], standard["version"])
+            self.assertEqual(document["standard"]["publication_date"], standard["publication_date"])
+            self.assertEqual(document["standard"]["status"], standard["status"])
 
     def test_family_or_class_change_requires_new_dataset_release_metadata(self):
         path, data = self.document()
@@ -286,31 +303,47 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
     def test_existing_record_change_requires_patch_not_minor_increment(self):
         index = json.loads(MODULE.INDEX_PATH.read_text(encoding="utf-8"))
         previous = index["release_history"][-1]
+        parsed = MODULE.parse_version(previous["version"])
+        self.assertIsNotNone(parsed)
+        major, minor, patch, _ = parsed
+        expected_patch = f"{major}.{minor}.{patch + 1}"
+        wrong_minor = f"{major}.{minor + 1}.0"
+
         release = copy.deepcopy(previous)
-        release["version"] = "0.5.0-draft"
+        release["version"] = wrong_minor
         release["change_level"] = "minor"
         release["content_digest"] = "sha256:" + "f" * 64
         index["release_history"].append(release)
-        index["standard"]["version"] = "0.5.0-draft"
+        index["standard"]["version"] = wrong_minor
         self.write(MODULE.INDEX_PATH, index)
         for path in self.paths():
             document = json.loads(path.read_text(encoding="utf-8"))
-            document["standard"]["version"] = "0.5.0-draft"
+            document["standard"]["version"] = wrong_minor
             self.write(path, document)
-        self.assertTrue(any("must advance to 0.4.2" in error for error in self.published_errors()))
+        errors = self.published_errors()
+        self.assertTrue(any("change_level must be 'patch'" in error for error in errors))
+        self.assertTrue(any(f"must advance to {expected_patch}" in error for error in errors))
 
     def test_new_family_requires_minor_dataset_increment(self):
         index = json.loads(MODULE.INDEX_PATH.read_text(encoding="utf-8"))
         previous = index["release_history"][-1]
+        parsed = MODULE.parse_version(previous["version"])
+        self.assertIsNotNone(parsed)
+        major, minor, patch, _ = parsed
+        expected_minor = f"{major}.{minor + 1}.0"
+        wrong_patch = f"{major}.{minor}.{patch + 1}"
+
         release = copy.deepcopy(previous)
-        release["version"] = "0.4.2-draft"
+        release["version"] = wrong_patch
         release["change_level"] = "patch"
         release["content_digest"] = "sha256:" + "e" * 64
         release["family_ids"].append("VIGIL-FF-0012")
         index["release_history"].append(release)
-        index["standard"]["version"] = "0.4.2-draft"
+        index["standard"]["version"] = wrong_patch
         self.write(MODULE.INDEX_PATH, index)
-        self.assertTrue(any("must advance to 0.5.0" in error for error in self.published_errors()))
+        errors = self.published_errors()
+        self.assertTrue(any("change_level must be 'minor'" in error for error in errors))
+        self.assertTrue(any(f"must advance to {expected_minor}" in error for error in errors))
 
     def test_dataset_release_requires_fixed_edition_date(self):
         index = json.loads(MODULE.INDEX_PATH.read_text(encoding="utf-8"))
@@ -323,7 +356,7 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         classes = {item["class_id"]: item for document in documents for item in document["classes"]}
         self.assertEqual(
             [class_id for class_id in sorted(classes) if class_id >= "VIGIL-FC-000046"],
-            [f"VIGIL-FC-{number:06d}" for number in range(46, 69)],
+            [f"VIGIL-FC-{number:06d}" for number in range(46, 71)],
         )
         authority = next(document for document in documents if document["family"]["family_id"] == "VIGIL-FF-0001")
         self.assertEqual(classes["VIGIL-FC-000046"]["family_id"], authority["family"]["family_id"])
@@ -335,7 +368,7 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         index = json.loads(MODULE.INDEX_PATH.read_text(encoding="utf-8"))
         documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
         selectable = {item["class_id"] for document in documents for item in document["classes"]}
-        self.assertEqual(len(selectable), 61)
+        self.assertEqual(len(selectable), 63)
         self.assertTrue(all(item["abstraction"] == "class" for document in documents for item in document["classes"]))
         subtypes = {
             subtype["historical_class_id"]: item["class_id"]
@@ -347,6 +380,27 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         self.assertEqual(subtypes, mappings)
         self.assertEqual(set(index["removed_ids"]), set(mappings))
         self.assertTrue(selectable.isdisjoint(mappings))
+
+    def test_objective_pursuit_integrity_family_has_bounded_peer_mechanisms(self):
+        documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
+        objective = next(document for document in documents if document["family"]["family_id"] == "VIGIL-FF-0012")
+        self.assertEqual(
+            [item["class_id"] for item in objective["classes"]],
+            ["VIGIL-FC-000069", "VIGIL-FC-000070"],
+        )
+        invariant = objective["family"]["invariant"].lower()
+        self.assertIn("intended success condition", invariant)
+        self.assertIn("stopping conditions", invariant)
+
+        classes = {item["class_id"]: item for item in objective["classes"]}
+        reward = classes["VIGIL-FC-000069"]
+        persistence = classes["VIGIL-FC-000070"]
+        self.assertIn("reward", reward["definition"].lower())
+        self.assertIn("intended success condition", reward["definition"].lower())
+        self.assertIn("safe", persistence["plain_english"].lower())
+        self.assertIn("feasible and admissible completion pathway", persistence["definition"].lower())
+        self.assertTrue(any(ref["publisher"] == "OpenAI" for ref in reward.get("external_references", [])))
+        self.assertTrue(any(ref["publisher"] == "OpenAI" for ref in persistence.get("external_references", [])))
 
     def test_identity_representation_authority_class_is_portable_and_bounded(self):
         documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]

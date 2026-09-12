@@ -19,6 +19,7 @@ families/
   VIGIL-FF-0009-agency-preserving-influence-integrity.json
   VIGIL-FF-0010-infrastructural-authority-integrity.json
   VIGIL-FF-0011-value-appropriation-integrity.json
+  VIGIL-FF-0012-objective-pursuit-integrity.json
 generated/
   VIGIL.FailureTaxonomy.CaseFileExamples.json
   VIGIL.Observatory.FailureTaxonomy.FullReference.pdf
@@ -76,7 +77,7 @@ Family filenames use `<family_id>-<human-readable-slug>.json`. The immutable ID 
 
 Every family defines its immutable ID, semantic code, canonical name, version, status, abstraction, plain-English explanation, technical definition, governing invariant, scope, inclusion rule, exclusion rule, aliases, and allowed class IDs/codes.
 
-Every selectable class defines its immutable ID, semantic code, current family ID, canonical name, class abstraction, status, plain-English explanation, technical definition, recognition criteria, exclusions, examples, aliases, typed relationships where relevant, and optional external mappings or supersession metadata. An embedded subtype preserves its semantic name, explanation, definition, recognition criteria, exclusions, examples, aliases and any historical retired class ID/code without becoming a peer class.
+Every selectable class defines its immutable ID, semantic code, current family ID, canonical name, class abstraction, status, plain-English explanation, technical definition, recognition criteria, exclusions, examples, aliases, typed relationships where relevant, and optional external mappings or supersession metadata. A class may also define a canonical `invariant`: the positive mechanism-specific structural property that must hold to prevent or repair that class. Class invariants must remain narrower than, and consistent with, the parent family invariant. During the staged invariant backfill, consumers must use a published class invariant when present and must not synthesize one from the class definition or silently substitute the broader family invariant. An embedded subtype preserves its semantic name, explanation, definition, recognition criteria, exclusions, examples, aliases and any historical retired class ID/code without becoming a peer class.
 
 ### Semantic roles of family prose
 
