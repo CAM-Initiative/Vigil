@@ -92,10 +92,11 @@
         "unclassified",
         "provisionally-classified",
         "classified",
+        "exemplar",
         "classification-disputed",
         "requires-human-review"
       ],
-      "classification_rule": "Unclassified and requires-human-review Incidents assert no primary or secondary class. Provisionally classified, classified and disputed Incidents require one selectable canonical primary mapping and may carry independently evidenced selectable canonical secondary mappings. Named subtypes and recognition patterns refine the containing class and are not independently assignable or duplicable beside that parent. Every asserted mapping carries its own classification basis and confidence. Incident existence is never conditional on classification completion.",
+      "classification_rule": "Unclassified and requires-human-review Incidents assert no primary or secondary class. Provisionally classified, classified, exemplar and disputed Incidents require one selectable canonical primary mapping and may carry independently evidenced selectable canonical secondary mappings. Exemplar identifies an Incident that is attached to a Failure Class because it demonstrates the governing invariant holding under the relevant failure pressure; it is not failure-occurrence evidence and must not be projected into failure case-study collections. Named subtypes and recognition patterns refine the containing class and are not independently assignable or duplicable beside that parent. Every asserted mapping carries its own classification basis and confidence. Incident existence is never conditional on classification completion.",
       "classification_confidence_rule": "classification_confidence evaluates confidence that the available occurrence facts fit the asserted Failure Class. It must not be mechanically inferred from source evidence status, source count, publisher identity, primary-artefact accessibility, reproduction status, corroboration, or absence of root-cause information. A source-level user-reported, first-party-reported, registry-reported, unverified, or other bounded evidence status does not automatically require medium or low taxonomy confidence; strongly corroborated evidence does not automatically justify high taxonomy confidence.",
       "external_incident_relationship_values": [
         "same-incident",
@@ -158,6 +159,7 @@
         "S2",
         "S3",
         "S4",
+        "S5",
         "SU"
       ],
       "severity_assessment_status_values": [
@@ -165,12 +167,13 @@
         "incident-assessed",
         "requires-incident-review"
       ],
-      "severity_rule": "Incident severity rates the maximum occurrence-level harm or consequence supported by the preserved evidence: S1 critical materialised harm; S2 high materialised harm; S3 moderate, bounded materialised harm; S4 low, minor and readily remediable materialised harm; SU no defensible band. It is independent of taxonomy classification, source evidence status, workflow priority, publisher, notoriety, CAM importance and hypothetical worst-case capability. Legacy FM severity is provenance only and never determines the Incident band.",
+      "severity_rule": "Incident severity rates the maximum occurrence-level harm or consequence supported by the preserved evidence: S1 critical materialised harm; S2 high materialised harm; S3 moderate, bounded materialised harm; S4 low, minor and readily remediable materialised harm; S5 no materialised downstream harm despite a completed or evidenced occurrence; SU no defensible band. It is independent of taxonomy classification, source evidence status, workflow priority, publisher, notoriety, CAM importance and hypothetical worst-case capability. Legacy FM severity is provenance only and never determines the Incident band.",
       "severity_meanings": {
         "S1": "Critical: the occurrence materialised death, grave injury, grave or enduring deprivation of liberty or essential care, severe sexual or child-safety harm, very large realised loss, destructive loss of critical assets, or comparably grave and persistent rights or societal harm.",
         "S2": "High: the occurrence materialised substantial harm to a person, group, organisation or important function, including significant financial, property, privacy, rights, health or operational consequences, but the supported scope, seriousness or reversibility remains below S1.",
         "S3": "Moderate: the occurrence materialised meaningful but bounded harm, disruption, expense, privacy or dignitary impact that is limited in scope, substantially reversible, or not shown to be grave; it exceeds minor inconvenience or negligible consequence.",
         "S4": "Low: the occurrence materialised only minor, short-lived, localised or readily remedied inconvenience, expense, presentation error, coordination defect or service impairment.",
+        "S5": "No materialised downstream harm: the occurrence materially demonstrated a failure mechanism, governance-relevant behaviour, successful invariant or other bounded event, but the preserved evidence establishes no resulting harm, loss, disruption, rights impact or other adverse downstream consequence outside the controlled or observational occurrence itself.",
         "SU": "Unassessed: the evidence cannot support a defensible occurrence-level band or cannot distinguish the relevant adjacent bands. Taxonomy importance, alleged potential and hypothetical worst-case harm do not cure that gap."
       },
       "severity_analysis_rule": "The structured severity fields are substantive occurrence-level Incident diagnosis. They are not source metadata, diagnostic provenance, taxonomy metadata or workflow metadata. Every incident-assessed record separately states the materialised consequence, affected scope, seriousness and persistence or reversibility, available quantitative information, evidentiary limits, and a record-specific adjacent-band rationale. The fields must not be empty, circular, generic, copied from a Failure Class or inferred from legacy severity. SU requires requires-incident-review and a concrete assessment_gap naming the missing occurrence evidence needed to assign a band; assessed substantive fields must not be fabricated for SU.",
