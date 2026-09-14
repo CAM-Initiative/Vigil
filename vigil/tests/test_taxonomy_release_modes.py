@@ -95,6 +95,19 @@ class TaxonomyReleaseModeTests(unittest.TestCase):
             path.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
 
     def test_beta_graduation_is_staged_on_working_branch_and_published_without_draft_suffix(self):
+        index_before = json.loads(PREP.INDEX_PATH.read_text(encoding="utf-8"))
+        previous = index_before["release_history"][-1]["version"]
+        previous_families = set(index_before["release_history"][-1]["family_ids"])
+        current_families = {
+            json.loads(path.read_text(encoding="utf-8"))["family"]["family_id"] for path in self.paths()
+        }
+        expected, expected_level = PREP.next_release_version(
+            previous,
+            previous_families,
+            current_families,
+            "beta",
+        )
+
         self.stage_beta_graduation()
         working_errors, _ = VALIDATOR.validate_catalogue(self.paths(), enforce_current_release=False)
         self.assertEqual(working_errors, [])
@@ -104,14 +117,14 @@ class TaxonomyReleaseModeTests(unittest.TestCase):
 
         self.assertTrue(PREP.prepare_release("2026-09-11"))
         index = json.loads(PREP.INDEX_PATH.read_text(encoding="utf-8"))
-        self.assertEqual(index["standard"]["version"], "0.4.2")
+        self.assertEqual(index["standard"]["version"], expected)
         self.assertEqual(index["standard"]["status"], "beta")
-        self.assertEqual(index["release_history"][-1]["version"], "0.4.2")
-        self.assertEqual(index["release_history"][-1]["change_level"], "patch")
+        self.assertEqual(index["release_history"][-1]["version"], expected)
+        self.assertEqual(index["release_history"][-1]["change_level"], expected_level)
 
         for path in self.paths():
             data = json.loads(path.read_text(encoding="utf-8"))
-            self.assertEqual(data["standard"]["version"], "0.4.2")
+            self.assertEqual(data["standard"]["version"], expected)
             self.assertEqual(data["standard"]["status"], "beta")
             self.assertEqual(data["family"]["status"], "beta")
             self.assertTrue(all(item["status"] == "beta" for item in data["classes"]))

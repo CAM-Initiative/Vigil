@@ -65,6 +65,9 @@ def markdown_family(data: dict, level: int = 1) -> str:
     )
     if family.get("aliases"):
         out.extend(["", f"**Prior codes / aliases:** {'; '.join(f'`{x}`' for x in family['aliases'])}"])
+    if family.get("invariant_exemplars"):
+        out.extend(["", f"{h}## Invariant exemplars", ""])
+        out.extend(markdown_invariant_exemplar(item) for item in family["invariant_exemplars"])
     out.extend(["", f"{h}# Failure classes", ""])
 
     for item in data["classes"]:
@@ -77,6 +80,10 @@ def markdown_family(data: dict, level: int = 1) -> str:
             f"**Status:** {item['status']}", "",
             f"**Plain English:** {item['plain_english']}", "",
             f"{h}## Technical definition", "", item["definition"], "",
+        ])
+        if item.get("invariant"):
+            out.extend([f"{h}## Class invariant", "", f"> {item['invariant']}", ""])
+        out.extend([
             f"{h}## Recognition criteria", "",
         ])
         out.extend(f"- {x}" for x in item["recognition"]["required_conditions"])
@@ -87,6 +94,9 @@ def markdown_family(data: dict, level: int = 1) -> str:
         out.extend(f"- {x}" for x in item["exclusions"])
         out.extend(["", f"{h}## Illustrative examples", ""])
         out.extend(f"- {x}" for x in item["examples"])
+        if item.get("invariant_exemplars"):
+            out.extend(["", f"{h}## Invariant exemplars", ""])
+            out.extend(markdown_invariant_exemplar(exemplar) for exemplar in item["invariant_exemplars"])
         if item.get("aliases"):
             out.extend(["", f"**Prior codes / aliases:** {'; '.join(f'`{x}`' for x in item['aliases'])}"])
         if item.get("subtypes"):
@@ -120,6 +130,25 @@ def markdown_family(data: dict, level: int = 1) -> str:
                 )
         out.extend(["", "---", ""])
     return "\n".join(out).rstrip() + "\n"
+
+
+def markdown_invariant_exemplar(exemplar: dict) -> str:
+    placement = exemplar["governance_placement"]
+    boundaries = "\n".join(f"  - {item}" for item in exemplar["boundary_conditions"])
+    return "\n".join([
+        f"### {exemplar['title']}",
+        "",
+        f"- **VIGIL Incident:** `{exemplar['linked_incident_id']}`",
+        f"- **Relationship:** `{exemplar['exemplar_type']}` ({exemplar['exemplar_status']})",
+        f"- **Evidence basis:** {exemplar['evidence_basis']}",
+        f"- **Invariant demonstrated:** {exemplar['invariant_demonstrated']}",
+        f"- **Why this is not failure evidence:** {exemplar['success_basis']}",
+        "- **Boundary conditions:**",
+        boundaries,
+        f"- **Governance placement:** {placement['framework']} — `{placement['instrument_id']}`, {placement['section_or_control']}. {placement['placement_note']}",
+        f"- **Provenance:** {exemplar['provenance_note']}",
+        "",
+    ])
 
 
 def publication_date(value: object) -> str:
@@ -493,6 +522,31 @@ def case_examples_html(examples: list[dict]) -> str:
     return f"<section class=\"case-studies\"><h4>{heading}</h4>" + "".join(studies) + "</section>"
 
 
+def invariant_exemplars_html(exemplars: list[dict], *, heading: str = "h4") -> str:
+    if not exemplars:
+        return ""
+    cards = []
+    for exemplar in exemplars:
+        placement = exemplar["governance_placement"]
+        boundaries = "".join(f"<li>{esc(value)}</li>" for value in exemplar["boundary_conditions"])
+        cards.append(
+            '<article class="invariant-exemplar">'
+            f"<{heading}>{esc(exemplar['title'])}</{heading}>"
+            f"<p><strong>VIGIL Incident:</strong> <code>{esc(exemplar['linked_incident_id'])}</code> · "
+            f"<strong>Relationship:</strong> <code>{esc(exemplar['exemplar_type'])}</code> ({esc(exemplar['exemplar_status'])})</p>"
+            f"<p><strong>Evidence basis:</strong> {esc(exemplar['evidence_basis'])}</p>"
+            f"<p><strong>Invariant demonstrated:</strong> {esc(exemplar['invariant_demonstrated'])}</p>"
+            f"<p><strong>Why this is not failure evidence:</strong> {esc(exemplar['success_basis'])}</p>"
+            f"<p><strong>Boundary conditions:</strong></p><ul>{boundaries}</ul>"
+            f"<p><strong>Governance placement:</strong> {esc(placement['framework'])} — "
+            f"<code>{esc(placement['instrument_id'])}</code>, {esc(placement['section_or_control'])}. "
+            f"{esc(placement['placement_note'])}</p>"
+            f"<p><strong>Provenance:</strong> {esc(exemplar['provenance_note'])}</p>"
+            "</article>"
+        )
+    return '<section class="invariant-exemplars"><h3>Invariant exemplars</h3>' + "".join(cards) + "</section>"
+
+
 def publication_class_html(item: dict, section_number: str, class_lookup: dict[str, tuple[str, str]], case_examples: list[dict] | None = None) -> str:
     recognition = "".join(f"<li>{esc(x)}</li>" for x in item["recognition"]["required_conditions"])
     indicators = ""
@@ -516,6 +570,7 @@ def publication_class_html(item: dict, section_number: str, class_lookup: dict[s
             for m in item["external_mappings"]
         ) + "</ul>"
     subtypes = subtype_html(item, heading="h3")
+    invariant = f'<h3>Class invariant</h3><p class="invariant">{esc(item["invariant"])}</p>' if item.get("invariant") else ""
     return f"""
 <section class="book-class" id="{esc(anchor(item['class_id']))}">
   <p class="class-kicker">{esc(section_number)} · {esc(str(item['abstraction']).upper())}</p>
@@ -523,8 +578,9 @@ def publication_class_html(item: dict, section_number: str, class_lookup: dict[s
   <p class="class-meta"><code>{esc(item['class_id'])}</code> · <code>{esc(item['class_code'])}</code> · {esc(str(item['status']).title())}</p>
   <p class="plain"><strong>Plain English:</strong> {esc(item['plain_english'])}</p>
   <h3>Technical definition</h3><p>{esc(item['definition'])}</p>
+  {invariant}
   <div class="grid criteria-grid"><section><h3>Recognition criteria</h3><ul>{recognition}</ul>{indicators}</section><section><h3>Exclusions</h3><ul>{exclusions}</ul></section></div>
-  <h3>Illustrative examples</h3><ul>{illustrative_examples}</ul>{subtypes}{aliases}{relationships}{mappings}{case_examples_html(case_examples or [])}
+  <h3>Illustrative examples</h3><ul>{illustrative_examples}</ul>{invariant_exemplars_html(item.get("invariant_exemplars", []), heading="h4")}{subtypes}{aliases}{relationships}{mappings}{case_examples_html(case_examples or [])}
 </section>"""
 
 
@@ -568,6 +624,7 @@ def publication_family_html(data: dict, chapter_number: int, case_examples: dict
     <h2>Technical definition</h2><p>{esc(family['definition'])}</p>
     <h2>Governing invariant</h2><p class="invariant">{esc(family['invariant'])}</p>
     <h2>Classification boundary</h2><div class="grid"><section><h3>Include when</h3><p>{esc(family['inclusion_rule'])}</p></section><section><h3>Exclude when</h3><p>{esc(family['exclusion_rule'])}</p></section></div>
+    {invariant_exemplars_html(family.get("invariant_exemplars", []), heading="h3")}
   </section>{classes}
 </section>"""
 
@@ -601,13 +658,15 @@ def class_html(item: dict, case_examples: list[dict] | None = None) -> str:
             for m in item["external_mappings"]
         ) + "</ul>"
     subtypes = subtype_html(item, heading="h4")
+    invariant = f'<h4>Class invariant</h4><p class="invariant">{esc(item["invariant"])}</p>' if item.get("invariant") else ""
     return f"""
 <article class="card" id="{esc(anchor(item['class_id']))}">
   <div class="top"><div><span class="pill">{esc(item['abstraction'])}</span><h3>{esc(item['name'])}</h3><p><code>{esc(item['class_id'])}</code> · <code>{esc(item['class_code'])}</code></p></div><span class="pill">{esc(item['status'])}</span></div>
   <p class="plain"><strong>Plain English:</strong> {esc(item['plain_english'])}</p>
   <h4>Technical definition</h4><p>{esc(item['definition'])}</p>
+  {invariant}
   <div class="grid"><section><h4>Recognition criteria</h4><ul>{recognition}</ul>{indicators}</section><section><h4>Exclusions</h4><ul>{exclusions}</ul></section></div>
-  <h4>Illustrative examples</h4><ul>{illustrative_examples}</ul>{subtypes}{aliases}{relationships}{mappings}{case_examples_html(case_examples or [])}
+  <h4>Illustrative examples</h4><ul>{illustrative_examples}</ul>{invariant_exemplars_html(item.get("invariant_exemplars", []), heading="h4")}{subtypes}{aliases}{relationships}{mappings}{case_examples_html(case_examples or [])}
 </article>"""
 
 
@@ -651,7 +710,7 @@ def family_html(data: dict, heading_level: int = 1, case_examples: dict[str, lis
 <p><strong>Immutable ID:</strong> <code>{esc(family['family_id'])}</code> · <strong>Semantic code:</strong> <code>{esc(family['family_code'])}</code> · <strong>Version:</strong> {esc(family['version'])} · <strong>Status:</strong> {esc(family['status'])}</p>
 <h2>Technical definition</h2><p>{esc(family['definition'])}</p><h2>Governing invariant</h2><p class="invariant">{esc(family['invariant'])}</p>
 <h2>Classification boundary</h2><div class="grid"><section><h3>Include when</h3><p>{esc(family['inclusion_rule'])}</p></section><section><h3>Exclude when</h3><p>{esc(family['exclusion_rule'])}</p></section></div>
-<h2>Scope</h2><ul>{scope}</ul><details><summary><strong>Allowed identifiers</strong></summary><ul>{allowed}</ul></details><details><summary><strong>Prior codes and aliases</strong></summary><ul>{aliases}</ul></details></section>
+<h2>Scope</h2><ul>{scope}</ul><details><summary><strong>Allowed identifiers</strong></summary><ul>{allowed}</ul></details><details><summary><strong>Prior codes and aliases</strong></summary><ul>{aliases}</ul></details>{invariant_exemplars_html(family.get("invariant_exemplars", []), heading="h3")}</section>
 <h2>Failure classes</h2>{''.join(class_html(item, (case_examples or {}).get(item['class_id'], [])) for item in data['classes'])}</section>"""
 
 

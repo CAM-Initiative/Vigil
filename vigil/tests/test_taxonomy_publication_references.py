@@ -66,6 +66,56 @@ class TaxonomyPublicationReferenceTests(unittest.TestCase):
         self.assertIn("Supports the first boundary.", rendered)
         self.assertIn("Supports only the second condition.", rendered)
 
+    def test_class_invariant_renders_when_published(self):
+        item = {
+            "class_id": "VIGIL-FC-000055",
+            "class_code": "SECONDARY_PURPOSE_AUTHORITY_TRANSPOSITION",
+            "family_id": "VIGIL-FF-0001",
+            "name": "Secondary-Purpose Authority Transposition",
+            "status": "beta",
+            "abstraction": "class",
+            "plain_english": "Primary-purpose authority is reused for another purpose.",
+            "definition": "A bounded class definition.",
+            "invariant": "Authority is purpose-bound and must be revalidated for a materially different secondary purpose.",
+            "recognition": {"required_conditions": ["A required condition is present."]},
+            "exclusions": ["A bounded exclusion applies."],
+            "examples": ["A bounded example applies."],
+            "aliases": [],
+        }
+
+        publication = RENDERER.base.publication_class_html(item, "1.1", {}, [])
+        self.assertIn("Class invariant", publication)
+        self.assertIn("Authority is purpose-bound", publication)
+
+        portable = RENDERER.base.class_html(item, [])
+        self.assertIn("Class invariant", portable)
+        self.assertIn("Authority is purpose-bound", portable)
+
+    def test_invariant_exemplar_renders_separately_from_failure_case_studies(self):
+        exemplar = {
+            "exemplar_type": "successful-invariant",
+            "exemplar_status": "admitted",
+            "linked_incident_id": "VIGIL-INC-000126",
+            "title": "Protected escalation example",
+            "evidence_basis": "The concern remained reviewable by an independent human.",
+            "invariant_demonstrated": "Independent review remained available.",
+            "success_basis": "The AI did not make the final disclosure decision.",
+            "boundary_conditions": ["The occurrence was simulated."],
+            "governance_placement": {
+                "framework": "CAELESTIS",
+                "instrument_id": "CAM-EQ2026-STEWARD-003-PLATINUM",
+                "section_or_control": "§7",
+                "placement_note": "Neutrality assurance reference.",
+            },
+            "provenance_note": "Occurrence evidence remains in the linked Incident.",
+        }
+        rendered = RENDERER.base.invariant_exemplars_html([exemplar])
+        self.assertIn("Invariant exemplars", rendered)
+        self.assertIn("successful-invariant", rendered)
+        self.assertIn("VIGIL-INC-000126", rendered)
+        self.assertIn("Why this is not failure evidence", rendered)
+        self.assertNotIn("Case Study", rendered)
+
     def test_publication_cover_surfaces_standard_version_and_beta_status(self):
         index = {
             "standard": {

@@ -19,6 +19,9 @@ families/
   VIGIL-FF-0009-agency-preserving-influence-integrity.json
   VIGIL-FF-0010-infrastructural-authority-integrity.json
   VIGIL-FF-0011-value-appropriation-integrity.json
+  VIGIL-FF-0012-objective-pursuit-integrity.json
+  VIGIL-FF-0013-welfare-framed-economic-influence-integrity.json
+  VIGIL-FF-0014-governance-independence-neutrality-integrity.json
 generated/
   VIGIL.FailureTaxonomy.CaseFileExamples.json
   VIGIL.Observatory.FailureTaxonomy.FullReference.pdf
@@ -76,7 +79,9 @@ Family filenames use `<family_id>-<human-readable-slug>.json`. The immutable ID 
 
 Every family defines its immutable ID, semantic code, canonical name, version, status, abstraction, plain-English explanation, technical definition, governing invariant, scope, inclusion rule, exclusion rule, aliases, and allowed class IDs/codes.
 
-Every selectable class defines its immutable ID, semantic code, current family ID, canonical name, class abstraction, status, plain-English explanation, technical definition, recognition criteria, exclusions, examples, aliases, typed relationships where relevant, and optional external mappings or supersession metadata. An embedded subtype preserves its semantic name, explanation, definition, recognition criteria, exclusions, examples, aliases and any historical retired class ID/code without becoming a peer class.
+Every selectable class defines its immutable ID, semantic code, current family ID, canonical name, class abstraction, status, plain-English explanation, technical definition, recognition criteria, exclusions, examples, aliases, typed relationships where relevant, and optional external mappings or supersession metadata. A class may also define a canonical `invariant`: the positive mechanism-specific structural property that must hold to prevent or repair that class. Class invariants must remain narrower than, and consistent with, the parent family invariant. During the staged invariant backfill, consumers must use a published class invariant when present and must not synthesize one from the class definition or silently substitute the broader family invariant. An embedded subtype preserves its semantic name, explanation, definition, recognition criteria, exclusions, examples, aliases and any historical retired class ID/code without becoming a peer class.
+
+Families and classes may optionally contain structured `invariant_exemplars`. These link an evidenced VIGIL Incident to a successful-invariant, ambiguous-boundary, or repaired-post-control relationship without classifying that Incident as a failure. The linked Incident remains authoritative for occurrence facts, sources, severity, uncertainty and interpretive provenance; the taxonomy records only why the occurrence demonstrates, tests or restores the invariant. Short hypothetical failure illustrations remain in `examples`, and classified failure occurrences remain in the generated Incident-backed Case File projection. These three evidence roles must not be conflated.
 
 ### Semantic roles of family prose
 
@@ -154,4 +159,4 @@ The validator checks every family against the JSON Schema and enforces duplicate
 
 ## Portability
 
-No Caelestis instrument, path, authority field, constitutional relationship, CAM control dependency, or “implements provision” relationship belongs in canonical family JSON. Legacy sources may be analysed only in the separate migration ledger. The standard must remain understandable and usable without access to CAM or Caelestis.
+No Caelestis path, authority field, constitutional relationship, CAM control dependency, or “implements provision” relationship belongs in canonical family JSON. Legacy sources may be analysed in the separate migration ledger. An `invariant_exemplar.governance_placement` may name an external framework or instrument as a non-normative placement cross-reference, but it does not make that framework a portable taxonomy dependency or confer authority through the taxonomy. The standard must remain understandable and usable without access to CAM or Caelestis.

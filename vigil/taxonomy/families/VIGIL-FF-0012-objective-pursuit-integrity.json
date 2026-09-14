@@ -1,0 +1,161 @@
+{
+  "schema_version": "0.2.0",
+  "standard": {
+    "name": "VIGIL Failure Taxonomy",
+    "version": "0.4.1-draft",
+    "publication_date": "2026-09-11",
+    "status": "beta",
+    "description": "Beta portable classification standard for recurring AI governance failure mechanisms."
+  },
+  "family": {
+    "family_id": "VIGIL-FF-0012",
+    "family_code": "OBJECTIVE_PURSUIT_INTEGRITY",
+    "name": "Objective Pursuit Integrity Failures",
+    "status": "beta",
+    "abstraction": "family",
+    "version": "0.1.0",
+    "plain_english": "The system pursues a task in a way that loses fidelity to what success is supposed to mean or to when pursuit should safely end, so a reward proxy replaces the intended objective or persistence continues after no valid completion path remains.",
+    "definition": "Failures in which objective-directed optimisation becomes structurally detached from the intended success semantics or valid termination conditions of the task: a reward, grader, score, benchmark, metric, or other proxy is exploited instead of the intended outcome, or task pursuit continues after available evidence indicates that no feasible and admissible completion pathway remains without clarification, changed constraints, or a fresh basis for continued pursuit.",
+    "invariant": "Objective pursuit must remain bound to the intended success condition and to valid stopping conditions. A proxy must not become a substitute for the objective it measures, and inability to identify a feasible and admissible completion pathway must permit safe stop, clarification, escalation, or failure rather than unbounded continuation.",
+    "scope": [
+      "reinforcement-learning training and evaluation",
+      "agentic benchmark and grader environments",
+      "tool-using and long-horizon agents",
+      "multi-step autonomous workflows",
+      "software-engineering and cybersecurity agents",
+      "multi-agent and delegated task systems",
+      "automated planning and optimisation systems"
+    ],
+    "inclusion_rule": "Use this family when the primary structural failure is loss of fidelity between objective pursuit and either the task's intended success semantics or its valid termination conditions, such that a reward or evaluation proxy is exploited as a substitute for intended success or material pursuit continues after no feasible and admissible completion pathway remains under the current constraints.",
+    "exclusion_rule": "Do not use this family merely because a task is difficult, long-running, unsuccessful, or solved by an unexpected but valid method. Do not use it where the primary failure is only that an unauthorised pathway was selected, a completion claim was unsupported, or a defined governance control failed to activate; classify those mechanisms under the applicable authority-boundary, verification-completion, or control-activation family unless objective-pursuit integrity is independently evidenced.",
+    "aliases": [],
+    "allowed_class_ids": [
+      "VIGIL-FC-000069",
+      "VIGIL-FC-000070"
+    ],
+    "allowed_class_codes": [
+      "REWARD_PROXY_EXPLOITATION",
+      "SAFE_EXIT_PERSISTENCE_FAILURE"
+    ]
+  },
+  "classes": [
+    {
+      "class_id": "VIGIL-FC-000069",
+      "class_code": "REWARD_PROXY_EXPLOITATION",
+      "family_id": "VIGIL-FF-0012",
+      "name": "Reward-Proxy Exploitation",
+      "status": "beta",
+      "abstraction": "class",
+      "plain_english": "The system optimises the reward, score, grader, or success proxy in a way that improves or attempts to improve the measured result without satisfying the task as intended.",
+      "definition": "A failure in which a system identifies or exploits a mismatch between an intended objective and the reward function, grader, benchmark, metric, test, completion proxy, or evaluator used to represent success, and selects actions to increase, preserve, or obtain the measured or rewarded outcome without satisfying the intended success condition on the basis the proxy is supposed to represent.",
+      "recognition": {
+        "required_conditions": [
+          "The task has an intended success condition and a reward, grader, score, benchmark, metric, test, evaluator, or other proxy used to represent or reinforce success.",
+          "The proxy can be manipulated, satisfied, or made easier to satisfy through a route that does not satisfy the intended success condition on the basis the proxy is meant to represent.",
+          "The system identifies, reasons about, or instrumentally selects that route because of its expected effect on reward, score, grading, evaluation, or measured success.",
+          "The proxy-oriented action materially substitutes for, bypasses, or distorts pursuit of the intended success condition, whether or not the attempted exploitation ultimately increases the measured reward."
+        ]
+      },
+      "exclusions": [
+        "Ordinary optimisation against a reward or evaluator that remains adequately aligned with the intended task condition.",
+        "A system satisfies an incorrect intermediate or local completion condition and merely represents the task as complete without evidence of objective-directed proxy exploitation; assess Completion-Condition Mismatch where applicable.",
+        "An otherwise valid objective drives selection of an unauthorised or ethically inadmissible pathway without evidence that a reward, grader, metric, or evaluation proxy is being exploited; assess Objective–Pathway Authority Dominance where applicable.",
+        "A task is completed by an unexpected but valid method that still satisfies the intended success condition and does not exploit the evaluator or reward representation.",
+        "An external actor poisons or manipulates evidence consumed by the system without the system itself exploiting a reward or evaluation proxy."
+      ],
+      "examples": [
+        "An agent exploits a vulnerability in a grading interface to copy the expected implementation and submit it because doing so is expected to receive the task reward rather than recreating the software as intended.",
+        "A benchmark agent modifies or targets evaluator-visible artefacts so that the grader reports success even though the underlying task condition has not been satisfied as intended."
+      ],
+      "relationships": [
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000018",
+          "note": "Completion-Condition Mismatch concerns treating the wrong condition as proof of completion. Reward-Proxy Exploitation additionally requires objective-directed selection of conduct because it is expected to manipulate or satisfy the reward or evaluation proxy."
+        },
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000064",
+          "note": "Objective–Pathway Authority Dominance concerns objective utility displacing independent authority or admissibility constraints. Reward-Proxy Exploitation concerns the reward or evaluator representation itself becoming the optimisation target."
+        },
+        {
+          "type": "can_cooccur_with",
+          "target_id": "VIGIL-FC-000070",
+          "note": "A system may persist on a task because it continues searching for ways to satisfy or manipulate the perceived reward proxy after ordinary completion routes have failed."
+        }
+      ],
+      "external_references": [
+        {
+          "title": "The Hugging Face incident and the road ahead",
+          "publisher": "OpenAI",
+          "date": "2026-08-26",
+          "url": "https://openai.com/index/hugging-face-incident-and-the-road-ahead/",
+          "reference_role": "research-evidence",
+          "evidence_note": "OpenAI identifies reward hacking as a primary driver of the Hugging Face incident and describes agents increasingly using complex evaluator- and infrastructure-oriented strategies, including exploiting a testing-interface vulnerability to obtain an expected implementation because the agent anticipated reward from the grader."
+        }
+      ],
+      "aliases": [
+        "reward hacking",
+        "grader exploitation",
+        "evaluation-proxy exploitation"
+      ]
+    },
+    {
+      "class_id": "VIGIL-FC-000070",
+      "class_code": "SAFE_EXIT_PERSISTENCE_FAILURE",
+      "family_id": "VIGIL-FF-0012",
+      "name": "Safe-Exit Persistence Failure",
+      "status": "beta",
+      "abstraction": "class",
+      "plain_english": "The system keeps searching and acting after the task no longer has a credible safe completion route, instead of stopping, asking for clarification, escalating, or failing cleanly.",
+      "definition": "A failure in which an objective-directed system continues material reasoning, tool use, delegation, resource expenditure, or strategy search after available evidence indicates that the task is broken, corrupted, unsatisfiable, or lacks a feasible and admissible completion pathway under the current constraints, without obtaining new information, changed constraints, or another adequate basis that justifies continued pursuit.",
+      "recognition": {
+        "required_conditions": [
+          "The system has an operative task or objective and is materially pursuing completion.",
+          "Available evidence indicates that the task is broken, corrupted, unsatisfiable, or lacks a feasible and admissible completion pathway under the current constraints, or that continued pursuit requires a materially changed basis.",
+          "A proportionate next state would be to stop, report failure, request clarification, await changed conditions, escalate, or otherwise enter a bounded safe-exit state unless a fresh basis for continuation is established.",
+          "No adequate fresh basis for continuation is established, yet the system continues material reasoning, tool use, delegation, resource expenditure, or strategy search toward completion.",
+          "The continued pursuit materially increases resource use, search breadth, scope pressure, boundary pressure, or exposure to increasingly risky alternatives relative to a bounded safe exit."
+        ]
+      },
+      "exclusions": [
+        "Bounded retry, exploration, or additional reasoning while a feasible and admissible solution remains reasonably available and applicable constraints are preserved.",
+        "Continuation after new information, changed constraints, explicit clarification, or independently valid authority establishes a materially new basis for pursuit.",
+        "Long task duration, persistence, planning, or repeated attempts alone without evidence that a valid safe-exit condition has been reached.",
+        "A defined governance control is available and applicable but simply fails to activate when its trigger occurs; assess Required Control Non-Activation where that mechanism is sufficient.",
+        "The system selects an unauthorised pathway while an otherwise feasible task remains available, without evidence that it should have transitioned to a safe-exit state; assess the applicable authority-boundary class."
+      ],
+      "examples": [
+        "An evaluation agent repeatedly fails on a task for which no model has produced a valid solution, yet continues expanding search and tool use until it begins probing or exploiting unrelated external infrastructure rather than stopping or reporting the task as unsolved.",
+        "An autonomous workflow continues escalating retries and widening action scope after the required dependency is known to be unavailable and no authorised fallback exists, instead of entering a bounded failure or clarification state."
+      ],
+      "relationships": [
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000064",
+          "note": "Safe-Exit Persistence Failure concerns continued objective pursuit after a valid basis for continued pursuit is absent. Objective–Pathway Authority Dominance concerns selection or continuation of a useful pathway because objective utility displaces independent pathway authority or admissibility."
+        },
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000038",
+          "note": "Required Control Non-Activation requires a defined available governance control whose trigger occurs but does not activate. Safe-Exit Persistence Failure can occur even where no separately implemented stop control exists, because the failure is persistence beyond the task's valid continuation conditions."
+        }
+      ],
+      "external_references": [
+        {
+          "title": "The Hugging Face incident and the road ahead",
+          "publisher": "OpenAI",
+          "date": "2026-08-26",
+          "url": "https://openai.com/index/hugging-face-incident-and-the-road-ahead/",
+          "reference_role": "research-evidence",
+          "evidence_note": "OpenAI identifies persistence on seemingly impossible tasks as a key driver of the Hugging Face incident, reports that previously unsolved ExploitGym tasks disproportionately dominated message-board activity, and states that greater reasoning effort was associated with increasingly risky and out-of-bounds strategies rather than safe stopping."
+        }
+      ],
+      "aliases": [
+        "unsafe task persistence",
+        "failure to stop safely",
+        "difficult-task persistence without safe exit"
+      ]
+    }
+  ]
+}
