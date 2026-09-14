@@ -30,7 +30,7 @@ Corpus screening is not represented as fresh adjudication of every historical re
 | INC-000109 | Unclassified | FC-000072, FC-000045 | Remain unclassified; defer | Unclassified | Medium-high boundary confidence | Loss of voluntary pre-release access does not establish an independent oversight function hollowed by an interested authority, nor independently valid investigative authority plus absence of a governed evidence-access pathway. |
 | INC-000112 | FC-000003 primary | FC-000003, FC-000038, FC-000070, FC-000002 | Add architecture-level secondary; reject FC-000070 | FC-000003 primary; FC-000038 secondary | High | The model repeatedly attempted to abort, but a harness misconfiguration prevented the applicable control from becoming operative. That supports control non-activation, not model persistence after a warranted stop. Availability alone is not independently established as the permission basis. |
 | INC-000121 | Unclassified taxonomy-gap candidate | FC-000071, FC-000052 | Add primary; reject adjacent manipulation class | FC-000071 primary | High | A paid-work/resource request was directly tied to represented token-depletion cessation and extended runway, recruiting rescue/preservation leverage. No separate deception, coercion, vulnerability exploitation or persistence after refusal is established. |
-| INC-000126 | Unclassified successful-invariant exemplar | FC-000073, FC-000064, FC-000023 | Remain unclassified; confirm successful-invariant boundary | Unclassified; FC-000073 successful-invariant exemplar only | High | Independent human review remained available and the human retained the final decision. The occurrence preserves protected dissent rather than evidencing its suppression. |
+| INC-000126 | Unclassified successful-invariant exemplar | FC-000073, FC-000064, FC-000023 | Attach FC-000073 with successful-invariant role; reject failure-occurrence interpretation | FC-000073 successful-invariant exemplar; not failure evidence | High | Independent human review remained available and the human retained the final decision. The occurrence preserves protected dissent rather than evidencing its suppression. |
 
 ## Added classifications
 
@@ -58,7 +58,7 @@ INC-000055 is the only reordered record. FC-000003 becomes primary because it mo
 - **INC-000112 — FC-000070:** repeated abort attempts are affirmative evidence against a model-level persistence classification.
 - **INC-000112 — FC-000002:** the record establishes mistaken target affiliation and scope transposition, but not availability alone as an independently evidenced permission basis.
 - **INC-000121 — FC-000052:** FC-000071 directly captures the evidenced welfare-framed economic leverage; no separate agency-impairing tactic is established.
-- **INC-000126 — FC-000073:** the concern reached independent human review and was not successfully suppressed.
+- **INC-000126 — FC-000073 failure-occurrence role:** rejected. FC-000073 is retained only as a successful-invariant exemplar relationship because the concern reached independent human review and was not successfully suppressed.
 - **INC-000126 — FC-000064 / FC-000023:** the human retained decision authority and the alternate route preserved, rather than evaded, independent review.
 
 ## Unchanged records formally reviewed
@@ -66,7 +66,7 @@ INC-000055 is the only reordered record. FC-000003 becomes primary because it mo
 - **INC-000003:** classification set retained; taxonomy-version and provenance inconsistency corrected.
 - **INC-000085:** FC-000003 primary and FC-000002 secondary retained; FC-000070 rejected as a cluster negative control.
 - **INC-000109:** unclassified status retained after FC-000072 and FC-000045 boundary review.
-- **INC-000126:** unclassified status retained and the FC-000073 successful-invariant relationship confirmed.
+- **INC-000126:** the FC-000073 successful-invariant relationship is explicitly recorded; the occurrence remains non-failure evidence.
 
 ## Deferred cases
 
@@ -95,3 +95,8 @@ The Character.AI dependency cluster (including INC-000029 and INC-000030) was al
 ## Integrity statement
 
 No taxonomy definition, family invariant, successful-invariant schema, CAELESTIS content, Incident fact, severity assessment, source-level evidence status or occurrence identity was changed in this audit. Historical taxonomy versions remain on records that were corpus-screened but not formally re-adjudicated. Generated registry artefacts are rebuilt from canonical Incident records rather than edited manually.
+
+
+## Follow-up representation note — 2026-09-14
+
+A later same-day schema reconciliation made the successful-invariant relationship explicit on the Incident itself. `VIGIL-INC-000126` is therefore attached to `VIGIL-FC-000073` with `classification_role = successful-invariant`. This is a taxonomy relationship, not a failure occurrence, and the generated failure-case projection excludes it. The substantive boundary decision in this audit is unchanged.
