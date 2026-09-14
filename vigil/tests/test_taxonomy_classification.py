@@ -44,6 +44,14 @@ class IncidentTaxonomyClassificationTests(unittest.TestCase):
                 self.assertIsNone(block["primary_classification"], record["id"])
                 self.assertEqual(block["secondary_classifications"], [], record["id"])
 
+    def test_successful_invariant_is_classified_but_not_failure_evidence(self):
+        record = next(item for item in self.incidents if item["id"] == "VIGIL-INC-000126")
+        block = record["taxonomy_classification"]
+        self.assertEqual(block["classification_status"], "classified")
+        self.assertEqual(block["classification_role"], "successful-invariant")
+        self.assertEqual(block["primary_classification"]["class_id"], "VIGIL-FC-000073")
+        self.assertEqual(block["secondary_classifications"], [])
+
     def test_generated_examples_preserve_primary_secondary_roles(self):
         subprocess.run(["python", str(VIGIL / "scripts" / "build-vigil-public-records.py")], cwd=ROOT, check=True)
         projection = json.loads(
@@ -68,6 +76,7 @@ class IncidentTaxonomyClassificationTests(unittest.TestCase):
         canonical = {
             record["id"] for record in self.incidents
             if isinstance(record["taxonomy_classification"].get("primary_classification"), dict)
+            and record["taxonomy_classification"].get("classification_role") != "successful-invariant"
         }
         self.assertEqual(projected, canonical)
 
