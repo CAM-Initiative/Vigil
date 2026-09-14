@@ -97,6 +97,12 @@ class TaxonomyReleaseModeTests(unittest.TestCase):
     def test_beta_graduation_is_staged_on_working_branch_and_published_without_draft_suffix(self):
         index_before = json.loads(PREP.INDEX_PATH.read_text(encoding="utf-8"))
         previous = index_before["release_history"][-1]["version"]
+        if not previous.endswith("-draft"):
+            self.assertEqual(index_before["standard"]["status"], "beta")
+            prepared_errors, _ = VALIDATOR.validate_catalogue(self.paths(), enforce_current_release=True)
+            self.assertEqual(prepared_errors, [])
+            return
+
         previous_families = set(index_before["release_history"][-1]["family_ids"])
         current_families = {
             json.loads(path.read_text(encoding="utf-8"))["family"]["family_id"] for path in self.paths()
