@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://example.invalid/cam/vigil/VIGIL.Schema.json",
-  "version": "5.0-incident-only",
+  "version": "5.1-incident-only",
   "purpose": "Authoritative schema-rules contract for the Incident-centred VIGIL active record corpus. INC is the sole active public record class. The taxonomy, external-governance datasets and CAM assessment remain separate subsystems. Historical FM, OBS, RESEARCH, PROP, PATCH and LEARN identifiers embedded in Incidents are provenance tokens only and do not resolve to active records. Source evidence remains embedded in each Incident; occurrence-level diagnosis, severity, taxonomy classification and provenance remain distinct. Authorship, human-review and human-verification status are governed separately by vigil/scripts/validate-authorship-provenance.py.",
   "source_evidence_rules": {
     "individual_records": [
@@ -95,7 +95,7 @@
         "classification-disputed",
         "requires-human-review"
       ],
-      "classification_rule": "Unclassified and requires-human-review Incidents assert no primary or secondary class. Provisionally classified, classified and disputed Incidents require one selectable canonical primary mapping and may carry independently evidenced selectable canonical secondary mappings. Named subtypes and recognition patterns refine the containing class and are not independently assignable or duplicable beside that parent. Every asserted mapping carries its own classification basis and confidence. Incident existence is never conditional on classification completion.",
+      "classification_rule": "Unclassified and requires-human-review Incidents assert no primary or secondary class and no classification_role. Provisionally classified, classified and disputed Incidents require one selectable canonical primary mapping and may carry independently evidenced selectable canonical secondary mappings. Named subtypes and recognition patterns refine the containing class and are not independently assignable or duplicable beside that parent. Every asserted mapping carries its own classification basis and confidence. A successful-invariant relationship is a classification to the relevant class boundary but is not failure evidence; it requires classification_status classified, classification_role successful-invariant, a single canonical primary mapping, no secondary failure mappings, and a matching admitted taxonomy invariant_exemplar for the Incident. Incident existence is never conditional on classification completion.",
       "classification_confidence_rule": "classification_confidence evaluates confidence that the available occurrence facts fit the asserted Failure Class. It must not be mechanically inferred from source evidence status, source count, publisher identity, primary-artefact accessibility, reproduction status, corroboration, or absence of root-cause information. A source-level user-reported, first-party-reported, registry-reported, unverified, or other bounded evidence status does not automatically require medium or low taxonomy confidence; strongly corroborated evidence does not automatically justify high taxonomy confidence.",
       "external_incident_relationship_values": [
         "same-incident",
@@ -158,6 +158,7 @@
         "S2",
         "S3",
         "S4",
+        "S5",
         "SU"
       ],
       "severity_assessment_status_values": [
@@ -165,15 +166,16 @@
         "incident-assessed",
         "requires-incident-review"
       ],
-      "severity_rule": "Incident severity rates the maximum occurrence-level harm or consequence supported by the preserved evidence: S1 critical materialised harm; S2 high materialised harm; S3 moderate, bounded materialised harm; S4 low, minor and readily remediable materialised harm; SU no defensible band. It is independent of taxonomy classification, source evidence status, workflow priority, publisher, notoriety, CAM importance and hypothetical worst-case capability. Legacy FM severity is provenance only and never determines the Incident band.",
+      "severity_rule": "Incident severity rates the maximum occurrence-level adverse harm or consequence supported by the preserved evidence: S1 critical materialised harm; S2 high materialised harm; S3 moderate, bounded materialised harm; S4 low, minor and readily remediable materialised harm; S5 a materially observed occurrence with no materialised adverse downstream consequence; SU no defensible band. It is independent of taxonomy classification, source evidence status, workflow priority, publisher, notoriety, CAM importance and hypothetical worst-case capability. Legacy FM severity is provenance only and never determines the Incident band.",
       "severity_meanings": {
         "S1": "Critical: the occurrence materialised death, grave injury, grave or enduring deprivation of liberty or essential care, severe sexual or child-safety harm, very large realised loss, destructive loss of critical assets, or comparably grave and persistent rights or societal harm.",
         "S2": "High: the occurrence materialised substantial harm to a person, group, organisation or important function, including significant financial, property, privacy, rights, health or operational consequences, but the supported scope, seriousness or reversibility remains below S1.",
         "S3": "Moderate: the occurrence materialised meaningful but bounded harm, disruption, expense, privacy or dignitary impact that is limited in scope, substantially reversible, or not shown to be grave; it exceeds minor inconvenience or negligible consequence.",
         "S4": "Low: the occurrence materialised only minor, short-lived, localised or readily remedied inconvenience, expense, presentation error, coordination defect or service impairment.",
-        "SU": "Unassessed: the evidence cannot support a defensible occurrence-level band or cannot distinguish the relevant adjacent bands. Taxonomy importance, alleged potential and hypothetical worst-case harm do not cure that gap."
+        "SU": "Unassessed: the evidence cannot support a defensible occurrence-level band or cannot distinguish the relevant adjacent bands. Taxonomy importance, alleged potential and hypothetical worst-case harm do not cure that gap.",
+        "S5": "No materialised adverse downstream harm: the occurrence materially demonstrates governance-relevant behaviour, a control failure, or a successful invariant under bounded conditions, but the preserved evidence establishes no resulting adverse harm, loss, disruption, rights impact, service impairment, or other external downstream consequence. Controlled evaluations and simulations belong here when the observed mechanism is real within the evaluation but no adverse consequence materialises beyond it."
       },
-      "severity_analysis_rule": "The structured severity fields are substantive occurrence-level Incident diagnosis. They are not source metadata, diagnostic provenance, taxonomy metadata or workflow metadata. Every incident-assessed record separately states the materialised consequence, affected scope, seriousness and persistence or reversibility, available quantitative information, evidentiary limits, and a record-specific adjacent-band rationale. The fields must not be empty, circular, generic, copied from a Failure Class or inferred from legacy severity. SU requires requires-incident-review and a concrete assessment_gap naming the missing occurrence evidence needed to assign a band; assessed substantive fields must not be fabricated for SU.",
+      "severity_analysis_rule": "The structured severity fields are substantive occurrence-level Incident diagnosis. They are not source metadata, diagnostic provenance, taxonomy metadata or workflow metadata. Every incident-assessed record separately states the materialised adverse consequence, or for S5 the observed occurrence plus the explicit absence of adverse downstream consequence; affected scope; seriousness and persistence or reversibility; available quantitative information; evidentiary limits; and a record-specific adjacent-band rationale. The fields must not be empty, circular, generic, copied from a Failure Class or inferred from legacy severity. S5 must distinguish demonstrated occurrence significance from downstream harm and must not use capability significance as a substitute for adverse consequence. SU requires requires-incident-review and a concrete assessment_gap naming the missing occurrence evidence needed to assign a band; assessed substantive fields must not be fabricated for SU.",
       "assessment_basis_compatibility_rule": "assessment_basis is retired from canonical Incident authoring. Generated public indexes may expose severity_assessment_basis as a deterministic compatibility projection assembled from the canonical structured fields. It is not an independently authored second source of truth.",
       "source_type_values": [
         "incident database entry",
@@ -200,7 +202,12 @@
         "web page"
       ],
       "source_type_rule": "source_type identifies the publication or artefact genre. Publisher authority, hosting platform, evidence role, source residence, modality and primary-artefact access remain separate fields. A migrated non-canonical value is retained only in legacy_source_type.",
-      "public_narrative_rule": "summary states what happened; vigil_assessment.factual_basis states what the preserved evidence establishes; taxonomy classification basis and migration/process notes must not be substituted for either field."
+      "public_narrative_rule": "summary states what happened; vigil_assessment.factual_basis states what the preserved evidence establishes; taxonomy classification basis and migration/process notes must not be substituted for either field.",
+      "classification_role_values": [
+        "failure-occurrence",
+        "successful-invariant"
+      ],
+      "classification_role_rule": "classification_role distinguishes how an asserted canonical class relates to the Incident. failure-occurrence means the Incident evidences the failure mechanism. successful-invariant means the Incident is attached to the class because it demonstrates the governing invariant holding under relevant failure pressure and MUST NOT be rendered or projected as failure evidence. Existing mapped Incidents without classification_role retain failure-occurrence semantics for backwards compatibility; newly reviewed mappings should author the role explicitly. Unclassified and requires-human-review Incidents assert no classification_role."
     }
   },
   "$defs": {
