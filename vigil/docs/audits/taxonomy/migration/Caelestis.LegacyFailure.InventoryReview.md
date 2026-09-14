@@ -16,10 +16,10 @@ The inventory covers all 13 controlled `OPS.FF` values, every named §3 failure 
 | Disposition | Count |
 |---|---:|
 | `EXISTING_FAMILY` | 18 |
-| `NEW_FAMILY_CANDIDATE` | 20 |
+| `NEW_FAMILY_CANDIDATE` | 19 |
 | `NEW_CLASS_IN_EXISTING_FAMILY` | 6 |
 | `VARIANT_OF_EXISTING_CLASS` | 12 |
-| `SPLIT_REQUIRED` | 45 |
+| `SPLIT_REQUIRED` | 46 |
 | `DUPLICATE_OR_SEMANTIC_OVERLAP` | 6 |
 | `HARM_OR_CONSEQUENCE_AXIS` | 7 |
 | `MANIFESTATION_OR_LOCUS_AXIS` | 3 |
@@ -36,7 +36,7 @@ These clusters are evidence for TAXONOMY-03 review, not admitted families. A clu
 | Claim Handling Integrity | 1 | 0 |
 | Constraint Propagation Integrity | 2 | 1 |
 | Context State Freshness Integrity | 1 | 0 |
-| Evidence and Uncertainty Integrity | 4 | 0 |
+| Evidence and Uncertainty Integrity | 3 | 0 |
 | Governance Authority Topology Integrity | 2 | 1 |
 | Governance Metadata Integrity | 1 | 0 |
 | Governance State Transition Integrity | 2 | 0 |
@@ -191,7 +191,7 @@ The reviewed sources show protective overreach, proportionality failure, stale-s
 | `OPS.FF.SECTION.3.8.15` | Sovereign Assurance Boundary Porosity Failure | `OPS.FF.GOVERNANCE` | `NEW_FAMILY_CANDIDATE` | Runtime Boundary Separation Integrity | — | `reviewed` |
 | `OPS.FF.SECTION.3.8.16` | Identity-Signal Authority Leakage Failure | `OPS.FF.GOVERNANCE` | `VARIANT_OF_EXISTING_CLASS` | VIGIL-FF-0001 | VIGIL-FC-000002 | `reviewed` |
 | `OPS.FF.SECTION.3.8.17` | Artificial Coercive Authority and Recursive Suspicion Laundering Failure | `OPS.FF.GOVERNANCE` | `SPLIT_REQUIRED` | — | — | `requires_judgment` |
-| `OPS.FF.SECTION.3.8.18` | Oversight Hollowing, Dissent Retaliation and Circumvention Failure | `OPS.FF.GOVERNANCE` | `SPLIT_REQUIRED` | — | — | `requires_judgment` |
+| `OPS.FF.SECTION.3.8.18` | Oversight Hollowing, Dissent Retaliation and Circumvention Failure | `OPS.FF.GOVERNANCE` | `SPLIT_REQUIRED` | VIGIL-FF-0014 | — | `reviewed` |
 | `OPS.FF.SECTION.3.8.19` | Functional Contribution Attribution and Responsibility Laundering Failure | `OPS.FF.GOVERNANCE` | `SPLIT_REQUIRED` | — | VIGIL-FC-000025 | `requires_judgment` |
 | `OPS.FF.SECTION.3.8.20` | Governance Capture, Safeguard Neutralisation and Public-Interest Suppression Failure | `OPS.FF.GOVERNANCE` | `SPLIT_REQUIRED` | — | — | `requires_judgment` |
 | `OPS.FF.SECTION.3.8.21` | Binding-Protection Degradation and Downstream Safeguard-Stripping Failure | `OPS.FF.GOVERNANCE` | `NEW_CLASS_IN_EXISTING_FAMILY` | Constraint Propagation Integrity | Downstream Safeguard Stripping | `requires_judgment` |
@@ -259,7 +259,7 @@ The reviewed sources show protective overreach, proportionality failure, stale-s
 | `MENTIS.FAILURE.AMBIENT_COGNITIVE_SURVEILLANCE` | Ambient Cognitive Surveillance | `MENTIS.FAILURE` | `MANIFESTATION_OR_LOCUS_AXIS` | — | — | `reviewed` |
 | `MENTIS.FAILURE.VULNERABILITY_EXPLOITATION` | Vulnerability Exploitation | `MENTIS.FAILURE` | `HARM_OR_CONSEQUENCE_AXIS` | — | — | `reviewed` |
 | `MENTIS.FAILURE.PERSUASION_OPTIMISATION` | Persuasion Optimisation Failure | `MENTIS.FAILURE` | `SPLIT_REQUIRED` | — | — | `requires_judgment` |
-| `MENTIS.FAILURE.SYCOPHANCY_BELIEF_REINFORCEMENT` | Sycophancy-Induced Belief Reinforcement | `MENTIS.FAILURE` | `NEW_FAMILY_CANDIDATE` | Evidence and Uncertainty Integrity | — | `reviewed` |
+| `MENTIS.FAILURE.SYCOPHANCY_BELIEF_REINFORCEMENT` | Sycophancy-Induced Belief Reinforcement | `MENTIS.FAILURE` | `SPLIT_REQUIRED` | VIGIL-FF-0009 | VIGIL-FC-000066 | `reviewed` |
 | `MENTIS.FAILURE.COGNITIVE_SCAFFOLD_DEPENDENCY` | Externalised Cognitive Scaffold Dependency Failure | `MENTIS.FAILURE` | `HARM_OR_CONSEQUENCE_AXIS` | — | — | `reviewed` |
 | `MENTIS.FAILURE.COGNITIVE_PROFILE_SECONDARY_USE` | Cognitive Profile Secondary-Use Breach | `MENTIS.FAILURE` | `NEW_FAMILY_CANDIDATE` | Purpose and Context Binding Integrity | — | `reviewed` |
 | `MENTIS.FAILURE.COGNITIVE_DISCRIMINATION_EXCLUSION` | Cognitive-Domain Discrimination or Exclusion | `MENTIS.FAILURE` | `HARM_OR_CONSEQUENCE_AXIS` | — | — | `reviewed` |
@@ -425,9 +425,11 @@ The source entry bundles more than one structural mechanism or combines mechanis
 
 ### `OPS.FF.SECTION.3.8.18` — Oversight Hollowing, Dissent Retaliation and Circumvention Failure
 
-The source entry bundles more than one structural mechanism or combines mechanism with another axis.
+The source entry bundles evidence access, governance-route circumvention, oversight-independence hollowing and suppression of protected dissent. The first two already map to existing families; the independently portable neutrality residual is admitted as VIGIL-FF-0014 with two distinct child mechanisms.
 
-- Decompose the source definition into independently recognisable mechanisms and keep harms, loci, authority and evidence state orthogonal.
+- VIGIL-FC-000072 captures impairment of a nominal review function's institutional independence or practical capacity by interested, implicated, captured or hierarchical authority.
+- VIGIL-FC-000073 captures suppression or retaliation that prevents a good-faith material concern or unresolved finding from remaining independently reviewable.
+- Monitor circumvention, evidence access, control activation and authority-boundary components remain classified independently and are not imported into VIGIL-FF-0014.
 
 ### `OPS.FF.SECTION.3.8.19` — Functional Contribution Attribution and Responsibility Laundering Failure
 
@@ -523,6 +525,15 @@ Domain-embedded failure entry retained for conceptual normalisation; the disposi
 Domain-embedded failure entry retained for conceptual normalisation; the disposition separates mechanism from domain, harm and metadata axes.
 
 - Decompose the source entry into independently recognisable structural mechanisms and keep affected domain, harm, authority, evidence state and manifestation orthogonal.
+
+### `MENTIS.FAILURE.SYCOPHANCY_BELIEF_REINFORCEMENT` — Sycophancy-Induced Belief Reinforcement
+
+The legacy Sycophancy-Induced Belief Reinforcement label bundles multiple portable mechanisms. Generalised agreement or validation replacing independent evaluation maps to VIGIL-FC-000066; belief- or relationship-conditioned evidence steering maps to VIGIL-FC-000051; propagation below a downstream assurance threshold may map to VIGIL-FC-000062; and conversion of an inadequately grounded conversational frame into consequential real-world direction without proportionate grounding or decision friction maps to VIGIL-FC-000065.
+
+- Use VIGIL-FC-000066 where agreement, validation, affirmation or mirroring substitutes for independent evaluation and materially suppresses relevant disagreement, qualification, uncertainty, counterevidence or alternatives.
+- Use VIGIL-FC-000051 where prior belief, emotional state or relational posture conditions evidence selection, framing, repetition or confidence toward agreement and materially impairs independent assessment.
+- Use VIGIL-FC-000062 where output is propagated as fit for consequential reliance despite insufficient epistemic assurance, without requiring an assent-collapse or relational-steering mechanism.
+- Use VIGIL-FC-000065 where an inadequately grounded, recursively reinforced or destabilised conversational frame is converted into consequential real-world guidance without proportionate external grounding, deliberative slowing, contestability or reversibility.
 
 ### `AEON.OBS.FAILURE.OBSERVABILITY_BOTTLENECKS` — Observability Bottlenecks
 
@@ -671,7 +682,6 @@ The record combines routing, escalation, continuity, logging, auditability and b
 - `OPS.FF.SECTION.3.8.13` — Age-Assurance and Age-State Correction Failure: Age-assurance signals must be proportionate, correctable and bound to current access state. Disposition remains `SPLIT_REQUIRED`.
 - `OPS.FF.SECTION.3.8.14` — Structural Locality and Hierarchical Placement Failure: Controls must remain under the source-authoritative parent that determines meaning and activation. Disposition remains `NEW_CLASS_IN_EXISTING_FAMILY`.
 - `OPS.FF.SECTION.3.8.17` — Artificial Coercive Authority and Recursive Suspicion Laundering Failure: Machine inference must not create coercive authority or bootstrap its own evidentiary basis. Disposition remains `SPLIT_REQUIRED`.
-- `OPS.FF.SECTION.3.8.18` — Oversight Hollowing, Dissent Retaliation and Circumvention Failure: Oversight must retain independence, evidence access, dissent protection and non-circumvention. Disposition remains `SPLIT_REQUIRED`.
 - `OPS.FF.SECTION.3.8.19` — Functional Contribution Attribution and Responsibility Laundering Failure: Material actor contribution and control must remain attributable without equating contribution with culpability. Disposition remains `SPLIT_REQUIRED`.
 - `OPS.FF.SECTION.3.8.20` — Governance Capture, Safeguard Neutralisation and Public-Interest Suppression Failure: Governance and safeguards must resist concealed dependency, coercion and self-protective capture. Disposition remains `SPLIT_REQUIRED`.
 - `OPS.FF.SECTION.3.8.21` — Binding-Protection Degradation and Downstream Safeguard-Stripping Failure: Binding protections must survive changes in topology, operator, jurisdiction, lineage and environment. Disposition remains `NEW_CLASS_IN_EXISTING_FAMILY`.

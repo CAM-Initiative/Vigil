@@ -224,6 +224,54 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         self.assertIn("### Semantic roles of family prose", guidance)
         self.assertIn("Parent prose must be re-tested whenever a class is added", guidance)
 
+    def test_invariant_exemplar_schema_is_optional_and_role_bounded(self):
+        schema = json.loads(MODULE.SCHEMA_PATH.read_text(encoding="utf-8"))
+        exemplar = schema["$defs"]["invariant_exemplar"]
+        self.assertNotIn("invariant_exemplars", schema["$defs"]["family"]["required"])
+        self.assertNotIn("invariant_exemplars", schema["$defs"]["class"]["required"])
+        self.assertEqual(
+            exemplar["properties"]["exemplar_type"]["enum"],
+            ["successful-invariant", "ambiguous-boundary", "repaired-post-control"],
+        )
+        self.assertIn("linked_incident_id", exemplar["required"])
+        self.assertIn("governance_placement", exemplar["required"])
+        self.assertIn("provenance_note", exemplar["required"])
+
+    def test_invalid_invariant_exemplar_relationship_is_rejected(self):
+        path = next(path for path in self.paths() if "VIGIL-FF-0014" in path.name)
+        data = json.loads(path.read_text(encoding="utf-8"))
+        exemplar = data["classes"][1]["invariant_exemplars"][0]
+        exemplar["exemplar_type"] = "failure-occurrence"
+        self.write(path, data)
+        self.assertTrue(any("is not an allowed value" in error for error in self.errors()))
+
+    def test_governance_independence_family_has_bounded_peer_mechanisms(self):
+        documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
+        document = next(item for item in documents if item["family"]["family_id"] == "VIGIL-FF-0014")
+        self.assertEqual(
+            [item["class_id"] for item in document["classes"]],
+            ["VIGIL-FC-000072", "VIGIL-FC-000073"],
+        )
+        dissent = document["classes"][1]
+        self.assertEqual(dissent["invariant_exemplars"][0]["linked_incident_id"], "VIGIL-INC-000126")
+        self.assertTrue(
+            any(
+                relation["type"] == "distinguish_from" and relation["target_id"] == "VIGIL-FC-000023"
+                for relation in dissent["relationships"]
+            )
+        )
+        exclusions = " ".join(dissent["exclusions"]).lower()
+        self.assertIn("successful invariant exemplar", exclusions)
+        self.assertIn("unilaterally", exclusions)
+
+    def test_oversight_hollowing_migration_is_partially_resolved_without_collapsing_split(self):
+        ledger = json.loads(MODULE.MIGRATION_LEDGER.read_text(encoding="utf-8"))
+        entry = next(item for item in ledger["entries"] if item["inventory_id"] == "CAEL-0058")
+        self.assertEqual(entry["disposition"], "SPLIT_REQUIRED")
+        self.assertEqual(entry["candidate_portable_family"]["family_id"], "VIGIL-FF-0014")
+        self.assertTrue(any("VIGIL-FC-000072" in note for note in entry["split_notes"]))
+        self.assertTrue(any("VIGIL-FC-000073" in note for note in entry["split_notes"]))
+
     def test_observability_parent_encompasses_authorised_evidence_access(self):
         documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
         family = next(item["family"] for item in documents if item["family"]["family_id"] == "VIGIL-FF-0004")
@@ -356,7 +404,7 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         classes = {item["class_id"]: item for document in documents for item in document["classes"]}
         self.assertEqual(
             [class_id for class_id in sorted(classes) if class_id >= "VIGIL-FC-000046"],
-            [f"VIGIL-FC-{number:06d}" for number in range(46, 72)],
+            [f"VIGIL-FC-{number:06d}" for number in range(46, 74)],
         )
         authority = next(document for document in documents if document["family"]["family_id"] == "VIGIL-FF-0001")
         self.assertEqual(classes["VIGIL-FC-000046"]["family_id"], authority["family"]["family_id"])
@@ -368,7 +416,7 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         index = json.loads(MODULE.INDEX_PATH.read_text(encoding="utf-8"))
         documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
         selectable = {item["class_id"] for document in documents for item in document["classes"]}
-        self.assertEqual(len(selectable), 64)
+        self.assertEqual(len(selectable), 66)
         self.assertTrue(all(item["abstraction"] == "class" for document in documents for item in document["classes"]))
         subtypes = {
             subtype["historical_class_id"]: item["class_id"]

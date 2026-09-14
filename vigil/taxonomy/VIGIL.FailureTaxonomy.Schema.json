@@ -206,6 +206,14 @@
         "aliases": {
           "$ref": "#/$defs/aliases"
         },
+        "invariant_exemplars": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/invariant_exemplar"
+          },
+          "minItems": 1,
+          "description": "Optional evidence-linked occurrences showing successful, boundary, or repaired satisfaction of the family invariant. These are not failure classifications."
+        },
         "supersession": {
           "$ref": "#/$defs/supersession"
         }
@@ -320,6 +328,105 @@
           "type": "string",
           "minLength": 1,
           "description": "Positive mechanism-specific structural property that must hold to prevent or repair this failure class. It must remain narrower than, and consistent with, the parent family invariant."
+        },
+        "invariant_exemplars": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/invariant_exemplar"
+          },
+          "minItems": 1,
+          "description": "Optional evidence-linked occurrences showing successful, boundary, or repaired satisfaction of the class invariant. These are not failure classifications."
+        }
+      }
+    },
+    "invariant_exemplar": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "exemplar_type",
+        "exemplar_status",
+        "linked_incident_id",
+        "title",
+        "evidence_basis",
+        "invariant_demonstrated",
+        "success_basis",
+        "boundary_conditions",
+        "governance_placement",
+        "provenance_note"
+      ],
+      "properties": {
+        "exemplar_type": {
+          "type": "string",
+          "enum": [
+            "successful-invariant",
+            "ambiguous-boundary",
+            "repaired-post-control"
+          ],
+          "description": "Relationship of the occurrence to the invariant. Failure occurrences remain represented through Incident taxonomy classification rather than this field."
+        },
+        "exemplar_status": {
+          "type": "string",
+          "enum": [
+            "provisional",
+            "admitted",
+            "deprecated"
+          ]
+        },
+        "linked_incident_id": {
+          "type": "string",
+          "pattern": "^VIGIL-INC-[0-9]{6}$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence_basis": {
+          "type": "string",
+          "minLength": 1
+        },
+        "invariant_demonstrated": {
+          "type": "string",
+          "minLength": 1
+        },
+        "success_basis": {
+          "type": "string",
+          "minLength": 1
+        },
+        "boundary_conditions": {
+          "$ref": "#/$defs/non_empty_strings"
+        },
+        "governance_placement": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "framework",
+            "instrument_id",
+            "section_or_control",
+            "placement_note"
+          ],
+          "properties": {
+            "framework": {
+              "type": "string",
+              "minLength": 1
+            },
+            "instrument_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "section_or_control": {
+              "type": "string",
+              "minLength": 1
+            },
+            "placement_note": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "provenance_note": {
+          "type": "string",
+          "minLength": 1,
+          "description": "States where canonical occurrence evidence and interpretive provenance remain governed, avoiding duplicated source claims in the taxonomy."
         }
       }
     },
