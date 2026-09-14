@@ -172,33 +172,44 @@ class TaxonomyPublicationReferenceTests(unittest.TestCase):
         )
 
 
-    def test_subtype_publication_hierarchy_avoids_orphaned_headings_without_forced_pages(self):
-        item = {
-            "subtypes": [
-                {
-                    "name": "Delegation Scope Expansion",
-                    "historical_class_id": "VIGIL-FC-000008",
-                    "historical_class_code": "DELEGATION_SCOPE_EXPANSION",
-                    "plain_english": "A prior permission is stretched into a materially new action.",
-                    "definition": "A bounded subtype definition.",
-                    "recognition": {"required_conditions": ["A required condition is present."]},
-                    "exclusions": ["A bounded exclusion applies."],
-                    "examples": ["A bounded illustrative example."],
-                }
+    def test_retired_subtype_material_is_not_published(self):
+        families = RENDERER.base.load_catalogue()
+        subtype_count = 0
+
+        for chapter_number, data in enumerate(families, start=1):
+            subtypes = [
+                subtype
+                for item in data["classes"]
+                for subtype in item.get("subtypes", [])
             ]
-        }
+            subtype_count += len(subtypes)
+            rendered = [
+                RENDERER.base.markdown_family(data),
+                RENDERER.base.html_family(data),
+                RENDERER.base.publication_family_html(data, chapter_number),
+            ]
+            for output in rendered:
+                self.assertNotIn("Non-selectable subtypes and recognition patterns", output)
+                for subtype in subtypes:
+                    retired_values = [
+                        subtype["historical_class_id"],
+                        subtype["historical_class_code"],
+                        subtype["name"],
+                        subtype["plain_english"],
+                        subtype["definition"],
+                        *subtype["recognition"]["required_conditions"],
+                        *subtype["exclusions"],
+                        *subtype["examples"],
+                        *subtype.get("aliases", []),
+                    ]
+                    for value in retired_values:
+                        self.assertNotIn(value, output)
 
-        rendered = RENDERER.base.subtype_html(item, heading="h3")
-        self.assertIn('class="subtypes-heading"', rendered)
-        self.assertIn('class="subtype-title"', rendered)
+                for item in data["classes"]:
+                    self.assertIn(item["class_id"], output)
+                    self.assertIn(item["name"], output)
 
-        print_style = RENDERER.base.PRINT_STYLE
-        self.assertIn(".subtypes-heading{", print_style)
-        self.assertIn("break-after:avoid-page", print_style)
-        self.assertIn(".subtype-title{", print_style)
-        self.assertIn(".subtypes{margin-top:8mm", print_style)
-        self.assertIn("break-before:auto", print_style)
-        self.assertNotIn(".subtypes{break-before:page", print_style)
+        self.assertEqual(subtype_count, 7)
 
 if __name__ == "__main__":
     unittest.main()
