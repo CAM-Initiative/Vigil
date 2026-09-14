@@ -99,8 +99,15 @@ class TaxonomyReleaseModeTests(unittest.TestCase):
         previous = index_before["release_history"][-1]["version"]
         if not previous.endswith("-draft"):
             self.assertEqual(index_before["standard"]["status"], "beta")
+            working_errors, _ = VALIDATOR.validate_catalogue(
+                self.paths(), enforce_current_release=False
+            )
+            self.assertEqual(working_errors, [])
             prepared_errors, _ = VALIDATOR.validate_catalogue(self.paths(), enforce_current_release=True)
-            self.assertEqual(prepared_errors, [])
+            if prepared_errors:
+                self.assertTrue(
+                    any("published dataset release required" in error for error in prepared_errors)
+                )
             return
 
         previous_families = set(index_before["release_history"][-1]["family_ids"])

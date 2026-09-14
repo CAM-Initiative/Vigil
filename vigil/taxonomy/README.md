@@ -79,7 +79,16 @@ Family filenames use `<family_id>-<human-readable-slug>.json`. The immutable ID 
 
 Every family defines its immutable ID, semantic code, canonical name, version, status, abstraction, plain-English explanation, technical definition, governing invariant, scope, inclusion rule, exclusion rule, aliases, and allowed class IDs/codes.
 
-Every selectable class defines its immutable ID, semantic code, current family ID, canonical name, class abstraction, status, plain-English explanation, technical definition, recognition criteria, exclusions, examples, aliases, typed relationships where relevant, and optional external mappings or supersession metadata. A class may also define a canonical `invariant`: the positive mechanism-specific structural property that must hold to prevent or repair that class. Class invariants must remain narrower than, and consistent with, the parent family invariant. During the staged invariant backfill, consumers must use a published class invariant when present and must not synthesize one from the class definition or silently substitute the broader family invariant. An embedded subtype preserves its semantic name, explanation, definition, recognition criteria, exclusions, examples, aliases and any historical retired class ID/code without becoming a peer class.
+Every selectable class defines its immutable ID, semantic code, current family ID, canonical name, class abstraction, status, plain-English explanation, technical definition, canonical `invariant`, recognition criteria, exclusions, examples, aliases, typed relationships where relevant, and optional external mappings or supersession metadata. The class invariant is the positive mechanism-specific structural property that must hold to prevent or repair that class. It must remain narrower than, and consistent with, the parent family invariant. Consumers must load the applicable family invariant once and add each applicable class invariant. They must not synthesise, infer, or substitute a missing class invariant from the class definition or the broader family invariant. An embedded subtype preserves its semantic name, explanation, definition, recognition criteria, exclusions, examples, aliases and any historical retired class ID/code without becoming a peer class.
+
+The effective constraint set is therefore:
+
+```text
+parent family invariant
++ each applicable class invariant
+```
+
+Where multiple classes from the same family apply, the family invariant is loaded once and each class contributes only its mechanism-specific additional constraint. Renderers and consumers must expose these as distinct family and class fields rather than duplicating the parent family invariant as class text.
 
 Families and classes may optionally contain structured `invariant_exemplars`. These link an evidenced VIGIL Incident to a successful-invariant, ambiguous-boundary, or repaired-post-control relationship without classifying that Incident as a failure. The linked Incident remains authoritative for occurrence facts, sources, severity, uncertainty and interpretive provenance; the taxonomy records only why the occurrence demonstrates, tests or restores the invariant. Short hypothetical failure illustrations remain in `examples`, and classified failure occurrences remain in the generated Incident-backed Case File projection. These three evidence roles must not be conflated.
 

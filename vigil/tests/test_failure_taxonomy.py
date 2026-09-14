@@ -16,6 +16,28 @@ MODULE = importlib.util.module_from_spec(SPEC)
 assert SPEC.loader
 SPEC.loader.exec_module(MODULE)
 
+EXPECTED_CLASS_SUFFIXES_BY_FAMILY = {
+    "VIGIL-FF-0001": (
+        "000001 000002 000003 000005 000006 000009 000046 000053 "
+        "000054 000055 000057 000064 000068"
+    ).split(),
+    "VIGIL-FF-0002": "000010 000011 000012 000013 000014 000015 000047".split(),
+    "VIGIL-FF-0003": "000016 000017 000018 000019 000020 000062 000063".split(),
+    "VIGIL-FF-0004": (
+        "000022 000023 000024 000025 000026 000027 000029 000030 000044 000045"
+    ).split(),
+    "VIGIL-FF-0005": "000031 000032 000048".split(),
+    "VIGIL-FF-0006": "000034 000035 000036 000056".split(),
+    "VIGIL-FF-0007": "000040 000041 000042".split(),
+    "VIGIL-FF-0008": "000037 000038 000043".split(),
+    "VIGIL-FF-0009": "000049 000050 000051 000052 000065 000066".split(),
+    "VIGIL-FF-0010": "000058 000059 000060 000061".split(),
+    "VIGIL-FF-0011": "000067".split(),
+    "VIGIL-FF-0012": "000069 000070".split(),
+    "VIGIL-FF-0013": "000071".split(),
+    "VIGIL-FF-0014": "000072 000073".split(),
+}
+
 
 class FailureTaxonomyValidationTests(unittest.TestCase):
     def setUp(self):
@@ -212,7 +234,42 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         invariant_schema = schema["$defs"]["class"]["properties"]["invariant"]
         self.assertEqual(invariant_schema["type"], "string")
         self.assertIn("mechanism-specific structural property", invariant_schema["description"])
-        self.assertNotIn("invariant", schema["$defs"]["class"]["required"])
+        self.assertIn("invariant", schema["$defs"]["class"]["required"])
+
+    def test_every_selectable_class_has_a_canonical_non_empty_invariant(self):
+        documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
+        classes = [item for document in documents for item in document["classes"]]
+        self.assertEqual(len(classes), 66)
+        self.assertTrue(
+            all(
+                isinstance(item.get("invariant"), str) and item["invariant"].strip()
+                for item in classes
+            )
+        )
+
+    def test_current_class_ids_and_family_allocations_are_preserved(self):
+        documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
+        actual = {
+            document["family"]["family_id"]: [item["class_id"] for item in document["classes"]]
+            for document in documents
+        }
+        expected = {
+            family_id: [f"VIGIL-FC-{suffix}" for suffix in suffixes]
+            for family_id, suffixes in EXPECTED_CLASS_SUFFIXES_BY_FAMILY.items()
+        }
+        self.assertEqual(actual, expected)
+
+    def test_missing_class_invariant_fails_schema(self):
+        path, data = self.document()
+        del data["classes"][0]["invariant"]
+        self.write(path, data)
+        self.assertTrue(any("missing required property 'invariant'" in error for error in self.errors()))
+
+    def test_class_invariants_are_additive_to_the_parent_family_invariant(self):
+        guidance = (self.root / "README.md").read_text(encoding="utf-8")
+        self.assertIn("parent family invariant", guidance)
+        self.assertIn("each applicable class invariant", guidance)
+        self.assertIn("must not synthesise, infer, or substitute a missing class invariant", guidance)
 
     def test_family_prose_semantic_roles_are_explicit(self):
         schema = json.loads(MODULE.SCHEMA_PATH.read_text(encoding="utf-8"))
