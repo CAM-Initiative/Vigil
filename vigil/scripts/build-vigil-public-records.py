@@ -121,6 +121,7 @@ def incident_search_terms(record: dict[str, Any]) -> list[str]:
         jurisdiction.get("sector"),
         jurisdiction.get("regulatory_surface"),
         taxonomy.get("taxonomy_version"),
+        taxonomy.get("classification_role"),
         [
             value
             for item in secondary
@@ -168,6 +169,7 @@ def incident_entry(path: Path, record: dict[str, Any]) -> dict[str, Any]:
         "platform_or_vendor": system.get("platform_or_vendor"),
         "severity": assessment.get("severity"),
         "classification_status": taxonomy.get("classification_status"),
+        "classification_role": taxonomy.get("classification_role"),
         "primary_class_id": primary.get("class_id"),
         "primary_family_id": primary.get("family_id") or primary_family.get("family_id"),
         "occurred_from": incident.get("occurred_from"),
@@ -191,6 +193,8 @@ def taxonomy_examples(records: list[dict[str, Any]]) -> dict[str, Any]:
     for record in records:
         block = record.get("taxonomy_classification")
         if not isinstance(block, dict):
+            continue
+        if block.get("classification_role") == "successful-invariant":
             continue
         mappings: list[tuple[str, dict[str, Any]]] = []
         primary = block.get("primary_classification")
