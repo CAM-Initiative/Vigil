@@ -385,7 +385,10 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         release["version"] = wrong_patch
         release["change_level"] = "patch"
         release["content_digest"] = "sha256:" + "e" * 64
-        release["family_ids"].append("VIGIL-FF-0012")
+        synthetic_family_id = "VIGIL-FF-9999"
+        self.assertNotIn(synthetic_family_id, release["family_ids"])
+        release["family_ids"].append(synthetic_family_id)
+        release["family_ids"].sort()
         index["release_history"].append(release)
         index["standard"]["version"] = wrong_patch
         self.write(MODULE.INDEX_PATH, index)
