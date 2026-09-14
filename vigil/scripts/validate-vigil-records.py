@@ -37,7 +37,7 @@ GENERIC_SEVERITY_TEXT = (
     "the assessment is confined to the people, systems, organisations, service cohort",
 )
 ADJACENT_BANDS = {
-    "S1": {"S2"}, "S2": {"S1", "S3"}, "S3": {"S2", "S4"}, "S4": {"S3"},
+    "S1": {"S2"}, "S2": {"S1", "S3"}, "S3": {"S2", "S4"}, "S4": {"S3", "S5"}, "S5": {"S4"},
 }
 DIAGNOSTIC_REQUIRED = {
     "method", "diagnostic_date", "human_role", "ai_role", "ai_platform", "ai_model",
@@ -183,7 +183,7 @@ def validate_incident_taxonomy(path: Path, record: dict[str, Any], errors: list[
         if primary is not None or secondary:
             errors.append(f"{path}: {status} Incident must not assert taxonomy mappings")
         return
-    if status not in {"classified", "provisionally-classified", "classification-disputed"}:
+    if status not in {"classified", "provisionally-classified", "classification-disputed", "exemplar"}:
         return
     families, classes = taxonomy_catalogue()
     retired = retired_taxonomy_class_successors()
