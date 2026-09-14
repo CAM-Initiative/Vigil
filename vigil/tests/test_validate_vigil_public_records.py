@@ -30,6 +30,7 @@ class ValidateVigilPublicRecordsTest(unittest.TestCase):
             "severity_assessment": {"severity": "S3"},
             "taxonomy_classification": {
                 "classification_status": "classified",
+                "classification_role": "successful-invariant",
                 "primary_classification": {
                     "class_id": "VIGIL-FC-000001",
                     "family_id": "VIGIL-FF-0001",
@@ -38,6 +39,7 @@ class ValidateVigilPublicRecordsTest(unittest.TestCase):
         }
 
         expected = validator.expected_projection(record)
+        self.assertEqual(expected["classification_role"], "successful-invariant")
         entry = {
             **expected,
             "search_terms": ["Example Provider", "VIGIL-FC-000001"],
