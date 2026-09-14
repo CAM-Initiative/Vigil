@@ -35,8 +35,8 @@ The family has two distinct child mechanisms: impairment of the review function 
 `invariant_exemplars` is an optional array on either a family or selectable class. It is deliberately separate from:
 
 - `examples`, which remains short hypothetical failure illustration;
-- Incident `taxonomy_classification`, which remains the failure-occurrence relationship; and
-- the generated Case File projection, which remains derived from asserted Incident failure classifications.
+- Incident `taxonomy_classification`, which may attach an occurrence to a canonical class while `classification_role` distinguishes ordinary `failure-occurrence` evidence from a `successful-invariant` relationship; and
+- the generated failure Case File projection, which remains derived only from asserted Incident failure-occurrence mappings and excludes successful-invariant exemplars.
 
 Each exemplar requires:
 
@@ -51,7 +51,7 @@ Each exemplar requires:
 - structured `governance_placement` with `framework`, `instrument_id`, `section_or_control`, and `placement_note`; and
 - `provenance_note` explaining where canonical occurrence evidence and interpretation remain governed.
 
-Failure occurrences are intentionally absent from `exemplar_type`: they already have a canonical representation through Incident taxonomy classification. The extension is optional and therefore backwards-compatible with every existing family and class document. The family-document `schema_version` remains `0.2.0`; no bulk rewrite or incompatible contract change is required.
+Failure occurrences are intentionally absent from `exemplar_type`: they already have a canonical representation through Incident taxonomy classification. A linked Incident may now reciprocally identify an admitted `successful-invariant` relationship through `taxonomy_classification.classification_role`, allowing public consumers to resolve the same class boundary without treating the occurrence as failure evidence. The taxonomy extension remains optional and backwards-compatible with every existing family and class document. The family-document `schema_version` remains `0.2.0`; no bulk rewrite or incompatible contract change is required.
 
 ## First admitted exemplar
 
@@ -95,9 +95,9 @@ The optional field generalises without changing existing failure classification:
 
 | Relationship | Canonical representation |
 |---|---|
-| Failure occurrence | Incident `taxonomy_classification` and generated Case File projection |
-| Successful invariant | `invariant_exemplars[].exemplar_type = successful-invariant` |
+| Failure occurrence | Incident `taxonomy_classification` with `classification_role = failure-occurrence`; included in generated failure Case File projection |
+| Successful invariant | Incident `taxonomy_classification` with `classification_role = successful-invariant`, reciprocally matched to `invariant_exemplars[].exemplar_type = successful-invariant`; excluded from failure Case File projection |
 | Ambiguous boundary case | `invariant_exemplars[].exemplar_type = ambiguous-boundary` |
 | Repaired or post-control occurrence | `invariant_exemplars[].exemplar_type = repaired-post-control` |
 
-The same model can be applied to Authority Boundary Integrity, Verification & Completion Integrity, Observability & Audit Integrity, Governance Control Reach, Control Activation, and Agency-Preserving Influence classes without changing their existing records. No additional exemplar types or Incident-schema fields are needed for this tranche.
+The same model can be applied to Authority Boundary Integrity, Verification & Completion Integrity, Observability & Audit Integrity, Governance Control Reach, Control Activation, and Agency-Preserving Influence classes without changing their existing records. No additional exemplar types are needed for this tranche. One bounded Incident relationship field, `classification_role`, is used so successful exemplars remain attached to the relevant class without being represented as failure occurrences.

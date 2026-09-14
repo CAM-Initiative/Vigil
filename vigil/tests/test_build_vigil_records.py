@@ -24,6 +24,7 @@ class IncidentBuilderTests(unittest.TestCase):
         entry = BUILDER.incident_entry(BUILDER.INCIDENTS / "VIGIL-INC-000081.json", record)
         self.assertEqual(entry["severity"], record["severity_assessment"]["severity"])
         self.assertEqual(entry["classification_status"], record["taxonomy_classification"]["classification_status"])
+        self.assertEqual(entry.get("classification_role"), record["taxonomy_classification"].get("classification_role"))
         self.assertEqual(entry["record_version"], record["record_identity"]["version"])
         self.assertEqual(entry["record_last_updated"], record["record_identity"]["updated"])
         self.assertIn("search_terms", entry)
@@ -58,6 +59,7 @@ class IncidentBuilderTests(unittest.TestCase):
         examples = [item for rows in projection["classes"].values() for item in rows]
         self.assertTrue(examples)
         self.assertTrue(all(item["incident_id"].startswith("VIGIL-INC-") for item in examples))
+        self.assertFalse(any(item["incident_id"] == "VIGIL-INC-000126" for item in examples))
 
     def test_generation_is_byte_stable(self):
         targets = (BUILDER.INCIDENT_INDEX, BUILDER.MASTER_INDEX, BUILDER.TAXONOMY_EXAMPLES)

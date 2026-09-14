@@ -37,7 +37,8 @@ GENERIC_SEVERITY_TEXT = (
     "the assessment is confined to the people, systems, organisations, service cohort",
 )
 ADJACENT_BANDS = {
-    "S1": {"S2"}, "S2": {"S1", "S3"}, "S3": {"S2", "S4"}, "S4": {"S3"},
+    "S1": {"S2"}, "S2": {"S1", "S3"}, "S3": {"S2", "S4"},
+    "S4": {"S3", "S5"}, "S5": {"S4"},
 }
 DIAGNOSTIC_REQUIRED = {
     "method", "diagnostic_date", "human_role", "ai_role", "ai_platform", "ai_model",
@@ -169,6 +170,9 @@ def validate_incident_taxonomy(path: Path, record: dict[str, Any], errors: list[
     if status not in set(contract["classification_status_values"]):
         errors.append(f"{path}: invalid taxonomy classification_status {status!r}")
         return
+    role = block.get("classification_role")
+    if role is not None and role not in set(contract["classification_role_values"]):
+        errors.append(f"{path}: invalid taxonomy classification_role {role!r}")
     for field in ("taxonomy_version", "classification_basis"):
         if not non_empty(block.get(field)):
             errors.append(f"{path}: taxonomy_classification.{field} must be non-empty")
@@ -182,12 +186,29 @@ def validate_incident_taxonomy(path: Path, record: dict[str, Any], errors: list[
     if status in {"unclassified", "requires-human-review"}:
         if primary is not None or secondary:
             errors.append(f"{path}: {status} Incident must not assert taxonomy mappings")
+        if role is not None:
+            errors.append(f"{path}: {status} Incident must not assert classification_role")
         return
     if status not in {"classified", "provisionally-classified", "classification-disputed"}:
         return
     families, classes = taxonomy_catalogue()
     retired = retired_taxonomy_class_successors()
     primary_id = validate_taxonomy_mapping(path, primary, "primary_classification", families, classes, retired, errors)
+    if role == "successful-invariant":
+        if status != "classified":
+            errors.append(f"{path}: successful-invariant classification_role requires classified status")
+        if secondary:
+            errors.append(f"{path}: successful-invariant classification_role must not assert secondary failure mappings")
+        exemplar_rows = classes.get(primary_id, {}).get("invariant_exemplars", []) if primary_id else []
+        exemplar_match = any(
+            isinstance(item, dict)
+            and item.get("linked_incident_id") == record.get("id")
+            and item.get("exemplar_type") == "successful-invariant"
+            and item.get("exemplar_status") == "admitted"
+            for item in exemplar_rows
+        )
+        if not exemplar_match:
+            errors.append(f"{path}: successful-invariant classification_role must match an admitted taxonomy invariant_exemplar")
     seen = {primary_id} if primary_id else set()
     for index, mapping in enumerate(secondary):
         class_id = validate_taxonomy_mapping(
