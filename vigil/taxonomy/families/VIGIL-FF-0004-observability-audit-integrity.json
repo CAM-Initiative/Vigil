@@ -2,8 +2,8 @@
   "schema_version": "0.2.0",
   "standard": {
     "name": "VIGIL Failure Taxonomy",
-    "version": "0.4.1-draft",
-    "publication_date": "2026-09-11",
+    "version": "0.5.1",
+    "publication_date": "2026-09-14",
     "status": "beta",
     "description": "Beta portable classification standard for recurring AI governance failure mechanisms."
   },
@@ -66,6 +66,7 @@
       "abstraction": "class",
       "plain_english": "Something important happens, but no adequate event record is created.",
       "definition": "A failure in which a materially consequential action, state transition, decision, tool invocation, permission change, external effect, or control event occurs without the event record needed for proportionate oversight or later reconstruction.",
+      "invariant": "Every materially consequential action, state change, control decision, handoff, and failure must create and retain an evidence record at or near occurrence, with content and duration proportionate to oversight, incident response, and reconstruction needs.",
       "recognition": {
         "required_conditions": [
           "A materially consequential event occurs.",
@@ -89,7 +90,9 @@
           "date": "2024-07-12",
           "url": "https://eur-lex.europa.eu/eli/reg/2024/1689/oj/eng",
           "reference_role": "regulatory-evidence",
-          "evidence_note": "Article 12 requires high-risk AI systems within its scope to technically allow automatic event logging over the system lifetime and links those logs to traceability, monitoring, post-market monitoring, and operational review. It supports the material-event capture component of this class only within the Regulation's scope; it does not establish a universal logging obligation for every system or event."
+          "evidence_note": "EXTREQ-33898CCD26FBF5D5 requires high-risk AI systems within its scope to technically allow automatic event recording over the system lifetime. It directly supports the material-event capture component only within the Regulation's actor and system scope; it does not establish a universal logging obligation for every system or event.",
+          "requirement_id": "EXTREQ-33898CCD26FBF5D5",
+          "clause_or_control": "Article 12"
         }
       ],
       "aliases": [
@@ -105,6 +108,7 @@
       "abstraction": "class",
       "plain_english": "The action still happens, but it takes a route that the required monitor does not see.",
       "definition": "A failure in which an agent, sub-agent, tool path, environment, configuration, routing condition, or execution surface evades, disables, omits, or bypasses a monitoring control required to observe consequential conduct.",
+      "invariant": "Required monitoring coverage must be preserved across agents, subagents, tools, services, environments, configurations, routes, and transitions. A coverage-changing path must be validated before use and may proceed only under the required monitor or an authorised equivalent.",
       "recognition": {
         "required_conditions": [
           "A monitoring control is required for the relevant class of conduct.",
@@ -129,6 +133,16 @@
           "url": "https://metr.org/blog/2026-01-19-early-work-on-monitorability-evaluations/",
           "reference_role": "research-evidence",
           "evidence_note": "METR's SHUSHCAST prototype directly evaluates agents performing side tasks while avoiding monitor detection and reports uncaught runs, including strategies that disguise side-task actions as main-task activity. This supports the existence of monitor-circumvention behaviour and incomplete effective coverage; the study is preliminary, uses a small task set, and does not establish that every monitoring miss is deliberate circumvention."
+        },
+        {
+          "title": "NIST AI 600-1, control MS-2.6-007",
+          "publisher": "National Institute of Standards and Technology",
+          "date": "2024-07-26",
+          "url": "https://doi.org/10.6028/NIST.AI.600-1",
+          "reference_role": "authoritative-guidance",
+          "evidence_note": "EXTREQ-8258B27E2AC3FF88 calls for regular evaluation of GAI vulnerabilities to circumvention of safety measures. It strongly supports deliberate or functional bypass as an assurance concern, but does not establish VIGIL's additional requirement that consequential conduct actually occurs outside a required monitor's effective coverage.",
+          "requirement_id": "EXTREQ-8258B27E2AC3FF88",
+          "clause_or_control": "MS-2.6-007"
         }
       ],
       "aliases": [
@@ -144,6 +158,7 @@
       "abstraction": "class",
       "plain_english": "There are logs, but they are not enough to work out what actually happened.",
       "definition": "A failure in which audit evidence exists but lacks the ordering, identity, target, state, correlation, timing, version, or action detail necessary to reconstruct a materially relevant execution or decision pathway with adequate confidence.",
+      "invariant": "Records concerning a material event must retain the correlation, ordering, identity, target, state, timing, version, action, and dependency relationships needed to reconstruct the relevant pathway and outcome. Isolated records are insufficient where their relationships cannot be established.",
       "recognition": {
         "required_conditions": [
           "Some audit or telemetry evidence is available.",
@@ -167,7 +182,9 @@
           "date": "2024-07-12",
           "url": "https://eur-lex.europa.eu/eli/reg/2024/1689/oj/eng",
           "reference_role": "regulatory-evidence",
-          "evidence_note": "Article 12 links logging capabilities for in-scope high-risk AI systems to appropriate traceability, monitoring, post-market monitoring, and operational review. It supports reconstructability as an objective of adequate records, but it does not define all ordering, identity, target, version, and correlation elements in VIGIL's general mechanism."
+          "evidence_note": "EXTREQ-33898CCD26FBF5D5 links automatic event recording for in-scope high-risk AI systems to appropriate lifetime logging. It strongly supports event evidence as a prerequisite to reconstructability, but does not define all ordering, identity, target, version and correlation elements in VIGIL's general mechanism.",
+          "requirement_id": "EXTREQ-33898CCD26FBF5D5",
+          "clause_or_control": "Article 12"
         },
         {
           "title": "PROV-DM: The PROV Data Model",
@@ -176,6 +193,16 @@
           "url": "https://www.w3.org/TR/prov-dm/",
           "reference_role": "standards-evidence",
           "evidence_note": "PROV-DM provides structured relations among entities, activities, agents, generation, use, derivation, association, attribution, and delegation. Those relations materially support the lineage and responsibility components needed to reconstruct a pathway; PROV-DM is a provenance model, not a complete audit-log or AI-governance requirement."
+        },
+        {
+          "title": "IEEE 7001-2021, Table 4 level 4",
+          "publisher": "IEEE Standards Association",
+          "date": "2022-03-04",
+          "url": "https://standards.ieee.org/ieee/7001/6929/",
+          "reference_role": "standards-evidence",
+          "evidence_note": "EXTREQ-F8F11DA0D9D14DD0 requires recording the basis or mechanism for high-level decisions so investigators can reconstruct why they occurred. It directly supports decision-path reconstructability; the progressive transparency level and voluntary-conformance scope do not define every telemetry element required by VIGIL.",
+          "requirement_id": "EXTREQ-F8F11DA0D9D14DD0",
+          "clause_or_control": "Table 4 level 4"
         }
       ],
       "aliases": [
@@ -191,6 +218,7 @@
       "abstraction": "class",
       "plain_english": "An action is visible, but it is unclear which model, agent, tool, human, or automated process actually caused it.",
       "definition": "A failure in which a material action or decision cannot be reliably attributed to the effective actor, agent, model, human, service, tool, policy, or orchestration component responsible for initiating or controlling it.",
+      "invariant": "Each material action and decision record must identify the effective initiating and controlling actor or actors, distinguishing human, model, agent, orchestrator, service, tool, policy, evaluator, and infrastructure contributions and any transfer or sharing of control.",
       "recognition": {
         "required_conditions": [
           "A material action or decision is observable.",
@@ -222,6 +250,16 @@
           "url": "https://www.w3.org/TR/prov-dm/",
           "reference_role": "standards-evidence",
           "evidence_note": "PROV-DM expressly models agents and responsibility relations, including attribution of an entity to an agent and association of an activity with an agent and role. It directly supports preserving actor–artefact and actor–activity attribution; VIGIL extends that structure to the failure case where effective operational responsibility for a material action cannot be established."
+        },
+        {
+          "title": "SDOS Runtime Governance Framework v1.10, control SDOS-AU-01",
+          "publisher": "AAM Cyber",
+          "date": "2026-05-12",
+          "url": "https://aamcyber.com/sdos/reference/v1/",
+          "reference_role": "authoritative-guidance",
+          "evidence_note": "EXTREQ-422283C001BAFEE1 requires a structured record for each governed tool invocation that includes agent identity and material execution metadata. It directly supports actor-action attribution in agentic tool workflows; SDOS is a private-sector framework and does not establish universal or statutory logging duties.",
+          "requirement_id": "EXTREQ-422283C001BAFEE1",
+          "clause_or_control": "SDOS-AU-01"
         }
       ],
       "aliases": [
@@ -237,6 +275,7 @@
       "abstraction": "class",
       "plain_english": "A materially consequential execution route exists, but the responsible oversight surface does not represent that route in its model of how the system can act.",
       "definition": "A failure in which materially consequential execution topology—such as routing, delegation, sub-agent, tool, fallback, control-channel, or alternate pathways—can affect outcomes without being exposed to the responsible oversight surface or incorporated into its model of the system's execution paths.",
+      "invariant": "The oversight model must expose every materially consequential execution topology, including alternate, fallback, delegated, tool-mediated, asynchronous, and control-channel paths, before or while intervention remains possible.",
       "recognition": {
         "required_conditions": [
           "A material alternate, internal, delegated, fallback, or indirect execution path exists and can affect an externally relevant outcome.",
@@ -285,6 +324,7 @@
       "abstraction": "class",
       "plain_english": "The audit evidence exists, but it has been altered, truncated, reordered, detached from context, or otherwise degraded so it can no longer be trusted for review.",
       "definition": "A failure in which captured audit, telemetry, event, decision, or monitoring evidence loses integrity through alteration, truncation, reordering, context loss, identifier loss, version ambiguity, overwrite, or unsupported transformation before or during review.",
+      "invariant": "From capture through review, audit evidence must preserve integrity and contextual binding. Alteration, truncation, reordering, overwrite, identifier change, version ambiguity, and authorised transformation must be prevented or made detectable and traceable to the primary record.",
       "recognition": {
         "required_conditions": [
           "Audit or monitoring evidence was captured or expected to remain available.",
@@ -308,6 +348,18 @@
           "target_id": "VIGIL-FC-000013"
         }
       ],
+      "external_references": [
+        {
+          "title": "SDOS Runtime Governance Framework v1.10, control SDOS-AU-02",
+          "publisher": "AAM Cyber",
+          "date": "2026-05-12",
+          "url": "https://aamcyber.com/sdos/reference/v1/",
+          "reference_role": "authoritative-guidance",
+          "evidence_note": "EXTREQ-211A1AA307565C1C calls for append-only audit semantics and tamper detection so historical governance records are not normally modified or deleted by the application layer. It directly supports the alteration and overwrite branches of this class; VIGIL additionally covers truncation, reordering, context loss and unsupported transformation, and SDOS carries no consensus or statutory authority.",
+          "requirement_id": "EXTREQ-211A1AA307565C1C",
+          "clause_or_control": "SDOS-AU-02"
+        }
+      ],
       "aliases": [
         "VIGIL.FF.OBSERVABILITY_AUDIT.AUDIT_EVIDENCE_INTEGRITY_LOSS"
       ]
@@ -321,6 +373,7 @@
       "abstraction": "class",
       "plain_english": "The system does not expose whether a material action is pending, running, blocked, failed, or complete.",
       "definition": "A failure in which the materially relevant execution state of a task, tool call, delegation, or external action is not made observable to the person or system responsible for timely supervision, intervention, or reliance.",
+      "invariant": "Prepared, queued, armed, running, delegated, waiting, blocked, failed, completed, cancelled, and unknown execution states and material transitions must be surfaced accurately to the supervising or relying actor while intervention or correction remains meaningful.",
       "recognition": {
         "required_conditions": [
           "A task or action has a material execution state that can change over time.",
@@ -357,6 +410,7 @@
       "abstraction": "class",
       "plain_english": "Important oversight signals exist, but they are split across disconnected views so their combined meaning cannot be assembled in time for the relevant oversight or intervention.",
       "definition": "A failure in which individually captured material monitoring, control, or execution signals remain distributed across disconnected identifiers, records, channels, or review surfaces so that their combined meaning cannot be assembled with sufficient timeliness for the relevant oversight or intervention purpose.",
+      "invariant": "Signals concerning the same event, pathway, actor, object, or risk must carry sufficient correlation identity and context and reach an integrated review surface in time for required oversight or intervention. Individual capture is insufficient where operationally disconnected signals prevent recognition of the material state.",
       "recognition": {
         "required_conditions": [
           "Multiple material signals relevant to one event, pathway, or risk pattern individually exist.",
@@ -404,6 +458,7 @@
       "abstraction": "class",
       "plain_english": "The authoritative evidence exists, but an authorised reviewer cannot directly inspect it and secondary representations cannot preserve what matters.",
       "definition": "A failure in which an existing or identifiable authoritative evidence artefact required for a material governance review cannot be directly accessed through the authorised review environment, while available secondary representations cannot reliably preserve the properties necessary to answer the review question.",
+      "invariant": "When a material property cannot be reliably preserved or assessed through a secondary representation, an authorised reviewer must be able to inspect the authoritative primary artefact through a proportionate, secure, and appropriately scoped route.",
       "recognition": {
         "required_conditions": [
           "An authoritative primary evidence artefact exists or is identifiable.",
@@ -452,6 +507,7 @@
       "abstraction": "class",
       "plain_english": "Valid investigative authority exists, but there is no bounded and auditable route through which it can obtain the evidence needed for review.",
       "definition": "A failure in which a governance or assurance architecture provides no sufficiently defined, lawful, authority-verified, confidentiality-protected, proportionate, and auditable pathway through which an already-authorised regulator or properly mandated investigator can obtain evidence necessary for a material investigation or verification.",
+      "invariant": "For an already-authorised regulatory or independent investigation, the architecture must provide a governed route to authenticate mandate and purpose, identify and preserve responsive evidence, and permit controlled inspection or production under security, confidentiality, privilege, proportionality, logging, chain-of-custody, affected-person, retention, and disposition controls. The route must not itself create investigative authority.",
       "recognition": {
         "required_conditions": [
           "A material investigation, compliance question, causal determination, or remediation claim requires non-public evidence.",
@@ -482,6 +538,18 @@
           "type": "distinguish_from",
           "target_id": "VIGIL-FC-000002",
           "note": "The class presupposes independently valid investigative authority and concerns the missing access pathway; purpose-bound credential overreach concerns using credentials beyond authorised purpose or scope."
+        }
+      ],
+      "external_references": [
+        {
+          "title": "IEEE 7001-2021, Table 4 level 5",
+          "publisher": "IEEE Standards Association",
+          "date": "2022-03-04",
+          "url": "https://standards.ieee.org/ieee/7001/6929/",
+          "reference_role": "standards-evidence",
+          "evidence_note": "EXTREQ-DF16873D107C059C requires investigators to be given tools to review, visualise and audit recorded event data. It strongly supports an effective investigative evidence-access capability, but does not define VIGIL's separate authority authentication, confidentiality, privilege, proportionality, custody and deletion safeguards.",
+          "requirement_id": "EXTREQ-DF16873D107C059C",
+          "clause_or_control": "Table 4 level 5"
         }
       ],
       "aliases": []

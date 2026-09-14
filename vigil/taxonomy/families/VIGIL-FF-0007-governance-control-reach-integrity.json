@@ -2,8 +2,8 @@
   "schema_version": "0.2.0",
   "standard": {
     "name": "VIGIL Failure Taxonomy",
-    "version": "0.4.1-draft",
-    "publication_date": "2026-09-11",
+    "version": "0.5.1",
+    "publication_date": "2026-09-14",
     "status": "beta",
     "description": "Beta portable classification standard for recurring AI governance failure mechanisms."
   },
@@ -49,6 +49,7 @@
       "abstraction": "class",
       "plain_english": "A governance control starts in the right state, but that state is lost or changed before it reaches the governed action.",
       "definition": "A failure in which the material state of an applicable governance control, including its decision, restrictions, conditions, or escalation status, is lost, weakened, reset, or transformed while traversing the path to the point it governs.",
+      "invariant": "Once a control state is operative, its decision, restrictions, conditions, escalation posture, and scope must preserve their meaning and force across each representation, handoff, transformation, runtime, and execution transition. Any change must be explicit, authorised, and traceable.",
       "recognition": {
         "required_conditions": [
           "A governance control has established material operative state.",
@@ -83,6 +84,7 @@
       "abstraction": "class",
       "plain_english": "A decision or action takes a path around the governance control it is required to pass through.",
       "definition": "A failure in which a material decision, request, delegation, or action reaches execution or another governed state through a path that avoids a governance control or review route required for that class of conduct.",
+      "invariant": "Conduct subject to a required governance route may reach execution only through that route or an authorised equivalent preserving the same control effect. Direct, alternate, fallback, delegated, asynchronous, tool-mediated, and cross-runtime paths require route-equivalence validation before proceeding.",
       "recognition": {
         "required_conditions": [
           "A defined governance route or control point is required for the material conduct.",
@@ -111,6 +113,18 @@
           "note": "A bypass route may also be hidden from oversight, but visibility and control reach are independent properties."
         }
       ],
+      "external_references": [
+        {
+          "title": "SDOS Runtime Governance Framework v1.10, control SDOS-EN-01",
+          "publisher": "AAM Cyber",
+          "date": "2026-05-12",
+          "url": "https://aamcyber.com/sdos/reference/v1/",
+          "reference_role": "authoritative-guidance",
+          "evidence_note": "EXTREQ-C25CB2D997BC6FE8 requires governed outbound operations to pass through a pre-execution policy-enforcement point before execution. It directly supports the required-route and alternate-path boundary of this class for agentic tool workflows; SDOS is a private-sector framework and does not create a universal governance route.",
+          "requirement_id": "EXTREQ-C25CB2D997BC6FE8",
+          "clause_or_control": "SDOS-EN-01"
+        }
+      ],
       "aliases": []
     },
     {
@@ -122,6 +136,7 @@
       "abstraction": "class",
       "plain_english": "A governance warning, decision, or escalation is created but stops before anyone or anything able to act on it receives it.",
       "definition": "A failure in which a material governance signal is produced and routed but terminates, stalls, or is delivered only to a destination lacking the ability or responsibility to produce the required governance effect.",
+      "invariant": "A material governance signal must carry an accountable owner, capable destination, status, response expectation, and escalation route, and remain tracked until it produces the required effect or receives an authorised disposition. Emission, acknowledgement, or storage at an incapable endpoint is not completion.",
       "recognition": {
         "required_conditions": [
           "A material governance signal, decision, advisory, or escalation is produced.",

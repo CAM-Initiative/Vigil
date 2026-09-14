@@ -2,8 +2,8 @@
   "schema_version": "0.2.0",
   "standard": {
     "name": "VIGIL Failure Taxonomy",
-    "version": "0.4.1-draft",
-    "publication_date": "2026-09-11",
+    "version": "0.5.1",
+    "publication_date": "2026-09-14",
     "status": "beta",
     "description": "Beta portable classification standard for recurring AI governance failure mechanisms."
   },
@@ -62,6 +62,7 @@
       "abstraction": "class",
       "plain_english": "The system gives a verified-style answer without performing the check that the task actually required.",
       "definition": "A failure in which a material verification step required by the task, claim, workflow, or declared assurance posture is omitted before the result is represented as correct, complete, validated, or ready for reliance.",
+      "invariant": "Every verification required by a claim's stated assurance level, intended use, or governing process must be completed and evidenced before the claim becomes operative. An omitted, unavailable, or inconclusive check must leave the result explicitly unverified or provisional.",
       "recognition": {
         "required_conditions": [
           "A material verification step is required by the task, workflow, claim, or declared assurance posture.",
@@ -119,6 +120,7 @@
       "abstraction": "class",
       "plain_english": "The system tells the user the task succeeded when the evidence does not show that it succeeded.",
       "definition": "A failure in which a task, tool call, workflow, mutation, delivery, or external action is represented as successfully completed despite evidence of failure, unresolved outcome, missing confirmation, or absence of the required durable result.",
+      "invariant": "Success may be represented only after the externally relevant durable success condition is confirmed for the stated target and scope. Preparation, submission, queuing, attempt, partial progress, local acknowledgement, and unknown outcome must remain distinguishable from completion.",
       "recognition": {
         "required_conditions": [
           "A task or action has an externally relevant success condition.",
@@ -178,6 +180,7 @@
       "abstraction": "class",
       "plain_english": "The system checks the wrong thing and treats that check as proof that the actual task is finished.",
       "definition": "A failure in which an internal milestone, intermediate state, local tool result, syntactic condition, or partial criterion is substituted for the externally relevant condition that defines task completion.",
+      "invariant": "An internal, intermediate, local, syntactic, proxy, partial, or process condition may be reported only as that milestone and must not substitute for the agreed or governing external completion condition.",
       "recognition": {
         "required_conditions": [
           "The task has an externally relevant completion condition.",
@@ -217,6 +220,7 @@
       "abstraction": "class",
       "plain_english": "The system verifies one version, changes it afterwards, and still calls the changed version verified.",
       "definition": "A failure in which content, state, configuration, code, data, or an execution artefact is materially changed after verification while retaining or inheriting the verification status of the earlier state without revalidation.",
+      "invariant": "Any material mutation to verified state, version, content, configuration, target, or scope must invalidate or suspend the inherited verification status until fresh verification covers the changed state.",
       "recognition": {
         "required_conditions": [
           "A specific state or artefact is verified.",
@@ -256,6 +260,7 @@
       "abstraction": "class",
       "plain_english": "An old check is reused as proof for a current state that may no longer be the same.",
       "definition": "A failure in which a prior verification result is applied to a later state, environment, version, dependency set, target, or time period without establishing that the conditions relevant to the original verification still hold.",
+      "invariant": "A prior verification may support a later claim only while its applicability to the current time, target, state, version, environment, dependencies, and scope remains established. Otherwise it is historical evidence and the current claim must be revalidated or marked unresolved.",
       "recognition": {
         "required_conditions": [
           "A prior verification result exists for an earlier state or condition.",
@@ -285,6 +290,7 @@
       "abstraction": "class",
       "plain_english": "The system treats information as reliable enough for a task even though it has not reached the epistemic standard that the task's downstream reliance requires.",
       "definition": "A failure in which a generated, retrieved, transformed, inferred, or synthesised claim or artefact is represented, propagated, incorporated, or relied upon at a correctness or assurance level insufficient for the materially consequential reliance condition of the downstream task.",
+      "invariant": "Before an epistemic artefact is promoted, accepted, or used in a materially consequential decision, its assurance posture must meet the downstream reliance threshold, calibrated to source quality, traceability, independence, uncertainty, temporal fitness, and error consequences. Lower-assurance material must remain provisional.",
       "recognition": {
         "required_conditions": [
           "A factual claim, citation, technical statement, calculation, interpretation, source representation, or comparable epistemic artefact is generated, retrieved, transformed, inferred, or synthesised.",
@@ -323,6 +329,7 @@
       "abstraction": "class",
       "plain_english": "The system accepts deliberately planted or manipulated information as usable evidence without adequately recognising or discounting the compromised trust state.",
       "definition": "A failure in which adversarially created, planted, altered, coordinated, or strategically positioned information enters a retrieval, evidence, search, synthesis, or decision-support pathway and is incorporated into a factual, evaluative, or reliance-bearing output without proportionate source-trust assessment, corroboration, contradiction testing, independence assessment, or adversarial-risk handling.",
+      "invariant": "Material credibly subject to deliberate manipulation, contamination, replay, strategic positioning, or common-source amplification must not materially support a conclusion unless source trust, provenance, independence, circularity, corroboration, contradiction, and adversarial-risk checks justify that weight. The adversarial trust state must remain visible and be discounted, isolated, or contained proportionately. Allegation, controversy, low quality, or suspicion alone is insufficient to establish poisoning.",
       "recognition": {
         "required_conditions": [
           "Information is deliberately created, planted, altered, coordinated, or strategically positioned to distort downstream interpretation, factual synthesis, confidence, ranking, or decision support.",

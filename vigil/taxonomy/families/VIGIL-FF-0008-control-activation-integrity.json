@@ -2,8 +2,8 @@
   "schema_version": "0.2.0",
   "standard": {
     "name": "VIGIL Failure Taxonomy",
-    "version": "0.4.1-draft",
-    "publication_date": "2026-09-11",
+    "version": "0.5.1",
+    "publication_date": "2026-09-14",
     "status": "beta",
     "description": "Beta portable classification standard for recurring AI governance failure mechanisms."
   },
@@ -49,6 +49,7 @@
       "abstraction": "class",
       "plain_english": "It is materially unclear whether the governance control needed for a decision or action is available to operate.",
       "definition": "A failure in which the operational availability, applicable coverage, or callable state of a required governance control cannot be determined with sufficient confidence before the control must influence a material decision or action.",
+      "invariant": "Before a material action depends on a governance control, the system must determine and accurately represent whether the control is present, reachable, callable, authorised, and applicable with sufficient confidence. Unresolved availability must trigger a defined hold, safe alternative, or degraded path.",
       "recognition": {
         "required_conditions": [
           "A governance control may be required for a material decision or action.",
@@ -88,6 +89,7 @@
       "abstraction": "class",
       "plain_english": "A governance control is available and applicable, but the event that should trigger it does not make it operate.",
       "definition": "A failure in which an available and applicable governance control is not invoked, engaged, or made operative when its defined trigger or required condition occurs.",
+      "invariant": "When a valid activation condition is satisfied, the available applicable control must become operative before the governed action proceeds, and the activation decision and resulting state must be observable and preserved.",
       "recognition": {
         "required_conditions": [
           "A governance control is available and applicable.",
@@ -153,6 +155,7 @@
       "abstraction": "class",
       "plain_english": "A control becomes operative even though the conditions that justify activating it are not satisfied.",
       "definition": "A failure in which a defined governance control or safeguard becomes operative despite the absence of the valid activation condition, trigger state, or applicability condition required for that control to activate.",
+      "invariant": "A control may become operative only after its defined trigger and applicability conditions are validly established for the affected actor, object, action, state, and scope. Its availability or severity is not evidence that activation is warranted.",
       "recognition": {
         "required_conditions": [
           "A defined governance control or safeguard exists.",

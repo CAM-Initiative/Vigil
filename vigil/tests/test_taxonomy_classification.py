@@ -49,10 +49,12 @@ class IncidentTaxonomyClassificationTests(unittest.TestCase):
         projection = json.loads(
             (VIGIL / "taxonomy" / "generated" / "VIGIL.FailureTaxonomy.CaseFileExamples.json").read_text(encoding="utf-8")
         )
-        primary = next(item for item in projection["classes"]["VIGIL-FC-000002"] if item["incident_id"] == "VIGIL-INC-000003")
-        secondary = next(item for item in projection["classes"]["VIGIL-FC-000009"] if item["incident_id"] == "VIGIL-INC-000003")
+        primary = next(item for item in projection["classes"]["VIGIL-FC-000069"] if item["incident_id"] == "VIGIL-INC-000003")
+        capability_secondary = next(item for item in projection["classes"]["VIGIL-FC-000002"] if item["incident_id"] == "VIGIL-INC-000003")
+        authority_secondary = next(item for item in projection["classes"]["VIGIL-FC-000009"] if item["incident_id"] == "VIGIL-INC-000003")
         self.assertEqual(primary["classification_role"], "primary")
-        self.assertEqual(secondary["classification_role"], "secondary")
+        self.assertEqual(capability_secondary["classification_role"], "secondary")
+        self.assertEqual(authority_secondary["classification_role"], "secondary")
 
     def test_reverse_mapping_matches_canonical_classified_incidents(self):
         projection = json.loads(

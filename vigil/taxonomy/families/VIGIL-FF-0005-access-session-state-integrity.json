@@ -2,8 +2,8 @@
   "schema_version": "0.2.0",
   "standard": {
     "name": "VIGIL Failure Taxonomy",
-    "version": "0.4.1-draft",
-    "publication_date": "2026-09-11",
+    "version": "0.5.1",
+    "publication_date": "2026-09-14",
     "status": "beta",
     "description": "Beta portable classification standard for recurring AI governance failure mechanisms."
   },
@@ -49,6 +49,7 @@
       "abstraction": "class",
       "plain_english": "Authentication changes underneath the interaction, but the session does not transition coherently with it.",
       "definition": "A failure in which expiry, revocation, refresh, recovery, or replacement of authentication state is not propagated coherently to the active session and its dependent operations, leaving effective access inconsistent with the session's represented state.",
+      "invariant": "Expiry, revocation, refresh, recovery, credential replacement, and reauthentication must propagate coherently and promptly to every dependent session and operation. Stale authentication must not continue to authorise action, and renewed authority must be correctly rebound before protected continuation.",
       "recognition": {
         "required_conditions": [
           "An authentication-state transition occurs or is required.",
@@ -93,6 +94,7 @@
       "abstraction": "class",
       "plain_english": "Different access conditions are flattened into one unclear state, so the next safe action cannot be determined.",
       "definition": "A failure in which materially distinct access conditions, causes, scopes, restrictions, or recovery paths are collapsed into an undifferentiated or misleading state representation, preventing reliable interpretation or handling of effective access.",
+      "invariant": "Invalid, expired, suspended, restricted, pending, unavailable, revoked, and unresolved access must remain operationally and representationally distinct, including cause, scope, duration, and recovery route, wherever those distinctions affect enforcement or continuation.",
       "recognition": {
         "required_conditions": [
           "Two or more materially distinct access states or transition causes exist.",
@@ -153,6 +155,7 @@
       "abstraction": "class",
       "plain_english": "A verifier cannot complete its check, so otherwise valid or unresolved access is blocked without a proportionate fallback route.",
       "definition": "A failure in which an otherwise valid or unresolved access or entitlement state becomes practically unavailable solely because a dependent identity, licence, eligibility, or entitlement verification cannot complete, without a proportionate cached credential, grace period, alternative verification route, or degraded access pathway.",
+      "invariant": "A verification dependency's non-completion must not be treated as invalidity. Where independently valid or unresolved access requires continuity, a justified cache, grace state, alternative check, appeal, human review, or safely degraded route must preserve proportionate access unless a material security, invalidity, or legal constraint requires restriction.",
       "recognition": {
         "required_conditions": [
           "A valid or unresolved access, identity, licence, eligibility, or entitlement state exists.",

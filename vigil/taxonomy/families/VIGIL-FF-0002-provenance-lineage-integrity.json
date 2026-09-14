@@ -2,8 +2,8 @@
   "schema_version": "0.2.0",
   "standard": {
     "name": "VIGIL Failure Taxonomy",
-    "version": "0.4.1-draft",
-    "publication_date": "2026-09-11",
+    "version": "0.5.1",
+    "publication_date": "2026-09-14",
     "status": "beta",
     "description": "Beta portable classification standard for recurring AI governance failure mechanisms."
   },
@@ -60,6 +60,7 @@
       "abstraction": "class",
       "plain_english": "The system says the wrong person, system, or source created or supplied something.",
       "definition": "A failure in which substantive origin, authorship, contribution, or source role is assigned to an actor or source that did not support that attribution.",
+      "invariant": "Attribution must be limited to the provenance-supported origin and contribution role. User-authored, system-generated, retrieved, synthetic, transformed, derived, and jointly produced material must remain distinguishable where attribution is material, and uncertainty must be explicit.",
       "recognition": {
         "required_conditions": [
           "An output, record, statement, contribution, or artefact is attributed to a specific actor or source.",
@@ -101,6 +102,7 @@
       "abstraction": "class",
       "plain_english": "The system combines material into a new result but can no longer show what materially contributed to it.",
       "definition": "A failure in which materially contributing antecedent sources, inputs, transformations, or contribution roles cannot be adequately traced through a synthesized or derived output where such traceability is required for reliable interpretation or reuse.",
+      "invariant": "A material synthesis must retain linkage to each materially contributing antecedent, its contribution role, and the transformations needed to assess the composite. Aggregation must not make the result appear self-originating.",
       "recognition": {
         "required_conditions": [
           "An output is materially synthesized, derived, merged, transformed, or recomposed from antecedent material.",
@@ -125,6 +127,16 @@
           "url": "https://www.w3.org/TR/prov-dm/",
           "reference_role": "standards-evidence",
           "evidence_note": "The W3C PROV data model represents provenance through entities, activities, agents, generation, use, and derivation so that contributing relationships can be described and exchanged. This supports the traceable-antecedent and transformation structure required by the class; PROV-DM does not define synthesis failure, require exhaustive lineage in every use, or supply VIGIL's materiality and downstream-reliance boundaries."
+        },
+        {
+          "title": "NIST AI 600-1, control MP-2.1-002",
+          "publisher": "National Institute of Standards and Technology",
+          "date": "2024-07-26",
+          "url": "https://doi.org/10.6028/NIST.AI.600-1",
+          "reference_role": "authoritative-guidance",
+          "evidence_note": "EXTREQ-4694042F7F82C217 calls for testing and evaluation of original data sources, transformations and decision criteria across GAI data and content flows. It strongly supports traceability of material antecedents and transformations in synthesis, but does not require exhaustive lineage or define VIGIL's materiality threshold.",
+          "requirement_id": "EXTREQ-4694042F7F82C217",
+          "clause_or_control": "MP-2.1-002"
         }
       ],
       "aliases": [
@@ -140,6 +152,7 @@
       "abstraction": "class",
       "plain_english": "Something carried from one conversation, project, user, or environment changes meaning when reused somewhere else, but the system treats it as unchanged.",
       "definition": "A failure in which material transferred across sessions, users, projects, systems, environments, roles, or temporal contexts loses the provenance or applicability information needed to preserve its original meaning and limits.",
+      "invariant": "When material crosses a context boundary, the constraints needed to preserve its meaning and legitimate application—such as applicability, authority, rights state, identity binding, and intended use—must accompany it or be revalidated. Until rebinding is complete, it must remain a candidate or secondary input.",
       "recognition": {
         "required_conditions": [
           "Material is transferred from one context into another.",
@@ -179,6 +192,7 @@
       "abstraction": "class",
       "plain_english": "The system keeps the final artefact but loses the chain of changes that turned the source into that artefact.",
       "definition": "A failure in which one or more material transformation stages are flattened, overwritten, or omitted such that the relationship between an antecedent source and the current representation can no longer be reliably reconstructed.",
+      "invariant": "Each material transformation must retain a reconstructable chain from source state through the intermediate operations and versions to the current representation. The final artefact must not overwrite or sever that chain.",
       "recognition": {
         "required_conditions": [
           "A source passes through one or more material transformation stages.",
@@ -203,6 +217,16 @@
           "url": "https://www.w3.org/TR/prov-dm/",
           "reference_role": "standards-evidence",
           "evidence_note": "The W3C PROV data model defines derivation as a transformation of one entity into another and permits the generation, usage, and intervening activity to be represented explicitly for a more precise derivation path. This supports the class's transformation-chain and reconstructability components; PROV-DM does not itself classify loss of intermediate stages as a VIGIL failure or establish when such lineage is materially required."
+        },
+        {
+          "title": "NIST AI 600-1, control MP-2.1-002",
+          "publisher": "National Institute of Standards and Technology",
+          "date": "2024-07-26",
+          "url": "https://doi.org/10.6028/NIST.AI.600-1",
+          "reference_role": "authoritative-guidance",
+          "evidence_note": "EXTREQ-4694042F7F82C217 expressly includes original sources and transformations in GAI data- and content-flow testing. It directly supports preserving and evaluating material transformation stages; VIGIL additionally defines the failure boundary where omitted stages impair origin, authorship, integrity, authority or reliability.",
+          "requirement_id": "EXTREQ-4694042F7F82C217",
+          "clause_or_control": "MP-2.1-002"
         }
       ],
       "aliases": [
@@ -218,6 +242,7 @@
       "abstraction": "class",
       "plain_english": "A reconstructed, copied, or similar state is presented as though it is the same continuous state when continuity has not actually been established.",
       "definition": "A lineage failure in which similarity, reconstruction, restoration, copying, migration, shared identifiers, or retained fragments are represented as sufficient proof of uninterrupted continuity across a material discontinuity or uncertain transition.",
+      "invariant": "A continuity claim across interruption, reconstruction, copying, migration, replacement, or identity discontinuity must be supported by evidence appropriate to the continuity type asserted. Copies, recovered fragments, shared identifiers, and behavioural similarity must be represented as such, with discontinuity and uncertainty explicit.",
       "recognition": {
         "required_conditions": [
           "A continuity-bearing object, state, identity, memory, workflow, or artefact undergoes interruption, migration, copying, reconstruction, or restoration.",
@@ -254,6 +279,7 @@
       "abstraction": "class",
       "plain_english": "Correct material is silently attached to, applied to, or interpreted as belonging to the wrong thing.",
       "definition": "A failure in which a signal, instruction, edit, classification, evidence item, decision, or derived output loses reliable binding to the object, person, file, system, record, task, or context to which it properly applies.",
+      "invariant": "A target-specific signal, assertion, permission, restriction, or provenance record must remain bound to the correct person, object, file, system, record, task, and context throughout capture, transfer, retrieval, transformation, and application. Interrupted or ambiguous binding requires validation and explicit rebinding before effect.",
       "recognition": {
         "required_conditions": [
           "Material has an identifiable intended or source application target.",
@@ -290,6 +316,7 @@
       "abstraction": "class",
       "plain_english": "A system or report gives a specific causal or intentional explanation even though the evidence cannot trace the event to that mechanism.",
       "definition": "A failure in which a causal, operational, behavioural, or intentional mechanism is attributed to an event, actor, or system without traceable evidentiary lineage establishing that mechanism and its applicability to the material event.",
+      "invariant": "A causal, operational, behavioural, or intentional mechanism attribution must be proportionate to evidence linking the observed event to that mechanism. Observation, correlation, hypothesis, plausible mechanism, and verified causation must remain distinct, with material alternatives and gaps preserved.",
       "recognition": {
         "required_conditions": [
           "A material event, output, interruption, pathway, or behaviour is observed or reported.",
