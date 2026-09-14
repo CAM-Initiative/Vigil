@@ -67,9 +67,25 @@ class IncidentTaxonomyClassificationTests(unittest.TestCase):
         }
         canonical = {
             record["id"] for record in self.incidents
-            if isinstance(record["taxonomy_classification"].get("primary_classification"), dict)
+            if record["taxonomy_classification"]["classification_status"] in {
+                "classified", "provisionally-classified", "classification-disputed"
+            }
+            and isinstance(record["taxonomy_classification"].get("primary_classification"), dict)
         }
         self.assertEqual(projected, canonical)
+
+    def test_exemplar_is_mapped_but_not_projected_as_failure_evidence(self):
+        exemplar = next(record for record in self.incidents if record["id"] == "VIGIL-INC-000126")
+        block = exemplar["taxonomy_classification"]
+        self.assertEqual(block["classification_status"], "exemplar")
+        self.assertEqual(block["primary_classification"]["class_id"], "VIGIL-FC-000073")
+        projection = json.loads(
+            (VIGIL / "taxonomy" / "generated" / "VIGIL.FailureTaxonomy.CaseFileExamples.json").read_text(encoding="utf-8")
+        )
+        self.assertFalse(any(
+            item["incident_id"] == "VIGIL-INC-000126"
+            for item in projection["classes"]["VIGIL-FC-000073"]
+        ))
 
 
 if __name__ == "__main__":
