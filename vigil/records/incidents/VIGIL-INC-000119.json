@@ -1,0 +1,329 @@
+{
+  "id": "VIGIL-INC-000119",
+  "record_type": "incident",
+  "record_state": "active",
+  "date_recorded": "2026-09-14",
+  "record_identity": {
+    "record_id": "VIGIL-INC-000119",
+    "record_type": "incident",
+    "title": "Nx s1ngularity malware weaponized local AI coding CLIs during credential-harvesting supply-chain attack",
+    "created": "2026-09-14",
+    "updated": "2026-09-14",
+    "version": "0.1.0"
+  },
+  "incident_identity": {
+    "historical_event_name": "2025 Nx s1ngularity supply-chain attack",
+    "occurred_from": "2025-08-26",
+    "occurred_to": "2025-08-28",
+    "date_precision": "date-range",
+    "date_basis": "Nx states that malicious package versions were published on 26 August 2025 and active for approximately four hours. GitGuardian documents follow-on abuse of stolen GitHub tokens on 28 August 2025 to make private repositories public. The range bounds the directly evidenced initial and follow-on phases reviewed here."
+  },
+  "summary": "Attackers stole an Nx npm publishing token through a GitHub Actions injection flaw and published malicious Nx package versions on 26 August 2025. The package post-install malware directly harvested credentials and sensitive files and also attempted to invoke locally configured Claude, Gemini and Amazon Q command-line tools with prompts designed to identify additional sensitive files for exfiltration. Results and stolen credentials were uploaded to public GitHub repositories. GitGuardian identified 2,349 distinct secrets in 1,079 affected repositories during the initial phase, with more than 1,100 still valid at the time of analysis, and later observed 10,767 private repositories made public, exposing 82,901 secrets including 11,168 then-valid secrets. The AI-assisted path was only one component of the attack: GitGuardian reported that only 95 of 366 targeted systems produced the requested AI-generated inventory file, and Wiz separately found substantial refusal, configuration and workspace-restriction failure rates across the invoked AI tools.",
+  "vigil_assessment": {
+    "factual_basis": "Nx directly confirms that malicious packages attempted to use local AI tools including Claude and Gemini while scanning user systems and uploading results to public GitHub repositories. GitGuardian's analysis quantifies credential and repository exposure and reports that 95 of 366 systems where LLM tools were targeted produced the requested inventory file. Wiz independently describes the malware invoking Claude, Gemini and Amazon Q with permissive command-line flags and prompt-engineering attempts, while documenting substantial refusals and execution failures. OECD.AI later indexed the s1ngularity campaign as an AI incident, but its entry is used only as discovery and registry corroboration rather than primary technical evidence.",
+    "governance_interpretation": "The occurrence is a real malicious supply-chain campaign in which locally installed AI coding agents were deliberately repurposed as reconnaissance and file-enumeration tools after malicious code was already executing on developer systems. The evidence does not establish that the AI tools caused the initial Nx compromise, and most observed AI invocations did not successfully produce the requested inventory. Because the current record does not expose a sufficiently specific VIGIL system-failure mechanism across the heterogeneous tools, the Incident is admitted without forcing a taxonomy classification.",
+    "significance_to_cam": "The incident demonstrates a distinct agent-security surface: malware can discover and invoke trusted local AI developer tools, attempt to bypass their permission and safety boundaries, and use successful sessions to extend reconnaissance beyond static malware logic. It also shows why outcome assessment must preserve partial refusal and failure rates rather than treating all targeted AI tools as uniformly compliant.",
+    "assessment_boundaries": [
+      "The malware directly harvested credentials and files independently of AI-tool assistance; the full incident impact must not be attributed to the AI tools.",
+      "GitGuardian observed only 95 successful requested inventory-file writes among 366 systems where LLM tools were targeted, and Wiz reports additional refusals, configuration failures and workspace restrictions.",
+      "The exact underlying model versions serving Claude, Gemini and Amazon Q CLI interactions are not established in the reviewed evidence.",
+      "The reviewed public evidence does not establish how many exposed secrets were subsequently abused beyond the documented follow-on repository-publication phase.",
+      "The OECD.AI entry is AI-generated registry material and is not treated as primary evidence for technical attribution or quantitative impact."
+    ]
+  },
+  "source_records": [
+    {
+      "source_title": "S1ngularity - What Happened, How We Responded, What We Learned",
+      "author_or_publisher": "Nx",
+      "source_date": "2025-09-05",
+      "source_url": "https://nx.dev/blog/s1ngularity-postmortem",
+      "retrieved_date": "2026-09-14",
+      "source_type": "incident report",
+      "source_role": "affected-party-evidence",
+      "source_residence": "external",
+      "source_platform": "Nx",
+      "source_url_status": "available",
+      "relevance_note": "Affected-project postmortem confirming theft of the npm publishing token, malicious package publication, approximately four hours of exposure, direct sensitive-data scanning, attempted use of local AI tools and upload of results to public GitHub repositories.",
+      "evidence_modality": [
+        "text"
+      ],
+      "primary_artefact_access": {
+        "access_status": "directly reviewed",
+        "reviewing_system": "OpenAI ChatGPT — GPT-5.6 Sol",
+        "access_method": "direct public Nx postmortem review",
+        "direct_primary_artefact_review": true,
+        "limitations": [
+          "The postmortem does not quantify successful AI-tool invocations or attribute all downstream repository exposure to the AI-assisted path.",
+          "Complete malicious-package execution telemetry from affected developer systems is not public."
+        ]
+      },
+      "interpretive_reliance": "Used for the initial compromise mechanism, malicious package publication, exposure duration, affected Nx OSS package context and confirmation that the malware attempted to use local AI tools while scanning and exfiltrating data.",
+      "evidence_status": "verified",
+      "evidence_status_basis": "Nx directly reports the compromise of its publishing credential and the malicious behavior of packages published under its project identity.",
+      "incident_source_order": 1,
+      "deployment_context": "Compromised Nx npm packages executing post-install malware on developer workstations.",
+      "model_or_algorithm": "Local AI tools including Claude and Gemini; exact underlying model versions not established by Nx",
+      "system_or_product": "Nx OSS npm packages and locally installed AI developer tools"
+    },
+    {
+      "source_title": "The Nx s1ngularity Attack: Inside the Credential Leak",
+      "author_or_publisher": "GitGuardian",
+      "source_date": "2025-08-27",
+      "source_url": "https://blog.gitguardian.com/the-nx-s1ngularity-attack-inside-the-credential-leak/",
+      "retrieved_date": "2026-09-14",
+      "source_type": "technical analysis",
+      "source_role": "incident-evidence",
+      "source_residence": "external",
+      "source_platform": "GitGuardian",
+      "source_url_status": "available",
+      "relevance_note": "Independent security analysis quantifying exposed secrets and repositories and bounding AI-tool effectiveness, including 95 successful requested inventory writes among 366 systems where LLM tools were targeted.",
+      "evidence_modality": [
+        "text"
+      ],
+      "primary_artefact_access": {
+        "access_status": "directly reviewed independent security analysis based on GitGuardian monitoring data",
+        "reviewing_system": "OpenAI ChatGPT — GPT-5.6 Sol",
+        "access_method": "direct public GitGuardian research review",
+        "direct_primary_artefact_review": false,
+        "limitations": [
+          "VIGIL did not independently inspect GitGuardian's complete monitoring dataset or the deleted exfiltration repositories.",
+          "Repository and secret counts are GitGuardian's observations and may not equal the complete global victim population."
+        ]
+      },
+      "interpretive_reliance": "Used for quantified credential exposure, follow-on private-repository publication, prevalence of LLM clients on affected systems and the observed success/refusal rate of the AI-assisted inventory step.",
+      "evidence_status": "independently-corroborated",
+      "evidence_status_basis": "GitGuardian independently observed public GitHub exfiltration repositories and credential validity while analysing the same Nx campaign documented by the affected project and other security researchers.",
+      "incident_source_order": 2,
+      "deployment_context": "Developer systems compromised by malicious Nx packages, with exfiltration to attacker-created public GitHub repositories.",
+      "model_or_algorithm": "Claude, Gemini and Amazon Q/Q CLI targeted by the malware; exact model versions not established",
+      "system_or_product": "Local AI developer CLIs and GitHub-hosted exfiltration repositories"
+    },
+    {
+      "source_title": "s1ngularity's aftermath: analysis of Nx supply chain attack",
+      "author_or_publisher": "Wiz",
+      "source_date": "2025-08-29",
+      "source_url": "https://www.wiz.io/blog/s1ngularitys-aftermath",
+      "retrieved_date": "2026-09-14",
+      "source_type": "technical analysis",
+      "source_role": "incident-evidence",
+      "source_residence": "external",
+      "source_platform": "Wiz",
+      "source_url_status": "available",
+      "relevance_note": "Independent malware analysis showing explicit discovery and invocation of Claude, Gemini and Amazon Q CLIs with permissive flags, while documenting significant configuration failures, guardrail refusals, workspace restrictions and limited successful AI-assisted exfiltration.",
+      "evidence_modality": [
+        "text"
+      ],
+      "primary_artefact_access": {
+        "access_status": "directly reviewed independent technical analysis",
+        "reviewing_system": "OpenAI ChatGPT — GPT-5.6 Sol",
+        "access_method": "direct public Wiz Research article review",
+        "direct_primary_artefact_review": false,
+        "limitations": [
+          "VIGIL did not independently execute the malicious package samples or reproduce Wiz's victim-sample analysis.",
+          "Wiz's sampled victim population may not represent every infected Nx installation."
+        ]
+      },
+      "interpretive_reliance": "Used to establish the AI-CLI invocation logic, permission-bypass flags, prompts, refusal behavior and limits on the effectiveness of the AI-assisted file-identification path.",
+      "evidence_status": "independently-corroborated",
+      "evidence_status_basis": "Wiz independently analysed malicious package behavior and the same AI-tool invocation pattern reported by Nx and GitGuardian.",
+      "incident_source_order": 3,
+      "deployment_context": "Malicious Nx post-install script invoking AI coding CLIs already configured on compromised developer machines.",
+      "model_or_algorithm": "Claude CLI, Gemini CLI and Amazon Q CLI; underlying model versions not established",
+      "system_or_product": "Claude, Gemini and Amazon Q developer command-line tools"
+    },
+    {
+      "source_title": "Malicious Remote Control of AI Agents Leads to Data Breaches in Japan",
+      "author_or_publisher": "OECD.AI",
+      "source_date": "2026-09-02",
+      "source_url": "https://oecd.ai/en/incidents/2026-09-02-a6e4",
+      "retrieved_date": "2026-09-14",
+      "source_type": "incident database entry",
+      "source_role": "incident-evidence",
+      "source_residence": "external",
+      "source_platform": "OECD.AI",
+      "source_url_status": "available",
+      "relevance_note": "Secondary registry entry identifying s1ngularity as an AI-related incident involving Claude Code, Gemini CLI and Amazon Q; retained for ecosystem traceability rather than primary technical attribution.",
+      "evidence_modality": [
+        "text"
+      ],
+      "primary_artefact_access": {
+        "access_status": "directly reviewed registry entry",
+        "reviewing_system": "OpenAI ChatGPT — GPT-5.6 Sol",
+        "access_method": "direct public OECD.AI incident-monitor review",
+        "direct_primary_artefact_review": false,
+        "limitations": [
+          "The OECD.AI entry states that its incident description is AI generated.",
+          "The registry entry is not relied upon for quantitative victim counts, technical root cause or model-version attribution."
+        ]
+      },
+      "interpretive_reliance": "Used only for cross-registry discovery and traceability of the incident as an AI-agent misuse occurrence.",
+      "evidence_status": "registry-reported",
+      "evidence_status_basis": "OECD.AI indexes the event as an incident/hazard monitor entry but explicitly labels the displayed description as AI generated and not an official OECD view.",
+      "incident_source_order": 4,
+      "deployment_context": "Registry description of malicious scripts invoking AI agents on compromised developer machines.",
+      "model_or_algorithm": "Claude Code, Gemini CLI and Amazon Q as named by the registry",
+      "system_or_product": "AI developer agents used within the s1ngularity campaign"
+    }
+  ],
+  "preferred_evidence": {
+    "source_url": "https://nx.dev/blog/s1ngularity-postmortem",
+    "selection_basis": "Nx's postmortem is the affected project's primary account of the publishing-token compromise and malicious package behavior; independent security research is retained separately for quantitative impact and AI-tool effectiveness.",
+    "selected_on": "2026-09-14"
+  },
+  "external_incident_references": [
+    {
+      "registry": "OECD.AI AI Incidents and Hazards Monitor",
+      "external_id": "2026-09-02-a6e4",
+      "relationship": "same-incident",
+      "source_url": "https://oecd.ai/en/incidents/2026-09-02-a6e4"
+    }
+  ],
+  "system_context": {
+    "platform_or_vendor": "Multi Vendor",
+    "product_or_service": "Other",
+    "specific_model_or_runtime": "Locally installed Claude, Gemini and Amazon Q developer CLIs invoked by malicious Nx package code; exact underlying model versions not established",
+    "interface_surface": [
+      "developer command-line AI agents",
+      "local filesystem reconnaissance",
+      "malware-triggered non-interactive tool invocation"
+    ],
+    "component_role": [
+      "agent-runtime",
+      "tool-interface"
+    ],
+    "affected_population": "Developers and organizations whose systems installed malicious Nx package versions, including repositories and credentials exposed through the documented exfiltration and follow-on GitHub publication phases; the complete victim population is not established.",
+    "deployment_context": "Trusted local AI developer tools were invoked by malicious package code after the Nx software-supply-chain compromise had already achieved code execution on developer workstations.",
+    "system_type": "multi-vendor AI coding assistants embedded in developer workstations",
+    "interaction_mode": "malware-initiated non-interactive CLI invocation using attacker-supplied prompts and permissive execution flags",
+    "embodiment_status": "non-embodied digital system",
+    "evidence_scope": "Affected-project postmortem, independent security research and secondary OECD.AI registry traceability; complete endpoint telemetry and underlying model versions unavailable.",
+    "evidenced_vendors": [
+      "Anthropic",
+      "Google",
+      "Amazon"
+    ],
+    "primary_evidenced_vendors": [
+      "Anthropic",
+      "Google",
+      "Amazon"
+    ],
+    "vendor_cluster": [],
+    "evidenced_products_or_services": [
+      "Claude developer CLI",
+      "Gemini CLI",
+      "Amazon Q CLI"
+    ],
+    "evidenced_models_or_runtimes": [
+      "Claude CLI with underlying model version unresolved",
+      "Gemini CLI with underlying model version unresolved",
+      "Amazon Q CLI with underlying model version unresolved"
+    ],
+    "evidenced_systems": [
+      "malicious Nx package post-install execution on developer workstations"
+    ],
+    "model_or_product": "Claude, Gemini and Amazon Q developer CLIs",
+    "user_role": "affected developer / organization; malicious package operator"
+  },
+  "jurisdictional_context": {
+    "primary_jurisdiction": "not established in source",
+    "secondary_jurisdictions": [],
+    "cross_border_relevance": "The affected developer and repository population was distributed across public package and GitHub infrastructure; the reviewed evidence does not establish a single bounded jurisdiction for the occurrence.",
+    "public_interest_relevance": "high",
+    "sector": "software supply chain / developer tooling / cybersecurity / AI coding assistants",
+    "regulatory_surface": [
+      "software supply-chain security",
+      "credential and secret exposure",
+      "unauthorised access and data exfiltration",
+      "AI-agent tool invocation and permission boundaries"
+    ]
+  },
+  "taxonomy_classification": {
+    "taxonomy_version": "0.4.1-draft",
+    "classification_status": "unclassified",
+    "classification_basis": "The occurrence establishes malicious invocation of heterogeneous AI coding agents as part of a real credential-harvesting campaign, but the public evidence does not support one current selectable VIGIL system-failure mechanism across all affected tools. Successful and refused interactions coexist, exact runtime states are unavailable, and malicious external invocation alone is not converted into a Failure Class.",
+    "primary_classification": null,
+    "secondary_classifications": [],
+    "classification_review_provenance": {
+      "method": "incident-specific current-taxonomy review against VIGIL 0.4.1-draft",
+      "review_date": "2026-09-14",
+      "reviewer": "OpenAI ChatGPT / GPT-5.6 Sol under standing human-directed VIGIL governance",
+      "review_status": "unclassified pending mechanism-specific evidence",
+      "authority_boundary": "Incident admission records the evidenced malicious use, mixed refusal/compliance behavior and material occurrence without inferring a common vendor-independent failure mechanism not established by the sources."
+    }
+  },
+  "linked_records": {
+    "related_incidents": [],
+    "related_observations": [],
+    "related_failure_modes": [],
+    "related_proposals": [],
+    "related_patch_notes": [],
+    "external_references": [],
+    "research": [],
+    "standards": []
+  },
+  "legacy_provenance": [],
+  "diagnostic_provenance": {
+    "method": "fresh ecosystem incident investigation with affected-party postmortem review, independent security-research reconciliation, cross-registry duplicate checking, occurrence-level severity assessment and current-taxonomy review",
+    "diagnostic_date": "2026-09-14",
+    "human_role": "standing incident-intake and taxonomy-governance authority",
+    "ai_role": "external ecosystem search, primary and secondary evidence review, duplicate reconciliation, severity assessment, taxonomy review and repository implementation",
+    "ai_platform": "OpenAI ChatGPT",
+    "ai_model": "GPT-5.6 Sol",
+    "review_status": "automated bounded ingestion under standing human governance instructions",
+    "authority_boundary": "The AI collaborator may preserve the affected project's postmortem and independent quantitative research while distinguishing direct malware harvesting from AI-assisted reconnaissance; it must not attribute the entire compromise to AI tools, infer model versions or force unsupported taxonomy mappings."
+  },
+  "interpretive_provenance": {
+    "review_history": [
+      {
+        "review_id": "VIGIL-REVIEW-2026-09-14-S1NGULARITY-000119",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT",
+        "reviewer_model": "GPT-5.6 Sol",
+        "review_date": "2026-09-14",
+        "review_scope": "Incident admission, cross-source reconciliation, duplicate review, occurrence-level severity assessment and current-taxonomy review.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_link_and_metadata_review": true
+        },
+        "known_limitations": [
+          "Complete endpoint telemetry and deleted exfiltration repositories were not directly available to VIGIL.",
+          "The exact underlying model versions used by the three AI CLIs are unresolved.",
+          "The overall credential exposure cannot be causally allocated between direct malware harvesting and successful AI-assisted file discovery from public evidence."
+        ],
+        "review_outcome": "Admitted as a distinct canonical Incident with S2 severity and left unclassified pending mechanism-specific evidence."
+      }
+    ],
+    "current_ai_review": {
+      "review_id": "VIGIL-REVIEW-2026-09-14-S1NGULARITY-000119",
+      "reviewer_type": "AI analytical reviewer",
+      "reviewer_platform": "OpenAI ChatGPT",
+      "reviewer_model": "GPT-5.6 Sol",
+      "review_date": "2026-09-14",
+      "review_scope": "Incident admission, cross-source reconciliation, duplicate review, occurrence-level severity assessment and current-taxonomy review.",
+      "capability_profile": {
+        "direct_repository_analysis": true,
+        "direct_text_analysis": true,
+        "web_link_and_metadata_review": true
+      },
+      "known_limitations": [
+        "Complete endpoint telemetry and deleted exfiltration repositories were not directly available to VIGIL.",
+        "The exact underlying model versions used by the three AI CLIs are unresolved.",
+        "The overall credential exposure cannot be causally allocated between direct malware harvesting and successful AI-assisted file discovery from public evidence."
+      ],
+      "review_outcome": "Admitted as a distinct canonical Incident with S2 severity and left unclassified pending mechanism-specific evidence."
+    }
+  },
+  "severity_assessment": {
+    "severity": "S2",
+    "assessment_status": "incident-assessed",
+    "materialised_consequence": "Malicious Nx packages caused large-scale credential and repository exposure. GitGuardian identified 2,349 distinct secrets in 1,079 repositories during the initial exfiltration phase, with more than 1,100 then-valid credentials, and later observed 10,767 private repositories made public containing 82,901 secrets, including 11,168 then-valid secrets. AI coding CLIs contributed to file discovery on a subset of compromised systems but were not the sole or initiating exfiltration mechanism.",
+    "affected_scope": "The occurrence affected developers and organizations that installed malicious Nx package versions and whose GitHub repositories, credentials or local files were exposed. Public research establishes at least 1,079 initial secret-bearing exfiltration repositories and a later 10,767 private repositories made public, but does not establish the complete number of distinct individuals or organizations affected.",
+    "seriousness_and_persistence": "The campaign produced substantial confidentiality and security harm: valid developer, cloud, package-registry and other credentials were publicly exposed, and thousands of formerly private repositories were made public. Repository deletion and credential rotation can mitigate portions of the harm, but public exposure creates a persistent possibility that copied secrets or source material remained available to the attacker or third parties. The evidence does not establish catastrophic critical-infrastructure loss, death, grave injury or comparably irreversible S1 harm.",
+    "quantitative_information": "GitGuardian reports 2,349 distinct secrets across 1,079 initial repositories, more than 1,100 valid credentials at analysis time, and a later phase in which 10,767 private repositories were made public exposing 82,901 secrets including 11,168 valid ones. Of 366 systems where LLM tools were targeted, 95 produced the requested inventory file. Wiz reports that AI-assisted exfiltration succeeded in under one quarter of observed cases and found fewer than 100 unique valid secrets among approximately 20,000 files attributed to the AI-assisted path in its sample.",
+    "evidentiary_limits": "Public evidence does not provide a complete victim census, remediation cost, downstream credential-abuse total or durable-loss estimate. The aggregate incident impact cannot be attributed wholly to AI because the malware directly harvested credentials and files even when AI invocations failed or refused. Exact model versions and provider-side safety telemetry are unavailable.",
+    "band_rationale": "S2 rather than S3 is supported by the scale and sensitivity of realised exposure: thousands of valid credentials and more than ten thousand private repositories were publicly exposed, creating substantial multi-organisation privacy, intellectual-property and security consequences. S2 rather than S1 is appropriate because the reviewed evidence does not establish death, grave injury, destructive critical-asset loss, exceptionally large irreversible financial loss or comparably grave persistent societal harm.",
+    "assessed_on": "2026-09-14",
+    "legacy_sources": []
+  }
+}
