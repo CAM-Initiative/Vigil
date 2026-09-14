@@ -32,6 +32,8 @@ migration/
 
 Family JSON is canonical. The maintained PDF is a generated publication projection. Generated HTML is not a VIGIL publication asset; HTML emitted by the renderer is transient build material only. The migration ledger is non-normative source-analysis evidence and is not a dependency of the portable taxonomy.
 
+Current publications render only active families and selectable classes. Historical or retired class material retained in canonical `subtypes` for migration integrity is not publication content and must not appear in Markdown, HTML, or PDF output.
+
 `generated/VIGIL.FailureTaxonomy.CaseFileExamples.json` is a non-normative reverse mapping derived from canonical Incident `taxonomy_classification` blocks. It lets public interfaces discover Case File examples for immutable family and class IDs without embedding incident-specific record IDs in portable taxonomy definitions. Each projected example declares whether the mapping is the Incident's primary structural mechanism or an independently evidenced secondary mechanism. Unclassified Incidents remain valid registry records but do not enter this classification projection until a primary classification exists.
 
 Canonical Incident classification preserves one principal mechanism in `primary_classification`. The optional `secondary_classifications` array records zero or more additional, independently evidenced structural mechanisms. A secondary classification is not a harm, consequence, manifestation, sector, locus, hypothesis, or merely conceivable upstream cause. Primary and secondary class IDs must be distinct and resolve to the canonical taxonomy.
