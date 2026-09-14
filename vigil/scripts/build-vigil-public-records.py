@@ -192,6 +192,8 @@ def taxonomy_examples(records: list[dict[str, Any]]) -> dict[str, Any]:
         block = record.get("taxonomy_classification")
         if not isinstance(block, dict):
             continue
+        if block.get("classification_status") not in {"classified", "provisionally-classified", "classification-disputed"}:
+            continue
         mappings: list[tuple[str, dict[str, Any]]] = []
         primary = block.get("primary_classification")
         if isinstance(primary, dict):
