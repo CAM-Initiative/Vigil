@@ -356,7 +356,7 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         classes = {item["class_id"]: item for document in documents for item in document["classes"]}
         self.assertEqual(
             [class_id for class_id in sorted(classes) if class_id >= "VIGIL-FC-000046"],
-            [f"VIGIL-FC-{number:06d}" for number in range(46, 71)],
+            [f"VIGIL-FC-{number:06d}" for number in range(46, 72)],
         )
         authority = next(document for document in documents if document["family"]["family_id"] == "VIGIL-FF-0001")
         self.assertEqual(classes["VIGIL-FC-000046"]["family_id"], authority["family"]["family_id"])
@@ -368,7 +368,7 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         index = json.loads(MODULE.INDEX_PATH.read_text(encoding="utf-8"))
         documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
         selectable = {item["class_id"] for document in documents for item in document["classes"]}
-        self.assertEqual(len(selectable), 63)
+        self.assertEqual(len(selectable), 64)
         self.assertTrue(all(item["abstraction"] == "class" for document in documents for item in document["classes"]))
         subtypes = {
             subtype["historical_class_id"]: item["class_id"]
@@ -401,6 +401,15 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         self.assertIn("feasible and admissible completion pathway", persistence["definition"].lower())
         self.assertTrue(any(ref["publisher"] == "OpenAI" for ref in reward.get("external_references", [])))
         self.assertTrue(any(ref["publisher"] == "OpenAI" for ref in persistence.get("external_references", [])))
+
+    def test_welfare_framed_economic_family_uses_unique_allocations(self):
+        documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
+        welfare = next(document for document in documents if document["family"]["family_id"] == "VIGIL-FF-0013")
+        self.assertEqual(welfare["family"]["allowed_class_ids"], ["VIGIL-FC-000071"])
+        self.assertEqual([item["class_id"] for item in welfare["classes"]], ["VIGIL-FC-000071"])
+        self.assertEqual(welfare["classes"][0]["family_id"], "VIGIL-FF-0013")
+        self.assertNotIn("interpretive_boundary", welfare["classes"][0])
+        self.assertIn("phenomenologically instantiated", welfare["classes"][0]["definition"])
 
     def test_identity_representation_authority_class_is_portable_and_bounded(self):
         documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]

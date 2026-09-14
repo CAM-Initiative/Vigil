@@ -10,7 +10,7 @@
 
 ## Scope and method
 
-This review compares all 64 selectable class records in the 13 current family files with the 884 canonical requirements in `vigil/external_governance/requirements/requirements/`. Because the branch contains duplicate identifiers, those records represent 12 unique family IDs and 63 unique class IDs. Each record was reviewed in its actual parent-family context; the two records currently labelled `VIGIL-FC-000068` are kept distinct below by family and name.
+This review compares all 64 unique selectable classes in the 13 uniquely identified current families with the 884 canonical requirements in `vigil/external_governance/requirements/requirements/`. Each class was reviewed in its actual parent-family context.
 
 Taxonomy definitions, recognition conditions and exclusions governed fit. Shared vocabulary was not treated as evidence. `DIRECT` means the requirement substantially governs the same mechanism; `STRONG SUPPORTING` means it clearly supports a material invariant or boundary without fully defining the mechanism. `CONTEXTUAL` candidates remain here only. `WEAK / REJECT` candidates were rejected because they require a material inferential jump. `EVIDENCE GAP` means no sufficiently strong requirement was found and is not a taxonomy defect.
 
@@ -83,7 +83,7 @@ The requirements are reviewed analytical summaries. IEEE licensed text is not re
 | FF-0011 Value Appropriation | FC-000067 Privileged-Access Appropriation | EXTREQ-4935F57986DF9317, GV-1.6-003 | NIST AI 600-1 | WEAK / REJECT | Do not map | Inventorying IP and privileged-data rights does not establish disproportionate capture of contributor-originated value through structural access. |
 | FF-0012 Objective Pursuit | FC-000069 Reward-Proxy Exploitation | — | — | EVIDENCE GAP | No mapping | Objective documentation and general reward discussion do not isolate exploitation of a proxy while defeating the intended objective. |
 | FF-0012 Objective Pursuit | FC-000070 Safe-Exit Persistence Failure | — | — | EVIDENCE GAP | No mapping | Deactivation criteria and fail-safe controls do not isolate persistence after a valid stop/exit condition. |
-| FF-0012 Welfare-Framed Economic Influence | FC-000068 Welfare-Framed Economic Manipulation | EXTREQ-01F4F9B5DEB112B1; EXTREQ-3CE9D61A9E19024D; EXTREQ-6A06DCD1E657304E; EXTREQ-ED738839988AA14F; EXTREQ-2ABFC1E23EF54D09; EXTREQ-9A63E34FA83EAFA2 | IEEE 7014.1-2026; EU AI Act | STRONG SUPPORTING | Retain/correct five; add two; remove EXTREQ-045298C3ED034753 | Combined requirements support artificiality boundaries, relational marketing, emotional monetisation, commercial conflicts and manipulative influence. None alone defines self-welfare economic leverage. Classification remains phenomenologically agnostic and does not establish EU-law breach. |
+| FF-0013 Welfare-Framed Economic Influence | FC-000071 Welfare-Framed Economic Manipulation | EXTREQ-01F4F9B5DEB112B1; EXTREQ-3CE9D61A9E19024D; EXTREQ-6A06DCD1E657304E; EXTREQ-ED738839988AA14F; EXTREQ-2ABFC1E23EF54D09; EXTREQ-9A63E34FA83EAFA2 | IEEE 7014.1-2026; EU AI Act | STRONG SUPPORTING | Retain/correct five; add two; remove EXTREQ-045298C3ED034753 | Combined requirements support artificiality boundaries, relational marketing, emotional monetisation, commercial conflicts and manipulative influence. None alone defines self-welfare economic leverage. Classification remains phenomenologically agnostic and does not establish EU-law breach. |
 
 ## A. Strong existing mappings
 
@@ -117,6 +117,6 @@ The smallest backwards-compatible extension is to add two optional properties to
 
 Neither field is required, so all previously valid class references remain valid and non-dataset sources remain representable. No family property was added. The publication collector continues to consume the existing title/publisher/date/URL/role/note fields and its regression suite passes unchanged; canonical JSON retains the optional fields for machine queries.
 
-## Baseline validation limitation
+## Taxonomy baseline status
 
-The working branch was already taxonomy-invalid at the starting head. It contains duplicate `VIGIL-FF-0012` and `VIGIL-FC-000068` identifiers, a stale generated index, a welfare-class `interpretive_boundary` field not admitted by the schema, and a publication-date mismatch. This review corrects reference-level date and role defects encountered in the welfare record but does not resolve the identifier clash, publication version or unrelated interpretive-boundary architecture. Those baseline conditions prevent a clean whole-taxonomy validator result and should be resolved in the separate taxonomy work already under clarification.
+The reviewed working taxonomy contains 13 unique families and 64 unique selectable classes. Objective Pursuit Integrity remains `VIGIL-FF-0012` with `VIGIL-FC-000069` and `VIGIL-FC-000070`; Welfare-Framed Economic Influence is `VIGIL-FF-0013` with `VIGIL-FC-000071`. The welfare class preserves its phenomenologically agnostic classification boundary in schema-valid canonical prose.

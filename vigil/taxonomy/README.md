@@ -20,6 +20,7 @@ families/
   VIGIL-FF-0010-infrastructural-authority-integrity.json
   VIGIL-FF-0011-value-appropriation-integrity.json
   VIGIL-FF-0012-objective-pursuit-integrity.json
+  VIGIL-FF-0013-welfare-framed-economic-influence-integrity.json
 generated/
   VIGIL.FailureTaxonomy.CaseFileExamples.json
   VIGIL.Observatory.FailureTaxonomy.FullReference.pdf
