@@ -112,7 +112,6 @@ def markdown_family(data: dict, level: int = 1) -> str:
 
 
 def markdown_invariant_exemplar(exemplar: dict) -> str:
-    placement = exemplar["governance_placement"]
     boundaries = "\n".join(f"  - {item}" for item in exemplar["boundary_conditions"])
     return "\n".join([
         f"### {exemplar['title']}",
@@ -124,7 +123,6 @@ def markdown_invariant_exemplar(exemplar: dict) -> str:
         f"- **Why this is not failure evidence:** {exemplar['success_basis']}",
         "- **Boundary conditions:**",
         boundaries,
-        f"- **Governance placement:** {placement['framework']} — `{placement['instrument_id']}`, {placement['section_or_control']}. {placement['placement_note']}",
         f"- **Provenance:** {exemplar['provenance_note']}",
         "",
     ])
@@ -506,7 +504,6 @@ def invariant_exemplars_html(exemplars: list[dict], *, heading: str = "h4") -> s
         return ""
     cards = []
     for exemplar in exemplars:
-        placement = exemplar["governance_placement"]
         boundaries = "".join(f"<li>{esc(value)}</li>" for value in exemplar["boundary_conditions"])
         cards.append(
             '<article class="invariant-exemplar">'
@@ -517,9 +514,6 @@ def invariant_exemplars_html(exemplars: list[dict], *, heading: str = "h4") -> s
             f"<p><strong>Invariant demonstrated:</strong> {esc(exemplar['invariant_demonstrated'])}</p>"
             f"<p><strong>Why this is not failure evidence:</strong> {esc(exemplar['success_basis'])}</p>"
             f"<p><strong>Boundary conditions:</strong></p><ul>{boundaries}</ul>"
-            f"<p><strong>Governance placement:</strong> {esc(placement['framework'])} — "
-            f"<code>{esc(placement['instrument_id'])}</code>, {esc(placement['section_or_control'])}. "
-            f"{esc(placement['placement_note'])}</p>"
             f"<p><strong>Provenance:</strong> {esc(exemplar['provenance_note'])}</p>"
             "</article>"
         )
