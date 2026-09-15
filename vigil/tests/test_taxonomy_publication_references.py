@@ -116,6 +116,60 @@ class TaxonomyPublicationReferenceTests(unittest.TestCase):
         self.assertIn("Why this is not failure evidence", rendered)
         self.assertNotIn("Case Study", rendered)
 
+    def test_prior_codes_remain_metadata_but_are_not_published(self):
+        family_alias = "LEGACY.FAMILY.CODE.SHOULD.NOT.RENDER"
+        class_alias = "LEGACY.CLASS.CODE.SHOULD.NOT.RENDER"
+        data = {
+            "family": {
+                "family_id": "VIGIL-FF-9999",
+                "family_code": "CURRENT_FAMILY_CODE",
+                "name": "Synthetic family",
+                "status": "beta",
+                "version": "0.0.0-test",
+                "abstraction": "family",
+                "plain_english": "Synthetic family used to test publication projection.",
+                "definition": "A bounded synthetic family definition.",
+                "invariant": "The current canonical identity remains authoritative.",
+                "inclusion_rule": "Include only for the synthetic test.",
+                "exclusion_rule": "Exclude all non-test cases.",
+                "scope": ["Synthetic test scope."],
+                "allowed_class_ids": ["VIGIL-FC-999999"],
+                "allowed_class_codes": ["CURRENT_CLASS_CODE"],
+                "aliases": [family_alias],
+            },
+            "classes": [
+                {
+                    "class_id": "VIGIL-FC-999999",
+                    "class_code": "CURRENT_CLASS_CODE",
+                    "family_id": "VIGIL-FF-9999",
+                    "name": "Synthetic class",
+                    "status": "beta",
+                    "abstraction": "class",
+                    "plain_english": "Synthetic class used to test publication projection.",
+                    "definition": "A bounded synthetic class definition.",
+                    "recognition": {"required_conditions": ["Synthetic condition."]},
+                    "exclusions": ["Synthetic exclusion."],
+                    "examples": ["Synthetic example."],
+                    "aliases": [class_alias],
+                }
+            ],
+        }
+
+        self.assertEqual(data["family"]["aliases"], [family_alias])
+        self.assertEqual(data["classes"][0]["aliases"], [class_alias])
+
+        rendered = [
+            RENDERER.base.markdown_family(data),
+            RENDERER.base.html_family(data),
+            RENDERER.base.publication_family_html(data, 1),
+        ]
+        for output in rendered:
+            self.assertNotIn("Prior codes", output)
+            self.assertNotIn(family_alias, output)
+            self.assertNotIn(class_alias, output)
+            self.assertIn("CURRENT_FAMILY_CODE", output)
+            self.assertIn("CURRENT_CLASS_CODE", output)
+
     def test_publication_cover_surfaces_standard_version_and_beta_status(self):
         index = {
             "standard": {
