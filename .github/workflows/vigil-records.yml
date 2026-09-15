@@ -97,3 +97,22 @@ jobs:
               exit 0
             fi
           fi
+
+      - name: Notify CAM catalogue of refreshed VIGIL records
+        if: github.event_name == 'push' && github.actor != 'github-actions[bot]'
+        env:
+          CAM_CATALOGUE_DISPATCH_TOKEN: ${{ secrets.CAM_CATALOGUE_DISPATCH_TOKEN }}
+        run: |
+          if [ -z "$CAM_CATALOGUE_DISPATCH_TOKEN" ]; then
+            echo "CAM_CATALOGUE_DISPATCH_TOKEN is not configured; skipping cross-repository VIGIL sync notification."
+            echo "Add a VIGIL repository secret named CAM_CATALOGUE_DISPATCH_TOKEN with permission to dispatch workflows in CAM-Initiative/cam-governance-catalogue."
+            exit 0
+          fi
+
+          curl --fail-with-body \
+            --request POST \
+            --header "Accept: application/vnd.github+json" \
+            --header "Authorization: Bearer $CAM_CATALOGUE_DISPATCH_TOKEN" \
+            --header "X-GitHub-Api-Version: 2022-11-28" \
+            https://api.github.com/repos/CAM-Initiative/cam-governance-catalogue/dispatches \
+            --data '{"event_type":"vigil-records-updated","client_payload":{"source_repository":"CAM-Initiative/Vigil","source_ref":"main"}}'
