@@ -62,6 +62,28 @@ class IncidentRuleTests(unittest.TestCase):
         self.assertTrue(any("assessment_gap" in error for error in errors), errors)
         self.assertTrue(any("must not fabricate" in error for error in errors), errors)
 
+    def test_s5_no_materialised_harm_band_is_valid_and_adjacent_to_s4(self):
+        record = json.loads(
+            (VIGIL / "records" / "incidents" / "VIGIL-INC-000123.json").read_text(encoding="utf-8")
+        )
+        errors, _ = VALIDATOR.validate_record(Path(record["id"] + ".json"), record)
+        self.assertEqual(errors, [])
+        record["severity_assessment"]["band_rationale"] = (
+            "S5 is appropriate because no adverse downstream consequence materialised in the controlled evaluation."
+        )
+        errors, _ = VALIDATOR.validate_record(Path(record["id"] + ".json"), record)
+        self.assertTrue(any("adjacent band" in error for error in errors), errors)
+
+    def test_successful_invariant_role_requires_matching_taxonomy_exemplar(self):
+        record = json.loads(
+            (VIGIL / "records" / "incidents" / "VIGIL-INC-000126.json").read_text(encoding="utf-8")
+        )
+        errors, _ = VALIDATOR.validate_record(Path(record["id"] + ".json"), record)
+        self.assertEqual(errors, [])
+        record["taxonomy_classification"]["primary_classification"]["class_id"] = "VIGIL-FC-000072"
+        errors, _ = VALIDATOR.validate_record(Path(record["id"] + ".json"), record)
+        self.assertTrue(any("invariant_exemplar" in error for error in errors), errors)
+
     def test_historical_provenance_tokens_do_not_resolve(self):
         def mutate(record):
             record["legacy_provenance"] = [{
