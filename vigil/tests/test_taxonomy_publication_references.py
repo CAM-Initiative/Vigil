@@ -110,11 +110,24 @@ class TaxonomyPublicationReferenceTests(unittest.TestCase):
             "provenance_note": "Occurrence evidence remains in the linked Incident.",
         }
         rendered = RENDERER.base.invariant_exemplars_html([exemplar])
+        self.assertEqual(exemplar["governance_placement"]["framework"], "CAELESTIS")
         self.assertIn("Invariant exemplars", rendered)
         self.assertIn("successful-invariant", rendered)
         self.assertIn("VIGIL-INC-000126", rendered)
         self.assertIn("Why this is not failure evidence", rendered)
+        self.assertNotIn("Governance placement", rendered)
+        self.assertNotIn("CAELESTIS", rendered)
+        self.assertNotIn("CAM-EQ2026-STEWARD-003-PLATINUM", rendered)
         self.assertNotIn("Case Study", rendered)
+
+        markdown = RENDERER.base.markdown_invariant_exemplar(exemplar)
+        self.assertIn("Evidence basis", markdown)
+        self.assertIn("Invariant demonstrated", markdown)
+        self.assertIn("Boundary conditions", markdown)
+        self.assertIn("Provenance", markdown)
+        self.assertNotIn("Governance placement", markdown)
+        self.assertNotIn("CAELESTIS", markdown)
+        self.assertNotIn("CAM-EQ2026-STEWARD-003-PLATINUM", markdown)
 
     def test_prior_codes_remain_metadata_but_are_not_published(self):
         family_alias = "LEGACY.FAMILY.CODE.SHOULD.NOT.RENDER"
