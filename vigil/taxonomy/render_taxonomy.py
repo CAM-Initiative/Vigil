@@ -63,8 +63,6 @@ def markdown_family(data: dict, level: int = 1) -> str:
         f"- `{class_id}` — `{class_code}`"
         for class_id, class_code in zip(family["allowed_class_ids"], family["allowed_class_codes"])
     )
-    if family.get("aliases"):
-        out.extend(["", f"**Prior codes / aliases:** {'; '.join(f'`{x}`' for x in family['aliases'])}"])
     if family.get("invariant_exemplars"):
         out.extend(["", f"{h}## Invariant exemplars", ""])
         out.extend(markdown_invariant_exemplar(item) for item in family["invariant_exemplars"])
@@ -97,8 +95,6 @@ def markdown_family(data: dict, level: int = 1) -> str:
         if item.get("invariant_exemplars"):
             out.extend(["", f"{h}## Invariant exemplars", ""])
             out.extend(markdown_invariant_exemplar(exemplar) for exemplar in item["invariant_exemplars"])
-        if item.get("aliases"):
-            out.extend(["", f"**Prior codes / aliases:** {'; '.join(f'`{x}`' for x in item['aliases'])}"])
         if item.get("relationships"):
             out.extend(["", f"{h}## Relationships", ""])
             for relation in item["relationships"]:
@@ -116,7 +112,6 @@ def markdown_family(data: dict, level: int = 1) -> str:
 
 
 def markdown_invariant_exemplar(exemplar: dict) -> str:
-    placement = exemplar["governance_placement"]
     boundaries = "\n".join(f"  - {item}" for item in exemplar["boundary_conditions"])
     return "\n".join([
         f"### {exemplar['title']}",
@@ -128,7 +123,6 @@ def markdown_invariant_exemplar(exemplar: dict) -> str:
         f"- **Why this is not failure evidence:** {exemplar['success_basis']}",
         "- **Boundary conditions:**",
         boundaries,
-        f"- **Governance placement:** {placement['framework']} — `{placement['instrument_id']}`, {placement['section_or_control']}. {placement['placement_note']}",
         f"- **Provenance:** {exemplar['provenance_note']}",
         "",
     ])
@@ -510,7 +504,6 @@ def invariant_exemplars_html(exemplars: list[dict], *, heading: str = "h4") -> s
         return ""
     cards = []
     for exemplar in exemplars:
-        placement = exemplar["governance_placement"]
         boundaries = "".join(f"<li>{esc(value)}</li>" for value in exemplar["boundary_conditions"])
         cards.append(
             '<article class="invariant-exemplar">'
@@ -521,9 +514,6 @@ def invariant_exemplars_html(exemplars: list[dict], *, heading: str = "h4") -> s
             f"<p><strong>Invariant demonstrated:</strong> {esc(exemplar['invariant_demonstrated'])}</p>"
             f"<p><strong>Why this is not failure evidence:</strong> {esc(exemplar['success_basis'])}</p>"
             f"<p><strong>Boundary conditions:</strong></p><ul>{boundaries}</ul>"
-            f"<p><strong>Governance placement:</strong> {esc(placement['framework'])} — "
-            f"<code>{esc(placement['instrument_id'])}</code>, {esc(placement['section_or_control'])}. "
-            f"{esc(placement['placement_note'])}</p>"
             f"<p><strong>Provenance:</strong> {esc(exemplar['provenance_note'])}</p>"
             "</article>"
         )
@@ -537,9 +527,6 @@ def publication_class_html(item: dict, section_number: str, class_lookup: dict[s
         indicators = "<h4>Indicators</h4><ul>" + "".join(f"<li>{esc(x)}</li>" for x in item["recognition"]["indicators"]) + "</ul>"
     exclusions = "".join(f"<li>{esc(x)}</li>" for x in item["exclusions"])
     illustrative_examples = "".join(f"<li>{esc(x)}</li>" for x in item["examples"])
-    aliases = ""
-    if item.get("aliases"):
-        aliases = "<h3>Prior codes and aliases</h3><ul>" + "".join(f"<li><code>{esc(x)}</code></li>" for x in item["aliases"]) + "</ul>"
     relationships = ""
     if item.get("relationships"):
         relationships = "<h3>Relationships</h3><ul>" + "".join(
@@ -562,7 +549,7 @@ def publication_class_html(item: dict, section_number: str, class_lookup: dict[s
   <h3>Technical definition</h3><p>{esc(item['definition'])}</p>
   {invariant}
   <div class="grid criteria-grid"><section><h3>Recognition criteria</h3><ul>{recognition}</ul>{indicators}</section><section><h3>Exclusions</h3><ul>{exclusions}</ul></section></div>
-  <h3>Illustrative examples</h3><ul>{illustrative_examples}</ul>{invariant_exemplars_html(item.get("invariant_exemplars", []), heading="h4")}{aliases}{relationships}{mappings}{case_examples_html(case_examples or [])}
+  <h3>Illustrative examples</h3><ul>{illustrative_examples}</ul>{invariant_exemplars_html(item.get("invariant_exemplars", []), heading="h4")}{relationships}{mappings}{case_examples_html(case_examples or [])}
 </section>"""
 
 
@@ -578,8 +565,6 @@ def publication_family_html(data: dict, chapter_number: int, case_examples: dict
             f"<span class=\"chapter-item-title\">{esc(item['name'])}</span>"
             f"<span class=\"chapter-item-id\"><code>{esc(item['class_id'])}</code></span></li>"
         )
-    aliases = " · ".join(f"<code>{esc(x)}</code>" for x in family.get("aliases", []))
-    alias_html = f"<p class=\"chapter-aliases\"><strong>Prior codes and aliases:</strong> {aliases}</p>" if aliases else ""
     selected_case_examples = select_class_case_examples(data, case_examples or {})
     classes = "".join(
         publication_class_html(
@@ -599,7 +584,6 @@ def publication_family_html(data: dict, chapter_number: int, case_examples: dict
     <p class="chapter-meta"><code>{esc(family['family_id'])}</code> · <code>{esc(family['family_code'])}</code> · Version {esc(family['version'])} · {esc(str(family['status']).title())}</p>
     <h2 class="chapter-outline-title">In this chapter</h2>
     <ol class="chapter-list">{''.join(chapter_rows)}</ol>
-    {alias_html}
   </section>
   <section class="chapter-overview">
     <p class="chapter-kicker">Chapter {chapter_number} · Failure family overview</p>
@@ -620,11 +604,6 @@ def class_html(item: dict, case_examples: list[dict] | None = None) -> str:
         ) + "</ul>"
     exclusions = "".join(f"<li>{esc(x)}</li>" for x in item["exclusions"])
     illustrative_examples = "".join(f"<li>{esc(x)}</li>" for x in item["examples"])
-    aliases = ""
-    if item.get("aliases"):
-        aliases = "<h4>Prior codes and aliases</h4><ul>" + "".join(
-            f"<li><code>{esc(x)}</code></li>" for x in item["aliases"]
-        ) + "</ul>"
     relationships = ""
     if item.get("relationships"):
         relationships = "<h4>Relationships</h4><ul>" + "".join(
@@ -647,7 +626,7 @@ def class_html(item: dict, case_examples: list[dict] | None = None) -> str:
   <h4>Technical definition</h4><p>{esc(item['definition'])}</p>
   {invariant}
   <div class="grid"><section><h4>Recognition criteria</h4><ul>{recognition}</ul>{indicators}</section><section><h4>Exclusions</h4><ul>{exclusions}</ul></section></div>
-  <h4>Illustrative examples</h4><ul>{illustrative_examples}</ul>{invariant_exemplars_html(item.get("invariant_exemplars", []), heading="h4")}{aliases}{relationships}{mappings}{case_examples_html(case_examples or [])}
+  <h4>Illustrative examples</h4><ul>{illustrative_examples}</ul>{invariant_exemplars_html(item.get("invariant_exemplars", []), heading="h4")}{relationships}{mappings}{case_examples_html(case_examples or [])}
 </article>"""
 
 
@@ -659,14 +638,13 @@ def family_html(data: dict, heading_level: int = 1, case_examples: dict[str, lis
         f"<li><code>{esc(class_id)}</code> — <code>{esc(class_code)}</code></li>"
         for class_id, class_code in zip(family["allowed_class_ids"], family["allowed_class_codes"])
     )
-    aliases = "".join(f"<li><code>{esc(x)}</code></li>" for x in family.get("aliases", []))
     return f"""
 <section class="family" id="{esc(anchor(family['family_id']))}">
 <section class="hero"><p class="eyebrow">Governance Failure Taxonomy · Technical Reference</p><{tag}>{esc(family['name'])}</{tag}><p class="plain">{esc(family['plain_english'])}</p>
 <p><strong>Immutable ID:</strong> <code>{esc(family['family_id'])}</code> · <strong>Semantic code:</strong> <code>{esc(family['family_code'])}</code> · <strong>Version:</strong> {esc(family['version'])} · <strong>Status:</strong> {esc(family['status'])}</p>
 <h2>Technical definition</h2><p>{esc(family['definition'])}</p><h2>Governing invariant</h2><p class="invariant">{esc(family['invariant'])}</p>
 <h2>Classification boundary</h2><div class="grid"><section><h3>Include when</h3><p>{esc(family['inclusion_rule'])}</p></section><section><h3>Exclude when</h3><p>{esc(family['exclusion_rule'])}</p></section></div>
-<h2>Scope</h2><ul>{scope}</ul><details><summary><strong>Allowed identifiers</strong></summary><ul>{allowed}</ul></details><details><summary><strong>Prior codes and aliases</strong></summary><ul>{aliases}</ul></details>{invariant_exemplars_html(family.get("invariant_exemplars", []), heading="h3")}</section>
+<h2>Scope</h2><ul>{scope}</ul><details><summary><strong>Allowed identifiers</strong></summary><ul>{allowed}</ul></details>{invariant_exemplars_html(family.get("invariant_exemplars", []), heading="h3")}</section>
 <h2>Failure classes</h2>{''.join(class_html(item, (case_examples or {}).get(item['class_id'], [])) for item in data['classes'])}</section>"""
 
 
@@ -699,7 +677,7 @@ html,body{background:#fff!important}body{font-size:9.5pt;line-height:1.48}main{m
 .publication-imprint{page:imprint;min-height:249mm;page-break-after:always;display:flex;flex-direction:column;color:#2a2a2a;font-family:Helvetica,Arial,sans-serif}.imprint-kicker{font-family:Helvetica,Arial,sans-serif;color:#022c1b;text-transform:uppercase;letter-spacing:.08em;font-size:7.5pt;font-weight:700;margin-bottom:4mm}.publication-imprint h1{font-family:Helvetica,Arial,sans-serif;color:#022c1b;font-size:22pt;font-weight:700;margin:0 0 9mm}.publication-meta{display:grid;grid-template-columns:42mm 1fr;gap:2.1mm 6mm;margin:0;font-family:Helvetica,Arial,sans-serif}.publication-meta dt{color:#6f6657}.publication-meta dd{margin:0;font-weight:600}.imprint-rule{height:.6pt;background:#b8943f;width:100%;margin:8mm 0 5mm}.publication-imprint>p{font-family:Helvetica,Arial,sans-serif}.reliance-notice{margin-top:auto;padding-top:4mm;border-top:.6pt solid #d8d5cc;font-family:Helvetica,Arial,sans-serif}.reliance-notice h2{font-family:Helvetica,Arial,sans-serif;font-size:9pt;font-weight:700;color:#022c1b;margin:0 0 2.5mm}.reliance-notice p{font-family:Helvetica,Arial,sans-serif;font-size:8.3pt;line-height:1.45;color:#504a40;margin:0}.publisher-block{margin-top:5mm;padding-top:4mm;border-top:.6pt solid #d8d5cc;font-family:Helvetica,Arial,sans-serif}.publisher-block h2{font-family:Helvetica,Arial,sans-serif;font-size:9pt;font-weight:700;color:#022c1b;margin:0 0 2.5mm}.publisher-block p{font-family:Helvetica,Arial,sans-serif;font-size:8.5pt;line-height:1.5;color:#504a40;margin:0}.publisher-block strong{color:#022c1b}.publisher-block .ai-disclosure{margin-top:3mm;font-size:8pt;line-height:1.42;color:#504a40}
 .contents{border:0;padding:0;page-break-after:always}.contents h1{font-family:Georgia,"Times New Roman",serif;font-size:22pt;color:#022c1b;font-weight:500}.contents h2{color:#022c1b}.contents a{color:#022c1b}.book-contents ol{list-style:none;padding:0;margin:9mm 0 0}.book-contents li{margin:0 0 4.5mm}.book-contents a{display:flex;align-items:baseline;gap:3mm;text-decoration:none}.contents-chapter-number{font-family:Helvetica,Arial,sans-serif;font-weight:700;color:#b8943f;width:8mm}.contents-family-title{font-family:Georgia,"Times New Roman",serif;font-size:12.5pt;color:#022c1b}.contents-leader{flex:1;border-bottom:.5pt dotted #b9b4a9;transform:translateY(-1.5mm);min-width:8mm}.book-contents a::after{content:target-counter(attr(href), page);font-family:Helvetica,Arial,sans-serif;font-size:9pt;color:#6f6657;margin-left:1mm}
 .family{page-break-before:always;border-top:0!important;padding-top:0!important;margin-top:0!important}.family>.hero{border:0;padding:0;margin:0 0 8mm}.family>.hero h1,.family>.hero h2{font-family:Georgia,"Times New Roman",serif;color:#022c1b;font-weight:500}.family>.hero .eyebrow{color:#022c1b}.card{break-inside:auto;border:1px solid #c8d1c8;border-radius:6px;padding:5mm;margin:0 0 5mm}.card h3{font-family:Georgia,"Times New Roman",serif;font-size:15pt;color:#022c1b;font-weight:500}.plain{background:#eef4e8!important;border-left:3pt solid #022c1b;border-radius:0!important}.invariant{background:#f6f4eb!important;border-left:2.2pt solid #022c1b!important}.grid{grid-template-columns:1fr 1fr;gap:4mm}.grid section{break-inside:avoid;background:#f6f4eb!important}.top{break-inside:avoid}.case-files{break-inside:auto}a{color:#022c1b;text-decoration:none}details{display:block}details>summary{list-style:none}details>*{display:block!important}
-.chapter-opener{break-before:page;break-after:page}.chapter-opener h1{font-family:Georgia,"Times New Roman",serif;font-size:30pt;line-height:1.02;color:#022c1b;font-weight:500;margin:3mm 0 7mm;max-width:165mm}.chapter-kicker,.class-kicker{text-transform:uppercase;letter-spacing:.11em;font-size:8pt;font-weight:700;color:#b8943f;margin:0 0 3mm}.chapter-lead{background:#eef4e8!important;border-left:3pt solid #022c1b;padding:4mm 5mm;font-family:Georgia,"Times New Roman",serif;font-size:13pt;line-height:1.28;margin:0 0 4mm}.chapter-meta,.class-meta{font-size:8pt;color:#6f6657;margin:0 0 6mm}.chapter-opener h2,.chapter-overview h2,.chapter-overview h3,.book-class h2,.book-class h3{font-family:Georgia,"Times New Roman",serif;color:#022c1b;font-weight:500}.chapter-opener h2{font-size:16pt;margin:5mm 0 2mm}.chapter-outline-title{font-family:Helvetica,Arial,sans-serif!important;font-size:13pt!important;font-weight:700!important;margin:7mm 0 2mm!important}.chapter-aliases{font-size:7.8pt;color:#6f6657;margin:4mm 0 0}.chapter-opener .grid h3{font-family:Helvetica,Arial,sans-serif;font-size:12pt;color:#171717;font-weight:700}.chapter-overview{break-after:page}.chapter-overview h2{font-size:16pt;margin:5mm 0 2mm}.chapter-overview .grid h3{font-family:Helvetica,Arial,sans-serif;font-size:10pt;font-weight:700;color:#171717;margin:0 0 2mm}.chapter-list{list-style:none;padding:0;margin:3mm 0 7mm}.chapter-list li{display:grid;grid-template-columns:13mm 1fr 55mm;gap:3mm;border-bottom:.35pt solid #ddd8ca;padding:2.5mm 0;align-items:start}.chapter-item-number{font-weight:700;color:#b8943f}.chapter-item-title{font-weight:600}.chapter-item-id{font-size:7.4pt;color:#6f6657;text-align:right}.book-class{break-before:page}.class-title{font-size:23pt;line-height:1.08;margin:0 0 2mm}.class-meta{margin-bottom:4mm}.variant-parent{font-family:Georgia,"Times New Roman",serif;font-style:italic;color:#6f6657;margin:-1mm 0 4mm}.book-class>.plain{font-size:11pt;line-height:1.32;padding:4mm 5mm;margin:0 0 5mm}.book-class h3{font-size:13pt;margin:5mm 0 2mm}.book-class .grid h3{font-family:Helvetica,Arial,sans-serif;font-size:10pt;font-weight:700;color:#171717;margin:0 0 2mm}.criteria-grid{break-inside:avoid}.book-class ul{margin-top:1.5mm}.case-studies{margin-top:7mm}.case-studies>h4{font-family:Georgia,"Times New Roman",serif;font-size:15pt;color:#022c1b;font-weight:500;margin:0 0 3mm}.case-study{background:#eef4e8;border-left:3pt solid #022c1b;border-radius:2mm;padding:4mm 5mm;margin:0 0 4mm;break-inside:avoid}.case-study h5{font-family:Georgia,"Times New Roman",serif;font-size:11.5pt;line-height:1.2;color:#022c1b;margin:0 0 1.2mm}.case-study-meta{font-family:Helvetica,Arial,sans-serif;font-size:8pt;color:#6f6657;margin:0 0 3mm}.case-study-context{font-family:Helvetica,Arial,sans-serif;font-size:9.5pt;line-height:1.45;margin:0 0 3mm;color:#2f302d}.case-study-basis{font-family:Helvetica,Arial,sans-serif;font-size:9pt;line-height:1.4;margin:0;padding-top:3mm;border-top:.45pt solid #c7d5c9;color:#3f463f}.case-study-basis strong{color:#022c1b}.case-study-source{font-family:Helvetica,Arial,sans-serif;font-size:8pt;line-height:1.35;margin:3mm 0 0;color:#504a40;overflow-wrap:anywhere}.case-study-source strong{color:#022c1b}.case-study-source a{color:#315f50;text-decoration:underline;overflow-wrap:anywhere}.case-study-ref{font-family:Helvetica,Arial,sans-serif;font-size:7.5pt;color:#78716c;margin:3mm 0 0}.book-family code,.book-class code{font-size:.88em}.book-family+.book-family{border:0!important;padding:0!important;margin:0!important}
+.chapter-opener{break-before:page;break-after:page}.chapter-opener h1{font-family:Georgia,"Times New Roman",serif;font-size:30pt;line-height:1.02;color:#022c1b;font-weight:500;margin:3mm 0 7mm;max-width:165mm}.chapter-kicker,.class-kicker{text-transform:uppercase;letter-spacing:.11em;font-size:8pt;font-weight:700;color:#b8943f;margin:0 0 3mm}.chapter-lead{background:#eef4e8!important;border-left:3pt solid #022c1b;padding:4mm 5mm;font-family:Georgia,"Times New Roman",serif;font-size:13pt;line-height:1.28;margin:0 0 4mm}.chapter-meta,.class-meta{font-size:8pt;color:#6f6657;margin:0 0 6mm}.chapter-opener h2,.chapter-overview h2,.chapter-overview h3,.book-class h2,.book-class h3{font-family:Georgia,"Times New Roman",serif;color:#022c1b;font-weight:500}.chapter-opener h2{font-size:16pt;margin:5mm 0 2mm}.chapter-outline-title{font-family:Helvetica,Arial,sans-serif!important;font-size:13pt!important;font-weight:700!important;margin:7mm 0 2mm!important}.chapter-opener .grid h3{font-family:Helvetica,Arial,sans-serif;font-size:12pt;color:#171717;font-weight:700}.chapter-overview{break-after:page}.chapter-overview h2{font-size:16pt;margin:5mm 0 2mm}.chapter-overview .grid h3{font-family:Helvetica,Arial,sans-serif;font-size:10pt;font-weight:700;color:#171717;margin:0 0 2mm}.chapter-list{list-style:none;padding:0;margin:3mm 0 7mm}.chapter-list li{display:grid;grid-template-columns:13mm 1fr 55mm;gap:3mm;border-bottom:.35pt solid #ddd8ca;padding:2.5mm 0;align-items:start}.chapter-item-number{font-weight:700;color:#b8943f}.chapter-item-title{font-weight:600}.chapter-item-id{font-size:7.4pt;color:#6f6657;text-align:right}.book-class{break-before:page}.class-title{font-size:23pt;line-height:1.08;margin:0 0 2mm}.class-meta{margin-bottom:4mm}.variant-parent{font-family:Georgia,"Times New Roman",serif;font-style:italic;color:#6f6657;margin:-1mm 0 4mm}.book-class>.plain{font-size:11pt;line-height:1.32;padding:4mm 5mm;margin:0 0 5mm}.book-class h3{font-size:13pt;margin:5mm 0 2mm}.book-class .grid h3{font-family:Helvetica,Arial,sans-serif;font-size:10pt;font-weight:700;color:#171717;margin:0 0 2mm}.criteria-grid{break-inside:avoid}.book-class ul{margin-top:1.5mm}.case-studies{margin-top:7mm}.case-studies>h4{font-family:Georgia,"Times New Roman",serif;font-size:15pt;color:#022c1b;font-weight:500;margin:0 0 3mm}.case-study{background:#eef4e8;border-left:3pt solid #022c1b;border-radius:2mm;padding:4mm 5mm;margin:0 0 4mm;break-inside:avoid}.case-study h5{font-family:Georgia,"Times New Roman",serif;font-size:11.5pt;line-height:1.2;color:#022c1b;margin:0 0 1.2mm}.case-study-meta{font-family:Helvetica,Arial,sans-serif;font-size:8pt;color:#6f6657;margin:0 0 3mm}.case-study-context{font-family:Helvetica,Arial,sans-serif;font-size:9.5pt;line-height:1.45;margin:0 0 3mm;color:#2f302d}.case-study-basis{font-family:Helvetica,Arial,sans-serif;font-size:9pt;line-height:1.4;margin:0;padding-top:3mm;border-top:.45pt solid #c7d5c9;color:#3f463f}.case-study-basis strong{color:#022c1b}.case-study-source{font-family:Helvetica,Arial,sans-serif;font-size:8pt;line-height:1.35;margin:3mm 0 0;color:#504a40;overflow-wrap:anywhere}.case-study-source strong{color:#022c1b}.case-study-source a{color:#315f50;text-decoration:underline;overflow-wrap:anywhere}.case-study-ref{font-family:Helvetica,Arial,sans-serif;font-size:7.5pt;color:#78716c;margin:3mm 0 0}.book-family code,.book-class code{font-size:.88em}.book-family+.book-family{border:0!important;padding:0!important;margin:0!important}
 """
 
 
