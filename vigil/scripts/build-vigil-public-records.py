@@ -77,6 +77,14 @@ def sources(record: dict[str, Any]) -> list[dict[str, Any]]:
     return [item for item in value if isinstance(item, dict)] if isinstance(value, list) else []
 
 
+def source_roles(record: dict[str, Any]) -> list[str]:
+    return sorted({
+        role
+        for item in sources(record)
+        if isinstance((role := item.get("source_role")), str) and role.strip()
+    })
+
+
 def text_terms(*values: Any) -> list[str]:
     """Return a compact, deterministic search vocabulary without embedding source objects."""
     terms: dict[str, str] = {}
@@ -139,6 +147,7 @@ def incident_search_terms(record: dict[str, Any]) -> list[str]:
                 item.get("author_or_publisher"),
                 item.get("source_platform"),
                 item.get("source_type"),
+                item.get("source_role"),
             )
             if value
         ],
@@ -174,6 +183,7 @@ def incident_entry(path: Path, record: dict[str, Any]) -> dict[str, Any]:
         "primary_class_id": primary.get("class_id"),
         "primary_family_id": primary.get("family_id") or primary_family.get("family_id"),
         "occurred_from": incident.get("occurred_from"),
+        "source_roles": source_roles(record),
         "search_terms": incident_search_terms(record),
         "path": record_path,
         "github_blob_url": github_url(record_path),

@@ -27,6 +27,7 @@ class IncidentBuilderTests(unittest.TestCase):
         self.assertEqual(entry.get("classification_role"), record["taxonomy_classification"].get("classification_role"))
         self.assertEqual(entry["record_version"], record["record_identity"]["version"])
         self.assertEqual(entry["record_last_updated"], record["record_identity"]["updated"])
+        self.assertEqual(entry["source_roles"], BUILDER.source_roles(record))
         self.assertIn("search_terms", entry)
         self.assertTrue(entry["search_terms"])
         for canonical_detail in (

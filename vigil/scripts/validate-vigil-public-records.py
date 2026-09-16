@@ -35,6 +35,7 @@ INDEX_ENTRY_KEYS = {
     "primary_class_id",
     "primary_family_id",
     "occurred_from",
+    "source_roles",
     "search_terms",
     "path",
     "github_blob_url",
@@ -86,6 +87,13 @@ def expected_projection(record: dict[str, Any]) -> dict[str, Any]:
         "primary_class_id": primary.get("class_id"),
         "primary_family_id": primary.get("family_id") or primary_family.get("family_id"),
         "occurred_from": incident.get("occurred_from"),
+        "source_roles": sorted({
+            role
+            for item in record.get("source_records", [])
+            if isinstance(item, dict)
+            and isinstance((role := item.get("source_role")), str)
+            and role.strip()
+        }),
         "path": path,
         "github_blob_url": f"https://github.com/{REPOSITORY}/blob/{BRANCH}/{path}",
         "raw_url": f"https://raw.githubusercontent.com/{REPOSITORY}/{BRANCH}/{path}",

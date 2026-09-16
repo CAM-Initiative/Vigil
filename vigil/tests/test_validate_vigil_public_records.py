@@ -27,6 +27,7 @@ class ValidateVigilPublicRecordsTest(unittest.TestCase):
             "incident_identity": {"occurred_from": "2026-09-10"},
             "summary": "A bounded Incident summary.",
             "system_context": {"platform_or_vendor": "Example Provider"},
+            "source_records": [{"source_role": "incident-evidence"}],
             "harm_impact_assessment": {"overall_severity": "S3"},
             "taxonomy_classification": {
                 "classification_status": "classified",
