@@ -1,6 +1,6 @@
-# VIGIL
+# VIGIL Observatory
 
-**VIGIL** is the CAM Initiative's Incident-centred public observatory for AI governance evidence and occurrence-level diagnosis.
+**VIGIL Observatory** (technical namespace **VIGIL**) is CAM Initiative's Incident-centred public observatory for AI governance evidence and occurrence-level diagnosis.
 
 VIGIL preserves what happened, the evidence supporting the occurrence, the bounded VIGIL diagnosis, structured severity, taxonomy classification, uncertainty and provenance. It does **not** create CAM/Caelestis doctrine, determine liability or establish final factual truth.
 
@@ -96,14 +96,14 @@ See [`vigil/MAINTAINERS.md`](vigil/MAINTAINERS.md) for authority boundaries and 
 
 ## Authorship and relationship to CAM
 
-VIGIL is predominantly AI-authored and semi-autonomously maintained under human contract approval. Repository inclusion does not imply human authorship, substantive human review or independent verification unless an artefact expressly states otherwise.
+VIGIL Observatory is predominantly AI-authored and semi-autonomously maintained under human contract approval. Repository inclusion does not imply human authorship, substantive human review or independent verification unless an artefact expressly states otherwise.
 
 CAM/Caelestis instruments become authoritative only through their own amendment, validation and adoption processes.
 
 ## Licence
 
-VIGIL is publicly inspectable proprietary work. Copyright © 2026 Phoenix Covenant Pty Ltd trading as CAM Initiative. All rights reserved.
+VIGIL Observatory is publicly inspectable proprietary work. Copyright © 2026 Phoenix Covenant Pty Ltd trading as CAM Initiative (ABN 14 692 195 529). All rights reserved.
 
-Citation, reference and linking with clear attribution are permitted. Public access does not grant permission to reproduce, redistribute, adapt, derive from, translate, systematically extract, incorporate, train on, evaluate with, or otherwise reuse VIGIL materials. Commercial and non-commercial substantive reuse require prior written licence.
+Citation, reference and linking with clear attribution to **CAM Initiative and VIGIL Observatory** are permitted. Public access does not grant permission to reproduce, redistribute, adapt, derive from, translate, systematically extract, incorporate, train on, evaluate with, or otherwise reuse VIGIL Observatory Materials. Commercial and non-commercial substantive reuse require prior written licence.
 
 See [`LICENSE.md`](LICENSE.md) and [`RIGHTS.json`](RIGHTS.json).

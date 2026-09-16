@@ -4,9 +4,9 @@ This directory contains a portable, machine-readable technical reference for AI-
 
 ## Rights and citation
 
-The family JSON files remain the canonical taxonomy; the maintained Full Reference PDF is a generated publication projection. The taxonomy and associated original material are proprietary VIGIL Materials. Public accessibility and inspectability do not grant permission to copy, redistribute, adapt, derive from, translate, systematically extract, incorporate into another taxonomy or product, or train or evaluate machine-learning systems with the material. Citation, reference and linking with attribution to **CAM Initiative and VIGIL Observatory** are permitted. Other reuse requires prior written licence; see [`../../LICENSE.md`](../../LICENSE.md) and [`../../RIGHTS.json`](../../RIGHTS.json).
+The family JSON files remain the canonical taxonomy; the maintained Full Reference PDF is a generated publication projection. The taxonomy and associated original material are proprietary VIGIL Observatory Materials. Public accessibility and inspectability do not grant permission to copy, redistribute, adapt, derive from, translate, systematically extract, incorporate into another taxonomy or product, or train or evaluate machine-learning systems with the material. Citation, reference and linking with attribution to **CAM Initiative and VIGIL Observatory** are permitted. Other reuse requires prior written licence; see [`../../LICENSE.md`](../../LICENSE.md) and [`../../RIGHTS.json`](../../RIGHTS.json).
 
-© 2026 Phoenix Covenant Pty Ltd trading as CAM Initiative. All rights reserved.
+© 2026 Phoenix Covenant Pty Ltd trading as CAM Initiative (ABN 14 692 195 529). All rights reserved.
 
 ## Architecture
 
@@ -36,7 +36,7 @@ migration/
   Caelestis.LegacyFailure.InventoryReview.md
 ```
 
-Family JSON is canonical. The maintained PDF is a generated publication projection. Generated HTML is not a VIGIL publication asset; HTML emitted by the renderer is transient build material only. The migration ledger is non-normative source-analysis evidence and is not a dependency of the portable taxonomy.
+Family JSON is canonical. The maintained PDF is a generated publication projection. Generated HTML is not a VIGIL Observatory publication asset; HTML emitted by the renderer is transient build material only. The migration ledger is non-normative source-analysis evidence and is not a dependency of the portable taxonomy.
 
 Current publications render only active families and selectable classes. Historical or retired class material retained in canonical `subtypes` for migration integrity is not publication content and must not appear in Markdown, HTML, or PDF output.
 
