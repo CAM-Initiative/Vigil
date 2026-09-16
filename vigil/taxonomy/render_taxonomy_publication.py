@@ -56,7 +56,7 @@ def load_reference_registry() -> dict[str, dict[str, Any]]:
 
 
 def collect_external_references(families: list[dict]) -> list[dict[str, Any]]:
-    """Collect class and Harm & Severity references once, retaining support context."""
+    """Collect class references once, retaining every class that cites each source."""
     collected: dict[str, dict[str, Any]] = {}
     order: list[str] = []
 
@@ -92,6 +92,15 @@ def collect_external_references(families: list[dict]) -> list[dict[str, Any]]:
                 if class_id and support not in collected[key]["classes"]:
                     collected[key]["classes"].append(support)
 
+    return [collected[key] for key in order]
+
+
+def collect_publication_references(families: list[dict]) -> list[dict[str, Any]]:
+    """Merge taxonomy references with the canonical Harm & Severity evidence base."""
+    references = collect_external_references(families)
+    collected = {_reference_key(reference): reference for reference in references}
+    order = list(collected)
+
     matrix = load_harm_methodology()
     registry = load_reference_registry()
     for reference_id in matrix.get("reference_ids", []):
@@ -116,7 +125,6 @@ def collect_external_references(families: list[dict]) -> list[dict[str, Any]]:
         collected[key]["harm_severity_note"] = _text(reference.get("use_note"))
 
     return [collected[key] for key in order]
-
 
 def _criterion_html(value: object) -> str:
     rendered = base.esc(value)
@@ -188,7 +196,7 @@ def harm_severity_html() -> str:
 
 
 def bibliography_html(families: list[dict]) -> str:
-    references = collect_external_references(families)
+    references = collect_publication_references(families)
     if not references:
         return ""
 
