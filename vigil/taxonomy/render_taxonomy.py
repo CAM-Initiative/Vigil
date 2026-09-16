@@ -657,7 +657,7 @@ PRINT_STYLE = """
 @page{size:A4;margin:18mm 16mm 18mm;
   @top-left{content:"CAM INITIATIVE | GOVERNANCE FAILURE TAXONOMY";font-size:7.2pt;color:#022c1b;letter-spacing:.07em;font-weight:600}
   @top-right{content:"TECHNICAL REFERENCE";font-size:7.2pt;color:#78716c;letter-spacing:.06em}
-  @bottom-left{content:"© 2026 CAM Initiative · VIGIL · All rights reserved";font-size:6.5pt;color:#78716c}
+  @bottom-left{content:"© 2026 CAM Initiative · VIGIL Observatory · All rights reserved";font-size:6.5pt;color:#78716c}
   @bottom-right{content:"Page " counter(page);font-size:7.2pt;color:#78716c}
 }
 @page cover{size:A4;margin:0;@top-left{content:none}@top-right{content:none}@bottom-left{content:none}@bottom-right{content:none}}
@@ -759,8 +759,8 @@ def publication_frontmatter(index: dict, families: list[dict]) -> str:
   <p>This technical reference provides the maintained classification structure for governance failure families and failure classes, including classification boundaries and recognition criteria.</p>
   <section class="rights-notice">
     <h2>Copyright and licensing</h2>
-    <p><strong>{esc(COPYRIGHT_NOTICE)}</strong> VIGIL taxonomy structures and associated original material are proprietary, including families, classes, names, definitions, invariants, boundaries, recognition criteria, relationships, explanatory prose, schemas and structured compilations.</p>
-    <p>Public access does not grant permission to reproduce, redistribute, adapt, translate, derive from, systematically extract, incorporate into another taxonomy, framework, product, dataset or service, or train or evaluate AI systems using this material. Citation, reference and linking with attribution to Dr Michelle O'Rourke, CAM Initiative and VIGIL are permitted. Other reuse requires prior written licence.</p>
+    <p><strong>{esc(COPYRIGHT_NOTICE)}</strong> VIGIL Observatory taxonomy structures and associated original material are proprietary, including families, classes, names, definitions, invariants, boundaries, recognition criteria, relationships, explanatory prose, schemas and structured compilations.</p>
+    <p>Public access does not grant permission to reproduce, redistribute, adapt, translate, derive from, systematically extract, incorporate into another taxonomy, framework, product, dataset or service, or train or evaluate AI systems using this material. Citation, reference and linking with attribution to Dr Michelle O'Rourke, CAM Initiative and VIGIL Observatory are permitted. Other reuse requires prior written licence.</p>
     <p>Licence requests: <a href="mailto:research@cam-initiative.org">research@cam-initiative.org</a>. Detailed terms: <a href="https://github.com/CAM-Initiative/Vigil/blob/main/LICENSE.md">LICENSE.md</a>.</p>
   </section>
   <section class="reliance-notice">
