@@ -102,4 +102,8 @@ CAM/Caelestis instruments become authoritative only through their own amendment,
 
 ## Licence
 
-Unless otherwise stated, VIGIL record text, schema documentation and public governance notes are licensed under **CC BY-NC-SA 4.0**. See [`Licence.md`](Licence.md).
+VIGIL is publicly inspectable proprietary work. Copyright © 2026 Phoenix Covenant Pty Ltd trading as CAM Initiative. All rights reserved.
+
+Citation, reference and linking with clear attribution are permitted. Public access does not grant permission to reproduce, redistribute, adapt, derive from, translate, systematically extract, incorporate, train on, evaluate with, or otherwise reuse VIGIL materials. Commercial and non-commercial substantive reuse require prior written licence.
+
+See [`LICENSE.md`](LICENSE.md) and [`RIGHTS.json`](RIGHTS.json).

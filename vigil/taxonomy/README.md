@@ -2,6 +2,12 @@
 
 This directory contains a portable, machine-readable technical reference for AI-governance failure mechanisms. It is separate from incident, severity, harm, evidence-confidence, triage, jurisdiction, vendor, repair-state, and other event metadata.
 
+## Rights and citation
+
+The family JSON files remain the canonical taxonomy; the maintained Full Reference PDF is a generated publication projection. The taxonomy and associated original material are proprietary VIGIL Materials. Public accessibility and inspectability do not grant permission to copy, redistribute, adapt, derive from, translate, systematically extract, incorporate into another taxonomy or product, or train or evaluate machine-learning systems with the material. Citation, reference and linking with attribution to **Dr Michelle O'Rourke, CAM Initiative, VIGIL** are permitted. Other reuse requires prior written licence; see [`../../LICENSE.md`](../../LICENSE.md) and [`../../RIGHTS.json`](../../RIGHTS.json).
+
+© 2026 Phoenix Covenant Pty Ltd trading as CAM Initiative. All rights reserved.
+
 ## Architecture
 
 ```text
