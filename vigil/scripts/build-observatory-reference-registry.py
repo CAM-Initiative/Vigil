@@ -40,10 +40,16 @@ def main() -> None:
         for dimension in matrix.get("dimensions", [])
         for threshold in dimension.get("thresholds", {}).values()
     ]
-    if len(threshold_ids) != 40 or len(threshold_ids) != len(set(threshold_ids)):
-        raise SystemExit("Harm Impact Matrix must contain 40 unique S1-S5 threshold IDs")
+    dimensions = matrix.get("dimensions", [])
+    expected_threshold_count = len(dimensions) * 5
+    if any(set(dimension.get("thresholds", {})) != {"S1", "S2", "S3", "S4", "S5"} for dimension in dimensions):
+        raise SystemExit("Every Harm Impact Matrix dimension must define exactly S1-S5")
+    if len(threshold_ids) != expected_threshold_count or len(threshold_ids) != len(set(threshold_ids)):
+        raise SystemExit(
+            f"Harm Impact Matrix must contain {expected_threshold_count} unique S1-S5 threshold IDs"
+        )
     with TARGET.open("w", encoding="utf-8", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=FIELDS)
+        writer = csv.DictWriter(handle, fieldnames=FIELDS, lineterminator="\n")
         writer.writeheader()
         writer.writerows({field: row[field] for field in FIELDS} for row in rows)
     print(f"Reference registry valid; wrote {len(rows)} rows to {TARGET.relative_to(ROOT.parent)}")

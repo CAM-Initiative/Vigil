@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://example.invalid/cam/vigil/VIGIL.Schema.json",
-  "version": "5.4-incident-legacy-retired",
+  "version": "5.5-him-evidence-derived",
   "purpose": "Authoritative schema-rules contract for the Incident-centred VIGIL active record corpus. INC is the sole active public record class. The taxonomy, external-governance datasets and CAM assessment remain separate subsystems. Retired FM, OBS, RESEARCH, PROP, PATCH and LEARN records and migration artefacts remain recoverable through Git history and are not carried as active Incident data. Source evidence remains embedded in each Incident; occurrence-level diagnosis, severity, taxonomy classification and provenance remain distinct. Authorship, human-review and human-verification status are governed separately by vigil/scripts/validate-authorship-provenance.py.",
   "source_evidence_rules": {
     "individual_records": [
@@ -182,12 +182,15 @@
       "harm_impact_dimension_ids": [
         "physical-health-safety",
         "psychological-wellbeing",
-        "rights-liberty-equal-treatment",
+        "rights-liberty",
+        "equal-treatment",
         "privacy-confidentiality",
-        "financial-economic-property",
+        "financial-economic",
+        "property-asset-damage",
         "service-operational-infrastructure",
         "reputation-dignity",
-        "societal-democratic-environmental"
+        "societal-democratic",
+        "environmental"
       ],
       "harm_impact_status_values": [
         "assessed",
@@ -201,7 +204,9 @@
         "high",
         "not-assessed"
       ],
-      "harm_impact_rule": "Overall severity equals the numerically highest S1-S5 band among assessed materialised-harm dimensions. Dimensions are not averaged or summed, and multiple lower harms do not escalate the overall band. Unreported means relevant impact is absent from the available published evidence and must never be encoded as S1. Insufficient-evidence means some impact evidence exists but cannot be banded. Not-applicable requires affirmative contextual grounds. If no dimension can be assessed, overall severity is SU. S1 requires positive evidence of minimal or no downstream harm, not silence.",
+      "harm_impact_rule": "Overall severity equals the numerically highest S1-S5 band among assessed materialised-harm dimensions. Dimensions are not averaged or summed, and multiple lower harms do not escalate the overall band. Unreported means relevant impact is absent from the available published evidence and must never be encoded as S1. Insufficient-evidence means some impact evidence exists but cannot be banded. Not-applicable requires affirmative contextual grounds. If no dimension can be assessed, overall severity is SU unless positive evidence establishes a bounded occurrence with no materialised downstream harm; that special case is S1 with empty controlling_dimensions and a non-empty no_materialised_harm_basis. Silence never produces S1.",
+      "harm_impact_currency_rule": "Published monetary amounts retain their original currency. USD thresholds apply only to published USD amounts or conversions carrying a recorded source and rate date. Non-USD amounts without a defensible conversion may use only independently supported qualitative livelihood, organisational-viability or systemic criteria.",
+      "harm_impact_evidence_reference_rule": "Assessed dimension evidence_refs must resolve to substantive source_records and must not cite record-cross-reference sources as Harm Impact evidence.",
       "harm_impact_reference_rule": "Incident records identify the VIGIL-HIM methodology and threshold IDs but do not duplicate the external bibliography. Methodological sources resolve through vigil/references/VIGIL.ObservatoryReferenceRegistry.json.",
       "source_type_values": [
         "incident database entry",

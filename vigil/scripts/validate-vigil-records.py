@@ -209,7 +209,22 @@ def harm_matrix() -> dict[str, Any]:
     return load_json(HARM_MATRIX_PATH)
 
 
-def validate_harm_impact(path: Path, assessment: Any, errors: list[str]) -> None:
+def financial_band_for_usd(value: float) -> str:
+    if value < 0:
+        raise ValueError("financial loss cannot be negative")
+    if value < 10_000:
+        return "S1"
+    if value < 1_000_000:
+        return "S2"
+    if value < 100_000_000:
+        return "S3"
+    if value < 100_000_000_000:
+        return "S4"
+    return "S5"
+
+
+def validate_harm_impact(path: Path, record: dict[str, Any], errors: list[str]) -> None:
+    assessment = record.get("harm_impact_assessment")
     if not isinstance(assessment, dict):
         errors.append(f"{path}: harm_impact_assessment must be an object")
         return
@@ -246,6 +261,7 @@ def validate_harm_impact(path: Path, assessment: Any, errors: list[str]) -> None
         errors.append(f"{path}: harm impact dimensions must contain every canonical dimension exactly once")
 
     assessed: list[tuple[str, str]] = []
+    source_records = record.get("source_records")
     statuses = set(contract["harm_impact_status_values"])
     confidences = set(contract["harm_impact_evidence_confidence_values"])
     for index, row in enumerate(rows):
@@ -276,9 +292,39 @@ def validate_harm_impact(path: Path, assessment: Any, errors: list[str]) -> None
             refs = row.get("evidence_refs")
             if not isinstance(refs, list) or not refs or any(not isinstance(item, str) for item in refs):
                 errors.append(f"{label}.evidence_refs must be a non-empty string array when assessed")
+            elif isinstance(source_records, list):
+                for ref in refs:
+                    match = re.fullmatch(r"source_records\[(\d+)\]", ref)
+                    if match is None:
+                        errors.append(f"{label}.evidence_refs must use source_records[N] references")
+                        continue
+                    source_index = int(match.group(1))
+                    if source_index >= len(source_records):
+                        errors.append(f"{label}.evidence_refs points outside source_records")
+                        continue
+                    source = source_records[source_index]
+                    if isinstance(source, dict) and source.get("source_role") == "record-cross-reference":
+                        errors.append(f"{label}.evidence_refs must not cite a record-cross-reference source")
             values = row.get("observed_values")
             if not isinstance(values, list):
                 errors.append(f"{label}.observed_values must be an array when assessed")
+            elif dimension_id == "financial-economic" and severity in SEVERITY_RANK:
+                for value in values:
+                    if not isinstance(value, dict) or value.get("unit") != "USD":
+                        continue
+                    amount = value.get("value")
+                    if isinstance(amount, bool) or not isinstance(amount, (int, float)):
+                        errors.append(f"{label}.observed_values USD value must be numeric")
+                        continue
+                    try:
+                        expected_band = financial_band_for_usd(float(amount))
+                    except ValueError:
+                        errors.append(f"{label}.observed_values financial loss cannot be negative")
+                        continue
+                    if severity != expected_band:
+                        errors.append(
+                            f"{label}.severity must be {expected_band} for the reported USD value under canonical financial boundaries"
+                        )
             if row.get("evidence_confidence") == "not-assessed":
                 errors.append(f"{label}.evidence_confidence cannot be not-assessed when assessed")
         else:
@@ -304,13 +350,27 @@ def validate_harm_impact(path: Path, assessment: Any, errors: list[str]) -> None
             errors.append(f"{path}: S1 requires positive assessed evidence")
         if "assessment_gap" in assessment:
             errors.append(f"{path}: assessment_gap is reserved for SU")
+        if "no_materialised_harm_basis" in assessment:
+            errors.append(f"{path}: no_materialised_harm_basis is reserved for bounded S1 assessments with no materialised harm")
     else:
-        if overall != "SU":
-            errors.append(f"{path}: no assessed dimension requires overall_severity SU")
-        if controlling:
-            errors.append(f"{path}: SU must not have controlling_dimensions")
-        if not non_empty(assessment.get("assessment_gap")):
-            errors.append(f"{path}: SU requires a concrete assessment_gap")
+        if overall == "S1":
+            if controlling:
+                errors.append(f"{path}: no-materialised-harm S1 must not have controlling_dimensions")
+            if not non_empty(assessment.get("no_materialised_harm_basis")):
+                errors.append(f"{path}: no-materialised-harm S1 requires a concrete no_materialised_harm_basis")
+            if "assessment_gap" in assessment:
+                errors.append(f"{path}: assessment_gap is reserved for SU")
+            if any(row.get("assessment_status") == "insufficient-evidence" for row in rows if isinstance(row, dict)):
+                errors.append(f"{path}: no-materialised-harm S1 cannot contain insufficient-evidence dimensions")
+        else:
+            if overall != "SU":
+                errors.append(f"{path}: no assessed dimension requires overall_severity SU or bounded no-materialised-harm S1")
+            if controlling:
+                errors.append(f"{path}: SU must not have controlling_dimensions")
+            if not non_empty(assessment.get("assessment_gap")):
+                errors.append(f"{path}: SU requires a concrete assessment_gap")
+            if "no_materialised_harm_basis" in assessment:
+                errors.append(f"{path}: no_materialised_harm_basis is reserved for bounded S1")
 
 
 def validate_source_records(path: Path, record: dict[str, Any], errors: list[str]) -> None:
@@ -528,7 +588,7 @@ def validate_record(
             errors.append(f"{path}: non-canonical platform_or_vendor")
         if system.get("product_or_service") not in allowed_products:
             errors.append(f"{path}: non-canonical product_or_service")
-    validate_harm_impact(path, record.get("harm_impact_assessment"), errors)
+    validate_harm_impact(path, record, errors)
     validate_source_records(path, record, errors)
     validate_incident_taxonomy(path, record, errors)
     validate_provenance(path, record, errors)

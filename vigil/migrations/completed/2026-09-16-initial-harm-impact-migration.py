@@ -1,19 +1,21 @@
 #!/usr/bin/env python3
-"""One-time controlled migration from narrative severity to VIGIL-HIM 1.0.0.
+"""SUPERSEDED historical migration from narrative severity to VIGIL-HIM 1.0.0.
 
-The script consumes each record's preserved consequence, scope, quantitative
-information, evidentiary limits and band rationale. It does not inspect or alter
-Failure Taxonomy classifications. Re-running after migration is a no-op.
+This file preserves the initial legacy-seeded migration for audit history. Its
+default-to-legacy-severity and keyword dimension-selection logic was superseded
+by the evidence-derived adjudication completed on 2026-09-16. It is not runtime
+VIGIL machinery and is unsafe to run against the current corpus.
 """
 
 from __future__ import annotations
 
 import json
 import re
+import sys
 from collections import Counter
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = Path(__file__).resolve().parents[3]
 INCIDENTS = ROOT / "vigil" / "records" / "incidents"
 MATRIX_PATH = ROOT / "vigil" / "methodologies" / "VIGIL.HarmImpactMatrix.v1.0.0.json"
 DATE = "2026-09-16"
@@ -343,6 +345,10 @@ def transform(record: dict, matrix: dict) -> tuple[dict, dict]:
 
 
 def main() -> None:
+    if "--historical-replay" not in sys.argv:
+        raise SystemExit(
+            "Historical migration only; pass --historical-replay only in an isolated historical checkout."
+        )
     matrix = load(MATRIX_PATH)
     results = []
     for path in sorted(INCIDENTS.glob("VIGIL-INC-*.json")):

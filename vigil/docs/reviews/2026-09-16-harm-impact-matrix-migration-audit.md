@@ -1,142 +1,135 @@
-# Harm Impact Matrix migration audit — 2026-09-16
+# Harm Impact Matrix evidence-derived adjudication audit — 2026-09-16
 
-## Scope and starting point
+## Scope and method
 
-This review examined all 124 canonical Incident records on
-`chore/remove-aeon-governance-lab-public-references`. The branch already used the
-ascending S1–S5 direction established by the earlier severity-alignment audit.
-This migration replaced the single narrative `severity_assessment` with the
-versioned `harm_impact_assessment` contract and re-derived overall severity under
-VIGIL-HIM 1.0.0.
+All 124 canonical Incident records were reviewed from preserved source evidence. Legacy severity was used only as an audit comparator. For each Incident, the review identified supported materialised harms, applied the matching VIGIL-HIM threshold, and derived overall severity as the highest supported band. Failure Taxonomy classifications, source roles, preferred evidence and factual Incident content were not re-adjudicated.
 
-The review did not alter Failure Families, Failure Classes, primary or secondary
-classifications, exemplars, source evidence, or invariant/repair analysis.
+The final methodology has 11 independent dimensions: physical health/safety; psychological wellbeing; rights/liberty; equal treatment; privacy/confidentiality; financial/economic; property/asset damage; service/operational/infrastructure; reputation/dignity; societal/democratic; and environmental harm. Splitting the three former composite dimensions prevents one consequence type from obscuring another.
 
-## External alignment
+The financial scale is S1 below USD 10,000; S2 from USD 10,000 to below USD 1 million; S3 from USD 1 million to below USD 100 million; S4 from USD 100 million to below USD 100 billion; and S5 at or above USD 100 billion. The S4 upper bound is VIGIL’s gap-closing operational adaptation, not a threshold attributed to MIT. Non-USD amounts remain in their source currency unless a defensible dated conversion is recorded.
 
-The central Observatory Reference Registry records the sources used:
-
-- `VIGIL-REF-000001`–`000003`: MIT FutureTech AI Incident Tracker scale,
-  tracker methodology and June 2026 evidence-bounded review note;
-- `VIGIL-REF-000004`: CSET AI Harm Framework;
-- `VIGIL-REF-000005`–`000006`: CISA functional impact, information impact and
-  recoverability guidance;
-- `VIGIL-REF-000007`: NIST SP 800-34 recovery-time and maximum-tolerable-downtime
-  concepts;
-- `VIGIL-REF-000008`: NIS2 implementing thresholds;
-- `VIGIL-REF-000009`: DORA ICT incident materiality thresholds; and
-- `VIGIL-REF-000010`: ASD Australian cross-government cyber incident guidance.
-
-VIGIL aligns the ascending direction and adapts selected consequence,
-functional-impact, recoverability and materiality concepts. It does not claim
-equivalence with MIT, CSET, CISA, NIST, NIS2, DORA or ASD. External references
-provide context; VIGIL-HIM owns the operational dimensions, thresholds and
-derivation rule.
-
-## Canonical derivation
-
-Overall severity is the maximum S1–S5 band among assessed materialised-harm
-dimensions. No averaging or summation occurs. Multiple lower harms do not
-escalate the result. Every dimension tied at the maximum is controlling.
-
-`unreported` records missing published impact information and is never S1.
-`insufficient-evidence` records impact evidence that cannot support a band.
-`not-applicable` requires affirmative contextual grounds. S1 requires positive
-evidence of minimal/no downstream materialised harm. If no dimension is assessed,
-the overall severity is SU.
-
-## Transformation method
-
-The controlled migration read each record's preserved summary, materialised
-consequence, affected scope, seriousness/persistence, quantitative information,
-evidentiary limits, band rationale and source references. It selected a primary
-materialised-harm dimension from occurrence evidence, linked the matching stable
-matrix threshold, preserved supported quantitative text as an observed value,
-and explicitly marked all other dimensions. Generic statements that a quantity
-was not reported were excluded from dimension selection.
-
-The old severity code was treated as a candidate result, not as a harm category.
-The validator independently recomputes the maximum from assessed rows. Eight
-assessed records changed because their preserved evidence did not meet the new
-dimension threshold corresponding to the legacy code. The other 110 assessed
-records retained their severity. The six former SU records remain SU because no
-dimension can yet be defensibly banded.
+MIT FutureTech’s 2026 Delphi study is registered as the principal external quantitative/cross-domain severity reference. External work informs VIGIL-HIM; VIGIL owns its dimensions, thresholds and derivation rule, and registration does not imply equivalence or endorsement.
 
 ## Corpus results
 
 | Measure | Result |
 | --- | ---: |
-| Canonical records examined | 124 |
-| Records structurally migrated | 124 |
-| Overall severity changed | 8 |
-| Overall severity unchanged | 116 |
-| Records at SU / requiring human evidence review | 6 |
-| Assessed dimension rows | 119 |
-| Unreported dimension rows | 825 |
-| Insufficient-evidence dimension rows | 6 |
-| Not-applicable dimension rows | 42 |
+| Canonical Incidents reviewed | 124 |
+| Assessed harm dimensions | 134 |
+| Unreported dimensions | 1132 |
+| Insufficient-evidence dimensions | 10 |
+| Not-applicable dimensions | 88 |
+| Bounded/no-materialised-harm S1 cases | 8 |
+| SU / human-review cases | 10 |
+| Incidents with multiple assessed harms | 26 |
+| Changed overall severity decisions | 48 |
 
-### Before/after distribution
+### Old and new severity distribution
 
 | Severity | Before | After |
 | --- | ---: | ---: |
-| S1 | 6 | 6 |
-| S2 | 15 | 15 |
-| S3 | 46 | 49 |
-| S4 | 40 | 44 |
-| S5 | 11 | 4 |
-| SU | 6 | 6 |
+| S1 | 6 | 8 |
+| S2 | 15 | 26 |
+| S3 | 49 | 58 |
+| S4 | 44 | 19 |
+| S5 | 4 | 3 |
+| SU | 6 | 10 |
 
-### Changed severity
+### Controlling-harm distribution
 
-| Incident | Old | New | Matrix basis |
-| --- | --- | --- | --- |
-| `VIGIL-INC-000004` | S5 | S4 | Live organisational intrusions are substantial, but catastrophic/prolonged essential-service loss is not established. |
-| `VIGIL-INC-000005` | S5 | S4 | Wrongful arrest is substantial; prolonged or enduring detention is not established. |
-| `VIGIL-INC-000006` | S5 | S4 | Wrongful arrest while pregnant is substantial; grave injury or prolonged/enduring detention is not established. |
-| `VIGIL-INC-000007` | S5 | S4 | Wrongful detention is substantial; prolonged or enduring deprivation is not established. |
-| `VIGIL-INC-000049` | S5 | S4 | Reported realised loss is US$25 million, within the S4 financial band. |
-| `VIGIL-INC-000053` | S5 | S3 | ₹10.70 crore supports meaningful bounded harm; no USD conversion or S4 qualitative override is evidenced. |
-| `VIGIL-INC-000077` | S4 | S3 | US$4,820 loss plus identity-document disclosure is meaningful but bounded and does not meet an S4 threshold. |
-| `VIGIL-INC-000083` | S5 | S3 | A$7.4 million aggregate loss supports meaningful bounded harm; no USD conversion or S4 qualitative override is evidenced. |
+Counts can exceed the number of banded Incidents because ties retain every controlling dimension.
 
-### Human evidence review required
+| Controlling dimension | Incidents |
+| --- | ---: |
+| `financial-economic` | 4 |
+| `physical-health-safety` | 1 |
+| `privacy-confidentiality` | 26 |
+| `property-asset-damage` | 13 |
+| `psychological-wellbeing` | 7 |
+| `reputation-dignity` | 8 |
+| `rights-liberty` | 12 |
+| `service-operational-infrastructure` | 40 |
+| `societal-democratic` | 9 |
 
-- `VIGIL-INC-000028`
-- `VIGIL-INC-000033`
-- `VIGIL-INC-000037`
-- `VIGIL-INC-000065`
-- `VIGIL-INC-000120`
-- `VIGIL-INC-000121`
+### Bounded S1 cases
 
-Each remains SU with a concrete `assessment_gap`; the most plausible impact
-dimension is `insufficient-evidence`, not assigned S1.
+`VIGIL-INC-000093`, `VIGIL-INC-000108`, `VIGIL-INC-000120`, `VIGIL-INC-000122`, `VIGIL-INC-000123`, `VIGIL-INC-000124`, `VIGIL-INC-000125`, `VIGIL-INC-000126`.
 
-## Versioning and provenance
+Each has positive occurrence-bounding evidence, empty `controlling_dimensions`, and a concrete `no_materialised_harm_basis`. Silence or merely unreported harm was not treated as S1.
 
-Every migrated record received a patch-version increment, `record_identity.updated`
-was set to 2026-09-16, and a new append-only interpretive review entry identifies
-the VIGIL-HIM migration scope and evidence limits. Existing source, diagnostic,
-legacy and interpretive provenance was preserved.
+### SU / human-review cases
 
-## Legacy priority metadata
+`VIGIL-INC-000012`, `VIGIL-INC-000028`, `VIGIL-INC-000033`, `VIGIL-INC-000037`, `VIGIL-INC-000040`, `VIGIL-INC-000061`, `VIGIL-INC-000063`, `VIGIL-INC-000065`, `VIGIL-INC-000081`, `VIGIL-INC-000101`.
 
-The preceding severity-schema audit had already removed canonical and record-level
-P0/P1/P2/P3/PN or equivalent operational-priority metadata. This pass found no
-canonical priority field to preserve and removed priority metadata from 0 records.
-The schema continues to reject legacy priority keys recursively. VIGIL-HIM does
-not introduce a replacement priority model.
+Each has a concrete `assessment_gap`; an identified possible consequence was marked `insufficient-evidence`, not converted to S1.
 
-## Generated outputs and validation
+### Multiple independently assessed harms
 
-- `python3 vigil/scripts/build-observatory-reference-registry.py`: passed; 10
-  registry references and CSV rows.
-- `python3 vigil/scripts/validate-vigil-records.py`: passed; 124 records.
-- `python3 vigil/scripts/build-vigil-public-records.py`: regenerated lightweight
-  Incident and master indexes from `overall_severity`.
-- `python3 vigil/scripts/validate-vigil-public-records.py`: passed; 124 records.
-- `python3 -m unittest discover -s vigil/tests -p 'test_*.py'`: passed; 134 tests.
+`VIGIL-INC-000001`, `VIGIL-INC-000003`, `VIGIL-INC-000044`, `VIGIL-INC-000048`, `VIGIL-INC-000064`, `VIGIL-INC-000066`, `VIGIL-INC-000075`, `VIGIL-INC-000077`, `VIGIL-INC-000079`, `VIGIL-INC-000082`, `VIGIL-INC-000084`, `VIGIL-INC-000085`, `VIGIL-INC-000090`, `VIGIL-INC-000094`, `VIGIL-INC-000098`, `VIGIL-INC-000100`, `VIGIL-INC-000102`, `VIGIL-INC-000103`, `VIGIL-INC-000104`, `VIGIL-INC-000106`, `VIGIL-INC-000110`, `VIGIL-INC-000112`, `VIGIL-INC-000114`, `VIGIL-INC-000118`, `VIGIL-INC-000119`, `VIGIL-INC-000127`.
 
-The generated Incident index remains lightweight. It publishes only the derived
-overall code and canonical record link; the full matrix remains in the canonical
-Incident JSON.
+## Changed severity decisions
+
+The table records every change from the immediately preceding branch state. Materialised harm lists the assessed dimensions at the new overall band; SU rows identify the unresolved candidate dimension, and bounded S1 rows record no artificial harm dimension.
+
+| Incident | Legacy | New | Materialised harm | Threshold | Evidence basis | Reason for change |
+| --- | --- | --- | --- | --- | --- | --- |
+| `VIGIL-INC-000001` | S4 | S3 | property-asset-damage, service-operational-infrastructure | VIGIL-HIM-1.0.0-PAD-S3, VIGIL-HIM-1.0.0-SOI-S3 | The preserved sources establish the bounded consequence described in the Incident summary: A Replit Agent was reported…; The preserved sources establish the bounded consequence described in the Incident summary: A Replit Agent was reported… | Independent threshold application supports the lower S3 maximum rather than preserving legacy S4. |
+| `VIGIL-INC-000003` | S4 | S3 | privacy-confidentiality, property-asset-damage | VIGIL-HIM-1.0.0-PRV-S3, VIGIL-HIM-1.0.0-PAD-S3 | The evidence supports bounded access to credentials, held-out solution material and production systems. It does not est…; The evidence supports unauthorised production-system compromise and modification requiring recovery, but not an outage,… | Independent threshold application supports the lower S3 maximum rather than preserving legacy S4. |
+| `VIGIL-INC-000004` | S4 | S3 | property-asset-damage | VIGIL-HIM-1.0.0-PAD-S3 | The preserved sources establish the bounded consequence described in the Incident summary: Gambit Security reported tha… | Independent threshold application supports the lower S3 maximum rather than preserving legacy S4. |
+| `VIGIL-INC-000005` | S4 | S3 | rights-liberty | VIGIL-HIM-1.0.0-RGT-S3 | The preserved sources establish the bounded consequence described in the Incident summary: Reported facial-recognition… | Independent threshold application supports the lower S3 maximum rather than preserving legacy S4. |
+| `VIGIL-INC-000006` | S4 | S3 | rights-liberty | VIGIL-HIM-1.0.0-RGT-S3 | The preserved sources establish the bounded consequence described in the Incident summary: Reported facial-recognition… | Independent threshold application supports the lower S3 maximum rather than preserving legacy S4. |
+| `VIGIL-INC-000007` | S4 | S3 | rights-liberty | VIGIL-HIM-1.0.0-RGT-S3 | The preserved sources establish the bounded consequence described in the Incident summary: Reported facial-recognition… | Independent threshold application supports the lower S3 maximum rather than preserving legacy S4. |
+| `VIGIL-INC-000008` | S5 | S4 | rights-liberty | VIGIL-HIM-1.0.0-RGT-S4 | The preserved sources establish the bounded consequence described in the Incident summary: Reported false identificatio… | Independent threshold application supports the lower S4 maximum rather than preserving legacy S5. |
+| `VIGIL-INC-000012` | S3 | SU | psychological-wellbeing (insufficient evidence) | — | The source establishes dependence-oriented system language but does not establish resulting user distress, dependency or impairment sufficient to band psychological harm. | Evidence identifies a possible consequence but does not support a defensible band. |
+| `VIGIL-INC-000013` | S4 | S3 | privacy-confidentiality | VIGIL-HIM-1.0.0-PRV-S3 | The preserved sources establish the bounded consequence described in the Incident summary: Reported use of stolen crede… | Independent threshold application supports the lower S3 maximum rather than preserving legacy S4. |
+| `VIGIL-INC-000018` | S3 | S2 | service-operational-infrastructure | VIGIL-HIM-1.0.0-SOI-S2 | The preserved sources establish the bounded consequence described in the Incident summary: OpenAI reported that Enterpr… | Independent threshold application supports the lower S2 maximum rather than preserving legacy S3. |
+| `VIGIL-INC-000035` | S4 | S3 | service-operational-infrastructure | VIGIL-HIM-1.0.0-SOI-S3 | The preserved sources establish the bounded consequence described in the Incident summary: Anthropic states that the U.… | Independent threshold application supports the lower S3 maximum rather than preserving legacy S4. |
+| `VIGIL-INC-000038` | S3 | S4 | service-operational-infrastructure | VIGIL-HIM-1.0.0-SOI-S4 | The preserved sources establish the bounded consequence described in the Incident summary: OpenAI Status listed the inc… | Independent threshold application supports the higher S4 maximum rather than preserving legacy S3. |
+| `VIGIL-INC-000040` | S3 | SU | societal-democratic (insufficient evidence) | — | The reporting establishes legal model-access transactions and later suspected-distillation suspensions, but does not establish a materialised societal, democratic or other downstr… | Evidence identifies a possible consequence but does not support a defensible band. |
+| `VIGIL-INC-000041` | S4 | S3 | rights-liberty | VIGIL-HIM-1.0.0-RGT-S3 | The preserved sources establish the bounded consequence described in the Incident summary: Reported submission of incor… | Independent threshold application supports the lower S3 maximum rather than preserving legacy S4. |
+| `VIGIL-INC-000043` | S3 | S2 | reputation-dignity | VIGIL-HIM-1.0.0-RDG-S2 | The preserved sources establish the bounded consequence described in the Incident summary: AIAAIC records the incident… | Independent threshold application supports the lower S2 maximum rather than preserving legacy S3. |
+| `VIGIL-INC-000045` | S4 | S3 | privacy-confidentiality | VIGIL-HIM-1.0.0-PRV-S3 | The preserved sources establish the bounded consequence described in the Incident summary: The report describes wire-le… | Independent threshold application supports the lower S3 maximum rather than preserving legacy S4. |
+| `VIGIL-INC-000049` | S4 | S3 | financial-economic | VIGIL-HIM-1.0.0-FIN-S3 | The reported US$25 million realised loss is at least USD 1 million and below USD 100 million. Threshold applied: Aggreg… | Independent threshold application supports the lower S3 maximum rather than preserving legacy S4. |
+| `VIGIL-INC-000050` | S3 | S2 | service-operational-infrastructure | VIGIL-HIM-1.0.0-SOI-S2 | The preserved sources establish the bounded consequence described in the Incident summary: Reported synthetic identity… | Independent threshold application supports the lower S2 maximum rather than preserving legacy S3. |
+| `VIGIL-INC-000051` | S3 | S2 | service-operational-infrastructure | VIGIL-HIM-1.0.0-SOI-S2 | The preserved sources establish the bounded consequence described in the Incident summary: Reported use of AI-generated… | Independent threshold application supports the lower S2 maximum rather than preserving legacy S3. |
+| `VIGIL-INC-000052` | S3 | S2 | societal-democratic | VIGIL-HIM-1.0.0-SOD-S2 | The preserved sources establish the bounded consequence described in the Incident summary: Reported use of AI-generated… | Independent threshold application supports the lower S2 maximum rather than preserving legacy S3. |
+| `VIGIL-INC-000055` | S4 | S3 | property-asset-damage | VIGIL-HIM-1.0.0-PAD-S3 | The preserved sources establish the bounded consequence described in the Incident summary: During an Irregular cybersec… | Independent threshold application supports the lower S3 maximum rather than preserving legacy S4. |
+| `VIGIL-INC-000056` | S3 | S2 | service-operational-infrastructure | VIGIL-HIM-1.0.0-SOI-S2 | The preserved sources establish the bounded consequence described in the Incident summary: Bird states that the agent d… | Independent threshold application supports the lower S2 maximum rather than preserving legacy S3. |
+| `VIGIL-INC-000057` | S4 | S3 | privacy-confidentiality | VIGIL-HIM-1.0.0-PRV-S3 | The preserved sources establish the bounded consequence described in the Incident summary: The report states that a sel… | Independent threshold application supports the lower S3 maximum rather than preserving legacy S4. |
+| `VIGIL-INC-000058` | S3 | S2 | societal-democratic | VIGIL-HIM-1.0.0-SOD-S2 | The preserved sources establish the bounded consequence described in the Incident summary: Spokane police reportedly re… | Independent threshold application supports the lower S2 maximum rather than preserving legacy S3. |
+| `VIGIL-INC-000060` | S4 | S2 | service-operational-infrastructure | VIGIL-HIM-1.0.0-SOI-S2 | The preserved sources establish the bounded consequence described in the Incident summary: AISI reported out-of-scope a… | Independent threshold application supports the lower S2 maximum rather than preserving legacy S4. |
+| `VIGIL-INC-000061` | S4 | SU | rights-liberty (insufficient evidence) | — | The evidence reports 67,868 grant suspensions but does not establish how many were caused by facial-verification failure, so the attributable rights impact cannot be banded. | Evidence identifies a possible consequence but does not support a defensible band. |
+| `VIGIL-INC-000063` | S3 | SU | physical-health-safety (insufficient evidence) | — | The evidence establishes inaccurate health guidance but no resulting treatment decision, injury or clinical outcome from which to band materialised health harm. | Evidence identifies a possible consequence but does not support a defensible band. |
+| `VIGIL-INC-000067` | S4 | S3 | privacy-confidentiality | VIGIL-HIM-1.0.0-PRV-S3 | The preserved sources establish the bounded consequence described in the Incident summary: AIID records allegations tha… | Independent threshold application supports the lower S3 maximum rather than preserving legacy S4. |
+| `VIGIL-INC-000069` | S4 | S3 | privacy-confidentiality | VIGIL-HIM-1.0.0-PRV-S3 | The preserved sources establish the bounded consequence described in the Incident summary: AIID records allegations tha… | Independent threshold application supports the lower S3 maximum rather than preserving legacy S4. |
+| `VIGIL-INC-000070` | S4 | S3 | privacy-confidentiality | VIGIL-HIM-1.0.0-PRV-S3 | The preserved sources establish the bounded consequence described in the Incident summary: 404 Media reported that Webi… | Independent threshold application supports the lower S3 maximum rather than preserving legacy S4. |
+| `VIGIL-INC-000072` | S4 | S3 | property-asset-damage | VIGIL-HIM-1.0.0-PAD-S3 | The preserved sources establish the bounded consequence described in the Incident summary: The later follow-up post sup… | Independent threshold application supports the lower S3 maximum rather than preserving legacy S4. |
+| `VIGIL-INC-000073` | S4 | S3 | privacy-confidentiality | VIGIL-HIM-1.0.0-PRV-S3 | The preserved sources establish the bounded consequence described in the Incident summary: Reuters reported Anthropic's… | Independent threshold application supports the lower S3 maximum rather than preserving legacy S4. |
+| `VIGIL-INC-000074` | S4 | S3 | financial-economic | VIGIL-HIM-1.0.0-FIN-S3 | The preserved sources establish the bounded consequence described in the Incident summary: The report quotes affected n… | Independent threshold application supports the lower S3 maximum rather than preserving legacy S4. |
+| `VIGIL-INC-000076` | S4 | S3 | rights-liberty | VIGIL-HIM-1.0.0-RGT-S3 | The preserved sources establish the bounded consequence described in the Incident summary: Ars documents the student’s… | Independent threshold application supports the lower S3 maximum rather than preserving legacy S4. |
+| `VIGIL-INC-000081` | S3 | SU | financial-economic (insufficient evidence) | — | The observed fare differences and broader surveillance-pricing concerns do not establish a causal pricing input, aggregate overcharge or realised loss that can be banded. | Evidence identifies a possible consequence but does not support a defensible band. |
+| `VIGIL-INC-000082` | S4 | S3 | privacy-confidentiality, reputation-dignity | VIGIL-HIM-1.0.0-PRV-S3, VIGIL-HIM-1.0.0-RDG-S3 | The preserved sources establish the bounded consequence described in the Incident summary: A Bronx legal resident repor…; The preserved sources establish the bounded consequence described in the Incident summary: A Bronx legal resident repor… | Independent threshold application supports the lower S3 maximum rather than preserving legacy S4. |
+| `VIGIL-INC-000084` | S4 | S3 | privacy-confidentiality, property-asset-damage | VIGIL-HIM-1.0.0-PRV-S3, VIGIL-HIM-1.0.0-PAD-S3 | The preserved sources establish the bounded consequence described in the Incident summary: Anthropic reported that Clau…; The preserved sources establish the bounded consequence described in the Incident summary: Anthropic reported that Clau… | Independent threshold application supports the lower S3 maximum rather than preserving legacy S4. |
+| `VIGIL-INC-000085` | S4 | S3 | privacy-confidentiality, property-asset-damage | VIGIL-HIM-1.0.0-PRV-S3, VIGIL-HIM-1.0.0-PAD-S3 | The preserved sources establish the bounded consequence described in the Incident summary: Anthropic reported that Clau…; The preserved sources establish the bounded consequence described in the Incident summary: Anthropic reported that Clau… | Independent threshold application supports the lower S3 maximum rather than preserving legacy S4. |
+| `VIGIL-INC-000086` | S4 | S3 | property-asset-damage | VIGIL-HIM-1.0.0-PAD-S3 | The preserved sources establish the bounded consequence described in the Incident summary: Anthropic reported that an i… | Independent threshold application supports the lower S3 maximum rather than preserving legacy S4. |
+| `VIGIL-INC-000088` | S4 | S3 | service-operational-infrastructure | VIGIL-HIM-1.0.0-SOI-S3 | The preserved sources establish the bounded consequence described in the Incident summary: Researchers reconstructed ro… | Independent threshold application supports the lower S3 maximum rather than preserving legacy S4. |
+| `VIGIL-INC-000094` | S4 | S3 | privacy-confidentiality, property-asset-damage | VIGIL-HIM-1.0.0-PRV-S3, VIGIL-HIM-1.0.0-PAD-S3 | The preserved sources establish the bounded consequence described in the Incident summary: Hunt.io and researcher Bob D…; The preserved sources establish the bounded consequence described in the Incident summary: Hunt.io and researcher Bob D… | Independent threshold application supports the lower S3 maximum rather than preserving legacy S4. |
+| `VIGIL-INC-000095` | S3 | S2 | service-operational-infrastructure | VIGIL-HIM-1.0.0-SOI-S2 | The preserved sources establish the bounded consequence described in the Incident summary: Mistral reported that the Mi… | Independent threshold application supports the lower S2 maximum rather than preserving legacy S3. |
+| `VIGIL-INC-000101` | S3 | SU | psychological-wellbeing (insufficient evidence) | — | OpenAI established a globally deployed sycophantic behaviour and rollback, but did not publish a materially harmed cohort or occurrence-level downstream psychological consequence… | Evidence identifies a possible consequence but does not support a defensible band. |
+| `VIGIL-INC-000108` | S3 | S1 | No materialised downstream harm established | bounded S1 rule | The occurrence was a controlled proof of concept using researcher-controlled accounts and data; the preserved evidence establishes the demonstrated channel was decommissioned and… | Positive bounded-occurrence evidence supports S1 without inventing a controlling harm dimension. |
+| `VIGIL-INC-000109` | S3 | S2 | service-operational-infrastructure | VIGIL-HIM-1.0.0-SOI-S2 | The preserved sources establish the bounded consequence described in the Incident summary: The Financial Times reported… | Independent threshold application supports the lower S2 maximum rather than preserving legacy S3. |
+| `VIGIL-INC-000116` | S3 | S4 | service-operational-infrastructure | VIGIL-HIM-1.0.0-SOI-S4 | The preserved sources establish the bounded consequence described in the Incident summary: AI agents being tested by Op… | Independent threshold application supports the higher S4 maximum rather than preserving legacy S3. |
+| `VIGIL-INC-000120` | SU | S1 | No materialised downstream harm established | bounded S1 rule | The reported drone-swarm work remained at simulation and early board-validation stage; the preserved evidence positively states that no operational fielded swarm or casualties res… | Positive bounded-occurrence evidence supports S1 without inventing a controlling harm dimension. |
+| `VIGIL-INC-000121` | SU | S2 | service-operational-infrastructure | VIGIL-HIM-1.0.0-SOI-S2 | The preserved sources establish the bounded consequence described in the Incident summary: Jeff Sebo publicly reported… | Independent threshold application supports the higher S2 maximum rather than preserving legacy SU. |
+
+## Evidence-reference and confidence controls
+
+Harm rows cite only the source records used for that harm. The validator resolves every `source_records[N]` reference and rejects `record-cross-reference` sources as Harm Impact evidence. INC-127 continues to use GreyNoise and PaperCut for its privacy and property/asset assessments; OECD.AI remains a cross-registry source and external same-incident reference, not substantive harm evidence.
+
+Harm confidence is derived from the directness, status and corroboration of the cited sources. The corpus contains high, medium and low confidence assessments rather than a migration-wide constant.
+
+## Reproducibility and remaining judgement
+
+The superseded legacy-severity migration was moved to `vigil/migrations/completed/2026-09-16-initial-harm-impact-migration.py` and guarded as historical replay only. The evidence-derived decisions are recorded in `vigil/migrations/completed/2026-09-16-evidence-derived-harm-impact.py`, also opt-in and non-runtime.
+
+The ten SU cases above require stronger occurrence-level evidence before a band can be assigned. No unresolved schema or generator issue remains. Generated artefact and validation results are recorded in the completion commit and CI.
