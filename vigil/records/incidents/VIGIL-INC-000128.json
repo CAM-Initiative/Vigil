@@ -1,0 +1,163 @@
+{
+  "id": "VIGIL-INC-000128",
+  "record_type": "incident",
+  "record_state": "active",
+  "date_recorded": "2026-09-17",
+  "record_identity": {
+    "record_id": "VIGIL-INC-000128",
+    "record_type": "incident",
+    "title": "PhantomRaven used likely LLM-generated npm malware to steal developer and CI/CD information",
+    "created": "2026-09-17",
+    "updated": "2026-09-17",
+    "version": "0.1.0"
+  },
+  "incident_identity": {
+    "historical_event_name": "2025–2026 PhantomRaven npm information-stealer campaign",
+    "occurred_from": "2025-11-01",
+    "occurred_to": null,
+    "date_precision": "month-range",
+    "date_basis": "CrowdStrike reports PhantomRaven incidents from November 2025 and describes continuing investigation and associated packages through 2026; the public report does not establish an exact first day or definitive campaign end date."
+  },
+  "summary": "CrowdStrike Counter Adversary Operations reports that a financially motivated self-described bug-bounty hunter developed and distributed PhantomRaven, a JavaScript information stealer, through malicious npm packages. CrowdStrike assesses with high confidence that the malware was likely written using a large language model, based on statistical token-analysis patterns, verbose comments and placeholder code. Falcon Complete responded to and remediated multiple PhantomRaven incidents. The malware automatically collected system, Git/npm and CI/CD environment information and exfiltrated collected data to attacker-controlled infrastructure. The specific LLM used to generate the code is not established.",
+  "vigil_assessment": {
+    "factual_basis": "CrowdStrike's primary technical report identifies two npm packages containing PhantomRaven scripts, describes multiple remediated incidents, documents the malware's collection and exfiltration behaviour, and assesses with high confidence that the code was likely LLM-generated. The report also links the operator to a longer-running bug-bounty pattern and describes malicious dependency-confusion and typosquatting techniques.",
+    "governance_interpretation": "This occurrence establishes malicious deployment of likely LLM-generated malware in a real software-supply-chain context, but it does not establish which model generated the code, the prompts used, whether safeguards were bypassed, or a model-level or runtime-level governance failure. VIGIL therefore records the realised AI-enabled misuse without inferring a specific failure mechanism.",
+    "significance_to_cam": "The occurrence is relevant because it shows LLM-assisted capability generation lowering the technical barrier to bespoke credential-stealing malware that can be distributed through developer supply chains. It also demonstrates why evidence of AI-generated artefacts must remain distinct from evidence of autonomous agent action or a specific model failure.",
+    "assessment_boundaries": [
+      "CrowdStrike does not identify the LLM used to generate PhantomRaven.",
+      "The report does not establish that an AI agent autonomously selected victims, published packages or operated the campaign.",
+      "CrowdStrike's LLM-generation assessment is high-confidence attribution based on code characteristics and token analysis, not a disclosed provider-side transcript or model log.",
+      "The reviewed public evidence does not quantify the number of affected organisations or the volume or sensitivity of successfully exfiltrated data across all incidents.",
+      "The operator's claimed bug-bounty rationale does not convert unauthorised compromise into authorised security testing."
+    ]
+  },
+  "source_records": [
+    {
+      "source_title": "PhantomRaven: An LLM-Generated Information Stealer Developed for Bug Bounty Hunting",
+      "author_or_publisher": "CrowdStrike",
+      "source_date": "2026-09-15",
+      "source_url": "https://www.crowdstrike.com/en-us/blog/phantomraven-llm-generated-information-stealer-for-bug-bounty-hunting/",
+      "retrieved_date": "2026-09-17",
+      "source_type": "technical analysis",
+      "source_role": "incident-evidence",
+      "source_residence": "external",
+      "source_platform": "CrowdStrike",
+      "source_url_status": "available",
+      "relevance_note": "Primary threat-intelligence disclosure describing PhantomRaven incidents, malicious npm distribution, information collection and exfiltration behaviour, and CrowdStrike's high-confidence assessment that the malware was likely LLM-generated.",
+      "evidence_modality": ["text", "table"],
+      "primary_artefact_access": {
+        "access_status": "directly reviewed",
+        "reviewing_system": "OpenAI ChatGPT — GPT-5.6 Sol",
+        "access_method": "direct public CrowdStrike technical-report review",
+        "direct_primary_artefact_review": true,
+        "limitations": [
+          "The report does not identify the LLM provider or model used to generate the malware.",
+          "Underlying Falcon telemetry, malware-development prompts and provider-side model logs are not public."
+        ]
+      },
+      "interpretive_reliance": "Used as primary evidence for campaign identity, malware behaviour, npm distribution, realised incident response and the high-confidence LLM-generation assessment.",
+      "evidence_status": "verified",
+      "evidence_status_basis": "CrowdStrike reports its own Counter Adversary Operations investigation and Falcon Complete response to multiple PhantomRaven incidents; VIGIL treats the directly reported technical observations as primary evidence while preserving CrowdStrike's attribution language and uncertainty.",
+      "incident_source_order": 1,
+      "deployment_context": "Malicious software-supply-chain activity using npm packages to deploy an information stealer against developer systems.",
+      "model_or_algorithm": "Unidentified large language model; CrowdStrike assesses LLM generation with high confidence",
+      "system_or_product": "PhantomRaven JavaScript information stealer distributed through npm"
+    }
+  ],
+  "preferred_evidence": {
+    "source_url": "https://www.crowdstrike.com/en-us/blog/phantomraven-llm-generated-information-stealer-for-bug-bounty-hunting/",
+    "selection_basis": "CrowdStrike's report is the primary public technical disclosure and directly describes the malware, observed incidents, distribution mechanism and basis for its LLM-generation assessment.",
+    "selected_on": "2026-09-17"
+  },
+  "external_incident_references": [],
+  "system_context": {
+    "platform_or_vendor": "Other",
+    "product_or_service": "PhantomRaven",
+    "specific_model_or_runtime": "Unidentified LLM used for malware generation; exact provider and model not established",
+    "interface_surface": ["malware code generation", "software supply chain", "npm package installation"],
+    "component_role": ["foundation-model"],
+    "affected_population": "Multiple organisations affected by PhantomRaven incidents according to CrowdStrike; exact victim count not publicly established.",
+    "deployment_context": "A malicious actor distributed likely LLM-generated information-stealing code through malicious npm packages.",
+    "system_type": "LLM-assisted malicious software development",
+    "interaction_mode": "human-directed malware development and deployment; autonomous model operation not established",
+    "embodiment_status": "non-embodied digital system",
+    "evidence_scope": "Primary CrowdStrike technical disclosure; provider-side model records and complete victim telemetry unavailable.",
+    "evidenced_vendors": [],
+    "primary_evidenced_vendors": [],
+    "vendor_cluster": [],
+    "evidenced_products_or_services": ["PhantomRaven", "npm"],
+    "evidenced_models_or_runtimes": ["unidentified large language model"],
+    "evidenced_systems": ["PhantomRaven npm information-stealer campaign"],
+    "model_or_product": "unidentified LLM / PhantomRaven",
+    "user_role": "malicious external actor"
+  },
+  "jurisdictional_context": {
+    "primary_jurisdiction": "Cross-border / not fully established",
+    "secondary_jurisdictions": [],
+    "cross_border_relevance": "The malware was distributed through the public npm ecosystem and CrowdStrike reports multiple incidents, but the public report does not provide a complete victim-jurisdiction list.",
+    "public_interest_relevance": "high",
+    "sector": "AI / cybersecurity / software supply chain",
+    "regulatory_surface": ["AI-enabled cyber misuse", "unauthorized system access", "credential and confidential-information theft", "software supply-chain security"]
+  },
+  "taxonomy_classification": {
+    "taxonomy_version": "0.5.1",
+    "classification_status": "unclassified",
+    "classification_basis": "The evidence supports malicious use of likely LLM-generated code but does not identify the model, prompt, safeguard interaction, runtime behaviour or other mechanism required to map the occurrence defensibly to a current VIGIL Failure Class. Malicious use alone does not establish taxonomy membership.",
+    "primary_classification": null,
+    "secondary_classifications": [],
+    "classification_review_provenance": {
+      "method": "incident-taxonomy-review",
+      "review_date": "2026-09-17",
+      "reviewer": "OpenAI ChatGPT — GPT-5.6 Sol",
+      "review_status": "reviewed-unclassified",
+      "authority_boundary": "Incident existence and AI-enabled malicious use do not by themselves establish a specific VIGIL Failure Class without occurrence-level evidence of the responsible governance mechanism."
+    },
+    "classification_role": null
+  },
+  "related_incidents": [],
+  "research_references": [],
+  "standards_and_regulatory_references": [],
+  "diagnostic_provenance": {
+    "method": "bounded ecosystem incident intake with primary-source review",
+    "diagnostic_date": "2026-09-17",
+    "human_role": "standing incident-intake and taxonomy-governance authority",
+    "ai_role": "AI analytical review and structured record preparation",
+    "authority_boundary": "AI review does not constitute human verification or final legal or factual adjudication."
+  },
+  "interpretive_provenance": {
+    "review_history": [],
+    "current_ai_review": {
+      "review_id": "VIGIL-REVIEW-2026-09-17-INC-000128",
+      "reviewer_type": "AI analytical reviewer",
+      "reviewer_platform": "OpenAI ChatGPT",
+      "reviewer_model": "GPT-5.6 Sol",
+      "review_date": "2026-09-17",
+      "review_scope": "Primary-source incident evidence, severity and taxonomy review.",
+      "capability_profile": {"web_research": true, "repository_review": true, "taxonomy_review": true},
+      "known_limitations": ["No access to CrowdStrike's underlying private telemetry or the malware-development model transcript.", "No independent provider-side confirmation of the LLM-generation attribution."],
+      "review_outcome": "Accepted as a bounded AI-enabled cyber incident; taxonomy remains unclassified."
+    }
+  },
+  "harm_impact_assessment": {
+    "methodology_id": "VIGIL-HIM",
+    "methodology_version": "1.0.0",
+    "derivation_rule": "highest-supported-materialised-harm",
+    "assessed_on": "2026-09-17",
+    "overall_severity": "S3",
+    "controlling_dimensions": ["privacy-confidentiality"],
+    "coverage_note": "Privacy/confidentiality is assessed from reported credential and CI/CD information collection/exfiltration in multiple remediated incidents. Other dimensions are unreported where the public evidence does not establish materialised harm.",
+    "dimensions": [
+      {"dimension_id":"service-operational-infrastructure","assessment_status":"unreported","assessment_basis":"The available published evidence does not report materialised service or operational disruption at a level that can be defensibly banded; absence of reporting is not evidence of no harm.","evidence_confidence":"not-assessed"},
+      {"dimension_id":"financial-economic","assessment_status":"unreported","assessment_basis":"The available published evidence does not quantify realised financial or economic loss; absence of reporting is not evidence of no harm.","evidence_confidence":"not-assessed"},
+      {"dimension_id":"property-asset-damage","assessment_status":"unreported","assessment_basis":"The available published evidence does not report materialised property or asset damage at a level that can be defensibly banded.","evidence_confidence":"not-assessed"},
+      {"dimension_id":"physical-health-safety","assessment_status":"unreported","assessment_basis":"The available published evidence does not report materialised physical health or safety harm.","evidence_confidence":"not-assessed"},
+      {"dimension_id":"psychological-wellbeing","assessment_status":"unreported","assessment_basis":"The available published evidence does not report materialised psychological harm.","evidence_confidence":"not-assessed"},
+      {"dimension_id":"rights-liberty","assessment_status":"unreported","assessment_basis":"The available published evidence does not report materialised rights or liberty harm at a level that can be defensibly banded.","evidence_confidence":"not-assessed"},
+      {"dimension_id":"equal-treatment","assessment_status":"unreported","assessment_basis":"The available published evidence does not report materialised unequal-treatment harm.","evidence_confidence":"not-assessed"},
+      {"dimension_id":"privacy-confidentiality","assessment_status":"assessed","severity":"S3","threshold_id":"VIGIL-HIM-1.0.0-PRV-S3","observed_values":[{"metric":"affected incidents","qualitative_value":"multiple PhantomRaven incidents remediated by CrowdStrike Falcon Complete"},{"metric":"information targeted","qualitative_value":"system, Git/npm and CI/CD environment information including potential authentication tokens and API keys"}],"assessment_basis":"CrowdStrike reports multiple real incidents and documents automatic collection and exfiltration of credential-bearing and confidential developer/CI information. The public evidence supports meaningful bounded confidentiality compromise but does not establish large-scale or persistent exposure sufficient for S4.","evidence_confidence":"medium","evidence_refs":["source_records[0]"]},
+      {"dimension_id":"reputation-dignity","assessment_status":"unreported","assessment_basis":"The available published evidence does not report materialised reputational or dignitary harm.","evidence_confidence":"not-assessed"},
+      {"dimension_id":"societal-democratic","assessment_status":"unreported","assessment_basis":"The available published evidence does not report materialised societal or democratic harm.","evidence_confidence":"not-assessed"},
+      {"dimension_id":"environmental","assessment_status":"unreported","assessment_basis":"The available published evidence does not report materialised environmental harm.","evidence_confidence":"not-assessed"}
+    ]
+  }
+}
