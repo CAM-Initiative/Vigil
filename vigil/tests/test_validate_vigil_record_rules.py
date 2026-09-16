@@ -40,11 +40,12 @@ class IncidentRuleTests(unittest.TestCase):
 
     def test_generic_and_circular_band_reasoning_is_rejected(self):
         def mutate(record):
+            severity = record["severity_assessment"]["severity"]
             record["severity_assessment"]["affected_scope"] = (
                 "The assessment is confined to the people, systems, organisations, service cohort."
             )
             record["severity_assessment"]["band_rationale"] = (
-                "S2 because this is an S2 incident; S1 and S3 are different."
+                f"{severity} because this is a {severity} incident."
             )
         errors = self.errors(mutate)
         self.assertTrue(any("generic/template" in error for error in errors), errors)
@@ -62,17 +63,23 @@ class IncidentRuleTests(unittest.TestCase):
         self.assertTrue(any("assessment_gap" in error for error in errors), errors)
         self.assertTrue(any("must not fabricate" in error for error in errors), errors)
 
-    def test_s5_no_materialised_harm_band_is_valid_and_adjacent_to_s4(self):
+    def test_s1_no_materialised_harm_band_is_valid_and_adjacent_to_s2(self):
         record = json.loads(
             (VIGIL / "records" / "incidents" / "VIGIL-INC-000123.json").read_text(encoding="utf-8")
         )
         errors, _ = VALIDATOR.validate_record(Path(record["id"] + ".json"), record)
         self.assertEqual(errors, [])
         record["severity_assessment"]["band_rationale"] = (
-            "S5 is appropriate because no adverse downstream consequence materialised in the controlled evaluation."
+            "S1 is appropriate because no adverse downstream consequence materialised in the controlled evaluation."
         )
         errors, _ = VALIDATOR.validate_record(Path(record["id"] + ".json"), record)
         self.assertTrue(any("adjacent band" in error for error in errors), errors)
+
+    def test_legacy_operational_priority_is_rejected_recursively(self):
+        def mutate(record):
+            record["legacy_governance_state"] = [{"preserved_analysis": {"triage": {"triage_priority": "P1"}}}]
+        errors = self.errors(mutate)
+        self.assertTrue(any("legacy operational priority field" in error for error in errors), errors)
 
     def test_successful_invariant_role_requires_matching_taxonomy_exemplar(self):
         record = json.loads(

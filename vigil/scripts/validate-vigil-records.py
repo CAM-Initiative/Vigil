@@ -408,6 +408,9 @@ def validate_record(
     forbidden = sorted(field for field in contract["forbidden_top_level_fields"] if field in record)
     if forbidden:
         errors.append(f"{path}: forbidden Incident fields: {', '.join(forbidden)}")
+    for field in contract.get("legacy_priority_fields", []):
+        if contains_key(record, field):
+            errors.append(f"{path}: legacy operational priority field {field!r} is prohibited")
     if contains_key(record, "source_data"):
         errors.append(f"{path}: source_data is retired; use source_records")
     if not non_empty(record.get("summary")):
