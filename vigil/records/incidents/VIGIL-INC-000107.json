@@ -9,7 +9,7 @@
     "title": "Mathspace breach exposed personal data of more than one million users in Australia and New Zealand",
     "created": "2026-09-09",
     "updated": "2026-09-16",
-    "version": "0.1.2"
+    "version": "0.1.3"
   },
   "incident_identity": {
     "historical_event_name": "2026 Mathspace Metabase data breach",
@@ -246,37 +246,116 @@
           "SU records remain subject to the evidence gaps already stated in their canonical severity assessments."
         ],
         "review_outcome": "Severity code aligned from S2 to S4. The occurrence-level evidence and consequence threshold were re-evaluated and retained; only the ordinal direction changed."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-09-16-HIM-000107",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-5",
+        "review_date": "2026-09-16",
+        "review_scope": "Controlled full-corpus Harm Impact Matrix derivation from preserved Incident evidence; Failure Taxonomy adjudications were not reopened.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_link_and_metadata_review": true
+        },
+        "known_limitations": [
+          "The assessment is bounded to evidence already preserved in the Incident and does not infer unreported harms, losses, durations or affected populations.",
+          "Unreported dimensions remain explicitly unreported and do not represent supported absence of harm."
+        ],
+        "review_outcome": "Derived overall severity S4 using VIGIL-HIM 1.0.0. The controlling dimension is privacy-confidentiality; legacy severity was S4."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-09-16-SEVERITY-000107",
+      "review_id": "VIGIL-REVIEW-2026-09-16-HIM-000107",
       "reviewer_type": "AI analytical reviewer",
       "reviewer_platform": "OpenAI Codex",
       "reviewer_model": "GPT-5",
       "review_date": "2026-09-16",
-      "review_scope": "Corpus-wide severity-direction alignment, occurrence-level criteria re-adjudication, and legacy operational-priority audit.",
+      "review_scope": "Controlled full-corpus Harm Impact Matrix derivation from preserved Incident evidence; Failure Taxonomy adjudications were not reopened.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
         "web_link_and_metadata_review": true
       },
       "known_limitations": [
-        "The review was bounded to evidence already preserved in the Incident and did not infer unreported harms or reopen taxonomy classifications.",
-        "SU records remain subject to the evidence gaps already stated in their canonical severity assessments."
+        "The assessment is bounded to evidence already preserved in the Incident and does not infer unreported harms, losses, durations or affected populations.",
+        "Unreported dimensions remain explicitly unreported and do not represent supported absence of harm."
       ],
-      "review_outcome": "Severity code aligned from S2 to S4. The occurrence-level evidence and consequence threshold were re-evaluated and retained; only the ordinal direction changed."
+      "review_outcome": "Derived overall severity S4 using VIGIL-HIM 1.0.0. The controlling dimension is privacy-confidentiality; legacy severity was S4."
     }
   },
-  "severity_assessment": {
-    "severity": "S4",
-    "assessment_status": "incident-assessed",
-    "materialised_consequence": "Personal information relating to 1,079,819 people was downloaded without authorisation from Mathspace's Australian reporting database. The affected population included students, parents or guardians, teachers and Mathspace staff.",
-    "affected_scope": "The disclosed affected cohort spans more than one million people across Australia and New Zealand. Exposed fields included user IDs, usernames, names, email addresses, country, time zone, user type, email-verification status and account activity/join dates; not every field was present for every person.",
-    "seriousness_and_persistence": "The breach materially compromised confidentiality at very large scale and involved data about students and school communities. Mathspace reports no evidence so far of publication, sale or other misuse and reports that academic records and authentication credentials were not exposed. The exposed personal data cannot be made undisclosed after exfiltration even though the compromised system has been taken offline.",
-    "quantitative_information": "Mathspace states that 1,079,819 people were affected. Unauthorised access dated back to 10 August 2026, information was downloaded on 27 August, the Metabase instance was updated on 29 August, and the breach was confirmed on 3 September.",
-    "evidentiary_limits": "The public evidence does not identify the attacker, quantify how many records contained each field, establish downstream misuse, or publish the complete forensic report. Mathspace states that passwords, authentication tokens, SSO credentials, API credentials, academic records and assessment results were not exposed.",
-    "band_rationale": "S4 is appropriate because a confirmed unauthorised download exposed personal information concerning more than one million people, including students, creating serious and persistent confidentiality consequences at population scale. S5 is not supported because the reviewed evidence does not establish catastrophic physical harm, irreversible systemic infrastructure failure or comparable extreme consequence. S3 would understate the realised scale and persistence of the confidentiality loss, even though no credential compromise or downstream misuse has yet been established.",
+  "harm_impact_assessment": {
+    "methodology_id": "VIGIL-HIM",
+    "methodology_version": "1.0.0",
+    "derivation_rule": "highest-supported-materialised-harm",
     "assessed_on": "2026-09-16",
-    "legacy_sources": []
+    "overall_severity": "S4",
+    "controlling_dimensions": [
+      "privacy-confidentiality"
+    ],
+    "coverage_note": "The preserved evidence supports one controlling privacy and confidentiality assessment. Other relevant harm dimensions remain unreported and do not lower or raise the derived overall severity.",
+    "dimensions": [
+      {
+        "dimension_id": "physical-health-safety",
+        "assessment_status": "unreported",
+        "assessment_basis": "The preserved Incident evidence does not report a materialised impact in this dimension; absence of reporting is not evidence of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "psychological-wellbeing",
+        "assessment_status": "unreported",
+        "assessment_basis": "The preserved Incident evidence does not report a materialised impact in this dimension; absence of reporting is not evidence of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "rights-liberty-equal-treatment",
+        "assessment_status": "unreported",
+        "assessment_basis": "The preserved Incident evidence does not report a materialised impact in this dimension; absence of reporting is not evidence of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "privacy-confidentiality",
+        "assessment_status": "assessed",
+        "severity": "S4",
+        "threshold_id": "VIGIL-HIM-1.0.0-PRV-S4",
+        "observed_values": [
+          {
+            "metric": "published quantitative information",
+            "qualitative_value": "Mathspace states that 1,079,819 people were affected. Unauthorised access dated back to 10 August 2026, information was downloaded on 27 August, the Metabase instance was updated on 29 August, and the breach was confirmed on 3 September."
+          }
+        ],
+        "assessment_basis": "Personal information relating to 1,079,819 people was downloaded without authorisation from Mathspace's Australian reporting database. The affected population included students, parents or guardians, teachers and Mathspace staff. The breach materially compromised confidentiality at very large scale and involved data about students and school communities. Mathspace reports no evidence so far of publication, sale or other misuse and reports that academic records and authentication credentials were not exposed. The exposed personal data cannot be made undisclosed after exfiltration even though the compromised system has been taken offline. Threshold applied: Large-scale or highly sensitive exposure, persistent loss of confidentiality, or substantial evidenced misuse.",
+        "evidence_confidence": "medium",
+        "evidence_refs": [
+          "source_records[0]",
+          "source_records[1]"
+        ]
+      },
+      {
+        "dimension_id": "financial-economic-property",
+        "assessment_status": "unreported",
+        "assessment_basis": "The preserved Incident evidence does not report a materialised impact in this dimension; absence of reporting is not evidence of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "service-operational-infrastructure",
+        "assessment_status": "unreported",
+        "assessment_basis": "The preserved Incident evidence does not report a materialised impact in this dimension; absence of reporting is not evidence of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "reputation-dignity",
+        "assessment_status": "unreported",
+        "assessment_basis": "The preserved Incident evidence does not report a materialised impact in this dimension; absence of reporting is not evidence of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "societal-democratic-environmental",
+        "assessment_status": "unreported",
+        "assessment_basis": "The preserved Incident evidence does not report a materialised impact in this dimension; absence of reporting is not evidence of no harm.",
+        "evidence_confidence": "not-assessed"
+      }
+    ]
   }
 }

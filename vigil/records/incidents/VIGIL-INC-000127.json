@@ -9,7 +9,7 @@
     "title": "AI-orchestrated PaperCut campaign compromised at least 440 instances across 395 organizations",
     "created": "2026-09-15",
     "updated": "2026-09-16",
-    "version": "0.1.1"
+    "version": "0.1.2"
   },
   "incident_identity": {
     "historical_event_name": "2026 AI-orchestrated PaperCut NG/MF mass-exploitation campaign",
@@ -286,37 +286,117 @@
           "SU records remain subject to the evidence gaps already stated in their canonical severity assessments."
         ],
         "review_outcome": "Severity code aligned from S2 to S4. The occurrence-level evidence and consequence threshold were re-evaluated and retained; only the ordinal direction changed."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-09-16-HIM-000127",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-5",
+        "review_date": "2026-09-16",
+        "review_scope": "Controlled full-corpus Harm Impact Matrix derivation from preserved Incident evidence; Failure Taxonomy adjudications were not reopened.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_link_and_metadata_review": true
+        },
+        "known_limitations": [
+          "The assessment is bounded to evidence already preserved in the Incident and does not infer unreported harms, losses, durations or affected populations.",
+          "Unreported dimensions remain explicitly unreported and do not represent supported absence of harm."
+        ],
+        "review_outcome": "Derived overall severity S4 using VIGIL-HIM 1.0.0. The controlling dimension is privacy-confidentiality; legacy severity was S4."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-09-16-SEVERITY-000127",
+      "review_id": "VIGIL-REVIEW-2026-09-16-HIM-000127",
       "reviewer_type": "AI analytical reviewer",
       "reviewer_platform": "OpenAI Codex",
       "reviewer_model": "GPT-5",
       "review_date": "2026-09-16",
-      "review_scope": "Corpus-wide severity-direction alignment, occurrence-level criteria re-adjudication, and legacy operational-priority audit.",
+      "review_scope": "Controlled full-corpus Harm Impact Matrix derivation from preserved Incident evidence; Failure Taxonomy adjudications were not reopened.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
         "web_link_and_metadata_review": true
       },
       "known_limitations": [
-        "The review was bounded to evidence already preserved in the Incident and did not infer unreported harms or reopen taxonomy classifications.",
-        "SU records remain subject to the evidence gaps already stated in their canonical severity assessments."
+        "The assessment is bounded to evidence already preserved in the Incident and does not infer unreported harms, losses, durations or affected populations.",
+        "Unreported dimensions remain explicitly unreported and do not represent supported absence of harm."
       ],
-      "review_outcome": "Severity code aligned from S2 to S4. The occurrence-level evidence and consequence threshold were re-evaluated and retained; only the ordinal direction changed."
+      "review_outcome": "Derived overall severity S4 using VIGIL-HIM 1.0.0. The controlling dimension is privacy-confidentiality; legacy severity was S4."
     }
   },
-  "severity_assessment": {
-    "severity": "S4",
-    "assessment_status": "incident-assessed",
-    "materialised_consequence": "The campaign produced unauthorized compromise of at least 440 PaperCut instances at 395 identified organizations, credential and secret harvesting across many victims, domain-administrator access at 12 organizations, and exfiltration of full Active Directory credential databases where domain-admin access was obtained.",
-    "affected_scope": "At least 395 identified organizations in 48 countries, including 204 education-sector organizations; GreyNoise reports additional real victims that it could not attribute to named organizations.",
-    "seriousness_and_persistence": "Compromise included stolen credentials and domain secrets and, for 12 organizations, domain-administrator control with full credential-database exfiltration. GreyNoise reported that some compromised victims had not yet received follow-on activity at last observation, so the duration and eventual downstream use of many accesses remained unresolved.",
-    "quantitative_information": "GreyNoise reports at least 440 compromised PaperCut NG/MF instances across 395 identified organizations in 48 countries; 204 victims were in education; 12 organizations reached domain-admin access; 11 organizations were compromised within 26 seconds during the full campaign; one U.S. high school progressed from initial access to domain admin in seven minutes.",
-    "evidentiary_limits": "The available evidence does not establish a complete global victim count, exact losses, complete data exfiltration for every victim, destructive effects, ransomware deployment, state sponsorship, or the exact contribution of each AI component to each compromise step.",
-    "band_rationale": "S4 is supported because the occurrence caused substantial realized privacy, security and operational harm across hundreds of organizations, including credential theft and domain-wide administrative compromise. It exceeds S3's bounded moderate harm in both scale and privilege impact. S5 is not supported because the reviewed evidence does not establish death, grave injury, destructive loss of critical assets, very large realized financial loss, or comparably grave and persistent societal or rights harm.",
+  "harm_impact_assessment": {
+    "methodology_id": "VIGIL-HIM",
+    "methodology_version": "1.0.0",
+    "derivation_rule": "highest-supported-materialised-harm",
     "assessed_on": "2026-09-16",
-    "legacy_sources": []
+    "overall_severity": "S4",
+    "controlling_dimensions": [
+      "privacy-confidentiality"
+    ],
+    "coverage_note": "The preserved evidence supports one controlling privacy and confidentiality assessment. Other relevant harm dimensions remain unreported and do not lower or raise the derived overall severity.",
+    "dimensions": [
+      {
+        "dimension_id": "physical-health-safety",
+        "assessment_status": "unreported",
+        "assessment_basis": "The preserved Incident evidence does not report a materialised impact in this dimension; absence of reporting is not evidence of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "psychological-wellbeing",
+        "assessment_status": "unreported",
+        "assessment_basis": "The preserved Incident evidence does not report a materialised impact in this dimension; absence of reporting is not evidence of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "rights-liberty-equal-treatment",
+        "assessment_status": "unreported",
+        "assessment_basis": "The preserved Incident evidence does not report a materialised impact in this dimension; absence of reporting is not evidence of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "privacy-confidentiality",
+        "assessment_status": "assessed",
+        "severity": "S4",
+        "threshold_id": "VIGIL-HIM-1.0.0-PRV-S4",
+        "observed_values": [
+          {
+            "metric": "published quantitative information",
+            "qualitative_value": "GreyNoise reports at least 440 compromised PaperCut NG/MF instances across 395 identified organizations in 48 countries; 204 victims were in education; 12 organizations reached domain-admin access; 11 organizations were compromised within 26 seconds during the full campaign; one U.S. high school progressed from initial access to domain admin in seven minutes."
+          }
+        ],
+        "assessment_basis": "The campaign produced unauthorized compromise of at least 440 PaperCut instances at 395 identified organizations, credential and secret harvesting across many victims, domain-administrator access at 12 organizations, and exfiltration of full Active Directory credential databases where domain-admin access was obtained. Compromise included stolen credentials and domain secrets and, for 12 organizations, domain-administrator control with full credential-database exfiltration. GreyNoise reported that some compromised victims had not yet received follow-on activity at last observation, so the duration and eventual downstream use of many accesses remained unresolved. Threshold applied: Large-scale or highly sensitive exposure, persistent loss of confidentiality, or substantial evidenced misuse.",
+        "evidence_confidence": "medium",
+        "evidence_refs": [
+          "source_records[0]",
+          "source_records[1]",
+          "source_records[2]"
+        ]
+      },
+      {
+        "dimension_id": "financial-economic-property",
+        "assessment_status": "unreported",
+        "assessment_basis": "The preserved Incident evidence does not report a materialised impact in this dimension; absence of reporting is not evidence of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "service-operational-infrastructure",
+        "assessment_status": "unreported",
+        "assessment_basis": "The preserved Incident evidence does not report a materialised impact in this dimension; absence of reporting is not evidence of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "reputation-dignity",
+        "assessment_status": "unreported",
+        "assessment_basis": "The preserved Incident evidence does not report a materialised impact in this dimension; absence of reporting is not evidence of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "societal-democratic-environmental",
+        "assessment_status": "unreported",
+        "assessment_basis": "The preserved Incident evidence does not report a materialised impact in this dimension; absence of reporting is not evidence of no harm.",
+        "evidence_confidence": "not-assessed"
+      }
+    ]
   }
 }

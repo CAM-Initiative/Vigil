@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://example.invalid/cam/vigil/VIGIL.Schema.json",
-  "version": "5.2-incident-only",
+  "version": "5.3-incident-only",
   "purpose": "Authoritative schema-rules contract for the Incident-centred VIGIL active record corpus. INC is the sole active public record class. The taxonomy, external-governance datasets and CAM assessment remain separate subsystems. Historical FM, OBS, RESEARCH, PROP, PATCH and LEARN identifiers embedded in Incidents are provenance tokens only and do not resolve to active records. Source evidence remains embedded in each Incident; occurrence-level diagnosis, severity, taxonomy classification and provenance remain distinct. Authorship, human-review and human-verification status are governed separately by vigil/scripts/validate-authorship-provenance.py.",
   "source_evidence_rules": {
     "individual_records": [
@@ -56,7 +56,7 @@
         "incident_identity",
         "summary",
         "vigil_assessment",
-        "severity_assessment",
+        "harm_impact_assessment",
         "source_records",
         "preferred_evidence",
         "external_incident_references",
@@ -69,6 +69,7 @@
         "interpretive_provenance"
       ],
       "forbidden_top_level_fields": [
+        "severity_assessment",
         "evidence_confidence",
         "evidence_statuses",
         "preferred_evidence_status",
@@ -145,23 +146,6 @@
         "cam_compliance_status"
       ],
       "incident_cam_internal_forbidden_semantics": "Incident cam_internal may preserve a neutral governance-layer label, occurrence/taxonomy boundary note, or bounded CAM diagnostic statement. It must not contain affected/related CAM instrument routing, corpus coverage, remaining gaps, proposal or patch need/linkage, recommended CAM amendments, repair or implementation state, or validator/automation impact.",
-      "severity_assessment_required_fields": [
-        "severity",
-        "assessment_status",
-        "assessed_on",
-        "legacy_sources"
-      ],
-      "severity_assessment_incident_assessed_fields": [
-        "materialised_consequence",
-        "affected_scope",
-        "seriousness_and_persistence",
-        "quantitative_information",
-        "evidentiary_limits",
-        "band_rationale"
-      ],
-      "severity_assessment_unassessed_fields": [
-        "assessment_gap"
-      ],
       "severity_values": [
         "S1",
         "S2",
@@ -169,11 +153,6 @@
         "S4",
         "S5",
         "SU"
-      ],
-      "severity_assessment_status_values": [
-        "provisionally-migrated",
-        "incident-assessed",
-        "requires-incident-review"
       ],
       "severity_rule": "Incident severity increases from S1 to S5 and rates the maximum occurrence-level adverse harm or consequence supported by the preserved evidence: S1 minimal or no materialised adverse downstream harm; S2 low, minor and readily remediable materialised harm; S3 moderate, bounded materialised harm; S4 high or substantial materialised harm; S5 catastrophic or critical materialised harm; SU no defensible band. It is independent of taxonomy classification, source evidence status, publisher, notoriety, CAM importance and hypothetical worst-case capability. Legacy FM severity is provenance only and never determines the Incident band.",
       "severity_meanings": {
@@ -184,8 +163,34 @@
         "S5": "Catastrophic or critical: the occurrence materialised death, grave injury, grave or enduring deprivation of liberty or essential care, severe sexual or child-safety harm, very large realised loss, destructive loss of critical assets, or comparably grave and persistent rights or societal harm.",
         "SU": "Unassessed: the evidence cannot support a defensible occurrence-level band or cannot distinguish the relevant adjacent bands. Taxonomy importance, alleged potential and hypothetical worst-case harm do not cure that gap."
       },
-      "severity_analysis_rule": "The structured severity fields are substantive occurrence-level Incident diagnosis. They are not source metadata, diagnostic provenance, taxonomy metadata or workflow metadata. Every incident-assessed record separately states the materialised adverse consequence, or for S1 the observed occurrence plus the explicit absence of adverse downstream consequence; affected scope; seriousness and persistence or reversibility; available quantitative information; evidentiary limits; and a record-specific adjacent-band rationale. The fields must not be empty, circular, generic, copied from a Failure Class or inferred from legacy severity. S1 must distinguish demonstrated occurrence significance from downstream harm and must not use capability significance as a substitute for adverse consequence. SU requires requires-incident-review and a concrete assessment_gap naming the missing occurrence evidence needed to assign a band; assessed substantive fields must not be fabricated for SU.",
-      "assessment_basis_compatibility_rule": "assessment_basis is retired from canonical Incident authoring. Generated public indexes may expose severity_assessment_basis as a deterministic compatibility projection assembled from the canonical structured fields. It is not an independently authored second source of truth.",
+      "severity_analysis_rule": "The structured harm-impact rows are substantive occurrence-level Incident diagnosis. They are not source metadata, diagnostic provenance, taxonomy metadata or workflow metadata. Each row records a canonical harm dimension, assessment status, concise evidence basis and confidence. Assessed rows additionally identify the supported severity threshold and evidence references. S1 must be positively supported; missing reporting is unreported. SU requires a concrete assessment_gap and no assessed row.",
+      "harm_impact_methodology_id": "VIGIL-HIM",
+      "harm_impact_methodology_version": "1.0.0",
+      "harm_impact_derivation_rule": "highest-supported-materialised-harm",
+      "harm_impact_dimension_ids": [
+        "physical-health-safety",
+        "psychological-wellbeing",
+        "rights-liberty-equal-treatment",
+        "privacy-confidentiality",
+        "financial-economic-property",
+        "service-operational-infrastructure",
+        "reputation-dignity",
+        "societal-democratic-environmental"
+      ],
+      "harm_impact_status_values": [
+        "assessed",
+        "unreported",
+        "insufficient-evidence",
+        "not-applicable"
+      ],
+      "harm_impact_evidence_confidence_values": [
+        "low",
+        "medium",
+        "high",
+        "not-assessed"
+      ],
+      "harm_impact_rule": "Overall severity equals the numerically highest S1-S5 band among assessed materialised-harm dimensions. Dimensions are not averaged or summed, and multiple lower harms do not escalate the overall band. Unreported means relevant impact is absent from the available published evidence and must never be encoded as S1. Insufficient-evidence means some impact evidence exists but cannot be banded. Not-applicable requires affirmative contextual grounds. If no dimension can be assessed, overall severity is SU. S1 requires positive evidence of minimal or no downstream harm, not silence.",
+      "harm_impact_reference_rule": "Incident records identify the VIGIL-HIM methodology and threshold IDs but do not duplicate the external bibliography. Methodological sources resolve through vigil/references/VIGIL.ObservatoryReferenceRegistry.json.",
       "source_type_values": [
         "incident database entry",
         "news article",
@@ -487,7 +492,7 @@
   },
   "generated_register_rules": {
     "pruning": "Generated index manifests prune empty arrays, empty strings, empty objects, and nulls while preserving meaningful uncertainty values.",
-    "index_entry_contract": "VIGIL.Incidents.Index.json and VIGIL.Registry.Index.json contain deterministic Incident list metadata plus canonical record locations. Structured severity remains canonical and severity_assessment_basis is a temporary deterministic compatibility projection.",
+    "index_entry_contract": "VIGIL.Incidents.Index.json and VIGIL.Registry.Index.json contain deterministic Incident list metadata plus canonical record locations. The lightweight severity code is a deterministic projection of harm_impact_assessment.overall_severity; full matrix detail remains in the canonical Incident record.",
     "incident_evidence_facets": {
       "evidence_statuses": "Sorted unique values derived from source_records[].evidence_status.",
       "preferred_evidence_status": "Derived from the unique source_record whose source_url equals preferred_evidence.source_url; never separately maintained.",

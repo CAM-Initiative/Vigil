@@ -32,48 +32,50 @@ class IncidentRuleTests(unittest.TestCase):
     def test_retired_record_type_is_rejected(self):
         self.assertTrue(self.errors(lambda record: record.update(record_type="failure_mode")))
 
-    def test_structured_severity_components_are_required(self):
-        self.assertTrue(self.errors(lambda record: record["severity_assessment"].pop("affected_scope")))
+    def test_harm_matrix_components_are_required(self):
+        self.assertTrue(self.errors(lambda record: record["harm_impact_assessment"].pop("derivation_rule")))
 
-    def test_canonical_assessment_basis_is_rejected(self):
-        self.assertTrue(self.errors(lambda record: record["severity_assessment"].update(assessment_basis="S2 because S2")))
-
-    def test_generic_and_circular_band_reasoning_is_rejected(self):
+    def test_overall_must_equal_highest_assessed_band(self):
         def mutate(record):
-            severity = record["severity_assessment"]["severity"]
-            record["severity_assessment"]["affected_scope"] = (
-                "The assessment is confined to the people, systems, organisations, service cohort."
-            )
-            record["severity_assessment"]["band_rationale"] = (
-                f"{severity} because this is a {severity} incident."
-            )
+            record["harm_impact_assessment"]["overall_severity"] = "S1"
         errors = self.errors(mutate)
-        self.assertTrue(any("generic/template" in error for error in errors), errors)
-        self.assertTrue(any("circular" in error for error in errors), errors)
+        self.assertTrue(any("highest supported" in error for error in errors), errors)
 
-    def test_su_requires_review_gap_and_no_assessed_fields(self):
+    def test_unreported_is_not_s1(self):
         def mutate(record):
-            record["severity_assessment"] = {
-                "severity": "SU", "assessment_status": "incident-assessed",
-                "assessed_on": "2026-09-02", "legacy_sources": [],
-                "materialised_consequence": "Invented consequence",
-            }
+            row = next(item for item in record["harm_impact_assessment"]["dimensions"] if item["assessment_status"] == "unreported")
+            row["severity"] = "S1"
         errors = self.errors(mutate)
-        self.assertTrue(any("requires-incident-review" in error for error in errors), errors)
-        self.assertTrue(any("assessment_gap" in error for error in errors), errors)
-        self.assertTrue(any("must not fabricate" in error for error in errors), errors)
+        self.assertTrue(any("forbidden when status is unreported" in error for error in errors), errors)
 
-    def test_s1_no_materialised_harm_band_is_valid_and_adjacent_to_s2(self):
+    def test_threshold_must_match_dimension_and_band(self):
+        def mutate(record):
+            row = next(item for item in record["harm_impact_assessment"]["dimensions"] if item["assessment_status"] == "assessed")
+            row["threshold_id"] = "VIGIL-HIM-1.0.0-FIN-S1"
+        errors = self.errors(mutate)
+        self.assertTrue(any("does not match" in error for error in errors), errors)
+
+    def test_su_requires_gap_and_no_assessed_dimensions(self):
+        record = json.loads(
+            (VIGIL / "records" / "incidents" / "VIGIL-INC-000028.json").read_text(encoding="utf-8")
+        )
+        record["harm_impact_assessment"].pop("assessment_gap")
+        errors, _ = VALIDATOR.validate_record(Path(record["id"] + ".json"), record)
+        self.assertTrue(any("SU requires" in error for error in errors), errors)
+
+    def test_s1_requires_positive_assessed_evidence(self):
         record = json.loads(
             (VIGIL / "records" / "incidents" / "VIGIL-INC-000123.json").read_text(encoding="utf-8")
         )
         errors, _ = VALIDATOR.validate_record(Path(record["id"] + ".json"), record)
         self.assertEqual(errors, [])
-        record["severity_assessment"]["band_rationale"] = (
-            "S1 is appropriate because no adverse downstream consequence materialised in the controlled evaluation."
-        )
+        row = next(item for item in record["harm_impact_assessment"]["dimensions"] if item["assessment_status"] == "assessed")
+        row["assessment_status"] = "unreported"
+        for field in ("severity", "threshold_id", "observed_values", "evidence_refs"):
+            row.pop(field, None)
+        row["evidence_confidence"] = "not-assessed"
         errors, _ = VALIDATOR.validate_record(Path(record["id"] + ".json"), record)
-        self.assertTrue(any("adjacent band" in error for error in errors), errors)
+        self.assertTrue(any("no assessed dimension" in error for error in errors), errors)
 
     def test_legacy_operational_priority_is_rejected_recursively(self):
         def mutate(record):

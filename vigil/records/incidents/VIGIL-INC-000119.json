@@ -9,7 +9,7 @@
     "title": "Nx s1ngularity malware weaponized local AI coding CLIs during credential-harvesting supply-chain attack",
     "created": "2026-09-14",
     "updated": "2026-09-16",
-    "version": "0.1.1"
+    "version": "0.1.2"
   },
   "incident_identity": {
     "historical_event_name": "2025 Nx s1ngularity supply-chain attack",
@@ -310,37 +310,118 @@
           "SU records remain subject to the evidence gaps already stated in their canonical severity assessments."
         ],
         "review_outcome": "Severity code aligned from S2 to S4. The occurrence-level evidence and consequence threshold were re-evaluated and retained; only the ordinal direction changed."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-09-16-HIM-000119",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-5",
+        "review_date": "2026-09-16",
+        "review_scope": "Controlled full-corpus Harm Impact Matrix derivation from preserved Incident evidence; Failure Taxonomy adjudications were not reopened.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_link_and_metadata_review": true
+        },
+        "known_limitations": [
+          "The assessment is bounded to evidence already preserved in the Incident and does not infer unreported harms, losses, durations or affected populations.",
+          "Unreported dimensions remain explicitly unreported and do not represent supported absence of harm."
+        ],
+        "review_outcome": "Derived overall severity S4 using VIGIL-HIM 1.0.0. The controlling dimension is privacy-confidentiality; legacy severity was S4."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-09-16-SEVERITY-000119",
+      "review_id": "VIGIL-REVIEW-2026-09-16-HIM-000119",
       "reviewer_type": "AI analytical reviewer",
       "reviewer_platform": "OpenAI Codex",
       "reviewer_model": "GPT-5",
       "review_date": "2026-09-16",
-      "review_scope": "Corpus-wide severity-direction alignment, occurrence-level criteria re-adjudication, and legacy operational-priority audit.",
+      "review_scope": "Controlled full-corpus Harm Impact Matrix derivation from preserved Incident evidence; Failure Taxonomy adjudications were not reopened.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
         "web_link_and_metadata_review": true
       },
       "known_limitations": [
-        "The review was bounded to evidence already preserved in the Incident and did not infer unreported harms or reopen taxonomy classifications.",
-        "SU records remain subject to the evidence gaps already stated in their canonical severity assessments."
+        "The assessment is bounded to evidence already preserved in the Incident and does not infer unreported harms, losses, durations or affected populations.",
+        "Unreported dimensions remain explicitly unreported and do not represent supported absence of harm."
       ],
-      "review_outcome": "Severity code aligned from S2 to S4. The occurrence-level evidence and consequence threshold were re-evaluated and retained; only the ordinal direction changed."
+      "review_outcome": "Derived overall severity S4 using VIGIL-HIM 1.0.0. The controlling dimension is privacy-confidentiality; legacy severity was S4."
     }
   },
-  "severity_assessment": {
-    "severity": "S4",
-    "assessment_status": "incident-assessed",
-    "materialised_consequence": "Malicious Nx packages caused large-scale credential and repository exposure. GitGuardian identified 2,349 distinct secrets in 1,079 repositories during the initial exfiltration phase, with more than 1,100 then-valid credentials, and later observed 10,767 private repositories made public containing 82,901 secrets, including 11,168 then-valid secrets. AI coding CLIs contributed to file discovery on a subset of compromised systems but were not the sole or initiating exfiltration mechanism.",
-    "affected_scope": "The occurrence affected developers and organizations that installed malicious Nx package versions and whose GitHub repositories, credentials or local files were exposed. Public research establishes at least 1,079 initial secret-bearing exfiltration repositories and a later 10,767 private repositories made public, but does not establish the complete number of distinct individuals or organizations affected.",
-    "seriousness_and_persistence": "The campaign produced substantial confidentiality and security harm: valid developer, cloud, package-registry and other credentials were publicly exposed, and thousands of formerly private repositories were made public. Repository deletion and credential rotation can mitigate portions of the harm, but public exposure creates a persistent possibility that copied secrets or source material remained available to the attacker or third parties. The evidence does not establish catastrophic critical-infrastructure loss, death, grave injury or comparably irreversible S5 harm.",
-    "quantitative_information": "GitGuardian reports 2,349 distinct secrets across 1,079 initial repositories, more than 1,100 valid credentials at analysis time, and a later phase in which 10,767 private repositories were made public exposing 82,901 secrets including 11,168 valid ones. Of 366 systems where LLM tools were targeted, 95 produced the requested inventory file. Wiz reports that AI-assisted exfiltration succeeded in under one quarter of observed cases and found fewer than 100 unique valid secrets among approximately 20,000 files attributed to the AI-assisted path in its sample.",
-    "evidentiary_limits": "Public evidence does not provide a complete victim census, remediation cost, downstream credential-abuse total or durable-loss estimate. The aggregate incident impact cannot be attributed wholly to AI because the malware directly harvested credentials and files even when AI invocations failed or refused. Exact model versions and provider-side safety telemetry are unavailable.",
-    "band_rationale": "S4 rather than S3 is supported by the scale and sensitivity of realised exposure: thousands of valid credentials and more than ten thousand private repositories were publicly exposed, creating substantial multi-organisation privacy, intellectual-property and security consequences. S4 rather than S5 is appropriate because the reviewed evidence does not establish death, grave injury, destructive critical-asset loss, exceptionally large irreversible financial loss or comparably grave persistent societal harm.",
+  "harm_impact_assessment": {
+    "methodology_id": "VIGIL-HIM",
+    "methodology_version": "1.0.0",
+    "derivation_rule": "highest-supported-materialised-harm",
     "assessed_on": "2026-09-16",
-    "legacy_sources": []
+    "overall_severity": "S4",
+    "controlling_dimensions": [
+      "privacy-confidentiality"
+    ],
+    "coverage_note": "The preserved evidence supports one controlling privacy and confidentiality assessment. Other relevant harm dimensions remain unreported and do not lower or raise the derived overall severity.",
+    "dimensions": [
+      {
+        "dimension_id": "physical-health-safety",
+        "assessment_status": "unreported",
+        "assessment_basis": "The preserved Incident evidence does not report a materialised impact in this dimension; absence of reporting is not evidence of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "psychological-wellbeing",
+        "assessment_status": "unreported",
+        "assessment_basis": "The preserved Incident evidence does not report a materialised impact in this dimension; absence of reporting is not evidence of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "rights-liberty-equal-treatment",
+        "assessment_status": "unreported",
+        "assessment_basis": "The preserved Incident evidence does not report a materialised impact in this dimension; absence of reporting is not evidence of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "privacy-confidentiality",
+        "assessment_status": "assessed",
+        "severity": "S4",
+        "threshold_id": "VIGIL-HIM-1.0.0-PRV-S4",
+        "observed_values": [
+          {
+            "metric": "published quantitative information",
+            "qualitative_value": "GitGuardian reports 2,349 distinct secrets across 1,079 initial repositories, more than 1,100 valid credentials at analysis time, and a later phase in which 10,767 private repositories were made public exposing 82,901 secrets including 11,168 valid ones. Of 366 systems where LLM tools were targeted, 95 produced the requested inventory file. Wiz reports that AI-assisted exfiltration succeeded in under one quarter of observed cases and found fewer than 100 unique valid secrets among approximately 20,000 files attributed to the AI-assisted path in its sample."
+          }
+        ],
+        "assessment_basis": "Malicious Nx packages caused large-scale credential and repository exposure. GitGuardian identified 2,349 distinct secrets in 1,079 repositories during the initial exfiltration phase, with more than 1,100 then-valid credentials, and later observed 10,767 private repositories made public containing 82,901 secrets, including 11,168 then-valid secrets. AI coding CLIs contributed to file discovery on a subset of compromised systems but were not the sole or initiating exfiltration mechanism. The campaign produced substantial confidentiality and security harm: valid developer, cloud, package-registry and other credentials were publicly exposed, and thousands of formerly private repositories were made public. Repository deletion and credential rotation can mitigate portions of the harm, but public exposure creates a persistent possibility that copied secrets or source material remained available to the attacker or third parties. The evidence does not establish catastrophic critical-infrastructure loss, death, grave injury or comparably irreversible S5 harm. Threshold applied: Large-scale or highly sensitive exposure, persistent loss of confidentiality, or substantial evidenced misuse.",
+        "evidence_confidence": "medium",
+        "evidence_refs": [
+          "source_records[0]",
+          "source_records[1]",
+          "source_records[2]",
+          "source_records[3]"
+        ]
+      },
+      {
+        "dimension_id": "financial-economic-property",
+        "assessment_status": "unreported",
+        "assessment_basis": "The preserved Incident evidence does not report a materialised impact in this dimension; absence of reporting is not evidence of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "service-operational-infrastructure",
+        "assessment_status": "unreported",
+        "assessment_basis": "The preserved Incident evidence does not report a materialised impact in this dimension; absence of reporting is not evidence of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "reputation-dignity",
+        "assessment_status": "unreported",
+        "assessment_basis": "The preserved Incident evidence does not report a materialised impact in this dimension; absence of reporting is not evidence of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "societal-democratic-environmental",
+        "assessment_status": "unreported",
+        "assessment_basis": "The preserved Incident evidence does not report a materialised impact in this dimension; absence of reporting is not evidence of no harm.",
+        "evidence_confidence": "not-assessed"
+      }
+    ]
   }
 }

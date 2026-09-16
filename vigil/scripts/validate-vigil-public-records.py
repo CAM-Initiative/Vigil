@@ -62,7 +62,7 @@ def expected_projection(record: dict[str, Any]) -> dict[str, Any]:
     incident = record.get("incident_identity") if isinstance(record.get("incident_identity"), dict) else {}
     system = record.get("system_context") if isinstance(record.get("system_context"), dict) else {}
     taxonomy = record.get("taxonomy_classification") if isinstance(record.get("taxonomy_classification"), dict) else {}
-    assessment = record.get("severity_assessment") if isinstance(record.get("severity_assessment"), dict) else {}
+    assessment = record.get("harm_impact_assessment") if isinstance(record.get("harm_impact_assessment"), dict) else {}
     primary = taxonomy.get("primary_classification") if isinstance(taxonomy.get("primary_classification"), dict) else {}
     if not primary:
         legacy_primary_class = taxonomy.get("primary_class")
@@ -80,7 +80,7 @@ def expected_projection(record: dict[str, Any]) -> dict[str, Any]:
         "title": identity.get("title") or record.get("summary") or record_id,
         "summary": record.get("summary"),
         "platform_or_vendor": system.get("platform_or_vendor"),
-        "severity": assessment.get("severity"),
+        "severity": assessment.get("overall_severity"),
         "classification_status": taxonomy.get("classification_status"),
         "classification_role": taxonomy.get("classification_role"),
         "primary_class_id": primary.get("class_id"),
@@ -138,7 +138,7 @@ def validate_generated_incident_projection(
 
         for forbidden in (
             "source_records",
-            "severity_assessment",
+            "harm_impact_assessment",
             "primary_classification",
             "secondary_classifications",
             "diagnostic_provenance_summary",

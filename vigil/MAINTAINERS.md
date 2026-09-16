@@ -49,7 +49,7 @@ The taxonomy migration assurance ledger at `vigil/taxonomy/migration/Caelestis.L
 
 `source_records` is the only canonical evidence block. Preserve source identity, URLs, dates, evidence modality, access state, source residence, source role and claim-relative evidence status. Do not infer inaccessible facts or represent repository acceptance as human verification.
 
-Structured Incident severity is substantive occurrence-level diagnosis. It is not source metadata, diagnostic provenance, taxonomy metadata or workflow priority. `severity_assessment_basis` may exist only as a deterministic generated compatibility projection.
+Structured Incident severity is derived through `harm_impact_assessment` and VIGIL-HIM. Overall severity is the highest supported assessed materialised-harm band; dimensions are never averaged or summed. `unreported` is not S1, and SU applies when no dimension can be defensibly banded. Severity remains independent of source metadata, diagnostic provenance, taxonomy classification and workflow priority.
 
 ## Generated outputs
 

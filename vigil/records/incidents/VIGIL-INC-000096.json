@@ -9,7 +9,7 @@
     "title": "DeepSeek exposed an unauthenticated database containing chat histories and secrets",
     "created": "2026-09-08",
     "updated": "2026-09-16",
-    "version": "0.1.3"
+    "version": "0.1.4"
   },
   "incident_identity": {
     "historical_event_name": "DeepSeek exposed ClickHouse database",
@@ -219,37 +219,116 @@
           "SU records remain subject to the evidence gaps already stated in their canonical severity assessments."
         ],
         "review_outcome": "Severity code aligned from S2 to S4. The occurrence-level evidence and consequence threshold were re-evaluated and retained; only the ordinal direction changed."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-09-16-HIM-000096",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-5",
+        "review_date": "2026-09-16",
+        "review_scope": "Controlled full-corpus Harm Impact Matrix derivation from preserved Incident evidence; Failure Taxonomy adjudications were not reopened.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_link_and_metadata_review": true
+        },
+        "known_limitations": [
+          "The assessment is bounded to evidence already preserved in the Incident and does not infer unreported harms, losses, durations or affected populations.",
+          "Unreported dimensions remain explicitly unreported and do not represent supported absence of harm."
+        ],
+        "review_outcome": "Derived overall severity S4 using VIGIL-HIM 1.0.0. The controlling dimension is service-operational-infrastructure; legacy severity was S4."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-09-16-SEVERITY-000096",
+      "review_id": "VIGIL-REVIEW-2026-09-16-HIM-000096",
       "reviewer_type": "AI analytical reviewer",
       "reviewer_platform": "OpenAI Codex",
       "reviewer_model": "GPT-5",
       "review_date": "2026-09-16",
-      "review_scope": "Corpus-wide severity-direction alignment, occurrence-level criteria re-adjudication, and legacy operational-priority audit.",
+      "review_scope": "Controlled full-corpus Harm Impact Matrix derivation from preserved Incident evidence; Failure Taxonomy adjudications were not reopened.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
         "web_link_and_metadata_review": true
       },
       "known_limitations": [
-        "The review was bounded to evidence already preserved in the Incident and did not infer unreported harms or reopen taxonomy classifications.",
-        "SU records remain subject to the evidence gaps already stated in their canonical severity assessments."
+        "The assessment is bounded to evidence already preserved in the Incident and does not infer unreported harms, losses, durations or affected populations.",
+        "Unreported dimensions remain explicitly unreported and do not represent supported absence of harm."
       ],
-      "review_outcome": "Severity code aligned from S2 to S4. The occurrence-level evidence and consequence threshold were re-evaluated and retained; only the ordinal direction changed."
+      "review_outcome": "Derived overall severity S4 using VIGIL-HIM 1.0.0. The controlling dimension is service-operational-infrastructure; legacy severity was S4."
     }
   },
-  "severity_assessment": {
-    "severity": "S4",
-    "assessment_status": "incident-assessed",
-    "materialised_consequence": "More than one million log lines containing chat histories, secret keys and backend details were exposed through an unauthenticated internet-accessible database with full database-operation capability.",
-    "affected_scope": "DeepSeek backend data and user conversations present in the exposed database; the number of unique affected users is not established.",
-    "seriousness_and_persistence": "The exposure involved sensitive user and operational data and full database access. DeepSeek remediated promptly after notification, and no confirmed malicious exploitation is established.",
-    "quantitative_information": "Wiz reported more than one million exposed log lines and two publicly reachable ClickHouse endpoints.",
-    "evidentiary_limits": "The evidence does not establish that an unauthorised third party accessed or misused the exposed database before Wiz discovered it. The complete number of affected users is not public. VIGIL does not infer a model-level failure from an infrastructure access-control misconfiguration.",
-    "band_rationale": "S4 rather than S5 is appropriate because no catastrophic, irreversible or confirmed mass exploitation consequence is established. S4 rather than S3 is appropriate because the realised exposure included sensitive user chats, secrets and full database control at substantial scale.",
+  "harm_impact_assessment": {
+    "methodology_id": "VIGIL-HIM",
+    "methodology_version": "1.0.0",
+    "derivation_rule": "highest-supported-materialised-harm",
     "assessed_on": "2026-09-16",
-    "legacy_sources": []
+    "overall_severity": "S4",
+    "controlling_dimensions": [
+      "service-operational-infrastructure"
+    ],
+    "coverage_note": "The preserved evidence supports one controlling service, operational and infrastructure assessment. Other relevant harm dimensions remain unreported and do not lower or raise the derived overall severity.",
+    "dimensions": [
+      {
+        "dimension_id": "physical-health-safety",
+        "assessment_status": "unreported",
+        "assessment_basis": "The preserved Incident evidence does not report a materialised impact in this dimension; absence of reporting is not evidence of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "psychological-wellbeing",
+        "assessment_status": "unreported",
+        "assessment_basis": "The preserved Incident evidence does not report a materialised impact in this dimension; absence of reporting is not evidence of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "rights-liberty-equal-treatment",
+        "assessment_status": "unreported",
+        "assessment_basis": "The preserved Incident evidence does not report a materialised impact in this dimension; absence of reporting is not evidence of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "privacy-confidentiality",
+        "assessment_status": "unreported",
+        "assessment_basis": "The preserved Incident evidence does not report a materialised impact in this dimension; absence of reporting is not evidence of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "financial-economic-property",
+        "assessment_status": "unreported",
+        "assessment_basis": "The preserved Incident evidence does not report a materialised impact in this dimension; absence of reporting is not evidence of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "service-operational-infrastructure",
+        "assessment_status": "assessed",
+        "severity": "S4",
+        "threshold_id": "VIGIL-HIM-1.0.0-SOI-S4",
+        "observed_values": [
+          {
+            "metric": "published quantitative information",
+            "qualitative_value": "Wiz reported more than one million exposed log lines and two publicly reachable ClickHouse endpoints."
+          }
+        ],
+        "assessment_basis": "More than one million log lines containing chat histories, secret keys and backend details were exposed through an unauthenticated internet-accessible database with full database-operation capability. The exposure involved sensitive user and operational data and full database access. DeepSeek remediated promptly after notification, and no confirmed malicious exploitation is established. Threshold applied: Essential or critical operation disrupted for more than 24 hours, multi-organisation or multi-jurisdiction impact, exceeded evidenced maximum tolerable downtime, or recovery requiring substantial external intervention.",
+        "evidence_confidence": "medium",
+        "evidence_refs": [
+          "source_records[0]",
+          "source_records[1]"
+        ]
+      },
+      {
+        "dimension_id": "reputation-dignity",
+        "assessment_status": "unreported",
+        "assessment_basis": "The preserved Incident evidence does not report a materialised impact in this dimension; absence of reporting is not evidence of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "societal-democratic-environmental",
+        "assessment_status": "unreported",
+        "assessment_basis": "The preserved Incident evidence does not report a materialised impact in this dimension; absence of reporting is not evidence of no harm.",
+        "evidence_confidence": "not-assessed"
+      }
+    ]
   }
 }

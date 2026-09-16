@@ -22,7 +22,7 @@ class IncidentBuilderTests(unittest.TestCase):
     def test_incident_index_is_a_lightweight_catalogue_projection(self):
         record = BUILDER.load(BUILDER.INCIDENTS / "VIGIL-INC-000081.json")
         entry = BUILDER.incident_entry(BUILDER.INCIDENTS / "VIGIL-INC-000081.json", record)
-        self.assertEqual(entry["severity"], record["severity_assessment"]["severity"])
+        self.assertEqual(entry["severity"], record["harm_impact_assessment"]["overall_severity"])
         self.assertEqual(entry["classification_status"], record["taxonomy_classification"]["classification_status"])
         self.assertEqual(entry.get("classification_role"), record["taxonomy_classification"].get("classification_role"))
         self.assertEqual(entry["record_version"], record["record_identity"]["version"])
@@ -30,7 +30,7 @@ class IncidentBuilderTests(unittest.TestCase):
         self.assertIn("search_terms", entry)
         self.assertTrue(entry["search_terms"])
         for canonical_detail in (
-            "severity_assessment",
+            "harm_impact_assessment",
             "primary_classification",
             "secondary_classifications",
             "source_records",
