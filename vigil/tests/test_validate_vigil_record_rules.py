@@ -93,7 +93,7 @@ class IncidentRuleTests(unittest.TestCase):
         errors, _ = VALIDATOR.validate_record(Path(record["id"] + ".json"), record)
         self.assertTrue(any("invariant_exemplar" in error for error in errors), errors)
 
-    def test_historical_provenance_tokens_do_not_resolve(self):
+    def test_retired_legacy_structures_are_rejected(self):
         def mutate(record):
             record["legacy_provenance"] = [{
                 "legacy_id": "VIGIL-2026-FM-9999",
@@ -101,7 +101,22 @@ class IncidentRuleTests(unittest.TestCase):
                 "relationship": "governance-analysis-source",
                 "preservation_note": "Historical derivation token; no live target is required.",
             }]
-        self.assertEqual(self.errors(mutate), [])
+        errors = self.errors(mutate)
+        self.assertTrue(any("forbidden Incident fields" in error for error in errors), errors)
+
+    def test_nested_migration_source_metadata_is_rejected(self):
+        def mutate(record):
+            record["source_records"][0]["migration_source_provenance"] = {
+                "legacy_id": "VIGIL-2026-FM-9999"
+            }
+        errors = self.errors(mutate)
+        self.assertTrue(any("forbidden retired Incident fields" in error for error in errors), errors)
+
+    def test_retired_research_record_link_is_rejected(self):
+        def mutate(record):
+            record["research_references"] = ["VIGIL-2026-RESEARCH-0001"]
+        errors = self.errors(mutate)
+        self.assertTrue(any("retired VIGIL record ID" in error for error in errors), errors)
 
     def test_source_status_and_preferred_source_are_enforced(self):
         self.assertTrue(self.errors(lambda record: record["source_records"][0].pop("evidence_status")))

@@ -145,7 +145,9 @@ def validate_generated_incident_projection(
             "interpretive_provenance_summary",
             "evidence_access_summary",
             "external_incident_references",
-            "legacy_provenance",
+            "related_incidents",
+            "research_references",
+            "standards_and_regulatory_references",
         ):
             if forbidden in entry:
                 errors.append(f"{path}: {record_id} embeds canonical detail field {forbidden}")

@@ -1,14 +1,14 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://example.invalid/cam/vigil/VIGIL.Schema.json",
-  "version": "5.3-incident-only",
-  "purpose": "Authoritative schema-rules contract for the Incident-centred VIGIL active record corpus. INC is the sole active public record class. The taxonomy, external-governance datasets and CAM assessment remain separate subsystems. Historical FM, OBS, RESEARCH, PROP, PATCH and LEARN identifiers embedded in Incidents are provenance tokens only and do not resolve to active records. Source evidence remains embedded in each Incident; occurrence-level diagnosis, severity, taxonomy classification and provenance remain distinct. Authorship, human-review and human-verification status are governed separately by vigil/scripts/validate-authorship-provenance.py.",
+  "version": "5.4-incident-legacy-retired",
+  "purpose": "Authoritative schema-rules contract for the Incident-centred VIGIL active record corpus. INC is the sole active public record class. The taxonomy, external-governance datasets and CAM assessment remain separate subsystems. Retired FM, OBS, RESEARCH, PROP, PATCH and LEARN records and migration artefacts remain recoverable through Git history and are not carried as active Incident data. Source evidence remains embedded in each Incident; occurrence-level diagnosis, severity, taxonomy classification and provenance remain distinct. Authorship, human-review and human-verification status are governed separately by vigil/scripts/validate-authorship-provenance.py.",
   "source_evidence_rules": {
     "individual_records": [
       "source_records is the only canonical source-evidence block in individual records.",
       "source_data is forbidden in individual records.",
       "source_data.sources is forbidden in individual records.",
-      "linked_records.external_references must not duplicate the primary evidence source already held in source_records.",
+      "external_incident_references is the canonical location for external incident-registry relationships and must not duplicate primary evidence already held in source_records.",
       "Source evidence belongs in source_records within the substantive record it evidences; it is not a separate VIGIL record class.",
       "Internal curator instructions such as 'add this incident to' or 'do not amend in this pass' are forbidden in public record content.",
       "Each source record must state evidence_modality.",
@@ -63,8 +63,7 @@
         "system_context",
         "jurisdictional_context",
         "taxonomy_classification",
-        "linked_records",
-        "legacy_provenance",
+        "related_incidents",
         "diagnostic_provenance",
         "interpretive_provenance"
       ],
@@ -77,7 +76,17 @@
         "repair_status",
         "remaining_gaps",
         "proposal_needed",
-        "patch_note_needed"
+        "patch_note_needed",
+        "legacy_provenance",
+        "legacy_governance_state",
+        "linked_records"
+      ],
+      "forbidden_nested_fields": [
+        "migration_source_provenance",
+        "legacy_source_type",
+        "additional_legacy_source_origins",
+        "legacy_diagnostic_sources",
+        "legacy_source_id"
       ],
       "legacy_priority_fields": [
         "priority",
@@ -133,8 +142,11 @@
         "not-assessed"
       ],
       "evidence_status_rule": "Evidence status is assessed for each source and the proposition for which it is cited. It is not a publisher reputation score or an Incident-level confidence aggregate. evidence_status accepts only the controlled enum; evidence_status_basis explains the bounded assignment. Incident-level evidence_confidence is retired and forbidden.",
-      "legacy_rule": "legacy_provenance preserves historical FM or OBS contribution identifiers and explanatory payloads embedded during migration. These values are historical provenance tokens only: validators, builders and interfaces must not resolve them to active files. An empty array identifies a native Incident with no legacy contributor.",
-      "repair_layer_boundary": "An Incident preserves historical evidence, occurrence-level diagnosis and taxonomy classification. Current CAM corpus coverage, gap, proposal, patch, repair and implementation state are downstream mutable assessments and must not be authored as Incident-native fields. cam_internal is optional and, when present on an Incident, is limited to bounded diagnostic context that does not assess CAM corpus coverage or repair state. Historical repair material may remain only inside explicitly bounded legacy or migration provenance and must not be projected as current Incident state.",
+      "relationship_rule": "related_incidents is the sole active VIGIL-record relationship field. It contains only unique canonical VIGIL-INC-NNNNNN identifiers and must not contain self-links or retired record-class identifiers.",
+      "research_reference_rule": "research_references may preserve current external research citations that do not require full source-evidence treatment. Retired VIGIL RESEARCH identifiers are forbidden. Any research relied on as Incident evidence belongs in source_records.",
+      "standards_and_regulatory_reference_rule": "standards_and_regulatory_references may preserve current external standards or regulatory context as non-evidentiary cross-references. Any source relied on as Incident evidence belongs in source_records.",
+      "legacy_retirement_rule": "Legacy record classes and migration artefacts remain recoverable through Git history. Active Incident records contain only information required by the current VIGIL data model.",
+      "repair_layer_boundary": "An Incident preserves historical evidence, occurrence-level diagnosis and taxonomy classification. Current CAM corpus coverage, gap, proposal, patch, repair and implementation state are downstream mutable assessments and must not be authored as Incident-native fields. cam_internal is optional and, when present on an Incident, is limited to bounded diagnostic context that does not assess CAM corpus coverage or repair state.",
       "incident_cam_internal_allowed_fields": [
         "governance_layer",
         "routing_note",
@@ -215,7 +227,7 @@
         "observation record",
         "web page"
       ],
-      "source_type_rule": "source_type identifies the publication or artefact genre. Publisher authority, hosting platform, evidence role, source residence, modality and primary-artefact access remain separate fields. A migrated non-canonical value is retained only in legacy_source_type.",
+      "source_type_rule": "source_type identifies the publication or artefact genre. Publisher authority, hosting platform, evidence role, source residence, modality and primary-artefact access remain separate fields. Active records must use a canonical source_type value.",
       "public_narrative_rule": "summary states what happened; vigil_assessment.factual_basis states what the preserved evidence establishes; taxonomy classification basis and migration/process notes must not be substituted for either field.",
       "classification_role_values": [
         "failure-occurrence",
@@ -303,7 +315,7 @@
         "record_identity",
         "summary",
         "source_records",
-        "linked_records"
+        "related_incidents"
       ]
     },
     "source_residence": {
@@ -499,10 +511,12 @@
       "aggregation_rule": "Generated Incident indexes must not flatten source assessments into narrative text or synthesize an overall confidence value."
     }
   },
-  "linked_records_rules": {
-    "incident_links": "related_incidents may resolve to active canonical Incident IDs.",
-    "external_standards": "standards and external_references preserve external context without creating another VIGIL record class.",
-    "historical_tokens": "FM, OBS, RESEARCH, PROP, PATCH and LEARN identifiers retained in linked_records or provenance are historical tokens only. They are not active resolution dependencies and must not be treated as current public records."
+  "incident_relationship_rules": {
+    "incident_links": "related_incidents resolves only to active canonical Incident IDs.",
+    "external_registry_links": "external_incident_references is the sole canonical location for external incident-registry relationships.",
+    "research_links": "research_references preserves current external research citations only; evidentiary reliance remains in source_records.",
+    "standards_and_regulatory_links": "standards_and_regulatory_references preserves current external standards and regulatory context only; evidentiary reliance remains in source_records.",
+    "retired_links": "Active Incident records must not carry FM, OBS, RESEARCH, PROP, PATCH or LEARN relationship structures or identifiers. Historical recovery is through Git history."
   },
   "record_state_rules": {
     "purpose": "Top-level record_state is the Incident maintainer workflow state. It is independent of occurrence severity, taxonomy classification and external ecosystem conditions.",

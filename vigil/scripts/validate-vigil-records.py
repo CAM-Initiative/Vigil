@@ -18,7 +18,7 @@ SCHEMA_PATH = VIGIL / "VIGIL.Schema.json"
 HARM_MATRIX_PATH = VIGIL / "methodologies" / "VIGIL.HarmImpactMatrix.v1.0.0.json"
 TAXONOMY_INDEX = VIGIL / "taxonomy" / "VIGIL.FailureTaxonomy.Index.json"
 INCIDENT_ID = re.compile(r"^VIGIL-INC-\d{6}$")
-HISTORICAL_ID = re.compile(r"^VIGIL-\d{4}-(?:FM|OBS|RESEARCH|PROP|PATCH|LEARN)-\d{4}$")
+HISTORICAL_ID = re.compile(r"VIGIL-\d{4}-(?:FM|OBS|RESEARCH|PROP|PATCH|LEARN)-\d{4}")
 RETIRED_RECORD_DIRS = {"failures", "observations", "research", "proposals", "patches", "learn"}
 RETIRED_INDEXES = {
     "VIGIL.Failures.Index.json", "VIGIL.Observations.Index.json", "VIGIL.Research.Index.json",
@@ -402,23 +402,54 @@ def validate_provenance(path: Path, record: dict[str, Any], errors: list[str]) -
     if not isinstance(current, dict) or current.get("review_id") not in seen:
         errors.append(f"{path}: current_ai_review must resolve to review_history")
 
-def validate_legacy_provenance(path: Path, record: dict[str, Any], errors: list[str]) -> None:
-    legacy = record.get("legacy_provenance")
-    if not isinstance(legacy, list):
-        errors.append(f"{path}: legacy_provenance must be an array")
-        return
-    for index, item in enumerate(legacy):
-        if not isinstance(item, dict):
-            errors.append(f"{path}: legacy_provenance[{index}] must be an object")
-            continue
-        if item.get("legacy_type") not in {"failure_mode", "observation"}:
-            errors.append(f"{path}: legacy_provenance[{index}].legacy_type is invalid")
-        if not isinstance(item.get("legacy_id"), str) or not HISTORICAL_ID.fullmatch(item["legacy_id"]):
-            errors.append(f"{path}: legacy_provenance[{index}].legacy_id is malformed")
-        for field in ("relationship", "preservation_note"):
-            if not non_empty(item.get(field)):
-                errors.append(f"{path}: legacy_provenance[{index}].{field} must be non-empty")
-    # Historical tokens deliberately are not resolved to retired record files.
+def validate_relationships_and_references(
+    path: Path,
+    record: dict[str, Any],
+    known_ids: set[str] | None,
+    errors: list[str],
+) -> None:
+    record_id = record.get("id")
+    related = record.get("related_incidents")
+    if not isinstance(related, list):
+        errors.append(f"{path}: related_incidents must be an array")
+    else:
+        string_ids = [item for item in related if isinstance(item, str)]
+        if len(string_ids) != len(set(string_ids)):
+            errors.append(f"{path}: related_incidents must not contain duplicates")
+        for index, incident_id in enumerate(related):
+            if not isinstance(incident_id, str) or not INCIDENT_ID.fullmatch(incident_id):
+                errors.append(f"{path}: related_incidents[{index}] must use VIGIL-INC-NNNNNN")
+            elif incident_id == record_id:
+                errors.append(f"{path}: related_incidents must not contain a self-link")
+            elif known_ids is not None and incident_id not in known_ids:
+                errors.append(f"{path}: related_incidents[{index}] does not resolve to an active Incident")
+
+    research = record.get("research_references")
+    if research is not None:
+        if not isinstance(research, list) or not research:
+            errors.append(f"{path}: research_references must be a non-empty array when present")
+        else:
+            for index, citation in enumerate(research):
+                if not non_empty(citation):
+                    errors.append(f"{path}: research_references[{index}] must be a non-empty string")
+                elif HISTORICAL_ID.search(citation):
+                    errors.append(f"{path}: research_references[{index}] contains a retired VIGIL record ID")
+
+    standards = record.get("standards_and_regulatory_references")
+    if standards is not None:
+        if not isinstance(standards, list) or not standards:
+            errors.append(f"{path}: standards_and_regulatory_references must be a non-empty array when present")
+        else:
+            for index, reference in enumerate(standards):
+                valid = non_empty(reference) or (isinstance(reference, dict) and bool(reference))
+                if not valid:
+                    errors.append(
+                        f"{path}: standards_and_regulatory_references[{index}] must be a non-empty string or object"
+                    )
+                elif HISTORICAL_ID.search(json.dumps(reference, ensure_ascii=False)):
+                    errors.append(
+                        f"{path}: standards_and_regulatory_references[{index}] contains a retired VIGIL record ID"
+                    )
 
 
 def validate_record(
@@ -431,7 +462,6 @@ def validate_record(
     allowed_products: set[str] | None = None,
     schema_path: Path | None = None,
 ) -> tuple[list[str], list[str]]:
-    del known_ids
     errors = errors if errors is not None else []
     warnings = warnings if warnings is not None else []
     contract = incident_contract(schema_path)
@@ -450,6 +480,9 @@ def validate_record(
     forbidden = sorted(field for field in contract["forbidden_top_level_fields"] if field in record)
     if forbidden:
         errors.append(f"{path}: forbidden Incident fields: {', '.join(forbidden)}")
+    retired_nested = sorted(field for field in contract.get("forbidden_nested_fields", []) if contains_key(record, field))
+    if retired_nested:
+        errors.append(f"{path}: forbidden retired Incident fields: {', '.join(retired_nested)}")
     for field in contract.get("legacy_priority_fields", []):
         if contains_key(record, field):
             errors.append(f"{path}: legacy operational priority field {field!r} is prohibited")
@@ -499,7 +532,7 @@ def validate_record(
     validate_source_records(path, record, errors)
     validate_incident_taxonomy(path, record, errors)
     validate_provenance(path, record, errors)
-    validate_legacy_provenance(path, record, errors)
+    validate_relationships_and_references(path, record, known_ids, errors)
     return errors, warnings
 
 
@@ -521,18 +554,22 @@ def validate(root: Path | None = None, schema_path: Path | None = None) -> int:
             if (VIGIL / filename).exists():
                 errors.append(f"{VIGIL / filename}: retired generated index must not exist")
     paths = record_files(root)
-    ids: set[str] = set()
+    loaded: list[tuple[Path, dict[str, Any]]] = []
     for path in paths:
         try:
             record = load_json(path)
         except Exception as exc:  # noqa: BLE001
             errors.append(f"{path}: unable to read JSON: {exc}")
             continue
+        loaded.append((path, record))
+    ids: set[str] = set()
+    for path, record in loaded:
         record_id = record.get("id")
         if isinstance(record_id, str):
             if record_id in ids:
                 errors.append(f"{path}: duplicate Incident id {record_id}")
             ids.add(record_id)
+    for path, record in loaded:
         validate_record(path, record, ids, errors, warnings, schema_path=schema_path)
     for warning in warnings:
         print(f"WARNING: {warning}", file=sys.stderr)

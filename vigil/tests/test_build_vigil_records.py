@@ -38,7 +38,9 @@ class IncidentBuilderTests(unittest.TestCase):
             "interpretive_provenance_summary",
             "evidence_access_summary",
             "external_incident_references",
-            "legacy_provenance",
+            "related_incidents",
+            "research_references",
+            "standards_and_regulatory_references",
         ):
             self.assertNotIn(canonical_detail, entry)
 

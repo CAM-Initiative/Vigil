@@ -29,8 +29,8 @@ GENERATED_PROVENANCE = {
     "human_verification_status": "not-verified",
 }
 PRESERVE_EMPTY_KEYS = {
-    "legacy_sources", "legacy_provenance", "secondary_classifications",
-    "external_incident_references",
+    "legacy_sources", "secondary_classifications", "external_incident_references",
+    "related_incidents",
 }
 
 
