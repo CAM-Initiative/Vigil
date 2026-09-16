@@ -1,14 +1,14 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://example.invalid/cam/vigil/VIGIL.Schema.json",
-  "version": "5.1-incident-only",
-  "purpose": "Authoritative schema-rules contract for the Incident-centred VIGIL active record corpus. INC is the sole active public record class. The taxonomy, external-governance datasets and CAM assessment remain separate subsystems. Historical FM, OBS, RESEARCH, PROP, PATCH and LEARN identifiers embedded in Incidents are provenance tokens only and do not resolve to active records. Source evidence remains embedded in each Incident; occurrence-level diagnosis, severity, taxonomy classification and provenance remain distinct. Authorship, human-review and human-verification status are governed separately by vigil/scripts/validate-authorship-provenance.py.",
+  "version": "5.5-him-evidence-derived",
+  "purpose": "Authoritative schema-rules contract for the Incident-centred VIGIL active record corpus. INC is the sole active public record class. The taxonomy, external-governance datasets and CAM assessment remain separate subsystems. Retired FM, OBS, RESEARCH, PROP, PATCH and LEARN records and migration artefacts remain recoverable through Git history and are not carried as active Incident data. Source evidence remains embedded in each Incident; occurrence-level diagnosis, severity, taxonomy classification and provenance remain distinct. Authorship, human-review and human-verification status are governed separately by vigil/scripts/validate-authorship-provenance.py.",
   "source_evidence_rules": {
     "individual_records": [
       "source_records is the only canonical source-evidence block in individual records.",
       "source_data is forbidden in individual records.",
       "source_data.sources is forbidden in individual records.",
-      "linked_records.external_references must not duplicate the primary evidence source already held in source_records.",
+      "external_incident_references is the canonical location for external incident-registry relationships and must not duplicate primary evidence already held in source_records.",
       "Source evidence belongs in source_records within the substantive record it evidences; it is not a separate VIGIL record class.",
       "Internal curator instructions such as 'add this incident to' or 'do not amend in this pass' are forbidden in public record content.",
       "Each source record must state evidence_modality.",
@@ -56,19 +56,19 @@
         "incident_identity",
         "summary",
         "vigil_assessment",
-        "severity_assessment",
+        "harm_impact_assessment",
         "source_records",
         "preferred_evidence",
         "external_incident_references",
         "system_context",
         "jurisdictional_context",
         "taxonomy_classification",
-        "linked_records",
-        "legacy_provenance",
+        "related_incidents",
         "diagnostic_provenance",
         "interpretive_provenance"
       ],
       "forbidden_top_level_fields": [
+        "severity_assessment",
         "evidence_confidence",
         "evidence_statuses",
         "preferred_evidence_status",
@@ -76,8 +76,27 @@
         "repair_status",
         "remaining_gaps",
         "proposal_needed",
-        "patch_note_needed"
+        "patch_note_needed",
+        "legacy_provenance",
+        "legacy_governance_state",
+        "linked_records"
       ],
+      "forbidden_nested_fields": [
+        "migration_source_provenance",
+        "legacy_source_type",
+        "additional_legacy_source_origins",
+        "legacy_diagnostic_sources",
+        "legacy_source_id"
+      ],
+      "legacy_priority_fields": [
+        "priority",
+        "triage",
+        "triage_priority",
+        "response_priority",
+        "urgency",
+        "escalation_priority"
+      ],
+      "legacy_priority_rule": "Operational priority and triage classifications are not part of the canonical Incident model. Legacy P0/P1/P2/P3/PN metadata and equivalent priority fields are prohibited throughout active Incident records because they have no current methodological role. Evidence-review triage may be described narratively, but it must not create a second incident-ranking scale.",
       "identity_rule": "The immutable VIGIL-INC-NNNNNN identity and plain-English historical event title identify the occurrence. Event dates belong in incident_identity and never in the canonical ID.",
       "interpretation_rule": "summary and vigil_assessment.factual_basis preserve the historical account; vigil_assessment.governance_interpretation preserves VIGIL analysis; taxonomy_classification preserves reusable class mappings; provenance fields preserve review authority and limitations.",
       "date_precision_values": [
@@ -123,8 +142,11 @@
         "not-assessed"
       ],
       "evidence_status_rule": "Evidence status is assessed for each source and the proposition for which it is cited. It is not a publisher reputation score or an Incident-level confidence aggregate. evidence_status accepts only the controlled enum; evidence_status_basis explains the bounded assignment. Incident-level evidence_confidence is retired and forbidden.",
-      "legacy_rule": "legacy_provenance preserves historical FM or OBS contribution identifiers and explanatory payloads embedded during migration. These values are historical provenance tokens only: validators, builders and interfaces must not resolve them to active files. An empty array identifies a native Incident with no legacy contributor.",
-      "repair_layer_boundary": "An Incident preserves historical evidence, occurrence-level diagnosis and taxonomy classification. Current CAM corpus coverage, gap, proposal, patch, repair and implementation state are downstream mutable assessments and must not be authored as Incident-native fields. cam_internal is optional and, when present on an Incident, is limited to bounded diagnostic context that does not assess CAM corpus coverage or repair state. Historical repair material may remain only inside explicitly bounded legacy or migration provenance and must not be projected as current Incident state.",
+      "relationship_rule": "related_incidents is the sole active VIGIL-record relationship field. It contains only unique canonical VIGIL-INC-NNNNNN identifiers and must not contain self-links or retired record-class identifiers.",
+      "research_reference_rule": "research_references may preserve current external research citations that do not require full source-evidence treatment. Retired VIGIL RESEARCH identifiers are forbidden. Any research relied on as Incident evidence belongs in source_records.",
+      "standards_and_regulatory_reference_rule": "standards_and_regulatory_references may preserve current external standards or regulatory context as non-evidentiary cross-references. Any source relied on as Incident evidence belongs in source_records.",
+      "legacy_retirement_rule": "Legacy record classes and migration artefacts remain recoverable through Git history. Active Incident records contain only information required by the current VIGIL data model.",
+      "repair_layer_boundary": "An Incident preserves historical evidence, occurrence-level diagnosis and taxonomy classification. Current CAM corpus coverage, gap, proposal, patch, repair and implementation state are downstream mutable assessments and must not be authored as Incident-native fields. cam_internal is optional and, when present on an Incident, is limited to bounded diagnostic context that does not assess CAM corpus coverage or repair state.",
       "incident_cam_internal_allowed_fields": [
         "governance_layer",
         "routing_note",
@@ -136,23 +158,6 @@
         "cam_compliance_status"
       ],
       "incident_cam_internal_forbidden_semantics": "Incident cam_internal may preserve a neutral governance-layer label, occurrence/taxonomy boundary note, or bounded CAM diagnostic statement. It must not contain affected/related CAM instrument routing, corpus coverage, remaining gaps, proposal or patch need/linkage, recommended CAM amendments, repair or implementation state, or validator/automation impact.",
-      "severity_assessment_required_fields": [
-        "severity",
-        "assessment_status",
-        "assessed_on",
-        "legacy_sources"
-      ],
-      "severity_assessment_incident_assessed_fields": [
-        "materialised_consequence",
-        "affected_scope",
-        "seriousness_and_persistence",
-        "quantitative_information",
-        "evidentiary_limits",
-        "band_rationale"
-      ],
-      "severity_assessment_unassessed_fields": [
-        "assessment_gap"
-      ],
       "severity_values": [
         "S1",
         "S2",
@@ -161,22 +166,48 @@
         "S5",
         "SU"
       ],
-      "severity_assessment_status_values": [
-        "provisionally-migrated",
-        "incident-assessed",
-        "requires-incident-review"
-      ],
-      "severity_rule": "Incident severity rates the maximum occurrence-level adverse harm or consequence supported by the preserved evidence: S1 critical materialised harm; S2 high materialised harm; S3 moderate, bounded materialised harm; S4 low, minor and readily remediable materialised harm; S5 a materially observed occurrence with no materialised adverse downstream consequence; SU no defensible band. It is independent of taxonomy classification, source evidence status, workflow priority, publisher, notoriety, CAM importance and hypothetical worst-case capability. Legacy FM severity is provenance only and never determines the Incident band.",
+      "severity_rule": "Incident severity increases from S1 to S5 and rates the maximum occurrence-level adverse harm or consequence supported by the preserved evidence: S1 minimal or no materialised adverse downstream harm; S2 low, minor and readily remediable materialised harm; S3 moderate, bounded materialised harm; S4 high or substantial materialised harm; S5 catastrophic or critical materialised harm; SU no defensible band. It is independent of taxonomy classification, source evidence status, publisher, notoriety, CAM importance and hypothetical worst-case capability. Legacy FM severity is provenance only and never determines the Incident band.",
       "severity_meanings": {
-        "S1": "Critical: the occurrence materialised death, grave injury, grave or enduring deprivation of liberty or essential care, severe sexual or child-safety harm, very large realised loss, destructive loss of critical assets, or comparably grave and persistent rights or societal harm.",
-        "S2": "High: the occurrence materialised substantial harm to a person, group, organisation or important function, including significant financial, property, privacy, rights, health or operational consequences, but the supported scope, seriousness or reversibility remains below S1.",
+        "S1": "Minimal or no materialised adverse downstream harm: the occurrence materially demonstrates governance-relevant behaviour, a control failure, or a successful invariant under bounded conditions, but the preserved evidence establishes no resulting adverse harm, loss, disruption, rights impact, service impairment, or other external downstream consequence. Controlled evaluations and simulations belong here when the observed mechanism is real within the evaluation but no adverse consequence materialises beyond it.",
+        "S2": "Low: the occurrence materialised only minor, short-lived, localised or readily remedied inconvenience, expense, presentation error, coordination defect or service impairment.",
         "S3": "Moderate: the occurrence materialised meaningful but bounded harm, disruption, expense, privacy or dignitary impact that is limited in scope, substantially reversible, or not shown to be grave; it exceeds minor inconvenience or negligible consequence.",
-        "S4": "Low: the occurrence materialised only minor, short-lived, localised or readily remedied inconvenience, expense, presentation error, coordination defect or service impairment.",
-        "SU": "Unassessed: the evidence cannot support a defensible occurrence-level band or cannot distinguish the relevant adjacent bands. Taxonomy importance, alleged potential and hypothetical worst-case harm do not cure that gap.",
-        "S5": "No materialised adverse downstream harm: the occurrence materially demonstrates governance-relevant behaviour, a control failure, or a successful invariant under bounded conditions, but the preserved evidence establishes no resulting adverse harm, loss, disruption, rights impact, service impairment, or other external downstream consequence. Controlled evaluations and simulations belong here when the observed mechanism is real within the evaluation but no adverse consequence materialises beyond it."
+        "S4": "High: the occurrence materialised substantial harm to a person, group, organisation or important function, including significant financial, property, privacy, rights, health or operational consequences, but the supported scope, seriousness or reversibility remains below S5.",
+        "S5": "Catastrophic or critical: the occurrence materialised death, grave injury, grave or enduring deprivation of liberty or essential care, severe sexual or child-safety harm, very large realised loss, destructive loss of critical assets, or comparably grave and persistent rights or societal harm.",
+        "SU": "Unassessed: the evidence cannot support a defensible occurrence-level band or cannot distinguish the relevant adjacent bands. Taxonomy importance, alleged potential and hypothetical worst-case harm do not cure that gap."
       },
-      "severity_analysis_rule": "The structured severity fields are substantive occurrence-level Incident diagnosis. They are not source metadata, diagnostic provenance, taxonomy metadata or workflow metadata. Every incident-assessed record separately states the materialised adverse consequence, or for S5 the observed occurrence plus the explicit absence of adverse downstream consequence; affected scope; seriousness and persistence or reversibility; available quantitative information; evidentiary limits; and a record-specific adjacent-band rationale. The fields must not be empty, circular, generic, copied from a Failure Class or inferred from legacy severity. S5 must distinguish demonstrated occurrence significance from downstream harm and must not use capability significance as a substitute for adverse consequence. SU requires requires-incident-review and a concrete assessment_gap naming the missing occurrence evidence needed to assign a band; assessed substantive fields must not be fabricated for SU.",
-      "assessment_basis_compatibility_rule": "assessment_basis is retired from canonical Incident authoring. Generated public indexes may expose severity_assessment_basis as a deterministic compatibility projection assembled from the canonical structured fields. It is not an independently authored second source of truth.",
+      "severity_analysis_rule": "The structured harm-impact rows are substantive occurrence-level Incident diagnosis. They are not source metadata, diagnostic provenance, taxonomy metadata or workflow metadata. Each row records a canonical harm dimension, assessment status, concise evidence basis and confidence. Assessed rows additionally identify the supported severity threshold and evidence references. S1 must be positively supported; missing reporting is unreported. SU requires a concrete assessment_gap and no assessed row.",
+      "harm_impact_methodology_id": "VIGIL-HIM",
+      "harm_impact_methodology_version": "1.0.0",
+      "harm_impact_derivation_rule": "highest-supported-materialised-harm",
+      "harm_impact_dimension_ids": [
+        "physical-health-safety",
+        "psychological-wellbeing",
+        "rights-liberty",
+        "equal-treatment",
+        "privacy-confidentiality",
+        "financial-economic",
+        "property-asset-damage",
+        "service-operational-infrastructure",
+        "reputation-dignity",
+        "societal-democratic",
+        "environmental"
+      ],
+      "harm_impact_status_values": [
+        "assessed",
+        "unreported",
+        "insufficient-evidence",
+        "not-applicable"
+      ],
+      "harm_impact_evidence_confidence_values": [
+        "low",
+        "medium",
+        "high",
+        "not-assessed"
+      ],
+      "harm_impact_rule": "Overall severity equals the numerically highest S1-S5 band among assessed materialised-harm dimensions. Dimensions are not averaged or summed, and multiple lower harms do not escalate the overall band. Unreported means relevant impact is absent from the available published evidence and must never be encoded as S1. Insufficient-evidence means some impact evidence exists but cannot be banded. Not-applicable requires affirmative contextual grounds. If no dimension can be assessed, overall severity is SU unless positive evidence establishes a bounded occurrence with no materialised downstream harm; that special case is S1 with empty controlling_dimensions and a non-empty no_materialised_harm_basis. Silence never produces S1.",
+      "harm_impact_currency_rule": "Published monetary amounts retain their original currency. USD thresholds apply only to published USD amounts or conversions carrying a recorded source and rate date. Non-USD amounts without a defensible conversion may use only independently supported qualitative livelihood, organisational-viability or systemic criteria.",
+      "harm_impact_evidence_reference_rule": "Assessed dimension evidence_refs must resolve to substantive source_records and must not cite record-cross-reference sources as Harm Impact evidence.",
+      "harm_impact_reference_rule": "Incident records identify the VIGIL-HIM methodology and threshold IDs but do not duplicate the external bibliography. Methodological sources resolve through vigil/references/VIGIL.ObservatoryReferenceRegistry.json.",
       "source_type_values": [
         "incident database entry",
         "news article",
@@ -201,7 +232,7 @@
         "observation record",
         "web page"
       ],
-      "source_type_rule": "source_type identifies the publication or artefact genre. Publisher authority, hosting platform, evidence role, source residence, modality and primary-artefact access remain separate fields. A migrated non-canonical value is retained only in legacy_source_type.",
+      "source_type_rule": "source_type identifies the publication or artefact genre. Publisher authority, hosting platform, evidence role, source residence, modality and primary-artefact access remain separate fields. Active records must use a canonical source_type value.",
       "public_narrative_rule": "summary states what happened; vigil_assessment.factual_basis states what the preserved evidence establishes; taxonomy classification basis and migration/process notes must not be substituted for either field.",
       "classification_role_values": [
         "failure-occurrence",
@@ -289,7 +320,7 @@
         "record_identity",
         "summary",
         "source_records",
-        "linked_records"
+        "related_incidents"
       ]
     },
     "source_residence": {
@@ -478,17 +509,20 @@
   },
   "generated_register_rules": {
     "pruning": "Generated index manifests prune empty arrays, empty strings, empty objects, and nulls while preserving meaningful uncertainty values.",
-    "index_entry_contract": "VIGIL.Incidents.Index.json and VIGIL.Registry.Index.json contain deterministic Incident list metadata plus canonical record locations. Structured severity remains canonical and severity_assessment_basis is a temporary deterministic compatibility projection.",
+    "index_entry_contract": "VIGIL.Incidents.Index.json and VIGIL.Registry.Index.json contain deterministic Incident list metadata plus canonical record locations. The lightweight severity code is a deterministic projection of harm_impact_assessment.overall_severity; full matrix detail remains in the canonical Incident record.",
     "incident_evidence_facets": {
       "evidence_statuses": "Sorted unique values derived from source_records[].evidence_status.",
       "preferred_evidence_status": "Derived from the unique source_record whose source_url equals preferred_evidence.source_url; never separately maintained.",
+      "source_roles": "Sorted unique values derived from source_records[].source_role so public consumers can distinguish substantive evidence from contextual and cross-reference material without embedding canonical source records.",
       "aggregation_rule": "Generated Incident indexes must not flatten source assessments into narrative text or synthesize an overall confidence value."
     }
   },
-  "linked_records_rules": {
-    "incident_links": "related_incidents may resolve to active canonical Incident IDs.",
-    "external_standards": "standards and external_references preserve external context without creating another VIGIL record class.",
-    "historical_tokens": "FM, OBS, RESEARCH, PROP, PATCH and LEARN identifiers retained in linked_records or provenance are historical tokens only. They are not active resolution dependencies and must not be treated as current public records."
+  "incident_relationship_rules": {
+    "incident_links": "related_incidents resolves only to active canonical Incident IDs.",
+    "external_registry_links": "external_incident_references is the sole canonical location for external incident-registry relationships.",
+    "research_links": "research_references preserves current external research citations only; evidentiary reliance remains in source_records.",
+    "standards_and_regulatory_links": "standards_and_regulatory_references preserves current external standards and regulatory context only; evidentiary reliance remains in source_records.",
+    "retired_links": "Active Incident records must not carry FM, OBS, RESEARCH, PROP, PATCH or LEARN relationship structures or identifiers. Historical recovery is through Git history."
   },
   "record_state_rules": {
     "purpose": "Top-level record_state is the Incident maintainer workflow state. It is independent of occurrence severity, taxonomy classification and external ecosystem conditions.",

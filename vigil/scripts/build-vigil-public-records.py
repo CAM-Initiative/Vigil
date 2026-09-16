@@ -29,8 +29,8 @@ GENERATED_PROVENANCE = {
     "human_verification_status": "not-verified",
 }
 PRESERVE_EMPTY_KEYS = {
-    "legacy_sources", "legacy_provenance", "secondary_classifications",
-    "external_incident_references",
+    "legacy_sources", "secondary_classifications", "external_incident_references",
+    "related_incidents",
 }
 
 
@@ -77,6 +77,14 @@ def sources(record: dict[str, Any]) -> list[dict[str, Any]]:
     return [item for item in value if isinstance(item, dict)] if isinstance(value, list) else []
 
 
+def source_roles(record: dict[str, Any]) -> list[str]:
+    return sorted({
+        role
+        for item in sources(record)
+        if isinstance((role := item.get("source_role")), str) and role.strip()
+    })
+
+
 def text_terms(*values: Any) -> list[str]:
     """Return a compact, deterministic search vocabulary without embedding source objects."""
     terms: dict[str, str] = {}
@@ -100,7 +108,7 @@ def incident_search_terms(record: dict[str, Any]) -> list[str]:
     system = record.get("system_context") if isinstance(record.get("system_context"), dict) else {}
     jurisdiction = record.get("jurisdictional_context") if isinstance(record.get("jurisdictional_context"), dict) else {}
     taxonomy = record.get("taxonomy_classification") if isinstance(record.get("taxonomy_classification"), dict) else {}
-    assessment = record.get("severity_assessment") if isinstance(record.get("severity_assessment"), dict) else {}
+    assessment = record.get("harm_impact_assessment") if isinstance(record.get("harm_impact_assessment"), dict) else {}
     secondary = taxonomy.get("secondary_classifications") if isinstance(taxonomy.get("secondary_classifications"), list) else []
     source_list = sources(record)
 
@@ -129,7 +137,8 @@ def incident_search_terms(record: dict[str, Any]) -> list[str]:
             for value in (item.get("class_id"), item.get("family_id"))
             if value
         ],
-        assessment.get("assessment_status"),
+        assessment.get("methodology_id"),
+        assessment.get("methodology_version"),
         [
             value
             for item in source_list
@@ -138,6 +147,7 @@ def incident_search_terms(record: dict[str, Any]) -> list[str]:
                 item.get("author_or_publisher"),
                 item.get("source_platform"),
                 item.get("source_type"),
+                item.get("source_role"),
             )
             if value
         ],
@@ -149,7 +159,7 @@ def incident_entry(path: Path, record: dict[str, Any]) -> dict[str, Any]:
     incident = record.get("incident_identity") if isinstance(record.get("incident_identity"), dict) else {}
     system = record.get("system_context") if isinstance(record.get("system_context"), dict) else {}
     taxonomy = record.get("taxonomy_classification") if isinstance(record.get("taxonomy_classification"), dict) else {}
-    assessment = record.get("severity_assessment") if isinstance(record.get("severity_assessment"), dict) else {}
+    assessment = record.get("harm_impact_assessment") if isinstance(record.get("harm_impact_assessment"), dict) else {}
     primary = taxonomy.get("primary_classification") if isinstance(taxonomy.get("primary_classification"), dict) else {}
     if not primary:
         legacy_primary_class = taxonomy.get("primary_class")
@@ -167,12 +177,13 @@ def incident_entry(path: Path, record: dict[str, Any]) -> dict[str, Any]:
         "title": identity.get("title") or record.get("summary") or record.get("id"),
         "summary": record.get("summary"),
         "platform_or_vendor": system.get("platform_or_vendor"),
-        "severity": assessment.get("severity"),
+        "severity": assessment.get("overall_severity"),
         "classification_status": taxonomy.get("classification_status"),
         "classification_role": taxonomy.get("classification_role"),
         "primary_class_id": primary.get("class_id"),
         "primary_family_id": primary.get("family_id") or primary_family.get("family_id"),
         "occurred_from": incident.get("occurred_from"),
+        "source_roles": source_roles(record),
         "search_terms": incident_search_terms(record),
         "path": record_path,
         "github_blob_url": github_url(record_path),

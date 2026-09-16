@@ -15,31 +15,16 @@ VIGIL = ROOT / "vigil"
 RECORDS_ROOT = VIGIL / "records"
 INCIDENT_ROOT = RECORDS_ROOT / "incidents"
 SCHEMA_PATH = VIGIL / "VIGIL.Schema.json"
+HARM_MATRIX_PATH = VIGIL / "methodologies" / "VIGIL.HarmImpactMatrix.v1.0.0.json"
 TAXONOMY_INDEX = VIGIL / "taxonomy" / "VIGIL.FailureTaxonomy.Index.json"
 INCIDENT_ID = re.compile(r"^VIGIL-INC-\d{6}$")
-HISTORICAL_ID = re.compile(r"^VIGIL-\d{4}-(?:FM|OBS|RESEARCH|PROP|PATCH|LEARN)-\d{4}$")
+HISTORICAL_ID = re.compile(r"VIGIL-\d{4}-(?:FM|OBS|RESEARCH|PROP|PATCH|LEARN)-\d{4}")
 RETIRED_RECORD_DIRS = {"failures", "observations", "research", "proposals", "patches", "learn"}
 RETIRED_INDEXES = {
     "VIGIL.Failures.Index.json", "VIGIL.Observations.Index.json", "VIGIL.Research.Index.json",
     "VIGIL.Proposals.Index.json", "VIGIL.PatchNotes.Index.json", "VIGIL.Learn.Index.json",
 }
-STRUCTURED_SEVERITY_FIELDS = (
-    "materialised_consequence", "affected_scope", "seriousness_and_persistence",
-    "quantitative_information", "evidentiary_limits", "band_rationale",
-)
-GENERIC_SEVERITY_TEXT = (
-    "state the consequence or harm that actually materialised",
-    "state the record-specific people, systems, organisations",
-    "explain the seriousness, duration, persistence",
-    "preserve supported counts, loss, duration",
-    "state the occurrence-specific limits on causal mechanism",
-    "explain why s3 is supported over s2 and s4",
-    "the assessment is confined to the people, systems, organisations, service cohort",
-)
-ADJACENT_BANDS = {
-    "S1": {"S2"}, "S2": {"S1", "S3"}, "S3": {"S2", "S4"},
-    "S4": {"S3", "S5"}, "S5": {"S4"},
-}
+SEVERITY_RANK = {"S1": 1, "S2": 2, "S3": 3, "S4": 4, "S5": 5}
 DIAGNOSTIC_REQUIRED = {
     "method", "diagnostic_date", "human_role", "ai_role", "ai_platform", "ai_model",
     "review_status", "authority_boundary",
@@ -220,55 +205,172 @@ def validate_incident_taxonomy(path: Path, record: dict[str, Any], errors: list[
             seen.add(class_id)
 
 
-def validate_severity(path: Path, assessment: Any, errors: list[str]) -> None:
+def harm_matrix() -> dict[str, Any]:
+    return load_json(HARM_MATRIX_PATH)
+
+
+def financial_band_for_usd(value: float) -> str:
+    if value < 0:
+        raise ValueError("financial loss cannot be negative")
+    if value < 10_000:
+        return "S1"
+    if value < 1_000_000:
+        return "S2"
+    if value < 100_000_000:
+        return "S3"
+    if value < 100_000_000_000:
+        return "S4"
+    return "S5"
+
+
+def validate_harm_impact(path: Path, record: dict[str, Any], errors: list[str]) -> None:
+    assessment = record.get("harm_impact_assessment")
     if not isinstance(assessment, dict):
-        errors.append(f"{path}: severity_assessment must be an object")
+        errors.append(f"{path}: harm_impact_assessment must be an object")
         return
     contract = incident_contract()
-    required = set(contract["severity_assessment_required_fields"])
+    required = {
+        "methodology_id", "methodology_version", "derivation_rule", "assessed_on",
+        "overall_severity", "controlling_dimensions", "coverage_note", "dimensions",
+    }
     missing = sorted(required - set(assessment))
     if missing:
-        errors.append(f"{path}: severity_assessment missing {', '.join(missing)}")
-    severity = assessment.get("severity")
-    status = assessment.get("assessment_status")
-    if severity not in set(contract["severity_values"]):
-        errors.append(f"{path}: invalid Incident severity {severity!r}")
-    if status not in set(contract["severity_assessment_status_values"]):
-        errors.append(f"{path}: invalid severity assessment_status {status!r}")
+        errors.append(f"{path}: harm_impact_assessment missing {', '.join(missing)}")
+    if assessment.get("methodology_id") != contract["harm_impact_methodology_id"]:
+        errors.append(f"{path}: harm impact methodology_id is not canonical")
+    if assessment.get("methodology_version") != contract["harm_impact_methodology_version"]:
+        errors.append(f"{path}: harm impact methodology_version is not canonical")
+    if assessment.get("derivation_rule") != contract["harm_impact_derivation_rule"]:
+        errors.append(f"{path}: harm impact derivation_rule is not canonical")
     if parse_date(assessment.get("assessed_on")) is None:
-        errors.append(f"{path}: severity_assessment.assessed_on must be an ISO date")
-    legacy_sources = assessment.get("legacy_sources")
-    if not isinstance(legacy_sources, list) or any(
-        not isinstance(item, str) or not HISTORICAL_ID.fullmatch(item) for item in legacy_sources
-    ):
-        errors.append(f"{path}: severity_assessment.legacy_sources must contain historical IDs only")
-    if "assessment_basis" in assessment:
-        errors.append(f"{path}: assessment_basis is retired from canonical Incident authoring")
-    if severity == "SU":
-        if status != "requires-incident-review":
-            errors.append(f"{path}: SU requires requires-incident-review")
-        if not non_empty(assessment.get("assessment_gap")):
-            errors.append(f"{path}: SU requires a concrete assessment_gap")
-        for field in STRUCTURED_SEVERITY_FIELDS:
-            if field in assessment:
-                errors.append(f"{path}: SU must not fabricate {field}")
+        errors.append(f"{path}: harm_impact_assessment.assessed_on must be an ISO date")
+    if not non_empty(assessment.get("coverage_note")):
+        errors.append(f"{path}: harm_impact_assessment.coverage_note must be non-empty")
+
+    matrix = harm_matrix()
+    dimensions_by_id = {item["dimension_id"]: item for item in matrix["dimensions"]}
+    expected_ids = set(contract["harm_impact_dimension_ids"])
+    rows = assessment.get("dimensions")
+    if not isinstance(rows, list):
+        errors.append(f"{path}: harm_impact_assessment.dimensions must be an array")
         return
-    if status != "incident-assessed":
-        errors.append(f"{path}: assessed severity requires incident-assessed status")
-    for field in STRUCTURED_SEVERITY_FIELDS:
-        value = assessment.get(field)
-        if not non_empty(value):
-            errors.append(f"{path}: severity_assessment.{field} must be non-empty")
+    actual_ids = [row.get("dimension_id") for row in rows if isinstance(row, dict)]
+    if len(actual_ids) != len(set(actual_ids)):
+        errors.append(f"{path}: harm impact dimensions must be unique")
+    if set(actual_ids) != expected_ids:
+        errors.append(f"{path}: harm impact dimensions must contain every canonical dimension exactly once")
+
+    assessed: list[tuple[str, str]] = []
+    source_records = record.get("source_records")
+    statuses = set(contract["harm_impact_status_values"])
+    confidences = set(contract["harm_impact_evidence_confidence_values"])
+    for index, row in enumerate(rows):
+        label = f"{path}: harm_impact_assessment.dimensions[{index}]"
+        if not isinstance(row, dict):
+            errors.append(f"{label} must be an object")
             continue
-        lowered = value.casefold()
-        if any(fragment in lowered for fragment in GENERIC_SEVERITY_TEXT):
-            errors.append(f"{path}: severity_assessment.{field} contains generic/template text")
-    rationale = str(assessment.get("band_rationale", ""))
-    if re.search(rf"\b{re.escape(str(severity))}\s+because\s+(?:this|it)\s+is\s+(?:an?\s+)?{re.escape(str(severity))}\b", rationale, re.I):
-        errors.append(f"{path}: band_rationale is circular")
-    adjacent = ADJACENT_BANDS.get(str(severity), set())
-    if adjacent and not any(re.search(rf"\b{band}\b", rationale) for band in adjacent):
-        errors.append(f"{path}: band_rationale must distinguish at least one adjacent band")
+        dimension_id = row.get("dimension_id")
+        status = row.get("assessment_status")
+        if dimension_id not in expected_ids:
+            errors.append(f"{label}.dimension_id is not canonical")
+        if status not in statuses:
+            errors.append(f"{label}.assessment_status is not canonical")
+        if not non_empty(row.get("assessment_basis")):
+            errors.append(f"{label}.assessment_basis must be non-empty")
+        if row.get("evidence_confidence") not in confidences:
+            errors.append(f"{label}.evidence_confidence is not canonical")
+        if status == "assessed":
+            severity = row.get("severity")
+            threshold_id = row.get("threshold_id")
+            if severity not in SEVERITY_RANK:
+                errors.append(f"{label}.severity must be S1-S5 when assessed")
+            else:
+                assessed.append((str(dimension_id), str(severity)))
+                expected_threshold = dimensions_by_id.get(str(dimension_id), {}).get("thresholds", {}).get(str(severity), {}).get("threshold_id")
+                if threshold_id != expected_threshold:
+                    errors.append(f"{label}.threshold_id does not match the matrix dimension and band")
+            refs = row.get("evidence_refs")
+            if not isinstance(refs, list) or not refs or any(not isinstance(item, str) for item in refs):
+                errors.append(f"{label}.evidence_refs must be a non-empty string array when assessed")
+            elif isinstance(source_records, list):
+                for ref in refs:
+                    match = re.fullmatch(r"source_records\[(\d+)\]", ref)
+                    if match is None:
+                        errors.append(f"{label}.evidence_refs must use source_records[N] references")
+                        continue
+                    source_index = int(match.group(1))
+                    if source_index >= len(source_records):
+                        errors.append(f"{label}.evidence_refs points outside source_records")
+                        continue
+                    source = source_records[source_index]
+                    if isinstance(source, dict) and source.get("source_role") == "record-cross-reference":
+                        errors.append(f"{label}.evidence_refs must not cite a record-cross-reference source")
+            values = row.get("observed_values")
+            if not isinstance(values, list):
+                errors.append(f"{label}.observed_values must be an array when assessed")
+            elif dimension_id == "financial-economic" and severity in SEVERITY_RANK:
+                for value in values:
+                    if not isinstance(value, dict) or value.get("unit") != "USD":
+                        continue
+                    amount = value.get("value")
+                    if isinstance(amount, bool) or not isinstance(amount, (int, float)):
+                        errors.append(f"{label}.observed_values USD value must be numeric")
+                        continue
+                    try:
+                        expected_band = financial_band_for_usd(float(amount))
+                    except ValueError:
+                        errors.append(f"{label}.observed_values financial loss cannot be negative")
+                        continue
+                    if severity != expected_band:
+                        errors.append(
+                            f"{label}.severity must be {expected_band} for the reported USD value under canonical financial boundaries"
+                        )
+            if row.get("evidence_confidence") == "not-assessed":
+                errors.append(f"{label}.evidence_confidence cannot be not-assessed when assessed")
+        else:
+            for field in ("severity", "threshold_id", "observed_values", "evidence_refs"):
+                if field in row:
+                    errors.append(f"{label}.{field} is forbidden when status is {status}")
+            if row.get("evidence_confidence") != "not-assessed":
+                errors.append(f"{label}.evidence_confidence must be not-assessed when status is {status}")
+
+    overall = assessment.get("overall_severity")
+    controlling = assessment.get("controlling_dimensions")
+    if not isinstance(controlling, list) or any(item not in expected_ids for item in controlling):
+        errors.append(f"{path}: controlling_dimensions must be a canonical dimension array")
+        controlling = []
+    if assessed:
+        expected_overall = max((severity for _, severity in assessed), key=SEVERITY_RANK.__getitem__)
+        expected_controlling = sorted(dimension for dimension, severity in assessed if severity == expected_overall)
+        if overall != expected_overall:
+            errors.append(f"{path}: overall_severity must equal highest supported assessed harm band {expected_overall}")
+        if sorted(controlling) != expected_controlling:
+            errors.append(f"{path}: controlling_dimensions must identify every dimension at the overall band")
+        if overall == "S1" and not any(row.get("assessment_status") == "assessed" and row.get("severity") == "S1" for row in rows if isinstance(row, dict)):
+            errors.append(f"{path}: S1 requires positive assessed evidence")
+        if "assessment_gap" in assessment:
+            errors.append(f"{path}: assessment_gap is reserved for SU")
+        if "no_materialised_harm_basis" in assessment:
+            errors.append(f"{path}: no_materialised_harm_basis is reserved for bounded S1 assessments with no materialised harm")
+    else:
+        if overall == "S1":
+            if controlling:
+                errors.append(f"{path}: no-materialised-harm S1 must not have controlling_dimensions")
+            if not non_empty(assessment.get("no_materialised_harm_basis")):
+                errors.append(f"{path}: no-materialised-harm S1 requires a concrete no_materialised_harm_basis")
+            if "assessment_gap" in assessment:
+                errors.append(f"{path}: assessment_gap is reserved for SU")
+            if any(row.get("assessment_status") == "insufficient-evidence" for row in rows if isinstance(row, dict)):
+                errors.append(f"{path}: no-materialised-harm S1 cannot contain insufficient-evidence dimensions")
+        else:
+            if overall != "SU":
+                errors.append(f"{path}: no assessed dimension requires overall_severity SU or bounded no-materialised-harm S1")
+            if controlling:
+                errors.append(f"{path}: SU must not have controlling_dimensions")
+            if not non_empty(assessment.get("assessment_gap")):
+                errors.append(f"{path}: SU requires a concrete assessment_gap")
+            if "no_materialised_harm_basis" in assessment:
+                errors.append(f"{path}: no_materialised_harm_basis is reserved for bounded S1")
 
 
 def validate_source_records(path: Path, record: dict[str, Any], errors: list[str]) -> None:
@@ -360,23 +462,54 @@ def validate_provenance(path: Path, record: dict[str, Any], errors: list[str]) -
     if not isinstance(current, dict) or current.get("review_id") not in seen:
         errors.append(f"{path}: current_ai_review must resolve to review_history")
 
-def validate_legacy_provenance(path: Path, record: dict[str, Any], errors: list[str]) -> None:
-    legacy = record.get("legacy_provenance")
-    if not isinstance(legacy, list):
-        errors.append(f"{path}: legacy_provenance must be an array")
-        return
-    for index, item in enumerate(legacy):
-        if not isinstance(item, dict):
-            errors.append(f"{path}: legacy_provenance[{index}] must be an object")
-            continue
-        if item.get("legacy_type") not in {"failure_mode", "observation"}:
-            errors.append(f"{path}: legacy_provenance[{index}].legacy_type is invalid")
-        if not isinstance(item.get("legacy_id"), str) or not HISTORICAL_ID.fullmatch(item["legacy_id"]):
-            errors.append(f"{path}: legacy_provenance[{index}].legacy_id is malformed")
-        for field in ("relationship", "preservation_note"):
-            if not non_empty(item.get(field)):
-                errors.append(f"{path}: legacy_provenance[{index}].{field} must be non-empty")
-    # Historical tokens deliberately are not resolved to retired record files.
+def validate_relationships_and_references(
+    path: Path,
+    record: dict[str, Any],
+    known_ids: set[str] | None,
+    errors: list[str],
+) -> None:
+    record_id = record.get("id")
+    related = record.get("related_incidents")
+    if not isinstance(related, list):
+        errors.append(f"{path}: related_incidents must be an array")
+    else:
+        string_ids = [item for item in related if isinstance(item, str)]
+        if len(string_ids) != len(set(string_ids)):
+            errors.append(f"{path}: related_incidents must not contain duplicates")
+        for index, incident_id in enumerate(related):
+            if not isinstance(incident_id, str) or not INCIDENT_ID.fullmatch(incident_id):
+                errors.append(f"{path}: related_incidents[{index}] must use VIGIL-INC-NNNNNN")
+            elif incident_id == record_id:
+                errors.append(f"{path}: related_incidents must not contain a self-link")
+            elif known_ids is not None and incident_id not in known_ids:
+                errors.append(f"{path}: related_incidents[{index}] does not resolve to an active Incident")
+
+    research = record.get("research_references")
+    if research is not None:
+        if not isinstance(research, list) or not research:
+            errors.append(f"{path}: research_references must be a non-empty array when present")
+        else:
+            for index, citation in enumerate(research):
+                if not non_empty(citation):
+                    errors.append(f"{path}: research_references[{index}] must be a non-empty string")
+                elif HISTORICAL_ID.search(citation):
+                    errors.append(f"{path}: research_references[{index}] contains a retired VIGIL record ID")
+
+    standards = record.get("standards_and_regulatory_references")
+    if standards is not None:
+        if not isinstance(standards, list) or not standards:
+            errors.append(f"{path}: standards_and_regulatory_references must be a non-empty array when present")
+        else:
+            for index, reference in enumerate(standards):
+                valid = non_empty(reference) or (isinstance(reference, dict) and bool(reference))
+                if not valid:
+                    errors.append(
+                        f"{path}: standards_and_regulatory_references[{index}] must be a non-empty string or object"
+                    )
+                elif HISTORICAL_ID.search(json.dumps(reference, ensure_ascii=False)):
+                    errors.append(
+                        f"{path}: standards_and_regulatory_references[{index}] contains a retired VIGIL record ID"
+                    )
 
 
 def validate_record(
@@ -389,7 +522,6 @@ def validate_record(
     allowed_products: set[str] | None = None,
     schema_path: Path | None = None,
 ) -> tuple[list[str], list[str]]:
-    del known_ids
     errors = errors if errors is not None else []
     warnings = warnings if warnings is not None else []
     contract = incident_contract(schema_path)
@@ -408,6 +540,12 @@ def validate_record(
     forbidden = sorted(field for field in contract["forbidden_top_level_fields"] if field in record)
     if forbidden:
         errors.append(f"{path}: forbidden Incident fields: {', '.join(forbidden)}")
+    retired_nested = sorted(field for field in contract.get("forbidden_nested_fields", []) if contains_key(record, field))
+    if retired_nested:
+        errors.append(f"{path}: forbidden retired Incident fields: {', '.join(retired_nested)}")
+    for field in contract.get("legacy_priority_fields", []):
+        if contains_key(record, field):
+            errors.append(f"{path}: legacy operational priority field {field!r} is prohibited")
     if contains_key(record, "source_data"):
         errors.append(f"{path}: source_data is retired; use source_records")
     if not non_empty(record.get("summary")):
@@ -450,11 +588,11 @@ def validate_record(
             errors.append(f"{path}: non-canonical platform_or_vendor")
         if system.get("product_or_service") not in allowed_products:
             errors.append(f"{path}: non-canonical product_or_service")
-    validate_severity(path, record.get("severity_assessment"), errors)
+    validate_harm_impact(path, record, errors)
     validate_source_records(path, record, errors)
     validate_incident_taxonomy(path, record, errors)
     validate_provenance(path, record, errors)
-    validate_legacy_provenance(path, record, errors)
+    validate_relationships_and_references(path, record, known_ids, errors)
     return errors, warnings
 
 
@@ -476,18 +614,22 @@ def validate(root: Path | None = None, schema_path: Path | None = None) -> int:
             if (VIGIL / filename).exists():
                 errors.append(f"{VIGIL / filename}: retired generated index must not exist")
     paths = record_files(root)
-    ids: set[str] = set()
+    loaded: list[tuple[Path, dict[str, Any]]] = []
     for path in paths:
         try:
             record = load_json(path)
         except Exception as exc:  # noqa: BLE001
             errors.append(f"{path}: unable to read JSON: {exc}")
             continue
+        loaded.append((path, record))
+    ids: set[str] = set()
+    for path, record in loaded:
         record_id = record.get("id")
         if isinstance(record_id, str):
             if record_id in ids:
                 errors.append(f"{path}: duplicate Incident id {record_id}")
             ids.add(record_id)
+    for path, record in loaded:
         validate_record(path, record, ids, errors, warnings, schema_path=schema_path)
     for warning in warnings:
         print(f"WARNING: {warning}", file=sys.stderr)

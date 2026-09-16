@@ -27,7 +27,8 @@ class ValidateVigilPublicRecordsTest(unittest.TestCase):
             "incident_identity": {"occurred_from": "2026-09-10"},
             "summary": "A bounded Incident summary.",
             "system_context": {"platform_or_vendor": "Example Provider"},
-            "severity_assessment": {"severity": "S3"},
+            "source_records": [{"source_role": "incident-evidence"}],
+            "harm_impact_assessment": {"overall_severity": "S3"},
             "taxonomy_classification": {
                 "classification_status": "classified",
                 "classification_role": "successful-invariant",
@@ -54,12 +55,12 @@ class ValidateVigilPublicRecordsTest(unittest.TestCase):
             validator.validate_generated_incident_projection({record["id"]: record}, errors)
             self.assertEqual(errors, [])
 
-            entry["severity_assessment"] = record["severity_assessment"]
+            entry["harm_impact_assessment"] = record["harm_impact_assessment"]
             path.write_text(json.dumps({"records": [entry]}), encoding="utf-8")
             errors = []
             validator.validate_generated_incident_projection({record["id"]: record}, errors)
             self.assertTrue(any("non-index fields" in error for error in errors))
-            self.assertTrue(any("embeds canonical detail field severity_assessment" in error for error in errors))
+            self.assertTrue(any("embeds canonical detail field harm_impact_assessment" in error for error in errors))
 
 
 if __name__ == "__main__":

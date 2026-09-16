@@ -6,7 +6,7 @@ VIGIL is an Incident-centred public evidence and diagnosis corpus. INC is the so
 
 Before editing Incidents, inspect `vigil/VIGIL.Schema.json`, `vigil/templates/incident-record-template.json`, `vigil/scripts/validate-vigil-records.py` and comparable canonical records. Preserve stable IDs, evidence, uncertainty, occurrence-level diagnosis, severity and provenance.
 
-Historical retired-class identifiers and payloads embedded in Incidents are provenance tokens only. Preserve them where they explain derivation, but never require them to resolve to live files.
+Legacy record classes and migration artefacts remain recoverable through Git history. Do not restore them to active Incident records or require them as runtime dependencies.
 
 Build and validate with:
 

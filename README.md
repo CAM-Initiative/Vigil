@@ -14,7 +14,7 @@ vigil/records/incidents/   INC — bounded occurrence-level Incident records
 
 FM, OBS, RESEARCH, PROP, PATCH and LEARN are retired record classes. Their historical files remain recoverable through Git history and `stabilization/pre-fm-schema-migration`; they are not active records, publication inputs or resolution targets.
 
-Migrated Incidents retain historical provenance where it explains their derivation. A legacy identifier embedded in `legacy_provenance`, `legacy_governance_state`, migration-source metadata or historical links is a provenance token only and does not require a live retired record.
+Legacy record classes and migration artefacts remain recoverable through Git history. Active Incident records contain only information required by the current VIGIL data model.
 
 ## Incident model
 

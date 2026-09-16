@@ -1,61 +1,106 @@
-# Incident Severity Standard
+# VIGIL Harm Impact Matrix 1.0.0
 
-Incident severity is a substantive diagnosis of harm or consequence that actually
-materialised in one bounded occurrence. It is part of the Incident's diagnosis. It
-is not source metadata, diagnostic provenance, taxonomy metadata, classification
-confidence, workflow metadata, triage priority, or a statement of CAM repair
-importance.
+VIGIL Incident severity is the highest supported materialised harm in a bounded
+occurrence. It is not a likelihood estimate, a Failure Taxonomy classification,
+classification confidence, source prestige, operational priority, or a statement
+of hypothetical worst-case capability.
+
+The canonical machine-readable methodology is
+`vigil/methodologies/VIGIL.HarmImpactMatrix.v1.0.0.json`. External sources resolve
+through the separate `vigil/references/VIGIL.ObservatoryReferenceRegistry.json`.
+
+## Derivation
+
+`Incident evidence → harm impact threshold(s) → highest supported harm → overall severity`
+
+For every canonical dimension, record exactly one status:
+
+- `assessed`: evidence supports a materialised impact and a threshold band;
+- `unreported`: the dimension is relevant but published evidence does not report
+  whether or how harm materialised;
+- `insufficient-evidence`: some impact evidence exists but cannot support a band;
+- `not-applicable`: affirmative context puts the dimension outside the bounded
+  occurrence.
+
+Absence of published evidence is not evidence of no harm. `unreported` is never
+S1. S1 requires positive evidence of minimal materialised harm or a bounded
+occurrence with no materialised downstream harm. In the latter case, the record
+uses an empty `controlling_dimensions` array and a concrete
+`no_materialised_harm_basis`; it does not invent a controlling harm type. If no
+dimension is assessed and that positive bounded-no-harm evidence is absent, the
+overall result is SU.
+
+Overall severity is `max(assessed dimension bands)`. Do not average or add
+dimensions. Multiple S2 harms remain S2 unless evidence independently supports a
+higher threshold. Every dimension tied at the maximum is controlling.
 
 ## Bands
 
-- **S1 — Critical:** death, grave injury, grave or enduring deprivation of liberty
-  or essential care, severe sexual or child-safety harm, very large realised loss,
-  destructive loss of critical assets, or comparably grave and persistent rights or
-  societal harm.
-- **S2 — High:** substantial realised financial, property, privacy, rights, health,
-  operational, or equivalent harm below the supported scope, seriousness, or
-  irreversibility of S1.
-- **S3 — Moderate:** meaningful but bounded realised disruption, expense, privacy,
-  dignitary, or equivalent harm that exceeds minor inconvenience but is limited in
-  scope, substantially reversible, or not shown to be grave.
-- **S4 — Low:** only minor, short-lived, localised, or readily remedied realised
-  inconvenience, expense, presentation error, coordination defect, or service
-  impairment.
-- **SU — Unassessed:** the evidence cannot support a defensible occurrence-level
-  band or distinguish the relevant adjacent bands.
+| Band | Canonical meaning |
+| --- | --- |
+| S1 | Minimal or no materialised adverse downstream harm, positively supported. |
+| S2 | Low, minor, short-lived, localised or readily remediable materialised harm. |
+| S3 | Moderate, meaningful but bounded materialised harm. |
+| S4 | High or substantial materialised harm below catastrophic or critical consequence. |
+| S5 | Catastrophic or critical materialised harm. |
+| SU | No defensible overall band because no dimension has sufficient evidence for assessment. |
 
-The band is independent of Failure Family, Failure Class, taxonomy confidence,
-source count, publisher prestige, notoriety, workflow priority, hypothetical
-worst-case capability, and legal or regulatory significance unless that significance
-itself formed part of the realised consequence. Legacy Failure Mode severity is
-provenance only.
+## Harm dimensions
 
-## Structured analysis
+The matrix assesses physical health and safety; psychological wellbeing; rights
+and liberty; equal treatment and non-discrimination; privacy and confidentiality;
+financial and economic harm; property and asset damage; service, operational and
+infrastructure impact; reputation and dignity; societal and democratic harm; and
+environmental harm. These dimensions are separate because financial loss does not
+establish asset damage, rights deprivation does not necessarily establish
+discrimination, and democratic or societal harm does not establish environmental
+damage.
 
-Every S1-S4 assessment authors six separate occurrence-specific components:
+The full S1–S5 criteria and stable threshold IDs are in the machine-readable
+methodology. Two dimensions contain quantitative operational anchors:
 
-1. `materialised_consequence` — the consequence that actually occurred, not a
-   hypothetical mechanism risk.
-2. `affected_scope` — the evidenced people, systems, organisations, service cohort,
-   jurisdiction, or period, without extrapolation to an unsupported population.
-3. `seriousness_and_persistence` — seriousness, duration, persistence,
-   reversibility, recoverability, and continuing effects where the evidence supports
-   them.
-4. `quantitative_information` — supported counts, loss, duration, system scale, or
-   frequency, or a concise statement of which relevant quantities are unavailable.
-5. `evidentiary_limits` — limits on causal mechanism, intent, protected-signal use,
-   liability, population, persistence, or other disputed facts. This does not replace
-   source-level `evidence_status`.
-6. `band_rationale` — why the selected band is supported over its adjacent band or
-   bands in this occurrence.
+| Band | Financial/economic | Service/operational/infrastructure |
+| --- | --- | --- |
+| S1 | Direct realised loss below USD 10,000 without material livelihood or organisational-viability impairment. | No user-visible impairment, or positively evidenced non-critical interruption below 15 minutes within applicable recovery objectives. |
+| S2 | USD 10,000 to below USD 1 million, or independently evidenced low and readily remediable economic disruption where no defensible conversion is available. | Limited non-critical degradation below 2 hours, critical interruption below 30 minutes, or a localised workflow failure resolved through routine recovery. |
+| S3 | USD 1 million to below USD 100 million, or independently evidenced material but bounded livelihood or organisational loss where no defensible conversion is available. | Material important-service or workflow disruption; important-function outage over 2 hours; relevant cloud unavailability over 30 minutes; or limited availability over 5%/one million EU users for over 1 hour, with bounded recovery. |
+| S4 | USD 100 million to below USD 100 billion, or independently evidenced substantial solvency, organisational-viability or widespread economic impact where no defensible conversion is available. | Essential or critical operation disrupted over 24 hours, material multi-organisation/jurisdiction operational impact, exceeded evidenced maximum tolerable downtime, or substantial external recovery. Production compromise alone is insufficient. |
+| S5 | At least USD 100 billion, catastrophic insolvency or systemic economic loss. | Catastrophic or prolonged essential-service loss or operational collapse with comparably grave consequences. |
 
-For SU, these assessed fields are omitted rather than fabricated. `assessment_gap`
-states what occurrence evidence is missing and what is needed to support a band.
+Financial bands apply directly to published USD realised loss. A conversion must
+preserve the source amount, currency, conversion date and source. Without that
+basis, a non-USD amount remains unconverted and can use a qualitative clause only
+when the corresponding livelihood, organisational-viability or systemic
+consequence is independently evidenced. An unpublished amount is `unreported`,
+never zero.
 
-## Public compatibility projection
+The quantitative anchors are informed by MIT FutureTech's 2026 Delphi severity
+work. VIGIL extends S4 through amounts below USD 100 billion to close the
+otherwise unclassified USD 10 billion to below USD 100 billion interval. This is
+a VIGIL operational adaptation; it is not attributed to MIT FutureTech.
 
-Canonical Incident files do not author `assessment_basis`. The public Incident and
-Registry index builder temporarily exposes `severity_assessment_basis` by joining the
-six canonical fields in a fixed order, or by projecting the SU `assessment_gap`.
-That generated string is a compatibility surface only and must not be edited or
-treated as a second source of truth.
+Operational thresholds adapt functional-impact and recoverability concepts from
+CISA and NIST and contextual sector anchors from NIS2 and DORA. Sector rules do
+not automatically determine a VIGIL band outside their scope.
+
+## External alignment and limits
+
+MIT FutureTech's AI Incident Tracker uses a 1 (Negligible) to 5 (Catastrophic)
+harm-severity direction and harm categories based on the CSET AI Harm Framework.
+Its 2026 Delphi severity work is the principal external quantitative and
+cross-domain anchor. VIGIL aligns direction and learns from those materials and
+their evidence-bounded assessment practice, but owns its operational dimensions,
+thresholds and ratings and does not claim equivalence or endorsement.
+
+VIGIL also adapts functional-impact, recoverability, continuity and regulatory
+materiality concepts from CISA, NIST, NIS2, DORA and ASD. Those references supply
+context and defensible anchors. VIGIL-HIM remains VIGIL's own deterministic
+methodology for evidence-to-repair governance analysis.
+
+The conceptual layers remain separate:
+
+1. evidence establishes what is reported;
+2. harm dimensions describe materialised consequences;
+3. severity records the highest supported magnitude;
+4. Failure Taxonomy classes describe the failure mechanism; and
+5. invariants and governance repair state what must hold to prevent recurrence.

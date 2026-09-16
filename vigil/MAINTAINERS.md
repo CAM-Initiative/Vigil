@@ -27,9 +27,9 @@ Before opening a pull request from `agent/incident-ecosystem-ingestion`, synchro
 
 ## Historical provenance
 
-Migrated Incidents may contain `legacy_provenance`, `legacy_governance_state`, migration-source metadata and historical IDs. Preserve those payloads when they explain derivation or historical review. A retired-class ID is a provenance token, not a live link; validators, builders and public interfaces must not require a corresponding FM, OBS, RESEARCH, PROP, PATCH or LEARN file.
+Legacy record classes and migration artefacts remain recoverable through Git history. Active Incident records contain only information required by the current VIGIL data model and must not carry retired payloads, migration-source metadata or retired-record links.
 
-Do not falsify historical review dates, reconstruct deleted records or reinterpret historical payloads as current workflow state.
+Do not falsify historical review dates or rewrite historical audits and reviews that accurately describe earlier repository states.
 
 ## Retained subsystem boundaries
 
@@ -49,7 +49,9 @@ The taxonomy migration assurance ledger at `vigil/taxonomy/migration/Caelestis.L
 
 `source_records` is the only canonical evidence block. Preserve source identity, URLs, dates, evidence modality, access state, source residence, source role and claim-relative evidence status. Do not infer inaccessible facts or represent repository acceptance as human verification.
 
-Structured Incident severity is substantive occurrence-level diagnosis. It is not source metadata, diagnostic provenance, taxonomy metadata or workflow priority. `severity_assessment_basis` may exist only as a deterministic generated compatibility projection.
+`related_incidents` is the sole active VIGIL-record relationship field. Current external research citations may be retained in `research_references`, and current standards or regulatory context in `standards_and_regulatory_references`; sources relied on as Incident evidence still belong in `source_records`.
+
+Structured Incident severity is derived through `harm_impact_assessment` and VIGIL-HIM. Overall severity is the highest supported assessed materialised-harm band; dimensions are never averaged or summed. `unreported` is not S1, and SU applies when no dimension can be defensibly banded. Severity remains independent of source metadata, diagnostic provenance, taxonomy classification and workflow priority.
 
 ## Generated outputs
 

@@ -16,11 +16,11 @@ The taxonomy, external-governance datasets and CAM assessment are separate retai
 - Preserve source URLs, evidence status, evidence modality, source residence, source role, access limitations and uncertainty.
 - Do not invent sources, dates, affected systems, causal claims, legal findings, severity or taxonomy mappings.
 - Keep occurrence-level facts in `summary` and `vigil_assessment.factual_basis`; keep governed diagnosis in `vigil_assessment.governance_interpretation`.
-- Keep structured `severity_assessment` as substantive occurrence-level diagnosis, independent of taxonomy classification, source prestige, workflow priority and hypothetical worst-case harm.
+- Keep structured `harm_impact_assessment` as substantive occurrence-level diagnosis under VIGIL-HIM. Overall severity is the highest supported assessed materialised-harm band; never average or sum dimensions, and never encode unreported harm as S1. Keep severity independent of taxonomy classification, source prestige, workflow priority and hypothetical worst-case harm.
 - Keep taxonomy classification separately governed and allow an Incident to remain unclassified.
 - Preserve append-only interpretive provenance and do not represent AI review as human review or verification.
 
-Historical FM/OBS/RESEARCH/PROP/PATCH/LEARN identifiers embedded in `legacy_provenance`, `legacy_governance_state`, migration-source provenance, source metadata or links are historical provenance tokens only. Do not remove or rewrite those payloads merely because the retired files are absent, and do not require the tokens to resolve to active records.
+Legacy record classes and migration artefacts remain recoverable through Git history. Active Incident records contain only information required by the current VIGIL data model. Do not restore retired payloads, migration-source metadata or retired-record links to active records.
 
 ## Schema and publication
 

@@ -74,8 +74,6 @@ def main() -> int:
                 errors.append(f"{location} is marked vigil-internal without a CAM/VIGIL origin marker")
             if residence == "cam-internal" and not looks_cam:
                 errors.append(f"{location} is marked cam-internal without a CAM/Caelestis origin marker")
-            if role == "record-cross-reference" and residence != "vigil-internal":
-                errors.append(f"{location} record-cross-reference must use vigil-internal residence")
             if residence == "vigil-internal" and role not in {
                 "record-cross-reference", "direct-testimony", "incident-evidence", "governance-basis"
             }:
