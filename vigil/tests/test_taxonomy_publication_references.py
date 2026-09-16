@@ -62,7 +62,7 @@ class TaxonomyPublicationReferenceTests(unittest.TestCase):
         )
 
         rendered = RENDERER.bibliography_html(families)
-        self.assertEqual(rendered.count('class="bibliography-entry"'), 1)
+        self.assertEqual(rendered.count("<em>Primary source</em>"), 1)
         self.assertIn("Supports the first boundary.", rendered)
         self.assertIn("Supports only the second condition.", rendered)
 
