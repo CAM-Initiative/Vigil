@@ -30,12 +30,14 @@ on:
       - "vigil/taxonomy/validate_taxonomy.py"
       - "vigil/taxonomy/render_taxonomy.py"
       - "vigil/taxonomy/render_taxonomy_publication.py"
+      - "vigil/methodologies/VIGIL.HarmImpactMatrix.v*.json"
+      - "vigil/references/VIGIL.ObservatoryReferenceRegistry.json"
       - "vigil/taxonomy/assets/**"
       - ".github/workflows/taxonomy-publications.yml"
   workflow_dispatch:
 
 concurrency:
-  group: vigil-taxonomy-publications-${{ github.event_name == 'workflow_run' && 'main' || github.ref }}
+  group: vigil-taxonomy-publications-${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.pull_request.number) || 'main' }}
   cancel-in-progress: true
 
 permissions:
@@ -166,17 +168,19 @@ jobs:
           text = "\n".join(page.extract_text() or "" for page in PdfReader(str(pdf)).pages)
           normalised_text = re.sub(r"\s+", " ", text).strip()
           required = [
-              "Phoenix Covenant Pty Ltd trading as CAM Initiative",
+              "Phoenix Covenant Pty Ltd trading as CAM Initiative (ABN 14 692 195 529)",
               "All rights reserved",
               "Copyright and licensing",
               "Copyright and licensing notice effective 16 September 2026",
-              "ABN 14 692 195 529",
               "VIGIL Observatory taxonomy structures",
               "Citation, reference and linking with attribution to CAM Initiative and VIGIL Observatory",
               "Third-party reliance",
               "does not confer any right of reliance on a third party",
               "Generative AI disclosure",
               "CAM Initiative has reviewed the substantive claims, references and classifications and accepts responsibility",
+              "VIGIL Harm & Severity Methodology",
+              "VIGIL-HIM",
+              "References",
           ]
           missing = [value for value in required if value.lower() not in normalised_text.lower()]
           if missing:

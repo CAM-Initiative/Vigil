@@ -4,7 +4,7 @@ This directory contains a portable, machine-readable technical reference for AI-
 
 ## Rights and citation
 
-The family JSON files remain the canonical taxonomy; the maintained Full Reference PDF is a generated publication projection. The taxonomy and associated original material are proprietary VIGIL Materials. Public accessibility and inspectability do not grant permission to copy, redistribute, adapt, derive from, translate, systematically extract, incorporate into another taxonomy or product, or train or evaluate machine-learning systems with the material. Citation, reference and linking with attribution to **Dr Michelle O'Rourke, CAM Initiative, VIGIL** are permitted. Other reuse requires prior written licence; see [`../../LICENSE.md`](../../LICENSE.md) and [`../../RIGHTS.json`](../../RIGHTS.json).
+The family JSON files remain the canonical taxonomy; the maintained Full Reference PDF is a generated publication projection. The taxonomy and associated original material are proprietary VIGIL Materials. Public accessibility and inspectability do not grant permission to copy, redistribute, adapt, derive from, translate, systematically extract, incorporate into another taxonomy or product, or train or evaluate machine-learning systems with the material. Citation, reference and linking with attribution to **CAM Initiative and VIGIL Observatory** are permitted. Other reuse requires prior written licence; see [`../../LICENSE.md`](../../LICENSE.md) and [`../../RIGHTS.json`](../../RIGHTS.json).
 
 © 2026 Phoenix Covenant Pty Ltd trading as CAM Initiative. All rights reserved.
 
@@ -114,7 +114,7 @@ Definitions must not contain incident-specific values. Severity, harm, persisten
 
 ## Dataset and publication versioning
 
-The version in `VIGIL.FailureTaxonomy.Index.json` is the version of the complete downloadable taxonomy dataset and Full Reference Manual. It is distinct from the version of an individual family record and from the historical taxonomy version recorded on a prior classification decision.
+The version in `VIGIL.FailureTaxonomy.Index.json` is the version of the downloadable Failure Taxonomy dataset. The maintained Full Reference PDF is a composite technical reference and therefore surfaces both the canonical Failure Taxonomy version and the canonical VIGIL Harm & Severity methodology version. The publication renderer resolves the current VIGIL-HIM methodology from `vigil/methodologies/`, so a methodology version change is reflected in the technical reference without falsely advancing the taxonomy dataset version.
 
 Dataset releases follow these rules:
 
@@ -139,13 +139,13 @@ A subtype is nested directly under exactly one canonical class and cannot be emi
 Generate the maintained Full Reference PDF with:
 
 ```bash
-python vigil/taxonomy/render_taxonomy.py \
+python vigil/taxonomy/render_taxonomy_publication.py \
   --catalogue \
   --output-dir vigil/taxonomy/generated \
   --pdf
 ```
 
-The PDF is a deterministic projection of the canonical family JSON and is generated rather than hand-edited. The renderer may emit HTML internally while composing the PDF, but those files are transient build material and are not committed publication assets. Pull requests validate the taxonomy contract, rebuild the Incident-backed Case File projection, and apply evidence exclusions without requiring publication regeneration. After changes land on `main`, the publication workflow uses the repository's established PDF renderer to regenerate, validate, and commit the refreshed PDF asset.
+The PDF is a deterministic projection of the canonical family JSON, the current VIGIL Harm & Severity methodology, and their consolidated external references; it is generated rather than hand-edited. The renderer may emit HTML internally while composing the PDF, but those files are transient build material and are not committed publication assets. Pull requests validate the taxonomy contract, rebuild the Incident-backed Case File projection, and apply evidence exclusions without requiring publication regeneration. After changes land on `main`, the publication workflow uses the repository's established PDF renderer to regenerate, validate, and commit the refreshed PDF asset.
 
 Generate one Markdown family reference when needed:
 

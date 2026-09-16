@@ -183,7 +183,7 @@ class TaxonomyPublicationReferenceTests(unittest.TestCase):
             self.assertIn("CURRENT_FAMILY_CODE", output)
             self.assertIn("CURRENT_CLASS_CODE", output)
 
-    def test_publication_cover_surfaces_standard_version_and_beta_status(self):
+    def test_publication_cover_surfaces_component_versions_and_beta_status(self):
         index = {
             "standard": {
                 "version": "0.4.2",
@@ -193,10 +193,14 @@ class TaxonomyPublicationReferenceTests(unittest.TestCase):
         }
         families = [{"classes": []}]
         rendered = RENDERER.base.publication_frontmatter(index, families)
-        self.assertIn("VIGIL Failure Taxonomy 0.4.2", rendered)
+        self.assertIn("VIGIL Observatory · Technical Reference", rendered)
+        self.assertIn("0.4.2", rendered)
+        self.assertIn("Harm &amp; Severity version", rendered)
+        self.assertIn("1.0.0", rendered)
         self.assertIn("Status: Beta", rendered)
         self.assertIn("Governance<br>Failure<br>Taxonomy", rendered)
         self.assertIn("Technical Reference", rendered)
+
 
     def test_distinct_provisions_at_one_url_remain_distinct_citations(self):
         families = [
@@ -277,6 +281,23 @@ class TaxonomyPublicationReferenceTests(unittest.TestCase):
                     self.assertIn(item["name"], output)
 
         self.assertEqual(subtype_count, 7)
+
+    def test_harm_severity_methodology_renders_canonical_version_and_dimensions(self):
+        matrix = RENDERER.load_harm_methodology()
+        rendered = RENDERER.harm_severity_html()
+        self.assertIn("VIGIL Harm &amp; Severity Methodology", rendered)
+        self.assertIn(f"Version {matrix['version']}", rendered)
+        self.assertIn("Severity bands", rendered)
+        self.assertIn("Assessment statuses", rendered)
+        for dimension in matrix["dimensions"]:
+            self.assertIn(RENDERER.base.esc(dimension["label"]), rendered)
+
+    def test_harm_severity_references_enter_consolidated_bibliography(self):
+        rendered = RENDERER.bibliography_html([])
+        self.assertIn("VIGIL Harm &amp; Severity Methodology", rendered)
+        self.assertIn("MIT FutureTech", rendered)
+        self.assertIn("References", rendered)
+
 
 if __name__ == "__main__":
     unittest.main()
