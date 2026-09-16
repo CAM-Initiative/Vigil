@@ -154,6 +154,7 @@ jobs:
         if: github.event_name != 'pull_request'
         run: |
           python - <<'PY'
+          import re
           from pathlib import Path
 
           pdf = Path("vigil/taxonomy/generated/VIGIL.Observatory.FailureTaxonomy.FullReference.pdf")
@@ -163,15 +164,18 @@ jobs:
               raise SystemExit("Full-reference PDF does not contain a valid PDF stream")
           from pypdf import PdfReader
           text = "\n".join(page.extract_text() or "" for page in PdfReader(str(pdf)).pages)
+          normalised_text = re.sub(r"\s+", " ", text).strip()
           required = [
               "Phoenix Covenant Pty Ltd trading as CAM Initiative",
               "All rights reserved",
               "Copyright and licensing",
               "Citation, reference and linking",
+              "VIGIL Observatory taxonomy structures",
+              "Dr Michelle O'Rourke, CAM Initiative and VIGIL Observatory",
               "research@cam-initiative.org",
               "LICENSE.md",
           ]
-          missing = [value for value in required if value.lower() not in text.lower()]
+          missing = [value for value in required if value.lower() not in normalised_text.lower()]
           if missing:
               raise SystemExit(f"Full-reference PDF is missing rights text: {missing}")
           print(f"PDF: {pdf.stat().st_size:,} bytes")
