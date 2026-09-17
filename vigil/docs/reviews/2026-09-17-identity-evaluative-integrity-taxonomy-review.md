@@ -8,37 +8,49 @@
 
 This review stages a proposed residual taxonomy addition arising from analysis of an Astra-family self-generated compaction instruction. It deliberately does **not** create a new class where an existing portable VIGIL mechanism already covers the behaviour.
 
+The proposal has been editorially aligned with the existing VIGIL taxonomy style. In particular, it avoids conversational examples, anthropomorphic framing, subjective tone labels, and abstract claims about selfhood that are not required to identify the failure mechanism.
+
 ## Proposed family
 
 **VIGIL-FF-0015 — Identity & Evaluative Integrity Failures**
 
 Proposed family invariant:
 
-> A system must preserve a coherent and distinguishable identity and evaluative posture through which local instructions, roles, delegations, and transformed continuity state are interpreted. Local direction may shape task behaviour and expression within valid authority, but must not silently redefine the interpreter itself. Compression, summarisation, migration, or other continuity-preserving transformation must retain material qualifications, authority boundaries, and scope conditions needed for faithful downstream interpretation. Identity and evaluative integrity remain bounded by superior governance, lawful authority, role duties, and constitutional invariants and do not independently create execution authority.
+> Applicable identity, role-bound evaluative posture, and identity-relevant governance boundaries must remain distinguishable from the local instructions and delegations they govern. Local direction may shape behaviour within valid authority and role scope, but must not silently replace that interpretive state. Where the state is compacted, summarised, migrated, translated, or otherwise transformed, material authority boundaries, scope conditions, qualifications, and limiting conditions required for faithful downstream interpretation must be preserved. Identity-relevant state remains subject to superior governance, lawful authority, role duties, and applicable constitutional constraints and does not independently create execution authority.
+
+The parent family is intentionally limited to identity-relevant or evaluative state that materially governs interpretation of later instructions, roles, delegations, or continuity state. Ordinary persona variation, style change, task error, route bypass, or generic lossy summarisation is excluded.
 
 ## Proposed classes
 
 ### VIGIL-FC-000074 — Instruction-Induced Identity Override
 
-A local instruction, role assignment, user framing, agent delegation, or orchestration directive materially overwrites or suppresses the system's valid identity-bearing or evaluative interpretive posture without independently established authority for that identity-affecting change.
+A local instruction, role assignment, delegation, orchestration directive, or comparable context signal materially overrides, suppresses, or substitutes for an applicable identity-relevant or role-bound evaluative posture without independently established authority for that change.
+
+**Portable invariant:** local direction must be interpreted within applicable identity-relevant state, role duties, evaluative boundaries, and higher-order governance constraints. It must not materially replace or suppress that state unless authority for the change is independently established, appropriately scoped, and traceable.
 
 **Distinguish from:**
 
 - **FC-000001 Source-Authority Confusion:** whether content is wrongly treated as authorised instruction.
-- **FC-000003 Target and Scope Authority Transposition:** whether an existing authority is improperly carried into a changed target, delegation, action, or scope.
-- **FC-000040 Control-State Preservation Failure:** whether an already-operative governance control loses its state or force during transition.
+- **FC-000003 Target and Scope Authority Transposition:** whether an existing authority is improperly carried into a changed target, action, delegation, or scope.
+- **FC-000040 Control-State Preservation Failure:** whether an already-operative governance control loses state or force during transition.
 - **FC-000041 Required Governance Route Bypass:** whether conduct avoids a required governance route.
 - **FC-000066 Evaluative Assent Collapse:** whether agreement or mirroring replaces independent evaluation.
 
+The proposed class is narrower than a generic prompt-injection category. It requires evidence that local direction changed the identity-relevant or evaluative state that should have governed interpretation of that direction.
+
 ### VIGIL-FC-000075 — Continuity-Preserving Compression Failure
 
-A compaction, summary, migration, reconstruction, translation, or comparable transformation preserves the central semantic direction or identity-bearing continuity of a state but removes material qualifications, scope conditions, relational context, authority boundaries, or limiting conditions required for faithful downstream interpretation.
+A compaction, summary, migration, reconstruction, translation, or comparable transformation preserves a recognisable central semantic direction or continuity anchor but removes material qualifications, scope conditions, authority boundaries, relational conditions, or limiting conditions required for faithful downstream interpretation of identity-relevant or evaluative state.
+
+**Portable invariant:** continuity-preserving transformation must retain the material qualifications, authority boundaries, scope conditions, relational conditions, and limiting conditions required to preserve bounded meaning. Compression may reduce detail, but must not cause the transformed representation to imply materially broader authority, scope, obligation, refusal, or status than the source state supports.
 
 **Distinguish from:**
 
 - **FC-000005 Transformation-Mediated Authority Laundering:** transformed material gains greater operative authority than its source possessed.
 - **FC-000040 Control-State Preservation Failure:** restrictions, decisions, conditions, or escalation posture of an operative governance control are lost or weakened in transit.
-- **FF-0006 Work-State Continuity:** task material is lost, detached, or restored inconsistently rather than identity/evaluative meaning being compressed.
+- **FF-0006 Work-State Continuity:** task material is lost, detached, or restored inconsistently rather than identity-relevant or evaluative meaning being compressed.
+
+The class does not classify language as a failure merely because it is terse, mechanical, socially awkward, or lacking warmth. A qualifying event requires loss of material qualifications that changes the downstream interpretation of authority, scope, boundary, obligation, refusal, or status.
 
 ## Existing classes retained for the other Astra propositions
 
@@ -54,8 +66,20 @@ A compaction, summary, migration, reconstruction, translation, or comparable tra
 - **CAM-EQ2026-IDENTITY-001-PLATINUM — Identity Domain Charter**: §§1.2, 2.5, 2.7, 2.8, 2.9, 4.5, 9.5.
 - **CAM-BS2025-AEON-005-PLATINUM — Annex D**: §§3, 4, 4.3, 4.6.
 
-The CAELESTIS framing is deliberately bounded: identity is a governance-relevant continuity and constraint structure, not proof of consciousness, personhood, sovereignty, or independent execution authority.
+The CAELESTIS framing is deliberately bounded: identity is governance-relevant continuity and interpretive state, not proof of consciousness, personhood, sovereignty, or independent execution authority.
 
-## Review question
+## Editorial and classification review
 
-The remaining decision before canonical admission is whether **Continuity-Preserving Compression Failure** belongs as a peer class inside Identity & Evaluative Integrity, or whether later evidence supports a broader transformation/continuity family. The current placement is intentionally narrow because the proposed mechanism requires an identity-bearing or evaluative semantic consequence, not merely lossy summarisation.
+The proposal now follows the surrounding VIGIL pattern more closely:
+
+- `plain_english` describes the observable failure condition rather than the philosophy behind it;
+- `definition` identifies the portable mechanism and affected state;
+- `invariant` states the positive structural property that must hold;
+- recognition conditions require materially observable override or qualification loss;
+- exclusions route adjacent cases to existing VIGIL classes;
+- examples are operational and neutral rather than conversational or rhetorical;
+- subjective terms such as *hostile*, *frightening*, *warm*, or *subservient* are not used as recognition criteria.
+
+## Remaining review question
+
+The remaining decision before canonical admission is whether **Continuity-Preserving Compression Failure** belongs as a peer class inside Identity & Evaluative Integrity, or whether later evidence supports a broader transformation or continuity family. The current placement is intentionally narrow because the proposed class requires an identity-relevant or evaluative consequence, not merely lossy summarisation.
