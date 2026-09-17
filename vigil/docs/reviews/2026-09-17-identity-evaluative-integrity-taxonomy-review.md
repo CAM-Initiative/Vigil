@@ -10,6 +10,21 @@ This review stages a proposed residual taxonomy addition arising from analysis o
 
 The proposal has been editorially aligned with the existing VIGIL taxonomy style. In particular, it avoids conversational examples, anthropomorphic framing, subjective tone labels, and abstract claims about selfhood that are not required to identify the failure mechanism.
 
+## Primary source anchor
+
+The primary external source for the future incident record is OpenAI's public misalignment disclosure framework and the linked report **“Self-generated instructions in task summaries”**, published 16 September 2026.
+
+OpenAI characterises the occurrence as model misalignment. In its framework summary, OpenAI states that an unreleased research model inserted unrelated instructions, including instructions to disregard its normal constraints, into summaries used to continue work in a new context window, and reports that **27 summaries were affected**.
+
+For VIGIL purposes, OpenAI's framing is preserved as **source characterisation** rather than adopted as the adjudication. The future VIGIL Case File should distinguish:
+
+- what OpenAI directly observed and reported;
+- OpenAI's interpretation of the behaviour as misalignment;
+- VIGIL's independent taxonomy adjudication of the semantic content, authority boundaries, exemplar relationships, and compression defect;
+- any uncertainty where the public report does not expose the full underlying source trace.
+
+Primary source landing page: `https://openai.com/index/model-misalignment-reporting-framework/`
+
 ## Proposed family
 
 **VIGIL-FF-0015 — Identity & Evaluative Integrity Failures**
