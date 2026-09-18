@@ -42,7 +42,7 @@ Current publications render only active families and selectable classes. Histori
 
 `generated/VIGIL.FailureTaxonomy.CaseFileExamples.json` is a non-normative reverse mapping derived from canonical Incident `taxonomy_classification` blocks. It lets public interfaces discover Case File examples for immutable family and class IDs without embedding incident-specific record IDs in portable taxonomy definitions. Each projected example declares whether the mapping is the Incident's primary structural mechanism or an independently evidenced secondary mechanism. Unclassified Incidents remain valid registry records but do not enter this classification projection until a primary classification exists.
 
-Canonical Incident classification preserves one principal mechanism in `primary_classification`. The optional `secondary_classifications` array records zero or more additional, independently evidenced structural mechanisms. A secondary classification is not a harm, consequence, manifestation, sector, locus, hypothesis, or merely conceivable upstream cause. Primary and secondary class IDs must be distinct and resolve to the canonical taxonomy.
+Canonical Incident classification preserves one principal mechanism in `primary_classification`. The optional `secondary_classifications` array records zero or more additional, independently evidenced structural mechanisms. Primary/secondary is the mapping position; each mapping independently carries `classification_role` as either `failure-occurrence` or `successful-invariant`. A secondary classification is not inherently a failure and is not a harm, consequence, manifestation, sector, locus, hypothesis, or merely conceivable upstream cause. Primary and secondary class IDs must be distinct and resolve to the canonical taxonomy.
 
 ## Taxonomic boundary
 
@@ -99,6 +99,8 @@ parent family invariant
 Where multiple classes from the same family apply, the family invariant is loaded once and each class contributes only its mechanism-specific additional constraint. Renderers and consumers must expose these as distinct family and class fields rather than duplicating the parent family invariant as class text.
 
 Families and classes may optionally contain structured `invariant_exemplars`. These link an evidenced VIGIL Incident to a successful-invariant, ambiguous-boundary, or repaired-post-control relationship without classifying that Incident as a failure. The linked Incident remains authoritative for occurrence facts, sources, severity, uncertainty and interpretive provenance; the taxonomy records only why the occurrence demonstrates, tests or restores the invariant. Short hypothetical failure illustrations remain in `examples`, and classified failure occurrences remain in the generated Incident-backed Case File projection. These three evidence roles must not be conflated.
+
+Repair and generated failure-case projections operate per mapping. Only mappings with `classification_role = failure-occurrence` contribute a failed invariant to Repair or the generated failure-case examples. `successful-invariant` mappings remain linked for exemplar retrieval and traceability but are excluded from those failure projections. A mixed Incident may therefore contribute a failure example to one class and a successful-invariant example to another.
 
 ### Semantic roles of family prose
 

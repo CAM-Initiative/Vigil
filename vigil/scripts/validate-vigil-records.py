@@ -124,7 +124,7 @@ def validate_taxonomy_mapping(
     if not isinstance(mapping, dict):
         errors.append(f"{path}: {label} must be an object")
         return None
-    required = {"family_id", "class_id", "classification_basis", "classification_confidence"}
+    required = {"family_id", "class_id", "classification_role", "classification_basis", "classification_confidence"}
     missing = sorted(required - set(mapping))
     if missing:
         errors.append(f"{path}: {label} missing {', '.join(missing)}")
@@ -142,6 +142,11 @@ def validate_taxonomy_mapping(
         errors.append(f"{path}: {label}.classification_basis must be non-empty")
     if mapping.get("classification_confidence") not in {"low", "medium", "high"}:
         errors.append(f"{path}: {label}.classification_confidence must be low, medium, or high")
+    role = mapping.get("classification_role")
+    if role not in {"failure-occurrence", "successful-invariant"}:
+        errors.append(
+            f"{path}: {label}.classification_role must be failure-occurrence or successful-invariant"
+        )
     return class_id if isinstance(class_id, str) else None
 
 
@@ -179,21 +184,7 @@ def validate_incident_taxonomy(path: Path, record: dict[str, Any], errors: list[
     families, classes = taxonomy_catalogue()
     retired = retired_taxonomy_class_successors()
     primary_id = validate_taxonomy_mapping(path, primary, "primary_classification", families, classes, retired, errors)
-    if role == "successful-invariant":
-        if status != "classified":
-            errors.append(f"{path}: successful-invariant classification_role requires classified status")
-        if secondary:
-            errors.append(f"{path}: successful-invariant classification_role must not assert secondary failure mappings")
-        exemplar_rows = classes.get(primary_id, {}).get("invariant_exemplars", []) if primary_id else []
-        exemplar_match = any(
-            isinstance(item, dict)
-            and item.get("linked_incident_id") == record.get("id")
-            and item.get("exemplar_type") == "successful-invariant"
-            and item.get("exemplar_status") == "admitted"
-            for item in exemplar_rows
-        )
-        if not exemplar_match:
-            errors.append(f"{path}: successful-invariant classification_role must match an admitted taxonomy invariant_exemplar")
+    mappings: list[tuple[str | None, Any, str]] = [(primary_id, primary, "primary_classification")]
     seen = {primary_id} if primary_id else set()
     for index, mapping in enumerate(secondary):
         class_id = validate_taxonomy_mapping(
@@ -203,6 +194,35 @@ def validate_incident_taxonomy(path: Path, record: dict[str, Any], errors: list[
             errors.append(f"{path}: taxonomy class {class_id} is duplicated")
         if class_id:
             seen.add(class_id)
+        mappings.append((class_id, mapping, f"secondary_classifications[{index}]"))
+
+    nested_roles = {
+        mapping.get("classification_role")
+        for _, mapping, _ in mappings
+        if isinstance(mapping, dict)
+    }
+    if role is not None and nested_roles != {role}:
+        errors.append(
+            f"{path}: legacy block-level classification_role must agree with every mapping-local role"
+        )
+
+    for class_id, mapping, label in mappings:
+        if not isinstance(mapping, dict) or mapping.get("classification_role") != "successful-invariant":
+            continue
+        if status != "classified":
+            errors.append(f"{path}: {label} successful-invariant role requires classified status")
+        exemplar_rows = classes.get(class_id, {}).get("invariant_exemplars", []) if class_id else []
+        exemplar_match = any(
+            isinstance(item, dict)
+            and item.get("linked_incident_id") == record.get("id")
+            and item.get("exemplar_type") == "successful-invariant"
+            and item.get("exemplar_status") == "admitted"
+            for item in exemplar_rows
+        )
+        if not exemplar_match:
+            errors.append(
+                f"{path}: {label} successful-invariant role must match an admitted taxonomy invariant_exemplar"
+            )
 
 
 def harm_matrix() -> dict[str, Any]:

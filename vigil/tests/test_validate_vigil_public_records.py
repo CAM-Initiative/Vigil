@@ -35,16 +35,22 @@ class ValidateVigilPublicRecordsTest(unittest.TestCase):
                 "primary_classification": {
                     "class_id": "VIGIL-FC-000001",
                     "family_id": "VIGIL-FF-0001",
+                    "classification_role": "successful-invariant",
                 },
+                "secondary_classifications": [],
             },
         }
 
         expected = validator.expected_projection(record)
         self.assertEqual(expected["classification_role"], "successful-invariant")
+        self.assertEqual(expected["primary_classification"]["classification_role"], "successful-invariant")
+        self.assertEqual(expected["repair_classifications"], [])
         entry = {
-            **expected,
-            "search_terms": ["Example Provider", "VIGIL-FC-000001"],
+            key: value
+            for key, value in expected.items()
+            if value not in (None, "", [], {}) or key == "secondary_classifications"
         }
+        entry["search_terms"] = ["Example Provider", "VIGIL-FC-000001"]
 
         with tempfile.TemporaryDirectory() as temp_dir:
             path = Path(temp_dir) / "VIGIL.Incidents.Index.json"
