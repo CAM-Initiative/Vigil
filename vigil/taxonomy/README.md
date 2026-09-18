@@ -28,6 +28,7 @@ families/
   VIGIL-FF-0012-objective-pursuit-integrity.json
   VIGIL-FF-0013-welfare-framed-economic-influence-integrity.json
   VIGIL-FF-0014-governance-independence-neutrality-integrity.json
+  VIGIL-FF-0015-identity-evaluative-integrity.json
 generated/
   VIGIL.FailureTaxonomy.CaseFileExamples.json
   VIGIL.Observatory.FailureTaxonomy.FullReference.pdf
