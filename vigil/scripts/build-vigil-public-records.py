@@ -246,6 +246,7 @@ def taxonomy_examples(records: list[dict[str, Any]]) -> dict[str, Any]:
     taxonomy = load(TAXONOMY_INDEX)
     classes: dict[str, list[dict[str, Any]]] = {}
     successful_invariants: dict[str, list[dict[str, Any]]] = {}
+    ambiguous_boundaries: dict[str, list[dict[str, Any]]] = {}
     for family in taxonomy.get("families", []):
         if not isinstance(family, dict) or not isinstance(family.get("file"), str):
             continue
@@ -254,6 +255,7 @@ def taxonomy_examples(records: list[dict[str, Any]]) -> dict[str, Any]:
             if isinstance(item, dict) and isinstance(item.get("class_id"), str):
                 classes[item["class_id"]] = []
                 successful_invariants[item["class_id"]] = []
+                ambiguous_boundaries[item["class_id"]] = []
     seen: set[tuple[str, str, str]] = set()
     for record in records:
         for position, mapping in taxonomy_mappings(record):
@@ -265,7 +267,7 @@ def taxonomy_examples(records: list[dict[str, Any]]) -> dict[str, Any]:
             if deduplication_key in seen:
                 continue
             seen.add(deduplication_key)
-            target = classes if role == "failure-occurrence" else successful_invariants
+            target = classes if role == "failure-occurrence" else successful_invariants if role == "successful-invariant" else ambiguous_boundaries
             target[class_id].append(prune({
                 "incident_id": record.get("id"),
                 "incident_title": record.get("record_identity", {}).get("title"),
@@ -282,6 +284,7 @@ def taxonomy_examples(records: list[dict[str, Any]]) -> dict[str, Any]:
         },
         "classes": classes,
         "successful_invariants": successful_invariants,
+        "ambiguous_boundaries": ambiguous_boundaries,
     }
 
 
