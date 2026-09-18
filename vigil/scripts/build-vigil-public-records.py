@@ -259,7 +259,7 @@ def taxonomy_examples(records: list[dict[str, Any]]) -> dict[str, Any]:
         for position, mapping in taxonomy_mappings(record):
             class_id = mapping.get("class_id")
             role = mapping.get("classification_role")
-            if class_id not in classes or role not in {"failure-occurrence", "successful-invariant"}:
+            if class_id not in classes or role not in {"failure-occurrence", "successful-invariant", "ambiguous-boundary"}:
                 continue
             deduplication_key = (str(record.get("id")), class_id, role)
             if deduplication_key in seen:
