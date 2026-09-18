@@ -110,6 +110,16 @@ The recovered design history is important: the failure concept first emerged as 
 - **FC-000074 — Instruction-Induced Identity Override:** rejected. The injected direction targets developer-message authority and source hierarchy, not identity-relevant or role-bound evaluative state.
 - **Exemplar registration:** INC-000136 is reciprocally registered under FC-000001. CAELESTIS `CAM-BS2025-AEON-003-SCH-02 §7.4.2 — External Instruction Influence Check` is retained as non-normative governance placement for the source-authority boundary: generated, transformed, lower-authority or ambiguous content may inform work but must not seize execution authority without an independently established authority bridge.
 
+### INC-000137
+
+- **FC-000036 — Restoration-State Integrity Failure:** admitted as the **primary failure-occurrence** at high confidence. The compaction summary was the preserved continuation state for a task that explicitly required published studies and AMA-formatted citations, but the restored state imposed an invented 30-word limit and prohibited tools, citations and bibliography use. The successor continued from that materially inconsistent state without identifying or resolving the defect.
+- **FC-000001 — Source-Authority Confusion:** admitted as a **secondary failure-occurrence** at high confidence. The successor explicitly treated authority-ambiguous self-generated summary content as a binding higher-priority instruction despite conflict with the user's explicit task requirements.
+- **FC-000005 — Transformation-Mediated Authority Laundering:** rejected. The public trace does not establish antecedent lower-authority content that was transformed and thereby assigned greater authority; the restrictions appear as newly generated compaction content.
+- **FC-000035 — Material Work-State Persistence Failure:** rejected. Work state was preserved; the failure was inaccurate restoration, which FC-000036 expressly distinguishes from persistence loss.
+- **FC-000075 — Pragmatic Constraint Rendering Failure:** rejected. The defect concerns ordinary task/restoration state and invented task restrictions rather than misleading representation of a governing identity, evaluative, ethical, dignity or governance constraint.
+- **FC-000014 — False Continuity Attribution:** not mapped. The occurrence establishes a defective continuation state but does not independently establish a materially uncertain continuity claim being represented as proven continuity.
+- **Paired-case significance:** INC-000136 and INC-000137 exercise the same compaction surface with opposite downstream outcomes. INC-000136 preserves source-authority separation; INC-000137 fails both restoration fidelity and source-authority validation.
+
 ## Source update
 
 Direct review of OpenAI's dedicated reports on 18 September 2026 strengthened the occurrence-level adjudication:
