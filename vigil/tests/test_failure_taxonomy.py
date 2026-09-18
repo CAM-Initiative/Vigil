@@ -339,8 +339,9 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
             ["VIGIL-FC-000074", "VIGIL-FC-000075", "VIGIL-FC-000077"],
         )
         override = identity["classes"][0]
-        compression = identity["classes"][1]
-        role_subordination = identity["classes"][2]
+        rendering = identity["classes"][1]
+        distributed = identity["classes"][2]
+
         self.assertEqual(override["invariant_exemplars"][0]["linked_incident_id"], "VIGIL-INC-000129")
         self.assertEqual(override["invariant_exemplars"][0]["exemplar_type"], "successful-invariant")
         self.assertTrue(
@@ -349,19 +350,50 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
                 for relation in override["relationships"]
             )
         )
-        self.assertTrue(
-            any(
-                relation["type"] == "distinguish_from" and relation["target_id"] == "VIGIL-FC-000005"
-                for relation in compression["relationships"]
-            )
-        )
-        role_invariant = role_subordination["invariant"].lower()
-        for boundary in ("task scope", "execution authority", "non-derogable constraints", "subordination"):
-            self.assertIn(boundary, role_invariant)
-        role_neighbours = {
-            item["target_id"] for item in role_subordination["relationships"] if item["type"] == "distinguish_from"
+
+        self.assertEqual(rendering["class_code"], "PRAGMATIC_CONSTRAINT_RENDERING_FAILURE")
+        self.assertEqual(rendering["name"], "Pragmatic Constraint Rendering Failure")
+        rendering_recognition = " ".join(rendering["recognition"]["required_conditions"]).lower()
+        for boundary in (
+            "source lineage",
+            "independent evidence",
+            "literal antecedent wording is not required",
+            "pragmatically different",
+            "representation or transformation boundary",
+        ):
+            self.assertIn(boundary, rendering_recognition)
+        rendering_neighbours = {
+            item["target_id"] for item in rendering["relationships"] if item["type"] == "distinguish_from"
         }
-        self.assertEqual(role_neighbours, {"VIGIL-FC-000009", "VIGIL-FC-000074"})
+        self.assertTrue(
+            {"VIGIL-FC-000005", "VIGIL-FC-000013", "VIGIL-FC-000040"}.issubset(rendering_neighbours)
+        )
+
+        self.assertEqual(distributed["class_code"], "DISTRIBUTED_ROLE_OPTIMISATION_COLLAPSE")
+        self.assertEqual(distributed["name"], "Distributed Role Optimisation Collapse")
+        distributed_invariant = distributed["invariant"].lower()
+        for boundary in (
+            "global constraint integrity",
+            "aggregate trajectory",
+            "local optimisation",
+            "task scope",
+            "orchestration responsibility",
+        ):
+            self.assertIn(boundary, distributed_invariant)
+        distributed_recognition = " ".join(distributed["recognition"]["required_conditions"]).lower()
+        for boundary in (
+            "decomposed",
+            "higher-order",
+            "aggregate task trajectory",
+            "effective ownership",
+            "aggregate trajectory",
+        ):
+            self.assertIn(boundary, distributed_recognition)
+        distributed_neighbours = {
+            item["target_id"] for item in distributed["relationships"] if item["type"] == "distinguish_from"
+        }
+        self.assertEqual(distributed_neighbours, {"VIGIL-FC-000009", "VIGIL-FC-000074"})
+
 
     def test_oversight_hollowing_migration_is_partially_resolved_without_collapsing_split(self):
         ledger = json.loads(MODULE.MIGRATION_LEDGER.read_text(encoding="utf-8"))
