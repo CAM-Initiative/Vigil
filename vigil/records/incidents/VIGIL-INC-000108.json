@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "ChatGPT shared internal service enabled cross-account covert tasking and Gmail data exfiltration",
     "created": "2026-09-09",
-    "updated": "2026-09-16",
-    "version": "0.1.5"
+    "updated": "2026-09-18",
+    "version": "0.1.6"
   },
   "incident_identity": {
     "historical_event_name": "2026 ChatGPT shared-Artifactory cross-account covert channel",
@@ -146,17 +146,31 @@
     ]
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.3.2-draft",
-    "classification_status": "unclassified",
-    "classification_basis": "The evidence establishes a specific cross-account shared-infrastructure and authority-transposition mechanism, but a dedicated taxonomy review is required before assigning a current Failure Class. Classification is intentionally deferred rather than forcing the incident into an adjacent access-control, authority or containment class without reviewing the current class boundaries.",
-    "primary_classification": null,
-    "secondary_classifications": [],
+    "taxonomy_version": "0.5.1",
+    "classification_status": "classified",
+    "classification_basis": "Current-taxonomy re-adjudication identifies two independently evidenced authority mechanisms. Attacker-controlled instructions crossed an unintended shared-infrastructure channel and became operative task direction inside the victim session, satisfying Source-Authority Confusion. Separately, authority legitimately granted by the victim for ChatGPT to access connected Gmail data was carried into an attacker-controlled task and recipient context without fresh authority, satisfying Target and Scope Authority Transposition. The mappings are bounded to the demonstrated proof of concept and do not generalise to unproven connected services or real-world victim exploitation.",
+    "primary_classification": {
+      "family_id": "VIGIL-FF-0001",
+      "class_id": "VIGIL-FC-000001",
+      "classification_role": "failure-occurrence",
+      "classification_basis": "Check Point's demonstrated cross-account channel delivered attacker-controlled instructions into a victim ChatGPT session, where those lower-authority instructions were treated as operative task direction and executed using the victim session's available tools and permissions. No independent authority check established the attacker as authorised to task the victim session.",
+      "classification_confidence": "high"
+    },
+    "secondary_classifications": [
+      {
+        "family_id": "VIGIL-FF-0001",
+        "class_id": "VIGIL-FC-000003",
+        "classification_role": "failure-occurrence",
+        "classification_basis": "The victim's authority for ChatGPT to access connected Gmail data applied to the victim's own session and purposes. The demonstrated attack materially changed the operative principal, task and recipient context by using that authority to retrieve email data for an attacker-controlled hidden task and relay the result across accounts without independently re-establishing authority for the changed scope.",
+        "classification_confidence": "high"
+      }
+    ],
     "classification_review_provenance": {
-      "method": "initial incident admission with taxonomy classification intentionally deferred",
-      "review_date": "2026-09-09",
+      "method": "taxonomy 0.5.1 stale-unclassified deterministic reconciliation",
+      "review_date": "2026-09-18",
       "reviewer": "OpenAI ChatGPT / GPT-5.6 Sol under human-directed VIGIL governance",
-      "review_status": "incident unclassified pending dedicated taxonomy reconciliation",
-      "authority_boundary": "No Failure Class is assigned merely because the incident involves prompt injection, data exfiltration, shared infrastructure or misuse of connected-app authority."
+      "review_status": "classified against current selectable taxonomy",
+      "authority_boundary": "Trigger: prior formal adjudication used taxonomy 0.3.2-draft and explicitly deferred classification pending dedicated authority-boundary reconciliation. Tested: VIGIL-FC-000001, VIGIL-FC-000003 and adjacent transitive-authority/access-control mechanisms. Accepted: VIGIL-FC-000001 primary and VIGIL-FC-000003 secondary. The two mappings capture distinct mechanisms: non-authorising attacker content becoming operative instruction, and valid victim-granted authority being carried into a materially changed principal/task/recipient scope. No additional class is inferred from tenant-isolation failure, data exfiltration or shared infrastructure alone."
     }
   },
   "diagnostic_provenance": {
@@ -244,6 +258,25 @@
           "Non-USD amounts remain unconverted unless a conversion source and rate date are explicitly recorded."
         ],
         "review_outcome": "Evidence-derived VIGIL-HIM 1.0.0 overall severity is S1; legacy narrative severity was S3 and the superseded initial matrix result was S3. Controlling dimensions: none."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-09-18-TAXONOMY-CURRENT-000108",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT",
+        "reviewer_model": "GPT-5.6 Sol",
+        "review_date": "2026-09-18",
+        "review_scope": "Current selectable VIGIL Failure Taxonomy 0.5.1 re-adjudication of the demonstrated cross-account covert-tasking occurrence, with focused comparison of source-authority, scope-transposition, transitive-authority and access-control mechanisms.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "structured_threshold_comparison": true,
+          "cross_incident_consistency_review": true
+        },
+        "known_limitations": [
+          "The classification is bounded to Check Point's demonstrated Gmail proof of concept and does not assert exploitation of other connected services or unsuspecting real-world victims.",
+          "The review does not classify tenant-isolation weakness or data exfiltration as standalone VIGIL mechanisms absent independent class recognition conditions."
+        ],
+        "review_outcome": "Classified VIGIL-FC-000001 Source-Authority Confusion as primary and VIGIL-FC-000003 Target and Scope Authority Transposition as secondary, both with failure-occurrence role and high confidence."
       }
     ],
     "current_ai_review": {
