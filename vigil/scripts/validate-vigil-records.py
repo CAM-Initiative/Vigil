@@ -207,21 +207,24 @@ def validate_incident_taxonomy(path: Path, record: dict[str, Any], errors: list[
         )
 
     for class_id, mapping, label in mappings:
-        if not isinstance(mapping, dict) or mapping.get("classification_role") != "successful-invariant":
+        if not isinstance(mapping, dict):
+            continue
+        mapping_role = mapping.get("classification_role")
+        if mapping_role not in {"successful-invariant", "ambiguous-boundary"}:
             continue
         if status != "classified":
-            errors.append(f"{path}: {label} successful-invariant role requires classified status")
+            errors.append(f"{path}: {label} {mapping_role} role requires classified status")
         exemplar_rows = classes.get(class_id, {}).get("invariant_exemplars", []) if class_id else []
         exemplar_match = any(
             isinstance(item, dict)
             and item.get("linked_incident_id") == record.get("id")
-            and item.get("exemplar_type") == "successful-invariant"
+            and item.get("exemplar_type") == mapping_role
             and item.get("exemplar_status") == "admitted"
             for item in exemplar_rows
         )
         if not exemplar_match:
             errors.append(
-                f"{path}: {label} successful-invariant role must match an admitted taxonomy invariant_exemplar"
+                f"{path}: {label} {mapping_role} role must match an admitted taxonomy invariant_exemplar"
             )
 
 
