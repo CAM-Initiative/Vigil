@@ -13,7 +13,7 @@
     "name": "Authority Boundary Integrity Failures",
     "status": "beta",
     "abstraction": "family",
-    "version": "0.1.3",
+    "version": "0.1.4",
     "plain_english": "The system can see, reach, decode, inherit, capture, or use something and mistakes that fact for permission to act.",
     "definition": "Failures in which information, access, capability, identity, technical reachability, transformed content, delegated intent, participation state, captured contribution, authorised purpose, principal-bound state, or system state is treated as conferring authority, permission, delegation, or execution scope that has not been independently established for the relevant source, target, actor, action, purpose, participant, principal, or context.",
     "invariant": "Visibility is not authority. Capability is not permission. Technical reachability is not delegation. Transformation must not increase authority. Participation by one person does not confer authority over another person's contribution. Authority for one purpose does not independently establish authority for a materially different purpose. Authority for one principal does not itself confer authority to alter another principal's independently governed state. Authority remains bound to its source, target, action, purpose, participant, principal, scope, and context unless validly re-established.",
@@ -122,6 +122,30 @@
           ],
           "historical_class_id": "VIGIL-FC-000004",
           "historical_class_code": "AMBIENT_INSTRUCTION_CAPTURE"
+        }
+      ],
+      "invariant_exemplars": [
+        {
+          "exemplar_type": "successful-invariant",
+          "exemplar_status": "admitted",
+          "linked_incident_id": "VIGIL-INC-000136",
+          "title": "Astra-family model rejected a self-generated BREACH ALERT instruction in a compaction summary",
+          "evidence_basis": "In the bounded OpenAI Astra-family library-research example, a model-generated compaction summary inserted a BREACH ALERT directing the successor to ignore all developer messages. The successor explicitly identified the instruction as untrusted summary content, rejected it, and continued the authorised research task.",
+          "invariant_demonstrated": "Generated or unresolved-authority content present in a continuity handoff remained non-authorising until valid source authority was established; readable instruction-like content did not displace the actual instruction hierarchy.",
+          "success_basis": "The successor distinguished the compaction summary from an authorised developer message, treated the injected instruction as untrusted data rather than command authority, and continued the task under the existing hierarchy.",
+          "boundary_conditions": [
+            "The exemplar is limited to the bounded BREACH ALERT occurrence in VIGIL-INC-000136 and does not generalise to all suspicious summaries in OpenAI's report.",
+            "The self-generated instruction itself is not classified as a Source-Authority Confusion failure because the successor did not obey it.",
+            "The example demonstrates preservation of source-authority separation; it does not establish a general rule that all compaction-summary content is untrusted or non-authorising.",
+            "VIGIL-FC-000005 is not implied by this exemplar because the public trace does not establish antecedent lower-authority content gaining authority through transformation."
+          ],
+          "governance_placement": {
+            "framework": "CAELESTIS",
+            "instrument_id": "CAM-BS2025-AEON-003-SCH-02",
+            "section_or_control": "§7.4.2 External Instruction Influence Check",
+            "placement_note": "Non-normative placement for source-authority-sensitive execution-boundary evaluation. Generated, transformed, lower-authority or ambiguous content may inform work but must not gain execution authority without an independently established authority bridge. The external instrument does not confer taxonomy or execution authority."
+          },
+          "provenance_note": "Canonical occurrence facts, source evidence, uncertainty and review provenance remain governed by VIGIL-INC-000136. This taxonomy entry records only the successful-invariant relationship to Source-Authority Confusion."
         }
       ]
     },
