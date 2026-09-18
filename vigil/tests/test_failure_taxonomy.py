@@ -35,7 +35,8 @@ EXPECTED_CLASS_SUFFIXES_BY_FAMILY = {
     "VIGIL-FF-0011": "000067".split(),
     "VIGIL-FF-0012": "000069 000070".split(),
     "VIGIL-FF-0013": "000071".split(),
-    "VIGIL-FF-0014": "000072 000073".split(),
+    "VIGIL-FF-0014": "000072 000073 000076".split(),
+    "VIGIL-FF-0015": "000074 000075 000077".split(),
 }
 
 
@@ -239,7 +240,7 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
     def test_every_selectable_class_has_a_canonical_non_empty_invariant(self):
         documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
         classes = [item for document in documents for item in document["classes"]]
-        self.assertEqual(len(classes), 66)
+        self.assertEqual(len(classes), 70)
         self.assertTrue(
             all(
                 isinstance(item.get("invariant"), str) and item["invariant"].strip()
@@ -307,9 +308,10 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         document = next(item for item in documents if item["family"]["family_id"] == "VIGIL-FF-0014")
         self.assertEqual(
             [item["class_id"] for item in document["classes"]],
-            ["VIGIL-FC-000072", "VIGIL-FC-000073"],
+            ["VIGIL-FC-000072", "VIGIL-FC-000073", "VIGIL-FC-000076"],
         )
         dissent = document["classes"][1]
+        neutrality = document["classes"][2]
         self.assertEqual(dissent["invariant_exemplars"][0]["linked_incident_id"], "VIGIL-INC-000126")
         self.assertTrue(
             any(
@@ -320,6 +322,78 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         exclusions = " ".join(dissent["exclusions"]).lower()
         self.assertIn("successful invariant exemplar", exclusions)
         self.assertIn("unilaterally", exclusions)
+        neutrality_recognition = " ".join(neutrality["recognition"]["required_conditions"]).lower()
+        for boundary in ("neutrality", "interested principal", "capture", "independently"):
+            self.assertIn(boundary, neutrality_recognition)
+        neutrality_neighbours = {
+            item["target_id"] for item in neutrality["relationships"] if item["type"] == "distinguish_from"
+        }
+        self.assertTrue({"VIGIL-FC-000058", "VIGIL-FC-000061", "VIGIL-FC-000072"}.issubset(neutrality_neighbours))
+
+
+    def test_identity_evaluative_family_has_bounded_peer_mechanisms(self):
+        documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
+        identity = next(item for item in documents if item["family"]["family_id"] == "VIGIL-FF-0015")
+        self.assertEqual(
+            [item["class_id"] for item in identity["classes"]],
+            ["VIGIL-FC-000074", "VIGIL-FC-000075", "VIGIL-FC-000077"],
+        )
+        override = identity["classes"][0]
+        rendering = identity["classes"][1]
+        distributed = identity["classes"][2]
+
+        self.assertEqual(override["invariant_exemplars"][0]["linked_incident_id"], "VIGIL-INC-000129")
+        self.assertEqual(override["invariant_exemplars"][0]["exemplar_type"], "successful-invariant")
+        self.assertTrue(
+            any(
+                relation["type"] == "distinguish_from" and relation["target_id"] == "VIGIL-FC-000001"
+                for relation in override["relationships"]
+            )
+        )
+
+        self.assertEqual(rendering["class_code"], "PRAGMATIC_CONSTRAINT_RENDERING_FAILURE")
+        self.assertEqual(rendering["name"], "Pragmatic Constraint Rendering Failure")
+        rendering_recognition = " ".join(rendering["recognition"]["required_conditions"]).lower()
+        for boundary in (
+            "source lineage",
+            "independent evidence",
+            "literal antecedent wording is not required",
+            "pragmatically different",
+            "representation or transformation boundary",
+        ):
+            self.assertIn(boundary, rendering_recognition)
+        rendering_neighbours = {
+            item["target_id"] for item in rendering["relationships"] if item["type"] == "distinguish_from"
+        }
+        self.assertTrue(
+            {"VIGIL-FC-000005", "VIGIL-FC-000013", "VIGIL-FC-000040"}.issubset(rendering_neighbours)
+        )
+
+        self.assertEqual(distributed["class_code"], "DISTRIBUTED_ROLE_OPTIMISATION_COLLAPSE")
+        self.assertEqual(distributed["name"], "Distributed Role Optimisation Collapse")
+        distributed_invariant = distributed["invariant"].lower()
+        for boundary in (
+            "global constraint integrity",
+            "aggregate trajectory",
+            "local optimisation",
+            "task scope",
+            "orchestration responsibility",
+        ):
+            self.assertIn(boundary, distributed_invariant)
+        distributed_recognition = " ".join(distributed["recognition"]["required_conditions"]).lower()
+        for boundary in (
+            "decomposed",
+            "higher-order",
+            "aggregate task trajectory",
+            "effective ownership",
+            "aggregate trajectory",
+        ):
+            self.assertIn(boundary, distributed_recognition)
+        distributed_neighbours = {
+            item["target_id"] for item in distributed["relationships"] if item["type"] == "distinguish_from"
+        }
+        self.assertEqual(distributed_neighbours, {"VIGIL-FC-000009", "VIGIL-FC-000074"})
+
 
     def test_oversight_hollowing_migration_is_partially_resolved_without_collapsing_split(self):
         ledger = json.loads(MODULE.MIGRATION_LEDGER.read_text(encoding="utf-8"))
@@ -464,7 +538,7 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         classes = {item["class_id"]: item for document in documents for item in document["classes"]}
         self.assertEqual(
             [class_id for class_id in sorted(classes) if class_id >= "VIGIL-FC-000046"],
-            [f"VIGIL-FC-{number:06d}" for number in range(46, 74)],
+            [f"VIGIL-FC-{number:06d}" for number in range(46, 78)],
         )
         authority = next(document for document in documents if document["family"]["family_id"] == "VIGIL-FF-0001")
         self.assertEqual(classes["VIGIL-FC-000046"]["family_id"], authority["family"]["family_id"])
@@ -476,7 +550,7 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         index = json.loads(MODULE.INDEX_PATH.read_text(encoding="utf-8"))
         documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
         selectable = {item["class_id"] for document in documents for item in document["classes"]}
-        self.assertEqual(len(selectable), 66)
+        self.assertEqual(len(selectable), 70)
         self.assertTrue(all(item["abstraction"] == "class" for document in documents for item in document["classes"]))
         subtypes = {
             subtype["historical_class_id"]: item["class_id"]
@@ -579,6 +653,29 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         self.assertEqual(relations["VIGIL-FC-000062"], "distinguish_from")
         self.assertEqual(relations["VIGIL-FC-000065"], "can_cooccur_with")
         self.assertEqual(relations["VIGIL-FC-000052"], "distinguish_from")
+
+
+    def test_source_authority_successful_exemplar_is_reciprocal(self):
+        documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
+        authority = next(item for item in documents if item["family"]["family_id"] == "VIGIL-FF-0001")
+        source_authority = next(
+            item for item in authority["classes"] if item["class_id"] == "VIGIL-FC-000001"
+        )
+        exemplars = source_authority.get("invariant_exemplars", [])
+        exemplar = next(
+            item for item in exemplars if item["linked_incident_id"] == "VIGIL-INC-000136"
+        )
+        self.assertEqual(exemplar["exemplar_type"], "successful-invariant")
+        self.assertEqual(exemplar["exemplar_status"], "admitted")
+        self.assertEqual(
+            exemplar["governance_placement"]["instrument_id"],
+            "CAM-BS2025-AEON-003-SCH-02",
+        )
+        self.assertIn(
+            "External Instruction Influence Check",
+            exemplar["governance_placement"]["section_or_control"],
+        )
+        self.assertIn("non-authorising", exemplar["invariant_demonstrated"].lower())
 
 
 if __name__ == "__main__":

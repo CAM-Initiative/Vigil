@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Mathspace breach exposed personal data of more than one million users in Australia and New Zealand",
     "created": "2026-09-09",
-    "updated": "2026-09-16",
-    "version": "0.1.4"
+    "updated": "2026-09-18",
+    "version": "0.1.5"
   },
   "incident_identity": {
     "historical_event_name": "2026 Mathspace Metabase data breach",
@@ -173,17 +173,23 @@
     ]
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.3.2-draft",
-    "classification_status": "unclassified",
-    "classification_basis": "The occurrence establishes a large-scale confidentiality breach and a documented chain involving missed vulnerability-advisory escalation and incomplete compromise checks, but the current VIGIL taxonomy has not yet been reconciled carefully enough to determine whether one current Failure Class captures the governed mechanism without collapsing distinct vulnerability-management, monitoring and data-governance failures.",
-    "primary_classification": null,
+    "taxonomy_version": "0.5.1",
+    "classification_status": "classified",
+    "classification_basis": "Current-taxonomy re-adjudication identifies Required Control Non-Activation as the primary structural mechanism. Mathspace's first-party disclosure states that a critical Metabase security advisory and patched versions were published, that Mathspace's vulnerability-notification process did not identify and escalate the advisory, and that the vulnerable instance remained exposed before unauthorised access and data download. The same disclosure separately states that recommended compromise checks were not completed when the instance was later updated. The classification is bounded to the missed applicable vulnerability-management control and does not treat the breach, attacker conduct, affected population or harm severity as taxonomy membership by themselves.",
+    "primary_classification": {
+      "family_id": "VIGIL-FF-0008",
+      "class_id": "VIGIL-FC-000038",
+      "classification_role": "failure-occurrence",
+      "classification_basis": "A vulnerability-notification and escalation process existed for security advisories; a critical advisory and patched versions for the deployed Metabase component were published; Mathspace states that its process did not identify and escalate that advisory before exploitation. This satisfies the current FC-000038 mechanism in which an available and applicable governance control does not become operative when its trigger occurs.",
+      "classification_confidence": "high"
+    },
     "secondary_classifications": [],
     "classification_review_provenance": {
-      "method": "initial incident admission with taxonomy classification intentionally deferred",
-      "review_date": "2026-09-09",
+      "method": "taxonomy 0.5.1 stale-unclassified deterministic reconciliation",
+      "review_date": "2026-09-18",
       "reviewer": "OpenAI ChatGPT / GPT-5.6 Sol under human-directed VIGIL governance",
-      "review_status": "incident unclassified pending dedicated taxonomy reconciliation",
-      "authority_boundary": "No Failure Class is asserted merely from the presence of a cyberattack, personal-data breach, delayed patch or affected-student population."
+      "review_status": "classified against current selectable taxonomy",
+      "authority_boundary": "Trigger: prior formal adjudication used taxonomy 0.3.2-draft and explicitly deferred class selection pending taxonomy reconciliation. Tested: VIGIL-FC-000038 and adjacent observability, access-control and data-governance mechanisms. Accepted: VIGIL-FC-000038 as primary. No secondary class is asserted because the preserved evidence does not independently establish a second VIGIL mechanism without collapsing vulnerability management, compromise detection and breach consequences. Taxonomy evolution prompted re-adjudication but does not alter the factual occurrence."
     }
   },
   "diagnostic_provenance": {
@@ -271,6 +277,25 @@
           "Non-USD amounts remain unconverted unless a conversion source and rate date are explicitly recorded."
         ],
         "review_outcome": "Evidence-derived VIGIL-HIM 1.0.0 overall severity is S4; legacy narrative severity was S4 and the superseded initial matrix result was S4. Controlling dimensions: privacy-confidentiality."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-09-18-TAXONOMY-CURRENT-000107",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT",
+        "reviewer_model": "GPT-5.6 Sol",
+        "review_date": "2026-09-18",
+        "review_scope": "Current selectable VIGIL Failure Taxonomy 0.5.1 re-adjudication of a previously unclassified Incident, with focused comparison of vulnerability-management, control-activation, monitoring and data-governance mechanisms.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "structured_threshold_comparison": true,
+          "cross_incident_consistency_review": true
+        },
+        "known_limitations": [
+          "The review is bounded to evidence already preserved in the canonical Incident and does not infer attacker identity, negligence, legal liability or unreported technical controls.",
+          "No secondary class is inferred from breach magnitude or harm severity."
+        ],
+        "review_outcome": "Classified VIGIL-FC-000038 Required Control Non-Activation as the primary failure-occurrence mechanism. The first-party disclosure establishes that an applicable vulnerability-notification and escalation process failed to activate on a published critical advisory before exploitation."
       }
     ],
     "current_ai_review": {

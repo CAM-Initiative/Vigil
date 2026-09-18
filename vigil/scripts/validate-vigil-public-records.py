@@ -32,6 +32,9 @@ INDEX_ENTRY_KEYS = {
     "severity",
     "classification_status",
     "classification_role",
+    "primary_classification",
+    "secondary_classifications",
+    "repair_classifications",
     "primary_class_id",
     "primary_family_id",
     "occurred_from",
@@ -58,6 +61,16 @@ def canonical_records() -> dict[str, dict[str, Any]]:
     }
 
 
+def projected_mapping(mapping: Any) -> dict[str, Any] | None:
+    if not isinstance(mapping, dict) or not isinstance(mapping.get("class_id"), str):
+        return None
+    return {
+        "family_id": mapping.get("family_id"),
+        "class_id": mapping.get("class_id"),
+        "classification_role": mapping.get("classification_role"),
+    }
+
+
 def expected_projection(record: dict[str, Any]) -> dict[str, Any]:
     identity = record.get("record_identity") if isinstance(record.get("record_identity"), dict) else {}
     incident = record.get("incident_identity") if isinstance(record.get("incident_identity"), dict) else {}
@@ -69,6 +82,13 @@ def expected_projection(record: dict[str, Any]) -> dict[str, Any]:
         legacy_primary_class = taxonomy.get("primary_class")
         primary = legacy_primary_class if isinstance(legacy_primary_class, dict) else {}
     primary_family = taxonomy.get("primary_family") if isinstance(taxonomy.get("primary_family"), dict) else {}
+    secondary = taxonomy.get("secondary_classifications") if isinstance(taxonomy.get("secondary_classifications"), list) else []
+    projected_secondary = [
+        projected
+        for mapping in secondary
+        if (projected := projected_mapping(mapping)) is not None
+    ]
+    mappings = ([('primary', primary)] if primary else []) + [('secondary', mapping) for mapping in secondary]
     record_id = str(record["id"])
     path = f"vigil/records/incidents/{record_id}.json"
     return {
@@ -84,6 +104,15 @@ def expected_projection(record: dict[str, Any]) -> dict[str, Any]:
         "severity": assessment.get("overall_severity"),
         "classification_status": taxonomy.get("classification_status"),
         "classification_role": taxonomy.get("classification_role"),
+        "primary_classification": projected_mapping(primary),
+        "secondary_classifications": projected_secondary,
+        "repair_classifications": [
+            {**projected, "mapping_position": position}
+            for position, mapping in mappings
+            if isinstance(mapping, dict)
+            and mapping.get("classification_role") == "failure-occurrence"
+            and (projected := projected_mapping(mapping)) is not None
+        ],
         "primary_class_id": primary.get("class_id"),
         "primary_family_id": primary.get("family_id") or primary_family.get("family_id"),
         "occurred_from": incident.get("occurred_from"),
@@ -132,7 +161,10 @@ def validate_generated_incident_projection(
         expected = expected_projection(record)
         for key, value in expected.items():
             if value in (None, "", [], {}):
-                if key in entry:
+                if key == "secondary_classifications":
+                    if entry.get(key) != []:
+                        errors.append(f"{path}: {record_id} secondary_classifications must preserve an empty array")
+                elif key in entry:
                     errors.append(f"{path}: {record_id} retains empty projected field {key}")
                 continue
             if entry.get(key) != value:
@@ -147,8 +179,6 @@ def validate_generated_incident_projection(
         for forbidden in (
             "source_records",
             "harm_impact_assessment",
-            "primary_classification",
-            "secondary_classifications",
             "diagnostic_provenance_summary",
             "interpretive_provenance_summary",
             "evidence_access_summary",
