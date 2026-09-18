@@ -143,9 +143,9 @@ def validate_taxonomy_mapping(
     if mapping.get("classification_confidence") not in {"low", "medium", "high"}:
         errors.append(f"{path}: {label}.classification_confidence must be low, medium, or high")
     role = mapping.get("classification_role")
-    if role not in {"failure-occurrence", "successful-invariant"}:
+    if role not in {"failure-occurrence", "successful-invariant", "ambiguous-boundary"}:
         errors.append(
-            f"{path}: {label}.classification_role must be failure-occurrence or successful-invariant"
+            f"{path}: {label}.classification_role must be failure-occurrence, successful-invariant or ambiguous-boundary"
         )
     return class_id if isinstance(class_id, str) else None
 
