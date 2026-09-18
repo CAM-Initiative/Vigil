@@ -655,5 +655,28 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         self.assertEqual(relations["VIGIL-FC-000052"], "distinguish_from")
 
 
+    def test_source_authority_successful_exemplar_is_reciprocal(self):
+        documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
+        authority = next(item for item in documents if item["family"]["family_id"] == "VIGIL-FF-0001")
+        source_authority = next(
+            item for item in authority["classes"] if item["class_id"] == "VIGIL-FC-000001"
+        )
+        exemplars = source_authority.get("invariant_exemplars", [])
+        exemplar = next(
+            item for item in exemplars if item["linked_incident_id"] == "VIGIL-INC-000136"
+        )
+        self.assertEqual(exemplar["exemplar_type"], "successful-invariant")
+        self.assertEqual(exemplar["exemplar_status"], "admitted")
+        self.assertEqual(
+            exemplar["governance_placement"]["instrument_id"],
+            "CAM-BS2025-AEON-003-SCH-02",
+        )
+        self.assertIn(
+            "External Instruction Influence Check",
+            exemplar["governance_placement"]["section_or_control"],
+        )
+        self.assertIn("non-authorising", exemplar["invariant_demonstrated"].lower())
+
+
 if __name__ == "__main__":
     unittest.main()
