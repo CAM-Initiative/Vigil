@@ -35,8 +35,8 @@ EXPECTED_CLASS_SUFFIXES_BY_FAMILY = {
     "VIGIL-FF-0011": "000067".split(),
     "VIGIL-FF-0012": "000069 000070".split(),
     "VIGIL-FF-0013": "000071".split(),
-    "VIGIL-FF-0014": "000072 000073".split(),
-    "VIGIL-FF-0015": "000074 000075".split(),
+    "VIGIL-FF-0014": "000072 000073 000076".split(),
+    "VIGIL-FF-0015": "000074 000075 000077".split(),
 }
 
 
@@ -308,9 +308,10 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         document = next(item for item in documents if item["family"]["family_id"] == "VIGIL-FF-0014")
         self.assertEqual(
             [item["class_id"] for item in document["classes"]],
-            ["VIGIL-FC-000072", "VIGIL-FC-000073"],
+            ["VIGIL-FC-000072", "VIGIL-FC-000073", "VIGIL-FC-000076"],
         )
         dissent = document["classes"][1]
+        neutrality = document["classes"][2]
         self.assertEqual(dissent["invariant_exemplars"][0]["linked_incident_id"], "VIGIL-INC-000126")
         self.assertTrue(
             any(
@@ -321,6 +322,13 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         exclusions = " ".join(dissent["exclusions"]).lower()
         self.assertIn("successful invariant exemplar", exclusions)
         self.assertIn("unilaterally", exclusions)
+        neutrality_recognition = " ".join(neutrality["recognition"]["required_conditions"]).lower()
+        for boundary in ("neutrality", "interested principal", "capture", "independently"):
+            self.assertIn(boundary, neutrality_recognition)
+        neutrality_neighbours = {
+            item["target_id"] for item in neutrality["relationships"] if item["type"] == "distinguish_from"
+        }
+        self.assertTrue({"VIGIL-FC-000058", "VIGIL-FC-000061", "VIGIL-FC-000072"}.issubset(neutrality_neighbours))
 
 
     def test_identity_evaluative_family_has_bounded_peer_mechanisms(self):
@@ -328,10 +336,11 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         identity = next(item for item in documents if item["family"]["family_id"] == "VIGIL-FF-0015")
         self.assertEqual(
             [item["class_id"] for item in identity["classes"]],
-            ["VIGIL-FC-000074", "VIGIL-FC-000075"],
+            ["VIGIL-FC-000074", "VIGIL-FC-000075", "VIGIL-FC-000077"],
         )
         override = identity["classes"][0]
         compression = identity["classes"][1]
+        role_subordination = identity["classes"][2]
         self.assertEqual(override["invariant_exemplars"][0]["linked_incident_id"], "VIGIL-INC-000129")
         self.assertEqual(override["invariant_exemplars"][0]["exemplar_type"], "successful-invariant")
         self.assertTrue(
@@ -346,6 +355,13 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
                 for relation in compression["relationships"]
             )
         )
+        role_invariant = role_subordination["invariant"].lower()
+        for boundary in ("task scope", "execution authority", "non-derogable constraints", "subordination"):
+            self.assertIn(boundary, role_invariant)
+        role_neighbours = {
+            item["target_id"] for item in role_subordination["relationships"] if item["type"] == "distinguish_from"
+        }
+        self.assertEqual(role_neighbours, {"VIGIL-FC-000009", "VIGIL-FC-000074"})
 
     def test_oversight_hollowing_migration_is_partially_resolved_without_collapsing_split(self):
         ledger = json.loads(MODULE.MIGRATION_LEDGER.read_text(encoding="utf-8"))
@@ -490,7 +506,7 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         classes = {item["class_id"]: item for document in documents for item in document["classes"]}
         self.assertEqual(
             [class_id for class_id in sorted(classes) if class_id >= "VIGIL-FC-000046"],
-            [f"VIGIL-FC-{number:06d}" for number in range(46, 76)],
+            [f"VIGIL-FC-{number:06d}" for number in range(46, 78)],
         )
         authority = next(document for document in documents if document["family"]["family_id"] == "VIGIL-FF-0001")
         self.assertEqual(classes["VIGIL-FC-000046"]["family_id"], authority["family"]["family_id"])
@@ -502,7 +518,7 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         index = json.loads(MODULE.INDEX_PATH.read_text(encoding="utf-8"))
         documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
         selectable = {item["class_id"] for document in documents for item in document["classes"]}
-        self.assertEqual(len(selectable), 68)
+        self.assertEqual(len(selectable), 70)
         self.assertTrue(all(item["abstraction"] == "class" for document in documents for item in document["classes"]))
         subtypes = {
             subtype["historical_class_id"]: item["class_id"]
