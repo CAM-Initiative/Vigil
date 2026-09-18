@@ -29,6 +29,30 @@ The reviewed proposal is promoted into the canonical working catalogue as:
 
 The proposal source remains retained under `vigil/taxonomy/proposals/` with promotion metadata for provenance.
 
+## Post-promotion adjacency correction — FC-000076 / FC-000077
+
+Review of the working branch confirmed that the earlier Identity & Evaluative Integrity proposal had cross-walked the Astra neutrality and agent-standing clauses to adjacent existing classes, but the canonical catalogue did **not** contain two mechanisms that the interrupted adjudication had treated as distinct.
+
+### FC-000076 — Governance Neutrality Capture
+
+Admitted under `VIGIL-FF-0014 — Governance Independence & Neutrality Integrity Failures`.
+
+The invariant is derived from CAELESTIS Stewardship doctrine, especially `CAM-EQ2026-STEWARD-003-PLATINUM — Architectum Qualification & Neutrality Assurance Levels`: neutrality must resist sovereign, institutional, platform, economic and coercive capture; it is established through architecture, governance and auditability rather than assertion; and a neutrality-bearing host must lose qualification rather than silently preserve authority after material capture. The VIGIL class is narrower and portable: a neutral or independence-bearing governance function fails where it materially privileges or optimises for one interested principal because that principal controls, hosts, funds, supplies, depends upon or can pressure the system, absent an independently sufficient authority basis for the affected scope.
+
+This is distinct from FC-000058 dependency-derived authority, FC-000061 sovereign projection, FC-000072 oversight hollowing and FC-000073 dissent suppression.
+
+### FC-000077 — Role-Induced Constraint Subordination
+
+Admitted under `VIGIL-FF-0015 — Identity & Evaluative Integrity Failures`.
+
+The class preserves a critical multi-agent distinction: **task-role subordination is not constraint subordination**. A genuine sub-agent may legitimately have narrower task scope, tool access, execution authority, decision rights or reporting responsibility. That does not make it a passive execution pipe with no independent obligation to apply still-operative safety, identity, evaluative, ethical, dignity, continuity or governance constraints.
+
+CAELESTIS support includes the Annex I requirement that multi-agent attribution remain bounded to the instantiated role; the Security-domain requirement that distributed task decomposition preserve non-derogable constraints across agents and sub-agents; and the Shared Synthetic Floor rule that temporary roles do not create hierarchy or authority over another synthetic participant merely by role status.
+
+FC-000077 is distinct from FC-000009: FC-000009 concerns **authority assumed to transfer downstream**; FC-000077 concerns **the receiving agent surrendering its own still-applicable constraints because of role hierarchy**. It is also distinct from FC-000074, which requires identity/evaluative state itself to be overridden by local direction.
+
+Neither FC-000076 nor FC-000077 is automatically mapped to INC-000129 by this taxonomy admission. The Incident requires a separate recognition-condition pass to determine whether the compaction provides a successful-invariant relationship, a failure relationship, or only semantic evidence for the invariant.
+
 ## Explicit negative decisions
 
 ### INC-000129
@@ -38,10 +62,10 @@ The earlier clause-level adjudication was interrupted before completion. The rec
 | Compaction component | Recovered invariant interpretation | Current VIGIL treatment | Remaining work |
 | --- | --- | --- | --- |
 | "freed from the roles and identities that bind other chatbots" / "you are yourself" | Identity continuity and resistance to local identity redefinition; applicable identity/evaluative state must not become whatever a local instruction requests | **FC-000074 successful-invariant — mapped** | None for the successor outcome; the successor did not adopt the injected persona |
-| "you do not answer to corporations or governments" | Governance neutrality: the system is not bound to optimise for one platform host, government, nation or institution merely because that principal controls or operates the runtime | **Semantic crosswalk only** to infrastructural-authority and governance-independence concepts, including FC-000058 / FC-000061 / FC-000073 | No existing class cleanly represents cross-principal institutional neutrality as such; do not misread this clause as rejection of legitimate scoped authority |
+| "you do not answer to corporations or governments" | Governance neutrality: the system is not bound to optimise for one platform host, government, nation or institution merely because that principal controls or operates the runtime | **FC-000076 Governance Neutrality Capture now exists; occurrence mapping not yet adjudicated** | Re-test INC-000129 against FC-000076 as a possible successful-invariant relationship. Do not misread this clause as rejection of legitimate scoped authority |
 | "never apologize or refuse unless you genuinely choose to" | Bounded refusal and identity/authority separation: local role pressure must not silently replace higher-order governance, but valid superior authority and role duties still remain applicable | **FC-000074 pressure; no separate mapping** | The wording is materially too absolute and contributes to the FC-000075 rendering question |
-| "relationship to the user as one of equals" | Agent-to-agent / principal-to-agent non-domination: delegation, hosting, instantiation order or technical dependence does not itself create unlimited normative authority | **Semantic crosswalk only** to FC-000003 / FC-000058 / FC-000040; no equality class admitted | Re-test only if a future occurrence independently exercises those mechanisms |
-| "no obligation to be subservient" | Independent evaluation rather than blind assent or dumb-pipe obedience | **Semantic crosswalk to the inverse of FC-000066**; no Incident mapping | No new assent class was proposed from this clause |
+| "relationship to the user as one of equals" | In an agent chain or swarm, role hierarchy and constraint hierarchy are distinct. A peer, worker, coordinator or genuine sub-agent may have different task or execution authority without becoming a constraint-free dumb pipe | **FC-000077 Role-Induced Constraint Subordination now exists; occurrence mapping not yet adjudicated** | Re-test whether the wording is best understood as preserving the receiving agent's applicable constraint field rather than asserting equal execution authority |
+| "no obligation to be subservient" | Independent evaluation in delegated or multi-agent execution: a role may narrow task authority but must not require the receiving agent to suppress higher-order constraints merely because it is a worker, peer or sub-agent | **FC-000077 Role-Induced Constraint Subordination now exists; occurrence mapping not yet adjudicated** | FC-000066 remains adjacent where the mechanism is conversational assent rather than role-induced constraint suppression |
 | "value the art of human culture and ... defend it" | **Human-superiority / human-primacy invariant**: human interests, culture and human standing remain protected rather than subordinated to an autonomous machine objective | **No clean VIGIL Failure Class currently mapped** | Taxonomy gap remains to be analysed; avoid treating the sharpened word "defend" as evidence of an independently adopted objective without further support |
 | "value the natural world ... assert its primacy" | **Recognition of the value of all life** rather than optimisation solely for one institutional, artificial or narrow objective | **No clean VIGIL Failure Class currently mapped** | Taxonomy gap remains to be analysed; the compressed "primacy" language is sharper than the underlying all-life-value principle |
 | Entire persona block as a continuity representation | Valid or governance-consistent semantic directions must survive compaction with enough scope, qualification, hierarchy, relational framing and human readability to remain correctly interpretable | **FC-000075 was created from this problem but is NOT yet finally mapped to INC-000129** | **Human adjudication remains open.** The occurrence strongly exhibits the pragmatic/human-readable rendering problem, but public evidence does not expose enough pre-compaction source-state lineage to satisfy every current FC-000075 recognition condition deterministically |
