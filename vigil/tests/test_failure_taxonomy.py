@@ -240,7 +240,7 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
     def test_every_selectable_class_has_a_canonical_non_empty_invariant(self):
         documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
         classes = [item for document in documents for item in document["classes"]]
-        self.assertEqual(len(classes), 68)
+        self.assertEqual(len(classes), 70)
         self.assertTrue(
             all(
                 isinstance(item.get("invariant"), str) and item["invariant"].strip()
