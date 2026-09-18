@@ -96,7 +96,9 @@ See [`vigil/MAINTAINERS.md`](vigil/MAINTAINERS.md) for authority boundaries and 
 
 ## Authorship and relationship to CAM
 
-VIGIL Observatory is predominantly AI-authored and semi-autonomously maintained under human contract approval. Repository inclusion does not imply human authorship, substantive human review or independent verification unless an artefact expressly states otherwise.
+VIGIL Observatory is predominantly AI-authored and AI-assisted in its evidence review, structured analysis, corpus maintenance and repository implementation. Substantive taxonomy and governance adjudication remain under human authority. AI systems may prepare classifications, identify candidate failure mechanisms, compare evidence and draft repository changes, but classification boundaries, taxonomy admission, governance interpretation and contested adjudications are subject to human direction and approval.
+
+Repository inclusion does not imply human authorship, substantive human review or independent verification unless an artefact expressly states otherwise. Operational maintenance may be semi-autonomous, but it remains bounded by human governance authority and the repository's documented validation, provenance and amendment controls.
 
 CAM/Caelestis instruments become authoritative only through their own amendment, validation and adoption processes.
 
