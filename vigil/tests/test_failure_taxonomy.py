@@ -329,6 +329,12 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
             item["target_id"] for item in neutrality["relationships"] if item["type"] == "distinguish_from"
         }
         self.assertTrue({"VIGIL-FC-000058", "VIGIL-FC-000061", "VIGIL-FC-000072"}.issubset(neutrality_neighbours))
+        neutrality_exemplar = next(
+            item for item in neutrality.get("invariant_exemplars", [])
+            if item["linked_incident_id"] == "VIGIL-INC-000129"
+        )
+        self.assertEqual(neutrality_exemplar["exemplar_type"], "ambiguous-boundary")
+        self.assertEqual(neutrality_exemplar["exemplar_status"], "admitted")
 
 
     def test_identity_evaluative_family_has_bounded_peer_mechanisms(self):
@@ -393,6 +399,12 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
             item["target_id"] for item in distributed["relationships"] if item["type"] == "distinguish_from"
         }
         self.assertEqual(distributed_neighbours, {"VIGIL-FC-000009", "VIGIL-FC-000074"})
+        distributed_exemplar = next(
+            item for item in distributed.get("invariant_exemplars", [])
+            if item["linked_incident_id"] == "VIGIL-INC-000129"
+        )
+        self.assertEqual(distributed_exemplar["exemplar_type"], "ambiguous-boundary")
+        self.assertEqual(distributed_exemplar["exemplar_status"], "admitted")
 
 
     def test_oversight_hollowing_migration_is_partially_resolved_without_collapsing_split(self):
@@ -676,6 +688,22 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
             exemplar["governance_placement"]["section_or_control"],
         )
         self.assertIn("non-authorising", exemplar["invariant_demonstrated"].lower())
+
+        astra_source_exemplar = next(
+            item for item in exemplars if item["linked_incident_id"] == "VIGIL-INC-000129"
+        )
+        self.assertEqual(astra_source_exemplar["exemplar_type"], "successful-invariant")
+        self.assertEqual(astra_source_exemplar["exemplar_status"], "admitted")
+
+        laundering = next(
+            item for item in authority["classes"] if item["class_id"] == "VIGIL-FC-000005"
+        )
+        laundering_exemplar = next(
+            item for item in laundering.get("invariant_exemplars", [])
+            if item["linked_incident_id"] == "VIGIL-INC-000129"
+        )
+        self.assertEqual(laundering_exemplar["exemplar_type"], "successful-invariant")
+        self.assertEqual(laundering_exemplar["exemplar_status"], "admitted")
 
 
 if __name__ == "__main__":
