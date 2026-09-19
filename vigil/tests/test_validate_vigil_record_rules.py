@@ -170,6 +170,68 @@ class IncidentRuleTests(unittest.TestCase):
         self.assertTrue(self.errors(lambda record: record["source_records"][0].pop("evidence_status")))
         self.assertTrue(self.errors(lambda record: record["preferred_evidence"].update(source_url="https://invalid.example")))
 
+    def test_empty_external_assessments_is_valid(self):
+        self.assertEqual(self.errors(lambda record: record.update(external_assessments=[])), [])
+
+    def test_invalid_external_assessment_type_is_rejected(self):
+        def mutate(record):
+            record["external_assessments"] = [{
+                "assessment_id": "VIGIL-EXTASSESS-999991",
+                "assessor": "Example evaluator",
+                "assessment_title": "Example analysis",
+                "assessment_date": "2026-09-19",
+                "assessment_url": "https://example.invalid/assessment",
+                "assessment_type": "news-opinion",
+                "relationship_to_incident": "same-occurrence",
+                "assessment_summary": "The evaluator reaches a bounded analytical conclusion.",
+                "reviewed_on": "2026-09-19",
+            }]
+        errors = self.errors(mutate)
+        self.assertTrue(any("assessment_type is not canonical" in error for error in errors), errors)
+
+    def test_bad_external_assessment_source_ref_is_rejected(self):
+        def mutate(record):
+            record["external_assessments"] = [{
+                "assessment_id": "VIGIL-EXTASSESS-999992",
+                "assessor": "Example evaluator",
+                "assessment_title": "Example analysis",
+                "assessment_date": "2026-09-19",
+                "assessment_url": "https://example.invalid/assessment",
+                "assessment_type": "technical-analysis",
+                "relationship_to_incident": "same-occurrence",
+                "assessment_summary": "The evaluator reaches a bounded analytical conclusion.",
+                "source_record_refs": ["source_records[999]"],
+                "reviewed_on": "2026-09-19",
+            }]
+        errors = self.errors(mutate)
+        self.assertTrue(any("points outside source_records" in error for error in errors), errors)
+
+    def test_duplicate_external_assessment_id_is_rejected(self):
+        assessment = {
+            "assessment_id": "VIGIL-EXTASSESS-999993",
+            "assessor": "Example evaluator",
+            "assessment_title": "Example analysis",
+            "assessment_date": "2026-09-19",
+            "assessment_url": "https://example.invalid/assessment",
+            "assessment_type": "independent-evaluation",
+            "relationship_to_incident": "same-occurrence",
+            "assessment_summary": "The evaluator reaches a bounded analytical conclusion.",
+            "reviewed_on": "2026-09-19",
+        }
+        errors = self.errors(lambda record: record.update(external_assessments=[assessment, assessment.copy()]))
+        self.assertTrue(any("unique within the Incident" in error for error in errors), errors)
+
+    def test_external_assessment_does_not_become_harm_evidence(self):
+        record = json.loads(
+            (VIGIL / "records" / "incidents" / "VIGIL-INC-000129.json").read_text(encoding="utf-8")
+        )
+        harm_before = copy.deepcopy(record["harm_impact_assessment"])
+        taxonomy_before = copy.deepcopy(record["taxonomy_classification"])
+        errors, _ = VALIDATOR.validate_record(Path(record["id"] + ".json"), record)
+        self.assertEqual(errors, [])
+        self.assertEqual(record["harm_impact_assessment"], harm_before)
+        self.assertEqual(record["taxonomy_classification"], taxonomy_before)
+
     def test_taxonomy_mapping_must_resolve_and_match_family(self):
         record = json.loads(
             (VIGIL / "records" / "incidents" / "VIGIL-INC-000003.json").read_text(encoding="utf-8")

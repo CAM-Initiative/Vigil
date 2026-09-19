@@ -30,7 +30,7 @@ GENERATED_PROVENANCE = {
 }
 PRESERVE_EMPTY_KEYS = {
     "legacy_sources", "secondary_classifications", "external_incident_references",
-    "related_incidents",
+    "external_assessments", "related_incidents",
 }
 
 
@@ -111,6 +111,7 @@ def incident_search_terms(record: dict[str, Any]) -> list[str]:
     assessment = record.get("harm_impact_assessment") if isinstance(record.get("harm_impact_assessment"), dict) else {}
     secondary = taxonomy.get("secondary_classifications") if isinstance(taxonomy.get("secondary_classifications"), list) else []
     source_list = sources(record)
+    external_assessments = record.get("external_assessments") if isinstance(record.get("external_assessments"), list) else []
 
     return text_terms(
         incident.get("historical_event_name"),
@@ -134,6 +135,21 @@ def incident_search_terms(record: dict[str, Any]) -> list[str]:
             mapping.get("classification_role")
             for mapping in [taxonomy.get("primary_classification"), *secondary]
             if isinstance(mapping, dict)
+        ],
+        [
+            value
+            for item in external_assessments
+            if isinstance(item, dict)
+            for value in (
+                item.get("assessor"),
+                item.get("assessment_title"),
+                item.get("assessment_type"),
+                item.get("relationship_to_incident"),
+                item.get("assessment_summary"),
+                (item.get("classification_or_rating") or {}).get("value")
+                if isinstance(item.get("classification_or_rating"), dict) else None,
+            )
+            if value
         ],
         [
             value
@@ -235,6 +251,7 @@ def incident_entry(path: Path, record: dict[str, Any]) -> dict[str, Any]:
         "primary_family_id": primary.get("family_id") or primary_family.get("family_id"),
         "occurred_from": incident.get("occurred_from"),
         "source_roles": source_roles(record),
+        "external_assessments": record.get("external_assessments", []),
         "search_terms": incident_search_terms(record),
         "path": record_path,
         "github_blob_url": github_url(record_path),

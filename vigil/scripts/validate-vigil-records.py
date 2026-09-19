@@ -18,6 +18,8 @@ SCHEMA_PATH = VIGIL / "VIGIL.Schema.json"
 HARM_MATRIX_PATH = VIGIL / "methodologies" / "VIGIL.HarmImpactMatrix.v1.0.0.json"
 TAXONOMY_INDEX = VIGIL / "taxonomy" / "VIGIL.FailureTaxonomy.Index.json"
 INCIDENT_ID = re.compile(r"^VIGIL-INC-\d{6}$")
+EXTERNAL_ASSESSMENT_ID = re.compile(r"^VIGIL-EXTASSESS-\d{6}$")
+HTTP_URL = re.compile(r"^https?://[^\s]+$", re.IGNORECASE)
 HISTORICAL_ID = re.compile(r"VIGIL-\d{4}-(?:FM|OBS|RESEARCH|PROP|PATCH|LEARN)-\d{4}")
 RETIRED_RECORD_DIRS = {"failures", "observations", "research", "proposals", "patches", "learn"}
 RETIRED_INDEXES = {
@@ -42,6 +44,10 @@ SOURCE_REQUIRED = {
 ACCESS_REQUIRED = {
     "access_status", "reviewing_system", "access_method", "direct_primary_artefact_review",
     "limitations",
+}
+EXTERNAL_ASSESSMENT_REQUIRED = {
+    "assessment_id", "assessor", "assessment_title", "assessment_date", "assessment_url",
+    "assessment_type", "relationship_to_incident", "assessment_summary", "reviewed_on",
 }
 
 
@@ -450,6 +456,92 @@ def validate_source_records(path: Path, record: dict[str, Any], errors: list[str
             errors.append(f"{path}: preferred_evidence.source_url must uniquely select one source_record")
 
 
+def validate_external_assessments(
+    path: Path,
+    record: dict[str, Any],
+    known_assessment_ids: set[str] | None,
+    errors: list[str],
+) -> None:
+    assessments = record.get("external_assessments", [])
+    if not isinstance(assessments, list):
+        errors.append(f"{path}: external_assessments must be an array when present")
+        return
+
+    contract = incident_contract()
+    allowed_types = set(contract["external_assessment_type_values"])
+    allowed_relationships = set(contract["external_assessment_relationship_values"])
+    allowed_statuses = set(contract["external_assessment_status_values"])
+    source_records = record.get("source_records") if isinstance(record.get("source_records"), list) else []
+    seen: set[str] = set()
+
+    for index, assessment in enumerate(assessments):
+        label = f"{path}: external_assessments[{index}]"
+        if not isinstance(assessment, dict):
+            errors.append(f"{label} must be an object")
+            continue
+        missing = sorted(EXTERNAL_ASSESSMENT_REQUIRED - set(assessment))
+        if missing:
+            errors.append(f"{label} missing {', '.join(missing)}")
+        assessment_id = assessment.get("assessment_id")
+        if not isinstance(assessment_id, str) or not EXTERNAL_ASSESSMENT_ID.fullmatch(assessment_id):
+            errors.append(f"{label}.assessment_id must use VIGIL-EXTASSESS-NNNNNN")
+        elif assessment_id in seen:
+            errors.append(f"{label}.assessment_id must be unique within the Incident")
+        else:
+            seen.add(assessment_id)
+        for field in ("assessor", "assessment_title", "assessment_summary"):
+            if not non_empty(assessment.get(field)):
+                errors.append(f"{label}.{field} must be non-empty")
+        for field in ("assessment_date", "reviewed_on"):
+            if parse_date(assessment.get(field)) is None:
+                errors.append(f"{label}.{field} must be an ISO date")
+        if not non_empty(assessment.get("assessment_url")) or not HTTP_URL.fullmatch(str(assessment.get("assessment_url", ""))):
+            errors.append(f"{label}.assessment_url must be an HTTP(S) URL")
+        if assessment.get("assessment_type") not in allowed_types:
+            errors.append(f"{label}.assessment_type is not canonical")
+        if assessment.get("relationship_to_incident") not in allowed_relationships:
+            errors.append(f"{label}.relationship_to_incident is not canonical")
+        if "assessment_status" in assessment and assessment.get("assessment_status") not in allowed_statuses:
+            errors.append(f"{label}.assessment_status is not canonical")
+        for field in ("scope_note", "vigil_comparison_note", "publication_or_institution", "assessment_version"):
+            if field in assessment and not non_empty(assessment.get(field)):
+                errors.append(f"{label}.{field} must be non-empty when present")
+
+        rating = assessment.get("classification_or_rating")
+        if rating is not None:
+            if not isinstance(rating, dict):
+                errors.append(f"{label}.classification_or_rating must be an object")
+            else:
+                for field in ("scheme", "value"):
+                    if not non_empty(rating.get(field)):
+                        errors.append(f"{label}.classification_or_rating.{field} must be non-empty")
+                if "verbatim_label" in rating and not non_empty(rating.get("verbatim_label")):
+                    errors.append(f"{label}.classification_or_rating.verbatim_label must be non-empty when present")
+
+        refs = assessment.get("source_record_refs")
+        if refs is not None:
+            if not isinstance(refs, list) or not refs or any(not isinstance(ref, str) for ref in refs):
+                errors.append(f"{label}.source_record_refs must be a non-empty string array when present")
+            elif len(refs) != len(set(refs)):
+                errors.append(f"{label}.source_record_refs must not contain duplicates")
+            else:
+                for ref in refs:
+                    match = re.fullmatch(r"source_records\[(\d+)\]", ref)
+                    if match is None:
+                        errors.append(f"{label}.source_record_refs must use source_records[N] references")
+                    elif int(match.group(1)) >= len(source_records):
+                        errors.append(f"{label}.source_record_refs points outside source_records")
+
+        supersedes = assessment.get("supersedes_assessment_id")
+        if supersedes is not None:
+            if not isinstance(supersedes, str) or not EXTERNAL_ASSESSMENT_ID.fullmatch(supersedes):
+                errors.append(f"{label}.supersedes_assessment_id must use VIGIL-EXTASSESS-NNNNNN")
+            elif supersedes == assessment_id:
+                errors.append(f"{label}.supersedes_assessment_id must not self-reference")
+            elif known_assessment_ids is not None and supersedes not in known_assessment_ids:
+                errors.append(f"{label}.supersedes_assessment_id does not resolve")
+
+
 def validate_provenance(path: Path, record: dict[str, Any], errors: list[str]) -> None:
     diagnostic = record.get("diagnostic_provenance")
     if not isinstance(diagnostic, dict):
@@ -539,6 +631,7 @@ def validate_record(
     path: Path,
     record: dict[str, Any],
     known_ids: set[str] | None = None,
+    known_assessment_ids: set[str] | None = None,
     errors: list[str] | None = None,
     warnings: list[str] | None = None,
     allowed_vendors: set[str] | None = None,
@@ -613,6 +706,7 @@ def validate_record(
             errors.append(f"{path}: non-canonical product_or_service")
     validate_harm_impact(path, record, errors)
     validate_source_records(path, record, errors)
+    validate_external_assessments(path, record, known_assessment_ids, errors)
     validate_incident_taxonomy(path, record, errors)
     validate_provenance(path, record, errors)
     validate_relationships_and_references(path, record, known_ids, errors)
@@ -646,14 +740,23 @@ def validate(root: Path | None = None, schema_path: Path | None = None) -> int:
             continue
         loaded.append((path, record))
     ids: set[str] = set()
+    assessment_ids: set[str] = set()
     for path, record in loaded:
         record_id = record.get("id")
         if isinstance(record_id, str):
             if record_id in ids:
                 errors.append(f"{path}: duplicate Incident id {record_id}")
             ids.add(record_id)
+        assessments = record.get("external_assessments", [])
+        if isinstance(assessments, list):
+            for assessment in assessments:
+                assessment_id = assessment.get("assessment_id") if isinstance(assessment, dict) else None
+                if isinstance(assessment_id, str):
+                    if assessment_id in assessment_ids:
+                        errors.append(f"{path}: duplicate external assessment id {assessment_id}")
+                    assessment_ids.add(assessment_id)
     for path, record in loaded:
-        validate_record(path, record, ids, errors, warnings, schema_path=schema_path)
+        validate_record(path, record, ids, assessment_ids, errors, warnings, schema_path=schema_path)
     for warning in warnings:
         print(f"WARNING: {warning}", file=sys.stderr)
     if errors:
