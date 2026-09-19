@@ -9,26 +9,53 @@
     "title": "Waymo robotaxis contributed to San Francisco gridlock during major power outage",
     "created": "2026-09-19",
     "updated": "2026-09-19",
-    "version": "0.1.0"
+    "version": "0.2.0"
   },
   "incident_identity": {
     "historical_event_name": "Waymo robotaxis contributed to San Francisco gridlock during major power outage",
     "occurred_from": "2025-12-20",
     "occurred_to": null,
     "date_precision": "exact-day",
-    "date_basis": "AIID records 20 December 2025, the date of the PG&E outage and Waymo service disruption."
+    "date_basis": "Waymo identifies 20 December 2025 as the date of the San Francisco outage and fleet response."
   },
-  "summary": "During a major San Francisco power outage, Waymo robotaxis reportedly requested remote confirmation checks at scale when traffic signals failed, contributing to traffic congestion before the company paused service and later announced software and emergency-response changes.",
+  "summary": "During a major San Francisco power outage, Waymo vehicles encountered thousands of dark traffic signals; requests for remote confirmation surged, delays contributed to congestion, and Waymo temporarily paused service.",
   "vigil_assessment": {
-    "factual_basis": "During a major San Francisco power outage, Waymo robotaxis reportedly requested remote confirmation checks at scale when traffic signals failed, contributing to traffic congestion before the company paused service and later announced software and emergency-response changes.",
-    "governance_interpretation": "The occurrence is admitted as a bounded recent AI-related incident. Mechanism-level VIGIL taxonomy classification is intentionally withheld in this intake pass pending separate class adjudication.",
-    "significance_to_cam": "The occurrence broadens the Observatory's recent 2025–2026 coverage and provides evidence for later governance, harm and failure-mechanism comparison.",
+    "factual_basis": "Waymo states that its vehicles safely traversed more than 7,000 dark signals but generated more simultaneous confirmation requests than the response system could promptly handle. The backlog caused some vehicles to wait longer than normal and contributed to congestion amid wider outage-related gridlock. Waymo paused service and later described fleet and response-capacity changes.",
+    "governance_interpretation": "The occurrence exposed an operational capacity boundary in a distributed autonomy-and-remote-assistance system under correlated infrastructure failure. The evidence supports service degradation, but does not establish that Waymo caused the citywide gridlock or that a selectable VIGIL failure invariant is satisfied.",
+    "significance_to_cam": "The case shows that autonomy systems must be tested for correlated edge cases in which many units simultaneously seek remote confirmation during degraded public infrastructure.",
     "assessment_boundaries": [
-      "The record is bounded to the reviewed public evidence and does not infer unreported model versions, mechanisms, intent, liability or downstream consequences.",
-      "Incident admission does not establish a VIGIL Failure Class."
+      "PG&E's outage disabled traffic signals and caused wider city disruption; Waymo describes its vehicles as a contributor to, not the sole cause of, congestion.",
+      "No reviewed source establishes collision, injury or emergency-service obstruction attributable to a Waymo vehicle."
     ]
   },
   "source_records": [
+    {
+      "source_title": "Autonomously navigating the real world",
+      "author_or_publisher": "Waymo",
+      "source_date": "2025-12-23",
+      "source_url": "https://waymo.com/blog/2025/12/autonomously-navigating-the-real-world/",
+      "retrieved_date": "2026-09-19",
+      "source_type": "incident report",
+      "source_role": "incident-evidence",
+      "source_residence": "external",
+      "source_platform": "Waymo",
+      "source_url_status": "available",
+      "relevance_note": "First-party explanation of the outage conditions, confirmation-request backlog, service pause and planned changes.",
+      "evidence_modality": [
+        "text"
+      ],
+      "primary_artefact_access": {
+        "access_status": "directly reviewed",
+        "reviewing_system": "OpenAI Codex — GPT-5",
+        "access_method": "direct public web review",
+        "direct_primary_artefact_review": true,
+        "limitations": []
+      },
+      "interpretive_reliance": "Used only for the occurrence facts and consequences expressly attributed to this source.",
+      "evidence_status": "first-party-reported",
+      "evidence_status_basis": "Waymo reports its own system behaviour and response; independent quantification of congestion contribution is unavailable.",
+      "incident_source_order": 1
+    },
     {
       "source_title": "Waymo robotaxis contributed to San Francisco gridlock during major power outage",
       "author_or_publisher": "AI Incident Database",
@@ -36,32 +63,30 @@
       "source_url": "https://incidentdatabase.ai/cite/1326/",
       "retrieved_date": "2026-09-19",
       "source_type": "incident database entry",
-      "source_role": "incident-evidence",
+      "source_role": "record-cross-reference",
       "source_residence": "external",
       "source_platform": "AI Incident Database",
       "source_url_status": "available",
-      "relevance_note": "Structured external incident-registry evidence used for discovery, occurrence scoping and bounded intake.",
+      "relevance_note": "External registry record retained for discovery chronology and cross-registry reconciliation; not used as the principal authority for adjudicated facts or harm.",
       "evidence_modality": [
         "text"
       ],
       "primary_artefact_access": {
         "access_status": "directly reviewed",
-        "reviewing_system": "OpenAI ChatGPT — GPT-5.6 Sol",
+        "reviewing_system": "OpenAI Codex — GPT-5",
         "access_method": "direct public web review",
         "direct_primary_artefact_review": true,
-        "limitations": [
-          "The reviewed registry entry may summarize underlying primary and secondary reporting; those underlying sources should be strengthened in a later evidence pass where material."
-        ]
+        "limitations": []
       },
-      "interpretive_reliance": "Used only for occurrence facts expressly supported by the reviewed registry entry.",
+      "interpretive_reliance": "Used only for registry identity and discovery chronology.",
       "evidence_status": "registry-reported",
-      "evidence_status_basis": "Secondary incident-registry entry used for bounded intake; not treated as independent adjudication of all underlying claims.",
-      "incident_source_order": 1
+      "evidence_status_basis": "Secondary incident-registry entry retained for traceability and not cited as substantive Harm Impact evidence.",
+      "incident_source_order": 2
     }
   ],
   "preferred_evidence": {
-    "source_url": "https://incidentdatabase.ai/cite/1326/",
-    "selection_basis": "Selected for bounded intake because it provides a structured incident-specific summary and traceable external registry identity; later evidence strengthening may replace this as preferred evidence.",
+    "source_url": "https://waymo.com/blog/2025/12/autonomously-navigating-the-real-world/",
+    "selection_basis": "Selected as the system operator's incident-specific explanation of the operational mechanism and remediation.",
     "selected_on": "2026-09-19"
   },
   "external_incident_references": [
@@ -77,40 +102,53 @@
     "product_or_service": "Other",
     "specific_model_or_runtime": "Waymo autonomous driving, remote assistance and fleet-management systems",
     "interface_surface": [
-      "publicly reported affected AI-enabled system or workflow"
+      "autonomous vehicle fleet and remote assistance"
     ],
     "component_role": [
-      "other"
+      "agent-runtime",
+      "orchestration",
+      "execution"
     ]
   },
   "jurisdictional_context": {
     "primary_jurisdiction": "United States / California",
     "secondary_jurisdictions": [],
-    "cross_border_relevance": "Only where expressly stated in the occurrence summary.",
+    "cross_border_relevance": "No material cross-border consequence is established in the reviewed occurrence.",
     "public_interest_relevance": "high",
-    "sector": "AI-enabled service, platform, infrastructure or mediated decision context",
+    "sector": "autonomous transport and urban mobility",
     "regulatory_surface": [
-      "AI incident evidence",
-      "system governance and accountability"
+      "automated-vehicle safety",
+      "transport service resilience"
     ]
   },
   "taxonomy_classification": {
     "taxonomy_version": "0.6.0",
     "classification_status": "unclassified",
     "classification_role": null,
-    "classification_basis": "The occurrence is admitted on evidence, but this bounded intake does not force a current Failure Class from outcome alone. A mechanism-level classification requires separate evidence-supported adjudication.",
+    "classification_basis": "The evidence establishes correlated-load and operational-capacity degradation, but the current selectable taxonomy does not provide a sufficiently exact mechanism mapping without stretching an authority or continuity class.",
     "primary_classification": null,
     "secondary_classifications": [],
     "classification_review_provenance": {
-      "method": "bounded recent-incident intake and current-taxonomy review",
+      "method": "evidence-strengthening review and recognition-condition comparison against selectable VIGIL Failure Classes",
       "review_date": "2026-09-19",
-      "reviewer": "OpenAI ChatGPT — GPT-5.6 Sol",
-      "review_status": "unclassified pending mechanism-level adjudication",
-      "authority_boundary": "Incident admission does not by itself establish a reusable VIGIL failure mechanism."
+      "reviewer": "OpenAI Codex — GPT-5",
+      "review_status": "unclassified",
+      "authority_boundary": "Classification is limited to mechanisms established by the preserved occurrence evidence; harm severity and incident admission do not establish a Failure Class."
     }
   },
-  "related_incidents": [],
-  "diagnostic_provenance": {},
+  "related_incidents": [
+    "VIGIL-INC-000163"
+  ],
+  "diagnostic_provenance": {
+    "method": "incident-specific evidence review, harm-threshold comparison and taxonomy recognition-condition analysis",
+    "diagnostic_date": "2026-09-19",
+    "human_role": "standing incident and taxonomy governance authority",
+    "ai_role": "AI evidence synthesis and structured adjudication preparation",
+    "authority_boundary": "AI review preserves source disputes and does not constitute final human, legal or factual adjudication.",
+    "ai_platform": "OpenAI Codex",
+    "ai_model": "GPT-5",
+    "review_status": "AI analytical adjudication"
+  },
   "interpretive_provenance": {
     "review_history": [
       {
@@ -131,15 +169,34 @@
           "Deterministic generated artefacts and local validators are not run by this connected GitHub write step."
         ],
         "review_outcome": "Accepted as VIGIL-INC-000156; retained unclassified with occurrence severity S3."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-09-19-000156-ADJUDICATION",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-5",
+        "review_date": "2026-09-19",
+        "review_scope": "Incident-specific evidence strengthening, occurrence-date verification, dimension-by-dimension Harm Impact review and current-taxonomy adjudication.",
+        "capability_profile": {
+          "web_research": true,
+          "repository_review": true,
+          "taxonomy_review": true,
+          "structured_threshold_comparison": true
+        },
+        "known_limitations": [
+          "PG&E's outage disabled traffic signals and caused wider city disruption; Waymo describes its vehicles as a contributor to, not the sole cause of, congestion.",
+          "No reviewed source establishes collision, injury or emergency-service obstruction attributable to a Waymo vehicle."
+        ],
+        "review_outcome": "Evidence strengthened; severity adjudicated as S3; taxonomy status set to unclassified."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-09-19-000156-INTAKE",
+      "review_id": "VIGIL-REVIEW-2026-09-19-000156-ADJUDICATION",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT",
-      "reviewer_model": "GPT-5.6 Sol",
+      "reviewer_platform": "OpenAI Codex",
+      "reviewer_model": "GPT-5",
       "review_date": "2026-09-19",
-      "review_scope": "Recent-incident discovery, repository duplicate reconciliation, occurrence-level severity and bounded taxonomy intake.",
+      "review_scope": "Incident-specific evidence strengthening, occurrence-date verification, dimension-by-dimension Harm Impact review and current-taxonomy adjudication.",
       "capability_profile": {
         "web_research": true,
         "repository_review": true,
@@ -147,10 +204,10 @@
         "structured_threshold_comparison": true
       },
       "known_limitations": [
-        "The record is bounded to reviewed public evidence and does not infer unreported model versions, mechanisms or downstream harms.",
-        "Deterministic generated artefacts and local validators are not run by this connected GitHub write step."
+        "PG&E's outage disabled traffic signals and caused wider city disruption; Waymo describes its vehicles as a contributor to, not the sole cause of, congestion.",
+        "No reviewed source establishes collision, injury or emergency-service obstruction attributable to a Waymo vehicle."
       ],
-      "review_outcome": "Accepted as VIGIL-INC-000156; retained unclassified with occurrence severity S3."
+      "review_outcome": "Evidence strengthened; severity adjudicated as S3; taxonomy status set to unclassified."
     },
     "operating_model": "AI-authored, semi-autonomous production under human contract approval",
     "human_governance_editor": null,
@@ -165,78 +222,78 @@
     "controlling_dimensions": [
       "service-operational-infrastructure"
     ],
-    "coverage_note": "Fleet behaviour contributed to city traffic disruption during a major outage and affected road users and emergency-service conditions, but no severe physical injury is established in the reviewed evidence.",
+    "coverage_note": "A temporary service pause and contribution to congestion are established; injury and emergency-service consequences are not reported.",
     "dimensions": [
+      {
+        "dimension_id": "physical-health-safety",
+        "assessment_status": "unreported",
+        "assessment_basis": "The reviewed incident-specific evidence does not establish a separately bandable materialised impact in this dimension.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "psychological-wellbeing",
+        "assessment_status": "unreported",
+        "assessment_basis": "The reviewed incident-specific evidence does not establish a separately bandable materialised impact in this dimension.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "rights-liberty",
+        "assessment_status": "unreported",
+        "assessment_basis": "The reviewed incident-specific evidence does not establish a separately bandable materialised impact in this dimension.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "equal-treatment",
+        "assessment_status": "unreported",
+        "assessment_basis": "The reviewed incident-specific evidence does not establish a separately bandable materialised impact in this dimension.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "privacy-confidentiality",
+        "assessment_status": "unreported",
+        "assessment_basis": "The reviewed incident-specific evidence does not establish a separately bandable materialised impact in this dimension.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "financial-economic",
+        "assessment_status": "unreported",
+        "assessment_basis": "The reviewed incident-specific evidence does not establish a separately bandable materialised impact in this dimension.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "property-asset-damage",
+        "assessment_status": "unreported",
+        "assessment_basis": "The reviewed incident-specific evidence does not establish a separately bandable materialised impact in this dimension.",
+        "evidence_confidence": "not-assessed"
+      },
       {
         "dimension_id": "service-operational-infrastructure",
         "assessment_status": "assessed",
         "severity": "S3",
         "threshold_id": "VIGIL-HIM-1.0.0-SOI-S3",
         "observed_values": [],
-        "assessment_basis": "Fleet behaviour contributed to city traffic disruption during a major outage and affected road users and emergency-service conditions, but no severe physical injury is established in the reviewed evidence.",
+        "assessment_basis": "The confirmation backlog delayed vehicles, contributed to congestion during a major outage and led Waymo to pause service; the impact was material but bounded and temporary.",
         "evidence_confidence": "medium",
         "evidence_refs": [
           "source_records[0]"
         ]
       },
       {
-        "dimension_id": "financial-economic",
-        "assessment_status": "unreported",
-        "assessment_basis": "The available reviewed evidence does not establish a separately bandable materialised impact in this dimension.",
-        "evidence_confidence": "not-assessed"
-      },
-      {
-        "dimension_id": "property-asset-damage",
-        "assessment_status": "unreported",
-        "assessment_basis": "The available reviewed evidence does not establish a separately bandable materialised impact in this dimension.",
-        "evidence_confidence": "not-assessed"
-      },
-      {
-        "dimension_id": "physical-health-safety",
-        "assessment_status": "unreported",
-        "assessment_basis": "The available reviewed evidence does not establish a separately bandable materialised impact in this dimension.",
-        "evidence_confidence": "not-assessed"
-      },
-      {
-        "dimension_id": "psychological-wellbeing",
-        "assessment_status": "unreported",
-        "assessment_basis": "The available reviewed evidence does not establish a separately bandable materialised impact in this dimension.",
-        "evidence_confidence": "not-assessed"
-      },
-      {
-        "dimension_id": "rights-liberty",
-        "assessment_status": "unreported",
-        "assessment_basis": "The available reviewed evidence does not establish a separately bandable materialised impact in this dimension.",
-        "evidence_confidence": "not-assessed"
-      },
-      {
-        "dimension_id": "equal-treatment",
-        "assessment_status": "unreported",
-        "assessment_basis": "The available reviewed evidence does not establish a separately bandable materialised impact in this dimension.",
-        "evidence_confidence": "not-assessed"
-      },
-      {
-        "dimension_id": "privacy-confidentiality",
-        "assessment_status": "unreported",
-        "assessment_basis": "The available reviewed evidence does not establish a separately bandable materialised impact in this dimension.",
-        "evidence_confidence": "not-assessed"
-      },
-      {
         "dimension_id": "reputation-dignity",
         "assessment_status": "unreported",
-        "assessment_basis": "The available reviewed evidence does not establish a separately bandable materialised impact in this dimension.",
+        "assessment_basis": "The reviewed incident-specific evidence does not establish a separately bandable materialised impact in this dimension.",
         "evidence_confidence": "not-assessed"
       },
       {
         "dimension_id": "societal-democratic",
         "assessment_status": "unreported",
-        "assessment_basis": "The available reviewed evidence does not establish a separately bandable materialised impact in this dimension.",
+        "assessment_basis": "The reviewed incident-specific evidence does not establish a separately bandable materialised impact in this dimension.",
         "evidence_confidence": "not-assessed"
       },
       {
         "dimension_id": "environmental",
         "assessment_status": "unreported",
-        "assessment_basis": "The available reviewed evidence does not establish a separately bandable materialised impact in this dimension.",
+        "assessment_basis": "The reviewed incident-specific evidence does not establish a separately bandable materialised impact in this dimension.",
         "evidence_confidence": "not-assessed"
       }
     ]
