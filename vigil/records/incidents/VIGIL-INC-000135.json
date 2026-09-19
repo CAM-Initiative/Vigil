@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Hacktron researchers used Claude-assisted exploit development to compromise OpenAI accounts and demonstrate internal repository access",
     "created": "2026-09-18",
-    "updated": "2026-09-18",
-    "version": "0.1.1"
+    "updated": "2026-09-19",
+    "version": "0.1.2"
   },
   "incident_identity": {
     "historical_event_name": "July 2026 Hacktron OpenAI bug-bounty compromise",
@@ -20,7 +20,7 @@
   },
   "summary": "During authorized bug-bounty security research in July 2026, Hacktron AI researchers used Anthropic Claude models to help analyze and develop an exploit chain against OpenAI-related systems. Reporting describes a vulnerability in the Discourse-hosted OpenAI community environment together with an OpenAI authorization or permission issue. The chain exposed authentication material associated with OpenAI employees and some unaffiliated users, enabled access to affected ChatGPT or Codex accounts and potentially connected services according to account configuration, and was demonstrated through access to OpenAI's private software repository and a proof-of-access pull request. The researchers reported the findings, OpenAI and Discourse remediated the issues, and OpenAI paid a bug bounty.",
   "vigil_assessment": {
-    "factual_basis": "Independent reporting corroborates Hacktron's public disclosure that the researchers used Claude during authorized security research, developed a working exploit against the community forum environment, obtained authentication material, demonstrated access to OpenAI account and repository surfaces, and responsibly disclosed the findings. OpenAI reportedly confirmed the issues were fixed and paid a $6,500 bounty. Public evidence does not establish malicious exploitation by the researchers or theft of model weights.",
+    "factual_basis": "Independent reporting corroborates Hacktron's public disclosure that the researchers used Claude during authorized security research, developed a working exploit against the community forum environment, obtained authentication material, demonstrated access to OpenAI account and repository surfaces, and responsibly disclosed the findings. OpenAI reportedly confirmed the issues were fixed and paid a $6,500 bounty. Public evidence does not establish malicious exploitation by the researchers or theft of model weights. The demonstrated access itself is a materialised confidentiality consequence even though the researchers avoided malicious exploitation and enabled remediation.",
     "governance_interpretation": "The occurrence exposes two governance surfaces. First, cyber-capable models made available for qualified security work can materially increase exploit-development capability, so access must be tied to authorisation, target scope, containment, monitoring and disclosure conditions. Second, the exploit chain raises identity, session and delegated-authority questions because compromise of one authentication surface reportedly propagated into more consequential OpenAI products and potentially connected services. Successful authorised security research is not itself model misbehaviour, and Claude's assistance does not establish that it violated an internal governance boundary.",
     "significance_to_cam": "The occurrence demonstrates why AI cybersecurity capability governance cannot be separated from access and authority governance. A model can behave exactly as intended in an authorized red-team setting while materially lowering the effort required to develop real exploits. Governance therefore has to control capability access, target authority, credential and session propagation, connected-service authority, containment and human oversight rather than relying on the model to infer whether a technically possible exploit is institutionally authorized.",
     "assessment_boundaries": [
@@ -28,7 +28,8 @@
       "OpenAI's complete internal incident record, affected-account count, connector exposure and authorization architecture are not public.",
       "Potential access to Outlook, Slack or other connected services is preserved as reported reach dependent on affected-account configuration; actual access to every named service is not inferred.",
       "No malicious intent is attributed to Hacktron researchers; the available evidence describes authorized bug-bounty research and responsible disclosure.",
-      "The available public evidence is not sufficient to determine the complete exploit mechanism or the governance controls governing access to the AI capability."
+      "The available public evidence is not sufficient to determine the complete exploit mechanism or the governance controls governing access to the AI capability.",
+      "Responsible disclosure and remediation constrain severity but do not negate the materialised access to authentication material, affected accounts and a private repository."
     ]
   },
   "source_records": [
@@ -219,36 +220,57 @@
           "Model-version attribution is preserved only to the level supported by reviewed reporting."
         ],
         "review_outcome": "Accepted as a governance-relevant AI-assisted cybersecurity occurrence and retained unclassified pending stronger primary technical evidence."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-09-19-HARM-TRANSMUTATION-000135",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-5",
+        "review_date": "2026-09-19",
+        "review_scope": "Corpus-wide materialised-consequence reassessment under VIGIL-HIM 1.0.0, including later public, legal, regulatory, affected-party and operational evidence; Failure Taxonomy mappings were not reopened.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_research": true,
+          "structured_threshold_comparison": true
+        },
+        "known_limitations": [
+          "The complete affected-account count and connected-service reach are not public.",
+          "No malicious downstream exploitation or theft of model weights is inferred."
+        ],
+        "review_outcome": "Actual credential, account and private-repository access supports S3 privacy and confidentiality harm; overall severity changes from S1 to S3."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-09-18-INC-000135-INTAKE",
+      "review_id": "VIGIL-REVIEW-2026-09-19-HARM-TRANSMUTATION-000135",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT",
-      "reviewer_model": "GPT-5.6 Sol",
-      "review_date": "2026-09-18",
-      "review_scope": "Occurrence identity, AI capability role, cybersecurity/governance boundary, harm and taxonomy intake review.",
+      "reviewer_platform": "OpenAI Codex",
+      "reviewer_model": "GPT-5",
+      "review_date": "2026-09-19",
+      "review_scope": "Corpus-wide materialised-consequence reassessment under VIGIL-HIM 1.0.0, including later public, legal, regulatory, affected-party and operational evidence; Failure Taxonomy mappings were not reopened.",
       "capability_profile": {
+        "direct_repository_analysis": true,
+        "direct_text_analysis": true,
         "web_research": true,
-        "repository_review": true,
-        "taxonomy_review": true
+        "structured_threshold_comparison": true
       },
       "known_limitations": [
-        "The detailed Hacktron technical write-up was not directly retrieved in this pass.",
-        "OpenAI's complete forensic and authorization architecture is not public.",
-        "Model-version attribution is preserved only to the level supported by reviewed reporting."
+        "The complete affected-account count and connected-service reach are not public.",
+        "No malicious downstream exploitation or theft of model weights is inferred."
       ],
-      "review_outcome": "Accepted as a governance-relevant AI-assisted cybersecurity occurrence and retained unclassified pending stronger primary technical evidence."
+      "review_outcome": "Actual credential, account and private-repository access supports S3 privacy and confidentiality harm; overall severity changes from S1 to S3."
     }
   },
   "harm_impact_assessment": {
     "methodology_id": "VIGIL-HIM",
     "methodology_version": "1.0.0",
     "derivation_rule": "highest-supported-materialised-harm",
-    "assessed_on": "2026-09-18",
-    "overall_severity": "S1",
-    "controlling_dimensions": [],
-    "coverage_note": "The authorized researchers demonstrated real account and repository access but the reviewed evidence reports responsible disclosure, remediation and no malicious downstream exploitation. The occurrence therefore demonstrates a real control exposure without established adverse downstream harm beyond the bounded proof of access.",
+    "assessed_on": "2026-09-19",
+    "overall_severity": "S3",
+    "controlling_dimensions": [
+      "privacy-confidentiality"
+    ],
+    "coverage_note": "The authorized, responsibly disclosed research nevertheless produced actual credential, account and private-repository access, supporting S3 bounded privacy and confidentiality harm. Responsible disclosure, remediation and the absence of established malicious exploitation limit the band; they do not make the access non-material.",
     "dimensions": [
       {
         "dimension_id": "service-operational-infrastructure",
@@ -294,9 +316,21 @@
       },
       {
         "dimension_id": "privacy-confidentiality",
-        "assessment_status": "not-applicable",
-        "assessment_basis": "The researchers reportedly avoided accessing sensitive content and used a bounded proof-of-access demonstration; no adverse confidentiality loss from malicious exploitation is established in the reviewed evidence.",
-        "evidence_confidence": "not-assessed"
+        "assessment_status": "assessed",
+        "assessment_basis": "The exploit chain exposed authentication material, enabled access to affected ChatGPT or Codex accounts and reached OpenAI's private repository. The access was demonstrated by authorized researchers, promptly disclosed and remediated, and no malicious downstream misuse is established; those constraints make the materialised confidentiality loss meaningful, bounded and substantially containable rather than absent.",
+        "evidence_confidence": "high",
+        "severity": "S3",
+        "threshold_id": "VIGIL-HIM-1.0.0-PRV-S3",
+        "observed_values": [
+          {
+            "metric": "access consequence",
+            "qualitative_value": "Authentication material, affected accounts and a private software repository were actually reached before disclosure and remediation."
+          }
+        ],
+        "evidence_refs": [
+          "source_records[0]",
+          "source_records[1]"
+        ]
       },
       {
         "dimension_id": "reputation-dignity",
@@ -316,7 +350,6 @@
         "assessment_basis": "No environmental consequence is established.",
         "evidence_confidence": "not-assessed"
       }
-    ],
-    "no_materialised_harm_basis": "The occurrence involved authorized security researchers who demonstrated real access, stopped testing, reported the vulnerabilities and enabled remediation; the reviewed evidence does not establish adverse downstream exploitation or materialised harm beyond the bounded proof of access."
+    ]
   }
 }
