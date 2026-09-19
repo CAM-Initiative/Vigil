@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://example.invalid/cam/vigil/VIGIL.Schema.json",
-  "version": "5.5-him-evidence-derived",
+  "version": "5.7-external-assessments",
   "purpose": "Authoritative schema-rules contract for the Incident-centred VIGIL active record corpus. INC is the sole active public record class. The taxonomy, external-governance datasets and CAM assessment remain separate subsystems. Retired FM, OBS, RESEARCH, PROP, PATCH and LEARN records and migration artefacts remain recoverable through Git history and are not carried as active Incident data. Source evidence remains embedded in each Incident; occurrence-level diagnosis, severity, taxonomy classification and provenance remain distinct. Authorship, human-review and human-verification status are governed separately by vigil/scripts/validate-authorship-provenance.py.",
   "source_evidence_rules": {
     "individual_records": [
@@ -15,7 +15,8 @@
       "Each source record must state primary_artefact_access, including whether direct primary review occurred.",
       "A transcript, screenshot, summary, or human description must not be represented as equivalent to direct audiovisual or interaction review.",
       "Each source record must state source_residence so external incident evidence is distinguishable from CAM/VIGIL provenance.",
-      "Each source record must state source_role so Incident evidence, affected-party evidence, governance or standards basis, contextual material, direct testimony, and record cross-references are not rendered interchangeably.",
+      "Each source record must state source_role so Incident evidence, harm evidence, affected-party evidence, governance or standards basis, contextual material, direct testimony, and record cross-references are not rendered interchangeably.",
+      "harm-evidence identifies a source used to establish a materialised consequence or a harm-assessment boundary; adverse media characterisation may evidence reputational framing but does not establish that the underlying technical characterisation is true.",
       "Every Incident source record must state a controlled evidence_status and a concise evidence_status_basis explaining the claim-relative assignment.",
       "source_type describes the artefact, source_residence its origin, source_role why it is used, primary_artefact_access what was reviewed, and evidence_status its evidentiary relationship to the cited proposition; these dimensions must remain separate.",
       "Incident evidence_status is claim-relative and must not be inferred from publisher reputation alone or replaced with low, medium, high, percentages, scores, or narrative prose.",
@@ -114,7 +115,7 @@
         "classification-disputed",
         "requires-human-review"
       ],
-      "classification_rule": "Unclassified and requires-human-review Incidents assert no primary or secondary class and no classification_role. Provisionally classified, classified and disputed Incidents require one selectable canonical primary mapping and may carry independently evidenced selectable canonical secondary mappings. Primary/secondary is mapping position; failure-occurrence/successful-invariant is an independent mapping-local role. Named subtypes and recognition patterns refine the containing class and are not independently assignable or duplicable beside that parent. Every asserted mapping carries its own classification_role, classification basis and confidence. A successful-invariant mapping is a classification to the relevant class boundary but is not failure evidence; it requires classification_status classified and a matching admitted taxonomy invariant_exemplar for the Incident. Mixed-role Incidents omit the legacy block-level role. Incident existence is never conditional on classification completion.",
+      "classification_rule": "Unclassified and requires-human-review Incidents assert no primary or secondary class and no classification_role. Provisionally classified, classified and disputed Incidents require one selectable canonical primary mapping and may carry independently evidenced selectable canonical secondary mappings. Primary/secondary is mapping position; failure-occurrence/successful-invariant/ambiguous-boundary is an independent mapping-local role. Named subtypes and recognition patterns refine the containing class and are not independently assignable or duplicable beside that parent. Every asserted mapping carries its own classification_role, classification basis and confidence. A successful-invariant mapping is a classification to the relevant class boundary but is not failure evidence; it requires classification_status classified and a matching admitted taxonomy invariant_exemplar for the Incident. An ambiguous-boundary mapping records that the occurrence materially engages or illustrates the class invariant without establishing either failure occurrence or successful invariant holding; it requires classification_status classified and a matching admitted ambiguous-boundary taxonomy invariant_exemplar. Mixed-role Incidents omit the legacy block-level role. Incident existence is never conditional on classification completion.",
       "classification_confidence_rule": "classification_confidence evaluates confidence that the available occurrence facts fit the asserted Failure Class. It must not be mechanically inferred from source evidence status, source count, publisher identity, primary-artefact accessibility, reproduction status, corroboration, or absence of root-cause information. A source-level user-reported, first-party-reported, registry-reported, unverified, or other bounded evidence status does not automatically require medium or low taxonomy confidence; strongly corroborated evidence does not automatically justify high taxonomy confidence.",
       "external_incident_relationship_values": [
         "same-incident",
@@ -123,6 +124,31 @@
         "narrower-event",
         "supporting-registry-entry"
       ],
+      "external_assessment_type_values": [
+        "provider-analysis",
+        "independent-evaluation",
+        "research-analysis",
+        "regulatory-assessment",
+        "legal-assessment",
+        "incident-registry-assessment",
+        "technical-analysis",
+        "other"
+      ],
+      "external_assessment_relationship_values": [
+        "same-occurrence",
+        "partial-occurrence",
+        "broader-cluster",
+        "related-occurrence"
+      ],
+      "external_assessment_status_values": [
+        "current",
+        "superseded",
+        "withdrawn",
+        "historical"
+      ],
+      "external_assessment_rule": "external_assessments is an optional array of attributable third-party analytical positions. It remains separate from occurrence evidence in source_records, harm evidence, VIGIL assessment and taxonomy, and cross-registry identity links in external_incident_references. An empty or absent array means no external assessment has been admitted; it does not mean none exists. Inclusion does not imply VIGIL endorsement.",
+      "external_assessment_source_rule": "An external assessment normally cites the canonical source_record that preserves its publication through source_record_refs. Each reference must use source_records[N] syntax and resolve within the same Incident. The assessment object describes the analytical relationship and does not duplicate bibliographic metadata or automatically make the source Harm Impact evidence.",
+      "external_assessment_temporal_rule": "External assessments are point-in-time positions. Materially revised positions are appended rather than overwritten; assessment_version and supersedes_assessment_id preserve version history where needed.",
       "source_authority_rule": "All discovery chronology remains in source_records. preferred_evidence selects one preserved source by URL and records the selection basis and date; source order or publication date alone does not determine authority.",
       "source_record_required_fields": [
         "evidence_status",
@@ -236,10 +262,28 @@
       "public_narrative_rule": "summary states what happened; vigil_assessment.factual_basis states what the preserved evidence establishes; taxonomy classification basis and migration/process notes must not be substituted for either field.",
       "classification_role_values": [
         "failure-occurrence",
-        "successful-invariant"
+        "successful-invariant",
+        "ambiguous-boundary"
       ],
-      "classification_role_rule": "Each primary_classification and secondary_classifications mapping MUST carry classification_role. failure-occurrence means the Incident evidences that mapped failure mechanism. successful-invariant means the Incident is attached to that mapped class because it demonstrates the governing invariant holding under relevant failure pressure and MUST NOT be rendered or projected as failure evidence. Mapping-local role is authoritative and is independent of primary/secondary position and harm severity. A block-level classification_role, where retained, is a legacy compatibility summary and MUST agree with every nested mapping; mixed-role Incidents omit it. Unclassified and requires-human-review Incidents assert no mapping role because they assert no class mapping.",
-      "repair_projection_rule": "Repair applies only to mappings whose classification_role is failure-occurrence. successful-invariant mappings remain available for classification, exemplar retrieval, taxonomy traceability, references and successful-invariant examples, but MUST be excluded from failure-case and Repair projections. An all-exemplar Incident has an empty Repair mapping set."
+      "classification_role_rule": "Each primary_classification and secondary_classifications mapping MUST carry classification_role. failure-occurrence means the Incident evidences that mapped failure mechanism. successful-invariant means the Incident demonstrates the governing invariant holding under relevant failure pressure. ambiguous-boundary means the Incident materially engages or illustrates the class invariant but the bounded evidence establishes neither a failure occurrence nor a successful-invariant outcome. Neither successful-invariant nor ambiguous-boundary may be rendered or projected as failure evidence. Mapping-local role is authoritative and is independent of primary/secondary position and harm severity. A block-level classification_role, where retained, is a legacy compatibility summary and MUST agree with every nested mapping; mixed-role Incidents omit it. Unclassified and requires-human-review Incidents assert no mapping role because they assert no class mapping.",
+      "repair_projection_rule": "Repair applies only to mappings whose classification_role is failure-occurrence. successful-invariant and ambiguous-boundary mappings remain available for classification, exemplar retrieval, taxonomy traceability and references, but MUST be excluded from failure-case and Repair projections. An Incident with no failure-occurrence mappings has an empty Repair mapping set.",
+      "incident_artefact_rule": "Incident records may optionally preserve occurrence-specific source artefacts in incident_artefacts. Artefacts must remain evidentiary cross-references rather than derived VIGIL interpretation; commit-pinned or otherwise stable locators are preferred. Image artefacts should provide accessible alt text, provenance, the originating source URL where known, and a renderable media URL distinct from any human-facing permalink when required.",
+      "incident_artefact_types": [
+        "source-screenshot",
+        "source-image",
+        "prompt",
+        "model-output",
+        "document",
+        "log",
+        "other"
+      ],
+      "incident_artefact_capture_status_values": [
+        "source-published",
+        "maintainer-captured",
+        "source-transcribed",
+        "maintainer-transcribed",
+        "other"
+      ]
     }
   },
   "$defs": {
@@ -311,6 +355,19 @@
         "incident_source_order"
       ]
     },
+    "external_assessment": {
+      "required": [
+        "assessment_id",
+        "assessor",
+        "assessment_title",
+        "assessment_date",
+        "assessment_url",
+        "assessment_type",
+        "relationship_to_incident",
+        "assessment_summary",
+        "reviewed_on"
+      ]
+    },
     "vigil_record": {
       "description": "Common structural minimum for the sole active VIGIL record class: Incident.",
       "required": [
@@ -336,6 +393,7 @@
     "source_role": {
       "enum": [
         "incident-evidence",
+        "harm-evidence",
         "affected-party-evidence",
         "standards-or-regulatory-basis",
         "governance-basis",
@@ -510,7 +568,7 @@
   },
   "generated_register_rules": {
     "pruning": "Generated index manifests prune empty arrays, empty strings, empty objects, and nulls while preserving meaningful uncertainty values.",
-    "index_entry_contract": "VIGIL.Incidents.Index.json and VIGIL.Registry.Index.json contain deterministic Incident list metadata plus canonical record locations. The Incident index preserves lightweight primary and secondary mapping objects with family_id, class_id and authoritative mapping-local classification_role, plus the failure-only Repair mapping projection. The lightweight severity code is a deterministic projection of harm_impact_assessment.overall_severity; full matrix and classification-basis detail remains in the canonical Incident record.",
+    "index_entry_contract": "VIGIL.Incidents.Index.json and VIGIL.Registry.Index.json contain deterministic Incident list metadata plus canonical record locations. The Incident index preserves lightweight primary and secondary mapping objects with family_id, class_id and authoritative mapping-local classification_role, plus the failure-only Repair mapping projection. It also preserves structured external_assessments so public consumers can render attributable third-party analysis without flattening or conflating it with evidence. The lightweight severity code is a deterministic projection of harm_impact_assessment.overall_severity; full matrix and classification-basis detail remains in the canonical Incident record.",
     "incident_evidence_facets": {
       "evidence_statuses": "Sorted unique values derived from source_records[].evidence_status.",
       "preferred_evidence_status": "Derived from the unique source_record whose source_url equals preferred_evidence.source_url; never separately maintained.",
@@ -521,6 +579,7 @@
   "incident_relationship_rules": {
     "incident_links": "related_incidents resolves only to active canonical Incident IDs.",
     "external_registry_links": "external_incident_references is the sole canonical location for external incident-registry relationships.",
+    "external_assessment_links": "external_assessments preserves attributable external analysis of the occurrence and must not be used as a synonym for an external registry link, an Incident fact, a VIGIL taxonomy mapping or Harm Impact evidence.",
     "research_links": "research_references preserves current external research citations only; evidentiary reliance remains in source_records.",
     "standards_and_regulatory_links": "standards_and_regulatory_references preserves current external standards and regulatory context only; evidentiary reliance remains in source_records.",
     "retired_links": "Active Incident records must not carry FM, OBS, RESEARCH, PROP, PATCH or LEARN relationship structures or identifiers. Historical recovery is through Git history."

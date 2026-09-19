@@ -36,6 +36,7 @@ class IncidentBuilderTests(unittest.TestCase):
         self.assertEqual(entry["record_version"], record["record_identity"]["version"])
         self.assertEqual(entry["record_last_updated"], record["record_identity"]["updated"])
         self.assertEqual(entry["source_roles"], BUILDER.source_roles(record))
+        self.assertEqual(entry["external_assessments"], record.get("external_assessments", []))
         self.assertIn("search_terms", entry)
         self.assertTrue(entry["search_terms"])
         for canonical_detail in (
@@ -50,6 +51,16 @@ class IncidentBuilderTests(unittest.TestCase):
             "standards_and_regulatory_references",
         ):
             self.assertNotIn(canonical_detail, entry)
+
+    def test_external_assessment_survives_projection_without_affecting_taxonomy_or_repair(self):
+        record = BUILDER.load(BUILDER.INCIDENTS / "VIGIL-INC-000129.json")
+        entry = BUILDER.incident_entry(BUILDER.INCIDENTS / "VIGIL-INC-000129.json", record)
+        self.assertEqual(entry["external_assessments"], record["external_assessments"])
+        self.assertEqual(entry["primary_classification"]["class_id"], "VIGIL-FC-000075")
+        self.assertEqual(
+            [item["class_id"] for item in entry["repair_classifications"]],
+            ["VIGIL-FC-000075"],
+        )
 
     def test_master_registry_is_incident_only(self):
         BUILDER.build()
@@ -88,6 +99,7 @@ class IncidentBuilderTests(unittest.TestCase):
             "C": (mapping("VIGIL-FC-000001", "successful-invariant"), [], []),
             "D": (mapping("VIGIL-FC-000001", "failure-occurrence"), [mapping("VIGIL-FC-000002", "successful-invariant")], ["VIGIL-FC-000001"]),
             "E": (mapping("VIGIL-FC-000001", "successful-invariant"), [mapping("VIGIL-FC-000002", "failure-occurrence")], ["VIGIL-FC-000002"]),
+            "F": (mapping("VIGIL-FC-000001", "failure-occurrence"), [mapping("VIGIL-FC-000002", "ambiguous-boundary")], ["VIGIL-FC-000001"]),
         }
         records = []
         for label, (primary, secondary, expected_repairs) in structures.items():
@@ -117,11 +129,19 @@ class IncidentBuilderTests(unittest.TestCase):
             for class_id, rows in projection["successful_invariants"].items()
             for item in rows
         }
+        ambiguous_pairs = {
+            (item["incident_id"], class_id)
+            for class_id, rows in projection["ambiguous_boundaries"].items()
+            for item in rows
+        }
         self.assertIn(("VIGIL-INC-TEST-D", "VIGIL-FC-000001"), failure_pairs)
         self.assertIn(("VIGIL-INC-TEST-D", "VIGIL-FC-000002"), exemplar_pairs)
         self.assertIn(("VIGIL-INC-TEST-E", "VIGIL-FC-000001"), exemplar_pairs)
         self.assertIn(("VIGIL-INC-TEST-E", "VIGIL-FC-000002"), failure_pairs)
         self.assertNotIn(("VIGIL-INC-TEST-C", "VIGIL-FC-000001"), failure_pairs)
+        self.assertIn(("VIGIL-INC-TEST-F", "VIGIL-FC-000002"), ambiguous_pairs)
+        self.assertNotIn(("VIGIL-INC-TEST-F", "VIGIL-FC-000002"), failure_pairs)
+        self.assertNotIn(("VIGIL-INC-TEST-F", "VIGIL-FC-000002"), exemplar_pairs)
 
     def test_generation_is_byte_stable(self):
         targets = (BUILDER.INCIDENT_INDEX, BUILDER.MASTER_INDEX, BUILDER.TAXONOMY_EXAMPLES)

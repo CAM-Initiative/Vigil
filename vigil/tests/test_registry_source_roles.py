@@ -5,6 +5,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 INCIDENTS = ROOT / "vigil" / "records" / "incidents"
+SCHEMA = ROOT / "vigil" / "VIGIL.Schema.json"
 
 
 def load(incident_id: str) -> dict:
@@ -12,6 +13,25 @@ def load(incident_id: str) -> dict:
 
 
 class RegistrySourceRoleTests(unittest.TestCase):
+    def test_schema_admits_explicit_harm_evidence_role(self):
+        schema = json.loads(SCHEMA.read_text(encoding="utf-8"))
+        self.assertIn("harm-evidence", schema["$defs"]["source_role"]["enum"])
+
+    def test_inc_129_media_sources_are_explicit_harm_evidence(self):
+        record = load("VIGIL-INC-000129")
+        media_sources = record["source_records"][3:8]
+        self.assertEqual(len(media_sources), 5)
+        self.assertTrue(all(item["source_type"] == "news article" for item in media_sources))
+        self.assertTrue(all(item["source_role"] == "harm-evidence" for item in media_sources))
+        reputation = next(
+            item for item in record["harm_impact_assessment"]["dimensions"]
+            if item["dimension_id"] == "reputation-dignity"
+        )
+        self.assertEqual(
+            reputation["evidence_refs"],
+            [f"source_records[{index}]" for index in range(3, 8)],
+        )
+
     def test_inc_127_evidence_hierarchy_is_structural(self):
         record = load("VIGIL-INC-000127")
         by_publisher = {item["author_or_publisher"]: item for item in record["source_records"]}
@@ -44,6 +64,37 @@ class RegistrySourceRoleTests(unittest.TestCase):
         self.assertEqual(registry["evidence_status"], "registry-reported")
         self.assertEqual(registry["source_role"], "incident-evidence")
         self.assertEqual(record["preferred_evidence"]["source_url"], registry["source_url"])
+
+    def test_recovered_consequences_are_banded_per_him_evidence(self):
+        expected = {
+            "VIGIL-INC-000061": ("S3", "service-operational-infrastructure"),
+            "VIGIL-INC-000065": ("S4", "reputation-dignity"),
+            "VIGIL-INC-000131": ("S3", "privacy-confidentiality"),
+            "VIGIL-INC-000135": ("S3", "privacy-confidentiality"),
+            "VIGIL-INC-000148": ("S3", "service-operational-infrastructure"),
+        }
+        for incident_id, (severity, controller) in expected.items():
+            with self.subTest(incident_id=incident_id):
+                record = load(incident_id)
+                assessment = record["harm_impact_assessment"]
+                self.assertEqual(assessment["overall_severity"], severity)
+                self.assertIn(controller, assessment["controlling_dimensions"])
+                row = next(item for item in assessment["dimensions"] if item["dimension_id"] == controller)
+                self.assertEqual(row["assessment_status"], "assessed")
+                self.assertEqual(row["severity"], severity)
+                self.assertTrue(row["evidence_refs"])
+
+    def test_non_usd_legal_consequence_remains_unbanded_without_conversion(self):
+        record = load("VIGIL-INC-000140")
+        assessment = record["harm_impact_assessment"]
+        financial = next(
+            item for item in assessment["dimensions"]
+            if item["dimension_id"] == "financial-economic"
+        )
+        self.assertEqual(assessment["overall_severity"], "SU")
+        self.assertEqual(financial["assessment_status"], "insufficient-evidence")
+        self.assertNotIn("severity", financial)
+        self.assertIn("conversion source and rate date", financial["assessment_basis"])
 
 
 if __name__ == "__main__":

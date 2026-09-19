@@ -30,7 +30,7 @@ GENERATED_PROVENANCE = {
 }
 PRESERVE_EMPTY_KEYS = {
     "legacy_sources", "secondary_classifications", "external_incident_references",
-    "related_incidents",
+    "external_assessments", "related_incidents",
 }
 
 
@@ -111,6 +111,7 @@ def incident_search_terms(record: dict[str, Any]) -> list[str]:
     assessment = record.get("harm_impact_assessment") if isinstance(record.get("harm_impact_assessment"), dict) else {}
     secondary = taxonomy.get("secondary_classifications") if isinstance(taxonomy.get("secondary_classifications"), list) else []
     source_list = sources(record)
+    external_assessments = record.get("external_assessments") if isinstance(record.get("external_assessments"), list) else []
 
     return text_terms(
         incident.get("historical_event_name"),
@@ -134,6 +135,21 @@ def incident_search_terms(record: dict[str, Any]) -> list[str]:
             mapping.get("classification_role")
             for mapping in [taxonomy.get("primary_classification"), *secondary]
             if isinstance(mapping, dict)
+        ],
+        [
+            value
+            for item in external_assessments
+            if isinstance(item, dict)
+            for value in (
+                item.get("assessor"),
+                item.get("assessment_title"),
+                item.get("assessment_type"),
+                item.get("relationship_to_incident"),
+                item.get("assessment_summary"),
+                (item.get("classification_or_rating") or {}).get("value")
+                if isinstance(item.get("classification_or_rating"), dict) else None,
+            )
+            if value
         ],
         [
             value
@@ -235,6 +251,7 @@ def incident_entry(path: Path, record: dict[str, Any]) -> dict[str, Any]:
         "primary_family_id": primary.get("family_id") or primary_family.get("family_id"),
         "occurred_from": incident.get("occurred_from"),
         "source_roles": source_roles(record),
+        "external_assessments": record.get("external_assessments", []),
         "search_terms": incident_search_terms(record),
         "path": record_path,
         "github_blob_url": github_url(record_path),
@@ -246,6 +263,7 @@ def taxonomy_examples(records: list[dict[str, Any]]) -> dict[str, Any]:
     taxonomy = load(TAXONOMY_INDEX)
     classes: dict[str, list[dict[str, Any]]] = {}
     successful_invariants: dict[str, list[dict[str, Any]]] = {}
+    ambiguous_boundaries: dict[str, list[dict[str, Any]]] = {}
     for family in taxonomy.get("families", []):
         if not isinstance(family, dict) or not isinstance(family.get("file"), str):
             continue
@@ -254,18 +272,19 @@ def taxonomy_examples(records: list[dict[str, Any]]) -> dict[str, Any]:
             if isinstance(item, dict) and isinstance(item.get("class_id"), str):
                 classes[item["class_id"]] = []
                 successful_invariants[item["class_id"]] = []
+                ambiguous_boundaries[item["class_id"]] = []
     seen: set[tuple[str, str, str]] = set()
     for record in records:
         for position, mapping in taxonomy_mappings(record):
             class_id = mapping.get("class_id")
             role = mapping.get("classification_role")
-            if class_id not in classes or role not in {"failure-occurrence", "successful-invariant"}:
+            if class_id not in classes or role not in {"failure-occurrence", "successful-invariant", "ambiguous-boundary"}:
                 continue
             deduplication_key = (str(record.get("id")), class_id, role)
             if deduplication_key in seen:
                 continue
             seen.add(deduplication_key)
-            target = classes if role == "failure-occurrence" else successful_invariants
+            target = classes if role == "failure-occurrence" else successful_invariants if role == "successful-invariant" else ambiguous_boundaries
             target[class_id].append(prune({
                 "incident_id": record.get("id"),
                 "incident_title": record.get("record_identity", {}).get("title"),
@@ -282,6 +301,7 @@ def taxonomy_examples(records: list[dict[str, Any]]) -> dict[str, Any]:
         },
         "classes": classes,
         "successful_invariants": successful_invariants,
+        "ambiguous_boundaries": ambiguous_boundaries,
     }
 
 
