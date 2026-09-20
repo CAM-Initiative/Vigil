@@ -65,6 +65,22 @@ REVIEWED_NON_ASSESSMENTS = {
     # assessments.  Material Senate and Genians analyses are admitted on-record.
     ("VIGIL-INC-000034", 1), ("VIGIL-INC-000037", 1),
     ("VIGIL-INC-000048", 1),
+    # Records 62-93 evidence pass: authoritative clinical/policy context, legal
+    # issue-spotting and commentary were semantically reviewed.  None supplies
+    # a separately attributable assessment conclusion about its Incident.
+    ("VIGIL-INC-000062", 1), ("VIGIL-INC-000066", 1),
+    ("VIGIL-INC-000068", 1), ("VIGIL-INC-000079", 1),
+    ("VIGIL-INC-000089", 2),
+    # Records 94-124 evidence pass: general clinical guidance and a
+    # different-scope monitorability report were reviewed as context, not as
+    # assessments of the individual Incident occurrence.
+    ("VIGIL-INC-000102", 1), ("VIGIL-INC-000104", 2),
+    ("VIGIL-INC-000105", 1), ("VIGIL-INC-000123", 1),
+    # Records 125-149 evidence pass: related research, a currency-series
+    # endpoint and a cross-occurrence risk scan were reviewed as context or
+    # threshold evidence.  None is an assessment of its bounded Incident.
+    ("VIGIL-INC-000125", 1), ("VIGIL-INC-000126", 1),
+    ("VIGIL-INC-000140", 3), ("VIGIL-INC-000145", 1),
 }
 
 

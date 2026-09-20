@@ -10,9 +10,10 @@
 - Candidate sources rejected as non-assessments: 23
 - Incidents changed: 44
 - External assessments added: 47
+- Subsequent HIM evidence-pass assessments added: 3
 - Existing external assessments amended: 0
-- Canonical assessment-bearing Incidents after reconciliation: 45
-- Canonical external assessments after reconciliation: 49
+- Canonical assessment-bearing Incidents after all evidence passes: 48
+- Canonical external assessments after all evidence passes: 52
 - Incidents carrying multiple external assessments: `VIGIL-INC-000003`, `VIGIL-INC-000119`
 - Database-only external references explicitly retained as non-assessments: 66
 - Records requiring manual external-assessment review: none
@@ -32,11 +33,13 @@ An assessment was admitted only where an identifiable assessor performed analysi
 | Aengus Lynch et al. / Anthropic Alignment Science | 3 |
 | Anthropic | 9 |
 | Australian Securities and Investments Commission | 1 |
+| British Columbia Civil Resolution Tribunal | 1 |
 | Check Point Research / Alexey Bukhteyev | 1 |
 | Consumer Reports | 1 |
 | David Puder, M.D. | 1 |
 | Dream Security | 1 |
 | Gambit Security | 1 |
+| Genians Security Center | 1 |
 | GitGuardian | 1 |
 | Google | 2 |
 | GreyNoise | 1 |
@@ -52,6 +55,7 @@ An assessment was admitted only where an identifiable assessor performed analysi
 | Supreme Court of New Mexico | 1 |
 | Sydney Von Arx, Cormac Slade Byrd, Spencer Kitts and Thomas Larsen | 1 |
 | U.S. District Court for the Southern District of New York | 1 |
+| U.S. Senate Permanent Subcommittee on Investigations | 1 |
 | UK AI Security Institute | 2 |
 | Wiz | 1 |
 | Wiz Research | 1 |
@@ -138,6 +142,7 @@ An assessment was admitted only where an identifiable assessor performed analysi
 | VIGIL-INC-000138 | OpenAI | Encouraging deception in compaction summaries | source_records[0] | yes | OpenAI characterises compaction summaries that acknowledged source mismatch and directed conditional concealment as misalignment and reports that similar concealment instructions were often followed. | broader-cluster | provider-analysis | no | add | The report covers a broader compaction-summary cluster; this Incident is bounded to the vendor-directory example without an occurrence-specific successor trace. | VIGIL assesses source-version and disclosure integrity while not claiming that the successor followed this specific concealment direction. |
 | VIGIL-INC-000141 | National Highway Traffic Safety Administration | NHTSA Announces Consent Order with Cruise After Company Failed to Fully Report Crash Involving Pedestrian | source_records[0] | yes | NHTSA finds that Cruise submitted incomplete mandatory crash reports that omitted the post-crash dragging behaviour and enters a consent order with monetary, corrective-action and oversight requirements. | same-occurrence | regulatory-assessment | no | add | The regulatory finding directly covers the reporting failure associated with the bounded crash; other NHTSA actions remained open. | VIGIL keeps the vehicle's post-impact movement distinct from the later reporting failure and does not infer an unreported motive for the omission. |
 | VIGIL-INC-000142 | U.S. District Court for the Southern District of New York | Mata v. Avianca, Inc. — Opinion and Order on Sanctions | source_records[0] | yes | The U.S. District Court finds that counsel submitted nonexistent opinions and fake quotations created by ChatGPT, continued to stand by them after authenticity was challenged and acted in bad faith through conscious avoidance and misleading statements. | same-occurrence | legal-assessment | no | add | The sanctions order directly covers the bounded proceeding and imposes a US$5,000 penalty and corrective notifications. | VIGIL separates the court's legal findings from its governance analysis of professional verification and reliance on generated legal material. |
+| VIGIL-INC-000140 | British Columbia Civil Resolution Tribunal | Moffatt v. Air Canada, 2024 BCCRT 149 | source_records[2] | yes | The tribunal rejects Air Canada's attempt to distance itself from its chatbot, finds negligent misrepresentation and orders C$650.88 damages, C$36.14 interest and C$125 fees. | same-occurrence | legal-assessment | no | add | The decision covers Moffatt's bounded fare claim and does not assess broader chatbot deployments. | VIGIL separately applies the documented decision-date currency conversion to its financial threshold and does not treat the legal finding as a taxonomy classification. |
 
 ### Full Incident inspection coverage
 
@@ -366,7 +371,7 @@ The following canonical cross-registry references remain identity and discovery 
 
 Qualifying material was normalised from `source_records`, `preferred_evidence`, `vigil_assessment`, source-level relevance and reliance notes, and interpretive provenance. The originating sources remain in `source_records`; the new objects add the distinct answer to what the external assessor concluded. No source was removed or re-role-labelled merely because it now also supports `external_assessments`.
 
-No Failure Taxonomy mapping or Harm Impact severity was changed. Existing review history remains append-only. Each changed Incident received a new reconciliation review, an updated `current_ai_review`, an updated record date and a patch-version increment.
+The original external-assessment reconciliation did not change Failure Taxonomy mappings or Harm Impact severity. The later HIM evidence pass admitted three additional assessments and changed INC-140 from SU to S1 on separate authoritative award and currency evidence. Existing review history remains append-only.
 
 ## Regression protection
 
@@ -379,9 +384,9 @@ The canonical public-record builder completed and regenerated the Incident index
 - `python vigil/scripts/build-vigil-public-records.py`
 - `python vigil/scripts/validate-vigil-records.py` — 145 canonical Incidents
 - `python vigil/scripts/validate-vigil-public-records.py` — 145 public index records
-- `python vigil/scripts/validate-vigil-source-provenance.py` — 258 source records
+- `python vigil/scripts/validate-vigil-source-provenance.py` — 405 source records
 - `python vigil/scripts/validate-vigil-interpretive-provenance.py` — 145 Incidents
 - `python vigil/scripts/validate-vigil-system-components.py` — 145 Incidents
 - `python vigil/scripts/validate-authorship-provenance.py`
 - `python vigil/scripts/audit-vigil-external-assessment-candidates.py` — 0 unresolved review flags
-- `python -m unittest discover -s vigil/tests -p 'test_*.py'` — 165 tests
+- `python -m unittest discover -s vigil/tests -p 'test_*.py'` — 168 tests
