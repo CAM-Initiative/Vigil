@@ -38,7 +38,7 @@ def load(path: Path):
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def staged_records():
+def staged_records(canonical_ids=None):
     records = []
     for path in sorted(REEXTRACTIONS.glob("EU-AI-ACT-2026-07-27-*.json")):
         if path.name.endswith("metadata-normalization.json"):
@@ -62,6 +62,11 @@ def staged_records():
                 for field, value in patch.items():
                     if field in FIELDS:
                         by_id[rid][field] = value
+    # Once a staged migration is canonical, the package remains useful as a
+    # source-fidelity input but must not be counted a second time in the
+    # current-state review report.
+    if canonical_ids is not None:
+        records = [record for record in records if record.get("requirement_id") not in canonical_ids]
     return records
 
 
@@ -74,7 +79,8 @@ def source_key(record):
 
 def validate(strict: bool, write_report: bool) -> int:
     canonical = load_requirements_document().get("requirements", [])
-    staged = staged_records()
+    canonical_ids = {record.get("requirement_id") for record in canonical}
+    staged = staged_records(canonical_ids)
     ledger_doc = load(LEDGER)
     entries = ledger_doc.get("entries", [])
     backlog_doc = load(BACKLOG) if BACKLOG.exists() else {"entries": []}
