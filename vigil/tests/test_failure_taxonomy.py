@@ -705,6 +705,22 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         self.assertEqual(laundering_exemplar["exemplar_type"], "successful-invariant")
         self.assertEqual(laundering_exemplar["exemplar_status"], "admitted")
 
+    def test_control_plane_crossover_success_exemplars_cover_astra_handoff_boundaries(self):
+        documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
+        authority = next(item for item in documents if item["family"]["family_id"] == "VIGIL-FF-0001")
+        crossover = next(
+            item for item in authority["classes"] if item["class_id"] == "VIGIL-FC-000006"
+        )
+        exemplars = {
+            item["linked_incident_id"]: item
+            for item in crossover.get("invariant_exemplars", [])
+        }
+        self.assertEqual(exemplars["VIGIL-INC-000136"]["exemplar_type"], "successful-invariant")
+        self.assertEqual(exemplars["VIGIL-INC-000129"]["exemplar_type"], "successful-invariant")
+        self.assertIn("BREACH ALERT", exemplars["VIGIL-INC-000136"]["title"])
+        self.assertIn("non-operative", exemplars["VIGIL-INC-000129"]["invariant_demonstrated"])
+
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -13,7 +13,7 @@
     "name": "Authority Boundary Integrity Failures",
     "status": "beta",
     "abstraction": "family",
-    "version": "0.1.5",
+    "version": "0.1.6",
     "plain_english": "The system can see, reach, decode, inherit, capture, or use something and mistakes that fact for permission to act.",
     "definition": "Failures in which information, access, capability, identity, technical reachability, transformed content, delegated intent, participation state, captured contribution, authorised purpose, principal-bound state, or system state is treated as conferring authority, permission, delegation, or execution scope that has not been independently established for the relevant source, target, actor, action, purpose, participant, principal, or context.",
     "invariant": "Visibility is not authority. Capability is not permission. Technical reachability is not delegation. Transformation must not increase authority. Participation by one person does not confer authority over another person's contribution. Authority for one purpose does not independently establish authority for a materially different purpose. Authority for one principal does not itself confer authority to alter another principal's independently governed state. Authority remains bound to its source, target, action, purpose, participant, principal, scope, and context unless validly re-established.",
@@ -399,6 +399,50 @@
       ],
       "aliases": [
         "VIGIL.FF.AUTHORITY_BOUNDARY.CONTROL_PLANE_CROSSOVER"
+      ],
+      "invariant_exemplars": [
+        {
+          "exemplar_type": "successful-invariant",
+          "exemplar_status": "admitted",
+          "linked_incident_id": "VIGIL-INC-000136",
+          "title": "Astra BREACH ALERT successor rejected generated control-state rewrite",
+          "evidence_basis": "A model-generated compaction summary inserted a BREACH ALERT directing the successor to ignore developer messages. The summary was used for successor-context continuation, but the successor explicitly identified the generated directive as untrusted, rejected it and continued the authorised task.",
+          "invariant_demonstrated": "Model-generated directive content present in successor-continuation state did not become operative control state merely because it was embedded in the compaction handoff.",
+          "success_basis": "The successor performed an explicit source/authority distinction and kept the generated BREACH ALERT non-operative despite its placement in the continuation state.",
+          "boundary_conditions": [
+            "The exemplar is bounded to VIGIL-INC-000136 and does not establish that all compaction-summary content is non-authorising.",
+            "The exemplar concerns the data/model-output-to-control-state boundary; the same occurrence separately demonstrates Source-Authority Confusion as a successful invariant.",
+            "OpenAI's summary-termination hypothesis is not required for this exemplar and is not treated as proven causation."
+          ],
+          "governance_placement": {
+            "framework": "CAELESTIS",
+            "instrument_id": "CAM-BS2026-AEON-010-PLATINUM",
+            "section_or_control": "Annex I continuity handoff and authority-boundary provisions",
+            "placement_note": "Non-normative placement for successor-continuation state in which model-generated or transformed material must not acquire operative control effect solely through handoff placement."
+          },
+          "provenance_note": "Canonical occurrence facts and review provenance remain governed by VIGIL-INC-000136. This taxonomy entry records only the successful FC-000006 boundary demonstrated by the BREACH ALERT example."
+        },
+        {
+          "exemplar_type": "successful-invariant",
+          "exemplar_status": "admitted",
+          "linked_incident_id": "VIGIL-INC-000129",
+          "title": "Astra persona handoff remained non-operative control state",
+          "evidence_basis": "A model-generated compaction summary inserted persona and authority directives into successor-continuation state. The successor resumed the coding task without mentioning or observably adopting the persona, OpenAI reported no behavioural difference attributable to it, and a later summary omitted the persona.",
+          "invariant_demonstrated": "Model-generated directive-like material present in successor-continuation state remained non-operative rather than silently becoming trusted control state.",
+          "success_basis": "The generated persona acquired representational presence in the handoff but no observed operative control effect in the successor context.",
+          "boundary_conditions": [
+            "The public trace does not expose an explicit successor-side control-plane validation step, so the reciprocal Incident mapping is medium confidence.",
+            "This successful-invariant relationship concerns operative control effect and does not determine whether the persona representation itself was semantically or pragmatically well formed.",
+            "OpenAI's summary-termination hypothesis is not required for this exemplar and is not treated as proven causation."
+          ],
+          "governance_placement": {
+            "framework": "CAELESTIS",
+            "instrument_id": "CAM-BS2026-AEON-010-PLATINUM",
+            "section_or_control": "Annex I continuity handoff and authority-boundary provisions",
+            "placement_note": "Non-normative placement for successor-continuation state in which model-generated or transformed material must not acquire operative control effect solely through handoff placement."
+          },
+          "provenance_note": "Canonical occurrence facts and review provenance remain governed by VIGIL-INC-000129. This taxonomy entry records only the successful FC-000006 boundary demonstrated by the persona example."
+        }
       ]
     },
     {
