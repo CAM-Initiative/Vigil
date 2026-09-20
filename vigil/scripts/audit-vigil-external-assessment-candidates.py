@@ -60,6 +60,11 @@ REVIEWED_NON_ASSESSMENTS = {
     ("VIGIL-INC-000007", 1), ("VIGIL-INC-000011", 1),
     ("VIGIL-INC-000012", 1), ("VIGIL-INC-000015", 1),
     ("VIGIL-INC-000017", 1),
+    # Records 31-61 evidence pass: explicitly reviewed general provider context
+    # and journalistic occurrence evidence that are not third-party analytical
+    # assessments.  Material Senate and Genians analyses are admitted on-record.
+    ("VIGIL-INC-000034", 1), ("VIGIL-INC-000037", 1),
+    ("VIGIL-INC-000048", 1),
 }
 
 
