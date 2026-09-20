@@ -15,7 +15,7 @@ VIGIL = ROOT / "vigil"
 RECORDS_ROOT = VIGIL / "records"
 INCIDENT_ROOT = RECORDS_ROOT / "incidents"
 SCHEMA_PATH = VIGIL / "VIGIL.Schema.json"
-HARM_MATRIX_PATH = VIGIL / "methodologies" / "VIGIL.HarmImpactMatrix.v1.0.0.json"
+HARM_MATRIX_DIR = VIGIL / "methodologies"
 TAXONOMY_INDEX = VIGIL / "taxonomy" / "VIGIL.FailureTaxonomy.Index.json"
 INCIDENT_ID = re.compile(r"^VIGIL-INC-\d{6}$")
 EXTERNAL_ASSESSMENT_ID = re.compile(r"^VIGIL-EXTASSESS-\d{6}$")
@@ -234,8 +234,16 @@ def validate_incident_taxonomy(path: Path, record: dict[str, Any], errors: list[
             )
 
 
-def harm_matrix() -> dict[str, Any]:
-    return load_json(HARM_MATRIX_PATH)
+def harm_matrix(version: str) -> dict[str, Any]:
+    if re.fullmatch(r"\d+\.\d+\.\d+", version) is None:
+        raise ValueError(f"invalid VIGIL-HIM version {version!r}")
+    path = HARM_MATRIX_DIR / f"VIGIL.HarmImpactMatrix.v{version}.json"
+    if not path.exists():
+        raise FileNotFoundError(f"VIGIL-HIM methodology file does not exist for version {version}")
+    matrix = load_json(path)
+    if matrix.get("version") != version:
+        raise ValueError(f"VIGIL-HIM methodology file version mismatch for {version}")
+    return matrix
 
 
 def financial_band_for_usd(value: float) -> str:
@@ -267,8 +275,13 @@ def validate_harm_impact(path: Path, record: dict[str, Any], errors: list[str]) 
         errors.append(f"{path}: harm_impact_assessment missing {', '.join(missing)}")
     if assessment.get("methodology_id") != contract["harm_impact_methodology_id"]:
         errors.append(f"{path}: harm impact methodology_id is not canonical")
-    if assessment.get("methodology_version") != contract["harm_impact_methodology_version"]:
-        errors.append(f"{path}: harm impact methodology_version is not canonical")
+    methodology_version = assessment.get("methodology_version")
+    supported_versions = set(contract.get(
+        "harm_impact_methodology_supported_versions",
+        [contract["harm_impact_methodology_version"]],
+    ))
+    if methodology_version not in supported_versions:
+        errors.append(f"{path}: harm impact methodology_version is not supported")
     if assessment.get("derivation_rule") != contract["harm_impact_derivation_rule"]:
         errors.append(f"{path}: harm impact derivation_rule is not canonical")
     if parse_date(assessment.get("assessed_on")) is None:
@@ -276,7 +289,15 @@ def validate_harm_impact(path: Path, record: dict[str, Any], errors: list[str]) 
     if not non_empty(assessment.get("coverage_note")):
         errors.append(f"{path}: harm_impact_assessment.coverage_note must be non-empty")
 
-    matrix = harm_matrix()
+    try:
+        matrix = harm_matrix(str(methodology_version))
+    except (ValueError, FileNotFoundError) as exc:
+        errors.append(f"{path}: {exc}")
+        return
+    if matrix.get("methodology_id") != assessment.get("methodology_id"):
+        errors.append(f"{path}: harm impact methodology_id does not match methodology file")
+    if matrix.get("derivation_rule") != assessment.get("derivation_rule"):
+        errors.append(f"{path}: harm impact derivation_rule does not match methodology file")
     dimensions_by_id = {item["dimension_id"]: item for item in matrix["dimensions"]}
     expected_ids = set(contract["harm_impact_dimension_ids"])
     rows = assessment.get("dimensions")
