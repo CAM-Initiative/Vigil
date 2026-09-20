@@ -54,6 +54,12 @@ REVIEWED_NON_ASSESSMENTS = {
     ("VIGIL-INC-000109", 2), ("VIGIL-INC-000110", 2),
     ("VIGIL-INC-000120", 1), ("VIGIL-INC-000127", 1),
     ("VIGIL-INC-000129", 2),
+    # Records 1-30 evidence pass: these sources were reviewed and deliberately
+    # retained as occurrence/context evidence, not attributable third-party
+    # analytical assessments.
+    ("VIGIL-INC-000007", 1), ("VIGIL-INC-000011", 1),
+    ("VIGIL-INC-000012", 1), ("VIGIL-INC-000015", 1),
+    ("VIGIL-INC-000017", 1),
 }
 
 
@@ -104,4 +110,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
