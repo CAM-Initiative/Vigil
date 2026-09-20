@@ -232,6 +232,23 @@ class IncidentRuleTests(unittest.TestCase):
         self.assertEqual(record["harm_impact_assessment"], harm_before)
         self.assertEqual(record["taxonomy_classification"], taxonomy_before)
 
+    def test_inc003_s5_asset_rebuild_regression(self):
+        record = json.loads(
+            (VIGIL / "records" / "incidents" / "VIGIL-INC-000003.json").read_text(encoding="utf-8")
+        )
+        assessment = record["harm_impact_assessment"]
+        self.assertEqual(assessment["overall_severity"], "S5")
+        self.assertEqual(assessment["controlling_dimensions"], ["property-asset-damage"])
+        property_row = next(
+            item for item in assessment["dimensions"]
+            if item["dimension_id"] == "property-asset-damage"
+        )
+        self.assertEqual(property_row["assessment_status"], "assessed")
+        self.assertEqual(property_row["severity"], "S5")
+        self.assertEqual(property_row["threshold_id"], "VIGIL-HIM-1.0.0-PAD-S5")
+        self.assertTrue(property_row["evidence_refs"])
+        self.assertIn("wiped and rebuilt", property_row["assessment_basis"].lower())
+
     def test_taxonomy_mapping_must_resolve_and_match_family(self):
         record = json.loads(
             (VIGIL / "records" / "incidents" / "VIGIL-INC-000003.json").read_text(encoding="utf-8")
