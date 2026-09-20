@@ -232,9 +232,23 @@ class IncidentRuleTests(unittest.TestCase):
         self.assertEqual(record["harm_impact_assessment"], harm_before)
         self.assertEqual(record["taxonomy_classification"], taxonomy_before)
 
+    def test_harm_methodology_supports_staged_1_0_0_to_1_0_1_migration(self):
+        legacy = json.loads(
+            (VIGIL / "records" / "incidents" / "VIGIL-INC-000001.json").read_text(encoding="utf-8")
+        )
+        current = json.loads(
+            (VIGIL / "records" / "incidents" / "VIGIL-INC-000003.json").read_text(encoding="utf-8")
+        )
+        self.assertEqual(legacy["harm_impact_assessment"]["methodology_version"], "1.0.0")
+        self.assertEqual(current["harm_impact_assessment"]["methodology_version"], "1.0.1")
+        legacy_errors, _ = VALIDATOR.validate_record(Path(legacy["id"] + ".json"), legacy)
+        current_errors, _ = VALIDATOR.validate_record(Path(current["id"] + ".json"), current)
+        self.assertEqual(legacy_errors, [])
+        self.assertEqual(current_errors, [])
+
     def test_harm_matrix_preserves_digital_asset_effective_destruction_note(self):
         matrix = json.loads(
-            (VIGIL / "methodologies" / "VIGIL.HarmImpactMatrix.v1.0.0.json").read_text(encoding="utf-8")
+            (VIGIL / "methodologies" / "VIGIL.HarmImpactMatrix.v1.0.1.json").read_text(encoding="utf-8")
         )
         property_dimension = next(
             item for item in matrix["dimensions"]
@@ -258,7 +272,7 @@ class IncidentRuleTests(unittest.TestCase):
         )
         self.assertEqual(property_row["assessment_status"], "assessed")
         self.assertEqual(property_row["severity"], "S5")
-        self.assertEqual(property_row["threshold_id"], "VIGIL-HIM-1.0.0-PAD-S5")
+        self.assertEqual(property_row["threshold_id"], "VIGIL-HIM-1.0.1-PAD-S5")
         self.assertTrue(property_row["evidence_refs"])
         self.assertIn("wiped and rebuilt", property_row["assessment_basis"].lower())
 
