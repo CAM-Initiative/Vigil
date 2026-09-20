@@ -57,7 +57,21 @@ discrimination, and democratic or societal harm does not establish environmental
 damage.
 
 The full S1–S5 criteria and stable threshold IDs are in the machine-readable
-methodology. Two dimensions contain quantitative operational anchors:
+methodology.
+
+### Digital infrastructure and effective destruction
+
+For the property-and-asset dimension, digital infrastructure can be effectively
+destroyed even when the underlying hardware and data bytes still exist. Where a
+compromise causes a critical digital asset to lose trustworthy operational state
+such that the affected asset cannot safely be retained and must be wiped and
+rebuilt or reconstructed from a known-clean state, that consequence may satisfy
+the S5 criterion for effectively irreversible destruction. Routine precautionary
+reimaging, credential rotation or ordinary recovery work does not by itself
+establish S5; the evidence must support loss of trusted state in the critical
+asset itself.
+
+Two dimensions contain quantitative operational anchors:
 
 | Band | Financial/economic | Service/operational/infrastructure |
 | --- | --- | --- |
