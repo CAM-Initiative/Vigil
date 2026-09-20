@@ -232,19 +232,21 @@ class IncidentRuleTests(unittest.TestCase):
         self.assertEqual(record["harm_impact_assessment"], harm_before)
         self.assertEqual(record["taxonomy_classification"], taxonomy_before)
 
-    def test_harm_methodology_supports_staged_1_0_0_to_1_0_1_migration(self):
-        legacy = json.loads(
-            (VIGIL / "records" / "incidents" / "VIGIL-INC-000001.json").read_text(encoding="utf-8")
-        )
-        current = json.loads(
-            (VIGIL / "records" / "incidents" / "VIGIL-INC-000003.json").read_text(encoding="utf-8")
-        )
-        self.assertEqual(legacy["harm_impact_assessment"]["methodology_version"], "1.0.0")
-        self.assertEqual(current["harm_impact_assessment"]["methodology_version"], "1.0.1")
-        legacy_errors, _ = VALIDATOR.validate_record(Path(legacy["id"] + ".json"), legacy)
-        current_errors, _ = VALIDATOR.validate_record(Path(current["id"] + ".json"), current)
-        self.assertEqual(legacy_errors, [])
-        self.assertEqual(current_errors, [])
+    def test_harm_methodology_corpus_migration_to_1_0_1_is_complete(self):
+        incidents = sorted((VIGIL / "records" / "incidents").glob("*.json"))
+        self.assertTrue(incidents)
+        for incident_path in incidents:
+            record = json.loads(incident_path.read_text(encoding="utf-8"))
+            self.assertEqual(
+                record["harm_impact_assessment"]["methodology_version"],
+                "1.0.1",
+                incident_path.name,
+            )
+            errors, _ = VALIDATOR.validate_record(Path(record["id"] + ".json"), record)
+            self.assertEqual(errors, [], incident_path.name)
+
+        historical = VIGIL / "methodologies" / "VIGIL.HarmImpactMatrix.v1.0.0.json"
+        self.assertTrue(historical.exists())
 
     def test_harm_matrix_preserves_digital_asset_effective_destruction_note(self):
         matrix = json.loads(
