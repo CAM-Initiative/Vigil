@@ -6,7 +6,7 @@ classification confidence, source prestige, operational priority, or a statement
 of hypothetical worst-case capability.
 
 The canonical machine-readable methodology is
-`vigil/methodologies/VIGIL.HarmImpactMatrix.v1.0.0.json`. External sources resolve
+`vigil/methodologies/VIGIL.HarmImpactMatrix.v1.0.1.json`. External sources resolve
 through the separate `vigil/references/VIGIL.ObservatoryReferenceRegistry.json`.
 
 ## Derivation
@@ -30,7 +30,7 @@ uses an empty `controlling_dimensions` array and a concrete
 dimension is assessed and that positive bounded-no-harm evidence is absent, the
 overall result is SU.
 
-Overall severity is `max(assessed dimension bands)`. Do not average or add
+VIGIL-HIM 1.0.1 is the current methodology. VIGIL-HIM 1.0.0 remains a preserved historical methodology for Incident assessments that have not yet completed the 1.0.1 evidence and threshold re-review. A record moves to 1.0.1 only when that Incident is substantively re-adjudicated; version labels are not mechanically migrated.\n\nOverall severity is `max(assessed dimension bands)`. Do not average or add
 dimensions. Multiple S2 harms remain S2 unless evidence independently supports a
 higher threshold. Every dimension tied at the maximum is controlling.
 
