@@ -11,7 +11,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2] / "vigil"
 SOURCE = ROOT / "references" / "VIGIL.ObservatoryReferenceRegistry.json"
 TARGET = ROOT / "references" / "VIGIL.ObservatoryReferenceRegistry.csv"
-MATRIX = ROOT / "methodologies" / "VIGIL.HarmImpactMatrix.v1.0.0.json"
+MATRIX = ROOT / "methodologies" / "VIGIL.HarmImpactMatrix.v1.0.1.json"
 ID = re.compile(r"^VIGIL-REF-\d{6}$")
 FIELDS = ["reference_id", "title", "publisher", "reference_type", "url", "accessed_on", "use_note"]
 
