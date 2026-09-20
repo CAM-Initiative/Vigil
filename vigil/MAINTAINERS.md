@@ -25,6 +25,12 @@ Historical architecture remains recoverable through Git history and `stabilizati
 
 Before opening a pull request from `agent/incident-ecosystem-ingestion`, synchronize it with the current `main` so the PR is based on the current canonical repository state. A deliberate pre-PR rebase of this dedicated ingestion branch onto current `main` is permitted for that synchronization step when no concurrent ingestion work is in flight and the branch is not already under review. Because rebasing rewrites branch history, use it only at this bounded pre-PR boundary and update the remote with lease-protected force semantics rather than an unconditional force push. Do not use rebasing, resetting or force-pushing as routine cleanup while the ingestion branch is accumulating work.
 
+## Incident identity granularity
+
+Canonical Incident identity follows the best-supported occurrence boundary in the source evidence. Multiple worked examples, rollouts, traces, manifestations, or taxonomy outcomes reported within one provider incident MUST NOT receive separate `VIGIL-INC-*` identifiers solely because their mechanisms or downstream outcomes differ. Preserve those distinctions as example-level evidence and taxonomy analysis inside the canonical Incident unless the evidence independently establishes distinct occurrence identities.
+
+Before allocating a new Incident for material already covered by an existing provider report, explicitly test whether the candidate is a new incident or only an example/sub-occurrence within the same reported incident. Taxonomy granularity is not Incident-identity authority.
+
 ## Historical provenance
 
 Legacy record classes and migration artefacts remain recoverable through Git history. Active Incident records contain only information required by the current VIGIL data model and must not carry retired payloads, migration-source metadata or retired-record links.
