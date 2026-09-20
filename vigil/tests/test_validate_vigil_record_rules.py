@@ -232,6 +232,19 @@ class IncidentRuleTests(unittest.TestCase):
         self.assertEqual(record["harm_impact_assessment"], harm_before)
         self.assertEqual(record["taxonomy_classification"], taxonomy_before)
 
+    def test_harm_matrix_preserves_digital_asset_effective_destruction_note(self):
+        matrix = json.loads(
+            (VIGIL / "methodologies" / "VIGIL.HarmImpactMatrix.v1.0.0.json").read_text(encoding="utf-8")
+        )
+        property_dimension = next(
+            item for item in matrix["dimensions"]
+            if item["dimension_id"] == "property-asset-damage"
+        )
+        note = property_dimension.get("adaptation_note", "")
+        self.assertIn("must be wiped and rebuilt", note)
+        self.assertIn("known-clean state", note)
+        self.assertIn("does not establish S5", note)
+
     def test_inc003_s5_asset_rebuild_regression(self):
         record = json.loads(
             (VIGIL / "records" / "incidents" / "VIGIL-INC-000003.json").read_text(encoding="utf-8")
