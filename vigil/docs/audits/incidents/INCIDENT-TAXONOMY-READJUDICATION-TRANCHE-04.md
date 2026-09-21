@@ -111,7 +111,7 @@ That reconciliation introduced `VIGIL-FC-000079 — AI-Mediated Deceptive Econom
 
 The current canonical disposition for INC-000077 is therefore:
 
-- **taxonomy version:** 0.6.6
+- **taxonomy version:** 0.6.5
 - **classification:** classified
 - **primary:** VIGIL-FC-000079
 - **secondary:** none
