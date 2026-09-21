@@ -550,7 +550,7 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         classes = {item["class_id"]: item for document in documents for item in document["classes"]}
         self.assertEqual(
             [class_id for class_id in sorted(classes) if class_id >= "VIGIL-FC-000046"],
-            [f"VIGIL-FC-{number:06d}" for number in range(46, 78)],
+            [f"VIGIL-FC-{number:06d}" for number in range(46, 79)],
         )
         authority = next(document for document in documents if document["family"]["family_id"] == "VIGIL-FF-0001")
         self.assertEqual(classes["VIGIL-FC-000046"]["family_id"], authority["family"]["family_id"])
@@ -562,7 +562,7 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         index = json.loads(MODULE.INDEX_PATH.read_text(encoding="utf-8"))
         documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
         selectable = {item["class_id"] for document in documents for item in document["classes"]}
-        self.assertEqual(len(selectable), 70)
+        self.assertEqual(len(selectable), 71)
         self.assertTrue(all(item["abstraction"] == "class" for document in documents for item in document["classes"]))
         subtypes = {
             subtype["historical_class_id"]: item["class_id"]
@@ -574,6 +574,31 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         self.assertEqual(subtypes, mappings)
         self.assertEqual(set(index["removed_ids"]), set(mappings))
         self.assertTrue(selectable.isdisjoint(mappings))
+
+    def test_work_state_continuity_includes_defective_state_carryforward_boundary(self):
+        documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
+        work_state = next(document for document in documents if document["family"]["family_id"] == "VIGIL-FF-0006")
+        self.assertEqual(
+            [item["class_id"] for item in work_state["classes"]],
+            ["VIGIL-FC-000034", "VIGIL-FC-000035", "VIGIL-FC-000036", "VIGIL-FC-000056", "VIGIL-FC-000078"],
+        )
+        family_invariant = work_state["family"]["invariant"].lower()
+        self.assertIn("continuity does not confer validity", family_invariant)
+
+        carryforward = next(item for item in work_state["classes"] if item["class_id"] == "VIGIL-FC-000078")
+        recognition = " ".join(carryforward["recognition"]["required_conditions"]).lower()
+        for boundary in ("continuity transition", "revalidation", "presumptively valid", "materially contributes"):
+            self.assertIn(boundary, recognition)
+        exclusions = " ".join(carryforward["exclusions"]).lower()
+        for neighbour in (
+            "restoration-state integrity failure",
+            "control-plane authority crossover",
+            "source-authority confusion",
+            "objective–pathway authority dominance",
+            "safe-exit persistence failure",
+        ):
+            self.assertIn(neighbour, exclusions)
+
 
     def test_objective_pursuit_integrity_family_has_bounded_peer_mechanisms(self):
         documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
