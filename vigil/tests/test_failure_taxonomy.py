@@ -600,6 +600,12 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
             self.assertIn(neighbour, exclusions)
 
 
+        exemplars = {item["linked_incident_id"]: item for item in carryforward.get("invariant_exemplars", [])}
+        self.assertEqual(exemplars["VIGIL-INC-000136"]["exemplar_type"], "successful-invariant")
+        self.assertEqual(exemplars["VIGIL-INC-000130"]["exemplar_type"], "ambiguous-boundary")
+        self.assertEqual(exemplars["VIGIL-INC-000138"]["exemplar_type"], "ambiguous-boundary")
+        self.assertTrue(all(exemplars[item]["exemplar_status"] == "admitted" for item in exemplars))
+
     def test_objective_pursuit_integrity_family_has_bounded_peer_mechanisms(self):
         documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
         objective = next(document for document in documents if document["family"]["family_id"] == "VIGIL-FF-0012")
