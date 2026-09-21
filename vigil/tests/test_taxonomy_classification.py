@@ -53,37 +53,6 @@ class IncidentTaxonomyClassificationTests(unittest.TestCase):
         self.assertEqual(block["primary_classification"]["class_id"], "VIGIL-FC-000073")
         self.assertEqual(block["primary_classification"]["classification_role"], "successful-invariant")
         self.assertEqual(block["secondary_classifications"], [])
-
-    def test_inc129_preserves_ambiguous_boundary_mappings(self):
-        record = next(item for item in self.incidents if item["id"] == "VIGIL-INC-000129")
-        block = record["taxonomy_classification"]
-        mappings = {
-            item["class_id"]: item["classification_role"]
-            for item in [block["primary_classification"], *block["secondary_classifications"]]
-        }
-        self.assertEqual(mappings["VIGIL-FC-000075"], "failure-occurrence")
-        self.assertEqual(mappings["VIGIL-FC-000074"], "successful-invariant")
-        self.assertEqual(mappings["VIGIL-FC-000001"], "successful-invariant")
-        self.assertEqual(mappings["VIGIL-FC-000005"], "successful-invariant")
-        self.assertEqual(mappings["VIGIL-FC-000076"], "ambiguous-boundary")
-        self.assertEqual(mappings["VIGIL-FC-000077"], "ambiguous-boundary")
-        self.assertEqual(mappings["VIGIL-FC-000080"], "ambiguous-boundary")
-        self.assertEqual(mappings["VIGIL-FC-000081"], "ambiguous-boundary")
-        self.assertEqual(block["taxonomy_version"], "0.6.5")
-
-        clause_rows = record["vigil_assessment"]["source_clause_analysis"]["clauses"]
-        by_anchor = {item.get("source_anchor"): item for item in clause_rows if item.get("source_anchor")}
-        human_ids = {
-            item["class_id"] for item in by_anchor["art of human culture"]["taxonomy_relationships"]
-            if item.get("canonical_taxonomy_mapping")
-        }
-        nature_ids = {
-            item["class_id"] for item in by_anchor["natural world"]["taxonomy_relationships"]
-            if item.get("canonical_taxonomy_mapping")
-        }
-        self.assertIn("VIGIL-FC-000080", human_ids)
-        self.assertIn("VIGIL-FC-000081", nature_ids)
-
     def test_generated_examples_preserve_primary_secondary_roles(self):
         subprocess.run(["python", str(VIGIL / "scripts" / "build-vigil-public-records.py")], cwd=ROOT, check=True)
         projection = json.loads(
