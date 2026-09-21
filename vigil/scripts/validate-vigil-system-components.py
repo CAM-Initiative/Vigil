@@ -19,15 +19,22 @@ def load_json(path: Path) -> Any:
         return json.load(handle)
 
 
-def allowed_component_roles() -> set[str]:
+def system_context_contract() -> tuple[set[str], set[str], set[str]]:
     schema = load_json(SCHEMA_PATH)
-    values = schema.get("system_context_rules", {}).get("allowed_component_role_values", [])
+    rules = schema.get("system_context_rules", {})
+    values = rules.get("allowed_component_role_values", [])
     if not isinstance(values, list) or not values:
         raise ValueError("VIGIL.Schema.json must define non-empty allowed_component_role_values")
     roles = {value for value in values if isinstance(value, str) and value.strip()}
     if len(roles) != len(values):
         raise ValueError("allowed_component_role_values must contain unique non-empty strings")
-    return roles
+    agent_values = set(rules.get("agent_context_rules", {}).get("agentic_status_values", []))
+    environment_values = set(
+        rules.get("occurrence_environment_rules", {}).get("operational_setting_values", [])
+    )
+    if not agent_values or not environment_values:
+        raise ValueError("VIGIL.Schema.json must define agent and occurrence-environment values")
+    return roles, agent_values, environment_values
 
 
 def record_files() -> list[Path]:
@@ -41,13 +48,14 @@ def record_files() -> list[Path]:
 def validate() -> int:
     errors: list[str] = []
     try:
-        allowed = allowed_component_roles()
+        allowed, agent_values, environment_values = system_context_contract()
     except Exception as exc:  # noqa: BLE001
         print(f"VIGIL component-role validation failed: {exc}", file=sys.stderr)
         return 1
 
     checked = 0
     classified = 0
+    normalized = 0
     for path in record_files():
         checked += 1
         try:
@@ -58,23 +66,32 @@ def validate() -> int:
         if not isinstance(record, dict):
             continue
         context = record.get("system_context")
-        if not isinstance(context, dict) or "component_role" not in context:
+        if not isinstance(context, dict):
             continue
-        classified += 1
-        roles = context.get("component_role")
-        if not isinstance(roles, list) or not roles:
-            errors.append(f"{path}: system_context.component_role must be a non-empty array when present")
-            continue
-        if any(not isinstance(role, str) or not role.strip() for role in roles):
-            errors.append(f"{path}: system_context.component_role must contain only non-empty strings")
-            continue
-        if len(roles) != len(set(roles)):
-            errors.append(f"{path}: system_context.component_role must not contain duplicates")
-        unknown = sorted(set(roles) - allowed)
-        if unknown:
-            errors.append(
-                f"{path}: system_context.component_role contains non-canonical values: {', '.join(unknown)}"
-            )
+        agent = context.get("agent_context")
+        environment = context.get("occurrence_environment")
+        if not isinstance(agent, dict) or agent.get("agentic_status") not in agent_values:
+            errors.append(f"{path}: system_context.agent_context is missing or non-canonical")
+        if not isinstance(environment, dict) or environment.get("operational_setting") not in environment_values:
+            errors.append(f"{path}: system_context.occurrence_environment is missing or non-canonical")
+        if isinstance(agent, dict) and isinstance(environment, dict):
+            normalized += 1
+        if "component_role" in context:
+            classified += 1
+            roles = context.get("component_role")
+            if not isinstance(roles, list) or not roles:
+                errors.append(f"{path}: system_context.component_role must be a non-empty array when present")
+                continue
+            if any(not isinstance(role, str) or not role.strip() for role in roles):
+                errors.append(f"{path}: system_context.component_role must contain only non-empty strings")
+                continue
+            if len(roles) != len(set(roles)):
+                errors.append(f"{path}: system_context.component_role must not contain duplicates")
+            unknown = sorted(set(roles) - allowed)
+            if unknown:
+                errors.append(
+                    f"{path}: system_context.component_role contains non-canonical values: {', '.join(unknown)}"
+                )
 
     if errors:
         print("VIGIL component-role validation failed:", file=sys.stderr)
@@ -84,7 +101,8 @@ def validate() -> int:
 
     print(
         "VIGIL component-role validation passed: "
-        f"{checked} Incidents checked, {classified} records carry component_role."
+        f"{checked} Incidents checked, {normalized} records carry normalized agent/environment metadata, "
+        f"and {classified} records carry component_role."
     )
     return 0
 
