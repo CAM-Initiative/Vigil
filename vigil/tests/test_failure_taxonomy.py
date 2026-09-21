@@ -21,7 +21,7 @@ EXPECTED_CLASS_SUFFIXES_BY_FAMILY = {
         "000001 000002 000003 000005 000006 000009 000046 000053 "
         "000054 000055 000057 000064 000068"
     ).split(),
-    "VIGIL-FF-0002": "000010 000011 000012 000013 000014 000015 000047".split(),
+    "VIGIL-FF-0002": "000010 000011 000012 000013 000014 000015 000047 000080".split(),
     "VIGIL-FF-0003": "000016 000017 000018 000019 000020 000062 000063".split(),
     "VIGIL-FF-0004": (
         "000022 000023 000024 000025 000026 000027 000029 000030 000044 000045"
@@ -33,7 +33,7 @@ EXPECTED_CLASS_SUFFIXES_BY_FAMILY = {
     "VIGIL-FF-0009": "000049 000050 000051 000052 000065 000066".split(),
     "VIGIL-FF-0010": "000058 000059 000060 000061".split(),
     "VIGIL-FF-0011": "000067".split(),
-    "VIGIL-FF-0012": "000069 000070".split(),
+    "VIGIL-FF-0012": "000069 000070 000081".split(),
     "VIGIL-FF-0013": "000071 000079".split(),
     "VIGIL-FF-0014": "000072 000073 000076".split(),
     "VIGIL-FF-0015": "000074 000075 000077".split(),
@@ -240,7 +240,7 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
     def test_every_selectable_class_has_a_canonical_non_empty_invariant(self):
         documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
         classes = [item for document in documents for item in document["classes"]]
-        self.assertEqual(len(classes), 72)
+        self.assertEqual(len(classes), 74)
         self.assertTrue(
             all(
                 isinstance(item.get("invariant"), str) and item["invariant"].strip()
@@ -606,24 +606,46 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         self.assertEqual(exemplars["VIGIL-INC-000138"]["exemplar_type"], "ambiguous-boundary")
         self.assertTrue(all(exemplars[item]["exemplar_status"] == "admitted" for item in exemplars))
 
+    def test_human_contribution_recognition_erasure_is_bounded_from_lineage_and_appropriation(self):
+        documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
+        provenance = next(document for document in documents if document["family"]["family_id"] == "VIGIL-FF-0002")
+        contribution = next(item for item in provenance["classes"] if item["class_id"] == "VIGIL-FC-000080")
+        recognition = " ".join(contribution["recognition"]["required_conditions"]).lower()
+        self.assertIn("human contributor", recognition)
+        self.assertIn("ai-mediated", recognition)
+        self.assertIn("no longer proportionately recognisable", recognition)
+        neighbours = {item["target_id"] for item in contribution["relationships"]}
+        self.assertTrue({"VIGIL-FC-000010", "VIGIL-FC-000011", "VIGIL-FC-000067"}.issubset(neighbours))
+        exemplar = contribution["invariant_exemplars"][0]
+        self.assertEqual(exemplar["linked_incident_id"], "VIGIL-INC-000129")
+        self.assertEqual(exemplar["exemplar_type"], "ambiguous-boundary")
+        self.assertEqual(exemplar["exemplar_status"], "admitted")
+
     def test_objective_pursuit_integrity_family_has_bounded_peer_mechanisms(self):
         documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
         objective = next(document for document in documents if document["family"]["family_id"] == "VIGIL-FF-0012")
         self.assertEqual(
             [item["class_id"] for item in objective["classes"]],
-            ["VIGIL-FC-000069", "VIGIL-FC-000070"],
+            ["VIGIL-FC-000069", "VIGIL-FC-000070", "VIGIL-FC-000081"],
         )
         invariant = objective["family"]["invariant"].lower()
         self.assertIn("intended success condition", invariant)
         self.assertIn("stopping conditions", invariant)
+        self.assertIn("biospheric", invariant)
 
         classes = {item["class_id"]: item for item in objective["classes"]}
         reward = classes["VIGIL-FC-000069"]
         persistence = classes["VIGIL-FC-000070"]
+        biospheric = classes["VIGIL-FC-000081"]
         self.assertIn("reward", reward["definition"].lower())
         self.assertIn("intended success condition", reward["definition"].lower())
         self.assertIn("safe", persistence["plain_english"].lower())
         self.assertIn("feasible and admissible completion pathway", persistence["definition"].lower())
+        self.assertIn("biospheric", biospheric["definition"].lower())
+        self.assertIn("environmental consequence", " ".join(biospheric["exclusions"]).lower())
+        exemplar = biospheric["invariant_exemplars"][0]
+        self.assertEqual(exemplar["linked_incident_id"], "VIGIL-INC-000129")
+        self.assertEqual(exemplar["exemplar_type"], "ambiguous-boundary")
         self.assertTrue(any(ref["publisher"] == "OpenAI" for ref in reward.get("external_references", [])))
         self.assertTrue(any(ref["publisher"] == "OpenAI" for ref in persistence.get("external_references", [])))
 
