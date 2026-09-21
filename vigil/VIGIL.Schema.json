@@ -410,7 +410,9 @@
       "platform_or_vendor",
       "product_or_service",
       "specific_model_or_runtime",
-      "interface_surface"
+      "interface_surface",
+      "agent_context",
+      "occurrence_environment"
     ],
     "optional_fields": [
       "component_role"
@@ -561,14 +563,80 @@
     "component_role_evidence_rule": "Assign component roles only where record-local evidence or direct system documentation supports the function. Do not infer an underlying model provider, deployment arrangement, or additional component merely from the presence of an orchestration or agent harness.",
     "multi_vendor_rule": "Multi Vendor means two or more evidenced provider/vendor identities participate in the relevant system context. It must not be used merely because a system combines heterogeneous component types, local and hosted components, or an orchestration layer with an unresolved model provider.",
     "specific_model_or_runtime_rule": "Non-empty string; intentionally not an enum because runtime names and tool-augmented modes drift frequently.",
-    "interface_surface_rule": "Non-empty string or array of non-empty strings describing where or how behaviour appears."
+    "interface_surface_rule": "Non-empty string or array of non-empty strings describing where or how behaviour appears.",
+    "agent_context_rules": {
+      "description": "Occurrence-level, evidence-bounded agent configuration. agentic_status is the single canonical topology field; a duplicate coordination_topology field is intentionally not maintained until the corpus needs a distinct topology vocabulary.",
+      "required_fields": [
+        "agentic_status",
+        "agent_count",
+        "agent_count_min",
+        "agent_count_max",
+        "count_basis",
+        "evidence_basis",
+        "source_record_refs"
+      ],
+      "agentic_status_values": [
+        "non-agentic",
+        "single-agent",
+        "multi-agent",
+        "swarm",
+        "unknown"
+      ],
+      "count_basis_values": [
+        "exact",
+        "minimum",
+        "range",
+        "unknown",
+        "not-applicable"
+      ],
+      "evidence_rule": "Do not infer a single agent, an exact count, multi-agent execution or swarm architecture from silence. source_record_refs must resolve to canonical source_records[N] entries in the same Incident.",
+      "consistency_rules": [
+        "single-agent requires agent_count, agent_count_min and agent_count_max to equal 1 and count_basis exact.",
+        "non-agentic requires null numeric count fields and count_basis not-applicable.",
+        "An exact multi-agent count must be at least 2; multi-agent with no exact count must preserve an evidenced minimum or remain unknown.",
+        "swarm requires source-supported swarm architecture or behaviour and may carry exact, minimum, range or unknown count basis.",
+        "unknown requires null numeric count fields and count_basis unknown.",
+        "For exact counts, min and max must equal agent_count. For ranges, min and max are required and min must not exceed max. For minimum counts, min is required and max is null."
+      ]
+    },
+    "occurrence_environment_rules": {
+      "description": "Occurrence-level operational setting and, independently, the actor that conducted testing.",
+      "required_fields": [
+        "operational_setting",
+        "testing_actor",
+        "environment_detail",
+        "evidence_basis",
+        "source_record_refs"
+      ],
+      "operational_setting_values": [
+        "testing",
+        "live",
+        "mixed",
+        "unknown"
+      ],
+      "testing_actor_values": [
+        "provider-internal",
+        "government",
+        "third-party",
+        "joint",
+        "not-applicable",
+        "unknown"
+      ],
+      "evidence_rule": "Classify the material occurrence, not the product's general availability, ownership or vendor. source_record_refs must resolve to canonical source_records[N] entries in the same Incident.",
+      "consistency_rules": [
+        "live requires testing_actor not-applicable.",
+        "testing requires a testing actor other than not-applicable.",
+        "provider-internal, government, third-party and joint apply only to testing or mixed occurrences.",
+        "unknown operational setting requires testing_actor unknown."
+      ]
+    }
   },
   "cam_internal_rules": {
     "description": "On Incidents, cam_internal is optional bounded diagnostic context. It must not encode current CAM corpus coverage, repair state or implementation state."
   },
   "generated_register_rules": {
     "pruning": "Generated index manifests prune empty arrays, empty strings, empty objects, and nulls while preserving meaningful uncertainty values.",
-    "index_entry_contract": "VIGIL.Incidents.Index.json and VIGIL.Registry.Index.json contain deterministic Incident list metadata plus canonical record locations. The Incident index preserves lightweight primary and secondary mapping objects with family_id, class_id and authoritative mapping-local classification_role, plus the failure-only Repair mapping projection. It also preserves structured external_assessments so public consumers can render attributable third-party analysis without flattening or conflating it with evidence. The lightweight severity code is a deterministic projection of harm_impact_assessment.overall_severity; full matrix and classification-basis detail remains in the canonical Incident record.",
+    "index_entry_contract": "VIGIL.Incidents.Index.json and VIGIL.Registry.Index.json contain deterministic Incident list metadata plus canonical record locations. The Incident index preserves lightweight primary and secondary mapping objects with family_id, class_id and authoritative mapping-local classification_role, plus the failure-only Repair mapping projection. It also preserves structured external_assessments and lightweight agent_context and occurrence_environment projections. Evidence bases and source references remain canonical only in Incident records. The lightweight severity code is a deterministic projection of harm_impact_assessment.overall_severity; full matrix and classification-basis detail remains in the canonical Incident record.",
     "incident_evidence_facets": {
       "evidence_statuses": "Sorted unique values derived from source_records[].evidence_status.",
       "preferred_evidence_status": "Derived from the unique source_record whose source_url equals preferred_evidence.source_url; never separately maintained.",
