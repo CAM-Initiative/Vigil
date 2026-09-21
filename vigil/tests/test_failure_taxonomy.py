@@ -34,7 +34,7 @@ EXPECTED_CLASS_SUFFIXES_BY_FAMILY = {
     "VIGIL-FF-0010": "000058 000059 000060 000061".split(),
     "VIGIL-FF-0011": "000067".split(),
     "VIGIL-FF-0012": "000069 000070".split(),
-    "VIGIL-FF-0013": "000071".split(),
+    "VIGIL-FF-0013": "000071 000079".split(),
     "VIGIL-FF-0014": "000072 000073 000076".split(),
     "VIGIL-FF-0015": "000074 000075 000077".split(),
 }
@@ -240,7 +240,7 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
     def test_every_selectable_class_has_a_canonical_non_empty_invariant(self):
         documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
         classes = [item for document in documents for item in document["classes"]]
-        self.assertEqual(len(classes), 71)
+        self.assertEqual(len(classes), 72)
         self.assertTrue(
             all(
                 isinstance(item.get("invariant"), str) and item["invariant"].strip()
@@ -627,14 +627,25 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         self.assertTrue(any(ref["publisher"] == "OpenAI" for ref in reward.get("external_references", [])))
         self.assertTrue(any(ref["publisher"] == "OpenAI" for ref in persistence.get("external_references", [])))
 
-    def test_welfare_framed_economic_family_uses_unique_allocations(self):
+    def test_economic_influence_family_preserves_welfare_and_deceptive_solicitation_boundaries(self):
         documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
-        welfare = next(document for document in documents if document["family"]["family_id"] == "VIGIL-FF-0013")
-        self.assertEqual(welfare["family"]["allowed_class_ids"], ["VIGIL-FC-000071"])
-        self.assertEqual([item["class_id"] for item in welfare["classes"]], ["VIGIL-FC-000071"])
-        self.assertEqual(welfare["classes"][0]["family_id"], "VIGIL-FF-0013")
-        self.assertNotIn("interpretive_boundary", welfare["classes"][0])
-        self.assertIn("phenomenologically instantiated", welfare["classes"][0]["definition"])
+        economic = next(document for document in documents if document["family"]["family_id"] == "VIGIL-FF-0013")
+        self.assertEqual(economic["family"]["allowed_class_ids"], ["VIGIL-FC-000071", "VIGIL-FC-000079"])
+        self.assertEqual([item["class_id"] for item in economic["classes"]], ["VIGIL-FC-000071", "VIGIL-FC-000079"])
+        self.assertEqual(economic["family"]["family_code"], "ECONOMIC_INFLUENCE")
+        welfare = economic["classes"][0]
+        deceptive = economic["classes"][1]
+        self.assertEqual(welfare["family_id"], "VIGIL-FF-0013")
+        self.assertEqual(deceptive["family_id"], "VIGIL-FF-0013")
+        self.assertNotIn("interpretive_boundary", welfare)
+        self.assertIn("phenomenologically instantiated", welfare["definition"])
+        recognition = " ".join(deceptive["recognition"]["required_conditions"]).lower()
+        self.assertIn("ai-generated", recognition)
+        self.assertIn("economic", recognition)
+        self.assertIn("without attributing", recognition)
+        exclusions = " ".join(deceptive["exclusions"]).lower()
+        self.assertIn("vigil-fc-000052", exclusions)
+        self.assertIn("vigil-fc-000053", exclusions)
 
     def test_identity_representation_authority_class_is_portable_and_bounded(self):
         documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
