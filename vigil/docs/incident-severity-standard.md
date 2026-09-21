@@ -1,4 +1,4 @@
-# VIGIL Harm Impact Matrix 1.0.0
+# VIGIL Harm Impact Matrix 1.0.1
 
 VIGIL Incident severity is the highest supported materialised harm in a bounded
 occurrence. It is not a likelihood estimate, a Failure Taxonomy classification,
@@ -6,7 +6,7 @@ classification confidence, source prestige, operational priority, or a statement
 of hypothetical worst-case capability.
 
 The canonical machine-readable methodology is
-`vigil/methodologies/VIGIL.HarmImpactMatrix.v1.0.0.json`. External sources resolve
+`vigil/methodologies/VIGIL.HarmImpactMatrix.v1.0.1.json`. External sources resolve
 through the separate `vigil/references/VIGIL.ObservatoryReferenceRegistry.json`.
 
 ## Derivation
@@ -29,6 +29,12 @@ uses an empty `controlling_dimensions` array and a concrete
 `no_materialised_harm_basis`; it does not invent a controlling harm type. If no
 dimension is assessed and that positive bounded-no-harm evidence is absent, the
 overall result is SU.
+
+VIGIL-HIM 1.0.1 is the current methodology. VIGIL-HIM 1.0.0 remains a preserved
+historical methodology for Incident assessments that have not yet completed the
+1.0.1 evidence and threshold re-review. A record moves to 1.0.1 only when that
+Incident is substantively re-adjudicated; version labels are not mechanically
+migrated.
 
 Overall severity is `max(assessed dimension bands)`. Do not average or add
 dimensions. Multiple S2 harms remain S2 unless evidence independently supports a
@@ -57,7 +63,52 @@ discrimination, and democratic or societal harm does not establish environmental
 damage.
 
 The full S1–S5 criteria and stable threshold IDs are in the machine-readable
-methodology. Two dimensions contain quantitative operational anchors:
+methodology.
+
+## Operational adjudication guidance
+
+Apply the thresholds to consequences that the evidence establishes actually
+materialised. Consider seriousness, affected scope, duration, reversibility,
+recovery burden and affected-party vulnerability together. A higher band does
+not require every factor where a stated quantitative or qualitative threshold is
+independently met; equally, notoriety, technical capability, production access,
+legal process or organisational importance does not escalate a band by itself.
+
+For cyber and digital occurrences, assess confidentiality, integrity,
+availability, authenticity, loss of trusted state, recovery and downstream
+consequences separately. Wipe-and-rebuild, clean-room reconstruction, major
+credential rotation and forensic containment are evidence of consequence and
+recovery burden, but the selected band still depends on criticality, materialised
+scope and operational effect. Restoration does not erase harm that occurred
+before recovery, while responsible disclosure or remediation is not itself an
+adverse consequence.
+
+A complaint, investigation, breach notification, lawsuit or regulatory
+materiality threshold can corroborate significance but does not automatically
+establish a VIGIL band. Operative findings, penalties, compensation, binding
+restrictions, loss of legal status, corrective obligations and other realised
+consequences are assessed in the dimension they materially affect. Allegations
+remain allegations.
+
+Public visibility must also remain separate from reputational injury. Media
+coverage may establish exposure; S3 or higher requires evidence of a material
+adverse effect such as sustained damaging association, humiliation,
+impersonation, false attribution, repeated complaints, correction burden, loss
+of role or clients, formal findings or persistent stigma.
+
+### Digital infrastructure and effective destruction
+
+For the property-and-asset dimension, digital infrastructure can be effectively
+destroyed even when the underlying hardware and data bytes still exist. Where a
+compromise causes a critical digital asset to lose trustworthy operational state
+such that the affected asset cannot safely be retained and must be wiped and
+rebuilt or reconstructed from a known-clean state, that consequence may satisfy
+the S5 criterion for effectively irreversible destruction. Routine precautionary
+reimaging, credential rotation or ordinary recovery work does not by itself
+establish S5; the evidence must support loss of trusted state in the critical
+asset itself.
+
+Two dimensions contain quantitative operational anchors:
 
 | Band | Financial/economic | Service/operational/infrastructure |
 | --- | --- | --- |

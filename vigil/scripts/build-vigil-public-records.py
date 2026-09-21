@@ -32,6 +32,7 @@ PRESERVE_EMPTY_KEYS = {
     "legacy_sources", "secondary_classifications", "external_incident_references",
     "external_assessments", "related_incidents",
 }
+PRESERVE_NULL_KEYS = {"agent_count", "agent_count_min", "agent_count_max"}
 
 
 def load(path: Path) -> dict[str, Any]:
@@ -46,7 +47,9 @@ def prune(value: Any) -> Any:
         return {
             key: cleaned
             for key, item in value.items()
-            if (cleaned := prune(item)) not in (None, "", [], {}) or key in PRESERVE_EMPTY_KEYS
+            if (cleaned := prune(item)) not in (None, "", [], {})
+            or key in PRESERVE_EMPTY_KEYS
+            or (key in PRESERVE_NULL_KEYS and cleaned is None)
         }
     if isinstance(value, list):
         return [cleaned for item in value if (cleaned := prune(item)) not in (None, "", [], {})]
@@ -226,6 +229,11 @@ def incident_entry(path: Path, record: dict[str, Any]) -> dict[str, Any]:
     primary_family = taxonomy.get("primary_family") if isinstance(taxonomy.get("primary_family"), dict) else {}
     secondary = taxonomy.get("secondary_classifications") if isinstance(taxonomy.get("secondary_classifications"), list) else []
     record_path = relative(path)
+    agent_context = system.get("agent_context") if isinstance(system.get("agent_context"), dict) else {}
+    occurrence_environment = (
+        system.get("occurrence_environment")
+        if isinstance(system.get("occurrence_environment"), dict) else {}
+    )
 
     return prune({
         "id": record.get("id"),
@@ -237,6 +245,17 @@ def incident_entry(path: Path, record: dict[str, Any]) -> dict[str, Any]:
         "title": identity.get("title") or record.get("summary") or record.get("id"),
         "summary": record.get("summary"),
         "platform_or_vendor": system.get("platform_or_vendor"),
+        "agent_context": {
+            "agentic_status": agent_context.get("agentic_status"),
+            "agent_count": agent_context.get("agent_count"),
+            "agent_count_min": agent_context.get("agent_count_min"),
+            "agent_count_max": agent_context.get("agent_count_max"),
+            "count_basis": agent_context.get("count_basis"),
+        },
+        "occurrence_environment": {
+            "operational_setting": occurrence_environment.get("operational_setting"),
+            "testing_actor": occurrence_environment.get("testing_actor"),
+        },
         "severity": assessment.get("overall_severity"),
         "classification_status": taxonomy.get("classification_status"),
         "classification_role": taxonomy.get("classification_role"),

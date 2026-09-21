@@ -29,6 +29,8 @@ INDEX_ENTRY_KEYS = {
     "title",
     "summary",
     "platform_or_vendor",
+    "agent_context",
+    "occurrence_environment",
     "severity",
     "classification_status",
     "classification_role",
@@ -76,6 +78,11 @@ def expected_projection(record: dict[str, Any]) -> dict[str, Any]:
     identity = record.get("record_identity") if isinstance(record.get("record_identity"), dict) else {}
     incident = record.get("incident_identity") if isinstance(record.get("incident_identity"), dict) else {}
     system = record.get("system_context") if isinstance(record.get("system_context"), dict) else {}
+    agent = system.get("agent_context") if isinstance(system.get("agent_context"), dict) else {}
+    environment = (
+        system.get("occurrence_environment")
+        if isinstance(system.get("occurrence_environment"), dict) else {}
+    )
     taxonomy = record.get("taxonomy_classification") if isinstance(record.get("taxonomy_classification"), dict) else {}
     assessment = record.get("harm_impact_assessment") if isinstance(record.get("harm_impact_assessment"), dict) else {}
     primary = taxonomy.get("primary_classification") if isinstance(taxonomy.get("primary_classification"), dict) else {}
@@ -102,6 +109,17 @@ def expected_projection(record: dict[str, Any]) -> dict[str, Any]:
         "title": identity.get("title") or record.get("summary") or record_id,
         "summary": record.get("summary"),
         "platform_or_vendor": system.get("platform_or_vendor"),
+        "agent_context": {
+            "agentic_status": agent.get("agentic_status"),
+            "agent_count": agent.get("agent_count"),
+            "agent_count_min": agent.get("agent_count_min"),
+            "agent_count_max": agent.get("agent_count_max"),
+            "count_basis": agent.get("count_basis"),
+        },
+        "occurrence_environment": {
+            "operational_setting": environment.get("operational_setting"),
+            "testing_actor": environment.get("testing_actor"),
+        },
         "severity": assessment.get("overall_severity"),
         "classification_status": taxonomy.get("classification_status"),
         "classification_role": taxonomy.get("classification_role"),

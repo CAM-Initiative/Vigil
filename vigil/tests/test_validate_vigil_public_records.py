@@ -26,7 +26,20 @@ class ValidateVigilPublicRecordsTest(unittest.TestCase):
             },
             "incident_identity": {"occurred_from": "2026-09-10"},
             "summary": "A bounded Incident summary.",
-            "system_context": {"platform_or_vendor": "Example Provider"},
+            "system_context": {
+                "platform_or_vendor": "Example Provider",
+                "agent_context": {
+                    "agentic_status": "non-agentic",
+                    "agent_count": None,
+                    "agent_count_min": None,
+                    "agent_count_max": None,
+                    "count_basis": "not-applicable",
+                },
+                "occurrence_environment": {
+                    "operational_setting": "live",
+                    "testing_actor": "not-applicable",
+                },
+            },
             "source_records": [{"source_role": "incident-evidence"}],
             "harm_impact_assessment": {"overall_severity": "S3"},
             "external_assessments": [],

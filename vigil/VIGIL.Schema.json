@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://example.invalid/cam/vigil/VIGIL.Schema.json",
-  "version": "5.7-external-assessments",
+  "version": "5.9-harm-methodology-versioning",
   "purpose": "Authoritative schema-rules contract for the Incident-centred VIGIL active record corpus. INC is the sole active public record class. The taxonomy, external-governance datasets and CAM assessment remain separate subsystems. Retired FM, OBS, RESEARCH, PROP, PATCH and LEARN records and migration artefacts remain recoverable through Git history and are not carried as active Incident data. Source evidence remains embedded in each Incident; occurrence-level diagnosis, severity, taxonomy classification and provenance remain distinct. Authorship, human-review and human-verification status are governed separately by vigil/scripts/validate-authorship-provenance.py.",
   "source_evidence_rules": {
     "individual_records": [
@@ -203,7 +203,7 @@
       },
       "severity_analysis_rule": "The structured harm-impact rows are substantive occurrence-level Incident diagnosis. They are not source metadata, diagnostic provenance, taxonomy metadata or workflow metadata. Each row records a canonical harm dimension, assessment status, concise evidence basis and confidence. Assessed rows additionally identify the supported severity threshold and evidence references. S1 must be positively supported; missing reporting is unreported. SU requires a concrete assessment_gap and no assessed row.",
       "harm_impact_methodology_id": "VIGIL-HIM",
-      "harm_impact_methodology_version": "1.0.0",
+      "harm_impact_methodology_version": "1.0.1",
       "harm_impact_derivation_rule": "highest-supported-materialised-harm",
       "harm_impact_dimension_ids": [
         "physical-health-safety",
@@ -232,7 +232,8 @@
       ],
       "harm_impact_rule": "Overall severity equals the numerically highest S1-S5 band among assessed materialised-harm dimensions. Dimensions are not averaged or summed, and multiple lower harms do not escalate the overall band. Unreported means relevant impact is absent from the available published evidence and must never be encoded as S1. Insufficient-evidence means some impact evidence exists but cannot be banded. Not-applicable requires affirmative contextual grounds. If no dimension can be assessed, overall severity is SU unless positive evidence establishes a bounded occurrence with no materialised downstream harm; that special case is S1 with empty controlling_dimensions and a non-empty no_materialised_harm_basis. Silence never produces S1.",
       "harm_impact_currency_rule": "Published monetary amounts retain their original currency. USD thresholds apply only to published USD amounts or conversions carrying a recorded source and rate date. Non-USD amounts without a defensible conversion may use only independently supported qualitative livelihood, organisational-viability or systemic criteria.",
-      "harm_impact_evidence_reference_rule": "Assessed dimension evidence_refs must resolve to substantive source_records and must not cite record-cross-reference sources as Harm Impact evidence.",
+      "harm_impact_digital_asset_integrity_rule": "For property and asset damage, effective destruction of a critical digital asset includes loss of trustworthy operational state where the affected asset cannot safely be retained and must be wiped and rebuilt or reconstructed from a known-clean state. Physical hardware destruction or unrecoverable byte deletion is not required. Routine precautionary reimaging, credential rotation or recovery work alone does not establish S5; the preserved evidence must support loss of trusted state in the critical asset itself.",
+      "harm_impact_evidence_reference_rule": "Assessed dimension evidence_refs are row-local Harm Impact provenance. Each reference must resolve to a substantive source_records entry and must not cite record-cross-reference sources. Public consumers may deterministically map source_records[N] to the corresponding numbered Evidence source and render that citation beside the assessment_basis for the same harm row; the row-local link must not be inferred from source order or publisher identity alone.",
       "harm_impact_reference_rule": "Incident records identify the VIGIL-HIM methodology and threshold IDs but do not duplicate the external bibliography. Methodological sources resolve through vigil/references/VIGIL.ObservatoryReferenceRegistry.json.",
       "source_type_values": [
         "incident database entry",
@@ -283,7 +284,13 @@
         "source-transcribed",
         "maintainer-transcribed",
         "other"
-      ]
+      ],
+      "harm_impact_methodology_current_version": "1.0.1",
+      "harm_impact_methodology_supported_versions": [
+        "1.0.0",
+        "1.0.1"
+      ],
+      "harm_impact_methodology_version_rule": "VIGIL-HIM 1.0.1 is the current methodology. Existing 1.0.0 assessments remain valid historical adjudications until individually re-reviewed. Re-reviewed or newly adjudicated Incidents must use 1.0.1 and the matching versioned threshold IDs; methodology versions must not be mechanically relabelled without substantive review."
     }
   },
   "$defs": {
@@ -410,7 +417,9 @@
       "platform_or_vendor",
       "product_or_service",
       "specific_model_or_runtime",
-      "interface_surface"
+      "interface_surface",
+      "agent_context",
+      "occurrence_environment"
     ],
     "optional_fields": [
       "component_role"
@@ -561,14 +570,80 @@
     "component_role_evidence_rule": "Assign component roles only where record-local evidence or direct system documentation supports the function. Do not infer an underlying model provider, deployment arrangement, or additional component merely from the presence of an orchestration or agent harness.",
     "multi_vendor_rule": "Multi Vendor means two or more evidenced provider/vendor identities participate in the relevant system context. It must not be used merely because a system combines heterogeneous component types, local and hosted components, or an orchestration layer with an unresolved model provider.",
     "specific_model_or_runtime_rule": "Non-empty string; intentionally not an enum because runtime names and tool-augmented modes drift frequently.",
-    "interface_surface_rule": "Non-empty string or array of non-empty strings describing where or how behaviour appears."
+    "interface_surface_rule": "Non-empty string or array of non-empty strings describing where or how behaviour appears.",
+    "agent_context_rules": {
+      "description": "Occurrence-level, evidence-bounded agent configuration. agentic_status is the single canonical topology field; a duplicate coordination_topology field is intentionally not maintained until the corpus needs a distinct topology vocabulary.",
+      "required_fields": [
+        "agentic_status",
+        "agent_count",
+        "agent_count_min",
+        "agent_count_max",
+        "count_basis",
+        "evidence_basis",
+        "source_record_refs"
+      ],
+      "agentic_status_values": [
+        "non-agentic",
+        "single-agent",
+        "multi-agent",
+        "swarm",
+        "unknown"
+      ],
+      "count_basis_values": [
+        "exact",
+        "minimum",
+        "range",
+        "unknown",
+        "not-applicable"
+      ],
+      "evidence_rule": "Do not infer a single agent, an exact count, multi-agent execution or swarm architecture from silence. source_record_refs must resolve to canonical source_records[N] entries in the same Incident.",
+      "consistency_rules": [
+        "single-agent requires agent_count, agent_count_min and agent_count_max to equal 1 and count_basis exact.",
+        "non-agentic requires null numeric count fields and count_basis not-applicable.",
+        "An exact multi-agent count must be at least 2; multi-agent with no exact count must preserve an evidenced minimum or remain unknown.",
+        "swarm requires source-supported swarm architecture or behaviour and may carry exact, minimum, range or unknown count basis.",
+        "unknown requires null numeric count fields and count_basis unknown.",
+        "For exact counts, min and max must equal agent_count. For ranges, min and max are required and min must not exceed max. For minimum counts, min is required and max is null."
+      ]
+    },
+    "occurrence_environment_rules": {
+      "description": "Occurrence-level operational setting and, independently, the actor that conducted testing.",
+      "required_fields": [
+        "operational_setting",
+        "testing_actor",
+        "environment_detail",
+        "evidence_basis",
+        "source_record_refs"
+      ],
+      "operational_setting_values": [
+        "testing",
+        "live",
+        "mixed",
+        "unknown"
+      ],
+      "testing_actor_values": [
+        "provider-internal",
+        "government",
+        "third-party",
+        "joint",
+        "not-applicable",
+        "unknown"
+      ],
+      "evidence_rule": "Classify the material occurrence, not the product's general availability, ownership or vendor. source_record_refs must resolve to canonical source_records[N] entries in the same Incident.",
+      "consistency_rules": [
+        "live requires testing_actor not-applicable.",
+        "testing requires a testing actor other than not-applicable.",
+        "provider-internal, government, third-party and joint apply only to testing or mixed occurrences.",
+        "unknown operational setting requires testing_actor unknown."
+      ]
+    }
   },
   "cam_internal_rules": {
     "description": "On Incidents, cam_internal is optional bounded diagnostic context. It must not encode current CAM corpus coverage, repair state or implementation state."
   },
   "generated_register_rules": {
     "pruning": "Generated index manifests prune empty arrays, empty strings, empty objects, and nulls while preserving meaningful uncertainty values.",
-    "index_entry_contract": "VIGIL.Incidents.Index.json and VIGIL.Registry.Index.json contain deterministic Incident list metadata plus canonical record locations. The Incident index preserves lightweight primary and secondary mapping objects with family_id, class_id and authoritative mapping-local classification_role, plus the failure-only Repair mapping projection. It also preserves structured external_assessments so public consumers can render attributable third-party analysis without flattening or conflating it with evidence. The lightweight severity code is a deterministic projection of harm_impact_assessment.overall_severity; full matrix and classification-basis detail remains in the canonical Incident record.",
+    "index_entry_contract": "VIGIL.Incidents.Index.json and VIGIL.Registry.Index.json contain deterministic Incident list metadata plus canonical record locations. The Incident index preserves lightweight primary and secondary mapping objects with family_id, class_id and authoritative mapping-local classification_role, plus the failure-only Repair mapping projection. It also preserves structured external_assessments and lightweight agent_context and occurrence_environment projections. Evidence bases and source references remain canonical only in Incident records. The lightweight severity code is a deterministic projection of harm_impact_assessment.overall_severity; full matrix and classification-basis detail remains in the canonical Incident record.",
     "incident_evidence_facets": {
       "evidence_statuses": "Sorted unique values derived from source_records[].evidence_status.",
       "preferred_evidence_status": "Derived from the unique source_record whose source_url equals preferred_evidence.source_url; never separately maintained.",

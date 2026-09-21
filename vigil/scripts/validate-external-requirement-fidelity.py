@@ -142,9 +142,7 @@ def validate() -> tuple[list[str], list[str], dict]:
                 errors.append(f"{path.name}: retired requirement appears in multiple packages: {rid}")
             retired_ids.add(rid)
             current = req_by_id.get(rid)
-            if current is None:
-                errors.append(f"{path.name}: retired requirement is absent from canonical corpus: {rid}")
-            elif source_key(current) != key:
+            if current is not None and source_key(current) != key:
                 errors.append(f"{path.name}: retired requirement belongs to another source/version: {rid}")
         for record in package.get("requirements", []):
             staged_requirement_count += 1
@@ -163,6 +161,14 @@ def validate() -> tuple[list[str], list[str], dict]:
             if atomicity == "atomic" and record.get("constituent_propositions"):
                 errors.append(f"{path.name}: atomic record unexpectedly carries constituent propositions: {rid}")
 
+    retired_present = retired_ids & set(req_by_id)
+    staged_present = staged_ids & set(req_by_id)
+    if retired_present and retired_present != retired_ids:
+        errors.append("EU AI Act canonical corpus contains only part of the declared retired identity set")
+    elif not retired_present and staged_present != staged_ids:
+        errors.append("EU AI Act canonical corpus is neither pre-migration nor fully migrated")
+    migration_state = "pre-migration" if retired_present else "migrated"
+
     summary = {
         "historical_complete_sources": len(historical_complete),
         "fidelity_assured_effective_complete_sources": effective_complete,
@@ -170,6 +176,7 @@ def validate() -> tuple[list[str], list[str], dict]:
         "explicit_fidelity_entries": len(fidelity_entries),
         "staged_reextraction_retirements": len(retired_ids),
         "staged_reextraction_requirements": staged_requirement_count,
+        "eu_ai_act_migration_state": migration_state,
     }
     return errors, warnings, summary
 

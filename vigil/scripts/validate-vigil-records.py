@@ -15,7 +15,7 @@ VIGIL = ROOT / "vigil"
 RECORDS_ROOT = VIGIL / "records"
 INCIDENT_ROOT = RECORDS_ROOT / "incidents"
 SCHEMA_PATH = VIGIL / "VIGIL.Schema.json"
-HARM_MATRIX_PATH = VIGIL / "methodologies" / "VIGIL.HarmImpactMatrix.v1.0.0.json"
+HARM_MATRIX_DIR = VIGIL / "methodologies"
 TAXONOMY_INDEX = VIGIL / "taxonomy" / "VIGIL.FailureTaxonomy.Index.json"
 INCIDENT_ID = re.compile(r"^VIGIL-INC-\d{6}$")
 EXTERNAL_ASSESSMENT_ID = re.compile(r"^VIGIL-EXTASSESS-\d{6}$")
@@ -90,6 +90,128 @@ def contains_key(value: Any, key: str) -> bool:
 def allowed_system_values(schema_path: Path | None = None) -> tuple[set[str], set[str]]:
     rules = schema(schema_path)["system_context_rules"]
     return set(rules["allowed_platform_or_vendor_values"]), set(rules["allowed_product_or_service_values"])
+
+
+def is_non_negative_integer(value: Any) -> bool:
+    return isinstance(value, int) and not isinstance(value, bool) and value >= 0
+
+
+def validate_source_refs(
+    path: Path,
+    label: str,
+    value: Any,
+    source_records: Any,
+    errors: list[str],
+) -> None:
+    if not isinstance(value, list) or not value:
+        errors.append(f"{path}: {label}.source_record_refs must be a non-empty array")
+        return
+    if len(value) != len(set(ref for ref in value if isinstance(ref, str))):
+        errors.append(f"{path}: {label}.source_record_refs must not contain duplicates")
+    for ref in value:
+        match = re.fullmatch(r"source_records\[(\d+)\]", ref) if isinstance(ref, str) else None
+        if match is None:
+            errors.append(f"{path}: {label}.source_record_refs must use source_records[N] references")
+        elif not isinstance(source_records, list) or int(match.group(1)) >= len(source_records):
+            errors.append(f"{path}: {label}.source_record_refs points outside source_records")
+
+
+def validate_agent_and_environment_context(
+    path: Path,
+    record: dict[str, Any],
+    system: dict[str, Any],
+    errors: list[str],
+    schema_path: Path | None = None,
+) -> None:
+    rules = schema(schema_path)["system_context_rules"]
+    source_records = record.get("source_records")
+    agent_rules = rules["agent_context_rules"]
+    agent = system.get("agent_context")
+    if not isinstance(agent, dict):
+        errors.append(f"{path}: system_context.agent_context must be an object")
+    else:
+        missing = sorted(set(agent_rules["required_fields"]) - set(agent))
+        if missing:
+            errors.append(f"{path}: system_context.agent_context missing {', '.join(missing)}")
+        status = agent.get("agentic_status")
+        basis = agent.get("count_basis")
+        count = agent.get("agent_count")
+        minimum = agent.get("agent_count_min")
+        maximum = agent.get("agent_count_max")
+        if status not in set(agent_rules["agentic_status_values"]):
+            errors.append(f"{path}: system_context.agent_context.agentic_status is not canonical")
+        if basis not in set(agent_rules["count_basis_values"]):
+            errors.append(f"{path}: system_context.agent_context.count_basis is not canonical")
+        for field, value in (("agent_count", count), ("agent_count_min", minimum), ("agent_count_max", maximum)):
+            if value is not None and not is_non_negative_integer(value):
+                errors.append(f"{path}: system_context.agent_context.{field} must be a non-negative integer or null")
+        if not non_empty(agent.get("evidence_basis")):
+            errors.append(f"{path}: system_context.agent_context.evidence_basis must be non-empty")
+        validate_source_refs(path, "system_context.agent_context", agent.get("source_record_refs"), source_records, errors)
+
+        if status == "single-agent" and (basis != "exact" or (count, minimum, maximum) != (1, 1, 1)):
+            errors.append(f"{path}: single-agent requires exact count, minimum and maximum of 1")
+        if status == "non-agentic" and (basis != "not-applicable" or any(v is not None for v in (count, minimum, maximum))):
+            errors.append(f"{path}: non-agentic requires not-applicable count basis and null numeric counts")
+        if status == "unknown" and (basis != "unknown" or any(v is not None for v in (count, minimum, maximum))):
+            errors.append(f"{path}: unknown agentic status requires unknown count basis and null numeric counts")
+        if status == "multi-agent" and basis not in {"exact", "minimum", "range"}:
+            errors.append(f"{path}: multi-agent requires exact, minimum or range count basis")
+        if status == "swarm" and basis not in {"exact", "minimum", "range", "unknown"}:
+            errors.append(f"{path}: swarm has an invalid count basis")
+        if basis == "exact":
+            if not is_non_negative_integer(count) or minimum != count or maximum != count:
+                errors.append(f"{path}: exact agent count must agree with minimum and maximum")
+            elif status in {"multi-agent", "swarm"} and count < 2:
+                errors.append(f"{path}: exact multi-agent or swarm count must be at least 2")
+        elif basis == "minimum":
+            if count is not None or not is_non_negative_integer(minimum) or maximum is not None or minimum < 2:
+                errors.append(f"{path}: minimum count requires null exact/max fields and a minimum of at least 2")
+        elif basis == "range":
+            if (
+                count is not None
+                or not is_non_negative_integer(minimum)
+                or not is_non_negative_integer(maximum)
+                or minimum < 2
+                or minimum > maximum
+            ):
+                errors.append(f"{path}: range count requires ordered minimum/maximum values of at least 2")
+
+    environment_rules = rules["occurrence_environment_rules"]
+    environment = system.get("occurrence_environment")
+    if not isinstance(environment, dict):
+        errors.append(f"{path}: system_context.occurrence_environment must be an object")
+    else:
+        missing = sorted(set(environment_rules["required_fields"]) - set(environment))
+        if missing:
+            errors.append(f"{path}: system_context.occurrence_environment missing {', '.join(missing)}")
+        setting = environment.get("operational_setting")
+        actor = environment.get("testing_actor")
+        if setting not in set(environment_rules["operational_setting_values"]):
+            errors.append(f"{path}: system_context.occurrence_environment.operational_setting is not canonical")
+        if actor not in set(environment_rules["testing_actor_values"]):
+            errors.append(f"{path}: system_context.occurrence_environment.testing_actor is not canonical")
+        if not non_empty(environment.get("environment_detail")):
+            errors.append(f"{path}: system_context.occurrence_environment.environment_detail must be non-empty")
+        if not non_empty(environment.get("evidence_basis")):
+            errors.append(f"{path}: system_context.occurrence_environment.evidence_basis must be non-empty")
+        validate_source_refs(
+            path,
+            "system_context.occurrence_environment",
+            environment.get("source_record_refs"),
+            source_records,
+            errors,
+        )
+        if setting == "live" and actor != "not-applicable":
+            errors.append(f"{path}: live occurrence requires testing_actor not-applicable")
+        if setting == "testing" and actor == "not-applicable":
+            errors.append(f"{path}: testing occurrence must identify or preserve uncertainty about the testing actor")
+        if setting == "unknown" and actor != "unknown":
+            errors.append(f"{path}: unknown occurrence setting requires unknown testing actor")
+        if actor in {"provider-internal", "government", "third-party", "joint"} and setting not in {"testing", "mixed"}:
+            errors.append(f"{path}: testing actor categories apply only to testing or mixed occurrences")
+        if setting == "mixed" and actor == "not-applicable":
+            errors.append(f"{path}: mixed occurrence must identify or preserve uncertainty about the testing actor")
 
 
 def taxonomy_catalogue() -> tuple[dict[str, dict[str, Any]], dict[str, dict[str, Any]]]:
@@ -234,8 +356,16 @@ def validate_incident_taxonomy(path: Path, record: dict[str, Any], errors: list[
             )
 
 
-def harm_matrix() -> dict[str, Any]:
-    return load_json(HARM_MATRIX_PATH)
+def harm_matrix(version: str) -> dict[str, Any]:
+    if re.fullmatch(r"\d+\.\d+\.\d+", version) is None:
+        raise ValueError(f"invalid VIGIL-HIM version {version!r}")
+    path = HARM_MATRIX_DIR / f"VIGIL.HarmImpactMatrix.v{version}.json"
+    if not path.exists():
+        raise FileNotFoundError(f"VIGIL-HIM methodology file does not exist for version {version}")
+    matrix = load_json(path)
+    if matrix.get("version") != version:
+        raise ValueError(f"VIGIL-HIM methodology file version mismatch for {version}")
+    return matrix
 
 
 def financial_band_for_usd(value: float) -> str:
@@ -267,8 +397,13 @@ def validate_harm_impact(path: Path, record: dict[str, Any], errors: list[str]) 
         errors.append(f"{path}: harm_impact_assessment missing {', '.join(missing)}")
     if assessment.get("methodology_id") != contract["harm_impact_methodology_id"]:
         errors.append(f"{path}: harm impact methodology_id is not canonical")
-    if assessment.get("methodology_version") != contract["harm_impact_methodology_version"]:
-        errors.append(f"{path}: harm impact methodology_version is not canonical")
+    methodology_version = assessment.get("methodology_version")
+    supported_versions = set(contract.get(
+        "harm_impact_methodology_supported_versions",
+        [contract["harm_impact_methodology_version"]],
+    ))
+    if methodology_version not in supported_versions:
+        errors.append(f"{path}: harm impact methodology_version is not supported")
     if assessment.get("derivation_rule") != contract["harm_impact_derivation_rule"]:
         errors.append(f"{path}: harm impact derivation_rule is not canonical")
     if parse_date(assessment.get("assessed_on")) is None:
@@ -276,7 +411,15 @@ def validate_harm_impact(path: Path, record: dict[str, Any], errors: list[str]) 
     if not non_empty(assessment.get("coverage_note")):
         errors.append(f"{path}: harm_impact_assessment.coverage_note must be non-empty")
 
-    matrix = harm_matrix()
+    try:
+        matrix = harm_matrix(str(methodology_version))
+    except (ValueError, FileNotFoundError) as exc:
+        errors.append(f"{path}: {exc}")
+        return
+    if matrix.get("methodology_id") != assessment.get("methodology_id"):
+        errors.append(f"{path}: harm impact methodology_id does not match methodology file")
+    if matrix.get("derivation_rule") != assessment.get("derivation_rule"):
+        errors.append(f"{path}: harm impact derivation_rule does not match methodology file")
     dimensions_by_id = {item["dimension_id"]: item for item in matrix["dimensions"]}
     expected_ids = set(contract["harm_impact_dimension_ids"])
     rows = assessment.get("dimensions")
@@ -704,6 +847,7 @@ def validate_record(
             errors.append(f"{path}: non-canonical platform_or_vendor")
         if system.get("product_or_service") not in allowed_products:
             errors.append(f"{path}: non-canonical product_or_service")
+        validate_agent_and_environment_context(path, record, system, errors, schema_path)
     validate_harm_impact(path, record, errors)
     validate_source_records(path, record, errors)
     validate_external_assessments(path, record, known_assessment_ids, errors)

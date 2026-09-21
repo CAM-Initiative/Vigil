@@ -103,7 +103,7 @@ LIFECYCLE_STAGES = {
 }
 GOVERNANCE_CONCEPTS = {
     "accountability", "ai-literacy", "assurance", "change-management", "conformity",
-    "data-governance", "documentation", "environmental-impact", "fairness-bias", "human-oversight",
+    "data-governance", "documentation", "environmental-impact", "fairness-bias", "governance", "human-oversight",
     "impact-assessment", "incident-governance", "inventory", "lifecycle-governance", "monitoring",
     "privacy", "provenance", "risk-management", "robustness", "safety", "security", "supply-chain",
     "testing-evaluation", "traceability", "transparency", "worker-affected-person-rights",
@@ -128,6 +128,10 @@ REQUIRED_REQUIREMENT_FIELDS = {
     "source_defined_tags", "related_external_requirements", "interpretation_status",
     "interpretation_provenance", "assurance_provenance", "review_limitations",
 }
+OPTIONAL_REQUIREMENT_FIELDS = {
+    "semantic_atomicity", "constituent_propositions",
+}
+SEMANTIC_ATOMICITY = {"atomic", "source-defined-compound"}
 REQUIRED_SCOPE_FIELDS = {
     "vigil_source_id", "external_source_id", "source_version", "canonical_source_identifier",
     "source_role", "source_access_status", "access_checked_at", "access_locator", "source_access_notes",
@@ -346,9 +350,21 @@ def validate_requirements(
         forbidden = sorted(FORBIDDEN_INTERNAL_FIELDS & set(req))
         if forbidden:
             errors.append(f"{label}: contains forbidden CAM-assessment fields {forbidden}")
-        unexpected = sorted(set(req) - REQUIRED_REQUIREMENT_FIELDS)
+        unexpected = sorted(set(req) - REQUIRED_REQUIREMENT_FIELDS - OPTIONAL_REQUIREMENT_FIELDS)
         if unexpected:
             errors.append(f"{label}: contains unsupported fields {unexpected}")
+        semantic_atomicity = req.get("semantic_atomicity")
+        constituent_propositions = req.get("constituent_propositions")
+        if semantic_atomicity is not None:
+            if semantic_atomicity not in SEMANTIC_ATOMICITY:
+                errors.append(f"{label}: invalid semantic_atomicity {semantic_atomicity!r}")
+            if semantic_atomicity == "source-defined-compound":
+                if not string_array(constituent_propositions, nonempty=True):
+                    errors.append(f"{label}: source-defined compound requires constituent_propositions")
+            elif constituent_propositions is not None:
+                errors.append(f"{label}: atomic record must not carry constituent_propositions")
+        elif constituent_propositions is not None:
+            errors.append(f"{label}: constituent_propositions requires semantic_atomicity")
         rid = req["requirement_id"]
         if not isinstance(rid, str) or not REQ_ID_RE.fullmatch(rid):
             errors.append(f"{label}: invalid requirement_id")

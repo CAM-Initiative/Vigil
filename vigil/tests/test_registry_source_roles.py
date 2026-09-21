@@ -19,8 +19,8 @@ class RegistrySourceRoleTests(unittest.TestCase):
 
     def test_inc_129_media_sources_are_explicit_harm_evidence(self):
         record = load("VIGIL-INC-000129")
-        media_sources = record["source_records"][3:8]
-        self.assertEqual(len(media_sources), 5)
+        media_sources = record["source_records"][3:9]
+        self.assertEqual(len(media_sources), 6)
         self.assertTrue(all(item["source_type"] == "news article" for item in media_sources))
         self.assertTrue(all(item["source_role"] == "harm-evidence" for item in media_sources))
         reputation = next(
@@ -29,7 +29,7 @@ class RegistrySourceRoleTests(unittest.TestCase):
         )
         self.assertEqual(
             reputation["evidence_refs"],
-            [f"source_records[{index}]" for index in range(3, 8)],
+            [f"source_records[{index}]" for index in range(3, 9)],
         )
 
     def test_inc_127_evidence_hierarchy_is_structural(self):
@@ -53,7 +53,7 @@ class RegistrySourceRoleTests(unittest.TestCase):
             for ref in row.get("evidence_refs", [])
         }
         self.assertNotIn("source_records[2]", harm_refs)
-        self.assertEqual(harm_refs, {"source_records[0]", "source_records[1]"})
+        self.assertEqual(harm_refs, {"source_records[0]", "source_records[1]", "source_records[3]"})
 
     def test_registry_reported_does_not_imply_cross_reference(self):
         record = load("VIGIL-INC-000104")
@@ -84,17 +84,21 @@ class RegistrySourceRoleTests(unittest.TestCase):
                 self.assertEqual(row["severity"], severity)
                 self.assertTrue(row["evidence_refs"])
 
-    def test_non_usd_legal_consequence_remains_unbanded_without_conversion(self):
+    def test_non_usd_legal_consequence_is_banded_with_documented_conversion(self):
         record = load("VIGIL-INC-000140")
         assessment = record["harm_impact_assessment"]
         financial = next(
             item for item in assessment["dimensions"]
             if item["dimension_id"] == "financial-economic"
         )
-        self.assertEqual(assessment["overall_severity"], "SU")
-        self.assertEqual(financial["assessment_status"], "insufficient-evidence")
-        self.assertNotIn("severity", financial)
-        self.assertIn("conversion source and rate date", financial["assessment_basis"])
+        self.assertEqual(assessment["overall_severity"], "S1")
+        self.assertEqual(financial["assessment_status"], "assessed")
+        self.assertEqual(financial["severity"], "S1")
+        self.assertEqual(financial["threshold_id"], "VIGIL-HIM-1.0.1-FIN-S1")
+        self.assertIn("US$599.27", financial["assessment_basis"])
+        self.assertEqual(financial["evidence_refs"], [
+            "source_records[1]", "source_records[2]", "source_records[3]",
+        ])
 
 
 if __name__ == "__main__":

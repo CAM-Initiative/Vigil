@@ -37,6 +37,22 @@ class IncidentBuilderTests(unittest.TestCase):
         self.assertEqual(entry["record_last_updated"], record["record_identity"]["updated"])
         self.assertEqual(entry["source_roles"], BUILDER.source_roles(record))
         self.assertEqual(entry["external_assessments"], record.get("external_assessments", []))
+        self.assertEqual(
+            entry["agent_context"],
+            {
+                key: record["system_context"]["agent_context"][key]
+                for key in ("agentic_status", "agent_count", "agent_count_min", "agent_count_max", "count_basis")
+            },
+        )
+        self.assertEqual(
+            entry["occurrence_environment"],
+            {
+                key: record["system_context"]["occurrence_environment"][key]
+                for key in ("operational_setting", "testing_actor")
+            },
+        )
+        self.assertNotIn("evidence_basis", entry["agent_context"])
+        self.assertNotIn("source_record_refs", entry["occurrence_environment"])
         self.assertIn("search_terms", entry)
         self.assertTrue(entry["search_terms"])
         for canonical_detail in (
