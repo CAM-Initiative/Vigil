@@ -2,7 +2,7 @@
   "schema_version": "0.2.0",
   "standard": {
     "name": "VIGIL Failure Taxonomy",
-    "version": "0.6.4",
+    "version": "0.6.5",
     "publication_date": "2026-09-21",
     "status": "beta",
     "description": "Beta portable classification standard for recurring AI governance failure mechanisms."
@@ -81,6 +81,14 @@
           "url": "https://doi.org/10.6028/NIST.SP.800-63b-4",
           "reference_role": "authoritative-guidance",
           "evidence_note": "Section 5 establishes authenticated-session continuity through session bindings, lifetime limits, termination, reauthentication, and independent session handling in federated contexts. This directly supports coherent authentication-state transitions; VIGIL's class additionally covers propagation failures affecting active AI tasks and dependent operations beyond NIST's federal digital-identity scope."
+        },
+        {
+          "title": "RFC 7009: OAuth 2.0 Token Revocation",
+          "publisher": "Internet Engineering Task Force",
+          "date": "2013-08-01",
+          "url": "https://www.rfc-editor.org/rfc/rfc7009.html",
+          "reference_role": "standards-evidence",
+          "evidence_note": "RFC 7009 specifies revocation of OAuth access and refresh tokens, immediate invalidation of the revoked token, possible invalidation of related tokens and grants, and minimisation of propagation delay. This directly supports coherent propagation of authentication-state revocation across dependent authorization state; VIGIL additionally covers refresh, recovery, replacement and active-task continuity beyond OAuth."
         }
       ],
       "aliases": []
@@ -144,6 +152,16 @@
           "historical_class_id": "VIGIL-FC-000033",
           "historical_class_code": "REENTRY_ACCESS_STATE_AMBIGUITY"
         }
+      ],
+      "external_references": [
+        {
+          "title": "RFC 9110: HTTP Semantics",
+          "publisher": "Internet Engineering Task Force",
+          "date": "2022-06-06",
+          "url": "https://www.rfc-editor.org/rfc/rfc9110.html",
+          "reference_role": "standards-evidence",
+          "evidence_note": "RFC 9110 distinguishes materially different access conditions, including missing or invalid authentication credentials (401) and authenticated but insufficiently authorised access (403), and specifies different response semantics. This supports preserving distinct access states rather than collapsing them into one misleading condition; VIGIL's class extends beyond HTTP and requires governance-relevant loss of interpretability or handling."
+        }
       ]
     },
     {
@@ -188,7 +206,19 @@
           "note": "A missing fallback can coincide with treating non-verification as decision authority, but the access and authority mechanisms remain distinct."
         }
       ],
-      "aliases": []
+      "aliases": [],
+      "external_references": [
+        {
+          "title": "IEEE 7014-2024, clause 4.3.2.2 (post-p)",
+          "publisher": "IEEE Standards Association",
+          "date": "2024-06-28",
+          "url": "https://standards.ieee.org/ieee/7014/7648/",
+          "reference_role": "standards-evidence",
+          "evidence_note": "EXTREQ-49B20F7E12B92A09 recommends, where possible, not unduly withholding service solely because effective informed consent is not provided. This gives a narrow independent example of avoiding single-verification dependency lockout; VIGIL's class extends beyond consent and requires an otherwise valid or unresolved access state plus absent proportionate fallback.",
+          "requirement_id": "EXTREQ-49B20F7E12B92A09",
+          "clause_or_control": "4.3.2.2 (post-p)"
+        }
+      ]
     }
   ]
 }

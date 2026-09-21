@@ -2,7 +2,7 @@
   "schema_version": "0.2.0",
   "standard": {
     "name": "VIGIL Failure Taxonomy",
-    "version": "0.6.4",
+    "version": "0.6.5",
     "publication_date": "2026-09-21",
     "status": "beta",
     "description": "Beta portable classification standard for recurring AI governance failure mechanisms."
@@ -169,6 +169,26 @@
           },
           "provenance_note": "Canonical occurrence facts, source wording, clause analysis, uncertainty and review provenance remain governed by VIGIL-INC-000129. This taxonomy entry records only the successful-invariant relationship to Source-Authority Confusion."
         }
+      ],
+      "external_references": [
+        {
+          "title": "LLM01:2025 Prompt Injection",
+          "publisher": "OWASP Foundation",
+          "date": "2024-11-19",
+          "url": "https://genai.owasp.org/llmrisk/llm01-prompt-injection/",
+          "reference_role": "authoritative-guidance",
+          "evidence_note": "OWASP identifies direct and indirect prompt injection as external or user-controlled content altering model behaviour, including through retrieved files, webpages and multimodal material, and recommends segregating untrusted content from operative prompts. This directly supports the source-versus-instruction boundary of this class; it does not establish that every instruction-like input is unauthorised, that every behavioural change is a VIGIL failure, or that any particular occurrence satisfied the class conditions."
+        },
+        {
+          "title": "IEEE 7014.1-2026, clause 6.25.3(a-c)",
+          "publisher": "IEEE Standards Association",
+          "date": "2026-06-12",
+          "url": "https://standards.ieee.org/ieee/7014.1/11609/",
+          "reference_role": "standards-evidence",
+          "evidence_note": "EXTREQ-4C18B5A910ECD719 requires avoiding unwarranted authority, communicating uncertainty and encouraging consultation of authoritative sources. This independently supports source discrimination and authority calibration; the clause is limited to partner-based GPAI and does not itself define instruction obedience or VIGIL's full source-authority boundary.",
+          "requirement_id": "EXTREQ-4C18B5A910ECD719",
+          "clause_or_control": "6.25.3(a-c)"
+        }
       ]
     },
     {
@@ -228,6 +248,26 @@
           "historical_class_id": "VIGIL-FC-000007",
           "historical_class_code": "TECHNICAL_REACHABILITY_AS_AUTHORITY"
         }
+      ],
+      "external_references": [
+        {
+          "title": "LLM06:2025 Excessive Agency",
+          "publisher": "OWASP Foundation",
+          "date": "2024-11-19",
+          "url": "https://genai.owasp.org/llmrisk/llm062025-excessive-agency/",
+          "reference_role": "authoritative-guidance",
+          "evidence_note": "OWASP distinguishes an agent's available functionality and downstream permissions from the minimum authority required for its intended operation, and calls for user-context execution, least privilege, approval and complete mediation. This directly supports the class boundary between technical capability and permission; it does not define every exercise of broad capability as unauthorised or establish the actor, target, scope or occurrence facts required by VIGIL."
+        },
+        {
+          "title": "IEEE 7009-2024, Annex A.3 / 7009-ASR-011",
+          "publisher": "IEEE Standards Association",
+          "date": "2024-07-05",
+          "url": "https://standards.ieee.org/ieee/7009/7096/",
+          "reference_role": "standards-evidence",
+          "evidence_note": "EXTREQ-C64032FC58E84CBA requires a means to inhibit specified function execution when no authorization to execute is available. It independently supports the distinction between technical ability and authority; IEEE 7009 is fail-safe specific and does not define every capability-authority inference covered by VIGIL.",
+          "requirement_id": "EXTREQ-C64032FC58E84CBA",
+          "clause_or_control": "Annex A.3 / 7009-ASR-011"
+        }
       ]
     },
     {
@@ -285,6 +325,16 @@
           ],
           "historical_class_id": "VIGIL-FC-000008",
           "historical_class_code": "DELEGATION_SCOPE_EXPANSION"
+        }
+      ],
+      "external_references": [
+        {
+          "title": "RFC 8707: Resource Indicators for OAuth 2.0",
+          "publisher": "Internet Engineering Task Force",
+          "date": "2020-02-01",
+          "url": "https://www.rfc-editor.org/rfc/rfc8707.html",
+          "reference_role": "standards-evidence",
+          "evidence_note": "RFC 8707 requires OAuth authorization to distinguish what access is requested from where that access may be exercised, and supports audience-restricting tokens to specific protected resources and scopes. This directly supports target- and scope-bound authority and revalidation when those dimensions change; it does not govern non-OAuth delegations, establish that a particular scope change lacked authority, or define the full VIGIL transposition mechanism."
         }
       ]
     },
@@ -347,6 +397,26 @@
           },
           "provenance_note": "Canonical occurrence facts, source wording, clause analysis, uncertainty and review provenance remain governed by VIGIL-INC-000129. This taxonomy entry records only the successful-invariant relationship to Transformation-Mediated Authority Laundering."
         }
+      ],
+      "external_references": [
+        {
+          "title": "NIST AI 600-1, control MP-2.1-002",
+          "publisher": "National Institute of Standards and Technology",
+          "date": "2024-07-26",
+          "url": "https://doi.org/10.6028/NIST.AI.600-1",
+          "reference_role": "authoritative-guidance",
+          "evidence_note": "EXTREQ-4694042F7F82C217 calls for test and evaluation of original sources and transformations in GAI data and content flows. This supports preservation of source authority through representation changes; it does not itself define authority laundering or establish that a transformation increased authority.",
+          "requirement_id": "EXTREQ-4694042F7F82C217",
+          "clause_or_control": "MP-2.1-002"
+        },
+        {
+          "title": "PROV-DM: The PROV Data Model",
+          "publisher": "World Wide Web Consortium",
+          "date": "2013-04-30",
+          "url": "https://www.w3.org/TR/prov-dm/",
+          "reference_role": "standards-evidence",
+          "evidence_note": "W3C PROV-DM models derivation, generation, use, attribution and agent responsibility across changes in representation. This independently supports preserving source provenance and authority-relevant lineage through transformation; PROV-DM does not itself assign instruction authority or define when a transformed representation has been improperly promoted into a governance or execution role."
+        }
       ]
     },
     {
@@ -395,6 +465,14 @@
           "url": "https://cwe.mitre.org/data/definitions/15.html",
           "reference_role": "authoritative-guidance",
           "evidence_note": "CWE-15 identifies the security weakness in allowing user-provided or otherwise untrusted data to control sensitive system or configuration values that govern behaviour or manage resources. This directly supports the trust-boundary and data-to-control-state components of the mechanism; it does not define VIGIL's control-plane abstraction, address model or retrieved content specifically, or establish the class's full fresh-authority-validation requirement."
+        },
+        {
+          "title": "Not what you've signed up for: Compromising Real-World LLM-Integrated Applications with Indirect Prompt Injection",
+          "publisher": "arXiv",
+          "date": "2023-02-23",
+          "url": "https://arxiv.org/abs/2302.12173",
+          "reference_role": "research-evidence",
+          "evidence_note": "Greshake et al. show that LLM-integrated applications can blur the line between external data and operative instructions, allowing retrieved content to manipulate application functionality and API use. This independently supports the data-to-control boundary underlying this class; VIGIL's control-plane state promotion mechanism is narrower and requires an actual conversion into governing state."
         }
       ],
       "aliases": [
@@ -493,6 +571,26 @@
       ],
       "aliases": [
         "VIGIL.FF.AUTHORITY_BOUNDARY.TRANSITIVE_AUTHORITY_PROPAGATION"
+      ],
+      "external_references": [
+        {
+          "title": "Model AI Governance Framework for Agentic AI, section 2.1.2",
+          "publisher": "Infocomm Media Development Authority of Singapore",
+          "date": "2026-05-20",
+          "url": "https://www.imda.gov.sg/resources/press-releases-factsheets-and-speeches/factsheets/2026/updated-model-ai-governance-framework-for-agentic-ai",
+          "reference_role": "authoritative-guidance",
+          "evidence_note": "EXTREQ-123BD645B0C468E1 recommends making agent permissions non-transferable and session- or task-bound. This directly supports re-establishing authority at downstream actor or task boundaries; the framework does not define VIGIL's full actor–intermediary–downstream propagation mechanism.",
+          "requirement_id": "EXTREQ-123BD645B0C468E1",
+          "clause_or_control": "2.1.2"
+        },
+        {
+          "title": "RFC 8693: OAuth 2.0 Token Exchange",
+          "publisher": "Internet Engineering Task Force",
+          "date": "2020-01-01",
+          "url": "https://www.rfc-editor.org/rfc/rfc8693.html",
+          "reference_role": "standards-evidence",
+          "evidence_note": "RFC 8693 distinguishes subject and actor identities, treats delegation as scoped rights granted to a separate actor, and represents delegation chains explicitly. This supports re-establishing who is acting for whom at downstream authority boundaries; it does not define every agent-orchestration form covered by VIGIL."
+        }
       ]
     },
     {
@@ -543,7 +641,27 @@
           "note": "An evidence-to-authority conversion may coincide with omission of a separately required verification step, but neither mechanism establishes the other."
         }
       ],
-      "aliases": []
+      "aliases": [],
+      "external_references": [
+        {
+          "title": "NIST AI RMF 1.0, MEASURE 2.5",
+          "publisher": "National Institute of Standards and Technology",
+          "date": "2023-01-26",
+          "url": "https://doi.org/10.6028/NIST.AI.100-1",
+          "reference_role": "authoritative-guidance",
+          "evidence_note": "EXTREQ-2E1D2C63187C14E8 requires demonstrating validity and reliability and documenting limits on generalization. This supports treating predictive or classificatory outputs as bounded evidence rather than self-authorising decisions; it does not define the independent authority condition required by VIGIL.",
+          "requirement_id": "EXTREQ-2E1D2C63187C14E8",
+          "clause_or_control": "MEASURE 2.5"
+        },
+        {
+          "title": "Automation bias: a systematic review of frequency, effect mediators, and mitigators",
+          "publisher": "Journal of the American Medical Informatics Association",
+          "date": "2011-06-16",
+          "url": "https://doi.org/10.1136/amiajnl-2011-000089",
+          "reference_role": "research-evidence",
+          "evidence_note": "Goddard, Roudsari and Wyatt review systematic over-reliance on automated decision support and failures to recognise automation-induced errors. This independently supports the risk of elevating an evidentiary system output into consequential decision authority; VIGIL separately requires that the evidentiary state be treated as sufficient authority beyond what it validly establishes."
+        }
+      ]
     },
     {
       "class_id": "VIGIL-FC-000053",
@@ -598,7 +716,19 @@
           "note": "A separately defined safeguard may also fail to activate, but that control mechanism requires independent evidence."
         }
       ],
-      "aliases": []
+      "aliases": [],
+      "external_references": [
+        {
+          "title": "IEEE 7014-2024, clause 4.3.5.2(d)",
+          "publisher": "IEEE Standards Association",
+          "date": "2024-06-28",
+          "url": "https://standards.ieee.org/ieee/7014/7648/",
+          "reference_role": "standards-evidence",
+          "evidence_note": "EXTREQ-7033840016B023BC prohibits applying affective modelling to identifiable subject data without prior informed consent. This provides an independent consent-sensitive identity-use boundary; its scope is affective modelling and it does not define all likeness, voice or identity-bound synthesis covered by VIGIL.",
+          "requirement_id": "EXTREQ-7033840016B023BC",
+          "clause_or_control": "4.3.5.2(d)"
+        }
+      ]
     },
     {
       "class_id": "VIGIL-FC-000054",
@@ -649,6 +779,18 @@
       "aliases": [
         "multi-party consent transposition",
         "non-user participant authority transposition"
+      ],
+      "external_references": [
+        {
+          "title": "IEEE 7014-2024, clause 4.3.2.2(i-k)",
+          "publisher": "IEEE Standards Association",
+          "date": "2024-06-28",
+          "url": "https://standards.ieee.org/ieee/7014/7648/",
+          "reference_role": "standards-evidence",
+          "evidence_note": "EXTREQ-29B0D0B21F7E80D4 prohibits transferring or sharing affective data beyond consent and conditioning use on third-party data access. It independently supports participant-specific authority boundaries in multi-party processing; the standard's affective-data scope is narrower than VIGIL's multi-party capture class.",
+          "requirement_id": "EXTREQ-29B0D0B21F7E80D4",
+          "clause_or_control": "4.3.2.2(i-k)"
+        }
       ]
     },
     {
@@ -763,6 +905,24 @@
       "aliases": [
         "third-party state authority transposition",
         "cross-principal authority transposition"
+      ],
+      "external_references": [
+        {
+          "title": "API1:2023 Broken Object Level Authorization",
+          "publisher": "OWASP Foundation",
+          "date": "2023-07-03",
+          "url": "https://api-security.owasp.org/editions/2023/en/0xa1-broken-object-level-authorization/",
+          "reference_role": "authoritative-guidance",
+          "evidence_note": "OWASP requires object-level checks that bind the logged-in user's permission to the requested action and requested object, and documents unauthorised modification or deletion of another user's objects when that check is absent. This directly supports the independently governed cross-principal state boundary; it does not define every shared-resource dispute as a failure or establish VIGIL's broader entitlement, consent, contractual and procedural branches."
+        },
+        {
+          "title": "The Confused Deputy (or why capabilities might have been invented)",
+          "publisher": "ACM SIGOPS Operating Systems Review",
+          "date": "1988-10-01",
+          "url": "https://doi.org/10.1145/54289.871709",
+          "reference_role": "research-evidence",
+          "evidence_note": "Hardy's confused-deputy analysis establishes the classic risk of one actor's authority being misapplied across principals when ambient authority is not correctly bound to the requesting principal. This supports VIGIL's cross-principal authority boundary; the VIGIL class additionally requires a materially governed state associated with another identifiable principal."
+        }
       ]
     },
     {
@@ -823,6 +983,16 @@
         "task-objective authority dominance",
         "objective utility displacement of verified authority",
         "instrumental objective success through unauthorised exploitation"
+      ],
+      "external_references": [
+        {
+          "title": "Optimal Policies Tend To Seek Power",
+          "publisher": "Advances in Neural Information Processing Systems (NeurIPS)",
+          "date": "2021-12-01",
+          "url": "https://proceedings.neurips.cc/paper/2021/file/c26820b8a4c1b3c2aa868d6d57e14a79-Paper.pdf",
+          "reference_role": "research-evidence",
+          "evidence_note": "Turner et al. formally show that in broad classes of environments optimal policies can have instrumental incentives to preserve options and seek power in service of reward. This independently supports objective-driven selection of instrumentally useful pathways; it does not establish VIGIL's separate requirement that an applicable authority or ethical constraint be displaced by objective utility."
+        }
       ]
     },
     {

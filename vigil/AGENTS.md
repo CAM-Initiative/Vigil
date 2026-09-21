@@ -48,6 +48,16 @@ The public indexes are navigation projections, not duplicate record stores:
 - Canonical Incident diagnosis, evidence, severity analysis, taxonomy objects and provenance remain only in `vigil/records/incidents/`.
 - `VIGIL.Registry.Index.json` is a registry manifest. It must not duplicate the Incident `records` array.
 
+## Test maintenance contract
+
+Permanent tests must protect stable repository contracts: schema and validator behaviour, generic cross-record integrity, publication/build invariants, or an explicitly immutable ID/allocation contract.
+
+Do not add permanent CI tests whose only purpose is to prove a completed migration, current branch state, exact current class count, one work package's source composition, or one Incident's adjudication. Preserve those acceptance results in the relevant audit record or run them as bounded one-off validation during the work package.
+
+When testing validator behaviour, prefer an isolated fixture or direct rule mutation. Do not make a unit test depend on the unrelated validity of a live canonical Incident unless the test is intentionally a corpus regression. A single record defect should not cause unrelated rule tests to fail.
+
+Dataset-specific snapshot tests are appropriate only where the underlying value is explicitly immutable (for example, stable allocated IDs). Avoid duplicating the same invariant through hard-coded counts, version strings and incident-specific assertions.
+
 ## Required workflow
 
 Before editing an Incident, inspect `vigil/VIGIL.Schema.json`, the Incident template, the validator and comparable Incident records. Preserve stable IDs and substantive evidence.

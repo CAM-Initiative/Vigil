@@ -222,32 +222,24 @@ class IncidentRuleTests(unittest.TestCase):
         self.assertTrue(any("unique within the Incident" in error for error in errors), errors)
 
     def test_external_assessment_does_not_become_harm_evidence(self):
-        record = json.loads(
-            (VIGIL / "records" / "incidents" / "VIGIL-INC-000129.json").read_text(encoding="utf-8")
-        )
+        record = copy.deepcopy(self.record)
+        record["external_assessments"] = [{
+            "assessment_id": "VIGIL-EXTASSESS-999994",
+            "assessor": "Example evaluator",
+            "assessment_title": "Example analysis",
+            "assessment_date": "2026-09-19",
+            "assessment_url": "https://example.invalid/assessment",
+            "assessment_type": "technical-analysis",
+            "relationship_to_incident": "same-occurrence",
+            "assessment_summary": "The evaluator reaches a bounded analytical conclusion.",
+            "reviewed_on": "2026-09-19",
+        }]
         harm_before = copy.deepcopy(record["harm_impact_assessment"])
         taxonomy_before = copy.deepcopy(record["taxonomy_classification"])
         errors, _ = VALIDATOR.validate_record(Path(record["id"] + ".json"), record)
         self.assertEqual(errors, [])
         self.assertEqual(record["harm_impact_assessment"], harm_before)
         self.assertEqual(record["taxonomy_classification"], taxonomy_before)
-
-    def test_harm_methodology_corpus_migration_to_1_0_1_is_complete(self):
-        incidents = sorted((VIGIL / "records" / "incidents").glob("*.json"))
-        self.assertTrue(incidents)
-        for incident_path in incidents:
-            record = json.loads(incident_path.read_text(encoding="utf-8"))
-            self.assertEqual(
-                record["harm_impact_assessment"]["methodology_version"],
-                "1.0.1",
-                incident_path.name,
-            )
-            errors, _ = VALIDATOR.validate_record(Path(record["id"] + ".json"), record)
-            self.assertEqual(errors, [], incident_path.name)
-
-        historical = VIGIL / "methodologies" / "VIGIL.HarmImpactMatrix.v1.0.0.json"
-        self.assertTrue(historical.exists())
-
     def test_harm_matrix_preserves_digital_asset_effective_destruction_note(self):
         matrix = json.loads(
             (VIGIL / "methodologies" / "VIGIL.HarmImpactMatrix.v1.0.1.json").read_text(encoding="utf-8")

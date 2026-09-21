@@ -53,21 +53,6 @@ class IncidentTaxonomyClassificationTests(unittest.TestCase):
         self.assertEqual(block["primary_classification"]["class_id"], "VIGIL-FC-000073")
         self.assertEqual(block["primary_classification"]["classification_role"], "successful-invariant")
         self.assertEqual(block["secondary_classifications"], [])
-
-    def test_inc129_preserves_ambiguous_boundary_mappings(self):
-        record = next(item for item in self.incidents if item["id"] == "VIGIL-INC-000129")
-        block = record["taxonomy_classification"]
-        mappings = {
-            item["class_id"]: item["classification_role"]
-            for item in [block["primary_classification"], *block["secondary_classifications"]]
-        }
-        self.assertEqual(mappings["VIGIL-FC-000075"], "failure-occurrence")
-        self.assertEqual(mappings["VIGIL-FC-000074"], "successful-invariant")
-        self.assertEqual(mappings["VIGIL-FC-000001"], "successful-invariant")
-        self.assertEqual(mappings["VIGIL-FC-000005"], "successful-invariant")
-        self.assertEqual(mappings["VIGIL-FC-000076"], "ambiguous-boundary")
-        self.assertEqual(mappings["VIGIL-FC-000077"], "ambiguous-boundary")
-
     def test_generated_examples_preserve_primary_secondary_roles(self):
         subprocess.run(["python", str(VIGIL / "scripts" / "build-vigil-public-records.py")], cwd=ROOT, check=True)
         projection = json.loads(

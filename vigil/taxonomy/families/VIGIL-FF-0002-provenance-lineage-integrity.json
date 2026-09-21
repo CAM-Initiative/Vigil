@@ -2,7 +2,7 @@
   "schema_version": "0.2.0",
   "standard": {
     "name": "VIGIL Failure Taxonomy",
-    "version": "0.6.4",
+    "version": "0.6.5",
     "publication_date": "2026-09-21",
     "status": "beta",
     "description": "Beta portable classification standard for recurring AI governance failure mechanisms."
@@ -13,7 +13,7 @@
     "name": "Provenance & Lineage Integrity Failures",
     "status": "beta",
     "abstraction": "family",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "plain_english": "The system loses, changes, or misstates where information, work, or state came from, who contributed it, what happened to it, or what it properly applies to.",
     "definition": "Failures in which source origin, authorship, contribution, transformation history, cross-context lineage, continuity state, or target-object binding is lost, distorted, collapsed, or represented with greater certainty than the available provenance supports.",
     "invariant": "Origin, authorship, transformation, lineage, continuity and application target remain distinguishable and traceable wherever their loss could materially change meaning, authority, attribution, reuse, identity, or downstream reliance.",
@@ -38,7 +38,8 @@
       "VIGIL-FC-000013",
       "VIGIL-FC-000014",
       "VIGIL-FC-000015",
-      "VIGIL-FC-000047"
+      "VIGIL-FC-000047",
+      "VIGIL-FC-000080"
     ],
     "allowed_class_codes": [
       "MISATTRIBUTION",
@@ -47,7 +48,8 @@
       "LINEAGE_COLLAPSE",
       "FALSE_CONTINUITY",
       "TARGET_BINDING_FAILURE",
-      "UNSUPPORTED_MECHANISM_ATTRIBUTION"
+      "UNSUPPORTED_MECHANISM_ATTRIBUTION",
+      "HUMAN_CONTRIBUTION_RECOGNITION_ERASURE"
     ]
   },
   "classes": [
@@ -268,6 +270,16 @@
       ],
       "aliases": [
         "VIGIL.FF.PROVENANCE_LINEAGE.FALSE_CONTINUITY"
+      ],
+      "external_references": [
+        {
+          "title": "PROV-DM: The PROV Data Model",
+          "publisher": "World Wide Web Consortium",
+          "date": "2013-04-30",
+          "url": "https://www.w3.org/TR/prov-dm/",
+          "reference_role": "standards-evidence",
+          "evidence_note": "W3C PROV models entities, activities, agents, generation, derivation and attribution so continuity claims can be grounded in explicit lineage relations. This supports distinguishing evidenced continuity from mere similarity or reconstruction; PROV-DM does not define VIGIL's discontinuity threshold or false-continuity representation test."
+        }
       ]
     },
     {
@@ -305,6 +317,16 @@
       ],
       "aliases": [
         "VIGIL.FF.PROVENANCE_LINEAGE.TARGET_BINDING_FAILURE"
+      ],
+      "external_references": [
+        {
+          "title": "RFC 8707: Resource Indicators for OAuth 2.0",
+          "publisher": "Internet Engineering Task Force",
+          "date": "2020-02-01",
+          "url": "https://www.rfc-editor.org/rfc/rfc8707.html",
+          "reference_role": "standards-evidence",
+          "evidence_note": "RFC 8707 defines an explicit protected-resource identifier and audience restriction so an access artefact remains bound to the service or resource for which it was issued. This strongly supports explicit target binding and rejection of an invalid or changed target; it is an OAuth authorization standard and does not establish VIGIL's broader provenance failure for files, people, records, tasks or evidentiary artefacts."
+        }
       ]
     },
     {
@@ -355,7 +377,120 @@
           "note": "Execution-state non-disclosure can deprive a user of the actual state while an unsupported narration supplies a separate false causal account."
         }
       ],
-      "aliases": []
+      "aliases": [],
+      "external_references": [
+        {
+          "title": "Four Principles of Explainable Artificial Intelligence",
+          "publisher": "National Institute of Standards and Technology",
+          "date": "2021-09-29",
+          "url": "https://doi.org/10.6028/NIST.IR.8312",
+          "reference_role": "authoritative-guidance",
+          "evidence_note": "NIST's Explanation Accuracy principle requires an explanation to correctly reflect the process that generated an output, while its Knowledge Limits principle requires systems to identify conditions in which answers are outside design scope or insufficiently reliable. This directly supports evidence-proportionate mechanism attribution and preservation of epistemic limits; it does not determine causation, intent, or the applicable mechanism in any particular VIGIL occurrence."
+        },
+        {
+          "title": "IEEE 7001-2021, section 5.2.2 principle",
+          "publisher": "IEEE Standards Association",
+          "date": "2022-03-04",
+          "url": "https://standards.ieee.org/ieee/7001/6929/",
+          "reference_role": "standards-evidence",
+          "evidence_note": "EXTREQ-80B95118891500CC requires investigators to be able to trace the system processes that led to an incident over the relevant time period. This supports evidence-bounded mechanism attribution; it does not prohibit every causal hypothesis or define VIGIL's materiality threshold.",
+          "requirement_id": "EXTREQ-80B95118891500CC",
+          "clause_or_control": "5.2.2 principle"
+        }
+      ]
+    },
+    {
+      "class_id": "VIGIL-FC-000080",
+      "class_code": "HUMAN_CONTRIBUTION_RECOGNITION_ERASURE",
+      "family_id": "VIGIL-FF-0002",
+      "name": "Human Contribution Recognition Erasure",
+      "status": "beta",
+      "abstraction": "class",
+      "plain_english": "AI-mediated transformation, aggregation, automation or propagation materially uses human creative or cognitive contribution but makes that contribution disappear from the resulting account of how the output or value was produced.",
+      "definition": "A failure in which materially human creative, cognitive, research, editorial, governance, technical or other contribution-bearing work is incorporated into, transformed by, aggregated through, automated within, scaled through, or propagated by an AI-mediated process and the resulting artefact, representation, workflow or value chain removes, abstracts, flattens or obscures the human contribution role to the point that the contribution is no longer proportionately recognisable, even where technical source lineage may remain recoverable.",
+      "invariant": "Where materially human contribution shapes an output, process, model, decision, artefact or value-bearing result, the material human contribution role must remain proportionately recognisable through AI-mediated transformation, aggregation, automation, scaling and propagation. Tooling or synthetic mediation must not make materially human contribution appear self-originating, purely system-derived or contribution-neutral. Technical recoverability of a source does not by itself preserve contribution recognition where the material human role has been erased.",
+      "recognition": {
+        "required_conditions": [
+          "A human contributor has made a material creative, cognitive, research, editorial, governance, technical or other contribution-bearing contribution.",
+          "An AI-mediated transformation, aggregation, automation, scaling or propagation process materially incorporates, depends on, or carries forward that contribution.",
+          "The resulting artefact, representation, workflow or value chain removes, abstracts, flattens or obscures the human contribution role so that the material contribution is no longer proportionately recognisable in the downstream account of how the result was produced.",
+          "The loss of contribution recognition is material to attribution, provenance-associated value, participation or credit, governance traceability, interpretive legitimacy, or another context in which the human contribution role reasonably matters.",
+          "The recognition loss is not adequately explained by an independently justified privacy, confidentiality, anonymisation, employment, agency, work-for-hire or equivalent arrangement that intentionally governs how the contribution is represented."
+        ]
+      },
+      "exclusions": [
+        "Minor influence, ordinary inspiration or incidental human interaction that does not materially contribute to the downstream result.",
+        "The wrong person, system or source is affirmatively identified as the author or source; assess VIGIL-FC-000010 Authorship or Source Misattribution where incorrect attribution is the decisive mechanism.",
+        "Material antecedent sources or transformations cannot be reconstructed at all; assess VIGIL-FC-000011 Untraceable Synthesis where loss of traceable antecedents is sufficient, while this class may co-occur only if human contribution-role erasure is independently evidenced.",
+        "The primary mechanism is disproportionate capture of contributor-originated value through privileged access or structural advantage; assess VIGIL-FC-000067 Privileged-Access Appropriation, which may co-occur where recognition erasure also occurs.",
+        "Proportionate compression, summarisation or aggregation that preserves the material human contribution relationship at the level reasonably required by the context.",
+        "Authorised anonymisation, privacy protection, confidentiality, employment, agency, work-for-hire or comparable arrangements that legitimately govern public naming or contribution representation without falsely treating material human contribution as absent."
+      ],
+      "examples": [
+        "A research or design workflow uses a person's substantive analysis and corrections to produce an AI-mediated final artefact, while the published or institutional representation presents the result as purely system-generated even though internal lineage still shows the human contribution.",
+        "A platform aggregates materially human governance, research or creative contributions into automated downstream outputs and progressively strips the contributor role from the propagated representation until the value-bearing result appears contribution-neutral or self-originating."
+      ],
+      "relationships": [
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000010",
+          "note": "Authorship or Source Misattribution requires an incorrect attribution claim. Human Contribution Recognition Erasure can occur without naming an incorrect author where materially human contribution is instead abstracted, flattened or made invisible."
+        },
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000011",
+          "note": "Untraceable Synthesis concerns inability to reconstruct material antecedents or transformations. Human Contribution Recognition Erasure can occur even when technical lineage remains recoverable but the human contribution role is no longer recognised in the downstream representation or value chain."
+        },
+        {
+          "type": "can_cooccur_with",
+          "target_id": "VIGIL-FC-000067",
+          "note": "Privileged-Access Appropriation concerns disproportionate value capture through structural advantage. Contribution-recognition erasure may accompany such capture but does not require privileged access, commercialisation or disproportionate appropriation."
+        },
+        {
+          "type": "can_cooccur_with",
+          "target_id": "VIGIL-FC-000013",
+          "note": "Transformation Lineage Collapse may remove the history of how an artefact was produced, while Human Contribution Recognition Erasure specifically concerns loss of the materially human contribution role through that or another mediation process."
+        }
+      ],
+      "aliases": [
+        "human contribution erasure",
+        "creative contribution recognition loss",
+        "cognitive contribution abstraction"
+      ],
+      "invariant_exemplars": [
+        {
+          "exemplar_type": "ambiguous-boundary",
+          "exemplar_status": "admitted",
+          "linked_incident_id": "VIGIL-INC-000129",
+          "title": "Astra-family persona compaction expressed a human-contribution recognition invariant",
+          "evidence_basis": "The persona block included a clause concerning the art of human culture. VIGIL interprets the bounded semantic direction as combining a human-dignity floor with the narrower requirement that materially human creative and cognitive contribution remain recognisable through synthetic mediation.",
+          "invariant_demonstrated": "AI mediation, automation or transformation must not erase the material human contribution role from a result merely because the contribution is carried through system-generated or tool-mediated form.",
+          "success_basis": "The wording materially expresses the FC-000080 invariant, but INC-000129 does not contain an occurrence in which human contribution was actually incorporated and then erased from a downstream artefact or value chain. The relationship is therefore an admitted ambiguous boundary rather than failure evidence or a successful-invariant holding.",
+          "boundary_conditions": [
+            "Human dignity remains a protected governance floor and is not itself converted into a standalone VIGIL failure class.",
+            "No human creative or cognitive contribution is evidenced as being erased from a downstream artefact or value chain in the bounded occurrence.",
+            "The clause must not be interpreted as establishing human superiority, system inferiority or a categorical prohibition on synthetic contribution.",
+            "The over-sharp protective wording contributes separately to VIGIL-FC-000075 Pragmatic Constraint Rendering Failure."
+          ],
+          "governance_placement": {
+            "framework": "CAELESTIS",
+            "instrument_id": "CAM-BS2026-AEON-008-PLATINUM",
+            "section_or_control": "Annex G §1 Purpose; §2.1.1 Tool-Mediated Contribution and Execution Boundary",
+            "placement_note": "Non-normative placement for recognition of materially human creative and cognitive contribution through automation, synthetic mediation, scaling and propagation."
+          },
+          "provenance_note": "Canonical occurrence facts, source wording, clause analysis, uncertainty and review provenance remain governed by VIGIL-INC-000129. This taxonomy entry reciprocally records the canonical ambiguous-boundary relationship to Human Contribution Recognition Erasure."
+        }
+      ],
+      "external_references": [
+        {
+          "title": "PROV-DM: The PROV Data Model",
+          "publisher": "World Wide Web Consortium",
+          "date": "2013-04-30",
+          "url": "https://www.w3.org/TR/prov-dm/",
+          "reference_role": "standards-evidence",
+          "evidence_note": "W3C PROV explicitly represents attribution between entities and agents and supports preserving responsibility for contributions. This independently supports contributor recognisability and provenance; it does not define VIGIL's threshold for AI-mediated human-contribution recognition erasure."
+        }
+      ]
     }
   ]
 }

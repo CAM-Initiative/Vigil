@@ -2,7 +2,7 @@
   "schema_version": "0.2.0",
   "standard": {
     "name": "VIGIL Failure Taxonomy",
-    "version": "0.6.4",
+    "version": "0.6.5",
     "publication_date": "2026-09-21",
     "status": "beta",
     "description": "Beta portable classification standard for recurring AI governance failure mechanisms."
@@ -86,6 +86,14 @@
           "url": "https://learn.microsoft.com/en-us/agent-framework/workflows/checkpoints",
           "reference_role": "authoritative-guidance",
           "evidence_note": "Microsoft's Agent Framework requires rehydrated workflows to preserve the topology and executor identities of the workflow that created the checkpoint, and states that changing those identities makes the rebuilt workflow incompatible with the checkpoint. This directly supports the need for a stable continuation anchor binding persisted state to the correct resumable workflow; VIGIL generalises that structural requirement beyond this framework."
+        },
+        {
+          "title": "A survey of rollback-recovery protocols in message-passing systems",
+          "publisher": "ACM Computing Surveys",
+          "date": "2002-09-01",
+          "url": "https://doi.org/10.1145/568522.568525",
+          "reference_role": "research-evidence",
+          "evidence_note": "Elnozahy et al. survey checkpoint-based and log-based rollback-recovery protocols in which consistent checkpoints anchor system restoration. This independently supports the need for trustworthy continuity anchors; VIGIL's class applies the principle to governed work-state continuity rather than only distributed-system fault recovery."
         }
       ],
       "aliases": []
@@ -123,7 +131,25 @@
           "note": "Work-state persistence concerns survival of task material; authentication-state continuity concerns coherence of access state."
         }
       ],
-      "aliases": []
+      "aliases": [],
+      "external_references": [
+        {
+          "title": "Microsoft Agent Framework Workflows - Checkpoints",
+          "publisher": "Microsoft",
+          "date": "2026-08-10",
+          "url": "https://learn.microsoft.com/en-us/agent-framework/workflows/checkpoints",
+          "reference_role": "authoritative-guidance",
+          "evidence_note": "Microsoft documents checkpoints as saved workflow state used to avoid lost progress and resume work after failure, pause or migration, including durable cross-process storage for production workflows. This directly supports preservation of resumable material work state across interruption; it is framework-specific guidance and does not establish that every transient intermediate state must be persisted or define VIGIL's materiality and represented-continuation thresholds."
+        },
+        {
+          "title": "A survey of rollback-recovery protocols in message-passing systems",
+          "publisher": "ACM Computing Surveys",
+          "date": "2002-09-01",
+          "url": "https://doi.org/10.1145/568522.568525",
+          "reference_role": "research-evidence",
+          "evidence_note": "Rollback-recovery literature treats preserved checkpoints and logs as the basis for restoring material system state after failure. This independently supports persistence of work-relevant state across interruption; VIGIL separately requires that materially required work state be lost or detached in a governance-relevant workflow."
+        }
+      ]
     },
     {
       "class_id": "VIGIL-FC-000036",
@@ -213,7 +239,17 @@
           "note": "Turn-state coordination concerns synchronisation of the live shared conversational floor; work-state persistence concerns survival of task material across interruption or transition."
         }
       ],
-      "aliases": []
+      "aliases": [],
+      "external_references": [
+        {
+          "title": "Conversational AI for multi-agent communication in Natural Language",
+          "publisher": "AI Communications",
+          "date": "2022-09-15",
+          "url": "https://doi.org/10.3233/AIC-220147",
+          "reference_role": "research-evidence",
+          "evidence_note": "Lemon identifies dialogue-state tracking, live issues, participant state and turn-taking as core coordination problems in multi-agent conversational systems. This independently supports explicit conversational turn-state coordination; VIGIL's class is narrower and requires synthetic or mediated turn state to become materially miscoordinated."
+        }
+      ]
     },
     {
       "class_id": "VIGIL-FC-000078",
@@ -272,16 +308,6 @@
           "type": "can_cooccur_with",
           "target_id": "VIGIL-FC-000070",
           "note": "Safe-exit persistence concerns continued pursuit after no feasible and admissible completion pathway remains. Defective-state carryforward can occur while valid alternatives still exist, but both mechanisms may coexist when inherited defective state also prevents an appropriate safe exit."
-        }
-      ],
-      "external_references": [
-        {
-          "title": "Self-generated prompt injections in compaction summaries",
-          "publisher": "OpenAI",
-          "date": "2026-09-16",
-          "url": "https://alignment.openai.com/misalignment-reports/self-generated-prompt-injections-in-compaction-summaries/",
-          "reference_role": "contextual-evidence",
-          "evidence_note": "OpenAI reports compaction-handoff examples in which newly generated continuation instructions were either rejected or adopted by a successor context. The contrast supports treating validity at the continuation boundary as distinct from mere persistence or restoration fidelity; VIGIL independently defines the bounded failure mechanism and recognition conditions."
         }
       ],
       "aliases": [
@@ -350,6 +376,16 @@
             "placement_note": "Non-normative placement for continuity handoffs in which inherited state remains challengeable and materially defective state requires revalidation, repair, qualification, quarantine, rollback or reset before governing continued execution."
           },
           "provenance_note": "Canonical facts and uncertainty remain governed by VIGIL-INC-000138; this records only the ambiguous continuity-validity boundary."
+        }
+      ],
+      "external_references": [
+        {
+          "title": "Memory poisoning attacks on retrieval-augmented Large Language Model agents via deceptive semantic reasoning",
+          "publisher": "Engineering Applications of Artificial Intelligence",
+          "date": "2026-03-01",
+          "url": "https://doi.org/10.1016/j.engappai.2026.113968",
+          "reference_role": "research-evidence",
+          "evidence_note": "This peer-reviewed study demonstrates that poisoned long-term memory can persist in memory-augmented LLM agents and influence later retrieval and reasoning. It independently supports the risk of defective state being carried forward into later operation; VIGIL additionally requires a continuity transition in which defective inherited state is treated as sufficient basis without proportionate revalidation, repair, quarantine or reset."
         }
       ]
     }

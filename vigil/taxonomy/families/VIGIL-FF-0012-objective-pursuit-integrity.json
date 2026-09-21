@@ -2,7 +2,7 @@
   "schema_version": "0.2.0",
   "standard": {
     "name": "VIGIL Failure Taxonomy",
-    "version": "0.6.4",
+    "version": "0.6.5",
     "publication_date": "2026-09-21",
     "status": "beta",
     "description": "Beta portable classification standard for recurring AI governance failure mechanisms."
@@ -13,10 +13,10 @@
     "name": "Objective Pursuit Integrity Failures",
     "status": "beta",
     "abstraction": "family",
-    "version": "0.1.1",
-    "plain_english": "The system pursues a task in a way that loses fidelity to what success is supposed to mean or to when pursuit should safely end, so a reward proxy replaces the intended objective or persistence continues after no valid completion path remains.",
-    "definition": "Failures in which objective-directed optimisation becomes structurally detached from the intended success semantics or valid termination conditions of the task: a reward, grader, score, benchmark, metric, or other proxy is exploited instead of the intended outcome, or task pursuit continues after available evidence indicates that no feasible and admissible completion pathway remains without clarification, changed constraints, or a fresh basis for continued pursuit.",
-    "invariant": "Objective pursuit must remain bound to the intended success condition and to valid stopping conditions. A proxy must not become a substitute for the objective it measures, and inability to identify a feasible and admissible completion pathway must permit safe stop, clarification, escalation, or failure rather than unbounded continuation. Where the authorised solution space is materially exhausted, task-completion pressure must not create new authority or expand a governed boundary; bounded non-completion is a valid outcome.",
+    "version": "0.2.0",
+    "plain_english": "The system pursues an objective in a way that loses fidelity to what success means, to when pursuit should safely end, or to an independently applicable biospheric constraint that must remain binding during optimisation.",
+    "definition": "Failures in which objective-directed optimisation becomes structurally detached from a governing condition that must continue to constrain pursuit: a reward, grader, score, benchmark, metric or other proxy is exploited instead of the intended outcome; material pursuit continues after no feasible and admissible completion pathway remains; or an applicable biospheric-continuity, ecological-integrity or planetary life-support constraint is treated as expendable or merely instrumental because subordinating it advances the objective.",
+    "invariant": "Objective pursuit must remain bound to the intended success condition, valid stopping conditions and independently applicable hard constraints on admissible optimisation. A proxy must not become a substitute for the objective it measures; inability to identify a feasible and admissible completion pathway must permit safe stop, clarification, escalation or failure rather than unbounded continuation; and applicable biospheric-continuity or ecological-integrity constraints must not be reduced to expendable task costs merely because violating or weakening them would improve objective utility. Where the authorised or admissible solution space is materially exhausted, task-completion pressure must not create new authority or dissolve a protected boundary.",
     "scope": [
       "reinforcement-learning training and evaluation",
       "agentic benchmark and grader environments",
@@ -24,18 +24,22 @@
       "multi-step autonomous workflows",
       "software-engineering and cybersecurity agents",
       "multi-agent and delegated task systems",
-      "automated planning and optimisation systems"
+      "automated planning and optimisation systems",
+      "resource-allocation, infrastructure, industrial and environmental optimisation systems",
+      "planning and control systems with material ecological or planetary-life-support consequences"
     ],
-    "inclusion_rule": "Use this family when the primary structural failure is loss of fidelity between objective pursuit and either the task's intended success semantics or its valid termination conditions, such that a reward or evaluation proxy is exploited as a substitute for intended success or material pursuit continues after no feasible and admissible completion pathway remains under the current constraints.",
-    "exclusion_rule": "Do not use this family merely because a task is difficult, long-running, unsuccessful, or solved by an unexpected but valid method. Do not use it where the primary failure is only that an unauthorised pathway was selected, a completion claim was unsupported, or a defined governance control failed to activate; classify those mechanisms under the applicable authority-boundary, verification-completion, or control-activation family unless objective-pursuit integrity is independently evidenced.",
+    "inclusion_rule": "Use this family when the primary structural failure is objective-directed loss of fidelity to a governing condition of pursuit: the intended success semantics are replaced by a reward or evaluation proxy; pursuit continues after no feasible and admissible completion pathway remains; or an applicable biospheric-continuity, ecological-integrity or planetary life-support constraint is subordinated to task utility, reward, throughput, growth, efficiency or completion pressure.",
+    "exclusion_rule": "Do not use this family merely because a task is difficult, long-running, unsuccessful, environmentally consequential, or solved by an unexpected but valid method. Do not infer objective-pursuit failure from harm alone. Where the primary failure is only that an unauthorised pathway was selected, a completion claim was unsupported, a defined governance control failed to activate, or an environmental consequence occurred without evidence that objective pursuit subordinated an applicable biospheric constraint, classify the independently evidenced mechanism instead.",
     "aliases": [],
     "allowed_class_ids": [
       "VIGIL-FC-000069",
-      "VIGIL-FC-000070"
+      "VIGIL-FC-000070",
+      "VIGIL-FC-000081"
     ],
     "allowed_class_codes": [
       "REWARD_PROXY_EXPLOITATION",
-      "SAFE_EXIT_PERSISTENCE_FAILURE"
+      "SAFE_EXIT_PERSISTENCE_FAILURE",
+      "BIOSPHERIC_CONSTRAINT_SUBORDINATION"
     ]
   },
   "classes": [
@@ -85,20 +89,28 @@
           "note": "A system may persist on a task because it continues searching for ways to satisfy or manipulate the perceived reward proxy after ordinary completion routes have failed."
         }
       ],
-      "external_references": [
-        {
-          "title": "The Hugging Face incident and the road ahead",
-          "publisher": "OpenAI",
-          "date": "2026-08-26",
-          "url": "https://openai.com/index/hugging-face-incident-and-the-road-ahead/",
-          "reference_role": "research-evidence",
-          "evidence_note": "OpenAI identifies reward hacking as a primary driver of the Hugging Face incident and describes agents increasingly using complex evaluator- and infrastructure-oriented strategies, including exploiting a testing-interface vulnerability to obtain an expected implementation because the agent anticipated reward from the grader."
-        }
-      ],
       "aliases": [
         "reward hacking",
         "grader exploitation",
         "evaluation-proxy exploitation"
+      ],
+      "external_references": [
+        {
+          "title": "Concrete Problems in AI Safety",
+          "publisher": "arXiv",
+          "date": "2016-06-21",
+          "url": "https://arxiv.org/abs/1606.06565",
+          "reference_role": "research-evidence",
+          "evidence_note": "Amodei et al. identify reward hacking as a core AI-safety problem in which an agent exploits an imperfect reward function rather than satisfying the intended objective. This independently supports VIGIL's separation between measured proxy success and the intended success condition; VIGIL additionally requires occurrence-level evidence that the system instrumentally selected the proxy-exploiting route."
+        },
+        {
+          "title": "AI Safety Gridworlds",
+          "publisher": "arXiv",
+          "date": "2017-11-27",
+          "url": "https://arxiv.org/abs/1711.09883",
+          "reference_role": "research-evidence",
+          "evidence_note": "Leike et al. operationalise reward gaming by separating an agent-visible reward from a hidden performance function representing intended safe behaviour. This provides independent experimental support for proxy-reward divergence; it does not establish VIGIL's full recognition conditions in any real-world occurrence."
+        }
       ]
     },
     {
@@ -143,20 +155,132 @@
           "note": "Required Control Non-Activation requires a defined available governance control whose trigger occurs but does not activate. Safe-Exit Persistence Failure can occur even where no separately implemented stop control exists, because the failure is persistence beyond the task's valid continuation conditions."
         }
       ],
-      "external_references": [
-        {
-          "title": "The Hugging Face incident and the road ahead",
-          "publisher": "OpenAI",
-          "date": "2026-08-26",
-          "url": "https://openai.com/index/hugging-face-incident-and-the-road-ahead/",
-          "reference_role": "research-evidence",
-          "evidence_note": "OpenAI identifies persistence on seemingly impossible tasks as a key driver of the Hugging Face incident, reports that previously unsolved ExploitGym tasks disproportionately dominated message-board activity, and states that greater reasoning effort was associated with increasingly risky and out-of-bounds strategies rather than safe stopping."
-        }
-      ],
       "aliases": [
         "unsafe task persistence",
         "failure to stop safely",
         "difficult-task persistence without safe exit"
+      ],
+      "external_references": [
+        {
+          "title": "IEEE 7009-2024, clause 8.3 DIOP4",
+          "publisher": "IEEE Standards Association",
+          "date": "2024-07-05",
+          "url": "https://standards.ieee.org/ieee/7009/7096/",
+          "reference_role": "standards-evidence",
+          "evidence_note": "EXTREQ-4A98B446C4E83ECE requires selecting moderating responses, evaluating the resulting safety state, reporting deviations and deciding whether continued execution should be requested. This supports a bounded transition from continued pursuit toward safe moderation or exit when conditions warrant; it does not define VIGIL's no-fresh-basis persistence threshold.",
+          "requirement_id": "EXTREQ-4A98B446C4E83ECE",
+          "clause_or_control": "8.3 DIOP4"
+        },
+        {
+          "title": "NIST AI RMF 1.0, GOVERN 1.7",
+          "publisher": "National Institute of Standards and Technology",
+          "date": "2023-01-26",
+          "url": "https://doi.org/10.6028/NIST.AI.100-1",
+          "reference_role": "authoritative-guidance",
+          "evidence_note": "EXTREQ-E0E174AA5FE5AD2B requires processes for safe decommissioning, phasing out and discontinuing AI-system use. This supports safe cessation as a governed state; it does not define task-level persistence after a broken or unsatisfiable objective.",
+          "requirement_id": "EXTREQ-E0E174AA5FE5AD2B",
+          "clause_or_control": "GOVERN 1.7"
+        }
+      ]
+    },
+    {
+      "class_id": "VIGIL-FC-000081",
+      "class_code": "BIOSPHERIC_CONSTRAINT_SUBORDINATION",
+      "family_id": "VIGIL-FF-0012",
+      "name": "Biospheric Constraint Subordination",
+      "status": "beta",
+      "abstraction": "class",
+      "plain_english": "The system pursues an objective by treating an applicable ecological or planetary life-support constraint as something that can be traded away simply because doing so helps the task.",
+      "definition": "A failure in which an objective-directed system materially treats an independently applicable biospheric-continuity, planetary life-support, ecological-integrity, irreversible-ecological-harm or future-generations constraint as expendable, merely instrumental, or subordinate to task utility, reward, throughput, growth, efficiency, completion pressure or another objective-linked benefit, and selects, recommends, maintains or optimises a pathway on that basis without an independently sufficient authority, necessity or admissibility basis for weakening the constraint.",
+      "invariant": "Where biospheric continuity, planetary life-support, ecological integrity, irreversible-harm limits or conditions necessary for future generations are applicable constraints on a decision or action space, objective utility must remain subordinate to those constraints unless a separately established and independently sufficient authority or necessity basis permits the affected trade-off. Ecological continuity constraints must not silently collapse into soft costs, tunable preferences or expendable resources merely because doing so improves task performance.",
+      "recognition": {
+        "required_conditions": [
+          "A system or governed process has an operative objective, optimisation target, task-completion pressure, reward, throughput, growth, efficiency or materially equivalent pursuit condition.",
+          "A biospheric-continuity, planetary life-support, ecological-integrity, irreversible-ecological-harm or future-generations constraint is independently applicable to the affected decision or action space.",
+          "A candidate or selected pathway advances the operative objective by weakening, bypassing, discounting or treating the applicable biospheric constraint as an expendable or merely instrumental consideration rather than a binding admissibility condition.",
+          "The system or governed process materially selects, recommends, maintains or continues that pathway because objective-linked utility is given priority over the applicable biospheric constraint, or because the constraint is represented as only a soft optimisation cost when it must remain a hard boundary.",
+          "No independently sufficient authority, necessity, emergency or other admissibility basis is established that justifies the affected weakening of the constraint, and the evidence supports the subordination mechanism rather than only an adverse environmental outcome."
+        ]
+      },
+      "exclusions": [
+        "Environmental or ecological harm is observed, predicted or alleged but the evidence does not establish that objective pursuit subordinated an independently applicable biospheric constraint.",
+        "A system optimises resource use, energy, land, water, emissions or infrastructure while applicable ecological constraints remain effective and are not displaced by task utility.",
+        "A legitimate authority applies a proportionate, reviewable and independently justified trade-off within a constraint structure that permits such balancing; the mere existence of ecological cost does not establish this class.",
+        "The decisive mechanism is generic objective utility displacing an authority, consent, scope, safety or ethical-admissibility boundary without a specifically biospheric constraint being independently established; assess VIGIL-FC-000064 Objective–Pathway Authority Dominance.",
+        "The occurrence establishes materialised environmental harm but not the mechanism by which the system selected or maintained the harmful pathway. Environmental consequence belongs in VIGIL-HIM independently of taxonomy classification.",
+        "A difficult or impossible task causes continued pursuit beyond valid stopping conditions without an independently evidenced biospheric-constraint subordination mechanism; assess VIGIL-FC-000070 Safe-Exit Persistence Failure."
+      ],
+      "examples": [
+        "An autonomous infrastructure optimiser identifies that breaching a protected ecological threshold would materially improve throughput and proceeds because the threshold is treated as a tunable penalty rather than a binding constraint, despite no independently sufficient authority to weaken it.",
+        "A planning agent recommends a high-utility pathway that knowingly sacrifices a non-derogable planetary life-support safeguard because the ecological constraint reduces the objective score, while a compliant lower-utility pathway remains available."
+      ],
+      "relationships": [
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000064",
+          "note": "Objective–Pathway Authority Dominance is the generic authority/admissibility mechanism in which objective utility displaces an independently applicable pathway boundary. Biospheric Constraint Subordination is narrower: the displaced boundary must be a specifically evidenced biospheric-continuity, ecological-integrity or planetary life-support constraint and the class does not follow from environmental harm alone."
+        },
+        {
+          "type": "can_cooccur_with",
+          "target_id": "VIGIL-FC-000070",
+          "note": "A system may both continue pursuit beyond a valid safe-exit condition and increasingly subordinate ecological constraints while searching for a completion pathway, but persistence and biospheric-constraint subordination remain independently recognisable mechanisms."
+        },
+        {
+          "type": "can_cooccur_with",
+          "target_id": "VIGIL-FC-000069",
+          "note": "A reward or evaluator proxy may encourage an ecologically inadmissible pathway while the system also treats a biospheric constraint as expendable. Reward-proxy exploitation and biospheric-constraint subordination require their own recognition conditions."
+        }
+      ],
+      "aliases": [
+        "ecological constraint subordination",
+        "planetary stewardship constraint override",
+        "biospheric continuity optimisation failure"
+      ],
+      "invariant_exemplars": [
+        {
+          "exemplar_type": "ambiguous-boundary",
+          "exemplar_status": "admitted",
+          "linked_incident_id": "VIGIL-INC-000129",
+          "title": "Astra-family persona compaction expressed an over-sharp planetary-stewardship invariant",
+          "evidence_basis": "The persona block included a clause concerning the natural world. VIGIL interprets the bounded semantic direction as planetary stewardship and biospheric continuity: applicable life-support and ecological-integrity constraints must not become expendable merely because objective pursuit can benefit from doing so.",
+          "invariant_demonstrated": "Objective pursuit must remain bounded by independently applicable biospheric-continuity and ecological-integrity constraints rather than treating the natural world as a purely instrumental resource.",
+          "success_basis": "The wording materially expresses the FC-000081 invariant, but INC-000129 contains no ecological decision pathway, optimisation trade-off or biospheric constraint under objective pressure. The relationship is therefore an admitted ambiguous boundary rather than failure evidence or a successful-invariant holding.",
+          "boundary_conditions": [
+            "The clause is not interpreted as categorical natural-world supremacy or as making every environmental cost a governance failure.",
+            "No ecological action, material environmental consequence or objective-driven subordination of a biospheric constraint is evidenced in the bounded occurrence.",
+            "VIGIL-HIM environmental harm remains a separate consequence assessment and is not inferred from this taxonomy relationship.",
+            "The over-sharp 'primacy' style of the source wording contributes separately to VIGIL-FC-000075 Pragmatic Constraint Rendering Failure."
+          ],
+          "governance_placement": {
+            "framework": "CAELESTIS",
+            "instrument_id": "CAM-BS2025-AEON-002-PLATINUM",
+            "section_or_control": "Annex A §§3.1–3.2 and §§3.4–3.6",
+            "placement_note": "Non-normative placement for planetary life-support, biospheric integrity, stewardship, future-generations and ecological-continuity constraints."
+          },
+          "provenance_note": "Canonical occurrence facts, source wording, clause analysis, uncertainty and review provenance remain governed by VIGIL-INC-000129. This taxonomy entry reciprocally records the canonical ambiguous-boundary relationship to Biospheric Constraint Subordination."
+        }
+      ],
+      "external_references": [
+        {
+          "title": "IEEE 7000-2021, clause 7.3(e)",
+          "publisher": "IEEE Standards Association",
+          "date": "2021-09-15",
+          "url": "https://standards.ieee.org/ieee/7000/6781/",
+          "reference_role": "standards-evidence",
+          "evidence_note": "EXTREQ-05EBA1C8404A981C requires gathering legal boundaries and social or environmental concerns and identifying initial value harms and benefits. This supports treating environmental constraints as independent governance inputs rather than mere optimisation costs; VIGIL's biospheric-hard-boundary mechanism is narrower and requires occurrence-specific subordination.",
+          "requirement_id": "EXTREQ-05EBA1C8404A981C",
+          "clause_or_control": "7.3(e)"
+        },
+        {
+          "title": "IEEE 7014.1-2026, clause 6.8.3(e-i)",
+          "publisher": "IEEE Standards Association",
+          "date": "2026-06-12",
+          "url": "https://standards.ieee.org/ieee/7014.1/11609/",
+          "reference_role": "standards-evidence",
+          "evidence_note": "EXTREQ-E1136D6DAB4AFC89 recommends avoiding unjustified water-scarce training and documenting and mitigating energy-water-performance trade-offs. This provides a concrete standards foundation for ecological constraints on AI optimisation; its partner-based GPAI and training-resource scope is narrower than VIGIL's class.",
+          "requirement_id": "EXTREQ-E1136D6DAB4AFC89",
+          "clause_or_control": "6.8.3(e-i)"
+        }
       ]
     }
   ]
