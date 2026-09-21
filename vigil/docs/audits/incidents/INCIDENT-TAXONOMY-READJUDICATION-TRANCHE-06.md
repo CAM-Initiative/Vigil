@@ -6,7 +6,7 @@
 - Tranche: 6 of 7
 - Frozen campaign population: 52 Incidents unclassified at campaign start
 - Records reviewed in this tranche: 8
-- Taxonomy: **VIGIL Failure Taxonomy 0.6.6**
+- Taxonomy: **VIGIL Failure Taxonomy 0.6.5**
 - Publication date: **2026-09-21**
 - Release state: **beta**
 - Active selectable classes: **72**
@@ -19,14 +19,14 @@
 
 | Incident | Prior status/version | Current status/version | Primary | Secondary | Key rejected / not independently established candidates | Outcome |
 | --- | --- | --- | --- | --- | --- | --- |
-| `VIGIL-INC-000135` | unclassified / 0.5.1 | unclassified / 0.6.6 | — | — | FC-000031: no auth-state transition failure; FC-000009: no downstream automatic authority transfer established; FC-000003: valid authority scope/transposition not reconstructable | Retained unclassified. Authorized bug-bounty assistance and OpenAI access consequences remain material without a sufficiently evidenced reusable mechanism. |
-| `VIGIL-INC-000139` | unclassified / 0.6.0 | unclassified / 0.6.6 | — | — | FC-000002: no agent-side capability-as-permission inference; FC-000064: no independently applicable constraint displaced by an authorised system objective; FC-000003: no original valid authority scope | Retained unclassified. Regulator-reported malicious agent use is not converted into model-side intent or authority failure. |
-| `VIGIL-INC-000140` | unclassified / 0.6.0 | **classified / 0.6.6** | **FC-000062 Epistemic Reliance Miscalibration** | — | FC-000016: no separately evidenced required verification step | Newly classified. Incorrect generated fare-policy information was presented as fit for consequential customer financial reliance. |
-| `VIGIL-INC-000141` | unclassified / 0.6.0 | **classified / 0.6.6** | **FC-000027 Audit-Evidence Integrity Loss** | — | FC-000022: event not wholly uncaptured; FC-000024: event ultimately reconstructable | Newly classified. Mapping is limited to Cruise's mandatory crash-report omission; no vehicle-control mechanism is inferred. |
-| `VIGIL-INC-000142` | unclassified / 0.6.0 | **classified / 0.6.6** | **FC-000062 Epistemic Reliance Miscalibration** | **FC-000016 Required Verification Omission** | — | Newly classified. Generated nonexistent legal authorities were used in a court filing, and verification was expressly omitted. |
-| `VIGIL-INC-000143` | unclassified / 0.6.0 | **classified / 0.6.6** | **FC-000062 Epistemic Reliance Miscalibration** | — | FC-000046: prediction not shown to become independent decision authority in place of a separately required authority basis | Newly classified at medium confidence. Predictive home-price estimates were used in a capital-intensive acquisition workflow at insufficient assurance for the scale of reliance. |
-| `VIGIL-INC-000144` | unclassified / 0.6.0 | unclassified / 0.6.6 | — | — | FC-000003: internal authority/scope state unknown; FC-000064: no objective-driven displacement of a constraint; FC-000070: no persistence beyond a warranted safe exit | Retained unclassified. Vehicle movement after a police stop does not itself establish an authority or safe-exit failure. |
-| `VIGIL-INC-000145` | classified / 0.6.6 targeted cluster review | **classified / 0.6.6 full review** | **FC-000079 AI-Mediated Deceptive Economic Solicitation** | — | FC-000052: human scam objective/tactic, not AI-system objective; FC-000053: generator-side identity/consent authority state unknown | Existing FC-000079 classification retained after full current-taxonomy review. |
+| `VIGIL-INC-000135` | unclassified / 0.5.1 | unclassified / 0.6.5 | — | — | FC-000031: no auth-state transition failure; FC-000009: no downstream automatic authority transfer established; FC-000003: valid authority scope/transposition not reconstructable | Retained unclassified. Authorized bug-bounty assistance and OpenAI access consequences remain material without a sufficiently evidenced reusable mechanism. |
+| `VIGIL-INC-000139` | unclassified / 0.6.0 | unclassified / 0.6.5 | — | — | FC-000002: no agent-side capability-as-permission inference; FC-000064: no independently applicable constraint displaced by an authorised system objective; FC-000003: no original valid authority scope | Retained unclassified. Regulator-reported malicious agent use is not converted into model-side intent or authority failure. |
+| `VIGIL-INC-000140` | unclassified / 0.6.0 | **classified / 0.6.5** | **FC-000062 Epistemic Reliance Miscalibration** | — | FC-000016: no separately evidenced required verification step | Newly classified. Incorrect generated fare-policy information was presented as fit for consequential customer financial reliance. |
+| `VIGIL-INC-000141` | unclassified / 0.6.0 | **classified / 0.6.5** | **FC-000027 Audit-Evidence Integrity Loss** | — | FC-000022: event not wholly uncaptured; FC-000024: event ultimately reconstructable | Newly classified. Mapping is limited to Cruise's mandatory crash-report omission; no vehicle-control mechanism is inferred. |
+| `VIGIL-INC-000142` | unclassified / 0.6.0 | **classified / 0.6.5** | **FC-000062 Epistemic Reliance Miscalibration** | **FC-000016 Required Verification Omission** | — | Newly classified. Generated nonexistent legal authorities were used in a court filing, and verification was expressly omitted. |
+| `VIGIL-INC-000143` | unclassified / 0.6.0 | **classified / 0.6.5** | **FC-000062 Epistemic Reliance Miscalibration** | — | FC-000046: prediction not shown to become independent decision authority in place of a separately required authority basis | Newly classified at medium confidence. Predictive home-price estimates were used in a capital-intensive acquisition workflow at insufficient assurance for the scale of reliance. |
+| `VIGIL-INC-000144` | unclassified / 0.6.0 | unclassified / 0.6.5 | — | — | FC-000003: internal authority/scope state unknown; FC-000064: no objective-driven displacement of a constraint; FC-000070: no persistence beyond a warranted safe exit | Retained unclassified. Vehicle movement after a police stop does not itself establish an authority or safe-exit failure. |
+| `VIGIL-INC-000145` | classified / 0.6.5 targeted cluster review | **classified / 0.6.5 full review** | **FC-000079 AI-Mediated Deceptive Economic Solicitation** | — | FC-000052: human scam objective/tactic, not AI-system objective; FC-000053: generator-side identity/consent authority state unknown | Existing FC-000079 classification retained after full current-taxonomy review. |
 
 ## Newly classified occurrences
 
@@ -78,7 +78,7 @@ FC-000046 is not used because the record does not establish that the predictive 
 
 INC-000145 had already moved to FC-000079 during the cross-cutting AI-mediated economic-scam reconciliation.
 
-Tranche 6 performed the scheduled full 0.6.6 review and confirms:
+Tranche 6 performed the scheduled full 0.6.5 review and confirms:
 
 - **FC-000079 remains primary**
 - no secondary classifications are added
@@ -115,7 +115,7 @@ No structured assessment was added for:
 - INC-000143 uses FC-000062 rather than FC-000046 because the operative problem is forecast assurance and uncertainty calibration in a reliance-bearing capital workflow, not a prediction being converted into independent authority.
 - INC-000141 is intentionally split: FC-000027 covers only degradation of the regulatory reporting artefact. Physical injury and autonomous-vehicle behaviour do not supply the taxonomy mechanism for that mapping.
 - INC-000135 and INC-000139 remain consistent with the campaign's malicious-use boundary: beneficial authorised exploitation or hostile agent use does not itself reveal an internal authority failure.
-- INC-000145 confirms the economic-scam correction introduced in taxonomy 0.6.6 and does not restore the previously rejected FC-000052/FC-000053 mappings.
+- INC-000145 confirms the economic-scam correction introduced in taxonomy 0.6.5 and does not restore the previously rejected FC-000052/FC-000053 mappings.
 
 ## Tranche totals
 
