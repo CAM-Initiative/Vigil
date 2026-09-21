@@ -36,6 +36,12 @@ jobs:
         with:
           python-version: "3.x"
 
+      - name: Validate taxonomy reference cleanup before Incident suite
+        run: |
+          python vigil/taxonomy/validate_taxonomy.py
+          python vigil/tests/test_failure_taxonomy.py
+          python vigil/tests/test_taxonomy_classification.py
+
       - name: Refresh Incident-only public VIGIL indexes for validation
         run: python vigil/scripts/build-vigil-public-records.py
 
