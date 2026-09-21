@@ -6,7 +6,7 @@
 - Tranche: 7 of 7
 - Frozen campaign population: 52 Incidents unclassified at campaign start
 - Records reviewed in this tranche: 4
-- Taxonomy: **VIGIL Failure Taxonomy 0.6.6**
+- Taxonomy: **VIGIL Failure Taxonomy 0.6.5**
 - Publication date: **2026-09-21**
 - Release state: **beta**
 - Active selectable classes: **72**
@@ -19,16 +19,16 @@
 
 | Incident | Prior status/version | Current status/version | Primary | Secondary | Key rejected / not independently established candidates | Outcome |
 | --- | --- | --- | --- | --- | --- | --- |
-| `VIGIL-INC-000146` | classified / 0.6.6 targeted cluster review | **classified / 0.6.6 full review** | **FC-000079 AI-Mediated Deceptive Economic Solicitation** | — | FC-000052: human scam objective/tactic rather than AI-system objective; FC-000053: generator-side identity/consent authority state unknown | Existing FC-000079 classification retained after scheduled full review. |
-| `VIGIL-INC-000147` | unclassified / 0.6.0 | unclassified / 0.6.6 | — | — | FC-000070: safe-exit trigger/no-feasible-path state not evidenced; FC-000003: no authority transposition; FC-000064: no objective-driven displacement of passenger-control constraint | Retained unclassified. Possible taxonomy gap for passenger-controlled termination/egress/override in embodied autonomous transport. |
-| `VIGIL-INC-000148` | unclassified / 0.6.0 | **classified / 0.6.6** | **FC-000062 Epistemic Reliance Miscalibration** | **FC-000015 Target-Object Binding Failure** | FC-000016: no separately defined omitted verification step; FC-000018: no internal substitute completion criterion preserved | Newly classified. Repeated speech-to-order interpretation errors were propagated into live transactions; cross-lane confusion independently supports target-binding failure. |
-| `VIGIL-INC-000149` | unclassified / 0.6.0 | unclassified / 0.6.6 | — | — | FC-000019: no prior verified state/post-verification mutation trace; FC-000020: no stale verification reuse; FC-000040: no lost control state; FC-000038: no defined safeguard/trigger/non-activation sequence | Retained unclassified. Post-update behavioral regression is established only at outcome level. |
+| `VIGIL-INC-000146` | classified / 0.6.5 targeted cluster review | **classified / 0.6.5 full review** | **FC-000079 AI-Mediated Deceptive Economic Solicitation** | — | FC-000052: human scam objective/tactic rather than AI-system objective; FC-000053: generator-side identity/consent authority state unknown | Existing FC-000079 classification retained after scheduled full review. |
+| `VIGIL-INC-000147` | unclassified / 0.6.0 | unclassified / 0.6.5 | — | — | FC-000070: safe-exit trigger/no-feasible-path state not evidenced; FC-000003: no authority transposition; FC-000064: no objective-driven displacement of passenger-control constraint | Retained unclassified. Possible taxonomy gap for passenger-controlled termination/egress/override in embodied autonomous transport. |
+| `VIGIL-INC-000148` | unclassified / 0.6.0 | **classified / 0.6.5** | **FC-000062 Epistemic Reliance Miscalibration** | **FC-000015 Target-Object Binding Failure** | FC-000016: no separately defined omitted verification step; FC-000018: no internal substitute completion criterion preserved | Newly classified. Repeated speech-to-order interpretation errors were propagated into live transactions; cross-lane confusion independently supports target-binding failure. |
+| `VIGIL-INC-000149` | unclassified / 0.6.0 | unclassified / 0.6.5 | — | — | FC-000019: no prior verified state/post-verification mutation trace; FC-000020: no stale verification reuse; FC-000040: no lost control state; FC-000038: no defined safeguard/trigger/non-activation sequence | Retained unclassified. Post-update behavioral regression is established only at outcome level. |
 
 ## Full review of previously reclassified VIGIL-INC-000146
 
 INC-000146 had already moved to FC-000079 during the cross-cutting AI-mediated economic-scam reconciliation.
 
-Tranche 7 performed the scheduled full 0.6.6 review and confirms:
+Tranche 7 performed the scheduled full 0.6.5 review and confirms:
 
 - **FC-000079 remains primary**
 - no secondary classifications are added
@@ -142,6 +142,6 @@ No new structured `external_assessments` were admitted in Tranche 7.
 
 All **52 records in the frozen unclassified-campaign population have now received their scheduled deterministic current-taxonomy review**.
 
-The campaign was executed in seven tranches against the current taxonomy available at each tranche, with later full reviews using taxonomy 0.6.6 after that release became current. Cross-cutting taxonomy corrections, including the AI-mediated deceptive economic-solicitation reconciliation, did not substitute for the scheduled full review of affected frozen records.
+The campaign was executed in seven tranches against the current taxonomy available at each tranche, with later full reviews using taxonomy 0.6.5 after that release became current. Cross-cutting taxonomy corrections, including the AI-mediated deceptive economic-solicitation reconciliation, did not substitute for the scheduled full review of affected frozen records.
 
 This audit closes the frozen seven-tranche re-adjudication campaign. Remaining `unclassified`, `provisionally-classified` and `classification-disputed` records remain valid corpus states and must not be treated as campaign incompleteness.
