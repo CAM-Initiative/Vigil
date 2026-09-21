@@ -53,6 +53,27 @@ The taxonomy migration assurance ledger at `vigil/taxonomy/migration/Caelestis.L
 
 Structured Incident severity is derived through `harm_impact_assessment` and VIGIL-HIM. Overall severity is the highest supported assessed materialised-harm band; dimensions are never averaged or summed. `unreported` is not S1, and SU applies when no dimension can be defensibly banded. Severity remains independent of source metadata, diagnostic provenance, taxonomy classification and workflow priority.
 
+## Clause-level taxonomy assessment and publication
+
+Clause-level assessment follows this editorial sequence:
+
+> Source wording → recovered principle → occurrence-specific taxonomy assessment → formal structured classification.
+
+For `vigil_assessment.source_clause_analysis.clauses[]`, `source_anchor` or `source_paraphrase` preserves the source-language basis, `recovered_invariant_interpretation` states the general principle recovered from that language, and each `taxonomy_relationships[].rationale` applies the referenced taxonomy boundary to the bounded occurrence. The rationale is the canonical public content of the **Taxonomy assessment** column; it is not a generated relationship label, internal crosswalk note or substitute for the separate structured classification.
+
+Incident authors and reviewers must:
+
+- ground each rationale in the source clause, canonical class definition, invariant, recognition conditions and preserved occurrence evidence;
+- describe the occurrence-specific mechanism or boundary in natural language;
+- keep class IDs, class and family names, relationship roles and mapping state in their structured fields rather than using them as the public explanation;
+- avoid generic workflow phrases such as “supports the mapping,” “matches the finding” or “contributes to the recorded failure mechanism”;
+- preserve distinct rationales in source order when one clause has multiple relationships; and
+- state the demonstrated boundary and the missing occurrence condition for adjacent, ambiguous-boundary, exemplar or otherwise non-canonical relationships.
+
+Downstream website, document and PDF publishers must read and faithfully render the supplied `taxonomy_relationships[].rationale` values. Multiple rationales must be combined in stored order without duplication. A generated relationship-type summary may be used only as an explicit legacy fallback when no rationale is present; it must never replace supplied assessment prose. Website and PDF outputs must use the same rationale source.
+
+Publication consumers should protect this contract with generic fixtures covering a single rationale, multiple ordered rationales, mixed canonical and non-canonical relationships, and the missing-rationale fallback. Tests should validate the data contract rather than pinning the current adjudication of a live Incident.
+
 ## Generated outputs
 
 The active public outputs are:
