@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - agent/taxonomy-external-reference-reconciliation
     paths:
       - "vigil/**"
       - ".github/workflows/vigil-records.yml"
@@ -70,12 +69,6 @@ jobs:
           python vigil/scripts/validate-vigil-records.py
           python vigil/scripts/validate-vigil-public-records.py
 
-      - name: Validate taxonomy and classification mappings for reconciliation branch
-        run: |
-          python vigil/taxonomy/validate_taxonomy.py
-          python vigil/tests/test_failure_taxonomy.py
-          python vigil/tests/test_taxonomy_classification.py
-
       - name: Rebuild Incident-only public VIGIL indexes
         run: python vigil/scripts/build-vigil-public-records.py
 
@@ -109,7 +102,7 @@ jobs:
           fi
 
       - name: Notify CAM catalogue of refreshed VIGIL records
-        if: github.event_name == 'push' && github.actor != 'github-actions[bot]' && github.ref == 'refs/heads/main'
+        if: github.event_name == 'push' && github.actor != 'github-actions[bot]'
         env:
           CAM_CATALOGUE_DISPATCH_TOKEN: ${{ secrets.CAM_CATALOGUE_DISPATCH_TOKEN }}
         run: |
