@@ -98,3 +98,22 @@ Potential gap: **malicious package-distribution / software-supply-chain provenan
 ## Campaign state
 
 Tranches 1 through 4 of the frozen 52-record campaign have now been reviewed. The campaign is **not complete**. Tranche 5 and later frozen Incidents have not been re-adjudicated by this work package.
+
+
+## Post-tranche taxonomy correction — 2026-09-21
+
+The original Tranche 4 disposition for `VIGIL-INC-000077` is preserved above as historical audit evidence, but it has been **superseded** by the subsequent cross-corpus AI-mediated economic scam reconciliation.
+
+That reconciliation introduced `VIGIL-FC-000079 — AI-Mediated Deceptive Economic Solicitation` and identified a structural attribution error in the Tranche 4 mapping:
+
+- FC-000052 had attributed the human scammers' deceptive objective and tactic to a non-agentic AI system;
+- FC-000053 had inferred generator-side likeness-authority handling despite the generating system, request, consent controls and safeguard state being unknown.
+
+The current canonical disposition for INC-000077 is therefore:
+
+- **taxonomy version:** 0.6.6
+- **classification:** classified
+- **primary:** VIGIL-FC-000079
+- **secondary:** none
+
+The Tranche 4 table and corpus totals above describe the state at the time Tranche 4 closed. Current canonical records and the separate `INCIDENT-AI-MEDIATED-ECONOMIC-SCAM-RECONCILIATION.md` audit govern the superseding classification.
