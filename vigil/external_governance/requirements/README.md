@@ -15,6 +15,7 @@ The maintained current state is represented directly by:
 - `source-scope.json` — source access, extraction and review-priority state;
 - `external-requirement.schema.json` and `source-scope.schema.json` — canonical contracts;
 - `metadata-review.json` and `metadata-review.schema.json` — field-level source-fidelity review state for machine-critical requirement metadata;
+- `retirements/` — durable successor maps for explicit requirement-identity migrations;
 - `METADATA-REVIEW-METHODOLOGY.md` — review-state semantics and completion rules;
 - `source-review-assurance.json` — exact reviewed-source digests and separately evidenced human review/verification;
 - `source-coverage-manifests.json` — generated access/retrieval/analysis/completeness view.
@@ -75,6 +76,8 @@ Empty arrays in fidelity-critical metadata fields are ambiguous unless a review 
 The tracked fields are `applicable_actor`, `governed_object`, `timing_or_frequency`, `required_artefacts`, `evidence_expectation`, `verification_method`, `applicability_conditions`, and `exceptions_or_qualifications`.
 
 The ledger is deliberately conservative: legacy requirements are not automatically marked reviewed merely because fields already contain values. `validate-external-requirement-metadata.py` turns unresolved decisions into a finite review queue. The generated report includes both a requirement-level queue and a source/version summary showing, per field, whether values are populated or empty while review remains outstanding. This is the preferred basis for source-by-source remediation.
+
+Canonical records may carry optional `semantic_atomicity` and `constituent_propositions` fields where a reviewed source-fidelity extraction distinguishes an atomic proposition from a source-defined compound. These fields preserve the extraction judgment; they do not create a legal interpretation or a CAM applicability finding.
 
 Default mode reports unresolved review work but fails only on contradictory/malformed review-state contracts; `--strict` also fails while unresolved review decisions remain.
 

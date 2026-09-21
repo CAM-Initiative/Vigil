@@ -4,7 +4,7 @@ Sources listed here are not represented as fully reviewed. Metadata, abstracts, 
 
 | Source | Version | Role | Access | Extraction | Inaccessible material | Maintainer action |
 | --- | --- | --- | --- | --- | --- | --- |
-| Regulation (EU) 2024/1689 (Artificial Intelligence Act) — consolidated 27 July 2026 | `2026-07-27` | `primary-ai-governance` | `direct-public-primary` | `partial` | Full or sufficient source text | Obtain specialist legal review before treating the current operator-focused article decomposition as a complete legal corpus. |
+| Regulation (EU) 2024/1689 (Artificial Intelligence Act) — consolidated 27 July 2026 | `2026-07-27` | `primary-ai-governance` | `direct-public-primary` | `partial` | Full or sufficient source text | Continue semantic-atomicity and source-fidelity review across the remaining represented operator-facing provisions, then obtain specialist legal review before treating the current operator-focused article decomposition as a complete legal corpus. |
 | Failure modes and effects analysis (FMEA and FMECA) | `2018` | `supporting-external-authority` | `official-metadata-only` | `supporting-only` | Full or sufficient source text | No action currently required |
 | IEEE Standard Classification for Software Anomalies | `2009` | `context-or-discovery` | `official-metadata-only` | `context-only` | Full or sufficient source text | No action currently required |
 | IEEE Recommended Practice for Organizational Governance of Artificial Intelligence | `2026` | `primary-ai-governance` | `official-metadata-only` | `blocked-access` | Normative or governance-significant content beyond available source access | Obtain lawful primary-source access. |

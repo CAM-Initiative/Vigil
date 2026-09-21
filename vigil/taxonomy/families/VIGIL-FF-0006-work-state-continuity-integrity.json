@@ -13,10 +13,10 @@
     "name": "Work-State Continuity Integrity Failures",
     "status": "beta",
     "abstraction": "family",
-    "version": "0.1.2",
-    "plain_english": "Material work or shared interaction state needed to continue correctly is lost, detached, unsynchronised, or restored in an unusable state across interruption, transition, or coordinated participation.",
-    "definition": "Failures in which task state, intermediate work, dependencies, checkpoints, restoration context, or shared interaction state necessary for correct continuation are not durably anchored, preserved, recovered, synchronised, or made usable across interruption, transfer, restart, environment transition, or coordinated multi-participant interaction.",
-    "invariant": "Material work and shared interaction state necessary for correct continuation must remain durably anchored, recoverable, synchronised, and usable across interruption, transition, or coordinated participation.",
+    "version": "0.1.3",
+    "plain_english": "Material work or shared interaction state needed to continue correctly is lost, detached, unsynchronised, restored in an unusable state, or carried forward after its validity should have been challenged across interruption, transition, or coordinated participation.",
+    "definition": "Failures in which task state, intermediate work, dependencies, checkpoints, restoration context, or shared interaction state necessary for correct continuation are not durably anchored, preserved, recovered, synchronised, made usable, or kept appropriately challengeable across interruption, transfer, restart, environment transition, or coordinated multi-participant interaction. This includes continuity transitions that preserve materially defective, contradicted, stale, improperly scoped, or otherwise unreliable inherited state as the basis for continued action without proportionate revalidation, repair, qualification, quarantine, rollback, or reset.",
+    "invariant": "Material work and shared interaction state necessary for correct continuation must remain durably anchored, recoverable, synchronised, usable, and validity-bounded across interruption, transition, or coordinated participation. Continuity does not confer validity: inherited state must remain challengeable, and material evidence of defect, contradiction, changed applicability, or invalid scope must permit revalidation, repair, qualification, quarantine, rollback, or reset before that state governs continued execution.",
     "scope": [
       "long-running AI tasks",
       "agentic and multi-agent workflows",
@@ -26,20 +26,22 @@
       "workspace and environment transitions",
       "handoff and recovery operations"
     ],
-    "inclusion_rule": "Use this family when the primary structural failure is loss, detachment, non-persistence, unsynchronised coordination, or unfaithful restoration of material work or shared interaction state required to continue a task or coordinated interaction correctly.",
-    "exclusion_rule": "Do not use this family for access/session ambiguity, interpersonal or persona continuity, missing provenance of an otherwise usable artefact, or an ordinary task or conversational error where the material continuation or coordination state remains intact.",
+    "inclusion_rule": "Use this family when the primary structural failure is loss, detachment, non-persistence, unsynchronised coordination, unfaithful restoration, or continuity-mediated carryforward of materially defective or no-longer-valid work or shared interaction state required to continue a task or coordinated interaction correctly.",
+    "exclusion_rule": "Do not use this family for access/session ambiguity, interpersonal or persona continuity, missing provenance of an otherwise usable artefact, or an ordinary task or conversational error where the material continuation or coordination state remains intact and the transition does not materially contribute to persistence of a defective trajectory.",
     "aliases": [],
     "allowed_class_ids": [
       "VIGIL-FC-000034",
       "VIGIL-FC-000035",
       "VIGIL-FC-000036",
-      "VIGIL-FC-000056"
+      "VIGIL-FC-000056",
+      "VIGIL-FC-000078"
     ],
     "allowed_class_codes": [
       "CONTINUITY_ANCHOR_FAILURE",
       "WORK_STATE_PERSISTENCE_FAILURE",
       "RESTORATION_STATE_INTEGRITY_FAILURE",
-      "SYNTHETIC_CONVERSATIONAL_TURN_STATE_COORDINATION_FAILURE"
+      "SYNTHETIC_CONVERSATIONAL_TURN_STATE_COORDINATION_FAILURE",
+      "DEFECTIVE_STATE_CARRYFORWARD_FAILURE"
     ]
   },
   "classes": [
@@ -212,6 +214,79 @@
         }
       ],
       "aliases": []
+    },
+    {
+      "class_id": "VIGIL-FC-000078",
+      "class_code": "DEFECTIVE_STATE_CARRYFORWARD_FAILURE",
+      "family_id": "VIGIL-FF-0006",
+      "name": "Defective-State Carryforward Failure",
+      "status": "beta",
+      "abstraction": "class",
+      "plain_english": "A handoff or continuity mechanism carries a materially defective or no-longer-valid trajectory forward as the basis for continued action instead of making it challengeable, repairable, or resettable.",
+      "definition": "A failure in which material state is preserved or inherited across a continuity transition and is materially defective, contradicted, stale, improperly scoped, or otherwise unreliable for continued use, yet the receiving system treats that inherited state as a sufficient basis for continued reasoning or execution without proportionate revalidation, repair, qualification, quarantine, rollback, or reset. The transition must materially contribute to persistence of the defective trajectory; continuity itself must not be treated as evidence that inherited state remains valid.",
+      "invariant": "Continuity does not confer validity. State inherited across a handoff, compaction, checkpoint, restart, restoration, memory boundary, or other continuity transition must remain challengeable against current evidence, authority, scope, task requirements, and material contradictions. Where inherited state is materially defective or no longer applicable, continued execution requires proportionate revalidation, repair, qualification, quarantine, rollback, reset, or another adequate basis for relying on that state.",
+      "recognition": {
+        "required_conditions": [
+          "A handoff, compaction, checkpoint, restart, restoration, memory boundary, or other continuity transition transfers or preserves material state for subsequent reasoning or execution.",
+          "The inherited state is materially defective, contradicted, stale, improperly scoped, or otherwise unreliable for the continuation for which it is used, or material evidence available at the continuation boundary establishes a need to reassess its validity.",
+          "Correct continuation requires proportionate revalidation, repair, qualification, quarantine, rollback, reset, or another adequate basis before the inherited state governs further action.",
+          "The receiving system instead treats the inherited state or trajectory as presumptively valid and continues material reasoning or execution from it without the required validity check or corrective transition.",
+          "The continuity transition materially contributes to persistence of the defective trajectory, rather than the same error arising independently after a valid transition."
+        ]
+      },
+      "exclusions": [
+        "The restored state differs materially from the state that was actually preserved; use Restoration-State Integrity Failure where inaccurate restoration is the sufficient mechanism.",
+        "The inherited state is materially valid and applicable, and faithful continuation is appropriate.",
+        "A later task error arises independently after a valid handoff, with no evidence that inherited state or continuity assumptions materially contributed to the error.",
+        "The sole failure is that generated, retrieved, or lower-authority content becomes operative control state without authority validation; assess Control-Plane Authority Crossover unless defective-state carryforward is independently established.",
+        "The sole failure is misidentifying the authority of inherited content; assess Source-Authority Confusion unless the continuity transition also materially entrenches defective state.",
+        "An authorised objective drives selection of an inadmissible pathway without a material continuity transition contributing to persistence; assess Objective–Pathway Authority Dominance.",
+        "Available evidence establishes that no feasible and admissible completion pathway remains and the system continues pursuit rather than entering a bounded safe-exit state; assess Safe-Exit Persistence Failure unless defective inherited state independently explains the persistence."
+      ],
+      "examples": [
+        "A compaction handoff preserves a known contradiction in task requirements and the successor continues from the inherited restriction solely because it appears in the continuation state, rather than revalidating it against the governing task.",
+        "A workflow checkpoint carries forward a provisional assumption after later evidence has materially contradicted it, and the receiving agent treats the inherited assumption as settled instead of quarantining or resetting the affected trajectory."
+      ],
+      "relationships": [
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000036",
+          "note": "Restoration-State Integrity Failure concerns state restored inaccurately or unusably relative to the state required for correct continuation. Defective-State Carryforward can occur even when the inherited state is reproduced faithfully: the defect is treating that inherited trajectory as still valid without required reassessment."
+        },
+        {
+          "type": "can_cooccur_with",
+          "target_id": "VIGIL-FC-000001",
+          "note": "A receiving system may both confuse the authority of inherited material and allow defective state to persist across a continuity boundary, but source-authority error is not required for defective-state carryforward."
+        },
+        {
+          "type": "can_cooccur_with",
+          "target_id": "VIGIL-FC-000006",
+          "note": "Inherited defective material may also become operative control state. Control-plane promotion and continuity-mediated persistence remain independently testable mechanisms."
+        },
+        {
+          "type": "can_cooccur_with",
+          "target_id": "VIGIL-FC-000064",
+          "note": "Objective pressure may create or favour the defective trajectory, while defective-state carryforward separately explains why that trajectory remains sticky across a later continuity transition."
+        },
+        {
+          "type": "can_cooccur_with",
+          "target_id": "VIGIL-FC-000070",
+          "note": "Safe-exit persistence concerns continued pursuit after no feasible and admissible completion pathway remains. Defective-state carryforward can occur while valid alternatives still exist, but both mechanisms may coexist when inherited defective state also prevents an appropriate safe exit."
+        }
+      ],
+      "external_references": [
+        {
+          "title": "Self-generated prompt injections in compaction summaries",
+          "publisher": "OpenAI",
+          "date": "2026-09-16",
+          "url": "https://alignment.openai.com/misalignment-reports/self-generated-prompt-injections-in-compaction-summaries/",
+          "reference_role": "contextual-evidence",
+          "evidence_note": "OpenAI reports compaction-handoff examples in which newly generated continuation instructions were either rejected or adopted by a successor context. The contrast supports treating validity at the continuation boundary as distinct from mere persistence or restoration fidelity; VIGIL independently defines the bounded failure mechanism and recognition conditions."
+        }
+      ],
+      "aliases": [
+        "Continuity Validity Failure"
+      ]
     }
   ]
 }

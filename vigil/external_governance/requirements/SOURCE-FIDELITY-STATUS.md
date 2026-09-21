@@ -1,8 +1,8 @@
 # External Requirement Source-Fidelity Status
 
-Review date: 2026-09-10
+Review date: 2026-09-20
 
-The external-requirements corpus contains 884 canonical EXTREQ records across 81 registered source versions. Historical `extraction_status` remains preserved in `source-scope.json`; it is not, by itself, a claim of clause-level semantic fidelity.
+The external-requirements corpus contains 978 canonical EXTREQ records across 81 registered source versions. Historical `extraction_status` remains preserved in `source-scope.json`; it is not, by itself, a claim of clause-level semantic fidelity.
 
 ## Effective completion rule
 
@@ -12,7 +12,7 @@ A first-class source is effectively complete for clause-level use only when its 
 
 | Source | Historical extraction | Fidelity | Effective status | Finding |
 |---|---|---|---|---|
-| EU AI Act consolidated 27 July 2026 | partial | requires-reextraction | partial | Article-level records compress independently assessable legal propositions; staged stress-test packages remain separate. |
+| EU AI Act consolidated 27 July 2026 | partial | requires-reextraction | partial | Articles 4a and 9–15 have undergone atomic/source-defined-compound reconciliation: eight coarse identities were retired and 102 reviewed successors are canonical. Additional represented operator-facing provisions still require semantic-atomicity/source-fidelity review; this does not establish legal applicability, compliance or complete legal coverage. |
 | NIST AI RMF 1.0 | complete | assured | complete | Source-native Core subcategories retain defensible outcome-level granularity. |
 | AAM SDOS Runtime Governance 1.10 | complete | assured | complete | Twenty-four source-native controls retain identity with source-explicit metadata and related-control links. |
 | NIST AI 100-2e2025 | complete | assured | complete | Twenty-two represented taxonomy and cross-cutting security propositions retain identity with explicit document-wide qualifications and source-silent metadata decisions. |
