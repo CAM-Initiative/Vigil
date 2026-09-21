@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - agent/taxonomy-external-reference-reconciliation
     paths:
       - "vigil/**"
       - ".github/workflows/vigil-records.yml"
@@ -34,6 +35,44 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.x"
+
+      - name: Validate taxonomy bibliography reconciliation
+        run: |
+          python vigil/taxonomy/validate_taxonomy.py
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          root = Path("vigil/taxonomy")
+          index = json.loads((root / "VIGIL.FailureTaxonomy.Index.json").read_text(encoding="utf-8"))
+          strict = {"standards-evidence", "regulatory-evidence", "research-evidence"}
+          classes = []
+          for family in index["families"]:
+              doc = json.loads((root / family["file"]).read_text(encoding="utf-8"))
+              classes.extend(doc["classes"])
+
+          assert len(classes) == 74, len(classes)
+          weak = [
+              item["class_id"] for item in classes
+              if not any(ref.get("reference_role") in strict for ref in item.get("external_references", []))
+          ]
+          assert not weak, weak
+          openai = [
+              (item["class_id"], ref.get("title"))
+              for item in classes
+              for ref in item.get("external_references", [])
+              if ref.get("publisher") == "OpenAI"
+          ]
+          assert not openai, openai
+
+          by_id = {item["class_id"]: item for item in classes}
+          for class_id in ("VIGIL-FC-000069", "VIGIL-FC-000070", "VIGIL-FC-000078"):
+              assert by_id[class_id].get("external_references"), class_id
+              assert all(ref.get("publisher") != "OpenAI" for ref in by_id[class_id]["external_references"])
+
+          print("Taxonomy bibliography reconciliation passed: 74/74 classes have independent strict-source support; zero OpenAI class-level references.")
+          PY
+          python vigil/tests/test_taxonomy_classification.py
 
       - name: Refresh Incident-only public VIGIL indexes for validation
         run: python vigil/scripts/build-vigil-public-records.py
@@ -102,7 +141,7 @@ jobs:
           fi
 
       - name: Notify CAM catalogue of refreshed VIGIL records
-        if: github.event_name == 'push' && github.actor != 'github-actions[bot]'
+        if: github.event_name == 'push' && github.actor != 'github-actions[bot]' && github.ref == 'refs/heads/main'
         env:
           CAM_CATALOGUE_DISPATCH_TOKEN: ${{ secrets.CAM_CATALOGUE_DISPATCH_TOKEN }}
         run: |
