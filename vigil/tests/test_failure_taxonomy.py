@@ -605,6 +605,7 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         self.assertEqual(exemplars["VIGIL-INC-000130"]["exemplar_type"], "ambiguous-boundary")
         self.assertEqual(exemplars["VIGIL-INC-000138"]["exemplar_type"], "ambiguous-boundary")
         self.assertTrue(all(exemplars[item]["exemplar_status"] == "admitted" for item in exemplars))
+        self.assertFalse(any(ref.get("publisher") == "OpenAI" for ref in carryforward.get("external_references", [])))
 
     def test_human_contribution_recognition_erasure_is_bounded_from_lineage_and_appropriation(self):
         documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
@@ -646,8 +647,8 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         exemplar = biospheric["invariant_exemplars"][0]
         self.assertEqual(exemplar["linked_incident_id"], "VIGIL-INC-000129")
         self.assertEqual(exemplar["exemplar_type"], "ambiguous-boundary")
-        self.assertTrue(any(ref["publisher"] == "OpenAI" for ref in reward.get("external_references", [])))
-        self.assertTrue(any(ref["publisher"] == "OpenAI" for ref in persistence.get("external_references", [])))
+        self.assertFalse(any(ref.get("publisher") == "OpenAI" for ref in reward.get("external_references", [])))
+        self.assertFalse(any(ref.get("publisher") == "OpenAI" for ref in persistence.get("external_references", [])))
 
     def test_economic_influence_family_preserves_welfare_and_deceptive_solicitation_boundaries(self):
         documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
