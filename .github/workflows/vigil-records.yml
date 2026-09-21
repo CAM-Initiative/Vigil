@@ -36,6 +36,9 @@ jobs:
         with:
           python-version: "3.x"
 
+      - name: Prepare taxonomy 0.6.6 release metadata
+        run: python vigil/taxonomy/prepare_taxonomy_release.py --publication-date 2026-09-21
+
       - name: Refresh Incident-only public VIGIL indexes for validation
         run: python vigil/scripts/build-vigil-public-records.py
 
@@ -97,7 +100,9 @@ jobs:
           git add \
             vigil/VIGIL.Incidents.Index.json \
             vigil/VIGIL.Registry.Index.json \
-            vigil/taxonomy/generated/VIGIL.FailureTaxonomy.CaseFileExamples.json
+            vigil/taxonomy/generated/VIGIL.FailureTaxonomy.CaseFileExamples.json \
+            vigil/taxonomy/VIGIL.FailureTaxonomy.Index.json \
+            vigil/taxonomy/families
           if git diff --cached --quiet; then
             echo "No generated VIGIL output changes to commit."
           else
