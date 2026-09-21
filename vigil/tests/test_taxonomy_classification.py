@@ -67,6 +67,22 @@ class IncidentTaxonomyClassificationTests(unittest.TestCase):
         self.assertEqual(mappings["VIGIL-FC-000005"], "successful-invariant")
         self.assertEqual(mappings["VIGIL-FC-000076"], "ambiguous-boundary")
         self.assertEqual(mappings["VIGIL-FC-000077"], "ambiguous-boundary")
+        self.assertEqual(mappings["VIGIL-FC-000080"], "ambiguous-boundary")
+        self.assertEqual(mappings["VIGIL-FC-000081"], "ambiguous-boundary")
+        self.assertEqual(block["taxonomy_version"], "0.6.5")
+
+        clause_rows = record["vigil_assessment"]["source_clause_analysis"]["clauses"]
+        by_anchor = {item.get("source_anchor"): item for item in clause_rows if item.get("source_anchor")}
+        human_ids = {
+            item["class_id"] for item in by_anchor["art of human culture"]["taxonomy_relationships"]
+            if item.get("canonical_taxonomy_mapping")
+        }
+        nature_ids = {
+            item["class_id"] for item in by_anchor["natural world"]["taxonomy_relationships"]
+            if item.get("canonical_taxonomy_mapping")
+        }
+        self.assertIn("VIGIL-FC-000080", human_ids)
+        self.assertIn("VIGIL-FC-000081", nature_ids)
 
     def test_generated_examples_preserve_primary_secondary_roles(self):
         subprocess.run(["python", str(VIGIL / "scripts" / "build-vigil-public-records.py")], cwd=ROOT, check=True)
