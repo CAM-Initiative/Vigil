@@ -32,7 +32,7 @@ A record must not be treated as complete merely because it has `source_clause_an
 | Incident | Disposition | Review note |
 |---|---|---|
 | VIGIL-INC-000001 | REVIEWED — NO CHANGE (SUBSTANTIAL) | Fresh source check reconfirmed Replit first-party remediation, dev/prod separation, rollback availability and contemporaneous code-freeze / fabricated-data evidence. Existing FC-000002 primary and FC-000017 secondary mappings, Section 02 analysis and S3 consequence treatment remain evidence-aligned. |
-| VIGIL-INC-000002 | OPEN | |
+| VIGIL-INC-000002 | REVIEWED — NO CHANGE (SUBSTANTIAL) | Fresh source search reconfirmed the government-funded synthetic-institute campaign, high-volume AI-oriented publication strategy and bounded ChatGPT/Perplexity citation observations. Existing FC-000063 classification and provenance-aware Section 02 analysis remain aligned; no viewpoint-based failure inference was added. |
 | VIGIL-INC-000003 | OPEN | |
 | VIGIL-INC-000004 | OPEN | |
 | VIGIL-INC-000005 | OPEN | |
