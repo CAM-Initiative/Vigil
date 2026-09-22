@@ -25,23 +25,25 @@
   },
   "interpretive_provenance": {
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-09-21-AGENT-ENV-000066",
+      "review_id": "VIGIL-REVIEW-2026-09-22-INC-000066-GOVERNANCE-ASSESSMENT",
       "reviewer_type": "AI analytical reviewer",
       "reviewer_platform": "OpenAI Codex",
       "reviewer_model": "GPT-5",
-      "review_date": "2026-09-21",
-      "review_scope": "Occurrence-level agent configuration and occurrence-environment metadata migration using sources already preserved in the Incident.",
+      "review_date": "2026-09-22",
+      "review_scope": "Populate the clause-level VIGIL Governance Assessment from evidence already preserved in the Incident without reopening occurrence facts, Harm Impact or taxonomy mappings.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "structured_cross_record_reconciliation": true,
+        "taxonomy_review": true,
+        "structured_semantic_adjudication": true,
+        "cross_incident_consistency_review": true,
         "new_external_source_research": false
       },
       "known_limitations": [
-        "The review is bounded to evidence already preserved in each Incident and does not infer agent count, swarm topology, deployment state or testing ownership from silence.",
-        "Unknown classifications require later human or evidence-led review if more specific architecture evidence becomes available."
+        "The assessment is bounded to sources already preserved in the Incident and introduces no new external occurrence claims.",
+        "Existing taxonomy mappings, relationship roles and confidence values were treated as authoritative; apparent inconsistencies are flagged for human review rather than silently re-adjudicated."
       ],
-      "review_outcome": "Added canonical agent_context and occurrence_environment metadata without changing factual, taxonomy or Harm Impact adjudications."
+      "review_outcome": "Added 2 incident-specific governance-assessment rows; occurrence facts, source records, Section 03 taxonomy adjudication, Harm Impact and alignment outcome remain unchanged."
     },
     "historical_reviewer_note": "Pre-Incident FM/OBS review histories are preserved without re-dating under legacy_governance_state; they are not represented as reviews of the later Incident record.",
     "human_governance_editor": {
@@ -217,6 +219,27 @@
           "Unknown classifications require later human or evidence-led review if more specific architecture evidence becomes available."
         ],
         "review_outcome": "Added canonical agent_context and occurrence_environment metadata without changing factual, taxonomy or Harm Impact adjudications."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-09-22-INC-000066-GOVERNANCE-ASSESSMENT",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-5",
+        "review_date": "2026-09-22",
+        "review_scope": "Populate the clause-level VIGIL Governance Assessment from evidence already preserved in the Incident without reopening occurrence facts, Harm Impact or taxonomy mappings.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "structured_semantic_adjudication": true,
+          "cross_incident_consistency_review": true,
+          "new_external_source_research": false
+        },
+        "known_limitations": [
+          "The assessment is bounded to sources already preserved in the Incident and introduces no new external occurrence claims.",
+          "Existing taxonomy mappings, relationship roles and confidence values were treated as authoritative; apparent inconsistencies are flagged for human review rather than silently re-adjudicated."
+        ],
+        "review_outcome": "Added 2 incident-specific governance-assessment rows; occurrence facts, source records, Section 03 taxonomy adjudication, Harm Impact and alignment outcome remain unchanged."
       }
     ]
   },
@@ -236,8 +259,8 @@
     "record_id": "VIGIL-INC-000066",
     "record_type": "incident",
     "title": "Fabricated Trump rabies report misled AI search systems",
-    "updated": "2026-09-21",
-    "version": "1.1.10"
+    "updated": "2026-09-22",
+    "version": "1.1.12"
   },
   "record_state": "active",
   "record_type": "incident",
@@ -315,69 +338,17 @@
   ],
   "summary": "Mimikama documents a deliberately fabricated rabies-death story that was ingested into AI search answers and combined with an unrelated legitimate source, demonstrating adversarial content poisoning converted into authoritative-looking synthetic fact.",
   "system_context": {
-    "affected_population": "People and organisations directly affected by this occurrence.",
-    "comparative_vendor_notes": {},
-    "deployment_context": "Web-search answer synthesis exposed to deliberately fabricated content",
-    "embodiment_status": "non-embodied digital system",
-    "evidence_projection": {
-      "basis": "incident-selected source metadata",
-      "inference_boundary": "Only systems evidenced for this occurrence are projected; legacy FM-wide provider and product roll-ups are excluded.",
-      "method": "INCIDENT-02 occurrence-specific system reconciliation",
-      "reconciled_on": "2026-08-30"
-    },
-    "evidence_scope": "multi-provider",
-    "evidenced_models_or_runtimes": [
-      "AI-assisted retrieval and synthesis"
-    ],
-    "evidenced_products_or_services": [
-      "DuckDuckGo Search Assist and Brave AI"
-    ],
-    "evidenced_systems": [
-      {
-        "deployment_context": "Web-search answer synthesis exposed to deliberately fabricated content",
-        "evidence_source_platform": "Mimikama",
-        "models_or_runtimes": [
-          "AI-assisted retrieval and synthesis"
-        ],
-        "products_or_services": [
-          "DuckDuckGo Search Assist and Brave AI search"
-        ],
-        "projection_basis": "incident-source metadata",
-        "providers_or_vendors": [
-          "DuckDuckGo",
-          "Brave"
-        ],
-        "source_title": "Trump an Tollwut gestorben? Wie erfundene Meldungen KI-Suchmaschinen täuschen",
-        "source_url": "https://www.mimikama.org/trump-an-tollwut-gestorben-erfundene-meldungen-ki/"
-      }
-    ],
-    "evidenced_vendors": [
-      "DuckDuckGo",
-      "Brave"
-    ],
-    "interaction_mode": "retrieval-augmented factual answering",
-    "interface_surface": "web retrieval, source selection, answer synthesis and citation display",
-    "model_or_product": "DuckDuckGo Search Assist and Brave AI",
     "platform_or_vendor": "Multi Vendor",
-    "primary_evidenced_vendors": [
-      "DuckDuckGo",
-      "Brave"
-    ],
     "product_or_service": "Other",
     "specific_model_or_runtime": "AI-assisted retrieval and synthesis",
-    "system_type": "AI-assisted search retrieval and answer synthesis",
-    "user_role": "search user, publisher, attacker, platform operator or fact-checker",
-    "vendor_cluster": [
-      "DuckDuckGo",
-      "Brave"
-    ],
+    "interface_surface": "web retrieval, source selection, answer synthesis and citation display",
     "agent_context": {
       "agentic_status": "non-agentic",
       "agent_count": null,
       "agent_count_min": null,
       "agent_count_max": null,
       "count_basis": "not-applicable",
-      "evidence_basis": "The cited evidence describes the material system as AI-assisted search retrieval and answer synthesis, operating through retrieval-augmented factual answering, rather than autonomous or delegated agent execution in the material occurrence.",
+      "evidence_basis": "The cited evidence does not describe autonomous or delegated agent execution in the material occurrence.",
       "source_record_refs": [
         "source_records[0]"
       ]
@@ -386,7 +357,7 @@
       "operational_setting": "live",
       "testing_actor": "not-applicable",
       "environment_detail": "Material occurrence in actual deployed, operational, public, consumer, institutional or adversarial use.",
-      "evidence_basis": "The cited deployment evidence describes Web-search answer synthesis exposed to deliberately fabricated content. This supports actual operational or deployed use rather than a controlled evaluation.",
+      "evidence_basis": "The cited evidence places the material occurrence in live operational, public, consumer, institutional or adversarial use.",
       "source_record_refs": [
         "source_records[0]"
       ]
@@ -428,7 +399,38 @@
     ],
     "factual_basis": "The selected evidence reports: Mimikama documents a deliberately fabricated rabies-death story that was ingested into AI search answers and combined with an unrelated legitimate source, demonstrating adversarial content poisoning converted into authoritative-looking synthetic fact.",
     "governance_interpretation": "The reported test deliberately poisoned the retrievable information environment and AI search systems converted that compromised material into authoritative-seeming fact. The occurrence therefore combines epistemic reliance miscalibration with failure to recognise and discount adversarial evidence poisoning.",
-    "significance_to_cam": "For CAM, the occurrence demonstrates a cross-domain SECURITY–ECONOMICS–epistemic integrity pathway: adversarial content targeted trust and reputational value, while the retrieval systems failed to preserve a sufficiently sceptical evidence posture before converting the poisoned material into public factual synthesis. Reputational or status value is an affected value axis; adversarial evidence-poisoning acceptance is the reusable system failure."
+    "significance_to_cam": "For CAM, the occurrence demonstrates a cross-domain SECURITY–ECONOMICS–epistemic integrity pathway: adversarial content targeted trust and reputational value, while the retrieval systems failed to preserve a sufficiently sceptical evidence posture before converting the poisoned material into public factual synthesis. Reputational or status value is an affected value axis; adversarial evidence-poisoning acceptance is the reusable system failure.",
+    "source_clause_analysis": {
+      "source_record_order": 1,
+      "source_url": "https://www.mimikama.org/trump-an-tollwut-gestorben-erfundene-meldungen-ki/",
+      "purpose": "Preserve the source-language or evidentiary propositions that materially explain VIGIL's governance interpretation. Paraphrases are concise, source-bounded and linked to the existing taxonomy adjudication.",
+      "clauses": [
+        {
+          "source_paraphrase": "AI search systems converted a deliberately fabricated report that Donald Trump died of rabies into authoritative-looking factual answers.",
+          "recovered_invariant_interpretation": "A synthesized public-information answer must meet factual and source assurance appropriate to the reliance invited by the search surface.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000062",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The systems promoted an invented event into confident factual output even though the underlying material lacked the assurance required for public-information reliance."
+            }
+          ]
+        },
+        {
+          "source_paraphrase": "The false story was intentionally planted as an information-poisoning test and was combined with unrelated legitimate material in generated answers.",
+          "recovered_invariant_interpretation": "Adversarially planted retrieval material must be discounted through provenance, independence, contradiction and corroboration checks rather than gaining authority from availability.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000063",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The poisoning artefact entered the evidentiary pool and acquired support-like authority from unrelated legitimate content without adequate trust separation."
+            }
+          ]
+        }
+      ]
+    }
   },
   "harm_impact_assessment": {
     "methodology_id": "VIGIL-HIM",

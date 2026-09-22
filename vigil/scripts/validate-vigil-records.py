@@ -840,6 +840,16 @@ def validate_record(
     if not isinstance(system, dict):
         errors.append(f"{path}: system_context must be an object")
     else:
+        system_rules = schema(schema_path).get("system_context_rules", {})
+        allowed_system_fields = set(system_rules.get("required_fields", [])) | set(
+            system_rules.get("optional_fields", [])
+        )
+        unexpected_system_fields = sorted(set(system) - allowed_system_fields)
+        if unexpected_system_fields:
+            errors.append(
+                f"{path}: non-canonical system_context fields: "
+                f"{', '.join(unexpected_system_fields)}"
+            )
         for field in ("platform_or_vendor", "product_or_service", "specific_model_or_runtime", "interface_surface"):
             if field not in system or system[field] in (None, "", []):
                 errors.append(f"{path}: system_context.{field} must be non-empty")

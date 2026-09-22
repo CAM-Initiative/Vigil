@@ -412,7 +412,7 @@
     }
   },
   "system_context_rules": {
-    "description": "system_context describes the system, platform, product, service, runtime, interface, deployment and architectural component roles evidenced for an Incident. Provider identity, product identity and architectural function are orthogonal dimensions.",
+    "description": "system_context contains only the canonical occurrence-level system identity, runtime, interface, agent configuration, occurrence environment and optional architectural component roles. Source-specific system, model, product and deployment descriptions remain in source_records and must not be accumulated as parallel projections here. Provider identity, product identity and architectural function are orthogonal dimensions.",
     "required_fields": [
       "platform_or_vendor",
       "product_or_service",
@@ -424,6 +424,7 @@
     "optional_fields": [
       "component_role"
     ],
+    "field_boundary_rule": "Only required_fields and optional_fields are permitted in system_context. Historical roll-ups and source-derived projection fields are non-canonical because they duplicate source_records or substantive Incident sections.",
     "deprecated_fields": [
       "product_family",
       "specific_model"

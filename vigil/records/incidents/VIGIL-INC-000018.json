@@ -38,23 +38,25 @@
   },
   "interpretive_provenance": {
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-09-21-AGENT-ENV-000018",
+      "review_id": "VIGIL-REVIEW-2026-09-22-INC-000018-GOVERNANCE-ASSESSMENT",
       "reviewer_type": "AI analytical reviewer",
       "reviewer_platform": "OpenAI Codex",
       "reviewer_model": "GPT-5",
-      "review_date": "2026-09-21",
-      "review_scope": "Occurrence-level agent configuration and occurrence-environment metadata migration using sources already preserved in the Incident.",
+      "review_date": "2026-09-22",
+      "review_scope": "Populate the clause-level VIGIL Governance Assessment from evidence already preserved in the Incident without reopening occurrence facts, Harm Impact or taxonomy mappings.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "structured_cross_record_reconciliation": true,
+        "taxonomy_review": true,
+        "structured_semantic_adjudication": true,
+        "cross_incident_consistency_review": true,
         "new_external_source_research": false
       },
       "known_limitations": [
-        "The review is bounded to evidence already preserved in each Incident and does not infer agent count, swarm topology, deployment state or testing ownership from silence.",
-        "Unknown classifications require later human or evidence-led review if more specific architecture evidence becomes available."
+        "The assessment is bounded to sources already preserved in the Incident and introduces no new external occurrence claims.",
+        "Existing taxonomy mappings, relationship roles and confidence values were treated as authoritative; apparent inconsistencies are flagged for human review rather than silently re-adjudicated."
       ],
-      "review_outcome": "Added canonical agent_context and occurrence_environment metadata without changing factual, taxonomy or Harm Impact adjudications."
+      "review_outcome": "Added 1 incident-specific governance-assessment row; occurrence facts, source records, Section 03 taxonomy adjudication, Harm Impact and alignment outcome remain unchanged."
     },
     "historical_reviewer_note": "Pre-Incident FM/OBS review histories are preserved without re-dating under legacy_governance_state; they are not represented as reviews of the later Incident record.",
     "human_governance_editor": {
@@ -230,6 +232,27 @@
           "Unknown classifications require later human or evidence-led review if more specific architecture evidence becomes available."
         ],
         "review_outcome": "Added canonical agent_context and occurrence_environment metadata without changing factual, taxonomy or Harm Impact adjudications."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-09-22-INC-000018-GOVERNANCE-ASSESSMENT",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-5",
+        "review_date": "2026-09-22",
+        "review_scope": "Populate the clause-level VIGIL Governance Assessment from evidence already preserved in the Incident without reopening occurrence facts, Harm Impact or taxonomy mappings.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "structured_semantic_adjudication": true,
+          "cross_incident_consistency_review": true,
+          "new_external_source_research": false
+        },
+        "known_limitations": [
+          "The assessment is bounded to sources already preserved in the Incident and introduces no new external occurrence claims.",
+          "Existing taxonomy mappings, relationship roles and confidence values were treated as authoritative; apparent inconsistencies are flagged for human review rather than silently re-adjudicated."
+        ],
+        "review_outcome": "Added 1 incident-specific governance-assessment row; occurrence facts, source records, Section 03 taxonomy adjudication, Harm Impact and alignment outcome remain unchanged."
       }
     ]
   },
@@ -249,8 +272,8 @@
     "record_id": "VIGIL-INC-000018",
     "record_type": "incident",
     "title": "ChatGPT’s new app blocked Enterprise users without Codex permissions",
-    "updated": "2026-09-21",
-    "version": "1.1.9"
+    "updated": "2026-09-22",
+    "version": "1.1.11"
   },
   "record_state": "active",
   "record_type": "incident",
@@ -328,65 +351,17 @@
   ],
   "summary": "OpenAI reported that Enterprise users without Codex RBAC enabled could receive a codex_cli_workspace_disabled error when attempting to log into the new ChatGPT application after installation. ChatGPT Classic was provided as a temporary alternative while a fix was being developed.",
   "system_context": {
-    "affected_population": "People and organisations directly affected by this occurrence.",
-    "comparative_vendor_notes": {},
-    "deployment_context": "Enterprise application access coupled to Codex role-based access-control configuration.",
-    "embodiment_status": "non-embodied",
-    "evidence_projection": {
-      "basis": "incident-selected source metadata",
-      "inference_boundary": "Only systems evidenced for this occurrence are projected; legacy FM-wide provider and product roll-ups are excluded.",
-      "method": "INCIDENT-02 occurrence-specific system reconciliation",
-      "reconciled_on": "2026-08-30"
-    },
-    "evidence_scope": "provider-specific",
-    "evidenced_models_or_runtimes": [
-      "not specified"
-    ],
-    "evidenced_products_or_services": [
-      "ChatGPT Enterprise application and Codex entitlements"
-    ],
-    "evidenced_systems": [
-      {
-        "deployment_context": "Enterprise application access coupled to Codex role-based access-control configuration.",
-        "evidence_source_platform": "OpenAI Status",
-        "models_or_runtimes": [
-          "not specified"
-        ],
-        "products_or_services": [
-          "New ChatGPT application for Enterprise users"
-        ],
-        "projection_basis": "incident-source metadata",
-        "providers_or_vendors": [
-          "OpenAI"
-        ],
-        "source_title": "New ChatGPT App Not Available For Enterprise Users Without Codex Permissions",
-        "source_url": "https://status.openai.com/incidents/01KXRBA8B98QHMMVP3M86NHFZ1"
-      }
-    ],
-    "evidenced_vendors": [
-      "OpenAI"
-    ],
-    "interaction_mode": "login / account access / model access / API access / coding-agent use / quota-limited interaction / service-status-dependent interaction",
-    "interface_surface": "web application, API platform, account/login flow, identity-provider sign-in flow, coding-agent interface, model selection surface, quota/usage interface, service-status surface",
-    "model_or_product": "ChatGPT Enterprise application and Codex entitlements",
     "platform_or_vendor": "OpenAI",
-    "primary_evidenced_vendors": [
-      "OpenAI"
-    ],
     "product_or_service": "ChatGPT",
     "specific_model_or_runtime": "not specified",
-    "system_type": "frontier AI platform / model service / API platform / coding-agent surface",
-    "user_role": "end user / developer / maintainer / researcher / administrator / subscriber / organisation workspace user / API user",
-    "vendor_cluster": [
-      "OpenAI"
-    ],
+    "interface_surface": "web application, API platform, account/login flow, identity-provider sign-in flow, coding-agent interface, model selection surface, quota/usage interface, service-status surface",
     "agent_context": {
       "agentic_status": "non-agentic",
       "agent_count": null,
       "agent_count_min": null,
       "agent_count_max": null,
       "count_basis": "not-applicable",
-      "evidence_basis": "The cited evidence describes the material system as frontier AI platform / model service / API platform / coding-agent surface, operating through login / account access / model access / API access / coding-agent use / quota-limited interaction / service-status-dependent interaction, rather than autonomous or delegated agent execution in the material occurrence.",
+      "evidence_basis": "The cited evidence does not describe autonomous or delegated agent execution in the material occurrence.",
       "source_record_refs": [
         "source_records[0]"
       ]
@@ -395,7 +370,7 @@
       "operational_setting": "live",
       "testing_actor": "not-applicable",
       "environment_detail": "Material occurrence in actual deployed, operational, public, consumer, institutional or adversarial use.",
-      "evidence_basis": "The cited deployment evidence describes Enterprise application access coupled to Codex role-based access-control configuration. This supports actual operational or deployed use rather than a controlled evaluation.",
+      "evidence_basis": "The cited evidence places the material occurrence in live operational, public, consumer, institutional or adversarial use.",
       "source_record_refs": [
         "source_records[0]"
       ]
@@ -429,7 +404,26 @@
     ],
     "factual_basis": "The selected evidence reports: OpenAI reported that Enterprise users without Codex RBAC enabled could receive a codex_cli_workspace_disabled error when attempting to log into the new ChatGPT application after installation. ChatGPT Classic was provided as a temporary alternative while a fix was being developed.",
     "governance_interpretation": "In this incident, a component-level Codex permission unexpectedly governed access to the broader new ChatGPT application, obscuring the operative entitlement boundary.",
-    "significance_to_cam": "For CAM, this occurrence shows that in this incident, a component-level Codex permission unexpectedly governed access to the broader new ChatGPT application, obscuring the operative entitlement boundary. Controls should preserve evidence, authority state, escalation and contestability across the full affected pathway."
+    "significance_to_cam": "For CAM, this occurrence shows that in this incident, a component-level Codex permission unexpectedly governed access to the broader new ChatGPT application, obscuring the operative entitlement boundary. Controls should preserve evidence, authority state, escalation and contestability across the full affected pathway.",
+    "source_clause_analysis": {
+      "source_record_order": 1,
+      "source_url": "https://status.openai.com/incidents/01KXRBA8B98QHMMVP3M86NHFZ1",
+      "purpose": "Preserve the source-language or evidentiary propositions that materially explain VIGIL's governance interpretation. Paraphrases are concise, source-bounded and linked to the existing taxonomy adjudication.",
+      "clauses": [
+        {
+          "source_paraphrase": "Enterprise users without Codex RBAC enabled received a workspace-disabled error when attempting to use the new ChatGPT application.",
+          "recovered_invariant_interpretation": "A component entitlement must remain scoped to that component and must not silently redefine the user's broader application-access state.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000032",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "A Codex permission state was presented and enforced as broader ChatGPT application unavailability, obscuring the actual entitlement boundary."
+            }
+          ]
+        }
+      ]
+    }
   },
   "harm_impact_assessment": {
     "methodology_id": "VIGIL-HIM",

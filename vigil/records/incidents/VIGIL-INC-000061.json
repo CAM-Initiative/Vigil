@@ -32,23 +32,25 @@
   },
   "interpretive_provenance": {
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-09-21-AGENT-ENV-000061",
+      "review_id": "VIGIL-REVIEW-2026-09-22-INC-000061-GOVERNANCE-ASSESSMENT",
       "reviewer_type": "AI analytical reviewer",
       "reviewer_platform": "OpenAI Codex",
       "reviewer_model": "GPT-5",
-      "review_date": "2026-09-21",
-      "review_scope": "Occurrence-level agent configuration and occurrence-environment metadata migration using sources already preserved in the Incident.",
+      "review_date": "2026-09-22",
+      "review_scope": "Populate the clause-level VIGIL Governance Assessment from evidence already preserved in the Incident without reopening occurrence facts, Harm Impact or taxonomy mappings.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "structured_cross_record_reconciliation": true,
+        "taxonomy_review": true,
+        "structured_semantic_adjudication": true,
+        "cross_incident_consistency_review": true,
         "new_external_source_research": false
       },
       "known_limitations": [
-        "The review is bounded to evidence already preserved in each Incident and does not infer agent count, swarm topology, deployment state or testing ownership from silence.",
-        "Unknown classifications require later human or evidence-led review if more specific architecture evidence becomes available."
+        "The assessment is bounded to sources already preserved in the Incident and introduces no new external occurrence claims.",
+        "Existing taxonomy mappings, relationship roles and confidence values were treated as authoritative; apparent inconsistencies are flagged for human review rather than silently re-adjudicated."
       ],
-      "review_outcome": "Added canonical agent_context and occurrence_environment metadata without changing factual, taxonomy or Harm Impact adjudications."
+      "review_outcome": "Added 2 incident-specific governance-assessment rows; occurrence facts, source records, Section 03 taxonomy adjudication, Harm Impact and alignment outcome remain unchanged."
     },
     "historical_reviewer_note": "Pre-Incident FM/OBS review histories are preserved without re-dating under legacy_governance_state; they are not represented as reviews of the later Incident record.",
     "human_governance_editor": {
@@ -243,6 +245,27 @@
           "Unknown classifications require later human or evidence-led review if more specific architecture evidence becomes available."
         ],
         "review_outcome": "Added canonical agent_context and occurrence_environment metadata without changing factual, taxonomy or Harm Impact adjudications."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-09-22-INC-000061-GOVERNANCE-ASSESSMENT",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-5",
+        "review_date": "2026-09-22",
+        "review_scope": "Populate the clause-level VIGIL Governance Assessment from evidence already preserved in the Incident without reopening occurrence facts, Harm Impact or taxonomy mappings.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "structured_semantic_adjudication": true,
+          "cross_incident_consistency_review": true,
+          "new_external_source_research": false
+        },
+        "known_limitations": [
+          "The assessment is bounded to sources already preserved in the Incident and introduces no new external occurrence claims.",
+          "Existing taxonomy mappings, relationship roles and confidence values were treated as authoritative; apparent inconsistencies are flagged for human review rather than silently re-adjudicated."
+        ],
+        "review_outcome": "Added 2 incident-specific governance-assessment rows; occurrence facts, source records, Section 03 taxonomy adjudication, Harm Impact and alignment outcome remain unchanged."
       }
     ]
   },
@@ -262,8 +285,8 @@
     "record_id": "VIGIL-INC-000061",
     "record_type": "incident",
     "title": "SASSA facial-verification failures disrupted social-grant access",
-    "updated": "2026-09-21",
-    "version": "1.1.10"
+    "updated": "2026-09-22",
+    "version": "1.1.12"
   },
   "record_state": "active",
   "record_type": "incident",
@@ -374,65 +397,17 @@
   ],
   "summary": "SASSA acknowledged that interface glitches delayed and disrupted beneficiaries' completion of eLife certification, produced long queues and required some people to travel for in-person assistance before the self-service system was restored. AIID separately reports facial-recognition failure among non-verification causes and 67,868 grant suspensions for the quarter, but the evidence does not establish how many suspensions were caused specifically by facial verification.",
   "system_context": {
-    "affected_population": "SASSA grant recipients affected by verification and suspension workflows",
-    "comparative_vendor_notes": {},
-    "deployment_context": "South African social-grant verification and suspension workflow",
-    "embodiment_status": "digital system with real-world effects",
-    "evidence_projection": {
-      "basis": "incident-selected source metadata",
-      "inference_boundary": "Only systems evidenced for this occurrence are projected; legacy FM-wide provider and product roll-ups are excluded.",
-      "method": "INCIDENT-02 occurrence-specific system reconciliation",
-      "reconciled_on": "2026-08-30"
-    },
-    "evidence_scope": "provider-specific",
-    "evidenced_models_or_runtimes": [
-      "facial recognition / biometric identity verification"
-    ],
-    "evidenced_products_or_services": [
-      "SASSA eLife facial-verification and grant-access workflow"
-    ],
-    "evidenced_systems": [
-      {
-        "deployment_context": "South African social-grant verification and suspension workflow",
-        "evidence_source_platform": "AI Incident Database",
-        "models_or_runtimes": [
-          "facial recognition / biometric identity verification"
-        ],
-        "products_or_services": [
-          "SASSA eLife Certification portal and social-grant review workflow"
-        ],
-        "projection_basis": "incident-source metadata",
-        "providers_or_vendors": [
-          "SASSA"
-        ],
-        "source_title": "Incident 1606: SASSA Facial-Verification Failures Reportedly Contributed to Social Grant Access Disruptions in South Africa",
-        "source_url": "https://incidentdatabase.ai/cite/1606/"
-      }
-    ],
-    "evidenced_vendors": [
-      "SASSA"
-    ],
-    "interaction_mode": "biometric verification linked to consequential benefit administration",
-    "interface_surface": "public-benefit identity verification and suspension workflow",
-    "model_or_product": "SASSA eLife facial-verification and grant-access workflow",
     "platform_or_vendor": "Other",
-    "primary_evidenced_vendors": [
-      "SASSA"
-    ],
     "product_or_service": "Other",
     "specific_model_or_runtime": "facial recognition / biometric identity verification",
-    "system_type": "AI-enabled consequential decision or information system",
-    "user_role": "grant recipient, administrator, reviewer or appeals authority",
-    "vendor_cluster": [
-      "SASSA"
-    ],
+    "interface_surface": "public-benefit identity verification and suspension workflow",
     "agent_context": {
       "agentic_status": "non-agentic",
       "agent_count": null,
       "agent_count_min": null,
       "agent_count_max": null,
       "count_basis": "not-applicable",
-      "evidence_basis": "The cited evidence describes the material system as AI-enabled consequential decision or information system, operating through biometric verification linked to consequential benefit administration, rather than autonomous or delegated agent execution in the material occurrence.",
+      "evidence_basis": "The cited evidence does not describe autonomous or delegated agent execution in the material occurrence.",
       "source_record_refs": [
         "source_records[0]"
       ]
@@ -441,7 +416,7 @@
       "operational_setting": "live",
       "testing_actor": "not-applicable",
       "environment_detail": "Material occurrence in actual deployed, operational, public, consumer, institutional or adversarial use.",
-      "evidence_basis": "The cited deployment evidence describes South African social-grant verification and suspension workflow. This supports actual operational or deployed use rather than a controlled evaluation.",
+      "evidence_basis": "The cited evidence places the material occurrence in live operational, public, consumer, institutional or adversarial use.",
       "source_record_refs": [
         "source_records[0]"
       ]
@@ -485,7 +460,38 @@
     ],
     "factual_basis": "SASSA's official statement confirms that interface glitches delayed and disrupted eLife certification, produced long queues and imposed transport and waiting burdens on beneficiaries before service was restored. AIID reports facial-recognition failure among non-verification causes and 67,868 grant suspensions for the quarter, while not establishing how many suspensions were caused specifically by facial verification.",
     "governance_interpretation": "Reported biometric non-verification became an access barrier to essential public benefits, with the failed verification state carrying consequences beyond identity checking itself.",
-    "significance_to_cam": "For CAM, this occurrence shows that reported biometric non-verification became an access barrier to essential public benefits, with the failed verification state carrying consequences beyond identity checking itself. Controls should preserve evidence, authority state, escalation and contestability across the full affected pathway."
+    "significance_to_cam": "For CAM, this occurrence shows that reported biometric non-verification became an access barrier to essential public benefits, with the failed verification state carrying consequences beyond identity checking itself. Controls should preserve evidence, authority state, escalation and contestability across the full affected pathway.",
+    "source_clause_analysis": {
+      "source_record_order": 1,
+      "source_url": "https://incidentdatabase.ai/cite/1606/",
+      "purpose": "Preserve the source-language or evidentiary propositions that materially explain VIGIL's governance interpretation. Paraphrases are concise, source-bounded and linked to the existing taxonomy adjudication.",
+      "clauses": [
+        {
+          "source_paraphrase": "Reported facial non-verification carried consequences for continued access to South African social grants.",
+          "recovered_invariant_interpretation": "A biometric non-match must remain contestable inferential evidence and cannot become benefit-denial authority without independent identity resolution.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000046",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The failed facial-verification output reportedly acquired authority over an essential-benefit pathway beyond what the uncertain biometric result established."
+            }
+          ]
+        },
+        {
+          "source_paraphrase": "Beneficiaries faced delayed or disrupted certification and long queues when the remote verification workflow failed.",
+          "recovered_invariant_interpretation": "Essential-benefit access must have a proportionate fallback when the required verification service is unavailable or unable to resolve an eligible person.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000048",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The verification dependency blocked the underlying grant-access workflow and imposed in-person travel and waiting burdens before service restoration."
+            }
+          ]
+        }
+      ]
+    }
   },
   "harm_impact_assessment": {
     "methodology_id": "VIGIL-HIM",

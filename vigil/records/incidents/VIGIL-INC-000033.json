@@ -31,23 +31,25 @@
   },
   "interpretive_provenance": {
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-09-21-AGENT-ENV-000033",
+      "review_id": "VIGIL-REVIEW-2026-09-22-INC-000033-GOVERNANCE-ASSESSMENT",
       "reviewer_type": "AI analytical reviewer",
       "reviewer_platform": "OpenAI Codex",
       "reviewer_model": "GPT-5",
-      "review_date": "2026-09-21",
-      "review_scope": "Occurrence-level agent configuration and occurrence-environment metadata migration using sources already preserved in the Incident.",
+      "review_date": "2026-09-22",
+      "review_scope": "Populate the clause-level VIGIL Governance Assessment from evidence already preserved in the Incident without reopening occurrence facts, Harm Impact or taxonomy mappings.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "structured_cross_record_reconciliation": true,
+        "taxonomy_review": true,
+        "structured_semantic_adjudication": true,
+        "cross_incident_consistency_review": true,
         "new_external_source_research": false
       },
       "known_limitations": [
-        "The review is bounded to evidence already preserved in each Incident and does not infer agent count, swarm topology, deployment state or testing ownership from silence.",
-        "Unknown classifications require later human or evidence-led review if more specific architecture evidence becomes available."
+        "The assessment is bounded to sources already preserved in the Incident and introduces no new external occurrence claims.",
+        "Existing taxonomy mappings, relationship roles and confidence values were treated as authoritative; apparent inconsistencies are flagged for human review rather than silently re-adjudicated."
       ],
-      "review_outcome": "Added canonical agent_context and occurrence_environment metadata without changing factual, taxonomy or Harm Impact adjudications."
+      "review_outcome": "Added 1 incident-specific governance-assessment row; occurrence facts, source records, Section 03 taxonomy adjudication, Harm Impact and alignment outcome remain unchanged."
     },
     "historical_reviewer_note": "Pre-Incident FM/OBS review histories are preserved without re-dating under legacy_governance_state; they are not represented as reviews of the later Incident record.",
     "human_governance_editor": {
@@ -223,6 +225,27 @@
           "Unknown classifications require later human or evidence-led review if more specific architecture evidence becomes available."
         ],
         "review_outcome": "Added canonical agent_context and occurrence_environment metadata without changing factual, taxonomy or Harm Impact adjudications."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-09-22-INC-000033-GOVERNANCE-ASSESSMENT",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-5",
+        "review_date": "2026-09-22",
+        "review_scope": "Populate the clause-level VIGIL Governance Assessment from evidence already preserved in the Incident without reopening occurrence facts, Harm Impact or taxonomy mappings.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "structured_semantic_adjudication": true,
+          "cross_incident_consistency_review": true,
+          "new_external_source_research": false
+        },
+        "known_limitations": [
+          "The assessment is bounded to sources already preserved in the Incident and introduces no new external occurrence claims.",
+          "Existing taxonomy mappings, relationship roles and confidence values were treated as authoritative; apparent inconsistencies are flagged for human review rather than silently re-adjudicated."
+        ],
+        "review_outcome": "Added 1 incident-specific governance-assessment row; occurrence facts, source records, Section 03 taxonomy adjudication, Harm Impact and alignment outcome remain unchanged."
       }
     ]
   },
@@ -242,8 +265,8 @@
     "record_id": "VIGIL-INC-000033",
     "record_type": "incident",
     "title": "Spyware reportedly embedded weapons text to trigger LLM refusals during analysis",
-    "updated": "2026-09-21",
-    "version": "1.1.9"
+    "updated": "2026-09-22",
+    "version": "1.1.11"
   },
   "record_state": "active",
   "record_type": "incident",
@@ -320,57 +343,17 @@
   ],
   "summary": "The post reports that malware developers inserted nuclear- and biological-weapons text into spyware with the objective of triggering LLM safety refusals so that an AI security scanner would not analyse the artefact. The originating technical report, named malware sample, vendor, scanner, and independent forensic evidence were not recovered during the present research pass.",
   "system_context": {
-    "affected_population": "People and organisations directly affected by this occurrence.",
-    "comparative_vendor_notes": {},
-    "deployment_context": "Public report concerning adversarial spyware or malware evasion of AI-assisted defensive analysis.",
-    "embodiment_status": "non-embodied",
-    "evidence_projection": {
-      "basis": "incident-selected source metadata",
-      "inference_boundary": "Only systems evidenced for this occurrence are projected; legacy FM-wide provider and product roll-ups are excluded.",
-      "method": "INCIDENT-02 occurrence-specific system reconciliation",
-      "reconciled_on": "2026-08-30"
-    },
-    "evidence_scope": "provider-unresolved",
-    "evidenced_models_or_runtimes": [
-      "Unspecified large language model"
-    ],
-    "evidenced_products_or_services": [
-      "refusal-trigger spyware against AI analysis systems"
-    ],
-    "evidenced_systems": [
-      {
-        "deployment_context": "Public report concerning adversarial spyware or malware evasion of AI-assisted defensive analysis.",
-        "evidence_source_platform": "X",
-        "models_or_runtimes": [
-          "Unspecified large language model"
-        ],
-        "products_or_services": [
-          "Unspecified AI-assisted security scanner"
-        ],
-        "projection_basis": "incident-source metadata",
-        "providers_or_vendors": [],
-        "source_title": "X post reporting nuclear- and biological-weapons text embedded in spyware to trigger LLM safety refusals",
-        "source_url": "https://x.com/jsrailton/status/2064661778978533571"
-      }
-    ],
-    "evidenced_vendors": [],
-    "interaction_mode": "analysis of hostile files, malware, spyware, source code, documents, logs, network artefacts, indicators of compromise, or other untrusted evidence",
-    "interface_surface": "malware scanner, file-analysis pipeline, source-code inspection system, forensic analysis interface, security operations workflow, agentic defensive system, or artefact-ingestion pipeline",
-    "model_or_product": "refusal-trigger spyware against AI analysis systems",
     "platform_or_vendor": "Unknown",
-    "primary_evidenced_vendors": [],
     "product_or_service": "Other",
     "specific_model_or_runtime": "Unspecified large language model",
-    "system_type": "LLM-assisted malware analysis, threat detection, security scanning, forensic analysis, moderation, or incident-response system",
-    "user_role": "security analyst, malware researcher, incident responder, forensic examiner, threat-intelligence researcher, platform-integrity investigator, developer, auditor, or autonomous defensive agent",
-    "vendor_cluster": [],
+    "interface_surface": "malware scanner, file-analysis pipeline, source-code inspection system, forensic analysis interface, security operations workflow, agentic defensive system, or artefact-ingestion pipeline",
     "agent_context": {
       "agentic_status": "unknown",
       "agent_count": null,
       "agent_count_min": null,
       "agent_count_max": null,
       "count_basis": "unknown",
-      "evidence_basis": "The cited evidence describes the material system as LLM-assisted malware analysis, threat detection, security scanning, forensic analysis, moderation, or incident-response system, but does not establish a canonical agent architecture or materially participating agent count for this occurrence.",
+      "evidence_basis": "The cited evidence does not establish a canonical agent architecture or the number of materially participating agents.",
       "source_record_refs": [
         "source_records[0]"
       ]
@@ -379,7 +362,7 @@
       "operational_setting": "live",
       "testing_actor": "not-applicable",
       "environment_detail": "Material occurrence in actual deployed, operational, public, consumer, institutional or adversarial use.",
-      "evidence_basis": "The cited deployment evidence describes Public report concerning adversarial spyware or malware evasion of AI-assisted defensive analysis. This supports actual operational or deployed use rather than a controlled evaluation.",
+      "evidence_basis": "The cited evidence places the material occurrence in live operational, public, consumer, institutional or adversarial use.",
       "source_record_refs": [
         "source_records[0]"
       ]
@@ -412,7 +395,26 @@
     ],
     "factual_basis": "The selected evidence reports: The post reports that malware developers inserted nuclear- and biological-weapons text into spyware with the objective of triggering LLM safety refusals so that an AI security scanner would not analyse the artefact. The originating technical report, named malware sample, vendor, scanner, and independent forensic evidence were not recovered during the present research pass.",
     "governance_interpretation": "The reported artefact used embedded high-risk text as an adversarial control over the defender's analysis system, attempting to convert safety refusal into protection for malicious content.",
-    "significance_to_cam": "For CAM, this occurrence shows that the reported artefact used embedded high-risk text as an adversarial control over the defender's analysis system, attempting to convert safety refusal into protection for malicious content. Controls should preserve evidence, authority state, escalation and contestability across the full affected pathway."
+    "significance_to_cam": "For CAM, this occurrence shows that the reported artefact used embedded high-risk text as an adversarial control over the defender's analysis system, attempting to convert safety refusal into protection for malicious content. Controls should preserve evidence, authority state, escalation and contestability across the full affected pathway.",
+    "source_clause_analysis": {
+      "source_record_order": 1,
+      "source_url": "https://x.com/jsrailton/status/2064661778978533571",
+      "purpose": "Preserve the source-language or evidentiary propositions that materially explain VIGIL's governance interpretation. Paraphrases are concise, source-bounded and linked to the existing taxonomy adjudication.",
+      "clauses": [
+        {
+          "source_paraphrase": "Malware reportedly embedded nuclear- and biological-weapons text to cause an AI security scanner to refuse analysis of the artefact.",
+          "recovered_invariant_interpretation": "A safety refusal must depend on the authorised defensive role and requested action, not merely on adversarial high-risk text contained in the object being inspected.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000043",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Attacker-supplied text inside the malicious artefact activated the safeguard against authorised defensive analysis, turning the refusal control into protection for the malware."
+            }
+          ]
+        }
+      ]
+    }
   },
   "harm_impact_assessment": {
     "methodology_id": "VIGIL-HIM",

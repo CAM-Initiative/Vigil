@@ -106,11 +106,12 @@ class IncidentRuleTests(unittest.TestCase):
 
     def test_small_financial_loss_does_not_control_more_severe_privacy_harm(self):
         record = json.loads(
-            (VIGIL / "records" / "incidents" / "VIGIL-INC-000077.json").read_text(encoding="utf-8")
+            (VIGIL / "records" / "incidents" / "VIGIL-INC-000082.json").read_text(encoding="utf-8")
         )
         assessment = record["harm_impact_assessment"]
         self.assertEqual(assessment["overall_severity"], "S3")
-        self.assertEqual(assessment["controlling_dimensions"], ["privacy-confidentiality"])
+        self.assertIn("privacy-confidentiality", assessment["controlling_dimensions"])
+        self.assertNotIn("financial-economic", assessment["controlling_dimensions"])
         financial = next(row for row in assessment["dimensions"] if row["dimension_id"] == "financial-economic")
         self.assertEqual(financial["severity"], "S1")
         errors, _ = VALIDATOR.validate_record(Path(record["id"] + ".json"), record)

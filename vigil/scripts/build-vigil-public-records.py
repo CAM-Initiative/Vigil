@@ -118,15 +118,9 @@ def incident_search_terms(record: dict[str, Any]) -> list[str]:
 
     return text_terms(
         incident.get("historical_event_name"),
-        system.get("vendor_cluster"),
-        system.get("primary_evidenced_vendors"),
-        system.get("evidenced_vendors"),
-        system.get("evidenced_products_or_services"),
-        system.get("evidenced_models_or_runtimes"),
+        system.get("platform_or_vendor"),
         system.get("product_or_service"),
         system.get("specific_model_or_runtime"),
-        system.get("model_or_product"),
-        system.get("system_type"),
         system.get("interface_surface"),
         jurisdiction.get("primary_jurisdiction"),
         jurisdiction.get("secondary_jurisdictions"),
@@ -172,6 +166,8 @@ def incident_search_terms(record: dict[str, Any]) -> list[str]:
                 item.get("source_platform"),
                 item.get("source_type"),
                 item.get("source_role"),
+                item.get("system_or_product"),
+                item.get("model_or_algorithm"),
             )
             if value
         ],

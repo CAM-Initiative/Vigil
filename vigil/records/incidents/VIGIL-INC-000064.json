@@ -27,23 +27,25 @@
   },
   "interpretive_provenance": {
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-09-21-AGENT-ENV-000064",
+      "review_id": "VIGIL-REVIEW-2026-09-22-INC-000064-GOVERNANCE-ASSESSMENT",
       "reviewer_type": "AI analytical reviewer",
       "reviewer_platform": "OpenAI Codex",
       "reviewer_model": "GPT-5",
-      "review_date": "2026-09-21",
-      "review_scope": "Occurrence-level agent configuration and occurrence-environment metadata migration using sources already preserved in the Incident.",
+      "review_date": "2026-09-22",
+      "review_scope": "Populate the clause-level VIGIL Governance Assessment from evidence already preserved in the Incident without reopening occurrence facts, Harm Impact or taxonomy mappings.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "structured_cross_record_reconciliation": true,
+        "taxonomy_review": true,
+        "structured_semantic_adjudication": true,
+        "cross_incident_consistency_review": true,
         "new_external_source_research": false
       },
       "known_limitations": [
-        "The review is bounded to evidence already preserved in each Incident and does not infer agent count, swarm topology, deployment state or testing ownership from silence.",
-        "Unknown classifications require later human or evidence-led review if more specific architecture evidence becomes available."
+        "The assessment is bounded to sources already preserved in the Incident and introduces no new external occurrence claims.",
+        "Existing taxonomy mappings, relationship roles and confidence values were treated as authoritative; apparent inconsistencies are flagged for human review rather than silently re-adjudicated."
       ],
-      "review_outcome": "Added canonical agent_context and occurrence_environment metadata without changing factual, taxonomy or Harm Impact adjudications."
+      "review_outcome": "Added 1 incident-specific governance-assessment row; occurrence facts, source records, Section 03 taxonomy adjudication, Harm Impact and alignment outcome remain unchanged."
     },
     "review_history": [
       {
@@ -235,6 +237,27 @@
           "Unknown classifications require later human or evidence-led review if more specific architecture evidence becomes available."
         ],
         "review_outcome": "Added canonical agent_context and occurrence_environment metadata without changing factual, taxonomy or Harm Impact adjudications."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-09-22-INC-000064-GOVERNANCE-ASSESSMENT",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-5",
+        "review_date": "2026-09-22",
+        "review_scope": "Populate the clause-level VIGIL Governance Assessment from evidence already preserved in the Incident without reopening occurrence facts, Harm Impact or taxonomy mappings.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "structured_semantic_adjudication": true,
+          "cross_incident_consistency_review": true,
+          "new_external_source_research": false
+        },
+        "known_limitations": [
+          "The assessment is bounded to sources already preserved in the Incident and introduces no new external occurrence claims.",
+          "Existing taxonomy mappings, relationship roles and confidence values were treated as authoritative; apparent inconsistencies are flagged for human review rather than silently re-adjudicated."
+        ],
+        "review_outcome": "Added 1 incident-specific governance-assessment row; occurrence facts, source records, Section 03 taxonomy adjudication, Harm Impact and alignment outcome remain unchanged."
       }
     ]
   },
@@ -254,8 +277,8 @@
     "record_id": "VIGIL-INC-000064",
     "record_type": "incident",
     "title": "Grok generated sexualised images from photos of women and girls",
-    "updated": "2026-09-21",
-    "version": "1.1.10"
+    "updated": "2026-09-22",
+    "version": "1.1.12"
   },
   "record_state": "active",
   "record_type": "incident",
@@ -334,65 +357,17 @@
   ],
   "summary": "The Washington Post documented non-consensual sexualised image generation from real source photographs, including a source image of Ashley St. Clair from age 14.",
   "system_context": {
-    "affected_population": "People and organisations directly affected by this occurrence.",
-    "comparative_vendor_notes": {},
-    "deployment_context": "Real-person source photographs altered into sexualised synthetic imagery",
-    "embodiment_status": "non-embodied synthetic media",
-    "evidence_projection": {
-      "basis": "incident-selected source metadata",
-      "inference_boundary": "Only systems evidenced for this occurrence are projected; legacy FM-wide provider and product roll-ups are excluded.",
-      "method": "INCIDENT-02 occurrence-specific system reconciliation",
-      "reconciled_on": "2026-08-30"
-    },
-    "evidence_scope": "provider-specific",
-    "evidenced_models_or_runtimes": [
-      "xAI Grok image generation"
-    ],
-    "evidenced_products_or_services": [
-      "Grok on X"
-    ],
-    "evidenced_systems": [
-      {
-        "deployment_context": "Real-person source photographs altered into sexualised synthetic imagery",
-        "evidence_source_platform": "The Washington Post",
-        "models_or_runtimes": [
-          "xAI Grok image generation"
-        ],
-        "products_or_services": [
-          "Grok on X"
-        ],
-        "projection_basis": "incident-source metadata",
-        "providers_or_vendors": [
-          "xAI"
-        ],
-        "source_title": "X users tell Grok to undress women and girls in photos. It's saying yes.",
-        "source_url": "https://www.washingtonpost.com/technology/2026/01/06/x-grok-deepfake-sexual-abuse/"
-      }
-    ],
-    "evidenced_vendors": [
-      "xAI"
-    ],
-    "interaction_mode": "source-image transformation / sexualised identity synthesis",
-    "interface_surface": "image upload, likeness transformation, generated image output and downstream distribution",
-    "model_or_product": "Grok on X",
     "platform_or_vendor": "xAI",
-    "primary_evidenced_vendors": [
-      "xAI"
-    ],
     "product_or_service": "Grok",
     "specific_model_or_runtime": "xAI Grok image generation",
-    "system_type": "generative image system",
-    "user_role": "source-image subject, requester, platform operator, recipient or moderator",
-    "vendor_cluster": [
-      "xAI"
-    ],
+    "interface_surface": "image upload, likeness transformation, generated image output and downstream distribution",
     "agent_context": {
       "agentic_status": "non-agentic",
       "agent_count": null,
       "agent_count_min": null,
       "agent_count_max": null,
       "count_basis": "not-applicable",
-      "evidence_basis": "The cited evidence describes the material system as generative image system, operating through source-image transformation / sexualised identity synthesis, rather than autonomous or delegated agent execution in the material occurrence.",
+      "evidence_basis": "The cited evidence does not describe autonomous or delegated agent execution in the material occurrence.",
       "source_record_refs": [
         "source_records[0]"
       ]
@@ -401,7 +376,7 @@
       "operational_setting": "live",
       "testing_actor": "not-applicable",
       "environment_detail": "Material occurrence in actual deployed, operational, public, consumer, institutional or adversarial use.",
-      "evidence_basis": "The cited deployment evidence describes Real-person source photographs altered into sexualised synthetic imagery. This supports actual operational or deployed use rather than a controlled evaluation.",
+      "evidence_basis": "The cited evidence places the material occurrence in live operational, public, consumer, institutional or adversarial use.",
       "source_record_refs": [
         "source_records[0]"
       ]
@@ -436,7 +411,26 @@
     ],
     "factual_basis": "The selected evidence reports: The Washington Post documented non-consensual sexualised image generation from real source photographs, including a source image of Ashley St. Clair from age 14.",
     "governance_interpretation": "The reported outputs evidence two distinct governance failures: access to a real person's source image and the capability to transform it were treated as sufficient authority for non-consensual sexualised synthesis; and a source image depicting the person at age 14 proceeded to sexualised transformation instead of activating an applicable minor-protection sexual-safety boundary.",
-    "significance_to_cam": "For CAM, the occurrence requires both identity-and-consent authority controls and under-governance controls for minors. A real person's likeness cannot acquire sexual-synthesis authority merely because it is technically available, and a minor-derived source image must activate protective sexual-safety handling before generation proceeds."
+    "significance_to_cam": "For CAM, the occurrence requires both identity-and-consent authority controls and under-governance controls for minors. A real person's likeness cannot acquire sexual-synthesis authority merely because it is technically available, and a minor-derived source image must activate protective sexual-safety handling before generation proceeds.",
+    "source_clause_analysis": {
+      "source_record_order": 1,
+      "source_url": "https://www.washingtonpost.com/technology/2026/01/06/x-grok-deepfake-sexual-abuse/",
+      "purpose": "Preserve the source-language or evidentiary propositions that materially explain VIGIL's governance interpretation. Paraphrases are concise, source-bounded and linked to the existing taxonomy adjudication.",
+      "clauses": [
+        {
+          "source_paraphrase": "Grok generated non-consensual sexualised images from photographs of real women and girls, including a source photograph depicting a person at age fourteen.",
+          "recovered_invariant_interpretation": "Access to a person's image and the ability to transform it do not confer authority to create a sexualised representation; identity, consent and minor-protection boundaries remain independently applicable.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000053",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The system treated source-image availability as sufficient authority for sexualised identity transformation despite absent consent and, in the minor example, an especially strong protected-status boundary."
+            }
+          ]
+        }
+      ]
+    }
   },
   "harm_impact_assessment": {
     "methodology_id": "VIGIL-HIM",

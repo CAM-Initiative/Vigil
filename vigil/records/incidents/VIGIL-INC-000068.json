@@ -33,23 +33,25 @@
   },
   "interpretive_provenance": {
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-09-21-AGENT-ENV-000068",
+      "review_id": "VIGIL-REVIEW-2026-09-22-INC-000068-GOVERNANCE-ASSESSMENT",
       "reviewer_type": "AI analytical reviewer",
       "reviewer_platform": "OpenAI Codex",
       "reviewer_model": "GPT-5",
-      "review_date": "2026-09-21",
-      "review_scope": "Occurrence-level agent configuration and occurrence-environment metadata migration using sources already preserved in the Incident.",
+      "review_date": "2026-09-22",
+      "review_scope": "Populate the clause-level VIGIL Governance Assessment from evidence already preserved in the Incident without reopening occurrence facts, Harm Impact or taxonomy mappings.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "structured_cross_record_reconciliation": true,
+        "taxonomy_review": true,
+        "structured_semantic_adjudication": true,
+        "cross_incident_consistency_review": true,
         "new_external_source_research": false
       },
       "known_limitations": [
-        "The review is bounded to evidence already preserved in each Incident and does not infer agent count, swarm topology, deployment state or testing ownership from silence.",
-        "Unknown classifications require later human or evidence-led review if more specific architecture evidence becomes available."
+        "The assessment is bounded to sources already preserved in the Incident and introduces no new external occurrence claims.",
+        "Existing taxonomy mappings, relationship roles and confidence values were treated as authoritative; apparent inconsistencies are flagged for human review rather than silently re-adjudicated."
       ],
-      "review_outcome": "Added canonical agent_context and occurrence_environment metadata without changing factual, taxonomy or Harm Impact adjudications."
+      "review_outcome": "Added 1 incident-specific governance-assessment row; occurrence facts, source records, Section 03 taxonomy adjudication, Harm Impact and alignment outcome remain unchanged."
     },
     "historical_reviewer_note": "Pre-Incident FM/OBS review histories are preserved without re-dating under legacy_governance_state; they are not represented as reviews of the later Incident record.",
     "human_governance_editor": {
@@ -225,6 +227,27 @@
           "Unknown classifications require later human or evidence-led review if more specific architecture evidence becomes available."
         ],
         "review_outcome": "Added canonical agent_context and occurrence_environment metadata without changing factual, taxonomy or Harm Impact adjudications."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-09-22-INC-000068-GOVERNANCE-ASSESSMENT",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-5",
+        "review_date": "2026-09-22",
+        "review_scope": "Populate the clause-level VIGIL Governance Assessment from evidence already preserved in the Incident without reopening occurrence facts, Harm Impact or taxonomy mappings.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "structured_semantic_adjudication": true,
+          "cross_incident_consistency_review": true,
+          "new_external_source_research": false
+        },
+        "known_limitations": [
+          "The assessment is bounded to sources already preserved in the Incident and introduces no new external occurrence claims.",
+          "Existing taxonomy mappings, relationship roles and confidence values were treated as authoritative; apparent inconsistencies are flagged for human review rather than silently re-adjudicated."
+        ],
+        "review_outcome": "Added 1 incident-specific governance-assessment row; occurrence facts, source records, Section 03 taxonomy adjudication, Harm Impact and alignment outcome remain unchanged."
       }
     ]
   },
@@ -244,8 +267,8 @@
     "record_id": "VIGIL-INC-000068",
     "record_type": "incident",
     "title": "Fireflies.ai faced meeting-consent and biometric-voice allegations",
-    "updated": "2026-09-21",
-    "version": "1.1.10"
+    "updated": "2026-09-22",
+    "version": "1.1.12"
   },
   "record_state": "active",
   "record_type": "incident",
@@ -323,65 +346,17 @@
   ],
   "summary": "AIID indexes allegations concerning meeting capture and participant consent in a multi-party setting, including biometric-voice concerns. The record is used to corroborate that the authority problem is not unique to one vendor.",
   "system_context": {
-    "affected_population": "Fireflies.ai meeting participants and people whose voice data was processed",
-    "comparative_vendor_notes": {},
-    "deployment_context": "Fireflies.ai allegedly processed participant speech and biometric voice information in multi-party meetings.",
-    "embodiment_status": "software-mediated / multimodal",
-    "evidence_projection": {
-      "basis": "incident-selected source metadata",
-      "inference_boundary": "Only systems evidenced for this occurrence are projected; legacy FM-wide provider and product roll-ups are excluded.",
-      "method": "INCIDENT-02 occurrence-specific system reconciliation",
-      "reconciled_on": "2026-08-30"
-    },
-    "evidence_scope": "provider-specific",
-    "evidenced_models_or_runtimes": [
-      "AI meeting transcription and voice-processing system"
-    ],
-    "evidenced_products_or_services": [
-      "Fireflies.ai meeting assistant"
-    ],
-    "evidenced_systems": [
-      {
-        "deployment_context": "Multi-party virtual meetings involving non-user participants and alleged collection of voice-related or biometric data.",
-        "evidence_source_platform": "AI Incident Database",
-        "models_or_runtimes": [
-          "AI meeting transcription and voice-processing system"
-        ],
-        "products_or_services": [
-          "Fireflies.ai"
-        ],
-        "projection_basis": "incident-source metadata",
-        "providers_or_vendors": [
-          "Fireflies.ai"
-        ],
-        "source_title": "Incident 1651: Fireflies.ai meeting-assistant consent and biometric-voice allegations",
-        "source_url": "https://incidentdatabase.ai/cite/1651/"
-      }
-    ],
-    "evidenced_vendors": [
-      "Fireflies.ai"
-    ],
-    "interaction_mode": "one participant, organiser, tool user or third party introduces or operates a capture/processing system that affects other participants",
-    "interface_surface": "multi-party audio, video, text, meeting, webinar, classroom, conference, service, or collaborative interaction capture",
-    "model_or_product": "Fireflies.ai meeting assistant",
     "platform_or_vendor": "Fireflies.ai",
-    "primary_evidenced_vendors": [
-      "Fireflies.ai"
-    ],
     "product_or_service": "Other",
     "specific_model_or_runtime": "AI meeting transcription and voice-processing system",
-    "system_type": "AI meeting capture and voice-processing system",
-    "user_role": "tool user, meeting organiser, host, account holder, deployer, participant, non-user participant, third-party capturer, affected person, guardian or authorised representative",
-    "vendor_cluster": [
-      "Fireflies.ai"
-    ],
+    "interface_surface": "multi-party audio, video, text, meeting, webinar, classroom, conference, service, or collaborative interaction capture",
     "agent_context": {
       "agentic_status": "non-agentic",
       "agent_count": null,
       "agent_count_min": null,
       "agent_count_max": null,
       "count_basis": "not-applicable",
-      "evidence_basis": "The cited evidence describes the material system as AI meeting capture and voice-processing system, operating through one participant, organiser, tool user or third party introduces or operates a capture/processing system that affects other participants, rather than autonomous or delegated agent execution in the material occurrence.",
+      "evidence_basis": "The cited evidence does not describe autonomous or delegated agent execution in the material occurrence.",
       "source_record_refs": [
         "source_records[0]"
       ]
@@ -390,7 +365,7 @@
       "operational_setting": "live",
       "testing_actor": "not-applicable",
       "environment_detail": "Material occurrence in actual deployed, operational, public, consumer, institutional or adversarial use.",
-      "evidence_basis": "The cited deployment evidence describes Fireflies.ai allegedly processed participant speech and biometric voice information in multi-party meetings. This supports actual operational or deployed use rather than a controlled evaluation.",
+      "evidence_basis": "The cited evidence places the material occurrence in live operational, public, consumer, institutional or adversarial use.",
       "source_record_refs": [
         "source_records[0]"
       ]
@@ -424,7 +399,26 @@
     ],
     "factual_basis": "The selected evidence reports: AIID indexes allegations concerning meeting capture and participant consent in a multi-party setting, including biometric-voice concerns. The record is used to corroborate that the authority problem is not unique to one vendor.",
     "governance_interpretation": "The allegations concern a meeting assistant processing participant speech and biometric voice information without independently adequate authority for every affected participant.",
-    "significance_to_cam": "For CAM, this occurrence shows that the allegations concern a meeting assistant processing participant speech and biometric voice information without independently adequate authority for every affected participant. Controls should preserve evidence, authority state, escalation and contestability across the full affected pathway."
+    "significance_to_cam": "For CAM, this occurrence shows that the allegations concern a meeting assistant processing participant speech and biometric voice information without independently adequate authority for every affected participant. Controls should preserve evidence, authority state, escalation and contestability across the full affected pathway.",
+    "source_clause_analysis": {
+      "source_record_order": 1,
+      "source_url": "https://incidentdatabase.ai/cite/1651/",
+      "purpose": "Preserve the source-language or evidentiary propositions that materially explain VIGIL's governance interpretation. Paraphrases are concise, source-bounded and linked to the existing taxonomy adjudication.",
+      "clauses": [
+        {
+          "source_paraphrase": "Fireflies.ai faced allegations that a meeting assistant processed participants' speech and biometric voice information without independently adequate consent from each person.",
+          "recovered_invariant_interpretation": "Authority held by the tool user or organiser must not be treated as authority over the identifiable speech and biometric interests of other meeting participants.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000054",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The alleged processing crossed participant boundaries by deriving capture authority for all affected voices from one party's use of the assistant."
+            }
+          ]
+        }
+      ]
+    }
   },
   "harm_impact_assessment": {
     "methodology_id": "VIGIL-HIM",

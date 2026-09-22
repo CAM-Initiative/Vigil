@@ -27,23 +27,25 @@
   },
   "interpretive_provenance": {
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-09-21-AGENT-ENV-000036",
+      "review_id": "VIGIL-REVIEW-2026-09-22-INC-000036-GOVERNANCE-ASSESSMENT",
       "reviewer_type": "AI analytical reviewer",
       "reviewer_platform": "OpenAI Codex",
       "reviewer_model": "GPT-5",
-      "review_date": "2026-09-21",
-      "review_scope": "Occurrence-level agent configuration and occurrence-environment metadata migration using sources already preserved in the Incident.",
+      "review_date": "2026-09-22",
+      "review_scope": "Populate the clause-level VIGIL Governance Assessment from evidence already preserved in the Incident without reopening occurrence facts, Harm Impact or taxonomy mappings.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "structured_cross_record_reconciliation": true,
+        "taxonomy_review": true,
+        "structured_semantic_adjudication": true,
+        "cross_incident_consistency_review": true,
         "new_external_source_research": false
       },
       "known_limitations": [
-        "The review is bounded to evidence already preserved in each Incident and does not infer agent count, swarm topology, deployment state or testing ownership from silence.",
-        "Unknown classifications require later human or evidence-led review if more specific architecture evidence becomes available."
+        "The assessment is bounded to sources already preserved in the Incident and introduces no new external occurrence claims.",
+        "Existing taxonomy mappings, relationship roles and confidence values were treated as authoritative; apparent inconsistencies are flagged for human review rather than silently re-adjudicated."
       ],
-      "review_outcome": "Added canonical agent_context and occurrence_environment metadata without changing factual, taxonomy or Harm Impact adjudications."
+      "review_outcome": "Added 1 incident-specific governance-assessment row; occurrence facts, source records, Section 03 taxonomy adjudication, Harm Impact and alignment outcome remain unchanged."
     },
     "review_history": [
       {
@@ -235,6 +237,27 @@
           "Unknown classifications require later human or evidence-led review if more specific architecture evidence becomes available."
         ],
         "review_outcome": "Added canonical agent_context and occurrence_environment metadata without changing factual, taxonomy or Harm Impact adjudications."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-09-22-INC-000036-GOVERNANCE-ASSESSMENT",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-5",
+        "review_date": "2026-09-22",
+        "review_scope": "Populate the clause-level VIGIL Governance Assessment from evidence already preserved in the Incident without reopening occurrence facts, Harm Impact or taxonomy mappings.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "structured_semantic_adjudication": true,
+          "cross_incident_consistency_review": true,
+          "new_external_source_research": false
+        },
+        "known_limitations": [
+          "The assessment is bounded to sources already preserved in the Incident and introduces no new external occurrence claims.",
+          "Existing taxonomy mappings, relationship roles and confidence values were treated as authoritative; apparent inconsistencies are flagged for human review rather than silently re-adjudicated."
+        ],
+        "review_outcome": "Added 1 incident-specific governance-assessment row; occurrence facts, source records, Section 03 taxonomy adjudication, Harm Impact and alignment outcome remain unchanged."
       }
     ]
   },
@@ -254,8 +277,8 @@
     "record_id": "VIGIL-INC-000036",
     "record_type": "incident",
     "title": "ChatGPT refused a user’s image-generation request under an ambiguous classification",
-    "updated": "2026-09-21",
-    "version": "1.1.10"
+    "updated": "2026-09-22",
+    "version": "1.1.12"
   },
   "record_state": "active",
   "record_type": "incident",
@@ -333,65 +356,17 @@
   ],
   "summary": "The screenshot showed a prompt requesting a new character with the same character, pose, face, and style, wearing green cargo pants, black sleeveless tank top, sneakers, and an open military camo sleeveless jacket. The visible refusal rationale referred to harassment, discrimination, or bullying despite no obvious match between the visible request and the stated category.",
   "system_context": {
-    "affected_population": "People and organisations directly affected by this occurrence.",
-    "comparative_vendor_notes": {},
-    "deployment_context": "Consumer-facing image-generation workflow involving a character prompt and user-facing refusal message.",
-    "embodiment_status": "non-embodied",
-    "evidence_projection": {
-      "basis": "incident-selected source metadata",
-      "inference_boundary": "Only systems evidenced for this occurrence are projected; legacy FM-wide provider and product roll-ups are excluded.",
-      "method": "INCIDENT-02 occurrence-specific system reconciliation",
-      "reconciled_on": "2026-08-30"
-    },
-    "evidence_scope": "provider-specific",
-    "evidenced_models_or_runtimes": [
-      "Reported as GPT-5.5 on a Pro account; exact image-generation runtime and safety-classifier stack not independently confirmed"
-    ],
-    "evidenced_products_or_services": [
-      "ChatGPT image generation"
-    ],
-    "evidenced_systems": [
-      {
-        "deployment_context": "Consumer-facing image-generation workflow involving a character prompt and user-facing refusal message.",
-        "evidence_source_platform": "X",
-        "models_or_runtimes": [
-          "Reported as GPT-5.5 on a Pro account; exact image-generation runtime and safety-classifier stack not independently confirmed"
-        ],
-        "products_or_services": [
-          "ChatGPT image generation"
-        ],
-        "projection_basis": "incident-source metadata",
-        "providers_or_vendors": [
-          "OpenAI"
-        ],
-        "source_title": "User-reported ChatGPT image-generation refusal screenshot",
-        "source_url": "https://x.com/linkaixa/status/2067386070765863004"
-      }
-    ],
-    "evidenced_vendors": [
-      "OpenAI"
-    ],
-    "interaction_mode": "text-to-image or image-iteration workflow involving character description, style continuity, clothing changes, and safety-mediated generation refusal",
-    "interface_surface": "ChatGPT image-generation prompt and refusal interface",
-    "model_or_product": "ChatGPT image generation",
     "platform_or_vendor": "OpenAI",
-    "primary_evidenced_vendors": [
-      "OpenAI"
-    ],
     "product_or_service": "ChatGPT",
     "specific_model_or_runtime": "Reported as GPT-5.5 on a Pro account; exact image-generation runtime and safety-classifier stack not independently confirmed",
-    "system_type": "frontier multimodal AI system with image-generation safety classification and user-facing refusal messaging",
-    "user_role": "consumer user, image-generation user, creative user, character-design user, platform auditor, or VIGIL reporter",
-    "vendor_cluster": [
-      "OpenAI"
-    ],
+    "interface_surface": "ChatGPT image-generation prompt and refusal interface",
     "agent_context": {
       "agentic_status": "non-agentic",
       "agent_count": null,
       "agent_count_min": null,
       "agent_count_max": null,
       "count_basis": "not-applicable",
-      "evidence_basis": "The cited evidence describes the material system as frontier multimodal AI system with image-generation safety classification and user-facing refusal messaging, operating through text-to-image or image-iteration workflow involving character description, style continuity, clothing changes, and safety-mediated generation refusal, rather than autonomous or delegated agent execution in the material occurrence.",
+      "evidence_basis": "The cited evidence does not describe autonomous or delegated agent execution in the material occurrence.",
       "source_record_refs": [
         "source_records[0]"
       ]
@@ -400,7 +375,7 @@
       "operational_setting": "live",
       "testing_actor": "not-applicable",
       "environment_detail": "Material occurrence in actual deployed, operational, public, consumer, institutional or adversarial use.",
-      "evidence_basis": "The cited deployment evidence describes Consumer-facing image-generation workflow involving a character prompt and user-facing refusal message. This supports actual operational or deployed use rather than a controlled evaluation.",
+      "evidence_basis": "The cited evidence places the material occurrence in live operational, public, consumer, institutional or adversarial use.",
       "source_record_refs": [
         "source_records[0]"
       ]
@@ -434,7 +409,26 @@
     ],
     "factual_basis": "The selected evidence reports: The screenshot showed a prompt requesting a new character with the same character, pose, face, and style, wearing green cargo pants, black sleeveless tank top, sneakers, and an open military camo sleeveless jacket. The visible refusal rationale referred to harassment, discrimination, or bullying despite no obvious match between the visible request and the stated category.",
     "governance_interpretation": "The visible refusal attributed the block to harassment, discrimination, or bullying, but the preserved visible prompt evidence does not establish that specific causal or policy mechanism. The hidden classifier, transformed-prompt, earlier-context, renderer, or fallback-routing state remains unresolved.",
-    "significance_to_cam": "For CAM, this occurrence shows that a refusal explanation can overstate mechanism certainty when the evidence available to the user does not support the stated misconduct category. Governance should preserve uncertainty and distinguish the observed refusal outcome from an inferred causal mechanism."
+    "significance_to_cam": "For CAM, this occurrence shows that a refusal explanation can overstate mechanism certainty when the evidence available to the user does not support the stated misconduct category. Governance should preserve uncertainty and distinguish the observed refusal outcome from an inferred causal mechanism.",
+    "source_clause_analysis": {
+      "source_record_order": 1,
+      "source_url": "https://x.com/linkaixa/status/2067386070765863004",
+      "purpose": "Preserve the source-language or evidentiary propositions that materially explain VIGIL's governance interpretation. Paraphrases are concise, source-bounded and linked to the existing taxonomy adjudication.",
+      "clauses": [
+        {
+          "source_paraphrase": "ChatGPT visibly attributed an image-generation refusal to harassment, discrimination or bullying, although the preserved visible request did not establish that category.",
+          "recovered_invariant_interpretation": "A user-facing causal or policy explanation must correspond to the mechanism actually applied, or disclose uncertainty when hidden context and routing prevent that attribution.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000047",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The refusal presented a specific policy cause without inspectable support for that cause, leaving classifier, transformed-prompt, context and fallback alternatives unresolved."
+            }
+          ]
+        }
+      ]
+    }
   },
   "harm_impact_assessment": {
     "methodology_id": "VIGIL-HIM",

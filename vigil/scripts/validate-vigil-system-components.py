@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import re
 import sys
 from pathlib import Path
 from typing import Any
@@ -19,9 +20,12 @@ def load_json(path: Path) -> Any:
         return json.load(handle)
 
 
-def system_context_contract() -> tuple[set[str], set[str], set[str]]:
+def system_context_contract() -> tuple[set[str], set[str], set[str], set[str]]:
     schema = load_json(SCHEMA_PATH)
     rules = schema.get("system_context_rules", {})
+    fields = set(rules.get("required_fields", [])) | set(rules.get("optional_fields", []))
+    if not fields:
+        raise ValueError("system_context_rules must define canonical fields")
     values = rules.get("allowed_component_role_values", [])
     if not isinstance(values, list) or not values:
         raise ValueError("VIGIL.Schema.json must define non-empty allowed_component_role_values")
@@ -34,7 +38,18 @@ def system_context_contract() -> tuple[set[str], set[str], set[str]]:
     )
     if not agent_values or not environment_values:
         raise ValueError("VIGIL.Schema.json must define agent and occurrence-environment values")
-    return roles, agent_values, environment_values
+    return fields, roles, agent_values, environment_values
+
+
+def duplicate_semicolon_clauses(value: Any) -> list[str]:
+    if not isinstance(value, str) or ";" not in value:
+        return []
+    clauses = [
+        re.sub(r"[^a-z0-9]+", " ", clause.casefold()).strip()
+        for clause in value.split(";")
+    ]
+    clauses = [clause for clause in clauses if clause]
+    return sorted({clause for clause in clauses if clauses.count(clause) > 1})
 
 
 def record_files() -> list[Path]:
@@ -48,7 +63,7 @@ def record_files() -> list[Path]:
 def validate() -> int:
     errors: list[str] = []
     try:
-        allowed, agent_values, environment_values = system_context_contract()
+        fields, allowed, agent_values, environment_values = system_context_contract()
     except Exception as exc:  # noqa: BLE001
         print(f"VIGIL component-role validation failed: {exc}", file=sys.stderr)
         return 1
@@ -68,6 +83,18 @@ def validate() -> int:
         context = record.get("system_context")
         if not isinstance(context, dict):
             continue
+        unexpected = sorted(set(context) - fields)
+        if unexpected:
+            errors.append(
+                f"{path}: system_context contains non-canonical fields: {', '.join(unexpected)}"
+            )
+        for field in ("specific_model_or_runtime", "interface_surface"):
+            duplicates = duplicate_semicolon_clauses(context.get(field))
+            if duplicates:
+                errors.append(
+                    f"{path}: system_context.{field} repeats semicolon-delimited clauses: "
+                    f"{', '.join(duplicates)}"
+                )
         agent = context.get("agent_context")
         environment = context.get("occurrence_environment")
         if not isinstance(agent, dict) or agent.get("agentic_status") not in agent_values:
