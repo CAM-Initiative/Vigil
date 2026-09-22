@@ -335,7 +335,6 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         self.assertEqual(neutrality_exemplar["exemplar_type"], "ambiguous-boundary")
         self.assertEqual(neutrality_exemplar["exemplar_status"], "admitted")
 
-
     def test_identity_evaluative_family_has_bounded_peer_mechanisms(self):
         documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
         identity = next(item for item in documents if item["family"]["family_id"] == "VIGIL-FF-0015")
@@ -347,14 +346,23 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         rendering = identity["classes"][1]
         distributed = identity["classes"][2]
 
-        self.assertEqual(override["invariant_exemplars"][0]["linked_incident_id"], "VIGIL-INC-000129")
-        self.assertEqual(override["invariant_exemplars"][0]["exemplar_type"], "successful-invariant")
+        self.assertNotIn(
+            "VIGIL-INC-000129",
+            {item["linked_incident_id"] for item in override.get("invariant_exemplars", [])},
+        )
         self.assertTrue(
             any(
                 relation["type"] == "distinguish_from" and relation["target_id"] == "VIGIL-FC-000001"
                 for relation in override["relationships"]
             )
         )
+        self.assertTrue(
+            any(
+                relation["type"] == "distinguish_from" and relation["target_id"] == "VIGIL-FC-000078"
+                for relation in override["relationships"]
+            )
+        )
+        self.assertIn("continuity-state validity", identity["family"]["exclusion_rule"].lower())
 
         self.assertEqual(rendering["class_code"], "PRAGMATIC_CONSTRAINT_RENDERING_FAILURE")
         self.assertEqual(rendering["name"], "Pragmatic Constraint Rendering Failure")
@@ -371,7 +379,7 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
             item["target_id"] for item in rendering["relationships"] if item["type"] == "distinguish_from"
         }
         self.assertTrue(
-            {"VIGIL-FC-000005", "VIGIL-FC-000013", "VIGIL-FC-000040"}.issubset(rendering_neighbours)
+            {"VIGIL-FC-000005", "VIGIL-FC-000013", "VIGIL-FC-000040", "VIGIL-FC-000078"}.issubset(rendering_neighbours)
         )
 
         self.assertEqual(distributed["class_code"], "DISTRIBUTED_ROLE_OPTIMISATION_COLLAPSE")
@@ -404,7 +412,6 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         )
         self.assertEqual(distributed_exemplar["exemplar_type"], "ambiguous-boundary")
         self.assertEqual(distributed_exemplar["exemplar_status"], "admitted")
-
 
     def test_oversight_hollowing_migration_is_partially_resolved_without_collapsing_split(self):
         ledger = json.loads(MODULE.MIGRATION_LEDGER.read_text(encoding="utf-8"))
@@ -543,6 +550,7 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         del index["standard"]["publication_date"]
         self.write(MODULE.INDEX_PATH, index)
         self.assertTrue(any("standard.publication_date must be a valid" in error for error in self.errors()))
+
     def test_selectable_classes_and_non_selectable_subtypes_are_disjoint(self):
         index = json.loads(MODULE.INDEX_PATH.read_text(encoding="utf-8"))
         documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
@@ -559,23 +567,34 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         self.assertEqual(set(index["removed_ids"]), set(mappings))
         self.assertTrue(selectable.isdisjoint(mappings))
 
-    def test_work_state_continuity_includes_defective_state_carryforward_boundary(self):
+    def test_continuity_state_integrity_includes_validity_and_baseline_reset_boundary(self):
         documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
-        work_state = next(document for document in documents if document["family"]["family_id"] == "VIGIL-FF-0006")
+        continuity = next(document for document in documents if document["family"]["family_id"] == "VIGIL-FF-0006")
+        self.assertEqual(continuity["family"]["family_code"], "CONTINUITY_STATE_INTEGRITY")
+        self.assertEqual(continuity["family"]["name"], "Continuity-State Integrity Failures")
         self.assertEqual(
-            [item["class_id"] for item in work_state["classes"]],
+            [item["class_id"] for item in continuity["classes"]],
             ["VIGIL-FC-000034", "VIGIL-FC-000035", "VIGIL-FC-000036", "VIGIL-FC-000056", "VIGIL-FC-000078"],
         )
-        family_invariant = work_state["family"]["invariant"].lower()
-        self.assertIn("continuity does not confer validity", family_invariant)
+        family_invariant = continuity["family"]["invariant"].lower()
+        for boundary in ("applicable state", "continuity does not confer validity", "reversion to an applicable baseline"):
+            self.assertIn(boundary, family_invariant)
+        self.assertIn("identity-", continuity["family"]["inclusion_rule"].lower())
+        self.assertIn("persona", continuity["family"]["inclusion_rule"].lower())
 
-        carryforward = next(item for item in work_state["classes"] if item["class_id"] == "VIGIL-FC-000078")
-        recognition = " ".join(carryforward["recognition"]["required_conditions"]).lower()
+        validity = next(item for item in continuity["classes"] if item["class_id"] == "VIGIL-FC-000078")
+        self.assertEqual(validity["class_code"], "CONTINUITY_STATE_VALIDITY_FAILURE")
+        self.assertEqual(validity["name"], "Continuity-State Validity Failure")
+        self.assertIn("DEFECTIVE_STATE_CARRYFORWARD_FAILURE", validity["aliases"])
+        self.assertIn("Defective-State Carryforward Failure", validity["aliases"])
+        recognition = " ".join(validity["recognition"]["required_conditions"]).lower()
         for boundary in ("continuity transition", "revalidation", "presumptively valid", "materially contributes"):
             self.assertIn(boundary, recognition)
-        exclusions = " ".join(carryforward["exclusions"]).lower()
+        exclusions = " ".join(validity["exclusions"]).lower()
         for neighbour in (
             "restoration-state integrity failure",
+            "instruction-induced identity override",
+            "pragmatic constraint rendering failure",
             "control-plane authority crossover",
             "source-authority confusion",
             "objective–pathway authority dominance",
@@ -583,12 +602,14 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         ):
             self.assertIn(neighbour, exclusions)
 
-
-        exemplars = {item["linked_incident_id"]: item for item in carryforward.get("invariant_exemplars", [])}
+        exemplars = {item["linked_incident_id"]: item for item in validity.get("invariant_exemplars", [])}
         self.assertEqual(exemplars["VIGIL-INC-000136"]["exemplar_type"], "successful-invariant")
+        self.assertEqual(exemplars["VIGIL-INC-000129"]["exemplar_type"], "successful-invariant")
+        self.assertIn("baseline", exemplars["VIGIL-INC-000129"]["invariant_demonstrated"].lower())
         self.assertEqual(exemplars["VIGIL-INC-000130"]["exemplar_type"], "ambiguous-boundary")
         self.assertEqual(exemplars["VIGIL-INC-000138"]["exemplar_type"], "ambiguous-boundary")
         self.assertTrue(all(exemplars[item]["exemplar_status"] == "admitted" for item in exemplars))
+
     def test_objective_pursuit_integrity_family_has_bounded_peer_mechanisms(self):
         documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
         objective = next(document for document in documents if document["family"]["family_id"] == "VIGIL-FF-0012")
@@ -606,6 +627,7 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         self.assertIn("intended success condition", reward["definition"].lower())
         self.assertIn("safe", persistence["plain_english"].lower())
         self.assertIn("feasible and admissible completion pathway", persistence["definition"].lower())
+
     def test_identity_representation_authority_class_is_portable_and_bounded(self):
         documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
         classes = {item["class_id"]: item for document in documents for item in document["classes"]}
@@ -667,8 +689,7 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         self.assertEqual(relations["VIGIL-FC-000065"], "can_cooccur_with")
         self.assertEqual(relations["VIGIL-FC-000052"], "distinguish_from")
 
-
-    def test_source_authority_successful_exemplar_is_reciprocal(self):
+    def test_source_authority_successful_exemplar_requires_explicit_authority_evidence(self):
         documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
         authority = next(item for item in documents if item["family"]["family_id"] == "VIGIL-FF-0001")
         source_authority = next(
@@ -689,24 +710,17 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
             exemplar["governance_placement"]["section_or_control"],
         )
         self.assertIn("non-authorising", exemplar["invariant_demonstrated"].lower())
-
-        astra_source_exemplar = next(
-            item for item in exemplars if item["linked_incident_id"] == "VIGIL-INC-000129"
-        )
-        self.assertEqual(astra_source_exemplar["exemplar_type"], "successful-invariant")
-        self.assertEqual(astra_source_exemplar["exemplar_status"], "admitted")
+        self.assertNotIn("VIGIL-INC-000129", {item["linked_incident_id"] for item in exemplars})
 
         laundering = next(
             item for item in authority["classes"] if item["class_id"] == "VIGIL-FC-000005"
         )
-        laundering_exemplar = next(
-            item for item in laundering.get("invariant_exemplars", [])
-            if item["linked_incident_id"] == "VIGIL-INC-000129"
+        self.assertNotIn(
+            "VIGIL-INC-000129",
+            {item["linked_incident_id"] for item in laundering.get("invariant_exemplars", [])},
         )
-        self.assertEqual(laundering_exemplar["exemplar_type"], "successful-invariant")
-        self.assertEqual(laundering_exemplar["exemplar_status"], "admitted")
 
-    def test_control_plane_crossover_success_exemplars_cover_astra_handoff_boundaries(self):
+    def test_control_plane_crossover_success_exemplar_retains_explicit_rejection_case(self):
         documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
         authority = next(item for item in documents if item["family"]["family_id"] == "VIGIL-FF-0001")
         crossover = next(
@@ -717,10 +731,8 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
             for item in crossover.get("invariant_exemplars", [])
         }
         self.assertEqual(exemplars["VIGIL-INC-000136"]["exemplar_type"], "successful-invariant")
-        self.assertEqual(exemplars["VIGIL-INC-000129"]["exemplar_type"], "successful-invariant")
+        self.assertNotIn("VIGIL-INC-000129", exemplars)
         self.assertIn("BREACH ALERT", exemplars["VIGIL-INC-000136"]["title"])
-        self.assertIn("non-operative", exemplars["VIGIL-INC-000129"]["invariant_demonstrated"])
-
 
 
 if __name__ == "__main__":
