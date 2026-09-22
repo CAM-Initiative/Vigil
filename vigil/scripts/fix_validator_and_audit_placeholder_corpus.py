@@ -27,6 +27,7 @@ SOURCE_TYPE_MAP = {
     "official post-incident statement": "official announcement",
     "official product and safety announcement": "official announcement",
     "regulatory guidance": "government report",
+    "technical standard guidance": "standards document",
     "legislation": "standards document",
     "official report": "technical report",
 }
@@ -74,7 +75,6 @@ def placeholder_signals(d):
     factual = str(assessment.get("factual_basis", ""))
     governance = str(assessment.get("governance_interpretation", ""))
     significance = str(assessment.get("significance_to_cam", ""))
-    reviews = (d.get("interpretive_provenance") or {}).get("review_history") or []
     current = (d.get("interpretive_provenance") or {}).get("current_ai_review") or {}
 
     if len(sources) <= 1:
