@@ -25,6 +25,7 @@ jobs:
         run: |
           python vigil/scripts/rebuild_incidents_002_020_evidence.py
           python vigil/scripts/normalize_incidents_002_020_migration.py
+          python vigil/scripts/finalize_incidents_002_020_migration.py
       - name: Validate affected VIGIL records
         run: |
           set +e
@@ -50,5 +51,5 @@ jobs:
             echo "No record changes to commit"
             exit 0
           fi
-          git commit -m "data: rebuild INC-000002 to INC-000020 evidence assessments"
+          git commit -m "fix: finalize INC-000002 to INC-000020 evidence rebuild"
           git push origin HEAD:fix/source-clause-taxonomy-assessments
