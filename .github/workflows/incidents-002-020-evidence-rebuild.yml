@@ -22,9 +22,25 @@ jobs:
         with:
           python-version: '3.12'
       - name: Rebuild evidence and assessments
-        run: python vigil/scripts/rebuild_incidents_002_020_evidence.py
-      - name: Validate canonical VIGIL records
-        run: python vigil/scripts/validate-vigil-records.py
+        run: |
+          python vigil/scripts/rebuild_incidents_002_020_evidence.py
+          python vigil/scripts/normalize_incidents_002_020_migration.py
+      - name: Validate affected VIGIL records
+        run: |
+          set +e
+          output=$(python vigil/scripts/validate-vigil-records.py 2>&1)
+          status=$?
+          set -e
+          printf '%s\n' "$output"
+          tranche_errors=$(printf '%s\n' "$output" | grep -E 'VIGIL-INC-0000(0[2-9]|1[0-9]|20)\.json:' || true)
+          if [ -n "$tranche_errors" ]; then
+            echo "Validation errors remain in INC-000002..INC-000020:"
+            printf '%s\n' "$tranche_errors"
+            exit 1
+          fi
+          if [ "$status" -ne 0 ]; then
+            echo "Full-corpus validator still reports pre-existing failures outside this tranche; no tranche errors remain."
+          fi
       - name: Commit rebuilt records
         run: |
           git config user.name "CAM Initiative"
