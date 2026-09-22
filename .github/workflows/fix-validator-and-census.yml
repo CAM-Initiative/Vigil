@@ -1,0 +1,37 @@
+name: Fix validator defects and census placeholder corpus
+
+on:
+  push:
+    branches:
+      - fix/source-clause-taxonomy-assessments
+    paths:
+      - .github/workflows/fix-validator-and-census.yml
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/source-clause-taxonomy-assessments
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Repair known validator defects and build census
+        run: python vigil/scripts/fix_validator_and_audit_placeholder_corpus.py
+      - name: Validate full canonical corpus
+        run: python vigil/scripts/validate-vigil-records.py
+      - name: Commit repairs and census
+        run: |
+          git config user.name "CAM Initiative"
+          git config user.email "aeon.tier@protonmail.com"
+          git add vigil/records/incidents/VIGIL-INC-000001.json \
+                  vigil/records/incidents/VIGIL-INC-000065.json \
+                  vigil/records/incidents/VIGIL-INC-000113.json \
+                  vigil/docs/reviews/2026-09-22-placeholder-corpus-rewrite-census.md
+          git commit -m "fix: repair validators and census placeholder corpus"
+          git push origin HEAD:fix/source-clause-taxonomy-assessments
