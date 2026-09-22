@@ -1,0 +1,38 @@
+name: One-shot INC-000002 to INC-000020 evidence rebuild
+
+on:
+  push:
+    branches:
+      - fix/source-clause-taxonomy-assessments
+    paths:
+      - .github/workflows/incidents-002-020-evidence-rebuild.yml
+
+permissions:
+  contents: write
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/source-clause-taxonomy-assessments
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Rebuild evidence and assessments
+        run: python vigil/scripts/rebuild_incidents_002_020_evidence.py
+      - name: Validate canonical VIGIL records
+        run: python vigil/scripts/validate-vigil-records.py
+      - name: Commit rebuilt records
+        run: |
+          git config user.name "CAM Initiative"
+          git config user.email "aeon.tier@protonmail.com"
+          git add vigil/records/incidents/VIGIL-INC-0000{02..20}.json
+          if git diff --cached --quiet; then
+            echo "No record changes to commit"
+            exit 0
+          fi
+          git commit -m "data: rebuild INC-000002 to INC-000020 evidence assessments"
+          git push origin HEAD:fix/source-clause-taxonomy-assessments
