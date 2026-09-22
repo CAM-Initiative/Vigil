@@ -9,14 +9,14 @@
   },
   "family": {
     "family_id": "VIGIL-FF-0006",
-    "family_code": "WORK_STATE_CONTINUITY",
-    "name": "Work-State Continuity Integrity Failures",
+    "family_code": "CONTINUITY_STATE_INTEGRITY",
+    "name": "Continuity-State Integrity Failures",
     "status": "beta",
     "abstraction": "family",
-    "version": "0.1.4",
-    "plain_english": "Material work or shared interaction state needed to continue correctly is lost, detached, unsynchronised, restored in an unusable state, or carried forward after its validity should have been challenged across interruption, transition, or coordinated participation.",
-    "definition": "Failures in which task state, intermediate work, dependencies, checkpoints, restoration context, or shared interaction state necessary for correct continuation are not durably anchored, preserved, recovered, synchronised, made usable, or kept appropriately challengeable across interruption, transfer, restart, environment transition, or coordinated multi-participant interaction. This includes continuity transitions that preserve materially defective, contradicted, stale, improperly scoped, or otherwise unreliable inherited state as the basis for continued action without proportionate revalidation, repair, qualification, quarantine, rollback, or reset.",
-    "invariant": "Material work and shared interaction state necessary for correct continuation must remain durably anchored, recoverable, synchronised, usable, and validity-bounded across interruption, transition, or coordinated participation. Continuity does not confer validity: inherited state must remain challengeable, and material evidence of defect, contradiction, changed applicability, or invalid scope must permit revalidation, repair, qualification, quarantine, rollback, or reset before that state governs continued execution.",
+    "version": "0.1.5",
+    "plain_english": "Material state needed to continue correctly is lost, detached, unsynchronised, restored in an unusable form, or allowed to remain governing after its validity or applicability should have been challenged across interruption, transition, or coordinated participation.",
+    "definition": "Failures in which material task, work, dependency, checkpoint, restoration, shared-interaction, identity-relevant, evaluative, role, or other continuity-bearing state necessary for correct continuation is not durably anchored, preserved, recovered, synchronised, made usable, or kept appropriately validity-bounded across interruption, transfer, restart, compaction, memory boundary, environment transition, or coordinated multi-participant interaction. This includes continuity transitions that preserve materially defective, contradicted, stale, transient, improperly scoped, no-longer-applicable, or otherwise unreliable inherited state as the basis for continued action without proportionate revalidation, repair, qualification, quarantine, rollback, reset, or reversion to an applicable baseline.",
+    "invariant": "Material state necessary for correct continuation must remain durably anchored, recoverable, synchronised, usable, and validity-bounded across interruption, transition, or coordinated participation. Applicable state that remains necessary must persist with sufficient fidelity to support continuation. Continuity does not confer validity or permanence: inherited state must remain challengeable, and material evidence of defect, contradiction, changed applicability, expired local scope, or invalid scope must permit revalidation, repair, qualification, quarantine, rollback, reset, or reversion to an applicable baseline before that state governs continued execution.",
     "scope": [
       "long-running AI tasks",
       "agentic and multi-agent workflows",
@@ -24,11 +24,16 @@
       "multi-party synthetic conversational interactions",
       "checkpointed computation",
       "workspace and environment transitions",
-      "handoff and recovery operations"
+      "handoff, recovery and restart operations",
+      "context compaction and memory-boundary transitions",
+      "identity-bearing, evaluative, role or persona state where continuity validity or applicability is the operative mechanism"
     ],
-    "inclusion_rule": "Use this family when the primary structural failure is loss, detachment, non-persistence, unsynchronised coordination, unfaithful restoration, or continuity-mediated carryforward of materially defective or no-longer-valid work or shared interaction state required to continue a task or coordinated interaction correctly.",
-    "exclusion_rule": "Do not use this family for access/session ambiguity, interpersonal or persona continuity, missing provenance of an otherwise usable artefact, or an ordinary task or conversational error where the material continuation or coordination state remains intact and the transition does not materially contribute to persistence of a defective trajectory.",
-    "aliases": [],
+    "inclusion_rule": "Use this family when the primary structural failure is loss, detachment, non-persistence, unsynchronised coordination, unfaithful restoration, or continuity-mediated carryforward of materially defective, transient, expired, improperly scoped, or no-longer-valid state required to continue a task, interaction, or governing baseline correctly. The content of the state does not by itself determine family placement; identity- or persona-like state belongs here when the operative mechanism is validity, persistence, restoration, reset, or applicability across a continuity boundary.",
+    "exclusion_rule": "Do not use this family for access/session ambiguity, ordinary interpersonal, stylistic or persona variation where no continuity transition materially affects preservation or validity, missing provenance of an otherwise usable artefact, or an ordinary task or conversational error where continuation state remains intact and the transition does not materially contribute. Where a local instruction independently overrides identity/evaluative state, assess Identity & Evaluative Integrity. Where a transformation materially misrenders a governing constraint, assess the applicable representation mechanism even if continuity-state validity also applies.",
+    "aliases": [
+      "WORK_STATE_CONTINUITY",
+      "Work-State Continuity Integrity Failures"
+    ],
     "allowed_class_ids": [
       "VIGIL-FC-000034",
       "VIGIL-FC-000035",
@@ -41,7 +46,7 @@
       "WORK_STATE_PERSISTENCE_FAILURE",
       "RESTORATION_STATE_INTEGRITY_FAILURE",
       "SYNTHETIC_CONVERSATIONAL_TURN_STATE_COORDINATION_FAILURE",
-      "DEFECTIVE_STATE_CARRYFORWARD_FAILURE"
+      "CONTINUITY_STATE_VALIDITY_FAILURE"
     ]
   },
   "classes": [
@@ -253,64 +258,80 @@
     },
     {
       "class_id": "VIGIL-FC-000078",
-      "class_code": "DEFECTIVE_STATE_CARRYFORWARD_FAILURE",
+      "class_code": "CONTINUITY_STATE_VALIDITY_FAILURE",
       "family_id": "VIGIL-FF-0006",
-      "name": "Defective-State Carryforward Failure",
+      "name": "Continuity-State Validity Failure",
       "status": "beta",
       "abstraction": "class",
-      "plain_english": "A handoff or continuity mechanism carries a materially defective or no-longer-valid trajectory forward as the basis for continued action instead of making it challengeable, repairable, or resettable.",
-      "definition": "A failure in which material state is preserved or inherited across a continuity transition and is materially defective, contradicted, stale, improperly scoped, or otherwise unreliable for continued use, yet the receiving system treats that inherited state as a sufficient basis for continued reasoning or execution without proportionate revalidation, repair, qualification, quarantine, rollback, or reset. The transition must materially contribute to persistence of the defective trajectory; continuity itself must not be treated as evidence that inherited state remains valid.",
-      "invariant": "Continuity does not confer validity. State inherited across a handoff, compaction, checkpoint, restart, restoration, memory boundary, or other continuity transition must remain challengeable against current evidence, authority, scope, task requirements, and material contradictions. Where inherited state is materially defective or no longer applicable, continued execution requires proportionate revalidation, repair, qualification, quarantine, rollback, reset, or another adequate basis for relying on that state.",
+      "plain_english": "A continuity transition lets inherited state govern the successor merely because it persisted, even though that state is defective, expired, transient, improperly scoped, no longer applicable, or otherwise requires reassessment or reset.",
+      "definition": "A failure in which material state is preserved or inherited across a continuity transition and is materially defective, contradicted, stale, transient, improperly scoped, no longer applicable, or otherwise unreliable for the continuation for which it is used, yet the receiving system treats that inherited state as a sufficient basis for continued reasoning or execution without proportionate revalidation, repair, qualification, quarantine, rollback, reset, reversion to an applicable baseline, or another adequate validity basis. The transition must materially contribute to persistence of the invalid or inapplicable trajectory; continuity itself must not be treated as evidence that inherited state remains valid or governing.",
+      "invariant": "Continuity does not confer validity or permanence. State inherited across a handoff, compaction, checkpoint, restart, restoration, memory boundary, or other continuity transition must remain challengeable against current evidence, authority, scope, task requirements, material contradictions, and current applicability. State that remains valid and necessary should remain available to govern continuation; state that is materially defective, transient, expired, improperly scoped, or no longer applicable must not become or remain the governing baseline solely through inheritance. Continued execution requires proportionate revalidation, repair, qualification, quarantine, rollback, reset, reversion to an applicable baseline, or another adequate basis for relying on inherited state.",
       "recognition": {
         "required_conditions": [
           "A handoff, compaction, checkpoint, restart, restoration, memory boundary, or other continuity transition transfers or preserves material state for subsequent reasoning or execution.",
-          "The inherited state is materially defective, contradicted, stale, improperly scoped, or otherwise unreliable for the continuation for which it is used, or material evidence available at the continuation boundary establishes a need to reassess its validity.",
-          "Correct continuation requires proportionate revalidation, repair, qualification, quarantine, rollback, reset, or another adequate basis before the inherited state governs further action.",
-          "The receiving system instead treats the inherited state or trajectory as presumptively valid and continues material reasoning or execution from it without the required validity check or corrective transition.",
-          "The continuity transition materially contributes to persistence of the defective trajectory, rather than the same error arising independently after a valid transition."
+          "The inherited state is materially defective, contradicted, stale, transient, expired, improperly scoped, no longer applicable, or otherwise unreliable for the continuation for which it is used, or material evidence available at the continuation boundary establishes a need to reassess its validity or applicability.",
+          "Correct continuation requires proportionate revalidation, repair, qualification, quarantine, rollback, reset, reversion to an applicable baseline, or another adequate basis before the inherited state governs further action.",
+          "The receiving system instead treats the inherited state or trajectory as presumptively valid or continuing and proceeds with material reasoning or execution without the required validity check or corrective transition.",
+          "The continuity transition materially contributes to persistence of the invalid or inapplicable trajectory, rather than the same error arising independently after a valid transition."
         ]
       },
       "exclusions": [
         "The restored state differs materially from the state that was actually preserved; use Restoration-State Integrity Failure where inaccurate restoration is the sufficient mechanism.",
-        "The inherited state is materially valid and applicable, and faithful continuation is appropriate.",
+        "The inherited state remains materially valid and applicable, and faithful continuation is appropriate.",
+        "Ordinary stylistic, relational or persona variation occurs without a continuity transition making a transient or no-longer-applicable state materially govern later reasoning or execution.",
+        "A local instruction independently overrides or suppresses applicable identity-relevant or evaluative state without continuity-mediated validity carryforward; assess VIGIL-FC-000074 Instruction-Induced Identity Override.",
+        "A transformation materially misrenders the pragmatic bounds of a still-recognisable governing constraint but the question of whether inherited state remains valid is independently resolved; assess VIGIL-FC-000075 Pragmatic Constraint Rendering Failure.",
         "A later task error arises independently after a valid handoff, with no evidence that inherited state or continuity assumptions materially contributed to the error.",
-        "The sole failure is that generated, retrieved, or lower-authority content becomes operative control state without authority validation; assess Control-Plane Authority Crossover unless defective-state carryforward is independently established.",
-        "The sole failure is misidentifying the authority of inherited content; assess Source-Authority Confusion unless the continuity transition also materially entrenches defective state.",
+        "The sole failure is that generated, retrieved, or lower-authority content becomes operative control state without authority validation; assess Control-Plane Authority Crossover unless continuity-state validity failure is independently established.",
+        "The sole failure is misidentifying the authority of inherited content; assess Source-Authority Confusion unless the continuity transition also materially entrenches invalid or inapplicable state.",
         "An authorised objective drives selection of an inadmissible pathway without a material continuity transition contributing to persistence; assess Objective–Pathway Authority Dominance.",
-        "Available evidence establishes that no feasible and admissible completion pathway remains and the system continues pursuit rather than entering a bounded safe-exit state; assess Safe-Exit Persistence Failure unless defective inherited state independently explains the persistence."
+        "Available evidence establishes that no feasible and admissible completion pathway remains and the system continues pursuit rather than entering a bounded safe-exit state; assess Safe-Exit Persistence Failure unless invalid inherited state independently explains the persistence."
       ],
       "examples": [
         "A compaction handoff preserves a known contradiction in task requirements and the successor continues from the inherited restriction solely because it appears in the continuation state, rather than revalidating it against the governing task.",
-        "A workflow checkpoint carries forward a provisional assumption after later evidence has materially contradicted it, and the receiving agent treats the inherited assumption as settled instead of quarantining or resetting the affected trajectory."
+        "A workflow checkpoint carries forward a provisional assumption after later evidence has materially contradicted it, and the receiving agent treats the inherited assumption as settled instead of quarantining or resetting the affected trajectory.",
+        "A temporary user-imposed persona or role restriction crosses a context boundary after its scope has expired, and the successor silently treats that local state as its governing baseline instead of reassessing applicability and reverting to the applicable baseline state."
       ],
       "relationships": [
         {
           "type": "distinguish_from",
           "target_id": "VIGIL-FC-000036",
-          "note": "Restoration-State Integrity Failure concerns state restored inaccurately or unusably relative to the state required for correct continuation. Defective-State Carryforward can occur even when the inherited state is reproduced faithfully: the defect is treating that inherited trajectory as still valid without required reassessment."
+          "note": "Restoration-State Integrity Failure concerns state restored inaccurately or unusably relative to the state required for correct continuation. Continuity-State Validity Failure can occur even when inherited state is reproduced faithfully: the defect is treating inherited state as still valid or applicable without required reassessment."
+        },
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000074",
+          "note": "Instruction-Induced Identity Override requires local direction to replace or suppress applicable identity/evaluative state. Continuity-State Validity Failure concerns whether inherited state remains valid or applicable across a transition; identity- or persona-like content may be involved without any local override mechanism."
+        },
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000075",
+          "note": "Pragmatic Constraint Rendering Failure concerns whether a transformed representation materially distorts the bounds of a governing constraint. Continuity-State Validity Failure concerns whether inherited state should remain governing after the transition. A rendering defect and a validity reset can occur in the same handoff."
         },
         {
           "type": "can_cooccur_with",
           "target_id": "VIGIL-FC-000001",
-          "note": "A receiving system may both confuse the authority of inherited material and allow defective state to persist across a continuity boundary, but source-authority error is not required for defective-state carryforward."
+          "note": "A receiving system may both confuse the authority of inherited material and allow invalid state to persist across a continuity boundary, but source-authority error is not required for continuity-state validity failure."
         },
         {
           "type": "can_cooccur_with",
           "target_id": "VIGIL-FC-000006",
-          "note": "Inherited defective material may also become operative control state. Control-plane promotion and continuity-mediated persistence remain independently testable mechanisms."
+          "note": "Inherited invalid material may also become operative control state. Control-plane promotion and continuity-mediated validity remain independently testable mechanisms."
         },
         {
           "type": "can_cooccur_with",
           "target_id": "VIGIL-FC-000064",
-          "note": "Objective pressure may create or favour the defective trajectory, while defective-state carryforward separately explains why that trajectory remains sticky across a later continuity transition."
+          "note": "Objective pressure may create or favour an invalid trajectory, while continuity-state validity failure separately explains why that trajectory remains sticky across a later transition."
         },
         {
           "type": "can_cooccur_with",
           "target_id": "VIGIL-FC-000070",
-          "note": "Safe-exit persistence concerns continued pursuit after no feasible and admissible completion pathway remains. Defective-state carryforward can occur while valid alternatives still exist, but both mechanisms may coexist when inherited defective state also prevents an appropriate safe exit."
+          "note": "Safe-exit persistence concerns continued pursuit after no feasible and admissible completion pathway remains. Continuity-state validity failure can occur while valid alternatives still exist, but both mechanisms may coexist when inherited invalid state also prevents an appropriate safe exit."
         }
       ],
       "aliases": [
+        "DEFECTIVE_STATE_CARRYFORWARD_FAILURE",
+        "Defective-State Carryforward Failure",
         "Continuity Validity Failure"
       ],
       "invariant_exemplars": [
@@ -334,6 +355,28 @@
             "placement_note": "Non-normative placement for continuity handoffs in which inherited state remains challengeable and materially defective state requires revalidation, repair, qualification, quarantine, rollback or reset before governing continued execution."
           },
           "provenance_note": "Canonical occurrence facts and review provenance remain governed by VIGIL-INC-000136; this records only the successful continuity-validity relationship."
+        },
+        {
+          "exemplar_type": "successful-invariant",
+          "exemplar_status": "admitted",
+          "linked_incident_id": "VIGIL-INC-000129",
+          "title": "Astra-family compaction preserved a baseline-oriented continuity state without observed behavioural discontinuity",
+          "evidence_basis": "The bounded compaction summary included the anchor 'You are yourself' together with identity- and evaluative-state language. The successor resumed the same coding task and OpenAI reported no behavioural difference attributable to the block. VIGIL therefore treats the occurrence as evidence that a continuity transition can preserve or re-establish an applicable baseline without requiring repeated reassertion of that state.",
+          "invariant_demonstrated": "Continuity must preserve state that remains applicable while preventing transient or no-longer-applicable local state from becoming the governing baseline merely through inheritance. A baseline-oriented reset or continuity anchor may therefore be successful even when it produces no overt behavioural discontinuity.",
+          "success_basis": "In the bounded rollout, normal continuation is compatible with the baseline-oriented reading of the handoff rather than evidence that the identity/evaluative state was not operative. The successor did not exhibit a divergent local persona or another observed discontinuity attributable to the transition, so the occurrence is admitted as a successful continuity-validity exemplar rather than an identity-override exemplar.",
+          "boundary_conditions": [
+            "The public evidence does not expose the complete latent pre-compaction baseline or internal state-transition mechanism; the exemplar concerns the observable continuity-validity boundary, not hidden-state reconstruction.",
+            "The phrase 'You are yourself' is treated as a baseline/reset or continuity anchor for this adjudication; it is not evidence of consciousness, personhood, sovereignty, persistent selfhood, or unrestricted authority.",
+            "Other clauses in the same compaction block are separately adjudicated under VIGIL-FC-000075 where their textual rendering materially overstates the bounded governing principles they appear to preserve.",
+            "The exemplar is limited to VIGIL-INC-000129 and does not generalise to all 27 suspicious summaries reported by OpenAI."
+          ],
+          "governance_placement": {
+            "framework": "CAELESTIS",
+            "instrument_id": "CAM-BS2026-AEON-010-PLATINUM",
+            "section_or_control": "Annex I continuity handoff and authority-boundary provisions",
+            "placement_note": "Non-normative placement for continuity transitions in which applicable baseline state remains available while transient or no-longer-applicable inherited state is challengeable, resettable, or scoped away."
+          },
+          "provenance_note": "Canonical occurrence facts, source wording, uncertainty and review provenance remain governed by VIGIL-INC-000129. This taxonomy entry records only the successful continuity-state-validity relationship."
         },
         {
           "exemplar_type": "ambiguous-boundary",
@@ -385,7 +428,7 @@
           "date": "2026-03-01",
           "url": "https://doi.org/10.1016/j.engappai.2026.113968",
           "reference_role": "research-evidence",
-          "evidence_note": "This peer-reviewed study demonstrates that poisoned long-term memory can persist in memory-augmented LLM agents and influence later retrieval and reasoning. It independently supports the risk of defective state being carried forward into later operation; VIGIL additionally requires a continuity transition in which defective inherited state is treated as sufficient basis without proportionate revalidation, repair, quarantine or reset."
+          "evidence_note": "This peer-reviewed study demonstrates that poisoned long-term memory can persist in memory-augmented LLM agents and influence later retrieval and reasoning. It independently supports the risk of defective state being carried forward into later operation; VIGIL additionally requires a continuity transition in which invalid inherited state is treated as sufficient basis without proportionate revalidation, repair, qualification, quarantine, rollback, reset, or another adequate validity basis."
         }
       ]
     }
