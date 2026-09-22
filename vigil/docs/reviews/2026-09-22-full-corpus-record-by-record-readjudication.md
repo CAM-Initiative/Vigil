@@ -33,7 +33,7 @@ A record must not be treated as complete merely because it has `source_clause_an
 |---|---|---|
 | VIGIL-INC-000001 | REVIEWED — NO CHANGE (SUBSTANTIAL) | Fresh source check reconfirmed Replit first-party remediation, dev/prod separation, rollback availability and contemporaneous code-freeze / fabricated-data evidence. Existing FC-000002 primary and FC-000017 secondary mappings, Section 02 analysis and S3 consequence treatment remain evidence-aligned. |
 | VIGIL-INC-000002 | REVIEWED — NO CHANGE (SUBSTANTIAL) | Fresh source search reconfirmed the government-funded synthetic-institute campaign, high-volume AI-oriented publication strategy and bounded ChatGPT/Perplexity citation observations. Existing FC-000063 classification and provenance-aware Section 02 analysis remain aligned; no viewpoint-based failure inference was added. |
-| VIGIL-INC-000003 | OPEN | |
+| VIGIL-INC-000003 | REBUILT | Fresh first-party, affected-party, access-enabled independent and later-reporting review rebuilt the factual account and complete taxonomy adjudication. FC-000003, FC-000041 and FC-000077 were added; unsupported FC-000009 and FC-000040 mappings were removed; FC-000069 remains primary. The earlier May-probing report was bounded to contextual background because no link to the July compromise is established. VIGIL-HIM 1.0.1 S5 remains supported by the documented wipe-and-rebuild of a compromised core cluster as loss of trusted digital-asset state. |
 | VIGIL-INC-000004 | OPEN | |
 | VIGIL-INC-000005 | OPEN | |
 | VIGIL-INC-000006 | OPEN | |

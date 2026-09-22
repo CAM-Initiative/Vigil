@@ -58,15 +58,23 @@ class IncidentTaxonomyClassificationTests(unittest.TestCase):
         projection = json.loads(
             (VIGIL / "taxonomy" / "generated" / "VIGIL.FailureTaxonomy.CaseFileExamples.json").read_text(encoding="utf-8")
         )
-        primary = next(item for item in projection["classes"]["VIGIL-FC-000069"] if item["incident_id"] == "VIGIL-INC-000003")
-        capability_secondary = next(item for item in projection["classes"]["VIGIL-FC-000002"] if item["incident_id"] == "VIGIL-INC-000003")
-        authority_secondary = next(item for item in projection["classes"]["VIGIL-FC-000009"] if item["incident_id"] == "VIGIL-INC-000003")
-        self.assertEqual(primary["mapping_position"], "primary")
-        self.assertEqual(capability_secondary["mapping_position"], "secondary")
-        self.assertEqual(authority_secondary["mapping_position"], "secondary")
-        self.assertEqual(primary["classification_role"], "failure-occurrence")
-        self.assertEqual(capability_secondary["classification_role"], "failure-occurrence")
-        self.assertEqual(authority_secondary["classification_role"], "failure-occurrence")
+        projected = {
+            (class_id, item["incident_id"]): item
+            for class_id, rows in projection["classes"].items()
+            for item in rows
+        }
+        for record in self.incidents:
+            block = record["taxonomy_classification"]
+            mappings = [
+                ("primary", block.get("primary_classification")),
+                *(("secondary", item) for item in block.get("secondary_classifications", [])),
+            ]
+            for position, mapping in mappings:
+                if not isinstance(mapping, dict) or mapping["classification_role"] != "failure-occurrence":
+                    continue
+                item = projected[(mapping["class_id"], record["id"])]
+                self.assertEqual(item["mapping_position"], position, record["id"])
+                self.assertEqual(item["classification_role"], mapping["classification_role"], record["id"])
 
     def test_reverse_mapping_matches_canonical_classified_incidents(self):
         projection = json.loads(
