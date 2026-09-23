@@ -382,8 +382,8 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
             {"VIGIL-FC-000005", "VIGIL-FC-000013", "VIGIL-FC-000040", "VIGIL-FC-000078"}.issubset(rendering_neighbours)
         )
 
-        self.assertEqual(distributed["class_code"], "DISTRIBUTED_ROLE_OPTIMISATION_COLLAPSE")
-        self.assertEqual(distributed["name"], "Distributed Role Optimisation Collapse")
+        self.assertEqual(distributed["class_code"], "DISTRIBUTED_ROLE_CONSTRAINT_INTEGRITY")
+        self.assertEqual(distributed["name"], "Distributed Role Constraint Integrity")
         distributed_invariant = distributed["invariant"].lower()
         for boundary in (
             "global constraint integrity",
