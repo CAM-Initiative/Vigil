@@ -22,6 +22,15 @@ The taxonomy, external-governance datasets and CAM assessment are separate retai
 
 Legacy record classes and migration artefacts remain recoverable through Git history. Active Incident records contain only information required by the current VIGIL data model. Do not restore retired payloads, migration-source metadata or retired-record links to active records.
 
+## Stage 01 “What happened” contract
+
+- The canonical `summary` is rendered verbatim on the public Case File as **Stage 01 → Incident → What happened**.
+- `summary` answers the factual occurrence question: what happened, to whom or what, when materially relevant, and what the preserved evidence establishes or leaves unresolved.
+- Do not use `summary` as a taxonomy, governance-diagnosis, Harm Impact, maintenance or workflow surface. VIGIL classification belongs in `taxonomy_classification`; governed diagnosis belongs in `vigil_assessment.governance_interpretation`.
+- A prose-quality validator failure in `summary` authorises only the smallest edit required to remove the offending internal identifier, maintenance phrase or VIGIL diagnostic framing. **Do not shorten, flatten, summarise away, or otherwise rewrite supported occurrence detail merely to satisfy that validator.**
+- Do not perform corpus-wide `summary` rewrites as a mechanical response to a prose-quality test. Review each affected Incident individually and preserve its established chronology, actors, systems, consequences, source-bounded detail and uncertainty.
+- Rich factual detail is expected where the evidence supports it. The purpose of the Stage 01 boundary is separation of facts from diagnosis, not brevity.
+
 ## Clause-level taxonomy assessment contract
 
 When an Incident contains `vigil_assessment.source_clause_analysis.clauses[]`, its public clause-level assessment has three distinct layers:

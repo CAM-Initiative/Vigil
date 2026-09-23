@@ -16,11 +16,27 @@ INTERNAL_PROSE_PATTERNS = {
     ),
 }
 
+# Stage 01 on the public Case File renders record["summary"] verbatim as
+# "What happened". It is not an assessment or taxonomy surface. Keep this
+# contract separate from the broader public-prose quality check so a validator
+# failure cannot reasonably be interpreted as an instruction to rewrite or
+# compress the occurrence narrative.
+SUMMARY_ONLY_PATTERNS = {
+    **INTERNAL_PROSE_PATTERNS,
+    "VIGIL diagnostic framing": re.compile(
+        r"\bVIGIL\s+(?:classif(?:y|ies|ied)|treats?|maps?|assesses?|concludes?|therefore\b)",
+        re.IGNORECASE,
+    ),
+    "classification scaffolding": re.compile(
+        r"\b(?:taxonomy classification|classification status|failure class)\b",
+        re.IGNORECASE,
+    ),
+}
 
-def public_prose(record):
+
+def assessment_public_prose(record):
     assessment = record.get("vigil_assessment", {})
     harm = record.get("harm_impact_assessment", {})
-    yield "summary", record.get("summary", "")
     for field in (
         "factual_basis",
         "governance_interpretation",
@@ -42,11 +58,33 @@ def public_prose(record):
 
 
 class PublicProseQualityTests(unittest.TestCase):
-    def test_public_prose_does_not_depend_on_taxonomy_or_maintenance_shorthand(self):
+    def test_stage01_summary_is_factual_what_happened_prose(self):
         failures = []
         for path in sorted(INCIDENTS.glob("VIGIL-INC-*.json")):
             record = json.loads(path.read_text(encoding="utf-8"))
-            for field, value in public_prose(record):
+            value = record.get("summary", "")
+            if not isinstance(value, str):
+                continue
+            for label, pattern in SUMMARY_ONLY_PATTERNS.items():
+                match = pattern.search(value)
+                if match:
+                    failures.append(
+                        f"{record['id']} summary: {label} {match.group(0)!r}"
+                    )
+        self.assertEqual(
+            failures,
+            [],
+            "\nStage 01 summary is rendered as 'What happened'. "
+            "Remove only the offending taxonomy/diagnostic/maintenance wording; "
+            "do not shorten, flatten or rewrite supported occurrence facts.\n"
+            + "\n".join(failures),
+        )
+
+    def test_assessment_public_prose_does_not_depend_on_internal_shorthand(self):
+        failures = []
+        for path in sorted(INCIDENTS.glob("VIGIL-INC-*.json")):
+            record = json.loads(path.read_text(encoding="utf-8"))
+            for field, value in assessment_public_prose(record):
                 if not isinstance(value, str):
                     continue
                 for label, pattern in INTERNAL_PROSE_PATTERNS.items():
