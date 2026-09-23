@@ -285,6 +285,14 @@ base.STYLE += """
 .bibliography-number{font-weight:700;color:#a47d27}.bibliography-citation,.bibliography-support-label{margin:0}.bibliography-support-label{margin-top:6px;color:#57534e;font-size:.9em}.bibliography-support{list-style:none;padding:0;margin:2px 0 0;color:#57534e;font-size:.9em}.bibliography-support-item{margin-top:5px}.bibliography-support-item p{margin:0}.bibliography-evidence-note{margin-top:2px!important;color:#78716c}.bibliography-role{display:inline-block;margin-top:6px;color:#78716c;font-size:.75em;text-transform:uppercase;letter-spacing:.06em}
 """
 base.PRINT_STYLE += """
+.book-class{break-before:auto;margin-top:10mm}
+.book-class>.class-kicker,.book-class>.class-title,.book-class>.class-meta{break-after:avoid}
+.book-class .criteria-grid{display:block;break-inside:auto}
+.book-class .criteria-grid section{break-inside:auto;margin-bottom:4mm}
+.book-class .invariant-exemplars>h3{break-after:avoid}
+.book-class .invariant-exemplar{break-inside:avoid}
+.book-class .invariant-exemplar>h4{break-after:avoid}
+.book-class .case-studies>h4{break-after:avoid}
 .harm-severity-methodology{break-before:page;page-break-before:always;margin:0;padding:0;border:0;border-radius:0}
 .harm-severity-methodology>h1{font-family:Georgia,"Times New Roman",serif;font-size:24pt;line-height:1.08;color:#022c1b;font-weight:500;margin:0 0 3mm}
 .harm-methodology-meta{font-family:Helvetica,Arial,sans-serif;font-size:8.5pt;color:#6f6657;margin:0 0 5mm}.harm-methodology-lead{font-family:Georgia,"Times New Roman",serif;font-size:11pt;line-height:1.4;color:#2f302d;margin:0 0 6mm}
