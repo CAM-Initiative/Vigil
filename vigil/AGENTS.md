@@ -124,6 +124,13 @@ The guard must pass before the rebuilt record is accepted. Every baseline taxono
 
 Do not use an older working branch's taxonomy labels or mappings as the adjudication authority when the current canonical taxonomy is available.
 
+
+### Gmail staging requirement
+
+When Incident adjudication produces a taxonomy gap or another unresolved maintainer action, follow the Gmail staging protocol in `vigil/docs/maintenance/INCIDENT-ADJUDICATION-WORKFLOW.md`. In a connected ChatGPT maintenance session, use the Gmail connector to read the latest labelled `[CURRENT VIGIL QA ACTION]` queue, merge the new unresolved action into that queue, send the replacement self-email, and apply the `VIGIL/CURRENT QA ACTION` label.
+
+Do not leave a material next action only in conversational handoff text. Do not overwrite unresolved queue items with a one-item email. If Gmail is unavailable, explicitly report that staging was not completed and preserve the full ready-to-send payload.
+
 ## Required workflow
 
 Before editing an Incident, inspect `vigil/VIGIL.Schema.json`, the Incident template, the validator and comparable Incident records. Preserve stable IDs and substantive evidence.
