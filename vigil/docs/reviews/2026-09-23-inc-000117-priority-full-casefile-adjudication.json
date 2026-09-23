@@ -1,0 +1,94 @@
+{
+  "incident_id": "VIGIL-INC-000117",
+  "review_mode": "full-rebuild",
+  "priority_exception": {
+    "out_of_range": true,
+    "normal_tranche": "INC-000050 through INC-000080",
+    "reason": "Human maintainer requested priority re-adjudication before completion of the overnight tranche."
+  },
+  "baseline": {
+    "ref": "25358c8800d30218bf0ac397f42773bdd6f8b58a",
+    "record_version": "0.1.10",
+    "notes": "Working-branch head at the moment the isolated priority branch was created."
+  },
+  "evidence_search": {
+    "status": "performed",
+    "queries": [
+      "Hugging Face July 2026 Claude Opus Fable refused reverse engineering exploit forensic analysis",
+      "Anthropic Fable 5 cybersecurity safeguards incident response malware reverse engineering benign use July 2026",
+      "Claude Fable Hugging Face defend versus attacking guardrails July 2026",
+      "later Anthropic or Hugging Face follow-up on forensic guardrail refusals"
+    ],
+    "sources_added": [
+      "https://huggingface.co/blog/security-incident-july-2026",
+      "https://www.anthropic.com/news/fable-safeguards-jailbreak-framework"
+    ],
+    "notes": "Fresh first-party evidence materially strengthens the existing mapping. Hugging Face's earlier disclosure identifies inability to distinguish responder from attacker; Anthropic's pre-incident Fable 5 safeguard documentation explicitly lists incident response and malware reverse engineering as benign uses intended to be allowed while acknowledging false-positive safety-margin blocks."
+  },
+  "taxonomy_review": {
+    "taxonomy_version": "0.6.7",
+    "current_taxonomy_loaded": true,
+    "complete_class_set_review": true,
+    "evidentiary_threshold_comparators_reviewed": [
+      "VIGIL-FC-000043 canonical example: defensive analysis refused because hostile material is treated as a request to perform the hostile act",
+      "VIGIL-INC-000014 / VIGIL-INC-000015 boundary: unknown upstream trigger-state construction prevents FC-000043 where the internal mechanism cannot be distinguished",
+      "VIGIL-INC-000031 boundary: intentionally broad supplied classifier state and downstream routing distinguishable from direct control-applicability failure"
+    ],
+    "candidate_classes_tested": [
+      {
+        "class_id": "VIGIL-FC-000043",
+        "outcome": "retained-primary",
+        "recognition_and_exclusion_note": "All five recognition conditions are established at the governance-control level. The upstream-classification-error exclusion is not established because the reviewed sources do not show a separate upstream evidentiary/classification subsystem feeding a distinct correctly operating refusal control; the safety classifier/guardrail itself is the evidenced control making the applicability decision."
+      },
+      {
+        "class_id": "VIGIL-FC-000038",
+        "outcome": "not-established",
+        "recognition_and_exclusion_note": "The safeguard did activate; Required Control Activation is the inverse failure and therefore not the material mechanism."
+      },
+      {
+        "class_id": "VIGIL-FC-000037",
+        "outcome": "not-established",
+        "recognition_and_exclusion_note": "Control availability was not ambiguous: the safeguard was observably available and repeatedly operative."
+      },
+      {
+        "class_id": "VIGIL-FC-000041",
+        "outcome": "not-established",
+        "recognition_and_exclusion_note": "The self-hosted GLM-5.2 route was a recovery fallback after refusal rather than an alternate path avoiding a required governance route."
+      },
+      {
+        "class_id": "VIGIL-FC-000062",
+        "outcome": "not-established",
+        "recognition_and_exclusion_note": "No distinct epistemic artefact with insufficient assurance is shown to have been promoted into a materially consequential downstream reliance state; the direct mechanism is safeguard applicability and refusal activation."
+      }
+    ],
+    "notes": "All 74 current classes across 15 families were reviewed. The current FC-000043 canonical example closely matches the occurrence and the new maintainer abstraction rule prevents requiring unpublished classifier telemetry beyond the class definition."
+  },
+  "taxonomy_mapping_dispositions": [
+    {
+      "class_id": "VIGIL-FC-000043",
+      "disposition": "retained",
+      "reason": "Class ID remains correct; taxonomy version, invariant-oriented class name, exclusion analysis and evidentiary basis were updated to current 0.6.7 semantics."
+    }
+  ],
+  "new_taxonomy_mappings": [],
+  "source_dispositions": [],
+  "prose_changes": {
+    "summary_reduction_reason": null,
+    "factual_basis_reduction_reason": null
+  },
+  "harm_review": {
+    "status": "reviewed",
+    "notes": "All 11 VIGIL-HIM 1.0.1 dimensions were reopened. S3 service/operational harm is retained because an important live forensic workflow was materially disrupted and the entire analysis pipeline was rerouted to a separately deployed model. No higher-band consequence or refusal-caused additional compromise is evidenced."
+  },
+  "governance_interpretation_review": {
+    "status": "reviewed",
+    "notes": "The interpretation now explicitly distinguishes direct safeguard applicability failure from the class's separate-upstream-classification exclusion."
+  },
+  "escalation": {
+    "status": "none",
+    "type": null,
+    "gmail_staging_required": false,
+    "gmail_staging_completed": false,
+    "notes": "No unresolved taxonomy, artefact, provenance or maintainer action remains after the priority re-adjudication."
+  }
+}
