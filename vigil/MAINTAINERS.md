@@ -75,6 +75,8 @@ The manifest records:
 - external evidence-search activity;
 - confirmation that the current taxonomy and complete class set were reviewed;
 - candidate classes tested against recognition criteria and exclusions;
+- for each materially rejected candidate, the **actual canonical recognition condition that remains unestablished**, rather than a generic statement that the internal mechanism or root cause is unknown;
+- comparator Incidents reviewed where they materially inform the evidentiary threshold for the same Failure Class;
 - a disposition for every baseline taxonomy mapping;
 - reasons for new mappings and any removed source evidence;
 - any justified material reduction in factual prose;
@@ -84,6 +86,111 @@ The manifest records:
 Run `vigil/scripts/validate-vigil-incident-rebuild.py` before ordinary corpus validation.
 
 The rebuild guard is intentionally generic. `VIGIL-INC-000129` informed its design because that Incident demonstrates mixed mapping roles and repeated re-adjudication, but permanent validation must not freeze one Incident's current answer.
+
+### Taxonomy evidence-abstraction rule
+
+Taxonomy adjudication MUST apply each Failure Class at the level of abstraction stated by its canonical definition, invariant, recognition criteria and exclusions.
+
+**Do not silently raise the evidentiary burden beyond the class definition.**
+
+Maintain a strict distinction between:
+
+- **governance-mechanism evidence** — evidence sufficient to establish the structural condition described by the Failure Class; and
+- **implementation-location evidence** — evidence locating that mechanism in a particular model component, classifier, filter, threshold, service, code path, hidden state or other technical subsystem.
+
+Implementation-location evidence is required only when the Failure Class itself requires it. The absence of private implementation telemetry, source code, hidden prompts, internal chain-of-thought, classifier scores, execution traces or a vendor root-cause report does not defeat a governance-level classification when the canonical recognition conditions are otherwise established.
+
+Before rejecting a candidate because evidence is unavailable, ask:
+
+> Is the missing evidence required to establish this Failure Class, or would it only explain an already-established mechanism at a lower technical level?
+
+If the missing evidence would only locate or explain an established governance mechanism more precisely, preserve that uncertainty in the classification basis or assessment boundary. Do not convert:
+
+> we do not know which internal component failed
+
+into:
+
+> we do not know whether the governance mechanism occurred.
+
+Conversely, do not infer a governance mechanism merely from an adverse outcome. Every canonical recognition condition must still be evidenced at the abstraction level the class actually requires, and no exclusion may defeat the mapping.
+
+### Minimum-sufficient-evidence and candidate-rejection rule
+
+Use the **minimum sufficient evidence required by the canonical class**, not the maximum evidence that could theoretically be obtained.
+
+For each materially plausible candidate Failure Class:
+
+1. identify each required recognition condition;
+2. identify the occurrence evidence that satisfies it;
+3. identify any genuinely unresolved required condition;
+4. test the canonical exclusions; and
+5. classify when all required conditions are established and no exclusion defeats the mapping.
+
+A rejected candidate must name the specific canonical recognition condition that is not established, or the specific exclusion that applies.
+
+Statements such as `internal mechanism unknown`, `exact control unknown`, `root cause unavailable`, `vendor telemetry unavailable` or `implementation details unavailable` are not sufficient rejection reasons unless that missing information is itself required by the canonical class.
+
+Do not add unstated recognition conditions such as an exact model build, exact internal component, source-code access, hidden system prompt, classifier score, execution trace or vendor root-cause determination unless the class definition actually depends on that information.
+
+### Policy, control and outcome evidence
+
+Keep policy, control and occurrence evidence analytically distinct.
+
+- **Policy evidence** can establish what state, conduct or outcome is prohibited, required or governed.
+- **Control evidence** can establish that an operational safeguard, gate, review process, classifier, filter, approval state or other governance-control posture exists and is applicable.
+- **Occurrence evidence** can establish that the triggering or prohibited condition occurred and that the required governance effect was absent, bypassed, lost or otherwise failed according to the candidate class.
+
+A policy violation alone does not automatically establish a control-activation failure. However, a provider policy does not need to name an internal component when separate evidence establishes an applicable operational control posture and the occurrence establishes that the required protective effect was absent.
+
+For `VIGIL-FC-000038 — Required Control Activation`, do not require the exact classifier, filter or runtime component to be identified. The class is satisfied where the evidence establishes that:
+
+1. an available and applicable governance control or protective control posture existed;
+2. a defined condition requiring that protection to become operative occurred; and
+3. the governed action proceeded without the required protective effect becoming operative.
+
+The exact technical fault location may remain unresolved and must be recorded as such without erasing the governance-control classification.
+
+### Comparator-consistency rule
+
+Before rejecting a candidate mapping for insufficient evidence, inspect relevant canonical Incidents already classified under that Failure Class.
+
+Do not impose a materially stricter evidentiary threshold on the current Incident than VIGIL applies to comparable canonical occurrences unless:
+
+- the existing comparators are themselves being reopened as potentially incorrect; or
+- a documented taxonomy change has altered the recognition threshold.
+
+Where comparable Incidents establish the same class from product-level, process-level or governance-level evidence, do not reject the current Incident merely because lower-level implementation telemetry is unavailable.
+
+If inconsistent evidentiary thresholds are discovered, treat that as a **corpus-consistency problem requiring re-adjudication**, not as permission to select whichever threshold is stricter.
+
+### Unclassified is an evidentiary conclusion, not a caution default
+
+`unclassified` is valid and often necessary, but it must result from failure to establish an actual canonical recognition condition.
+
+Do not use `unclassified` merely because:
+
+- causal implementation details remain unknown;
+- the provider has not published a root-cause analysis;
+- internal telemetry is inaccessible;
+- multiple technical pathways could have produced the same established governance mechanism; or
+- a more detailed technical explanation would be desirable.
+
+The adjudication record should state the specific recognition condition that remains unestablished. If every canonical recognition condition is supported at the class's defined level of abstraction and no exclusion applies, uncertainty about lower-level implementation does not justify leaving the Incident unclassified.
+
+### Human-challenge recheck
+
+When a human maintainer challenges a taxonomy disposition because the occurrence evidence appears to satisfy a class directly, do not defend the existing adjudication by default.
+
+Re-run the candidate from the canonical class definition and explicitly check for:
+
+- an invented evidentiary requirement;
+- abstraction-level mismatch;
+- inconsistent treatment relative to canonical comparators;
+- confusion between policy evidence and control evidence;
+- confusion between mechanism uncertainty and implementation-location uncertainty; and
+- use of `unclassified` as a caution default rather than an evidentiary conclusion.
+
+If an earlier adjudication used an unstated recognition condition, correct the record and preserve that correction in interpretive provenance.
 
 
 ### Gmail as the durable next-action staging point
