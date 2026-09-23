@@ -32,25 +32,25 @@
   },
   "interpretive_provenance": {
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-09-22-INC-000047-GOVERNANCE-ASSESSMENT",
+      "review_id": "VIGIL-REVIEW-2026-09-23-INC-000047-READJUDICATION",
       "reviewer_type": "AI analytical reviewer",
       "reviewer_platform": "OpenAI Codex",
-      "reviewer_model": "GPT-5",
-      "review_date": "2026-09-22",
-      "review_scope": "Populate the clause-level VIGIL Governance Assessment from evidence already preserved in the Incident without reopening occurrence facts, Harm Impact or taxonomy mappings.",
+      "reviewer_model": "GPT-6",
+      "review_date": "2026-09-23",
+      "review_scope": "Primary pleading, source roles, occurrence, harm and full taxonomy 0.6.7 review.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
         "taxonomy_review": true,
         "structured_semantic_adjudication": true,
-        "cross_incident_consistency_review": true,
-        "new_external_source_research": false
+        "new_external_source_research": true
       },
       "known_limitations": [
-        "The assessment is bounded to sources already preserved in the Incident and introduces no new external occurrence claims.",
-        "Existing taxonomy mappings, relationship roles and confidence values were treated as authoritative; apparent inconsistencies are flagged for human review rather than silently re-adjudicated."
+        "The insurer’s internal decision traces and full response were not independently reviewed.",
+        "Plaintiff allegations are contested and not judicial findings.",
+        "AI review is not human verification."
       ],
-      "review_outcome": "Added 1 incident-specific governance-assessment row; occurrence facts, source records, Section 03 taxonomy adjudication, Harm Impact and alignment outcome remain unchanged."
+      "review_outcome": "Added primary complaint, restored bounded occurrence and field roles, changed FC-000046 from high-confidence classified to medium-confidence provisional and retained S4 as attributed reported essential-care deprivation."
     },
     "historical_reviewer_note": "Pre-Incident FM/OBS review histories are preserved without re-dating under legacy_governance_state; they are not represented as reviews of the later Incident record.",
     "human_governance_editor": {
@@ -247,6 +247,27 @@
           "Existing taxonomy mappings, relationship roles and confidence values were treated as authoritative; apparent inconsistencies are flagged for human review rather than silently re-adjudicated."
         ],
         "review_outcome": "Added 1 incident-specific governance-assessment row; occurrence facts, source records, Section 03 taxonomy adjudication, Harm Impact and alignment outcome remain unchanged."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-09-23-INC-000047-READJUDICATION",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-09-23",
+        "review_scope": "Primary pleading, source roles, occurrence, harm and full taxonomy 0.6.7 review.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "structured_semantic_adjudication": true,
+          "new_external_source_research": true
+        },
+        "known_limitations": [
+          "The insurer’s internal decision traces and full response were not independently reviewed.",
+          "Plaintiff allegations are contested and not judicial findings.",
+          "AI review is not human verification."
+        ],
+        "review_outcome": "Added primary complaint, restored bounded occurrence and field roles, changed FC-000046 from high-confidence classified to medium-confidence provisional and retained S4 as attributed reported essential-care deprivation."
       }
     ]
   },
@@ -257,21 +278,55 @@
     "sector": "healthcare / health insurance / medication access"
   },
   "preferred_evidence": {
-    "selected_on": "2026-08-30",
-    "selection_basis": "Selected as the most incident-specific substantive source preserved in the legacy evidence set; other selected sources remain in chronology.",
-    "source_url": "https://incidentdatabase.ai/cite/608/"
+    "source_url": "https://www.classaction.org/media/the-estate-of-gene-b-lokken-et-al-v-unitedhealth-group-inc-et-al.pdf",
+    "selection_basis": "Primary filed complaint establishes precisely what the plaintiffs alleged and preserves the adversarial evidence boundary.",
+    "selected_on": "2026-09-23"
   },
   "record_identity": {
     "created": "2026-08-30",
     "record_id": "VIGIL-INC-000047",
     "record_type": "incident",
     "title": "UnitedHealth algorithm allegedly supported Medicare Advantage care denials",
-    "updated": "2026-09-22",
-    "version": "1.1.11"
+    "updated": "2026-09-23",
+    "version": "1.1.12"
   },
   "record_state": "active",
   "record_type": "incident",
   "source_records": [
+    {
+      "source_title": "Estate of Gene B. Lokken et al. v. UnitedHealth Group Inc. — complaint",
+      "author_or_publisher": "Plaintiffs in Estate of Gene B. Lokken et al. v. UnitedHealth Group Inc.",
+      "source_date": "2023-11-14",
+      "source_url": "https://www.classaction.org/media/the-estate-of-gene-b-lokken-et-al-v-unitedhealth-group-inc-et-al.pdf",
+      "retrieved_date": "2026-09-23",
+      "source_type": "legal filing or decision",
+      "source_role": "incident-evidence",
+      "source_residence": "external",
+      "source_platform": "U.S. District Court filing hosted by ClassAction.org",
+      "source_url_status": "available",
+      "relevance_note": "Primary pleading for patient-specific denial allegations and asserted use of nH Predict in coverage decisions; contested allegations are not judicial findings.",
+      "evidence_modality": [
+        "text"
+      ],
+      "primary_artefact_access": {
+        "access_status": "directly reviewed primary pleading",
+        "reviewing_system": "OpenAI Codex / GPT-6",
+        "access_method": "Public PDF text review of filed complaint",
+        "direct_primary_artefact_review": true,
+        "limitations": [
+          "A complaint states the plaintiffs’ allegations and is not proof of liability or the insurer’s internal decision trace.",
+          "Only relevant sections were inspected in this bounded review."
+        ]
+      },
+      "interpretive_reliance": "Used to attribute individual care-denial and algorithm-authority claims to plaintiffs, not to declare them judicially proved.",
+      "evidence_status": "first-party-reported",
+      "evidence_status_basis": "The court filing is primary evidence of what plaintiffs alleged, not independent proof of the underlying mechanisms.",
+      "incident_source_order": 1,
+      "source_context": "Plaintiffs allege nH Predict care-duration estimates became effective coverage cutoffs and describe named patients’ post-acute care denials despite clinical objections.",
+      "deployment_context": "Medicare Advantage post-acute coverage determination.",
+      "model_or_algorithm": "nH Predict",
+      "system_or_product": "UnitedHealthcare/naviHealth care management"
+    },
     {
       "archive_url": "",
       "author_or_publisher": "AI Incident Database",
@@ -281,7 +336,7 @@
       ],
       "evidence_status": "registry-reported",
       "evidence_status_basis": "The AI Incident Database registry entry records the occurrence, but the entry is not treated as final verification of all underlying claims.",
-      "incident_source_order": 1,
+      "incident_source_order": 2,
       "interpretive_reliance": "Relied on as a structured secondary incident record for mechanism-level corroboration, not as an independent adjudication of every reported fact.",
       "model_or_algorithm": "not fully established in the database record",
       "primary_artefact_access": {
@@ -294,13 +349,13 @@
         ],
         "reviewing_system": "GPT-5.6 Thinking"
       },
-      "relevance_note": "Supports the recurring mechanism represented by this failure mode; underlying claims remain bounded by the incident record and its cited reports.",
+      "relevance_note": "AI Incident Database cross-reference to the lawsuit; not the primary evidence for its disputed allegations.",
       "retrieved_date": "2026-07-20",
       "source_context": "Reported use of an algorithmic care-duration estimate in coverage denial allegations.",
       "source_date": "2023-11-14",
       "source_platform": "AI Incident Database",
       "source_residence": "external",
-      "source_role": "incident-evidence",
+      "source_role": "record-cross-reference",
       "source_title": "UnitedHealth AI Model Allegedly Used to Deny Medicare Advantage Care",
       "source_type": "incident database entry",
       "source_url": "https://incidentdatabase.ai/cite/608/",
@@ -316,7 +371,7 @@
       ],
       "evidence_status": "independent-reporting",
       "evidence_status_basis": "The investigation provides authoritative consequence and practice context; individual causation and every denial remain case-specific.",
-      "incident_source_order": 2,
+      "incident_source_order": 3,
       "interpretive_reliance": "The investigation provides authoritative consequence and practice context; individual causation and every denial remain case-specific.",
       "model_or_algorithm": "not fully established in the source",
       "primary_artefact_access": {
@@ -343,7 +398,7 @@
       "system_or_product": "Other"
     }
   ],
-  "summary": "Reported use of an algorithmic care-duration estimate in coverage denial allegations.",
+  "summary": "In a 2023 lawsuit, the estates of Medicare Advantage patients alleged that UnitedHealthcare and naviHealth used a care-duration prediction tool, nH Predict, to end payment for post-acute care before their doctors considered them ready for discharge. The complaint describes patients receiving coverage termination notices and appealing or paying for further care. UnitedHealth disputed the allegations. A later Senate staff investigation reported increased post-acute denial rates, but the particular role of the prediction in each individual decision remains contested.",
   "system_context": {
     "platform_or_vendor": "UnitedHealth",
     "product_or_service": "Other",
@@ -371,24 +426,24 @@
     }
   },
   "taxonomy_classification": {
-    "classification_basis": "Only mechanisms independently evidenced in this occurrence are retained; parent FM inheritance is not a basis for classification.",
+    "classification_basis": "Full taxonomy 0.6.7 review provisionally retains FC-000046 Inferential Evidence–Authority Separation. The primary complaint expressly alleges that nH Predict’s expected stay length was treated as the operative cutoff for individual post-acute coverage despite clinicians’ objections. That would satisfy the class if established, but this source is a contested party pleading and the individual decision traces have not been independently verified. FC-000016 Required Verification Completion is not added without an independently specified omitted review step in a particular decision. Classification confidence is medium and explicitly allegation-bounded.",
     "classification_review_provenance": {
-      "authority_boundary": "Classification and confidence reflect evidence for this occurrence, not a parent Failure Mode.",
-      "method": "INCIDENT-02 occurrence-level semantic reconciliation",
-      "review_date": "2026-08-30",
-      "review_status": "incident classified",
-      "reviewer": "OpenAI Codex / GPT-5.6 under human-directed transformation decisions"
+      "method": "record-by-record full taxonomy 0.6.7 review of primary complaint and Senate context",
+      "review_date": "2026-09-23",
+      "reviewer": "OpenAI Codex / GPT-6 under human-directed VIGIL governance",
+      "review_status": "provisionally classified FC-000046 under taxonomy 0.6.7",
+      "authority_boundary": "The complaint provides explicit but contested evidence of estimated duration functioning as decision authority. Internal decision traces and UnitedHealth’s full case response were not independently reconstructed. FC-000016 not added from generalized allegations."
     },
-    "classification_status": "classified",
+    "classification_status": "provisionally-classified",
     "primary_classification": {
       "class_id": "VIGIL-FC-000046",
       "classification_role": "failure-occurrence",
-      "classification_basis": "Inferential Evidence–Authority Conflation is supported in this occurrence because The allegations concern predictive care estimates becoming practically determinative in essential-care decisions without adequate individual review and contestability.",
-      "classification_confidence": "high",
+      "classification_basis": "Plaintiffs allege nH Predict’s care-duration estimate functioned as a coverage cutoff despite patient-specific clinical objections; this is a provisional evidence-to-authority mapping on pleaded facts, not a finding that all denials were algorithmically dictated.",
+      "classification_confidence": "medium",
       "family_id": "VIGIL-FF-0001"
     },
     "secondary_classifications": [],
-    "taxonomy_version": "0.2.3-draft"
+    "taxonomy_version": "0.6.7"
   },
   "vigil_assessment": {
     "assessment_boundaries": [
@@ -396,23 +451,23 @@
       "Incident inclusion supports pattern analysis but does not determine legal liability or final factual truth.",
       "Incident admission does not determine legal liability or establish every disputed claim as final fact."
     ],
-    "factual_basis": "The selected evidence reports: Reported use of an algorithmic care-duration estimate in coverage denial allegations.",
-    "governance_interpretation": "The allegations concern predictive care estimates becoming practically determinative in essential-care decisions without adequate individual review and contestability.",
-    "significance_to_cam": "For CAM, this occurrence shows that the allegations concern predictive care estimates becoming practically determinative in essential-care decisions without adequate individual review and contestability. Controls should preserve evidence, authority state, escalation and contestability across the full affected pathway.",
+    "factual_basis": "The plaintiffs’ complaint directly alleges that nH Predict outcome reports were used to determine coverage cutoffs and that patients were denied further post-acute care despite clinicians’ recommendations. Those are pleaded allegations, not judicial findings. The AI Incident Database indexes the dispute; the Senate staff material documents wider denial practices and rates, but does not by itself establish the operative authority of the tool in each named patient’s decision. The reported denials and care consequences are material, while the exact decision trace and UnitedHealth’s response must remain visible as unresolved.",
+    "governance_interpretation": "The complaint alleges an evidence-to-authority conversion: nH Predict’s expected care period became an effective coverage cutoff despite individual clinical objections. This is a plausible FC-000046 mechanism on the pleaded facts, but the available record does not independently reconstruct each insurer decision or establish the allegations as adjudicated truth. The failure mapping is provisional and claim-bounded.",
+    "significance_to_cam": "A predicted average care duration can be useful evidence, but a patient-specific entitlement decision requires the applicable coverage rule and clinical review. The case tests whether the estimate was allowed to govern access to essential care beyond its evidentiary warrant, with a meaningful explanation and appeal route.",
     "source_clause_analysis": {
       "source_record_order": 1,
-      "source_url": "https://incidentdatabase.ai/cite/608/",
+      "source_url": "https://www.classaction.org/media/the-estate-of-gene-b-lokken-et-al-v-unitedhealth-group-inc-et-al.pdf",
       "purpose": "Preserve the source-language or evidentiary propositions that materially explain VIGIL's governance interpretation. Paraphrases are concise, source-bounded and linked to the existing taxonomy adjudication.",
       "clauses": [
         {
-          "source_paraphrase": "UnitedHealth's care-duration algorithm was alleged to influence Medicare Advantage coverage denials despite individual patient circumstances.",
+          "source_paraphrase": "The plaintiffs allege that nH Predict estimates determined when coverage ended for named post-acute care patients despite individual clinical objections.",
           "recovered_invariant_interpretation": "A predictive estimate must remain one contestable evidentiary input and cannot become care-denial authority without individual clinical review.",
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000046",
               "relationship": "failure-occurrence",
               "canonical_taxonomy_mapping": true,
-              "rationale": "The alleged process promoted an estimated care duration into a practically determinative coverage constraint in essential-care decisions."
+              "rationale": "On the plaintiffs’ account, a predicted care duration was used as the practical endpoint of individual coverage rather than a contestable input to an independently justified decision. The insurer’s actual decision trace remains disputed."
             }
           ]
         }
@@ -423,7 +478,7 @@
     "methodology_id": "VIGIL-HIM",
     "methodology_version": "1.0.1",
     "derivation_rule": "highest-supported-materialised-harm",
-    "assessed_on": "2026-09-20",
+    "assessed_on": "2026-09-23",
     "overall_severity": "S4",
     "controlling_dimensions": [
       "rights-liberty"
@@ -448,11 +503,11 @@
         "severity": "S4",
         "threshold_id": "VIGIL-HIM-1.0.1-RGT-S4",
         "observed_values": [],
-        "assessment_basis": "The preserved sources establish the bounded consequence described in the Incident summary: Reported use of an algorithmic care-duration estimate in coverage denial allegations. Unreported downstream consequences were not inferred. Threshold applied: Substantial or prolonged deprivation of liberty, essential care, legal protection or essential opportunity.",
+        "assessment_basis": "The complaint describes named patients losing payment for post-acute care despite clinicians’ recommendations, a reported substantial essential-care access consequence consistent with S4. The allegation is contested; neither direct algorithm causation nor liability is treated as established.",
         "evidence_confidence": "medium",
         "evidence_refs": [
           "source_records[0]",
-          "source_records[1]"
+          "source_records[2]"
         ]
       },
       {
