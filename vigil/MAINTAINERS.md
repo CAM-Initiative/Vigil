@@ -85,6 +85,27 @@ Run `vigil/scripts/validate-vigil-incident-rebuild.py` before ordinary corpus va
 
 The rebuild guard is intentionally generic. `VIGIL-INC-000129` informed its design because that Incident demonstrates mixed mapping roles and repeated re-adjudication, but permanent validation must not freeze one Incident's current answer.
 
+
+### Gmail as the durable next-action staging point
+
+VIGIL uses the maintainer Gmail account as the durable staging point for actions that cannot or should not be completed inside the current Incident edit.
+
+The current queue is the **latest** Gmail message whose subject begins `[CURRENT VIGIL QA ACTION]` and that carries the label `VIGIL/CURRENT QA ACTION`. That message is a complete authoritative snapshot of unresolved work and supersedes earlier queue notes.
+
+When adjudication identifies a new taxonomy requirement or another manual action:
+
+1. read the current queue first;
+2. reconcile its items against the actual working-branch state;
+3. preserve unresolved items;
+4. add the new instruction with Incident IDs, evidence basis, tested taxonomy boundaries or other relevant context;
+5. send a replacement self-email using the same subject prefix;
+6. apply the same Gmail label; and
+7. make the supersession rule explicit in the new body.
+
+A taxonomy escalation should explain the mechanism or invariant that is not faithfully representable, the nearest classes tested and rejected, and whether the likely next task is a new class, boundary amendment, family review or terminology repair.
+
+This is intentionally a connector-mediated maintainer workflow, not repository automation. GitHub Actions must not contain mailbox credentials or attempt to impersonate the ChatGPT Gmail connector.
+
 ### Mapping preservation invariant
 
 For every mapping present in the baseline, exactly one disposition is required:
