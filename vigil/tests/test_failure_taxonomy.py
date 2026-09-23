@@ -364,8 +364,8 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         )
         self.assertIn("continuity-state validity", identity["family"]["exclusion_rule"].lower())
 
-        self.assertEqual(rendering["class_code"], "PRAGMATIC_CONSTRAINT_RENDERING_FAILURE")
-        self.assertEqual(rendering["name"], "Pragmatic Constraint Rendering Failure")
+        self.assertEqual(rendering["class_code"], "PRAGMATIC_CONSTRAINT_RENDERING_INTEGRITY")
+        self.assertEqual(rendering["name"], "Pragmatic Constraint Rendering Integrity")
         rendering_recognition = " ".join(rendering["recognition"]["required_conditions"]).lower()
         for boundary in (
             "source lineage",
@@ -571,7 +571,7 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
         continuity = next(document for document in documents if document["family"]["family_id"] == "VIGIL-FF-0006")
         self.assertEqual(continuity["family"]["family_code"], "CONTINUITY_STATE_INTEGRITY")
-        self.assertEqual(continuity["family"]["name"], "Continuity-State Integrity Failures")
+        self.assertEqual(continuity["family"]["name"], "Continuity-State Integrity")
         self.assertEqual(
             [item["class_id"] for item in continuity["classes"]],
             ["VIGIL-FC-000034", "VIGIL-FC-000035", "VIGIL-FC-000036", "VIGIL-FC-000056", "VIGIL-FC-000078"],
@@ -583,8 +583,8 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         self.assertIn("persona", continuity["family"]["inclusion_rule"].lower())
 
         validity = next(item for item in continuity["classes"] if item["class_id"] == "VIGIL-FC-000078")
-        self.assertEqual(validity["class_code"], "CONTINUITY_STATE_VALIDITY_FAILURE")
-        self.assertEqual(validity["name"], "Continuity-State Validity Failure")
+        self.assertEqual(validity["class_code"], "CONTINUITY_STATE_VALIDITY")
+        self.assertEqual(validity["name"], "Continuity-State Validity")
         self.assertIn("DEFECTIVE_STATE_CARRYFORWARD_FAILURE", validity["aliases"])
         self.assertIn("Defective-State Carryforward Failure", validity["aliases"])
         recognition = " ".join(validity["recognition"]["required_conditions"]).lower()
@@ -592,12 +592,12 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
             self.assertIn(boundary, recognition)
         exclusions = " ".join(validity["exclusions"]).lower()
         for neighbour in (
-            "restoration-state integrity failure",
-            "instruction-induced identity override",
-            "pragmatic constraint rendering failure",
-            "control-plane authority crossover",
-            "source-authority confusion",
-            "objective–pathway authority dominance",
+            "restoration-state integrity",
+            "identity-state instruction boundary",
+            "pragmatic constraint rendering integrity",
+            "control-plane authority separation",
+            "source-authority separation",
+            "objective–pathway authority separation",
             "safe-exit persistence failure",
         ):
             self.assertIn(neighbour, exclusions)
