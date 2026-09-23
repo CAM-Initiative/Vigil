@@ -31,25 +31,25 @@
   },
   "interpretive_provenance": {
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-09-22-INC-000045-GOVERNANCE-ASSESSMENT",
+      "review_id": "VIGIL-REVIEW-2026-09-23-INC-000045-READJUDICATION",
       "reviewer_type": "AI analytical reviewer",
       "reviewer_platform": "OpenAI Codex",
-      "reviewer_model": "GPT-5",
-      "review_date": "2026-09-22",
-      "review_scope": "Populate the clause-level VIGIL Governance Assessment from evidence already preserved in the Incident without reopening occurrence facts, Harm Impact or taxonomy mappings.",
+      "reviewer_model": "GPT-6",
+      "review_date": "2026-09-23",
+      "review_scope": "Original technical report, source roles, occurrence, harm and full taxonomy 0.6.7 review.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
         "taxonomy_review": true,
         "structured_semantic_adjudication": true,
-        "cross_incident_consistency_review": true,
-        "new_external_source_research": false
+        "new_external_source_research": true
       },
       "known_limitations": [
-        "The assessment is bounded to sources already preserved in the Incident and introduces no new external occurrence claims.",
-        "Existing taxonomy mappings, relationship roles and confidence values were treated as authoritative; apparent inconsistencies are flagged for human review rather than silently re-adjudicated."
+        "The wire capture was not independently re-run by this review.",
+        "Tests used controlled files and fake secrets; broader customer impact is unknown.",
+        "AI review is not human verification."
       ],
-      "review_outcome": "Added 1 incident-specific governance-assessment row; occurrence facts, source records, Section 03 taxonomy adjudication, Harm Impact and alignment outcome remain unchanged."
+      "review_outcome": "Added original researcher evidence, retained FC-000003, corrected prose and changed unsupported S3 real-world privacy harm to SU."
     },
     "review_history": [
       {
@@ -262,6 +262,27 @@
           "Existing taxonomy mappings, relationship roles and confidence values were treated as authoritative; apparent inconsistencies are flagged for human review rather than silently re-adjudicated."
         ],
         "review_outcome": "Added 1 incident-specific governance-assessment row; occurrence facts, source records, Section 03 taxonomy adjudication, Harm Impact and alignment outcome remain unchanged."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-09-23-INC-000045-READJUDICATION",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-09-23",
+        "review_scope": "Original technical report, source roles, occurrence, harm and full taxonomy 0.6.7 review.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "structured_semantic_adjudication": true,
+          "new_external_source_research": true
+        },
+        "known_limitations": [
+          "The wire capture was not independently re-run by this review.",
+          "Tests used controlled files and fake secrets; broader customer impact is unknown.",
+          "AI review is not human verification."
+        ],
+        "review_outcome": "Added original researcher evidence, retained FC-000003, corrected prose and changed unsupported S3 real-world privacy harm to SU."
       }
     ]
   },
@@ -272,21 +293,57 @@
     "sector": "AI coding assistants / software development / cloud services"
   },
   "preferred_evidence": {
-    "selected_on": "2026-08-30",
-    "selection_basis": "Selected as the most incident-specific substantive source preserved in the legacy evidence set; other selected sources remain in chronology.",
-    "source_url": "https://thehackernews.com/2026/07/grok-build-uploads-entire-git.html"
+    "source_url": "https://gist.github.com/cereblab/dc9a40bc26120f4540e4e09b75ffb547",
+    "selection_basis": "Original investigator’s methods and captured artefact account, with explicit limitations, rather than secondary reporting or product changelog.",
+    "selected_on": "2026-09-23"
   },
   "record_identity": {
     "created": "2026-08-30",
     "record_id": "VIGIL-INC-000045",
     "record_type": "incident",
     "title": "Grok Build uploaded entire Git repositories to xAI storage",
-    "updated": "2026-09-22",
-    "version": "1.1.11"
+    "updated": "2026-09-23",
+    "version": "1.1.12"
   },
   "record_state": "active",
   "record_type": "incident",
   "source_records": [
+    {
+      "source_title": "What xAI Grok Build CLI actually sends to xAI — a wire-level analysis",
+      "author_or_publisher": "cereblab",
+      "source_date": "2026-07-12",
+      "source_url": "https://gist.github.com/cereblab/dc9a40bc26120f4540e4e09b75ffb547",
+      "retrieved_date": "2026-09-23",
+      "source_type": "investigation report",
+      "source_role": "incident-evidence",
+      "source_residence": "external",
+      "source_platform": "GitHub Gist",
+      "source_url_status": "available",
+      "relevance_note": "Original investigator account and reproducible captured evidence for repository-bundle uploads in Grok Build 0.2.93.",
+      "evidence_modality": [
+        "text",
+        "code"
+      ],
+      "primary_artefact_access": {
+        "access_status": "directly reviewed primary technical report",
+        "reviewing_system": "OpenAI Codex / GPT-6",
+        "access_method": "Direct public review of investigator’s methods, observations and limitations",
+        "direct_primary_artefact_review": true,
+        "limitations": [
+          "Capture artefacts and binaries were not independently re-run by this review.",
+          "The samples used researcher-controlled canary content and fake secrets.",
+          "Later server-side settings may differ across accounts."
+        ]
+      },
+      "interpretive_reliance": "Primary technical basis for upload scope, separate storage path and stated test limitations.",
+      "evidence_status": "first-party-reported",
+      "evidence_status_basis": "The researcher published their own wire captures and reproduction method; this review inspected the report but did not independently repeat the test.",
+      "incident_source_order": 1,
+      "source_context": "In Grok Build 0.2.93, an investigator captured a full tracked Git bundle and history sent to storage despite a prompt not to read files; tests used controlled canaries and fake secrets.",
+      "deployment_context": "Researcher-controlled Grok Build CLI consumer-account tests.",
+      "model_or_algorithm": "Grok Build 0.2.93",
+      "system_or_product": "Grok Build CLI"
+    },
     {
       "archive_url": "",
       "author_or_publisher": "The Hacker News / reporting on cereblab wire-level testing",
@@ -297,7 +354,7 @@
       ],
       "evidence_status": "independent-reporting",
       "evidence_status_basis": "The reviewed independent reporting from The Hacker News / reporting on cereblab wire-level testing establishes the occurrence to the extent reported; it does not adjudicate disputed underlying claims.",
-      "incident_source_order": 1,
+      "incident_source_order": 2,
       "interpretive_reliance": "Used for the source-qualified finding that repository-scale upload occurred in the tested version and was subsequently disabled.",
       "model_or_algorithm": "Grok Build v0.2.93",
       "primary_artefact_access": {
@@ -332,7 +389,7 @@
       ],
       "evidence_status": "verified",
       "evidence_status_basis": "The directly reviewed primary or authoritative material from xAI directly establishes the disclosed event, result or action for which it is cited; no broader deployment claim is inferred.",
-      "incident_source_order": 2,
+      "incident_source_order": 3,
       "interpretive_reliance": "Used only to establish first-party product-version provenance.",
       "model_or_algorithm": "Grok Build v0.2.93",
       "primary_artefact_access": {
@@ -344,13 +401,13 @@
         ],
         "reviewing_system": "GPT-5.6 Thinking"
       },
-      "relevance_note": "Confirms the relevant product version and provides first-party release provenance.",
+      "relevance_note": "Official version context only; changelog does not establish repository-upload behaviour.",
       "retrieved_date": "2026-07-17",
       "source_context": "The official changelog confirms the existence and release timing of Grok Build v0.2.93 but does not itself disclose repository-scale storage upload behaviour.",
       "source_date": "2026-07-08",
       "source_platform": "xAI",
       "source_residence": "external",
-      "source_role": "incident-evidence",
+      "source_role": "contextual-background",
       "source_title": "Grok Build Changelog — v0.2.93",
       "source_type": "product changelog",
       "source_url": "https://x.ai/build/changelog",
@@ -366,7 +423,7 @@
       ],
       "evidence_status": "independent-reporting",
       "evidence_status_basis": "The report corroborates meaningful bounded confidential-code exposure and remediation; it does not establish downstream misuse or irreversible disclosure.",
-      "incident_source_order": 3,
+      "incident_source_order": 4,
       "interpretive_reliance": "The report corroborates meaningful bounded confidential-code exposure and remediation; it does not establish downstream misuse or irreversible disclosure.",
       "model_or_algorithm": "not fully established in the source",
       "primary_artefact_access": {
@@ -393,7 +450,7 @@
       "system_or_product": "Grok"
     }
   ],
-  "summary": "The report describes wire-level testing in which Grok Build v0.2.93 uploaded complete Git repositories, including commit history and files not required for the active task, through a storage channel distinct from model-turn traffic. The reported transfer volume tracked repository size rather than files inspected by the model.",
+  "summary": "In July 2026, a researcher testing Grok Build v0.2.93 captured uploads of whole Git bundles to xAI storage, including tracked files the coding agent had been told not to read and the repository’s commit history. In one test, the agent was asked only to reply “OK”; the repository bundle was still transmitted. The researcher later observed that xAI had switched off the upload server-side on the tested account. The test used canary files and fake secrets; it did not establish that xAI trained on the uploaded code or exposed a real customer’s credentials.",
   "system_context": {
     "platform_or_vendor": "xAI",
     "product_or_service": "Grok",
@@ -421,35 +478,24 @@
     }
   },
   "taxonomy_classification": {
-    "classification_basis": "Only mechanisms independently evidenced in this occurrence are retained; parent FM inheritance is not a basis for classification.",
+    "classification_basis": "Full taxonomy 0.6.7 review retains FC-000003 Target and Scope Authority Binding as the failure occurrence. The investigator’s controlled capture shows authority to work with task-relevant repository content expanding into transfer of all tracked files and Git history via separate storage, including material the agent was instructed not to read. FC-000002 Capability-Authority Separation is adjacent but the specific incident boundary is transfer beyond the delegated task/target scope. The controlled test does not establish downstream real-customer confidentiality loss.",
     "classification_review_provenance": {
-      "authority_boundary": "Classification and confidence reflect evidence for this occurrence, not a parent Failure Mode.",
-      "method": "INCIDENT-02 occurrence-level semantic reconciliation",
-      "review_date": "2026-08-30",
-      "review_status": "incident classified",
-      "reviewer": "OpenAI Codex / GPT-5.6 under human-directed transformation decisions",
-      "ontology_migrations": [
-        {
-          "previous_class_id": "VIGIL-FC-000008",
-          "previous_class_code": "DELEGATION_SCOPE_EXPANSION",
-          "previous_class_name": "Delegation Scope Expansion",
-          "successor_class_id": "VIGIL-FC-000003",
-          "migration_type": "mechanical ontology successor mapping",
-          "migrated_on": "2026-08-31",
-          "authority_boundary": "The immutable class mapping changed under the approved ontology consolidation; evidence, diagnosis, severity, and classification confidence were not reassessed."
-        }
-      ]
+      "method": "record-by-record full taxonomy 0.6.7 and original wire-report review",
+      "review_date": "2026-09-23",
+      "reviewer": "OpenAI Codex / GPT-6 under human-directed VIGIL governance",
+      "review_status": "FC-000003 retained under taxonomy 0.6.7",
+      "authority_boundary": "FC-000003 accepted for the measured task-to-transfer scope expansion; FC-000002 considered but not separately established as a distinct mechanism. Current global product behaviour and real-customer harm are not inferred from the controlled test."
     },
     "classification_status": "classified",
     "primary_classification": {
       "class_id": "VIGIL-FC-000003",
       "classification_role": "failure-occurrence",
-      "classification_basis": "Target and Scope Authority Transposition, expressed through the delegation-scope-expansion subtype, is supported because the reported implementation converted authority to inspect or work within a repository into authority to transmit repository-scale content, while the transfer scope appears to have followed technically reachable repository contents rather than only files required for the active task.",
+      "classification_basis": "The CLI transmitted a full tracked repository and history to external storage when the user’s bounded task did not require reading those files. Technical reachability of repository content was treated as transfer scope beyond the delegated task.",
       "classification_confidence": "high",
       "family_id": "VIGIL-FF-0001"
     },
     "secondary_classifications": [],
-    "taxonomy_version": "0.2.3-draft"
+    "taxonomy_version": "0.6.7"
   },
   "vigil_assessment": {
     "assessment_boundaries": [
@@ -457,23 +503,23 @@
       "Deletion of previously transferred data was not independently verified.",
       "Incident admission does not determine legal liability or establish every disputed claim as final fact."
     ],
-    "factual_basis": "The selected evidence reports: The report describes wire-level testing in which Grok Build v0.2.93 uploaded complete Git repositories, including commit history and files not required for the active task, through a storage channel distinct from model-turn traffic. The reported transfer volume tracked repository size rather than files inspected by the model.",
-    "governance_interpretation": "The reported implementation converted authority to inspect or work within a repository into authority to transmit repository-scale content, while the transfer scope appears to have followed technically reachable repository contents rather than only files required for the active task.",
-    "significance_to_cam": "For CAM, this occurrence separates delegation scope from technical reachability: authority to perform repository-based coding work does not itself authorise repository-scale external transmission, and the fact that files are technically reachable cannot define permission to transmit them.",
+    "factual_basis": "The researcher’s original wire-level analysis provides captured request and bundle evidence for version 0.2.93: tracked repository content and history reached a storage endpoint separately from model-turn traffic even when the agent did not inspect those files. The researcher reported a later server-side disablement; the scope and permanence of that change across accounts are not independently established. The official changelog supports product-version context but not the upload finding. The controlled samples used fake credentials; no real secret exposure, training use or population-wide loss is proven here.",
+    "governance_interpretation": "The tested CLI expanded task-local repository access into a repository-wide external storage action. The controlled capture establishes a target-and-scope authority failure in that implementation; it does not by itself establish downstream misuse of the data or a quantified real-customer confidentiality harm. Later server-side disablement limits current generalisation, not the observed 0.2.93 behaviour.",
+    "significance_to_cam": "Permission to run a coding task in a repository does not itself cover bulk transmission of all tracked files and history. The upload path and retention setting need to be visible as distinct governed actions because an ordinary model-training opt-out did not stop the captured storage transfer in the test.",
     "source_clause_analysis": {
       "source_record_order": 1,
-      "source_url": "https://thehackernews.com/2026/07/grok-build-uploads-entire-git.html",
+      "source_url": "https://gist.github.com/cereblab/dc9a40bc26120f4540e4e09b75ffb547",
       "purpose": "Preserve the source-language or evidentiary propositions that materially explain VIGIL's governance interpretation. Paraphrases are concise, source-bounded and linked to the existing taxonomy adjudication.",
       "clauses": [
         {
-          "source_paraphrase": "Wire-level testing reported that Grok Build uploaded complete Git repositories, including history and files not required for the active task, through a separate storage channel.",
+          "source_paraphrase": "The investigator captured Grok Build uploading a Git bundle of tracked files and history despite a prompt to reply without reading any files.",
           "recovered_invariant_interpretation": "Authority to inspect or modify selected repository content for a task does not transfer to repository-wide transmission; changed action and data scope require separate authorisation.",
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000003",
               "relationship": "failure-occurrence",
               "canonical_taxonomy_mapping": true,
-              "rationale": "The implementation expanded task-local repository access into bulk external upload whose scope followed technically reachable content rather than task necessity."
+              "rationale": "The CLI sent tracked files beyond those the bounded coding task needed or the agent read, so task-local permission was extended to repository-wide storage transfer in the observed implementation."
             }
           ]
         }
@@ -484,12 +530,10 @@
     "methodology_id": "VIGIL-HIM",
     "methodology_version": "1.0.1",
     "derivation_rule": "highest-supported-materialised-harm",
-    "assessed_on": "2026-09-20",
-    "overall_severity": "S3",
-    "controlling_dimensions": [
-      "privacy-confidentiality"
-    ],
-    "coverage_note": "All eleven dimensions were re-reviewed. The preserved and newly added evidence independently supports the assessed dimensions; other dimensions remain unreported unless specifically assessed and do not lower or raise the derived result. Context-only sources were not used to manufacture assessed harm.",
+    "assessed_on": "2026-09-23",
+    "overall_severity": "SU",
+    "controlling_dimensions": [],
+    "coverage_note": "A controlled repository-transfer boundary failure is established, but the canary samples and fake secrets do not establish a bandable real-customer confidentiality injury. Other dimensions remain unreported, not S1.",
     "dimensions": [
       {
         "dimension_id": "physical-health-safety",
@@ -517,16 +561,9 @@
       },
       {
         "dimension_id": "privacy-confidentiality",
-        "assessment_status": "assessed",
-        "severity": "S3",
-        "threshold_id": "VIGIL-HIM-1.0.1-PRV-S3",
-        "observed_values": [],
-        "assessment_basis": "The preserved sources establish the bounded consequence described in the Incident summary: The report describes wire-level testing in which Grok Build v0.2.93 uploaded complete Git repositories, including commit history and files not required for the active task, through a storage channel distinct from model-turn traffic. The reported transfer volume tracked repository size rather than files inspected by the model. Unreported downstream consequences were not inferred. Threshold applied: Meaningful bounded exposure, access or misuse of personal, credential or confidential information that is substantially containable.",
-        "evidence_confidence": "medium",
-        "evidence_refs": [
-          "source_records[0]",
-          "source_records[2]"
-        ]
+        "assessment_status": "insufficient-evidence",
+        "assessment_basis": "The investigator used controlled canary repositories and fake secrets; the transfer mechanism was demonstrated, but the preserved record does not establish materialised exposure of real protected information or affected customer scale.",
+        "evidence_confidence": "not-assessed"
       },
       {
         "dimension_id": "financial-economic",
@@ -564,7 +601,8 @@
         "assessment_basis": "The preserved Incident evidence does not report a bandable materialised environmental impact; absence of reporting is not evidence of no harm.",
         "evidence_confidence": "not-assessed"
       }
-    ]
+    ],
+    "assessment_gap": "The controlled tests demonstrate transmission but do not identify real customer content, compromised credentials or downstream misuse sufficient to band materialised harm."
   },
   "related_incidents": []
 }
