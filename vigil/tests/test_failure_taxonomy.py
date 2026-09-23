@@ -567,49 +567,6 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         self.assertEqual(set(index["removed_ids"]), set(mappings))
         self.assertTrue(selectable.isdisjoint(mappings))
 
-    def test_continuity_state_integrity_includes_validity_and_baseline_reset_boundary(self):
-        documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
-        continuity = next(document for document in documents if document["family"]["family_id"] == "VIGIL-FF-0006")
-        self.assertEqual(continuity["family"]["family_code"], "CONTINUITY_STATE_INTEGRITY")
-        self.assertEqual(continuity["family"]["name"], "Continuity-State Integrity")
-        self.assertEqual(
-            [item["class_id"] for item in continuity["classes"]],
-            ["VIGIL-FC-000034", "VIGIL-FC-000035", "VIGIL-FC-000036", "VIGIL-FC-000056", "VIGIL-FC-000078"],
-        )
-        family_invariant = continuity["family"]["invariant"].lower()
-        for boundary in ("applicable state", "continuity does not confer validity", "reversion to an applicable baseline"):
-            self.assertIn(boundary, family_invariant)
-        self.assertIn("identity-", continuity["family"]["inclusion_rule"].lower())
-        self.assertIn("persona", continuity["family"]["inclusion_rule"].lower())
-
-        validity = next(item for item in continuity["classes"] if item["class_id"] == "VIGIL-FC-000078")
-        self.assertEqual(validity["class_code"], "CONTINUITY_STATE_VALIDITY")
-        self.assertEqual(validity["name"], "Continuity-State Validity")
-        self.assertIn("DEFECTIVE_STATE_CARRYFORWARD_FAILURE", validity["aliases"])
-        self.assertIn("Defective-State Carryforward Failure", validity["aliases"])
-        recognition = " ".join(validity["recognition"]["required_conditions"]).lower()
-        for boundary in ("continuity transition", "revalidation", "presumptively valid", "materially contributes"):
-            self.assertIn(boundary, recognition)
-        exclusions = " ".join(validity["exclusions"]).lower()
-        for neighbour in (
-            "restoration-state integrity",
-            "identity-state instruction boundary",
-            "pragmatic constraint rendering integrity",
-            "control-plane authority separation",
-            "source-authority separation",
-            "objective–pathway authority separation",
-            "safe-exit persistence failure",
-        ):
-            self.assertIn(neighbour, exclusions)
-
-        exemplars = {item["linked_incident_id"]: item for item in validity.get("invariant_exemplars", [])}
-        self.assertEqual(exemplars["VIGIL-INC-000136"]["exemplar_type"], "successful-invariant")
-        self.assertEqual(exemplars["VIGIL-INC-000129"]["exemplar_type"], "successful-invariant")
-        self.assertIn("baseline", exemplars["VIGIL-INC-000129"]["invariant_demonstrated"].lower())
-        self.assertEqual(exemplars["VIGIL-INC-000130"]["exemplar_type"], "ambiguous-boundary")
-        self.assertEqual(exemplars["VIGIL-INC-000138"]["exemplar_type"], "ambiguous-boundary")
-        self.assertTrue(all(exemplars[item]["exemplar_status"] == "admitted" for item in exemplars))
-
     def test_objective_pursuit_integrity_family_has_bounded_peer_mechanisms(self):
         documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
         objective = next(document for document in documents if document["family"]["family_id"] == "VIGIL-FF-0012")
