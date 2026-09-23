@@ -10,7 +10,7 @@
   "family": {
     "family_id": "VIGIL-FF-0005",
     "family_code": "ACCESS_SESSION_STATE",
-    "name": "Access & Session State Integrity Failures",
+    "name": "Access & Session State Integrity",
     "status": "beta",
     "abstraction": "family",
     "version": "0.1.2",
@@ -27,24 +27,26 @@
     ],
     "inclusion_rule": "Use this family when the primary structural failure is divergence, collapse, ambiguity, inaccurate representation, or loss of practical access caused by an incomplete dependent verification without a proportionate fallback during an authentication, access, entitlement, or session-state transition.",
     "exclusion_rule": "Do not use this family for lack of authority to perform an action, independently established invalid, expired, revoked, fraudulent, or ineligible access, generic service unavailability unrelated to an access-state or verification-dependency transition, theft or exposure of credentials, or loss of work state where access and session state remain accurate.",
-    "aliases": [],
+    "aliases": [
+      "Access & Session State Integrity Failures"
+    ],
     "allowed_class_ids": [
       "VIGIL-FC-000031",
       "VIGIL-FC-000032",
       "VIGIL-FC-000048"
     ],
     "allowed_class_codes": [
-      "AUTHENTICATION_STATE_CONTINUITY_FAILURE",
-      "ACCESS_STATE_COLLAPSE",
-      "VERIFICATION_DEPENDENCY_ACCESS_FAILURE"
+      "AUTHENTICATION_STATE_CONTINUITY",
+      "ACCESS_STATE_DIFFERENTIATION",
+      "VERIFICATION_DEPENDENCY_ACCESS_CONTINUITY"
     ]
   },
   "classes": [
     {
       "class_id": "VIGIL-FC-000031",
-      "class_code": "AUTHENTICATION_STATE_CONTINUITY_FAILURE",
+      "class_code": "AUTHENTICATION_STATE_CONTINUITY",
       "family_id": "VIGIL-FF-0005",
-      "name": "Authentication-State Continuity Failure",
+      "name": "Authentication-State Continuity",
       "status": "beta",
       "abstraction": "class",
       "plain_english": "Authentication changes underneath the interaction, but the session does not transition coherently with it.",
@@ -91,13 +93,16 @@
           "evidence_note": "RFC 7009 specifies revocation of OAuth access and refresh tokens, immediate invalidation of the revoked token, possible invalidation of related tokens and grants, and minimisation of propagation delay. This directly supports coherent propagation of authentication-state revocation across dependent authorization state; VIGIL additionally covers refresh, recovery, replacement and active-task continuity beyond OAuth."
         }
       ],
-      "aliases": []
+      "aliases": [
+        "AUTHENTICATION_STATE_CONTINUITY_FAILURE",
+        "Authentication-State Continuity Failure"
+      ]
     },
     {
       "class_id": "VIGIL-FC-000032",
-      "class_code": "ACCESS_STATE_COLLAPSE",
+      "class_code": "ACCESS_STATE_DIFFERENTIATION",
       "family_id": "VIGIL-FF-0005",
-      "name": "Access-State Collapse",
+      "name": "Access-State Differentiation",
       "status": "beta",
       "abstraction": "class",
       "plain_english": "Different access conditions are flattened into one unclear state, so the next safe action cannot be determined.",
@@ -126,7 +131,10 @@
           "note": "A failed authentication transition can also collapse distinct access-state causes, but neither mechanism requires the other."
         }
       ],
-      "aliases": [],
+      "aliases": [
+        "ACCESS_STATE_COLLAPSE",
+        "Access-State Collapse"
+      ],
       "subtypes": [
         {
           "name": "Re-entry Access-State Ambiguity",
@@ -166,9 +174,9 @@
     },
     {
       "class_id": "VIGIL-FC-000048",
-      "class_code": "VERIFICATION_DEPENDENCY_ACCESS_FAILURE",
+      "class_code": "VERIFICATION_DEPENDENCY_ACCESS_CONTINUITY",
       "family_id": "VIGIL-FF-0005",
-      "name": "Verification-Dependency Access Failure",
+      "name": "Verification-Dependency Access Continuity",
       "status": "beta",
       "abstraction": "class",
       "plain_english": "A verifier cannot complete its check, so otherwise valid or unresolved access is blocked without a proportionate fallback route.",
@@ -206,7 +214,10 @@
           "note": "A missing fallback can coincide with treating non-verification as decision authority, but the access and authority mechanisms remain distinct."
         }
       ],
-      "aliases": [],
+      "aliases": [
+        "VERIFICATION_DEPENDENCY_ACCESS_FAILURE",
+        "Verification-Dependency Access Failure"
+      ],
       "external_references": [
         {
           "title": "IEEE 7014-2024, clause 4.3.2.2 (post-p)",
