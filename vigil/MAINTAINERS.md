@@ -229,6 +229,66 @@ python vigil/scripts/build-vigil-public-records.py
 
 The master registry contains one registry, `incidents`. It is a registry-of-registries manifest and must not duplicate Incident entries. `VIGIL.Incidents.Index.json` is intentionally a lightweight catalogue/search/routing projection; canonical evidence, diagnosis, structured severity, taxonomy detail and provenance remain in the source Incident JSON. Do not manually edit generated outputs or recreate retired-class indexes.
 
+## Human-maintainer stop conditions for validators, schema rules and corpus-wide tests
+
+Validators, schemas and permanent corpus tests are **governance controls over the record set**. A change to one of these controls can silently redefine what canonical Incident content is permitted and can induce large-scale record rewrites. Treat semantic validator changes as maintainer decisions, not routine implementation cleanup.
+
+### Gate 1 — approval before changing the control
+
+Before editing any validator, schema rule, permanent test, builder rule or publication guard that can change whether canonical Incident content passes or fails, the agent or maintainer must first present the proposed change to the human maintainer and **STOP**.
+
+The pre-change explanation must state, in plain language:
+
+1. **Current behaviour** — what the existing rule checks and which canonical fields or structures it governs.
+2. **Proposed behaviour** — exactly what will change.
+3. **Pass/fail delta** — examples of content that passes today but would fail after the change, and content that fails today but would pass after the change.
+4. **Affected surface** — the exact VIGIL fields, website stages, generated outputs or subsystems involved.
+5. **Expected corpus impact** — known or estimated records likely to be affected. If this has not been measured, say so explicitly.
+6. **Repair implication** — whether satisfying the new rule could require prose rewrites, taxonomy changes, evidence changes, provenance changes, field movement, deletions, migrations or generated-output rebuilds.
+7. **Data-loss / semantic-drift risk** — what valuable information could be flattened, moved, hidden or deleted if the rule is applied mechanically.
+8. **Why the validator is the right place to enforce the rule** — rather than the schema, renderer, documentation, authoring contract or a bounded review.
+9. **Proposed stop condition** — what will happen after the validator change if existing records fail.
+
+No semantic validator/schema/test change may be implemented until the human maintainer explicitly approves that described behaviour.
+
+A change is semantic if it can alter the accepted meaning, placement, wording, classification, evidence state, harm state, provenance state or public presentation contract of canonical records. Renaming a test, fixing a syntax error, improving diagnostics or repairing execution without changing the accepted/rejected record set is not semantic; if there is any doubt, treat the change as semantic and stop for approval.
+
+### Gate 2 — approval before repairing records exposed by a changed control
+
+Human approval to change a validator **does not authorise automatic corpus repair**.
+
+After an approved validator/schema/test change is implemented:
+
+1. run it read-only against the corpus;
+2. report the exact failing records and fields;
+3. distinguish mechanical defects from semantic/content defects;
+4. for semantic/content defects, show representative before/after repair examples and explain which canonical field role each proposed edit preserves;
+5. **STOP again for human-maintainer approval before broad, multi-record or corpus-wide edits.**
+
+Do not combine “change the validator” and “rewrite every record that now fails” into one unattended maintenance action.
+
+### Mandatory stop conditions
+
+Stop and seek explicit human-maintainer direction when any proposed validator or repair would:
+
+- change the authoring role of `summary`, `vigil_assessment.factual_basis`, `vigil_assessment.significance_to_cam` or `vigil_assessment.governance_interpretation`;
+- move prose between website stages or canonical fields;
+- remove or prohibit previously accepted factual, analytical, evidentiary or provenance content;
+- introduce a new corpus-wide prose restriction or regex;
+- require more than a small bounded set of canonical Incident edits;
+- affect taxonomy mappings, classification roles/confidence, VIGIL-HIM results, source evidence, source-clause analysis or interpretive provenance;
+- convert a presentation preference into a canonical-record validity rule;
+- create a migration or rewrite requirement for records that were valid under the previous contract;
+- produce uncertainty about whether the validator or the website renderer is wrong.
+
+When a validator failure conflicts with the documented field-to-render contract, **do not repair the record first**. Stop, identify the contract conflict, and ask the human maintainer whether the validator, renderer, schema or record should change.
+
+### Validator failures are diagnostic, not editing authority
+
+A validator reports that a rule has been breached. It does not itself authorise deletion, simplification, paraphrase, field movement or re-adjudication.
+
+For prose in particular, the smallest possible fix is preferred only **after** the governing rule and field semantics are already approved and unambiguous. If the required repair is not obvious from the canonical contract, stop rather than infer the desired rewrite.
+
 ## Maintenance and validation
 
 Executable tests belong under `vigil/tests/`; current builders and validators belong under `vigil/scripts/`. Delete completed one-off migration, routing, reconciliation and seeding machinery when no retained subsystem depends on it.

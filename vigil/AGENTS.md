@@ -74,6 +74,26 @@ The public indexes are navigation projections, not duplicate record stores:
 - Canonical Incident diagnosis, evidence, severity analysis, taxonomy objects and provenance remain only in `vigil/records/incidents/`.
 - `VIGIL.Registry.Index.json` is a registry manifest. It must not duplicate the Incident `records` array.
 
+## Human-maintainer approval gate for validator and schema changes
+
+Before changing any validator, schema rule, permanent corpus test, builder rule or publication guard that can change which canonical Incident content passes or fails, read **Human-maintainer stop conditions for validators, schema rules and corpus-wide tests** in `vigil/MAINTAINERS.md`.
+
+For any semantic change, first tell the human maintainer:
+
+- what the rule does now;
+- exactly what will change;
+- what content will newly pass or fail;
+- which fields and website stages are affected;
+- how many records may be affected, or that the scope is not yet measured;
+- whether the change could induce record rewrites or information loss; and
+- why the validator, rather than the schema/renderer/documentation, is the correct enforcement point.
+
+Then **STOP and obtain explicit human approval before editing the validator**.
+
+Approval to change the validator is not approval to repair the corpus. After the change, run it read-only, report the failures, and **STOP again before semantic, multi-record or corpus-wide repairs**.
+
+If a validator conflicts with the field-to-render contract, do not “fix” the records to satisfy it. Escalate the conflict to the human maintainer.
+
 ## Test maintenance contract
 
 Permanent tests must protect stable repository contracts: schema and validator behaviour, generic cross-record integrity, publication/build invariants, or an explicitly immutable ID/allocation contract.
