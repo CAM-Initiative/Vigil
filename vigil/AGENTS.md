@@ -15,12 +15,24 @@ The taxonomy, external-governance datasets and CAM assessment are separate retai
 - Preserve `source_records` as the only canonical source-evidence block.
 - Preserve source URLs, evidence status, evidence modality, source residence, source role, access limitations and uncertainty.
 - Do not invent sources, dates, affected systems, causal claims, legal findings, severity or taxonomy mappings.
-- Keep occurrence-level facts in `summary` and `vigil_assessment.factual_basis`; keep governed diagnosis in `vigil_assessment.governance_interpretation`.
+- Keep the lay occurrence narrative in `summary`; keep evidence adjudication in `vigil_assessment.factual_basis`; keep governance significance in `vigil_assessment.significance_to_cam`; keep the integrated governed conclusion in `vigil_assessment.governance_interpretation`. Before editing any of these fields, read the website-rendering crosswalk in `vigil/MAINTAINERS.md`.
 - Keep structured `harm_impact_assessment` as substantive occurrence-level diagnosis under VIGIL-HIM. Overall severity is the highest supported assessed materialised-harm band; never average or sum dimensions, and never encode unreported harm as S1. Keep severity independent of taxonomy classification, source prestige, workflow priority and hypothetical worst-case harm.
 - Keep taxonomy classification separately governed and allow an Incident to remain unclassified.
 - Preserve append-only interpretive provenance and do not represent AI review as human review or verification.
 
 Legacy record classes and migration artefacts remain recoverable through Git history. Active Incident records contain only information required by the current VIGIL data model. Do not restore retired payloads, migration-source metadata or retired-record links to active records.
+
+## Stage 01 “What happened” contract
+
+The full field-to-render contract is maintained in `vigil/MAINTAINERS.md` under **Incident authoring and website-rendering crosswalk**. Treat that crosswalk as mandatory reading before Incident prose maintenance.
+
+
+- The canonical `summary` is rendered verbatim on the public Case File as **Stage 01 → Incident → What happened**.
+- `summary` answers the lay occurrence question only: what happened, to whom or what, when materially relevant, what happened next, and material consequences. It may attribute disputed facts and preserve essential uncertainty, but evidence adjudication such as what the preserved evidence establishes or does not establish belongs in `vigil_assessment.factual_basis`.
+- Do not use `summary` as a taxonomy, governance-diagnosis, Harm Impact, maintenance or workflow surface. VIGIL classification belongs in `taxonomy_classification`; governed diagnosis belongs in `vigil_assessment.governance_interpretation`.
+- A prose-quality validator failure in `summary` authorises only the smallest edit required to remove the offending internal identifier, maintenance phrase or VIGIL diagnostic framing. **Do not shorten, flatten, summarise away, or otherwise rewrite supported occurrence detail merely to satisfy that validator.**
+- Do not perform corpus-wide `summary` rewrites as a mechanical response to a prose-quality test. Review each affected Incident individually and preserve its established chronology, actors, systems, consequences, source-bounded detail and uncertainty.
+- Rich factual detail is expected where the evidence supports it. The purpose of the Stage 01 boundary is separation of facts from diagnosis, not brevity.
 
 ## Clause-level taxonomy assessment contract
 
@@ -61,6 +73,26 @@ The public indexes are navigation projections, not duplicate record stores:
 - `VIGIL.Incidents.Index.json` contains only the fields required for catalogue display, filtering/search, dates, severity/classification state and canonical record routing.
 - Canonical Incident diagnosis, evidence, severity analysis, taxonomy objects and provenance remain only in `vigil/records/incidents/`.
 - `VIGIL.Registry.Index.json` is a registry manifest. It must not duplicate the Incident `records` array.
+
+## Human-maintainer approval gate for validator and schema changes
+
+Before changing any validator, schema rule, permanent corpus test, builder rule or publication guard that can change which canonical Incident content passes or fails, read **Human-maintainer stop conditions for validators, schema rules and corpus-wide tests** in `vigil/MAINTAINERS.md`.
+
+For any semantic change, first tell the human maintainer:
+
+- what the rule does now;
+- exactly what will change;
+- what content will newly pass or fail;
+- which fields and website stages are affected;
+- how many records may be affected, or that the scope is not yet measured;
+- whether the change could induce record rewrites or information loss; and
+- why the validator, rather than the schema/renderer/documentation, is the correct enforcement point.
+
+Then **STOP and obtain explicit human approval before editing the validator**.
+
+Approval to change the validator is not approval to repair the corpus. After the change, run it read-only, report the failures, and **STOP again before semantic, multi-record or corpus-wide repairs**.
+
+If a validator conflicts with the field-to-render contract, do not “fix” the records to satisfy it. Escalate the conflict to the human maintainer.
 
 ## Test maintenance contract
 

@@ -86,6 +86,20 @@ Family filenames use `<family_id>-<human-readable-slug>.json`. The immutable ID 
 
 ## Family and class content
 
+### Canonical naming polarity
+
+Canonical family and class names describe the governed integrity property or invariant boundary, not the failed manifestation. The Failure Taxonomy remains a diagnostic taxonomy, but polarity is carried by the occurrence mapping rather than baked into the canonical label.
+
+For an Incident mapping:
+
+- `failure-occurrence` means the mapped invariant failed in the bounded occurrence;
+- `successful-invariant` means the mapped invariant held under relevant failure pressure; and
+- `ambiguous-boundary` means the occurrence materially engages the invariant but the evidence establishes neither failure nor successful holding.
+
+Accordingly, a class such as `Required Control Activation` may support all three roles without producing constructions such as “Required Control Non-Activation — successful invariant”. Failure definitions, recognition conditions, exclusions and failure examples remain failure-oriented diagnostic content. Canonical names and semantic codes should instead identify the positive or polarity-neutral property being assessed.
+
+Renaming for polarity does not create a new class. Immutable family and class IDs are preserved, prior public names and semantic codes are retained in `aliases`, and historical Incident classifications remain attached to the same IDs unless their substantive mechanism is separately re-adjudicated.
+
 Every family defines its immutable ID, semantic code, canonical name, version, status, abstraction, plain-English explanation, technical definition, governing invariant, scope, inclusion rule, exclusion rule, aliases, and allowed class IDs/codes.
 
 Every selectable class defines its immutable ID, semantic code, current family ID, canonical name, class abstraction, status, plain-English explanation, technical definition, canonical `invariant`, recognition criteria, exclusions, examples, aliases, typed relationships where relevant, and optional external mappings or supersession metadata. The class invariant is the positive mechanism-specific structural property that must hold to prevent or repair that class. It must remain narrower than, and consistent with, the parent family invariant. Consumers must load the applicable family invariant once and add each applicable class invariant. They must not synthesise, infer, or substitute a missing class invariant from the class definition or the broader family invariant. An embedded subtype preserves its semantic name, explanation, definition, recognition criteria, exclusions, examples, aliases and any historical retired class ID/code without becoming a peer class.
