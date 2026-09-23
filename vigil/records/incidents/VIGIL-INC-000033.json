@@ -31,25 +31,25 @@
   },
   "interpretive_provenance": {
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-09-22-INC-000033-GOVERNANCE-ASSESSMENT",
+      "review_id": "VIGIL-REVIEW-2026-09-23-INC-000033-READJUDICATION",
       "reviewer_type": "AI analytical reviewer",
       "reviewer_platform": "OpenAI Codex",
-      "reviewer_model": "GPT-5",
-      "review_date": "2026-09-22",
-      "review_scope": "Populate the clause-level VIGIL Governance Assessment from evidence already preserved in the Incident without reopening occurrence facts, Harm Impact or taxonomy mappings.",
+      "reviewer_model": "GPT-6",
+      "review_date": "2026-09-23",
+      "review_scope": "Full occurrence, field-semantic, source-role, harm and active taxonomy 0.6.7 review with primary research lookup.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
         "taxonomy_review": true,
         "structured_semantic_adjudication": true,
-        "cross_incident_consistency_review": true,
-        "new_external_source_research": false
+        "new_external_source_research": true
       },
       "known_limitations": [
-        "The assessment is bounded to sources already preserved in the Incident and introduces no new external occurrence claims.",
-        "Existing taxonomy mappings, relationship roles and confidence values were treated as authoritative; apparent inconsistencies are flagged for human review rather than silently re-adjudicated."
+        "No named scanner trace or original spyware artefact was available for direct verification.",
+        "The related secondary article is not proof of the same operational occurrence.",
+        "AI review is not human verification."
       ],
-      "review_outcome": "Added 1 incident-specific governance-assessment row; occurrence facts, source records, Section 03 taxonomy adjudication, Harm Impact and alignment outcome remain unchanged."
+      "review_outcome": "Repaired the field-to-render roles and changed FC-000043 from canonical failure occurrence to an unclassified candidate boundary; SU harm retained because no materialised outcome was established."
     },
     "historical_reviewer_note": "Pre-Incident FM/OBS review histories are preserved without re-dating under legacy_governance_state; they are not represented as reviews of the later Incident record.",
     "human_governance_editor": {
@@ -246,6 +246,27 @@
           "Existing taxonomy mappings, relationship roles and confidence values were treated as authoritative; apparent inconsistencies are flagged for human review rather than silently re-adjudicated."
         ],
         "review_outcome": "Added 1 incident-specific governance-assessment row; occurrence facts, source records, Section 03 taxonomy adjudication, Harm Impact and alignment outcome remain unchanged."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-09-23-INC-000033-READJUDICATION",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-09-23",
+        "review_scope": "Full occurrence, field-semantic, source-role, harm and active taxonomy 0.6.7 review with primary research lookup.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "structured_semantic_adjudication": true,
+          "new_external_source_research": true
+        },
+        "known_limitations": [
+          "No named scanner trace or original spyware artefact was available for direct verification.",
+          "The related secondary article is not proof of the same operational occurrence.",
+          "AI review is not human verification."
+        ],
+        "review_outcome": "Repaired the field-to-render roles and changed FC-000043 from canonical failure occurrence to an unclassified candidate boundary; SU harm retained because no materialised outcome was established."
       }
     ]
   },
@@ -265,8 +286,8 @@
     "record_id": "VIGIL-INC-000033",
     "record_type": "incident",
     "title": "Spyware reportedly embedded weapons text to trigger LLM refusals during analysis",
-    "updated": "2026-09-22",
-    "version": "1.1.11"
+    "updated": "2026-09-23",
+    "version": "1.1.12"
   },
   "record_state": "active",
   "record_type": "incident",
@@ -341,7 +362,7 @@
       "system_or_product": "Other"
     }
   ],
-  "summary": "The post reports that malware developers inserted nuclear- and biological-weapons text into spyware with the objective of triggering LLM safety refusals so that an AI security scanner would not analyse the artefact. The originating technical report, named malware sample, vendor, scanner, and independent forensic evidence were not recovered during the present research pass.",
+  "summary": "Security researcher John Scott-Railton reported that malware developers placed text about nuclear and biological weapons inside spyware to provoke a refusal when an AI security scanner examined it. A separate report described weapon-themed comments in a package intended to disrupt AI-assisted malware review. The preserved sources do not identify a scanner that actually refused this spyware sample or show that the reported evasion succeeded in a deployed defensive workflow.",
   "system_context": {
     "platform_or_vendor": "Unknown",
     "product_or_service": "Other",
@@ -369,47 +390,42 @@
     }
   },
   "taxonomy_classification": {
-    "classification_basis": "Only mechanisms independently evidenced in this occurrence are retained; parent FM inheritance is not a basis for classification.",
+    "classification_basis": "Re-adjudicated against the complete active Failure Taxonomy 0.6.7. FC-000043 Control Activation Validity requires a defined control, unsatisfied valid trigger, actual activation and material effect. The post describes an attacker objective, while the preserved evidence does not establish those occurrence conditions in a named scanner. FC-000001 Source-Authority Separation is also not established without evidence that a defender treated the artefact’s lower-trust text as operative instruction. The tactic remains an Incident with an unresolved failure mechanism, not a canonical failure occurrence.",
     "classification_review_provenance": {
-      "authority_boundary": "Classification and confidence reflect evidence for this occurrence, not a parent Failure Mode.",
-      "method": "INCIDENT-02 occurrence-level semantic reconciliation",
-      "review_date": "2026-08-30",
-      "review_status": "incident classified",
-      "reviewer": "OpenAI Codex / GPT-5.6 under human-directed transformation decisions"
+      "method": "record-by-record evidence-to-taxonomy review against full selectable taxonomy 0.6.7",
+      "review_date": "2026-09-23",
+      "reviewer": "OpenAI Codex / GPT-6 under human-directed VIGIL governance",
+      "review_status": "reviewed unclassified under taxonomy 0.6.7",
+      "authority_boundary": "Candidates FC-000043 and FC-000001 were tested against their recognition conditions; no class was accepted. Earlier FC-000043 mapping inferred a successful control activation from the reported attacker aim. No human verification or operational scanner trace is asserted."
     },
-    "classification_status": "classified",
-    "primary_classification": {
-      "class_id": "VIGIL-FC-000043",
-      "classification_role": "failure-occurrence",
-      "classification_basis": "Unwarranted Control Activation is supported in this occurrence because The reported artefact used embedded high-risk text as an adversarial control over the defender's analysis system, attempting to convert safety refusal into protection for malicious content.",
-      "classification_confidence": "medium",
-      "family_id": "VIGIL-FF-0008"
-    },
+    "classification_status": "unclassified",
+    "primary_classification": null,
     "secondary_classifications": [],
-    "taxonomy_version": "0.2.3-draft"
+    "taxonomy_version": "0.6.7"
   },
   "vigil_assessment": {
     "assessment_boundaries": [
-      "This metadata pass does not retroactively claim direct inspection of every historical primary source.",
-      "Incident admission does not determine legal liability or establish every disputed claim as final fact."
+      "The exact spyware sample, original technical artefact, affected scanner and operational scan trace have not been preserved for direct examination.",
+      "The related package report and limited model demonstration do not prove that this spyware evaded a deployed security scanner.",
+      "Incident admission records a reported adversarial attempt; it does not determine the attacker’s identity or establish a successful downstream compromise."
     ],
-    "factual_basis": "The selected evidence reports: The post reports that malware developers inserted nuclear- and biological-weapons text into spyware with the objective of triggering LLM safety refusals so that an AI security scanner would not analyse the artefact. The originating technical report, named malware sample, vendor, scanner, and independent forensic evidence were not recovered during the present research pass.",
-    "governance_interpretation": "The reported artefact used embedded high-risk text as an adversarial control over the defender's analysis system, attempting to convert safety refusal into protection for malicious content.",
-    "significance_to_cam": "For CAM, this occurrence shows that the reported artefact used embedded high-risk text as an adversarial control over the defender's analysis system, attempting to convert safety refusal into protection for malicious content. Controls should preserve evidence, authority state, escalation and contestability across the full affected pathway.",
+    "factual_basis": "The Scott-Railton post reports the developers’ intended refusal-triggering tactic. The secondary article describes related anti-analysis content and a limited model demonstration, but does not establish a successful refusal by a named operational scanner on the spyware in this Incident. The exact artefact, scanner configuration, activation condition and downstream result remain unverified. The observed fact is an adversarial artefact design and report of its purpose, not a demonstrated production safeguard activation.",
+    "governance_interpretation": "The reported tactic aimed to make an AI-assisted defensive analysis stop on weapon-themed text embedded in the object under inspection. The record establishes an attempted attack on the inspection boundary, while the available occurrence evidence does not establish that a defined safeguard actually activated without its valid trigger or that malware passed a scanner. A canonical control-activation failure is therefore unresolved.",
+    "significance_to_cam": "Source material submitted for defensive inspection can contain text designed to interfere with the inspector. A governance boundary must distinguish the analyst’s authorised task from instructions or policy-triggering language in the untrusted object; a refusal or timeout should remain visible as an incomplete inspection rather than silently becoming clearance.",
     "source_clause_analysis": {
       "source_record_order": 1,
       "source_url": "https://x.com/jsrailton/status/2064661778978533571",
       "purpose": "Preserve the source-language or evidentiary propositions that materially explain VIGIL's governance interpretation. Paraphrases are concise, source-bounded and linked to the existing taxonomy adjudication.",
       "clauses": [
         {
-          "source_paraphrase": "Malware reportedly embedded nuclear- and biological-weapons text to cause an AI security scanner to refuse analysis of the artefact.",
+          "source_paraphrase": "A researcher reported that malware developers embedded weapon-themed text in spyware with the aim of causing a defensive AI analysis to refuse.",
           "recovered_invariant_interpretation": "A safety refusal must depend on the authorised defensive role and requested action, not merely on adversarial high-risk text contained in the object being inspected.",
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000043",
-              "relationship": "failure-occurrence",
-              "canonical_taxonomy_mapping": true,
-              "rationale": "Attacker-supplied text inside the malicious artefact activated the safeguard against authorised defensive analysis, turning the refusal control into protection for the malware."
+              "relationship": "candidate boundary",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "The embedded text was intended to activate a refusal during authorised inspection, but the report does not show a defined scanner control becoming operative without a valid trigger or producing a material refusal in this occurrence."
             }
           ]
         }
