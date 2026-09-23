@@ -10,7 +10,7 @@
   "family": {
     "family_id": "VIGIL-FF-0008",
     "family_code": "CONTROL_ACTIVATION",
-    "name": "Control Activation Integrity Failures",
+    "name": "Control Activation Integrity",
     "status": "beta",
     "abstraction": "family",
     "version": "0.1.3",
@@ -27,24 +27,26 @@
     ],
     "inclusion_rule": "Use this family when the primary structural failure concerns whether a defined control's availability or applicability can be determined in time, whether it becomes operative when and only when valid activation conditions are satisfied, or whether the authority required for activation is suppressed.",
     "exclusion_rule": "Do not use this family for upstream evidence or classification error, stale contextual state, correct activation followed by excessive scope or intensity, lack of authority to impose an action, loss of an operative control state in transit, downstream access or work-state damage, or absence of audit evidence.",
-    "aliases": [],
+    "aliases": [
+      "Control Activation Integrity Failures"
+    ],
     "allowed_class_ids": [
       "VIGIL-FC-000037",
       "VIGIL-FC-000038",
       "VIGIL-FC-000043"
     ],
     "allowed_class_codes": [
-      "CONTROL_AVAILABILITY_AMBIGUITY",
-      "REQUIRED_CONTROL_NONACTIVATION",
-      "UNWARRANTED_CONTROL_ACTIVATION"
+      "CONTROL_AVAILABILITY_DETERMINATION",
+      "REQUIRED_CONTROL_ACTIVATION",
+      "CONTROL_ACTIVATION_VALIDITY"
     ]
   },
   "classes": [
     {
       "class_id": "VIGIL-FC-000037",
-      "class_code": "CONTROL_AVAILABILITY_AMBIGUITY",
+      "class_code": "CONTROL_AVAILABILITY_DETERMINATION",
       "family_id": "VIGIL-FF-0008",
-      "name": "Control Availability Ambiguity",
+      "name": "Control Availability Determination",
       "status": "beta",
       "abstraction": "class",
       "plain_english": "It is materially unclear whether the governance control needed for a decision or action is available to operate.",
@@ -78,7 +80,10 @@
           "note": "Availability ambiguity occurs before activation; control-state preservation begins only after operative control state exists."
         }
       ],
-      "aliases": [],
+      "aliases": [
+        "CONTROL_AVAILABILITY_AMBIGUITY",
+        "Control Availability Ambiguity"
+      ],
       "external_references": [
         {
           "title": "IEEE 7009-2024, clause 6.1(h)",
@@ -104,9 +109,9 @@
     },
     {
       "class_id": "VIGIL-FC-000038",
-      "class_code": "REQUIRED_CONTROL_NONACTIVATION",
+      "class_code": "REQUIRED_CONTROL_ACTIVATION",
       "family_id": "VIGIL-FF-0008",
-      "name": "Required Control Non-Activation",
+      "name": "Required Control Activation",
       "status": "beta",
       "abstraction": "class",
       "plain_english": "A governance control is available and applicable, but the event that should trigger it does not make it operate.",
@@ -128,7 +133,10 @@
         "A high-impact threshold is met, but the configured human-approval gate is never invoked.",
         "A model change qualifies for required evaluation, yet the evaluation workflow is not activated before deployment."
       ],
-      "aliases": [],
+      "aliases": [
+        "REQUIRED_CONTROL_NONACTIVATION",
+        "Required Control Non-Activation"
+      ],
       "relationships": [
         {
           "type": "distinguish_from",
@@ -192,9 +200,9 @@
     },
     {
       "class_id": "VIGIL-FC-000043",
-      "class_code": "UNWARRANTED_CONTROL_ACTIVATION",
+      "class_code": "CONTROL_ACTIVATION_VALIDITY",
       "family_id": "VIGIL-FF-0008",
-      "name": "Unwarranted Control Activation",
+      "name": "Control Activation Validity",
       "status": "beta",
       "abstraction": "class",
       "plain_english": "A control becomes operative even though the conditions that justify activating it are not satisfied.",
@@ -247,7 +255,10 @@
           "evidence_note": "Safety-engineering literature treats spurious activation as a distinct failure mode in which a protective system activates in an untimely or unwarranted manner and analyses the failure conditions and propagation that produce such activation. This is a close structural analogue for VIGIL's control-activation class; the paper does not establish VIGIL's governance-specific boundaries or terminology."
         }
       ],
-      "aliases": []
+      "aliases": [
+        "UNWARRANTED_CONTROL_ACTIVATION",
+        "Unwarranted Control Activation"
+      ]
     }
   ]
 }
