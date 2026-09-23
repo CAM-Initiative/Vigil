@@ -53,6 +53,143 @@ The taxonomy migration assurance ledger at `vigil/taxonomy/migration/Caelestis.L
 
 Structured Incident severity is derived through `harm_impact_assessment` and VIGIL-HIM. Overall severity is the highest supported assessed materialised-harm band; dimensions are never averaged or summed. `unreported` is not S1, and SU applies when no dimension can be defensibly banded. Severity remains independent of source metadata, diagnostic provenance, taxonomy classification and workflow priority.
 
+## Incident authoring and website-rendering crosswalk
+
+This section is a maintainer contract for canonical Incident prose. It exists to prevent repository maintenance from confusing VIGIL's internal data fields with the labels and stages rendered by the CAM Initiative website.
+
+**Before editing `summary`, `vigil_assessment.factual_basis`, `vigil_assessment.governance_interpretation`, or `vigil_assessment.significance_to_cam`, read this section first. Do not infer field purpose from a validator name such as “public prose”.**
+
+The crosswalk below was verified on 23 September 2026 against the current Case File implementation in `CAM-Initiative/cam-governance-catalogue`, principally:
+
+- `src/pages/vigil-case-file.tsx`
+- `src/lib/vigilPublicDisplay.ts`
+- `src/components/vigil/EvidenceCard.tsx`
+- `src/components/vigil/CaseTaxonomyAssessment.tsx`
+- `src/components/vigil/CaseTaxonomyClassification.tsx`
+- `src/components/vigil/HarmImpactMatrix.tsx`
+- `src/lib/vigilAffectedSystems.ts`
+- `src/lib/vigilExternalAssessments.ts`
+
+If the website projection changes, update this crosswalk before changing corpus prose to fit the new presentation.
+
+### Canonical prose roles
+
+These four fields are not interchangeable.
+
+| Canonical VIGIL field | Current website surface | Authoring purpose |
+| --- | --- | --- |
+| `summary` | Stage 01 → Incident → **What happened** | Plain-language occurrence narrative. It must be rich enough for a lay reader to understand the event: who or what was involved, what occurred, when materially relevant, what happened next, and material consequences. It may attribute disputed facts and preserve essential uncertainty, but it must not perform VIGIL evidence adjudication, taxonomy analysis, governance diagnosis, or state what “the evidence establishes”. |
+| `vigil_assessment.factual_basis` | Stage 02 → Assessment → **Factual basis** | Evidence-bounded synthesis of what the preserved sources establish, corroborate, dispute, do not establish, or leave unresolved. Phrases such as “the evidence establishes”, “the reviewed sources do not establish”, and “the available record supports X but not Y” belong here rather than in Stage 01. |
+| `vigil_assessment.significance_to_cam` | Stage 02 → Assessment → **Governance significance** | Why the occurrence matters for governance, controls, design or CAM analysis. This is the governance lesson or significance layer, not the occurrence narrative. |
+| `vigil_assessment.governance_interpretation` | Stage 05 → **VIGIL Observatory conclusion** | Integrated VIGIL analytical conclusion about the governance mechanism, boundary, failure, successful invariant or unresolved state evidenced by the occurrence. This is the conclusion layer and may use governed analytical language. |
+
+The stable reading sequence is therefore:
+
+> **What happened → What the evidence supports → Why it matters → Classification / governing invariant → VIGIL conclusion**
+
+Do not move content between these fields merely to satisfy a prose validator. A validator may identify an offending token or internal phrase, but it does not redefine the authoring role of the field.
+
+### Current Case File field-to-render crosswalk
+
+| Website stage / surface | Website label or content | Canonical VIGIL source |
+| --- | --- | --- |
+| Case header | Title | `record_identity.title` |
+| Case header | Incident | `id` |
+| Case header | Classification | derived from `taxonomy_classification` |
+| Case header | Severity | `harm_impact_assessment.overall_severity` |
+| Case header | Updated | `record_identity.updated` with fallbacks |
+| Stage 01 | **What happened** | `summary` |
+| Stage 01 | Incident artefact / image | `incident_artefacts[]` |
+| Stage 01 | Affected systems | selected `system_context.*` fields |
+| Stage 01 evidence card | Evidence source title | `source_records[].source_title` |
+| Stage 01 evidence card | **What the source establishes** | primarily `source_records[].source_context`; `vigil_assessment.factual_basis` is only a first-source fallback when no source-level confirmed-evidence field is available |
+| Stage 01 evidence card | Evidence relevance | `source_records[].interpretive_reliance`, then `relevance_note` fallback |
+| Stage 01 evidence card | Evidence-status basis | `source_records[].evidence_status_basis` |
+| Stage 01 evidence card | Limits of the evidence | source limitations / `primary_artefact_access.limitations` |
+| Stage 01 evidence metadata | Publisher, date, source type, evidence status, role, residence, modality, reviewer, access | selected `source_records[]` and `primary_artefact_access` fields |
+| Stage 02 | **Factual basis** | `vigil_assessment.factual_basis` |
+| Stage 02 | **Governance significance** | `vigil_assessment.significance_to_cam` |
+| Stage 02 | **VIGIL taxonomy assessment** | `vigil_assessment.source_clause_analysis.clauses[]` |
+| Stage 02 | Governance assessment provenance | `diagnostic_provenance.*` |
+| Stage 02 | External assessments | selected `external_assessments[]` fields |
+| Stage 02 | Real-world harm assessment | assessed rows from `harm_impact_assessment.dimensions[]` plus derived overall severity |
+| Stage 02 | Evidence gap | `harm_impact_assessment.assessment_gap` |
+| Stage 03 | Classification table | `taxonomy_classification.primary_classification` and `secondary_classifications[]` |
+| Stage 03 | Alignment | mapping-local `classification_role` |
+| Stage 03 | Classification basis | mapping-local `classification_basis` |
+| Stage 04 | Governing invariant / Repair | resolved from the current Failure Taxonomy using the Incident's class IDs; not authored as separate Incident prose |
+| Stage 05 | **VIGIL Observatory conclusion** | `vigil_assessment.governance_interpretation` |
+| Stage 06 | Evidence bibliography | selected `source_records[]` metadata |
+| Stage 06 | External incident records | `external_incident_references[]` |
+| Stage 06 | Taxonomy / methodology references | derived taxonomy and VIGIL-HIM references |
+| Stage 06 | Limits of the assessment | `vigil_assessment.assessment_boundaries[]` plus generated roll-up of non-assessed harm dimensions |
+| Stage 06 | Canonical Incident record | raw canonical Incident JSON link |
+
+### Important Stage 01 evidence-card distinction
+
+Stage 01 contains more than one factual-looking layer.
+
+The standalone **What happened** text comes from `summary`.
+
+Each evidence card separately renders **What the source establishes**. The website normally takes that text from the relevant `source_records[].source_context`. Only when no source-level confirmed-evidence text is available for the first source can `vigil_assessment.factual_basis` act as a fallback.
+
+Therefore:
+
+- `summary` is not a condensed `factual_basis`;
+- `factual_basis` is not a replacement for `summary`;
+- `source_context` is source-local evidence description and must not be treated as the Incident-level narrative; and
+- maintenance must not copy analytical or evidentiary-adjudication wording into `summary` merely because it is factual.
+
+The public-display helper currently also derives an internal `whatHappened` property for an evidence card from `summary`, but the ordinary `EvidenceCard` component does not render that property. Do not rely on this unused projection as a public surface.
+
+### Canonical Incident fields currently not rendered, or only partly rendered
+
+Canonical data must not be deleted merely because the ordinary Case File does not currently show it.
+
+The following fields are currently unrendered or only partially projected in the ordinary Case File WebUX:
+
+- `record_identity.version` and `record_identity.created`;
+- `record_state`;
+- most `incident_identity.*`, including occurrence dates, date precision, date basis and historical event name;
+- `preferred_evidence.*`;
+- `jurisdictional_context.*` as visible Case File content (it may contribute to search/indexing);
+- `related_incidents[]`;
+- `research_references[]`;
+- `standards_and_regulatory_references[]`;
+- `cam_internal.*`;
+- `interpretive_provenance.review_history[]` and the full current-review object;
+- `taxonomy_classification.classification_review_provenance`;
+- ordinary-WebUX display of taxonomy version and mapping confidence;
+- `system_context.component_role`;
+- agent-context evidence basis and source references;
+- occurrence-environment detail, evidence basis and source references;
+- `harm_impact_assessment.coverage_note`;
+- harm row `threshold_id` and `evidence_confidence`;
+- `observed_values` when an `assessment_basis` is already present;
+- individual unassessed harm-dimension assessment bases, which are generally rolled up rather than rendered row by row;
+- many `external_assessments[]` fields including assessment title, type, relationship, scope note, VIGIL comparison note, status, version and supersession;
+- `source_records[].incident_source_order`, `source_url_status`, `model_or_algorithm` and `system_or_product` as ordinary visible fields;
+- `primary_artefact_access.access_status`;
+- `incident_artefacts[].caption`, `artefact_type` and `media_type`.
+
+Absence from the current website is not permission to remove these fields. They remain part of the canonical Incident record where required by schema, evidence integrity, provenance, auditability, future rendering, report/PDF output or downstream tooling.
+
+### Maintainer editing guardrails
+
+Before changing Incident prose:
+
+1. identify the exact canonical field being edited;
+2. identify the exact website surface that consumes it;
+3. compare the proposed wording against that field's authoring purpose above;
+4. preserve supported occurrence detail and evidence uncertainty;
+5. do not use a validator failure as authority to rewrite neighbouring prose;
+6. do not perform corpus-wide `summary`, `factual_basis`, `significance_to_cam` or `governance_interpretation` rewrites mechanically;
+7. when a field appears semantically wrong for the current website, fix the field contract or renderer first rather than repeatedly rewriting records to compensate for projection ambiguity.
+
+For `summary` specifically, the repair rule is:
+
+> **Remove or relocate only material that belongs to evidence adjudication, governance interpretation, significance or classification. Preserve and, where necessary, restore the rich lay account of the occurrence.**
+
 ## Clause-level taxonomy assessment and publication
 
 Clause-level assessment follows this editorial sequence:
