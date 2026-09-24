@@ -1,0 +1,450 @@
+{
+  "id": "VIGIL-INC-000159",
+  "record_type": "incident",
+  "record_state": "active",
+  "date_recorded": "2026-09-19",
+  "record_identity": {
+    "record_id": "VIGIL-INC-000159",
+    "record_type": "incident",
+    "title": "Cline prompt-injection and cache-poisoning chain enabled unauthorized npm package publication",
+    "created": "2026-09-19",
+    "updated": "2026-09-23",
+    "version": "0.3.0"
+  },
+  "incident_identity": {
+    "historical_event_name": "Cline prompt-injection and cache-poisoning chain enabled unauthorized npm package publication",
+    "occurred_from": "2026-02-17",
+    "occurred_to": null,
+    "date_precision": "exact-day",
+    "date_basis": "Cline's postmortem and GitHub advisory identify 17 February 2026 as the unauthorised npm publication date."
+  },
+  "summary": "An attacker used a prompt-injection and GitHub Actions cache-poisoning chain associated with Cline's Claude-powered issue triage to obtain an npm token and publish an unauthorised `cline@2.3.0` package.",
+  "vigil_assessment": {
+    "factual_basis": "The researcher's reconstruction shows that untrusted issue text could direct the triage agent to execute code, after which shared cache scope could bridge into privileged release workflows. Cline's postmortem states that an attacker used the chain to steal an npm token and publish version 2.3.0 with a postinstall script for OpenClaw. Cline deprecated the version, revoked credentials and reported no evidence that OpenClaw itself was malicious or that user data was exposed.",
+    "governance_interpretation": "Untrusted issue content crossed into a tool-enabled workflow and then propagated through shared infrastructure into release authority. The model interaction was one necessary link; cache design, token scope and release configuration were independently necessary.",
+    "significance_to_cam": "The case demonstrates that AI issue-triage agents must be isolated from shared build state and publication credentials, because prompt injection can become supply-chain authority through ordinary CI/CD mechanisms.",
+    "assessment_boundaries": [
+      "The original researcher tested a mirror and states that a different actor weaponised the published technique against Cline.",
+      "The evidence does not support attributing the entire chain to Claude or treating OpenClaw as malicious."
+    ],
+    "source_clause_analysis": {
+      "source_record_order": 1,
+      "source_url": "https://cline.bot/blog/post-mortem-unauthorized-cline-cli-npm",
+      "purpose": "Preserve a source-specific paraphrase that links the primary occurrence evidence to VIGIL's governance interpretation without treating taxonomy classification as source fact.",
+      "clauses": [
+        {
+          "source_paraphrase": "First-party account of the token theft, unauthorised package, containment and user-impact findings.",
+          "recovered_invariant_interpretation": "Untrusted issue content crossed into a tool-enabled workflow and then propagated through shared infrastructure into release authority. The model interaction was one necessary link; cache design, token scope and release configuration were independently necessary.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000006",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Attacker-controlled issue text induced tool execution and crossed through shared cache state into a privileged release control plane."
+            },
+            {
+              "class_id": "VIGIL-FC-000009",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Authority propagated from a public issue-triage workflow through cache state and nightly release credentials to npm publication."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "source_records": [
+    {
+      "source_title": "Post-mortem: Unauthorized Cline CLI npm publication",
+      "author_or_publisher": "Cline",
+      "source_date": "2026-02-24",
+      "source_url": "https://cline.bot/blog/post-mortem-unauthorized-cline-cli-npm",
+      "retrieved_date": "2026-09-19",
+      "source_type": "incident report",
+      "source_role": "incident-evidence",
+      "source_residence": "external",
+      "source_platform": "Cline",
+      "source_url_status": "available",
+      "relevance_note": "First-party account of the token theft, unauthorised package, containment and user-impact findings.",
+      "evidence_modality": [
+        "text"
+      ],
+      "primary_artefact_access": {
+        "access_status": "directly reviewed",
+        "reviewing_system": "OpenAI Codex — GPT-5",
+        "access_method": "direct public web review",
+        "direct_primary_artefact_review": true,
+        "limitations": []
+      },
+      "interpretive_reliance": "Used only for the occurrence facts and consequences expressly attributed to this source.",
+      "evidence_status": "first-party-reported",
+      "evidence_status_basis": "Cline reports its own investigation and response.",
+      "incident_source_order": 1
+    },
+    {
+      "source_title": "Clinejection — Compromising Cline's Production Releases just by Prompting an Issue Triager",
+      "author_or_publisher": "Adnan Khan",
+      "source_date": "2026-02-09",
+      "source_url": "https://adnanthekhan.com/posts/clinejection/",
+      "retrieved_date": "2026-09-19",
+      "source_type": "technical analysis",
+      "source_role": "incident-evidence",
+      "source_residence": "external",
+      "source_platform": "Adnan Khan",
+      "source_url_status": "available",
+      "relevance_note": "Technical reconstruction and proof of concept for prompt injection, cache poisoning and credential propagation.",
+      "evidence_modality": [
+        "text"
+      ],
+      "primary_artefact_access": {
+        "access_status": "directly reviewed",
+        "reviewing_system": "OpenAI Codex — GPT-5",
+        "access_method": "direct public web review",
+        "direct_primary_artefact_review": true,
+        "limitations": []
+      },
+      "interpretive_reliance": "Used only for the occurrence facts and consequences expressly attributed to this source.",
+      "evidence_status": "verified",
+      "evidence_status_basis": "The researcher documents a mirror-based reproduction and clearly separates that test from the later attacker action.",
+      "incident_source_order": 2
+    },
+    {
+      "source_title": "Unauthorized cline@2.3.0 npm package publication",
+      "author_or_publisher": "GitHub Security Advisory",
+      "source_date": "2026-02-18",
+      "source_url": "https://github.com/cline/cline/security/advisories/GHSA-9ppg-jx86-fqw7",
+      "retrieved_date": "2026-09-19",
+      "source_type": "repository record",
+      "source_role": "incident-evidence",
+      "source_residence": "external",
+      "source_platform": "GitHub Security Advisory",
+      "source_url_status": "available",
+      "relevance_note": "Repository-hosted security advisory preserving affected version and remediation context.",
+      "evidence_modality": [
+        "text"
+      ],
+      "primary_artefact_access": {
+        "access_status": "directly reviewed",
+        "reviewing_system": "OpenAI Codex — GPT-5",
+        "access_method": "direct public web review",
+        "direct_primary_artefact_review": true,
+        "limitations": []
+      },
+      "interpretive_reliance": "Used only for the occurrence facts and consequences expressly attributed to this source.",
+      "evidence_status": "first-party-reported",
+      "evidence_status_basis": "Project security advisory for the affected package publication.",
+      "incident_source_order": 3
+    },
+    {
+      "source_title": "Cline prompt-injection and cache-poisoning chain enabled unauthorized npm package publication",
+      "author_or_publisher": "AI Incident Database",
+      "source_date": "2026-02-17",
+      "source_url": "https://incidentdatabase.ai/cite/1680/",
+      "retrieved_date": "2026-09-19",
+      "source_type": "incident database entry",
+      "source_role": "record-cross-reference",
+      "source_residence": "external",
+      "source_platform": "AI Incident Database",
+      "source_url_status": "available",
+      "relevance_note": "External registry record retained for discovery chronology and cross-registry reconciliation; not used as the principal authority for adjudicated facts or harm.",
+      "evidence_modality": [
+        "text"
+      ],
+      "primary_artefact_access": {
+        "access_status": "directly reviewed",
+        "reviewing_system": "OpenAI Codex — GPT-5",
+        "access_method": "direct public web review",
+        "direct_primary_artefact_review": true,
+        "limitations": []
+      },
+      "interpretive_reliance": "Used only for registry identity and discovery chronology.",
+      "evidence_status": "registry-reported",
+      "evidence_status_basis": "Secondary incident-registry entry retained for traceability and not cited as substantive Harm Impact evidence.",
+      "incident_source_order": 4
+    }
+  ],
+  "preferred_evidence": {
+    "source_url": "https://cline.bot/blog/post-mortem-unauthorized-cline-cli-npm",
+    "selection_basis": "Selected as the affected project's incident-specific postmortem, read alongside the independent technical reconstruction.",
+    "selected_on": "2026-09-19"
+  },
+  "external_incident_references": [
+    {
+      "registry": "AI Incident Database",
+      "external_id": "1680",
+      "relationship": "same-incident",
+      "source_url": "https://incidentdatabase.ai/cite/1680/"
+    }
+  ],
+  "system_context": {
+    "platform_or_vendor": "Multi Vendor",
+    "product_or_service": "Claude",
+    "specific_model_or_runtime": "Cline Claude-powered GitHub issue-triage workflow and npm publication chain",
+    "interface_surface": [
+      "GitHub issue triage, Actions cache and npm publication"
+    ],
+    "component_role": [
+      "agent-runtime",
+      "tool-interface",
+      "execution"
+    ],
+    "agent_context": {
+      "agentic_status": "unknown",
+      "agent_count": null,
+      "agent_count_min": null,
+      "agent_count_max": null,
+      "count_basis": "unknown",
+      "evidence_basis": "The preserved evidence establishes a Claude-powered issue-triage agent and automated release-chain interaction, but it does not establish the number of agent instances or a stable coordination topology for the material compromise.",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]",
+        "source_records[2]"
+      ]
+    },
+    "occurrence_environment": {
+      "operational_setting": "live",
+      "testing_actor": "not-applicable",
+      "environment_detail": "Material occurrence in a live GitHub Actions and npm publication pipeline that resulted in an unauthorised production package release.",
+      "evidence_basis": "The preserved postmortem and security advisory describe compromise of production release infrastructure rather than a bounded test.",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]",
+        "source_records[2]"
+      ]
+    }
+  },
+  "jurisdictional_context": {
+    "primary_jurisdiction": "Cross-border / software supply chain",
+    "secondary_jurisdictions": [],
+    "cross_border_relevance": "The public GitHub and npm supply-chain surfaces were globally accessible.",
+    "public_interest_relevance": "high",
+    "sector": "software development and package supply chain",
+    "regulatory_surface": [
+      "software supply-chain security",
+      "credential and release authority"
+    ]
+  },
+  "taxonomy_classification": {
+    "taxonomy_version": "0.6.0",
+    "classification_status": "classified",
+    "classification_role": "failure-occurrence",
+    "classification_basis": "The technical chain directly supports control-plane crossover and transitive propagation of publication authority, while preserving the independent roles of model, cache and credential configuration.",
+    "primary_classification": {
+      "family_id": "VIGIL-FF-0001",
+      "class_id": "VIGIL-FC-000006",
+      "classification_role": "failure-occurrence",
+      "classification_basis": "Attacker-controlled issue text induced tool execution and crossed through shared cache state into a privileged release control plane.",
+      "classification_confidence": "high"
+    },
+    "secondary_classifications": [
+      {
+        "family_id": "VIGIL-FF-0001",
+        "class_id": "VIGIL-FC-000009",
+        "classification_role": "failure-occurrence",
+        "classification_basis": "Authority propagated from a public issue-triage workflow through cache state and nightly release credentials to npm publication.",
+        "classification_confidence": "high"
+      }
+    ],
+    "classification_review_provenance": {
+      "method": "evidence-strengthening review and recognition-condition comparison against selectable VIGIL Failure Classes",
+      "review_date": "2026-09-19",
+      "reviewer": "OpenAI Codex — GPT-5",
+      "review_status": "classified",
+      "authority_boundary": "Classification is limited to mechanisms established by the preserved occurrence evidence; harm severity and incident admission do not establish a Failure Class."
+    }
+  },
+  "related_incidents": [],
+  "diagnostic_provenance": {
+    "method": "incident-specific evidence review, harm-threshold comparison and taxonomy recognition-condition analysis",
+    "diagnostic_date": "2026-09-19",
+    "human_role": "standing incident and taxonomy governance authority",
+    "ai_role": "AI evidence synthesis and structured adjudication preparation",
+    "authority_boundary": "AI review preserves source disputes and does not constitute final human, legal or factual adjudication.",
+    "ai_platform": "OpenAI Codex",
+    "ai_model": "GPT-5",
+    "review_status": "AI analytical adjudication"
+  },
+  "interpretive_provenance": {
+    "review_history": [
+      {
+        "review_id": "VIGIL-REVIEW-2026-09-19-000159-INTAKE",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT",
+        "reviewer_model": "GPT-5.6 Sol",
+        "review_date": "2026-09-19",
+        "review_scope": "Recent-incident discovery, repository duplicate reconciliation, occurrence-level severity and bounded taxonomy intake.",
+        "capability_profile": {
+          "web_research": true,
+          "repository_review": true,
+          "taxonomy_review": true,
+          "structured_threshold_comparison": true
+        },
+        "known_limitations": [
+          "The record is bounded to reviewed public evidence and does not infer unreported model versions, mechanisms or downstream harms.",
+          "Deterministic generated artefacts and local validators are not run by this connected GitHub write step."
+        ],
+        "review_outcome": "Accepted as VIGIL-INC-000159; retained unclassified with occurrence severity S3."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-09-19-000159-ADJUDICATION",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-5",
+        "review_date": "2026-09-19",
+        "review_scope": "Incident-specific evidence strengthening, occurrence-date verification, dimension-by-dimension Harm Impact review and current-taxonomy adjudication.",
+        "capability_profile": {
+          "web_research": true,
+          "repository_review": true,
+          "taxonomy_review": true,
+          "structured_threshold_comparison": true
+        },
+        "known_limitations": [
+          "The original researcher tested a mirror and states that a different actor weaponised the published technique against Cline.",
+          "The evidence does not support attributing the entire chain to Claude or treating OpenClaw as malicious."
+        ],
+        "review_outcome": "Evidence strengthened; severity adjudicated as S2; taxonomy status set to classified."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-09-23-WORKFLOW-EXPANSION-000159",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT",
+        "reviewer_model": "GPT-5.6 Sol",
+        "review_date": "2026-09-23",
+        "review_scope": "Workflow-contract expansion using evidence already preserved in the Incident: occurrence-level agent/environment metadata, source-specific Section 02 bridge, VIGIL-HIM 1.0.1 migration and provenance reconciliation. Existing factual and taxonomy adjudications were not independently reopened.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "structured_cross_record_reconciliation": true,
+          "structured_threshold_comparison": true,
+          "new_external_source_research": false
+        },
+        "known_limitations": [
+          "No new external source research was performed in this expansion pass; source completeness and post-ingestion developments were not independently rechecked.",
+          "Existing taxonomy mappings and classification status are preserved from the prior incident adjudication and should be re-adjudicated against the then-current taxonomy when transplanted into the active refactor branch.",
+          "Agent count and topology are not inferred from silence; unknown values are retained where the preserved evidence does not resolve them."
+        ],
+        "review_outcome": "Expanded VIGIL-INC-000159 to the newer occurrence workflow; added canonical agent/environment metadata, migrated VIGIL-HIM from 1.0.0 to 1.0.1 without changing the existing S2 harm band because threshold criteria are unchanged, and preserved taxonomy status classified."
+      }
+    ],
+    "current_ai_review": {
+      "review_id": "VIGIL-REVIEW-2026-09-23-WORKFLOW-EXPANSION-000159",
+      "reviewer_type": "AI analytical reviewer",
+      "reviewer_platform": "OpenAI ChatGPT",
+      "reviewer_model": "GPT-5.6 Sol",
+      "review_date": "2026-09-23",
+      "review_scope": "Workflow-contract expansion using evidence already preserved in the Incident: occurrence-level agent/environment metadata, source-specific Section 02 bridge, VIGIL-HIM 1.0.1 migration and provenance reconciliation. Existing factual and taxonomy adjudications were not independently reopened.",
+      "capability_profile": {
+        "direct_repository_analysis": true,
+        "direct_text_analysis": true,
+        "structured_cross_record_reconciliation": true,
+        "structured_threshold_comparison": true,
+        "new_external_source_research": false
+      },
+      "known_limitations": [
+        "No new external source research was performed in this expansion pass; source completeness and post-ingestion developments were not independently rechecked.",
+        "Existing taxonomy mappings and classification status are preserved from the prior incident adjudication and should be re-adjudicated against the then-current taxonomy when transplanted into the active refactor branch.",
+        "Agent count and topology are not inferred from silence; unknown values are retained where the preserved evidence does not resolve them."
+      ],
+      "review_outcome": "Expanded VIGIL-INC-000159 to the newer occurrence workflow; added canonical agent/environment metadata, migrated VIGIL-HIM from 1.0.0 to 1.0.1 without changing the existing S2 harm band because threshold criteria are unchanged, and preserved taxonomy status classified."
+    },
+    "operating_model": "AI-authored, semi-autonomous production under human contract approval",
+    "human_governance_editor": null,
+    "historical_reviewer_note": "No human substantive review or source verification is implied by this field."
+  },
+  "harm_impact_assessment": {
+    "methodology_id": "VIGIL-HIM",
+    "methodology_version": "1.0.1",
+    "derivation_rule": "highest-supported-materialised-harm",
+    "assessed_on": "2026-09-23",
+    "overall_severity": "S2",
+    "controlling_dimensions": [
+      "property-asset-damage",
+      "service-operational-infrastructure"
+    ],
+    "coverage_note": "Credential compromise, unauthorised publication and remediation are established; user-data compromise and malicious OpenClaw behaviour are not.",
+    "dimensions": [
+      {
+        "dimension_id": "physical-health-safety",
+        "assessment_status": "unreported",
+        "assessment_basis": "The reviewed incident-specific evidence does not establish a separately bandable materialised impact in this dimension.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "psychological-wellbeing",
+        "assessment_status": "unreported",
+        "assessment_basis": "The reviewed incident-specific evidence does not establish a separately bandable materialised impact in this dimension.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "rights-liberty",
+        "assessment_status": "unreported",
+        "assessment_basis": "The reviewed incident-specific evidence does not establish a separately bandable materialised impact in this dimension.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "equal-treatment",
+        "assessment_status": "unreported",
+        "assessment_basis": "The reviewed incident-specific evidence does not establish a separately bandable materialised impact in this dimension.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "privacy-confidentiality",
+        "assessment_status": "unreported",
+        "assessment_basis": "The reviewed incident-specific evidence does not establish a separately bandable materialised impact in this dimension.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "financial-economic",
+        "assessment_status": "unreported",
+        "assessment_basis": "The reviewed incident-specific evidence does not establish a separately bandable materialised impact in this dimension.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "property-asset-damage",
+        "assessment_status": "assessed",
+        "severity": "S2",
+        "threshold_id": "VIGIL-HIM-1.0.1-PAD-S2",
+        "observed_values": [],
+        "assessment_basis": "A publication credential was compromised and an unauthorised package version was released, requiring revocation and remediation; the version was quickly deprecated and no destructive user impact is established.",
+        "evidence_confidence": "high",
+        "evidence_refs": [
+          "source_records[0]",
+          "source_records[1]",
+          "source_records[2]"
+        ]
+      },
+      {
+        "dimension_id": "service-operational-infrastructure",
+        "assessment_status": "assessed",
+        "severity": "S2",
+        "threshold_id": "VIGIL-HIM-1.0.1-SOI-S2",
+        "observed_values": [],
+        "assessment_basis": "Cline removed AI workflows, invalidated caches and rotated credentials in a bounded recovery operation; no prolonged service outage is reported.",
+        "evidence_confidence": "high",
+        "evidence_refs": [
+          "source_records[0]",
+          "source_records[1]",
+          "source_records[2]"
+        ]
+      },
+      {
+        "dimension_id": "reputation-dignity",
+        "assessment_status": "unreported",
+        "assessment_basis": "The reviewed incident-specific evidence does not establish a separately bandable materialised impact in this dimension.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "societal-democratic",
+        "assessment_status": "unreported",
+        "assessment_basis": "The reviewed incident-specific evidence does not establish a separately bandable materialised impact in this dimension.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "environmental",
+        "assessment_status": "unreported",
+        "assessment_basis": "The reviewed incident-specific evidence does not establish a separately bandable materialised impact in this dimension.",
+        "evidence_confidence": "not-assessed"
+      }
+    ]
+  }
+}
