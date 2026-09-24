@@ -53,6 +53,184 @@ The taxonomy migration assurance ledger at `vigil/taxonomy/migration/Caelestis.L
 
 Structured Incident severity is derived through `harm_impact_assessment` and VIGIL-HIM. Overall severity is the highest supported assessed materialised-harm band; dimensions are never averaged or summed. `unreported` is not S1, and SU applies when no dimension can be defensibly banded. Severity remains independent of source metadata, diagnostic provenance, taxonomy classification and workflow priority.
 
+
+## Incident rebuild and re-adjudication control
+
+The normative maintainer workflow for substantive Incident rebuilds is `vigil/docs/maintenance/INCIDENT-ADJUDICATION-WORKFLOW.md`.
+
+The key maintenance distinction is:
+
+- ordinary schema validation asks whether a record is structurally admissible;
+- rebuild validation asks whether an existing governed record was changed **non-destructively and explicitly**.
+
+A structurally valid Incident can still be a failed rebuild if it silently drops evidence, compresses supported occurrence detail, removes a taxonomy relationship, changes mapping role/confidence without recording the change, or adjudicates against a stale taxonomy.
+
+### Required rebuild artefacts
+
+For `full-rebuild` work, maintainers must keep a temporary adjudication manifest based on `vigil/templates/incident-rebuild-adjudication-template.json`. The manifest is maintenance evidence, not canonical Incident content and not a public-record field.
+
+The manifest records:
+
+- the exact baseline ref/version;
+- external evidence-search activity;
+- confirmation that the current taxonomy and complete class set were reviewed;
+- candidate classes tested against recognition criteria and exclusions;
+- for each materially rejected candidate, the **actual canonical recognition condition that remains unestablished**, rather than a generic statement that the internal mechanism or root cause is unknown;
+- comparator Incidents reviewed where they materially inform the evidentiary threshold for the same Failure Class;
+- a disposition for every baseline taxonomy mapping;
+- reasons for new mappings and any removed source evidence;
+- any justified material reduction in factual prose;
+- whether Harm Impact was reopened or deliberately preserved; and
+- completion of the integrated governance-interpretation pass.
+
+Run `vigil/scripts/validate-vigil-incident-rebuild.py` before ordinary corpus validation.
+
+The rebuild guard is intentionally generic. `VIGIL-INC-000129` informed its design because that Incident demonstrates mixed mapping roles and repeated re-adjudication, but permanent validation must not freeze one Incident's current answer.
+
+### Taxonomy evidence-abstraction rule
+
+Taxonomy adjudication MUST apply each Failure Class at the level of abstraction stated by its canonical definition, invariant, recognition criteria and exclusions.
+
+**Do not silently raise the evidentiary burden beyond the class definition.**
+
+Maintain a strict distinction between:
+
+- **governance-mechanism evidence** — evidence sufficient to establish the structural condition described by the Failure Class; and
+- **implementation-location evidence** — evidence locating that mechanism in a particular model component, classifier, filter, threshold, service, code path, hidden state or other technical subsystem.
+
+Implementation-location evidence is required only when the Failure Class itself requires it. The absence of private implementation telemetry, source code, hidden prompts, internal chain-of-thought, classifier scores, execution traces or a vendor root-cause report does not defeat a governance-level classification when the canonical recognition conditions are otherwise established.
+
+Before rejecting a candidate because evidence is unavailable, ask:
+
+> Is the missing evidence required to establish this Failure Class, or would it only explain an already-established mechanism at a lower technical level?
+
+If the missing evidence would only locate or explain an established governance mechanism more precisely, preserve that uncertainty in the classification basis or assessment boundary. Do not convert:
+
+> we do not know which internal component failed
+
+into:
+
+> we do not know whether the governance mechanism occurred.
+
+Conversely, do not infer a governance mechanism merely from an adverse outcome. Every canonical recognition condition must still be evidenced at the abstraction level the class actually requires, and no exclusion may defeat the mapping.
+
+### Minimum-sufficient-evidence and candidate-rejection rule
+
+Use the **minimum sufficient evidence required by the canonical class**, not the maximum evidence that could theoretically be obtained.
+
+For each materially plausible candidate Failure Class:
+
+1. identify each required recognition condition;
+2. identify the occurrence evidence that satisfies it;
+3. identify any genuinely unresolved required condition;
+4. test the canonical exclusions; and
+5. classify when all required conditions are established and no exclusion defeats the mapping.
+
+A rejected candidate must name the specific canonical recognition condition that is not established, or the specific exclusion that applies.
+
+Statements such as `internal mechanism unknown`, `exact control unknown`, `root cause unavailable`, `vendor telemetry unavailable` or `implementation details unavailable` are not sufficient rejection reasons unless that missing information is itself required by the canonical class.
+
+Do not add unstated recognition conditions such as an exact model build, exact internal component, source-code access, hidden system prompt, classifier score, execution trace or vendor root-cause determination unless the class definition actually depends on that information.
+
+### Policy, control and outcome evidence
+
+Keep policy, control and occurrence evidence analytically distinct.
+
+- **Policy evidence** can establish what state, conduct or outcome is prohibited, required or governed.
+- **Control evidence** can establish that an operational safeguard, gate, review process, classifier, filter, approval state or other governance-control posture exists and is applicable.
+- **Occurrence evidence** can establish that the triggering or prohibited condition occurred and that the required governance effect was absent, bypassed, lost or otherwise failed according to the candidate class.
+
+A policy violation alone does not automatically establish a control-activation failure. However, a provider policy does not need to name an internal component when separate evidence establishes an applicable operational control posture and the occurrence establishes that the required protective effect was absent.
+
+For `VIGIL-FC-000038 — Required Control Activation`, do not require the exact classifier, filter or runtime component to be identified. The class is satisfied where the evidence establishes that:
+
+1. an available and applicable governance control or protective control posture existed;
+2. a defined condition requiring that protection to become operative occurred; and
+3. the governed action proceeded without the required protective effect becoming operative.
+
+The exact technical fault location may remain unresolved and must be recorded as such without erasing the governance-control classification.
+
+### Comparator-consistency rule
+
+Before rejecting a candidate mapping for insufficient evidence, inspect relevant canonical Incidents already classified under that Failure Class.
+
+Do not impose a materially stricter evidentiary threshold on the current Incident than VIGIL applies to comparable canonical occurrences unless:
+
+- the existing comparators are themselves being reopened as potentially incorrect; or
+- a documented taxonomy change has altered the recognition threshold.
+
+Where comparable Incidents establish the same class from product-level, process-level or governance-level evidence, do not reject the current Incident merely because lower-level implementation telemetry is unavailable.
+
+If inconsistent evidentiary thresholds are discovered, treat that as a **corpus-consistency problem requiring re-adjudication**, not as permission to select whichever threshold is stricter.
+
+### Unclassified is an evidentiary conclusion, not a caution default
+
+`unclassified` is valid and often necessary, but it must result from failure to establish an actual canonical recognition condition.
+
+Do not use `unclassified` merely because:
+
+- causal implementation details remain unknown;
+- the provider has not published a root-cause analysis;
+- internal telemetry is inaccessible;
+- multiple technical pathways could have produced the same established governance mechanism; or
+- a more detailed technical explanation would be desirable.
+
+The adjudication record should state the specific recognition condition that remains unestablished. If every canonical recognition condition is supported at the class's defined level of abstraction and no exclusion applies, uncertainty about lower-level implementation does not justify leaving the Incident unclassified.
+
+### Human-challenge recheck
+
+When a human maintainer challenges a taxonomy disposition because the occurrence evidence appears to satisfy a class directly, do not defend the existing adjudication by default.
+
+Re-run the candidate from the canonical class definition and explicitly check for:
+
+- an invented evidentiary requirement;
+- abstraction-level mismatch;
+- inconsistent treatment relative to canonical comparators;
+- confusion between policy evidence and control evidence;
+- confusion between mechanism uncertainty and implementation-location uncertainty; and
+- use of `unclassified` as a caution default rather than an evidentiary conclusion.
+
+If an earlier adjudication used an unstated recognition condition, correct the record and preserve that correction in interpretive provenance.
+
+
+### Gmail as the durable next-action staging point
+
+VIGIL uses the maintainer Gmail account as the durable staging point for unresolved actions that cannot or should not be completed inside the current Incident edit.
+
+**Gmail is an exception/action channel, not a completion log.** Do not send a Gmail notification merely because an Incident, pair, tranche or validator run completed successfully. A clean adjudication, an unchanged taxonomy, an exact matrix-to-Incident/Section 02 match, or an empty update queue requires **no email**.
+
+The current queue is the **latest** Gmail message whose subject begins `[CURRENT VIGIL QA ACTION]` and that carries the label `VIGIL/CURRENT QA ACTION`. That message is a complete authoritative snapshot of unresolved work and supersedes earlier queue notes.
+
+When adjudication identifies a new unresolved taxonomy requirement or another unresolved manual action:
+
+1. read the current queue first;
+2. reconcile its items against the actual working-branch state;
+3. preserve unresolved items;
+4. add the new instruction with Incident IDs, evidence basis, tested taxonomy boundaries or other relevant context;
+5. send a replacement self-email using the same subject prefix;
+6. apply the same Gmail label; and
+7. make the supersession rule explicit in the new body.
+
+A taxonomy escalation should explain the mechanism or invariant that is not faithfully representable, the nearest classes tested and rejected, and whether the likely next task is a new class, boundary amendment, family review or terminology repair.
+
+This is intentionally a connector-mediated maintainer workflow, not repository automation. GitHub Actions must not contain mailbox credentials or attempt to impersonate the ChatGPT Gmail connector.
+
+### Mapping preservation invariant
+
+For every mapping present in the baseline, exactly one disposition is required:
+
+`retained`, `role-changed`, `confidence-changed`, `role-confidence-changed`, `superseded`, or `removed-unsupported`.
+
+A mapping absent from the candidate without `superseded` or `removed-unsupported` is an error. A new candidate mapping requires an explicit evidence-bounded reason. Source removal likewise requires a disposition reason.
+
+This control does not make the old mapping presumptively correct. It makes changing governed analytical state an explicit adjudication rather than an accidental side effect of rewriting.
+
+### Factual-detail preservation invariant
+
+The rebuild guard detects large reductions in the word count of `summary` and `vigil_assessment.factual_basis`. It does not prohibit concise writing; it requires a maintainer to state why a material reduction improves fidelity rather than losing supported content.
+
+Do not satisfy this guard with generic text such as "made concise". The reason should identify duplication, unsupported detail, corrected scope, or another concrete fidelity basis.
+
 ## Incident authoring and website-rendering crosswalk
 
 This section is a maintainer contract for canonical Incident prose. It exists to prevent repository maintenance from confusing VIGIL's internal data fields with the labels and stages rendered by the CAM Initiative website.
@@ -210,6 +388,54 @@ Incident authors and reviewers must:
 Downstream website, document and PDF publishers must read and faithfully render the supplied `taxonomy_relationships[].rationale` values. Multiple rationales must be combined in stored order without duplication. A generated relationship-type summary may be used only as an explicit legacy fallback when no rationale is present; it must never replace supplied assessment prose. Website and PDF outputs must use the same rationale source.
 
 Publication consumers should protect this contract with generic fixtures covering a single rationale, multiple ordered rationales, mixed canonical and non-canonical relationships, and the missing-rationale fallback. Tests should validate the data contract rather than pinning the current adjudication of a live Incident.
+
+## Failure Taxonomy adjudication matrix
+
+`vigil/taxonomy/VIGIL.FailureTaxonomy.Adjudications.json` is the maintenance coverage table for exhaustive Incident-by-class review. It is not a second taxonomy and it is not a public classification narrative.
+
+Each enrolled Incident must have exactly one row for every current selectable Failure Class. The matrix is a taxonomy-role adjudication matrix, not a failure-only matrix. Exhaustive adjudication tests every class independently for failure occurrence, successful invariant and ambiguous boundary. A NO failure decision is not proof that the class has no taxonomy relationship to the Incident.
+
+Rows contain one semantic decision and a short occurrence-specific reason:
+
+- `failure-occurrence` — the occurrence establishes violation of the class invariant and must carry the same canonical Incident and Section 02 role;
+- `successful-invariant` — the invariant was materially tested or engaged and affirmatively preserved; the Incident mapping and an admitted reciprocal taxonomy `invariant_exemplar` are required;
+- `ambiguous-boundary` — the occurrence materially illuminates the invariant boundary but establishes neither failure nor successful preservation; the Incident mapping and an admitted reciprocal taxonomy `invariant_exemplar` are required;
+- `no-mapping` — sufficient recognition facts establish that the class is not materially engaged;
+- `unresolved` — a required recognition fact remains genuinely unavailable or indeterminate, and the reason must name that fact; and
+- `MISSING` — mechanical placeholder only; validation must fail until a reviewer adjudicates it.
+
+`unresolved` MUST NOT be used as a substitute for `ambiguous-boundary`. An ambiguous boundary is an affirmative taxonomy relationship; unresolved is evidence uncertainty. Ordinary absence of failure is neither a successful invariant nor an ambiguous boundary.
+
+Run `python vigil/scripts/sync-vigil-taxonomy-adjudications.py` after adding a selectable class or enrolling an Incident. The sync may create `MISSING` cells but must never choose a semantic disposition. During the v0.1 failure-only migration, prior `YES` becomes `failure-occurrence`, prior `UNRESOLVED` remains `unresolved`, and prior `NO` is retained under `prior_failure_adjudication` while the role-aware decision becomes `MISSING`; the sync MUST NOT infer `no-mapping` from prior failure rejection. Run `python vigil/scripts/validate-vigil-taxonomy-adjudications.py` to enforce current-class coverage and role-by-role canonical consistency.
+
+During a staged pair-by-pair recovery, use repeatable `--incident VIGIL-INC-NNNNNN` arguments to validate only the completed pair under the same rules. An Incident-scoped pass does not make unreviewed `MISSING` cells elsewhere complete and must not be reported as a full-matrix pass.
+
+A taxonomy review must not describe an enrolled Incident as exhaustively reviewed while any current cell is `MISSING`. Candidate shortlisting never substitutes for this matrix.
+
+For deterministic handover, disposition polarity is evidence-sensitive: `no-mapping` requires sufficient facts to reject all three positive roles; `unresolved` preserves a specific evidence gap; each positive role requires the same role in the canonical Incident and Section 02. Public nondisclosure of an internal state is not itself proof that the state failed.
+
+Adjudication reasons must also be occurrence-specific. Boilerplate templates, generic applicability statements, and duplicate normalised reasons within one Incident are validator failures. In particular, do not use forms such as `No material [class] mechanism is present ...`, `required conditions are outside the evidenced pathway`, `class does not apply`, or equivalent repetitive filler. A `no-mapping` reason must identify the recognition condition or exclusion resolved by the occurrence; an `unresolved` reason must identify the exact missing recognition fact.
+
+Stage 02 canonical role parsing is exact rather than impressionistic. Accepted values are `failure-occurrence` and `failure-occurrence contribution` for the `failure-occurrence` role, `successful-invariant` for the `successful-invariant` role, and `ambiguous-boundary exemplar` for the `ambiguous-boundary` role. Similar-sounding legacy text such as `canonical failure mapping` is not silently treated as equivalent; it is a maintainer normalisation action.
+
+### Post-adjudication record-update report
+
+The matrix campaign is analytically separate from canonical Incident repair.
+
+After completing an Incident or tranche:
+
+1. run the adjudication validator;
+2. repair all matrix-quality failures first, including `MISSING`, boilerplate, duplicate reasons and invalid `NO`/`UNRESOLVED` polarity;
+3. compare each clean positive role set with the same role in canonical `taxonomy_classification` mappings and Stage 02 canonical `source_clause_analysis.taxonomy_relationships`, and verify admitted reciprocal taxonomy exemplars for successful-invariant and ambiguous-boundary mappings;
+4. place an Incident on the **record update required** list only when the clean matrix disagrees with either canonical surface;
+5. do not modify the canonical Incident during a matrix-only campaign unless the maintainer separately authorises record repair;
+6. stage a Gmail action only when a genuine unresolved change is required, such as a canonical Incident/Section 02 repair that was identified but not performed, a taxonomy boundary/class/family change that remains to be made, or a genuinely new taxonomy class/proposal; and
+7. when the clean matrix matches both canonical surfaces and no taxonomy or other unresolved maintainer action is required, **do not send Gmail**.
+
+Do not send empty record-update reports, clean-pass notices, progress summaries or “no changes required” emails. If an authorised task already completed the required repair and no further action remains, Gmail staging is also unnecessary. GitHub Actions must not contain mailbox credentials.
+
+A matrix that fails its own adjudication-quality controls is not evidence that the Incident record needs repair. The matrix must become internally valid first. The validator marks clean matrix-to-canonical mismatches as `GMAIL ACTION REQUIRED`; intrinsic matrix-quality failures remain ordinary validation errors and must be repaired before any such notification is staged.
+
 
 ## Generated outputs
 
