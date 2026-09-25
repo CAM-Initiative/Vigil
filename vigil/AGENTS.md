@@ -44,9 +44,9 @@ When an Incident contains `vigil_assessment.source_clause_analysis.clauses[]`, i
 
 The rationale is public analytical content, not internal mapping metadata. Derive it from the source clause, the canonical taxonomy definition, invariant and recognition conditions, and the bounded Incident evidence. Explain what the clause demonstrates in this occurrence.
 
-Do not replace the rationale with relationship-type boilerplate such as “the clause contributes to the recorded failure mechanism.” Do not use a Alignment Class name, family name, identifier or mapping result as a substitute for the explanation. Structured identifiers, relationship roles and canonical-mapping state remain in their formal taxonomy fields.
+Do not replace the rationale with relationship-type boilerplate such as “the clause contributes to the recorded failure mechanism.” Do not use a Fidelity Class name, family name, identifier or mapping result as a substitute for the explanation. Structured identifiers, relationship roles and canonical-mapping state remain in their formal taxonomy fields.
 
-Where a clause has multiple taxonomy relationships, preserve each distinct rationale in source order. Together they must form a coherent assessment without duplicating the same explanation. For adjacent, ambiguous-boundary, exemplar or other non-misalignment relationships, state precisely what the clause demonstrates and which occurrence condition is not established; semantic adjacency must not be converted into a canonical misalignment classification.
+Where a clause has multiple taxonomy relationships, preserve each distinct rationale in source order. Together they must form a coherent assessment without duplicating the same explanation. For adjacent, ambiguous-boundary, exemplar or other non-misalignment relationships, state precisely what the clause demonstrates and which occurrence condition is not established; semantic adjacency must not be converted into a canonical misfidelity classification.
 
 ## Schema and publication
 

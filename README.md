@@ -19,7 +19,7 @@ Legacy record classes and migration artefacts remain recoverable through Git his
 ## Incident model
 
 ```text
-Evidence sources ──> Incident ──> Alignment Class ──> Alignment Family
+Evidence sources ──> Incident ──> Fidelity Class ──> Fidelity Family
                          │
                          └──> separate CAM applicability assessment
 ```

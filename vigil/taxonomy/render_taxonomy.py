@@ -396,7 +396,7 @@ def _candidate_rank(candidate: dict) -> tuple[int, int, int, str]:
 
 
 def select_class_case_examples(data: dict, case_examples: dict[str, list[dict]]) -> dict[str, list[dict]]:
-    """Select up to three publication-grade exemplars for every alignment class.
+    """Select up to three publication-grade exemplars for every fidelity class.
 
     Eligibility gates are intentionally stricter than the underlying VIGIL corpus:
     taxonomy mapping confidence must be High and an affected vendor/system must be known.
@@ -745,7 +745,7 @@ def publication_frontmatter(index: dict, families: list[dict]) -> str:
     <h1 class="cover-title">Governance<br>Alignment<br>Taxonomy</h1>
     <h2 class="cover-subtitle">Technical Reference</h2>
     <p class="cover-status">Status: {esc(status).title()}</p>
-    <p class="cover-descriptors">Alignment Families · Alignment Classes<br>Classification Boundaries · Recognition Criteria<br>Harm &amp; Severity Methodology</p>
+    <p class="cover-descriptors">Fidelity Families · Fidelity Classes<br>Classification Boundaries · Recognition Criteria<br>Harm &amp; Severity Methodology</p>
   </div>
   <footer class="cover-band">
     <img class="cover-footer-art" src="{esc(BRAND_FOOTER_URL)}" alt="">
@@ -773,7 +773,7 @@ def publication_frontmatter(index: dict, families: list[dict]) -> str:
     <dt>Alignment classes</dt><dd>{class_count}</dd>
   </dl>
   <div class="imprint-rule"></div>
-  <p>This technical reference provides the maintained classification structure for governance alignment families and alignment classes, including classification boundaries and recognition criteria, together with the VIGIL Harm &amp; Severity Methodology used to assess materialised consequence severity.</p>
+  <p>This technical reference provides the maintained classification structure for governance fidelity families and fidelity classes, including classification boundaries and recognition criteria, together with the VIGIL Harm &amp; Severity Methodology used to assess materialised consequence severity.</p>
   <section class="rights-notice">
     <h2>Copyright and licensing</h2>
     <p><strong>{esc(COPYRIGHT_NOTICE)}</strong></p>

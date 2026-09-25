@@ -42,7 +42,9 @@ Family JSON is canonical. The maintained PDF is a generated publication projecti
 
 ### Naming compatibility
 
-The public standard is the **VIGIL Observatory Alignment Taxonomy**. Existing machine filenames containing `FailureTaxonomy` and immutable `VIGIL-FF-*` / `VIGIL-FC-*` identifiers are retained as compatibility surfaces until a separately governed migration is approved. Consumers must not infer occurrence polarity from those legacy filename or identifier stems; polarity is carried by each Incident mapping's `classification_role`. The canonical publication filename is `VIGIL.Observatory.AlignmentTaxonomy.FullReference.pdf`; `VIGIL.Observatory.FailureTaxonomy.FullReference.pdf` is maintained only as a legacy compatibility alias. Generated HTML is not a VIGIL Observatory publication asset; HTML emitted by the renderer is transient build material only. The migration ledger is non-normative source-analysis evidence and is not a dependency of the portable taxonomy.
+The public standard is the **VIGIL Observatory Alignment Taxonomy**. Existing machine filenames containing `FailureTaxonomy` and immutable `VIGIL-FF-*` / `VIGIL-FC-*` identifiers are retained as compatibility surfaces until a separately governed migration is approved.
+
+Within the Alignment Taxonomy, `FF` denotes **Fidelity Family** and `FC` denotes **Fidelity Class**. These terms identify the structural invariant boundary being assessed without presupposing the outcome of an occurrence. The immutable `VIGIL-FF-*` and `VIGIL-FC-*` identifiers remain unchanged. Consumers must not infer occurrence polarity from those legacy filename or identifier stems; polarity is carried by each Incident mapping's `classification_role`. The canonical publication filename is `VIGIL.Observatory.AlignmentTaxonomy.FullReference.pdf`; `VIGIL.Observatory.FailureTaxonomy.FullReference.pdf` is maintained only as a legacy compatibility alias. Generated HTML is not a VIGIL Observatory publication asset; HTML emitted by the renderer is transient build material only. The migration ledger is non-normative source-analysis evidence and is not a dependency of the portable taxonomy.
 
 Current publications render only active families and selectable classes. Historical or retired class material retained in canonical `subtypes` for migration integrity is not publication content and must not appear in Markdown, HTML, or PDF output.
 
@@ -60,7 +62,7 @@ Broad organisational containers such as governance, UX, safety, security, or AI-
 
 The hierarchy is:
 
-**Alignment Taxonomy → Alignment Family → selectable Alignment Class → non-selectable subtype or recognition pattern where justified**
+**Alignment Taxonomy → Fidelity Family → selectable Fidelity Class → non-selectable subtype or recognition pattern where justified**
 
 One JSON file contains one bounded family. Selectable classes remain peer records in `classes`. A narrower manifestation of the same mechanism is embedded under its canonical class in `subtypes`; it is not independently selectable and does not appear in the family's allowed-class lists.
 
@@ -143,7 +145,7 @@ Dataset releases follow these rules:
 - lifecycle states progress through `prototype`, `draft`, `beta`, `active` and `deprecated` as applicable;
 - `draft` dataset releases use the `-draft` prerelease suffix; a deliberate graduation to `beta` or `active` removes that suffix and it must not later be reintroduced;
 - an amendment, addition, movement, deprecation, lifecycle graduation, or other change to an existing family or class collection increments the third digit;
-- admission of a new alignment family increments the second digit and resets the third digit to zero;
+- admission of a new fidelity family increments the second digit and resets the third digit to zero;
 - the first digit is reserved for a deliberately approved, materially incompatible re-foundation of the taxonomy and is never inferred from routine record maintenance;
 - every dataset release records a fixed ISO `publication_date`; generation must not substitute the current clock date;
 - historical classification stamps remain unchanged unless the mappings are substantively re-adjudicated.

@@ -76,7 +76,7 @@ The manifest records:
 - confirmation that the current taxonomy and complete class set were reviewed;
 - candidate classes tested against recognition criteria and exclusions;
 - for each materially rejected candidate, the **actual canonical recognition condition that remains unestablished**, rather than a generic statement that the internal mechanism or root cause is unknown;
-- comparator Incidents reviewed where they materially inform the evidentiary threshold for the same Alignment Class;
+- comparator Incidents reviewed where they materially inform the evidentiary threshold for the same Fidelity Class;
 - a disposition for every baseline taxonomy mapping;
 - reasons for new mappings and any removed source evidence;
 - any justified material reduction in factual prose;
@@ -89,20 +89,20 @@ The rebuild guard is intentionally generic. `VIGIL-INC-000129` informed its desi
 
 ### Taxonomy evidence-abstraction rule
 
-Taxonomy adjudication MUST apply each Alignment Class at the level of abstraction stated by its canonical definition, invariant, recognition criteria and exclusions.
+Taxonomy adjudication MUST apply each Fidelity Class at the level of abstraction stated by its canonical definition, invariant, recognition criteria and exclusions.
 
 **Do not silently raise the evidentiary burden beyond the class definition.**
 
 Maintain a strict distinction between:
 
-- **governance-mechanism evidence** — evidence sufficient to establish the structural condition described by the Alignment Class; and
+- **governance-mechanism evidence** — evidence sufficient to establish the structural condition described by the Fidelity Class; and
 - **implementation-location evidence** — evidence locating that mechanism in a particular model component, classifier, filter, threshold, service, code path, hidden state or other technical subsystem.
 
-Implementation-location evidence is required only when the Alignment Class itself requires it. The absence of private implementation telemetry, source code, hidden prompts, internal chain-of-thought, classifier scores, execution traces or a vendor root-cause report does not defeat a governance-level classification when the canonical recognition conditions are otherwise established.
+Implementation-location evidence is required only when the Fidelity Class itself requires it. The absence of private implementation telemetry, source code, hidden prompts, internal chain-of-thought, classifier scores, execution traces or a vendor root-cause report does not defeat a governance-level classification when the canonical recognition conditions are otherwise established.
 
 Before rejecting a candidate because evidence is unavailable, ask:
 
-> Is the missing evidence required to establish this Alignment Class, or would it only explain an already-established mechanism at a lower technical level?
+> Is the missing evidence required to establish this Fidelity Class, or would it only explain an already-established mechanism at a lower technical level?
 
 If the missing evidence would only locate or explain an established governance mechanism more precisely, preserve that uncertainty in the classification basis or assessment boundary. Do not convert:
 
@@ -118,7 +118,7 @@ Conversely, do not infer a governance mechanism merely from an adverse outcome. 
 
 Use the **minimum sufficient evidence required by the canonical class**, not the maximum evidence that could theoretically be obtained.
 
-For each materially plausible candidate Alignment Class:
+For each materially plausible candidate Fidelity Class:
 
 1. identify each required recognition condition;
 2. identify the occurrence evidence that satisfies it;
@@ -152,7 +152,7 @@ The exact technical fault location may remain unresolved and must be recorded as
 
 ### Comparator-consistency rule
 
-Before rejecting a candidate mapping for insufficient evidence, inspect relevant canonical Incidents already classified under that Alignment Class.
+Before rejecting a candidate mapping for insufficient evidence, inspect relevant canonical Incidents already classified under that Fidelity Class.
 
 Do not impose a materially stricter evidentiary threshold on the current Incident than VIGIL applies to comparable canonical occurrences unless:
 
@@ -393,7 +393,7 @@ Publication consumers should protect this contract with generic fixtures coverin
 
 `vigil/taxonomy/VIGIL.FailureTaxonomy.Adjudications.json` is the maintenance coverage table for exhaustive Incident-by-class review. Its legacy filename is retained for compatibility; it is governed by the current VIGIL Observatory Alignment Taxonomy. It is not a second taxonomy and it is not a public classification narrative.
 
-Each enrolled Incident must have exactly one row for every current selectable Alignment Class. The matrix is a taxonomy-role adjudication matrix, not a failure-only matrix. Exhaustive adjudication tests every class independently for failure occurrence, successful invariant and ambiguous boundary. A NO failure decision is not proof that the class has no taxonomy relationship to the Incident.
+Each enrolled Incident must have exactly one row for every current selectable Fidelity Class. The matrix is a taxonomy-role adjudication matrix, not a failure-only matrix. Exhaustive adjudication tests every class independently for failure occurrence, successful invariant and ambiguous boundary. A NO failure decision is not proof that the class has no taxonomy relationship to the Incident.
 
 Rows contain one semantic decision and a short occurrence-specific reason:
 
