@@ -8,7 +8,7 @@
     "record_type": "incident",
     "title": "DeepSeek exposed an unauthenticated database containing chat histories and secrets",
     "created": "2026-09-08",
-    "updated": "2026-09-21",
+    "updated": "2026-09-25",
     "version": "0.1.12"
   },
   "incident_identity": {
@@ -179,11 +179,19 @@
     ]
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.6.5",
-    "classification_status": "unclassified",
+    "taxonomy_version": "0.6.7",
+    "classification_status": "classified",
     "classification_basis": "Current-taxonomy review against VIGIL Failure Taxonomy 0.6.5 retains the occurrence as unclassified. The preserved evidence establishes a severe backend access-control misconfiguration: internet-reachable ClickHouse endpoints lacked authentication and exposed chat histories, secrets and full database operations. VIGIL-FC-000002 Capability-Authority Conflation was tested but is not established because no AI system or governance process is shown to have treated technical reachability as permission; the database was simply exposed. VIGIL-FC-000031 Authentication-State Continuity Failure is not applicable because no authentication-state transition failed to propagate. VIGIL-FC-000045 Authorised Investigative Evidence-Access Pathway Failure is not applicable because the occurrence is unauthorised public exposure, not absence of a governed route for an already-authorised investigator. The event remains a material infrastructure-security Incident without a precise current selectable Failure Class.",
     "primary_classification": null,
-    "secondary_classifications": [],
+    "secondary_classifications": [
+      {
+        "family_id": "VIGIL-FF-0001",
+        "class_id": "VIGIL-FC-000002",
+        "classification_role": "ambiguous-boundary",
+        "classification_basis": "The exposed backend made powerful capability directly reachable, but the event involved security researchers rather than an AI process treating reachability as permission; the occurrence therefore marks the capability-versus-authority boundary.",
+        "classification_confidence": "medium"
+      }
+    ],
     "classification_review_provenance": {
       "method": "deterministic current-taxonomy re-adjudication using preserved Incident evidence and complete VIGIL Failure Taxonomy 0.6.5 class-set review",
       "review_date": "2026-09-21",
