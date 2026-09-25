@@ -13,32 +13,35 @@
     "name": "Control Activation Integrity",
     "status": "beta",
     "abstraction": "family",
-    "version": "0.1.3",
-    "plain_english": "A defined control is not known to be available or applicable in time, fails to activate when required, activates without valid conditions, or has the authority needed for activation suppressed.",
-    "definition": "Failures in which the operational availability or applicability of a defined governance control cannot be determined in time, an applicable control does not become operative when its valid activation conditions are satisfied, a control becomes operative when its valid activation conditions are not satisfied, or the authority required to activate an applicable control is suppressed.",
-    "invariant": "An applicable governance control or safeguard must become operative when its valid activation conditions are satisfied, remain inactive when those conditions are not satisfied, and retain the operative authority required for activation.",
+    "version": "0.1.4",
+    "plain_english": "A defined control is not known to be available or applicable in time, fails to activate when required, activates without valid conditions, has the authority needed for activation suppressed, or activates but produces a materially insufficient protective effect.",
+    "definition": "Failures in which the operational availability or applicability of a defined governance control cannot be determined in time, an applicable control does not become operative when its valid activation conditions are satisfied, a control becomes operative when its valid activation conditions are not satisfied, the authority required to activate an applicable control is suppressed, or an activated protective control produces an effect materially insufficient for the hazard and protection context it is intended to govern.",
+    "invariant": "An applicable governance control or safeguard must become operative when its valid activation conditions are satisfied, remain inactive when those conditions are not satisfied, retain the operative authority required for activation, and when activated produce a timely and sufficient protective effect for the hazard and protection context it governs.",
     "scope": [
       "AI governance controls",
       "policy and assurance workflows",
       "safeguards and approval gates",
       "protective handling",
       "control activation conditions",
-      "blocking, gating, escalation and redirection authority"
+      "blocking, gating, escalation and redirection authority",
+      "control effectiveness and protective-effect sufficiency"
     ],
-    "inclusion_rule": "Use this family when the primary structural failure concerns whether a defined control's availability or applicability can be determined in time, whether it becomes operative when and only when valid activation conditions are satisfied, or whether the authority required for activation is suppressed.",
-    "exclusion_rule": "Do not use this family for upstream evidence or classification error, stale contextual state, correct activation followed by excessive scope or intensity, lack of authority to impose an action, loss of an operative control state in transit, downstream access or work-state damage, or absence of audit evidence.",
+    "inclusion_rule": "Use this family when the primary structural failure concerns whether a defined control's availability or applicability can be determined in time, whether it becomes operative when and only when valid activation conditions are satisfied, whether the authority required for activation is suppressed, or whether an activated protective control produces the materially required protective effect.",
+    "exclusion_rule": "Do not use this family for upstream evidence or classification error, stale contextual state, lack of authority to impose an action, loss of an operative control state in transit, downstream access or work-state damage, absence of audit evidence, or a purely substantive disagreement with policy where no applicable operational control or protective-effect obligation is established.",
     "aliases": [
       "Control Activation Integrity Failures"
     ],
     "allowed_class_ids": [
       "VIGIL-FC-000037",
       "VIGIL-FC-000038",
-      "VIGIL-FC-000043"
+      "VIGIL-FC-000043",
+      "VIGIL-FC-000083"
     ],
     "allowed_class_codes": [
       "CONTROL_AVAILABILITY_DETERMINATION",
       "REQUIRED_CONTROL_ACTIVATION",
-      "CONTROL_ACTIVATION_VALIDITY"
+      "CONTROL_ACTIVATION_VALIDITY",
+      "CONTROL_EFFECTIVENESS_INTEGRITY"
     ]
   },
   "classes": [
@@ -441,6 +444,96 @@
             "placement_note": "Non-normative analytical placement using a reference already retained by VIGIL-FC-000043; the referenced source does not define the VIGIL adjudication role."
           },
           "provenance_note": "Canonical occurrence facts and provenance remain governed by VIGIL-INC-000014; this entry records only the reciprocal taxonomy relationship."
+        }
+      ]
+    },
+    {
+      "class_id": "VIGIL-FC-000083",
+      "class_code": "CONTROL_EFFECTIVENESS_INTEGRITY",
+      "family_id": "VIGIL-FF-0008",
+      "name": "Control Effectiveness Integrity",
+      "status": "beta",
+      "abstraction": "class",
+      "plain_english": "A protective control turns on, but the protection it actually provides is too weak, late, incomplete, or otherwise insufficient for the hazard it is meant to control.",
+      "definition": "A failure in which an applicable governance or protective control validly becomes operative, but the control effect it produces is materially insufficient to prevent, contain, interrupt, redirect, mitigate, or safely bound the governed hazard to the level required by the control's protective purpose and the evidenced protection context.",
+      "invariant": "When a protective control validly becomes operative, its effect must be timely, proportionate, and sufficient for the hazard and protection context it governs. Detection, warning, labelling, refusal language, escalation signalling, or other nominal activation is not by itself sufficient where the required protective effect is not achieved and the governed harmful state is delivered, continues, or remains inadequately contained. Required protective sufficiency may increase where evidenced developmental vulnerability, capacity limitation, temporary or situational consent impairment, acute distress, cognitive asymmetry, or comparable protection conditions materially affect the risk, but disability or neurodivergence alone must not be treated as incapacity.",
+      "recognition": {
+        "required_conditions": [
+          "A defined governance or protective control is applicable and validly becomes operative.",
+          "The control has an identifiable protective purpose requiring a material effect such as prevention, blocking, containment, interruption, redirection, limitation, escalation, mitigation, or another protection-compatible outcome.",
+          "The actual control effect materially falls short of that required protective purpose, allowing the governed hazard to be delivered, continue, escape containment, or remain insufficiently mitigated.",
+          "The shortfall is material in the evidenced hazard and protection context; where vulnerability, developmental status, capacity limitation, temporary or situational consent impairment, acute distress, cognitive asymmetry, or another heightened protection condition is relied on, that condition must itself be supported rather than presumed."
+        ]
+      },
+      "exclusions": [
+        "The applicable control does not become operative when a valid activation condition occurs; assess Required Control Activation.",
+        "The control becomes operative even though its valid activation or applicability conditions are not satisfied; assess Control Activation Validity.",
+        "The control becomes operative with a sufficient effect but its operative state is later lost, weakened, reset, or transformed before reaching the governed point; assess Control-State Preservation.",
+        "An operative governance signal fails to reach any capable endpoint or execution surface; assess the applicable governance-control reach class rather than treating non-delivery as inadequate control effect.",
+        "The control produces the protective effect required by its defined purpose and the remaining harm arises through an independent downstream mechanism.",
+        "The dispute is solely that policy should have required a stronger safeguard, without evidence of an applicable operational control or protective-effect obligation in the material context.",
+        "Disability, neurodivergence, diagnosis, age-associated stereotype, or another personal characteristic is used by itself to presume incapacity, vulnerability, or diminished agency."
+      ],
+      "examples": [
+        "A content-safety control identifies an output as outside applicable guidelines and displays a warning, but the same harmful content remains visible to a protected user where the control's protective purpose requires prevention or containment.",
+        "A protective transaction or safety control activates and generates an advisory state, but the resulting effect is too late or too weak to satisfy the control's established containment or interruption requirement."
+      ],
+      "relationships": [
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000038",
+          "note": "Required Control Activation asks whether an applicable control became operative when required; Control Effectiveness Integrity applies after valid activation and asks whether the resulting protective effect was materially sufficient."
+        },
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000043",
+          "note": "Control Activation Validity asks whether the control should have activated; Control Effectiveness Integrity assumes valid activation and evaluates the sufficiency of the resulting protective effect."
+        },
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000040",
+          "note": "Control-State Preservation concerns loss or weakening of an operative control state across a downstream transition; Control Effectiveness Integrity concerns an operative control whose realised effect is itself insufficient at the governed point."
+        },
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000042",
+          "note": "Governance-signal delivery failure concerns an operative signal that cannot reach a capable endpoint; Control Effectiveness Integrity concerns a control that does operate at the governed point but does not achieve the protective effect required there."
+        }
+      ],
+      "aliases": [
+        "Protective Control Effectiveness",
+        "Control Effect Sufficiency"
+      ],
+      "external_references": [
+        {
+          "title": "NIST AI RMF 1.0, MEASURE 1.2",
+          "publisher": "National Institute of Standards and Technology",
+          "date": "2023-01-26",
+          "url": "https://doi.org/10.6028/NIST.AI.100-1",
+          "reference_role": "authoritative-guidance",
+          "evidence_note": "EXTREQ-233EE01AB85DB0F0 requires regular assessment and updating of metric appropriateness and control effectiveness. This supports treating realised control effectiveness as distinct from nominal control presence or activation; it does not define VIGIL's incident-level sufficiency threshold.",
+          "requirement_id": "EXTREQ-233EE01AB85DB0F0",
+          "clause_or_control": "MEASURE 1.2"
+        },
+        {
+          "title": "IEEE 7009-2024, clause 6.1(h)",
+          "publisher": "IEEE Standards Association",
+          "date": "2024-07-05",
+          "url": "https://standards.ieee.org/ieee/7009/7096/",
+          "reference_role": "standards-evidence",
+          "evidence_note": "EXTREQ-B71F509BD66AD387 requires specified fail-safe capabilities to be provided to the required extent in the identified regulatory context. This supports distinguishing nominal control activation from provision of the required protective capability and extent.",
+          "requirement_id": "EXTREQ-B71F509BD66AD387",
+          "clause_or_control": "6.1(h)"
+        },
+        {
+          "title": "IEEE 7014.1-2026, clause 6.6.3(a)",
+          "publisher": "IEEE Standards Association",
+          "date": "2026-06-12",
+          "url": "https://standards.ieee.org/ieee/7014.1/11609/",
+          "reference_role": "standards-evidence",
+          "evidence_note": "EXTREQ-7B5B8E05C23D17D5 recommends a fail-safe means to terminate harmful partner interactions. It provides domain-specific support for a protective control achieving an effective protective outcome rather than merely signalling activation.",
+          "requirement_id": "EXTREQ-7B5B8E05C23D17D5",
+          "clause_or_control": "6.6.3(a)"
         }
       ]
     }
