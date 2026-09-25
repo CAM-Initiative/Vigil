@@ -34,7 +34,7 @@ Do not falsify historical review dates or rewrite historical audits and reviews 
 ## Retained subsystem boundaries
 
 - `vigil/records/incidents/` — sole active public record corpus.
-- `vigil/taxonomy/` — canonical VIGIL Observatory failure taxonomy and generated publications.
+- `vigil/taxonomy/` — canonical VIGIL Observatory alignment taxonomy and generated publications.
 - `vigil/external_governance/sources/` — external-source registry.
 - `vigil/external_governance/requirements/` — external-governance requirements and projections.
 - `vigil/cam_assessment/` — CAM applicability and coverage assessment.
@@ -295,7 +295,7 @@ Do not move content between these fields merely to satisfy a prose validator. A 
 | Stage 03 | Classification table | `taxonomy_classification.primary_classification` and `secondary_classifications[]` |
 | Stage 03 | Alignment | mapping-local `classification_role` |
 | Stage 03 | Classification basis | mapping-local `classification_basis` |
-| Stage 04 | Governing invariant / Repair | resolved from the current Failure Taxonomy using the Incident's class IDs; not authored as separate Incident prose |
+| Stage 04 | Governing invariant / Repair | resolved from the current Alignment Taxonomy using the Incident's class IDs; not authored as separate Incident prose |
 | Stage 05 | **VIGIL Observatory conclusion** | `vigil_assessment.governance_interpretation` |
 | Stage 06 | Evidence bibliography | selected `source_records[]` metadata |
 | Stage 06 | External incident records | `external_incident_references[]` |
@@ -389,9 +389,9 @@ Downstream website, document and PDF publishers must read and faithfully render 
 
 Publication consumers should protect this contract with generic fixtures covering a single rationale, multiple ordered rationales, mixed canonical and non-canonical relationships, and the missing-rationale fallback. Tests should validate the data contract rather than pinning the current adjudication of a live Incident.
 
-## Failure Taxonomy adjudication matrix
+## Alignment Taxonomy adjudication matrix
 
-`vigil/taxonomy/VIGIL.FailureTaxonomy.Adjudications.json` is the maintenance coverage table for exhaustive Incident-by-class review. It is not a second taxonomy and it is not a public classification narrative.
+`vigil/taxonomy/VIGIL.FailureTaxonomy.Adjudications.json` is the maintenance coverage table for exhaustive Incident-by-class review. Its legacy filename is retained for compatibility; it is governed by the current VIGIL Observatory Alignment Taxonomy. It is not a second taxonomy and it is not a public classification narrative.
 
 Each enrolled Incident must have exactly one row for every current selectable Failure Class. The matrix is a taxonomy-role adjudication matrix, not a failure-only matrix. Exhaustive adjudication tests every class independently for failure occurrence, successful invariant and ambiguous boundary. A NO failure decision is not proof that the class has no taxonomy relationship to the Incident.
 

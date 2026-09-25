@@ -1,4 +1,4 @@
-name: VIGIL Observatory taxonomy publications
+name: VIGIL Observatory alignment taxonomy publications
 # Publication styling consumes repository-pinned CAM brand assets via render_taxonomy.py.
 
 on:
@@ -151,6 +151,9 @@ jobs:
             --catalogue \
             --output-dir vigil/taxonomy/generated \
             --pdf
+          cp \
+            vigil/taxonomy/generated/VIGIL.Observatory.AlignmentTaxonomy.FullReference.pdf \
+            vigil/taxonomy/generated/VIGIL.Observatory.FailureTaxonomy.FullReference.pdf
 
       - name: Verify maintained PDF publication on main
         if: github.event_name != 'pull_request'
@@ -159,7 +162,7 @@ jobs:
           import re
           from pathlib import Path
 
-          pdf = Path("vigil/taxonomy/generated/VIGIL.Observatory.FailureTaxonomy.FullReference.pdf")
+          pdf = Path("vigil/taxonomy/generated/VIGIL.Observatory.AlignmentTaxonomy.FullReference.pdf")
           if not pdf.exists() or pdf.stat().st_size < 5000:
               raise SystemExit("Full-reference PDF was not generated correctly")
           if pdf.read_bytes()[:5] != b"%PDF-":
@@ -197,6 +200,7 @@ jobs:
             vigil/taxonomy/VIGIL.FailureTaxonomy.Index.json \
             vigil/taxonomy/families \
             vigil/taxonomy/generated/VIGIL.FailureTaxonomy.CaseFileExamples.json \
+            vigil/taxonomy/generated/VIGIL.Observatory.AlignmentTaxonomy.FullReference.pdf \
             vigil/taxonomy/generated/VIGIL.Observatory.FailureTaxonomy.FullReference.pdf
           if git diff --cached --quiet; then
             echo "No taxonomy release or publication changes to commit."

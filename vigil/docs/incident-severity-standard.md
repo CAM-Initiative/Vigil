@@ -1,7 +1,7 @@
 # VIGIL Harm Impact Matrix 1.0.1
 
 VIGIL Incident severity is the highest supported materialised harm in a bounded
-occurrence. It is not a likelihood estimate, a Failure Taxonomy classification,
+occurrence. It is not a likelihood estimate, a Alignment Taxonomy classification,
 classification confidence, source prestige, operational priority, or a statement
 of hypothetical worst-case capability.
 
@@ -153,5 +153,5 @@ The conceptual layers remain separate:
 1. evidence establishes what is reported;
 2. harm dimensions describe materialised consequences;
 3. severity records the highest supported magnitude;
-4. Failure Taxonomy classes describe the failure mechanism; and
+4. Alignment Taxonomy classes describe the failure mechanism; and
 5. invariants and governance repair state what must hold to prevent recurrence.

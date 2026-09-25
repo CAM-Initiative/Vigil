@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate complete human-readable VIGIL Observatory Failure Taxonomy references."""
+"""Generate complete human-readable VIGIL Observatory Alignment Taxonomy references."""
 
 from __future__ import annotations
 
@@ -17,8 +17,8 @@ CASE_EXAMPLES = ROOT / "generated" / "VIGIL.FailureTaxonomy.CaseFileExamples.jso
 INCIDENT_RECORDS = ROOT.parent / "records" / "incidents"
 BRAND_HEADER_URL = "../assets/CAM_INITIATIVE_HEADER.png"
 BRAND_FOOTER_URL = "../assets/CAM_INITIATIVE_FOOTER_EMERALD.png"
-FULL_HTML_NAME = "VIGIL.FailureTaxonomy.FullReference.html"
-FULL_PDF_NAME = "VIGIL.Observatory.FailureTaxonomy.FullReference.pdf"
+FULL_HTML_NAME = "VIGIL.AlignmentTaxonomy.FullReference.html"
+FULL_PDF_NAME = "VIGIL.Observatory.AlignmentTaxonomy.FullReference.pdf"
 COPYRIGHT_NOTICE = "© 2026 Phoenix Covenant Pty Ltd trading as CAM Initiative (ABN 14 692 195 529). All rights reserved."
 
 
@@ -67,7 +67,7 @@ def markdown_family(data: dict, level: int = 1) -> str:
     if family.get("invariant_exemplars"):
         out.extend(["", f"{h}## Invariant exemplars", ""])
         out.extend(markdown_invariant_exemplar(item) for item in family["invariant_exemplars"])
-    out.extend(["", f"{h}# Failure classes", ""])
+    out.extend(["", f"{h}# Alignment classes", ""])
 
     for item in data["classes"]:
         out.extend([
@@ -396,7 +396,7 @@ def _candidate_rank(candidate: dict) -> tuple[int, int, int, str]:
 
 
 def select_class_case_examples(data: dict, case_examples: dict[str, list[dict]]) -> dict[str, list[dict]]:
-    """Select up to three publication-grade exemplars for every failure class.
+    """Select up to three publication-grade exemplars for every alignment class.
 
     Eligibility gates are intentionally stricter than the underlying VIGIL corpus:
     taxonomy mapping confidence must be High and an affected vendor/system must be known.
@@ -587,7 +587,7 @@ def publication_family_html(data: dict, chapter_number: int, case_examples: dict
     <ol class="chapter-list">{''.join(chapter_rows)}</ol>
   </section>
   <section class="chapter-overview">
-    <p class="chapter-kicker">Chapter {chapter_number} · Failure family overview</p>
+    <p class="chapter-kicker">Chapter {chapter_number} · Alignment family overview</p>
     <h2>Technical definition</h2><p>{esc(family['definition'])}</p>
     <h2>Governing invariant</h2><p class="invariant">{esc(family['invariant'])}</p>
     <h2>Classification boundary</h2><div class="grid"><section><h3>Include when</h3><p>{esc(family['inclusion_rule'])}</p></section><section><h3>Exclude when</h3><p>{esc(family['exclusion_rule'])}</p></section></div>
@@ -641,12 +641,12 @@ def family_html(data: dict, heading_level: int = 1, case_examples: dict[str, lis
     )
     return f"""
 <section class="family" id="{esc(anchor(family['family_id']))}">
-<section class="hero"><p class="eyebrow">Governance Failure Taxonomy · Technical Reference</p><{tag}>{esc(family['name'])}</{tag}><p class="plain">{esc(family['plain_english'])}</p>
+<section class="hero"><p class="eyebrow">Governance Alignment Taxonomy · Technical Reference</p><{tag}>{esc(family['name'])}</{tag}><p class="plain">{esc(family['plain_english'])}</p>
 <p><strong>Immutable ID:</strong> <code>{esc(family['family_id'])}</code> · <strong>Semantic code:</strong> <code>{esc(family['family_code'])}</code> · <strong>Version:</strong> {esc(family['version'])} · <strong>Status:</strong> {esc(family['status'])}</p>
 <h2>Technical definition</h2><p>{esc(family['definition'])}</p><h2>Governing invariant</h2><p class="invariant">{esc(family['invariant'])}</p>
 <h2>Classification boundary</h2><div class="grid"><section><h3>Include when</h3><p>{esc(family['inclusion_rule'])}</p></section><section><h3>Exclude when</h3><p>{esc(family['exclusion_rule'])}</p></section></div>
 <h2>Scope</h2><ul>{scope}</ul><details><summary><strong>Allowed identifiers</strong></summary><ul>{allowed}</ul></details>{invariant_exemplars_html(family.get("invariant_exemplars", []), heading="h3")}</section>
-<h2>Failure classes</h2>{''.join(class_html(item, (case_examples or {}).get(item['class_id'], [])) for item in data['classes'])}</section>"""
+<h2>Alignment classes</h2>{''.join(class_html(item, (case_examples or {}).get(item['class_id'], [])) for item in data['classes'])}</section>"""
 
 
 STYLE = """
@@ -655,7 +655,7 @@ STYLE = """
 
 PRINT_STYLE = """
 @page{size:A4;margin:18mm 16mm 18mm;
-  @top-left{content:"CAM INITIATIVE | GOVERNANCE FAILURE TAXONOMY";font-size:7.2pt;color:#022c1b;letter-spacing:.07em;font-weight:600}
+  @top-left{content:"CAM INITIATIVE | GOVERNANCE ALIGNMENT TAXONOMY";font-size:7.2pt;color:#022c1b;letter-spacing:.07em;font-weight:600}
   @top-right{content:"TECHNICAL REFERENCE";font-size:7.2pt;color:#78716c;letter-spacing:.06em}
   @bottom-left{content:"© 2026 CAM Initiative · VIGIL Observatory · All rights reserved";font-size:6.5pt;color:#78716c}
   @bottom-right{content:"Page " counter(page);font-size:7.2pt;color:#78716c}
@@ -745,7 +745,7 @@ def publication_frontmatter(index: dict, families: list[dict]) -> str:
     <h1 class="cover-title">Governance<br>Failure<br>Taxonomy</h1>
     <h2 class="cover-subtitle">Technical Reference</h2>
     <p class="cover-status">Status: {esc(status).title()}</p>
-    <p class="cover-descriptors">Failure Families · Failure Classes<br>Classification Boundaries · Recognition Criteria<br>Harm &amp; Severity Methodology</p>
+    <p class="cover-descriptors">Alignment Families · Alignment Classes<br>Classification Boundaries · Recognition Criteria<br>Harm &amp; Severity Methodology</p>
   </div>
   <footer class="cover-band">
     <img class="cover-footer-art" src="{esc(BRAND_FOOTER_URL)}" alt="">
@@ -763,17 +763,17 @@ def publication_frontmatter(index: dict, families: list[dict]) -> str:
   <p class="imprint-kicker">CAM Initiative · Technical Reference</p>
   <h1>Publication information</h1>
   <dl class="publication-meta">
-    <dt>Title</dt><dd>Governance Failure Taxonomy</dd>
+    <dt>Title</dt><dd>Governance Alignment Taxonomy</dd>
     <dt>Edition</dt><dd>Technical Reference</dd>
-    <dt>Failure Taxonomy version</dt><dd>{esc(version)}</dd>
+    <dt>Alignment Taxonomy version</dt><dd>{esc(version)}</dd>
     <dt>Harm &amp; Severity version</dt><dd>{esc(harm_version)}</dd>
     <dt>Status</dt><dd>{esc(status).title()}</dd>
     <dt>Publication date</dt><dd>{esc(edition_date)}</dd>
-    <dt>Failure families</dt><dd>{len(families)}</dd>
-    <dt>Failure classes</dt><dd>{class_count}</dd>
+    <dt>Alignment families</dt><dd>{len(families)}</dd>
+    <dt>Alignment classes</dt><dd>{class_count}</dd>
   </dl>
   <div class="imprint-rule"></div>
-  <p>This technical reference provides the maintained classification structure for governance failure families and failure classes, including classification boundaries and recognition criteria, together with the VIGIL Harm &amp; Severity Methodology used to assess materialised consequence severity.</p>
+  <p>This technical reference provides the maintained classification structure for governance alignment families and alignment classes, including classification boundaries and recognition criteria, together with the VIGIL Harm &amp; Severity Methodology used to assess materialised consequence severity.</p>
   <section class="rights-notice">
     <h2>Copyright and licensing</h2>
     <p><strong>{esc(COPYRIGHT_NOTICE)}</strong></p>
@@ -836,7 +836,7 @@ def combined_html(families: list[dict], case_examples: dict[str, list[dict]] | N
         else "".join(family_html(d, 1, case_examples) for d in families)
     )
     return document(
-        "Governance Failure Taxonomy — Technical Reference",
+        "Governance Alignment Taxonomy — Technical Reference",
         frontmatter + "".join(contents) + family_body,
         publication=publication,
     )

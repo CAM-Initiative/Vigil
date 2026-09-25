@@ -1,6 +1,6 @@
-# VIGIL Observatory Failure Taxonomy — Technical Standard
+# VIGIL Observatory Alignment Taxonomy — Technical Standard
 
-This directory contains a portable, machine-readable technical reference for AI-governance failure mechanisms. It is separate from incident, severity, harm, evidence-confidence, triage, jurisdiction, vendor, repair-state, and other event metadata.
+This directory contains a portable, machine-readable technical reference for AI-governance alignment invariants and their occurrence mappings. It is separate from incident, severity, harm, evidence-confidence, triage, jurisdiction, vendor, repair-state, and other event metadata.
 
 ## Rights and citation
 
@@ -31,13 +31,18 @@ families/
   VIGIL-FF-0015-identity-evaluative-integrity.json
 generated/
   VIGIL.FailureTaxonomy.CaseFileExamples.json
-  VIGIL.Observatory.FailureTaxonomy.FullReference.pdf
+  VIGIL.Observatory.AlignmentTaxonomy.FullReference.pdf
+  VIGIL.Observatory.FailureTaxonomy.FullReference.pdf  # legacy compatibility alias
 migration/
   Caelestis.LegacyFailure.MigrationLedger.json
   Caelestis.LegacyFailure.InventoryReview.md
 ```
 
-Family JSON is canonical. The maintained PDF is a generated publication projection. Generated HTML is not a VIGIL Observatory publication asset; HTML emitted by the renderer is transient build material only. The migration ledger is non-normative source-analysis evidence and is not a dependency of the portable taxonomy.
+Family JSON is canonical. The maintained PDF is a generated publication projection.
+
+### Naming compatibility
+
+The public standard is the **VIGIL Observatory Alignment Taxonomy**. Existing machine filenames containing `FailureTaxonomy` and immutable `VIGIL-FF-*` / `VIGIL-FC-*` identifiers are retained as compatibility surfaces until a separately governed migration is approved. Consumers must not infer occurrence polarity from those legacy filename or identifier stems; polarity is carried by each Incident mapping's `classification_role`. The canonical publication filename is `VIGIL.Observatory.AlignmentTaxonomy.FullReference.pdf`; `VIGIL.Observatory.FailureTaxonomy.FullReference.pdf` is maintained only as a legacy compatibility alias. Generated HTML is not a VIGIL Observatory publication asset; HTML emitted by the renderer is transient build material only. The migration ledger is non-normative source-analysis evidence and is not a dependency of the portable taxonomy.
 
 Current publications render only active families and selectable classes. Historical or retired class material retained in canonical `subtypes` for migration integrity is not publication content and must not appear in Markdown, HTML, or PDF output.
 
@@ -55,7 +60,7 @@ Broad organisational containers such as governance, UX, safety, security, or AI-
 
 The hierarchy is:
 
-**Failure Taxonomy → Failure Family → selectable Failure Class → non-selectable subtype or recognition pattern where justified**
+**Alignment Taxonomy → Alignment Family → selectable Alignment Class → non-selectable subtype or recognition pattern where justified**
 
 One JSON file contains one bounded family. Selectable classes remain peer records in `classes`. A narrower manifestation of the same mechanism is embedded under its canonical class in `subtypes`; it is not independently selectable and does not appear in the family's allowed-class lists.
 
@@ -88,7 +93,7 @@ Family filenames use `<family_id>-<human-readable-slug>.json`. The immutable ID 
 
 ### Canonical naming polarity
 
-Canonical family and class names describe the governed integrity property or invariant boundary, not the failed manifestation. The Failure Taxonomy remains a diagnostic taxonomy, but polarity is carried by the occurrence mapping rather than baked into the canonical label.
+Canonical family and class names describe the governed integrity property or invariant boundary, not the failed manifestation. The Alignment Taxonomy remains diagnostic, but polarity is carried by the occurrence mapping rather than baked into the canonical family or class label.
 
 For an Incident mapping:
 
@@ -131,14 +136,14 @@ Definitions must not contain incident-specific values. Severity, harm, persisten
 
 ## Dataset and publication versioning
 
-The version in `VIGIL.FailureTaxonomy.Index.json` is the version of the downloadable Failure Taxonomy dataset. The maintained Full Reference PDF is a composite technical reference and therefore surfaces both the canonical Failure Taxonomy version and the canonical VIGIL Harm & Severity methodology version. The publication renderer resolves the current VIGIL-HIM methodology from `vigil/methodologies/`, so a methodology version change is reflected in the technical reference without falsely advancing the taxonomy dataset version.
+The version in `VIGIL.FailureTaxonomy.Index.json` is the version of the downloadable Alignment Taxonomy dataset. The maintained Full Reference PDF is a composite technical reference and therefore surfaces both the canonical Alignment Taxonomy version and the canonical VIGIL Harm & Severity methodology version. The publication renderer resolves the current VIGIL-HIM methodology from `vigil/methodologies/`, so a methodology version change is reflected in the technical reference without falsely advancing the taxonomy dataset version.
 
 Dataset releases follow these rules:
 
 - lifecycle states progress through `prototype`, `draft`, `beta`, `active` and `deprecated` as applicable;
 - `draft` dataset releases use the `-draft` prerelease suffix; a deliberate graduation to `beta` or `active` removes that suffix and it must not later be reintroduced;
 - an amendment, addition, movement, deprecation, lifecycle graduation, or other change to an existing family or class collection increments the third digit;
-- admission of a new failure family increments the second digit and resets the third digit to zero;
+- admission of a new alignment family increments the second digit and resets the third digit to zero;
 - the first digit is reserved for a deliberately approved, materially incompatible re-foundation of the taxonomy and is never inferred from routine record maintenance;
 - every dataset release records a fixed ISO `publication_date`; generation must not substitute the current clock date;
 - historical classification stamps remain unchanged unless the mappings are substantively re-adjudicated.

@@ -1,4 +1,4 @@
-"""Regression tests for the portable VIGIL Failure Taxonomy contract."""
+"""Regression tests for the portable VIGIL Alignment Taxonomy contract."""
 
 from __future__ import annotations
 
@@ -40,7 +40,7 @@ EXPECTED_CLASS_SUFFIXES_BY_FAMILY = {
 }
 
 
-class FailureTaxonomyValidationTests(unittest.TestCase):
+class AlignmentTaxonomyValidationTests(unittest.TestCase):
     def setUp(self):
         self.tempdir = tempfile.TemporaryDirectory()
         self.root = Path(self.tempdir.name) / "taxonomy"
