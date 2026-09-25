@@ -742,7 +742,7 @@ def publication_frontmatter(index: dict, families: list[dict]) -> str:
   <img class="cover-masthead" src="{esc(BRAND_HEADER_URL)}" alt="">
   <div class="cover-body">
     <p class="cover-standard-line">VIGIL Observatory · Technical Reference</p>
-    <h1 class="cover-title">Governance<br>Failure<br>Taxonomy</h1>
+    <h1 class="cover-title">Governance<br>Alignment<br>Taxonomy</h1>
     <h2 class="cover-subtitle">Technical Reference</h2>
     <p class="cover-status">Status: {esc(status).title()}</p>
     <p class="cover-descriptors">Alignment Families · Alignment Classes<br>Classification Boundaries · Recognition Criteria<br>Harm &amp; Severity Methodology</p>
