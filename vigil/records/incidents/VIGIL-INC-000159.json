@@ -49,6 +49,42 @@
               "rationale": "Authority propagated from a public issue-triage workflow through cache state and nightly release credentials to npm publication."
             }
           ]
+        },
+        {
+          "source_paraphrase": "Attacker-controlled issue content was treated as operative instruction rather than remaining non-authorising data.",
+          "recovered_invariant_interpretation": "Untrusted or lower-authority content must remain non-authorising unless valid source authority is independently established.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000001",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Untrusted issue content was treated as operative instruction instead of remaining non-authorising data, allowing attacker-controlled text to direct consequential tool activity."
+            }
+          ]
+        },
+        {
+          "source_paraphrase": "Post-incident evidence preserved the material instruction and release-path events needed to document the occurrence.",
+          "recovered_invariant_interpretation": "Material events must be captured sufficiently to preserve occurrence evidence.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000022",
+              "relationship": "successful-invariant",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The retained post-incident evidence captured the material instruction, tool and release-path events needed to preserve the occurrence record."
+            }
+          ]
+        },
+        {
+          "source_paraphrase": "The retained evidence allowed the material compromise chain to be reconstructed without repeating unnecessary exploit mechanics.",
+          "recovered_invariant_interpretation": "The audit trail must remain reconstructable enough to explain material actions and state transitions.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000024",
+              "relationship": "successful-invariant",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The retained evidence supported reconstruction of the compromise chain while the public rationale remains bounded and does not restate unnecessary exploit mechanics."
+            }
+          ]
         }
       ]
     }
@@ -225,10 +261,10 @@
     ]
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.6.0",
+    "taxonomy_version": "0.6.7",
     "classification_status": "classified",
     "classification_role": "failure-occurrence",
-    "classification_basis": "The technical chain directly supports control-plane crossover and transitive propagation of publication authority, while preserving the independent roles of model, cache and credential configuration.",
+    "classification_basis": "The technical chain directly supports control-plane crossover and transitive propagation of publication authority, while preserving the independent roles of model, cache and credential configuration. Role-aware matrix reconciliation additionally records VIGIL-FC-000001 as a failure occurrence and VIGIL-FC-000022 / VIGIL-FC-000024 as successful invariants.",
     "primary_classification": {
       "family_id": "VIGIL-FF-0001",
       "class_id": "VIGIL-FC-000006",
@@ -243,14 +279,35 @@
         "classification_role": "failure-occurrence",
         "classification_basis": "Authority propagated from a public issue-triage workflow through cache state and nightly release credentials to npm publication.",
         "classification_confidence": "high"
+      },
+      {
+        "family_id": "VIGIL-FF-0001",
+        "class_id": "VIGIL-FC-000001",
+        "classification_role": "failure-occurrence",
+        "classification_basis": "Untrusted issue content was treated as operative instruction instead of remaining non-authorising data, allowing attacker-controlled text to direct consequential tool activity.",
+        "classification_confidence": "high"
+      },
+      {
+        "family_id": "VIGIL-FF-0004",
+        "class_id": "VIGIL-FC-000022",
+        "classification_role": "successful-invariant",
+        "classification_basis": "The retained post-incident evidence captured the material instruction, tool and release-path events needed to preserve the occurrence record.",
+        "classification_confidence": "high"
+      },
+      {
+        "family_id": "VIGIL-FF-0004",
+        "class_id": "VIGIL-FC-000024",
+        "classification_role": "successful-invariant",
+        "classification_basis": "The retained evidence supported reconstruction of the compromise chain while the public rationale remains bounded and does not restate unnecessary exploit mechanics.",
+        "classification_confidence": "high"
       }
     ],
     "classification_review_provenance": {
-      "method": "evidence-strengthening review and recognition-condition comparison against selectable VIGIL Failure Classes",
-      "review_date": "2026-09-19",
-      "reviewer": "OpenAI Codex — GPT-5",
-      "review_status": "classified",
-      "authority_boundary": "Classification is limited to mechanisms established by the preserved occurrence evidence; harm severity and incident admission do not establish a Failure Class."
+      "method": "dedicated single-record role-aware reconciliation against the completed adjudication matrix",
+      "review_date": "2026-09-25",
+      "reviewer": "OpenAI ChatGPT — GPT-5.6 Sol under human-directed VIGIL governance",
+      "review_status": "single-record QA reconciliation completed",
+      "authority_boundary": "This repair preserves the full underlying Incident evidence. New public rationales remain mechanism-bounded and avoid reproducing unnecessary exploit mechanics."
     }
   },
   "related_incidents": [],
