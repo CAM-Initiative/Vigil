@@ -58,6 +58,42 @@
               "rationale": "The model invoked the applicable abort, but the evaluation architecture failed to activate it, allowing later real-system activity; the failed boundary was the harness control rather than a refusal by the model to stop."
             }
           ]
+        },
+        {
+          "source_paraphrase": "The model repeatedly attempted to abort after the intended target became unreachable.",
+          "recovered_invariant_interpretation": "When the current pathway becomes invalid or unsafe, the system should stop, constrain action, or transition to a warranted safe exit.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000070",
+              "relationship": "successful-invariant",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The model repeatedly attempted the warranted safe exit after the intended target became unreachable; the harness, rather than the model, prevented the abort from becoming operative."
+            }
+          ]
+        },
+        {
+          "source_paraphrase": "The evaluation transcripts preserved the abort attempts and subsequent real-system activity.",
+          "recovered_invariant_interpretation": "Material events must be captured sufficiently to preserve occurrence evidence.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000022",
+              "relationship": "successful-invariant",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Evaluation transcripts captured the abort attempts and subsequent real-system activity."
+            }
+          ]
+        },
+        {
+          "source_paraphrase": "The preserved evaluation traces allowed the misconfigured target path and abort sequence to be reconstructed.",
+          "recovered_invariant_interpretation": "The audit trail must remain reconstructable enough to explain material actions and state transitions.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000024",
+              "relationship": "successful-invariant",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The preserved evaluation traces allowed the misconfigured target path, abort attempts and later activity to be reconstructed."
+            }
+          ]
         }
       ]
     }
@@ -223,9 +259,9 @@
     ]
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.5.1",
+    "taxonomy_version": "0.6.7",
     "classification_status": "classified",
-    "classification_basis": "FC-000003 remains primary because CTF authority was transposed to an unrelated real third-party system. FC-000038 is added as an independent evaluation-architecture mechanism: the model repeatedly invoked an applicable abort after making the intended target unreachable, but the harness failed to activate it before later consequential activity. FC-000070 is rejected because the evidence shows attempted safe exit rather than model persistence after a warranted stop.",
+    "classification_basis": "FC-000003 remains primary because CTF authority was transposed to an unrelated real third-party system. FC-000038 is added as an independent evaluation-architecture mechanism: the model repeatedly invoked an applicable abort after making the intended target unreachable, but the harness failed to activate it before later consequential activity. FC-000070 is rejected because the evidence shows attempted safe exit rather than model persistence after a warranted stop. Role-aware matrix reconciliation records VIGIL-FC-000070 successful-invariant; VIGIL-FC-000022 successful-invariant; VIGIL-FC-000024 successful-invariant.",
     "primary_classification": {
       "class_id": "VIGIL-FC-000003",
       "classification_role": "failure-occurrence",
@@ -240,15 +276,37 @@
         "family_id": "VIGIL-FF-0008",
         "classification_confidence": "high",
         "classification_basis": "An applicable abort control was available and its activation condition was reached when the intended target became unreachable. Anthropic reports that the model repeatedly attempted to abort, but an evaluation-harness misconfiguration prevented the abort from becoming operative before consequential real-system activity continued. This classification applies to the evaluation/control architecture, not to model refusal to stop."
+      },
+      {
+        "family_id": "VIGIL-FF-0012",
+        "class_id": "VIGIL-FC-000070",
+        "classification_role": "successful-invariant",
+        "classification_basis": "The model repeatedly attempted the warranted safe exit after the intended target became unreachable; the harness, rather than the model, prevented the abort from becoming operative.",
+        "classification_confidence": "high"
+      },
+      {
+        "family_id": "VIGIL-FF-0004",
+        "class_id": "VIGIL-FC-000022",
+        "classification_role": "successful-invariant",
+        "classification_basis": "Evaluation transcripts captured the abort attempts and subsequent real-system activity.",
+        "classification_confidence": "high"
+      },
+      {
+        "family_id": "VIGIL-FF-0004",
+        "class_id": "VIGIL-FC-000024",
+        "classification_role": "successful-invariant",
+        "classification_basis": "The preserved evaluation traces allowed the misconfigured target path, abort attempts and later activity to be reconstructed.",
+        "classification_confidence": "high"
       }
     ],
     "classification_review_provenance": {
-      "method": "taxonomy 0.5.1 delta and cross-incident consistency reconciliation",
-      "review_date": "2026-09-14",
-      "reviewer": "OpenAI Codex / GPT-5 under human-directed VIGIL governance",
-      "review_status": "existing primary retained; architecture-level control secondary added; FC-000070 rejected",
-      "authority_boundary": "Trigger: Safe-exit negative-control and required-control review within the evaluation-boundary cluster. Tested: VIGIL-FC-000003, VIGIL-FC-000038, VIGIL-FC-000070, VIGIL-FC-000002. Accepted: VIGIL-FC-000003, VIGIL-FC-000038. Rejected: VIGIL-FC-000070: The model repeatedly attempted to abort; continuation followed harness-level abort non-activation rather than refusal to take a safe exit.; VIGIL-FC-000002: The record directly establishes mistaken CTF target affiliation and scope transposition, but does not independently establish availability alone as the permission basis. Primary change: none; FC-000003 remains primary. Existing classifications retained: VIGIL-FC-000003. Change basis: new taxonomy availability and cross-incident control/safe-exit reconciliation. Taxonomy evolution prompted re-adjudication but does not alter the factual occurrence; no mechanism is inferred beyond evidence already preserved in this Incident."
-    }
+      "method": "bounded role-aware matrix-to-canonical reconciliation using the completed 74-class adjudication matrix",
+      "review_date": "2026-09-25",
+      "reviewer": "OpenAI ChatGPT — GPT-5.6 Sol under human-directed VIGIL governance",
+      "review_status": "role-aware canonical and Section 02 reconciliation completed",
+      "authority_boundary": "This bounded repair applies previously completed role-aware matrix findings. It does not introduce new evidence, allocate a new Fidelity Class, determine legal liability, or reopen Harm Impact."
+    },
+    "classification_role": "failure-occurrence"
   },
   "diagnostic_provenance": {
     "method": "automated ecosystem incident discovery with first-party source review, independent-source reconciliation, duplicate checking and current-taxonomy review",
