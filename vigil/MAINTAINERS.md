@@ -195,7 +195,10 @@ If an earlier adjudication used an unstated recognition condition, correct the r
 
 ### Gmail as the durable next-action staging point
 
-VIGIL uses the maintainer Gmail account as the durable staging point for unresolved actions that cannot or should not be completed inside the current Incident edit.
+VIGIL uses the designated agent mailbox **Caelen.agent@gmail.com** as the durable staging point for unresolved actions that cannot or should not be completed inside the current Incident edit.
+
+**Routing invariant:** all connector-mediated VIGIL operational action emails, QA queues, taxonomy handoffs, authoring audits, repository-cleanup actions and similar maintainer work items MUST be addressed to **Caelen.agent@gmail.com**. Do not route these workflow emails to a maintainer's personal mailbox merely because that account is currently connected or is the sender identity. If a VIGIL action email is accidentally sent elsewhere, mark it superseded and send the authoritative replacement to **Caelen.agent@gmail.com**.
+
 
 **Gmail is an exception/action channel, not a completion log.** Do not send a Gmail notification merely because an Incident, pair, tranche or validator run completed successfully. A clean adjudication, an unchanged taxonomy, an exact matrix-to-Incident/Section 02 match, or an empty update queue requires **no email**.
 
