@@ -20,8 +20,8 @@
   },
   "summary": "Mistral reported that the Mini Shai-Hulud supply-chain attack on TanStack resulted in compromised Mistral npm and PyPI SDK versions being published. The compromised PyPI package `mistralai==2.4.6` executed malicious code on import, downloading a background payload that harvested credentials from common locations. Mistral reported no impact to its global infrastructure and removed the affected releases.",
   "vigil_assessment": {
-    "factual_basis": "Mistral's security advisory identifies affected npm and PyPI versions, publication windows and indicators of compromise. It states that the compromised PyPI release executed a malicious script on Linux at import time and launched a detached process designed to harvest credentials.",
-    "governance_interpretation": "Trusted package-distribution channels carried malicious code into an AI software development kit. The governance problem is therefore not a model output but the integrity of the software supply chain through which developers receive AI tooling, including package provenance, release controls and the authority of third-party maintainers.",
+    "factual_basis": "Mistral's security advisory identifies affected npm and PyPI versions, publication windows and indicators of compromise. It states that the compromised PyPI release executed a malicious script on Linux at import time and launched a detached process designed to harvest credentials. Aikido Security separately reports that its malware team detected compromised npm package versions including @mistralai releases in the wider campaign. Its account documents external post-publication detection, not the exact Mistral internal monitoring control or the causal route to removal.",
+    "governance_interpretation": "Trusted package-distribution channels carried malicious code into an AI software development kit. The governance problem is therefore not a model output but the integrity of the software supply chain through which developers receive AI tooling, including package provenance, release controls and the authority of third-party maintainers. Aikido’s external detection and Mistral’s removal show a distinct post-publication response stage. The available accounts do not establish that a specific Mistral pre-publication control was required and failed, or that the external monitoring was the operative control that caused removal.",
     "significance_to_cam": "AI-system governance includes the developer infrastructure surrounding a model. Compromised package provenance can expose credentials and downstream systems before the model is ever invoked, making third-party build dependencies, release integrity and incident response part of the assurance boundary.",
     "assessment_boundaries": [
       "Mistral reports no impact to its global infrastructure.",
@@ -39,6 +39,18 @@
               "relationship": "ambiguous-boundary exemplar",
               "canonical_taxonomy_mapping": true,
               "rationale": "A trusted Mistral SDK package identity carried attacker-supplied executable content, materially illuminating the boundary between package/release provenance substitution and ordinary false authorship attribution."
+            }
+          ]
+        },
+        {
+          "source_paraphrase": "Aikido reported detection of compromised npm package versions including Mistral SDK releases; Mistral reported removing affected releases within hours.",
+          "recovered_invariant_interpretation": "When a protective control validly becomes operative, its effect must be timely, proportionate, and sufficient for the hazard and protection context it governs. Detection, warning, labelling, refusal language, escalation signalling, or other nominal activation is not by itself sufficient where the required protective effect is not achieved and the governed harmful state is delivered, continues, or remains inadequately contained. Required protective sufficiency may increase where evidenced developmental vulnerability, capacity limitation, temporary or situational consent impairment, acute distress, cognitive asymmetry, or comparable protection conditions materially affect the risk, but disability or neurodivergence alone must not be treated as incapacity.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000083",
+              "relationship": "ambiguous-boundary exemplar",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Aikido detected compromised npm releases after publication and Mistral removed affected SDK versions, but the record does not link one operative Mistral control to that external detection and protective removal."
             }
           ]
         }
@@ -111,6 +123,38 @@
       "source_url": "https://www.tomshardware.com/tech-industry/cyber-security/compromised-mistral-ai-and-tanstack-packages-may-have-exposed-github-cloud-and-ci-cd-credentials-in-mini-shai-hulud-malware-infection-supply-chain-campaign-spreads-across-npm-and-ai-developer-ecosystems-like-wildfire",
       "source_url_status": "public source page or indexed metadata available at review",
       "system_or_product": "Other"
+    },
+    {
+      "source_title": "Mini Shai-Hulud Is Back: npm Worm Hits over 160 Packages, including Mistral and Tanstack",
+      "author_or_publisher": "Aikido Security",
+      "source_date": "2026-05-12",
+      "source_url": "https://www.aikido.dev/blog/mini-shai-hulud-is-back-tanstack-compromised",
+      "retrieved_date": "2026-09-25",
+      "source_url_status": "available",
+      "source_type": "technical analysis",
+      "source_platform": "Aikido Security",
+      "source_residence": "external",
+      "source_role": "incident-evidence",
+      "evidence_modality": [
+        "text"
+      ],
+      "evidence_status": "first-party-reported",
+      "evidence_status_basis": "Aikido reports its own malware-team detections and lists affected npm releases; it does not establish the internal Mistral detection path or that customers were protected before installation.",
+      "primary_artefact_access": {
+        "access_method": "direct public source review",
+        "access_status": "directly reviewed",
+        "direct_primary_artefact_review": true,
+        "limitations": [
+          "The article was updated after first publication and does not by itself date each package-specific detection to the minute."
+        ],
+        "reviewing_system": "OpenAI ChatGPT — Codex"
+      },
+      "incident_source_order": 3,
+      "interpretive_reliance": "Independent first-party account of external package monitoring and affected Mistral npm releases.",
+      "relevance_note": "Tests the detection and monitoring boundary after malicious package publication.",
+      "source_context": "Aikido reported detecting 373 malicious package-version entries across 169 npm names, including @mistralai releases.",
+      "system_or_product": "Mistral SDK packages",
+      "model_or_algorithm": "not model-specific"
     }
   ],
   "preferred_evidence": {
@@ -166,7 +210,7 @@
   "taxonomy_classification": {
     "taxonomy_version": "0.6.7",
     "classification_status": "classified",
-    "classification_basis": "The completed role-aware VIGIL 0.6.7 matrix determines the canonical role set for this occurrence; each mapping below carries its incident-specific evidentiary basis.",
+    "classification_basis": "The evidence-first FC-082/FC-083 corpus review tested the respective recognition conditions and preserved all earlier class mappings; the incident-specific bases and roles are recorded below.",
     "primary_classification": {
       "family_id": "VIGIL-FF-0002",
       "class_id": "VIGIL-FC-000010",
@@ -174,13 +218,21 @@
       "classification_basis": "A trusted Mistral SDK package identity carried attacker-supplied executable content, materially illuminating the boundary between package/release provenance substitution and ordinary false authorship attribution.",
       "classification_confidence": "medium"
     },
-    "secondary_classifications": [],
+    "secondary_classifications": [
+      {
+        "family_id": "VIGIL-FF-0008",
+        "class_id": "VIGIL-FC-000083",
+        "classification_role": "ambiguous-boundary",
+        "classification_basis": "Aikido detected compromised npm releases after publication and Mistral removed affected SDK versions, but the record does not link one operative Mistral control to that external detection and protective removal.",
+        "classification_confidence": "medium"
+      }
+    ],
     "classification_review_provenance": {
-      "method": "bounded role-aware matrix-to-canonical reconciliation",
+      "method": "evidence-first full-corpus review of FC-000082 and FC-000083 against current taxonomy",
       "review_date": "2026-09-25",
-      "reviewer": "OpenAI ChatGPT — GPT-5.6 Sol under human-directed VIGIL governance",
-      "review_status": "canonical role surfaces reconciled to completed 74-class matrix",
-      "authority_boundary": "This bounded repair preserves the full underlying Incident evidence while applying the completed role-aware matrix. It does not introduce new evidence, allocate a new Fidelity Class, determine legal liability, or reproduce unnecessary security mechanics in new public rationales."
+      "reviewer": "OpenAI ChatGPT — Codex under human-directed VIGIL governance",
+      "review_status": "new pair roles reconciled to canonical mapping and Section 02",
+      "authority_boundary": "This taxonomy-only pass preserves the source evidence and Harm Impact assessment, does not infer lower-level implementation location or legal liability, and allocates no new Fidelity Class."
     },
     "classification_role": "ambiguous-boundary"
   },
