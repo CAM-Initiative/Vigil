@@ -237,7 +237,7 @@ This section is a maintainer contract for canonical Incident prose. It exists to
 
 **Before editing `summary`, `vigil_assessment.factual_basis`, `vigil_assessment.governance_interpretation`, or `vigil_assessment.significance_to_cam`, read this section first. Do not infer field purpose from a validator name such as “public prose”.**
 
-The crosswalk below was verified on 23 September 2026 against the current Case File implementation in `CAM-Initiative/cam-governance-catalogue`, principally:
+The crosswalk below was re-verified on 25 September 2026 against the current Case File implementation in `CAM-Initiative/cam-governance-catalogue` branch `ux/homepage-tactile-instrument-gears`, principally:
 
 - `src/pages/vigil-case-file.tsx`
 - `src/lib/vigilPublicDisplay.ts`
@@ -258,12 +258,12 @@ These four fields are not interchangeable.
 | --- | --- | --- |
 | `summary` | Stage 01 → Incident → **What happened** | Plain-language occurrence narrative. It must be rich enough for a lay reader to understand the event: who or what was involved, what occurred, when materially relevant, what happened next, and material consequences. It may attribute disputed facts and preserve essential uncertainty, but it must not perform VIGIL evidence adjudication, taxonomy analysis, governance diagnosis, or state what “the evidence establishes”. |
 | `vigil_assessment.factual_basis` | Stage 02 → Assessment → **Factual basis** | Evidence-bounded synthesis of what the preserved sources establish, corroborate, dispute, do not establish, or leave unresolved. Phrases such as “the evidence establishes”, “the reviewed sources do not establish”, and “the available record supports X but not Y” belong here rather than in Stage 01. |
-| `vigil_assessment.significance_to_cam` | Stage 02 → Assessment → **Governance significance** | Why the occurrence matters for governance, controls, design or CAM analysis. This is the governance lesson or significance layer, not the occurrence narrative. |
+| `vigil_assessment.significance_to_cam` | Stage 05 → Conclusion → **Governance significance** | Why the occurrence matters for governance, controls, design or CAM analysis. This is the governance lesson or significance layer, not the occurrence narrative. |
 | `vigil_assessment.governance_interpretation` | Stage 05 → **VIGIL Observatory conclusion** | Integrated VIGIL analytical conclusion about the governance mechanism, boundary, failure, successful invariant or unresolved state evidenced by the occurrence. This is the conclusion layer and may use governed analytical language. |
 
 The stable reading sequence is therefore:
 
-> **What happened → What the evidence supports → Why it matters → Classification / governing invariant → VIGIL conclusion**
+> **What happened → What the evidence supports → Classification → Governing invariant / Repair → VIGIL conclusion and why it matters**
 
 Do not move content between these fields merely to satisfy a prose validator. A validator may identify an offending token or internal phrase, but it does not redefine the authoring role of the field.
 
@@ -286,17 +286,17 @@ Do not move content between these fields merely to satisfy a prose validator. A 
 | Stage 01 evidence card | Limits of the evidence | source limitations / `primary_artefact_access.limitations` |
 | Stage 01 evidence metadata | Publisher, date, source type, evidence status, role, residence, modality, reviewer, access | selected `source_records[]` and `primary_artefact_access` fields |
 | Stage 02 | **Factual basis** | `vigil_assessment.factual_basis` |
-| Stage 02 | **Governance significance** | `vigil_assessment.significance_to_cam` |
 | Stage 02 | **VIGIL taxonomy assessment** | `vigil_assessment.source_clause_analysis.clauses[]` |
 | Stage 02 | Governance assessment provenance | `diagnostic_provenance.*` |
 | Stage 02 | External assessments | selected `external_assessments[]` fields |
 | Stage 02 | Real-world harm assessment | assessed rows from `harm_impact_assessment.dimensions[]` plus derived overall severity |
 | Stage 02 | Evidence gap | `harm_impact_assessment.assessment_gap` |
-| Stage 03 | Classification table | `taxonomy_classification.primary_classification` and `secondary_classifications[]` |
+| Stage 03 | Fidelity Family / Fidelity Class classification table | `taxonomy_classification.primary_classification` and `secondary_classifications[]`; immutable `VIGIL-FF-*` / `VIGIL-FC-*` identifiers resolve against the current Alignment Taxonomy |
 | Stage 03 | Alignment | mapping-local `classification_role` |
 | Stage 03 | Classification basis | mapping-local `classification_basis` |
-| Stage 04 | Governing invariant / Repair | resolved from the current Alignment Taxonomy using the Incident's class IDs; not authored as separate Incident prose |
+| Stage 04 | Governing invariant / Repair | resolved from the current Alignment Taxonomy using the Incident's Fidelity Class (`VIGIL-FC-*`) IDs; not authored as separate Incident prose |
 | Stage 05 | **VIGIL Observatory conclusion** | `vigil_assessment.governance_interpretation` |
+| Stage 05 | **Governance significance** | `vigil_assessment.significance_to_cam` |
 | Stage 06 | Evidence bibliography | selected `source_records[]` metadata |
 | Stage 06 | External incident records | `external_incident_references[]` |
 | Stage 06 | Taxonomy / methodology references | derived taxonomy and VIGIL-HIM references |
