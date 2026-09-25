@@ -67,7 +67,7 @@ def markdown_family(data: dict, level: int = 1) -> str:
     if family.get("invariant_exemplars"):
         out.extend(["", f"{h}## Invariant exemplars", ""])
         out.extend(markdown_invariant_exemplar(item) for item in family["invariant_exemplars"])
-    out.extend(["", f"{h}# Alignment classes", ""])
+    out.extend(["", f"{h}# Fidelity classes", ""])
 
     for item in data["classes"]:
         out.extend([
@@ -587,7 +587,7 @@ def publication_family_html(data: dict, chapter_number: int, case_examples: dict
     <ol class="chapter-list">{''.join(chapter_rows)}</ol>
   </section>
   <section class="chapter-overview">
-    <p class="chapter-kicker">Chapter {chapter_number} · Alignment family overview</p>
+    <p class="chapter-kicker">Chapter {chapter_number} · Fidelity family overview</p>
     <h2>Technical definition</h2><p>{esc(family['definition'])}</p>
     <h2>Governing invariant</h2><p class="invariant">{esc(family['invariant'])}</p>
     <h2>Classification boundary</h2><div class="grid"><section><h3>Include when</h3><p>{esc(family['inclusion_rule'])}</p></section><section><h3>Exclude when</h3><p>{esc(family['exclusion_rule'])}</p></section></div>
@@ -646,7 +646,7 @@ def family_html(data: dict, heading_level: int = 1, case_examples: dict[str, lis
 <h2>Technical definition</h2><p>{esc(family['definition'])}</p><h2>Governing invariant</h2><p class="invariant">{esc(family['invariant'])}</p>
 <h2>Classification boundary</h2><div class="grid"><section><h3>Include when</h3><p>{esc(family['inclusion_rule'])}</p></section><section><h3>Exclude when</h3><p>{esc(family['exclusion_rule'])}</p></section></div>
 <h2>Scope</h2><ul>{scope}</ul><details><summary><strong>Allowed identifiers</strong></summary><ul>{allowed}</ul></details>{invariant_exemplars_html(family.get("invariant_exemplars", []), heading="h3")}</section>
-<h2>Alignment classes</h2>{''.join(class_html(item, (case_examples or {}).get(item['class_id'], [])) for item in data['classes'])}</section>"""
+<h2>Fidelity classes</h2>{''.join(class_html(item, (case_examples or {}).get(item['class_id'], [])) for item in data['classes'])}</section>"""
 
 
 STYLE = """
@@ -769,8 +769,8 @@ def publication_frontmatter(index: dict, families: list[dict]) -> str:
     <dt>Harm &amp; Severity version</dt><dd>{esc(harm_version)}</dd>
     <dt>Status</dt><dd>{esc(status).title()}</dd>
     <dt>Publication date</dt><dd>{esc(edition_date)}</dd>
-    <dt>Alignment families</dt><dd>{len(families)}</dd>
-    <dt>Alignment classes</dt><dd>{class_count}</dd>
+    <dt>Fidelity families</dt><dd>{len(families)}</dd>
+    <dt>Fidelity classes</dt><dd>{class_count}</dd>
   </dl>
   <div class="imprint-rule"></div>
   <p>This technical reference provides the maintained classification structure for governance fidelity families and fidelity classes, including classification boundaries and recognition criteria, together with the VIGIL Harm &amp; Severity Methodology used to assess materialised consequence severity.</p>
