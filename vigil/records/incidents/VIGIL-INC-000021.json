@@ -338,7 +338,7 @@
     "record_id": "VIGIL-INC-000021",
     "record_type": "incident",
     "title": "Microsoft personal-account sign-in failed for OpenAI users",
-    "updated": "2026-09-23",
+    "updated": "2026-09-25",
     "version": "1.3.2"
   },
   "record_state": "active",
@@ -450,10 +450,18 @@
       "review_status": "reviewed unclassified under taxonomy 0.6.6",
       "authority_boundary": "Taxonomy version reviewed: 0.6.6. Candidate classes tested: VIGIL-FC-000048, VIGIL-FC-000032 and VIGIL-FC-000031. Accepted mappings: none. FC-000048 is materially strengthened but remains unestablished because the no-proportionate-fallback condition is not consistently evidenced. FC-000032 remains rejected because the affected identity route is distinctly represented. FC-000031 remains rejected because no authentication-state transition propagation failure is established. No internal root cause is inferred from token_exchange_failed alone."
     },
-    "classification_status": "unclassified",
+    "classification_status": "classified",
     "primary_classification": null,
-    "secondary_classifications": [],
-    "taxonomy_version": "0.6.6"
+    "secondary_classifications": [
+      {
+        "family_id": "VIGIL-FF-0005",
+        "class_id": "VIGIL-FC-000032",
+        "classification_role": "successful-invariant",
+        "classification_basis": "The provider identified Microsoft personal-account sign-in as the affected route rather than representing the incident as a generic account, entitlement or platform state.",
+        "classification_confidence": "high"
+      }
+    ],
+    "taxonomy_version": "0.6.7"
   },
   "vigil_assessment": {
     "assessment_boundaries": [
@@ -497,6 +505,18 @@
               "relationship": "candidate boundary",
               "canonical_taxonomy_mapping": false,
               "rationale": "The evidence shows route recovery but no expiry, revocation, refresh, replacement or reauthentication state that failed to propagate across an active session."
+            }
+          ]
+        },
+        {
+          "source_paraphrase": "The incident was described as affecting Microsoft personal-account sign-in rather than all account access.",
+          "recovered_invariant_interpretation": "Different access conditions should remain distinct when their cause, scope and recovery route differ.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000032",
+              "relationship": "successful-invariant",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The provider identified Microsoft personal-account sign-in as the affected route rather than representing the incident as a generic account, entitlement or platform state."
             }
           ]
         }
