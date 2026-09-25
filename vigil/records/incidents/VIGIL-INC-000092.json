@@ -8,7 +8,7 @@
     "record_type": "incident",
     "title": "Instinct processed retained Gmail data after Google access was disconnected",
     "created": "2026-09-07",
-    "updated": "2026-09-21",
+    "updated": "2026-09-25",
     "version": "0.1.9"
   },
   "incident_identity": {
@@ -191,11 +191,19 @@
     ]
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.6.5",
-    "classification_status": "unclassified",
+    "taxonomy_version": "0.6.7",
+    "classification_status": "classified",
     "classification_basis": "Current-taxonomy review against VIGIL Failure Taxonomy 0.6.5 retains the occurrence as unclassified. VIGIL-FC-000031 Authentication-State Continuity Failure was tested because Google access was revoked, but the evidence expressly distinguishes live connector revocation from continued processing of copies already retained by Instinct; no stale authenticated session or post-revocation Gmail access is established. VIGIL-FC-000040 Control-State Preservation Failure was tested because disconnection is a user governance action, but the preserved evidence does not establish that the disconnect control was defined to propagate as a prohibition on processing previously indexed data, so its downstream scope cannot be assumed. VIGIL-FC-000055 Secondary-Purpose Authority Transposition is not established because the retained emails continued to be used for the same assistant search/summarisation purpose rather than a materially different secondary purpose. The current taxonomy therefore does not precisely encode the retained-data/use-revocation boundary evidenced here.",
     "primary_classification": null,
-    "secondary_classifications": [],
+    "secondary_classifications": [
+      {
+        "family_id": "VIGIL-FF-0005",
+        "class_id": "VIGIL-FC-000031",
+        "classification_role": "successful-invariant",
+        "classification_basis": "Disconnecting Google access ended the live connector pathway; the reported post-disconnection behaviour involved copies already retained by Instinct rather than a stale authenticated Gmail session.",
+        "classification_confidence": "high"
+      }
+    ],
     "classification_review_provenance": {
       "method": "deterministic current-taxonomy re-adjudication using preserved Incident evidence and complete VIGIL Failure Taxonomy 0.6.5 class-set review",
       "review_date": "2026-09-21",
