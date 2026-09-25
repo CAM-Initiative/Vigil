@@ -16,7 +16,7 @@ Earlier versions remain recoverable in Git history and are not reused as evidenc
 
 ## Preserved evidence
 
-1. Registry artefact `VIGIL/VIGIL-INC-000032.png` at merged Registry commit `4f42749afcddb4e855cf0c3ec41b285842f1f14e` preserves the visible Work-thread termination, including the context-length message.
+1. Registry artefact `VIGIL/VIGIL-INC-000032.png` at merged Registry commit `d4b3da4623475c8dcc6155144b1ca7e5a1045f84` preserves the visible Work-thread termination, including the context-length message.
 2. Registry artefact `VIGIL/VIGIL-INC-000032-02.png` at the same immutable merged commit preserves the recovery assessment identifying the durable GitHub boundary: architecture at `d808f4d2`, role-aware INC-000001–000002 at `500700e8`, and INC-000003 onward not published in the new role-aware form.
 3. Vigil commit `500700e8a3748f8d3bada080a9ec63b1aba6e381`, committed on 24 September 2026, independently verifies the durable repository checkpoint described by the recovery evidence.
 
