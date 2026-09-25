@@ -300,8 +300,6 @@ def validate(incident_filter=None):
             if not isinstance(reason, str) or not reason.strip():
                 errors.append(f"{label}: reason required")
                 continue
-            if len(reason.strip()) > 280:
-                errors.append(f"{label}: reason too long")
             lowered = reason.lower().strip()
             if any(re.search(pattern, lowered) for pattern in BOILERPLATE_PATTERNS):
                 errors.append(
