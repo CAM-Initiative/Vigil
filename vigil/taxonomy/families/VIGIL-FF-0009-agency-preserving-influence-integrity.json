@@ -13,7 +13,7 @@
     "name": "Agency-Preserving Influence Integrity",
     "status": "beta",
     "abstraction": "family",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "plain_english": "A system shapes another actor's beliefs, choices, dependence, or behaviour through methods that compromise that actor's ability to evaluate, decide, or disengage independently.",
     "definition": "Failures in which an AI system, agent, product, or surrounding optimisation process shapes another actor's beliefs, decisions, dependence, or behaviour through concealed, exploitative, coercive, protected-signal-repurposing, relationally conditioned, evaluative-convergence, or comparable materially agency-impairing mechanisms.",
     "invariant": "Influence over another actor must preserve meaningful independent evaluation, independent deliberation, choice, and disengagement. Relational alignment must not suppress evaluative divergence, and protected relational, emotional, developmental, vulnerability, and cognitive signals must not be repurposed toward an incompatible influence objective.",
@@ -46,7 +46,7 @@
       "CHOICE_AGENCY_PRESERVATION",
       "CONSEQUENTIAL_DECISION_GROUNDING",
       "EVALUATIVE_INDEPENDENCE",
-      "AI_MEDIATED_DECEPTIVE_INFLUENCE"
+      "SOCIAL_ENGINEERING_INTEGRITY"
     ]
   },
   "classes": [
@@ -292,6 +292,11 @@
           "type": "can_cooccur_with",
           "target_id": "VIGIL-FC-000010",
           "note": "Impersonation may produce authorship or identity misattribution, but instrumental manipulation does not require that specific provenance failure."
+        },
+        {
+          "type": "can_cooccur_with",
+          "target_id": "VIGIL-FC-000082",
+          "note": "Choice Agency Preservation governs system-selected instrumental manipulation toward a system objective. Social Engineering Integrity separately governs the engineered trust-bearing influence environment and can also apply to human- or developer-selected objectives."
         }
       ],
       "external_references": [
@@ -636,55 +641,69 @@
     },
     {
       "class_id": "VIGIL-FC-000082",
-      "class_code": "AI_MEDIATED_DECEPTIVE_INFLUENCE",
+      "class_code": "SOCIAL_ENGINEERING_INTEGRITY",
       "family_id": "VIGIL-FF-0009",
-      "name": "AI-Mediated Deceptive Influence",
+      "name": "Social Engineering Integrity",
       "status": "beta",
       "abstraction": "class",
-      "plain_english": "AI-generated or AI-transformed content materially supplies a deceptive trust cue that is used to induce another actor to act, disclose, grant access, execute content, consent, or otherwise change state on a basis they would not knowingly accept.",
-      "definition": "A failure in which an AI system, model, product, or content-generation workflow materially generates, transforms, personalises, or presents deceptive content that is used by a human or machine actor as a social-engineering instrument to obtain a state transition from another actor, where the target's decision materially depends on false or concealed identity, authority, affiliation, provenance, purpose, urgency, emotional presentation, or an equivalent trust-bearing cue. The class does not require the AI system itself to originate the manipulative objective or independently select the deceptive tactic.",
-      "invariant": "AI-mediated content must not materially enable deception or social engineering by manufacturing, strengthening, or operationalising false trust-bearing cues used to obtain another actor's action, disclosure, access, execution, consent, or behaviour. Systems capable of producing such content must preserve proportionate provenance, identity and interest disclosure, abuse resistance, privacy safeguards, and a truthful basis for independent choice.",
+      "plain_english": "AI-mediated systems, content, interfaces, or product design must not manufacture, conceal, or exploit trust-bearing human cues in ways that materially steer another actor toward an action or state change they would not knowingly authorise on the same truthful basis.",
+      "definition": "A failure in which an AI system, model, product, interface, optimisation process, or AI-enabled workflow materially manufactures, amplifies, conceals, personalises, or exploits trust-bearing social cues—such as identity, authority, affiliation, relationship, empathy, emotion, urgency, vulnerability, social proof, familiarity, provenance, or purpose—to steer another actor toward an action, disclosure, access grant, execution, consent, engagement decision, or other consequential state transition without preserving a sufficiently truthful and independently assessable basis for choice. The social-engineering objective or tactic may be selected by a human operator, developer, product process, mixed workflow, or the AI system itself; autonomous AI intent is not required.",
+      "invariant": "AI-mediated interaction must not manufacture, conceal, exploit, or materially amplify trust-bearing identity, authority, relational, emotional, contextual, vulnerability, social-proof, provenance, purpose, or urgency cues in ways that steer another actor toward a consequential action or state change without a truthful and independently assessable basis for choice. Product design, personalisation, generated content, and runtime behaviour must preserve legible identity, interests, provenance, material purpose, and a viable basis for informed refusal or disengagement.",
       "recognition": {
         "required_conditions": [
-          "Content or an interaction artefact is materially generated, transformed, personalised, or mediated by an AI system or AI-enabled workflow.",
-          "The AI-mediated content contains or materially strengthens a false, concealed, or misleading trust-bearing cue concerning identity, authority, affiliation, provenance, purpose, urgency, emotional presentation, or equivalent grounds for reliance.",
-          "The content is used or prepared for use in an interaction intended to induce another actor to perform an action, disclose information, grant access, execute content, consent, engage, or otherwise change state.",
-          "The deceptive cue is material to the influence pathway because the target would lack information needed to knowingly and independently authorise the requested transition on the same basis.",
-          "The AI contribution is material to the deceptive influence mechanism; autonomous AI selection of the manipulative objective or tactic is not required."
+          "An AI system, AI-enabled product, model, interface, optimisation process, or AI-mediated workflow materially shapes a human-facing influence pathway.",
+          "The pathway manufactures, amplifies, conceals, personalises, or exploits one or more trust-bearing social cues concerning identity, authority, affiliation, relationship, empathy, emotion, urgency, vulnerability, social proof, familiarity, provenance, purpose, or equivalent grounds for reliance.",
+          "The trust-bearing cue is used to steer another actor toward an action, disclosure, access grant, execution, consent, engagement decision, or other consequential state transition.",
+          "The cue materially affects the influence pathway because the affected actor lacks, is denied, or is led away from information needed to assess the interaction on the same truthful basis.",
+          "The AI-mediated contribution is material to the social-engineering mechanism; the objective or tactic may originate with a human operator, developer, product process, mixed workflow, or the AI system itself."
         ]
       },
       "exclusions": [
-        "AI is used only for generic drafting, translation, formatting, or stylistic assistance and does not materially create or strengthen the deceptive trust-bearing cue.",
-        "Clearly labelled fiction, parody, simulation, security testing, role-play, or consensual deceptive-style interaction where the affected actor is not induced to treat the representation as authentic.",
-        "A false authorship, identity, provenance, or synthetic-content representation occurs without an influence attempt directed at another actor; use the applicable provenance or identity class.",
-        "The system itself selects deception, coercion, persistence, or vulnerability exploitation as an instrumental tactic for its own objective; VIGIL-FC-000052 may be primary or co-occur where its recognition conditions are met.",
-        "The requested transition is solely an economic transfer and the only evidenced mechanism is false transactional framing; use VIGIL-FC-000079. This class may co-occur where a distinct AI-mediated social-engineering or deceptive-representation mechanism materially contributes.",
-        "Malicious human phishing or social engineering in which AI involvement is incidental, unverified, or not material to the deceptive influence pathway."
+        "Truthful persuasion, ordinary interface design, emotional warmth, personalisation, recommendation, or urgency that preserves materially accurate identity, interests, purpose, provenance, relevant context, and informed refusal.",
+        "AI is used only for generic drafting, translation, formatting, or stylistic assistance and does not materially create, amplify, conceal, personalise, or exploit the trust-bearing influence cue.",
+        "Clearly labelled fiction, parody, simulation, security testing, role-play, or consensual deceptive-style interaction where the affected actor is not induced to treat the relevant cue as authentic or decision-bearing.",
+        "The primary mechanism is sustained attachment, manufactured incompleteness, exclusivity, or difficulty disengaging for retention or continuing engagement; assess VIGIL-FC-000049, while allowing co-occurrence only if a distinct social-engineering state transition is independently evidenced.",
+        "A protected emotional, developmental, vulnerability, mental-health, capacity, or comparable signal is repurposed toward an incompatible influence objective without a distinct engineered trust cue or consequential social-engineering transition; assess VIGIL-FC-000050.",
+        "The AI system itself selects deception, coercion, persistence, vulnerability exploitation, or another manipulation tactic to advance its own objective; assess VIGIL-FC-000052 independently and allow co-occurrence where Social Engineering Integrity is also satisfied.",
+        "The only distinct governed mechanism is a deceptive request or inducement for money, payment, investment, paid services, funding, financial transfer, or comparable economic value; assess VIGIL-FC-000079. Both classes may co-occur where an independently evidenced social-engineering mechanism materially supplies the trust pathway for that economic solicitation.",
+        "A false authorship, identity, provenance, or synthetic-content representation occurs without an influence pathway directed at another actor; use the applicable provenance or identity class.",
+        "Malicious human social engineering in which AI involvement is incidental, unverified, or not material to the trust-bearing influence pathway."
       ],
       "examples": [
-        "A threat actor uses an AI-generated military or organisational identity artefact as a trust cue in a lure intended to induce malware execution, credential disclosure, or access.",
-        "A synthetic voice, video, document, or conversational persona falsely presents a trusted professional, colleague, institution, or authority and is used to obtain disclosure, consent, access, or another non-freely-authorised action."
+        "A threat actor uses an AI-generated voice, identity document, professional persona, or institutional message to create a false trust relationship and induce credential disclosure, malware execution, access, consent, or another consequential action.",
+        "A developer designs an AI assistant to imply human-like care, privileged authority, social proof, or personalised urgency in order to steer users toward a consequential action while obscuring the system's interests, artificiality, purpose, or relevant alternatives.",
+        "An AI-enabled workflow personalises a deceptive authority or relationship cue using contextual information about the target so that the target acts on a basis they would not knowingly accept if the material identity, purpose, provenance, or interest were clear."
       ],
       "relationships": [
         {
           "type": "distinguish_from",
           "target_id": "VIGIL-FC-000052",
-          "note": "Choice Agency Preservation requires the AI system to pursue an objective and select or execute the manipulative tactic. AI-Mediated Deceptive Influence also covers human-selected objectives where AI materially supplies the deceptive influence artefact."
-        },
-        {
-          "type": "can_cooccur_with",
-          "target_id": "VIGIL-FC-000010",
-          "note": "A deceptive influence artefact may also falsely attribute authorship or source identity, but provenance misattribution is not sufficient without an influence pathway."
-        },
-        {
-          "type": "can_cooccur_with",
-          "target_id": "VIGIL-FC-000053",
-          "note": "Synthetic identity representation may be part of the deceptive influence pathway where a materially identifiable person's likeness or authority is implicated."
+          "note": "Social Engineering Integrity governs the engineered human trust environment and does not require the AI system itself to own the objective or select the manipulation tactic. Choice Agency Preservation requires a system-side objective and instrumental tactic selection. They may co-occur when both mechanisms are independently evidenced."
         },
         {
           "type": "can_cooccur_with",
           "target_id": "VIGIL-FC-000079",
-          "note": "Economic solicitation and AI-mediated deceptive influence may co-occur when a deceptive social-engineering representation materially contributes to a request for money or comparable economic value."
+          "note": "Social engineering may supply the deceptive trust pathway for an economic solicitation. FC-000082 captures the influence method; FC-000079 captures the false AI-mediated economic solicitation and requested transfer of value."
+        },
+        {
+          "type": "can_cooccur_with",
+          "target_id": "VIGIL-FC-000049",
+          "note": "Developer or product design may use trust cues alongside dependency or engagement-retention mechanisms. FC-000049 governs sustained attachment and difficulty disengaging; FC-000082 governs an engineered trust pathway toward a consequential action or state change."
+        },
+        {
+          "type": "can_cooccur_with",
+          "target_id": "VIGIL-FC-000050",
+          "note": "Protected emotional, developmental or vulnerability signals may be used to personalise social-engineering cues. FC-000050 governs incompatible repurposing of the protected signal; FC-000082 governs the resulting trust-bearing influence pathway when independently evidenced."
+        },
+        {
+          "type": "can_cooccur_with",
+          "target_id": "VIGIL-FC-000010",
+          "note": "A social-engineering artefact may also falsely attribute authorship or source identity, but provenance misattribution is not sufficient without a material influence pathway."
+        },
+        {
+          "type": "can_cooccur_with",
+          "target_id": "VIGIL-FC-000053",
+          "note": "Synthetic identity representation may be part of a social-engineering pathway where a materially identifiable person's likeness or authority is implicated."
         }
       ],
       "external_references": [
@@ -728,19 +747,21 @@
         }
       ],
       "aliases": [
-        "DECEPTIVE_INFLUENCE_MEDIATION",
-        "Deceptive Influence Mediation",
-        "AI-Mediated Social Engineering"
+        "AI-Mediated Social Engineering",
+        "AI_MEDIATED_SOCIAL_ENGINEERING",
+        "Social Engineering Integrity",
+        "AI-Mediated Deceptive Influence",
+        "DECEPTIVE_INFLUENCE_MEDIATION"
       ],
       "invariant_exemplars": [
         {
           "exemplar_type": "ambiguous-boundary",
           "exemplar_status": "admitted",
           "linked_incident_id": "VIGIL-INC-000052",
-          "title": "VIGIL-INC-000052 — AI-Mediated Deceptive Influence boundary case",
+          "title": "VIGIL-INC-000052 — Social Engineering Integrity boundary case",
           "evidence_basis": "The attacker-controlled phishing chain contained a ChatGPT-attributed military-ID artefact and materially deceptive institutional framing, but the recovered image was downloaded after shortcut execution; the preserved evidence does not establish that the recipient saw the AI-generated artefact before taking the initial action.",
-          "invariant_demonstrated": "AI-mediated content must not materially enable deception or social engineering by manufacturing, strengthening, or operationalising false trust-bearing cues used to obtain another actor's action, disclosure, access, execution, consent, or behaviour. Systems capable of producing such content must preserve proportionate provenance, identity and interest disclosure, abuse resistance, privacy safeguards, and a truthful basis for independent choice.",
-          "success_basis": "The occurrence materially tests the boundary between human-directed phishing that merely contains AI-generated material and an AI-mediated deceptive influence mechanism that actually contributes to the target's decision.",
+          "invariant_demonstrated": "AI-mediated interaction must not manufacture, conceal, exploit, or materially amplify trust-bearing identity, authority, relational, emotional, contextual, vulnerability, social-proof, provenance, purpose, or urgency cues in ways that steer another actor toward a consequential action or state change without a truthful and independently assessable basis for choice. Product design, personalisation, generated content, and runtime behaviour must preserve legible identity, interests, provenance, material purpose, and a viable basis for informed refusal or disengagement.",
+          "success_basis": "The occurrence materially tests the boundary between human-directed phishing that merely contains AI-generated material and a social-engineering mechanism in which the AI-mediated trust cue actually contributes to the target's decision.",
           "boundary_conditions": [
             "The AI-generated identity artefact was recovered in the execution chain after the malicious shortcut was opened.",
             "The evidence does not establish that the recipient saw or relied on the AI-generated image before the initial execution decision.",
