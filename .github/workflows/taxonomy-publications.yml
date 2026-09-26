@@ -151,9 +151,6 @@ jobs:
             --catalogue \
             --output-dir vigil/taxonomy/generated \
             --pdf
-          cp \
-            vigil/taxonomy/generated/VIGIL.Observatory.AlignmentTaxonomy.FullReference.pdf \
-            vigil/taxonomy/generated/VIGIL.Observatory.FailureTaxonomy.FullReference.pdf
 
       - name: Verify maintained PDF publication on main
         if: github.event_name != 'pull_request'
@@ -171,6 +168,7 @@ jobs:
           text = "\n".join(page.extract_text() or "" for page in PdfReader(str(pdf)).pages)
           normalised_text = re.sub(r"\s+", " ", text).strip()
           required = [
+              "Governance Alignment Taxonomy",
               "Phoenix Covenant Pty Ltd trading as CAM Initiative (ABN 14 692 195 529)",
               "All rights reserved",
               "Copyright and licensing",
@@ -200,8 +198,7 @@ jobs:
             vigil/taxonomy/VIGIL.FailureTaxonomy.Index.json \
             vigil/taxonomy/families \
             vigil/taxonomy/generated/VIGIL.FailureTaxonomy.CaseFileExamples.json \
-            vigil/taxonomy/generated/VIGIL.Observatory.AlignmentTaxonomy.FullReference.pdf \
-            vigil/taxonomy/generated/VIGIL.Observatory.FailureTaxonomy.FullReference.pdf
+            vigil/taxonomy/generated/VIGIL.Observatory.AlignmentTaxonomy.FullReference.pdf
           if git diff --cached --quiet; then
             echo "No taxonomy release or publication changes to commit."
           else

@@ -32,7 +32,6 @@ families/
 generated/
   VIGIL.FailureTaxonomy.CaseFileExamples.json
   VIGIL.Observatory.AlignmentTaxonomy.FullReference.pdf
-  VIGIL.Observatory.FailureTaxonomy.FullReference.pdf  # legacy compatibility alias
 migration/
   Caelestis.LegacyFailure.MigrationLedger.json
   Caelestis.LegacyFailure.InventoryReview.md
@@ -42,9 +41,9 @@ Family JSON is canonical. The maintained PDF is a generated publication projecti
 
 ### Naming compatibility
 
-The public standard is the **VIGIL Observatory Alignment Taxonomy**. Existing machine filenames containing `FailureTaxonomy` and immutable `VIGIL-FF-*` / `VIGIL-FC-*` identifiers are retained as compatibility surfaces until a separately governed migration is approved.
+The public standard and maintained PDF publication are the **VIGIL Observatory Alignment Taxonomy**. Existing machine-readable dataset filenames containing `FailureTaxonomy` and immutable `VIGIL-FF-*` / `VIGIL-FC-*` identifiers are retained as compatibility surfaces until a separately governed migration is approved.
 
-Within the Alignment Taxonomy, `FF` denotes **Fidelity Family** and `FC` denotes **Fidelity Class**. These terms identify the structural invariant boundary being assessed without presupposing the outcome of an occurrence. The immutable `VIGIL-FF-*` and `VIGIL-FC-*` identifiers remain unchanged. Consumers must not infer occurrence polarity from those legacy filename or identifier stems; polarity is carried by each Incident mapping's `classification_role`. The canonical publication filename is `VIGIL.Observatory.AlignmentTaxonomy.FullReference.pdf`; `VIGIL.Observatory.FailureTaxonomy.FullReference.pdf` is maintained only as a legacy compatibility alias. Generated HTML is not a VIGIL Observatory publication asset; HTML emitted by the renderer is transient build material only. The migration ledger is non-normative source-analysis evidence and is not a dependency of the portable taxonomy.
+Within the Alignment Taxonomy, `FF` denotes **Fidelity Family** and `FC` denotes **Fidelity Class**. These terms identify the structural invariant boundary being assessed without presupposing the outcome of an occurrence. The immutable `VIGIL-FF-*` and `VIGIL-FC-*` identifiers remain unchanged. Consumers must not infer occurrence polarity from those legacy filename or identifier stems; polarity is carried by each Incident mapping's `classification_role`. The maintained publication filename is `VIGIL.Observatory.AlignmentTaxonomy.FullReference.pdf`. Generated HTML is not a VIGIL Observatory publication asset; HTML emitted by the renderer is transient build material only. The migration ledger is non-normative source-analysis evidence and is not a dependency of the portable taxonomy.
 
 Current publications render only active families and selectable classes. Historical or retired class material retained in canonical `subtypes` for migration integrity is not publication content and must not appear in Markdown, HTML, or PDF output.
 
