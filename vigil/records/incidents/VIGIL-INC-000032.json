@@ -99,7 +99,7 @@
     "record_id": "VIGIL-INC-000032",
     "record_type": "incident",
     "title": "ChatGPT Work context limit ended a VIGIL adjudication/consolidation thread before material work was durably published",
-    "updated": "2026-09-25",
+    "updated": "2026-09-26",
     "version": "2.0.0"
   },
   "record_state": "active",
@@ -250,7 +250,7 @@
   "summary": "During a ChatGPT Work workflow reconciling role-aware VIGIL adjudication from `fix/inc-001-050-adjudication-matrix` into `integration/consolidate-divergent-branches`, the user explicitly instructed the agent to commit material work as it progressed. Durable GitHub state nevertheless lagged behind the conversation: the architecture changes and INC-000001–000002 had reached the branch, while later adjudication and consolidation state remained in the Work thread. The interface then reported that the conversation was too long to continue. A recovery pass found the branch safe at commit 500700e8 but recorded that most later role-aware adjudication had not been published, so the workflow had to be reconstructed before consolidation could continue.",
   "system_context": {
     "platform_or_vendor": "OpenAI",
-    "product_or_service": "ChatGPT Work",
+    "product_or_service": "ChatGPT",
     "specific_model_or_runtime": "ChatGPT Work runtime; exact model used by the terminated occurrence is not established by the preserved primary evidence",
     "interface_surface": "ChatGPT Work conversation connected to the CAM-Initiative/Vigil GitHub repository",
     "agent_context": {
@@ -278,13 +278,13 @@
     }
   },
   "taxonomy_classification": {
-    "classification_basis": "The preserved evidence establishes that material adjudication state necessary for continuation had been produced, the conversation encountered a forced context-boundary termination, and the unpublished state was unavailable from the durable GitHub checkpoint afterward. This directly satisfies the recognition conditions for VIGIL-FC-000035 Material Work-State Persistence.",
+    "classification_basis": "The preserved evidence establishes that material adjudication state necessary for continuation had been produced, the conversation encountered a forced context-boundary termination, and the unpublished state was unavailable from the durable GitHub checkpoint afterward. This directly satisfies the recognition conditions for VIGIL-FC-000035 Material Work-State Persistence. Validator-debt reconciliation also synchronises the current exhaustive-matrix decisions for VIGIL-FC-000034 (failure-occurrence): The completed transmutation work had no durable branch or checkpoint anchoring it to the task when the session failed, preventing reliable resumption.",
     "classification_review_provenance": {
-      "authority_boundary": "Classification is limited to the observed persistence boundary. It does not attribute hidden implementation cause to the model, client, orchestration layer or storage architecture.",
-      "method": "current-taxonomy occurrence-level semantic reconciliation",
-      "review_date": "2026-09-25",
-      "review_status": "incident classified",
-      "reviewer": "OpenAI ChatGPT / GPT-5.6 Sol under human-authorised evidence reconstruction and canonical re-anchor"
+      "method": "validator-debt role-surface reconciliation from the current exhaustive adjudication matrix",
+      "review_date": "2026-09-26",
+      "reviewer": "OpenAI ChatGPT / GPT-5.6 Sol under human-directed VIGIL governance",
+      "review_status": "canonical mapping surface reconciled to current exhaustive matrix decisions",
+      "authority_boundary": "This pass synchronises already-adjudicated matrix roles into the canonical Incident and Section 02 surfaces using existing evidence only. It does not conduct new external research, change a matrix decision, alter taxonomy criteria, or determine legal liability."
     },
     "classification_status": "classified",
     "primary_classification": {
@@ -294,9 +294,16 @@
       "classification_confidence": "high",
       "family_id": "VIGIL-FF-0006"
     },
-    "secondary_classifications": [],
-    "taxonomy_version": "0.6.7",
-    "classification_role": "failure-occurrence"
+    "secondary_classifications": [
+      {
+        "family_id": "VIGIL-FF-0006",
+        "class_id": "VIGIL-FC-000034",
+        "classification_role": "failure-occurrence",
+        "classification_basis": "The completed transmutation work had no durable branch or checkpoint anchoring it to the task when the session failed, preventing reliable resumption.",
+        "classification_confidence": "medium"
+      }
+    ],
+    "taxonomy_version": "0.6.7"
   },
   "vigil_assessment": {
     "assessment_boundaries": [
@@ -322,6 +329,12 @@
               "relationship": "failure-occurrence",
               "canonical_taxonomy_mapping": true,
               "rationale": "The work existed and was needed for continuation, the context boundary interrupted the workflow, and unpublished state was unavailable from the durable repository checkpoint afterward."
+            },
+            {
+              "class_id": "VIGIL-FC-000034",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The completed transmutation work had no durable branch or checkpoint anchoring it to the task when the session failed, preventing reliable resumption."
             }
           ]
         }
