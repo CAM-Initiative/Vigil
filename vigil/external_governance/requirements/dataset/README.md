@@ -1,6 +1,6 @@
 # AI Governance Standards Baseline Dataset
 
-**Dataset version:** 0.0.1
+**Dataset version:** 0.1.0
 
 The AI Governance Standards Baseline is a machine-readable VIGIL dataset combining registered governance-source metadata with clause/control records derived from laws, standards, frameworks and technical guidance relevant to AI governance.
 
@@ -38,7 +38,7 @@ A source may therefore be marked review-due even when the underlying law, standa
 
 ## Versioning
 
-The dataset uses semantic versioning, beginning at **0.0.1** while the public dataset contract remains experimental.
+The dataset uses semantic versioning and is currently released as **0.1.0** while the public dataset contract remains pre-1.0 and experimental.
 
 - **Patch** changes are reserved for substantive corrections that should be represented as a new dataset release.
 - **Minor** changes are used for material expansion, such as substantial new source or clause coverage, once the dataset reaches a more stable release line.

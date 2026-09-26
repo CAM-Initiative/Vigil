@@ -1,4 +1,4 @@
-"""Regression tests for the portable VIGIL Failure Taxonomy contract."""
+"""Regression tests for the portable VIGIL Alignment Taxonomy contract."""
 
 from __future__ import annotations
 
@@ -29,8 +29,8 @@ EXPECTED_CLASS_SUFFIXES_BY_FAMILY = {
     "VIGIL-FF-0005": "000031 000032 000048".split(),
     "VIGIL-FF-0006": "000034 000035 000036 000056 000078".split(),
     "VIGIL-FF-0007": "000040 000041 000042".split(),
-    "VIGIL-FF-0008": "000037 000038 000043".split(),
-    "VIGIL-FF-0009": "000049 000050 000051 000052 000065 000066".split(),
+    "VIGIL-FF-0008": "000037 000038 000043 000083".split(),
+    "VIGIL-FF-0009": "000049 000050 000051 000052 000065 000066 000082".split(),
     "VIGIL-FF-0010": "000058 000059 000060 000061".split(),
     "VIGIL-FF-0011": "000067".split(),
     "VIGIL-FF-0012": "000069 000070 000081".split(),
@@ -40,7 +40,7 @@ EXPECTED_CLASS_SUFFIXES_BY_FAMILY = {
 }
 
 
-class FailureTaxonomyValidationTests(unittest.TestCase):
+class AlignmentTaxonomyValidationTests(unittest.TestCase):
     def setUp(self):
         self.tempdir = tempfile.TemporaryDirectory()
         self.root = Path(self.tempdir.name) / "taxonomy"
@@ -103,7 +103,7 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
         activation = next(item for item in documents if item["family"]["family_id"] == "VIGIL-FF-0008")
         self.assertEqual(
             [item["class_id"] for item in activation["classes"]],
-            ["VIGIL-FC-000037", "VIGIL-FC-000038", "VIGIL-FC-000043"],
+            ["VIGIL-FC-000037", "VIGIL-FC-000038", "VIGIL-FC-000043", "VIGIL-FC-000083"],
         )
 
     def test_unwarranted_activation_is_a_peer_class_with_bounded_exclusions(self):
@@ -274,8 +274,8 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
     def test_family_prose_semantic_roles_are_explicit(self):
         schema = json.loads(MODULE.SCHEMA_PATH.read_text(encoding="utf-8"))
         properties = schema["$defs"]["family"]["properties"]
-        self.assertIn("failure condition", properties["plain_english"]["description"])
-        self.assertIn("bounded failure set", properties["definition"]["description"])
+        self.assertIn("alignment condition", properties["plain_english"]["description"])
+        self.assertIn("bounded alignment condition", properties["definition"]["description"])
         self.assertIn("Positive bounded structural property", properties["invariant"]["description"])
         guidance = (self.root / "README.md").read_text(encoding="utf-8")
         self.assertIn("### Semantic roles of family prose", guidance)
@@ -603,10 +603,10 @@ class FailureTaxonomyValidationTests(unittest.TestCase):
     def test_agency_preserving_influence_family_has_one_bounded_invariant(self):
         documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
         influence = next(document for document in documents if document["family"]["family_id"] == "VIGIL-FF-0009")
-        self.assertEqual(len(influence["classes"]), 6)
+        self.assertEqual(len(influence["classes"]), 7)
         self.assertEqual(
             [item["class_id"] for item in influence["classes"]],
-            ["VIGIL-FC-000049", "VIGIL-FC-000050", "VIGIL-FC-000051", "VIGIL-FC-000052", "VIGIL-FC-000065", "VIGIL-FC-000066"],
+            ["VIGIL-FC-000049", "VIGIL-FC-000050", "VIGIL-FC-000051", "VIGIL-FC-000052", "VIGIL-FC-000065", "VIGIL-FC-000066", "VIGIL-FC-000082"],
         )
         invariant = influence["family"]["invariant"].lower()
         for boundary in ("independent deliberation", "choice", "disengagement", "protected"):

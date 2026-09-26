@@ -198,7 +198,7 @@ class TaxonomyPublicationReferenceTests(unittest.TestCase):
         self.assertIn("Harm &amp; Severity version", rendered)
         self.assertIn("1.0.0", rendered)
         self.assertIn("Status: Beta", rendered)
-        self.assertIn("Governance<br>Failure<br>Taxonomy", rendered)
+        self.assertIn("Governance<br>Alignment<br>Taxonomy", rendered)
         self.assertIn("Technical Reference", rendered)
 
 

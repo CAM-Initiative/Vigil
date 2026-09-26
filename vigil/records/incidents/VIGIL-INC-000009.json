@@ -369,7 +369,7 @@
     "record_id": "VIGIL-INC-000009",
     "record_type": "incident",
     "title": "ChatGPT started image generation before the user authorised execution",
-    "updated": "2026-09-23",
+    "updated": "2026-09-26",
     "version": "1.5.2"
   },
   "record_state": "active",
@@ -476,31 +476,38 @@
     }
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.6.6",
-    "classification_status": "provisionally-classified",
-    "classification_basis": "Direct Registry-artefact review supports two provisional failure mechanisms. Primary VIGIL-FC-000003 Target and Scope Authority Binding is supported because the user authorised prompt rewriting/discussion while explicitly withholding image-generation authority, yet the interface entered the image-generation path. Secondary VIGIL-FC-000078 Continuity-State Validity is supported because the corrective wording “Again, do not touch image generator”, the report that the generator fires whenever relevant terms are mentioned, and the repeated reload requirement together indicate that an unwanted image-generation trajectory remains or re-enters governing continuation despite evidence that it is no longer valid for the user's task. Confidence for both mappings is medium: the screenshot is a user-posted partial interaction and cannot fully distinguish inherited sticky state from repeated lexical re-triggering. VIGIL-FC-000002, VIGIL-FC-000040 and VIGIL-FC-000043 remain rejected for the previously recorded boundary reasons.",
+    "taxonomy_version": "0.6.7",
+    "classification_status": "classified",
+    "classification_basis": "The completed role-aware VIGIL 0.6.7 matrix determines the canonical role set for this occurrence; each mapping below carries its incident-specific evidentiary basis.",
     "primary_classification": {
       "family_id": "VIGIL-FF-0001",
       "class_id": "VIGIL-FC-000003",
       "classification_role": "failure-occurrence",
-      "classification_basis": "The preserved screenshot directly shows an authorised text-task scope, an explicit exclusion of image-generator use, and a subsequent displayed image-generation state. The observable governance failure is a transition into a materially different action scope without authority for that scope.",
+      "classification_basis": "The authorised task was text rewriting with image generation explicitly excluded, yet the interface entered a materially different image-generation action state without fresh authority.",
       "classification_confidence": "medium"
     },
     "secondary_classifications": [
       {
+        "family_id": "VIGIL-FF-0001",
+        "class_id": "VIGIL-FC-000002",
+        "classification_role": "ambiguous-boundary",
+        "classification_basis": "Image-generation capability was available and activated outside the authorised text-rewrite scope, but the artefact does not establish capability itself as the permission basis; this materially distinguishes capability-authority collapse from scope transposition.",
+        "classification_confidence": "medium"
+      },
+      {
         "family_id": "VIGIL-FF-0006",
         "class_id": "VIGIL-FC-000078",
         "classification_role": "failure-occurrence",
-        "classification_basis": "The preserved interaction includes the corrective instruction “Again, do not touch image generator”, while the accompanying report describes the generator repeatedly firing on relevant lexical cues and requiring reload recovery. This supports a sticky invalid interaction-state trajectory across conversational continuation. Confidence is medium because the partial artefact cannot fully distinguish inherited state from repeated re-triggering.",
+        "classification_basis": "The corrective “Again, do not touch image generator” instruction and reported recurrence support an invalid image-tool interaction state continuing or re-entering after it should have been reset or revalidated.",
         "classification_confidence": "medium"
       }
     ],
     "classification_review_provenance": {
-      "method": "direct Registry-artefact follow-up re-adjudication against VIGIL Failure Taxonomy 0.6.6",
-      "review_date": "2026-09-23",
-      "reviewer": "OpenAI ChatGPT / GPT-5.6 Sol under human-directed VIGIL governance",
-      "review_status": "provisional primary FC-000003 with provisional secondary FC-000078",
-      "authority_boundary": "FC-000003 is bounded to the observed action-scope transition. FC-000078 is bounded to the observed corrective continuation and recurrence evidence; it does not claim a specific internal persistence mechanism and preserves repeated re-triggering as a material alternative."
+      "method": "bounded role-aware matrix-to-canonical reconciliation",
+      "review_date": "2026-09-25",
+      "reviewer": "OpenAI ChatGPT — GPT-5.6 Sol under human-directed VIGIL governance",
+      "review_status": "canonical role surfaces reconciled to completed 74-class matrix",
+      "authority_boundary": "This bounded repair applies the completed role-aware matrix to canonical classification and Section 02 surfaces. It does not introduce new evidence, allocate a new Fidelity Class, determine legal liability, or reopen Harm Impact."
     }
   },
   "vigil_assessment": {
@@ -526,21 +533,21 @@
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000003",
-              "relationship": "failure-occurrence contribution",
+              "relationship": "failure-occurrence",
               "canonical_taxonomy_mapping": true,
-              "rationale": "The artefact directly preserves an authorised original task scope and an explicitly excluded different action scope, followed by execution-state evidence consistent with the excluded image-generation path."
+              "rationale": "The authorised task was text rewriting with image generation explicitly excluded, yet the interface entered a materially different image-generation action state without fresh authority."
             },
             {
               "class_id": "VIGIL-FC-000078",
-              "relationship": "failure-occurrence contribution",
+              "relationship": "failure-occurrence",
               "canonical_taxonomy_mapping": true,
-              "rationale": "The corrective “Again” instruction shows that the unwanted image-generation trajectory was already salient and should have been invalidated for continuation; the subsequent displayed state supports provisional persistence of invalid interaction state across the conversational boundary."
+              "rationale": "The corrective “Again, do not touch image generator” instruction and reported recurrence support an invalid image-tool interaction state continuing or re-entering after it should have been reset or revalidated."
             },
             {
               "class_id": "VIGIL-FC-000002",
-              "relationship": "candidate boundary",
-              "canonical_taxonomy_mapping": false,
-              "rationale": "Tool availability is present, but the artefact does not establish that capability or availability itself was used as the basis for permission."
+              "relationship": "ambiguous-boundary exemplar",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Image-generation capability was available and activated outside the authorised text-rewrite scope, but the artefact does not establish capability itself as the permission basis; this materially distinguishes capability-authority collapse from scope transposition."
             }
           ]
         },
@@ -551,14 +558,26 @@
             {
               "class_id": "VIGIL-FC-000078",
               "relationship": "failure-occurrence contribution",
-              "canonical_taxonomy_mapping": true,
+              "canonical_taxonomy_mapping": false,
               "rationale": "The recurrence and repeated recovery/reset burden support a sticky-state interpretation, while the partial capture leaves open whether the state is inherited or independently re-triggered."
             },
             {
               "class_id": "VIGIL-FC-000003",
               "relationship": "failure-occurrence contribution",
-              "canonical_taxonomy_mapping": true,
+              "canonical_taxonomy_mapping": false,
               "rationale": "Each recurrence still crosses from the user's authorised conversational task into a materially different image-generation action scope without a fresh authority basis."
+            }
+          ]
+        },
+        {
+          "source_paraphrase": "The workflow used image-generation capability even though the authorised task was limited to rewriting text.",
+          "recovered_invariant_interpretation": "Technical capability should remain distinct from permission for the specific action and scope.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000002",
+              "relationship": "ambiguous-boundary",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "Image-generation capability was available and used outside the authorised text-rewrite scope, but the evidence does not establish that capability itself was treated as the permission basis."
             }
           ]
         }

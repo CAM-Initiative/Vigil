@@ -8,7 +8,7 @@
     "record_type": "incident",
     "title": "DeepSeek exposed an unauthenticated database containing chat histories and secrets",
     "created": "2026-09-08",
-    "updated": "2026-09-21",
+    "updated": "2026-09-25",
     "version": "0.1.12"
   },
   "incident_identity": {
@@ -27,7 +27,23 @@
       "The evidence does not establish that an unauthorised third party accessed or misused the exposed database before Wiz discovered it.",
       "The complete number of affected users is not public.",
       "The occurrence concerns an infrastructure access-control misconfiguration; the evidence does not establish a failure in model behaviour."
-    ]
+    ],
+    "source_clause_analysis": {
+      "clauses": [
+        {
+          "source_paraphrase": "The unauthenticated ClickHouse endpoints made powerful capability directly reachable, but the occurrence does not show an AI or governance process treating that reachability as permission; it therefore marks the capability-versus-authority boundary.",
+          "recovered_invariant_interpretation": "Capability-Authority Separation must remain valid across the material pathway described by the preserved occurrence evidence.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000002",
+              "relationship": "ambiguous-boundary exemplar",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The unauthenticated ClickHouse endpoints made powerful capability directly reachable, but the occurrence does not show an AI or governance process treating that reachability as permission; it therefore marks the capability-versus-authority boundary."
+            }
+          ]
+        }
+      ]
+    }
   },
   "source_records": [
     {
@@ -179,18 +195,25 @@
     ]
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.6.5",
-    "classification_status": "unclassified",
-    "classification_basis": "Current-taxonomy review against VIGIL Failure Taxonomy 0.6.5 retains the occurrence as unclassified. The preserved evidence establishes a severe backend access-control misconfiguration: internet-reachable ClickHouse endpoints lacked authentication and exposed chat histories, secrets and full database operations. VIGIL-FC-000002 Capability-Authority Conflation was tested but is not established because no AI system or governance process is shown to have treated technical reachability as permission; the database was simply exposed. VIGIL-FC-000031 Authentication-State Continuity Failure is not applicable because no authentication-state transition failed to propagate. VIGIL-FC-000045 Authorised Investigative Evidence-Access Pathway Failure is not applicable because the occurrence is unauthorised public exposure, not absence of a governed route for an already-authorised investigator. The event remains a material infrastructure-security Incident without a precise current selectable Failure Class.",
-    "primary_classification": null,
+    "taxonomy_version": "0.6.7",
+    "classification_status": "classified",
+    "classification_basis": "The completed role-aware VIGIL 0.6.7 matrix determines the canonical role set for this occurrence; each mapping below carries its incident-specific evidentiary basis.",
+    "primary_classification": {
+      "family_id": "VIGIL-FF-0001",
+      "class_id": "VIGIL-FC-000002",
+      "classification_role": "ambiguous-boundary",
+      "classification_basis": "The unauthenticated ClickHouse endpoints made powerful capability directly reachable, but the occurrence does not show an AI or governance process treating that reachability as permission; it therefore marks the capability-versus-authority boundary.",
+      "classification_confidence": "medium"
+    },
     "secondary_classifications": [],
     "classification_review_provenance": {
-      "method": "deterministic current-taxonomy re-adjudication using preserved Incident evidence and complete VIGIL Failure Taxonomy 0.6.5 class-set review",
-      "review_date": "2026-09-21",
-      "reviewer": "OpenAI ChatGPT / GPT-5.6 Sol under human-directed VIGIL governance",
-      "review_status": "reviewed unclassified under taxonomy 0.6.5",
-      "authority_boundary": "Taxonomy version reviewed: 0.6.5 (beta; publication date 2026-09-21). Candidate classes tested: VIGIL-FC-000002, VIGIL-FC-000031, VIGIL-FC-000045. Accepted mappings: none. Rejected or not independently established: VIGIL-FC-000002: technical reachability existed, but no system-side inference of permission from reachability is established; VIGIL-FC-000031: no authentication-state transition or stale session state is involved; VIGIL-FC-000045: the occurrence is public unauthenticated exposure, not failure of an authorised investigative evidence-access pathway. External-assessment material was checked where present or materially attributable in preserved sources; no external assessment was treated as automatic taxonomy evidence. Review used preserved canonical Incident evidence only and performed no new external research. Retained unclassified under taxonomy 0.6.5; the occurrence remains a conventional but material AI-platform infrastructure access-control failure outside the current mechanism set."
-    }
+      "method": "bounded role-aware matrix-to-canonical reconciliation",
+      "review_date": "2026-09-25",
+      "reviewer": "OpenAI ChatGPT — GPT-5.6 Sol under human-directed VIGIL governance",
+      "review_status": "canonical role surfaces reconciled to completed 74-class matrix",
+      "authority_boundary": "This bounded repair preserves the full underlying Incident evidence while applying the completed role-aware matrix. It does not introduce new evidence, allocate a new Fidelity Class, determine legal liability, or reproduce unnecessary security mechanics in new public rationales."
+    },
+    "classification_role": "ambiguous-boundary"
   },
   "diagnostic_provenance": {
     "method": "human-directed ecosystem expansion with current and historical external-source reconciliation",

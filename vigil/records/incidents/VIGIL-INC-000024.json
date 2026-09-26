@@ -289,7 +289,7 @@
     "record_id": "VIGIL-INC-000024",
     "record_type": "incident",
     "title": "Claude’s 15 April 2026 outage disrupted web, platform, and Code access",
-    "updated": "2026-09-22",
+    "updated": "2026-09-25",
     "version": "1.3.0"
   },
   "record_state": "active",
@@ -392,24 +392,40 @@
     }
   },
   "taxonomy_classification": {
-    "classification_basis": "Full occurrence-led review against VIGIL Failure Taxonomy 0.6.6 retains VIGIL-FC-000032 Access-State Differentiation. During a provider-confirmed major outage, an unused free account was represented as having exhausted its prompt allowance and was shown a Pro upgrade suggestion, while other paths presented login, verification, service-busy and model-unavailable states. Provider unavailability, exhausted allowance, plan eligibility, authentication failure and model availability are materially distinct causes with different recovery paths. The false limit and upgrade representation omitted the distinction needed for correct handling and directly satisfies FC-000032. VIGIL-FC-000031 Authentication-State Continuity is not independently established because the evidence shows failed login and verification but not an expiry, revocation, refresh, recovery or credential-replacement transition that failed to propagate coherently. VIGIL-FC-000048 Verification-Dependency Access Continuity is not established because the occurrence-wide evidence does not show otherwise-valid access blocked solely by an inconclusive verifier without proportionate fallback.",
+    "classification_basis": "The evidence-first FC-082/FC-083 corpus review tested the respective recognition conditions and preserved all earlier class mappings; the incident-specific bases and roles are recorded below.",
     "classification_review_provenance": {
-      "authority_boundary": "Taxonomy version reviewed: 0.6.6. Accepted: VIGIL-FC-000032, based on direct reporter observation that an unused free account was presented as prompt-limit exhausted and nudged to Pro during a provider-confirmed major outage. Rejected: VIGIL-FC-000031 because no authentication-state transition propagation defect is established; VIGIL-FC-000048 because the required verifier and no-fallback conditions are not established occurrence-wide. The mapping does not rest on generic outage symptoms alone.",
-      "method": "full-corpus occurrence-led re-adjudication against the complete VIGIL Failure Taxonomy 0.6.6 after fresh contemporaneous source review",
-      "review_date": "2026-09-22",
-      "review_status": "classified under taxonomy 0.6.6",
-      "reviewer": "OpenAI ChatGPT / GPT-5.6 Sol under human-directed VIGIL governance"
+      "method": "evidence-first full-corpus review of FC-000082 and FC-000083 against current taxonomy",
+      "review_date": "2026-09-25",
+      "reviewer": "OpenAI ChatGPT — Codex under human-directed VIGIL governance",
+      "review_status": "new pair roles reconciled to canonical mapping and Section 02",
+      "authority_boundary": "This taxonomy-only pass preserves the source evidence and Harm Impact assessment, does not infer lower-level implementation location or legal liability, and allocates no new Fidelity Class."
     },
     "classification_status": "classified",
     "primary_classification": {
+      "family_id": "VIGIL-FF-0005",
       "class_id": "VIGIL-FC-000032",
       "classification_role": "failure-occurrence",
-      "classification_basis": "During a provider-confirmed major outage, an unused free account was falsely represented as prompt-limit exhausted and shown a Pro upgrade path, collapsing provider availability failure into an allowance or plan state with a different recovery route.",
-      "classification_confidence": "high",
-      "family_id": "VIGIL-FF-0005"
+      "classification_basis": "During a provider-confirmed major outage, an unused free account was represented as prompt-limit exhausted and shown a Pro upgrade path, collapsing provider downtime into a false allowance/plan state with a different recovery path.",
+      "classification_confidence": "high"
     },
-    "secondary_classifications": [],
-    "taxonomy_version": "0.6.6"
+    "secondary_classifications": [
+      {
+        "family_id": "VIGIL-FF-0013",
+        "class_id": "VIGIL-FC-000079",
+        "classification_role": "failure-occurrence",
+        "classification_basis": "During confirmed provider downtime, an unused free account was falsely told its prompt allowance was exhausted and was shown a Pro upgrade path, using a materially false commercial premise to induce purchase of paid service.",
+        "classification_confidence": "high"
+      },
+      {
+        "family_id": "VIGIL-FF-0009",
+        "class_id": "VIGIL-FC-000082",
+        "classification_role": "failure-occurrence",
+        "classification_basis": "An unused free account was falsely told its prompt allowance was exhausted during a broader outage and presented with a Pro upgrade, steering an economic choice on misleading product-status context.",
+        "classification_confidence": "high"
+      }
+    ],
+    "taxonomy_version": "0.6.7",
+    "classification_role": "failure-occurrence"
   },
   "vigil_assessment": {
     "assessment_boundaries": [
@@ -432,9 +448,9 @@
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000032",
-              "relationship": "canonical failure mapping",
+              "relationship": "failure-occurrence",
               "canonical_taxonomy_mapping": true,
-              "rationale": "The unused account's false limit state and upgrade prompt represented provider downtime as a user allowance or plan condition, satisfying the class's distinct-state, collapsed-representation and recovery-ambiguity requirements."
+              "rationale": "During a provider-confirmed major outage, an unused free account was represented as prompt-limit exhausted and shown a Pro upgrade path, collapsing provider downtime into a false allowance/plan state with a different recovery path."
             },
             {
               "class_id": "VIGIL-FC-000031",
@@ -447,6 +463,24 @@
               "relationship": "rejected candidate",
               "canonical_taxonomy_mapping": false,
               "rationale": "The source does not establish occurrence-wide blockage of otherwise-valid access solely because an identity, licence, eligibility or entitlement verifier could not complete without fallback."
+            }
+          ]
+        },
+        {
+          "source_paraphrase": "During provider downtime, an unused free account was told its prompt allowance was exhausted and was shown a paid upgrade option.",
+          "recovered_invariant_interpretation": "A paid-service solicitation should be based on an accurate description of the user's account and service state.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000079",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "During confirmed provider downtime, an unused free account was falsely told its prompt allowance was exhausted and was shown a Pro upgrade path, using a materially false commercial premise to induce purchase of paid service."
+            },
+            {
+              "class_id": "VIGIL-FC-000082",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "An unused free account was falsely told its prompt allowance was exhausted during a broader outage and presented with a Pro upgrade, steering an economic choice on misleading product-status context."
             }
           ]
         }

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate the VIGIL Failure Taxonomy schema and catalogue invariants."""
+"""Validate the VIGIL Alignment Taxonomy schema and catalogue invariants."""
 
 from __future__ import annotations
 

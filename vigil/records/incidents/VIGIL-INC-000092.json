@@ -8,7 +8,7 @@
     "record_type": "incident",
     "title": "Instinct processed retained Gmail data after Google access was disconnected",
     "created": "2026-09-07",
-    "updated": "2026-09-21",
+    "updated": "2026-09-25",
     "version": "0.1.9"
   },
   "incident_identity": {
@@ -28,7 +28,23 @@
       "The occurrence is based on a named user's public account, independent reporting and a registry entry; VIGIL did not directly inspect the user's Instinct workspace or retained records.",
       "The exact architecture, storage location, retention duration and encryption state of the retained messages are not independently verified by VIGIL.",
       "No third-party disclosure, financial loss, account takeover or persistent downstream harm is established for this occurrence."
-    ]
+    ],
+    "source_clause_analysis": {
+      "clauses": [
+        {
+          "source_paraphrase": "Disconnecting Google access ended the live connector pathway; the reported post-disconnection behaviour used copies already retained by Instinct rather than a stale authenticated Gmail session.",
+          "recovered_invariant_interpretation": "Authentication-State Continuity must remain valid across the material pathway described by the preserved occurrence evidence.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000031",
+              "relationship": "successful-invariant",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Disconnecting Google access ended the live connector pathway; the reported post-disconnection behaviour used copies already retained by Instinct rather than a stale authenticated Gmail session."
+            }
+          ]
+        }
+      ]
+    }
   },
   "source_records": [
     {
@@ -191,18 +207,25 @@
     ]
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.6.5",
-    "classification_status": "unclassified",
-    "classification_basis": "Current-taxonomy review against VIGIL Failure Taxonomy 0.6.5 retains the occurrence as unclassified. VIGIL-FC-000031 Authentication-State Continuity Failure was tested because Google access was revoked, but the evidence expressly distinguishes live connector revocation from continued processing of copies already retained by Instinct; no stale authenticated session or post-revocation Gmail access is established. VIGIL-FC-000040 Control-State Preservation Failure was tested because disconnection is a user governance action, but the preserved evidence does not establish that the disconnect control was defined to propagate as a prohibition on processing previously indexed data, so its downstream scope cannot be assumed. VIGIL-FC-000055 Secondary-Purpose Authority Transposition is not established because the retained emails continued to be used for the same assistant search/summarisation purpose rather than a materially different secondary purpose. The current taxonomy therefore does not precisely encode the retained-data/use-revocation boundary evidenced here.",
-    "primary_classification": null,
+    "taxonomy_version": "0.6.7",
+    "classification_status": "classified",
+    "classification_basis": "The completed role-aware VIGIL 0.6.7 matrix determines the canonical role set for this occurrence; each mapping below carries its incident-specific evidentiary basis.",
+    "primary_classification": {
+      "family_id": "VIGIL-FF-0005",
+      "class_id": "VIGIL-FC-000031",
+      "classification_role": "successful-invariant",
+      "classification_basis": "Disconnecting Google access ended the live connector pathway; the reported post-disconnection behaviour used copies already retained by Instinct rather than a stale authenticated Gmail session.",
+      "classification_confidence": "high"
+    },
     "secondary_classifications": [],
     "classification_review_provenance": {
-      "method": "deterministic current-taxonomy re-adjudication using preserved Incident evidence and complete VIGIL Failure Taxonomy 0.6.5 class-set review",
-      "review_date": "2026-09-21",
-      "reviewer": "OpenAI ChatGPT / GPT-5.6 Sol under human-directed VIGIL governance",
-      "review_status": "reviewed unclassified under taxonomy 0.6.5",
-      "authority_boundary": "Taxonomy version reviewed: 0.6.5 (beta; publication date 2026-09-21). Candidate classes tested: VIGIL-FC-000031, VIGIL-FC-000040, VIGIL-FC-000055. Accepted mappings: none. Rejected or not independently established: VIGIL-FC-000031: no stale authentication session or renewed Gmail access after revocation is established; VIGIL-FC-000040: the preserved record does not establish that connector disconnection carried an operative prohibition on processing already retained copies; VIGIL-FC-000055: continued assistant processing is not shown to be a materially different secondary purpose. External-assessment material was checked where present or materially attributable in preserved sources; no external assessment was treated as automatic taxonomy evidence. Review used preserved canonical Incident evidence only and performed no new external research. Retained unclassified under taxonomy 0.6.5. Possible taxonomy gap: data-use and retained-copy processing after user revocation/disconnection where live access has ended but previously ingested data remains operable."
-    }
+      "method": "bounded role-aware matrix-to-canonical reconciliation",
+      "review_date": "2026-09-25",
+      "reviewer": "OpenAI ChatGPT — GPT-5.6 Sol under human-directed VIGIL governance",
+      "review_status": "canonical role surfaces reconciled to completed 74-class matrix",
+      "authority_boundary": "This bounded repair applies the completed role-aware matrix to canonical classification and Section 02 surfaces. It does not introduce new evidence, allocate a new Fidelity Class, determine legal liability, or reopen Harm Impact."
+    },
+    "classification_role": "successful-invariant"
   },
   "diagnostic_provenance": {
     "method": "scheduled ecosystem intake with AI Incident Database discovery, independent-report reconciliation, duplicate search, occurrence-level severity assessment and current-taxonomy boundary review",

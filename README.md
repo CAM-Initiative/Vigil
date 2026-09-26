@@ -19,7 +19,7 @@ Legacy record classes and migration artefacts remain recoverable through Git his
 ## Incident model
 
 ```text
-Evidence sources ──> Incident ──> Failure Class ──> Failure Family
+Evidence sources ──> Incident ──> Fidelity Class ──> Fidelity Family
                          │
                          └──> separate CAM applicability assessment
 ```
@@ -32,7 +32,7 @@ For individual Incidents, `source_records` is the only canonical source-evidence
 
 The following are separate from the Incident record corpus and remain active:
 
-- `vigil/taxonomy/` — VIGIL Observatory failure taxonomy and generated publications.
+- `vigil/taxonomy/` — VIGIL Observatory alignment taxonomy and generated publications.
 - `vigil/external_governance/` — external source registry and requirement corpus.
 - `vigil/cam_assessment/` — CAM applicability and coverage assessment.
 
@@ -82,7 +82,7 @@ Taxonomy, external-governance and CAM-assessment changes require their own subsy
 ```text
 vigil/
   records/incidents/       canonical Incident corpus
-  taxonomy/                failure taxonomy
+  taxonomy/                alignment taxonomy
   external_governance/     external sources and requirements
   cam_assessment/          CAM applicability assessment
   templates/               Incident authoring template

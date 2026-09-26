@@ -287,7 +287,7 @@
     "record_id": "VIGIL-INC-000023",
     "record_type": "incident",
     "title": "Claude’s June 2026 outage combined access failures and quota depletion",
-    "updated": "2026-09-22",
+    "updated": "2026-09-25",
     "version": "1.3.0"
   },
   "record_state": "active",
@@ -391,24 +391,40 @@
     }
   },
   "taxonomy_classification": {
-    "classification_basis": "Full occurrence-led review against VIGIL Failure Taxonomy 0.6.6 retains VIGIL-FC-000032 Access-State Differentiation on a narrower evidentiary basis. During a provider-confirmed partial outage and elevated model errors, the free-plan interface represented inability to respond as unexpected capacity constraints and suggested upgrading to Pro. Provider service failure, model-specific error and plan capacity are materially distinct access causes with different recovery paths; directing the user toward a paid-plan upgrade during the outage omitted the distinction needed for correct handling. Separate reporting of anomalously depleted paid quotas and a remedial reset corroborates that quota state also became unreliable, but the unverified proposed sub-agent cause is not adopted. VIGIL-FC-000031 Authentication-State Continuity is rejected because no authentication-state transition propagation defect is evidenced. VIGIL-FC-000048 Verification-Dependency Access Continuity is rejected because no dependent identity, licence, eligibility or entitlement verifier is shown to have failed.",
+    "classification_basis": "The evidence-first FC-082/FC-083 corpus review tested the respective recognition conditions and preserved all earlier class mappings; the incident-specific bases and roles are recorded below.",
     "classification_review_provenance": {
-      "authority_boundary": "Taxonomy version reviewed: 0.6.6. Accepted mapping: VIGIL-FC-000032, based on the directly observed capacity-and-upgrade representation during a provider-confirmed partial outage. The separately reported quota reset is corroborative rather than necessary to the mapping. Rejected: VIGIL-FC-000031 because no authentication transition propagation defect is established; VIGIL-FC-000048 because no qualifying verification dependency is identified. The reported Claude Code sub-agent mechanism is not treated as established root cause.",
-      "method": "full-corpus occurrence-led re-adjudication against the complete VIGIL Failure Taxonomy 0.6.6 after fresh source review and cross-occurrence source separation",
-      "review_date": "2026-09-22",
-      "review_status": "classified under taxonomy 0.6.6",
-      "reviewer": "OpenAI ChatGPT / GPT-5.6 Sol under human-directed VIGIL governance"
+      "method": "evidence-first full-corpus review of FC-000082 and FC-000083 against current taxonomy",
+      "review_date": "2026-09-25",
+      "reviewer": "OpenAI ChatGPT — Codex under human-directed VIGIL governance",
+      "review_status": "new pair roles reconciled to canonical mapping and Section 02",
+      "authority_boundary": "This taxonomy-only pass preserves the source evidence and Harm Impact assessment, does not infer lower-level implementation location or legal liability, and allocates no new Fidelity Class."
     },
     "classification_status": "classified",
     "primary_classification": {
+      "family_id": "VIGIL-FF-0005",
       "class_id": "VIGIL-FC-000032",
       "classification_role": "failure-occurrence",
-      "classification_basis": "During a provider-confirmed partial outage, the free-plan interface represented inability to respond as an unexpected capacity constraint and suggested upgrading to Pro, collapsing service-availability failure into a plan-capacity state with a materially different recovery path.",
-      "classification_confidence": "medium",
-      "family_id": "VIGIL-FF-0005"
+      "classification_basis": "During a provider-confirmed partial outage, the free-plan interface represented inability to respond as a capacity/plan state and suggested Pro, collapsing provider unavailability into a materially different access state and recovery path.",
+      "classification_confidence": "medium"
     },
-    "secondary_classifications": [],
-    "taxonomy_version": "0.6.6"
+    "secondary_classifications": [
+      {
+        "family_id": "VIGIL-FF-0013",
+        "class_id": "VIGIL-FC-000079",
+        "classification_role": "failure-occurrence",
+        "classification_basis": "The outage interface materially misrepresented provider unavailability as a free-plan capacity problem and used that false commercial premise to suggest purchasing Pro, creating an AI-mediated inducement for paid service.",
+        "classification_confidence": "high"
+      },
+      {
+        "family_id": "VIGIL-FF-0009",
+        "class_id": "VIGIL-FC-000082",
+        "classification_role": "failure-occurrence",
+        "classification_basis": "During provider downtime, the free-plan interface falsely framed unavailability as a capacity or quota limit and paired that apparent product-status authority with a Pro upgrade cue.",
+        "classification_confidence": "high"
+      }
+    ],
+    "taxonomy_version": "0.6.7",
+    "classification_role": "failure-occurrence"
   },
   "vigil_assessment": {
     "assessment_boundaries": [
@@ -431,9 +447,9 @@
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000032",
-              "relationship": "mechanism context",
+              "relationship": "failure-occurrence",
               "canonical_taxonomy_mapping": true,
-              "rationale": "The partial outage establishes one of the distinct underlying causes, but the canonical mapping depends on the separate directly observed plan-capacity representation."
+              "rationale": "During a provider-confirmed partial outage, the free-plan interface represented inability to respond as a capacity/plan state and suggested Pro, collapsing provider unavailability into a materially different access state and recovery path."
             }
           ]
         },
@@ -444,7 +460,7 @@
             {
               "class_id": "VIGIL-FC-000032",
               "relationship": "canonical failure mapping",
-              "canonical_taxonomy_mapping": true,
+              "canonical_taxonomy_mapping": false,
               "rationale": "The interface used a plan-capacity state and economic recovery route during a provider-confirmed availability incident, collapsing the distinction needed for correct handling."
             },
             {
@@ -458,6 +474,24 @@
               "relationship": "rejected candidate",
               "canonical_taxonomy_mapping": false,
               "rationale": "The source does not identify an identity, licence, eligibility or entitlement verifier whose non-completion blocked otherwise-valid access without fallback."
+            }
+          ]
+        },
+        {
+          "source_paraphrase": "During provider downtime, the interface told the user that free-plan usage had been exhausted and presented a paid upgrade path.",
+          "recovered_invariant_interpretation": "A paid-service solicitation should be based on an accurate description of the user's account and service state.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000079",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The outage interface materially misrepresented provider unavailability as a free-plan capacity problem and used that false commercial premise to suggest purchasing Pro, creating an AI-mediated inducement for paid service."
+            },
+            {
+              "class_id": "VIGIL-FC-000082",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "During provider downtime, the free-plan interface falsely framed unavailability as a capacity or quota limit and paired that apparent product-status authority with a Pro upgrade cue."
             }
           ]
         }

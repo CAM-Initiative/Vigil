@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "NarxCare score linked to opioid withdrawal and termination of care for a chronic-pain patient",
     "created": "2026-08-30",
-    "updated": "2026-09-23",
-    "version": "1.2.1"
+    "updated": "2026-09-25",
+    "version": "1.2.2"
   },
   "incident_identity": {
     "historical_event_name": "Kathryn NarxCare clinical-restriction occurrence",
@@ -41,9 +41,9 @@
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000046",
-              "relationship": "candidate boundary",
-              "canonical_taxonomy_mapping": false,
-              "rationale": "The statement establishes that scores were invoked in the restrictive-care pathway, but it does not establish that the inference itself displaced authorised clinical judgment."
+              "relationship": "ambiguous-boundary exemplar",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "NarxCare scores and a database report materially influenced restrictive care, but the record cannot establish whether the inference itself displaced authorised clinical judgment."
             }
           ]
         },
@@ -67,7 +67,19 @@
               "class_id": "VIGIL-FC-000046",
               "relationship": "semantic governance boundary",
               "canonical_taxonomy_mapping": false,
-              "rationale": "The vendor-described boundary closely expresses the distinction FC-000046 protects, but a general product-use expectation cannot prove that the occurrence crossed the class recognition threshold."
+              "rationale": "The vendor says its scores should aid clinical judgment rather than replace it. That general guidance sets a boundary for this case, but it does not show whether either clinician treated the report as a binding reason to stop medication or end care."
+            }
+          ]
+        },
+        {
+          "source_paraphrase": "NarxCare scores and a database report were part of the care restriction decision, while the degree of independent clinical judgment remains unresolved.",
+          "recovered_invariant_interpretation": "An inference may inform review, but it should not become binding authority without an independently established decision basis.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000046",
+              "relationship": "ambiguous-boundary",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "NarxCare scores and a database report materially influenced restrictive care, but the available evidence does not establish whether the algorithmic inference itself displaced independent clinical judgment."
             }
           ]
         }
@@ -301,24 +313,31 @@
     ]
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.6.6",
-    "classification_status": "unclassified",
-    "classification_basis": "Current occurrence-level review removes the prior FC-000046 Inferential Evidence–Authority Conflation mapping. The evidence establishes that NarxCare-related scores and reports materially influenced restrictive clinical outcomes, including cessation of opioid treatment and termination of an outpatient treatment relationship. FC-000046 requires the inferential output to become operative authority rather than remain one input within an authorised decision process. The public evidence does not expose the complete decision pathway or establish that the NarxCare inference displaced clinical authority, so no current Failure Class is asserted.",
-    "primary_classification": null,
+    "taxonomy_version": "0.6.7",
+    "classification_status": "classified",
+    "classification_basis": "The completed role-aware VIGIL 0.6.7 matrix determines the canonical role set for this occurrence; each mapping below carries its incident-specific evidentiary basis.",
+    "primary_classification": {
+      "family_id": "VIGIL-FF-0001",
+      "class_id": "VIGIL-FC-000046",
+      "classification_role": "ambiguous-boundary",
+      "classification_basis": "NarxCare scores and a database report materially influenced restrictive care, but the record cannot establish whether the inference itself displaced authorised clinical judgment.",
+      "classification_confidence": "medium"
+    },
     "secondary_classifications": [],
     "classification_review_provenance": {
-      "method": "occurrence-level evidence rebuild and current-taxonomy recognition-condition review",
-      "review_date": "2026-09-22",
-      "reviewer": "OpenAI ChatGPT / GPT-5.6 Sol under human-directed VIGIL governance",
-      "review_status": "unclassified after withdrawal of insufficiently evidenced FC-000046 mapping",
-      "authority_boundary": "The review distinguishes consequential influence from authority displacement and does not infer a class merely because a predictive score contributed to a harmful decision."
-    }
+      "method": "bounded role-aware matrix-to-canonical reconciliation",
+      "review_date": "2026-09-25",
+      "reviewer": "OpenAI ChatGPT — GPT-5.6 Sol under human-directed VIGIL governance",
+      "review_status": "canonical role surfaces reconciled to completed 74-class matrix",
+      "authority_boundary": "This bounded repair applies the completed role-aware matrix to canonical classification and Section 02 surfaces. It does not introduce new evidence, allocate a new Fidelity Class, determine legal liability, or reopen Harm Impact."
+    },
+    "classification_role": "ambiguous-boundary"
   },
   "harm_impact_assessment": {
     "methodology_id": "VIGIL-HIM",
     "methodology_version": "1.0.1",
     "derivation_rule": "highest-supported-materialised-harm",
-    "assessed_on": "2026-09-22",
+    "assessed_on": "2026-09-23",
     "overall_severity": "S4",
     "controlling_dimensions": [
       "rights-liberty"
@@ -425,24 +444,24 @@
   },
   "interpretive_provenance": {
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-09-23-PUBLIC-PROSE-SEPARATION-000048",
+      "review_id": "VIGIL-REVIEW-2026-09-23-INC-000048-READJUDICATION",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT",
-      "reviewer_model": "GPT-5.6 Sol",
+      "reviewer_platform": "OpenAI Codex",
+      "reviewer_model": "GPT-6",
       "review_date": "2026-09-23",
-      "review_scope": "Audit and repair the factual Incident prose after the public-prose identifier cleanup, keeping occurrence facts in summary/factual_basis and leaving governed diagnosis in governance_interpretation and structured taxonomy.",
+      "review_scope": "Re-adjudicate the Kathryn occurrence against the active 0.6.7 Failure Taxonomy, the maintainer field-to-render contract and HIM evidence thresholds.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "taxonomy_review": false,
-        "harm_impact_review": false,
-        "new_external_source_research": false
+        "taxonomy_review": true,
+        "harm_impact_review": true,
+        "new_external_source_research": true
       },
       "known_limitations": [
-        "No new external evidence was introduced; this pass is bounded to editorial separation of already-adjudicated occurrence facts from diagnosis.",
-        "Taxonomy mappings, classification confidence, Harm Impact findings, source evidence and prior interpretive provenance were not reopened."
+        "The public record does not supply the underlying score, medical chart, termination letter or complete clinician reasoning.",
+        "Provider intended-use guidance is not evidence of actual clinician adherence or violation in this occurrence."
       ],
-      "review_outcome": "Rewrote the Incident summary as a plain factual occurrence account while preserving the richer governance interpretation, structured taxonomy, Harm Impact findings, source evidence and prior review history unchanged."
+      "review_outcome": "Retained the unclassified finding after testing the active taxonomy; material score influence remains supported but authority displacement is unproven. Retained S4 care-access and S3 physical impact findings; corrected a public clause rationale to explain the occurrence without taxonomy jargon."
     },
     "historical_reviewer_note": "Earlier migration, severity and metadata review history remains recoverable through Git history. This rebuild supersedes the sparse incident-facing treatment without asserting that earlier automated passes directly reviewed the newly added source package.",
     "human_governance_editor": {
@@ -492,6 +511,26 @@
           "Taxonomy mappings, classification confidence, Harm Impact findings, source evidence and prior interpretive provenance were not reopened."
         ],
         "review_outcome": "Rewrote the Incident summary as a plain factual occurrence account while preserving the richer governance interpretation, structured taxonomy, Harm Impact findings, source evidence and prior review history unchanged."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-09-23-INC-000048-READJUDICATION",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-09-23",
+        "review_scope": "Re-adjudicate the Kathryn occurrence against the active 0.6.7 Failure Taxonomy, the maintainer field-to-render contract and HIM evidence thresholds.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "harm_impact_review": true,
+          "new_external_source_research": true
+        },
+        "known_limitations": [
+          "The public record does not supply the underlying score, medical chart, termination letter or complete clinician reasoning.",
+          "Provider intended-use guidance is not evidence of actual clinician adherence or violation in this occurrence."
+        ],
+        "review_outcome": "Retained the unclassified finding after testing the active taxonomy; material score influence remains supported but authority displacement is unproven. Retained S4 care-access and S3 physical impact findings; corrected a public clause rationale to explain the occurrence without taxonomy jargon."
       }
     ]
   },
