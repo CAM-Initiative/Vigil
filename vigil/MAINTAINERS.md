@@ -291,14 +291,15 @@ Do not move content between these fields merely to satisfy a prose validator. A 
 | Stage 01 evidence card | Limits of the evidence | source limitations / `primary_artefact_access.limitations` |
 | Stage 01 evidence metadata | Publisher, date, source type, evidence status, role, residence, modality, reviewer, access | selected `source_records[]` and `primary_artefact_access` fields |
 | Stage 02 | **Factual basis** | `vigil_assessment.factual_basis` |
-| Stage 02 | **VIGIL taxonomy assessment** | `vigil_assessment.source_clause_analysis.clauses[]` |
+| Stage 02 | **Incident breakdown** | `vigil_assessment.source_clause_analysis.clauses[]` |
 | Stage 02 | Public authorship and review transparency | compact projection of `interpretive_provenance.*` where supported by the renderer |
-| Stage 02 | External assessments | selected `external_assessments[]` fields |
-| Stage 02 | Real-world harm assessment | assessed rows from `harm_impact_assessment.dimensions[]` plus derived overall severity |
+| Stage 02 | External assessments | selected non-classification `external_assessments[]` fields |
+| Stage 02 | **Harm Impact Assessment** | assessed rows from `harm_impact_assessment.dimensions[]` plus derived overall severity |
 | Stage 02 | Evidence gap | `harm_impact_assessment.assessment_gap` |
 | Stage 03 | Fidelity Family / Fidelity Class classification table | `taxonomy_classification.primary_classification` and `secondary_classifications[]`; immutable `VIGIL-FF-*` / `VIGIL-FC-*` identifiers resolve against the current Alignment Taxonomy |
 | Stage 03 | Alignment | mapping-local `classification_role` |
 | Stage 03 | Classification basis | mapping-local `classification_basis` |
+| Stage 03 | **External Alignment Classification** | `external_assessments[].classification_or_rating` plus parent assessor / assessment citation metadata; external labels remain in the external assessor’s own scheme and are not translated into VIGIL taxonomy roles |
 | Stage 04 | Governing invariant / Repair | resolved from the current Alignment Taxonomy using the Incident's Fidelity Class (`VIGIL-FC-*`) IDs; not authored as separate Incident prose |
 | Stage 05 | **VIGIL Observatory conclusion** | `vigil_assessment.governance_interpretation` |
 | Stage 05 | **Governance significance** | `vigil_assessment.significance_to_cam` |
@@ -373,13 +374,13 @@ For `summary` specifically, the repair rule is:
 
 > **Remove or relocate only material that belongs to evidence adjudication, governance interpretation, significance or classification. Preserve and, where necessary, restore the rich lay account of the occurrence.**
 
-## Clause-level taxonomy assessment and publication
+## Clause-level incident breakdown and publication
 
-Clause-level assessment follows this editorial sequence:
+Clause-level incident breakdown follows this editorial sequence:
 
-> Source wording → recovered principle → occurrence-specific taxonomy assessment → formal structured classification.
+> Source wording → recovered principle → occurrence-specific incident analysis → formal structured classification.
 
-For `vigil_assessment.source_clause_analysis.clauses[]`, `source_anchor` or `source_paraphrase` preserves the source-language basis, `recovered_invariant_interpretation` states the general principle recovered from that language, and each `taxonomy_relationships[].rationale` applies the referenced taxonomy boundary to the bounded occurrence. The rationale is the canonical public content of the **Taxonomy assessment** column; it is not a generated relationship label, internal crosswalk note or substitute for the separate structured classification.
+For `vigil_assessment.source_clause_analysis.clauses[]`, `source_anchor` or `source_paraphrase` preserves the source-language basis, `recovered_invariant_interpretation` states the general principle recovered from that language, and each `taxonomy_relationships[].rationale` applies the referenced taxonomy boundary to the bounded occurrence. The rationale is the canonical public content of the **Incident analysis** column within the **Incident breakdown** table; it is not a generated relationship label, internal crosswalk note or substitute for the separate structured classification.
 
 Incident authors and reviewers must:
 
@@ -393,6 +394,21 @@ Incident authors and reviewers must:
 Downstream website, document and PDF publishers must read and faithfully render the supplied `taxonomy_relationships[].rationale` values. Multiple rationales must be combined in stored order without duplication. A generated relationship-type summary may be used only as an explicit legacy fallback when no rationale is present; it must never replace supplied assessment prose. Website and PDF outputs must use the same rationale source.
 
 Publication consumers should protect this contract with generic fixtures covering a single rationale, multiple ordered rationales, mixed canonical and non-canonical relationships, and the missing-rationale fallback. Tests should validate the data contract rather than pinning the current adjudication of a live Incident.
+
+
+### External alignment classification publication boundary
+
+Section 03 may publish an **External Alignment Classification** table when an admitted `external_assessments[]` entry contains `classification_or_rating`. This is a projection of the external assessor's own classification or rating, not a VIGIL reclassification.
+
+Publication consumers must:
+
+- preserve the external assessor and assessment citation;
+- preserve the scheme name and external value or verbatim label;
+- prefer a classification-specific published basis when one is available, otherwise use the admitted external assessment summary;
+- never translate an external label into VIGIL `failure-occurrence`, `successful-invariant` or `ambiguous-boundary` roles unless a separate VIGIL adjudication independently establishes that mapping; and
+- keep VIGIL's own Alignment Taxonomy table visually and semantically distinct from the external classification table.
+
+The current canonical compatibility source is `external_assessments[].classification_or_rating`. A proposed additive data shape for a future database-backed implementation is documented in `vigil/docs/design/EXTERNAL-ALIGNMENT-CLASSIFICATION.md`. That proposal is non-normative and does not change `VIGIL.Schema.json` until separately approved under the schema/validator stop conditions.
 
 ## Alignment Taxonomy adjudication matrix
 
