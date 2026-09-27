@@ -24,8 +24,10 @@ The exact 53 trajectories, affected images, users, model versions, tasks and hos
 
 ## Environment adjudication
 
-`operational_setting: mixed`  
-`testing_actor: provider-internal`
+- `deployment_state: pre-deployment`
+- `activity_contexts: [training, evaluation]`
+- `external_reach: live-external`
+- `activity_actor: provider-internal`
 
 The agents operated in provider-internal research/training/evaluation, but the material occurrence involved real consumer-origin ChatGPT images and live external image-hosting services. The schema requires classification of the material occurrence rather than the product's general deployment state.
 

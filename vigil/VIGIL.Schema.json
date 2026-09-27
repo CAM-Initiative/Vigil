@@ -608,21 +608,34 @@
       ]
     },
     "occurrence_environment_rules": {
-      "description": "Occurrence-level operational setting and, independently, the actor that conducted testing.",
+      "description": "Occurrence-level deployment state, activity context, external reach and the actor conducting non-operational activity. These dimensions answer separate governance questions and must be adjudicated independently.",
       "required_fields": [
-        "operational_setting",
-        "testing_actor",
+        "deployment_state",
+        "activity_contexts",
+        "external_reach",
+        "activity_actor",
         "environment_detail",
         "evidence_basis",
         "source_record_refs"
       ],
-      "operational_setting_values": [
-        "testing",
-        "live",
-        "mixed",
+      "deployment_state_values": [
+        "pre-deployment",
+        "deployed",
         "unknown"
       ],
-      "testing_actor_values": [
+      "activity_context_values": [
+        "training",
+        "evaluation",
+        "research",
+        "operational-use",
+        "unknown"
+      ],
+      "external_reach_values": [
+        "contained",
+        "live-external",
+        "unknown"
+      ],
+      "activity_actor_values": [
         "provider-internal",
         "government",
         "third-party",
@@ -630,12 +643,15 @@
         "not-applicable",
         "unknown"
       ],
-      "evidence_rule": "Classify the material occurrence, not the product's general availability, ownership or vendor. source_record_refs must resolve to canonical source_records[N] entries in the same Incident.",
+      "evidence_rule": "Adjudicate each dimension from occurrence-specific evidence. Deployment state describes whether the materially participating model or system was actually released into operational or public use; external reach separately describes whether the occurrence materially reached real systems, services, people or data outside the controlled environment. Real external interaction, public-internet access, real-world harm, consumer-origin data, provider identity or a deployed sibling product does not establish deployed status. activity_contexts may contain multiple values only where the evidence establishes each context, not merely as alternatives. Use unknown for any dimension the cited evidence does not establish. source_record_refs must resolve to canonical source_records[N] entries in the same Incident.",
       "consistency_rules": [
-        "live requires testing_actor not-applicable.",
-        "testing requires a testing actor other than not-applicable.",
-        "provider-internal, government, third-party and joint apply only to testing or mixed occurrences.",
-        "unknown operational setting requires testing_actor unknown."
+        "activity_contexts is a non-empty unique array of controlled values; unknown cannot be combined with another activity context.",
+        "operational-use requires deployed deployment state.",
+        "pre-deployment cannot include operational-use.",
+        "An exclusively operational-use occurrence requires activity_actor not-applicable.",
+        "provider-internal, government, third-party and joint require at least one training, evaluation or research context.",
+        "An exclusively unknown activity context requires activity_actor unknown.",
+        "No deployment-state value is implied or prohibited by live-external reach; a pre-deployment training, evaluation or research occurrence may legitimately be live-external."
       ]
     }
   },
