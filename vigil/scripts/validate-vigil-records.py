@@ -27,10 +27,6 @@ RETIRED_INDEXES = {
     "VIGIL.Proposals.Index.json", "VIGIL.PatchNotes.Index.json", "VIGIL.Learn.Index.json",
 }
 SEVERITY_RANK = {"S1": 1, "S2": 2, "S3": 3, "S4": 4, "S5": 5}
-DIAGNOSTIC_REQUIRED = {
-    "method", "diagnostic_date", "human_role", "ai_role", "ai_platform", "ai_model",
-    "review_status", "authority_boundary",
-}
 REVIEW_REQUIRED = {
     "review_id", "reviewer_type", "reviewer_platform", "reviewer_model", "review_date",
     "review_scope", "capability_profile", "known_limitations", "review_outcome",
@@ -48,6 +44,24 @@ ACCESS_REQUIRED = {
 EXTERNAL_ASSESSMENT_REQUIRED = {
     "assessment_id", "assessor", "assessment_title", "assessment_date", "assessment_url",
     "assessment_type", "relationship_to_incident", "assessment_summary", "reviewed_on",
+}
+PUBLIC_WORKLOG_PATTERNS = {
+    "validator repair narration": re.compile(r"\bvalidator(?:-debt| debt)\b", re.IGNORECASE),
+    "matrix reconciliation narration": re.compile(
+        r"\b(?:matrix-to-canonical|role(?:-aware)? matrix|role-surface) reconciliation\b|"
+        r"\b(?:reconciled|synchronises?) (?:to|from|with) (?:the )?(?:current |completed )?"
+        r"(?:exhaustive )?(?:adjudication )?matrix\b",
+        re.IGNORECASE,
+    ),
+    "candidate-testing transcript": re.compile(
+        r"\bcandidate classes tested\b|\btested but not asserted\b|"
+        r"\brejected or not independently established\b",
+        re.IGNORECASE,
+    ),
+    "research workflow narration": re.compile(r"\bno new external research\b", re.IGNORECASE),
+    "repository workflow narration": re.compile(
+        r"\brepository (?:implementation|drafting)\b", re.IGNORECASE
+    ),
 }
 
 
@@ -311,8 +325,49 @@ def validate_incident_taxonomy(path: Path, record: dict[str, Any], errors: list[
     for field in ("taxonomy_version", "classification_basis"):
         if not non_empty(block.get(field)):
             errors.append(f"{path}: taxonomy_classification.{field} must be non-empty")
-    if not isinstance(block.get("classification_review_provenance"), dict):
+    public_taxonomy_fields: list[tuple[str, Any]] = [
+        ("taxonomy_classification.classification_basis", block.get("classification_basis"))
+    ]
+    for index, mapping in enumerate(
+        [block.get("primary_classification")] + list(block.get("secondary_classifications") or [])
+    ):
+        if isinstance(mapping, dict):
+            public_taxonomy_fields.append(
+                (f"taxonomy_classification.mapping[{index}].classification_basis", mapping.get("classification_basis"))
+            )
+    for index, assessment in enumerate(record.get("external_assessments") or []):
+        if isinstance(assessment, dict):
+            public_taxonomy_fields.append(
+                (f"external_assessments[{index}].vigil_comparison_note", assessment.get("vigil_comparison_note"))
+            )
+    for label, value in public_taxonomy_fields:
+        if not isinstance(value, str):
+            continue
+        for description, pattern in PUBLIC_WORKLOG_PATTERNS.items():
+            if pattern.search(value):
+                errors.append(f"{path}: {label} contains forbidden {description}")
+    review_provenance = block.get("classification_review_provenance")
+    if not isinstance(review_provenance, dict):
         errors.append(f"{path}: classification_review_provenance must be an object")
+    else:
+        allowed = set(contract["classification_review_provenance_allowed_fields"])
+        required = set(contract["classification_review_provenance_required_fields"])
+        unexpected = sorted(set(review_provenance) - allowed)
+        missing_review = sorted(required - set(review_provenance))
+        if unexpected:
+            errors.append(
+                f"{path}: classification_review_provenance contains process-history fields "
+                f"{', '.join(unexpected)}"
+            )
+        if missing_review:
+            errors.append(
+                f"{path}: classification_review_provenance missing {', '.join(missing_review)}"
+            )
+        if parse_date(review_provenance.get("review_date")) is None:
+            errors.append(f"{path}: classification_review_provenance.review_date must be an ISO date")
+        for field in ("reviewer", "review_status"):
+            if not non_empty(review_provenance.get(field)):
+                errors.append(f"{path}: classification_review_provenance.{field} must be non-empty")
     primary = block.get("primary_classification")
     secondary = block.get("secondary_classifications")
     if not isinstance(secondary, list):
@@ -703,15 +758,6 @@ def validate_external_assessments(
 
 
 def validate_provenance(path: Path, record: dict[str, Any], errors: list[str]) -> None:
-    diagnostic = record.get("diagnostic_provenance")
-    if not isinstance(diagnostic, dict):
-        errors.append(f"{path}: diagnostic_provenance must be an object")
-    else:
-        missing = sorted(DIAGNOSTIC_REQUIRED - set(diagnostic))
-        if missing:
-            errors.append(f"{path}: diagnostic_provenance missing {', '.join(missing)}")
-        if parse_date(diagnostic.get("diagnostic_date")) is None:
-            errors.append(f"{path}: diagnostic_provenance.diagnostic_date must be an ISO date")
     provenance = record.get("interpretive_provenance")
     if not isinstance(provenance, dict):
         errors.append(f"{path}: interpretive_provenance must be an object")

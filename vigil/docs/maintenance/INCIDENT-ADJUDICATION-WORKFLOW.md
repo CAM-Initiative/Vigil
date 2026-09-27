@@ -12,6 +12,18 @@ A rebuild MUST be non-destructive by default.
 
 Existing source evidence, supported factual detail, taxonomy relationships, mapping roles, confidence, harm findings and interpretive provenance are the starting state. They may change only through explicit re-adjudication. No prior taxonomy mapping or source record may disappear silently.
 
+### Public-record content boundary
+
+The three governed surfaces have deliberately different jobs:
+
+- **Incident = public evidentiary and adjudicative result.** It carries the accepted taxonomy relationships, concise occurrence-specific aggregate and mapping-local bases, material uncertainty, harm reasoning, governance interpretation and substantive comparison with external assessments.
+- **Adjudication matrix = exhaustive taxonomy decision ledger.** Complete candidate testing and class-specific failure-occurrence, successful-invariant, ambiguous-boundary, no-mapping and unresolved reasons belong in `vigil/taxonomy/VIGIL.FailureTaxonomy.Adjudications.json`.
+- **Review/audit artefact = process history.** Baselines, source and mapping dispositions, migration rationale, comparator work, repository repairs and validator history belong in the rebuild manifest or `vigil/docs/reviews/` and `vigil/docs/audits/`.
+
+Do not repeat rejected-class or no-mapping inventories in an Incident's classification basis, mapping-local basis or external-assessment comparison. Repository workflow details—including branches, pull requests, matrix synchronisation, validator repair and whether new research was performed—are not public Incident content. `diagnostic_provenance` is retired and forbidden on active Incidents. `classification_review_provenance` is compact metadata only: review date, reviewer, review status and, when one exists, a stable review reference. Detailed review history must remain outside that block.
+
+This boundary does not authorise compression of evidence. Preserve factual chronology, uncertainty, occurrence-specific accepted mechanism reasoning, source-clause analysis, Harm Impact findings and valid AI authorship disclosure in `interpretive_provenance`.
+
 The required control sequence is:
 
 ```text
