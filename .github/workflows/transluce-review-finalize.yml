@@ -31,6 +31,29 @@ jobs:
           git fetch origin main
           git merge --no-edit origin/main
 
+      - name: Align adjudication matrix with published taxonomy release
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          taxonomy_path = Path("vigil/taxonomy/VIGIL.FailureTaxonomy.Index.json")
+          matrix_path = Path("vigil/taxonomy/VIGIL.FailureTaxonomy.Adjudications.json")
+
+          taxonomy = json.loads(taxonomy_path.read_text(encoding="utf-8"))
+          matrix = json.loads(matrix_path.read_text(encoding="utf-8"))
+          version = taxonomy["standard"]["version"]
+          prior = matrix.get("taxonomy_version")
+
+          print(f"Published taxonomy version: {version}")
+          print(f"Adjudication matrix version: {prior}")
+
+          if prior != version:
+              matrix["taxonomy_version"] = version
+              matrix_path.write_text(json.dumps(matrix, indent=2) + "\\n", encoding="utf-8")
+              print(f"Aligned adjudication matrix taxonomy_version: {prior} -> {version}")
+          PY
+
       - name: Refresh generated Incident indexes
         run: python vigil/scripts/build-vigil-public-records.py
 
