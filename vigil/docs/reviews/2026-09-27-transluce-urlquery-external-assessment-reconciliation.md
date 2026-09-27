@@ -30,13 +30,13 @@ No Transluce assessment is added to VIGIL-INC-000174 (BOCSAR): the 23 September 
 
 Transluce also publishes a downloadable urlquery data archive and links numerous underlying urlquery records. Those artefacts are evidence, not analytical positions, and therefore are not represented as additional `external_assessments`.
 
-The archive itself was not directly inspected in this pass. No claim of direct review of the complete released log corpus is made.
+The initial incident-specific pass did not directly inspect the downloadable archive. A follow-on review on 28 September 2026 directly downloaded and inspected the public dataset package, its manifest, README, report catalogues, confidence/disposition metadata and selected-provenance tables. That broader review is recorded separately in `2026-09-28-transluce-broader-corpus-review.md`. Direct inspection of the public package does not imply access to Transluce's upstream private raw-report archive.
 
 If occurrence-specific logs are admitted after direct review, they should be represented through the Incident evidence/artefact layer (for example `source_records` where relied upon as canonical evidence, or `incident_artefacts` with `artefact_type: log` for occurrence-specific source artefacts) rather than being mislabeled as external assessments.
 
 ## Broader-corpus boundary
 
-The Transluce publication describes additional urlquery activity outside the three bounded attempted-compromise cases, including earlier March 2026 data-retrieval activity and a broader March–September corpus. This pass does not convert those log clusters into new VIGIL Incidents. Admission requires the normal incident-ingestion workflow and evidentiary minimums.
+The Transluce publication describes additional urlquery activity outside the three bounded attempted-compromise cases, including earlier March 2026 data-retrieval activity and a broader March–September corpus. The initial pass did not convert those log clusters into new VIGIL Incidents. The 28 September follow-on review adjudicates the broader March–September and weaker November material against the normal incident-ingestion and evidentiary thresholds.
 
 ## Generated outputs
 
