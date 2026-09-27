@@ -131,7 +131,11 @@ class IncidentTaxonomyClassificationTests(unittest.TestCase):
                 "classification_basis": "Test structure.",
                 "primary_classification": primary,
                 "secondary_classifications": secondary,
-                "classification_review_provenance": {},
+                "classification_review_provenance": {
+                    "review_date": "2026-09-27",
+                    "reviewer": "test reviewer",
+                    "review_status": "classification review completed",
+                },
             }
             record = {"id": record_id, "taxonomy_classification": block}
             errors = []
@@ -150,7 +154,11 @@ class IncidentTaxonomyClassificationTests(unittest.TestCase):
                 "classification_basis": "Test structure.",
                 "primary_classification": mapping("VIGIL-FC-A", "failure-occurrence"),
                 "secondary_classifications": [],
-                "classification_review_provenance": {},
+                "classification_review_provenance": {
+                    "review_date": "2026-09-27",
+                    "reviewer": "test reviewer",
+                    "review_status": "classification review completed",
+                },
             },
         }
         errors = []

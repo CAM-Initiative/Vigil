@@ -292,7 +292,7 @@ Do not move content between these fields merely to satisfy a prose validator. A 
 | Stage 01 evidence metadata | Publisher, date, source type, evidence status, role, residence, modality, reviewer, access | selected `source_records[]` and `primary_artefact_access` fields |
 | Stage 02 | **Factual basis** | `vigil_assessment.factual_basis` |
 | Stage 02 | **VIGIL taxonomy assessment** | `vigil_assessment.source_clause_analysis.clauses[]` |
-| Stage 02 | Governance assessment provenance | `diagnostic_provenance.*` |
+| Stage 02 | Public authorship and review transparency | compact projection of `interpretive_provenance.*` where supported by the renderer |
 | Stage 02 | External assessments | selected `external_assessments[]` fields |
 | Stage 02 | Real-world harm assessment | assessed rows from `harm_impact_assessment.dimensions[]` plus derived overall severity |
 | Stage 02 | Evidence gap | `harm_impact_assessment.assessment_gap` |
