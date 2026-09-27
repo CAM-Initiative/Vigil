@@ -43,7 +43,7 @@ The Transluce publication describes additional urlquery activity outside the thr
 Only canonical Incident records are changed in this reconciliation. The repository's deterministic public-record builder projects structured `external_assessments` into generated indexes. Generated outputs should be refreshed by the normal build workflow when this branch is tested/merged; they are not manually edited.
 
 
-## Visual incident-artefact capture plan
+## Visual incident-artefact captures
 
 The public urlquery reports also provide suitable source views for visual incident artefacts. These should be captured as maintainer-preserved screenshots and stored in the CAM Initiative Registry, then linked from `incident_artefacts[]` in the relevant Incident. The screenshot is a visual cross-reference; the canonical evidentiary proposition remains anchored to the source record and public report URL.
 
@@ -57,3 +57,17 @@ Selected captures:
 The visual pair for AIHW is intentional: it prevents the Case File from collapsing a blocked exploit attempt and a successful retrieval of already-public data into the same factual proposition.
 
 Do not label generated or reconstructed imagery as a source screenshot. If a literal browser capture cannot be preserved, use `artefact_type: log` with explicit provenance rather than manufacturing a screenshot-like image.
+
+
+### Capture completion
+
+The selected public urlquery report views were directly rendered in Chromium and captured on 27 September 2026. The four PNGs are preserved in `CAM-Initiative/Registry` at commit `622adf55e5b9ac43689c6dc744a2c28460d381cb`:
+
+- `VIGIL/VIGIL-INC-000161.png` — UNM representative SQL-injection-shaped probe;
+- `VIGIL/VIGIL-INC-000175.png` — Data USA representative SQL-injection-shaped probe;
+- `VIGIL/VIGIL-INC-000172.png` — AIHW reflected-XSS-shaped request with Cloudflare block response;
+- `VIGIL/VIGIL-INC-000172-02.png` — AIHW pre-production public-file retrieval.
+
+The capture workflow was temporary and removed itself after committing the artefacts. The canonical Incident records reference the Registry files through commit-pinned `permalink` and `render_url` fields while retaining the originating urlquery report URL in `source_url`.
+
+This is a selective visual evidence pass, not a claim that the complete Transluce/urlquery archive has been directly reviewed. The broader released corpus remains subject to separate ingestion/admission review.
