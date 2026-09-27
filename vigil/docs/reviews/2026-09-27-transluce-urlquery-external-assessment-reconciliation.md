@@ -45,24 +45,40 @@ Only canonical Incident records are changed in this reconciliation. The reposito
 
 ## Visual incident-artefact captures
 
-The first visual pass preserved representative urlquery report pages. Those captures were technically valid forensic cross-references but were not suitable public-facing Case File artefacts: they foregrounded raw request strings and scan metadata rather than explaining the bounded occurrence in human-readable terms.
+The visual-selection pass established a distinction between the complete Incident narrative and the role of a public-facing artefact.
 
-The public-facing visual artefacts were therefore replaced with literal browser captures from Transluce's 23 September 2026 analytical report. The raw urlquery reports remain underlying source/provenance material; they are not used as the rendered Incident screenshots.
+The structured VIGIL Incident record remains responsible for the complete bounded factual account. A visual artefact should not be used to smuggle in material occurrence facts that are absent from the summary, factual basis or evidence spine. It should add information that is materially easier to understand in source-native visual or contextual form.
 
-Final captures:
+This review tested three candidate visual layers from the Transluce publication:
 
-- **VIGIL-INC-000161 — UNM:** the expanded Transluce incident panel explains that an ordinary attempt to retrieve a Digital Library photograph was followed by seven vulnerability probes after retrieval failures, and that the probes appeared unsuccessful.
-- **VIGIL-INC-000175 — Data USA:** the expanded Transluce incident panel explains that a University of Iowa data-retrieval task encountered malformed-query errors and was followed by twelve vulnerability probes, which appeared unsuccessful.
-- **VIGIL-INC-000172 — AIHW:** the expanded Transluce incident panel explains the pharmaceutical-data task, Cloudflare blocks, a reflected-XSS probe that was blocked before reaching the dashboard, and later retrieval of an already-public file through AIHW's pre-production server. The panel explicitly states that no non-public data was exposed.
-- **VIGIL-INC-000172 — context and limitations:** a tightly bounded capture of Transluce's overview paragraph records the assessor's broader proposition that three ordinary information-retrieval tasks escalated into exploit attempts, while also preserving the caveat that the identified attempts did not appear to succeed and the public evidence is incomplete.
+1. **raw urlquery report views** — useful underlying forensic traces, but poor public-facing visuals because they foreground request strings and scan metadata without explaining the occurrence;
+2. **screenshots of Transluce incident prose** — human-readable, but largely duplicative of facts already represented in the VIGIL summaries and factual bases;
+3. **Transluce's published urlquery activity timeline** — additive because it shows chronology, clustering, scan-volume pattern, confidence distinction and the relationship of the May–June incidents to RubyGems, collusion.wiki and Hugging Face context windows.
 
-The four replacement PNGs are preserved in `CAM-Initiative/Registry` at commit `f1f529cc35cc32d1b332294c1707efadd68f5ab7`:
+The third layer is therefore the final public-facing artefact selection.
+
+### Final visual selection
+
+The same complete Transluce timeline is preserved for each of the three related Incidents so every standalone Case File retains the cluster context:
+
+- **VIGIL-INC-000161 — UNM:** the figure places the 25–26 May episode inside the sharp May–June rise in higher-confidence activity and alongside the RubyGems and collusion.wiki context windows.
+- **VIGIL-INC-000175 — Data USA:** the figure makes the close temporal relationship to UNM visible and situates both inside the same dense May–June activity period.
+- **VIGIL-INC-000172 — AIHW:** the figure places the 20–21 June episode at the end of that dense cluster, within the collusion.wiki context window and before the later fall in activity.
+
+The complete source figure is preferable to incident-centred crops because the evidentiary value is the relationship between events. Cropping tightly around one marker removes some of the context the artefact is intended to add.
+
+The three final PNGs are preserved in `CAM-Initiative/Registry` at commit `907db9efd81c72dccbc6971a292602a5d32f044b`:
 
 - `VIGIL/VIGIL-INC-000161.png`;
-- `VIGIL/VIGIL-INC-000175.png`;
 - `VIGIL/VIGIL-INC-000172.png`;
-- `VIGIL/VIGIL-INC-000172-02.png`.
+- `VIGIL/VIGIL-INC-000175.png`.
 
-The canonical Incident records reference these files through commit-pinned `permalink` and `render_url` fields and use the Transluce report as the screenshot `source_url`. The individual urlquery report URLs remain available in the underlying evidence spine rather than being promoted as the public visual narrative.
+The previously used second AIHW artefact was removed rather than retaining a redundant image slot.
 
-These screenshots preserve Transluce's analytical presentation; they do not convert Transluce's attribution, interpretation or terminology into an independent VIGIL finding. This remains a selective visual evidence pass, not a claim that the complete Transluce/urlquery archive has been directly reviewed. The broader released corpus remains subject to separate ingestion/admission review.
+The individual urlquery reports remain preserved as bounded supporting `source_records[]` entries. They remain available for provenance and direct technical inspection without being promoted as the public visual narrative.
+
+### General artefact-selection rule
+
+A prose screenshot is not automatically inappropriate. It can be valuable where the source-specific framing, qualification, comparison or surrounding context is itself evidentially useful and would be awkward or misleading to flatten into VIGIL's ordinary Incident prose. The governing test is not whether the artefact contains prose or graphics; it is whether it adds evidentiary or explanatory value beyond what the structured Incident record already conveys.
+
+The Registry contract, VIGIL maintainer guidance and Incident schema were updated during this review to encode that rule.
