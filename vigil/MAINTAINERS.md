@@ -53,6 +53,8 @@ The taxonomy migration assurance ledger at `vigil/taxonomy/migration/Caelestis.L
 
 Structured Incident severity is derived through `harm_impact_assessment` and VIGIL-HIM. Overall severity is the highest supported assessed materialised-harm band; dimensions are never averaged or summed. `unreported` is not S1, and SU applies when no dimension can be defensibly banded. Severity remains independent of source metadata, diagnostic provenance, taxonomy classification and workflow priority.
 
+Occurrence-environment metadata also preserves independent dimensions. `deployment_state` records evidenced lifecycle status, `activity_contexts` records training/evaluation/research/operational activity, `external_reach` records whether real external systems, services, people or data were materially reached, and `activity_actor` identifies the actor conducting non-operational activity. Never infer deployed status from live external reach or real-world consequences. The complete adjudication rules are in `vigil/VIGIL.Schema.json` and the Incident adjudication workflow.
+
 
 ## Incident rebuild and re-adjudication control
 

@@ -8,7 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 VIGIL = ROOT / "vigil"
 INCIDENTS = VIGIL / "records" / "incidents"
-AUDIT = VIGIL / "docs" / "reviews" / "2026-09-21-agent-environment-metadata-migration-audit.json"
+AUDIT = VIGIL / "docs" / "reviews" / "2026-09-27-environment-metadata-semantic-transmutation-audit.json"
 SCRIPT = VIGIL / "scripts" / "validate-vigil-records.py"
 SPEC = importlib.util.spec_from_file_location("validate_agent_environment_metadata", SCRIPT)
 VALIDATOR = importlib.util.module_from_spec(SPEC)
@@ -42,28 +42,31 @@ class AgentEnvironmentMetadataTests(unittest.TestCase):
 
     def test_audit_counts_reconcile_to_corpus(self):
         audit = json.loads(AUDIT.read_text(encoding="utf-8"))
-        agent = Counter(record["system_context"]["agent_context"]["agentic_status"] for record in self.records)
-        basis = Counter(record["system_context"]["agent_context"]["count_basis"] for record in self.records)
-        setting = Counter(
-            record["system_context"]["occurrence_environment"]["operational_setting"]
+        deployment = Counter(
+            record["system_context"]["occurrence_environment"]["deployment_state"]
+            for record in self.records
+        )
+        contexts = Counter(
+            context
+            for record in self.records
+            for context in record["system_context"]["occurrence_environment"]["activity_contexts"]
+        )
+        reach = Counter(
+            record["system_context"]["occurrence_environment"]["external_reach"]
             for record in self.records
         )
         actor = Counter(
-            record["system_context"]["occurrence_environment"]["testing_actor"]
+            record["system_context"]["occurrence_environment"]["activity_actor"]
             for record in self.records
         )
-        self.assertEqual(audit["total_incidents_migrated"], len(self.records))
-        self.assertEqual(audit["agentic_status_counts"], dict(sorted(agent.items())))
-        self.assertEqual(audit["agent_count_basis_counts"], dict(sorted(basis.items())))
-        self.assertEqual(audit["occurrence_environment_counts"], dict(sorted(setting.items())))
-        self.assertEqual(audit["testing_actor_counts"], dict(sorted(actor.items())))
+        self.assertEqual(audit["active_incidents_reviewed"], len(self.records))
+        self.assertEqual(audit["deployment_state_counts"], dict(sorted(deployment.items())))
+        self.assertEqual(audit["activity_context_counts"], dict(sorted(contexts.items())))
+        self.assertEqual(audit["external_reach_counts"], dict(sorted(reach.items())))
+        self.assertEqual(audit["activity_actor_counts"], dict(sorted(actor.items())))
         self.assertEqual(
-            sum(audit["agentic_status_counts"].values()),
-            audit["total_incidents_migrated"],
-        )
-        self.assertEqual(
-            sum(audit["occurrence_environment_counts"].values()),
-            audit["total_incidents_migrated"],
+            sum(audit["deployment_state_counts"].values()),
+            audit["active_incidents_reviewed"],
         )
 
     def test_single_agent_requires_exact_one(self):
@@ -108,22 +111,33 @@ class AgentEnvironmentMetadataTests(unittest.TestCase):
         errors = self.errors(mutate)
         self.assertTrue(any("unknown agentic status" in error for error in errors), errors)
 
-    def test_live_environment_rejects_testing_actor(self):
+    def test_operational_use_requires_deployment(self):
         errors = self.errors(
             lambda record: record["system_context"]["occurrence_environment"].update(
-                testing_actor="provider-internal"
+                deployment_state="unknown"
             )
         )
-        self.assertTrue(any("live occurrence requires" in error for error in errors), errors)
+        self.assertTrue(any("operational-use requires deployed" in error for error in errors), errors)
 
-    def test_testing_environment_rejects_not_applicable_actor(self):
+    def test_unknown_context_rejects_non_unknown_actor(self):
         errors = self.errors(
             lambda record: record["system_context"]["occurrence_environment"].update(
-                operational_setting="testing",
-                testing_actor="not-applicable",
+                deployment_state="unknown",
+                activity_contexts=["unknown"],
+                activity_actor="not-applicable",
             )
         )
-        self.assertTrue(any("testing occurrence must" in error for error in errors), errors)
+        self.assertTrue(any("unknown activity context requires" in error for error in errors), errors)
+
+    def test_predeployment_evaluation_may_reach_live_external_systems(self):
+        def mutate(record):
+            record["system_context"]["occurrence_environment"].update(
+                deployment_state="pre-deployment",
+                activity_contexts=["evaluation"],
+                external_reach="live-external",
+                activity_actor="provider-internal",
+            )
+        self.assertFalse(self.errors(mutate))
 
     def test_metadata_source_references_must_resolve(self):
         errors = self.errors(

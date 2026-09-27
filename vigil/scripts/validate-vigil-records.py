@@ -185,12 +185,25 @@ def validate_agent_and_environment_context(
         missing = sorted(set(environment_rules["required_fields"]) - set(environment))
         if missing:
             errors.append(f"{path}: system_context.occurrence_environment missing {', '.join(missing)}")
-        setting = environment.get("operational_setting")
-        actor = environment.get("testing_actor")
-        if setting not in set(environment_rules["operational_setting_values"]):
-            errors.append(f"{path}: system_context.occurrence_environment.operational_setting is not canonical")
-        if actor not in set(environment_rules["testing_actor_values"]):
-            errors.append(f"{path}: system_context.occurrence_environment.testing_actor is not canonical")
+        deployment = environment.get("deployment_state")
+        contexts = environment.get("activity_contexts")
+        reach = environment.get("external_reach")
+        actor = environment.get("activity_actor")
+        if deployment not in set(environment_rules["deployment_state_values"]):
+            errors.append(f"{path}: system_context.occurrence_environment.deployment_state is not canonical")
+        context_values = set(environment_rules["activity_context_values"])
+        if (
+            not isinstance(contexts, list)
+            or not contexts
+            or any(context not in context_values for context in contexts)
+            or len(contexts) != len(set(contexts))
+        ):
+            errors.append(f"{path}: system_context.occurrence_environment.activity_contexts must be a non-empty unique array of canonical values")
+            contexts = []
+        if reach not in set(environment_rules["external_reach_values"]):
+            errors.append(f"{path}: system_context.occurrence_environment.external_reach is not canonical")
+        if actor not in set(environment_rules["activity_actor_values"]):
+            errors.append(f"{path}: system_context.occurrence_environment.activity_actor is not canonical")
         if not non_empty(environment.get("environment_detail")):
             errors.append(f"{path}: system_context.occurrence_environment.environment_detail must be non-empty")
         if not non_empty(environment.get("evidence_basis")):
@@ -202,16 +215,20 @@ def validate_agent_and_environment_context(
             source_records,
             errors,
         )
-        if setting == "live" and actor != "not-applicable":
-            errors.append(f"{path}: live occurrence requires testing_actor not-applicable")
-        if setting == "testing" and actor == "not-applicable":
-            errors.append(f"{path}: testing occurrence must identify or preserve uncertainty about the testing actor")
-        if setting == "unknown" and actor != "unknown":
-            errors.append(f"{path}: unknown occurrence setting requires unknown testing actor")
-        if actor in {"provider-internal", "government", "third-party", "joint"} and setting not in {"testing", "mixed"}:
-            errors.append(f"{path}: testing actor categories apply only to testing or mixed occurrences")
-        if setting == "mixed" and actor == "not-applicable":
-            errors.append(f"{path}: mixed occurrence must identify or preserve uncertainty about the testing actor")
+        context_set = set(contexts)
+        if "unknown" in context_set and len(context_set) > 1:
+            errors.append(f"{path}: unknown activity context cannot be combined with another context")
+        if "operational-use" in context_set and deployment != "deployed":
+            errors.append(f"{path}: operational-use requires deployed deployment state")
+        if deployment == "pre-deployment" and "operational-use" in context_set:
+            errors.append(f"{path}: pre-deployment occurrence cannot be operational-use")
+        non_operational = context_set & {"training", "evaluation", "research"}
+        if context_set == {"operational-use"} and actor != "not-applicable":
+            errors.append(f"{path}: exclusively operational-use occurrence requires activity_actor not-applicable")
+        if actor in {"provider-internal", "government", "third-party", "joint"} and not non_operational:
+            errors.append(f"{path}: activity actor categories require training, evaluation or research context")
+        if context_set == {"unknown"} and actor != "unknown":
+            errors.append(f"{path}: unknown activity context requires unknown activity_actor")
 
 
 def taxonomy_catalogue() -> tuple[dict[str, dict[str, Any]], dict[str, dict[str, Any]]]:
