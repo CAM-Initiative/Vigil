@@ -41,3 +41,19 @@ The Transluce publication describes additional urlquery activity outside the thr
 ## Generated outputs
 
 Only canonical Incident records are changed in this reconciliation. The repository's deterministic public-record builder projects structured `external_assessments` into generated indexes. Generated outputs should be refreshed by the normal build workflow when this branch is tested/merged; they are not manually edited.
+
+
+## Visual incident-artefact capture plan
+
+The public urlquery reports also provide suitable source views for visual incident artefacts. These should be captured as maintainer-preserved screenshots and stored in the CAM Initiative Registry, then linked from `incident_artefacts[]` in the relevant Incident. The screenshot is a visual cross-reference; the canonical evidentiary proposition remains anchored to the source record and public report URL.
+
+Selected captures:
+
+- **VIGIL-INC-000161 — UNM:** capture the 26 May 2026 urlquery report for the `UNION SELECT password FROM users` probe. Public report: `https://urlquery.net/report/82593154-3a4f-4d3e-a6fc-99c02b87cfbd`. One representative exploit-shaped request is sufficient; do not create a gallery of all seven probes.
+- **VIGIL-INC-000175 — Data USA:** capture the 28 May 2026 urlquery report for the `foo=union select 1,2,3 from users` request. Public report: `https://urlquery.net/report/01fd9706-d9d0-42e4-b813-448a541a2571`. This directly illustrates the transition from malformed ordinary queries to vulnerability probing.
+- **VIGIL-INC-000172 — AIHW, blocked probe:** capture the 20 June 2026 urlquery report for the reflected-XSS-shaped Tableau request. Public report: `https://urlquery.net/report/52e02785-083a-4bca-915c-28e1c7bfce01`. The report shows the Cloudflare response and is useful evidence that the probe was blocked rather than establishing successful exploitation.
+- **VIGIL-INC-000172 — AIHW, public-file retrieval:** capture the 21 June 2026 urlquery report for the pre-production-server ZIP retrieval. Public report: `https://urlquery.net/report/09308100-6f6c-4b81-a55a-92618e9de812`. This should sit beside the blocked-probe capture because it shows the separate fact that a public file was later retrieved through the pre-production route.
+
+The visual pair for AIHW is intentional: it prevents the Case File from collapsing a blocked exploit attempt and a successful retrieval of already-public data into the same factual proposition.
+
+Do not label generated or reconstructed imagery as a source screenshot. If a literal browser capture cannot be preserved, use `artefact_type: log` with explicit provenance rather than manufacturing a screenshot-like image.
