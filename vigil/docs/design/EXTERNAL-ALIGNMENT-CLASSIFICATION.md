@@ -112,3 +112,21 @@ This proposal does **not**:
 - authorize a schema, validator, migration, or corpus-wide record change.
 
 Any future amendment to `VIGIL.Schema.json`, validators, permanent tests, or canonical records remains subject to the maintainer stop conditions.
+
+## Taxonomy-gap signal boundary
+
+External classifications can also reveal concepts that VIGIL's current taxonomy does not obviously represent, but they are not themselves authority for taxonomy expansion.
+
+Where an external assessor's classification, published basis or conceptual distinction identifies a governance-relevant point that the Incident evidence independently supports, the reviewer should ask whether that point is faithfully representable in the current Alignment Taxonomy.
+
+If it is not, the point should enter the taxonomy-gap test in `vigil/docs/design/TAXONOMY-GAP-DETECTION.md`.
+
+The external framework remains a discovery and comparison source. VIGIL must independently establish:
+
+- the occurrence evidence;
+- the recovered governance proposition;
+- the nearest current classes and their actual recognition boundaries; and
+- whether the mismatch is evidence uncertainty, an existing-class fit, a boundary or terminology repair, a family/decomposition issue, or a genuine taxonomy-coverage gap.
+
+Do not create or broaden a VIGIL Fidelity Class merely to reproduce an external assessor's vocabulary.
+
