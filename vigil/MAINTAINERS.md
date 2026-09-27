@@ -570,6 +570,17 @@ Before closure, classify each touched supporting artefact as LIVE, GENERATED, RE
 
 ## Incident artefact storage boundary
 
+### Public-facing artefact selection
+
+The Case File prose remains responsible for the complete bounded factual account. A public-facing Incident artefact should add evidentiary or explanatory value rather than merely restating the summary or factual basis as an image.
+
+Prefer artefacts that expose structure that prose conveys less efficiently: chronology, clustering, scale, comparison, spatial or system relationships, interface state, source-native visual evidence, or other directly observable context.
+
+Prose screenshots are not categorically excluded. Preserve them when the source-specific framing, qualification, comparison or surrounding context is itself useful evidence and should not simply be flattened into VIGIL's general Incident narrative. Do not preserve a prose screenshot when it only photographs facts already adequately represented in the Case File.
+
+For every proposed public-facing artefact, ask: **what does this let the reader see or understand that the structured Incident record does not convey as effectively on its own?** If there is no substantive answer, omit the artefact even if an image slot is available.
+
+
 Occurrence-specific screenshots, source images, videos, logs and preserved documents are stored in `CAM-Initiative/Registry/VIGIL/`, not in this repository. The canonical capture, naming and migration workflow is defined by `Registry/VIGIL/README.md`.
 
 The VIGIL Incident record stores only the structured `incident_artefacts[]` metadata and references:
