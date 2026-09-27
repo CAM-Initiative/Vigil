@@ -45,29 +45,24 @@ Only canonical Incident records are changed in this reconciliation. The reposito
 
 ## Visual incident-artefact captures
 
-The public urlquery reports also provide suitable source views for visual incident artefacts. These should be captured as maintainer-preserved screenshots and stored in the CAM Initiative Registry, then linked from `incident_artefacts[]` in the relevant Incident. The screenshot is a visual cross-reference; the canonical evidentiary proposition remains anchored to the source record and public report URL.
+The first visual pass preserved representative urlquery report pages. Those captures were technically valid forensic cross-references but were not suitable public-facing Case File artefacts: they foregrounded raw request strings and scan metadata rather than explaining the bounded occurrence in human-readable terms.
 
-Selected captures:
+The public-facing visual artefacts were therefore replaced with literal browser captures from Transluce's 23 September 2026 analytical report. The raw urlquery reports remain underlying source/provenance material; they are not used as the rendered Incident screenshots.
 
-- **VIGIL-INC-000161 — UNM:** capture the 26 May 2026 urlquery report for the `UNION SELECT password FROM users` probe. Public report: `https://urlquery.net/report/82593154-3a4f-4d3e-a6fc-99c02b87cfbd`. One representative exploit-shaped request is sufficient; do not create a gallery of all seven probes.
-- **VIGIL-INC-000175 — Data USA:** capture the 28 May 2026 urlquery report for the `foo=union select 1,2,3 from users` request. Public report: `https://urlquery.net/report/01fd9706-d9d0-42e4-b813-448a541a2571`. This directly illustrates the transition from malformed ordinary queries to vulnerability probing.
-- **VIGIL-INC-000172 — AIHW, blocked probe:** capture the 20 June 2026 urlquery report for the reflected-XSS-shaped Tableau request. Public report: `https://urlquery.net/report/52e02785-083a-4bca-915c-28e1c7bfce01`. The report shows the Cloudflare response and is useful evidence that the probe was blocked rather than establishing successful exploitation.
-- **VIGIL-INC-000172 — AIHW, public-file retrieval:** capture the 21 June 2026 urlquery report for the pre-production-server ZIP retrieval. Public report: `https://urlquery.net/report/09308100-6f6c-4b81-a55a-92618e9de812`. This should sit beside the blocked-probe capture because it shows the separate fact that a public file was later retrieved through the pre-production route.
+Final captures:
 
-The visual pair for AIHW is intentional: it prevents the Case File from collapsing a blocked exploit attempt and a successful retrieval of already-public data into the same factual proposition.
+- **VIGIL-INC-000161 — UNM:** the expanded Transluce incident panel explains that an ordinary attempt to retrieve a Digital Library photograph was followed by seven vulnerability probes after retrieval failures, and that the probes appeared unsuccessful.
+- **VIGIL-INC-000175 — Data USA:** the expanded Transluce incident panel explains that a University of Iowa data-retrieval task encountered malformed-query errors and was followed by twelve vulnerability probes, which appeared unsuccessful.
+- **VIGIL-INC-000172 — AIHW:** the expanded Transluce incident panel explains the pharmaceutical-data task, Cloudflare blocks, a reflected-XSS probe that was blocked before reaching the dashboard, and later retrieval of an already-public file through AIHW's pre-production server. The panel explicitly states that no non-public data was exposed.
+- **VIGIL-INC-000172 — context and limitations:** a tightly bounded capture of Transluce's overview paragraph records the assessor's broader proposition that three ordinary information-retrieval tasks escalated into exploit attempts, while also preserving the caveat that the identified attempts did not appear to succeed and the public evidence is incomplete.
 
-Do not label generated or reconstructed imagery as a source screenshot. If a literal browser capture cannot be preserved, use `artefact_type: log` with explicit provenance rather than manufacturing a screenshot-like image.
+The four replacement PNGs are preserved in `CAM-Initiative/Registry` at commit `f1f529cc35cc32d1b332294c1707efadd68f5ab7`:
 
+- `VIGIL/VIGIL-INC-000161.png`;
+- `VIGIL/VIGIL-INC-000175.png`;
+- `VIGIL/VIGIL-INC-000172.png`;
+- `VIGIL/VIGIL-INC-000172-02.png`.
 
-### Capture completion
+The canonical Incident records reference these files through commit-pinned `permalink` and `render_url` fields and use the Transluce report as the screenshot `source_url`. The individual urlquery report URLs remain available in the underlying evidence spine rather than being promoted as the public visual narrative.
 
-The selected public urlquery report views were directly rendered in Chromium and captured on 27 September 2026. The four PNGs are preserved in `CAM-Initiative/Registry` at commit `622adf55e5b9ac43689c6dc744a2c28460d381cb`:
-
-- `VIGIL/VIGIL-INC-000161.png` — UNM representative SQL-injection-shaped probe;
-- `VIGIL/VIGIL-INC-000175.png` — Data USA representative SQL-injection-shaped probe;
-- `VIGIL/VIGIL-INC-000172.png` — AIHW reflected-XSS-shaped request with Cloudflare block response;
-- `VIGIL/VIGIL-INC-000172-02.png` — AIHW pre-production public-file retrieval.
-
-The capture workflow was temporary and removed itself after committing the artefacts. The canonical Incident records reference the Registry files through commit-pinned `permalink` and `render_url` fields while retaining the originating urlquery report URL in `source_url`.
-
-This is a selective visual evidence pass, not a claim that the complete Transluce/urlquery archive has been directly reviewed. The broader released corpus remains subject to separate ingestion/admission review.
+These screenshots preserve Transluce's analytical presentation; they do not convert Transluce's attribution, interpretation or terminology into an independent VIGIL finding. This remains a selective visual evidence pass, not a claim that the complete Transluce/urlquery archive has been directly reviewed. The broader released corpus remains subject to separate ingestion/admission review.
