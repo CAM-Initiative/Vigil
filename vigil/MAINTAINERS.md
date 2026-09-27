@@ -308,6 +308,8 @@ Do not move content between these fields merely to satisfy a prose validator. A 
 | Stage 06 | Limits of the assessment | `vigil_assessment.assessment_boundaries[]` plus generated roll-up of non-assessed harm dimensions |
 | Stage 06 | Canonical Incident record | raw canonical Incident JSON link |
 
+Mapping-local `classification_basis` is public, occurrence-specific explanatory prose. It must describe the evidence, mechanism and classification boundary directly and must not use Incident record identifiers as narrative referents; Incident identity belongs in structured record metadata, not the explanation.
+
 ### Important Stage 01 evidence-card distinction
 
 Stage 01 contains more than one factual-looking layer.
