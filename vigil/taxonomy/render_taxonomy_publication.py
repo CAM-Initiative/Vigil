@@ -179,7 +179,7 @@ def harm_severity_html() -> str:
         '<p class="chapter-kicker">Assessment methodology</p>'
         f"<h1>{base.esc(HARM_PUBLICATION_TITLE)}</h1>"
         f'<p class="harm-methodology-meta"><code>{base.esc(methodology_id)}</code> · Version {base.esc(version)} · Effective {base.esc(effective)}</p>'
-        '<p class="harm-methodology-lead">VIGIL Incident severity records the highest supported materialised harm in a bounded occurrence. It is separate from Failure Taxonomy classification, likelihood, source prestige, workflow priority and hypothetical worst-case capability.</p>'
+        '<p class="harm-methodology-lead">VIGIL Incident severity records the highest supported materialised harm in a bounded occurrence. It is separate from Alignment Taxonomy classification, likelihood, source prestige, workflow priority and hypothetical worst-case capability.</p>'
         "<h2>Derivation</h2>"
         f'<p class="harm-derivation">{base.esc(matrix.get("derivation_statement", ""))}</p>'
         "<h2>Severity bands</h2>"

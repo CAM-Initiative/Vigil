@@ -7,16 +7,6 @@
     ]
   },
   "date_recorded": "2026-08-30",
-  "diagnostic_provenance": {
-    "ai_model": "GPT-5.6",
-    "ai_platform": "OpenAI Codex",
-    "ai_role": "incident disentanglement, source clustering, schema implementation and provenance preservation",
-    "authority_boundary": "This provenance records migration analysis only and does not replace the original diagnostic or interpretive provenance preserved from legacy records.",
-    "diagnostic_date": "2026-08-30",
-    "human_role": "migration contract author and approval authority",
-    "method": "curated-legacy-record-incident-normalisation",
-    "review_status": "majority migration under human contract approval; line-by-line human review not asserted"
-  },
   "external_incident_references": [],
   "id": "VIGIL-INC-000022",
   "incident_identity": {
@@ -328,8 +318,8 @@
     "record_id": "VIGIL-INC-000022",
     "record_type": "incident",
     "title": "ChatGPT outage disrupted login, conversations, and responses in April 2026",
-    "updated": "2026-09-23",
-    "version": "1.3.2"
+    "updated": "2026-09-27",
+    "version": "1.3.3"
   },
   "record_state": "active",
   "record_type": "incident",
@@ -421,10 +411,14 @@
       ]
     },
     "occurrence_environment": {
-      "operational_setting": "live",
-      "testing_actor": "not-applicable",
+      "deployment_state": "deployed",
+      "activity_contexts": [
+        "operational-use"
+      ],
+      "external_reach": "live-external",
+      "activity_actor": "not-applicable",
       "environment_detail": "Provider-confirmed disruption in deployed public services.",
-      "evidence_basis": "OpenAI's write-up places the occurrence in live ChatGPT, Codex and Platform authentication and availability paths.",
+      "evidence_basis": "OpenAI's write-up places the occurrence in deployed ChatGPT, Codex and Platform authentication and availability paths. The deployment finding rests on the occurrence-specific evidence of actual released operational or public use, independently of its external reach.",
       "source_record_refs": [
         "source_records[0]",
         "source_records[1]"
@@ -432,24 +426,23 @@
     }
   },
   "taxonomy_classification": {
-    "classification_basis": "Full occurrence-led review against VIGIL Failure Taxonomy 0.6.6 classifies the incident as VIGIL-FC-000032 Access-State Differentiation. OpenAI's post-incident write-up now supplies the mechanism absent from the earlier record: backend availability errors were surfaced through unnecessary login flows. Backend unavailability and invalid or unauthenticated account state are materially distinct causes with different recovery paths; representing the former as the latter omits the distinction needed for correct handling. VIGIL-FC-000031 Authentication-State Continuity is rejected because no expiry, revocation, refresh, recovery or credential-replacement transition failed to propagate to an active session. VIGIL-FC-000048 Verification-Dependency Access Continuity is rejected because the evidence does not establish an otherwise-valid entitlement blocked solely by an inconclusive identity, licence, eligibility or entitlement verifier without a proportionate fallback.",
+    "classification_basis": "Backend availability errors unnecessarily triggered login flows, collapsing a service-availability cause into an authentication-state representation with the wrong recovery path.",
     "classification_review_provenance": {
-      "method": "full-corpus occurrence-led re-adjudication against the complete VIGIL Failure Taxonomy 0.6.6 after fresh first-party post-incident and independent reporting review",
-      "review_date": "2026-09-22",
-      "reviewer": "OpenAI ChatGPT / GPT-5.6 Sol under human-directed VIGIL governance",
-      "review_status": "classified under taxonomy 0.6.6",
-      "authority_boundary": "Taxonomy version reviewed: 0.6.6. Candidate classes tested: VIGIL-FC-000032, VIGIL-FC-000031 and VIGIL-FC-000048. Accepted mapping: VIGIL-FC-000032, because the provider expressly states that backend availability errors unnecessarily triggered login flows, collapsing distinct availability and authentication states into the wrong recovery representation. Rejected: VIGIL-FC-000031, because no authentication-state transition propagation defect is established; VIGIL-FC-000048, because no qualifying unresolved verifier and occurrence-wide absence of proportionate fallback are established. The classification is bounded to the published access-state representation mechanism and does not classify generic service overload by itself."
+      "review_date": "2026-09-25",
+      "reviewer": "OpenAI ChatGPT — GPT-5.6 Sol under human-directed VIGIL governance",
+      "review_status": "classification review completed"
     },
     "classification_status": "classified",
     "primary_classification": {
       "family_id": "VIGIL-FF-0005",
       "class_id": "VIGIL-FC-000032",
       "classification_role": "failure-occurrence",
-      "classification_basis": "Backend availability errors unnecessarily triggered login flows, representing a service-availability cause as an authentication condition and obscuring the recovery action appropriate to the actual cause.",
+      "classification_basis": "Backend availability errors unnecessarily triggered login flows, collapsing a service-availability cause into an authentication-state representation with the wrong recovery path.",
       "classification_confidence": "high"
     },
     "secondary_classifications": [],
-    "taxonomy_version": "0.6.6"
+    "taxonomy_version": "0.6.7",
+    "classification_role": "failure-occurrence"
   },
   "vigil_assessment": {
     "assessment_boundaries": [
@@ -473,7 +466,7 @@
             {
               "class_id": "VIGIL-FC-000032",
               "relationship": "supporting mechanism context",
-              "canonical_taxonomy_mapping": true,
+              "canonical_taxonomy_mapping": false,
               "rationale": "The overload explains why access failed, but the mapping in this row depends on the provider's separate statement that availability errors were represented through unnecessary login flows. Generic overload alone would not establish the represented-state mismatch."
             }
           ]
@@ -484,9 +477,9 @@
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000032",
-              "relationship": "canonical failure mapping",
+              "relationship": "failure-occurrence",
               "canonical_taxonomy_mapping": true,
-              "rationale": "The provider identifies two distinct causes and confirms that the backend-availability cause triggered the login-state representation. That collapse obscured the recovery path appropriate to the actual failure and satisfies all three recognition conditions."
+              "rationale": "Backend availability errors unnecessarily triggered login flows, collapsing a service-availability cause into an authentication-state representation with the wrong recovery path."
             },
             {
               "class_id": "VIGIL-FC-000031",

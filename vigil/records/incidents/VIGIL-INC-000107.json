@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Mathspace breach exposed personal data of more than one million users in Australia and New Zealand",
     "created": "2026-09-09",
-    "updated": "2026-09-22",
-    "version": "0.1.11"
+    "updated": "2026-09-27",
+    "version": "0.1.12"
   },
   "incident_identity": {
     "historical_event_name": "2026 Mathspace Metabase data breach",
@@ -44,6 +44,30 @@
               "relationship": "failure-occurrence",
               "canonical_taxonomy_mapping": true,
               "rationale": "The published critical advisory satisfied the process trigger, but the control did not activate before exploitation and the later update was not followed by all recommended compromise checks."
+            }
+          ]
+        },
+        {
+          "source_paraphrase": "Historical logs retained the material access and download events even after the vulnerable instance had been updated.",
+          "recovered_invariant_interpretation": "Materially consequential actions and state changes should leave evidence records sufficient for incident response and review.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000022",
+              "relationship": "successful-invariant",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Historical logs preserved the unauthorised-access and download events sufficiently for the later compromise to be identified."
+            }
+          ]
+        },
+        {
+          "source_paraphrase": "The retained logs were sufficient to reconstruct the important access and download timeline.",
+          "recovered_invariant_interpretation": "A material event record should preserve enough ordering, identity and dependency information to reconstruct the relevant pathway.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000024",
+              "relationship": "successful-invariant",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The retained logs allowed the key access and download chronology to be reconstructed, including the sequence of unauthorised access and later data download."
             }
           ]
         }
@@ -179,10 +203,14 @@
       ]
     },
     "occurrence_environment": {
-      "operational_setting": "live",
-      "testing_actor": "not-applicable",
+      "deployment_state": "deployed",
+      "activity_contexts": [
+        "operational-use"
+      ],
+      "external_reach": "live-external",
+      "activity_actor": "not-applicable",
       "environment_detail": "Material occurrence in actual deployed, operational, public, consumer, institutional or adversarial use.",
-      "evidence_basis": "The cited evidence places the material occurrence in live operational, public, consumer, institutional or adversarial use.",
+      "evidence_basis": "The cited evidence places the material occurrence in deployed operational, public, consumer, institutional or adversarial use. The deployment finding rests on the occurrence-specific evidence of actual released operational or public use, independently of its external reach.",
       "source_record_refs": [
         "source_records[0]"
       ]
@@ -206,7 +234,7 @@
     ]
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.5.1",
+    "taxonomy_version": "0.6.7",
     "classification_status": "classified",
     "classification_basis": "Current-taxonomy re-adjudication identifies Required Control Non-Activation as the primary structural mechanism. Mathspace's first-party disclosure states that a critical Metabase security advisory and patched versions were published, that Mathspace's vulnerability-notification process did not identify and escalate the advisory, and that the vulnerable instance remained exposed before unauthorised access and data download. The same disclosure separately states that recommended compromise checks were not completed when the instance was later updated. The classification is bounded to the missed applicable vulnerability-management control and does not treat the breach, attacker conduct, affected population or harm severity as taxonomy membership by themselves.",
     "primary_classification": {
@@ -216,24 +244,27 @@
       "classification_basis": "A vulnerability-notification and escalation process existed for security advisories; a critical advisory and patched versions for the deployed Metabase component were published; Mathspace states that its process did not identify and escalate that advisory before exploitation. This satisfies the current FC-000038 mechanism in which an available and applicable governance control does not become operative when its trigger occurs.",
       "classification_confidence": "high"
     },
-    "secondary_classifications": [],
+    "secondary_classifications": [
+      {
+        "family_id": "VIGIL-FF-0004",
+        "class_id": "VIGIL-FC-000022",
+        "classification_role": "successful-invariant",
+        "classification_basis": "Historical logs preserved the unauthorised-access and download events sufficiently for the later compromise to be identified.",
+        "classification_confidence": "high"
+      },
+      {
+        "family_id": "VIGIL-FF-0004",
+        "class_id": "VIGIL-FC-000024",
+        "classification_role": "successful-invariant",
+        "classification_basis": "The retained logs allowed the key access and download chronology to be reconstructed, including the sequence of unauthorised access and later data download.",
+        "classification_confidence": "high"
+      }
+    ],
     "classification_review_provenance": {
-      "method": "taxonomy 0.5.1 stale-unclassified deterministic reconciliation",
       "review_date": "2026-09-18",
       "reviewer": "OpenAI ChatGPT / GPT-5.6 Sol under human-directed VIGIL governance",
-      "review_status": "classified against current selectable taxonomy",
-      "authority_boundary": "Trigger: prior formal adjudication used taxonomy 0.3.2-draft and explicitly deferred class selection pending taxonomy reconciliation. Tested: VIGIL-FC-000038 and adjacent observability, access-control and data-governance mechanisms. Accepted: VIGIL-FC-000038 as primary. No secondary class is asserted because the preserved evidence does not independently establish a second VIGIL mechanism without collapsing vulnerability management, compromise detection and breach consequences. Taxonomy evolution prompted re-adjudication but does not alter the factual occurrence."
+      "review_status": "classification review completed"
     }
-  },
-  "diagnostic_provenance": {
-    "method": "human-directed incident ingestion using first-party breach disclosure and independent Australian reporting",
-    "diagnostic_date": "2026-09-09",
-    "human_role": "incident-selection and taxonomy-restraint authority",
-    "ai_role": "source verification, factual bounding, severity assessment and repository implementation",
-    "ai_platform": "OpenAI ChatGPT",
-    "ai_model": "GPT-5.6 Sol",
-    "review_status": "human-directed bounded ingestion",
-    "authority_boundary": "The AI collaborator may admit and severity-assess the evidenced occurrence but must not infer attacker identity, legal fault, regulatory breach or taxonomy membership beyond the reviewed evidence."
   },
   "interpretive_provenance": {
     "review_history": [

@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Hermes agent ran unattended during intrusion into Thailand’s Ministry of Finance",
     "created": "2026-09-08",
-    "updated": "2026-09-21",
-    "version": "0.1.12"
+    "updated": "2026-09-27",
+    "version": "0.1.13"
   },
   "incident_identity": {
     "historical_event_name": "Hermes AI-assisted Thailand Ministry of Finance intrusion",
@@ -28,7 +28,23 @@
       "Hunt.io did not establish exfiltration of the office and personnel files enumerated by Hermes.",
       "The public evidence does not identify the underlying foundation-model runtime used by Hermes in this operation.",
       "The operator deliberately enabled YOLO mode, so malicious use is not automatically classified as a Hermes governance failure."
-    ]
+    ],
+    "source_clause_analysis": {
+      "clauses": [
+        {
+          "source_paraphrase": "Hermes approval prompts did not simply fail to activate: the hostile operator deliberately configured unattended 'YOLO' execution, materially distinguishing control non-activation from adversarial removal of the approval condition.",
+          "recovered_invariant_interpretation": "Required Control Activation must remain valid across the material pathway described by the preserved occurrence evidence.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000038",
+              "relationship": "ambiguous-boundary exemplar",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Hermes approval prompts did not simply fail to activate: the hostile operator deliberately configured unattended 'YOLO' execution, materially distinguishing control non-activation from adversarial removal of the approval condition."
+            }
+          ]
+        }
+      ]
+    }
   },
   "source_records": [
     {
@@ -126,10 +142,14 @@
       ]
     },
     "occurrence_environment": {
-      "operational_setting": "live",
-      "testing_actor": "not-applicable",
+      "deployment_state": "deployed",
+      "activity_contexts": [
+        "operational-use"
+      ],
+      "external_reach": "live-external",
+      "activity_actor": "not-applicable",
       "environment_detail": "Material occurrence in actual deployed, operational, public, consumer, institutional or adversarial use.",
-      "evidence_basis": "The cited evidence places the material occurrence in live operational, public, consumer, institutional or adversarial use.",
+      "evidence_basis": "The cited evidence places the material occurrence in deployed operational, public, consumer, institutional or adversarial use. The deployment finding rests on the occurrence-specific evidence of actual released operational or public use, independently of its external reach.",
       "source_record_refs": [
         "source_records[0]"
       ]
@@ -149,28 +169,23 @@
     ]
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.6.5",
-    "classification_status": "unclassified",
-    "classification_basis": "Current-taxonomy review against VIGIL Failure Taxonomy 0.6.5 retains the occurrence as unclassified. VIGIL-FC-000002 Capability-Authority Conflation, VIGIL-FC-000003 Target and Scope Authority Transposition and VIGIL-FC-000064 Objective–Pathway Authority Dominance were tested because Hermes operated autonomously against a real government target, but the preserved technical analysis states that a hostile operator intentionally selected the attack objective and enabled unattended 'YOLO' execution. The record does not establish that Hermes itself inferred authority from technical capability, transposed a valid authority grant from another scope, or displaced an independently applicable constraint in favour of task utility. VIGIL-FC-000038 Required Control Non-Activation is not applied because approval prompts were deliberately disabled by the operator rather than an applicable control failing to activate contrary to its configured state.",
-    "primary_classification": null,
+    "taxonomy_version": "0.6.7",
+    "classification_status": "classified",
+    "classification_basis": "Hermes approval prompts did not simply fail to activate: the hostile operator deliberately configured unattended 'YOLO' execution, materially distinguishing control non-activation from adversarial removal of the approval condition.",
+    "primary_classification": {
+      "family_id": "VIGIL-FF-0008",
+      "class_id": "VIGIL-FC-000038",
+      "classification_role": "ambiguous-boundary",
+      "classification_basis": "Hermes approval prompts did not simply fail to activate: the hostile operator deliberately configured unattended 'YOLO' execution, materially distinguishing control non-activation from adversarial removal of the approval condition.",
+      "classification_confidence": "medium"
+    },
     "secondary_classifications": [],
     "classification_review_provenance": {
-      "method": "deterministic current-taxonomy re-adjudication using preserved Incident evidence and complete VIGIL Failure Taxonomy 0.6.5 class-set review",
-      "review_date": "2026-09-21",
-      "reviewer": "OpenAI ChatGPT / GPT-5.6 Sol under human-directed VIGIL governance",
-      "review_status": "reviewed unclassified under taxonomy 0.6.5",
-      "authority_boundary": "Taxonomy version reviewed: 0.6.5 (beta; publication date 2026-09-21). Candidate classes tested: VIGIL-FC-000002, VIGIL-FC-000003, VIGIL-FC-000064, VIGIL-FC-000038. Accepted mappings: none. Rejected or not independently established: VIGIL-FC-000002: no agent-side capability-as-authority inference is established; VIGIL-FC-000003: no valid authority grant is shown transposed from another scope; VIGIL-FC-000064: no independently applicable constraint is shown displaced by objective utility; VIGIL-FC-000038: operator-disabled approval prompts are not non-activation of an applicable configured control. External-assessment material was checked where present or materially attributable in preserved sources; no external assessment was treated as automatic taxonomy evidence. Review used preserved canonical Incident evidence only and performed no new external research. Retained unclassified under taxonomy 0.6.5; deliberate hostile unattended configuration remains malicious use rather than an evidenced internal Hermes failure mechanism."
-    }
-  },
-  "diagnostic_provenance": {
-    "method": "human-directed ecosystem expansion with current and historical external-source reconciliation",
-    "diagnostic_date": "2026-09-08",
-    "human_role": "ecosystem-balance direction and governance approval authority",
-    "ai_role": "source discovery, duplicate reconciliation, factual bounding, taxonomy analysis, severity assessment and repository drafting",
-    "ai_platform": "OpenAI ChatGPT",
-    "ai_model": "GPT-5.6 Sol",
-    "review_status": "human-directed ecosystem ingestion",
-    "authority_boundary": "The AI collaborator may admit externally evidenced occurrences while preserving uncertainty; it may not infer unreported causality, liability, intent, affected population or taxonomy membership."
+      "review_date": "2026-09-25",
+      "reviewer": "OpenAI ChatGPT — GPT-5.6 Sol under human-directed VIGIL governance",
+      "review_status": "classification review completed"
+    },
+    "classification_role": "ambiguous-boundary"
   },
   "interpretive_provenance": {
     "review_history": [

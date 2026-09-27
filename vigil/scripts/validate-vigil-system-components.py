@@ -20,7 +20,7 @@ def load_json(path: Path) -> Any:
         return json.load(handle)
 
 
-def system_context_contract() -> tuple[set[str], set[str], set[str], set[str]]:
+def system_context_contract() -> tuple[set[str], set[str], set[str], set[str], set[str], set[str]]:
     schema = load_json(SCHEMA_PATH)
     rules = schema.get("system_context_rules", {})
     fields = set(rules.get("required_fields", [])) | set(rules.get("optional_fields", []))
@@ -33,12 +33,13 @@ def system_context_contract() -> tuple[set[str], set[str], set[str], set[str]]:
     if len(roles) != len(values):
         raise ValueError("allowed_component_role_values must contain unique non-empty strings")
     agent_values = set(rules.get("agent_context_rules", {}).get("agentic_status_values", []))
-    environment_values = set(
-        rules.get("occurrence_environment_rules", {}).get("operational_setting_values", [])
-    )
-    if not agent_values or not environment_values:
+    environment_rules = rules.get("occurrence_environment_rules", {})
+    deployment_values = set(environment_rules.get("deployment_state_values", []))
+    activity_values = set(environment_rules.get("activity_context_values", []))
+    reach_values = set(environment_rules.get("external_reach_values", []))
+    if not agent_values or not deployment_values or not activity_values or not reach_values:
         raise ValueError("VIGIL.Schema.json must define agent and occurrence-environment values")
-    return fields, roles, agent_values, environment_values
+    return fields, roles, agent_values, deployment_values, activity_values, reach_values
 
 
 def duplicate_semicolon_clauses(value: Any) -> list[str]:
@@ -63,7 +64,7 @@ def record_files() -> list[Path]:
 def validate() -> int:
     errors: list[str] = []
     try:
-        fields, allowed, agent_values, environment_values = system_context_contract()
+        fields, allowed, agent_values, deployment_values, activity_values, reach_values = system_context_contract()
     except Exception as exc:  # noqa: BLE001
         print(f"VIGIL component-role validation failed: {exc}", file=sys.stderr)
         return 1
@@ -99,7 +100,14 @@ def validate() -> int:
         environment = context.get("occurrence_environment")
         if not isinstance(agent, dict) or agent.get("agentic_status") not in agent_values:
             errors.append(f"{path}: system_context.agent_context is missing or non-canonical")
-        if not isinstance(environment, dict) or environment.get("operational_setting") not in environment_values:
+        if (
+            not isinstance(environment, dict)
+            or environment.get("deployment_state") not in deployment_values
+            or environment.get("external_reach") not in reach_values
+            or not isinstance(environment.get("activity_contexts"), list)
+            or not environment["activity_contexts"]
+            or any(value not in activity_values for value in environment["activity_contexts"])
+        ):
             errors.append(f"{path}: system_context.occurrence_environment is missing or non-canonical")
         if isinstance(agent, dict) and isinstance(environment, dict):
             normalized += 1

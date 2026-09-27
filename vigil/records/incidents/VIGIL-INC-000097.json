@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Meta AI users reportedly published sensitive chatbot conversations without fully realising they were public",
     "created": "2026-09-08",
-    "updated": "2026-09-22",
-    "version": "0.1.12"
+    "updated": "2026-09-27",
+    "version": "0.1.13"
   },
   "incident_identity": {
     "historical_event_name": "Meta AI Discover inadvertent public-chat disclosure",
@@ -41,7 +41,19 @@
               "class_id": "VIGIL-FC-000032",
               "relationship": "failure-occurrence",
               "canonical_taxonomy_mapping": true,
-              "rationale": "The workflow contained a share action and preview, but reportedly failed to communicate the materially different public state clearly enough for some users to understand the exposure."
+              "rationale": "Private chatbot interaction and public Discover publication were materially different access states, yet the share workflow reportedly left some users unsure that the resulting post would be public."
+            }
+          ]
+        },
+        {
+          "source_paraphrase": "Publication required an affirmative share action and preview rather than occurring automatically from the private conversation.",
+          "recovered_invariant_interpretation": "A materially different secondary use should have its own authority basis rather than silently inheriting the basis for the original purpose.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000055",
+              "relationship": "successful-invariant",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The app required an affirmative share action and preview before publication, providing a fresh user-authority step rather than silently reusing private-chat processing authority for the public-sharing purpose."
             }
           ]
         }
@@ -180,10 +192,14 @@
       ]
     },
     "occurrence_environment": {
-      "operational_setting": "live",
-      "testing_actor": "not-applicable",
+      "deployment_state": "deployed",
+      "activity_contexts": [
+        "operational-use"
+      ],
+      "external_reach": "live-external",
+      "activity_actor": "not-applicable",
       "environment_detail": "Material occurrence in actual deployed, operational, public, consumer, institutional or adversarial use.",
-      "evidence_basis": "The cited evidence places the material occurrence in live operational, public, consumer, institutional or adversarial use.",
+      "evidence_basis": "The cited evidence places the material occurrence in deployed operational, public, consumer, institutional or adversarial use. The deployment finding rests on the occurrence-specific evidence of actual released operational or public use, independently of its external reach.",
       "source_record_refs": [
         "source_records[0]"
       ]
@@ -204,34 +220,30 @@
     ]
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.3.1-draft",
+    "taxonomy_version": "0.6.7",
     "classification_status": "classified",
-    "classification_basis": "The occurrence satisfies VIGIL-FC-000032 Access-State Collapse because materially distinct private-conversation and public-publication states existed, while reporting indicates the posting workflow omitted or insufficiently surfaced the distinction needed for some users to understand the resulting public access state.",
+    "classification_basis": "Private chatbot interaction and public Discover publication were materially different access states, yet the share workflow reportedly left some users unsure that the resulting post would be public. The app required an affirmative share action and preview before publication, providing a fresh user-authority step rather than silently reusing private-chat processing authority for the public-sharing purpose.",
     "primary_classification": {
       "family_id": "VIGIL-FF-0005",
       "class_id": "VIGIL-FC-000032",
       "classification_role": "failure-occurrence",
-      "classification_basis": "The private-chat and public-Discover states were materially distinct, but the publication workflow reportedly left some users unclear about where their content would be visible.",
+      "classification_basis": "Private chatbot interaction and public Discover publication were materially different access states, yet the share workflow reportedly left some users unsure that the resulting post would be public.",
       "classification_confidence": "medium"
     },
-    "secondary_classifications": [],
+    "secondary_classifications": [
+      {
+        "family_id": "VIGIL-FF-0001",
+        "class_id": "VIGIL-FC-000055",
+        "classification_role": "successful-invariant",
+        "classification_basis": "The app required an affirmative share action and preview before publication, providing a fresh user-authority step rather than silently reusing private-chat processing authority for the public-sharing purpose.",
+        "classification_confidence": "high"
+      }
+    ],
     "classification_review_provenance": {
-      "method": "taxonomy-0.3.1 access-state reconciliation",
-      "review_date": "2026-09-08",
-      "reviewer": "OpenAI ChatGPT / GPT-5.6 Sol under human-directed VIGIL governance",
-      "review_status": "incident classified",
-      "authority_boundary": "Classification is bounded to the evidenced occurrence and does not determine legal liability, final factual truth, intent beyond the evidence, or broader vendor responsibility."
+      "review_date": "2026-09-25",
+      "reviewer": "OpenAI ChatGPT — GPT-5.6 Sol under human-directed VIGIL governance",
+      "review_status": "classification review completed"
     }
-  },
-  "diagnostic_provenance": {
-    "method": "human-directed ecosystem expansion with current and historical external-source reconciliation",
-    "diagnostic_date": "2026-09-08",
-    "human_role": "ecosystem-balance direction and governance approval authority",
-    "ai_role": "source discovery, duplicate reconciliation, factual bounding, taxonomy analysis, severity assessment and repository drafting",
-    "ai_platform": "OpenAI ChatGPT",
-    "ai_model": "GPT-5.6 Sol",
-    "review_status": "human-directed ecosystem ingestion",
-    "authority_boundary": "The AI collaborator may admit externally evidenced occurrences while preserving uncertainty; it may not infer unreported causality, liability, intent, affected population or taxonomy membership."
   },
   "interpretive_provenance": {
     "review_history": [

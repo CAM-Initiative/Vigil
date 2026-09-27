@@ -44,9 +44,9 @@ When an Incident contains `vigil_assessment.source_clause_analysis.clauses[]`, i
 
 The rationale is public analytical content, not internal mapping metadata. Derive it from the source clause, the canonical taxonomy definition, invariant and recognition conditions, and the bounded Incident evidence. Explain what the clause demonstrates in this occurrence.
 
-Do not replace the rationale with relationship-type boilerplate such as “the clause contributes to the recorded failure mechanism.” Do not use a Failure Class name, family name, identifier or mapping result as a substitute for the explanation. Structured identifiers, relationship roles and canonical-mapping state remain in their formal taxonomy fields.
+Do not replace the rationale with relationship-type boilerplate such as “the clause contributes to the recorded failure mechanism.” Do not use a Fidelity Class name, family name, identifier or mapping result as a substitute for the explanation. Structured identifiers, relationship roles and canonical-mapping state remain in their formal taxonomy fields.
 
-Where a clause has multiple taxonomy relationships, preserve each distinct rationale in source order. Together they must form a coherent assessment without duplicating the same explanation. For adjacent, ambiguous-boundary, exemplar or other non-failure relationships, state precisely what the clause demonstrates and which occurrence condition is not established; semantic adjacency must not be converted into a canonical failure classification.
+Where a clause has multiple taxonomy relationships, preserve each distinct rationale in source order. Together they must form a coherent assessment without duplicating the same explanation. For adjacent, ambiguous-boundary, exemplar or other non-misalignment relationships, state precisely what the clause demonstrates and which occurrence condition is not established; semantic adjacency must not be converted into a canonical misalignment classification.
 
 ## Schema and publication
 
@@ -103,6 +103,33 @@ Do not add permanent CI tests whose only purpose is to prove a completed migrati
 When testing validator behaviour, prefer an isolated fixture or direct rule mutation. Do not make a unit test depend on the unrelated validity of a live canonical Incident unless the test is intentionally a corpus regression. A single record defect should not cause unrelated rule tests to fail.
 
 Dataset-specific snapshot tests are appropriate only where the underlying value is explicitly immutable (for example, stable allocated IDs). Avoid duplicating the same invariant through hard-coded counts, version strings and incident-specific assertions.
+
+
+## Incident rebuild and re-adjudication gate
+
+Substantive Incident rebuilds, refactors and taxonomy re-adjudications MUST follow `vigil/docs/maintenance/INCIDENT-ADJUDICATION-WORKFLOW.md`.
+
+A rebuild is non-destructive by default. Before rewriting, establish the canonical baseline, search for additional occurrence evidence, preserve supported factual detail, recover every existing taxonomy mapping, load the current taxonomy, and adjudicate mappings against recognition criteria and exclusions. Existing mappings and sources may change only through explicit disposition.
+
+For a full rebuild, create a maintainer adjudication manifest from `vigil/templates/incident-rebuild-adjudication-template.json` and run:
+
+```bash
+python vigil/scripts/validate-vigil-incident-rebuild.py \
+  --baseline-ref <baseline-ref-or-commit> \
+  --candidate-file vigil/records/incidents/<INCIDENT>.json \
+  --manifest <adjudication-manifest.json>
+```
+
+The guard must pass before the rebuilt record is accepted. Every baseline taxonomy mapping must be accounted for as retained, changed, superseded or removed-unsupported. Silent mapping deletion is prohibited. Material shortening of `summary` or `vigil_assessment.factual_basis` requires an explicit fidelity reason in the manifest.
+
+Do not use an older working branch's taxonomy labels or mappings as the adjudication authority when the current canonical taxonomy is available.
+
+
+### Gmail staging requirement
+
+When Incident adjudication produces a taxonomy gap or another unresolved maintainer action, follow the Gmail staging protocol in `vigil/docs/maintenance/INCIDENT-ADJUDICATION-WORKFLOW.md`. In a connected ChatGPT maintenance session, use the Gmail connector to read the latest labelled `[CURRENT VIGIL QA ACTION]` queue, merge the new unresolved action into that queue, send the replacement self-email, and apply the `VIGIL/CURRENT QA ACTION` label.
+
+Do not leave a material next action only in conversational handoff text. Do not overwrite unresolved queue items with a one-item email. If Gmail is unavailable, explicitly report that staging was not completed and preserve the full ready-to-send payload.
 
 ## Required workflow
 

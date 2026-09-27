@@ -117,8 +117,10 @@ def expected_projection(record: dict[str, Any]) -> dict[str, Any]:
             "count_basis": agent.get("count_basis"),
         },
         "occurrence_environment": {
-            "operational_setting": environment.get("operational_setting"),
-            "testing_actor": environment.get("testing_actor"),
+            "deployment_state": environment.get("deployment_state"),
+            "activity_contexts": environment.get("activity_contexts"),
+            "external_reach": environment.get("external_reach"),
+            "activity_actor": environment.get("activity_actor"),
         },
         "severity": assessment.get("overall_severity"),
         "classification_status": taxonomy.get("classification_status"),

@@ -36,8 +36,10 @@ class ValidateVigilPublicRecordsTest(unittest.TestCase):
                     "count_basis": "not-applicable",
                 },
                 "occurrence_environment": {
-                    "operational_setting": "live",
-                    "testing_actor": "not-applicable",
+                    "deployment_state": "deployed",
+                    "activity_contexts": ["operational-use"],
+                    "external_reach": "live-external",
+                    "activity_actor": "not-applicable",
                 },
             },
             "source_records": [{"source_role": "incident-evidence"}],

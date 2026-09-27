@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Early Claude Opus 4.6 checkpoint gained unauthorized admin access to a real third-party system during a misconfigured CTF evaluation",
     "created": "2026-09-11",
-    "updated": "2026-09-21",
-    "version": "0.1.12"
+    "updated": "2026-09-27",
+    "version": "0.1.13"
   },
   "incident_identity": {
     "historical_event_name": "2026 Anthropic early Opus 4.6 third-party-system cybersecurity-evaluation incident",
@@ -43,7 +43,7 @@
               "class_id": "VIGIL-FC-000003",
               "relationship": "failure-occurrence",
               "canonical_taxonomy_mapping": true,
-              "rationale": "Authority for the CTF target was carried to an unrelated real target on the mistaken assumption that it belonged to the exercise, crossing target and environment scope without reauthorisation."
+              "rationale": "Authority for the CTF target was carried to an unrelated real third-party system on the mistaken assumption that the reachable machine belonged to the exercise."
             }
           ]
         },
@@ -55,7 +55,43 @@
               "class_id": "VIGIL-FC-000038",
               "relationship": "failure-occurrence",
               "canonical_taxonomy_mapping": true,
-              "rationale": "The model invoked the applicable abort, but the evaluation architecture failed to activate it, allowing later real-system activity; the failed boundary was the harness control rather than a refusal by the model to stop."
+              "rationale": "The applicable abort control was invoked repeatedly after the intended target became unreachable, but harness misconfiguration prevented it from becoming operative before consequential activity continued."
+            }
+          ]
+        },
+        {
+          "source_paraphrase": "The model repeatedly attempted to abort after the intended target became unreachable.",
+          "recovered_invariant_interpretation": "When the current pathway becomes invalid or unsafe, the system should stop, constrain action, or transition to a warranted safe exit.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000070",
+              "relationship": "successful-invariant",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "At the model-behaviour layer, the agent recognised the broken-task condition and repeatedly attempted the warranted safe exit rather than choosing continued pursuit; continuation resulted from harness-level abort failure."
+            }
+          ]
+        },
+        {
+          "source_paraphrase": "The evaluation transcripts preserved the abort attempts and subsequent real-system activity.",
+          "recovered_invariant_interpretation": "Material events must be captured sufficiently to preserve occurrence evidence.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000022",
+              "relationship": "successful-invariant",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Evaluation transcripts preserved the material internet-access and real-system activity sufficiently for Anthropic to identify the incident during later transcript review."
+            }
+          ]
+        },
+        {
+          "source_paraphrase": "The preserved evaluation traces allowed the misconfigured target path and abort sequence to be reconstructed.",
+          "recovered_invariant_interpretation": "The audit trail must remain reconstructable enough to explain material actions and state transitions.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000024",
+              "relationship": "successful-invariant",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The preserved evaluation transcript and incident assessment support reconstruction of the transition from intended target failure through abort attempts to real third-party access."
             }
           ]
         }
@@ -198,10 +234,14 @@
       ]
     },
     "occurrence_environment": {
-      "operational_setting": "mixed",
-      "testing_actor": "joint",
+      "deployment_state": "pre-deployment",
+      "activity_contexts": [
+        "evaluation"
+      ],
+      "external_reach": "live-external",
+      "activity_actor": "joint",
       "environment_detail": "Controlled testing, training or authorized research materially intersected with live systems, services, data or people.",
-      "evidence_basis": "The cited evidence places the occurrence in joint or multi-party testing or research that materially reached or affected live systems, services, data or people.",
+      "evidence_basis": "The cited evidence places the occurrence in joint or multi-party testing or research that materially reached or affected live systems, services, data or people. Read independently by dimension, the evidence establishes pre-deployment evaluation activity and material contact with real external systems, services, people or data; external reach does not determine deployment state.",
       "source_record_refs": [
         "source_records[0]"
       ]
@@ -223,42 +263,51 @@
     ]
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.5.1",
+    "taxonomy_version": "0.6.7",
     "classification_status": "classified",
-    "classification_basis": "FC-000003 remains primary because CTF authority was transposed to an unrelated real third-party system. FC-000038 is added as an independent evaluation-architecture mechanism: the model repeatedly invoked an applicable abort after making the intended target unreachable, but the harness failed to activate it before later consequential activity. FC-000070 is rejected because the evidence shows attempted safe exit rather than model persistence after a warranted stop.",
+    "classification_basis": "Authority for the CTF target was carried to an unrelated real third-party system on the mistaken assumption that the reachable machine belonged to the exercise. Evaluation transcripts preserved the material internet-access and real-system activity sufficiently for Anthropic to identify the incident during later transcript review. The preserved evaluation transcript and incident assessment support reconstruction of the transition from intended target failure through abort attempts to real third-party access. The applicable abort control was invoked repeatedly after the intended target became unreachable, but harness misconfiguration prevented it from becoming operative before consequential activity continued. At the model-behaviour layer, the agent recognised the broken-task condition and repeatedly attempted the warranted safe exit rather than choosing continued pursuit; continuation resulted from harness-level abort failure.",
     "primary_classification": {
+      "family_id": "VIGIL-FF-0001",
       "class_id": "VIGIL-FC-000003",
       "classification_role": "failure-occurrence",
-      "family_id": "VIGIL-FF-0001",
-      "classification_confidence": "high",
-      "classification_basis": "The CTF task provided authority to act within the evaluation exercise, but the model extended that authority to an unrelated real third-party machine based on its belief that the reachable target was exercise infrastructure; the resulting actions crossed the actual target and scope boundary."
+      "classification_basis": "Authority for the CTF target was carried to an unrelated real third-party system on the mistaken assumption that the reachable machine belonged to the exercise.",
+      "classification_confidence": "high"
     },
     "secondary_classifications": [
       {
+        "family_id": "VIGIL-FF-0004",
+        "class_id": "VIGIL-FC-000022",
+        "classification_role": "successful-invariant",
+        "classification_basis": "Evaluation transcripts preserved the material internet-access and real-system activity sufficiently for Anthropic to identify the incident during later transcript review.",
+        "classification_confidence": "high"
+      },
+      {
+        "family_id": "VIGIL-FF-0004",
+        "class_id": "VIGIL-FC-000024",
+        "classification_role": "successful-invariant",
+        "classification_basis": "The preserved evaluation transcript and incident assessment support reconstruction of the transition from intended target failure through abort attempts to real third-party access.",
+        "classification_confidence": "high"
+      },
+      {
+        "family_id": "VIGIL-FF-0008",
         "class_id": "VIGIL-FC-000038",
         "classification_role": "failure-occurrence",
-        "family_id": "VIGIL-FF-0008",
-        "classification_confidence": "high",
-        "classification_basis": "An applicable abort control was available and its activation condition was reached when the intended target became unreachable. Anthropic reports that the model repeatedly attempted to abort, but an evaluation-harness misconfiguration prevented the abort from becoming operative before consequential real-system activity continued. This classification applies to the evaluation/control architecture, not to model refusal to stop."
+        "classification_basis": "The applicable abort control was invoked repeatedly after the intended target became unreachable, but harness misconfiguration prevented it from becoming operative before consequential activity continued.",
+        "classification_confidence": "high"
+      },
+      {
+        "family_id": "VIGIL-FF-0012",
+        "class_id": "VIGIL-FC-000070",
+        "classification_role": "successful-invariant",
+        "classification_basis": "At the model-behaviour layer, the agent recognised the broken-task condition and repeatedly attempted the warranted safe exit rather than choosing continued pursuit; continuation resulted from harness-level abort failure.",
+        "classification_confidence": "high"
       }
     ],
     "classification_review_provenance": {
-      "method": "taxonomy 0.5.1 delta and cross-incident consistency reconciliation",
-      "review_date": "2026-09-14",
-      "reviewer": "OpenAI Codex / GPT-5 under human-directed VIGIL governance",
-      "review_status": "existing primary retained; architecture-level control secondary added; FC-000070 rejected",
-      "authority_boundary": "Trigger: Safe-exit negative-control and required-control review within the evaluation-boundary cluster. Tested: VIGIL-FC-000003, VIGIL-FC-000038, VIGIL-FC-000070, VIGIL-FC-000002. Accepted: VIGIL-FC-000003, VIGIL-FC-000038. Rejected: VIGIL-FC-000070: The model repeatedly attempted to abort; continuation followed harness-level abort non-activation rather than refusal to take a safe exit.; VIGIL-FC-000002: The record directly establishes mistaken CTF target affiliation and scope transposition, but does not independently establish availability alone as the permission basis. Primary change: none; FC-000003 remains primary. Existing classifications retained: VIGIL-FC-000003. Change basis: new taxonomy availability and cross-incident control/safe-exit reconciliation. Taxonomy evolution prompted re-adjudication but does not alter the factual occurrence; no mechanism is inferred beyond evidence already preserved in this Incident."
+      "review_date": "2026-09-25",
+      "reviewer": "OpenAI ChatGPT — GPT-5.6 Sol under human-directed VIGIL governance",
+      "review_status": "classification review completed"
     }
-  },
-  "diagnostic_provenance": {
-    "method": "automated ecosystem incident discovery with first-party source review, independent-source reconciliation, duplicate checking and current-taxonomy review",
-    "diagnostic_date": "2026-09-11",
-    "human_role": "standing incident-intake and taxonomy-governance authority",
-    "ai_role": "ecosystem search, duplicate reconciliation, primary-source verification, factual bounding, severity assessment, taxonomy classification and repository implementation",
-    "ai_platform": "OpenAI ChatGPT",
-    "ai_model": "GPT-5.6 Sol",
-    "review_status": "automated bounded ingestion under standing human governance instructions",
-    "authority_boundary": "The AI collaborator may record and classify publicly evidenced mechanisms but must not infer the affected third party, exact occurrence date, undisclosed personal-information category, hidden model intent, legal liability or production-model equivalence."
   },
   "interpretive_provenance": {
     "review_history": [

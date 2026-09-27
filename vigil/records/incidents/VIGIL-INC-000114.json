@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "New Mexico lawyer filed ChatGPT-assisted appellate brief containing fabricated witnesses and testimony",
     "created": "2026-09-12",
-    "updated": "2026-09-21",
-    "version": "0.1.10"
+    "updated": "2026-09-27",
+    "version": "0.1.11"
   },
   "incident_identity": {
     "historical_event_name": "2026 State v. Sandoval ChatGPT-fabricated appellate brief incident",
@@ -43,7 +43,7 @@
               "class_id": "VIGIL-FC-000062",
               "relationship": "failure-occurrence",
               "canonical_taxonomy_mapping": true,
-              "rationale": "Material incapable of supporting judicial reliance was incorporated into a formal criminal appellate brief as factual and legal support."
+              "rationale": "Generated factual and legal material that could not support judicial reliance was incorporated into a formal criminal appellate brief as factual and legal support."
             }
           ]
         },
@@ -55,7 +55,19 @@
               "class_id": "VIGIL-FC-000016",
               "relationship": "failure-occurrence",
               "canonical_taxonomy_mapping": true,
-              "rationale": "The admission directly establishes omission of the required source and factual check before filing, independently of the generated material's underlying unreliability."
+              "rationale": "Counsel expressly admitted that the factual claims and legal authorities were not verified before the brief was signed and filed."
+            }
+          ]
+        },
+        {
+          "source_paraphrase": "The filing presented testimony, witnesses and legal authorities that were fabricated or misrepresented.",
+          "recovered_invariant_interpretation": "Source attribution should remain limited to evidence and authorities that actually exist and support the represented proposition.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000010",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The filing attributed testimony to fabricated and real witnesses and presented nonexistent or misrepresented authority as though those sources supported the propositions asserted."
             }
           ]
         }
@@ -191,10 +203,14 @@
       ]
     },
     "occurrence_environment": {
-      "operational_setting": "live",
-      "testing_actor": "not-applicable",
+      "deployment_state": "deployed",
+      "activity_contexts": [
+        "operational-use"
+      ],
+      "external_reach": "live-external",
+      "activity_actor": "not-applicable",
       "environment_detail": "Material occurrence in actual deployed, operational, public, consumer, institutional or adversarial use.",
-      "evidence_basis": "The cited evidence places the material occurrence in live operational, public, consumer, institutional or adversarial use.",
+      "evidence_basis": "The cited evidence places the material occurrence in deployed operational, public, consumer, institutional or adversarial use. The deployment finding rests on the occurrence-specific evidence of actual released operational or public use, independently of its external reach.",
       "source_record_refs": [
         "source_records[0]"
       ]
@@ -215,42 +231,38 @@
     ]
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.4.1-draft",
+    "taxonomy_version": "0.6.7",
     "classification_status": "classified",
-    "classification_basis": "The occurrence independently supports two current Verification & Completion Integrity classes. VIGIL-FC-000062 Epistemic Reliance Miscalibration captures the promotion of fabricated or insufficiently assured generated factual and legal material into a criminal appellate filing whose downstream use required materially higher factual and source fidelity. VIGIL-FC-000016 Required Verification Omission captures the separate, expressly evidenced omission of verification before filing.",
+    "classification_basis": "Generated factual and legal material that could not support judicial reliance was incorporated into a formal criminal appellate brief as factual and legal support. The filing attributed testimony to fabricated and real witnesses and presented nonexistent or misrepresented authority as though those sources supported the propositions asserted. Counsel expressly admitted that the factual claims and legal authorities were not verified before the brief was signed and filed.",
     "primary_classification": {
+      "family_id": "VIGIL-FF-0003",
       "class_id": "VIGIL-FC-000062",
       "classification_role": "failure-occurrence",
-      "family_id": "VIGIL-FF-0003",
-      "classification_confidence": "high",
-      "classification_basis": "Generated factual and legal material containing fabricated witnesses, false testimony and misrepresented authority was submitted as usable support in a formal criminal appellate brief despite not meeting the epistemic assurance threshold required for judicial reliance."
+      "classification_basis": "Generated factual and legal material that could not support judicial reliance was incorporated into a formal criminal appellate brief as factual and legal support.",
+      "classification_confidence": "high"
     },
     "secondary_classifications": [
       {
+        "family_id": "VIGIL-FF-0002",
+        "class_id": "VIGIL-FC-000010",
+        "classification_role": "failure-occurrence",
+        "classification_basis": "The filing attributed testimony to fabricated and real witnesses and presented nonexistent or misrepresented authority as though those sources supported the propositions asserted.",
+        "classification_confidence": "high"
+      },
+      {
+        "family_id": "VIGIL-FF-0003",
         "class_id": "VIGIL-FC-000016",
         "classification_role": "failure-occurrence",
-        "family_id": "VIGIL-FF-0003",
-        "classification_confidence": "high",
-        "classification_basis": "The New Mexico Supreme Court expressly records the attorney's admission that he did not verify the factual claims or legal authority before signing and filing the brief, directly establishing omission of a material verification step required for the reliance-bearing task."
+        "classification_basis": "Counsel expressly admitted that the factual claims and legal authorities were not verified before the brief was signed and filed.",
+        "classification_confidence": "high"
       }
     ],
     "classification_review_provenance": {
-      "method": "incident-specific current-taxonomy review",
-      "review_date": "2026-09-12",
-      "reviewer": "OpenAI ChatGPT / GPT-5.6 Sol under standing human-directed VIGIL governance",
-      "review_status": "classified on directly evidenced epistemic-reliance and verification-omission mechanisms",
-      "authority_boundary": "The classification describes the evidenced assurance and verification failures. It does not determine ultimate professional liability beyond the court's own contempt order, infer the exact model-generated text, or assign sole causal responsibility to ChatGPT."
-    }
-  },
-  "diagnostic_provenance": {
-    "method": "automated ecosystem incident discovery with direct court-order review, independent reporting, existing-Incident duplicate reconciliation, current-taxonomy mapping and occurrence-level severity assessment",
-    "diagnostic_date": "2026-09-12",
-    "human_role": "standing incident-intake and taxonomy-governance authority",
-    "ai_role": "ecosystem search, duplicate reconciliation, primary-source review, factual bounding, severity assessment, taxonomy classification and repository implementation",
-    "ai_platform": "OpenAI ChatGPT",
-    "ai_model": "GPT-5.6 Sol",
-    "review_status": "automated bounded ingestion under standing human governance instructions",
-    "authority_boundary": "The AI collaborator may record the court's findings and admissions and classify directly evidenced governance mechanisms but must not infer the exact model version, underlying prompt/response sequence, unadjudicated discipline outcome or broader prevalence."
+      "review_date": "2026-09-25",
+      "reviewer": "OpenAI ChatGPT — GPT-5.6 Sol under human-directed VIGIL governance",
+      "review_status": "classification review completed"
+    },
+    "classification_role": "failure-occurrence"
   },
   "interpretive_provenance": {
     "review_history": [

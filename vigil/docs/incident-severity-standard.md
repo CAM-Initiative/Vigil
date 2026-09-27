@@ -1,7 +1,7 @@
 # VIGIL Harm Impact Matrix 1.0.1
 
 VIGIL Incident severity is the highest supported materialised harm in a bounded
-occurrence. It is not a likelihood estimate, a Failure Taxonomy classification,
+occurrence. It is not a likelihood estimate, a Alignment Taxonomy classification,
 classification confidence, source prestige, operational priority, or a statement
 of hypothetical worst-case capability.
 
@@ -30,11 +30,11 @@ uses an empty `controlling_dimensions` array and a concrete
 dimension is assessed and that positive bounded-no-harm evidence is absent, the
 overall result is SU.
 
-VIGIL-HIM 1.0.1 is the current methodology. VIGIL-HIM 1.0.0 remains a preserved
-historical methodology for Incident assessments that have not yet completed the
-1.0.1 evidence and threshold re-review. A record moves to 1.0.1 only when that
-Incident is substantively re-adjudicated; version labels are not mechanically
-migrated.
+VIGIL-HIM 1.0.1 is the current methodology and is required for all canonical
+Incident assessments. VIGIL-HIM 1.0.0 is retired from active use and preserved
+unchanged solely as historical audit material. Do not use 1.0.0 for new or
+current adjudication, and do not rewrite historical review provenance that
+correctly records an earlier 1.0.0 assessment.
 
 Overall severity is `max(assessed dimension bands)`. Do not average or add
 dimensions. Multiple S2 harms remain S2 unless evidence independently supports a
@@ -153,5 +153,5 @@ The conceptual layers remain separate:
 1. evidence establishes what is reported;
 2. harm dimensions describe materialised consequences;
 3. severity records the highest supported magnitude;
-4. Failure Taxonomy classes describe the failure mechanism; and
+4. Alignment Taxonomy classes describe the failure mechanism; and
 5. invariants and governance repair state what must hold to prevent recurrence.
