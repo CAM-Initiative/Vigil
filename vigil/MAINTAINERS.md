@@ -391,6 +391,8 @@ Incident authors and reviewers must:
 - preserve distinct rationales in source order when one clause has multiple relationships; and
 - state the demonstrated boundary and the missing occurrence condition for adjacent, ambiguous-boundary, exemplar or otherwise non-canonical relationships.
 
+Where clause-level analysis recovers a materially supported governance proposition that cannot be reconciled faithfully with the current taxonomy, do not force it into the nearest class and do not treat the mismatch as automatic authority to create a class. Record it as a taxonomy-gap signal and apply the design test in `vigil/docs/design/TAXONOMY-GAP-DETECTION.md`. The review must distinguish evidence gaps, existing-class fit, boundary or terminology repair, decomposition/family review and genuine taxonomy-coverage gaps. New canonical Fidelity Classes remain a human-governance decision.
+
 Downstream website, document and PDF publishers must read and faithfully render the supplied `taxonomy_relationships[].rationale` values. Multiple rationales must be combined in stored order without duplication. A generated relationship-type summary may be used only as an explicit legacy fallback when no rationale is present; it must never replace supplied assessment prose. Website and PDF outputs must use the same rationale source.
 
 Publication consumers should protect this contract with generic fixtures covering a single rationale, multiple ordered rationales, mixed canonical and non-canonical relationships, and the missing-rationale fallback. Tests should validate the data contract rather than pinning the current adjudication of a live Incident.
