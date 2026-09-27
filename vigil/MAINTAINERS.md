@@ -566,3 +566,19 @@ python vigil/taxonomy/validate_taxonomy.py
 Also run the validators owned by external governance or CAM assessment when those subsystems are touched.
 
 Before closure, classify each touched supporting artefact as LIVE, GENERATED, REVIEW, AUDIT or RETIRE. Historical machinery must not masquerade as current authority. Do not reset, rebase, merge, cherry-pick, force-push or rewrite shared history as cleanup. The bounded pre-PR ingestion-branch synchronization exception above is the only permitted rebase/lease-protected force-update under this guide.
+
+
+## Incident artefact storage boundary
+
+Occurrence-specific screenshots, source images, videos, logs and preserved documents are stored in `CAM-Initiative/Registry/VIGIL/`, not in this repository. The canonical capture, naming and migration workflow is defined by `Registry/VIGIL/README.md`.
+
+The VIGIL Incident record stores only the structured `incident_artefacts[]` metadata and references:
+
+- `permalink` — commit-pinned human-facing GitHub URL in `CAM-Initiative/Registry`;
+- `render_url` — matching commit-pinned raw Registry URL;
+- `source_url` — original external source URL, which must not be replaced by the Registry copy;
+- capture/provenance fields describing how the Registry artefact was preserved.
+
+Commit the Registry artefact before adding its VIGIL reference. Do not use `main` or another moving branch in canonical `permalink` or `render_url` values. If an Incident has several artefacts, use the Incident ID filename followed by stable numeric suffixes such as `-02`, `-03`.
+
+If occurrence-specific media is discovered in the Vigil repository, migrate the bytes to Registry, update every Incident reference to the commit-pinned Registry asset, verify rendering, and only then remove the duplicate Vigil copy. Taxonomy/publication branding assets are not Incident artefacts and are outside this storage rule.
