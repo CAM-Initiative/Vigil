@@ -249,8 +249,10 @@ def incident_entry(path: Path, record: dict[str, Any]) -> dict[str, Any]:
             "count_basis": agent_context.get("count_basis"),
         },
         "occurrence_environment": {
-            "operational_setting": occurrence_environment.get("operational_setting"),
-            "testing_actor": occurrence_environment.get("testing_actor"),
+            "deployment_state": occurrence_environment.get("deployment_state"),
+            "activity_contexts": occurrence_environment.get("activity_contexts"),
+            "external_reach": occurrence_environment.get("external_reach"),
+            "activity_actor": occurrence_environment.get("activity_actor"),
         },
         "severity": assessment.get("overall_severity"),
         "classification_status": taxonomy.get("classification_status"),

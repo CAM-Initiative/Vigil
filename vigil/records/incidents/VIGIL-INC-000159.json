@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Cline prompt-injection and cache-poisoning chain enabled unauthorized npm package publication",
     "created": "2026-09-19",
-    "updated": "2026-09-26",
-    "version": "0.3.0"
+    "updated": "2026-09-27",
+    "version": "0.3.1"
   },
   "incident_identity": {
     "historical_event_name": "Cline prompt-injection and cache-poisoning chain enabled unauthorized npm package publication",
@@ -238,10 +238,14 @@
       ]
     },
     "occurrence_environment": {
-      "operational_setting": "live",
-      "testing_actor": "not-applicable",
+      "deployment_state": "deployed",
+      "activity_contexts": [
+        "operational-use"
+      ],
+      "external_reach": "live-external",
+      "activity_actor": "not-applicable",
       "environment_detail": "Material occurrence in a live GitHub Actions and npm publication pipeline that resulted in an unauthorised production package release.",
-      "evidence_basis": "The preserved postmortem and security advisory describe compromise of production release infrastructure rather than a bounded test.",
+      "evidence_basis": "The preserved postmortem and security advisory describe compromise of production release infrastructure rather than a bounded test. The deployment finding rests on the occurrence-specific evidence of actual released operational or public use, independently of its external reach.",
       "source_record_refs": [
         "source_records[0]",
         "source_records[1]",
@@ -263,7 +267,7 @@
   "taxonomy_classification": {
     "taxonomy_version": "0.6.7",
     "classification_status": "classified",
-    "classification_basis": "The technical chain directly supports control-plane crossover and transitive propagation of publication authority, while preserving the independent roles of model, cache and credential configuration. Role-aware matrix reconciliation additionally records VIGIL-FC-000001 as a failure occurrence and VIGIL-FC-000022 / VIGIL-FC-000024 as successful invariants.",
+    "classification_basis": "Attacker-controlled issue text induced tool execution and crossed through shared cache state into a privileged release control plane. Authority propagated from a public issue-triage workflow through cache state and nightly release credentials to npm publication. Untrusted issue content was treated as operative instruction instead of remaining non-authorising data, allowing attacker-controlled text to direct consequential tool activity. The retained post-incident evidence captured the material instruction, tool and release-path events needed to preserve the occurrence record. The retained evidence supported reconstruction of the compromise chain while the public rationale remains bounded and does not restate unnecessary exploit mechanics.",
     "primary_classification": {
       "family_id": "VIGIL-FF-0001",
       "class_id": "VIGIL-FC-000006",
@@ -302,24 +306,12 @@
       }
     ],
     "classification_review_provenance": {
-      "method": "dedicated single-record role-aware reconciliation against the completed adjudication matrix",
       "review_date": "2026-09-25",
       "reviewer": "OpenAI ChatGPT — GPT-5.6 Sol under human-directed VIGIL governance",
-      "review_status": "single-record QA reconciliation completed",
-      "authority_boundary": "This repair preserves the full underlying Incident evidence. New public rationales remain mechanism-bounded and avoid reproducing unnecessary exploit mechanics."
+      "review_status": "classification review completed"
     }
   },
   "related_incidents": [],
-  "diagnostic_provenance": {
-    "method": "incident-specific evidence review, harm-threshold comparison and taxonomy recognition-condition analysis",
-    "diagnostic_date": "2026-09-19",
-    "human_role": "standing incident and taxonomy governance authority",
-    "ai_role": "AI evidence synthesis and structured adjudication preparation",
-    "authority_boundary": "AI review preserves source disputes and does not constitute final human, legal or factual adjudication.",
-    "ai_platform": "OpenAI Codex",
-    "ai_model": "GPT-5",
-    "review_status": "AI analytical adjudication"
-  },
   "interpretive_provenance": {
     "review_history": [
       {

@@ -48,6 +48,28 @@ class ValidateIncidentCorpusTests(unittest.TestCase):
         self.assertNotEqual(self.validate_mutation(lambda record: record.update(source_data={})), 0)
         self.assertNotEqual(self.validate_mutation(lambda record: record.update(evidence_confidence="high")), 0)
 
+    def test_diagnostic_provenance_is_retired(self):
+        self.assertNotEqual(
+            self.validate_mutation(lambda record: record.update(diagnostic_provenance={})),
+            0,
+        )
+
+    def test_classification_review_provenance_is_compact(self):
+        def mutate(record):
+            record["taxonomy_classification"]["classification_review_provenance"]["method"] = (
+                "matrix-to-canonical reconciliation"
+            )
+
+        self.assertNotEqual(self.validate_mutation(mutate), 0)
+
+    def test_public_taxonomy_prose_rejects_worklog_narration(self):
+        def mutate(record):
+            record["taxonomy_classification"]["classification_basis"] += (
+                " Candidate classes tested in repository implementation."
+            )
+
+        self.assertNotEqual(self.validate_mutation(mutate), 0)
+
     def test_source_order_must_be_contiguous(self):
         self.assertNotEqual(
             self.validate_mutation(lambda record: record["source_records"][0].update(incident_source_order=2)),

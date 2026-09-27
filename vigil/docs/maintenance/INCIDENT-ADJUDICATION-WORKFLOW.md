@@ -12,6 +12,18 @@ A rebuild MUST be non-destructive by default.
 
 Existing source evidence, supported factual detail, taxonomy relationships, mapping roles, confidence, harm findings and interpretive provenance are the starting state. They may change only through explicit re-adjudication. No prior taxonomy mapping or source record may disappear silently.
 
+### Public-record content boundary
+
+The three governed surfaces have deliberately different jobs:
+
+- **Incident = public evidentiary and adjudicative result.** It carries the accepted taxonomy relationships, concise occurrence-specific aggregate and mapping-local bases, material uncertainty, harm reasoning, governance interpretation and substantive comparison with external assessments.
+- **Adjudication matrix = exhaustive taxonomy decision ledger.** Complete candidate testing and class-specific failure-occurrence, successful-invariant, ambiguous-boundary, no-mapping and unresolved reasons belong in `vigil/taxonomy/VIGIL.FailureTaxonomy.Adjudications.json`.
+- **Review/audit artefact = process history.** Baselines, source and mapping dispositions, migration rationale, comparator work, repository repairs and validator history belong in the rebuild manifest or `vigil/docs/reviews/` and `vigil/docs/audits/`.
+
+Do not repeat rejected-class or no-mapping inventories in an Incident's classification basis, mapping-local basis or external-assessment comparison. Repository workflow details—including branches, pull requests, matrix synchronisation, validator repair and whether new research was performed—are not public Incident content. `diagnostic_provenance` is retired and forbidden on active Incidents. `classification_review_provenance` is compact metadata only: review date, reviewer, review status and, when one exists, a stable review reference. Detailed review history must remain outside that block.
+
+This boundary does not authorise compression of evidence. Preserve factual chronology, uncertainty, occurrence-specific accepted mechanism reasoning, source-clause analysis, Harm Impact findings and valid AI authorship disclosure in `interpretive_provenance`.
+
 The required control sequence is:
 
 ```text
@@ -62,6 +74,17 @@ Rebuild `summary` and `vigil_assessment.factual_basis` from the evidence before 
 - Governance diagnosis, taxonomy labels and severity reasoning belong in their governed fields.
 
 If a rebuild materially shortens the baseline `summary` or `factual_basis`, the adjudication manifest must explain why the reduction is a fidelity improvement rather than information loss.
+
+### Occurrence-environment adjudication
+
+Adjudicate the four occurrence-environment dimensions independently from the cited occurrence evidence:
+
+1. `deployment_state` asks whether the materially participating model or system was actually in operational or public deployment: `pre-deployment`, `deployed` or `unknown`.
+2. `activity_contexts` records evidenced `training`, `evaluation`, `research` and/or `operational-use`; use multiple values only when each is established, and use `unknown` alone when the activity cannot be established.
+3. `external_reach` asks whether the activity remained `contained`, materially reached real external systems, services, people or data (`live-external`), or is `unknown`.
+4. `activity_actor` records who conducted training, evaluation or research. It replaces the narrower testing-actor concept because non-operational activity is not limited to testing.
+
+Do not infer deployment from external reach. Public-internet access, interaction with a production website, real-world harm, consumer-origin data, provider identity and a deployed sibling product do not prove that the participating model was deployed. A provider-internal training agent may therefore be `pre-deployment`, `training`, `live-external` and `provider-internal`. Conversely, ordinary use of an evidenced released product is `deployed` and `operational-use`, while its external reach is still adjudicated separately. Preserve `unknown` for any unsupported dimension rather than using external consequences as a lifecycle proxy.
 
 ## 4. TAXONOMY — retrieve, test and adjudicate
 

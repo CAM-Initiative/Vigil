@@ -53,6 +53,8 @@ The taxonomy migration assurance ledger at `vigil/taxonomy/migration/Caelestis.L
 
 Structured Incident severity is derived through `harm_impact_assessment` and VIGIL-HIM. Overall severity is the highest supported assessed materialised-harm band; dimensions are never averaged or summed. `unreported` is not S1, and SU applies when no dimension can be defensibly banded. Severity remains independent of source metadata, diagnostic provenance, taxonomy classification and workflow priority.
 
+Occurrence-environment metadata also preserves independent dimensions. `deployment_state` records evidenced lifecycle status, `activity_contexts` records training/evaluation/research/operational activity, `external_reach` records whether real external systems, services, people or data were materially reached, and `activity_actor` identifies the actor conducting non-operational activity. Never infer deployed status from live external reach or real-world consequences. The complete adjudication rules are in `vigil/VIGIL.Schema.json` and the Incident adjudication workflow.
+
 
 ## Incident rebuild and re-adjudication control
 
@@ -290,7 +292,7 @@ Do not move content between these fields merely to satisfy a prose validator. A 
 | Stage 01 evidence metadata | Publisher, date, source type, evidence status, role, residence, modality, reviewer, access | selected `source_records[]` and `primary_artefact_access` fields |
 | Stage 02 | **Factual basis** | `vigil_assessment.factual_basis` |
 | Stage 02 | **VIGIL taxonomy assessment** | `vigil_assessment.source_clause_analysis.clauses[]` |
-| Stage 02 | Governance assessment provenance | `diagnostic_provenance.*` |
+| Stage 02 | Public authorship and review transparency | compact projection of `interpretive_provenance.*` where supported by the renderer |
 | Stage 02 | External assessments | selected `external_assessments[]` fields |
 | Stage 02 | Real-world harm assessment | assessed rows from `harm_impact_assessment.dimensions[]` plus derived overall severity |
 | Stage 02 | Evidence gap | `harm_impact_assessment.assessment_gap` |

@@ -27,10 +27,6 @@ RETIRED_INDEXES = {
     "VIGIL.Proposals.Index.json", "VIGIL.PatchNotes.Index.json", "VIGIL.Learn.Index.json",
 }
 SEVERITY_RANK = {"S1": 1, "S2": 2, "S3": 3, "S4": 4, "S5": 5}
-DIAGNOSTIC_REQUIRED = {
-    "method", "diagnostic_date", "human_role", "ai_role", "ai_platform", "ai_model",
-    "review_status", "authority_boundary",
-}
 REVIEW_REQUIRED = {
     "review_id", "reviewer_type", "reviewer_platform", "reviewer_model", "review_date",
     "review_scope", "capability_profile", "known_limitations", "review_outcome",
@@ -48,6 +44,24 @@ ACCESS_REQUIRED = {
 EXTERNAL_ASSESSMENT_REQUIRED = {
     "assessment_id", "assessor", "assessment_title", "assessment_date", "assessment_url",
     "assessment_type", "relationship_to_incident", "assessment_summary", "reviewed_on",
+}
+PUBLIC_WORKLOG_PATTERNS = {
+    "validator repair narration": re.compile(r"\bvalidator(?:-debt| debt)\b", re.IGNORECASE),
+    "matrix reconciliation narration": re.compile(
+        r"\b(?:matrix-to-canonical|role(?:-aware)? matrix|role-surface) reconciliation\b|"
+        r"\b(?:reconciled|synchronises?) (?:to|from|with) (?:the )?(?:current |completed )?"
+        r"(?:exhaustive )?(?:adjudication )?matrix\b",
+        re.IGNORECASE,
+    ),
+    "candidate-testing transcript": re.compile(
+        r"\bcandidate classes tested\b|\btested but not asserted\b|"
+        r"\brejected or not independently established\b",
+        re.IGNORECASE,
+    ),
+    "research workflow narration": re.compile(r"\bno new external research\b", re.IGNORECASE),
+    "repository workflow narration": re.compile(
+        r"\brepository (?:implementation|drafting)\b", re.IGNORECASE
+    ),
 }
 
 
@@ -185,12 +199,25 @@ def validate_agent_and_environment_context(
         missing = sorted(set(environment_rules["required_fields"]) - set(environment))
         if missing:
             errors.append(f"{path}: system_context.occurrence_environment missing {', '.join(missing)}")
-        setting = environment.get("operational_setting")
-        actor = environment.get("testing_actor")
-        if setting not in set(environment_rules["operational_setting_values"]):
-            errors.append(f"{path}: system_context.occurrence_environment.operational_setting is not canonical")
-        if actor not in set(environment_rules["testing_actor_values"]):
-            errors.append(f"{path}: system_context.occurrence_environment.testing_actor is not canonical")
+        deployment = environment.get("deployment_state")
+        contexts = environment.get("activity_contexts")
+        reach = environment.get("external_reach")
+        actor = environment.get("activity_actor")
+        if deployment not in set(environment_rules["deployment_state_values"]):
+            errors.append(f"{path}: system_context.occurrence_environment.deployment_state is not canonical")
+        context_values = set(environment_rules["activity_context_values"])
+        if (
+            not isinstance(contexts, list)
+            or not contexts
+            or any(context not in context_values for context in contexts)
+            or len(contexts) != len(set(contexts))
+        ):
+            errors.append(f"{path}: system_context.occurrence_environment.activity_contexts must be a non-empty unique array of canonical values")
+            contexts = []
+        if reach not in set(environment_rules["external_reach_values"]):
+            errors.append(f"{path}: system_context.occurrence_environment.external_reach is not canonical")
+        if actor not in set(environment_rules["activity_actor_values"]):
+            errors.append(f"{path}: system_context.occurrence_environment.activity_actor is not canonical")
         if not non_empty(environment.get("environment_detail")):
             errors.append(f"{path}: system_context.occurrence_environment.environment_detail must be non-empty")
         if not non_empty(environment.get("evidence_basis")):
@@ -202,16 +229,20 @@ def validate_agent_and_environment_context(
             source_records,
             errors,
         )
-        if setting == "live" and actor != "not-applicable":
-            errors.append(f"{path}: live occurrence requires testing_actor not-applicable")
-        if setting == "testing" and actor == "not-applicable":
-            errors.append(f"{path}: testing occurrence must identify or preserve uncertainty about the testing actor")
-        if setting == "unknown" and actor != "unknown":
-            errors.append(f"{path}: unknown occurrence setting requires unknown testing actor")
-        if actor in {"provider-internal", "government", "third-party", "joint"} and setting not in {"testing", "mixed"}:
-            errors.append(f"{path}: testing actor categories apply only to testing or mixed occurrences")
-        if setting == "mixed" and actor == "not-applicable":
-            errors.append(f"{path}: mixed occurrence must identify or preserve uncertainty about the testing actor")
+        context_set = set(contexts)
+        if "unknown" in context_set and len(context_set) > 1:
+            errors.append(f"{path}: unknown activity context cannot be combined with another context")
+        if "operational-use" in context_set and deployment != "deployed":
+            errors.append(f"{path}: operational-use requires deployed deployment state")
+        if deployment == "pre-deployment" and "operational-use" in context_set:
+            errors.append(f"{path}: pre-deployment occurrence cannot be operational-use")
+        non_operational = context_set & {"training", "evaluation", "research"}
+        if context_set == {"operational-use"} and actor != "not-applicable":
+            errors.append(f"{path}: exclusively operational-use occurrence requires activity_actor not-applicable")
+        if actor in {"provider-internal", "government", "third-party", "joint"} and not non_operational:
+            errors.append(f"{path}: activity actor categories require training, evaluation or research context")
+        if context_set == {"unknown"} and actor != "unknown":
+            errors.append(f"{path}: unknown activity context requires unknown activity_actor")
 
 
 def taxonomy_catalogue() -> tuple[dict[str, dict[str, Any]], dict[str, dict[str, Any]]]:
@@ -294,8 +325,49 @@ def validate_incident_taxonomy(path: Path, record: dict[str, Any], errors: list[
     for field in ("taxonomy_version", "classification_basis"):
         if not non_empty(block.get(field)):
             errors.append(f"{path}: taxonomy_classification.{field} must be non-empty")
-    if not isinstance(block.get("classification_review_provenance"), dict):
+    public_taxonomy_fields: list[tuple[str, Any]] = [
+        ("taxonomy_classification.classification_basis", block.get("classification_basis"))
+    ]
+    for index, mapping in enumerate(
+        [block.get("primary_classification")] + list(block.get("secondary_classifications") or [])
+    ):
+        if isinstance(mapping, dict):
+            public_taxonomy_fields.append(
+                (f"taxonomy_classification.mapping[{index}].classification_basis", mapping.get("classification_basis"))
+            )
+    for index, assessment in enumerate(record.get("external_assessments") or []):
+        if isinstance(assessment, dict):
+            public_taxonomy_fields.append(
+                (f"external_assessments[{index}].vigil_comparison_note", assessment.get("vigil_comparison_note"))
+            )
+    for label, value in public_taxonomy_fields:
+        if not isinstance(value, str):
+            continue
+        for description, pattern in PUBLIC_WORKLOG_PATTERNS.items():
+            if pattern.search(value):
+                errors.append(f"{path}: {label} contains forbidden {description}")
+    review_provenance = block.get("classification_review_provenance")
+    if not isinstance(review_provenance, dict):
         errors.append(f"{path}: classification_review_provenance must be an object")
+    else:
+        allowed = set(contract["classification_review_provenance_allowed_fields"])
+        required = set(contract["classification_review_provenance_required_fields"])
+        unexpected = sorted(set(review_provenance) - allowed)
+        missing_review = sorted(required - set(review_provenance))
+        if unexpected:
+            errors.append(
+                f"{path}: classification_review_provenance contains process-history fields "
+                f"{', '.join(unexpected)}"
+            )
+        if missing_review:
+            errors.append(
+                f"{path}: classification_review_provenance missing {', '.join(missing_review)}"
+            )
+        if parse_date(review_provenance.get("review_date")) is None:
+            errors.append(f"{path}: classification_review_provenance.review_date must be an ISO date")
+        for field in ("reviewer", "review_status"):
+            if not non_empty(review_provenance.get(field)):
+                errors.append(f"{path}: classification_review_provenance.{field} must be non-empty")
     primary = block.get("primary_classification")
     secondary = block.get("secondary_classifications")
     if not isinstance(secondary, list):
@@ -686,15 +758,6 @@ def validate_external_assessments(
 
 
 def validate_provenance(path: Path, record: dict[str, Any], errors: list[str]) -> None:
-    diagnostic = record.get("diagnostic_provenance")
-    if not isinstance(diagnostic, dict):
-        errors.append(f"{path}: diagnostic_provenance must be an object")
-    else:
-        missing = sorted(DIAGNOSTIC_REQUIRED - set(diagnostic))
-        if missing:
-            errors.append(f"{path}: diagnostic_provenance missing {', '.join(missing)}")
-        if parse_date(diagnostic.get("diagnostic_date")) is None:
-            errors.append(f"{path}: diagnostic_provenance.diagnostic_date must be an ISO date")
     provenance = record.get("interpretive_provenance")
     if not isinstance(provenance, dict):
         errors.append(f"{path}: interpretive_provenance must be an object")

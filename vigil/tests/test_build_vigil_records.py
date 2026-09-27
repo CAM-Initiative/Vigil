@@ -48,7 +48,7 @@ class IncidentBuilderTests(unittest.TestCase):
             entry["occurrence_environment"],
             {
                 key: record["system_context"]["occurrence_environment"][key]
-                for key in ("operational_setting", "testing_actor")
+                for key in ("deployment_state", "activity_contexts", "external_reach", "activity_actor")
             },
         )
         self.assertNotIn("evidence_basis", entry["agent_context"])
