@@ -18,6 +18,7 @@ SCHEMA_PATH = VIGIL / "VIGIL.Schema.json"
 HARM_MATRIX_DIR = VIGIL / "methodologies"
 TAXONOMY_INDEX = VIGIL / "taxonomy" / "VIGIL.FailureTaxonomy.Index.json"
 INCIDENT_ID = re.compile(r"^VIGIL-INC-\d{6}$")
+PUBLIC_INCIDENT_ID = re.compile(r"(?<![A-Z0-9-])(?:VIGIL-)?INC-\d{6}(?!\d)", re.IGNORECASE)
 EXTERNAL_ASSESSMENT_ID = re.compile(r"^VIGIL-EXTASSESS-\d{6}$")
 HTTP_URL = re.compile(r"^https?://[^\s]+$", re.IGNORECASE)
 HISTORICAL_ID = re.compile(r"VIGIL-\d{4}-(?:FM|OBS|RESEARCH|PROP|PATCH|LEARN)-\d{4}")
@@ -299,6 +300,11 @@ def validate_taxonomy_mapping(
         errors.append(f"{path}: {label} class {class_id} does not belong to {family_id}")
     if not non_empty(mapping.get("classification_basis")):
         errors.append(f"{path}: {label}.classification_basis must be non-empty")
+    elif PUBLIC_INCIDENT_ID.search(mapping["classification_basis"]):
+        errors.append(
+            f"{path}: {label}.classification_basis must describe the occurrence directly "
+            "and must not use an Incident ID as a narrative referent"
+        )
     if mapping.get("classification_confidence") not in {"low", "medium", "high"}:
         errors.append(f"{path}: {label}.classification_confidence must be low, medium, or high")
     role = mapping.get("classification_role")

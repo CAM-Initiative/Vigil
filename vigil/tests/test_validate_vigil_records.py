@@ -70,6 +70,52 @@ class ValidateIncidentCorpusTests(unittest.TestCase):
 
         self.assertNotEqual(self.validate_mutation(mutate), 0)
 
+    def mapping_errors(self, basis, label="taxonomy_classification.primary_classification"):
+        mapping = {
+            "family_id": "VIGIL-FF-9999",
+            "class_id": "VIGIL-FC-999999",
+            "classification_role": "ambiguous-boundary",
+            "classification_basis": basis,
+            "classification_confidence": "high",
+        }
+        families = {"VIGIL-FF-9999": {}}
+        classes = {"VIGIL-FC-999999": {"family_id": "VIGIL-FF-9999"}}
+        errors = []
+        VALIDATOR.validate_taxonomy_mapping(
+            Path("synthetic-incident.json"), mapping, label, families, classes, {}, errors
+        )
+        return errors
+
+    def test_mapping_local_basis_without_incident_identifier_passes(self):
+        self.assertEqual(
+            self.mapping_errors("The bounded occurrence does not establish the required control failure."),
+            [],
+        )
+
+    def test_primary_mapping_basis_rejects_short_incident_identifier(self):
+        errors = self.mapping_errors("INC-000129 does not establish the required control failure.")
+        self.assertTrue(any("must not use an Incident ID" in error for error in errors), errors)
+
+    def test_secondary_mapping_basis_rejects_canonical_incident_identifier(self):
+        errors = self.mapping_errors(
+            "VIGIL-INC-000129 does not establish the required control failure.",
+            "taxonomy_classification.secondary_classifications[0]",
+        )
+        self.assertTrue(any("must not use an Incident ID" in error for error in errors), errors)
+
+    def test_structured_incident_identifiers_remain_outside_mapping_prose_rule(self):
+        synthetic_record = {
+            "id": "VIGIL-INC-000129",
+            "related_incidents": ["VIGIL-INC-000001"],
+            "taxonomy_classification": {
+                "primary_classification": {
+                    "classification_basis": "The evidenced pathway establishes the classification boundary."
+                }
+            },
+        }
+        basis = synthetic_record["taxonomy_classification"]["primary_classification"]["classification_basis"]
+        self.assertEqual(self.mapping_errors(basis), [])
+
     def test_source_order_must_be_contiguous(self):
         self.assertNotEqual(
             self.validate_mutation(lambda record: record["source_records"][0].update(incident_source_order=2)),
