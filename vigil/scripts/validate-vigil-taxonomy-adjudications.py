@@ -46,6 +46,11 @@ UNRESOLVED_MARKERS = (
     "missing",
     "insufficient",
 )
+UNRESOLVED_BOILERPLATE_PATTERNS = (
+    r"(?:does not establish|lacks?|missing|unavailable) (?:the )?recognition facts? "
+    r"needed to resolve (?:vigil-)?fc-?\d+",
+    r"(?:candidate|class|classification) remains unresolved (?:at|on) the class boundary",
+)
 BOILERPLATE_PATTERNS = (
     r"^no material .+ mechanism is present in the bounded occurrence",
     r"required (?:failure )?conditions are outside the evidenced pathway",
@@ -53,6 +58,15 @@ BOILERPLATE_PATTERNS = (
     r"^(?:not applicable|n/?a)[\.!]?$",
     r"^(?:no|none)\s*[-:]?\s*(?:applicable|relevant)[\.!]?$",
 )
+
+
+def unresolved_reason_identifies_evidence_gap(reason):
+    """Return whether an unresolved reason names more than matrix state."""
+    lowered = reason.lower().strip()
+    return any(marker in lowered for marker in UNRESOLVED_MARKERS) and not any(
+        re.search(pattern, lowered)
+        for pattern in UNRESOLVED_BOILERPLATE_PATTERNS
+    )
 
 # Section 02 uses occurrence-level prose labels, but only these exact values
 # are admitted as canonical role encodings. Similar-sounding strings such as
@@ -322,8 +336,8 @@ def validate(incident_filter=None):
                     f"{label}: evidence uncertainty must be unresolved, not "
                     "no-mapping"
                 )
-            if decision == "unresolved" and not any(
-                marker in lowered for marker in UNRESOLVED_MARKERS
+            if decision == "unresolved" and not unresolved_reason_identifies_evidence_gap(
+                reason
             ):
                 errors.append(
                     f"{label}: unresolved reason must identify the missing or "

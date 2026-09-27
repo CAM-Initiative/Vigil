@@ -43,6 +43,23 @@ class MigrationTests(unittest.TestCase):
 
 
 class RoleParsingTests(unittest.TestCase):
+    def test_unresolved_reason_rejects_matrix_state_placeholder(self):
+        self.assertFalse(
+            VALIDATOR["unresolved_reason_identifies_evidence_gap"](
+                "The preserved record does not establish the recognition facts "
+                "needed to resolve VIGIL-FC-000040; this candidate remains "
+                "unresolved at the class boundary."
+            )
+        )
+
+    def test_unresolved_reason_accepts_occurrence_specific_gap(self):
+        self.assertTrue(
+            VALIDATOR["unresolved_reason_identifies_evidence_gap"](
+                "The agents attacked excluded countries, but the record does not "
+                "establish whether an operative target restriction reached each agent."
+            )
+        )
+
     def test_section02_accepts_only_documented_role_values(self):
         record = {
             "vigil_assessment": {
