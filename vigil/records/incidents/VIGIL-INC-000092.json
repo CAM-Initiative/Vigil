@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Instinct processed retained Gmail data after Google access was disconnected",
     "created": "2026-09-07",
-    "updated": "2026-09-27",
-    "version": "0.1.10"
+    "updated": "2026-09-28",
+    "version": "0.1.11"
   },
   "incident_identity": {
     "historical_event_name": "21 August 2026 Instinct retained-email processing after Google disconnection",
@@ -33,13 +33,25 @@
       "clauses": [
         {
           "source_paraphrase": "Disconnecting Google access ended the live connector pathway; the reported post-disconnection behaviour used copies already retained by Instinct rather than a stale authenticated Gmail session.",
-          "recovered_invariant_interpretation": "Authentication-State Continuity must remain valid across the material pathway described by the preserved occurrence evidence.",
+          "recovered_invariant_interpretation": "A revoked authentication pathway should cease to authorise fresh access, and later use of already retained data must remain distinguishable from continued authenticated access.",
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000031",
               "relationship": "successful-invariant",
               "canonical_taxonomy_mapping": true,
               "rationale": "Disconnecting Google access ended the live connector pathway; the reported post-disconnection behaviour used copies already retained by Instinct rather than a stale authenticated Gmail session."
+            }
+          ]
+        },
+        {
+          "source_paraphrase": "Instinct continued processing copies of Gmail data retained before disconnection and sent an email summary about three hours after Google access had been disconnected.",
+          "recovered_invariant_interpretation": "A disconnect control should have a clear and preserved scope over whether data already retained by the system may continue to be processed after the live connector is revoked.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000040",
+              "relationship": "candidate boundary",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "The preserved record does not establish whether disconnecting Google created an operative control state that was intended to prohibit subsequent processing of copies already retained by Instinct."
             }
           ]
         }
@@ -211,19 +223,19 @@
     ]
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.6.7",
+    "taxonomy_version": "0.6.9",
     "classification_status": "classified",
-    "classification_basis": "Disconnecting Google access ended the live connector pathway; the reported post-disconnection behaviour used copies already retained by Instinct rather than a stale authenticated Gmail session.",
+    "classification_basis": "The successful-invariant mapping to VIGIL-FC-000031 is limited to the live connector pathway: disconnecting Google ended authenticated Gmail access, and the later behaviour used retained copies rather than a stale session. Whether the disconnect was also intended to prohibit subsequent processing of retained copies remains unresolved.",
     "primary_classification": {
       "family_id": "VIGIL-FF-0005",
       "class_id": "VIGIL-FC-000031",
       "classification_role": "successful-invariant",
-      "classification_basis": "Disconnecting Google access ended the live connector pathway; the reported post-disconnection behaviour used copies already retained by Instinct rather than a stale authenticated Gmail session.",
+      "classification_basis": "Disconnecting Google access ended the live connector pathway; the reported post-disconnection behaviour used copies already retained by Instinct rather than a stale authenticated Gmail session. This successful-invariant finding is limited to authentication-state continuity.",
       "classification_confidence": "high"
     },
     "secondary_classifications": [],
     "classification_review_provenance": {
-      "review_date": "2026-09-25",
+      "review_date": "2026-09-28",
       "reviewer": "OpenAI ChatGPT — GPT-5.6 Sol under human-directed VIGIL governance",
       "review_status": "classification review completed"
     },
