@@ -416,6 +416,24 @@ The current canonical compatibility source is `external_assessments[].classifica
 
 ## Alignment Taxonomy adjudication matrix
 
+### Adjudication completeness and exemplar eligibility
+
+Reviewed Incidents may opt into the backwards-compatible completeness contract by assigning
+`adjudication_status` to every material `source_clause_analysis.clauses[]` entry and storing the
+derived `taxonomy_classification.adjudication_coverage.status`. `mapped` denotes a final canonical
+relationship; `resolved-no-mapping` denotes a completed determination that no current Fidelity
+Class applies; `unresolved` preserves an evidence-limited existing-class candidate; and
+`taxonomy-gap` records an established issue for which no current class is adequate. Use the
+optional `adjudication_note` only when the relationship rationale does not already explain the
+disposition.
+
+Coverage is `complete` only when every material clause is `mapped` or `resolved-no-mapping`; it is
+`partial` when any clause is `unresolved` or `taxonomy-gap`. This status is recomputed by the record
+validator and projected in the public Incident index. A `successful-invariant` relationship remains
+a mapping-local finding regardless of coverage. Incident-level exemplar eligibility requires
+complete coverage, at least one canonical successful-invariant mapping, and no canonical
+failure-occurrence or ambiguous-boundary mapping.
+
 `vigil/taxonomy/VIGIL.FailureTaxonomy.Adjudications.json` is the maintenance coverage table for exhaustive Incident-by-class review. Its legacy filename is retained for compatibility; it is governed by the current VIGIL Observatory Alignment Taxonomy. It is not a second taxonomy and it is not a public classification narrative.
 
 Each enrolled Incident must have exactly one row for every current selectable Fidelity Class. The matrix is a taxonomy-role adjudication matrix, not a failure-only matrix. Exhaustive adjudication tests every class independently for failure occurrence, successful invariant and ambiguous boundary. A NO failure decision is not proof that the class has no taxonomy relationship to the Incident.

@@ -25,6 +25,7 @@ class IncidentBuilderTests(unittest.TestCase):
         self.assertEqual(entry["severity"], record["harm_impact_assessment"]["overall_severity"])
         self.assertEqual(entry["classification_status"], record["taxonomy_classification"]["classification_status"])
         self.assertEqual(entry.get("classification_role"), record["taxonomy_classification"].get("classification_role"))
+        self.assertIsNone(entry.get("alignment_exemplar_eligible"))
         self.assertEqual(
             entry["primary_classification"]["classification_role"],
             record["taxonomy_classification"]["primary_classification"]["classification_role"],
@@ -98,6 +99,11 @@ class IncidentBuilderTests(unittest.TestCase):
         self.assertFalse(any(item["incident_id"] == "VIGIL-INC-000126" for item in examples))
         successful = [item for rows in projection["successful_invariants"].values() for item in rows]
         self.assertTrue(any(item["incident_id"] == "VIGIL-INC-000126" for item in successful))
+        self.assertTrue(any(item["incident_id"] == "VIGIL-INC-000015" for item in successful))
+        partial = BUILDER.load(BUILDER.INCIDENTS / "VIGIL-INC-000015.json")
+        complete = BUILDER.load(BUILDER.INCIDENTS / "VIGIL-INC-000126.json")
+        self.assertFalse(BUILDER.alignment_exemplar_eligible(partial))
+        self.assertTrue(BUILDER.alignment_exemplar_eligible(complete))
 
     def test_failure_examples_and_repair_are_derived_per_mapping(self):
         def mapping(class_id, role):
@@ -125,6 +131,7 @@ class IncidentBuilderTests(unittest.TestCase):
                 "taxonomy_classification": {
                     "primary_classification": primary,
                     "secondary_classifications": secondary,
+                    "adjudication_coverage": {"status": "complete"},
                 },
             }
             records.append(record)
@@ -153,6 +160,7 @@ class IncidentBuilderTests(unittest.TestCase):
         self.assertIn(("VIGIL-INC-TEST-D", "VIGIL-FC-000001"), failure_pairs)
         self.assertIn(("VIGIL-INC-TEST-D", "VIGIL-FC-000002"), exemplar_pairs)
         self.assertIn(("VIGIL-INC-TEST-E", "VIGIL-FC-000001"), exemplar_pairs)
+        self.assertIn(("VIGIL-INC-TEST-C", "VIGIL-FC-000001"), exemplar_pairs)
         self.assertIn(("VIGIL-INC-TEST-E", "VIGIL-FC-000002"), failure_pairs)
         self.assertNotIn(("VIGIL-INC-TEST-C", "VIGIL-FC-000001"), failure_pairs)
         self.assertIn(("VIGIL-INC-TEST-F", "VIGIL-FC-000002"), ambiguous_pairs)
