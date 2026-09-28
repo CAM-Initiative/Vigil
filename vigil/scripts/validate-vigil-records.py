@@ -328,6 +328,60 @@ def validate_incident_taxonomy(path: Path, record: dict[str, Any], errors: list[
     role = block.get("classification_role")
     if role is not None and role not in set(contract["classification_role_values"]):
         errors.append(f"{path}: invalid taxonomy classification_role {role!r}")
+
+    coverage = block.get("adjudication_coverage")
+    assessment = record.get("vigil_assessment")
+    analysis = assessment.get("source_clause_analysis") if isinstance(assessment, dict) else None
+    clauses = analysis.get("clauses") if isinstance(analysis, dict) else None
+    # This contract is additive: legacy records without clause dispositions remain valid.
+    # Once either surface adopts it, both the stored coverage and every material clause
+    # must participate so that coverage can be recomputed rather than asserted.
+    has_clause_status = isinstance(clauses, list) and any(
+        isinstance(clause, dict) and "adjudication_status" in clause for clause in clauses
+    )
+    if coverage is not None or has_clause_status:
+        if not isinstance(coverage, dict) or coverage.get("status") not in {"complete", "partial"}:
+            errors.append(
+                f"{path}: taxonomy_classification.adjudication_coverage.status must be complete or partial"
+            )
+        statuses = []
+        for index, clause in enumerate(clauses if isinstance(clauses, list) else []):
+            if not isinstance(clause, dict):
+                continue
+            clause_status = clause.get("adjudication_status")
+            label = f"vigil_assessment.source_clause_analysis.clauses[{index}]"
+            if clause_status not in {"mapped", "resolved-no-mapping", "unresolved", "taxonomy-gap"}:
+                errors.append(f"{path}: {label}.adjudication_status is missing or invalid")
+                continue
+            if "adjudication_note" in clause and not non_empty(clause.get("adjudication_note")):
+                errors.append(f"{path}: {label}.adjudication_note must be non-empty when present")
+            statuses.append(clause_status)
+            relationships = clause.get("taxonomy_relationships")
+            relationships = relationships if isinstance(relationships, list) else []
+            canonical = [
+                item for item in relationships
+                if isinstance(item, dict) and item.get("canonical_taxonomy_mapping") is True
+            ]
+            if clause_status == "mapped" and not canonical:
+                errors.append(f"{path}: {label} mapped requires a canonical taxonomy relationship")
+            if clause_status == "resolved-no-mapping" and canonical:
+                errors.append(f"{path}: {label} resolved-no-mapping must not contain a canonical mapping")
+            if clause_status == "unresolved" and not any(
+                isinstance(item, dict)
+                and item.get("canonical_taxonomy_mapping") is False
+                and "candidate" in str(item.get("relationship", "")).casefold()
+                for item in relationships
+            ):
+                errors.append(f"{path}: {label} unresolved requires an unresolved candidate relationship")
+            if clause_status == "taxonomy-gap" and canonical:
+                errors.append(f"{path}: {label} taxonomy-gap must not contain a canonical mapping")
+        if statuses and isinstance(coverage, dict):
+            computed = "partial" if any(value in {"unresolved", "taxonomy-gap"} for value in statuses) else "complete"
+            if coverage.get("status") != computed:
+                errors.append(
+                    f"{path}: adjudication_coverage.status {coverage.get('status')!r} is inconsistent; "
+                    f"clause dispositions require {computed!r}"
+                )
     for field in ("taxonomy_version", "classification_basis"):
         if not non_empty(block.get(field)):
             errors.append(f"{path}: taxonomy_classification.{field} must be non-empty")

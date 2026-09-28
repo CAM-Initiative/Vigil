@@ -142,6 +142,52 @@ class IncidentRuleTests(unittest.TestCase):
         errors, _ = VALIDATOR.validate_record(Path(record["id"] + ".json"), record)
         self.assertTrue(any("invariant_exemplar" in error for error in errors), errors)
 
+    def test_adjudication_coverage_is_recomputed_from_clause_dispositions(self):
+        record = json.loads(
+            (VIGIL / "records" / "incidents" / "VIGIL-INC-000126.json").read_text(encoding="utf-8")
+        )
+        record["taxonomy_classification"]["adjudication_coverage"]["status"] = "partial"
+        errors, _ = VALIDATOR.validate_record(Path(record["id"] + ".json"), record)
+        self.assertTrue(any("clause dispositions require 'complete'" in error for error in errors), errors)
+
+    def test_mapped_clause_requires_canonical_relationship(self):
+        record = json.loads(
+            (VIGIL / "records" / "incidents" / "VIGIL-INC-000126.json").read_text(encoding="utf-8")
+        )
+        relationship = record["vigil_assessment"]["source_clause_analysis"]["clauses"][0]["taxonomy_relationships"][0]
+        relationship["canonical_taxonomy_mapping"] = False
+        errors, _ = VALIDATOR.validate_record(Path(record["id"] + ".json"), record)
+        self.assertTrue(any("mapped requires a canonical taxonomy relationship" in error for error in errors), errors)
+
+    def test_unresolved_clause_requires_candidate_relationship(self):
+        record = json.loads(
+            (VIGIL / "records" / "incidents" / "VIGIL-INC-000126.json").read_text(encoding="utf-8")
+        )
+        clause = record["vigil_assessment"]["source_clause_analysis"]["clauses"][0]
+        clause["adjudication_status"] = "unresolved"
+        record["taxonomy_classification"]["adjudication_coverage"]["status"] = "partial"
+        errors, _ = VALIDATOR.validate_record(Path(record["id"] + ".json"), record)
+        self.assertTrue(any("unresolved requires an unresolved candidate relationship" in error for error in errors), errors)
+
+    def test_resolved_without_mapping_rejects_canonical_relationship(self):
+        record = json.loads(
+            (VIGIL / "records" / "incidents" / "VIGIL-INC-000126.json").read_text(encoding="utf-8")
+        )
+        clause = record["vigil_assessment"]["source_clause_analysis"]["clauses"][0]
+        clause["adjudication_status"] = "resolved-no-mapping"
+        errors, _ = VALIDATOR.validate_record(Path(record["id"] + ".json"), record)
+        self.assertTrue(any("resolved-no-mapping must not contain a canonical mapping" in error for error in errors), errors)
+
+    def test_taxonomy_gap_rejects_canonical_relationship(self):
+        record = json.loads(
+            (VIGIL / "records" / "incidents" / "VIGIL-INC-000126.json").read_text(encoding="utf-8")
+        )
+        clause = record["vigil_assessment"]["source_clause_analysis"]["clauses"][0]
+        clause["adjudication_status"] = "taxonomy-gap"
+        record["taxonomy_classification"]["adjudication_coverage"]["status"] = "partial"
+        errors, _ = VALIDATOR.validate_record(Path(record["id"] + ".json"), record)
+        self.assertTrue(any("taxonomy-gap must not contain a canonical mapping" in error for error in errors), errors)
+
     def test_retired_legacy_structures_are_rejected(self):
         def mutate(record):
             record["legacy_provenance"] = [{
