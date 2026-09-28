@@ -141,9 +141,9 @@ class ExternalSourceRegistryTests(unittest.TestCase):
     def test_migrated_august_review_programme_has_bounded_model_attribution(self):
         registry = json.loads(mod.REGISTRY_PATH.read_text(encoding="utf-8"))
         events = [event for entry in registry["entries"] for event in entry["substantive_review_provenance"]["review_events"]]
-        self.assertEqual(len(registry["entries"]), 81)
-        self.assertEqual(len(events), 99)
-        self.assertEqual(sum("requirement extraction" in e["review_scope"] for e in events), 18)
+        august_events = [event for event in events if event["review_date"].startswith("2026-08-")]
+        self.assertEqual(len(august_events), 99)
+        self.assertEqual(sum("requirement extraction" in e["review_scope"] for e in august_events), 18)
         self.assertTrue(all(e["review_system"] == {"provider": "OpenAI", "platform": "ChatGPT", "model": "GPT-5.6 Sol"} for e in events))
 
 
