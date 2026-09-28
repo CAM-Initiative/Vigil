@@ -1,8 +1,10 @@
 # External Requirement Source-Fidelity Status
 
-Review date: 2026-09-20
+Review date: 2026-09-28
 
-The external-requirements corpus contains 978 canonical EXTREQ records across 81 registered source versions. Historical `extraction_status` remains preserved in `source-scope.json`; it is not, by itself, a claim of clause-level semantic fidelity.
+The external-requirements corpus contains 978 canonical EXTREQ records across 85 registered source versions. Historical `extraction_status` remains preserved in `source-scope.json`; it is not, by itself, a claim of clause-level semantic fidelity.
+
+Baseline 0.2.0 adds four source-level registrations (CETS No. 225, OECD/LEGAL/0449, the current Government of Canada Directive on Automated Decision-Making, and C2PA 2.4). Each is `not-started` with zero EXTREQ records; none is included in the complete or fidelity-assured counts below.
 
 ## Effective completion rule
 

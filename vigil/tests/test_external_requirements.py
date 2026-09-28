@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import copy
+import datetime as dt
 import importlib.util
 import sys
 import tempfile
@@ -199,8 +200,9 @@ class ExternalRequirementsTests(unittest.TestCase):
             self.assertEqual(provenance["review_system"], {
                 "provider": "OpenAI", "platform": "ChatGPT", "model": "GPT-5.6 Sol"
             })
-            self.assertEqual(provenance["review_date"], "2026-08-24")
-            self.assertEqual(provenance["next_substantive_review"], "2026-11-22")
+            review_date = dt.date.fromisoformat(provenance["review_date"])
+            next_review = dt.date.fromisoformat(provenance["next_substantive_review"])
+            self.assertEqual(next_review, review_date + dt.timedelta(days=90))
 
     def test_recorded_source_digest_does_not_invent_human_assurance(self):
         overlay = MODULE.load_json(MODULE.REVIEW_ASSURANCE_PATH)
