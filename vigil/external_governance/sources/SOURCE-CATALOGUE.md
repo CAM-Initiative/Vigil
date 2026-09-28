@@ -2,9 +2,9 @@
 
 Public knowledge catalogue of external governance sources and their bounded relevance to AI governance. The summaries describe source subject matter; they do not provide legal advice or establish that a source applies to any particular system or organisation.
 
-- Source versions: 81
+- Source versions: 85
 - Review-due source versions: 0
-- Registry updated through: 2026-08-24
+- Registry updated through: 2026-09-28T00:00:00Z
 
 ## SDOS Runtime Governance Framework — Control Catalog and Reference Document
 
@@ -22,6 +22,57 @@ The SDOS Runtime Governance Framework is an owner-authored control catalogue for
 - **Review method:** direct-public-primary-review · bounded-complete-review
 - **Review freshness:** current
 - **Official source:** https://aamcyber.com/sdos/reference/v1/
+
+## C2PA Technical Specification
+
+The C2PA Technical Specification defines an open technical framework for content provenance and authenticity using signed manifests, assertions, ingredients, credentials and validation processes. Version 2.4, published in April 2026, is relevant to governance of synthetic and transformed media because it can preserve claims about origin and editing history in a verifiable structure. The specification does not prove that content is true, eliminate deception, or establish that any producer or platform conforms; those questions remain implementation- and evidence-dependent. Normative conformance statements, explanatory examples and optional implementation choices have distinct technical force.
+
+- **Issuer:** Coalition for Content Provenance and Authenticity
+- **Version:** `2.4`
+- **Lifecycle state:** `published`
+- **AI-governance relevance:** assurance, documentation, provenance, security, supply-chain, traceability, transparency
+- **Applicable lifecycle stages:** development, data-acquisition, deployment, operation-use, monitoring, change-management, supply-chain, cross-lifecycle
+- **Relevance scope:** Open content-provenance technical specification with material relevance to synthetic-content authenticity and transformation lineage; it is not a general factuality standard or legal compliance regime.
+- **Last substantive review:** 2026-09-28
+- **Next substantive review:** 2026-12-27
+- **Substantive reviewer:** OpenAI / ChatGPT / GPT-5.6 Sol
+- **Review method:** direct-public-primary-review · not-started
+- **Review freshness:** current
+- **Official source:** https://spec.c2pa.org/specifications/specifications/2.4/index.html
+
+## Directive on Automated Decision-Making
+
+The Government of Canada Directive on Automated Decision-Making governs automated decision systems used by federal departments for administrative decisions. It uses an Algorithmic Impact Assessment to determine impact levels and scales requirements concerning notice, explanation, testing, peer review, monitoring, human intervention, recourse and public reporting. Its authority and application are bounded to the Canadian federal administrative context described by the instrument; those duties do not automatically extend to other actors or jurisdictions. The instrument is particularly useful for comparing governance obligations that increase with assessed impact while retaining departmental scope, defined terms, exceptions and transition provisions.
+
+- **Issuer:** Treasury Board of Canada Secretariat
+- **Version:** `current-2026-09-28`
+- **Lifecycle state:** `in-force`
+- **AI-governance relevance:** accountability, assurance, documentation, human-oversight, impact-assessment, monitoring, risk-management, testing-evaluation, traceability, transparency
+- **Applicable lifecycle stages:** governance, design, development, testing-evaluation, deployment, operation-use, monitoring, incident-response, change-management
+- **Relevance scope:** Current Canadian federal government directive for automated administrative decision systems. Actor, system and decision scope must be preserved in analysis and comparison.
+- **Last substantive review:** 2026-09-28
+- **Next substantive review:** 2026-12-27
+- **Substantive reviewer:** OpenAI / ChatGPT / GPT-5.6 Sol
+- **Review method:** direct-public-primary-review · not-started
+- **Review freshness:** current
+- **Official source:** https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=32592
+
+## Council of Europe Framework Convention on Artificial Intelligence and Human Rights, Democracy and the Rule of Law
+
+The Council of Europe Framework Convention on Artificial Intelligence and Human Rights, Democracy and the Rule of Law establishes an international treaty framework for AI-related activities across their lifecycle. It addresses human rights, democratic institutions, rule-of-law safeguards, risk and impact management, transparency, accountability, remedies and procedural protections. At the verified baseline date, the treaty was open for signature and had not entered into force. Signature, ratification, territorial scope, domestic implementation and application to a particular activity remain separate legal questions. Its governance value is the integration of technical risk processes with public-law safeguards rather than a technical control catalogue.
+
+- **Issuer:** Council of Europe
+- **Version:** `2024-09-05`
+- **Lifecycle state:** `open-for-signature-not-in-force`
+- **AI-governance relevance:** accountability, assurance, human-oversight, impact-assessment, lifecycle-governance, risk-management, safety, transparency, worker-affected-person-rights
+- **Applicable lifecycle stages:** governance, design, development, deployment, operation-use, monitoring, incident-response, change-management, cross-lifecycle
+- **Relevance scope:** International treaty source relevant to rights-preserving AI governance. Treaty status and applicability must be established from the Treaty Office and relevant domestic processes.
+- **Last substantive review:** 2026-09-28
+- **Next substantive review:** 2026-12-27
+- **Substantive reviewer:** OpenAI / ChatGPT / GPT-5.6 Sol
+- **Review method:** direct-public-primary-review · not-started
+- **Review freshness:** current
+- **Official source:** https://www.coe.int/en/web/conventions/full-list?module=treaty-detail&treatynum=225
 
 ## CycloneDX 1.7 — Machine Learning Bill of Materials (ML-BOM)
 
@@ -1365,6 +1416,23 @@ The OECD report Towards a Common Reporting Framework for AI Incidents develops a
 - **Review method:** direct-public-primary-review · supporting-only-review
 - **Review freshness:** current
 - **Official source:** https://www.oecd.org/en/publications/towards-a-common-reporting-framework-for-ai-incidents_f326d4ac-en.html
+
+## Recommendation of the Council on Artificial Intelligence
+
+The OECD Recommendation of the Council on Artificial Intelligence, commonly expressed through the OECD AI Principles, provides intergovernmental principles for trustworthy AI and recommendations to policy makers. The 2024 revision addresses inclusive growth, human rights and democratic values, transparency and explainability, robustness, security and safety, and accountability across the AI lifecycle. It is a policy recommendation rather than binding legislation, and it does not establish legal applicability, adherence, implementation, certification or clause-level conformance. Its value is a shared policy baseline used across jurisdictions rather than a detailed implementation-control catalogue.
+
+- **Issuer:** OECD
+- **Version:** `2024-05-03`
+- **Lifecycle state:** `adopted-current`
+- **AI-governance relevance:** accountability, human-oversight, lifecycle-governance, risk-management, robustness, safety, security, transparency, worker-affected-person-rights
+- **Applicable lifecycle stages:** governance, design, development, testing-evaluation, deployment, operation-use, monitoring, incident-response, change-management, cross-lifecycle
+- **Relevance scope:** Current intergovernmental AI-policy recommendation with foundational comparative value; it does not create binding legal duties or certify conformance.
+- **Last substantive review:** 2026-09-28
+- **Next substantive review:** 2026-12-27
+- **Substantive reviewer:** OpenAI / ChatGPT / GPT-5.6 Sol
+- **Review method:** direct-public-primary-review · not-started
+- **Review freshness:** current
+- **Official source:** https://legalinstruments.oecd.org/en/instruments/OECD-LEGAL-0449
 
 ## SPDX Specification 3.0.1 — AI Profile
 

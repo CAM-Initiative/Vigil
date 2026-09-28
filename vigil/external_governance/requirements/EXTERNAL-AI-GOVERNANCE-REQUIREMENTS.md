@@ -2,8 +2,8 @@
 
 Canonical analytical catalogue derived from registered external governance sources. Inclusion does not establish CAM applicability, adoption, coverage, compliance, conformance or alignment.
 
-- Registered source versions: 81
-- Primary AI-governance source versions: 57
+- Registered source versions: 85
+- Primary AI-governance source versions: 61
 - Requirement records: 978
 
 ## SDOS Runtime Governance Framework — Control Catalog and Reference Document — 1.10
@@ -42,6 +42,42 @@ Canonical analytical catalogue derived from registered external governance sourc
 | `EXTREQ-E413E7DE0D505870` | SDOS-RS-01 | Use accumulated governed feedback and audit data to produce post-hoc risk/safety investment evaluation with documented component metrics and statistical summaries for operator review. | `recommended-practice` / `guidance` | `industry-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-ED3205AF140C41E7` | SDOS-RM-02 | Assess task characteristics at dispatch and prevent tasks requiring higher analytical capability from being routed below the minimum capability tier identified for the task. | `recommended-practice` / `guidance` | `industry-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-EE5947EABAB44AA2` | SDOS-DE-01 | Govern multi-agent deliberation through policy-defined panel composition, common admission and identity controls, and structured auditable output; treat elevated-risk deliberation outputs as inputs to human review rather than substitutes for human oversight. | `recommended-practice` / `guidance` | `industry-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+
+## C2PA Technical Specification — 2.4
+
+- Source: `EXT-477888AB2C1E` / `C2PA-SPEC`
+- Role: `primary-ai-governance`
+- Access: `direct-public-primary`
+- Extraction: `not-started`
+- Requirements: 0
+- Review priority: `high-value-governance-source`
+- Next action: Perform bounded primary-source analysis before creating any EXTREQ records.
+
+No requirement records are asserted. Registered at source level for AI Governance Standards Baseline 0.2.0. No EXTREQ record exists and no clause-level completeness or Compliance claim is made.
+
+## Directive on Automated Decision-Making — current-2026-09-28
+
+- Source: `EXT-12CF1C0E7F42` / `CANADA-DIRECTIVE-AUTOMATED-DECISION-MAKING`
+- Role: `primary-ai-governance`
+- Access: `direct-public-primary`
+- Extraction: `not-started`
+- Requirements: 0
+- Review priority: `critical-governance-source`
+- Next action: Perform bounded primary-source analysis before creating any EXTREQ records.
+
+No requirement records are asserted. Registered at source level for AI Governance Standards Baseline 0.2.0. No EXTREQ record exists and no clause-level completeness or Compliance claim is made.
+
+## Council of Europe Framework Convention on Artificial Intelligence and Human Rights, Democracy and the Rule of Law — 2024-09-05
+
+- Source: `EXT-63C32647602D` / `COE-AI-CONVENTION-CETS-225`
+- Role: `primary-ai-governance`
+- Access: `direct-public-primary`
+- Extraction: `not-started`
+- Requirements: 0
+- Review priority: `critical-governance-source`
+- Next action: Perform bounded primary-source analysis before creating any EXTREQ records.
+
+No requirement records are asserted. Registered at source level for AI Governance Standards Baseline 0.2.0. No EXTREQ record exists and no clause-level completeness or Compliance claim is made.
 
 ## CycloneDX 1.7 — Machine Learning Bill of Materials (ML-BOM) — 1.7
 
@@ -1956,6 +1992,18 @@ No requirement records are asserted. Retained as a bounded supporting authority.
 - Next action: Crosswalk VIGIL failure-report fields against OECD reporting criteria without converting policy guidance into mandatory duties.
 
 No requirement records are asserted. AI-specific incident-reporting framework retained for reporting-dimension and interoperability comparison, not as a binding requirement baseline.
+
+## Recommendation of the Council on Artificial Intelligence — 2024-05-03
+
+- Source: `EXT-A35C209A334B` / `OECD-AI-PRINCIPLES`
+- Role: `primary-ai-governance`
+- Access: `direct-public-primary`
+- Extraction: `not-started`
+- Requirements: 0
+- Review priority: `critical-governance-source`
+- Next action: Perform bounded primary-source analysis before creating any EXTREQ records.
+
+No requirement records are asserted. Registered at source level for AI Governance Standards Baseline 0.2.0. No EXTREQ record exists and no clause-level completeness or Compliance claim is made.
 
 ## SPDX Specification 3.0.1 — AI Profile — 3.0.1
 

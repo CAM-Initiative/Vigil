@@ -1,10 +1,16 @@
 # AI Governance Standards Baseline Dataset
 
-**Dataset version:** 0.1.0
+**Dataset version:** 0.2.0
 
 The AI Governance Standards Baseline is a machine-readable VIGIL dataset combining registered governance-source metadata with clause/control records derived from laws, standards, frameworks and technical guidance relevant to AI governance.
 
 The dataset is intended to help third parties understand what each source is, how it relates to AI governance, which lifecycle stages it informs, when its substantive assessment was last reviewed, and—where clause records are available—the individual governance requirements represented from that source.
+
+## Release 0.2.0 coverage boundary
+
+Release 0.2.0 contains **85 registered source versions** and **978 canonical clause/control records**. Four source versions were newly registered at source level: Council of Europe CETS No. 225, OECD/LEGAL/0449, the Government of Canada Directive on Automated Decision-Making, and C2PA Technical Specification 2.4. Their extraction state is `not-started`; they contribute no EXTREQ records and must not be presented as clause-level Compliance coverage.
+
+No new structured requirement extraction was completed for 0.2.0. IEEE 7003 and the four newly registered sources await primary-source analysis, the consolidated EU AI Act remains partial, and the prioritised ISO/IEC standards remain pending lawful access. See `CHANGELOG.md` for the source-by-source release boundary.
 
 ## Package contents
 
@@ -38,10 +44,10 @@ A source may therefore be marked review-due even when the underlying law, standa
 
 ## Versioning
 
-The dataset uses semantic versioning and is currently released as **0.1.0** while the public dataset contract remains pre-1.0 and experimental.
+The dataset uses semantic versioning and is currently released as **0.2.0** while the public dataset contract remains pre-1.0 and experimental.
 
 - **Patch** changes are reserved for substantive corrections that should be represented as a new dataset release.
-- **Minor** changes are used for material expansion, such as substantial new source or clause coverage, once the dataset reaches a more stable release line.
+- **Minor** changes are used for material expansion, such as substantial new source or clause coverage, while the dataset remains on its pre-1.0 release line.
 - **Major** changes are reserved for incompatible changes to the dataset contract or structure.
 
 A review-freshness update by itself does **not** require a dataset version increment. Review-only refreshes may regenerate the current package under the same dataset version; `manifest.json` records the package build/update timestamp and hashes so individual generated artefacts remain distinguishable.
