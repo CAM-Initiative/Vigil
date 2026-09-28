@@ -34,6 +34,8 @@ INDEX_ENTRY_KEYS = {
     "severity",
     "classification_status",
     "classification_role",
+    "adjudication_coverage",
+    "alignment_exemplar_eligible",
     "primary_classification",
     "secondary_classifications",
     "repair_classifications",
@@ -125,6 +127,22 @@ def expected_projection(record: dict[str, Any]) -> dict[str, Any]:
         "severity": assessment.get("overall_severity"),
         "classification_status": taxonomy.get("classification_status"),
         "classification_role": taxonomy.get("classification_role"),
+        "adjudication_coverage": taxonomy.get("adjudication_coverage"),
+        "alignment_exemplar_eligible": (
+            None if not isinstance(taxonomy.get("adjudication_coverage"), dict)
+            else (
+                taxonomy["adjudication_coverage"].get("status") == "complete"
+                and "successful-invariant" in {
+                    mapping.get("classification_role") for _, mapping in mappings
+                }
+                and "failure-occurrence" not in {
+                    mapping.get("classification_role") for _, mapping in mappings
+                }
+                and "ambiguous-boundary" not in {
+                    mapping.get("classification_role") for _, mapping in mappings
+                }
+            )
+        ),
         "primary_classification": projected_mapping(primary),
         "secondary_classifications": projected_secondary,
         "repair_classifications": [

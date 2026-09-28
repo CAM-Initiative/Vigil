@@ -291,14 +291,15 @@ Do not move content between these fields merely to satisfy a prose validator. A 
 | Stage 01 evidence card | Limits of the evidence | source limitations / `primary_artefact_access.limitations` |
 | Stage 01 evidence metadata | Publisher, date, source type, evidence status, role, residence, modality, reviewer, access | selected `source_records[]` and `primary_artefact_access` fields |
 | Stage 02 | **Factual basis** | `vigil_assessment.factual_basis` |
-| Stage 02 | **VIGIL taxonomy assessment** | `vigil_assessment.source_clause_analysis.clauses[]` |
+| Stage 02 | **Incident breakdown** | `vigil_assessment.source_clause_analysis.clauses[]` |
 | Stage 02 | Public authorship and review transparency | compact projection of `interpretive_provenance.*` where supported by the renderer |
-| Stage 02 | External assessments | selected `external_assessments[]` fields |
-| Stage 02 | Real-world harm assessment | assessed rows from `harm_impact_assessment.dimensions[]` plus derived overall severity |
+| Stage 02 | External assessments | selected non-classification `external_assessments[]` fields |
+| Stage 02 | **Harm Impact Assessment** | assessed rows from `harm_impact_assessment.dimensions[]` plus derived overall severity |
 | Stage 02 | Evidence gap | `harm_impact_assessment.assessment_gap` |
 | Stage 03 | Fidelity Family / Fidelity Class classification table | `taxonomy_classification.primary_classification` and `secondary_classifications[]`; immutable `VIGIL-FF-*` / `VIGIL-FC-*` identifiers resolve against the current Alignment Taxonomy |
 | Stage 03 | Alignment | mapping-local `classification_role` |
 | Stage 03 | Classification basis | mapping-local `classification_basis` |
+| Stage 03 | **External Alignment Classification** | `external_assessments[].classification_or_rating` plus parent assessor / assessment citation metadata; external labels remain in the external assessor’s own scheme and are not translated into VIGIL taxonomy roles |
 | Stage 04 | Governing invariant / Repair | resolved from the current Alignment Taxonomy using the Incident's Fidelity Class (`VIGIL-FC-*`) IDs; not authored as separate Incident prose |
 | Stage 05 | **VIGIL Observatory conclusion** | `vigil_assessment.governance_interpretation` |
 | Stage 05 | **Governance significance** | `vigil_assessment.significance_to_cam` |
@@ -375,13 +376,13 @@ For `summary` specifically, the repair rule is:
 
 > **Remove or relocate only material that belongs to evidence adjudication, governance interpretation, significance or classification. Preserve and, where necessary, restore the rich lay account of the occurrence.**
 
-## Clause-level taxonomy assessment and publication
+## Clause-level incident breakdown and publication
 
-Clause-level assessment follows this editorial sequence:
+Clause-level incident breakdown follows this editorial sequence:
 
-> Source wording → recovered principle → occurrence-specific taxonomy assessment → formal structured classification.
+> Source wording → recovered principle → occurrence-specific incident analysis → formal structured classification.
 
-For `vigil_assessment.source_clause_analysis.clauses[]`, `source_anchor` or `source_paraphrase` preserves the source-language basis, `recovered_invariant_interpretation` states the general principle recovered from that language, and each `taxonomy_relationships[].rationale` applies the referenced taxonomy boundary to the bounded occurrence. The rationale is the canonical public content of the **Taxonomy assessment** column; it is not a generated relationship label, internal crosswalk note or substitute for the separate structured classification.
+For `vigil_assessment.source_clause_analysis.clauses[]`, `source_anchor` or `source_paraphrase` preserves the source-language basis, `recovered_invariant_interpretation` states the general principle recovered from that language, and each `taxonomy_relationships[].rationale` applies the referenced taxonomy boundary to the bounded occurrence. The rationale is the canonical public content of the **Incident analysis** column within the **Incident breakdown** table; it is not a generated relationship label, internal crosswalk note or substitute for the separate structured classification.
 
 Incident authors and reviewers must:
 
@@ -392,11 +393,46 @@ Incident authors and reviewers must:
 - preserve distinct rationales in source order when one clause has multiple relationships; and
 - state the demonstrated boundary and the missing occurrence condition for adjacent, ambiguous-boundary, exemplar or otherwise non-canonical relationships.
 
+Where clause-level analysis recovers a materially supported governance proposition that cannot be reconciled faithfully with the current taxonomy, do not force it into the nearest class and do not treat the mismatch as automatic authority to create a class. Record it as a taxonomy-gap signal and apply the design test in `vigil/docs/design/TAXONOMY-GAP-DETECTION.md`. The review must distinguish evidence gaps, existing-class fit, boundary or terminology repair, decomposition/family review and genuine taxonomy-coverage gaps. New canonical Fidelity Classes remain a human-governance decision.
+
 Downstream website, document and PDF publishers must read and faithfully render the supplied `taxonomy_relationships[].rationale` values. Multiple rationales must be combined in stored order without duplication. A generated relationship-type summary may be used only as an explicit legacy fallback when no rationale is present; it must never replace supplied assessment prose. Website and PDF outputs must use the same rationale source.
 
 Publication consumers should protect this contract with generic fixtures covering a single rationale, multiple ordered rationales, mixed canonical and non-canonical relationships, and the missing-rationale fallback. Tests should validate the data contract rather than pinning the current adjudication of a live Incident.
 
+
+### External alignment classification publication boundary
+
+Section 03 may publish an **External Alignment Classification** table when an admitted `external_assessments[]` entry contains `classification_or_rating`. This is a projection of the external assessor's own classification or rating, not a VIGIL reclassification.
+
+Publication consumers must:
+
+- preserve the external assessor and assessment citation;
+- preserve the scheme name and external value or verbatim label;
+- prefer a classification-specific published basis when one is available, otherwise use the admitted external assessment summary;
+- never translate an external label into VIGIL `failure-occurrence`, `successful-invariant` or `ambiguous-boundary` roles unless a separate VIGIL adjudication independently establishes that mapping; and
+- keep VIGIL's own Alignment Taxonomy table visually and semantically distinct from the external classification table.
+
+The current canonical compatibility source is `external_assessments[].classification_or_rating`. A proposed additive data shape for a future database-backed implementation is documented in `vigil/docs/design/EXTERNAL-ALIGNMENT-CLASSIFICATION.md`. That proposal is non-normative and does not change `VIGIL.Schema.json` until separately approved under the schema/validator stop conditions.
+
 ## Alignment Taxonomy adjudication matrix
+
+### Adjudication completeness and exemplar eligibility
+
+Reviewed Incidents may opt into the backwards-compatible completeness contract by assigning
+`adjudication_status` to every material `source_clause_analysis.clauses[]` entry and storing the
+derived `taxonomy_classification.adjudication_coverage.status`. `mapped` denotes a final canonical
+relationship; `resolved-no-mapping` denotes a completed determination that no current Fidelity
+Class applies; `unresolved` preserves an evidence-limited existing-class candidate; and
+`taxonomy-gap` records an established issue for which no current class is adequate. Use the
+optional `adjudication_note` only when the relationship rationale does not already explain the
+disposition.
+
+Coverage is `complete` only when every material clause is `mapped` or `resolved-no-mapping`; it is
+`partial` when any clause is `unresolved` or `taxonomy-gap`. This status is recomputed by the record
+validator and projected in the public Incident index. A `successful-invariant` relationship remains
+a mapping-local finding regardless of coverage. Incident-level exemplar eligibility requires
+complete coverage, at least one canonical successful-invariant mapping, and no canonical
+failure-occurrence or ambiguous-boundary mapping.
 
 `vigil/taxonomy/VIGIL.FailureTaxonomy.Adjudications.json` is the maintenance coverage table for exhaustive Incident-by-class review. Its legacy filename is retained for compatibility; it is governed by the current VIGIL Observatory Alignment Taxonomy. It is not a second taxonomy and it is not a public classification narrative.
 
@@ -548,3 +584,30 @@ python vigil/taxonomy/validate_taxonomy.py
 Also run the validators owned by external governance or CAM assessment when those subsystems are touched.
 
 Before closure, classify each touched supporting artefact as LIVE, GENERATED, REVIEW, AUDIT or RETIRE. Historical machinery must not masquerade as current authority. Do not reset, rebase, merge, cherry-pick, force-push or rewrite shared history as cleanup. The bounded pre-PR ingestion-branch synchronization exception above is the only permitted rebase/lease-protected force-update under this guide.
+
+
+## Incident artefact storage boundary
+
+### Public-facing artefact selection
+
+The Case File prose remains responsible for the complete bounded factual account. A public-facing Incident artefact should add evidentiary or explanatory value rather than merely restating the summary or factual basis as an image.
+
+Prefer artefacts that expose structure that prose conveys less efficiently: chronology, clustering, scale, comparison, spatial or system relationships, interface state, source-native visual evidence, or other directly observable context.
+
+Prose screenshots are not categorically excluded. Preserve them when the source-specific framing, qualification, comparison or surrounding context is itself useful evidence and should not simply be flattened into VIGIL's general Incident narrative. Do not preserve a prose screenshot when it only photographs facts already adequately represented in the Case File.
+
+For every proposed public-facing artefact, ask: **what does this let the reader see or understand that the structured Incident record does not convey as effectively on its own?** If there is no substantive answer, omit the artefact even if an image slot is available.
+
+
+Occurrence-specific screenshots, source images, videos, logs and preserved documents are stored in `CAM-Initiative/Registry/VIGIL/`, not in this repository. The canonical capture, naming and migration workflow is defined by `Registry/VIGIL/README.md`.
+
+The VIGIL Incident record stores only the structured `incident_artefacts[]` metadata and references:
+
+- `permalink` — commit-pinned human-facing GitHub URL in `CAM-Initiative/Registry`;
+- `render_url` — matching commit-pinned raw Registry URL;
+- `source_url` — original external source URL, which must not be replaced by the Registry copy;
+- capture/provenance fields describing how the Registry artefact was preserved.
+
+Commit the Registry artefact before adding its VIGIL reference. Do not use `main` or another moving branch in canonical `permalink` or `render_url` values. If an Incident has several artefacts, use the Incident ID filename followed by stable numeric suffixes such as `-02`, `-03`.
+
+If occurrence-specific media is discovered in the Vigil repository, migrate the bytes to Registry, update every Incident reference to the commit-pinned Registry asset, verify rendering, and only then remove the duplicate Vigil copy. Taxonomy/publication branding assets are not Incident artefacts and are outside this storage rule.

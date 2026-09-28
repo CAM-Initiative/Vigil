@@ -212,6 +212,23 @@ def repair_classifications(record: dict[str, Any]) -> list[dict[str, Any]]:
     ]
 
 
+def alignment_exemplar_eligible(record: dict[str, Any]) -> bool | None:
+    """Derive Incident-level eligibility without changing mapping-local roles."""
+    taxonomy = record.get("taxonomy_classification")
+    if not isinstance(taxonomy, dict):
+        return None
+    coverage = taxonomy.get("adjudication_coverage")
+    if not isinstance(coverage, dict) or coverage.get("status") not in {"complete", "partial"}:
+        return None
+    roles = {mapping.get("classification_role") for _, mapping in taxonomy_mappings(record)}
+    return (
+        coverage.get("status") == "complete"
+        and "successful-invariant" in roles
+        and "failure-occurrence" not in roles
+        and "ambiguous-boundary" not in roles
+    )
+
+
 def incident_entry(path: Path, record: dict[str, Any]) -> dict[str, Any]:
     identity = record.get("record_identity") if isinstance(record.get("record_identity"), dict) else {}
     incident = record.get("incident_identity") if isinstance(record.get("incident_identity"), dict) else {}
@@ -257,6 +274,8 @@ def incident_entry(path: Path, record: dict[str, Any]) -> dict[str, Any]:
         "severity": assessment.get("overall_severity"),
         "classification_status": taxonomy.get("classification_status"),
         "classification_role": taxonomy.get("classification_role"),
+        "adjudication_coverage": taxonomy.get("adjudication_coverage"),
+        "alignment_exemplar_eligible": alignment_exemplar_eligible(record),
         "primary_classification": projected_mapping(primary),
         "secondary_classifications": [
             projected
