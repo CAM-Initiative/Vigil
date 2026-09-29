@@ -30,7 +30,7 @@ GENERATED_PROVENANCE = {
 }
 PRESERVE_EMPTY_KEYS = {
     "legacy_sources", "secondary_classifications", "external_incident_references",
-    "external_assessments", "related_incidents",
+    "external_assessments", "external_requirement_assessments", "related_incidents",
 }
 PRESERVE_NULL_KEYS = {"agent_count", "agent_count_min", "agent_count_max"}
 
@@ -115,6 +115,7 @@ def incident_search_terms(record: dict[str, Any]) -> list[str]:
     secondary = taxonomy.get("secondary_classifications") if isinstance(taxonomy.get("secondary_classifications"), list) else []
     source_list = sources(record)
     external_assessments = record.get("external_assessments") if isinstance(record.get("external_assessments"), list) else []
+    requirement_assessments = record.get("external_requirement_assessments") if isinstance(record.get("external_requirement_assessments"), list) else []
 
     return text_terms(
         incident.get("historical_event_name"),
@@ -145,6 +146,19 @@ def incident_search_terms(record: dict[str, Any]) -> list[str]:
                 item.get("assessment_summary"),
                 (item.get("classification_or_rating") or {}).get("value")
                 if isinstance(item.get("classification_or_rating"), dict) else None,
+            )
+            if value
+        ],
+        [
+            value
+            for item in requirement_assessments
+            if isinstance(item, dict)
+            for value in (
+                item.get("requirement_id"),
+                item.get("applicability_status"),
+                item.get("finding"),
+                item.get("applicability_basis"),
+                item.get("finding_basis"),
             )
             if value
         ],
@@ -288,6 +302,7 @@ def incident_entry(path: Path, record: dict[str, Any]) -> dict[str, Any]:
         "occurred_from": incident.get("occurred_from"),
         "source_roles": source_roles(record),
         "external_assessments": record.get("external_assessments", []),
+        "external_requirement_assessments": record.get("external_requirement_assessments", []),
         "search_terms": incident_search_terms(record),
         "path": record_path,
         "github_blob_url": github_url(record_path),

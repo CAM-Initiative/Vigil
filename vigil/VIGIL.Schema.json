@@ -314,7 +314,19 @@
         "1.0.0",
         "1.0.1"
       ],
-      "harm_impact_methodology_version_rule": "VIGIL-HIM 1.0.1 is the current methodology. Existing 1.0.0 assessments remain valid historical adjudications until individually re-reviewed. Re-reviewed or newly adjudicated Incidents must use 1.0.1 and the matching versioned threshold IDs; methodology versions must not be mechanically relabelled without substantive review."
+      "harm_impact_methodology_version_rule": "VIGIL-HIM 1.0.1 is the current methodology. Existing 1.0.0 assessments remain valid historical adjudications until individually re-reviewed. Re-reviewed or newly adjudicated Incidents must use 1.0.1 and the matching versioned threshold IDs; methodology versions must not be mechanically relabelled without substantive review.",
+      "external_requirement_assessment_applicability_values": [
+        "applicable",
+        "insufficient-evidence",
+        "not-applicable"
+      ],
+      "external_requirement_assessment_finding_values": [
+        "failure-occurrence",
+        "successful-invariant",
+        "ambiguous-boundary"
+      ],
+      "external_requirement_assessment_rule": "external_requirement_assessments is an optional array of occurrence-level VIGIL assessments against taxonomy-derived external requirement candidates. Each entry preserves its canonical EXTREQ identifier and every mapped Fidelity Class that cites it. Applicability is assessed separately from the finding. Applicable entries require an independent finding and finding_basis; insufficient-evidence and not-applicable entries prohibit both. The finding evaluates the particular requirement against occurrence evidence and must not be copied from taxonomy mapping roles or class rationales. Candidate generation does not determine applicability or findings. This array does not establish organization-wide compliance or non-compliance and does not duplicate central EXTREQ metadata.",
+      "external_requirement_assessment_reference_rule": "A derived_from_class_ids value must identify a class mapped on the same Incident whose external_references contains the matching requirement_id. The listed classes must include every such mapped class. Requirement IDs must resolve in the canonical EXTREQ shards. Research, contextual or other external references without a structured canonical requirement_id do not generate a candidate. A taxonomy gap is recorded in the methodology when a potentially applicable runtime issue has no representative Fidelity Class; it does not bypass taxonomy adjudication."
     }
   },
   "$defs": {
@@ -410,7 +422,16 @@
         "summary",
         "source_records",
         "related_incidents"
-      ]
+      ],
+      "type": "object",
+      "properties": {
+        "external_requirement_assessments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/external_requirement_assessment"
+          }
+        }
+      }
     },
     "source_residence": {
       "enum": [
@@ -432,6 +453,111 @@
         "record-cross-reference",
         "direct-testimony",
         "unknown"
+      ]
+    },
+    "external_requirement_assessment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requirement_id",
+        "derived_from_class_ids",
+        "applicability_status",
+        "applicability_basis",
+        "assessed_on"
+      ],
+      "properties": {
+        "requirement_id": {
+          "type": "string",
+          "pattern": "^EXTREQ-[A-F0-9]{16}$"
+        },
+        "derived_from_class_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^VIGIL-FC-[0-9]{6}$"
+          }
+        },
+        "applicability_status": {
+          "type": "string",
+          "enum": [
+            "applicable",
+            "insufficient-evidence",
+            "not-applicable"
+          ]
+        },
+        "applicability_basis": {
+          "type": "string",
+          "minLength": 1
+        },
+        "finding": {
+          "type": "string",
+          "enum": [
+            "failure-occurrence",
+            "successful-invariant",
+            "ambiguous-boundary"
+          ]
+        },
+        "finding_basis": {
+          "type": "string",
+          "minLength": 1
+        },
+        "assessed_on": {
+          "type": "string",
+          "format": "date"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "applicability_status": {
+                "const": "applicable"
+              }
+            },
+            "required": [
+              "applicability_status"
+            ]
+          },
+          "then": {
+            "required": [
+              "finding",
+              "finding_basis"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "applicability_status": {
+                "enum": [
+                  "insufficient-evidence",
+                  "not-applicable"
+                ]
+              }
+            },
+            "required": [
+              "applicability_status"
+            ]
+          },
+          "then": {
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "finding"
+                  ]
+                },
+                {
+                  "required": [
+                    "finding_basis"
+                  ]
+                }
+              ]
+            }
+          }
+        }
       ]
     }
   },

@@ -44,6 +44,7 @@ INDEX_ENTRY_KEYS = {
     "occurred_from",
     "source_roles",
     "external_assessments",
+    "external_requirement_assessments",
     "search_terms",
     "path",
     "github_blob_url",
@@ -163,6 +164,7 @@ def expected_projection(record: dict[str, Any]) -> dict[str, Any]:
             and role.strip()
         }),
         "external_assessments": record.get("external_assessments", []),
+        "external_requirement_assessments": record.get("external_requirement_assessments", []),
         "path": path,
         "github_blob_url": f"https://github.com/{REPOSITORY}/blob/{BRANCH}/{path}",
         "raw_url": f"https://raw.githubusercontent.com/{REPOSITORY}/{BRANCH}/{path}",
@@ -201,7 +203,11 @@ def validate_generated_incident_projection(
         expected = expected_projection(record)
         for key, value in expected.items():
             if value in (None, "", [], {}):
-                if key in {"secondary_classifications", "external_assessments"}:
+                if key in {
+                    "secondary_classifications",
+                    "external_assessments",
+                    "external_requirement_assessments",
+                }:
                     if entry.get(key) != []:
                         errors.append(f"{path}: {record_id} {key} must preserve an empty array")
                 elif key in entry:

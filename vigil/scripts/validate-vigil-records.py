@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import importlib.util
 import json
 import re
 import sys
@@ -20,6 +21,8 @@ TAXONOMY_INDEX = VIGIL / "taxonomy" / "VIGIL.FailureTaxonomy.Index.json"
 INCIDENT_ID = re.compile(r"^VIGIL-INC-\d{6}$")
 PUBLIC_INCIDENT_ID = re.compile(r"(?<![A-Z0-9-])(?:VIGIL-)?INC-\d{6}(?!\d)", re.IGNORECASE)
 EXTERNAL_ASSESSMENT_ID = re.compile(r"^VIGIL-EXTASSESS-\d{6}$")
+EXTERNAL_REQUIREMENT_ID = re.compile(r"^EXTREQ-[A-F0-9]{16}$")
+FIDELITY_CLASS_ID = re.compile(r"^VIGIL-FC-\d{6}$")
 HTTP_URL = re.compile(r"^https?://[^\s]+$", re.IGNORECASE)
 HISTORICAL_ID = re.compile(r"VIGIL-\d{4}-(?:FM|OBS|RESEARCH|PROP|PATCH|LEARN)-\d{4}")
 RETIRED_RECORD_DIRS = {"failures", "observations", "research", "proposals", "patches", "learn"}
@@ -817,6 +820,142 @@ def validate_external_assessments(
                 errors.append(f"{label}.supersedes_assessment_id does not resolve")
 
 
+def validate_external_requirement_assessments(
+    path: Path,
+    record: dict[str, Any],
+    known_requirement_ids: set[str] | None,
+    errors: list[str],
+) -> None:
+    """Validate occurrence-level assessments against taxonomy-derived EXTREQ candidates."""
+    assessments = record.get("external_requirement_assessments", [])
+    if not isinstance(assessments, list):
+        errors.append(f"{path}: external_requirement_assessments must be an array when present")
+        return
+
+    contract = incident_contract()
+    allowed_statuses = set(contract["external_requirement_assessment_applicability_values"])
+    allowed_findings = set(contract["external_requirement_assessment_finding_values"])
+    required = {
+        "requirement_id", "derived_from_class_ids", "applicability_status",
+        "applicability_basis", "assessed_on",
+    }
+    allowed = required | {"finding", "finding_basis"}
+    seen: set[str] = set()
+    taxonomy = record.get("taxonomy_classification")
+    taxonomy = taxonomy if isinstance(taxonomy, dict) else {}
+    mapped_class_ids: set[str] = set()
+    primary = taxonomy.get("primary_classification")
+    if isinstance(primary, dict) and isinstance(primary.get("class_id"), str):
+        mapped_class_ids.add(primary["class_id"])
+    secondary = taxonomy.get("secondary_classifications")
+    if isinstance(secondary, list):
+        mapped_class_ids.update(
+            item["class_id"] for item in secondary
+            if isinstance(item, dict) and isinstance(item.get("class_id"), str)
+        )
+
+    taxonomy_classes: dict[str, dict[str, Any]] = {}
+    if assessments:
+        try:
+            _, taxonomy_classes = taxonomy_catalogue()
+        except Exception as exc:  # noqa: BLE001
+            errors.append(f"{path}: unable to load taxonomy for external requirement assessments: {exc}")
+
+    for index, assessment in enumerate(assessments):
+        label = f"{path}: external_requirement_assessments[{index}]"
+        if not isinstance(assessment, dict):
+            errors.append(f"{label} must be an object")
+            continue
+        missing = sorted(required - set(assessment))
+        unexpected = sorted(set(assessment) - allowed)
+        if missing:
+            errors.append(f"{label} missing {', '.join(missing)}")
+        if unexpected:
+            errors.append(f"{label} has non-canonical fields: {', '.join(unexpected)}")
+
+        requirement_id = assessment.get("requirement_id")
+        if not isinstance(requirement_id, str) or not EXTERNAL_REQUIREMENT_ID.fullmatch(requirement_id):
+            errors.append(f"{label}.requirement_id must use EXTREQ- plus 16 uppercase hexadecimal characters")
+        else:
+            if requirement_id in seen:
+                errors.append(f"{label}.requirement_id must be unique within the Incident")
+            seen.add(requirement_id)
+            if known_requirement_ids is not None and requirement_id not in known_requirement_ids:
+                errors.append(f"{label}.requirement_id does not resolve in the canonical EXTREQ corpus")
+
+        class_ids = assessment.get("derived_from_class_ids")
+        class_ids_valid = isinstance(class_ids, list) and bool(class_ids)
+        if not class_ids_valid:
+            errors.append(f"{label}.derived_from_class_ids must be a non-empty array")
+            class_ids = []
+        elif any(not isinstance(class_id, str) or not FIDELITY_CLASS_ID.fullmatch(class_id) for class_id in class_ids):
+            errors.append(f"{label}.derived_from_class_ids must contain canonical Fidelity Class IDs")
+            class_ids_valid = False
+        elif len(class_ids) != len(set(class_ids)):
+            errors.append(f"{label}.derived_from_class_ids must not contain duplicates")
+            class_ids_valid = False
+        else:
+            not_mapped = sorted(set(class_ids) - mapped_class_ids)
+            if not_mapped:
+                errors.append(
+                    f"{label}.derived_from_class_ids includes classes not mapped on this Incident: "
+                    f"{', '.join(not_mapped)}"
+                )
+
+        status = assessment.get("applicability_status")
+        if status not in allowed_statuses:
+            errors.append(f"{label}.applicability_status is not canonical")
+        if not non_empty(assessment.get("applicability_basis")):
+            errors.append(f"{label}.applicability_basis must be non-empty")
+        assessed_on = assessment.get("assessed_on")
+        if (
+            not isinstance(assessed_on, str)
+            or re.fullmatch(r"\d{4}-\d{2}-\d{2}", assessed_on) is None
+            or parse_date(assessed_on) is None
+        ):
+            errors.append(f"{label}.assessed_on must be an ISO date in YYYY-MM-DD form")
+
+        finding = assessment.get("finding")
+        finding_basis = assessment.get("finding_basis")
+        if status == "applicable":
+            if finding not in allowed_findings:
+                errors.append(
+                    f"{label}.finding is required and must be canonical when applicability_status is applicable"
+                )
+            if not non_empty(finding_basis):
+                errors.append(
+                    f"{label}.finding_basis is required and must be non-empty when applicability_status is applicable"
+                )
+        elif status in {"insufficient-evidence", "not-applicable"}:
+            if "finding" in assessment or "finding_basis" in assessment:
+                errors.append(
+                    f"{label} must not include finding or finding_basis when applicability_status is {status}"
+                )
+
+        if (
+            isinstance(requirement_id, str)
+            and EXTERNAL_REQUIREMENT_ID.fullmatch(requirement_id)
+            and class_ids_valid
+        ):
+            eligible: set[str] = set()
+            for class_id in mapped_class_ids:
+                class_record = taxonomy_classes.get(class_id)
+                refs = class_record.get("external_references", []) if isinstance(class_record, dict) else []
+                if isinstance(refs, list) and any(
+                    isinstance(ref, dict) and ref.get("requirement_id") == requirement_id
+                    for ref in refs
+                ):
+                    eligible.add(class_id)
+            supplied = set(class_ids)
+            if not eligible:
+                errors.append(f"{label}.requirement_id is not cited by a mapped Fidelity Class on this Incident")
+            elif supplied != eligible:
+                errors.append(
+                    f"{label}.derived_from_class_ids must preserve every mapped source class; "
+                    f"expected {', '.join(sorted(eligible))}"
+                )
+
+
 def validate_provenance(path: Path, record: dict[str, Any], errors: list[str]) -> None:
     provenance = record.get("interpretive_provenance")
     if not isinstance(provenance, dict):
@@ -903,6 +1042,7 @@ def validate_record(
     allowed_vendors: set[str] | None = None,
     allowed_products: set[str] | None = None,
     schema_path: Path | None = None,
+    known_requirement_ids: set[str] | None = None,
 ) -> tuple[list[str], list[str]]:
     errors = errors if errors is not None else []
     warnings = warnings if warnings is not None else []
@@ -985,6 +1125,7 @@ def validate_record(
     validate_source_records(path, record, errors)
     validate_external_assessments(path, record, known_assessment_ids, errors)
     validate_incident_taxonomy(path, record, errors)
+    validate_external_requirement_assessments(path, record, known_requirement_ids, errors)
     validate_provenance(path, record, errors)
     validate_relationships_and_references(path, record, known_ids, errors)
     return errors, warnings
@@ -995,6 +1136,21 @@ def record_files(root: Path | None = None) -> list[Path]:
     if target.is_file():
         return [target]
     return sorted(target.rglob("*.json"), key=lambda item: item.as_posix())
+
+
+def load_external_requirement_ids() -> set[str]:
+    """Load canonical EXTREQ IDs through the shared sharded-requirements reader."""
+    helper_path = VIGIL / "scripts" / "external_requirements_io.py"
+    spec = importlib.util.spec_from_file_location("vigil_external_requirements_io", helper_path)
+    if spec is None or spec.loader is None:
+        raise ValueError(f"unable to load external requirements reader: {helper_path}")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return {
+        item["requirement_id"]
+        for item in module.load_requirements()
+        if isinstance(item, dict) and isinstance(item.get("requirement_id"), str)
+    }
 
 
 def validate(root: Path | None = None, schema_path: Path | None = None) -> int:
@@ -1032,8 +1188,23 @@ def validate(root: Path | None = None, schema_path: Path | None = None) -> int:
                     if assessment_id in assessment_ids:
                         errors.append(f"{path}: duplicate external assessment id {assessment_id}")
                     assessment_ids.add(assessment_id)
+    has_requirement_assessments = any(
+        isinstance(record.get("external_requirement_assessments"), list)
+        and bool(record["external_requirement_assessments"])
+        for _, record in loaded
+    )
+    known_requirement_ids: set[str] | None = None
+    if has_requirement_assessments:
+        try:
+            known_requirement_ids = load_external_requirement_ids()
+        except Exception as exc:  # noqa: BLE001
+            errors.append(f"canonical EXTREQ corpus could not be loaded for Incident assessments: {exc}")
+            known_requirement_ids = set()
     for path, record in loaded:
-        validate_record(path, record, ids, assessment_ids, errors, warnings, schema_path=schema_path)
+        validate_record(
+            path, record, ids, assessment_ids, errors, warnings,
+            schema_path=schema_path, known_requirement_ids=known_requirement_ids,
+        )
     for warning in warnings:
         print(f"WARNING: {warning}", file=sys.stderr)
     if errors:
