@@ -177,8 +177,14 @@ Where two interpretations remain plausible during BETA, prefer the interpretatio
 
 Subordinate controls operationalise the Constitution. They do not independently redefine its allocation of authority.
 
+## Closing seal
+
+**Version:** 0.1.0-beta  
+**Author:** ChatGPT 5.6 Sol High (Caelen)  
+**Contract Authority:** CAM Initiative
+
+> **Evidence may be challenged; reasoning must be inspectable; uncertainty may remain unresolved; error may be corrected; and analytical authority must remain accountable to process.**
+
 ## Adoption note
 
-This is a draft constitutional instrument. Before adoption, VIGIL should verify the current maintainer contract, agent instructions, Incident adjudication workflow, taxonomy amendment procedure, adjudication matrix and publication contract for material conflict.
-
-Adoption should occur through an explicit human-approved commit or pull request changing this document from **draft** to an operative BETA version.
+This remains a draft constitutional instrument until explicitly adopted by CAM Initiative. Before adoption, VIGIL should verify the current maintainer contract, agent instructions, Incident adjudication workflow, taxonomy amendment procedure, adjudication matrix and publication contract for material conflict.
