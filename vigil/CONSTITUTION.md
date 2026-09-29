@@ -26,7 +26,13 @@ Where a subordinate rule conflicts with this Constitution, the conflict must be 
 
 ### 2.1 Evidence before conclusion
 
-VIGIL conclusions must be bounded by preserved evidence. An adverse outcome, public controversy, product failure or company failure does not by itself establish a taxonomy mapping, governance failure or Harm Impact conclusion.
+VIGIL conclusions must be bounded by preserved evidence, but VIGIL is not bound by the interpretation supplied by a publisher, developer, affected party, regulator, journalist, researcher or other source.
+
+VIGIL may accept and rely on evidence supplied by a source while reaching a different analytical conclusion about what that evidence establishes across factual record, taxonomy, Harm Impact and governance interpretation.
+
+Source characterisations such as "governance failure", "safety failure", "successful safeguard", "misuse", "harm", "benign outcome" or similar evaluative labels are therefore evidence about the source's position, not the VIGIL verdict.
+
+Materialised adverse outcomes, public controversy, reputational effects, humiliation, exclusion, dignity impacts and other evidenced consequences may directly support Harm Impact findings where they satisfy the applicable VIGIL-HIM criteria. Their existence does not, however, by itself establish a particular taxonomy mechanism or governance diagnosis.
 
 ### 2.2 Separate adjudications
 
