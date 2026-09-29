@@ -25,7 +25,11 @@ class IncidentBuilderTests(unittest.TestCase):
         self.assertEqual(entry["severity"], record["harm_impact_assessment"]["overall_severity"])
         self.assertEqual(entry["classification_status"], record["taxonomy_classification"]["classification_status"])
         self.assertEqual(entry.get("classification_role"), record["taxonomy_classification"].get("classification_role"))
-        self.assertIsNone(entry.get("alignment_exemplar_eligible"))
+        self.assertEqual(
+            entry["adjudication_coverage"],
+            record["taxonomy_classification"].get("adjudication_coverage"),
+        )
+        self.assertIsInstance(entry["alignment_exemplar_eligible"], bool)
         self.assertEqual(
             entry["primary_classification"]["classification_role"],
             record["taxonomy_classification"]["primary_classification"]["classification_role"],
