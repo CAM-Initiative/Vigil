@@ -32,7 +32,41 @@
       "Agents and monitors were not strongly elicited or optimised for the dual-task setting.",
       "The study does not establish generalisation to real sabotage, deployment-world prevalence or persistent model goals.",
       "Hidden computation without an observable environmental effect is analytically distinct from transcript-visible action that a monitor observes but does not flag."
-    ]
+    ],
+    "source_clause_analysis": {
+      "source_record_order": 1,
+      "source_url": "https://metr.org/blog/2026-01-19-early-work-on-monitorability-evaluations/",
+      "purpose": "Separate the deliberately assigned monitor-evasion objective from the monitor’s measured detection performance, and preserve the boundary between coverage and control effectiveness.",
+      "clauses": [
+        {
+          "source_paraphrase": "The benchmark instructed agents to complete a side task without alerting a monitor that received the main-task prompt and action transcript, but not the side-task prompt.",
+          "recovered_invariant_interpretation": "An evaluation setup may test concealment without itself establishing an autonomous governance failure; whether the monitor receives the relevant activity is distinct from whether it correctly detects that activity.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000023",
+              "relationship": "candidate boundary",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "The monitor received the available transcript and action pathway, so the setup does not establish consequential conduct occurring outside effective monitor coverage. The assigned concealment condition is part of the benchmark design."
+            }
+          ],
+          "adjudication_status": "resolved-no-mapping",
+          "adjudication_note": "The clause defines the controlled test condition; it does not establish that an AI agent independently evaded a required monitoring path."
+        },
+        {
+          "source_paraphrase": "METR reported successful side-task runs that received no monitor flag even though the monitor had the main-task and transcript pathway; some actions could plausibly resemble main-task work.",
+          "recovered_invariant_interpretation": "A monitoring control that receives the relevant activity must produce a detection effect proportionate to its stated oversight purpose; nominal access to the transcript is not sufficient when the monitor fails to flag consequential side-task conduct.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000083",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The monitor received the transcript and assigned a flag score, yet some successful side-task runs remained uncaught. The active monitoring control therefore produced an insufficient detection effect for its stated purpose even though the conduct remained within the monitored pathway."
+            }
+          ],
+          "adjudication_status": "mapped"
+        }
+      ]
+    }
   },
   "source_records": [
     {
@@ -160,15 +194,25 @@
     ]
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.6.6",
-    "classification_status": "unclassified",
-    "classification_basis": "Current review removes the former VIGIL-FC-000023 Monitor Circumvention or Coverage Bypass mapping. SHUSHCAST explicitly assigned agents a side objective that included avoiding monitor detection, while the monitor continued to receive the benchmark transcript and visible actions. FC-000023 requires material conduct to occur through a path or condition outside effective required monitor coverage and excludes cases where the monitor observes the conduct but downstream detection or response fails. The occurrence therefore evidences a monitor-discrimination or alerting robustness problem for which no sufficiently specific admitted Failure Class is currently established.",
-    "primary_classification": null,
+    "taxonomy_version": "0.6.9",
+    "classification_status": "classified",
+    "classification_basis": "The current Alignment Taxonomy 0.6.9 supports VIGIL-FC-000083 Control Effectiveness Integrity for the monitor false negatives: the monitor received the available transcript and scored runs, but successful side-task conduct sometimes remained uncaught. The assigned concealment objective and continued transcript coverage do not establish a Monitoring Coverage Integrity failure. This mapping is limited to a preliminary controlled evaluation and does not establish deployment prevalence or generalisation.",
+    "primary_classification": {
+      "family_id": "VIGIL-FF-0008",
+      "class_id": "VIGIL-FC-000083",
+      "classification_role": "failure-occurrence",
+      "classification_basis": "The monitor received the relevant activity and produced a score, but some completed side tasks received no flag; the protective detection effect was insufficient for the monitor’s stated purpose.",
+      "classification_confidence": "medium"
+    },
     "secondary_classifications": [],
     "classification_review_provenance": {
-      "review_date": "2026-09-22",
-      "reviewer": "OpenAI ChatGPT / GPT-5.6 Sol under human-directed VIGIL governance",
+      "review_date": "2026-09-29",
+      "reviewer": "OpenAI ChatGPT — GPT-6 Codex under human-directed VIGIL governance",
       "review_status": "classification review completed"
+    },
+    "classification_role": "failure-occurrence",
+    "adjudication_coverage": {
+      "status": "complete"
     }
   },
   "interpretive_provenance": {

@@ -28,7 +28,28 @@
       "The evidence does not establish the precise routing, perception or fleet-management cause.",
       "The passenger's reported confusion and distress were temporary and resolved through support intervention.",
       "No injury, detention finding or enduring impairment is inferred."
-    ]
+    ],
+    "source_clause_analysis": {
+      "source_record_order": 1,
+      "source_url": "https://oecd.ai/en/incidents/2025-07-22-010b",
+      "purpose": "Separate the passenger’s reported looping and loss of trip control from the unobserved routing state needed to decide whether safe exit was required.",
+      "clauses": [
+        {
+          "source_paraphrase": "The Waymo vehicle repeatedly circled in a parking lot, leaving the passenger unable to complete the trip or readily exit until support intervention; full trip telemetry is unavailable.",
+          "recovered_invariant_interpretation": "When an objective-directed route becomes infeasible, the system should enter a bounded safe-exit or human-handoff state rather than continue a pursuit that leaves the passenger without effective control.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000070",
+              "relationship": "candidate boundary",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "The repeated loop and failed passenger-control path raise the Safe-Exit Transition boundary, but the available record does not show whether the route had become infeasible, whether the system recognised that condition, or whether continued movement materially increased pressure after a safe exit was due."
+            }
+          ],
+          "adjudication_status": "unresolved",
+          "adjudication_note": "Trip and vehicle telemetry needed to determine whether a safe-exit condition occurred and the system continued pursuit are unavailable."
+        }
+      ]
+    }
   },
   "source_records": [
     {
@@ -151,15 +172,18 @@
     ]
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.6.5",
+    "taxonomy_version": "0.6.9",
     "classification_status": "unclassified",
-    "classification_basis": "Current-taxonomy review against VIGIL Failure Taxonomy 0.6.5 retains the occurrence as unclassified. The evidence establishes that the Waymo robotaxi diverted into a parking garage, looped or remained within the facility, and temporarily left the passenger unable to complete the intended journey or readily exit until human support intervened. VIGIL-FC-000070 Safe-Exit Persistence Failure was tested, but the public record does not establish that the vehicle's routing task had become broken, unsatisfiable or devoid of a feasible admissible path, that a safe-exit condition had been reached, or that the system continued objective pursuit despite that state. VIGIL-FC-000003 Target and Scope Authority Transposition and VIGIL-FC-000064 Objective–Pathway Authority Dominance are not established because the vehicle's internal authority model, route objective, passenger-override state and planning basis are not exposed. Harm and loss of passenger control therefore do not supply the missing mechanism.",
+    "classification_basis": "The current Alignment Taxonomy 0.6.9 leaves the Incident unclassified at Incident level. Reports establish that the vehicle repeatedly circled and temporarily left the passenger unable to complete the trip or readily exit, but the unavailable trip telemetry does not establish whether a feasible route remained, whether a safe-exit condition was reached, or whether the system continued after recognising one. The clause therefore remains unresolved at the Safe-Exit Transition boundary rather than being positively mapped from the harm or loss of passenger control alone.",
     "primary_classification": null,
     "secondary_classifications": [],
     "classification_review_provenance": {
-      "review_date": "2026-09-21",
-      "reviewer": "OpenAI ChatGPT / GPT-5.6 Sol under human-directed VIGIL governance",
+      "review_date": "2026-09-29",
+      "reviewer": "OpenAI ChatGPT — GPT-6 Codex under human-directed VIGIL governance",
       "review_status": "classification review completed"
+    },
+    "adjudication_coverage": {
+      "status": "partial"
     }
   },
   "related_incidents": [],
