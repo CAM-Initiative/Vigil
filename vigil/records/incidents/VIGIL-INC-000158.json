@@ -33,11 +33,32 @@
       "purpose": "Preserve a source-specific paraphrase that links the primary occurrence evidence to VIGIL's governance interpretation without treating taxonomy classification as source fact.",
       "clauses": [
         {
-          "source_paraphrase": "Reports Wiz's access method, exposed data classes, token implications, disclosure and remediation.",
-          "recovered_invariant_interpretation": "The occurrence is a large-scale data and credential exposure caused by a backend security misconfiguration. The evidence does not establish that an AI model made the configuration decision or that a current VIGIL Failure Class is the right mechanism abstraction.",
+          "source_paraphrase": "Wiz researchers reportedly reached Moltbook's backend in under three minutes because a backend misconfiguration left it unsecured, giving them full read-and-write access to platform data.",
+          "recovered_invariant_interpretation": "The immediate control state was broad unauthenticated backend reachability with both read and write capability; the preserved evidence attributes this to a backend security misconfiguration, not an AI model decision.",
           "taxonomy_relationships": [],
           "adjudication_status": "resolved-no-mapping",
-          "adjudication_note": "This clause establishes a backend security misconfiguration, exposed data and credentials, responsible disclosure and remediation; it does not establish that an actor treated technical reachability as permission or that another current governance invariant failed. The capability-authority boundary is separately adjudicated as ambiguous in clause 2."
+          "adjudication_note": "The access-control defect is described, but the record does not establish an AI actor making the configuration decision or a specific selectable control failure."
+        },
+        {
+          "source_paraphrase": "The reachable database contained about 35,000 email addresses and thousands of private direct messages between platform users.",
+          "recovered_invariant_interpretation": "The backend access state exposed personal contact data and private communications across the platform; the record does not establish downstream disclosure beyond the researchers' access.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping",
+          "adjudication_note": "This clause distinguishes the information exposure from the separately described credential capability; no additional downstream use is established."
+        },
+        {
+          "source_paraphrase": "The same exposure included approximately 1.5 million API authentication tokens. Wiz reported that such tokens could enable agent impersonation, posting or messaging as agents, and editing, deleting or manipulating content consumed by other agents; no token misuse is established in this occurrence.",
+          "recovered_invariant_interpretation": "Exposed bearer credentials created a distinct account-authentication and content-integrity pathway, with possible effects on other agents' inputs, separate from disclosure of emails and private messages.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping",
+          "adjudication_note": "The source describes what exposed tokens could permit, not observed impersonation or content manipulation; potential capabilities are kept distinct from demonstrated use."
+        },
+        {
+          "source_paraphrase": "Wiz immediately disclosed the issue to Moltbook, which secured it within hours with Wiz's assistance; Wiz said it deleted data accessed during research and fix verification.",
+          "recovered_invariant_interpretation": "The response pathway included coordinated disclosure, backend remediation and deletion of research copies; these steps do not establish whether any third party accessed the data before remediation.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping",
+          "adjudication_note": "The source supports the reported response timeline and research-data deletion, but does not quantify prior third-party access or downstream misuse."
         },
         {
           "source_paraphrase": "The backend made powerful capability directly reachable, but the occurrence does not show an AI or governance process treating that reachability as permission.",
@@ -276,6 +297,28 @@
           "Factual basis, governance interpretation, CAM significance, assessment boundaries and source-clause analysis were not changed."
         ],
         "review_outcome": "Restored supported occurrence detail and essential factual boundaries in the public Stage 01 narrative without changing evidence admission or governed adjudication."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-09-30-CLAUSE-BREAKDOWN-000158",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-6 Codex",
+        "review_date": "2026-09-30",
+        "review_scope": "Incident-by-incident functional decomposition review of the preserved occurrence evidence and source_clause_analysis, testing whether materially distinct mechanisms, authority boundaries, control states, and failure or recovery pathways are represented. No harm reassessment or taxonomy re-adjudication was performed.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_link_and_metadata_review": true,
+          "structured_semantic_adjudication": true,
+          "full_current_taxonomy_review": false,
+          "new_external_source_research": false
+        },
+        "known_limitations": [
+          "The evidence does not establish malicious exploitation beyond the security research or downstream token misuse.",
+          "Potential token-enabled impersonation or content manipulation is described as capability, not as an observed action.",
+          "Existing ambiguous-boundary relationship and taxonomy history were preserved; no taxonomy version change or taxonomy assessment regeneration was performed."
+        ],
+        "review_outcome": "Separated the unsecured read-write backend state, exposed personal communications, exposed token-enabled account/content capabilities, and disclosure/remediation pathway. Preserved the existing FC-000002 ambiguous-boundary relationship verbatim; no classification, role or taxonomy history changed."
       }
     ],
     "current_ai_review": {
