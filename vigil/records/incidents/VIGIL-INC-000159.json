@@ -33,8 +33,8 @@
       "purpose": "Preserve a source-specific paraphrase that links the primary occurrence evidence to VIGIL's governance interpretation without treating taxonomy classification as source fact.",
       "clauses": [
         {
-          "source_paraphrase": "First-party account of the token theft, unauthorised package, containment and user-impact findings.",
-          "recovered_invariant_interpretation": "Untrusted issue content crossed into a tool-enabled workflow and then propagated through shared infrastructure into release authority. The model interaction was one necessary link; cache design, token scope and release configuration were independently necessary.",
+          "source_paraphrase": "Cline's postmortem explains that any GitHub user could open an issue handled by a Claude-powered triage workflow with Bash access; attacker-controlled issue instructions could cause code execution, and the workflow's shared cache scope let poisoned state reach a nightly release workflow with publication secrets.",
+          "recovered_invariant_interpretation": "An untrusted public-input workflow with shell execution shared cache state with a more privileged release workflow, allowing the attacker-controlled state to cross into a production publication control plane.",
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000006",
@@ -49,7 +49,8 @@
               "rationale": "Authority propagated from a public issue-triage workflow through cache state and nightly release credentials to npm publication."
             }
           ],
-          "adjudication_status": "mapped"
+          "adjudication_status": "mapped",
+          "adjudication_note": "This clause preserves the connected prompt-execution, shared-cache and privileged-release pathway described in Cline's postmortem; the separate untrusted-content authority boundary is represented in clause 2."
         },
         {
           "source_paraphrase": "Attacker-controlled issue content was treated as operative instruction rather than remaining non-authorising data.",
@@ -89,6 +90,27 @@
             }
           ],
           "adjudication_status": "mapped"
+        },
+        {
+          "source_paraphrase": "After the researcher publicly disclosed the workflow vulnerability, Cline removed the vulnerable workflows and rotated credentials, but deleted the wrong npm token. The exposed npm token remained active, while the organization-level token page showed zero active tokens and did not surface it.",
+          "recovered_invariant_interpretation": "Credential recovery did not bind verification to the specific exposed npm credential; an incomplete management view produced an apparent clean state while the credential remained usable.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping",
+          "adjudication_note": "This is a distinct recovery-control failure reported in the postmortem. No new taxonomy relationship is asserted in this clause review."
+        },
+        {
+          "source_paraphrase": "On February 17, a third party used the still-active npm token to publish cline@2.3.0 with a postinstall script that globally installed OpenClaw, which Cline later described as a legitimate, non-malicious open-source project.",
+          "recovered_invariant_interpretation": "The unrevoked publication credential enabled an unauthorised package release after the underlying workflow had been removed; the evidence does not support describing the OpenClaw payload as malicious code.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping",
+          "adjudication_note": "The package change and publication are reported; this clause does not infer that user systems were compromised beyond the reported software installation."
+        },
+        {
+          "source_paraphrase": "Cline published corrected version 2.4.0, deprecated 2.3.0 and revoked the token by 11:23 a.m. It reported that the occurrence was limited to the npm CLI package, no malicious code was delivered, and no user data was accessed or exfiltrated.",
+          "recovered_invariant_interpretation": "The response closed the active credential and package pathway and bounded the reported impact to the unexpected installation through the affected CLI release; it did not include the separately unaffected IDE extensions or source repository.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping",
+          "adjudication_note": "The response and impact bounds are those reported by Cline; this clause does not independently verify all user installations or infer zero exposure outside the reviewed audit."
         }
       ]
     }
@@ -401,6 +423,28 @@
           "Factual basis, governance interpretation, CAM significance, assessment boundaries and source-clause analysis were not changed."
         ],
         "review_outcome": "Restored supported occurrence detail and essential factual boundaries in the public Stage 01 narrative without changing evidence admission or governed adjudication."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-09-30-CLAUSE-BREAKDOWN-000159",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-6 Codex",
+        "review_date": "2026-09-30",
+        "review_scope": "Incident-by-incident functional decomposition review of the preserved occurrence evidence and source_clause_analysis, testing whether materially distinct mechanisms, authority boundaries, control states, and failure or recovery pathways are represented. No harm reassessment or taxonomy re-adjudication was performed.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_link_and_metadata_review": true,
+          "structured_semantic_adjudication": true,
+          "full_current_taxonomy_review": false,
+          "new_external_source_research": false
+        },
+        "known_limitations": [
+          "Cline's postmortem reports that the payload installed a legitimate OpenClaw project and that no malicious code or user-data access was identified; this review does not independently establish every downstream installation outcome.",
+          "The incident evidence describes Cline's own postmortem and the researcher's published chain; it does not attribute the third party's publication to the model or to the researcher.",
+          "Existing taxonomy relationships and history were preserved; no taxonomy version change or taxonomy assessment regeneration was performed."
+        ],
+        "review_outcome": "Clarified the connected issue-triage/cache/release mechanism and added distinct clauses for the failed npm-token rotation, later unauthorised package publication, and correction/revocation/impact bounds. All five existing FC-000006, FC-000009, FC-000001, FC-000022 and FC-000024 relationship objects were preserved; no classification, role or taxonomy history changed."
       }
     ],
     "current_ai_review": {
