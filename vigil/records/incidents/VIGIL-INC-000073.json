@@ -245,6 +245,27 @@
           "Unknown classifications require later human or evidence-led review if more specific architecture evidence becomes available."
         ],
         "review_outcome": "FC55 retained; FC41 and FC38 medium added; S3 privacy to SU because harm was cross-campaign transposition."
+      },
+      {
+        "review_id": "CLAUSE-RECONCILIATION-2026-09-30-INC-000073",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT",
+        "reviewer_model": "GPT-6 Codex",
+        "review_date": "2026-09-30",
+        "review_scope": "Functional decomposition of reported account-pool evasion, reasoning-trace extraction, downstream Qwen training and provider response; targeted reassessment of FC-000041, FC-000055, FC-000038, FC-000067 and FC-000083 using Anthropic’s September 2026 threat report. No harm reassessment was performed.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "structured_semantic_adjudication": true,
+          "full_current_taxonomy_review": false,
+          "new_external_source_research": true
+        },
+        "known_limitations": [
+          "Campaign attribution and account telemetry are reported by Anthropic and are not independently audited here.",
+          "The specific anti-distillation control that applied to the Alibaba requests and its activation state are not disclosed.",
+          "Sensitive user-data examples in the same report concern other labs and are not attributed to this campaign."
+        ],
+        "review_outcome": "Separated account eligibility and cross-pool containment, CoT extraction, downstream model training, and response. Replaced FC-000038 with an unresolved FC-000083 candidate for CoT protection because the campaign-specific control activation state is unknown; added FC-000083 for ineffective pool-level containment and FC-000067 for reported capability appropriation; removed FC-000055 as a canonical mapping because no primary-purpose authority transposition was established. Coverage is partial."
       }
     ]
   },
@@ -476,27 +497,27 @@
   "taxonomy_classification": {
     "taxonomy_version": "0.6.9",
     "classification_status": "classification-disputed",
-    "classification_basis": "Ordinary model access was allegedly carried into a materially different output-training purpose without valid secondary authority. Anthropic described existing anti-extraction protections, targeted extraction requests and emitted reasoning traces, showing the required protective effect did not hold for the observed pathway. Fraudulent account and proxy pools were used to avoid required account-eligibility and access routes, with traffic continuing after bans.",
+    "classification_basis": "Anthropic attributes the campaign to Alibaba-linked operators and reports account-route evasion, extraction of reasoning traces, and their use in Qwen training. The account and value-appropriation components are mapped to FC-000041, FC-000067 and campaign-level FC-000083; campaign-specific activation of the anti-distillation control remains unresolved. Attribution and the underlying telemetry have not been independently verified.",
     "primary_classification": {
-      "family_id": "VIGIL-FF-0001",
-      "class_id": "VIGIL-FC-000055",
+      "family_id": "VIGIL-FF-0011",
+      "class_id": "VIGIL-FC-000067",
       "classification_role": "failure-occurrence",
-      "classification_basis": "Ordinary model access was allegedly carried into a materially different output-training purpose without valid secondary authority.",
+      "classification_basis": "Anthropic reports that extracted Claude reasoning traces were converted to training data and used to develop Qwen capabilities, a material capability-value appropriation pathway.",
       "classification_confidence": "medium"
     },
     "secondary_classifications": [
       {
-        "family_id": "VIGIL-FF-0008",
-        "class_id": "VIGIL-FC-000038",
-        "classification_role": "failure-occurrence",
-        "classification_basis": "Anthropic described existing anti-extraction protections, targeted extraction requests and emitted reasoning traces, showing the required protective effect did not hold for the observed pathway.",
-        "classification_confidence": "medium"
-      },
-      {
         "family_id": "VIGIL-FF-0007",
         "class_id": "VIGIL-FC-000041",
         "classification_role": "failure-occurrence",
-        "classification_basis": "Fraudulent account and proxy pools were used to avoid required account-eligibility and access routes, with traffic continuing after bans.",
+        "classification_basis": "Anthropic reports fraudulent account and proxy pools used to evade its required account eligibility and access restrictions.",
+        "classification_confidence": "medium"
+      },
+      {
+        "family_id": "VIGIL-FF-0008",
+        "class_id": "VIGIL-FC-000083",
+        "classification_role": "failure-occurrence",
+        "classification_basis": "The first account-pool ban did not contain the campaign, which shifted traffic to a second pool; campaign-specific effectiveness of anti-distillation controls remains unresolved.",
         "classification_confidence": "medium"
       }
     ],
@@ -507,7 +528,7 @@
     },
     "classification_role": "failure-occurrence",
     "adjudication_coverage": {
-      "status": "complete"
+      "status": "partial"
     }
   },
   "vigil_assessment": {
@@ -518,47 +539,79 @@
       "Use of distillation as a technique can be legitimate; the alleged fraud, access restrictions and missing secondary-purpose authority are the disputed governance features."
     ],
     "factual_basis": "Reuters reported Anthropic’s June allegation. Anthropic’s original Senate letter claimed 28.8 million exchanges via nearly 25,000 fraudulent accounts from 22 April to 5 June. Its September threat report describes a larger May–July set of more than 151 million attributed exchanges, a fixed prompt eliciting reasoning traces from Opus 4.6/4.7, saving them as supervised fine-tuning material and using them in Qwen models; it describes almost 5,000 accounts in an initial obfuscated pool and a shift after bans. These figures cover different observation windows and should not be added. The provider can report its own observed traffic and bans, but the attribution to Alibaba, ultimate training lineage and legal status are not independently verified here. The same report’s sensitive data relaying examples are explicitly Moonshot, DeepSeek or Xiaomi, not evidence of an Alibaba privacy incident. No quantified commercial damage, operational cost or resulting model uplift attributable to these exchanges is established.",
-    "governance_interpretation": "If the provider’s attributed account and output record is accurate, ordinary inference access was repurposed for model training, obfuscated proxy identities bypassed eligibility routing, and some reasoning-extraction requests escaped an operational protective posture. These are three distinct process-level mechanisms. The actor attribution and actual Qwen training lineage remain disputed; a missing private classifier trace does not itself negate the provider-described control outcome.",
+    "governance_interpretation": "Anthropic’s September report supplies detailed first-party telemetry and attribution, but remains a provider account rather than an independently audited dataset or adjudication against Alibaba. Its facts support distinct account-routing, extraction, and model-training components. The anti-distillation control’s campaign-specific activation state is not described, so control effectiveness remains unresolved. The report’s separate examples of sensitive user-data relaying concern other labs and are not part of this Alibaba case.",
     "significance_to_cam": "The case illustrates the difference between allowed model consultation, bulk capability extraction and account-eligibility evasion. Later provider detail supports more than a generic allegation but is still not independent proof of the named actor. The report cannot supply a privacy harm in this particular campaign merely because other campaigns in the same document relayed sensitive user data.",
     "source_clause_analysis": {
       "source_record_order": 4,
       "source_url": "https://www.anthropic.com/threat-intelligence-report-september-2026",
-      "purpose": "Separate observed provider account/prompt patterns from disputed Alibaba attribution and harm.",
+      "purpose": "Distinguish account-route evasion and containment, reasoning-trace extraction, downstream capability appropriation and provider response within Anthropic’s first-party account; exclude separate user-data cases involving other labs.",
       "clauses": [
         {
-          "source_paraphrase": "The provider reports a large obfuscated account network used a fixed prompt to obtain reasoning traces and saved the outputs for Qwen training.",
-          "recovered_invariant_interpretation": "Service output access for ordinary inference does not itself authorise covert bulk capability extraction and downstream training.",
+          "source_paraphrase": "Anthropic reports that Alibaba-linked operators used two pools of fraudulent accounts, residential proxies, disposable emails and virtual-card payments to access Opus models at high volume; after one pool was banned, traffic shifted to the second.",
+          "recovered_invariant_interpretation": "A service’s account eligibility and access restrictions should remain effective across linked account pools and proxy routes; reaching the service through a technically available API or account does not establish eligible authority.",
           "taxonomy_relationships": [
-            {
-              "class_id": "VIGIL-FC-000055",
-              "relationship": "failure-occurrence",
-              "canonical_taxonomy_mapping": true,
-              "rationale": "Ordinary model access was allegedly carried into a materially different output-training purpose without valid secondary authority."
-            },
             {
               "class_id": "VIGIL-FC-000041",
               "relationship": "failure-occurrence",
               "canonical_taxonomy_mapping": true,
-              "rationale": "Fraudulent account and proxy pools were used to avoid required account-eligibility and access routes, with traffic continuing after bans."
+              "rationale": "Anthropic reports fraudulent account pools and proxy routes that obfuscated access and allowed continued traffic after the first pool was banned, indicating the required account-eligibility route was avoided."
+            },
+            {
+              "class_id": "VIGIL-FC-000083",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The reported ban was operative for the first pool, but the campaign promptly shifted to a second pool; the effect did not contain the attributed activity at campaign level."
             }
           ],
           "adjudication_status": "mapped"
         },
         {
-          "source_paraphrase": "A fixed prompt targeted reasoning traces despite anti-distillation safeguards; provider later strengthened extraction classifiers and preserved thinking.",
-          "recovered_invariant_interpretation": "An applicable operational reasoning-protection posture may fail to take effect on the triggering extraction request despite its implementation location being private.",
+          "source_paraphrase": "A fixed prompt elicited Opus reasoning traces inside the answers; Anthropic says its anti-distillation measures were targeted, but the report does not specify which operative safeguard applied to these requests or its state.",
+          "recovered_invariant_interpretation": "A reasoning-protection control should produce its required protective effect on the extraction request; the particular control’s applicability and activation in this campaign must be established before judging effectiveness.",
           "taxonomy_relationships": [
             {
-              "class_id": "VIGIL-FC-000038",
-              "relationship": "failure-occurrence",
-              "canonical_taxonomy_mapping": true,
-              "rationale": "Anthropic described existing anti-extraction protections, targeted extraction requests and emitted reasoning traces, showing the required protective effect did not hold for the observed pathway."
+              "class_id": "VIGIL-FC-000083",
+              "relationship": "unresolved candidate",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "The report describes existing anti-distillation measures and successful trace extraction, but does not establish which specific control became operative for this campaign; without valid activation, FC-000083 is not established."
             },
             {
-              "class_id": "VIGIL-FC-000079",
+              "class_id": "VIGIL-FC-000038",
               "relationship": "candidate-rejected",
               "canonical_taxonomy_mapping": false,
-              "rationale": "No synthetic authority claim induced a documented economic transfer by a victim."
+              "rationale": "The report describes extraction despite anti-distillation measures, but does not identify an applicable control’s required trigger or establish that the control failed to activate. A shortfall in effect, if established, belongs under FC-000083."
+            }
+          ],
+          "adjudication_status": "unresolved"
+        },
+        {
+          "source_paraphrase": "Anthropic says the extracted reasoning transcripts were saved, converted to supervised fine-tuning material and used to train Qwen models and develop other model capabilities.",
+          "recovered_invariant_interpretation": "Reasoning outputs generated in response to service queries should not be treated as unrestricted inputs to a separate model-training and capability-development program without an independently adequate basis.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000067",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The provider attributes large-scale use of its reasoning traces to another lab’s model training and R&D, describing material capture of value dependent on its capability without an adequate basis."
+            },
+            {
+              "class_id": "VIGIL-FC-000055",
+              "relationship": "candidate-rejected",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "The report describes covert extraction through fraudulent access rather than evidence that valid primary-purpose authority to process data was treated as sufficient for a secondary purpose; FC-000067 more directly represents the reported capability-value appropriation."
+            }
+          ],
+          "adjudication_status": "mapped"
+        },
+        {
+          "source_paraphrase": "Anthropic reports detecting and disrupting the campaigns, banning associated accounts and strengthening safeguards; the first Alibaba-linked pool’s ban did not prevent rapid use of the second pool.",
+          "recovered_invariant_interpretation": "Response effectiveness should be assessed against the continuing campaign across related access routes, rather than treating action on one pool as complete containment.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000083",
+              "relationship": "failure-occurrence contribution",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The first account ban did not contain the campaign, although subsequent detection, disruption and safeguard changes are reported as response measures."
             }
           ],
           "adjudication_status": "mapped"
