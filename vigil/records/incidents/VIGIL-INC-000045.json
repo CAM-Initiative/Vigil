@@ -18,25 +18,24 @@
   },
   "interpretive_provenance": {
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-09-23-INC-000045-READJUDICATION",
+      "review_id": "VIGIL-REVIEW-2026-09-30-CLAUSE-RECONCILIATION-000045",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI Codex",
-      "reviewer_model": "GPT-6",
-      "review_date": "2026-09-23",
-      "review_scope": "Original technical report, source roles, occurrence, harm and full taxonomy 0.6.7 review.",
+      "reviewer_platform": "OpenAI ChatGPT",
+      "reviewer_model": "GPT-6 Codex",
+      "review_date": "2026-09-30",
+      "review_scope": "Component-level decomposition of observed repository transmission and reported later server-side disablement; full current-taxonomy review, harm reassessment and new wire-level testing were not performed.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "taxonomy_review": true,
         "structured_semantic_adjudication": true,
-        "new_external_source_research": true
+        "full_current_taxonomy_review": false,
+        "new_external_source_research": false
       },
       "known_limitations": [
-        "The wire capture was not independently re-run by this review.",
-        "Tests used controlled files and fake secrets; broader customer impact is unknown.",
-        "AI review is not human verification."
+        "The upload capture is bounded to the tested version and controlled samples.",
+        "The server-side change was observed on one account; its deployment scope and permanence are not independently verified."
       ],
-      "review_outcome": "Added original researcher evidence, retained FC-000003, corrected prose and changed unsupported S3 real-world privacy harm to SU."
+      "review_outcome": "Separated the repository-wide storage transfer from the later, account-bounded server-side disablement; retained FC-000003 for the transfer and recorded the limited remediation with no taxonomy mapping."
     },
     "review_history": [
       {
@@ -270,6 +269,26 @@
           "AI review is not human verification."
         ],
         "review_outcome": "Added original researcher evidence, retained FC-000003, corrected prose and changed unsupported S3 real-world privacy harm to SU."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-09-30-CLAUSE-RECONCILIATION-000045",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT",
+        "reviewer_model": "GPT-6 Codex",
+        "review_date": "2026-09-30",
+        "review_scope": "Component-level decomposition of observed repository transmission and reported later server-side disablement; full current-taxonomy review, harm reassessment and new wire-level testing were not performed.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "structured_semantic_adjudication": true,
+          "full_current_taxonomy_review": false,
+          "new_external_source_research": false
+        },
+        "known_limitations": [
+          "The upload capture is bounded to the tested version and controlled samples.",
+          "The server-side change was observed on one account; its deployment scope and permanence are not independently verified."
+        ],
+        "review_outcome": "Separated the repository-wide storage transfer from the later, account-bounded server-side disablement; retained FC-000003 for the transfer and recorded the limited remediation with no taxonomy mapping."
       }
     ]
   },
@@ -504,8 +523,8 @@
       "purpose": "Preserve the source-language or evidentiary propositions that materially explain VIGIL's governance interpretation. Paraphrases are concise, source-bounded and linked to the existing taxonomy adjudication.",
       "clauses": [
         {
-          "source_paraphrase": "The investigator captured Grok Build uploading a Git bundle of tracked files and history despite a prompt to reply without reading any files.",
-          "recovered_invariant_interpretation": "Authority to inspect or modify selected repository content for a task does not transfer to repository-wide transmission; changed action and data scope require separate authorisation.",
+          "source_paraphrase": "In tests of Grok Build v0.2.93, a researcher captured the CLI sending a Git bundle with tracked files and repository history to xAI storage even when the task asked only for “OK” and the agent was not asked to inspect repository files.",
+          "recovered_invariant_interpretation": "Task authority to inspect selected repository content does not itself authorise transmitting the whole repository and its history to a separate storage service; the scope and destination of that action must remain within the granted authority.",
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000003",
@@ -515,6 +534,12 @@
             }
           ],
           "adjudication_status": "mapped"
+        },
+        {
+          "source_paraphrase": "The researcher later observed that xAI had disabled the upload server-side on the tested account; the observation did not establish the scope or permanence of the change across accounts.",
+          "recovered_invariant_interpretation": "Containment claims should identify the affected deployment scope and be bounded by observed verification; a change on one tested account does not establish fleet-wide remediation.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping"
         }
       ]
     }
