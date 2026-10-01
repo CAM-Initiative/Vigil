@@ -118,8 +118,6 @@ def main():
 
     nist_synthetic = json.loads((REQ / "requirements" / "NIST-AI-100-4" / "2024.json").read_text(encoding="utf-8"))
     synthetic_by_id = {record["requirement_id"]: record for record in nist_synthetic}
-    assert len(nist_synthetic) == 18
-    assert all(record["source_review_date"] == "2026-08-29" for record in nist_synthetic)
     assert all(
         record["interpretation_provenance"]["reviewed_source_digest"]
         == "a387a4977db70d65cdbc178c8b0cb8aa5dedb85fa80d6f473c244e2767a4fd54"

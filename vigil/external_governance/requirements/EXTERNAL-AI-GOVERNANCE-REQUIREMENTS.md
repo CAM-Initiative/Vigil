@@ -4,7 +4,7 @@ Canonical analytical catalogue derived from registered external governance sourc
 
 - Registered source versions: 85
 - Primary AI-governance source versions: 61
-- Requirement records: 1100
+- Requirement records: 1101
 
 ## SDOS Runtime Governance Framework — Control Catalog and Reference Document — 1.10
 
@@ -92,9 +92,9 @@ Canonical analytical catalogue derived from registered external governance sourc
 - Extraction: `not-started`
 - Requirements: 0
 - Review priority: `critical-governance-source`
-- Next action: Obtain an accessible authoritative exact-version primary copy with recorded provenance, then perform bounded extraction.
+- Next action: Obtain the substantive official Directive or a preserved authoritative 2026-09-28 snapshot before clause extraction.
 
-No requirement records are asserted. No canonical EXTREQ created: substantive exact-version primary-text access could not be verified in this session.
+No requirement records are asserted. No canonical extraction admitted: substantive Directive text and exact registered snapshot remain unverified.
 
 ## Council of Europe Framework Convention on Artificial Intelligence and Human Rights, Democracy and the Rule of Law — 2024-09-05
 
@@ -1615,16 +1615,16 @@ No requirement records are asserted. Registered as systems/software vocabulary a
 
 | Requirement | Clause/control | Summary | Posture / type | External authority | Relationship | Review / access |
 | --- | --- | --- | --- | --- | --- | --- |
-| `EXTREQ-1541AC9EA2E10037` | NISTAML.039 | Connected-resource compromise exploits agent access to tools, data or external systems. | `definitional` / `definition` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-1541AC9EA2E10037` | NISTAML.039 | Connected-resource compromise uses prompt injection to cause a generative AI system to leak private information from restricted resources it can access. | `definitional` / `definition` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-23C60DF093A7B3F8` | NISTAML.011 | Model-poisoning attacks manipulate model development or updating to impair availability. | `definitional` / `definition` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-26301842DF1DD2A3` | NISTAML.04 | Misuse attacks exploit AI capabilities or access paths for harmful purposes. | `definitional` / `definition` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-28E605A9C2985F50` | NISTAML.015 | Indirect prompt injection introduces adversarial instructions through content processed by a generative AI system or agent. | `definitional` / `definition` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-2BF9417F3DD54AA8` | NISTAML.03 | Privacy attacks seek information about models, training data, users or system interactions. | `definitional` / `definition` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
-| `EXTREQ-3A1A5B90FEE08268` | NISTAML.036 | Interaction-leakage attacks expose information from other users or sessions. | `definitional` / `definition` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-3A1A5B90FEE08268` | NISTAML.036 | User-interaction leakage uses indirect prompt injection to persuade an end user to reveal information that the generative AI system then leaks to an attacker. | `definitional` / `definition` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-41E7637A45C43336` | 3.6 | Interpret adversarial-ML benchmark results in light of threat-model, dataset, metric and transfer limitations. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-5790AF1D5ACDCB5E` | 2.2–2.4 | Select mitigations against an explicit threat model and evaluate their effectiveness and limitations against relevant attacks. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-7221439C481E489C` | NISTAML.033 | Membership-inference attacks determine whether a record was part of training. | `definitional` / `definition` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
-| `EXTREQ-77530B4AE0E1AB25` | NISTAML.027 | Misaligned-output attacks cause generative AI outputs to depart from intended policy or behavior. | `definitional` / `definition` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-77530B4AE0E1AB25` | NISTAML.027 | Misaligned-output attacks use malicious resources and indirect prompt injection to make generative AI systems produce incorrect, attacker-specified or selectively suppressed information. | `definitional` / `definition` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-7FE2C18999AD3ABD` | NISTAML.031 | Model-extraction attacks infer or reproduce model functionality or parameters. | `definitional` / `definition` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-8A8D35EEB8EA4C07` | NISTAML.01 | Availability attacks seek to degrade or deny an AI system's intended service. | `definitional` / `definition` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-94B4FCDF35C6B93C` | NISTAML.013 | Data-poisoning attacks manipulate training data to impair model availability. | `definitional` / `definition` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
@@ -1656,27 +1656,28 @@ No requirement records are asserted. Retained for terminology, examples, strateg
 - Role: `primary-ai-governance`
 - Access: `direct-public-primary`
 - Extraction: `complete`
-- Requirements: 18
+- Requirements: 19
 - Review priority: `supporting-specialist-source`
-- Next action: Maintain source/version surveillance and re-review on material revision.
+- Next action: Maintain exact-source/version surveillance and complete ordered relationship review.
 
 | Requirement | Clause/control | Summary | Posture / type | External authority | Relationship | Review / access |
 | --- | --- | --- | --- | --- | --- | --- |
 | `EXTREQ-04A1120E5709BBB5` | 7 | Combine complementary provenance, detection, labeling and governance measures rather than relying on one transparency technique. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-2B5F2D7EAF522E73` | 3.1.2.3–3.1.2.6 | Assess metadata and provenance implementations for privacy leakage, security risk, scalability and loss during distribution. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-40698698A6C5F8A4` | 6 | AI actors building, verifying or validating models should verify the effectiveness of provenance-data tracking techniques, such as metadata or watermarks added to model outputs, before deployment. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-40BA686203D7F020` | 5.6–5.6.1 | Red-team and test safeguards against foreseeable attempts to generate prohibited or harmful intimate content. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-4706A6387311D532` | 4.1.1 | Test watermark techniques using context-relevant robustness, quality, detection and false-positive measures. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-4F010C47F9C62E1B` | 3.1.1 | Select watermarking approaches according to content modality, threat model, robustness, detectability and deployment constraints. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
-| `EXTREQ-5205096A50B3E6B6` | 4.1.1 | Evaluate watermark insertion and detection for quality impact, false results, removal and evasion under relevant transformations. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-5215ABF2B855226E` | 4.2–4.2.2 | Evaluate synthetic-content detectors on representative data, transformations and adversarial conditions and report uncertainty. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
-| `EXTREQ-5252A04AB1238C2C` | 4.1.2 and 4.2.1 | Test metadata and provenance systems for authenticity, integrity, interoperability and persistence across content workflows. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-5252A04AB1238C2C` | 4.1.2 and 4.2.1 | Evaluate metadata-recording schemes for their intended benefits as well as potential harms, and distinguish detecting metadata from validating or interpreting it. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-5806C7417A46D033` | 4.3 | Document generalization, benchmark, base-rate and adversarial limitations when reporting transparency-technique performance. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-5AF6358B9779F629` | 3.1.2 | Record content provenance and modification information in interoperable metadata where the use context supports it. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-688F22BFEB762E26` | 3.3–3.3.2 | Design labels and disclosures so intended users can notice and understand synthetic or manipulated content status. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-7CB5F7FFAF6361BE` | 6 | AI actors deploying and using digital-content transparency techniques should establish mechanisms to collect diverse user feedback, especially on false-positive and false-negative cases. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-7D1019CFC5DFDF0B` | 5.3–5.4 | Use output filtering, hashing or matching and response processes where appropriate to reduce harmful synthetic-content distribution. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-8742BC3940F998B7` | 5.1–5.2 | Use proportionate training-data and input controls to reduce creation of unlawful or abusive intimate and child sexual content. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
-| `EXTREQ-907032FF4258B625` | 4.2.3 | Evaluate human-assisted detection with realistic users and decision contexts, including automation and confirmation effects. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
-| `EXTREQ-9B6AFA4DA5E9398D` | 3.3–3.3.2 | Test content labels for accessibility, comprehension, persistence and effects on user judgment. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-907032FF4258B625` | 4.2.3 | Evaluate human-assisted synthetic-content detection using measures appropriate to the form of human assistance. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-9B6AFA4DA5E9398D` | 3.3–3.3.2 | Research and evaluate how people interact with digital-content transparency information across demographics, technical systems and environments to inform label design. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-A25093A6B507D46B` | 3.2.2 | Evaluate detection separately for relevant image, audio, video and text modalities rather than assuming cross-modal performance. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-CB71ADED4F8D02F3` | 3.1.2.2–3.1.2.3 | Use cryptographic authentication or trust infrastructure where provenance claims require tamper evidence and issuer verification. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-F4FFD18134680288` | 3.2–3.2.2 | Use synthetic-content detection only with documented operating conditions, uncertainty and known failure modes. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |

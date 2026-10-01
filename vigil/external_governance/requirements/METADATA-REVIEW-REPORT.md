@@ -1,9 +1,9 @@
 # External Requirement Metadata Review Report
 
-- Records assessed: 1100
-- Canonical records: 1100
+- Records assessed: 1101
+- Canonical records: 1101
 - Staged records: 0
-- Metadata-complete: 1027
+- Metadata-complete: 1028
 - Records requiring review: 73
 - Unresolved field decisions: 584
 - Records flagged for re-extraction: 0
@@ -14,14 +14,14 @@
 
 | Field | Populated, reviewed | Populated, unreviewed | Empty, unreviewed | Not specified by source | Not applicable |
 |---|---:|---:|---:|---:|---:|
-| `applicable_actor` | 1027 | 73 | 0 | 0 | 0 |
-| `governed_object` | 1027 | 73 | 0 | 0 | 0 |
-| `timing_or_frequency` | 232 | 4 | 69 | 795 | 0 |
-| `required_artefacts` | 428 | 23 | 50 | 599 | 0 |
-| `evidence_expectation` | 408 | 23 | 50 | 619 | 0 |
-| `verification_method` | 321 | 1 | 72 | 706 | 0 |
-| `applicability_conditions` | 926 | 18 | 55 | 101 | 0 |
-| `exceptions_or_qualifications` | 689 | 18 | 55 | 338 | 0 |
+| `applicable_actor` | 1028 | 73 | 0 | 0 | 0 |
+| `governed_object` | 1028 | 73 | 0 | 0 | 0 |
+| `timing_or_frequency` | 233 | 4 | 69 | 795 | 0 |
+| `required_artefacts` | 427 | 23 | 50 | 601 | 0 |
+| `evidence_expectation` | 407 | 23 | 50 | 621 | 0 |
+| `verification_method` | 320 | 1 | 72 | 708 | 0 |
+| `applicability_conditions` | 928 | 18 | 55 | 100 | 0 |
+| `exceptions_or_qualifications` | 690 | 18 | 55 | 338 | 0 |
 
 ## Source-level review backlog
 
@@ -37,7 +37,7 @@
 | `EXT-3CCBC407EAC8|2026-05` | `fully-metadata-reviewed` | 39 | 39 | 0 | 0 | 0 |
 | `EXT-477888AB2C1E|2.4` | `fully-metadata-reviewed` | 28 | 28 | 0 | 0 | 0 |
 | `EXT-564A4CAA4F00|2024` | `fully-metadata-reviewed` | 63 | 63 | 0 | 0 | 0 |
-| `EXT-5BC2AAEAF1D3|2024` | `fully-metadata-reviewed` | 18 | 18 | 0 | 0 | 0 |
+| `EXT-5BC2AAEAF1D3|2024` | `fully-metadata-reviewed` | 19 | 19 | 0 | 0 | 0 |
 | `EXT-63C32647602D|2024-09-05` | `fully-metadata-reviewed` | 54 | 54 | 0 | 0 | 0 |
 | `EXT-6442C7954667|1.0` | `fully-metadata-reviewed` | 74 | 74 | 0 | 0 | 0 |
 | `EXT-65F7658B8B04|2024` | `fully-metadata-reviewed` | 75 | 75 | 0 | 0 | 0 |
