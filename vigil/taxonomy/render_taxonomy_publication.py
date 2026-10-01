@@ -248,7 +248,7 @@ def bibliography_html(families: list[dict]) -> str:
         '<section class="taxonomy-bibliography" id="taxonomy-bibliography">'
         '<p class="chapter-kicker">Evidence base</p>'
         '<h1>References</h1>'
-        '<p class="bibliography-intro">External sources supporting VIGIL failure-class definitions and the Harm &amp; Severity Methodology. Incident-specific evidence remains cited within the relevant Case Studies.</p>'
+        '<p class="bibliography-intro">External sources supporting VIGIL governed invariant definitions, failure conditions and the Harm &amp; Severity Methodology. Incident-specific evidence remains cited within the relevant Case Studies.</p>'
         f'<ol>{"".join(entries)}</ol>'
         "</section>"
     )
