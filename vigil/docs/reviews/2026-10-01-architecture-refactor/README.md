@@ -4,7 +4,7 @@ The individual review of all 13 flagged parents and 31 candidates is complete. *
 
 See [the disposition audit](ATOMICITY-COHERENCE-REVIEW.md) and [full context/provenance JSON](atomicity-coherence-review.json). The active backlog now contains only MEASURE 2.2. Original candidates and superseded backlog decisions are preserved in the audit; draft IDs do not allocate canonical identities. OECD reverse coverage is preserved and its represented bounded scope has no known material compression after coherence review. NIST remains effectively partial pending the genuine migration.
 
-Stage 3 remains in progress. No migration tooling, canonical identity, FC mapping or Incident record changed during this correction. The Google Drive connector could not access the newly supplied IEEE copy (Unknown tool); IEEE remains not-started pending substantive primary-text/edition/provenance verification.
+Stage 3 remains in progress. No migration tooling, canonical identity, FC mapping or Incident record changed during this correction. The IEEE copy is now accessible: edition and publisher-download provenance are established. Its AI-use notice requires advance written IEEE SA consent, which remains unverified; IEEE stays not-started. See [access review](ieee7003-access-review.json).
 
 ## Historical checkpoint before the coherence correction
 

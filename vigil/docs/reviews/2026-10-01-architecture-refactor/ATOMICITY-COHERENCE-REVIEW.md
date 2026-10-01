@@ -235,7 +235,7 @@ The JSON audit preserves all superseded backlog entries and individual candidate
 
 ## IEEE access
 
-The user reports an IEEE 7003 copy in Google Drive. Search and folder listing both returned “Unknown tool”. No substantive text was accessed, edition or lawful provenance verified, or requirements inferred. The registered `not-started` state remains.
+After the coherence checkpoint, Drive access succeeded. The 59-page IEEE Xplore licensed copy confirms IEEE Std 7003-2024, approved 11 December 2024 and published 24 January 2025. The publisher notice on PDF page 5 requires advance written IEEE SA consent for AI use; that permission remains unverified. No normative extraction performed. The registered `not-started` state remains. See `ieee7003-access-review.json` for the copy digest, provenance and precise blocker.
 
 ## Next work
 

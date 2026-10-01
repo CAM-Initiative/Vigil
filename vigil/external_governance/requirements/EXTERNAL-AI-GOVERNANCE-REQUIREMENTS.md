@@ -663,9 +663,9 @@ No requirement records are asserted. Supporting authority only; exhaustive first
 - Extraction: `not-started`
 - Requirements: 0
 - Review priority: `high-value-governance-source`
-- Next action: Obtain an accessible authoritative exact-version primary copy with recorded provenance, then perform bounded extraction.
+- Next action: Verify written IEEE SA consent or other applicable permission covering this AI-assisted analysis, then review source modality and bounded normative clauses before extraction.
 
-No requirement records are asserted. No canonical EXTREQ created: substantive exact-version primary-text access could not be verified in this session.
+No requirement records are asserted. Zero canonical EXTREQ records. Exact-edition primary copy and substantive clause structure are available; normative extraction awaits verification of permission covering AI-assisted analysis under the publisher notice. No requirements inferred from catalogue, abstract or contents.
 
 ## IEEE Standard for Transparent Employer Data Governance — 2021
 
