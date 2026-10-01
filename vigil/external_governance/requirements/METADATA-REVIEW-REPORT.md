@@ -21,7 +21,7 @@
 | `evidence_expectation` | 408 | 23 | 50 | 619 | 0 |
 | `verification_method` | 321 | 1 | 72 | 706 | 0 |
 | `applicability_conditions` | 926 | 18 | 55 | 101 | 0 |
-| `exceptions_or_qualifications` | 686 | 18 | 55 | 341 | 0 |
+| `exceptions_or_qualifications` | 689 | 18 | 55 | 338 | 0 |
 
 ## Source-level review backlog
 

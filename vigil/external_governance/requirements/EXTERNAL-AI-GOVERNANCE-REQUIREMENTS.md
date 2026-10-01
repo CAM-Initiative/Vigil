@@ -171,7 +171,7 @@ No requirement records are asserted. No canonical EXTREQ created: substantive ex
 - Extraction: `complete`
 - Requirements: 5
 - Review priority: `supporting-specialist-source`
-- Next action: Maintain source/version surveillance and re-review on material revision.
+- Next action: Retain review-level reverse coverage and finish ordered corpus/reference audit before registry admission; monitor source revisions.
 
 | Requirement | Clause/control | Summary | Posture / type | External authority | Relationship | Review / access |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -1611,7 +1611,7 @@ No requirement records are asserted. Registered as systems/software vocabulary a
 - Extraction: `complete`
 - Requirements: 22
 - Review priority: `supporting-specialist-source`
-- Next action: Maintain source/version surveillance and re-review on material revision.
+- Next action: Maintain source/version surveillance; repeat bounded fidelity and reverse-coverage review on material revision.
 
 | Requirement | Clause/control | Summary | Posture / type | External authority | Relationship | Review / access |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -1949,7 +1949,7 @@ No requirement records are asserted. Retained as a bounded supporting authority.
 - Extraction: `complete`
 - Requirements: 14
 - Review priority: `supporting-specialist-source`
-- Next action: Maintain source/version surveillance and re-review on material revision.
+- Next action: Maintain source/version surveillance; repeat bounded fidelity and reverse-coverage review on material revision.
 
 | Requirement | Clause/control | Summary | Posture / type | External authority | Relationship | Review / access |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -2138,7 +2138,7 @@ No requirement records are asserted. AI-specific incident-reporting framework re
 - Extraction: `complete`
 - Requirements: 4
 - Review priority: `supporting-specialist-source`
-- Next action: Maintain source/version surveillance and re-review on material revision.
+- Next action: Retain review-level reverse coverage and finish ordered corpus/reference audit before registry admission; monitor source revisions.
 
 | Requirement | Clause/control | Summary | Posture / type | External authority | Relationship | Review / access |
 | --- | --- | --- | --- | --- | --- | --- |
