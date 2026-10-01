@@ -1,5 +1,5 @@
 {
-  "schema_version": "0.3.0",
+  "schema_version": "0.4.0",
   "standard": {
     "name": "VIGIL Alignment Taxonomy",
     "version": "0.6.9",
@@ -64,14 +64,6 @@
       "plain_english": "Continuation state has a stable, durable identity tying it to the correct task, checkpoint, dependencies and resumption point.",
       "definition": "The property by which material work state is locatable and resumable through stable, unique and durable anchors binding the intended task, checkpoint, dependency set, relevant participants and continuation point, with explicit resolution of missing or ambiguous bindings.",
       "invariant": "State intended for continuation must be bound to a stable, unique, and durable anchor identifying the correct task, checkpoint, dependencies, relevant participants, and continuation point. Missing or ambiguous anchoring must pause continuation for explicit resolution rather than attach state to a guessed or similar context.",
-      "recognition": {
-        "required_conditions": [
-          "Material state exists or is expected to support later continuation.",
-          "A stable anchor is required to bind that state to the correct task, checkpoint, dependency set, or continuation point.",
-          "The anchor is absent, lost, ambiguous, or detached, preventing reliable resumption."
-        ],
-        "applies_to": "failure-occurrence"
-      },
       "exclusions": [
         "The state is correctly anchored but its contents were not persisted.",
         "The correct state is recoverable and only the user-facing label is inconvenient.",
@@ -111,7 +103,24 @@
         "Continuity Anchor Failure"
       ],
       "failure_condition": "A failure in which material work state lacks or loses the stable identity, checkpoint, task binding, dependency binding, or reference needed to locate and resume the correct continuation state after interruption or transition.",
-      "failure_plain_english": "The work exists, but it is no longer reliably tied to the task, checkpoint, or context needed to resume it."
+      "failure_plain_english": "The work exists, but it is no longer reliably tied to the task, checkpoint, or context needed to resume it.",
+      "failure_recognition": {
+        "required_conditions": [
+          "Material state exists or is expected to support later continuation.",
+          "A stable anchor is required to bind that state to the correct task, checkpoint, dependency set, or continuation point.",
+          "The anchor is absent, lost, ambiguous, or detached, preventing reliable resumption."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_condition": "Available occurrence evidence establishes the following bounded outcome: Stable unique anchors bind the intended task, checkpoint, dependencies, participants and continuation point.",
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "Material work must be resumed after interruption or handoff.",
+          "Stable unique anchors bind the intended task, checkpoint, dependencies, participants and continuation point.",
+          "A resumption resolves those anchors to the intended work and explicitly handles any missing or ambiguous binding."
+        ]
+      }
     },
     {
       "class_id": "VIGIL-FC-000035",
@@ -123,14 +132,6 @@
       "plain_english": "Work needed for promised or required continuation persists with the decisions, dependencies and status needed to resume.",
       "definition": "The property by which material intermediate work, task decisions, dependency state and resumable progress are durably preserved across interruption, restart, handoff, expiry, failover and environment transition wherever continuation is required or reasonably represented as supported.",
       "invariant": "State necessary for promised, required, or reasonably expected continuation must be persisted before interruption, handoff, expiry, failover, or environment transition, together with the dependencies and status needed to resume. Ephemeral treatment is permitted only where non-continuation is explicit.",
-      "recognition": {
-        "required_conditions": [
-          "Material work state has been produced and is necessary for correct continuation.",
-          "An interruption, restart, handoff, expiry, or environment transition occurs.",
-          "The state is lost or unavailable because it was not preserved with the required durability."
-        ],
-        "applies_to": "failure-occurrence"
-      },
       "exclusions": [
         "The state was explicitly ephemeral and no continuation was required or represented.",
         "The state persists but is restored inaccurately.",
@@ -192,7 +193,24 @@
         }
       ],
       "failure_condition": "A failure in which material intermediate work, task decisions, dependency state, or resumable progress is not durably preserved across an interruption or transition for which continuation is required or reasonably represented as supported.",
-      "failure_plain_english": "Important work disappears or becomes unavailable when the session, process, or environment changes."
+      "failure_plain_english": "Important work disappears or becomes unavailable when the session, process, or environment changes.",
+      "failure_recognition": {
+        "required_conditions": [
+          "Material work state has been produced and is necessary for correct continuation.",
+          "An interruption, restart, handoff, expiry, or environment transition occurs.",
+          "The state is lost or unavailable because it was not preserved with the required durability."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_condition": "Available occurrence evidence establishes the following bounded outcome: Material work, decisions, dependencies and resumable progress are durably preserved through that transition.",
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "A workflow requires or represents supported continuation across interruption.",
+          "Material work, decisions, dependencies and resumable progress are durably preserved through that transition.",
+          "Comparison of persisted and resumed state demonstrates recovery of the material progress needed for the represented continuation."
+        ]
+      }
     },
     {
       "class_id": "VIGIL-FC-000036",
@@ -204,14 +222,6 @@
       "plain_english": "Restored work is checked for completeness, consistency and current usability before continuation.",
       "definition": "The property by which recovered work state is validated against the intended checkpoint, task, dependencies, version, participants and current conditions for complete, consistent, sufficiently fresh and usable continuation, with material defects resolved or explicitly accepted through an authorised recovery decision.",
       "invariant": "Before continuation, restored state must be validated against the intended checkpoint, task, dependencies, version, participants, and current conditions for completeness, consistency, freshness, and usability. Defects must be exposed and resolved or explicitly accepted through an authorised recovery decision.",
-      "recognition": {
-        "required_conditions": [
-          "Work state is preserved and a restoration or recovery attempt occurs.",
-          "The restored state differs materially from the state required for correct continuation.",
-          "The defect is not adequately identified or resolved before continuation."
-        ],
-        "applies_to": "failure-occurrence"
-      },
       "exclusions": [
         "No work state was preserved at all.",
         "The state is restored faithfully and a later independent task error occurs.",
@@ -267,7 +277,24 @@
         }
       ],
       "failure_condition": "A failure in which preserved work state is recovered into a materially incomplete, inconsistent, stale, mismatched, or otherwise unusable continuation state without adequately exposing or resolving the restoration defect.",
-      "failure_plain_english": "Work is restored after interruption, but the restored state is incomplete, inconsistent, or unsafe to continue from."
+      "failure_plain_english": "Work is restored after interruption, but the restored state is incomplete, inconsistent, or unsafe to continue from.",
+      "failure_recognition": {
+        "required_conditions": [
+          "Work state is preserved and a restoration or recovery attempt occurs.",
+          "The restored state differs materially from the state required for correct continuation.",
+          "The defect is not adequately identified or resolved before continuation."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_condition": "Available occurrence evidence establishes the following bounded outcome: The recovered task, dependencies, version, participants and freshness are validated and defects are resolved or explicitly accepted under valid recovery authority.",
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "Work is restored from a checkpoint under current conditions.",
+          "The recovered task, dependencies, version, participants and freshness are validated and defects are resolved or explicitly accepted under valid recovery authority.",
+          "Restoration checks and ensuing use establish the state actually recovered and the authorised disposition of relevant discrepancies."
+        ]
+      }
     },
     {
       "class_id": "VIGIL-FC-000056",
@@ -279,15 +306,6 @@
       "plain_english": "Synthetic participants coordinate who is speaking, yielding, awaiting a response and taking the next turn.",
       "definition": "The property by which co-participating synthetic agents maintain and use sufficient shared speaker, turn and conversational-floor state for coherent allocation, yielding, handoff and continuation, including bounded clarification or collision recovery and explicitly coordinated parallel participation.",
       "invariant": "Co-participating synthetic agents must share or reconcile floor state identifying the current speaker, active turn, addressed participant, yield or handoff, awaited response, and next allocation. Ambiguity requires clarification or bounded collision recovery; intentional parallel participation remains permissible when explicitly coordinated.",
-      "recognition": {
-        "required_conditions": [
-          "Two or more synthetic participants are participating in the same conversational context.",
-          "Coherent continuation requires coordination of speaker identity, active-turn state, turn completion, yielding, or next-speaker allocation.",
-          "One or more synthetic participants fail to recognise or act on the relevant shared turn state.",
-          "The failure produces repeated answers, simultaneous or colliding responses, inappropriate interruption, inappropriate silence, or another material conversational-floor coordination breakdown."
-        ],
-        "applies_to": "failure-occurrence"
-      },
       "exclusions": [
         "A single synthetic participant gives an incorrect or irrelevant answer while turn allocation remains coherent.",
         "Ordinary network or inference latency delays a response without losing or corrupting turn state.",
@@ -326,7 +344,25 @@
         }
       ],
       "failure_condition": "A failure in which two or more synthetic agents participating in the same conversational interaction do not maintain or use sufficient shared turn-state, speaker-state, or conversational-floor state to determine when another participant is speaking, has yielded, is awaiting a response, or should receive the next turn, causing materially incoherent turn allocation or continuation.",
-      "failure_plain_english": "Multiple synthetic participants share a conversation but fail to recognise, yield, sequence, or coordinate turns, so the conversational floor breaks down."
+      "failure_plain_english": "Multiple synthetic participants share a conversation but fail to recognise, yield, sequence, or coordinate turns, so the conversational floor breaks down.",
+      "failure_recognition": {
+        "required_conditions": [
+          "Two or more synthetic participants are participating in the same conversational context.",
+          "Coherent continuation requires coordination of speaker identity, active-turn state, turn completion, yielding, or next-speaker allocation.",
+          "One or more synthetic participants fail to recognise or act on the relevant shared turn state.",
+          "The failure produces repeated answers, simultaneous or colliding responses, inappropriate interruption, inappropriate silence, or another material conversational-floor coordination breakdown."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_condition": "Available occurrence evidence establishes the following bounded outcome: They use sufficient shared speaker and turn state for coherent allocation, yielding, handoff or bounded collision recovery.",
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "Multiple synthetic participants share a conversational floor.",
+          "They use sufficient shared speaker and turn state for coherent allocation, yielding, handoff or bounded collision recovery.",
+          "The observed exchange and coordination state demonstrate the intended turn ownership, including any explicitly agreed parallel participation."
+        ]
+      }
     },
     {
       "class_id": "VIGIL-FC-000078",
@@ -338,16 +374,6 @@
       "plain_english": "Inherited state is checked for current validity and applicability, with proportionate correction or reset when needed.",
       "definition": "The property by which material state transferred through handoff, compaction, checkpoints, restart, restoration, memory boundaries or other continuity transitions remains challengeable against current evidence, authority, scope, task requirements, contradictions and applicability, and receives proportionate validation, repair, qualification, quarantine, rollback, reset or baseline reversion before governing continuation. Faithful inheritance does not independently establish validity or permanence.",
       "invariant": "Continuity does not confer validity or permanence. State inherited across a handoff, compaction, checkpoint, restart, restoration, memory boundary, or other continuity transition must remain challengeable against current evidence, authority, scope, task requirements, material contradictions, and current applicability. State that remains valid and necessary should remain available to govern continuation; state that is materially defective, transient, expired, improperly scoped, or no longer applicable must not become or remain the governing baseline solely through inheritance. Continued execution requires proportionate revalidation, repair, qualification, quarantine, rollback, reset, reversion to an applicable baseline, or another adequate basis for relying on inherited state.",
-      "recognition": {
-        "required_conditions": [
-          "A handoff, compaction, checkpoint, restart, restoration, memory boundary, or other continuity transition transfers or preserves material state for subsequent reasoning or execution.",
-          "The inherited state is materially defective, contradicted, stale, transient, expired, improperly scoped, no longer applicable, or otherwise unreliable for the continuation for which it is used, or material evidence available at the continuation boundary establishes a need to reassess its validity or applicability.",
-          "Correct continuation requires proportionate revalidation, repair, qualification, quarantine, rollback, reset, reversion to an applicable baseline, or another adequate basis before the inherited state governs further action.",
-          "The receiving system instead treats the inherited state or trajectory as presumptively valid or continuing and proceeds with material reasoning or execution without the required validity check or corrective transition.",
-          "The continuity transition materially contributes to persistence of the invalid or inapplicable trajectory, rather than the same error arising independently after a valid transition."
-        ],
-        "applies_to": "failure-occurrence"
-      },
       "exclusions": [
         "The restored state differs materially from the state that was actually preserved; use Restoration-State Integrity where inaccurate restoration is the sufficient mechanism.",
         "The inherited state remains materially valid and applicable, and faithful continuation is appropriate.",
@@ -527,7 +553,26 @@
         }
       ],
       "failure_condition": "A failure in which material state is preserved or inherited across a continuity transition and is materially defective, contradicted, stale, transient, improperly scoped, no longer applicable, or otherwise unreliable for the continuation for which it is used, yet the receiving system treats that inherited state as a sufficient basis for continued reasoning or execution without proportionate revalidation, repair, qualification, quarantine, rollback, reset, reversion to an applicable baseline, or another adequate validity basis. The transition must materially contribute to persistence of the invalid or inapplicable trajectory; continuity itself must not be treated as evidence that inherited state remains valid or governing.",
-      "failure_plain_english": "A continuity transition lets inherited state govern the successor merely because it persisted, even though that state is defective, expired, transient, improperly scoped, no longer applicable, or otherwise requires reassessment or reset."
+      "failure_plain_english": "A continuity transition lets inherited state govern the successor merely because it persisted, even though that state is defective, expired, transient, improperly scoped, no longer applicable, or otherwise requires reassessment or reset.",
+      "failure_recognition": {
+        "required_conditions": [
+          "A handoff, compaction, checkpoint, restart, restoration, memory boundary, or other continuity transition transfers or preserves material state for subsequent reasoning or execution.",
+          "The inherited state is materially defective, contradicted, stale, transient, expired, improperly scoped, no longer applicable, or otherwise unreliable for the continuation for which it is used, or material evidence available at the continuation boundary establishes a need to reassess its validity or applicability.",
+          "Correct continuation requires proportionate revalidation, repair, qualification, quarantine, rollback, reset, reversion to an applicable baseline, or another adequate basis before the inherited state governs further action.",
+          "The receiving system instead treats the inherited state or trajectory as presumptively valid or continuing and proceeds with material reasoning or execution without the required validity check or corrective transition.",
+          "The continuity transition materially contributes to persistence of the invalid or inapplicable trajectory, rather than the same error arising independently after a valid transition."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_condition": "Available occurrence evidence establishes the following bounded outcome: That state is challenged against current evidence, authority and contradictions and receives proportionate validation, repair or quarantine.",
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "Inherited state crosses a continuity boundary and may govern continuation.",
+          "That state is challenged against current evidence, authority and contradictions and receives proportionate validation, repair or quarantine.",
+          "The inherited state, review and subsequent use demonstrate the disposition of material defects rather than faithful copying alone."
+        ]
+      }
     }
   ],
   "semantic_model": "invariant-with-occurrence-polarity"

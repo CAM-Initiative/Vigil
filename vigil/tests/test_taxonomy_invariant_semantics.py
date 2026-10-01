@@ -27,9 +27,12 @@ def fixture():
         'plain_english': 'Evidence supports reconstruction of material events.',
         'definition': 'The property by which evidence preserves material event relationships.',
         'invariant': 'Material event relationships must remain reconstructable.',
+        'success_condition': 'An actual review reconstructs the material event pathway from preserved relationships.',
+        'success_recognition': {'applies_to': 'successful-invariant', 'required_conditions': [
+            'Material events require reconstruction.', 'The review reconstructs those events using preserved relationships.']},
         'failure_condition': 'A failure in which evidence lacks necessary material relationships.',
         'failure_plain_english': 'Records exist but cannot establish what happened.',
-        'recognition': {'applies_to': 'failure-occurrence', 'required_conditions': [
+        'failure_recognition': {'applies_to': 'failure-occurrence', 'required_conditions': [
             'Evidence exists.', 'Necessary event relationships cannot be established.']},
         'exclusions': ['Event relationships can be reconstructed adequately.'],
         'examples': ['Records omit the link between a decision and its action.'], 'aliases': [],
@@ -73,7 +76,7 @@ class InvariantSemanticContractTests(unittest.TestCase):
     def test_failure_recognition_scope_cannot_be_missing_or_success(self):
         for value in (None, 'successful-invariant', 'ambiguous-boundary'):
             data = fixture()
-            recognition = data['classes'][0]['recognition']
+            recognition = data['classes'][0]['failure_recognition']
             if value is None:
                 del recognition['applies_to']
             else:
@@ -93,7 +96,8 @@ class InvariantSemanticContractTests(unittest.TestCase):
         for value in ('A failure in which evidence is missing.',
                       'Failures where evidence is unusable.',
                       'The system fails to retain evidence.',
-                      'A lineage failure in which source binding is lost.'):
+                      'A lineage failure in which source binding is lost.',
+                      'A success in which evidence is available.'):
             for field in ('definition', 'plain_english'):
                 item = fixture()['classes'][0]
                 item[field] = value
@@ -108,7 +112,7 @@ class InvariantSemanticContractTests(unittest.TestCase):
                     item[target] = '  ' + item[source].upper() + '  '
                     self.assertTrue(VALIDATOR.invariant_description_errors(item, 'fixture'))
         item = data['classes'][0]
-        item['definition'] = item['recognition']['required_conditions'][0]
+        item['definition'] = item['failure_recognition']['required_conditions'][0]
         self.assertTrue(VALIDATOR.invariant_description_errors(item, 'fixture'))
 
     def test_negative_normative_boundary_is_valid_invariant_language(self):
@@ -128,12 +132,46 @@ class InvariantSemanticContractTests(unittest.TestCase):
                     self.assertIn(item['failure_condition'], output)
                     self.assertIn(item['failure_plain_english'], output)
                     self.assertLess(output.index(item['definition']), output.index(item['failure_condition']))
+                self.assertIn('Success recognition criteria', output)
+                self.assertIn(data['classes'][0]['success_condition'], output)
                 self.assertIn('Failure recognition criteria', output)
                 self.assertIn('Exclusions from failure recognition', output)
                 self.assertIn('Failure examples and boundary illustrations', output)
                 for role in ('failure-occurrence', 'successful-invariant', 'ambiguous-boundary'):
                     self.assertIn(role, output)
                 self.assertIn('Absence of failure evidence alone does not establish successful holding', output)
+
+
+class PositiveEvidenceAdmissionTests(unittest.TestCase):
+    def admission(self, success, failure, excluded=False):
+        import sys
+        sys.path.insert(0, str(ROOT.parent / 'scripts'))
+        from taxonomy_polarity import established_polarities
+        return established_polarities(fixture()['classes'][0], success_evidence=success,
+                                      failure_evidence=failure, failure_excluded=excluded)
+
+    def test_absence_of_either_polarity_does_not_prove_the_other(self):
+        self.assertEqual(self.admission([], []), set())
+        self.assertEqual(self.admission([['source_records[0]'], []], []), set())
+        self.assertEqual(self.admission([], [['source_records[0]'], []]), set())
+
+    def test_exclusion_from_failure_does_not_prove_success(self):
+        self.assertEqual(self.admission([], [['source_records[0]']] * 2, True), set())
+
+    def test_independent_complete_affirmative_evidence_is_required(self):
+        self.assertEqual(self.admission([['source_records[0]']] * 2, []), {'successful-invariant'})
+        self.assertEqual(self.admission([], [['source_records[0]']] * 2), {'failure-occurrence'})
+
+    def test_success_cannot_restate_invariant_or_primary_definition(self):
+        for field in ('invariant', 'definition', 'failure_condition'):
+            item = fixture()['classes'][0]
+            item['success_condition'] = item[field]
+            self.assertTrue(VALIDATOR.invariant_description_errors(item, 'fixture'))
+
+    def test_success_scope_is_explicit_and_cannot_be_failure(self):
+        data = fixture()
+        data['classes'][0]['success_recognition']['applies_to'] = 'failure-occurrence'
+        self.assertTrue(VALIDATOR.schema_errors(data, SCHEMA, SCHEMA))
 
 
 if __name__ == '__main__':

@@ -469,26 +469,8 @@ def validate_incident_taxonomy(path: Path, record: dict[str, Any], errors: list[
             f"{path}: legacy block-level classification_role must agree with every mapping-local role"
         )
 
-    for class_id, mapping, label in mappings:
-        if not isinstance(mapping, dict):
-            continue
-        mapping_role = mapping.get("classification_role")
-        if mapping_role not in {"successful-invariant", "ambiguous-boundary"}:
-            continue
-        if status != "classified":
-            errors.append(f"{path}: {label} {mapping_role} role requires classified status")
-        exemplar_rows = classes.get(class_id, {}).get("invariant_exemplars", []) if class_id else []
-        exemplar_match = any(
-            isinstance(item, dict)
-            and item.get("linked_incident_id") == record.get("id")
-            and item.get("exemplar_type") == mapping_role
-            and item.get("exemplar_status") == "admitted"
-            for item in exemplar_rows
-        )
-        if not exemplar_match:
-            errors.append(
-                f"{path}: {label} {mapping_role} role must match an admitted taxonomy invariant_exemplar"
-            )
+    # Occurrence polarity is mapping-local. Published exemplar admission and
+    # whole-Incident completeness are independent review/publication decisions.
 
 
 def harm_matrix(version: str) -> dict[str, Any]:
@@ -826,134 +808,11 @@ def validate_external_requirement_assessments(
     known_requirement_ids: set[str] | None,
     errors: list[str],
 ) -> None:
-    """Validate occurrence-level assessments against taxonomy-derived EXTREQ candidates."""
-    assessments = record.get("external_requirement_assessments", [])
-    if not isinstance(assessments, list):
-        errors.append(f"{path}: external_requirement_assessments must be an array when present")
-        return
-
-    contract = incident_contract()
-    allowed_statuses = set(contract["external_requirement_assessment_applicability_values"])
-    allowed_findings = set(contract["external_requirement_assessment_finding_values"])
-    required = {
-        "requirement_id", "derived_from_class_ids", "applicability_status",
-        "applicability_basis", "assessed_on",
-    }
-    allowed = required | {"finding", "finding_basis"}
-    seen: set[str] = set()
-    taxonomy = record.get("taxonomy_classification")
-    taxonomy = taxonomy if isinstance(taxonomy, dict) else {}
-    mapped_class_ids: set[str] = set()
-    primary = taxonomy.get("primary_classification")
-    if isinstance(primary, dict) and isinstance(primary.get("class_id"), str):
-        mapped_class_ids.add(primary["class_id"])
-    secondary = taxonomy.get("secondary_classifications")
-    if isinstance(secondary, list):
-        mapped_class_ids.update(
-            item["class_id"] for item in secondary
-            if isinstance(item, dict) and isinstance(item.get("class_id"), str)
-        )
-
-    taxonomy_classes: dict[str, dict[str, Any]] = {}
-    if assessments:
-        try:
-            _, taxonomy_classes = taxonomy_catalogue()
-        except Exception as exc:  # noqa: BLE001
-            errors.append(f"{path}: unable to load taxonomy for external requirement assessments: {exc}")
-
-    for index, assessment in enumerate(assessments):
-        label = f"{path}: external_requirement_assessments[{index}]"
-        if not isinstance(assessment, dict):
-            errors.append(f"{label} must be an object")
-            continue
-        missing = sorted(required - set(assessment))
-        unexpected = sorted(set(assessment) - allowed)
-        if missing:
-            errors.append(f"{label} missing {', '.join(missing)}")
-        if unexpected:
-            errors.append(f"{label} has non-canonical fields: {', '.join(unexpected)}")
-
-        requirement_id = assessment.get("requirement_id")
-        if not isinstance(requirement_id, str) or not EXTERNAL_REQUIREMENT_ID.fullmatch(requirement_id):
-            errors.append(f"{label}.requirement_id must use EXTREQ- plus 16 uppercase hexadecimal characters")
-        else:
-            if requirement_id in seen:
-                errors.append(f"{label}.requirement_id must be unique within the Incident")
-            seen.add(requirement_id)
-            if known_requirement_ids is not None and requirement_id not in known_requirement_ids:
-                errors.append(f"{label}.requirement_id does not resolve in the canonical EXTREQ corpus")
-
-        class_ids = assessment.get("derived_from_class_ids")
-        class_ids_valid = isinstance(class_ids, list) and bool(class_ids)
-        if not class_ids_valid:
-            errors.append(f"{label}.derived_from_class_ids must be a non-empty array")
-            class_ids = []
-        elif any(not isinstance(class_id, str) or not FIDELITY_CLASS_ID.fullmatch(class_id) for class_id in class_ids):
-            errors.append(f"{label}.derived_from_class_ids must contain canonical Fidelity Class IDs")
-            class_ids_valid = False
-        elif len(class_ids) != len(set(class_ids)):
-            errors.append(f"{label}.derived_from_class_ids must not contain duplicates")
-            class_ids_valid = False
-        else:
-            not_mapped = sorted(set(class_ids) - mapped_class_ids)
-            if not_mapped:
-                errors.append(
-                    f"{label}.derived_from_class_ids includes classes not mapped on this Incident: "
-                    f"{', '.join(not_mapped)}"
-                )
-
-        status = assessment.get("applicability_status")
-        if status not in allowed_statuses:
-            errors.append(f"{label}.applicability_status is not canonical")
-        if not non_empty(assessment.get("applicability_basis")):
-            errors.append(f"{label}.applicability_basis must be non-empty")
-        assessed_on = assessment.get("assessed_on")
-        if (
-            not isinstance(assessed_on, str)
-            or re.fullmatch(r"\d{4}-\d{2}-\d{2}", assessed_on) is None
-            or parse_date(assessed_on) is None
-        ):
-            errors.append(f"{label}.assessed_on must be an ISO date in YYYY-MM-DD form")
-
-        finding = assessment.get("finding")
-        finding_basis = assessment.get("finding_basis")
-        if status == "applicable":
-            if finding not in allowed_findings:
-                errors.append(
-                    f"{label}.finding is required and must be canonical when applicability_status is applicable"
-                )
-            if not non_empty(finding_basis):
-                errors.append(
-                    f"{label}.finding_basis is required and must be non-empty when applicability_status is applicable"
-                )
-        elif status in {"insufficient-evidence", "not-applicable"}:
-            if "finding" in assessment or "finding_basis" in assessment:
-                errors.append(
-                    f"{label} must not include finding or finding_basis when applicability_status is {status}"
-                )
-
-        if (
-            isinstance(requirement_id, str)
-            and EXTERNAL_REQUIREMENT_ID.fullmatch(requirement_id)
-            and class_ids_valid
-        ):
-            eligible: set[str] = set()
-            for class_id in mapped_class_ids:
-                class_record = taxonomy_classes.get(class_id)
-                refs = class_record.get("external_references", []) if isinstance(class_record, dict) else []
-                if isinstance(refs, list) and any(
-                    isinstance(ref, dict) and ref.get("requirement_id") == requirement_id
-                    for ref in refs
-                ):
-                    eligible.add(class_id)
-            supplied = set(class_ids)
-            if not eligible:
-                errors.append(f"{label}.requirement_id is not cited by a mapped Fidelity Class on this Incident")
-            elif supplied != eligible:
-                errors.append(
-                    f"{label}.derived_from_class_ids must preserve every mapped source class; "
-                    f"expected {', '.join(sorted(eligible))}"
-                )
+    """Delegate independent assessment checks to the owning domain validator."""
+    from occurrence_requirement_validation import assessment_errors
+    relationships_path = VIGIL / 'external_governance/requirements/taxonomy-relationships.json'
+    relationships = load_json(relationships_path)['relationships']
+    errors.extend(f"{path}: {error}" for error in assessment_errors(record, known_requirement_ids, relationships))
 
 
 def validate_provenance(path: Path, record: dict[str, Any], errors: list[str]) -> None:

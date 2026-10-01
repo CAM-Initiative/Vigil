@@ -15,7 +15,7 @@
   "properties": {
     "schema_version": {
       "type": "string",
-      "const": "0.3.0"
+      "const": "0.4.0"
     },
     "standard": {
       "type": "object",
@@ -258,12 +258,14 @@
         "plain_english",
         "definition",
         "invariant",
-        "recognition",
         "exclusions",
         "examples",
         "aliases",
         "failure_condition",
-        "failure_plain_english"
+        "failure_plain_english",
+        "failure_recognition",
+        "success_condition",
+        "success_recognition"
       ],
       "properties": {
         "class_id": {
@@ -296,33 +298,6 @@
           "type": "string",
           "minLength": 1,
           "description": "Technical definition of the governed invariant or integrity property, independent of occurrence polarity. Failure mechanisms belong in failure_condition."
-        },
-        "recognition": {
-          "type": "object",
-          "additionalProperties": false,
-          "required": [
-            "required_conditions",
-            "applies_to"
-          ],
-          "properties": {
-            "required_conditions": {
-              "$ref": "#/$defs/non_empty_strings",
-              "description": "Necessary conditions for the explicit failure mechanism, not a definition of the governed property or a test for successful-invariant relationships."
-            },
-            "indicators": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "minLength": 1
-              },
-              "uniqueItems": true
-            },
-            "applies_to": {
-              "type": "string",
-              "const": "failure-occurrence"
-            }
-          },
-          "description": "Failure recognition only. All required conditions and applicable exclusions govern failure-occurrence admission; their absence does not establish successful holding."
         },
         "exclusions": {
           "$ref": "#/$defs/non_empty_strings",
@@ -386,6 +361,65 @@
           "type": "string",
           "minLength": 1,
           "description": "Accessible explanation of how the invariant fails, kept separate from plain_english."
+        },
+        "failure_recognition": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "required_conditions",
+            "applies_to"
+          ],
+          "properties": {
+            "required_conditions": {
+              "$ref": "#/$defs/non_empty_strings",
+              "description": "Necessary conditions for the explicit failure mechanism, not a definition of the governed property or a test for successful-invariant relationships."
+            },
+            "indicators": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "uniqueItems": true
+            },
+            "applies_to": {
+              "type": "string",
+              "const": "failure-occurrence"
+            }
+          },
+          "description": "Failure recognition only. All required conditions and applicable exclusions govern failure-occurrence admission; their absence does not establish successful holding."
+        },
+        "success_condition": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Positively evidenced bounded occurrence outcome; neither the invariant alone nor absence of failure establishes it."
+        },
+        "success_recognition": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "required_conditions",
+            "applies_to"
+          ],
+          "properties": {
+            "required_conditions": {
+              "$ref": "#/$defs/non_empty_strings",
+              "description": "Positive context, observed property holding and evidence adequate to the assessed scope."
+            },
+            "indicators": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "uniqueItems": true
+            },
+            "applies_to": {
+              "type": "string",
+              "const": "successful-invariant"
+            }
+          },
+          "description": "All positive occurrence conditions require affirmative evidence; failed recognition does not establish failure."
         }
       }
     },

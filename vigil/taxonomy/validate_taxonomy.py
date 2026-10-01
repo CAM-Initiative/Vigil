@@ -32,7 +32,7 @@ DATE_PATTERN = re.compile(r"^[0-9]{4}-[0-9]{2}-[0-9]{2}$")
 SHA256_PATTERN = re.compile(r"^sha256:[0-9a-f]{64}$")
 FAILURE_DEFINITION_OPENING = re.compile(
     r"^(?:(?:a|an|the)\s+)?(?:[\w-]+\s+){0,3}"
-    r"(?:failures?\s+(?:in\s+which|where|of)|failure\s+to|fails?\s+to)\b", re.I
+    r"(?:failures?\s+(?:in\s+which|where|of)|failure\s+to|fails?\s+to|success(?:ful)?\s+(?:in\s+which|where|occurrence))\b", re.I
 )
 
 
@@ -47,12 +47,15 @@ def invariant_description_errors(item: dict, location: str) -> list[str]:
     def normalise(value: str) -> str:
         return " ".join(value.casefold().split()).rstrip(" .")
 
-    diagnostic = [item.get("failure_condition"), item.get("failure_plain_english")]
-    recognition = item.get("recognition", {})
+    diagnostic = [item.get("failure_condition"), item.get("failure_plain_english"), item.get("success_condition")]
+    recognition = item.get("failure_recognition", {})
     if isinstance(recognition, dict):
         conditions = recognition.get("required_conditions", [])
         if isinstance(conditions, list):
             diagnostic.extend(conditions)
+    success = item.get("success_recognition", {})
+    if isinstance(success, dict):
+        diagnostic.extend(success.get("required_conditions", []))
     failure_text = {normalise(value) for value in diagnostic if isinstance(value, str) and value.strip()}
     errors = []
     for field in ("plain_english", "definition"):
@@ -60,9 +63,13 @@ def invariant_description_errors(item: dict, location: str) -> list[str]:
         if not isinstance(value, str):
             continue  # The schema diagnoses missing or malformed fields.
         if FAILURE_DEFINITION_OPENING.match(value.strip()):
-            errors.append(f"{location}.{field}: primary description must define the governed invariant, not a failure occurrence")
+            errors.append(f"{location}.{field}: primary description must define the governed invariant, not a success or failure occurrence")
         if normalise(value) in failure_text:
-            errors.append(f"{location}.{field}: primary description must remain distinct from failure condition and failure-recognition text")
+            errors.append(f"{location}.{field}: primary description must remain distinct from success/failure conditions and recognition text")
+    if isinstance(item.get("success_condition"), str):
+        success_text = normalise(item["success_condition"])
+        if success_text in {normalise(str(item.get(f, ""))) for f in ("invariant", "definition", "failure_condition")}:
+            errors.append(f"{location}.success_condition: must define a distinct positive occurrence test")
     return errors
 
 

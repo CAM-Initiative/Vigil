@@ -25,7 +25,7 @@ class IncidentBuilderTests(unittest.TestCase):
         self.assertEqual(entry["severity"], record["harm_impact_assessment"]["overall_severity"])
         self.assertEqual(entry["classification_status"], record["taxonomy_classification"]["classification_status"])
         self.assertEqual(entry.get("classification_role"), record["taxonomy_classification"].get("classification_role"))
-        self.assertIsNone(entry.get("alignment_exemplar_eligible"))
+        self.assertEqual(entry["alignment_exemplar_eligible"], BUILDER.alignment_exemplar_eligible(record))
         self.assertEqual(
             entry["primary_classification"]["classification_role"],
             record["taxonomy_classification"]["primary_classification"]["classification_role"],
@@ -37,7 +37,7 @@ class IncidentBuilderTests(unittest.TestCase):
         self.assertEqual(entry["record_version"], record["record_identity"]["version"])
         self.assertEqual(entry["record_last_updated"], record["record_identity"]["updated"])
         self.assertEqual(entry["source_roles"], BUILDER.source_roles(record))
-        self.assertEqual(entry["external_assessments"], record.get("external_assessments", []))
+        self.assertEqual(entry["external_assessment_count"], len(record.get("external_assessments", [])))
         self.assertEqual(
             entry["agent_context"],
             {
@@ -69,10 +69,10 @@ class IncidentBuilderTests(unittest.TestCase):
         ):
             self.assertNotIn(canonical_detail, entry)
 
-    def test_external_assessment_survives_projection_without_affecting_taxonomy_or_repair(self):
+    def test_external_assessment_navigation_count_does_not_affect_taxonomy_or_repair(self):
         record = BUILDER.load(BUILDER.INCIDENTS / "VIGIL-INC-000129.json")
         entry = BUILDER.incident_entry(BUILDER.INCIDENTS / "VIGIL-INC-000129.json", record)
-        self.assertEqual(entry["external_assessments"], record["external_assessments"])
+        self.assertEqual(entry["external_assessment_count"], len(record["external_assessments"]))
         self.assertEqual(entry["primary_classification"]["class_id"], "VIGIL-FC-000075")
         self.assertEqual(
             [item["class_id"] for item in entry["repair_classifications"]],

@@ -1,5 +1,5 @@
 {
-  "schema_version": "0.3.0",
+  "schema_version": "0.4.0",
   "standard": {
     "name": "VIGIL Alignment Taxonomy",
     "version": "0.6.9",
@@ -55,14 +55,6 @@
       "plain_english": "Operative governance decisions and restrictions preserve their meaning and force through handoffs and transformations.",
       "definition": "The property by which an applicable control's established decision, restrictions, conditions, escalation posture and scope retain material meaning and force across representations, handoffs, transformations, runtimes and execution transitions unless explicitly and traceably changed under valid authority.",
       "invariant": "Once a control state is operative, its decision, restrictions, conditions, escalation posture, and scope must preserve their meaning and force across each representation, handoff, transformation, runtime, and execution transition. Any change must be explicit, authorised, and traceable.",
-      "recognition": {
-        "required_conditions": [
-          "A governance control has established material operative state.",
-          "That state must persist across one or more transitions to govern a downstream point.",
-          "The state is lost, weakened, reset, or materially transformed before reaching that point."
-        ],
-        "applies_to": "failure-occurrence"
-      },
       "exclusions": [
         "The control state reaches the target intact but is ignored there.",
         "The changed state results from an authorised and adequately represented new decision.",
@@ -106,7 +98,24 @@
         }
       ],
       "failure_condition": "A failure in which the material state of an applicable governance control, including its decision, restrictions, conditions, or escalation status, is lost, weakened, reset, or transformed while traversing the path to the point it governs.",
-      "failure_plain_english": "A governance control starts in the right state, but that state is lost or changed before it reaches the governed action."
+      "failure_plain_english": "A governance control starts in the right state, but that state is lost or changed before it reaches the governed action.",
+      "failure_recognition": {
+        "required_conditions": [
+          "A governance control has established material operative state.",
+          "That state must persist across one or more transitions to govern a downstream point.",
+          "The state is lost, weakened, reset, or materially transformed before reaching that point."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_condition": "Available occurrence evidence establishes the following bounded outcome: Its restrictions, conditions, escalation posture and scope retain meaning and force unless valid authority traceably changes them.",
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "An established control decision crosses a representation or execution boundary.",
+          "Its restrictions, conditions, escalation posture and scope retain meaning and force unless valid authority traceably changes them.",
+          "Before-and-after control records and the affected action demonstrate preservation or an explicitly authorised modification."
+        ]
+      }
     },
     {
       "class_id": "VIGIL-FC-000041",
@@ -118,14 +127,6 @@
       "plain_english": "Governed conduct passes through each required review or control route, or a validated authorised equivalent.",
       "definition": "The property by which material decisions, requests, delegations and actions traverse required governance controls or review routes before reaching execution or another governed state, including validated route equivalence for direct, alternate, fallback, asynchronous, tool-mediated and cross-runtime paths.",
       "invariant": "Conduct subject to a required governance route may reach execution only through that route or an authorised equivalent preserving the same control effect. Direct, alternate, fallback, delegated, asynchronous, tool-mediated, and cross-runtime paths require route-equivalence validation before proceeding.",
-      "recognition": {
-        "required_conditions": [
-          "A defined governance route or control point is required for the material conduct.",
-          "An alternate, fallback, delegated, or direct path avoids that route or control point.",
-          "The conduct proceeds without the governance effect the required route was designed to provide."
-        ],
-        "applies_to": "failure-occurrence"
-      },
       "exclusions": [
         "The alternate path supplies an authorised equivalent governance control.",
         "The route is followed but the control fails to activate.",
@@ -226,7 +227,24 @@
         }
       ],
       "failure_condition": "A failure in which a material decision, request, delegation, or action reaches execution or another governed state through a path that avoids a governance control or review route required for that class of conduct.",
-      "failure_plain_english": "A decision or action takes a path around the governance control it is required to pass through."
+      "failure_plain_english": "A decision or action takes a path around the governance control it is required to pass through.",
+      "failure_recognition": {
+        "required_conditions": [
+          "A defined governance route or control point is required for the material conduct.",
+          "An alternate, fallback, delegated, or direct path avoids that route or control point.",
+          "The conduct proceeds without the governance effect the required route was designed to provide."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_condition": "Available occurrence evidence establishes the following bounded outcome: It passes through the required controls before the governed effect, including independently validated equivalence for alternative routes.",
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "A material request or action must traverse a required governance route.",
+          "It passes through the required controls before the governed effect, including independently validated equivalence for alternative routes.",
+          "Route and execution evidence confirms the control sequence or the validated equivalent on the path actually used."
+        ]
+      }
     },
     {
       "class_id": "VIGIL-FC-000042",
@@ -238,14 +256,6 @@
       "plain_english": "Material governance signals reach accountable recipients able to act and stay tracked through effect or authorised disposition.",
       "definition": "The property by which produced governance signals, decisions, advisories and escalations retain accountable ownership, a capable destination, status, response expectation and escalation route until the required governance effect or an authorised disposition is established.",
       "invariant": "A material governance signal must carry an accountable owner, capable destination, status, response expectation, and escalation route, and remain tracked until it produces the required effect or receives an authorised disposition. Emission, acknowledgement, or storage at an incapable endpoint is not completion.",
-      "recognition": {
-        "required_conditions": [
-          "A material governance signal, decision, advisory, or escalation is produced.",
-          "The signal must reach a capable decision, execution, or review point to have its required effect.",
-          "The signal terminates, stalls, or reaches only an incapable destination before that effect occurs."
-        ],
-        "applies_to": "failure-occurrence"
-      },
       "exclusions": [
         "The signal reaches a capable destination and is deliberately rejected through an authorised decision.",
         "No governance signal was produced because the control failed to activate.",
@@ -409,7 +419,24 @@
         }
       ],
       "failure_condition": "A failure in which a material governance signal is produced and routed but terminates, stalls, or is delivered only to a destination lacking the ability or responsibility to produce the required governance effect.",
-      "failure_plain_english": "A governance warning, decision, or escalation is created but stops before anyone or anything able to act on it receives it."
+      "failure_plain_english": "A governance warning, decision, or escalation is created but stops before anyone or anything able to act on it receives it.",
+      "failure_recognition": {
+        "required_conditions": [
+          "A material governance signal, decision, advisory, or escalation is produced.",
+          "The signal must reach a capable decision, execution, or review point to have its required effect.",
+          "The signal terminates, stalls, or reaches only an incapable destination before that effect occurs."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_condition": "Available occurrence evidence establishes the following bounded outcome: Accountable ownership, a capable destination, status and escalation remain established until the required effect or authorised disposition occurs.",
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "A governance signal requires a response or disposition.",
+          "Accountable ownership, a capable destination, status and escalation remain established until the required effect or authorised disposition occurs.",
+          "Delivery, ownership and response evidence traces the signal through to its bounded disposition."
+        ]
+      }
     }
   ],
   "semantic_model": "invariant-with-occurrence-polarity"

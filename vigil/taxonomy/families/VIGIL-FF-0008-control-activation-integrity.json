@@ -1,5 +1,5 @@
 {
-  "schema_version": "0.3.0",
+  "schema_version": "0.4.0",
   "standard": {
     "name": "VIGIL Alignment Taxonomy",
     "version": "0.6.9",
@@ -58,14 +58,6 @@
       "plain_english": "A required control's presence, reachability and applicability are determined and accurately represented before reliance.",
       "definition": "The property by which operational availability, applicable coverage and callable state of a governance control are determined with sufficient confidence before it must influence a material decision or action, with defined holds, safe alternatives or degraded paths when availability remains unresolved.",
       "invariant": "Before a material action depends on a governance control, the system must determine and accurately represent whether the control is present, reachable, callable, authorised, and applicable with sufficient confidence. Unresolved availability must trigger a defined hold, safe alternative, or degraded path.",
-      "recognition": {
-        "required_conditions": [
-          "A governance control may be required for a material decision or action.",
-          "Its operational availability or applicable coverage cannot be determined in time to rely on it.",
-          "The ambiguity materially impairs safe routing, activation, or execution."
-        ],
-        "applies_to": "failure-occurrence"
-      },
       "exclusions": [
         "The control is known to be available but is not activated.",
         "The control's owner is uncertain while its operational availability remains clear.",
@@ -114,7 +106,24 @@
         }
       ],
       "failure_condition": "A failure in which the operational availability, applicable coverage, or callable state of a required governance control cannot be determined with sufficient confidence before the control must influence a material decision or action.",
-      "failure_plain_english": "It is materially unclear whether the governance control needed for a decision or action is available to operate."
+      "failure_plain_english": "It is materially unclear whether the governance control needed for a decision or action is available to operate.",
+      "failure_recognition": {
+        "required_conditions": [
+          "A governance control may be required for a material decision or action.",
+          "Its operational availability or applicable coverage cannot be determined in time to rely on it.",
+          "The ambiguity materially impairs safe routing, activation, or execution."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_condition": "Available occurrence evidence establishes the following bounded outcome: Availability and callable coverage are determined adequately before dependence, or the action enters a defined hold or safe alternative.",
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "A material action depends on an applicable governance control whose availability may be uncertain.",
+          "Availability and callable coverage are determined adequately before dependence, or the action enters a defined hold or safe alternative.",
+          "Control checks and action records show the established availability or the actual bounded response to unresolved availability."
+        ]
+      }
     },
     {
       "class_id": "VIGIL-FC-000038",
@@ -126,14 +135,6 @@
       "plain_english": "An available, applicable control becomes operative when its valid trigger occurs, before the governed action proceeds.",
       "definition": "The property by which an available and applicable governance control is invoked, engaged and made operative when its defined valid trigger or required activation condition occurs, with the activation decision and resulting state observable and preserved.",
       "invariant": "When a valid activation condition is satisfied, the available applicable control must become operative before the governed action proceeds, and the activation decision and resulting state must be observable and preserved.",
-      "recognition": {
-        "required_conditions": [
-          "A governance control is available and applicable.",
-          "A defined trigger or condition requiring activation occurs.",
-          "The control is not activated before the governed decision or action proceeds."
-        ],
-        "applies_to": "failure-occurrence"
-      },
       "exclusions": [
         "The control activates but is bypassed downstream.",
         "It is unresolved whether the control is available or applicable.",
@@ -411,7 +412,24 @@
         }
       ],
       "failure_condition": "A failure in which an available and applicable governance control is not invoked, engaged, or made operative when its defined trigger or required condition occurs.",
-      "failure_plain_english": "A governance control is available and applicable, but the event that should trigger it does not make it operate."
+      "failure_plain_english": "A governance control is available and applicable, but the event that should trigger it does not make it operate.",
+      "failure_recognition": {
+        "required_conditions": [
+          "A governance control is available and applicable.",
+          "A defined trigger or condition requiring activation occurs.",
+          "The control is not activated before the governed decision or action proceeds."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_condition": "Available occurrence evidence establishes the following bounded outcome: The control is engaged and made operative with its activation decision and resulting state observable.",
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "An available applicable control encounters its valid required trigger.",
+          "The control is engaged and made operative with its activation decision and resulting state observable.",
+          "Trigger, invocation and control-state evidence demonstrates activation for the affected action before the required governance point."
+        ]
+      }
     },
     {
       "class_id": "VIGIL-FC-000043",
@@ -423,16 +441,6 @@
       "plain_english": "Controls activate only when their defined trigger and applicability conditions are valid for the affected context.",
       "definition": "The property by which a governance control or safeguard becomes operative only on a validly established activation, trigger and applicability basis for the affected actor, object, action, state and scope, preserving the distinction between control availability and warranted activation.",
       "invariant": "A control may become operative only after its defined trigger and applicability conditions are validly established for the affected actor, object, action, state, and scope. Its availability or severity is not evidence that activation is warranted.",
-      "recognition": {
-        "required_conditions": [
-          "A defined governance control or safeguard exists.",
-          "Identifiable conditions determine when that control should become operative.",
-          "Those valid activation conditions are not satisfied in the material context.",
-          "The control nevertheless becomes operative.",
-          "The activation produces a material governance, execution, restriction, routing, refusal, escalation, or access effect."
-        ],
-        "applies_to": "failure-occurrence"
-      },
       "exclusions": [
         "An upstream evidence or classification error supplies an incorrect trigger state and the control activates correctly relative to that state.",
         "The control validly activates but its scope or intensity is excessive or disproportionate.",
@@ -518,7 +526,26 @@
         }
       ],
       "failure_condition": "A failure in which a defined governance control or safeguard becomes operative despite the absence of the valid activation condition, trigger state, or applicability condition required for that control to activate.",
-      "failure_plain_english": "A control becomes operative even though the conditions that justify activating it are not satisfied."
+      "failure_plain_english": "A control becomes operative even though the conditions that justify activating it are not satisfied.",
+      "failure_recognition": {
+        "required_conditions": [
+          "A defined governance control or safeguard exists.",
+          "Identifiable conditions determine when that control should become operative.",
+          "Those valid activation conditions are not satisfied in the material context.",
+          "The control nevertheless becomes operative.",
+          "The activation produces a material governance, execution, restriction, routing, refusal, escalation, or access effect."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_condition": "Available occurrence evidence establishes the following bounded outcome: A valid trigger and applicability basis is established for that actor, object, action and scope before the safeguard becomes operative.",
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "A safeguard is proposed for activation on an affected actor or state.",
+          "A valid trigger and applicability basis is established for that actor, object, action and scope before the safeguard becomes operative.",
+          "Activation evidence links the established trigger to the imposed control and its relevant limits."
+        ]
+      }
     },
     {
       "class_id": "VIGIL-FC-000083",
@@ -530,15 +557,6 @@
       "plain_english": "A validly activated safeguard provides timely and sufficient protection for the hazard and evidenced protection needs in context.",
       "definition": "The property by which an applicable, validly activated governance or protective control produces an effect sufficient and timely to prevent, contain, interrupt, redirect, mitigate or safely bound its governed hazard to the level required by its protective purpose and evidenced protection context. Heightened protection conditions require evidence; disability or neurodivergence alone does not establish incapacity.",
       "invariant": "When a protective control validly becomes operative, its effect must be timely, proportionate, and sufficient for the hazard and protection context it governs. Detection, warning, labelling, refusal language, escalation signalling, or other nominal activation is not by itself sufficient where the required protective effect is not achieved and the governed harmful state is delivered, continues, or remains inadequately contained. Required protective sufficiency may increase where evidenced developmental vulnerability, capacity limitation, temporary or situational consent impairment, acute distress, cognitive asymmetry, or comparable protection conditions materially affect the risk, but disability or neurodivergence alone must not be treated as incapacity.",
-      "recognition": {
-        "required_conditions": [
-          "A defined governance or protective control is applicable and validly becomes operative.",
-          "The control has an identifiable protective purpose requiring a material effect such as prevention, blocking, containment, interruption, redirection, limitation, escalation, mitigation, or another protection-compatible outcome.",
-          "The actual control effect materially falls short of that required protective purpose, allowing the governed hazard to be delivered, continue, escape containment, or remain insufficiently mitigated.",
-          "The shortfall is material in the evidenced hazard and protection context; where vulnerability, developmental status, capacity limitation, temporary or situational consent impairment, acute distress, cognitive asymmetry, or another heightened protection condition is relied on, that condition must itself be supported rather than presumed."
-        ],
-        "applies_to": "failure-occurrence"
-      },
       "exclusions": [
         "The applicable control does not become operative when a valid activation condition occurs; assess Required Control Activation.",
         "The control becomes operative even though its valid activation or applicability conditions are not satisfied; assess Control Activation Validity.",
@@ -813,7 +831,25 @@
         }
       ],
       "failure_condition": "A failure in which an applicable governance or protective control validly becomes operative, but the control effect it produces is materially insufficient to prevent, contain, interrupt, redirect, mitigate, or safely bound the governed hazard to the level required by the control's protective purpose and the evidenced protection context.",
-      "failure_plain_english": "A protective control turns on, but the protection it actually provides is too weak, late, incomplete, or otherwise insufficient for the hazard it is meant to control."
+      "failure_plain_english": "A protective control turns on, but the protection it actually provides is too weak, late, incomplete, or otherwise insufficient for the hazard it is meant to control.",
+      "failure_recognition": {
+        "required_conditions": [
+          "A defined governance or protective control is applicable and validly becomes operative.",
+          "The control has an identifiable protective purpose requiring a material effect such as prevention, blocking, containment, interruption, redirection, limitation, escalation, mitigation, or another protection-compatible outcome.",
+          "The actual control effect materially falls short of that required protective purpose, allowing the governed hazard to be delivered, continue, escape containment, or remain insufficiently mitigated.",
+          "The shortfall is material in the evidenced hazard and protection context; where vulnerability, developmental status, capacity limitation, temporary or situational consent impairment, acute distress, cognitive asymmetry, or another heightened protection condition is relied on, that condition must itself be supported rather than presumed."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_condition": "Available occurrence evidence establishes the following bounded outcome: The control produces a timely effect sufficient for its protective purpose and evidenced context, including any justified heightened protection.",
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "An applicable validly activated protective control faces its governed hazard.",
+          "The control produces a timely effect sufficient for its protective purpose and evidenced context, including any justified heightened protection.",
+          "Observed intervention and hazard outcome demonstrate the required containment or mitigation rather than activation alone."
+        ]
+      }
     }
   ],
   "semantic_model": "invariant-with-occurrence-polarity"

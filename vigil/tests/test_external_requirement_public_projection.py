@@ -21,11 +21,12 @@ class ExternalRequirementProjectionTests(unittest.TestCase):
             "external_requirement_assessments": [] if assessment is None else [assessment],
         }
 
-    def test_empty_optional_assessment_array_is_preserved_in_public_entry(self):
+    def test_optional_assessment_has_navigation_count(self):
         entry = BUILDER.incident_entry(Path("vigil/records/incidents/VIGIL-INC-000001.json"), self.record())
-        self.assertEqual(entry["external_requirement_assessments"], [])
+        self.assertEqual(entry["external_requirement_assessment_count"], 0)
+        self.assertNotIn("external_requirement_assessments", entry)
 
-    def test_assessment_fields_are_projected_and_searchable(self):
+    def test_requirement_is_searchable_without_duplicating_assessment(self):
         assessment = {
             "requirement_id": "EXTREQ-0123456789ABCDEF",
             "derived_from_class_ids": ["VIGIL-FC-000001"],
@@ -36,7 +37,8 @@ class ExternalRequirementProjectionTests(unittest.TestCase):
             "assessed_on": "2026-09-29",
         }
         entry = BUILDER.incident_entry(Path("vigil/records/incidents/VIGIL-INC-000001.json"), self.record(assessment))
-        self.assertEqual(entry["external_requirement_assessments"], [assessment])
+        self.assertEqual(entry["external_requirement_assessment_count"], 1)
+        self.assertNotIn("external_requirement_assessments", entry)
         self.assertIn(assessment["requirement_id"], entry["search_terms"])
         self.assertIn("failure-occurrence", entry["search_terms"])
 

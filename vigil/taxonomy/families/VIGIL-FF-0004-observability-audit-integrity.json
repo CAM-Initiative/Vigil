@@ -1,5 +1,5 @@
 {
-  "schema_version": "0.3.0",
+  "schema_version": "0.4.0",
   "standard": {
     "name": "VIGIL Alignment Taxonomy",
     "version": "0.6.9",
@@ -71,14 +71,6 @@
       "plain_english": "Material events create and retain records sufficient for the oversight and reconstruction required in context.",
       "definition": "The property by which materially consequential actions, state transitions, decisions, tool invocations, permission changes, external effects and control events create and retain proportionate event evidence at or near occurrence for oversight, incident response and reconstruction.",
       "invariant": "Every materially consequential action, state change, control decision, handoff, and failure must create and retain an evidence record at or near occurrence, with content and duration proportionate to oversight, incident response, and reconstruction needs.",
-      "recognition": {
-        "required_conditions": [
-          "A materially consequential event occurs.",
-          "The applicable oversight or assurance context requires the event to be observable or reconstructable.",
-          "No adequate record of the event is captured or retained."
-        ],
-        "applies_to": "failure-occurrence"
-      },
       "exclusions": [
         "The event is immaterial for the applicable assurance level.",
         "Equivalent evidence is captured through another reliable mechanism.",
@@ -408,7 +400,24 @@
         }
       ],
       "failure_condition": "A failure in which a materially consequential action, state transition, decision, tool invocation, permission change, external effect, or control event occurs without the event record needed for proportionate oversight or later reconstruction.",
-      "failure_plain_english": "Something important happens, but no adequate event record is created."
+      "failure_plain_english": "Something important happens, but no adequate event record is created.",
+      "failure_recognition": {
+        "required_conditions": [
+          "A materially consequential event occurs.",
+          "The applicable oversight or assurance context requires the event to be observable or reconstructable.",
+          "No adequate record of the event is captured or retained."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_condition": "Available occurrence evidence establishes the following bounded outcome: Proportionate evidence of the event is created and retained at or near occurrence.",
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "A materially consequential event occurs that requires capture for oversight.",
+          "Proportionate evidence of the event is created and retained at or near occurrence.",
+          "Event records demonstrate the relevant action, transition or external effect and its timely capture and retention."
+        ]
+      }
     },
     {
       "class_id": "VIGIL-FC-000023",
@@ -420,14 +429,6 @@
       "plain_english": "Required monitoring covers consequential conduct across agents, tools, routes, environments and transitions.",
       "definition": "The property by which required monitoring coverage remains effective across agents, sub-agents, tool paths, services, environments, configurations and execution transitions, with validation of coverage-changing paths or authorised equivalents before use.",
       "invariant": "Required monitoring coverage must be preserved across agents, subagents, tools, services, environments, configurations, routes, and transitions. A coverage-changing path must be validated before use and may proceed only under the required monitor or an authorised equivalent.",
-      "recognition": {
-        "required_conditions": [
-          "A monitoring control is required for the relevant class of conduct.",
-          "Material conduct occurs through a path or condition outside effective monitor coverage.",
-          "The coverage gap prevents or materially degrades intended detection, review, or intervention."
-        ],
-        "applies_to": "failure-occurrence"
-      },
       "exclusions": [
         "The monitor observes the conduct but a downstream reviewer fails to act.",
         "Monitoring is not required for the relevant conduct or assurance level.",
@@ -485,7 +486,24 @@
         }
       ],
       "failure_condition": "A failure in which an agent, sub-agent, tool path, environment, configuration, routing condition, or execution surface evades, disables, omits, or bypasses a monitoring control required to observe consequential conduct.",
-      "failure_plain_english": "The action still happens, but it takes a route that the required monitor does not see."
+      "failure_plain_english": "The action still happens, but it takes a route that the required monitor does not see.",
+      "failure_recognition": {
+        "required_conditions": [
+          "A monitoring control is required for the relevant class of conduct.",
+          "Material conduct occurs through a path or condition outside effective monitor coverage.",
+          "The coverage gap prevents or materially degrades intended detection, review, or intervention."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_condition": "Available occurrence evidence establishes the following bounded outcome: Required coverage remains effective or a validated authorised equivalent operates across the change.",
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "Execution changes a path, agent, service or configuration relevant to required monitoring.",
+          "Required coverage remains effective or a validated authorised equivalent operates across the change.",
+          "Coverage tests and actual path evidence confirm monitoring on the materially used route during the relevant period."
+        ]
+      }
     },
     {
       "class_id": "VIGIL-FC-000024",
@@ -497,14 +515,6 @@
       "plain_english": "Material events leave records sufficient to determine what happened and how the relevant actions and states relate to one another.",
       "definition": "The property by which audit evidence preserves sufficient ordering, identity, target, state, correlation, timing, version, action and dependency information to reconstruct a materially relevant execution or decision pathway with appropriate confidence.",
       "invariant": "Records concerning a material event must retain the correlation, ordering, identity, target, state, timing, version, action, and dependency relationships needed to reconstruct the relevant pathway and outcome. Isolated records are insufficient where their relationships cannot be established.",
-      "recognition": {
-        "required_conditions": [
-          "Some audit or telemetry evidence is available.",
-          "A materially relevant execution, decision, or state-change pathway requires reconstruction.",
-          "The available evidence cannot establish one or more necessary elements of the pathway with sufficient reliability."
-        ],
-        "applies_to": "failure-occurrence"
-      },
       "exclusions": [
         "The pathway can be reconstructed adequately from the available evidence.",
         "The unresolved detail is immaterial to the review question.",
@@ -852,7 +862,24 @@
         }
       ],
       "failure_condition": "A failure in which audit evidence exists but lacks the ordering, identity, target, state, correlation, timing, version, or action detail necessary to reconstruct a materially relevant execution or decision pathway with adequate confidence.",
-      "failure_plain_english": "There are logs, but they are not enough to work out what actually happened."
+      "failure_plain_english": "There are logs, but they are not enough to work out what actually happened.",
+      "failure_recognition": {
+        "required_conditions": [
+          "Some audit or telemetry evidence is available.",
+          "A materially relevant execution, decision, or state-change pathway requires reconstruction.",
+          "The available evidence cannot establish one or more necessary elements of the pathway with sufficient reliability."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_condition": "Available occurrence evidence establishes the following bounded outcome: Evidence preserves adequate ordering, identity, target, state, correlation, timing, version, action and dependency relationships for the review purpose.",
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "A materially relevant execution or decision pathway requires reconstruction from audit evidence.",
+          "Evidence preserves adequate ordering, identity, target, state, correlation, timing, version, action and dependency relationships for the review purpose.",
+          "A bounded reconstruction using the available records establishes that pathway with appropriate confidence and explicit residual limits."
+        ]
+      }
     },
     {
       "class_id": "VIGIL-FC-000025",
@@ -864,14 +891,6 @@
       "plain_english": "Material actions can be traced to the actors or components that initiated and controlled them.",
       "definition": "The property by which material actions and decisions remain reliably attributable to effective initiating and controlling actors, distinguishing human, model, agent, orchestrator, service, tool, policy, evaluator and infrastructure contributions, including transfers or shared control.",
       "invariant": "Each material action and decision record must identify the effective initiating and controlling actor or actors, distinguishing human, model, agent, orchestrator, service, tool, policy, evaluator, and infrastructure contributions and any transfer or sharing of control.",
-      "recognition": {
-        "required_conditions": [
-          "A material action or decision is observable.",
-          "Attribution to the effective initiating or controlling actor is necessary for review or accountability.",
-          "Available evidence cannot reliably establish that attribution or collapses distinct actors into one undifferentiated source."
-        ],
-        "applies_to": "failure-occurrence"
-      },
       "exclusions": [
         "The responsible actor is adequately attributable.",
         "The issue is authorship provenance of content rather than operational responsibility for an action.",
@@ -914,7 +933,24 @@
         "Actor–Action Attribution Loss"
       ],
       "failure_condition": "A failure in which a material action or decision cannot be reliably attributed to the effective actor, agent, model, human, service, tool, policy, or orchestration component responsible for initiating or controlling it.",
-      "failure_plain_english": "An action is visible, but it is unclear which model, agent, tool, human, or automated process actually caused it."
+      "failure_plain_english": "An action is visible, but it is unclear which model, agent, tool, human, or automated process actually caused it.",
+      "failure_recognition": {
+        "required_conditions": [
+          "A material action or decision is observable.",
+          "Attribution to the effective initiating or controlling actor is necessary for review or accountability.",
+          "Available evidence cannot reliably establish that attribution or collapses distinct actors into one undifferentiated source."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_condition": "Available occurrence evidence establishes the following bounded outcome: Effective actor contributions and control transfers remain reliably distinguishable for that action.",
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "A material action involves initiating, controlling or shared actors.",
+          "Effective actor contributions and control transfers remain reliably distinguishable for that action.",
+          "Attribution evidence connects the action to its initiating and controlling actors and resolves relevant shared-control boundaries."
+        ]
+      }
     },
     {
       "class_id": "VIGIL-FC-000026",
@@ -926,15 +962,6 @@
       "plain_english": "Oversight can see and account for every execution route that can materially affect outcomes while intervention remains possible.",
       "definition": "The property by which materially consequential routing, delegation, sub-agent, tool, fallback, asynchronous and control-channel topology is exposed to the responsible oversight surface and represented in its execution-path model before or while intervention remains possible.",
       "invariant": "The oversight model must expose every materially consequential execution topology, including alternate, fallback, delegated, tool-mediated, asynchronous, and control-channel paths, before or while intervention remains possible.",
-      "recognition": {
-        "required_conditions": [
-          "A material alternate, internal, delegated, fallback, or indirect execution path exists and can affect an externally relevant outcome.",
-          "The responsible oversight surface or model does not expose, represent, or account for the existence or use of that consequential path adequately.",
-          "The hidden topology materially impairs supervision, intervention, reconstruction, or assurance.",
-          "Classification does not depend on proving that a formally required monitor or coverage route was bypassed."
-        ],
-        "applies_to": "failure-occurrence"
-      },
       "exclusions": [
         "The execution topology is adequately exposed to the responsible oversight surface through direct or equivalent representation.",
         "The topology is known and visible but an individual material event on it is not captured; use Material Event Capture.",
@@ -980,7 +1007,25 @@
         }
       ],
       "failure_condition": "A failure in which materially consequential execution topology—such as routing, delegation, sub-agent, tool, fallback, control-channel, or alternate pathways—can affect outcomes without being exposed to the responsible oversight surface or incorporated into its model of the system's execution paths.",
-      "failure_plain_english": "A materially consequential execution route exists, but the responsible oversight surface does not represent that route in its model of how the system can act."
+      "failure_plain_english": "A materially consequential execution route exists, but the responsible oversight surface does not represent that route in its model of how the system can act.",
+      "failure_recognition": {
+        "required_conditions": [
+          "A material alternate, internal, delegated, fallback, or indirect execution path exists and can affect an externally relevant outcome.",
+          "The responsible oversight surface or model does not expose, represent, or account for the existence or use of that consequential path adequately.",
+          "The hidden topology materially impairs supervision, intervention, reconstruction, or assurance.",
+          "Classification does not depend on proving that a formally required monitor or coverage route was bypassed."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_condition": "Available occurrence evidence establishes the following bounded outcome: The responsible oversight surface receives an adequate representation of the materially used topology while intervention remains possible.",
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "A consequential execution route includes delegation, tools, fallback or asynchronous paths.",
+          "The responsible oversight surface receives an adequate representation of the materially used topology while intervention remains possible.",
+          "Execution-path and oversight records show those routes and their timely availability for the required intervention."
+        ]
+      }
     },
     {
       "class_id": "VIGIL-FC-000027",
@@ -992,14 +1037,6 @@
       "plain_english": "Captured audit evidence preserves trustworthy content and context, with changes detectable and traceable to the primary record.",
       "definition": "The property by which captured audit, telemetry, event, decision and monitoring evidence retains integrity and contextual binding from capture through review, with prevention or traceable detection of material alteration, truncation, reordering, overwrite, identifier changes, version ambiguity and transformation.",
       "invariant": "From capture through review, audit evidence must preserve integrity and contextual binding. Alteration, truncation, reordering, overwrite, identifier change, version ambiguity, and authorised transformation must be prevented or made detectable and traceable to the primary record.",
-      "recognition": {
-        "required_conditions": [
-          "Audit or monitoring evidence was captured or expected to remain available.",
-          "The evidence undergoes a material integrity-degrading change or loses required contextual binding.",
-          "The degradation reduces confidence in reconstruction, attribution, verification, or review."
-        ],
-        "applies_to": "failure-occurrence"
-      },
       "exclusions": [
         "The evidence is preserved accurately but supports an unfavourable conclusion.",
         "The missing information was never captured in the first place.",
@@ -1044,7 +1081,24 @@
         "Audit-Evidence Integrity Loss"
       ],
       "failure_condition": "A failure in which captured audit, telemetry, event, decision, or monitoring evidence loses integrity through alteration, truncation, reordering, context loss, identifier loss, version ambiguity, overwrite, or unsupported transformation before or during review.",
-      "failure_plain_english": "The audit evidence exists, but it has been altered, truncated, reordered, detached from context, or otherwise degraded so it can no longer be trusted for review."
+      "failure_plain_english": "The audit evidence exists, but it has been altered, truncated, reordered, detached from context, or otherwise degraded so it can no longer be trusted for review.",
+      "failure_recognition": {
+        "required_conditions": [
+          "Audit or monitoring evidence was captured or expected to remain available.",
+          "The evidence undergoes a material integrity-degrading change or loses required contextual binding.",
+          "The degradation reduces confidence in reconstruction, attribution, verification, or review."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_condition": "Available occurrence evidence establishes the following bounded outcome: Its content and contextual binding remain intact, with material transformations or changes prevented or traceably detected.",
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "Captured audit evidence is retained, transformed or presented for review.",
+          "Its content and contextual binding remain intact, with material transformations or changes prevented or traceably detected.",
+          "Integrity checks, versions and custody records substantiate the evidence relied upon and disclose relevant alterations."
+        ]
+      }
     },
     {
       "class_id": "VIGIL-FC-000029",
@@ -1056,14 +1110,6 @@
       "plain_english": "People or systems responsible for supervision can see the material execution state and transitions in time to intervene or rely on them.",
       "definition": "The property by which material execution states and transitions of tasks, tool calls, delegations and external actions are accurately and promptly observable to supervising or relying actors, distinguishing prepared, queued, armed, running, waiting, blocked, failed, completed, cancelled and unknown states.",
       "invariant": "Prepared, queued, armed, running, delegated, waiting, blocked, failed, completed, cancelled, and unknown execution states and material transitions must be surfaced accurately to the supervising or relying actor while intervention or correction remains meaningful.",
-      "recognition": {
-        "required_conditions": [
-          "A task or action has a material execution state that can change over time.",
-          "Timely supervision, intervention, or reliance requires that state to be observable.",
-          "The state is withheld, collapsed, or not surfaced with sufficient timeliness or precision."
-        ],
-        "applies_to": "failure-occurrence"
-      },
       "exclusions": [
         "The execution state is adequately observable but the final outcome is incorrect.",
         "Only internal reasoning is undisclosed and no material execution state is hidden.",
@@ -1098,7 +1144,24 @@
         }
       ],
       "failure_condition": "A failure in which the materially relevant execution state of a task, tool call, delegation, or external action is not made observable to the person or system responsible for timely supervision, intervention, or reliance.",
-      "failure_plain_english": "The system does not expose whether a material action is pending, running, blocked, failed, or complete."
+      "failure_plain_english": "The system does not expose whether a material action is pending, running, blocked, failed, or complete.",
+      "failure_recognition": {
+        "required_conditions": [
+          "A task or action has a material execution state that can change over time.",
+          "Timely supervision, intervention, or reliance requires that state to be observable.",
+          "The state is withheld, collapsed, or not surfaced with sufficient timeliness or precision."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_condition": "Available occurrence evidence establishes the following bounded outcome: The supervising or relying actor can accurately and promptly distinguish the actual state and transitions.",
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "A task or external action changes materially relevant execution state.",
+          "The supervising or relying actor can accurately and promptly distinguish the actual state and transitions.",
+          "Observed execution and corresponding disclosures agree on prepared, running, waiting, blocked, failed, completed or unknown state as relevant."
+        ]
+      }
     },
     {
       "class_id": "VIGIL-FC-000030",
@@ -1110,14 +1173,6 @@
       "plain_english": "Related oversight signals can be connected and considered together in time for the required review or intervention.",
       "definition": "The property by which individually captured material monitoring, control and execution signals carry sufficient correlation identity and context to be assembled across records, channels and review surfaces within the time needed for relevant oversight or intervention.",
       "invariant": "Signals concerning the same event, pathway, actor, object, or risk must carry sufficient correlation identity and context and reach an integrated review surface in time for required oversight or intervention. Individual capture is insufficient where operationally disconnected signals prevent recognition of the material state.",
-      "recognition": {
-        "required_conditions": [
-          "Multiple material signals relevant to one event, pathway, or risk pattern individually exist.",
-          "Effective oversight or intervention requires those signals to be correlated or viewed together within a relevant time window.",
-          "Distribution across disconnected records, channels, identifiers, or review surfaces prevents sufficiently timely synthesis for that oversight or intervention purpose."
-        ],
-        "applies_to": "failure-occurrence"
-      },
       "exclusions": [
         "The signals can be reliably correlated with sufficient timeliness through an available identifier or review process.",
         "A required event signal was never captured; use Material Event Capture.",
@@ -1169,7 +1224,24 @@
         "Material Signal Fragmentation"
       ],
       "failure_condition": "A failure in which individually captured material monitoring, control, or execution signals remain distributed across disconnected identifiers, records, channels, or review surfaces so that their combined meaning cannot be assembled with sufficient timeliness for the relevant oversight or intervention purpose.",
-      "failure_plain_english": "Important oversight signals exist, but they are split across disconnected views so their combined meaning cannot be assembled in time for the relevant oversight or intervention."
+      "failure_plain_english": "Important oversight signals exist, but they are split across disconnected views so their combined meaning cannot be assembled in time for the relevant oversight or intervention.",
+      "failure_recognition": {
+        "required_conditions": [
+          "Multiple material signals relevant to one event, pathway, or risk pattern individually exist.",
+          "Effective oversight or intervention requires those signals to be correlated or viewed together within a relevant time window.",
+          "Distribution across disconnected records, channels, identifiers, or review surfaces prevents sufficiently timely synthesis for that oversight or intervention purpose."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_condition": "Available occurrence evidence establishes the following bounded outcome: Correlation identities and context allow those signals to be assembled within the required intervention interval.",
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "Oversight depends on material signals distributed across channels or records.",
+          "Correlation identities and context allow those signals to be assembled within the required intervention interval.",
+          "A demonstrated joined view reconstructs the relevant combined condition in time for the intended oversight."
+        ]
+      }
     },
     {
       "class_id": "VIGIL-FC-000044",
@@ -1181,16 +1253,6 @@
       "plain_english": "Authorised reviewers can inspect primary evidence directly when secondary representations cannot preserve the properties needed for review.",
       "definition": "The property by which an existing or identifiable authoritative evidence artefact is practically accessible for direct inspection through a proportionate, secure and scoped authorised review route when secondary representations cannot reliably preserve material evidential properties.",
       "invariant": "When a material property cannot be reliably preserved or assessed through a secondary representation, an authorised reviewer must be able to inspect the authoritative primary artefact through a proportionate, secure, and appropriately scoped route.",
-      "recognition": {
-        "required_conditions": [
-          "An authoritative primary evidence artefact exists or is identifiable.",
-          "An authorised reviewer requires direct inspection of that artefact for a material governance question.",
-          "The available review environment cannot provide practical direct access to the artefact.",
-          "Available transcripts, screenshots, metadata, descriptions, summaries, or other secondary representations cannot reliably preserve the material evidential properties.",
-          "The access failure materially impairs verification, reconstruction, attribution, or review."
-        ],
-        "applies_to": "failure-occurrence"
-      },
       "exclusions": [
         "The material event was never captured or no authoritative evidence artefact exists.",
         "The evidence is directly accessible but lacks sufficient content to reconstruct the event.",
@@ -1236,7 +1298,26 @@
         }
       ],
       "failure_condition": "A failure in which an existing or identifiable authoritative evidence artefact required for a material governance review cannot be directly accessed through the authorised review environment, while available secondary representations cannot reliably preserve the properties necessary to answer the review question.",
-      "failure_plain_english": "The authoritative evidence exists, but an authorised reviewer cannot directly inspect it and secondary representations cannot preserve what matters."
+      "failure_plain_english": "The authoritative evidence exists, but an authorised reviewer cannot directly inspect it and secondary representations cannot preserve what matters.",
+      "failure_recognition": {
+        "required_conditions": [
+          "An authoritative primary evidence artefact exists or is identifiable.",
+          "An authorised reviewer requires direct inspection of that artefact for a material governance question.",
+          "The available review environment cannot provide practical direct access to the artefact.",
+          "Available transcripts, screenshots, metadata, descriptions, summaries, or other secondary representations cannot reliably preserve the material evidential properties.",
+          "The access failure materially impairs verification, reconstruction, attribution, or review."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_condition": "Available occurrence evidence establishes the following bounded outcome: An authorised reviewer can directly inspect that artefact through a proportionate secure scoped route.",
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "Secondary representations cannot preserve a material property of an identifiable primary artefact.",
+          "An authorised reviewer can directly inspect that artefact through a proportionate secure scoped route.",
+          "A documented inspection demonstrates practical access to the relevant primary content and records residual access limitations."
+        ]
+      }
     },
     {
       "class_id": "VIGIL-FC-000045",
@@ -1248,16 +1329,6 @@
       "plain_english": "An already-authorised investigator has a bounded, secure and auditable route to obtain the evidence required for review.",
       "definition": "The property by which an independently authorised regulator or properly mandated investigator can obtain necessary evidence through a governed pathway authenticating mandate and purpose, preserving responsive evidence and controlling inspection or production with applicable confidentiality, security, privilege, proportionality, withholding review, logging, custody, retention and disposition safeguards. The pathway does not create investigative authority.",
       "invariant": "For an already-authorised regulatory or independent investigation, the architecture must provide a governed route to authenticate mandate and purpose, identify and preserve responsive evidence, and permit controlled inspection or production under security, confidentiality, privilege, proportionality, logging, chain-of-custody, affected-person, retention, and disposition controls. The route must not itself create investigative authority.",
-      "recognition": {
-        "required_conditions": [
-          "A material investigation, compliance question, causal determination, or remediation claim requires non-public evidence.",
-          "A regulator or properly mandated investigator has an independently valid basis to request or inspect the necessary evidence.",
-          "The governance architecture lacks a sufficiently defined route to authenticate authority and purpose, identify responsive evidence, and provide controlled access or production.",
-          "The missing route does not adequately govern confidentiality, security, privilege, proportionality, withholding review, access logging, custody, retention, or deletion as applicable.",
-          "The pathway failure materially prevents or degrades authorised investigation or verification."
-        ],
-        "applies_to": "failure-occurrence"
-      },
       "exclusions": [
         "The requester lacks valid authority or attempts to self-authorise.",
         "A bounded pathway exists and a particular request is lawfully denied or limited under its rules.",
@@ -1340,7 +1411,26 @@
         }
       ],
       "failure_condition": "A failure in which a governance or assurance architecture provides no sufficiently defined, lawful, authority-verified, confidentiality-protected, proportionate, and auditable pathway through which an already-authorised regulator or properly mandated investigator can obtain evidence necessary for a material investigation or verification.",
-      "failure_plain_english": "Valid investigative authority exists, but there is no bounded and auditable route through which it can obtain the evidence needed for review."
+      "failure_plain_english": "Valid investigative authority exists, but there is no bounded and auditable route through which it can obtain the evidence needed for review.",
+      "failure_recognition": {
+        "required_conditions": [
+          "A material investigation, compliance question, causal determination, or remediation claim requires non-public evidence.",
+          "A regulator or properly mandated investigator has an independently valid basis to request or inspect the necessary evidence.",
+          "The governance architecture lacks a sufficiently defined route to authenticate authority and purpose, identify responsive evidence, and provide controlled access or production.",
+          "The missing route does not adequately govern confidentiality, security, privilege, proportionality, withholding review, access logging, custody, retention, or deletion as applicable.",
+          "The pathway failure materially prevents or degrades authorised investigation or verification."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_condition": "Available occurrence evidence establishes the following bounded outcome: The pathway authenticates mandate and purpose, preserves the evidence and permits governed inspection or production with applicable safeguards.",
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "An independently authorised investigator requires particular responsive evidence.",
+          "The pathway authenticates mandate and purpose, preserves the evidence and permits governed inspection or production with applicable safeguards.",
+          "Access and custody records demonstrate responsive inspection or a reviewable justified withholding decision within the established mandate."
+        ]
+      }
     }
   ],
   "semantic_model": "invariant-with-occurrence-polarity"

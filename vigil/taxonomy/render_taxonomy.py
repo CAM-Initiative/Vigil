@@ -41,10 +41,12 @@ def anchor(value: str) -> str:
 OCCURRENCE_ROLE_NOTE = (
     "This class defines a governed invariant. A failure-occurrence relationship requires "
     "the failure condition and all required failure-recognition conditions, subject to "
-    "the exclusions. A successful-invariant relationship requires evidence that the "
-    "invariant held under the assessed conditions. An ambiguous-boundary relationship "
+    "the exclusions. A successful-invariant relationship requires the success condition "
+    "and affirmative evidence for all success-recognition conditions. An ambiguous-boundary relationship "
     "tests the boundary without establishing either outcome. Absence of failure "
-    "evidence alone does not establish successful holding."
+    "evidence alone does not establish successful holding. Absence of success evidence "
+    "does not establish failure. Exclusion from failure does not establish success; "
+    "failed success recognition does not establish failure."
 )
 
 
@@ -97,14 +99,17 @@ def markdown_family(data: dict, level: int = 1) -> str:
             out.extend([f"{h}## Class invariant", "", f"> {item['invariant']}", ""])
         out.extend([
             f"{h}## Occurrence relationships", "", OCCURRENCE_ROLE_NOTE, "",
+            f"{h}## Success condition", "", item["success_condition"], "",
+            f"{h}## Success recognition criteria", "",
+            *[f"- {x}" for x in item["success_recognition"]["required_conditions"]], "",
             f"{h}## Failure condition", "", item["failure_condition"], "",
             f"**Failure in plain English:** {item['failure_plain_english']}", "",
             f"{h}## Failure recognition criteria", "",
         ])
-        out.extend(f"- {x}" for x in item["recognition"]["required_conditions"])
-        if item["recognition"].get("indicators"):
+        out.extend(f"- {x}" for x in item["failure_recognition"]["required_conditions"])
+        if item["failure_recognition"].get("indicators"):
             out.extend(["", "**Failure indicators**", ""])
-            out.extend(f"- {x}" for x in item["recognition"]["indicators"])
+            out.extend(f"- {x}" for x in item["failure_recognition"]["indicators"])
         out.extend(["", f"{h}## Exclusions from failure recognition", ""])
         out.extend(f"- {x}" for x in item["exclusions"])
         out.extend(["", f"{h}## Failure examples and boundary illustrations", ""])
@@ -538,10 +543,10 @@ def invariant_exemplars_html(exemplars: list[dict], *, heading: str = "h4") -> s
 
 
 def publication_class_html(item: dict, section_number: str, class_lookup: dict[str, tuple[str, str]], case_examples: list[dict] | None = None) -> str:
-    recognition = "".join(f"<li>{esc(x)}</li>" for x in item["recognition"]["required_conditions"])
+    recognition = "".join(f"<li>{esc(x)}</li>" for x in item["failure_recognition"]["required_conditions"])
     indicators = ""
-    if item["recognition"].get("indicators"):
-        indicators = "<h4>Failure indicators</h4><ul>" + "".join(f"<li>{esc(x)}</li>" for x in item["recognition"]["indicators"]) + "</ul>"
+    if item["failure_recognition"].get("indicators"):
+        indicators = "<h4>Failure indicators</h4><ul>" + "".join(f"<li>{esc(x)}</li>" for x in item["failure_recognition"]["indicators"]) + "</ul>"
     exclusions = "".join(f"<li>{esc(x)}</li>" for x in item["exclusions"])
     illustrative_examples = "".join(f"<li>{esc(x)}</li>" for x in item["examples"])
     relationships = ""
@@ -566,6 +571,8 @@ def publication_class_html(item: dict, section_number: str, class_lookup: dict[s
   <h3>Technical definition</h3><p>{esc(item['definition'])}</p>
   {invariant}
   <h3>Occurrence relationships</h3><p>{esc(OCCURRENCE_ROLE_NOTE)}</p>
+  <h3>Success condition</h3><p>{esc(item['success_condition'])}</p>
+  <h3>Success recognition criteria</h3><ul>{''.join(f'<li>{esc(x)}</li>' for x in item['success_recognition']['required_conditions'])}</ul>
   <h3>Failure condition</h3><p>{esc(item['failure_condition'])}</p>
   <p><strong>Failure in plain English:</strong> {esc(item['failure_plain_english'])}</p>
   <div class="grid criteria-grid"><section><h3>Failure recognition criteria</h3><ul>{recognition}</ul>{indicators}</section><section><h3>Exclusions from failure recognition</h3><ul>{exclusions}</ul></section></div>
@@ -618,11 +625,11 @@ def publication_family_html(data: dict, chapter_number: int, case_examples: dict
 
 
 def class_html(item: dict, case_examples: list[dict] | None = None) -> str:
-    recognition = "".join(f"<li>{esc(x)}</li>" for x in item["recognition"]["required_conditions"])
+    recognition = "".join(f"<li>{esc(x)}</li>" for x in item["failure_recognition"]["required_conditions"])
     indicators = ""
-    if item["recognition"].get("indicators"):
+    if item["failure_recognition"].get("indicators"):
         indicators = "<h4>Failure indicators</h4><ul>" + "".join(
-            f"<li>{esc(x)}</li>" for x in item["recognition"]["indicators"]
+            f"<li>{esc(x)}</li>" for x in item["failure_recognition"]["indicators"]
         ) + "</ul>"
     exclusions = "".join(f"<li>{esc(x)}</li>" for x in item["exclusions"])
     illustrative_examples = "".join(f"<li>{esc(x)}</li>" for x in item["examples"])
@@ -648,6 +655,8 @@ def class_html(item: dict, case_examples: list[dict] | None = None) -> str:
   <h4>Technical definition</h4><p>{esc(item['definition'])}</p>
   {invariant}
   <h4>Occurrence relationships</h4><p>{esc(OCCURRENCE_ROLE_NOTE)}</p>
+  <h4>Success condition</h4><p>{esc(item['success_condition'])}</p>
+  <h4>Success recognition criteria</h4><ul>{''.join(f'<li>{esc(x)}</li>' for x in item['success_recognition']['required_conditions'])}</ul>
   <h4>Failure condition</h4><p>{esc(item['failure_condition'])}</p>
   <p><strong>Failure in plain English:</strong> {esc(item['failure_plain_english'])}</p>
   <div class="grid"><section><h4>Failure recognition criteria</h4><ul>{recognition}</ul>{indicators}</section><section><h4>Exclusions from failure recognition</h4><ul>{exclusions}</ul></section></div>

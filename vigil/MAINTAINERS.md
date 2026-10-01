@@ -51,7 +51,7 @@ The taxonomy migration assurance ledger at `vigil/taxonomy/migration/Caelestis.L
 
 `related_incidents` is the sole active VIGIL-record relationship field. Current external research citations may be retained in `research_references`, and current standards or regulatory context in `standards_and_regulatory_references`; sources relied on as Incident evidence still belong in `source_records`.
 
-`external_requirement_assessments` is an optional, separate occurrence-level assessment surface. Candidates are derived only from structured canonical `EXTREQ-*` references on Fidelity Classes already mapped to the Incident. The field does not duplicate central requirement metadata, taxonomy roles, or external assessments, and does not assert organisation-wide compliance. Follow `vigil/docs/maintenance/EXTERNAL-REQUIREMENT-ADJUDICATION.md`; do not backfill the corpus mechanically. Candidate generation preserves the meaning of `standards_and_regulatory_references` and does not use it to create candidates.
+`external_requirement_assessments` is an optional, separate occurrence-level assessment surface. Candidates may be resolved from a material source clause through reviewed FC/EXTREQ relationships or independently identified from occurrence evidence. The field does not duplicate central requirement metadata, taxonomy roles, or external assessments, and does not assert organisation-wide compliance. Follow `vigil/docs/maintenance/EXTERNAL-REQUIREMENT-ADJUDICATION.md`; do not backfill the corpus mechanically. Candidate generation preserves the meaning of `standards_and_regulatory_references` and does not use it to create candidates.
 
 Structured Incident severity is derived through `harm_impact_assessment` and VIGIL-HIM. Overall severity is the highest supported assessed materialised-harm band; dimensions are never averaged or summed. `unreported` is not S1, and SU applies when no dimension can be defensibly banded. Severity remains independent of source metadata, diagnostic provenance, taxonomy classification and workflow priority.
 
@@ -570,7 +570,7 @@ For Incident/schema/runtime changes, run:
 python vigil/scripts/build-vigil-public-records.py
 python vigil/tests/test_build_vigil_records.py
 python vigil/tests/test_external_requirement_assessments.py
-python vigil/tests/test_build_external_requirement_candidate_matrix.py
+python vigil/tests/test_clause_requirement_resolver.py
 python vigil/tests/test_external_requirement_public_projection.py
 python vigil/tests/test_validate_vigil_record_rules.py
 python vigil/tests/test_validate_vigil_records.py
@@ -578,7 +578,7 @@ python vigil/tests/test_validate_vigil_public_records.py
 python vigil/tests/test_vigil_pipeline_state.py
 python vigil/tests/test_vigil_source_provenance.py
 python vigil/scripts/validate-vigil-records.py
-python vigil/scripts/build-incident-external-requirement-candidate-matrix.py
+python vigil/scripts/validate-occurrence-requirement-assessments.py
 python vigil/scripts/validate-vigil-public-records.py
 python vigil/scripts/validate-vigil-source-provenance.py
 python vigil/scripts/validate-vigil-interpretive-provenance.py

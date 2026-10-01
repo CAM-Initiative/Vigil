@@ -52,7 +52,7 @@ Where a clause has multiple taxonomy relationships, preserve each distinct ratio
 
 The sole VIGIL record-rules contract is `vigil/VIGIL.Schema.json`. Subsystem schemas remain scoped to taxonomy, external governance and CAM assessment.
 
-The optional `external_requirement_assessments` field is governed by `vigil/docs/maintenance/EXTERNAL-REQUIREMENT-ADJUDICATION.md`. Candidate generation is taxonomy-led and does not determine applicability or findings. Preserve `standards_and_regulatory_references` as contextual references.
+The optional `external_requirement_assessments` field is governed by `vigil/docs/maintenance/EXTERNAL-REQUIREMENT-ADJUDICATION.md`. Candidate resolution is clause-scoped, on demand and limited to reviewed relationships; it does not determine applicability or findings. Preserve `standards_and_regulatory_references` as contextual references.
 
 Generated public record outputs are:
 
@@ -148,7 +148,7 @@ python vigil/scripts/validate-vigil-interpretive-provenance.py
 python vigil/scripts/validate-vigil-system-components.py
 python vigil/scripts/validate-authorship-provenance.py
 python vigil/tests/test_external_requirement_assessments.py
-python vigil/tests/test_build_external_requirement_candidate_matrix.py
+python vigil/tests/test_clause_requirement_resolver.py
 python vigil/tests/test_external_requirement_public_projection.py
 ```
 

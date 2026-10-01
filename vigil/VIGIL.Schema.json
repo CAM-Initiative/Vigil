@@ -127,7 +127,7 @@
         "classification-disputed",
         "requires-human-review"
       ],
-      "classification_rule": "Unclassified and requires-human-review Incidents assert no primary or secondary class and no classification_role. Provisionally classified, classified and disputed Incidents require one selectable canonical primary mapping and may carry independently evidenced selectable canonical secondary mappings. Primary/secondary is mapping position; failure-occurrence/successful-invariant/ambiguous-boundary is an independent mapping-local role. Named subtypes and recognition patterns refine the containing class and are not independently assignable or duplicable beside that parent. Every asserted mapping carries its own classification_role, classification basis and confidence. A successful-invariant mapping is a classification to the relevant class boundary but is not failure evidence; it requires classification_status classified and a matching admitted taxonomy invariant_exemplar for the Incident. An ambiguous-boundary mapping records that the occurrence materially engages or illustrates the class invariant without establishing either failure occurrence or successful invariant holding; it requires classification_status classified and a matching admitted ambiguous-boundary taxonomy invariant_exemplar. Mixed-role Incidents omit the legacy block-level role. Incident existence is never conditional on classification completion.",
+      "classification_rule": "Unclassified and requires-human-review Incidents assert no primary or secondary class and no classification_role. Provisionally classified, classified and disputed Incidents require one selectable canonical primary mapping and may carry independently evidenced selectable canonical secondary mappings. Primary/secondary is mapping position; failure-occurrence/successful-invariant/ambiguous-boundary is an independent mapping-local role. Named subtypes and recognition patterns refine the containing class and are not independently assignable or duplicable beside that parent. Every asserted mapping carries its own classification_role, classification basis and confidence. A successful-invariant mapping is a classification to the relevant class boundary but is not failure evidence; it requires affirmative success-condition evidence, independently of whole-Incident completeness or publication as a taxonomy exemplar. An ambiguous-boundary mapping records that the occurrence materially engages or illustrates the class invariant without establishing either failure occurrence or successful invariant holding; it preserves competing interpretations or missing polarity evidence independently of publication as a taxonomy exemplar. Mixed-role Incidents omit the legacy block-level role. Incident existence is never conditional on classification completion.",
       "adjudication_status_values": [
         "mapped",
         "resolved-no-mapping",
@@ -321,12 +321,13 @@
         "not-applicable"
       ],
       "external_requirement_assessment_finding_values": [
-        "failure-occurrence",
-        "successful-invariant",
-        "ambiguous-boundary"
+        "met",
+        "not-met",
+        "evidence-insufficient",
+        "not-assessable"
       ],
-      "external_requirement_assessment_rule": "external_requirement_assessments is an optional array of occurrence-level VIGIL assessments against taxonomy-derived external requirement candidates. Each entry preserves its canonical EXTREQ identifier and every mapped Fidelity Class that cites it. Applicability is assessed separately from the finding. Applicable entries require an independent finding and finding_basis; insufficient-evidence and not-applicable entries prohibit both. The finding evaluates the particular requirement against occurrence evidence and must not be copied from taxonomy mapping roles or class rationales. Candidate generation does not determine applicability or findings. This array does not establish organization-wide compliance or non-compliance and does not duplicate central EXTREQ metadata.",
-      "external_requirement_assessment_reference_rule": "A derived_from_class_ids value must identify a class mapped on the same Incident whose external_references contains the matching requirement_id. The listed classes must include every such mapped class. Requirement IDs must resolve in the canonical EXTREQ shards. Research, contextual or other external references without a structured canonical requirement_id do not generate a candidate. A taxonomy gap is recorded in the methodology when a potentially applicable runtime issue has no representative Fidelity Class; it does not bypass taxonomy adjudication."
+      "external_requirement_assessment_rule": "External requirement assessments are independently evidenced occurrence assessments. Clause-scoped reviewed relationships may identify candidates; occurrence evidence may also independently identify a requirement. Applicability and requirement outcome are separate from taxonomy polarity. Canonical evidence references resolve in source_records.",
+      "external_requirement_assessment_reference_rule": "Optional derived_from_class_ids identify supported reviewed FC/EXTREQ relationships on the recorded source_clause_indices. No exhaustive contributor list is required. Independent identification uses identification_basis without requiring an FC mapping."
     }
   },
   "$defs": {
@@ -460,10 +461,10 @@
       "additionalProperties": false,
       "required": [
         "requirement_id",
-        "derived_from_class_ids",
         "applicability_status",
         "applicability_basis",
-        "assessed_on"
+        "assessed_on",
+        "source_record_refs"
       ],
       "properties": {
         "requirement_id": {
@@ -472,7 +473,6 @@
         },
         "derived_from_class_ids": {
           "type": "array",
-          "minItems": 1,
           "uniqueItems": true,
           "items": {
             "type": "string",
@@ -494,9 +494,10 @@
         "finding": {
           "type": "string",
           "enum": [
-            "failure-occurrence",
-            "successful-invariant",
-            "ambiguous-boundary"
+            "met",
+            "not-met",
+            "evidence-insufficient",
+            "not-assessable"
           ]
         },
         "finding_basis": {
@@ -506,6 +507,28 @@
         "assessed_on": {
           "type": "string",
           "format": "date"
+        },
+        "source_record_refs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^source_records\\[[0-9]+\\]$"
+          }
+        },
+        "source_clause_indices": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "identification_basis": {
+          "type": "string",
+          "minLength": 1
         }
       },
       "allOf": [

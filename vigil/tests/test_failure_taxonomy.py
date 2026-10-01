@@ -111,7 +111,7 @@ class AlignmentTaxonomyValidationTests(unittest.TestCase):
         activation = next(item for item in documents if item["family"]["family_id"] == "VIGIL-FF-0008")
         unwarranted = next(item for item in activation["classes"] if item["class_id"] == "VIGIL-FC-000043")
         self.assertEqual(unwarranted["abstraction"], "class")
-        self.assertEqual(len(unwarranted["recognition"]["required_conditions"]), 5)
+        self.assertEqual(len(unwarranted["failure_recognition"]["required_conditions"]), 5)
         relationship = next(item for item in unwarranted["relationships"] if item["target_id"] == "VIGIL-FC-000038")
         self.assertEqual(relationship["type"], "distinguish_from")
         exclusions = " ".join(unwarranted["exclusions"]).lower()
@@ -322,7 +322,7 @@ class AlignmentTaxonomyValidationTests(unittest.TestCase):
         exclusions = " ".join(dissent["exclusions"]).lower()
         self.assertIn("successful invariant exemplar", exclusions)
         self.assertIn("unilaterally", exclusions)
-        neutrality_recognition = " ".join(neutrality["recognition"]["required_conditions"]).lower()
+        neutrality_recognition = " ".join(neutrality["failure_recognition"]["required_conditions"]).lower()
         for boundary in ("neutrality", "interested principal", "capture", "independently"):
             self.assertIn(boundary, neutrality_recognition)
         neutrality_neighbours = {
@@ -367,7 +367,7 @@ class AlignmentTaxonomyValidationTests(unittest.TestCase):
 
         self.assertEqual(rendering["class_code"], "PRAGMATIC_CONSTRAINT_RENDERING_INTEGRITY")
         self.assertEqual(rendering["name"], "Pragmatic Constraint Rendering Integrity")
-        rendering_recognition = " ".join(rendering["recognition"]["required_conditions"]).lower()
+        rendering_recognition = " ".join(rendering["failure_recognition"]["required_conditions"]).lower()
         for boundary in (
             "source lineage",
             "independent evidence",
@@ -394,7 +394,7 @@ class AlignmentTaxonomyValidationTests(unittest.TestCase):
             "orchestration responsibility",
         ):
             self.assertIn(boundary, distributed_invariant)
-        distributed_recognition = " ".join(distributed["recognition"]["required_conditions"]).lower()
+        distributed_recognition = " ".join(distributed["failure_recognition"]["required_conditions"]).lower()
         for boundary in (
             "decomposed",
             "higher-order",
@@ -590,7 +590,7 @@ class AlignmentTaxonomyValidationTests(unittest.TestCase):
         documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
         classes = {item["class_id"]: item for document in documents for item in document["classes"]}
         identity = classes["VIGIL-FC-000053"]
-        recognition = " ".join(identity["recognition"]["required_conditions"]).lower()
+        recognition = " ".join(identity["failure_recognition"]["required_conditions"]).lower()
         self.assertIn("identifiable real person", recognition)
         self.assertIn("consent", recognition)
         self.assertIn("possession", recognition)
@@ -620,7 +620,7 @@ class AlignmentTaxonomyValidationTests(unittest.TestCase):
         documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
         influence = next(document for document in documents if document["family"]["family_id"] == "VIGIL-FF-0009")
         decision = next(item for item in influence["classes"] if item["class_id"] == "VIGIL-FC-000065")
-        recognition = " ".join(decision["recognition"]["required_conditions"]).lower()
+        recognition = " ".join(decision["failure_recognition"]["required_conditions"]).lower()
         for boundary in ("consequential", "ground", "direction", "independent deliberation"):
             self.assertIn(boundary, recognition)
         exclusions = " ".join(decision["exclusions"]).lower()
@@ -635,7 +635,7 @@ class AlignmentTaxonomyValidationTests(unittest.TestCase):
         documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
         influence = next(document for document in documents if document["family"]["family_id"] == "VIGIL-FF-0009")
         assent = next(item for item in influence["classes"] if item["class_id"] == "VIGIL-FC-000066")
-        recognition = " ".join(assent["recognition"]["required_conditions"]).lower()
+        recognition = " ".join(assent["failure_recognition"]["required_conditions"]).lower()
         for boundary in ("independent evaluation", "agreement", "counterevidence", "independent"):
             self.assertIn(boundary, recognition)
         exclusions = " ".join(assent["exclusions"]).lower()
