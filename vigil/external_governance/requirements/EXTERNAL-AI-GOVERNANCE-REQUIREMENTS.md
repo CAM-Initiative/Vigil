@@ -4,7 +4,7 @@ Canonical analytical catalogue derived from registered external governance sourc
 
 - Registered source versions: 85
 - Primary AI-governance source versions: 61
-- Requirement records: 1099
+- Requirement records: 1100
 
 ## SDOS Runtime Governance Framework — Control Catalog and Reference Document — 1.10
 
@@ -1522,9 +1522,9 @@ No requirement records are asserted. Registered as systems/software vocabulary a
 - Role: `primary-ai-governance`
 - Access: `direct-public-primary`
 - Extraction: `complete`
-- Requirements: 73
+- Requirements: 74
 - Review priority: `critical-governance-source`
-- Next action: Complete the two-child MEASURE 2.2 migration and reverse coverage; retain eleven reviewed coherent controls.
+- Next action: Complete reverse invariant coverage and remaining ordered audit; no known canonical decomposition backlog in the represented Core.
 
 | Requirement | Clause/control | Summary | Posture / type | External authority | Relationship | Review / access |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -1535,9 +1535,11 @@ No requirement records are asserted. Registered as systems/software vocabulary a
 | `EXTREQ-1408DB88C2C42508` | MANAGE 3.2 | Monitor pre-trained models used for development as part of regular AI system monitoring and maintenance. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-233EE01AB85DB0F0` | MEASURE 1.2 | The appropriateness of metrics and effectiveness of controls are regularly assessed and updated, including errors and impacts on affected communities. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-23A856D39E460557` | GOVERN 4.2 | Organizational teams document and communicate AI-system risks and potential impacts. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-24885CF72B2DA35B` | MEASURE 2.2 | Organizations applying the NIST AI RMF should ensure that their evaluations of AI systems involving human subjects are representative of the population relevant to those evaluations. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-28293B6A2D5AB761` | MEASURE 2.7 | AI-system security and resilience are evaluated and documented. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-2831EFFBC5F8A321` | MAP 2.2 | Document AI system knowledge limits and how outputs may be used and overseen by humans, with sufficient information to assist relevant AI actors in decisions and subsequent actions. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-2905C0AA3C11D9DA` | MANAGE 4.2 | Integrate measurable continual-improvement activities into AI system updates, including regular engagement with interested parties and relevant AI actors. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-2ADA3838EE8E9B1C` | MEASURE 2.2 | Organizations applying the NIST AI RMF should ensure that their evaluations of AI systems involving human subjects meet requirements applicable to those evaluations, including protection of human subjects. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-2E1D2C63187C14E8` | MEASURE 2.5 | Demonstrate that the AI system to be deployed is valid and reliable, and document limits on generalizability beyond its development conditions. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-366214C3FB6CBD7B` | MAP 4.1 | Provide, follow and document approaches for mapping AI technology and legal risks of system components, including third-party data or software, and document risks of infringing third-party intellectual property or other rights. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-3B4A77A84EB7C45E` | MAP 3.4 | Define, assess and document processes for operator and practitioner proficiency with AI system performance and trustworthiness and relevant technical standards and certifications. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
@@ -1557,7 +1559,6 @@ No requirement records are asserted. Registered as systems/software vocabulary a
 | `EXTREQ-6165C5E752264175` | MEASURE 2.10 | Privacy risk is examined and documented. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-6320A5C27CD2562D` | GOVERN 1.1 | Legal and regulatory requirements involving AI are understood, managed and documented. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-65093F71FE0B832B` | MEASURE 4.2 | Inform and document trustworthiness measurement results in deployment contexts and across the AI lifecycle through domain-expert and relevant AI-actor input to validate consistent intended performance. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
-| `EXTREQ-66474C86C4005DDB` | MEASURE 2.2 | Ensure evaluations involving human subjects meet applicable requirements, including human-subject protection, and are representative of the relevant population. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-669D0C512E2B7AD7` | MAP 3.3 | The application scope is specified and documented based on capability, context and classification. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-6795C6C5F4D8116C` | MEASURE 4.1 | Connect risk measurement approaches to deployment contexts and inform them through consultation with domain experts and other end users; document the approaches. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-6870C9F25BE482D7` | MAP 1.1 | The intended purpose, users, uses, benefits, impacts, laws, norms, assumptions, settings and performance expectations of the AI system are understood and documented. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |

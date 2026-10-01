@@ -1080,7 +1080,7 @@ def seed(write: bool) -> int:
         for source in reviewed_sources
     }
     if counts != {NIST_RMF: 71, CYCLONEDX: 5, NIST_GAI: 223, IMDA_AGENTIC: 39, NIST_218A: 75, SDOS: 24, NIST_AML: 22, NIST_SYNTHETIC: 18, NIST_BIAS: 14, SPDX: 4}:
-        raise ValueError(f"unexpected reviewed source population: {counts}")
+        raise ValueError(f"manual reconciliation required: unexpected historical reviewed source population: {counts}")
 
     for record in selected:
         if record["vigil_source_id"] == NIST_GAI:

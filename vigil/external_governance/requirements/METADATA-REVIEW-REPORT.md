@@ -1,12 +1,12 @@
 # External Requirement Metadata Review Report
 
-- Records assessed: 1099
-- Canonical records: 1099
+- Records assessed: 1100
+- Canonical records: 1100
 - Staged records: 0
-- Metadata-complete: 1026
+- Metadata-complete: 1027
 - Records requiring review: 73
 - Unresolved field decisions: 584
-- Records flagged for re-extraction: 1
+- Records flagged for re-extraction: 0
 - Primary sources blocked by access: 37
 - Contract errors: 0
 
@@ -14,14 +14,14 @@
 
 | Field | Populated, reviewed | Populated, unreviewed | Empty, unreviewed | Not specified by source | Not applicable |
 |---|---:|---:|---:|---:|---:|
-| `applicable_actor` | 1026 | 73 | 0 | 0 | 0 |
-| `governed_object` | 1026 | 73 | 0 | 0 | 0 |
-| `timing_or_frequency` | 232 | 4 | 69 | 794 | 0 |
-| `required_artefacts` | 428 | 23 | 50 | 598 | 0 |
-| `evidence_expectation` | 408 | 23 | 50 | 618 | 0 |
-| `verification_method` | 321 | 1 | 72 | 705 | 0 |
-| `applicability_conditions` | 925 | 18 | 55 | 101 | 0 |
-| `exceptions_or_qualifications` | 685 | 18 | 55 | 341 | 0 |
+| `applicable_actor` | 1027 | 73 | 0 | 0 | 0 |
+| `governed_object` | 1027 | 73 | 0 | 0 | 0 |
+| `timing_or_frequency` | 232 | 4 | 69 | 795 | 0 |
+| `required_artefacts` | 428 | 23 | 50 | 599 | 0 |
+| `evidence_expectation` | 408 | 23 | 50 | 619 | 0 |
+| `verification_method` | 321 | 1 | 72 | 706 | 0 |
+| `applicability_conditions` | 926 | 18 | 55 | 101 | 0 |
+| `exceptions_or_qualifications` | 686 | 18 | 55 | 341 | 0 |
 
 ## Source-level review backlog
 
@@ -39,7 +39,7 @@
 | `EXT-564A4CAA4F00|2024` | `fully-metadata-reviewed` | 63 | 63 | 0 | 0 | 0 |
 | `EXT-5BC2AAEAF1D3|2024` | `fully-metadata-reviewed` | 18 | 18 | 0 | 0 | 0 |
 | `EXT-63C32647602D|2024-09-05` | `fully-metadata-reviewed` | 54 | 54 | 0 | 0 | 0 |
-| `EXT-6442C7954667|1.0` | `fully-metadata-reviewed` | 73 | 73 | 0 | 0 | 1 |
+| `EXT-6442C7954667|1.0` | `fully-metadata-reviewed` | 74 | 74 | 0 | 0 | 0 |
 | `EXT-65F7658B8B04|2024` | `fully-metadata-reviewed` | 75 | 75 | 0 | 0 | 0 |
 | `EXT-71B4139453FA|3.0.1` | `fully-metadata-reviewed` | 4 | 4 | 0 | 0 | 0 |
 | `EXT-7E4B8ED73AA5|2021` | `fully-metadata-reviewed` | 10 | 10 | 0 | 0 | 0 |
@@ -51,8 +51,7 @@
 
 ## Re-extraction findings
 
-- Backlog records: 1
-- `compound-normative-propositions`: 1
+- Backlog records: 0
 
 ## Primary sources blocked by access
 

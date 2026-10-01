@@ -40,10 +40,12 @@ def load(path: Path):
 
 def staged_records(canonical_ids=None):
     records = []
-    for path in sorted(REEXTRACTIONS.glob("EU-AI-ACT-2026-07-27-*.json")):
-        if path.name.endswith("metadata-normalization.json"):
+    for path in sorted(REEXTRACTIONS.glob("*.json")):
+        if path.name.endswith("-metadata-normalization.json"):
             continue
         doc = load(path)
+        if doc.get("status") != "migration-candidate":
+            continue
         for record in doc.get("requirements", []):
             clone = {**record}
             clone["_staged_package"] = path.name
@@ -53,8 +55,7 @@ def staged_records(canonical_ids=None):
             for field in FIELDS:
                 clone.setdefault(field, [])
             records.append(clone)
-    overlay_path = REEXTRACTIONS / "EU-AI-ACT-2026-07-27-metadata-normalization.json"
-    if overlay_path.exists():
+    for overlay_path in sorted(REEXTRACTIONS.glob("*-metadata-normalization.json")):
         overlay = load(overlay_path).get("overrides", {})
         by_id = {r["requirement_id"]: r for r in records}
         for rid, patch in overlay.items():

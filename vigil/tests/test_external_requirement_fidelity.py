@@ -17,6 +17,16 @@ spec.loader.exec_module(module)
 
 
 class ExternalRequirementFidelityTests(unittest.TestCase):
+    def test_migration_packages_are_independent(self):
+        canonical = {"retained-parent", "already-migrated-child"}
+        self.assertEqual(module.migration_state({"retained-parent"}, {"future-child"}, canonical), "pre-migration")
+        self.assertEqual(module.migration_state({"retired-parent"}, {"already-migrated-child"}, canonical), "migrated")
+
+    def test_migration_rejects_partial_children_and_parent_reuse(self):
+        self.assertEqual(module.migration_state({"parent"}, {"a", "b"}, {"a"}), "partial-or-invalid")
+        self.assertEqual(module.migration_state({"parent"}, {"a", "b"}, {"parent", "a", "b"}), "partial-or-invalid")
+        self.assertEqual(module.migration_state({"parent"}, {"parent"}, {"parent"}), "partial-or-invalid")
+
     def test_current_fidelity_ledger_is_structurally_valid(self):
         errors, warnings, summary = module.validate()
         self.assertEqual(errors, [])

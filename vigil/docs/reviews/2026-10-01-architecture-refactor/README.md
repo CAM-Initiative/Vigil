@@ -1,3 +1,13 @@
+# Current continuation: MEASURE 2.2 migration and NIST reverse coverage
+
+Stage 3A is complete: the retired MEASURE 2.2 parent is preserved in the retirement ledger and replaced by two context-complete canonical children. The fresh consumer scan found no consumers; no taxonomy or Incident references changed. The other twelve reviewed compounds retain identities and summaries. Canonical requirements now total **1,100**; NIST RMF has **74** records across **72** Core subcategories. Migration and subsystem validation passed.
+
+Stage 3C bounded NIST reverse coverage is reviewed: **13 constituent-support**, **29 contextual**, **32 outside taxonomy scope**. No whole-invariant direct equivalence or new Fidelity Class is asserted. Review-level correspondences remain held pending the full ordered source/reference audit. See [migration review](measure-2-2-migration-review.json) and [reverse coverage](nist-ai-rmf-reverse-coverage-review.json).
+
+The previous coherence audit and its counts describe the pre-migration checkpoint; its candidate IDs were subsequently admitted only for MEASURE 2.2. IEEE stays not-started while the user awaits permission. Stage 3D–F and Stage 4 remain pending/in progress; the Incident validator's existing diagnostics have not been mechanically repaired.
+
+## Earlier checkpoints
+
 # Current Stage 3 coherence correction
 
 The individual review of all 13 flagged parents and 31 candidates is complete. **12 coherent compounds retain their identities and summaries; only MEASURE 2.2 requires decomposition, with two context-complete proposed children.** There are no unresolved atomicity decisions and no existing repository consumer references requiring identity disposition for that subset. All 48 references to retained MEASURE 2.5 remain unchanged.
