@@ -45,8 +45,9 @@ Underlying occurrence review used the preserved source_records, factual basis an
 | Incident range | Candidate assessments | Insufficient evidence | Not applicable | Existing retained | Existing revised | Existing withdrawn | New entries |
 |---|---:|---:|---:|---:|---:|---:|---:|
 | 001–030 | 65 | 43 | 22 | 8 | 1 | 3 | 56 |
+| 031–060 | 60 | 43 | 17 | 9 | 4 | 1 | 47 |
 
-Completed tranches currently contain **65 assessments**: **43 insufficient-evidence**, **22 not-applicable**, **zero applicable**. Consequently there are zero external failure-occurrence, successful-invariant or ambiguous-boundary findings. Applicability is assessed; the missing evidence remains a substantive blocker.
+Completed tranches currently contain **125 assessments**: **86 insufficient-evidence**, **39 not-applicable**, **zero applicable**. Consequently there are zero external failure-occurrence, successful-invariant or ambiguous-boundary findings. Applicability is assessed; the missing evidence remains a substantive blocker.
 
 ## Earlier assessment audit
 
@@ -64,6 +65,20 @@ Each previously present assessment is accounted for below. Retained entries pres
 - `VIGIL-INC-000023` / `EXTREQ-9A63E34FA83EAFA2` — **withdrawn**. The final clause/class state no longer canonically maps the formerly contributing VIGIL-FC-000082. No remaining mapped class has a structured reference to this requirement; the prior assessment is withdrawn for loss of candidate provenance, not a new factual or legal determination. Prior value remains in Git history.
 - `VIGIL-INC-000024` / `EXTREQ-9A63E34FA83EAFA2` — **withdrawn**. The final clause/class state no longer canonically maps the formerly contributing VIGIL-FC-000082. No remaining mapped class has a structured reference to this requirement; the prior assessment is withdrawn for loss of candidate provenance, not a new factual or legal determination. Prior value remains in Git history.
 - `VIGIL-INC-000029` / `EXTREQ-9A63E34FA83EAFA2` — **withdrawn**. The final clause/class state no longer canonically maps the formerly contributing VIGIL-FC-000082. No remaining mapped class has a structured reference to this requirement; the prior assessment is withdrawn for loss of candidate provenance, not a new factual or legal determination. Prior value remains in Git history.
+- `VIGIL-INC-000034` / `EXTREQ-9A63E34FA83EAFA2` — **retained**. Independent applicability reasoning retained; exact contributing class set remains valid.
+- `VIGIL-INC-000034` / `EXTREQ-DC7C4F064C590E5A` — **retained**. Independent applicability reasoning retained; exact contributing class set remains valid.
+- `VIGIL-INC-000047` / `EXTREQ-DEA2B22466A64818` — **retained**. Independent applicability reasoning retained; exact contributing class set remains valid.
+- `VIGIL-INC-000049` / `EXTREQ-9A63E34FA83EAFA2` — **retained**. Independent applicability reasoning retained; exact contributing class set remains valid.
+- `VIGIL-INC-000050` / `EXTREQ-9A63E34FA83EAFA2` — **revised**. Replaced unsupported affirmative exclusion with the identified missing scope facts.
+- `VIGIL-INC-000051` / `EXTREQ-9A63E34FA83EAFA2` — **withdrawn**. The final clause/class state no longer canonically maps the formerly contributing VIGIL-FC-000082. No remaining mapped class has a structured reference to this requirement; the prior assessment is withdrawn for loss of candidate provenance, not a new factual or legal determination. Prior value remains in Git history.
+- `VIGIL-INC-000052` / `EXTREQ-9A63E34FA83EAFA2` — **retained**. Independent applicability reasoning retained; exact contributing class set remains valid.
+- `VIGIL-INC-000052` / `EXTREQ-DC7C4F064C590E5A` — **revised**. Replaced unsupported affirmative exclusion with the identified missing scope facts.
+- `VIGIL-INC-000053` / `EXTREQ-9A63E34FA83EAFA2` — **retained**. Independent applicability reasoning retained; exact contributing class set remains valid.
+- `VIGIL-INC-000054` / `EXTREQ-9A63E34FA83EAFA2` — **retained**. Independent applicability reasoning retained; exact contributing class set remains valid.
+- `VIGIL-INC-000056` / `EXTREQ-DEA2B22466A64818` — **retained**. Independent applicability reasoning retained; exact contributing class set remains valid.
+- `VIGIL-INC-000058` / `EXTREQ-9A63E34FA83EAFA2` — **revised**. Replaced unsupported affirmative exclusion with the identified missing scope facts.
+- `VIGIL-INC-000060` / `EXTREQ-9A63E34FA83EAFA2` — **retained**. Independent applicability reasoning retained; exact contributing class set remains valid.
+- `VIGIL-INC-000060` / `EXTREQ-DC7C4F064C590E5A` — **revised**. Replaced unsupported affirmative exclusion with the identified missing scope facts.
 
 ## Remaining evidence blockers and taxonomy signal
 
