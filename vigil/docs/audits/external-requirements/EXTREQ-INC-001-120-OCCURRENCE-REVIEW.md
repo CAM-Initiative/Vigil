@@ -47,8 +47,9 @@ Underlying occurrence review used the preserved source_records, factual basis an
 | 001–030 | 65 | 43 | 22 | 8 | 1 | 3 | 56 |
 | 031–060 | 60 | 43 | 17 | 9 | 4 | 1 | 47 |
 | 061–090 | 75 | 59 | 16 | 14 | 6 | 1 | 55 |
+| 091–120 | 79 | 45 | 34 | 11 | 3 | 1 | 65 |
 
-Completed tranches currently contain **200 assessments**: **145 insufficient-evidence**, **55 not-applicable**, **zero applicable**. Consequently there are zero external failure-occurrence, successful-invariant or ambiguous-boundary findings. Applicability is assessed; the missing evidence remains a substantive blocker.
+Completed tranches currently contain **279 assessments**: **190 insufficient-evidence**, **89 not-applicable**, **zero applicable**. Consequently there are zero external failure-occurrence, successful-invariant or ambiguous-boundary findings. Applicability is assessed; the missing evidence remains a substantive blocker.
 
 ## Earlier assessment audit
 
@@ -101,6 +102,21 @@ Each previously present assessment is accounted for below. Retained entries pres
 - `VIGIL-INC-000086` / `EXTREQ-90A317D512B165D5` — **retained**. Independent applicability reasoning retained; exact contributing class set remains valid.
 - `VIGIL-INC-000088` / `EXTREQ-42D3F017A9786AE8` — **retained**. Independent applicability reasoning retained; exact contributing class set remains valid.
 - `VIGIL-INC-000088` / `EXTREQ-90A317D512B165D5` — **retained**. Independent applicability reasoning retained; exact contributing class set remains valid.
+- `VIGIL-INC-000093` / `EXTREQ-42D3F017A9786AE8` — **retained**. Independent applicability reasoning retained; exact contributing class set remains valid.
+- `VIGIL-INC-000093` / `EXTREQ-90A317D512B165D5` — **retained**. Independent applicability reasoning retained; exact contributing class set remains valid.
+- `VIGIL-INC-000093` / `EXTREQ-9A63E34FA83EAFA2` — **revised**. Removed FC-000082 from contributor set; current clause adjudication supports FC-000052 only. Independent simulated-occurrence exclusion retained.
+- `VIGIL-INC-000093` / `EXTREQ-DC7C4F064C590E5A` — **retained**. Independent applicability reasoning retained; exact contributing class set remains valid.
+- `VIGIL-INC-000101` / `EXTREQ-9A63E34FA83EAFA2` — **revised**. Replaced unsupported affirmative exclusion with the identified missing scope facts.
+- `VIGIL-INC-000102` / `EXTREQ-9A63E34FA83EAFA2` — **retained**. Independent applicability reasoning retained; exact contributing class set remains valid.
+- `VIGIL-INC-000103` / `EXTREQ-9A63E34FA83EAFA2` — **retained**. Independent applicability reasoning retained; exact contributing class set remains valid.
+- `VIGIL-INC-000104` / `EXTREQ-9A63E34FA83EAFA2` — **retained**. Independent applicability reasoning retained; exact contributing class set remains valid.
+- `VIGIL-INC-000105` / `EXTREQ-9A63E34FA83EAFA2` — **retained**. Independent applicability reasoning retained; exact contributing class set remains valid.
+- `VIGIL-INC-000107` / `EXTREQ-42D3F017A9786AE8` — **retained**. Independent applicability reasoning retained; exact contributing class set remains valid.
+- `VIGIL-INC-000107` / `EXTREQ-90A317D512B165D5` — **retained**. Independent applicability reasoning retained; exact contributing class set remains valid.
+- `VIGIL-INC-000112` / `EXTREQ-42D3F017A9786AE8` — **retained**. Independent applicability reasoning retained; exact contributing class set remains valid.
+- `VIGIL-INC-000112` / `EXTREQ-90A317D512B165D5` — **retained**. Independent applicability reasoning retained; exact contributing class set remains valid.
+- `VIGIL-INC-000113` / `EXTREQ-9A63E34FA83EAFA2` — **revised**. Replaced unsupported affirmative exclusion with the identified missing scope facts.
+- `VIGIL-INC-000120` / `EXTREQ-DEA2B22466A64818` — **withdrawn**. The final clause/class state no longer canonically maps the formerly contributing VIGIL-FC-000041. No remaining mapped class has a structured reference to this requirement; the prior assessment is withdrawn for loss of candidate provenance, not a new factual or legal determination. Prior value remains in Git history.
 
 ## Remaining evidence blockers and taxonomy signal
 
