@@ -1,9 +1,9 @@
 # External Requirement Metadata Review Report
 
-- Records assessed: 1101
-- Canonical records: 1101
+- Records assessed: 1102
+- Canonical records: 1102
 - Staged records: 0
-- Metadata-complete: 1028
+- Metadata-complete: 1029
 - Records requiring review: 73
 - Unresolved field decisions: 584
 - Records flagged for re-extraction: 0
@@ -14,14 +14,14 @@
 
 | Field | Populated, reviewed | Populated, unreviewed | Empty, unreviewed | Not specified by source | Not applicable |
 |---|---:|---:|---:|---:|---:|
-| `applicable_actor` | 1028 | 73 | 0 | 0 | 0 |
-| `governed_object` | 1028 | 73 | 0 | 0 | 0 |
-| `timing_or_frequency` | 233 | 4 | 69 | 795 | 0 |
-| `required_artefacts` | 427 | 23 | 50 | 601 | 0 |
-| `evidence_expectation` | 407 | 23 | 50 | 621 | 0 |
-| `verification_method` | 320 | 1 | 72 | 708 | 0 |
-| `applicability_conditions` | 928 | 18 | 55 | 100 | 0 |
-| `exceptions_or_qualifications` | 690 | 18 | 55 | 338 | 0 |
+| `applicable_actor` | 1029 | 73 | 0 | 0 | 0 |
+| `governed_object` | 1029 | 73 | 0 | 0 | 0 |
+| `timing_or_frequency` | 233 | 4 | 69 | 796 | 0 |
+| `required_artefacts` | 428 | 23 | 50 | 601 | 0 |
+| `evidence_expectation` | 407 | 23 | 50 | 622 | 0 |
+| `verification_method` | 321 | 1 | 72 | 708 | 0 |
+| `applicability_conditions` | 929 | 18 | 55 | 100 | 0 |
+| `exceptions_or_qualifications` | 703 | 18 | 55 | 326 | 0 |
 
 ## Source-level review backlog
 
@@ -47,7 +47,7 @@
 | `EXT-8E377EF5CE66|2020` | `fully-metadata-reviewed` | 18 | 18 | 0 | 0 | 0 |
 | `EXT-8FEA9674D97A|1.10` | `fully-metadata-reviewed` | 24 | 24 | 0 | 0 | 0 |
 | `EXT-A35C209A334B|2024-05-03` | `fully-metadata-reviewed` | 37 | 37 | 0 | 0 | 0 |
-| `EXT-DE4FDB52698E|2024` | `fully-metadata-reviewed` | 223 | 223 | 0 | 0 | 0 |
+| `EXT-DE4FDB52698E|2024` | `fully-metadata-reviewed` | 224 | 224 | 0 | 0 | 0 |
 
 ## Re-extraction findings
 
