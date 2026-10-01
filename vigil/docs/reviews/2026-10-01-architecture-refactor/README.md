@@ -1,3 +1,15 @@
+# Current Stage 3 coherence correction
+
+The individual review of all 13 flagged parents and 31 candidates is complete. **12 coherent compounds retain their identities and summaries; only MEASURE 2.2 requires decomposition, with two context-complete proposed children.** There are no unresolved atomicity decisions and no existing repository consumer references requiring identity disposition for that subset. All 48 references to retained MEASURE 2.5 remain unchanged.
+
+See [the disposition audit](ATOMICITY-COHERENCE-REVIEW.md) and [full context/provenance JSON](atomicity-coherence-review.json). The active backlog now contains only MEASURE 2.2. Original candidates and superseded backlog decisions are preserved in the audit; draft IDs do not allocate canonical identities. OECD reverse coverage is preserved and its represented bounded scope has no known material compression after coherence review. NIST remains effectively partial pending the genuine migration.
+
+Stage 3 remains in progress. No migration tooling, canonical identity, FC mapping or Incident record changed during this correction. The Google Drive connector could not access the newly supplied IEEE copy (Unknown tool); IEEE remains not-started pending substantive primary-text/edition/provenance verification.
+
+## Historical checkpoint before the coherence correction
+
+The following narrative records the earlier checkpoint. Its 13-compound/31-replacement assumptions are superseded by the audit above and are not an approved migration plan.
+
 # Ordered architecture refactor — 1 October 2026
 
 Baseline: `f0984da0cc916a6763b7d69f694427009ba8dce7`, integration branch `work/integrate-external-requirements-001-179`.

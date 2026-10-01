@@ -6,7 +6,7 @@
 - Metadata-complete: 1026
 - Records requiring review: 73
 - Unresolved field decisions: 584
-- Records flagged for re-extraction: 13
+- Records flagged for re-extraction: 1
 - Primary sources blocked by access: 37
 - Contract errors: 0
 
@@ -39,20 +39,20 @@
 | `EXT-564A4CAA4F00|2024` | `fully-metadata-reviewed` | 63 | 63 | 0 | 0 | 0 |
 | `EXT-5BC2AAEAF1D3|2024` | `fully-metadata-reviewed` | 18 | 18 | 0 | 0 | 0 |
 | `EXT-63C32647602D|2024-09-05` | `fully-metadata-reviewed` | 54 | 54 | 0 | 0 | 0 |
-| `EXT-6442C7954667|1.0` | `fully-metadata-reviewed` | 73 | 73 | 0 | 0 | 12 |
+| `EXT-6442C7954667|1.0` | `fully-metadata-reviewed` | 73 | 73 | 0 | 0 | 1 |
 | `EXT-65F7658B8B04|2024` | `fully-metadata-reviewed` | 75 | 75 | 0 | 0 | 0 |
 | `EXT-71B4139453FA|3.0.1` | `fully-metadata-reviewed` | 4 | 4 | 0 | 0 | 0 |
 | `EXT-7E4B8ED73AA5|2021` | `fully-metadata-reviewed` | 10 | 10 | 0 | 0 | 0 |
 | `EXT-8D54F96680C4|2024` | `fully-metadata-reviewed` | 59 | 59 | 0 | 0 | 0 |
 | `EXT-8E377EF5CE66|2020` | `fully-metadata-reviewed` | 18 | 18 | 0 | 0 | 0 |
 | `EXT-8FEA9674D97A|1.10` | `fully-metadata-reviewed` | 24 | 24 | 0 | 0 | 0 |
-| `EXT-A35C209A334B|2024-05-03` | `fully-metadata-reviewed` | 37 | 37 | 0 | 0 | 1 |
+| `EXT-A35C209A334B|2024-05-03` | `fully-metadata-reviewed` | 37 | 37 | 0 | 0 | 0 |
 | `EXT-DE4FDB52698E|2024` | `fully-metadata-reviewed` | 223 | 223 | 0 | 0 | 0 |
 
 ## Re-extraction findings
 
-- Backlog records: 13
-- `compound-normative-propositions`: 13
+- Backlog records: 1
+- `compound-normative-propositions`: 1
 
 ## Primary sources blocked by access
 

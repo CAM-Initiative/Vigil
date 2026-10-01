@@ -83,13 +83,14 @@ Unlisted historical `complete` sources default to `fidelity-unassured` and are t
 
 For each source unit:
 
-1. Identify the actor, modality, action and object.
-2. Identify every material condition, threshold, timing rule, qualification and exception.
-3. Ask whether different constituent propositions could be independently satisfied or breached.
-4. Ask whether a downstream compliance or failure analysis would need to distinguish those propositions.
-5. If yes, decompose into separate EXTREQ records unless the publisher expressly defines them as one source action/outcome whose constituents should remain linked.
-6. For a source-defined compound, preserve the constituent propositions explicitly.
-7. Do not split merely because a sentence contains a list of examples or explanatory detail with no independent governance meaning.
+1. Identify actor, modality, action, object, trigger, purpose, conditions, qualifications, scope and lifecycle/timing.
+2. Identify material analytical constituents. Multiple verbs and source numbering do not decide atomicity.
+3. Test whether proposed children retain those dimensions and are independently intelligible and assessable without importing missing meaning from siblings.
+4. Test normative dependencies: communication of identified impacts, evidence of an assessment, conditional escalation, remediation of a detected issue, or consultation supporting a defined process.
+5. Distinguish separately observable elements of one control, evidence chain or decision pathway from genuinely independent governance propositions. Preserve a coherent source-defined outcome and its structured constituents where splitting would distort or duplicate that outcome.
+6. Decompose only where each child remains independently assessable and context-complete. Repeat inherited source context when necessary; do not strengthen modality, broaden actors/scope or invent timing, audiences or duties.
+7. Record unresolved interpretation explicitly. Do not decide atomicity from prospective Fidelity Class mappings or existing Incident findings; existing consumers constrain migration only.
+8. Complete individual atomicity dispositions before identity migration or migration-tool changes. Do not split examples or informative detail into normative duties.
 
 ## Identity and migration
 

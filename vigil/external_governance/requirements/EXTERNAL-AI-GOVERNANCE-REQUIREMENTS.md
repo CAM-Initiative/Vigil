@@ -1524,7 +1524,7 @@ No requirement records are asserted. Registered as systems/software vocabulary a
 - Extraction: `complete`
 - Requirements: 73
 - Review priority: `critical-governance-source`
-- Next action: Finish constituent re-extraction and reverse invariant coverage; all 73 scope-field reviews are recorded in the dated architecture review.
+- Next action: Complete the two-child MEASURE 2.2 migration and reverse coverage; retain eleven reviewed coherent controls.
 
 | Requirement | Clause/control | Summary | Posture / type | External authority | Relationship | Review / access |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -2087,7 +2087,7 @@ No requirement records are asserted. AI-specific incident-reporting framework re
 - Extraction: `complete`
 - Requirements: 37
 - Review priority: `critical-governance-source`
-- Next action: Finish one constituent re-extraction and reverse invariant coverage; retain non-binding Recommendation posture and bounded Sections 1–2 scope.
+- Next action: No decomposition required after semantic coherence review. Preserve non-binding policy scope and reverse review; remaining relationship admission is held pending ordered audit.
 
 | Requirement | Clause/control | Summary | Posture / type | External authority | Relationship | Review / access |
 | --- | --- | --- | --- | --- | --- | --- |
