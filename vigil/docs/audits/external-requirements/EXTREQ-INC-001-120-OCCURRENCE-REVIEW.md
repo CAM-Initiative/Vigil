@@ -49,7 +49,7 @@ Underlying occurrence review used the preserved source_records, factual basis an
 | 061–090 | 75 | 59 | 16 | 14 | 6 | 1 | 55 |
 | 091–120 | 79 | 45 | 34 | 11 | 3 | 1 | 65 |
 
-Completed tranches currently contain **279 assessments**: **190 insufficient-evidence**, **89 not-applicable**, **zero applicable**. Consequently there are zero external failure-occurrence, successful-invariant or ambiguous-boundary findings. Applicability is assessed; the missing evidence remains a substantive blocker.
+The completed review contains **279 assessments**: **190 insufficient-evidence**, **89 not-applicable**, **zero applicable**. Consequently there are zero external failure-occurrence, successful-invariant or ambiguous-boundary findings. Applicability is assessed; the missing evidence remains a substantive blocker.
 
 ## Earlier assessment audit
 
@@ -126,4 +126,20 @@ INC-000064’s existing taxonomy-gap clause remains: a standalone Grok privacy i
 
 ## Validation
 
-Validation results will be completed after all tranches and deterministic public projection regeneration. Candidate matrix snapshots remain untouched by the maintainer’s later instruction.
+Passed:
+
+- Incident validator: all 170 canonical Incidents.
+- Alignment Taxonomy schema/catalogue validator: 15 families, 76 classes (working-branch mode).
+- External governance canonical/generated validation: 85 source versions, 978 requirements; metadata and source-fidelity validators.
+- Public projection rebuild and validator: all 170 records; external-assessment projection fixtures.
+- Source provenance (574 active sources), interpretive provenance, authorship provenance, system components, rights and CAM validators.
+- Candidate-builder isolated regression (3 tests), external-assessment contract (9), external-assessment projection (2), external requirements (20), external sources (14), source-fidelity (3), Incident validator (14), record rules (32), public records (1), and Incident rebuild guard regression (5).
+- External metadata regression passes with `PYTHONPATH=vigil/scripts`; the first invocation without that module path failed at import, then the correctly configured invocation passed.
+- Bounded rebuild guards for all 79 changed Incidents against `6d31968`, including explicit retained dispositions for every prior mapping; source, harm, narrative and prior-history preservation checks.
+- Direct per-Incident exact candidate coverage (279/279), exact contributor sets, no unsupported finding fields, zero canonical material-clause class omissions; final clause-status counts independently recalculated.
+- Diff scope: no INC-121+ canonical or public Incident rows changed; no website files, class definitions, external-reference IDs, EXTREQ metadata or matrix snapshots changed. Changed Incident revision metadata was advanced by one patch and dated 2026-10-01.
+- `git diff --check`.
+
+One pre-existing broader regression remains: `test_build_vigil_records.py` runs 7 tests with 6 passing and `test_incident_index_is_a_lightweight_catalogue_projection` failing because it expects INC-000081 `alignment_exemplar_eligible` to be `None`. The unchanged builder derives `False` from its existing partial coverage/role state. Direct projection of INC-000081 loaded from starting commit `6d31968` also returns `False`, reproducing the same stale expectation. The test, eligibility contract and Incident taxonomy state were not changed to suppress this failure.
+
+The taxonomy adjudication matrix validator was intentionally not run because this review excludes use of that matrix following the maintainer’s later instruction. Candidate-builder regression uses isolated fixtures and writes neither matrix. Shared generated navigation/CaseFileExamples projections were rebuilt through the supported public builder; the matrix snapshots remain at their starting bytes.
