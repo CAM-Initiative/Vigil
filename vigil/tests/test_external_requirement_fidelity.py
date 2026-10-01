@@ -19,8 +19,12 @@ class ExternalRequirementFidelityTests(unittest.TestCase):
         errors, warnings, summary = module.validate()
         self.assertEqual(errors, [])
         self.assertGreaterEqual(summary["historical_complete_sources"], 2)
-        self.assertEqual(summary["fidelity_assured_effective_complete_sources"], 17)
-        self.assertEqual(summary["effective_partial_due_fidelity"], 0)
+        scope = module.load(module.SCOPE_PATH)
+        fidelity = module.load(module.FIDELITY_PATH)
+        assured = {module.source_key(entry) for entry in fidelity["entries"] if entry["fidelity_status"] == "assured"}
+        complete = {module.source_key(entry) for entry in scope["entries"] if entry["extraction_status"] == "complete"}
+        self.assertEqual(summary["fidelity_assured_effective_complete_sources"], len(complete & assured))
+        self.assertEqual(summary["effective_partial_due_fidelity"], len(complete - assured))
         self.assertEqual(warnings, [])
 
     def test_eu_ai_act_is_not_fidelity_assured(self):

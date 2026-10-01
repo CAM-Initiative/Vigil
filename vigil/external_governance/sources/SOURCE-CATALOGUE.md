@@ -4,7 +4,7 @@ Public knowledge catalogue of external governance sources and their bounded rele
 
 - Source versions: 85
 - Review-due source versions: 0
-- Registry updated through: 2026-09-28T00:00:00Z
+- Registry updated through: 2026-10-01T00:00:00Z
 
 ## SDOS Runtime Governance Framework — Control Catalog and Reference Document
 
@@ -33,10 +33,10 @@ The C2PA Technical Specification defines an open technical framework for content
 - **AI-governance relevance:** assurance, documentation, provenance, security, supply-chain, traceability, transparency
 - **Applicable lifecycle stages:** development, data-acquisition, deployment, operation-use, monitoring, change-management, supply-chain, cross-lifecycle
 - **Relevance scope:** Open content-provenance technical specification with material relevance to synthetic-content authenticity and transformation lineage; it is not a general factuality standard or legal compliance regime.
-- **Last substantive review:** 2026-09-28
-- **Next substantive review:** 2026-12-27
-- **Substantive reviewer:** OpenAI / ChatGPT / GPT-5.6 Sol
-- **Review method:** direct-public-primary-review · not-started
+- **Last substantive review:** 2026-10-01
+- **Next substantive review:** 2026-12-30
+- **Substantive reviewer:** OpenAI / Codex / ChatGPT Work / GPT-6
+- **Review method:** direct-public-primary-review · partial-review
 - **Review freshness:** current
 - **Official source:** https://spec.c2pa.org/specifications/specifications/2.4/index.html
 
@@ -67,10 +67,10 @@ The Council of Europe Framework Convention on Artificial Intelligence and Human 
 - **AI-governance relevance:** accountability, assurance, human-oversight, impact-assessment, lifecycle-governance, risk-management, safety, transparency, worker-affected-person-rights
 - **Applicable lifecycle stages:** governance, design, development, deployment, operation-use, monitoring, incident-response, change-management, cross-lifecycle
 - **Relevance scope:** International treaty source relevant to rights-preserving AI governance. Treaty status and applicability must be established from the Treaty Office and relevant domestic processes.
-- **Last substantive review:** 2026-09-28
-- **Next substantive review:** 2026-12-27
-- **Substantive reviewer:** OpenAI / ChatGPT / GPT-5.6 Sol
-- **Review method:** direct-public-primary-review · not-started
+- **Last substantive review:** 2026-10-01
+- **Next substantive review:** 2026-12-30
+- **Substantive reviewer:** OpenAI / Codex / ChatGPT Work / GPT-6
+- **Review method:** direct-public-primary-review · bounded-complete-review
 - **Review freshness:** current
 - **Official source:** https://www.coe.int/en/web/conventions/full-list?module=treaty-detail&treatynum=225
 
@@ -1427,10 +1427,10 @@ The OECD Recommendation of the Council on Artificial Intelligence, commonly expr
 - **AI-governance relevance:** accountability, human-oversight, lifecycle-governance, risk-management, robustness, safety, security, transparency, worker-affected-person-rights
 - **Applicable lifecycle stages:** governance, design, development, testing-evaluation, deployment, operation-use, monitoring, incident-response, change-management, cross-lifecycle
 - **Relevance scope:** Current intergovernmental AI-policy recommendation with foundational comparative value; it does not create binding legal duties or certify conformance.
-- **Last substantive review:** 2026-09-28
-- **Next substantive review:** 2026-12-27
-- **Substantive reviewer:** OpenAI / ChatGPT / GPT-5.6 Sol
-- **Review method:** direct-public-primary-review · not-started
+- **Last substantive review:** 2026-10-01
+- **Next substantive review:** 2026-12-30
+- **Substantive reviewer:** OpenAI / Codex / ChatGPT Work / GPT-6
+- **Review method:** direct-public-primary-review · bounded-complete-review
 - **Review freshness:** current
 - **Official source:** https://legalinstruments.oecd.org/en/instruments/OECD-LEGAL-0449
 

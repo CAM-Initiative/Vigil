@@ -51,7 +51,8 @@ class ExternalRequirementsTests(unittest.TestCase):
 
     def test_source_version_shards_are_canonical_and_deterministic(self):
         paths = REQUIREMENTS_IO.iter_shard_paths()
-        self.assertEqual(len(paths), 18)
+        expected_sources = {(record["external_source_id"], record["source_version"]) for record in self.requirements}
+        self.assertEqual({(path.parent.name, path.stem) for path in paths}, expected_sources)
         self.assertEqual(
             [record["requirement_id"] for record in self.requirements],
             sorted(record["requirement_id"] for record in self.requirements),
@@ -197,9 +198,11 @@ class ExternalRequirementsTests(unittest.TestCase):
         for item in self.coverage:
             provenance = item["substantive_review_provenance"]
             self.assertEqual(provenance["canonical_source"], "vigil/external_governance/sources/source-registry.json")
-            self.assertEqual(provenance["review_system"], {
-                "provider": "OpenAI", "platform": "ChatGPT", "model": "GPT-5.6 Sol"
-            })
+            source = next(entry for entry in self.registry_entries if MODULE.source_key(entry) == MODULE.source_key(item))
+            source_provenance = source["substantive_review_provenance"]
+            current = next(event for event in source_provenance["review_events"] if event["review_event_id"] == source_provenance["current_review_event_id"])
+            self.assertEqual(provenance["review_system"], current["review_system"])
+            self.assertEqual(provenance["review_date"], current["review_date"])
             review_date = dt.date.fromisoformat(provenance["review_date"])
             next_review = dt.date.fromisoformat(provenance["next_substantive_review"])
             self.assertEqual(next_review, review_date + dt.timedelta(days=90))

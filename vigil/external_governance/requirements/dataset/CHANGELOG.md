@@ -1,5 +1,9 @@
 # AI Governance Standards Baseline changelog
 
+## Unreleased — pending-source extraction, 2026-10-01
+
+Added 119 canonical requirements: 54 from the bounded CETS No. 225 implementation/remedies/risk/oversight scope, 37 from OECD/LEGAL/0449 Sections 1-2, and 28 from a partial C2PA 2.4 provenance-integrity/AI-disclosure slice. The current corpus has 1,097 records. Canada and IEEE 7003 retain zero records and explicit exact-primary-text access blockers. No taxonomy relationships were added. See `../../../docs/audits/external-requirements/2026-10-01-pending-external-source-expansion.md` for scope, provenance, interpretation conflicts and validation. Release 0.2.0 below remains the historical published boundary; this work does not publish a new package.
+
 ## 0.2.0 — 2026-09-28
 
 ### Newly registered sources
