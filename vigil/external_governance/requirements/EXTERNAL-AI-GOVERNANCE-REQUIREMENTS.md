@@ -71,7 +71,7 @@ Canonical analytical catalogue derived from registered external governance sourc
 | `EXTREQ-6DFDE6867038CA0F` | Section 15.2.1 | A generator adding an ingredient through an ingredient assertion must act as a validator and run the full ingredient validation algorithm. | `mandatory-normative` / `positive-duty` | `voluntary-technical-specification` | `conformance` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-823BB110445CB2FF` | Section 15.2.1 | Validation results may identify the validation specification version with a SemVer specVersion and the signature trust list with trustListURI. | `permitted-optional` / `permission` | `voluntary-technical-specification` | `conformance` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-877C5370F5BB1274` | Section 10.3.2.2 | When a remote ingredient manifest cannot be retrieved, generators should record manifest.inaccessible. | `recommended-practice` / `guidance` | `voluntary-technical-specification` | `conformance` | `reviewed-analytical-summary` / `direct-public-primary` |
-| `EXTREQ-8B6A092C0BA49994` | Section 15.2.1 | The validation algorithm must return consolidated results for the active manifest and the other stored manifests referenced through ingredient assertions. | `mandatory-normative` / `positive-duty` | `voluntary-technical-specification` | `conformance` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-8B6A092C0BA49994` | Section 15.2.1 | The validation algorithm must return consolidated validation results for all manifests in the asset’s C2PA Manifest Store, including the active manifest and stored manifests referenced through ingredient assertions. | `mandatory-normative` / `positive-duty` | `voluntary-technical-specification` | `conformance` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-8D0031B2BA0ADB65` | Section 10.3.2.2 | Ingredient manifests should be inserted into the new asset's manifest store to retain provenance. | `recommended-practice` / `guidance` | `voluntary-technical-specification` | `conformance` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-958C294F5AA652B8` | Section 15.2.1 | Custom validation status codes, when used, must conform to the entity-specific namespace syntax. | `mandatory-normative` / `positive-duty` | `voluntary-technical-specification` | `conformance` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-A849E2274E39A1C3` | Section 10.3.2.2 | When an ingredient manifest identifier is already present, generators must compare the manifests, ignore the new one if identical, or give the different new manifest a fresh identifier before insertion according to Chapter 8. | `mandatory-normative` / `positive-duty` | `voluntary-technical-specification` | `conformance` | `reviewed-analytical-summary` / `direct-public-primary` |
@@ -79,7 +79,7 @@ Canonical analytical catalogue derived from registered external governance sourc
 | `EXTREQ-CB115DA6C64A3063` | Section 10.3.2.4 | For standard and update manifests, the Sig_structure payload must be the serialized CBOR claim document using detached content mode. | `mandatory-normative` / `positive-duty` | `voluntary-technical-specification` | `conformance` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-DA3169C395EFDD3E` | Section 9.1 | A manifest must contain no more than one assertion defining a hard binding. | `mandatory-normative` / `positive-duty` | `voluntary-technical-specification` | `conformance` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-EB79CBCEFFE62067` | Section 6.8 | Claim generators must not redact c2pa.actions or c2pa.actions.v2 assertions because they carry essential asset history. | `mandatory-normative` / `prohibition` | `voluntary-technical-specification` | `conformance` | `reviewed-analytical-summary` / `direct-public-primary` |
-| `EXTREQ-EEA5E08FB517C36A` | Section 6.8 | When ingredient assertions are redacted, the new claim must record URI references to the redacted assertions in redacted_assertions. | `mandatory-normative` / `positive-duty` | `voluntary-technical-specification` | `conformance` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-EEA5E08FB517C36A` | Section 6.8 | When an assertion in an asset-embedded manifest is redacted as the asset is used as an ingredient, the claim must record a URI reference to that assertion in redacted_assertions. | `mandatory-normative` / `positive-duty` | `voluntary-technical-specification` | `conformance` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-F11F4371E4676579` | Section 10.3.2.1 | In a standard manifest, created_assertions must reference at least one hard-binding assertion. | `mandatory-normative` / `positive-duty` | `voluntary-technical-specification` | `conformance` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-F2833E634AC6C941` | Section 18.28.2 | All other AI disclosure fields are optional, but supplied fields must have the types prescribed by Section 18.28.4's CDDL schema. | `mandatory-normative` / `positive-duty` | `voluntary-technical-specification` | `conformance` | `needs-specialist-review` / `direct-public-primary` |
 | `EXTREQ-FFF0A540A6418C1B` | Section 10.3.2.1 | Claims must contain created_assertions; the claimed URI references in created_assertions and optional gathered_assertions identify the assertions added to the store. | `mandatory-normative` / `positive-duty` | `voluntary-technical-specification` | `conformance` | `reviewed-analytical-summary` / `direct-public-primary` |
@@ -104,7 +104,7 @@ No requirement records are asserted. No canonical extraction admitted: substanti
 - Extraction: `complete`
 - Requirements: 54
 - Review priority: `critical-governance-source`
-- Next action: Review taxonomy relationships only after Alignment Taxonomy semantic repair; preserve bounded scope and source-specific applicability.
+- Next action: Complete ordered relationship review; independently verify current depositary, Party and territory status before any occurrence-level applicability finding.
 
 | Requirement | Clause/control | Summary | Posture / type | External authority | Relationship | Review / access |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -160,7 +160,7 @@ No requirement records are asserted. No canonical extraction admitted: substanti
 | `EXTREQ-F394D1FC7B99913C` | Article 10(1) | Parties must maintain measures aimed at respecting equality, including gender equality, and legally applicable prohibitions on discrimination in AI lifecycle activities. | `mandatory-normative` / `positive-duty` | `binding-law` | `compliance` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-F8F84A89492810F6` | Article 26(2) | Parties must ensure oversight mechanisms act independently and impartially. | `mandatory-normative` / `positive-duty` | `binding-law` | `compliance` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-FB7635EBB2D2C9BE` | Article 26(4) | Where oversight mechanisms differ from existing domestic human-rights structures, Parties must promote effective cooperation between them where practicable. | `mandatory-normative` / `positive-duty` | `binding-law` | `compliance` | `reviewed-analytical-summary` / `direct-public-primary` |
-| `EXTREQ-FC6518F830AF5CE0` | Article 14(1) | Parties must ensure accessible and effective remedies for human-rights violations arising from AI lifecycle activities. | `mandatory-normative` / `positive-duty` | `binding-law` | `compliance` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-FC6518F830AF5CE0` | Article 14(1) | Parties must adopt or maintain measures ensuring accessible and effective remedies for human-rights violations from AI lifecycle activities, to the extent required by their international obligations and consistently with their domestic legal system. | `mandatory-normative` / `positive-duty` | `binding-law` | `compliance` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-FD5DBFFA62535210` | Article 25(1) | Parties must cooperate to realise the Convention's purpose. | `mandatory-normative` / `positive-duty` | `binding-law` | `compliance` | `reviewed-analytical-summary` / `direct-public-primary` |
 
 ## CycloneDX 1.7 — Machine Learning Bill of Materials (ML-BOM) — 1.7
@@ -1989,7 +1989,7 @@ No requirement records are asserted. Retained as a bounded supporting authority.
 - Extraction: `complete`
 - Requirements: 75
 - Review priority: `supporting-specialist-source`
-- Next action: Maintain source/version surveillance and re-review on material revision.
+- Next action: Maintain exact-version surveillance and complete ordered relationship review; preserve development-only scope.
 
 | Requirement | Clause/control | Summary | Posture / type | External authority | Relationship | Review / access |
 | --- | --- | --- | --- | --- | --- | --- |
