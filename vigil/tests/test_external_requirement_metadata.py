@@ -3,6 +3,7 @@
 from __future__ import annotations
 import importlib.util
 import json
+import jsonschema
 import tempfile
 from pathlib import Path
 
@@ -75,17 +76,13 @@ def main():
     backlog = json.loads((REQ / "reextraction-backlog.json").read_text(encoding="utf-8"))
     assert backlog_schema["properties"]["schema_version"]["const"] == "1.0"
     backlog_ids = [entry["current_requirement_id"] for entry in backlog["entries"]]
-    assert len(backlog_ids) == len(set(backlog_ids)) == 0
-    assert sum(entry["external_source_id"] == "IEEE-7009" for entry in backlog["entries"]) == 0
-    assert sum(entry["external_source_id"] == "NIST-AI-600-1" for entry in backlog["entries"]) == 0
-    assert sum(entry["external_source_id"] == "CYCLONEDX-SPEC" for entry in backlog["entries"]) == 0
-    assert sum(entry["external_source_id"] == "IMDA-AGENTIC-AI-MGF" for entry in backlog["entries"]) == 0
-    assert sum(entry["external_source_id"] == "NIST-SP-800-218A" for entry in backlog["entries"]) == 0
-    assert sum(entry["external_source_id"] == "AAM-SDOS-RUNTIME-GOVERNANCE" for entry in backlog["entries"]) == 0
-    assert sum(entry["external_source_id"] == "NIST-AI-100-2" for entry in backlog["entries"]) == 0
-    assert sum(entry["external_source_id"] == "NIST-AI-100-4" for entry in backlog["entries"]) == 0
-    assert sum(entry["external_source_id"] == "NIST-SP-1270" for entry in backlog["entries"]) == 0
-    assert sum(entry["external_source_id"] == "SPDX-SPEC" for entry in backlog["entries"]) == 0
+    assert len(backlog_ids) == len(set(backlog_ids))
+    jsonschema.Draft202012Validator(backlog_schema).validate(backlog)
+    canonical_by_id = {record["requirement_id"]: record for record in canonical}
+    for entry in backlog["entries"]:
+        record = canonical_by_id[entry["current_requirement_id"]]
+        for field in ("vigil_source_id", "external_source_id", "source_version", "clause_or_control"):
+            assert entry[field] == record[field]
 
     spdx = json.loads((REQ / "requirements" / "SPDX-SPEC" / "3.0.1.json").read_text(encoding="utf-8"))
     spdx_by_key = {record["identity_key"]: record for record in spdx}

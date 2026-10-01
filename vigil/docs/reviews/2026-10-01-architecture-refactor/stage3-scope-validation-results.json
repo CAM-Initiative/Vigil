@@ -1,0 +1,67 @@
+{
+  "reviewed_on": "2026-10-01",
+  "scope": "110 source-specific scope-field reviews; 13 decomposition issues and 31 review drafts; OECD reverse review. Stage 3 as a whole remains in progress.",
+  "results": [
+    {
+      "check": "python vigil/scripts/manage-external-sources.py validate",
+      "exit_code": 0,
+      "output_tail": "External source registry valid: 85 source versions, 0 review-required or review-due\n"
+    },
+    {
+      "check": "python vigil/scripts/manage-external-requirements.py validate --check-generated",
+      "exit_code": 0,
+      "output_tail": "External requirements valid: 85 source versions, 1099 requirements\n"
+    },
+    {
+      "check": "python vigil/scripts/validate-external-requirement-fidelity.py",
+      "exit_code": 0,
+      "output_tail": "{\n  \"effective_partial_due_fidelity\": 2,\n  \"eu_ai_act_migration_state\": \"migrated\",\n  \"explicit_fidelity_entries\": 21,\n  \"fidelity_assured_effective_complete_sources\": 17,\n  \"historical_complete_sources\": 19,\n  \"staged_reextraction_requirements\": 102,\n  \"staged_reextraction_retirements\": 8\n}\nWARNING: effective downgrade: NIST-AI-100-1 1.0 was historically complete but is not fidelity-assured\nWARNING: effective downgrade: OECD-AI-PRINCIPLES 2024-05-03 was historically complete but is not fidelity-assured\n"
+    },
+    {
+      "check": "python vigil/scripts/validate-external-requirement-metadata.py",
+      "exit_code": 0,
+      "output_tail": "{\n  \"records\": 1099,\n  \"canonical_records\": 1099,\n  \"staged_records\": 0,\n  \"metadata_complete\": 1026,\n  \"review_required_fields\": 584,\n  \"review_required_records\": 73,\n  \"reextraction_backlog_entries\": 13,\n  \"records_flagged_for_reextraction\": 13\n}\nExternal requirement metadata review contract valid\n"
+    },
+    {
+      "check": "python vigil/scripts/validate-vigil-referential-integrity.py",
+      "exit_code": 0,
+      "output_tail": "Cross-dataset referential integrity OK; no substantive adjudication performed\n"
+    },
+    {
+      "check": "python vigil/tests/test_external_requirement_fidelity.py",
+      "exit_code": 0,
+      "output_tail": "..\n----------------------------------------------------------------------\nRan 2 tests in 0.156s\n\nOK\n"
+    },
+    {
+      "check": "python vigil/tests/test_external_requirements.py",
+      "exit_code": 0,
+      "output_tail": "....................\n----------------------------------------------------------------------\nRan 20 tests in 1.058s\n\nOK\n"
+    },
+    {
+      "check": "python vigil/tests/test_external_sources.py",
+      "exit_code": 0,
+      "output_tail": "External source registry valid: 85 source versions, 0 review-required or review-due\n...............\n----------------------------------------------------------------------\nRan 15 tests in 0.035s\n\nOK\n"
+    },
+    {
+      "check": "python vigil/tests/test_external_requirement_metadata.py",
+      "exit_code": 0,
+      "output_tail": "External requirement metadata-review contract regression passed\n"
+    },
+    {
+      "check": "python vigil/taxonomy/validate_taxonomy.py",
+      "exit_code": 0,
+      "output_tail": "Validated 15 family file(s) against JSON Schema: 76 classes; catalogue integrity OK (working-branch mode)\n"
+    }
+  ],
+  "bounded_acceptance": {
+    "full_schema_draft_records_validated": 31,
+    "current_source_review_hashes_verified": 2
+  },
+  "expected_preservation_guard": {
+    "check": "python vigil/scripts/seed-reviewed-source-metadata.py",
+    "exit_code": 1,
+    "output_tail": "Traceback (most recent call last):\n  File \"/workspace/scratch/9b4f831acf7d/Vigil-refactor/vigil/scripts/seed-reviewed-source-metadata.py\", line 1254, in <module>\n    main()\n  File \"/workspace/scratch/9b4f831acf7d/Vigil-refactor/vigil/scripts/seed-reviewed-source-metadata.py\", line 1250, in main\n    raise SystemExit(seed(args.write))\n                     ^^^^^^^^^^^^^^^^\n  File \"/workspace/scratch/9b4f831acf7d/Vigil-refactor/vigil/scripts/seed-reviewed-source-metadata.py\", line 1220, in seed\n    raise ValueError(f\"existing metadata-review decision differs for {rid}; manual reconciliation required\")\nValueError: existing metadata-review decision differs for EXTREQ-0055BCF6AB20FDB7; manual reconciliation required\n",
+    "expected_result": "Refuse superseding newer reviewed metadata with a historical seed."
+  },
+  "unchanged_failing_gates": "Full Incident/occurrence-assessment validation remains unresolved as recorded in the previous Stage 2 review. No Incident changes made."
+}
