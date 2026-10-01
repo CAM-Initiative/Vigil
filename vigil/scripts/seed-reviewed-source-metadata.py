@@ -1066,7 +1066,15 @@ def seed(write: bool) -> int:
     records = req_doc["requirements"]
     by_id = {record["requirement_id"]: record for record in records}
     reviewed_sources = {NIST_RMF, CYCLONEDX, NIST_GAI, IMDA_AGENTIC, NIST_218A, SDOS, NIST_AML, NIST_SYNTHETIC, NIST_BIAS, SPDX}
-    selected = [record for record in records if record["vigil_source_id"] in reviewed_sources]
+    # This historical seed certifies its original field-review population only.
+    # The October Core coverage repair has a separate, still-provisional review;
+    # do not manufacture metadata assurance for its new MANAGE 4.3 identities.
+    continuation_ids = {"EXTREQ-0124DD1D36A2BEBB", "EXTREQ-47465BB08333009C"}
+    selected = [
+        record for record in records
+        if record["vigil_source_id"] in reviewed_sources
+        and record["requirement_id"] not in continuation_ids
+    ]
     counts = {
         source: sum(record["vigil_source_id"] == source for record in selected)
         for source in reviewed_sources

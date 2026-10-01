@@ -25,7 +25,8 @@ class ExternalRequirementFidelityTests(unittest.TestCase):
         complete = {module.source_key(entry) for entry in scope["entries"] if entry["extraction_status"] == "complete"}
         self.assertEqual(summary["fidelity_assured_effective_complete_sources"], len(complete & assured))
         self.assertEqual(summary["effective_partial_due_fidelity"], len(complete - assured))
-        self.assertEqual(warnings, [])
+        self.assertEqual(len(warnings), len(complete - assured))
+        self.assertTrue(all(warning.startswith("effective downgrade:") for warning in warnings))
 
     def test_eu_ai_act_is_not_fidelity_assured(self):
         fidelity = module.load(module.FIDELITY_PATH)
@@ -44,7 +45,7 @@ class ExternalRequirementFidelityTests(unittest.TestCase):
             (entry["external_source_id"], entry["source_version"]): entry["fidelity_status"]
             for entry in fidelity["entries"]
         }
-        self.assertEqual(status[("NIST-AI-100-1", "1.0")], "assured")
+        self.assertEqual(status[("NIST-AI-100-1", "1.0")], "provisional")
         self.assertEqual(status[("CYCLONEDX-SPEC", "1.7")], "assured")
         self.assertEqual(status[("NIST-AI-600-1", "2024")], "assured")
         self.assertEqual(status[("NIST-SP-800-218A", "2024")], "assured")
