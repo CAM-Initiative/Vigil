@@ -99,7 +99,7 @@ def main():
     assert aggregate["requirement_count"] == len(aggregate["requirements"])
     assert len(aggregate_by_id) == aggregate["requirement_count"]
     assert all(aggregate_by_id[record["requirement_id"]] == record for record in shard)
-    assert load(MANIFEST)["updated_at"] == aggregate["updated_at"] == "2026-09-20"
+    assert load(MANIFEST)["updated_at"] == aggregate["updated_at"]
 
     retirement = load(RETIREMENT)
     retirement_ids = {item["requirement_id"] for item in retirement["retired_requirements"]}

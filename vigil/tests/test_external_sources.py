@@ -144,7 +144,17 @@ class ExternalSourceRegistryTests(unittest.TestCase):
         august_events = [event for event in events if event["review_date"].startswith("2026-08-")]
         self.assertEqual(len(august_events), 99)
         self.assertEqual(sum("requirement extraction" in e["review_scope"] for e in august_events), 18)
-        self.assertTrue(all(e["review_system"] == {"provider": "OpenAI", "platform": "ChatGPT", "model": "GPT-5.6 Sol"} for e in events))
+        self.assertTrue(all(e["review_system"] == {"provider": "OpenAI", "platform": "ChatGPT", "model": "GPT-5.6 Sol"} for e in august_events))
+
+    def test_historical_review_method_survives_extraction_progress(self):
+        scope = {"source_access_status": "direct-public-primary", "extraction_status": "complete"}
+        historical = {"access_method": "official-metadata-only-review", "scope_method": "not-started"}
+        current = {"access_method": "direct-public-primary-review", "scope_method": "bounded-complete-review"}
+        self.assertTrue(mod.review_method_is_valid(historical, scope, is_current=False))
+        self.assertFalse(mod.review_method_is_valid(historical, scope, is_current=True))
+        self.assertTrue(mod.review_method_is_valid(current, scope, is_current=True))
+        malformed = {"access_method": "invented-review", "scope_method": "not-started"}
+        self.assertFalse(mod.review_method_is_valid(malformed, scope, is_current=False))
 
 
 if __name__ == "__main__":

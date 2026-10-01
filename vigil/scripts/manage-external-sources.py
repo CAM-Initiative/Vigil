@@ -161,6 +161,20 @@ def current_review_event(entry: dict[str, Any]) -> dict[str, Any] | None:
     )
 
 
+def review_method_is_valid(method: Any, scope: dict[str, Any], *, is_current: bool) -> bool:
+    """Keep historical methods intact while binding the current review to current scope."""
+    if not isinstance(method, dict) or set(method) != {"access_method", "scope_method"}:
+        return False
+    if method["access_method"] not in REVIEW_METHOD_ACCESS.values() or method["scope_method"] not in REVIEW_METHOD_SCOPE.values():
+        return False
+    if not is_current:
+        return True
+    return method == {
+        "access_method": REVIEW_METHOD_ACCESS.get(scope.get("source_access_status")),
+        "scope_method": REVIEW_METHOD_SCOPE.get(scope.get("extraction_status")),
+    }
+
+
 def material_projection(item: dict[str, Any]) -> dict[str, Any]:
     keys = (
         "external_source_id", "source_version", "canonical_identifier", "title", "issuer",
@@ -469,11 +483,8 @@ def validate(check_generated: bool = False) -> None:
                         if not isinstance(event, dict):
                             continue
                         method = event.get("review_method")
-                        expected = {
-                            "access_method": REVIEW_METHOD_ACCESS.get(scope.get("source_access_status")),
-                            "scope_method": REVIEW_METHOD_SCOPE.get(scope.get("extraction_status")),
-                        }
-                        if method != expected:
+                        is_current = event.get("review_event_id") == provenance.get("current_review_event_id")
+                        if not review_method_is_valid(method, scope, is_current=is_current):
                             errors.append(f"substantive review method conflicts with source-scope for {key}")
             for field in ("public_summary", "relevance_scope"):
                 value = entry.get(field)

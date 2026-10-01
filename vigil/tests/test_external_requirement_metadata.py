@@ -68,7 +68,8 @@ def main():
     assert isinstance(ledger["entries"], list)
     ids = [entry["requirement_id"] for entry in ledger["entries"]]
     assert len(ids) == len(set(ids))
-    assert len(ids) == 905
+    canonical = json.loads((REQ / "requirements.json").read_text(encoding="utf-8"))["requirements"]
+    assert set(ids) <= {record["requirement_id"] for record in canonical}
 
     backlog_schema = json.loads((REQ / "reextraction-backlog.schema.json").read_text(encoding="utf-8"))
     backlog = json.loads((REQ / "reextraction-backlog.json").read_text(encoding="utf-8"))
