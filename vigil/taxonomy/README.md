@@ -102,13 +102,17 @@ For an Incident mapping:
 - `successful-invariant` means the mapped invariant held under relevant failure pressure; and
 - `ambiguous-boundary` means the occurrence materially engages the invariant but the evidence establishes neither failure nor successful holding.
 
-Accordingly, a class such as `Required Control Activation` may support all three roles without producing constructions such as “Required Control Non-Activation — successful invariant”. Failure definitions, recognition conditions, exclusions and failure examples remain failure-oriented diagnostic content. Canonical names and semantic codes should instead identify the positive or polarity-neutral property being assessed.
+Accordingly, a class such as `Required Control Activation` may support all three roles. Canonical names, semantic codes, `plain_english` and `definition` describe the governed property. `failure_condition` and `failure_plain_english` explicitly preserve its failure manifestation. Failure recognition, exclusions and hypothetical failure or boundary illustrations remain diagnostic content with an explicit polarity scope.
 
 Renaming for polarity does not create a new class. Immutable family and class IDs are preserved, prior public names and semantic codes are retained in `aliases`, and historical Incident classifications remain attached to the same IDs unless their substantive mechanism is separately re-adjudicated.
 
-Every family defines its immutable ID, semantic code, canonical name, version, status, abstraction, plain-English explanation, technical definition, governing invariant, scope, inclusion rule, exclusion rule, aliases, and allowed class IDs/codes.
+Every family defines its immutable ID, semantic code, canonical name, version, status, abstraction, invariant-oriented plain-English explanation and technical definition, normative invariant, explicit failure condition and failure explanation, scope, failure inclusion and exclusion rules, aliases, and allowed class IDs/codes. `boundary_role = failure-occurrence` scopes the existing inclusion and exclusion rules; a failure exclusion does not exclude a successful-invariant relationship to the same governed property.
 
-Every selectable class defines its immutable ID, semantic code, current family ID, canonical name, class abstraction, status, plain-English explanation, technical definition, canonical `invariant`, recognition criteria, exclusions, examples, aliases, typed relationships where relevant, and optional external mappings or supersession metadata. The class invariant is the positive mechanism-specific structural property that must hold to prevent or repair that class. It must remain narrower than, and consistent with, the parent family invariant. Consumers must load the applicable family invariant once and add each applicable class invariant. They must not synthesise, infer, or substitute a missing class invariant from the class definition or the broader family invariant. An embedded subtype preserves its semantic name, explanation, definition, recognition criteria, exclusions, examples, aliases and any historical retired class ID/code without becoming a peer class.
+Every selectable class defines its immutable ID, semantic code, current family ID, canonical name, class abstraction, status, invariant-oriented `plain_english` and `definition`, normative `invariant`, explicit `failure_condition` and `failure_plain_english`, failure recognition criteria, exclusions, examples, aliases, typed relationships where relevant, and optional external mappings or supersession metadata. The class invariant must remain narrower than, and consistent with, the parent family invariant. Consumers must load the applicable family invariant once and add each applicable class invariant. They must not synthesise, infer, or substitute a missing class invariant from the class definition or the broader family invariant. An embedded subtype preserves its historical failure-manifestation name, explanation, definition, failure recognition, exclusions, examples, aliases and retired class ID/code without becoming a peer class. Its failure-oriented definition is explicitly scoped as a non-selectable manifestation of the parent property.
+
+Family documents use schema version `0.3.0` and `semantic_model = invariant-with-occurrence-polarity`. The index and adjudication matrix have separate contracts and do not inherit this family-document schema version. Historical FF/FC identities, codes, names and aliases remain resolvable. Consumers needing the old technical failure definition must read `failure_condition`; they must not interpret the revised primary `definition` as a failure statement.
+
+`recognition.required_conditions` retains its existing path and meaning for compatibility. The required discriminator `recognition.applies_to = failure-occurrence` makes that scope explicit. All required conditions and relevant exclusions must be considered for failure admission. Successful holding requires independent evidence that the invariant held under the assessed conditions; failure criteria must not be applied as a success test. An exclusion, an untriggered control or absence of failure evidence alone does not establish success. Ambiguous-boundary relationships preserve material boundary engagement without establishing either polarity.
 
 The effective constraint set is therefore:
 
@@ -127,9 +131,10 @@ Repair and generated failure-case projections operate per mapping. Only mappings
 
 The three principal family fields are complementary and must not be used as interchangeable summaries:
 
-- `plain_english` describes the recognisable **failure condition** in accessible language. It must say how the family is not working; a sentence that states only the healthy or required condition belongs in `invariant`.
-- `definition` gives the technical boundary of the **bounded failure set**. It must encompass every admitted child mechanism, distinguish neighbouring families, and avoid becoming either an incident example or a normative aspiration.
-- `invariant` states the positive **bounded structural property that must hold**. Every admitted child class must be a distinct way that this same property fails.
+- `plain_english` explains the **governed integrity property and correct operation** in accessible language.
+- `definition` defines the **bounded integrity domain** encompassing admitted child properties while distinguishing neighbouring families. It does not define only a failure polarity.
+- `invariant` states the normative **bounded structural property that must hold**. Every admitted child invariant refines this property.
+- `failure_condition` preserves the technical **bounded failure set**; `failure_plain_english` explains it accessibly. Failure inclusion, exclusion and recognition remain separate from primary meaning.
 
 Parent prose must be re-tested whenever a class is added, moved, narrowed, or widened. A valid child cannot be left outside the parent's `plain_english`, `definition`, `invariant`, and inclusion boundary merely because its immutable membership is machine-valid. Conversely, parent wording must not be broadened to import mechanisms that remain assigned to another family.
 
@@ -195,7 +200,7 @@ Run catalogue-wide schema and integrity validation:
 python vigil/taxonomy/validate_taxonomy.py
 ```
 
-The validator checks every family against the JSON Schema and enforces duplicate-ID/code detection, family membership, selectable-class abstraction, non-selectable subtype ownership, deterministic retired-ID successor mappings, current relationship targets, duplicate relationships, allowed-list drift, index/file agreement, filename identity, removed-ID reservation, mandatory descriptions, same-kind supersession, and supersession-chain integrity.
+The validator checks every family against the JSON Schema and enforces duplicate-ID/code detection, family membership, selectable-class abstraction, non-selectable subtype ownership, deterministic retired-ID successor mappings, current relationship targets, duplicate relationships, allowed-list drift, index/file agreement, filename identity, removed-ID reservation, mandatory descriptions, same-kind supersession, and supersession-chain integrity. It requires explicit failure fields and polarity scope, rejects primary descriptions copied from failure or recognition text, and detects explicit failure-definition openings. These bounded guards make common polarity regressions readily detectable; they do not replace semantic review or automatically prove natural-language equivalence.
 
 ## Portability
 

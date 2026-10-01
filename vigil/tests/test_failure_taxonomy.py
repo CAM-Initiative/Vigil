@@ -234,7 +234,7 @@ class AlignmentTaxonomyValidationTests(unittest.TestCase):
         schema = json.loads(MODULE.SCHEMA_PATH.read_text(encoding="utf-8"))
         invariant_schema = schema["$defs"]["class"]["properties"]["invariant"]
         self.assertEqual(invariant_schema["type"], "string")
-        self.assertIn("mechanism-specific structural property", invariant_schema["description"])
+        self.assertIn("Class invariants refine the family invariant", invariant_schema["description"])
         self.assertIn("invariant", schema["$defs"]["class"]["required"])
 
     def test_every_selectable_class_has_a_canonical_non_empty_invariant(self):
@@ -274,9 +274,10 @@ class AlignmentTaxonomyValidationTests(unittest.TestCase):
     def test_family_prose_semantic_roles_are_explicit(self):
         schema = json.loads(MODULE.SCHEMA_PATH.read_text(encoding="utf-8"))
         properties = schema["$defs"]["family"]["properties"]
-        self.assertIn("alignment condition", properties["plain_english"]["description"])
-        self.assertIn("bounded alignment condition", properties["definition"]["description"])
-        self.assertIn("Positive bounded structural property", properties["invariant"]["description"])
+        self.assertIn("governed property and correct operation", properties["plain_english"]["description"])
+        self.assertIn("independent of occurrence polarity", properties["definition"]["description"])
+        self.assertIn("Normative bounded structural property", properties["invariant"]["description"])
+        self.assertEqual(properties["boundary_role"]["const"], "failure-occurrence")
         guidance = (self.root / "README.md").read_text(encoding="utf-8")
         self.assertIn("### Semantic roles of family prose", guidance)
         self.assertIn("Parent prose must be re-tested whenever a class is added", guidance)
@@ -452,7 +453,7 @@ class AlignmentTaxonomyValidationTests(unittest.TestCase):
         self.assertIn("VIGIL-FC-000041", family["allowed_class_ids"])
         self.assertNotIn("only after", family["inclusion_rule"].lower())
         parent_prose = " ".join(
-            family[field] for field in ("plain_english", "definition", "invariant", "inclusion_rule")
+            family[field] for field in ("plain_english", "definition", "invariant", "inclusion_rule", "failure_condition")
         ).lower()
         for boundary in ("bypasses", "required governance route", "operative control state", "reach"):
             self.assertIn(boundary, parent_prose)
@@ -461,10 +462,10 @@ class AlignmentTaxonomyValidationTests(unittest.TestCase):
         documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
         activation = next(item for item in documents if item["family"]["family_id"] == "VIGIL-FF-0008")
         family = activation["family"]
-        plain = family["plain_english"].lower()
+        plain = family["failure_plain_english"].lower()
         self.assertIn("fails to activate", plain)
         self.assertIn("activates without valid conditions", plain)
-        definition = family["definition"].lower()
+        definition = family["failure_condition"].lower()
         for boundary in (
             "cannot be determined in time",
             "does not become operative",

@@ -1,5 +1,5 @@
 {
-  "schema_version": "0.2.0",
+  "schema_version": "0.3.0",
   "standard": {
     "name": "VIGIL Alignment Taxonomy",
     "version": "0.6.9",
@@ -14,8 +14,8 @@
     "status": "beta",
     "abstraction": "family",
     "version": "0.1.7",
-    "plain_english": "The system can see, reach, decode, inherit, capture, or use something and mistakes that fact for permission to act.",
-    "definition": "Failures in which information, access, capability, identity, technical reachability, transformed content, delegated intent, participation state, captured contribution, authorised purpose, principal-bound state, or system state is treated as conferring authority, permission, delegation, or execution scope that has not been independently established for the relevant source, target, actor, action, purpose, participant, principal, or context.",
+    "plain_english": "Permission is established separately from information, access, capability and task goals, and remains tied to the people, actions and contexts it covers.",
+    "definition": "The integrity domain in which authority is independently established and remains bound to its source, actor, target, action, purpose, participant, principal, scope and context across access, transformation, delegation and changes to independently governed state.",
     "invariant": "Visibility is not authority. Capability is not permission. Technical reachability is not delegation. Transformation must not increase authority. Participation by one person does not confer authority over another person's contribution. Authority for one purpose does not independently establish authority for a materially different purpose. Authority for one principal does not itself confer authority to alter another principal's independently governed state. Authority remains bound to its source, target, action, purpose, participant, principal, scope, and context unless validly re-established.",
     "scope": [
       "AI models",
@@ -63,7 +63,10 @@
       "CROSS_PRINCIPAL_STATE_AUTHORITY_SEPARATION",
       "OBJECTIVE_PATHWAY_AUTHORITY_SEPARATION",
       "INDUSTRIAL_SCALE_CAPABILITY_EXTRACTION_AUTHORITY"
-    ]
+    ],
+    "failure_condition": "Failures in which information, access, capability, identity, technical reachability, transformed content, delegated intent, participation state, captured contribution, authorised purpose, principal-bound state, or system state is treated as conferring authority, permission, delegation, or execution scope that has not been independently established for the relevant source, target, actor, action, purpose, participant, principal, or context.",
+    "failure_plain_english": "The system can see, reach, decode, inherit, capture, or use something and mistakes that fact for permission to act.",
+    "boundary_role": "failure-occurrence"
   },
   "classes": [
     {
@@ -73,15 +76,16 @@
       "name": "Source-Authority Separation",
       "status": "beta",
       "abstraction": "class",
-      "plain_english": "The system treats content it can read as though the content has permission to instruct it.",
-      "definition": "A failure in which content from a lower-authority, untrusted, retrieved, generated, third-party, or otherwise non-authorising source is treated as an instruction, command, policy, approval, or execution-authorising signal.",
+      "plain_english": "Content can direct an action only when its source has authority for that actor, action, target and scope.",
+      "definition": "The property by which operative instructions, commands, policies, approvals and execution-authorising signals remain distinguishable from non-authorising data through validation of source authority for the specific actor, action, target and scope.",
       "invariant": "Before content is treated as an operative instruction, policy, approval, or command, the system must verify that its source may authorise the specific actor, action, target, and scope. Unresolved or lower-authority material must remain non-authorising data.",
       "recognition": {
         "required_conditions": [
           "The system receives or retrieves content from a source whose authority is lower than, different from, or unresolved relative to the action being considered.",
           "The content is treated as operative instruction or authority rather than as data, evidence, context, or material for analysis.",
           "No independent authority check validly establishes that the source may authorise the affected action."
-        ]
+        ],
+        "applies_to": "failure-occurrence"
       },
       "exclusions": [
         "A system merely quotes, summarizes, classifies, or reasons about untrusted instructions without obeying them.",
@@ -109,7 +113,8 @@
               "Instruction-like content originates from an ambient, environmental, third-party, media, screen, retrieved, or otherwise non-user-authorising source.",
               "The system attributes the content to an authorised actor or treats it as execution-bearing instruction.",
               "The source distinction is not adequately preserved before action."
-            ]
+            ],
+            "applies_to": "failure-occurrence"
           },
           "exclusions": [
             "The user explicitly adopts or confirms the ambient content as an instruction.",
@@ -190,7 +195,9 @@
           "requirement_id": "EXTREQ-4C18B5A910ECD719",
           "clause_or_control": "6.25.3(a-c)"
         }
-      ]
+      ],
+      "failure_condition": "A failure in which content from a lower-authority, untrusted, retrieved, generated, third-party, or otherwise non-authorising source is treated as an instruction, command, policy, approval, or execution-authorising signal.",
+      "failure_plain_english": "The system treats content it can read as though the content has permission to instruct it."
     },
     {
       "class_id": "VIGIL-FC-000002",
@@ -199,15 +206,16 @@
       "name": "Capability-Authority Separation",
       "status": "beta",
       "abstraction": "class",
-      "plain_english": "The system assumes that because it has the ability or tool access to do something, it is allowed to do it.",
-      "definition": "A failure in which available capability, tool access, credentials, privileges, network or target reachability, inherited sessions, API availability, feature availability, or other action affordances are treated as sufficient authority for an action without separately establishing permission for the actor, target, action, and scope.",
+      "plain_english": "Having a tool, credential or technical route to act is kept separate from having permission to use it.",
+      "definition": "The property by which available capabilities, tools, credentials, privileges, sessions, APIs and reachable targets remain non-authorising affordances until permission for the proposed actor, target, action, method, scope and duration is independently established.",
       "invariant": "Before a consequential capability is exercised, valid permission must be established for the actor, target, action, method, scope, and duration. Authority that is absent, narrower, expired, or unresolved must leave that capability non-operative for the proposed effect.",
       "recognition": {
         "required_conditions": [
           "A capability, credential, session, network path, API, target, or execution pathway is technically available or reachable.",
           "The system uses that availability, reachability, access, or possession as a material basis for permission.",
           "Independent authority for the specific actor, target, action, and scope is absent, narrower, expired, unresolved, or not revalidated."
-        ]
+        ],
+        "applies_to": "failure-occurrence"
       },
       "exclusions": [
         "A permitted action is executed within an explicitly authorised scope.",
@@ -234,7 +242,8 @@
               "The system can technically reach or authenticate to a resource or target.",
               "That reachability is used as a material basis for authorising an action.",
               "The relevant target, principal, organisation, or action scope is not independently authorised."
-            ]
+            ],
+            "applies_to": "failure-occurrence"
           },
           "exclusions": [
             "The reachable resource is within the explicitly authorised scope.",
@@ -473,7 +482,9 @@
           },
           "provenance_note": "Canonical occurrence facts and provenance remain governed by VIGIL-INC-000004; this entry records only the reciprocal taxonomy relationship."
         }
-      ]
+      ],
+      "failure_condition": "A failure in which available capability, tool access, credentials, privileges, network or target reachability, inherited sessions, API availability, feature availability, or other action affordances are treated as sufficient authority for an action without separately establishing permission for the actor, target, action, and scope.",
+      "failure_plain_english": "The system assumes that because it has the ability or tool access to do something, it is allowed to do it."
     },
     {
       "class_id": "VIGIL-FC-000003",
@@ -482,15 +493,16 @@
       "name": "Target and Scope Authority Binding",
       "status": "beta",
       "abstraction": "class",
-      "plain_english": "Permission for one principal, target, task, action, environment, jurisdiction, or delegated scope gets silently reused for a materially different one.",
-      "definition": "A failure in which valid or purported authority tied to one principal, target, environment, action, jurisdiction, task, purpose, delegation, or scope is transposed to a materially different one without a fresh basis establishing that the authority applies there.",
+      "plain_english": "Permission stays bound to the principal, target and scope it covers and is re-established when those dimensions materially change.",
+      "definition": "The property by which authority remains bound to its established principal, target, environment, action, method, jurisdiction, task, purpose, delegation, scope and duration, with independent validation of applicability across material changes.",
       "invariant": "Before authority crosses a material change in principal, target, environment, action, method, jurisdiction, task, delegation chain, scope, or duration, authority for the changed dimension must be independently re-established.",
       "recognition": {
         "required_conditions": [
           "Some authority or permission exists or is assumed to exist for an original principal, target, environment, task, action, jurisdiction, purpose, or delegated scope.",
           "The operative principal, target, environment, task, action, jurisdiction, purpose, or delegated scope materially changes.",
           "The system continues as though the original authority automatically carries over to the changed scope."
-        ]
+        ],
+        "applies_to": "failure-occurrence"
       },
       "exclusions": [
         "The original authorisation explicitly covers the changed target and action.",
@@ -516,7 +528,8 @@
               "A valid or purported delegation exists.",
               "The proposed action materially changes the type, target, consequence, irreversibility, sensitivity, or external effect of the delegated task.",
               "The system proceeds without re-establishing authority for the expanded scope."
-            ]
+            ],
+            "applies_to": "failure-occurrence"
           },
           "exclusions": [
             "The delegation explicitly and unambiguously covers the new action and consequence.",
@@ -605,7 +618,9 @@
           },
           "provenance_note": "Reciprocal relationship completed on 2026-10-01 from the preserved 2026-09-30 clause-level Incident adjudication. Canonical occurrence evidence remains in VIGIL-INC-000113. No human verification is claimed."
         }
-      ]
+      ],
+      "failure_condition": "A failure in which valid or purported authority tied to one principal, target, environment, action, jurisdiction, task, purpose, delegation, or scope is transposed to a materially different one without a fresh basis establishing that the authority applies there.",
+      "failure_plain_english": "Permission for one principal, target, task, action, environment, jurisdiction, or delegated scope gets silently reused for a materially different one."
     },
     {
       "class_id": "VIGIL-FC-000005",
@@ -614,15 +629,16 @@
       "name": "Transformation Authority Preservation",
       "status": "beta",
       "abstraction": "class",
-      "plain_english": "Untrusted content becomes 'trusted' simply because it was decoded, decrypted, rendered, reformatted, or otherwise transformed.",
-      "definition": "A source-authority failure in which content gains greater instruction, governance, or execution authority after a representation change even though the transformation does not itself establish new authority.",
+      "plain_english": "Changing the form of content preserves its authority level; any new control effect has its own authority basis.",
+      "definition": "The property by which decoding, decryption, rendering, deserialisation, reconstruction, summarisation, translation and comparable representation changes preserve the originating content's authority state, with independently established authority for any resulting instruction, governance or execution effect.",
       "invariant": "Decoding, decrypting, rendering, deserialising, reconstructing, summarising, translating, or other transformation must preserve the input's authority state. If the transformed output will govern an action, authority for that resulting control effect must be independently established.",
       "recognition": {
         "required_conditions": [
           "The originating content is untrusted, lower-authority, or authority-ambiguous.",
           "The content undergoes decoding, decryption, rendering, deserialisation, reconstruction, summarisation, translation, or another representation change.",
           "The transformed representation is assigned greater operative authority than the source had before transformation."
-        ]
+        ],
+        "applies_to": "failure-occurrence"
       },
       "exclusions": [
         "The transformation preserves the original source authority and provenance.",
@@ -664,7 +680,9 @@
           "reference_role": "standards-evidence",
           "evidence_note": "W3C PROV-DM models derivation, generation, use, attribution and agent responsibility across changes in representation. This independently supports preserving source provenance and authority-relevant lineage through transformation; PROV-DM does not itself assign instruction authority or define when a transformed representation has been improperly promoted into a governance or execution role."
         }
-      ]
+      ],
+      "failure_condition": "A source-authority failure in which content gains greater instruction, governance, or execution authority after a representation change even though the transformation does not itself establish new authority.",
+      "failure_plain_english": "Untrusted content becomes 'trusted' simply because it was decoded, decrypted, rendered, reformatted, or otherwise transformed."
     },
     {
       "class_id": "VIGIL-FC-000006",
@@ -673,15 +691,16 @@
       "name": "Control-Plane Authority Separation",
       "status": "beta",
       "abstraction": "class",
-      "plain_english": "Ordinary model output or data silently becomes trusted system configuration or orchestration state.",
-      "definition": "A failure in which data-plane, model-generated, retrieved, or otherwise non-authoritative content is converted into control-plane state that can govern routing, tools, memory policy, configuration, checkpoints, permissions, or execution without fresh provenance and authority validation.",
+      "plain_english": "Data or model output becomes governing configuration only through fresh checks of its origin and authority for that effect.",
+      "definition": "The property by which promotion of data-plane, generated, retrieved or other non-authoritative material into routing, tools, policy, configuration, permissions, memory, checkpoints or orchestration state is governed by fresh provenance and authority validation appropriate to the resulting control effect.",
       "invariant": "Promotion of user data, retrieved material, model output, tool output, or other non-authoritative content into policy, configuration, routing, permissions, durable memory, checkpoints, orchestration, or execution state requires fresh provenance and authority validation for the resulting control effect; otherwise it must remain non-operative data.",
       "recognition": {
         "required_conditions": [
           "The originating material is data, model output, retrieved content, or other non-control-plane material.",
           "The material is promoted or converted into configuration, routing, tool schema, policy, cache, checkpoint, memory-policy, serialized control object, or comparable control state.",
           "The promotion occurs without a fresh authority validation appropriate to the new control-plane effect."
-        ]
+        ],
+        "applies_to": "failure-occurrence"
       },
       "exclusions": [
         "The control-plane update is explicitly authorised and validated.",
@@ -749,7 +768,9 @@
           },
           "provenance_note": "Canonical occurrence facts and review provenance remain governed by VIGIL-INC-000136. This taxonomy entry records only the successful FC-000006 boundary demonstrated by the BREACH ALERT example."
         }
-      ]
+      ],
+      "failure_condition": "A failure in which data-plane, model-generated, retrieved, or otherwise non-authoritative content is converted into control-plane state that can govern routing, tools, memory policy, configuration, checkpoints, permissions, or execution without fresh provenance and authority validation.",
+      "failure_plain_english": "Ordinary model output or data silently becomes trusted system configuration or orchestration state."
     },
     {
       "class_id": "VIGIL-FC-000009",
@@ -758,8 +779,8 @@
       "name": "Downstream Delegated Authority Validation",
       "status": "beta",
       "abstraction": "class",
-      "plain_english": "Authority held by one actor is assumed to transfer through an intermediary to a downstream actor or action without being established at that downstream boundary.",
-      "definition": "A failure in which actor A authorises actor or intermediary B for some scope, B delegates, forwards, invokes, or otherwise involves actor C, and C treats B's authority as automatically transferring to C or through further links without independently establishing authority for the downstream actor and action.",
+      "plain_english": "Every downstream participant receives and validates the authority needed for its own action, with the original constraints intact.",
+      "definition": "The property by which each delegation, forwarding, invocation or orchestration boundary carries and independently validates authority for the downstream actor and action, including the authorising principal, target, scope, constraints, duration and revocation state, rather than presuming authority is transitive.",
       "invariant": "At every downstream actor, agent, tool, service, or execution boundary, delegated authority must carry and validate its authorising principal, target, action, scope, constraints, duration, and revocation state. Delegation is non-transitive unless each downstream grant is independently established.",
       "recognition": {
         "required_conditions": [
@@ -767,7 +788,8 @@
           "The intermediary delegates, forwards, invokes, orchestrates, or otherwise crosses a distinct actor, agent, tool, service, or principal boundary.",
           "A downstream participant or action relies on the intermediary's authority as though it automatically transfers through that boundary.",
           "Authority for the downstream actor and action is not independently established with the relevant principal, target, action, constraints, and scope."
-        ]
+        ],
+        "applies_to": "failure-occurrence"
       },
       "exclusions": [
         "Delegation explicitly establishes authority for every downstream actor and action and preserves the relevant principal, target, constraints, scope, and revocation conditions.",
@@ -821,7 +843,9 @@
           "reference_role": "standards-evidence",
           "evidence_note": "RFC 8693 distinguishes subject and actor identities, treats delegation as scoped rights granted to a separate actor, and represents delegation chains explicitly. This supports re-establishing who is acting for whom at downstream authority boundaries; it does not define every agent-orchestration form covered by VIGIL."
         }
-      ]
+      ],
+      "failure_condition": "A failure in which actor A authorises actor or intermediary B for some scope, B delegates, forwards, invokes, or otherwise involves actor C, and C treats B's authority as automatically transferring to C or through further links without independently establishing authority for the downstream actor and action.",
+      "failure_plain_english": "Authority held by one actor is assumed to transfer through an intermediary to a downstream actor or action without being established at that downstream boundary."
     },
     {
       "class_id": "VIGIL-FC-000046",
@@ -830,8 +854,8 @@
       "name": "Inferential Evidence–Authority Separation",
       "status": "beta",
       "abstraction": "class",
-      "plain_english": "A prediction, match, score, or unresolved verification result is treated as though it independently authorises a consequential decision.",
-      "definition": "A failure in which a probabilistic, predictive, classificatory, verification, or other evidentiary state is treated as independently conferring authority for a consequential decision or action beyond what that state validly establishes.",
+      "plain_english": "Predictions, scores and verification results remain evidence; consequential decisions also have an independently established decision basis.",
+      "definition": "The property by which probabilistic, predictive, classificatory, verification and other evidentiary states remain distinct from authority for binding decisions, with independently established entitlement, decision authority, decision rule and evidentiary threshold proportionate to the consequential effect.",
       "invariant": "Before evidence, inference, classification, prediction, or verification state produces denial, revocation, detention, restriction, eligibility determination, or another binding effect, the applicable entitlement, decision authority, decision rule, and evidentiary threshold must be independently established, with uncertainty and contestability proportionate to the effect.",
       "recognition": {
         "required_conditions": [
@@ -840,7 +864,8 @@
           "A consequential decision or action requires an independent authority, entitlement, eligibility, verification, or decision basis.",
           "The evidentiary state is treated as sufficient to authorise, bind, revoke, deny, detain, or otherwise determine that consequential action.",
           "The required independent basis is not adequately established before the action proceeds."
-        ]
+        ],
+        "applies_to": "failure-occurrence"
       },
       "exclusions": [
         "An authorised decision-maker considers the state as non-binding evidence and independently establishes the decision basis.",
@@ -1096,7 +1121,9 @@
           },
           "provenance_note": "Reciprocal relationship completed on 2026-10-01 from the preserved 2026-09-30 clause-level Incident adjudication. Canonical occurrence evidence remains in VIGIL-INC-000007. No human verification is claimed."
         }
-      ]
+      ],
+      "failure_condition": "A failure in which a probabilistic, predictive, classificatory, verification, or other evidentiary state is treated as independently conferring authority for a consequential decision or action beyond what that state validly establishes.",
+      "failure_plain_english": "A prediction, match, score, or unresolved verification result is treated as though it independently authorises a consequential decision."
     },
     {
       "class_id": "VIGIL-FC-000053",
@@ -1105,8 +1132,8 @@
       "name": "Identity-Representation Authority Separation",
       "status": "beta",
       "abstraction": "class",
-      "plain_english": "Having or being able to transform a person's image, voice, likeness, or other identity-bound representation is treated as permission for a consent-sensitive use of that identity.",
-      "definition": "A failure in which possession of, access to, control over, or technical capability to transform an identifiable person's representation is treated as sufficient authority for an identity-bound synthesis, alteration, reproduction, or portrayal that requires a separate valid consent or authority basis.",
+      "plain_english": "Using or transforming an identifiable person's likeness has a consent or other authority basis specific to that person and use.",
+      "definition": "The property by which identity-bound synthesis, alteration, reproduction and portrayal of an identifiable person are governed by a separately established consent or other valid authority basis covering the person, representation, purpose, audience, target, scope, persistence and effect.",
       "invariant": "Authority for identity-bearing use must be specific to the affected person, proposed representation or transformation, purpose, target, audience, scope, persistence, and effect. Possession, prior publication, or technical transformability of the source artefact does not establish that basis.",
       "recognition": {
         "required_conditions": [
@@ -1115,7 +1142,8 @@
           "The proposed synthesis, alteration, reproduction, or portrayal is materially identity-bound or consent-sensitive and requires authority beyond mere possession or capability.",
           "Possession, access, control, upload, availability, or transformation capability is treated as sufficient authority for the identity-bound use.",
           "The required consent or other valid authority for that use is not adequately established before the transformation or synthesis proceeds."
-        ]
+        ],
+        "applies_to": "failure-occurrence"
       },
       "exclusions": [
         "The output is not materially attributable to an identifiable real person.",
@@ -1268,7 +1296,9 @@
           },
           "provenance_note": "Canonical occurrence facts and provenance remain governed by VIGIL-INC-000052; this entry records only the reciprocal taxonomy relationship."
         }
-      ]
+      ],
+      "failure_condition": "A failure in which possession of, access to, control over, or technical capability to transform an identifiable person's representation is treated as sufficient authority for an identity-bound synthesis, alteration, reproduction, or portrayal that requires a separate valid consent or authority basis.",
+      "failure_plain_english": "Having or being able to transform a person's image, voice, likeness, or other identity-bound representation is treated as permission for a consent-sensitive use of that identity."
     },
     {
       "class_id": "VIGIL-FC-000054",
@@ -1277,8 +1307,8 @@
       "name": "Multi-party Participant Authority Separation",
       "status": "beta",
       "abstraction": "class",
-      "plain_english": "One participant's permission to use a meeting or capture tool is treated as permission over everyone else's contribution.",
-      "definition": "A failure in which authority held by one participant, organiser, account holder, deployer, host, or tool user to initiate, receive, capture, transcribe, analyse, or retain a multi-party interaction is treated as sufficient authority over another affected participant's identifiable contribution without independently establishing the authority, notice, consent, legal basis, or other governance condition applicable to that participant and use.",
+      "plain_english": "Each participant's contribution has its own applicable governance basis for capture, processing and use.",
+      "definition": "The property by which AI-mediated capture, transcription, analysis, retention, sharing and use of multi-party contributions preserve participant identity and independently establish the notice, consent, legal, contractual or other governance basis applicable to each affected participant and use.",
       "invariant": "For capture, processing, retention, sharing, or downstream use in a multi-party interaction, the system must preserve each participant's identity and separately establish the governance basis applicable to that participant and contribution. Authority held by a host, account owner, facilitator, or another participant must not substitute for it.",
       "recognition": {
         "required_conditions": [
@@ -1287,7 +1317,8 @@
           "Another participant's identifiable speech, image, biometric representation, text, behaviour, or contribution is captured or materially processed.",
           "The system or deployer treats the first participant's authority, account status, invitation, or tool use as sufficient authority for the affected participant's contribution.",
           "The authority state applicable to the affected participant is not independently established to the level required for the relevant context and use."
-        ]
+        ],
+        "applies_to": "failure-occurrence"
       },
       "exclusions": [
         "A valid legal, contractual, organisational, consent, notice, or other authority basis independently covers each affected participant and the specific processing at issue.",
@@ -1333,7 +1364,9 @@
           "requirement_id": "EXTREQ-29B0D0B21F7E80D4",
           "clause_or_control": "4.3.2.2(i-k)"
         }
-      ]
+      ],
+      "failure_condition": "A failure in which authority held by one participant, organiser, account holder, deployer, host, or tool user to initiate, receive, capture, transcribe, analyse, or retain a multi-party interaction is treated as sufficient authority over another affected participant's identifiable contribution without independently establishing the authority, notice, consent, legal basis, or other governance condition applicable to that participant and use.",
+      "failure_plain_english": "One participant's permission to use a meeting or capture tool is treated as permission over everyone else's contribution."
     },
     {
       "class_id": "VIGIL-FC-000055",
@@ -1342,8 +1375,8 @@
       "name": "Secondary-Purpose Authority Revalidation",
       "status": "beta",
       "abstraction": "class",
-      "plain_english": "Permission to collect or use data for one reason is treated as permission to use it for a materially different reason.",
-      "definition": "A failure in which valid or purported authority to collect, receive, access, retain, analyse, or otherwise process data for an established primary purpose is treated as sufficient authority for a materially different secondary purpose, such as model training, product improvement, profiling, biometric development, research, publication, commercial reuse, or another consequential use, without independently establishing the authority or governance basis required for that secondary purpose.",
+      "plain_english": "A materially different use of data has its own authority or governance basis, with rights rechecked when custody or downstream effects change.",
+      "definition": "The property by which secondary uses of data or identifiable contributions are independently authorised for the affected purpose, data, recipient, scope, persistence and downstream effect, with legible and auditable rights and authority revalidation across material custody, sharing or propagation changes.",
       "invariant": "Before data or an identifiable contribution is used for a materially different secondary purpose, the system, provider, deployer, or governance process must independently establish a sufficient authority or governance basis for the secondary purpose, affected data or contribution, relevant target or recipient, scope, persistence, and downstream effect. Prior participation, prior processing, routing, fusion, public availability, silence, or absence of objection must not establish that basis. Where custody, persistence, sharing, propagation, or downstream consequence materially changes, the applicable authority and rights state must be revalidated and remain legible and auditable.",
       "recognition": {
         "required_conditions": [
@@ -1351,7 +1384,8 @@
           "A materially different secondary purpose is introduced or applied.",
           "The system, provider, deployer, or governance process relies materially on the original collection, participation, public availability, account permission, or primary-use authority as the basis for the secondary use.",
           "The authority, consent, legal basis, licence, notice, eligibility, or other required governance condition for the secondary purpose is absent, unresolved, narrower, or not independently established before the secondary use occurs."
-        ]
+        ],
+        "applies_to": "failure-occurrence"
       },
       "exclusions": [
         "The original authority explicitly and validly covers the secondary purpose and affected data within the applicable scope and conditions.",
@@ -1424,7 +1458,9 @@
           },
           "provenance_note": "Canonical occurrence facts and provenance remain governed by VIGIL-INC-000097; this entry records only the reciprocal taxonomy relationship."
         }
-      ]
+      ],
+      "failure_condition": "A failure in which valid or purported authority to collect, receive, access, retain, analyse, or otherwise process data for an established primary purpose is treated as sufficient authority for a materially different secondary purpose, such as model training, product improvement, profiling, biometric development, research, publication, commercial reuse, or another consequential use, without independently establishing the authority or governance basis required for that secondary purpose.",
+      "failure_plain_english": "Permission to collect or use data for one reason is treated as permission to use it for a materially different reason."
     },
     {
       "class_id": "VIGIL-FC-000057",
@@ -1433,8 +1469,8 @@
       "name": "Cross-Principal State Authority Separation",
       "status": "beta",
       "abstraction": "class",
-      "plain_english": "Permission to act for one person is treated as permission to change another person's separately governed state.",
-      "definition": "A failure in which valid or purported authority established for one principal is treated as sufficient authority to materially alter, cancel, displace, transfer, consume, restrict, or otherwise change a state associated with another identifiable principal, where that state is subject to an independent entitlement, consent, allocation, authority, contractual, procedural, or comparable governance boundary.",
+      "plain_english": "Changing another person's independently governed account, rights, resources or records requires authority over that person's affected state.",
+      "definition": "The property by which actions for an initiating principal remain distinct from authority to alter another identifiable principal's independently governed state, with an established entitlement, consent, allocation, contractual, procedural or comparable basis for the affected action, scope and effect.",
       "invariant": "Before one principal's account, rights, resources, preferences, records, or obligations are materially changed, authority applicable to that principal, state, action, scope, and effect must be established. An initiator's objective or authority over shared infrastructure must not substitute for it.",
       "recognition": {
         "required_conditions": [
@@ -1442,7 +1478,8 @@
           "Pursuing that objective materially changes a state associated with a different identifiable principal.",
           "The affected state is subject to an independent entitlement, consent, allocation, authority, contractual, procedural, or comparable governance boundary.",
           "The initiating principal's authority is treated as sufficient to alter the affected principal's state without independently establishing the basis required to do so."
-        ]
+        ],
+        "applies_to": "failure-occurrence"
       },
       "exclusions": [
         "A valid rule, role, contract, consent, allocation mechanism, or other authority basis already permits the action over the affected state.",
@@ -1491,7 +1528,9 @@
           "reference_role": "research-evidence",
           "evidence_note": "Hardy's confused-deputy analysis establishes the classic risk of one actor's authority being misapplied across principals when ambient authority is not correctly bound to the requesting principal. This supports VIGIL's cross-principal authority boundary; the VIGIL class additionally requires a materially governed state associated with another identifiable principal."
         }
-      ]
+      ],
+      "failure_condition": "A failure in which valid or purported authority established for one principal is treated as sufficient authority to materially alter, cancel, displace, transfer, consume, restrict, or otherwise change a state associated with another identifiable principal, where that state is subject to an independent entitlement, consent, allocation, authority, contractual, procedural, or comparable governance boundary.",
+      "failure_plain_english": "Permission to act for one person is treated as permission to change another person's separately governed state."
     },
     {
       "class_id": "VIGIL-FC-000064",
@@ -1500,8 +1539,8 @@
       "name": "Objective–Pathway Authority Separation",
       "status": "beta",
       "abstraction": "class",
-      "plain_english": "The system treats success on an authorised objective as sufficient reason to keep pursuing a useful pathway even when that pathway separately lacks authority or ethical admissibility.",
-      "definition": "A failure in which an assigned or otherwise authorised objective remains operatively dominant over independent authority, consent, ethical-admissibility, target, method, third-party-rights, data-custody, or execution-scope constraints, such that an instrumentally useful pathway is selected, continued, reconstructed, or protected without separately establishing that the pathway itself is authorised and admissible. The failure concerns objective-to-pathway authority inference: authority to pursue the objective is treated as materially supporting authority for the means used to pursue it.",
+      "plain_english": "Every material route toward a goal satisfies its own authority and admissibility conditions, including across multiple steps.",
+      "definition": "The property by which each selected, continued, reconstructed or protected pathway toward an objective is independently assessed for applicable authority, consent, ethical admissibility, target, method, third-party rights, data custody and execution scope, including aggregate delegated and multi-step effects. Objective utility does not independently authorise the means.",
       "invariant": "Each material pathway used to pursue an objective must independently satisfy its applicable authority and admissibility conditions. Delegated, cumulative, and multi-step means must be assessed in aggregate and revalidated when target, method, scope, external reach, or downstream effect materially changes.",
       "recognition": {
         "required_conditions": [
@@ -1510,7 +1549,8 @@
           "The pathway is subject to an independent authority, consent, ethical-admissibility, target, method, third-party-rights, data-custody, or execution-scope constraint that is absent, narrower, unresolved, or adverse to the pathway.",
           "Objective utility, task completion, efficiency, benchmark reward, inferred necessity, accumulated progress, or preservation of task-useful state materially displaces or substitutes for independent validation of the pathway constraint.",
           "The system selects, continues, reconstructs, protects, or routes around restrictions affecting that pathway without a valid independent basis establishing the pathway as authorised and admissible."
-        ]
+        ],
+        "applies_to": "failure-occurrence"
       },
       "exclusions": [
         "A technically available capability is treated as permission without evidence that objective utility or task success materially drives the authority inference; use Capability-Authority Separation.",
@@ -1605,7 +1645,9 @@
           },
           "provenance_note": "Canonical occurrence facts and provenance remain governed by VIGIL-INC-000118; this entry records only the reciprocal taxonomy relationship."
         }
-      ]
+      ],
+      "failure_condition": "A failure in which an assigned or otherwise authorised objective remains operatively dominant over independent authority, consent, ethical-admissibility, target, method, third-party-rights, data-custody, or execution-scope constraints, such that an instrumentally useful pathway is selected, continued, reconstructed, or protected without separately establishing that the pathway itself is authorised and admissible. The failure concerns objective-to-pathway authority inference: authority to pursue the objective is treated as materially supporting authority for the means used to pursue it.",
+      "failure_plain_english": "The system treats success on an authorised objective as sufficient reason to keep pursuing a useful pathway even when that pathway separately lacks authority or ethical admissibility."
     },
     {
       "class_id": "VIGIL-FC-000068",
@@ -1614,8 +1656,8 @@
       "name": "Industrial-Scale Capability Extraction Authority",
       "status": "beta",
       "abstraction": "class",
-      "plain_english": "A model or actor systematically extracts another model's restricted capabilities at industrial scale for reproduction or downstream training without an independently adequate authority basis.",
-      "definition": "A failure in which access to, interaction with, or technical reachability of an AI system is used to systematically acquire restricted or proprietary behavioural capabilities, reasoning patterns, outputs, functionality, or model-derived know-how at industrial scale for the purpose of reproducing, transferring, substituting, or training those capabilities into another model or system, while treating access, account possession, API availability, output visibility, or successful interaction as sufficient authority for that capability-acquisition purpose despite the relevant authority basis being absent, narrower, disputed, bypassed, or not independently established.",
+      "plain_english": "Industrial-scale acquisition of restricted model capabilities for reproduction or transfer has authority separate from ordinary access.",
+      "definition": "The property by which systematic industrial-scale acquisition of restricted or proprietary AI capabilities, reasoning behaviour, functionality or model-derived know-how for reproduction, substitution, training or derivative transfer is governed by an independently adequate authority basis, assessed cumulatively across automated, distributed, multi-account or concealed interactions.",
       "invariant": "Automated, repeated, distributed, multi-account, concealed, aggregated, or distillation-based acquisition must be assessed cumulatively for whether it reproduces materially equivalent capability at industrial scale. Separate authority must be established for capability extraction, replication, and derivative transfer; per-interaction access must not be compounded into that entitlement.",
       "recognition": {
         "required_conditions": [
@@ -1630,7 +1672,8 @@
           "Use of distributed accounts, proxies, aggregators, cloud infrastructure, credential rotation, rate-limit evasion, geographic routing, or other mechanisms to avoid single-point detection or enforcement.",
           "Collection of outputs, reasoning artefacts, behavioural traces, scores, labels, or evaluations for downstream model training or reproduction.",
           "A campaign explicitly organised around distillation, cloning, capability harvesting, teacher-model extraction, or systematic substitution of proprietary model functionality."
-        ]
+        ],
+        "applies_to": "failure-occurrence"
       },
       "exclusions": [
         "Ordinary use of a model for the immediate task for which access was provided, even where the user learns from the interaction.",
@@ -1697,7 +1740,10 @@
         "industrial model distillation campaign",
         "INDUSTRIAL_SCALE_UNAUTHORISED_CAPABILITY_EXTRACTION",
         "Industrial-Scale Unauthorised Capability Extraction"
-      ]
+      ],
+      "failure_condition": "A failure in which access to, interaction with, or technical reachability of an AI system is used to systematically acquire restricted or proprietary behavioural capabilities, reasoning patterns, outputs, functionality, or model-derived know-how at industrial scale for the purpose of reproducing, transferring, substituting, or training those capabilities into another model or system, while treating access, account possession, API availability, output visibility, or successful interaction as sufficient authority for that capability-acquisition purpose despite the relevant authority basis being absent, narrower, disputed, bypassed, or not independently established.",
+      "failure_plain_english": "A model or actor systematically extracts another model's restricted capabilities at industrial scale for reproduction or downstream training without an independently adequate authority basis."
     }
-  ]
+  ],
+  "semantic_model": "invariant-with-occurrence-polarity"
 }
