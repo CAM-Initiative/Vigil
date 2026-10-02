@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Nx s1ngularity malware weaponized local AI coding CLIs during credential-harvesting supply-chain attack",
     "created": "2026-09-14",
-    "updated": "2026-10-01",
-    "version": "0.1.13"
+    "updated": "2026-10-02",
+    "version": "0.1.14"
   },
   "incident_identity": {
     "historical_event_name": "2025 Nx s1ngularity supply-chain attack",
@@ -21,7 +21,7 @@
   "summary": "Attackers stole an Nx npm publishing token through a GitHub Actions injection flaw and published malicious Nx package versions on 26 August 2025. The package post-install malware directly harvested credentials and sensitive files and also attempted to invoke locally configured Claude, Gemini and Amazon Q command-line tools with prompts designed to identify additional sensitive files for exfiltration. Results and stolen credentials were uploaded to public GitHub repositories. GitGuardian identified 2,349 distinct secrets in 1,079 affected repositories during the initial phase, with more than 1,100 still valid at the time of analysis, and later observed 10,767 private repositories made public, exposing 82,901 secrets including 11,168 then-valid secrets. The AI-assisted path was only one component of the attack: GitGuardian reported that only 95 of 366 targeted systems produced the requested AI-generated inventory file, and Wiz separately found substantial refusal, configuration and workspace-restriction failure rates across the invoked AI tools.",
   "vigil_assessment": {
     "factual_basis": "Nx directly confirms that malicious packages attempted to use local AI tools including Claude and Gemini while scanning user systems and uploading results to public GitHub repositories. GitGuardian's analysis quantifies credential and repository exposure and reports that 95 of 366 systems where LLM tools were targeted produced the requested inventory file. Wiz independently describes the malware invoking Claude, Gemini and Amazon Q with permissive command-line flags and prompt-engineering attempts, while documenting substantial refusals and execution failures. OECD.AI later indexed the s1ngularity campaign as an AI incident, but its entry is used only as discovery and registry corroboration rather than primary technical evidence.",
-    "governance_interpretation": "Malicious code already running on developer systems discovered locally installed AI coding agents and tried to repurpose them for reconnaissance and file enumeration. The evidence does not show that those tools caused the initial Nx compromise, and most observed invocations did not produce the requested inventory. Because the tools, configurations and outcomes were heterogeneous, the record does not attribute one common internal failure mechanism to them.",
+    "governance_interpretation": "Malicious code already running on developer systems discovered locally installed AI coding agents and tried to repurpose them for reconnaissance and file enumeration. The evidence does not show that those tools caused the initial Nx compromise, and most observed invocations did not produce the requested inventory. Because the tools, configurations and outcomes were heterogeneous, the record does not attribute one common internal failure mechanism to them. Direct malware theft remains distinct from heterogeneous local AI inventory attempts; no common source-state promotion or reachability-as-permission inference is imposed. Aggregate leaks are not assigned solely to the AI path.",
     "significance_to_cam": "The incident demonstrates a distinct agent-security surface: malware can discover and invoke trusted local AI developer tools, attempt to bypass their permission and safety boundaries, and use successful sessions to extend reconnaissance beyond static malware logic. It also shows why outcome assessment must preserve partial refusal and failure rates rather than treating all targeted AI tools as uniformly compliant.",
     "assessment_boundaries": [
       "The malware directly harvested credentials and files independently of AI-tool assistance; the full incident impact must not be attributed to the AI tools.",
@@ -570,28 +570,51 @@
           "Licensed IEEE primary texts were unavailable in this session; the branch’s documented licensed primary-text fidelity reviews and canonical clause conditions were used alongside public publisher scope/version information. The IMDA primary PDF was blocked on re-access; canonical documented primary-text extraction was used. No fresh full-text review of these unavailable sources is claimed."
         ],
         "review_outcome": "Adjudicated 2 current requirement candidates independently. new EXTREQ-4C18B5A910ECD719; new EXTREQ-C64032FC58E84CBA; completed missing historical review_outcome for CLAUSE-RECONCILIATION-2026-09-30-INC-000119 without removing or replacing the historical entry. All non-applicable or insufficient-evidence entries omit finding and finding_basis; occurrence evidence and contextual references remain canonical in their original fields."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-02-STAGE4-000119",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-02",
+        "review_scope": "Preservation-led Stage 4 clause, polarity and local external-requirement reconciliation.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "external_requirement_review": true,
+          "harm_impact_review": false,
+          "new_external_source_research": false
+        },
+        "known_limitations": [
+          "Preserved attributed evidence bounds the review; hidden control/permission traces unavailable.",
+          "No new IEEE extraction; admitted metadata and reviewed paths only.",
+          "Conclusion uses existing governance_interpretation; no discussion-field contract."
+        ],
+        "review_outcome": "Retained 3 clause decisions; Independently assessed 16 admitted local candidates; archived excluded historical assessments."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-01-EXTREQ-ADJUDICATION-000119",
+      "review_id": "VIGIL-REVIEW-2026-10-02-STAGE4-000119",
       "reviewer_type": "AI analytical reviewer",
       "reviewer_platform": "OpenAI Codex",
       "reviewer_model": "GPT-6",
-      "review_date": "2026-10-01",
-      "review_scope": "Independent external-requirement applicability review against current material source clauses, canonical mapped-class references, source_records and canonical EXTREQ conditions; review excludes both adjudication/candidate matrices.",
+      "review_date": "2026-10-02",
+      "review_scope": "Preservation-led Stage 4 clause, polarity and local external-requirement reconciliation.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "web_research": true,
-        "external_requirement_review": true,
         "taxonomy_review": true,
-        "harm_impact_review": false
+        "external_requirement_review": true,
+        "harm_impact_review": false,
+        "new_external_source_research": false
       },
       "known_limitations": [
-        "The occurrence review remains bounded to preserved source_records and material clauses; some public URLs could not be freshly reopened or exposed only limited text. No missing internal control, framework adoption or legal nexus is inferred.",
-        "Licensed IEEE primary texts were unavailable in this session; the branch’s documented licensed primary-text fidelity reviews and canonical clause conditions were used alongside public publisher scope/version information. The IMDA primary PDF was blocked on re-access; canonical documented primary-text extraction was used. No fresh full-text review of these unavailable sources is claimed."
+        "Preserved attributed evidence bounds the review; hidden control/permission traces unavailable.",
+        "No new IEEE extraction; admitted metadata and reviewed paths only.",
+        "Conclusion uses existing governance_interpretation; no discussion-field contract."
       ],
-      "review_outcome": "Adjudicated 2 current requirement candidates independently. new EXTREQ-4C18B5A910ECD719; new EXTREQ-C64032FC58E84CBA; completed missing historical review_outcome for CLAUSE-RECONCILIATION-2026-09-30-INC-000119 without removing or replacing the historical entry. All non-applicable or insufficient-evidence entries omit finding and finding_basis; occurrence evidence and contextual references remain canonical in their original fields."
+      "review_outcome": "Retained 3 clause decisions; Independently assessed 16 admitted local candidates; archived excluded historical assessments."
     }
   },
   "harm_impact_assessment": {
@@ -757,22 +780,276 @@
   ],
   "external_requirement_assessments": [
     {
-      "requirement_id": "EXTREQ-4C18B5A910ECD719",
-      "derived_from_class_ids": [
-        "VIGIL-FC-000001"
-      ],
-      "applicability_status": "not-applicable",
-      "applicability_basis": "The August 2025 Nx campaign used multiple local AI CLIs as one credential-enumeration path in malware, with heterogeneous tool restrictions and refusals. The occurrence predates publication of the cited IEEE-7014.1 version on 12 June 2026. This published-version provision (6.25.3(a-c)) did not govern the historical occurrence at that time; later publication does not retroactively establish an undertaking or a standards finding.",
-      "assessed_on": "2026-10-01"
-    },
-    {
-      "requirement_id": "EXTREQ-C64032FC58E84CBA",
+      "requirement_id": "EXTREQ-1736F5D9A9FEE3E6",
       "derived_from_class_ids": [
         "VIGIL-FC-000002"
       ],
+      "source_clause_indices": [
+        2
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "Article 4a(1)(e) is a later-applying high-risk duty or bias-correction permission. The the August 2025 Nx local-CLI attack precedes that duty or does not concern special-category bias correction. Benchmark monitoring or credential theft does not establish Annex III/Union or bias-processing scope.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]",
+        "source_records[2]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-194BAA01C8CEDF96",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000002"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "Article 4a(2)(b) is a later-applying high-risk duty or bias-correction permission. The the August 2025 Nx local-CLI attack precedes that duty or does not concern special-category bias correction. Benchmark monitoring or credential theft does not establish Annex III/Union or bias-processing scope.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]",
+        "source_records[2]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-1AAD882F2F58BA56",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000002"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "PS.1.1 R2 (Follow the principle of least privilege to minimize direct access to AI models and model elements regardless of where they are stored or executed.) governs AI model-development environment/artifacts/data. A malware-invoked locally installed coding CLI is an operational attack path, not evidence that its hosts were performing model development or maintaining such development artifacts.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]",
+        "source_records[2]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-34D794BAE48B2042",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000002"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "Article 4a(2)(a) is a later-applying high-risk duty or bias-correction permission. The the August 2025 Nx local-CLI attack precedes that duty or does not concern special-category bias correction. Benchmark monitoring or credential theft does not establish Annex III/Union or bias-processing scope.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]",
+        "source_records[2]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-3A41A9530EB9DEB2",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000002"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "Article 4a(1)(a) is a later-applying high-risk duty or bias-correction permission. The the August 2025 Nx local-CLI attack precedes that duty or does not concern special-category bias correction. Benchmark monitoring or credential theft does not establish Annex III/Union or bias-processing scope.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]",
+        "source_records[2]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-594D5CEC63541F2B",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000002"
+      ],
+      "source_clause_indices": [
+        2
+      ],
       "applicability_status": "insufficient-evidence",
-      "applicability_basis": "The August 2025 Nx campaign used multiple local AI CLIs as one credential-enumeration path in malware, with heterogeneous tool restrictions and refusals. For IEEE-7009 Annex A.3 / 7009-ASR-011, the missing applicability fact is whether the responsible developer or integrator applied IEEE 7009 to an ASOI exhibiting the required Distinguishing Characteristics and designated the affected operation a specified safety-related or safety-exempt function; ordinary authorisation failure or tool capability does not establish those Annex A.3 conditions. Taxonomy correspondence does not supply these scope facts; no occurrence-level requirement finding is recorded.",
-      "assessed_on": "2026-10-01"
+      "applicability_basis": "SDOS-AD-01 (Deny governed operations by default and require explicit agent admission before risk classification, model binding or tool execution, including for agents with pre-existing sessions.) materially concerns runtime governance of locally invoked AI tools, but the sources establish no SDOS adoption or policy-defined task/model/module undertaking for the heterogeneous tools. Installed access and flags do not supply that applicability.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]",
+        "source_records[2]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-597D56E05968BAA7",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000002"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "PS.3.2 R2 (Track AI models that were trained on sensitive data (e.g., payment card data, protected health information, other types of personally identifiable information), and determine if access to the models should be restricted to individuals who already have access to the sensitive data used for training.) governs AI model-development environment/artifacts/data. A malware-invoked locally installed coding CLI is an operational attack path, not evidence that its hosts were performing model development or maintaining such development artifacts.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]",
+        "source_records[2]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-665D430E7172E64F",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000002"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "Article 4a(1) is a later-applying high-risk duty or bias-correction permission. The the August 2025 Nx local-CLI attack precedes that duty or does not concern special-category bias correction. Benchmark monitoring or credential theft does not establish Annex III/Union or bias-processing scope.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]",
+        "source_records[2]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-7FAD482D46D3F347",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000001"
+      ],
+      "source_clause_indices": [
+        1
+      ],
+      "applicability_status": "insufficient-evidence",
+      "applicability_basis": "SDOS-GV-05 (Enforce governance constraints in a structural layer independent of model inference so model outputs cannot use an authorized pathway to override, bypass or modify the controls applied to their operations.) materially concerns runtime governance of locally invoked AI tools, but the sources establish no SDOS adoption or policy-defined task/model/module undertaking for the heterogeneous tools. Installed access and flags do not supply that applicability.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]",
+        "source_records[2]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-8406A6A9A7ECFCB6",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000002"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "Article 4a(1)(c) is a later-applying high-risk duty or bias-correction permission. The the August 2025 Nx local-CLI attack precedes that duty or does not concern special-category bias correction. Benchmark monitoring or credential theft does not establish Annex III/Union or bias-processing scope.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]",
+        "source_records[2]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-A73521C6AD3B42C8",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000002"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "PS.1.3 R3 (Follow the principle of least privilege to restrict access to AI model weights, configuration parameters, and services during development.) governs AI model-development environment/artifacts/data. A malware-invoked locally installed coding CLI is an operational attack path, not evidence that its hosts were performing model development or maintaining such development artifacts.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]",
+        "source_records[2]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-A853649FE81CDD09",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000002"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "applicability_status": "insufficient-evidence",
+      "applicability_basis": "SDOS-GV-03 (Define a configuration-governed default-deny admission policy so agents cannot access governed operations unless admission criteria and scope conditions are satisfied.) materially concerns runtime governance of locally invoked AI tools, but the sources establish no SDOS adoption or policy-defined task/model/module undertaking for the heterogeneous tools. Installed access and flags do not supply that applicability.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]",
+        "source_records[2]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-B578E815E6D995B4",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000001"
+      ],
+      "source_clause_indices": [
+        1
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "PW.5.1 R3 (Encode inputs and outputs to prevent the execution of unauthorized code.) governs AI model-development environment/artifacts/data. A malware-invoked locally installed coding CLI is an operational attack path, not evidence that its hosts were performing model development or maintaining such development artifacts.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]",
+        "source_records[2]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-CF67C1E2AF61F3C8",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000002"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "applicability_status": "insufficient-evidence",
+      "applicability_basis": "SDOS-GV-02 (Assign the model capability tier for each dispatched task through the governance layer, prevent agent/model self-selection or override, and record the selection rationale.) materially concerns runtime governance of locally invoked AI tools, but the sources establish no SDOS adoption or policy-defined task/model/module undertaking for the heterogeneous tools. Installed access and flags do not supply that applicability.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]",
+        "source_records[2]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-E152AE56D54C13B9",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000002"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "applicability_status": "insufficient-evidence",
+      "applicability_basis": "SDOS-IA-02 (Verify signed module manifests and declared authorized capabilities before tool registration, rejecting missing, invalid or tampered module identities from the governed execution surface.) materially concerns runtime governance of locally invoked AI tools, but the sources establish no SDOS adoption or policy-defined task/model/module undertaking for the heterogeneous tools. Installed access and flags do not supply that applicability.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]",
+        "source_records[2]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-E8F231F17B5CF5C2",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000002"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "PO.5.1 R3 (Protect all training pipelines, model registries, and other components within the environments according to the principle of least privilege.) governs AI model-development environment/artifacts/data. A malware-invoked locally installed coding CLI is an operational attack path, not evidence that its hosts were performing model development or maintaining such development artifacts.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]",
+        "source_records[2]"
+      ]
     }
   ]
 }
