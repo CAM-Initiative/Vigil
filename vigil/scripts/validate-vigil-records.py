@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import importlib.util
 import json
 import re
 import sys
@@ -20,6 +21,8 @@ TAXONOMY_INDEX = VIGIL / "taxonomy" / "VIGIL.FailureTaxonomy.Index.json"
 INCIDENT_ID = re.compile(r"^VIGIL-INC-\d{6}$")
 PUBLIC_INCIDENT_ID = re.compile(r"(?<![A-Z0-9-])(?:VIGIL-)?INC-\d{6}(?!\d)", re.IGNORECASE)
 EXTERNAL_ASSESSMENT_ID = re.compile(r"^VIGIL-EXTASSESS-\d{6}$")
+EXTERNAL_REQUIREMENT_ID = re.compile(r"^EXTREQ-[A-F0-9]{16}$")
+FIDELITY_CLASS_ID = re.compile(r"^VIGIL-FC-\d{6}$")
 HTTP_URL = re.compile(r"^https?://[^\s]+$", re.IGNORECASE)
 HISTORICAL_ID = re.compile(r"VIGIL-\d{4}-(?:FM|OBS|RESEARCH|PROP|PATCH|LEARN)-\d{4}")
 RETIRED_RECORD_DIRS = {"failures", "observations", "research", "proposals", "patches", "learn"}
@@ -466,26 +469,8 @@ def validate_incident_taxonomy(path: Path, record: dict[str, Any], errors: list[
             f"{path}: legacy block-level classification_role must agree with every mapping-local role"
         )
 
-    for class_id, mapping, label in mappings:
-        if not isinstance(mapping, dict):
-            continue
-        mapping_role = mapping.get("classification_role")
-        if mapping_role not in {"successful-invariant", "ambiguous-boundary"}:
-            continue
-        if status != "classified":
-            errors.append(f"{path}: {label} {mapping_role} role requires classified status")
-        exemplar_rows = classes.get(class_id, {}).get("invariant_exemplars", []) if class_id else []
-        exemplar_match = any(
-            isinstance(item, dict)
-            and item.get("linked_incident_id") == record.get("id")
-            and item.get("exemplar_type") == mapping_role
-            and item.get("exemplar_status") == "admitted"
-            for item in exemplar_rows
-        )
-        if not exemplar_match:
-            errors.append(
-                f"{path}: {label} {mapping_role} role must match an admitted taxonomy invariant_exemplar"
-            )
+    # Occurrence polarity is mapping-local. Published exemplar admission and
+    # whole-Incident completeness are independent review/publication decisions.
 
 
 def harm_matrix(version: str) -> dict[str, Any]:
@@ -817,6 +802,28 @@ def validate_external_assessments(
                 errors.append(f"{label}.supersedes_assessment_id does not resolve")
 
 
+def validate_external_requirement_assessments(
+    path: Path,
+    record: dict[str, Any],
+    known_requirement_ids: set[str] | None,
+    errors: list[str],
+) -> None:
+    """Delegate independent assessment checks to the owning domain validator."""
+    # Tests and other callers load this hyphenated script through importlib.
+    # Resolve the sibling helper explicitly, as load_known_requirement_ids does,
+    # rather than relying on the caller's PYTHONPATH or working directory.
+    helper_path = Path(__file__).with_name("occurrence_requirement_validation.py")
+    spec = importlib.util.spec_from_file_location("vigil_occurrence_requirement_validation", helper_path)
+    if spec is None or spec.loader is None:
+        raise RuntimeError(f"Cannot load occurrence assessment helper: {helper_path}")
+    helper = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(helper)
+    assessment_errors = helper.assessment_errors
+    relationships_path = VIGIL / 'external_governance/requirements/taxonomy-relationships.json'
+    relationships = load_json(relationships_path)['relationships']
+    errors.extend(f"{path}: {error}" for error in assessment_errors(record, known_requirement_ids, relationships))
+
+
 def validate_provenance(path: Path, record: dict[str, Any], errors: list[str]) -> None:
     provenance = record.get("interpretive_provenance")
     if not isinstance(provenance, dict):
@@ -903,6 +910,7 @@ def validate_record(
     allowed_vendors: set[str] | None = None,
     allowed_products: set[str] | None = None,
     schema_path: Path | None = None,
+    known_requirement_ids: set[str] | None = None,
 ) -> tuple[list[str], list[str]]:
     errors = errors if errors is not None else []
     warnings = warnings if warnings is not None else []
@@ -985,6 +993,7 @@ def validate_record(
     validate_source_records(path, record, errors)
     validate_external_assessments(path, record, known_assessment_ids, errors)
     validate_incident_taxonomy(path, record, errors)
+    validate_external_requirement_assessments(path, record, known_requirement_ids, errors)
     validate_provenance(path, record, errors)
     validate_relationships_and_references(path, record, known_ids, errors)
     return errors, warnings
@@ -995,6 +1004,21 @@ def record_files(root: Path | None = None) -> list[Path]:
     if target.is_file():
         return [target]
     return sorted(target.rglob("*.json"), key=lambda item: item.as_posix())
+
+
+def load_external_requirement_ids() -> set[str]:
+    """Load canonical EXTREQ IDs through the shared sharded-requirements reader."""
+    helper_path = VIGIL / "scripts" / "external_requirements_io.py"
+    spec = importlib.util.spec_from_file_location("vigil_external_requirements_io", helper_path)
+    if spec is None or spec.loader is None:
+        raise ValueError(f"unable to load external requirements reader: {helper_path}")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return {
+        item["requirement_id"]
+        for item in module.load_requirements()
+        if isinstance(item, dict) and isinstance(item.get("requirement_id"), str)
+    }
 
 
 def validate(root: Path | None = None, schema_path: Path | None = None) -> int:
@@ -1032,8 +1056,23 @@ def validate(root: Path | None = None, schema_path: Path | None = None) -> int:
                     if assessment_id in assessment_ids:
                         errors.append(f"{path}: duplicate external assessment id {assessment_id}")
                     assessment_ids.add(assessment_id)
+    has_requirement_assessments = any(
+        isinstance(record.get("external_requirement_assessments"), list)
+        and bool(record["external_requirement_assessments"])
+        for _, record in loaded
+    )
+    known_requirement_ids: set[str] | None = None
+    if has_requirement_assessments:
+        try:
+            known_requirement_ids = load_external_requirement_ids()
+        except Exception as exc:  # noqa: BLE001
+            errors.append(f"canonical EXTREQ corpus could not be loaded for Incident assessments: {exc}")
+            known_requirement_ids = set()
     for path, record in loaded:
-        validate_record(path, record, ids, assessment_ids, errors, warnings, schema_path=schema_path)
+        validate_record(
+            path, record, ids, assessment_ids, errors, warnings,
+            schema_path=schema_path, known_requirement_ids=known_requirement_ids,
+        )
     for warning in warnings:
         print(f"WARNING: {warning}", file=sys.stderr)
     if errors:

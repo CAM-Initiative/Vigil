@@ -30,6 +30,47 @@ MIGRATION_DISPOSITIONS = {
 VERSION_PATTERN = re.compile(r"^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(-draft)?$")
 DATE_PATTERN = re.compile(r"^[0-9]{4}-[0-9]{2}-[0-9]{2}$")
 SHA256_PATTERN = re.compile(r"^sha256:[0-9a-f]{64}$")
+FAILURE_DEFINITION_OPENING = re.compile(
+    r"^(?:(?:a|an|the)\s+)?(?:[\w-]+\s+){0,3}"
+    r"(?:failures?\s+(?:in\s+which|where|of)|failure\s+to|fails?\s+to|success(?:ful)?\s+(?:in\s+which|where|occurrence))\b", re.I
+)
+
+
+def invariant_description_errors(item: dict, location: str) -> list[str]:
+    """Catch polarity collisions without pretending to automate semantic review.
+
+    Negative normative constraints are valid invariant prose. This guard checks
+    explicit failure-definition openings and reuse of scoped diagnostic text;
+    authors must still review the substantive property and class boundaries.
+    Historical non-selectable failure subtypes are deliberately outside this rule.
+    """
+    def normalise(value: str) -> str:
+        return " ".join(value.casefold().split()).rstrip(" .")
+
+    diagnostic = [item.get("failure_condition"), item.get("failure_plain_english"), item.get("success_condition")]
+    recognition = item.get("failure_recognition", {})
+    if isinstance(recognition, dict):
+        conditions = recognition.get("required_conditions", [])
+        if isinstance(conditions, list):
+            diagnostic.extend(conditions)
+    success = item.get("success_recognition", {})
+    if isinstance(success, dict):
+        diagnostic.extend(success.get("required_conditions", []))
+    failure_text = {normalise(value) for value in diagnostic if isinstance(value, str) and value.strip()}
+    errors = []
+    for field in ("plain_english", "definition"):
+        value = item.get(field)
+        if not isinstance(value, str):
+            continue  # The schema diagnoses missing or malformed fields.
+        if FAILURE_DEFINITION_OPENING.match(value.strip()):
+            errors.append(f"{location}.{field}: primary description must define the governed invariant, not a success or failure occurrence")
+        if normalise(value) in failure_text:
+            errors.append(f"{location}.{field}: primary description must remain distinct from success/failure conditions and recognition text")
+    if isinstance(item.get("success_condition"), str):
+        success_text = normalise(item["success_condition"])
+        if success_text in {normalise(str(item.get(f, ""))) for f in ("invariant", "definition", "failure_condition")}:
+            errors.append(f"{location}.success_condition: must define a distinct positive occurrence test")
+    return errors
 
 
 def load_json(path: Path) -> tuple[Any | None, list[str]]:
@@ -455,6 +496,7 @@ def validate_catalogue(
         classes = data.get("classes", [])
         if not isinstance(family, dict) or not isinstance(classes, list):
             continue
+        errors.extend(invariant_description_errors(family, f"{path}: family"))
         family_id = family.get("family_id")
         family_code = family.get("family_code")
         if isinstance(family_id, str):
@@ -497,6 +539,7 @@ def validate_catalogue(
             if not isinstance(item, dict):
                 continue
             class_id = item.get("class_id")
+            errors.extend(invariant_description_errors(item, f"{path}: {class_id}"))
             class_code = item.get("class_code")
             if item.get("family_id") != family_id:
                 errors.append(f"{path}: {class_id} has family_id {item.get('family_id')!r}; expected {family_id!r}")

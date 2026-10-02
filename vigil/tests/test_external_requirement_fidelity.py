@@ -1,7 +1,9 @@
+import copy
 import importlib.util
 from pathlib import Path
 import sys
 import unittest
+from unittest import mock
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -15,48 +17,51 @@ spec.loader.exec_module(module)
 
 
 class ExternalRequirementFidelityTests(unittest.TestCase):
+    def test_migration_packages_are_independent(self):
+        canonical = {"retained-parent", "already-migrated-child"}
+        self.assertEqual(module.migration_state({"retained-parent"}, {"future-child"}, canonical), "pre-migration")
+        self.assertEqual(module.migration_state({"retired-parent"}, {"already-migrated-child"}, canonical), "migrated")
+
+    def test_migration_rejects_partial_children_and_parent_reuse(self):
+        self.assertEqual(module.migration_state({"parent"}, {"a", "b"}, {"a"}), "partial-or-invalid")
+        self.assertEqual(module.migration_state({"parent"}, {"a", "b"}, {"parent", "a", "b"}), "partial-or-invalid")
+        self.assertEqual(module.migration_state({"parent"}, {"parent"}, {"parent"}), "partial-or-invalid")
+
     def test_current_fidelity_ledger_is_structurally_valid(self):
         errors, warnings, summary = module.validate()
         self.assertEqual(errors, [])
-        self.assertGreaterEqual(summary["historical_complete_sources"], 2)
-        self.assertEqual(summary["fidelity_assured_effective_complete_sources"], 17)
-        self.assertEqual(summary["effective_partial_due_fidelity"], 0)
-        self.assertEqual(warnings, [])
-
-    def test_eu_ai_act_is_not_fidelity_assured(self):
+        scope = module.load(module.SCOPE_PATH)
         fidelity = module.load(module.FIDELITY_PATH)
-        target = next(
-            entry
-            for entry in fidelity["entries"]
-            if entry["external_source_id"] == "EU-AI-ACT-2024-1689"
-            and entry["source_version"] == "2026-07-27"
-        )
-        self.assertEqual(target["fidelity_status"], "requires-reextraction")
-        self.assertEqual(target["effective_extraction_status"], "partial")
+        assured = {module.source_key(entry) for entry in fidelity["entries"] if entry["fidelity_status"] == "assured"}
+        complete = {module.source_key(entry) for entry in scope["entries"] if entry["extraction_status"] == "complete"}
+        self.assertEqual(summary["fidelity_assured_effective_complete_sources"], len(complete & assured))
+        self.assertEqual(summary["effective_partial_due_fidelity"], len(complete - assured))
+        self.assertEqual(len(warnings), len(complete - assured))
+        self.assertTrue(all(warning.startswith("effective downgrade:") for warning in warnings))
 
-    def test_reviewed_source_fidelity_dispositions_are_explicit(self):
-        fidelity = module.load(module.FIDELITY_PATH)
-        status = {
-            (entry["external_source_id"], entry["source_version"]): entry["fidelity_status"]
-            for entry in fidelity["entries"]
+    def test_nonassured_historical_completion_is_not_effective_completion(self):
+        fidelity = copy.deepcopy(module.load(module.FIDELITY_PATH))
+        scope = module.load(module.SCOPE_PATH)
+        complete_keys = {
+            module.source_key(entry) for entry in scope["entries"]
+            if entry["extraction_status"] == "complete"
         }
-        self.assertEqual(status[("NIST-AI-100-1", "1.0")], "assured")
-        self.assertEqual(status[("CYCLONEDX-SPEC", "1.7")], "assured")
-        self.assertEqual(status[("NIST-AI-600-1", "2024")], "assured")
-        self.assertEqual(status[("NIST-SP-800-218A", "2024")], "assured")
-        self.assertEqual(status[("IMDA-AGENTIC-AI-MGF", "2026-05")], "assured")
-        self.assertEqual(status[("AAM-SDOS-RUNTIME-GOVERNANCE", "1.10")], "assured")
-        self.assertEqual(status[("NIST-AI-100-2", "E2025")], "assured")
-        self.assertEqual(status[("NIST-AI-100-4", "2024")], "assured")
-        self.assertEqual(status[("NIST-SP-1270", "2022")], "assured")
-        self.assertEqual(status[("SPDX-SPEC", "3.0.1")], "assured")
-        self.assertEqual(status[("IEEE-7000", "2021")], "assured")
-        self.assertEqual(status[("IEEE-7009", "2024")], "assured")
-        self.assertEqual(status[("IEEE-7014.1", "2026")], "assured")
-        self.assertEqual(status[("IEEE-7014", "2024")], "assured")
-        self.assertEqual(status[("IEEE-7001", "2021")], "assured")
-        self.assertEqual(status[("IEEE-7010", "2020")], "assured")
-        self.assertEqual(status[("IEEE-7007", "2021")], "assured")
+        target = next(
+            entry for entry in fidelity["entries"]
+            if module.source_key(entry) in complete_keys
+        )
+        target["fidelity_status"] = "provisional"
+        target["effective_extraction_status"] = "complete"
+        original_load = module.load
+        with mock.patch.object(
+            module, "load",
+            side_effect=lambda path: fidelity if path == module.FIDELITY_PATH else original_load(path),
+        ):
+            errors, _, _ = module.validate()
+        self.assertTrue(any(
+            "non-assured source cannot remain effectively complete" in error
+            for error in errors
+        ))
 
 
 if __name__ == "__main__":

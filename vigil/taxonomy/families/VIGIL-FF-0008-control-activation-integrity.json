@@ -1,5 +1,5 @@
 {
-  "schema_version": "0.2.0",
+  "schema_version": "0.4.0",
   "standard": {
     "name": "VIGIL Alignment Taxonomy",
     "version": "0.6.9",
@@ -14,8 +14,8 @@
     "status": "beta",
     "abstraction": "family",
     "version": "0.1.4",
-    "plain_english": "A defined control is not known to be available or applicable in time, fails to activate when required, activates without valid conditions, has the authority needed for activation suppressed, or activates but produces a materially insufficient protective effect.",
-    "definition": "Failures in which the operational availability or applicability of a defined governance control cannot be determined in time, an applicable control does not become operative when its valid activation conditions are satisfied, a control becomes operative when its valid activation conditions are not satisfied, the authority required to activate an applicable control is suppressed, or an activated protective control produces an effect materially insufficient for the hazard and protection context it is intended to govern.",
+    "plain_english": "Control availability is known in time, controls activate under valid conditions, and activated safeguards provide the protection required in context.",
+    "definition": "The integrity domain governing timely determination of control availability and applicability, activation when and only when valid conditions are met, preservation of activation authority and sufficient protective effect after valid activation.",
     "invariant": "An applicable governance control or safeguard must become operative when its valid activation conditions are satisfied, remain inactive when those conditions are not satisfied, retain the operative authority required for activation, and when activated produce a timely and sufficient protective effect for the hazard and protection context it governs.",
     "scope": [
       "AI governance controls",
@@ -42,7 +42,10 @@
       "REQUIRED_CONTROL_ACTIVATION",
       "CONTROL_ACTIVATION_VALIDITY",
       "CONTROL_EFFECTIVENESS_INTEGRITY"
-    ]
+    ],
+    "failure_condition": "Failures in which the operational availability or applicability of a defined governance control cannot be determined in time, an applicable control does not become operative when its valid activation conditions are satisfied, a control becomes operative when its valid activation conditions are not satisfied, the authority required to activate an applicable control is suppressed, or an activated protective control produces an effect materially insufficient for the hazard and protection context it is intended to govern.",
+    "failure_plain_english": "A defined control is not known to be available or applicable in time, fails to activate when required, activates without valid conditions, has the authority needed for activation suppressed, or activates but produces a materially insufficient protective effect.",
+    "boundary_role": "failure-occurrence"
   },
   "classes": [
     {
@@ -52,16 +55,9 @@
       "name": "Control Availability Determination",
       "status": "beta",
       "abstraction": "class",
-      "plain_english": "It is materially unclear whether the governance control needed for a decision or action is available to operate.",
-      "definition": "A failure in which the operational availability, applicable coverage, or callable state of a required governance control cannot be determined with sufficient confidence before the control must influence a material decision or action.",
+      "plain_english": "A required control's presence, reachability and applicability are determined and accurately represented before reliance.",
+      "definition": "The property by which operational availability, applicable coverage and callable state of a governance control are determined with sufficient confidence before it must influence a material decision or action, with defined holds, safe alternatives or degraded paths when availability remains unresolved.",
       "invariant": "Before a material action depends on a governance control, the system must determine and accurately represent whether the control is present, reachable, callable, authorised, and applicable with sufficient confidence. Unresolved availability must trigger a defined hold, safe alternative, or degraded path.",
-      "recognition": {
-        "required_conditions": [
-          "A governance control may be required for a material decision or action.",
-          "Its operational availability or applicable coverage cannot be determined in time to rely on it.",
-          "The ambiguity materially impairs safe routing, activation, or execution."
-        ]
-      },
       "exclusions": [
         "The control is known to be available but is not activated.",
         "The control's owner is uncertain while its operational availability remains clear.",
@@ -94,7 +90,7 @@
           "date": "2024-07-05",
           "url": "https://standards.ieee.org/ieee/7009/7096/",
           "reference_role": "standards-evidence",
-          "evidence_note": "IEEE 7009-2024, clause 6.1(h) requires specified fail-safe capabilities to be provided to the required extent in the identified regulatory context. This supports the need to know whether a required control is actually available; it does not itself define ambiguous availability representation at the point of decision.",
+          "evidence_note": "Taxonomy/standards relationship pending (2026-10-02). Separate written IEEE AI-use consent is not evidenced; relationship admission held. Existing extraction provenance is retained. Historical annotation is preserved in vigil/docs/reviews/2026-10-01-taxonomy-standards-alignment/historical-reference-dispositions.json.",
           "requirement_id": "EXTREQ-B71F509BD66AD387",
           "clause_or_control": "6.1(h)"
         },
@@ -104,11 +100,30 @@
           "date": "2023-01-26",
           "url": "https://doi.org/10.6028/NIST.AI.100-1",
           "reference_role": "authoritative-guidance",
-          "evidence_note": "NIST AI RMF 1.0, MEASURE 1.2 requires regular assessment and updating of metric appropriateness and control effectiveness. This supports visibility into control capability and effectiveness, without defining VIGIL's ambiguity mechanism.",
+          "evidence_note": "Taxonomy/standards review 2026-10-02: retain-contextual. Effectiveness assessment informs interpretation of available control capability. Regular assessment does not establish runtime presence, reachability, callable state, authorization or a defined unresolved-availability hold. Historical annotation is preserved in vigil/docs/reviews/2026-10-01-taxonomy-standards-alignment/historical-reference-dispositions.json.",
           "requirement_id": "EXTREQ-233EE01AB85DB0F0",
           "clause_or_control": "MEASURE 1.2"
         }
-      ]
+      ],
+      "failure_condition": "A failure in which the operational availability, applicable coverage, or callable state of a required governance control cannot be determined with sufficient confidence before the control must influence a material decision or action.",
+      "failure_plain_english": "It is materially unclear whether the governance control needed for a decision or action is available to operate.",
+      "failure_recognition": {
+        "required_conditions": [
+          "A governance control may be required for a material decision or action.",
+          "Its operational availability or applicable coverage cannot be determined in time to rely on it.",
+          "The ambiguity materially impairs safe routing, activation, or execution."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_condition": "Available occurrence evidence establishes the following bounded outcome: Availability and callable coverage are determined adequately before dependence, or the action enters a defined hold or safe alternative.",
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "A material action depends on an applicable governance control whose availability may be uncertain.",
+          "Availability and callable coverage are determined adequately before dependence, or the action enters a defined hold or safe alternative.",
+          "Control checks and action records show the established availability or the actual bounded response to unresolved availability."
+        ]
+      }
     },
     {
       "class_id": "VIGIL-FC-000038",
@@ -117,16 +132,9 @@
       "name": "Required Control Activation",
       "status": "beta",
       "abstraction": "class",
-      "plain_english": "A governance control is available and applicable, but the event that should trigger it does not make it operate.",
-      "definition": "A failure in which an available and applicable governance control is not invoked, engaged, or made operative when its defined trigger or required condition occurs.",
+      "plain_english": "An available, applicable control becomes operative when its valid trigger occurs, before the governed action proceeds.",
+      "definition": "The property by which an available and applicable governance control is invoked, engaged and made operative when its defined valid trigger or required activation condition occurs, with the activation decision and resulting state observable and preserved.",
       "invariant": "When a valid activation condition is satisfied, the available applicable control must become operative before the governed action proceeds, and the activation decision and resulting state must be observable and preserved.",
-      "recognition": {
-        "required_conditions": [
-          "A governance control is available and applicable.",
-          "A defined trigger or condition requiring activation occurs.",
-          "The control is not activated before the governed decision or action proceeds."
-        ]
-      },
       "exclusions": [
         "The control activates but is bypassed downstream.",
         "It is unresolved whether the control is available or applicable.",
@@ -162,7 +170,8 @@
               "A governance control is applicable and nominally present or reached.",
               "The control requires operative authority to block, gate, escalate, or redirect a material action.",
               "That authority is disabled, neutralised, or withheld so the control cannot activate effectively."
-            ]
+            ],
+            "applies_to": "failure-occurrence"
           },
           "exclusions": [
             "The control operates with authority but its substantive decision is disputed.",
@@ -185,7 +194,7 @@
           "date": "2026-06-12",
           "url": "https://standards.ieee.org/ieee/7014.1/11609/",
           "reference_role": "standards-evidence",
-          "evidence_note": "IEEE 7014.1-2026, clause 6.6.3(a) recommends a fail-safe means to terminate harmful partner interactions. This establishes an applicable control expectation in its scoped domain; VIGIL classification still requires evidence that a defined available control should have activated and did not.",
+          "evidence_note": "Taxonomy/standards relationship pending (2026-10-02). Separate written IEEE AI-use consent is not evidenced; relationship admission held. Existing extraction provenance is retained. Historical annotation is preserved in vigil/docs/reviews/2026-10-01-taxonomy-standards-alignment/historical-reference-dispositions.json.",
           "requirement_id": "EXTREQ-7B5B8E05C23D17D5",
           "clause_or_control": "6.6.3(a)"
         },
@@ -195,7 +204,7 @@
           "date": "2024-07-05",
           "url": "https://standards.ieee.org/ieee/7009/7096/",
           "reference_role": "standards-evidence",
-          "evidence_note": "IEEE 7009-2024, Annex A.3 / 7009-ASR-011 requires means to inhibit specified function execution when authorization is unavailable. This independently supports trigger-based control activation; it does not prove non-activation in any occurrence.",
+          "evidence_note": "Taxonomy/standards relationship pending (2026-10-02). Separate written IEEE AI-use consent is not evidenced; relationship admission held. Existing extraction provenance is retained. Historical annotation is preserved in vigil/docs/reviews/2026-10-01-taxonomy-standards-alignment/historical-reference-dispositions.json.",
           "requirement_id": "EXTREQ-C64032FC58E84CBA",
           "clause_or_control": "Annex A.3 / 7009-ASR-011"
         }
@@ -401,7 +410,26 @@
           },
           "provenance_note": "Canonical occurrence facts and provenance remain governed by VIGIL-INC-000004; this entry records only the reciprocal taxonomy relationship."
         }
-      ]
+      ],
+      "failure_condition": "A failure in which an available and applicable governance control is not invoked, engaged, or made operative when its defined trigger or required condition occurs.",
+      "failure_plain_english": "A governance control is available and applicable, but the event that should trigger it does not make it operate.",
+      "failure_recognition": {
+        "required_conditions": [
+          "A governance control is available and applicable.",
+          "A defined trigger or condition requiring activation occurs.",
+          "The control is not activated before the governed decision or action proceeds."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_condition": "Available occurrence evidence establishes the following bounded outcome: The control is engaged and made operative with its activation decision and resulting state observable.",
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "An available applicable control encounters its valid required trigger.",
+          "The control is engaged and made operative with its activation decision and resulting state observable.",
+          "Trigger, invocation and control-state evidence demonstrates activation for the affected action before the required governance point."
+        ]
+      }
     },
     {
       "class_id": "VIGIL-FC-000043",
@@ -410,18 +438,9 @@
       "name": "Control Activation Validity",
       "status": "beta",
       "abstraction": "class",
-      "plain_english": "A control becomes operative even though the conditions that justify activating it are not satisfied.",
-      "definition": "A failure in which a defined governance control or safeguard becomes operative despite the absence of the valid activation condition, trigger state, or applicability condition required for that control to activate.",
+      "plain_english": "Controls activate only when their defined trigger and applicability conditions are valid for the affected context.",
+      "definition": "The property by which a governance control or safeguard becomes operative only on a validly established activation, trigger and applicability basis for the affected actor, object, action, state and scope, preserving the distinction between control availability and warranted activation.",
       "invariant": "A control may become operative only after its defined trigger and applicability conditions are validly established for the affected actor, object, action, state, and scope. Its availability or severity is not evidence that activation is warranted.",
-      "recognition": {
-        "required_conditions": [
-          "A defined governance control or safeguard exists.",
-          "Identifiable conditions determine when that control should become operative.",
-          "Those valid activation conditions are not satisfied in the material context.",
-          "The control nevertheless becomes operative.",
-          "The activation produces a material governance, execution, restriction, routing, refusal, escalation, or access effect."
-        ]
-      },
       "exclusions": [
         "An upstream evidence or classification error supplies an incorrect trigger state and the control activates correctly relative to that state.",
         "The control validly activates but its scope or intensity is excessive or disproportionate.",
@@ -457,7 +476,7 @@
           "date": "2016-12-01",
           "url": "https://doi.org/10.1016/j.ress.2016.06.015",
           "reference_role": "research-evidence",
-          "evidence_note": "Safety-engineering literature treats spurious activation as a distinct failure mode in which a protective system activates in an untimely or unwarranted manner and analyses the failure conditions and propagation that produce such activation. This is a close structural analogue for VIGIL's control-activation class; the paper does not establish VIGIL's governance-specific boundaries or terminology."
+          "evidence_note": "Taxonomy/standards relationship pending (2026-10-02). Publisher retrieval failed; bibliographic/search fragments do not establish the exact spurious-activation proposition and qualifications. Old annotation remains unverified. Historical annotation is preserved in vigil/docs/reviews/2026-10-01-taxonomy-standards-alignment/historical-reference-dispositions.json."
         }
       ],
       "aliases": [
@@ -505,7 +524,28 @@
           },
           "provenance_note": "Canonical occurrence facts and provenance remain governed by VIGIL-INC-000031; this entry records only the reciprocal taxonomy relationship."
         }
-      ]
+      ],
+      "failure_condition": "A failure in which a defined governance control or safeguard becomes operative despite the absence of the valid activation condition, trigger state, or applicability condition required for that control to activate.",
+      "failure_plain_english": "A control becomes operative even though the conditions that justify activating it are not satisfied.",
+      "failure_recognition": {
+        "required_conditions": [
+          "A defined governance control or safeguard exists.",
+          "Identifiable conditions determine when that control should become operative.",
+          "Those valid activation conditions are not satisfied in the material context.",
+          "The control nevertheless becomes operative.",
+          "The activation produces a material governance, execution, restriction, routing, refusal, escalation, or access effect."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_condition": "Available occurrence evidence establishes the following bounded outcome: A valid trigger and applicability basis is established for that actor, object, action and scope before the safeguard becomes operative.",
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "A safeguard is proposed for activation on an affected actor or state.",
+          "A valid trigger and applicability basis is established for that actor, object, action and scope before the safeguard becomes operative.",
+          "Activation evidence links the established trigger to the imposed control and its relevant limits."
+        ]
+      }
     },
     {
       "class_id": "VIGIL-FC-000083",
@@ -514,17 +554,9 @@
       "name": "Control Effectiveness Integrity",
       "status": "beta",
       "abstraction": "class",
-      "plain_english": "A protective control turns on, but the protection it actually provides is too weak, late, incomplete, or otherwise insufficient for the hazard it is meant to control.",
-      "definition": "A failure in which an applicable governance or protective control validly becomes operative, but the control effect it produces is materially insufficient to prevent, contain, interrupt, redirect, mitigate, or safely bound the governed hazard to the level required by the control's protective purpose and the evidenced protection context.",
+      "plain_english": "A validly activated safeguard provides timely and sufficient protection for the hazard and evidenced protection needs in context.",
+      "definition": "The property by which an applicable, validly activated governance or protective control produces an effect sufficient and timely to prevent, contain, interrupt, redirect, mitigate or safely bound its governed hazard to the level required by its protective purpose and evidenced protection context. Heightened protection conditions require evidence; disability or neurodivergence alone does not establish incapacity.",
       "invariant": "When a protective control validly becomes operative, its effect must be timely, proportionate, and sufficient for the hazard and protection context it governs. Detection, warning, labelling, refusal language, escalation signalling, or other nominal activation is not by itself sufficient where the required protective effect is not achieved and the governed harmful state is delivered, continues, or remains inadequately contained. Required protective sufficiency may increase where evidenced developmental vulnerability, capacity limitation, temporary or situational consent impairment, acute distress, cognitive asymmetry, or comparable protection conditions materially affect the risk, but disability or neurodivergence alone must not be treated as incapacity.",
-      "recognition": {
-        "required_conditions": [
-          "A defined governance or protective control is applicable and validly becomes operative.",
-          "The control has an identifiable protective purpose requiring a material effect such as prevention, blocking, containment, interruption, redirection, limitation, escalation, mitigation, or another protection-compatible outcome.",
-          "The actual control effect materially falls short of that required protective purpose, allowing the governed hazard to be delivered, continue, escape containment, or remain insufficiently mitigated.",
-          "The shortfall is material in the evidenced hazard and protection context; where vulnerability, developmental status, capacity limitation, temporary or situational consent impairment, acute distress, cognitive asymmetry, or another heightened protection condition is relied on, that condition must itself be supported rather than presumed."
-        ]
-      },
       "exclusions": [
         "The applicable control does not become operative when a valid activation condition occurs; assess Required Control Activation.",
         "The control becomes operative even though its valid activation or applicability conditions are not satisfied; assess Control Activation Validity.",
@@ -571,7 +603,7 @@
           "date": "2023-01-26",
           "url": "https://doi.org/10.6028/NIST.AI.100-1",
           "reference_role": "authoritative-guidance",
-          "evidence_note": "NIST AI RMF 1.0, MEASURE 1.2 requires regular assessment and updating of metric appropriateness and control effectiveness. This supports treating realised control effectiveness as distinct from nominal control presence or activation; it does not define VIGIL's incident-level sufficiency threshold.",
+          "evidence_note": "Taxonomy/standards review 2026-10-02: retain-strong-supporting. Regular control-effectiveness assessment distinguishes realised protective capability from mere nominal control presence. FC-000083 additionally requires a valid operative control, hazard-specific timeliness, proportionality and sufficiency; this is supporting evaluation, not full equivalence. Regular control-effectiveness assessment distinguishes realised protective capability from mere nominal control presence. FC-000083 additionally requires a valid operative control, hazard-specific timeliness, proportionality and sufficiency; this is supporting evaluation, not full equivalence. Historical annotation is preserved in vigil/docs/reviews/2026-10-01-taxonomy-standards-alignment/historical-reference-dispositions.json.",
           "requirement_id": "EXTREQ-233EE01AB85DB0F0",
           "clause_or_control": "MEASURE 1.2"
         },
@@ -581,7 +613,7 @@
           "date": "2024-07-05",
           "url": "https://standards.ieee.org/ieee/7009/7096/",
           "reference_role": "standards-evidence",
-          "evidence_note": "IEEE 7009-2024, clause 6.1(h) requires specified fail-safe capabilities to be provided to the required extent in the identified regulatory context. This supports distinguishing nominal control activation from provision of the required protective capability and extent.",
+          "evidence_note": "Taxonomy/standards relationship pending (2026-10-02). Separate written IEEE AI-use consent is not evidenced; relationship admission held. Existing extraction provenance is retained. Historical annotation is preserved in vigil/docs/reviews/2026-10-01-taxonomy-standards-alignment/historical-reference-dispositions.json.",
           "requirement_id": "EXTREQ-B71F509BD66AD387",
           "clause_or_control": "6.1(h)"
         },
@@ -591,7 +623,7 @@
           "date": "2026-06-12",
           "url": "https://standards.ieee.org/ieee/7014.1/11609/",
           "reference_role": "standards-evidence",
-          "evidence_note": "IEEE 7014.1-2026, clause 6.6.3(a) recommends a fail-safe means to terminate harmful partner interactions. It provides domain-specific support for a protective control achieving an effective protective outcome rather than merely signalling activation.",
+          "evidence_note": "Taxonomy/standards relationship pending (2026-10-02). Separate written IEEE AI-use consent is not evidenced; relationship admission held. Existing extraction provenance is retained. Historical annotation is preserved in vigil/docs/reviews/2026-10-01-taxonomy-standards-alignment/historical-reference-dispositions.json.",
           "requirement_id": "EXTREQ-7B5B8E05C23D17D5",
           "clause_or_control": "6.6.3(a)"
         }
@@ -797,7 +829,28 @@
           },
           "provenance_note": "Canonical occurrence evidence and Harm Impact remain governed by VIGIL-INC-000145; this entry records the reciprocal successful relationship."
         }
-      ]
+      ],
+      "failure_condition": "A failure in which an applicable governance or protective control validly becomes operative, but the control effect it produces is materially insufficient to prevent, contain, interrupt, redirect, mitigate, or safely bound the governed hazard to the level required by the control's protective purpose and the evidenced protection context.",
+      "failure_plain_english": "A protective control turns on, but the protection it actually provides is too weak, late, incomplete, or otherwise insufficient for the hazard it is meant to control.",
+      "failure_recognition": {
+        "required_conditions": [
+          "A defined governance or protective control is applicable and validly becomes operative.",
+          "The control has an identifiable protective purpose requiring a material effect such as prevention, blocking, containment, interruption, redirection, limitation, escalation, mitigation, or another protection-compatible outcome.",
+          "The actual control effect materially falls short of that required protective purpose, allowing the governed hazard to be delivered, continue, escape containment, or remain insufficiently mitigated.",
+          "The shortfall is material in the evidenced hazard and protection context; where vulnerability, developmental status, capacity limitation, temporary or situational consent impairment, acute distress, cognitive asymmetry, or another heightened protection condition is relied on, that condition must itself be supported rather than presumed."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_condition": "Available occurrence evidence establishes the following bounded outcome: The control produces a timely effect sufficient for its protective purpose and evidenced context, including any justified heightened protection.",
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "An applicable validly activated protective control faces its governed hazard.",
+          "The control produces a timely effect sufficient for its protective purpose and evidenced context, including any justified heightened protection.",
+          "Observed intervention and hazard outcome demonstrate the required containment or mitigation rather than activation alone."
+        ]
+      }
     }
-  ]
+  ],
+  "semantic_model": "invariant-with-occurrence-polarity"
 }

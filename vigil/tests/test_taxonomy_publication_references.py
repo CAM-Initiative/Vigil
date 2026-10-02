@@ -74,10 +74,14 @@ class TaxonomyPublicationReferenceTests(unittest.TestCase):
             "name": "Secondary-Purpose Authority Transposition",
             "status": "beta",
             "abstraction": "class",
-            "plain_english": "Primary-purpose authority is reused for another purpose.",
+            "plain_english": "Each secondary purpose has its own valid authority basis.",
             "definition": "A bounded class definition.",
+            "failure_condition": "Primary-purpose authority is reused without a secondary-purpose basis.",
+            "failure_plain_english": "Permission for one use is treated as permission for another.",
             "invariant": "Authority is purpose-bound and must be revalidated for a materially different secondary purpose.",
-            "recognition": {"required_conditions": ["A required condition is present."]},
+            "success_condition": "A reviewed secondary use matches its independently established authority.",
+            "success_recognition": {"required_conditions": ["The observed use matches the reviewed authority."]},
+            "failure_recognition": {"applies_to": "failure-occurrence", "required_conditions": ["A required failure condition is present."]},
             "exclusions": ["A bounded exclusion applies."],
             "examples": ["A bounded example applies."],
             "aliases": [],
@@ -114,7 +118,7 @@ class TaxonomyPublicationReferenceTests(unittest.TestCase):
         self.assertIn("Invariant exemplars", rendered)
         self.assertIn("successful-invariant", rendered)
         self.assertIn("VIGIL-INC-000126", rendered)
-        self.assertIn("Why this is not failure evidence", rendered)
+        self.assertIn("Relationship basis", rendered)
         self.assertNotIn("Governance placement", rendered)
         self.assertNotIn("CAELESTIS", rendered)
         self.assertNotIn("CAM-EQ2026-STEWARD-003-PLATINUM", rendered)
@@ -142,6 +146,8 @@ class TaxonomyPublicationReferenceTests(unittest.TestCase):
                 "abstraction": "family",
                 "plain_english": "Synthetic family used to test publication projection.",
                 "definition": "A bounded synthetic family definition.",
+                "failure_condition": "A bounded family failure condition.",
+                "failure_plain_english": "The synthetic family property fails.",
                 "invariant": "The current canonical identity remains authoritative.",
                 "inclusion_rule": "Include only for the synthetic test.",
                 "exclusion_rule": "Exclude all non-test cases.",
@@ -160,7 +166,11 @@ class TaxonomyPublicationReferenceTests(unittest.TestCase):
                     "abstraction": "class",
                     "plain_english": "Synthetic class used to test publication projection.",
                     "definition": "A bounded synthetic class definition.",
-                    "recognition": {"required_conditions": ["Synthetic condition."]},
+                    "failure_condition": "A bounded class failure condition.",
+                    "failure_plain_english": "The synthetic class property fails.",
+                    "failure_recognition": {"required_conditions": ["Synthetic condition."]},
+                    "success_condition": "The synthetic occurrence preserves the assessed property.",
+                    "success_recognition": {"required_conditions": ["Positive evidence supports the synthetic property."]},
                     "exclusions": ["Synthetic exclusion."],
                     "examples": ["Synthetic example."],
                     "aliases": [class_alias],

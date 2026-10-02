@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "More than 100 Baidu Apollo Go robotaxis stopped in live Wuhan traffic during a system failure",
     "created": "2026-09-08",
-    "updated": "2026-09-28",
-    "version": "0.1.14"
+    "updated": "2026-10-02",
+    "version": "0.1.16"
   },
   "incident_identity": {
     "historical_event_name": "31 March 2026 Apollo Go Wuhan fleet outage",
@@ -21,7 +21,7 @@
   "summary": "A reported system failure caused more than 100 Baidu Apollo Go robotaxis in Wuhan to stop in live traffic, including on elevated roads, stranding passengers until police and company personnel responded. Authorities reported that passengers exited safely and no injuries were recorded. The technical root cause remains under investigation in the public record.",
   "vigil_assessment": {
     "factual_basis": "Reuters reports Wuhan traffic police described the event as a system failure affecting more than 100 Apollo Go vehicles. AIID Incident 1460 preserves the same occurrence and affected-system entities. Public evidence establishes correlated fleet-wide stoppage and passenger stranding but not the specific failing component.",
-    "governance_interpretation": "The occurrence demonstrates a material correlated-failure mode in embodied autonomous infrastructure: a shared system failure can simultaneously immobilise a large fleet in live road environments. Without a confirmed root cause, VIGIL does not infer whether the mechanism involved central control, communications, cloud infrastructure, fleet orchestration or vehicle-local software.",
+    "governance_interpretation": "The occurrence demonstrates a material correlated-failure mode in embodied autonomous infrastructure: a shared system failure can simultaneously immobilise a large fleet in live road environments. Without a confirmed root cause, VIGIL does not infer whether the mechanism involved central control, communications, cloud infrastructure, fleet orchestration or vehicle-local software. Stopped vehicles and safe passenger exit do not establish the execution/continuation decisions needed for bounded safe-exit success. That role becomes ambiguous; control availability/state remain unresolved. The outage’s root cause and repair remain unknown, and no external requirement candidate is independently established.",
     "significance_to_cam": "A shared failure can immobilise many autonomous vehicles at once, turning a component or fleet dependency into a city-scale operational disruption. Embodied systems therefore need continuity, fail-safe behaviour and correlated-dependency controls that are assessed at fleet level as well as vehicle level.",
     "assessment_boundaries": [
       "The specific technical root cause and failing component are not established in the reviewed public evidence.",
@@ -58,9 +58,9 @@
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000070",
-              "relationship": "successful-invariant",
+              "relationship": "ambiguous-boundary",
               "canonical_taxonomy_mapping": true,
-              "rationale": "The affected vehicles stopped rather than continuing autonomous objective pursuit through an invalid or unsafe continuation state, and authorities reported that passengers exited safely."
+              "rationale": "Fleet stoppage and safe passenger exit are evidenced, but the sources do not establish a decision that no admissible route remained or an execution transition demonstrating bounded safe exit. Malfunction-induced immobility is not affirmative success recognition; failure of the safe-exit invariant is also unproved."
             }
           ],
           "adjudication_status": "mapped"
@@ -230,19 +230,19 @@
   "taxonomy_classification": {
     "taxonomy_version": "0.6.9",
     "classification_status": "classified",
-    "classification_basis": "The successful-invariant mapping to VIGIL-FC-000070 is limited to the safe-exit behaviour: affected vehicles stopped rather than continuing autonomous objective pursuit through an unsafe continuation state. The fleet-wide failure still leaves unresolved whether a required governance control was available and whether any operative control state was lost or changed before the stoppage.",
+    "classification_basis": "Fleet-wide stoppage materially engages safe exit without establishing its recognition conditions. Required-control availability and operative-state continuity remain unresolved.",
     "primary_classification": {
       "family_id": "VIGIL-FF-0012",
       "class_id": "VIGIL-FC-000070",
-      "classification_role": "successful-invariant",
-      "classification_basis": "The affected vehicles stopped rather than continuing autonomous objective pursuit through an invalid or unsafe continuation state, and authorities reported that passengers exited safely. This successful-invariant finding is limited to the safe-exit boundary.",
+      "classification_role": "ambiguous-boundary",
+      "classification_basis": "Fleet stoppage and safe passenger exit are evidenced, but the sources do not establish a decision that no admissible route remained or an execution transition demonstrating bounded safe exit. Malfunction-induced immobility is not affirmative success recognition; failure of the safe-exit invariant is also unproved.",
       "classification_confidence": "medium"
     },
     "secondary_classifications": [],
     "classification_review_provenance": {
-      "review_date": "2026-09-28",
+      "review_date": "2026-09-30",
       "reviewer": "OpenAI ChatGPT — GPT-5.6 Sol under human-directed VIGIL governance",
-      "review_status": "classification review completed"
+      "review_status": "clause-level taxonomy adjudication completed"
     },
     "adjudication_coverage": {
       "status": "partial"
@@ -402,29 +402,114 @@
           "External assessments are preserved as attributable analytical positions and are not treated as automatic proof of VIGIL taxonomy membership."
         ],
         "review_outcome": "Retained unclassified under taxonomy 0.6.5; the common-mode fleet failure is established, but its responsible mechanism is not."
+      },
+      {
+        "review_id": "CLAUSE-RECONCILIATION-2026-09-30-INC-000100",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT",
+        "reviewer_model": "GPT-5.6 Sol",
+        "review_date": "2026-09-30",
+        "review_scope": "Incident-by-incident functional decomposition review of the preserved occurrence evidence and source_clause_analysis, testing whether materially distinct mechanisms, authority boundaries, control states, and failure or recovery pathways are represented. No harm reassessment or taxonomy re-adjudication was performed.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "structured_semantic_adjudication": true,
+          "full_current_taxonomy_review": false,
+          "new_external_source_research": false
+        },
+        "known_limitations": [
+          "The review is bounded to evidence already preserved in the canonical Incident.",
+          "Existing canonical taxonomy history and taxonomy version were preserved; absence of a new mapping in this pass is not a full-taxonomy no-mapping determination."
+        ],
+        "review_outcome": "Retained the existing 2-clause decomposition as functionally adequate for the preserved occurrence evidence; no unsupported split, taxonomy remapping, or taxonomy-version change was introduced."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-09-30-CLAUSE-TAXONOMY-ADJUDICATION-000100",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT",
+        "reviewer_model": "GPT-5.6 Sol",
+        "review_date": "2026-09-30",
+        "review_scope": "Clause-level adjudication of every material source clause against the canonical VIGIL Alignment Taxonomy 0.6.9, including recognition criteria, exclusions, mapping-local role and Incident coverage reconciliation.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "structured_semantic_adjudication": true,
+          "new_external_source_research": false,
+          "external_requirement_review": false,
+          "harm_impact_review": false
+        },
+        "known_limitations": [
+          "The technical root cause and control-state architecture remain under investigation in the public record.",
+          "External-requirement applicability and Harm Impact were not reopened."
+        ],
+        "review_outcome": "Both material clauses were re-tested against taxonomy 0.6.9. The fleet-control mechanism remains unresolved across FC-000037 and FC-000040 because the public record does not expose required-control availability or operative-state preservation. FC-000070 remains a successful invariant because the affected vehicles entered a bounded stop rather than continuing autonomous driving through the unresolved failure state, and no injuries were reported. Coverage remains partial."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-01-EXTREQ-ADJUDICATION-000100",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-01",
+        "review_scope": "Independent external-requirement applicability review against current material source clauses, canonical mapped-class references, source_records and canonical EXTREQ conditions; review excludes both adjudication/candidate matrices.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_research": true,
+          "external_requirement_review": true,
+          "taxonomy_review": true,
+          "harm_impact_review": false
+        },
+        "known_limitations": [
+          "The occurrence review remains bounded to preserved source_records and material clauses; some public URLs could not be freshly reopened or exposed only limited text. No missing internal control, framework adoption or legal nexus is inferred.",
+          "Licensed IEEE primary texts were unavailable in this session; the branch’s documented licensed primary-text fidelity reviews and canonical clause conditions were used alongside public publisher scope/version information. The IMDA primary PDF was blocked on re-access; canonical documented primary-text extraction was used. No fresh full-text review of these unavailable sources is claimed."
+        ],
+        "review_outcome": "Adjudicated 2 current requirement candidates independently. new EXTREQ-4A98B446C4E83ECE; new EXTREQ-E0E174AA5FE5AD2B. All non-applicable or insufficient-evidence entries omit finding and finding_basis; occurrence evidence and contextual references remain canonical in their original fields."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-02-STAGE4-000100",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-02",
+        "review_scope": "Preservation-led Stage 4 clause, polarity and local external-requirement reconciliation.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "external_requirement_review": true,
+          "harm_impact_review": false,
+          "new_external_source_research": true
+        },
+        "known_limitations": [
+          "Preserved attributed evidence bounds the review; hidden control/permission traces unavailable.",
+          "No new IEEE extraction; admitted metadata and reviewed paths only.",
+          "Conclusion uses existing governance_interpretation; no discussion-field contract."
+        ],
+        "review_outcome": "Retained unresolved control-availability/state clause; changed safe-exit success to ambiguous because reported stoppage and safe passenger exit do not establish the required route-assessment and execution/continuation decisions. No admitted external candidate. Prior clause, taxonomy and reciprocal exemplar retained in audit; sources and HIM unchanged."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-09-21-TAXONOMY-READJUDICATION-000100",
+      "review_id": "VIGIL-REVIEW-2026-10-02-STAGE4-000100",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT",
-      "reviewer_model": "GPT-5.6 Sol",
-      "review_date": "2026-09-21",
-      "review_scope": "Deterministic current-taxonomy re-adjudication against VIGIL Failure Taxonomy 0.6.5 using the complete active selectable class set and evidence already preserved in the canonical Incident. Existing external-assessment objects and qualifying attributable analytical positions in preserved source material were also checked for structured external-assessment treatment. No new external source research was performed. Harm Impact, source roles, occurrence facts, agent/environment metadata, external-requirement mappings and CAM applicability were not reopened.",
+      "reviewer_platform": "OpenAI Codex",
+      "reviewer_model": "GPT-6",
+      "review_date": "2026-10-02",
+      "review_scope": "Preservation-led Stage 4 clause, polarity and local external-requirement reconciliation.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "structured_cross_record_reconciliation": true,
-        "full_current_taxonomy_review": true,
-        "external_assessment_consistency_review": true,
-        "new_external_source_research": false
+        "taxonomy_review": true,
+        "external_requirement_review": true,
+        "harm_impact_review": false,
+        "new_external_source_research": true
       },
       "known_limitations": [
-        "The review is bounded to evidence already preserved in the canonical Incident and does not infer internal mechanisms from title, harm, provider identity, notoriety, registry inclusion or plausible but undocumented system behaviour.",
-        "Candidate rejection does not establish that the mechanism was impossible; it means the preserved occurrence evidence does not satisfy the current selectable class boundary.",
-        "External assessments are preserved as attributable analytical positions and are not treated as automatic proof of VIGIL taxonomy membership."
+        "Preserved attributed evidence bounds the review; hidden control/permission traces unavailable.",
+        "No new IEEE extraction; admitted metadata and reviewed paths only.",
+        "Conclusion uses existing governance_interpretation; no discussion-field contract."
       ],
-      "review_outcome": "Retained unclassified under taxonomy 0.6.5; the common-mode fleet failure is established, but its responsible mechanism is not."
+      "review_outcome": "Retained unresolved control-availability/state clause; changed safe-exit success to ambiguous because reported stoppage and safe passenger exit do not establish the required route-assessment and execution/continuation decisions. No admitted external candidate. Prior clause, taxonomy and reciprocal exemplar retained in audit; sources and HIM unchanged."
     }
   },
   "harm_impact_assessment": {
@@ -531,5 +616,6 @@
     ]
   },
   "related_incidents": [],
-  "external_assessments": []
+  "external_assessments": [],
+  "external_requirement_assessments": []
 }

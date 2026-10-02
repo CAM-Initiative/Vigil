@@ -41,6 +41,17 @@ def requirement_id(source_id: str, version: str, clause: str, identity: str) -> 
     return "EXTREQ-" + hashlib.sha256(seed.encode("utf-8")).hexdigest()[:16].upper()
 
 
+def migration_state(retired_ids: set[str], child_ids: set[str], canonical_ids: set[str]) -> str:
+    """Determine one package's state; unrelated source migrations cannot affect it."""
+    retired_present = retired_ids & canonical_ids
+    children_present = child_ids & canonical_ids
+    if retired_ids and child_ids and retired_present == retired_ids and not children_present:
+        return "pre-migration"
+    if retired_ids and child_ids and not retired_present and children_present == child_ids:
+        return "migrated"
+    return "partial-or-invalid"
+
+
 def validate() -> tuple[list[str], list[str], dict]:
     errors: list[str] = []
     warnings: list[str] = []
@@ -126,6 +137,7 @@ def validate() -> tuple[list[str], list[str], dict]:
     staged_ids: set[str] = set()
     retired_ids: set[str] = set()
     staged_requirement_count = 0
+    package_states: dict[str, dict] = {}
     for path in sorted(REEXTRACTION_DIR.glob("*.json")) if REEXTRACTION_DIR.exists() else []:
         if path.name.endswith("-metadata-normalization.json"):
             continue
@@ -136,8 +148,11 @@ def validate() -> tuple[list[str], list[str], dict]:
             errors.append(f"{path.name}: staged source/version does not resolve to source-scope")
         if package.get("status") != "migration-candidate":
             errors.append(f"{path.name}: staged package must be migration-candidate")
+        package_retired: set[str] = set()
+        package_children: set[str] = set()
         for retired in package.get("retired_requirements", []):
             rid = retired.get("requirement_id")
+            package_retired.add(rid)
             if rid in retired_ids:
                 errors.append(f"{path.name}: retired requirement appears in multiple packages: {rid}")
             retired_ids.add(rid)
@@ -153,6 +168,19 @@ def validate() -> tuple[list[str], list[str], dict]:
             if rid in staged_ids:
                 errors.append(f"{path.name}: duplicate staged requirement ID {rid}")
             staged_ids.add(rid)
+            package_children.add(rid)
+            record_key = (record.get("vigil_source_id", key[0]), record.get("source_version", key[1]))
+            if record_key != key:
+                errors.append(f"{path.name}: child requirement belongs to another source/version: {rid}")
+            if rid in package_retired:
+                errors.append(f"{path.name}: retired parent identity reused as a child: {rid}")
+            if rid in req_by_id:
+                current = req_by_id[rid]
+                if source_key(current) != key or any(
+                    current.get(field) != record.get(field)
+                    for field in ("identity_key", "clause_or_control")
+                ):
+                    errors.append(f"{path.name}: canonical child identity differs from package: {rid}")
             atomicity = record.get("semantic_atomicity")
             if atomicity not in VALID_ATOMICITY:
                 errors.append(f"{path.name}: invalid semantic_atomicity for {rid}")
@@ -161,13 +189,10 @@ def validate() -> tuple[list[str], list[str], dict]:
             if atomicity == "atomic" and record.get("constituent_propositions"):
                 errors.append(f"{path.name}: atomic record unexpectedly carries constituent propositions: {rid}")
 
-    retired_present = retired_ids & set(req_by_id)
-    staged_present = staged_ids & set(req_by_id)
-    if retired_present and retired_present != retired_ids:
-        errors.append("EU AI Act canonical corpus contains only part of the declared retired identity set")
-    elif not retired_present and staged_present != staged_ids:
-        errors.append("EU AI Act canonical corpus is neither pre-migration nor fully migrated")
-    migration_state = "pre-migration" if retired_present else "migrated"
+        state = migration_state(package_retired, package_children, set(req_by_id))
+        package_states[path.name] = {"source": list(key), "state": state}
+        if state == "partial-or-invalid":
+            errors.append(f"{path.name}: canonical corpus is neither pre-migration nor fully migrated")
 
     summary = {
         "historical_complete_sources": len(historical_complete),
@@ -176,7 +201,7 @@ def validate() -> tuple[list[str], list[str], dict]:
         "explicit_fidelity_entries": len(fidelity_entries),
         "staged_reextraction_retirements": len(retired_ids),
         "staged_reextraction_requirements": staged_requirement_count,
-        "eu_ai_act_migration_state": migration_state,
+        "migration_packages": package_states,
     }
     return errors, warnings, summary
 

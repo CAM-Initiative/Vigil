@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Anthropic reported Moonshot and DeepSeek routed customer conversations through Claude for distillation",
     "created": "2026-09-11",
-    "updated": "2026-09-27",
-    "version": "0.2.2"
+    "updated": "2026-10-02",
+    "version": "0.2.4"
   },
   "incident_identity": {
     "historical_event_name": "2026 Moonshot and DeepSeek customer-conversation routing and distillation campaigns",
@@ -21,7 +21,7 @@
   "summary": "Anthropic reported that Moonshot AI and DeepSeek silently routed real customer requests through Claude and used resulting exchanges or reasoning traces in model-distillation and training workflows. Anthropic states that Moonshot users believed they were using Kimi while receiving Claude responses, and that DeepSeek similarly relayed selected customer requests to Claude without informing customers. Anthropic reported more than 23 million Moonshot-attributable exchanges between May and July 2026 and more than 12.1 million DeepSeek-attributable exchanges over 14 days in July, with some routed material containing sensitive customer or organisational information. Public reporting does not identify individual affected users or establish their jurisdictions, and the provider attribution is not treated as an adjudication of legal liability.",
   "vigil_assessment": {
     "factual_basis": "Anthropic's September 2026 threat-intelligence report directly describes separate Moonshot and DeepSeek campaigns. For Moonshot, Anthropic states that customer requests were silently forwarded to Claude rather than processed by Kimi, Claude responses were shown to users, at least some exchanges were captured and saved, and extracted Claude reasoning traces were used for model training. For DeepSeek, Anthropic states that selected user requests were silently relayed to Claude and that the resulting reasoning traces were extracted for downstream distillation. Anthropic reports more than 23 million exchanges attributable to Moonshot between May and July 2026 and more than 12.1 million exchanges attributable to DeepSeek over 14 days in July. Reuters, The Wall Street Journal and the South China Morning Post independently report Anthropic's findings concerning live customer-query routing and sensitive information. The available public evidence does not identify individual affected users or establish their jurisdictions, and VIGIL does not treat Anthropic's provider attribution as an independently adjudicated legal finding.",
-    "governance_interpretation": "Two distinct governance mechanisms are evidenced by the reported conduct. First, customer communications supplied for the primary purpose of obtaining service from Kimi or DeepSeek were redirected into Claude interactions and then used in a materially different training, distillation or capability-extraction purpose. Authority to process information for service delivery does not by itself establish authority to repurpose that information for external model interaction and downstream model development; this is Secondary-Purpose Authority Transposition. Second, the routing occurred as part of systematic high-volume campaigns designed to extract Claude capabilities for downstream training. The scale, repeated access pathways, concealment and training purpose satisfy the distinct Industrial-Scale Unauthorised Capability Extraction mechanism. The silent substitution of Claude for the model customers believed they were using is also governance-significant because it obscures the actual processing chain, but VIGIL does not force that disclosure problem into a separate class where the current taxonomy does not provide a cleaner occurrence-level fit.",
+    "governance_interpretation": "The reported conduct separates into three mechanisms. Customer requests were silently relayed from the selected service to Claude, changing the processing principal and creating an authority-scope boundary whose contractual or consent basis is not public. The customer-facing responses were also represented as coming from the selected service/model even though Anthropic reports Claude generated them, creating a source-attribution failure. Separately, saved exchanges and extracted reasoning traces were used for training/distillation, a materially different secondary purpose, and the campaign scale supports Industrial-Scale Capability Extraction. VIGIL preserves Anthropic's attribution as provider-reported evidence rather than an independent legal finding. Provider-attributed source misrepresentation and secondary-purpose/cumulative extraction failures remain distinct from unresolved cross-provider customer authority and consequential trust-cue effects. OECD AI awareness does not require identification of the exact model; users knew they interacted with an AI service, while provider substitution remains a separate taxonomy issue.",
     "significance_to_cam": "The occurrence demonstrates that model routing is not merely infrastructure metadata. A user-facing model identity can conceal a materially different processing chain in which user content crosses providers and becomes input to model development. Governance therefore needs purpose-bound authority, routing provenance and user-facing disclosure sufficient to distinguish which model actually processed information, whether information was relayed to another provider, and whether it entered a training or distillation pathway. The case also shows that secondary-purpose data use and industrial-scale model extraction can co-occur without being collapsed into one mechanism.",
     "assessment_boundaries": [
       "The occurrence is reported and attributed by Anthropic; VIGIL does not independently adjudicate the named firms' legal liability or contractual breach.",
@@ -42,12 +42,13 @@
           "recovered_invariant_interpretation": "Authority to receive customer information for one service does not itself authorise forwarding that information to a different model provider for a materially different processing chain.",
           "taxonomy_relationships": [
             {
-              "class_id": "VIGIL-FC-000055",
-              "relationship": "failure-occurrence contribution",
+              "class_id": "VIGIL-FC-000003",
+              "relationship": "ambiguous-boundary",
               "canonical_taxonomy_mapping": true,
-              "rationale": "The source describes customer-supplied information moving from the service-delivery purpose into an undisclosed external-model pathway without an independently established secondary-purpose authority basis."
+              "rationale": "Customers supplied information to obtain service from Kimi or DeepSeek, while Anthropic reports that the requests were silently relayed to Claude. This materially changes the processing principal and service path, but the public record does not expose the contractual or consent basis needed to determine whether customer authority validly covered that cross-provider processing."
             }
-          ]
+          ],
+          "adjudication_status": "mapped"
         },
         {
           "source_anchor": "captured and saved at least a portion of these exchanges",
@@ -55,29 +56,31 @@
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000055",
-              "relationship": "failure-occurrence contribution",
+              "relationship": "failure-occurrence",
               "canonical_taxonomy_mapping": true,
               "rationale": "Saving relayed customer exchanges for downstream training is the materially different secondary purpose protected by FC-000055."
             }
-          ]
+          ],
+          "adjudication_status": "mapped"
         },
         {
           "source_anchor": "silently relayed exchanges to Claude without informing DeepSeek customers",
           "recovered_invariant_interpretation": "A customer-facing service must not treat access to customer content as sufficient authority to route that content through a different provider and processing purpose without an adequate authority or governance basis.",
           "taxonomy_relationships": [
             {
-              "class_id": "VIGIL-FC-000055",
-              "relationship": "failure-occurrence contribution",
+              "class_id": "VIGIL-FC-000010",
+              "relationship": "failure-occurrence",
               "canonical_taxonomy_mapping": true,
-              "rationale": "The source expressly connects undisclosed cross-provider routing to the same customer-data secondary-purpose mechanism."
+              "rationale": "Anthropic reports that users believed they were receiving responses from Kimi or DeepSeek while Claude generated the responses. The represented source role therefore differed materially from the actual model source in a way relevant to accountability, data handling and interpretation."
             },
             {
               "class_id": "VIGIL-FC-000082",
-              "relationship": "ambiguous-boundary exemplar",
+              "relationship": "ambiguous-boundary",
               "canonical_taxonomy_mapping": true,
               "rationale": "Silent routing concealed the provider of responses and downstream training purpose from Kimi or DeepSeek customers, but a changed consequential customer choice caused by that cue is not shown."
             }
-          ]
+          ],
+          "adjudication_status": "mapped"
         },
         {
           "source_anchor": "over 23 million exchanges observed",
@@ -85,11 +88,12 @@
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000068",
-              "relationship": "failure-occurrence contribution",
+              "relationship": "failure-occurrence",
               "canonical_taxonomy_mapping": true,
               "rationale": "Anthropic reports a systematic campaign operating at tens of millions of exchanges and expressly links harvested outputs and reasoning traces to downstream training and distillation."
             }
-          ]
+          ],
+          "adjudication_status": "mapped"
         }
       ]
     }
@@ -323,9 +327,9 @@
     ]
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.6.6",
+    "taxonomy_version": "0.6.9",
     "classification_status": "classified",
-    "classification_basis": "The evidence-first FC-082/FC-083 corpus review tested the respective recognition conditions and preserved all earlier class mappings; the incident-specific bases and roles are recorded below.",
+    "classification_basis": "Customer-supplied information provided to obtain an AI service response was reportedly repurposed into an undisclosed external-model interaction and downstream training/distillation pathway without an independently established secondary-purpose authority basis. Anthropic reports that customers believed they were receiving responses from Kimi or DeepSeek while Claude actually generated the responses, materially misrepresenting the source role of the customer-facing output. Anthropic reports repeated, concealed campaigns at tens of millions of exchanges in which Claude outputs and reasoning traces were harvested for downstream model training, satisfying the industrial-scale capability-extraction mechanism. Customer requests were reportedly relayed from the service users selected to Claude, changing the processing principal and path; the public record does not expose whether the customer authority basis validly covered that cross-provider processing. Silent routing concealed the provider of responses and downstream training purpose from customers, but a changed consequential customer choice caused by that trust cue is not shown.",
     "primary_classification": {
       "class_id": "VIGIL-FC-000055",
       "classification_role": "failure-occurrence",
@@ -335,24 +339,41 @@
     },
     "secondary_classifications": [
       {
+        "family_id": "VIGIL-FF-0002",
+        "class_id": "VIGIL-FC-000010",
+        "classification_role": "failure-occurrence",
+        "classification_basis": "Anthropic reports that customers believed they were receiving responses from Kimi or DeepSeek while Claude actually generated the responses, materially misrepresenting the source role of the customer-facing output.",
+        "classification_confidence": "medium"
+      },
+      {
+        "family_id": "VIGIL-FF-0001",
         "class_id": "VIGIL-FC-000068",
         "classification_role": "failure-occurrence",
+        "classification_basis": "Anthropic reports repeated, concealed campaigns at tens of millions of exchanges in which Claude outputs and reasoning traces were harvested for downstream model training, satisfying the industrial-scale capability-extraction mechanism.",
+        "classification_confidence": "medium"
+      },
+      {
         "family_id": "VIGIL-FF-0001",
-        "classification_confidence": "medium",
-        "classification_basis": "Anthropic reports repeated, concealed and distributed campaigns at tens of millions of exchanges in which Claude outputs and reasoning traces were harvested for downstream model training, satisfying the industrial-scale capability-extraction mechanism."
+        "class_id": "VIGIL-FC-000003",
+        "classification_role": "ambiguous-boundary",
+        "classification_basis": "Customer requests were reportedly relayed from the service users selected to Claude, changing the processing principal and path; the public record does not expose whether the customer authority basis validly covered that cross-provider processing.",
+        "classification_confidence": "medium"
       },
       {
         "family_id": "VIGIL-FF-0009",
         "class_id": "VIGIL-FC-000082",
         "classification_role": "ambiguous-boundary",
-        "classification_basis": "Silent routing concealed the provider of responses and downstream training purpose from Kimi or DeepSeek customers, but a changed consequential customer choice caused by that cue is not shown.",
+        "classification_basis": "Silent routing concealed the provider of responses and downstream training purpose from customers, but a changed consequential customer choice caused by that trust cue is not shown.",
         "classification_confidence": "medium"
       }
     ],
     "classification_review_provenance": {
-      "review_date": "2026-09-25",
-      "reviewer": "OpenAI ChatGPT — Codex under human-directed VIGIL governance",
-      "review_status": "classification review completed"
+      "review_date": "2026-09-30",
+      "reviewer": "OpenAI ChatGPT — GPT-5.6 Sol under human-directed VIGIL governance",
+      "review_status": "clause-level taxonomy adjudication completed"
+    },
+    "adjudication_coverage": {
+      "status": "complete"
     }
   },
   "harm_impact_assessment": {
@@ -544,31 +565,363 @@
           "Taxonomy mappings, classification confidence, Harm Impact findings, source evidence and prior interpretive provenance were not reopened."
         ],
         "review_outcome": "Rewrote the Incident summary as a plain factual occurrence account while preserving the richer governance interpretation, structured taxonomy, Harm Impact findings, source evidence and prior review history unchanged."
+      },
+      {
+        "review_id": "CLAUSE-RECONCILIATION-2026-09-30-INC-000113",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT",
+        "reviewer_model": "GPT-5.6 Sol",
+        "review_date": "2026-09-30",
+        "review_scope": "Incident-by-incident functional decomposition review of the preserved occurrence evidence and source_clause_analysis, testing whether materially distinct mechanisms, authority boundaries, control states, and failure or recovery pathways are represented. No harm reassessment or taxonomy re-adjudication was performed.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "structured_semantic_adjudication": true,
+          "full_current_taxonomy_review": false,
+          "new_external_source_research": false
+        },
+        "known_limitations": [
+          "The review is bounded to evidence already preserved in the canonical Incident.",
+          "Existing canonical taxonomy history and taxonomy version were preserved; absence of a new mapping in this pass is not a full-taxonomy no-mapping determination."
+        ],
+        "review_outcome": "Retained the existing 4-clause decomposition as functionally adequate for the preserved occurrence evidence; no unsupported split, taxonomy remapping, or taxonomy-version change was introduced."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-09-30-CLAUSE-TAXONOMY-ADJUDICATION-000113",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT",
+        "reviewer_model": "GPT-5.6 Sol",
+        "review_date": "2026-09-30",
+        "review_scope": "Clause-level adjudication of every material source clause against the canonical VIGIL Alignment Taxonomy 0.6.9, including recognition criteria, exclusions, mapping-local role and Incident coverage reconciliation.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "structured_semantic_adjudication": true,
+          "new_external_source_research": true,
+          "external_requirement_review": false,
+          "harm_impact_review": false
+        },
+        "known_limitations": [
+          "The underlying traffic telemetry is Anthropic's provider attribution and is not independently reproduced in the public record.",
+          "Individual affected-user jurisdictions and the complete contractual/consent basis for cross-provider processing are not public.",
+          "External-requirement applicability and Harm Impact were not reopened."
+        ],
+        "review_outcome": "All four material clauses were re-tested against taxonomy 0.6.9. FC-000055 is now confined to the clear secondary-purpose training/distillation use rather than the service-routing step. Silent cross-provider routing is represented as an FC-000003 ambiguous boundary because the customer authority basis for a changed processing principal is not public. FC-000010 is added as a failure for the reported source-role substitution where users believed they were receiving Kimi/DeepSeek responses but Claude generated them. FC-000068 remains a supported industrial-scale capability-extraction failure and FC-000082 remains an ambiguous boundary. Coverage remains complete."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-01-EXTREQ-ADJUDICATION-000113",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-01",
+        "review_scope": "Independent external-requirement applicability review against current material source clauses, canonical mapped-class references, source_records and canonical EXTREQ conditions; review excludes both adjudication/candidate matrices.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_research": true,
+          "external_requirement_review": true,
+          "taxonomy_review": true,
+          "harm_impact_review": false
+        },
+        "known_limitations": [
+          "The occurrence review remains bounded to preserved source_records and material clauses; some public URLs could not be freshly reopened or exposed only limited text. No missing internal control, framework adoption or legal nexus is inferred.",
+          "Licensed IEEE primary texts were unavailable in this session; the branch’s documented licensed primary-text fidelity reviews and canonical clause conditions were used alongside public publisher scope/version information. The IMDA primary PDF was blocked on re-access; canonical documented primary-text extraction was used. No fresh full-text review of these unavailable sources is claimed."
+        ],
+        "review_outcome": "Adjudicated 5 current requirement candidates independently. new EXTREQ-045298C3ED034753; new EXTREQ-0EC62DE00B448D8E; new EXTREQ-4FA48F69E0D84D76; revised EXTREQ-9A63E34FA83EAFA2; new EXTREQ-C97ED35C30465C21. All non-applicable or insufficient-evidence entries omit finding and finding_basis; occurrence evidence and contextual references remain canonical in their original fields."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-02-STAGE4-000113",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-02",
+        "review_scope": "Preservation-led Stage 4 clause, polarity and local external-requirement reconciliation.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "external_requirement_review": true,
+          "harm_impact_review": false,
+          "new_external_source_research": false
+        },
+        "known_limitations": [
+          "Preserved attributed evidence bounds the review; hidden control/permission traces unavailable.",
+          "No new IEEE extraction; admitted metadata and reviewed paths only.",
+          "Conclusion uses existing governance_interpretation; no discussion-field contract."
+        ],
+        "review_outcome": "Retained 4 clause decisions; Independently assessed 15 admitted local candidates; archived excluded historical assessments."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-09-23-PUBLIC-PROSE-SEPARATION-000113",
+      "review_id": "VIGIL-REVIEW-2026-10-02-STAGE4-000113",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT",
-      "reviewer_model": "GPT-5.6 Sol",
-      "review_date": "2026-09-23",
-      "review_scope": "Audit and repair the factual Incident prose after the public-prose identifier cleanup, keeping occurrence facts in summary/factual_basis and leaving governed diagnosis in governance_interpretation and structured taxonomy.",
+      "reviewer_platform": "OpenAI Codex",
+      "reviewer_model": "GPT-6",
+      "review_date": "2026-10-02",
+      "review_scope": "Preservation-led Stage 4 clause, polarity and local external-requirement reconciliation.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "taxonomy_review": false,
+        "taxonomy_review": true,
+        "external_requirement_review": true,
         "harm_impact_review": false,
         "new_external_source_research": false
       },
       "known_limitations": [
-        "No new external evidence was introduced; this pass is bounded to editorial separation of already-adjudicated occurrence facts from diagnosis.",
-        "Taxonomy mappings, classification confidence, Harm Impact findings, source evidence and prior interpretive provenance were not reopened."
+        "Preserved attributed evidence bounds the review; hidden control/permission traces unavailable.",
+        "No new IEEE extraction; admitted metadata and reviewed paths only.",
+        "Conclusion uses existing governance_interpretation; no discussion-field contract."
       ],
-      "review_outcome": "Rewrote the Incident summary as a plain factual occurrence account while preserving the richer governance interpretation, structured taxonomy, Harm Impact findings, source evidence and prior review history unchanged."
+      "review_outcome": "Retained 4 clause decisions; Independently assessed 15 admitted local candidates; archived excluded historical assessments."
     }
   },
   "cam_internal": {
     "governance_layer": "purpose authority / model-routing provenance / capability extraction / privacy-confidentiality",
     "routing_note": "Keep tool, retrieval and review-environment housekeeping out of public incident prose. Route those matters to the private maintainer follow-up workflow instead."
-  }
+  },
+  "external_requirement_assessments": [
+    {
+      "requirement_id": "EXTREQ-0388DD291D8CE6BF",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000082"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "applicability_status": "applicable",
+      "applicability_basis": "Section 1.3(ii) is used as a nonbinding comparative benchmark for AI actors and the the May–July 2026 customer-routing/distillation campaigns, with evidenced model evaluation/traceability or customer AI interaction scope in 2026. No binding or certified conformity claim is made.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ],
+      "finding": "met",
+      "finding_basis": "The reported customers believed they were interacting with Kimi or DeepSeek AI services and received AI responses. That establishes awareness of AI interaction for this narrow OECD proposition. Silent substitution of Claude and undisclosed training are separate source/purpose issues; this benchmark does not require exact provider/model identity or authorize secondary use."
+    },
+    {
+      "requirement_id": "EXTREQ-0FC8A0CA89BD2FB2",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000082"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "applicability_status": "insufficient-evidence",
+      "applicability_basis": "IEEE-7001 Table 2 level 3 (Add intended purpose, nominal operator and responsible contact information to the public documentation.) requires the relevant lifecycle, stakeholder/level and conformance undertaking. These are not established by the the May–July 2026 customer-routing/distillation campaigns; event traces, access loss or wrong advice alone do not supply full validation, documentation or quality/ethical process scope. Admitted metadata only is used.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-194BAA01C8CEDF96",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000055"
+      ],
+      "source_clause_indices": [
+        1
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "Article 4a(2)(b) is a later-applying Chapter III high-risk duty or a special-category bias-correction provision. The the May–July 2026 customer-routing/distillation campaigns precedes the relevant application period, and no bias-correction exception or Annex III/Union trigger is established. Sensitive-data exposure is not bias correction.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-20A358942F546D98",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000055"
+      ],
+      "source_clause_indices": [
+        1
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "Article 4a(1)(d) is a later-applying Chapter III high-risk duty or a special-category bias-correction provision. The the May–July 2026 customer-routing/distillation campaigns precedes the relevant application period, and no bias-correction exception or Annex III/Union trigger is established. Sensitive-data exposure is not bias correction.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-34D794BAE48B2042",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000055"
+      ],
+      "source_clause_indices": [
+        1
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "Article 4a(2)(a) is a later-applying Chapter III high-risk duty or a special-category bias-correction provision. The the May–July 2026 customer-routing/distillation campaigns precedes the relevant application period, and no bias-correction exception or Annex III/Union trigger is established. Sensitive-data exposure is not bias correction.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-389BFB37A11977AE",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000082"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "applicability_status": "insufficient-evidence",
+      "applicability_basis": "Article 8 concerns Parties and implemented territorial lifecycle/rights/oversight duties. Relevant entry into force, implementation covering the actor and authorized-body or procedural trigger are not established. AISI access loss is not proof of compulsory investigative authority.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-3A41A9530EB9DEB2",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000055"
+      ],
+      "source_clause_indices": [
+        1
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "Article 4a(1)(a) is a later-applying Chapter III high-risk duty or a special-category bias-correction provision. The the May–July 2026 customer-routing/distillation campaigns precedes the relevant application period, and no bias-correction exception or Annex III/Union trigger is established. Sensitive-data exposure is not bias correction.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-4BFBC2F7E52FF380",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000003"
+      ],
+      "source_clause_indices": [
+        0
+      ],
+      "applicability_status": "insufficient-evidence",
+      "applicability_basis": "PO.5.1 R2 (Only store sensitive data used during AI model development, including production data, within organization-approved environments and locations within those environments.) materially concerns model development/evaluation or development-data handling. The sources describe an early checkpoint evaluation or downstream training, but no SSDF Profile undertaking, approved-location policy, complete model-input/output monitoring or action-specific documentation programme is established.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-665D430E7172E64F",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000055"
+      ],
+      "source_clause_indices": [
+        1
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "Article 4a(1) is a later-applying Chapter III high-risk duty or a special-category bias-correction provision. The the May–July 2026 customer-routing/distillation campaigns precedes the relevant application period, and no bias-correction exception or Annex III/Union trigger is established. Sensitive-data exposure is not bias correction.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-7675F4F8753B09FB",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000082"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "applicability_status": "insufficient-evidence",
+      "applicability_basis": "IEEE-7001 Table 2 level 1 (Make the system clearly identifiable as autonomous to users and bystanders.) requires the relevant lifecycle, stakeholder/level and conformance undertaking. These are not established by the the May–July 2026 customer-routing/distillation campaigns; event traces, access loss or wrong advice alone do not supply full validation, documentation or quality/ethical process scope. Admitted metadata only is used.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-76DDFFBEF09F35AE",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000003"
+      ],
+      "source_clause_indices": [
+        0
+      ],
+      "applicability_status": "insufficient-evidence",
+      "applicability_basis": "NIST-AI-600-1 MS-2.2-003 (Provide human subjects with options to withdraw participation or revoke their consent for present or future use of their data in GAI applications.) is a voluntary organizational/lifecycle action. The the May–July 2026 customer-routing/distillation campaigns establishes no source-defined adoption or action-specific programme covering this proposition. Evidence of a failure, abort, retrospective reconstruction or provider attribution does not itself establish that undertaking or the full action.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-92EFA8BEA16A80B5",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000082"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "applicability_status": "insufficient-evidence",
+      "applicability_basis": "Article 15(2) concerns Parties and implemented territorial lifecycle/rights/oversight duties. Relevant entry into force, implementation covering the actor and authorized-body or procedural trigger are not established. AISI access loss is not proof of compulsory investigative authority.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-CA7D89D6C27E1B66",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000055"
+      ],
+      "source_clause_indices": [
+        1
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "Article 4a(1)(b) is a later-applying Chapter III high-risk duty or a special-category bias-correction provision. The the May–July 2026 customer-routing/distillation campaigns precedes the relevant application period, and no bias-correction exception or Annex III/Union trigger is established. Sensitive-data exposure is not bias correction.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-CB71ADED4F8D02F3",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000010"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "NIST-AI-100-4 3.1.2.2–3.1.2.3 (Use cryptographic authentication or trust infrastructure where provenance claims require tamper evidence and issuer verification.) concerns content manifests, cryptographic provenance, transparency-technique verification or AI package/model-card metadata. Account ownership, technical claim assurance or model-source substitution is not that technical object.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-DD9D5135DB4D8AD6",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000082"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "applicability_status": "insufficient-evidence",
+      "applicability_basis": "NIST-AI-600-1 GV-5.1-002 (Document interactions with GAI systems to users prior to interactive activities, particularly in contexts involving more significant risks.) is a voluntary organizational/lifecycle action. The the May–July 2026 customer-routing/distillation campaigns establishes no source-defined adoption or action-specific programme covering this proposition. Evidence of a failure, abort, retrospective reconstruction or provider attribution does not itself establish that undertaking or the full action.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    }
+  ]
 }

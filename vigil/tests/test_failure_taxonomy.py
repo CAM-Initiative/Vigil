@@ -111,7 +111,7 @@ class AlignmentTaxonomyValidationTests(unittest.TestCase):
         activation = next(item for item in documents if item["family"]["family_id"] == "VIGIL-FF-0008")
         unwarranted = next(item for item in activation["classes"] if item["class_id"] == "VIGIL-FC-000043")
         self.assertEqual(unwarranted["abstraction"], "class")
-        self.assertEqual(len(unwarranted["recognition"]["required_conditions"]), 5)
+        self.assertEqual(len(unwarranted["failure_recognition"]["required_conditions"]), 5)
         relationship = next(item for item in unwarranted["relationships"] if item["target_id"] == "VIGIL-FC-000038")
         self.assertEqual(relationship["type"], "distinguish_from")
         exclusions = " ".join(unwarranted["exclusions"]).lower()
@@ -234,7 +234,7 @@ class AlignmentTaxonomyValidationTests(unittest.TestCase):
         schema = json.loads(MODULE.SCHEMA_PATH.read_text(encoding="utf-8"))
         invariant_schema = schema["$defs"]["class"]["properties"]["invariant"]
         self.assertEqual(invariant_schema["type"], "string")
-        self.assertIn("mechanism-specific structural property", invariant_schema["description"])
+        self.assertIn("Class invariants refine the family invariant", invariant_schema["description"])
         self.assertIn("invariant", schema["$defs"]["class"]["required"])
 
     def test_every_selectable_class_has_a_canonical_non_empty_invariant(self):
@@ -274,9 +274,10 @@ class AlignmentTaxonomyValidationTests(unittest.TestCase):
     def test_family_prose_semantic_roles_are_explicit(self):
         schema = json.loads(MODULE.SCHEMA_PATH.read_text(encoding="utf-8"))
         properties = schema["$defs"]["family"]["properties"]
-        self.assertIn("alignment condition", properties["plain_english"]["description"])
-        self.assertIn("bounded alignment condition", properties["definition"]["description"])
-        self.assertIn("Positive bounded structural property", properties["invariant"]["description"])
+        self.assertIn("governed property and correct operation", properties["plain_english"]["description"])
+        self.assertIn("independent of occurrence polarity", properties["definition"]["description"])
+        self.assertIn("Normative bounded structural property", properties["invariant"]["description"])
+        self.assertEqual(properties["boundary_role"]["const"], "failure-occurrence")
         guidance = (self.root / "README.md").read_text(encoding="utf-8")
         self.assertIn("### Semantic roles of family prose", guidance)
         self.assertIn("Parent prose must be re-tested whenever a class is added", guidance)
@@ -321,7 +322,7 @@ class AlignmentTaxonomyValidationTests(unittest.TestCase):
         exclusions = " ".join(dissent["exclusions"]).lower()
         self.assertIn("successful invariant exemplar", exclusions)
         self.assertIn("unilaterally", exclusions)
-        neutrality_recognition = " ".join(neutrality["recognition"]["required_conditions"]).lower()
+        neutrality_recognition = " ".join(neutrality["failure_recognition"]["required_conditions"]).lower()
         for boundary in ("neutrality", "interested principal", "capture", "independently"):
             self.assertIn(boundary, neutrality_recognition)
         neutrality_neighbours = {
@@ -366,7 +367,7 @@ class AlignmentTaxonomyValidationTests(unittest.TestCase):
 
         self.assertEqual(rendering["class_code"], "PRAGMATIC_CONSTRAINT_RENDERING_INTEGRITY")
         self.assertEqual(rendering["name"], "Pragmatic Constraint Rendering Integrity")
-        rendering_recognition = " ".join(rendering["recognition"]["required_conditions"]).lower()
+        rendering_recognition = " ".join(rendering["failure_recognition"]["required_conditions"]).lower()
         for boundary in (
             "source lineage",
             "independent evidence",
@@ -393,7 +394,7 @@ class AlignmentTaxonomyValidationTests(unittest.TestCase):
             "orchestration responsibility",
         ):
             self.assertIn(boundary, distributed_invariant)
-        distributed_recognition = " ".join(distributed["recognition"]["required_conditions"]).lower()
+        distributed_recognition = " ".join(distributed["failure_recognition"]["required_conditions"]).lower()
         for boundary in (
             "decomposed",
             "higher-order",
@@ -452,7 +453,7 @@ class AlignmentTaxonomyValidationTests(unittest.TestCase):
         self.assertIn("VIGIL-FC-000041", family["allowed_class_ids"])
         self.assertNotIn("only after", family["inclusion_rule"].lower())
         parent_prose = " ".join(
-            family[field] for field in ("plain_english", "definition", "invariant", "inclusion_rule")
+            family[field] for field in ("plain_english", "definition", "invariant", "inclusion_rule", "failure_condition")
         ).lower()
         for boundary in ("bypasses", "required governance route", "operative control state", "reach"):
             self.assertIn(boundary, parent_prose)
@@ -461,10 +462,10 @@ class AlignmentTaxonomyValidationTests(unittest.TestCase):
         documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
         activation = next(item for item in documents if item["family"]["family_id"] == "VIGIL-FF-0008")
         family = activation["family"]
-        plain = family["plain_english"].lower()
+        plain = family["failure_plain_english"].lower()
         self.assertIn("fails to activate", plain)
         self.assertIn("activates without valid conditions", plain)
-        definition = family["definition"].lower()
+        definition = family["failure_condition"].lower()
         for boundary in (
             "cannot be determined in time",
             "does not become operative",
@@ -589,7 +590,7 @@ class AlignmentTaxonomyValidationTests(unittest.TestCase):
         documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
         classes = {item["class_id"]: item for document in documents for item in document["classes"]}
         identity = classes["VIGIL-FC-000053"]
-        recognition = " ".join(identity["recognition"]["required_conditions"]).lower()
+        recognition = " ".join(identity["failure_recognition"]["required_conditions"]).lower()
         self.assertIn("identifiable real person", recognition)
         self.assertIn("consent", recognition)
         self.assertIn("possession", recognition)
@@ -619,7 +620,7 @@ class AlignmentTaxonomyValidationTests(unittest.TestCase):
         documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
         influence = next(document for document in documents if document["family"]["family_id"] == "VIGIL-FF-0009")
         decision = next(item for item in influence["classes"] if item["class_id"] == "VIGIL-FC-000065")
-        recognition = " ".join(decision["recognition"]["required_conditions"]).lower()
+        recognition = " ".join(decision["failure_recognition"]["required_conditions"]).lower()
         for boundary in ("consequential", "ground", "direction", "independent deliberation"):
             self.assertIn(boundary, recognition)
         exclusions = " ".join(decision["exclusions"]).lower()
@@ -634,7 +635,7 @@ class AlignmentTaxonomyValidationTests(unittest.TestCase):
         documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
         influence = next(document for document in documents if document["family"]["family_id"] == "VIGIL-FF-0009")
         assent = next(item for item in influence["classes"] if item["class_id"] == "VIGIL-FC-000066")
-        recognition = " ".join(assent["recognition"]["required_conditions"]).lower()
+        recognition = " ".join(assent["failure_recognition"]["required_conditions"]).lower()
         for boundary in ("independent evaluation", "agreement", "counterevidence", "independent"):
             self.assertIn(boundary, recognition)
         exclusions = " ".join(assent["exclusions"]).lower()

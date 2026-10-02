@@ -1,0 +1,57 @@
+{
+  "reviewed_on": "2026-10-01",
+  "scope": "NIST AI RMF meaning comparison continuation; not full Stage 3 or Incident completion.",
+  "results": [
+    {
+      "check": "python vigil/scripts/manage-external-sources.py validate",
+      "exit_code": 0,
+      "output_tail": "External source registry valid: 85 source versions, 0 review-required or review-due\n"
+    },
+    {
+      "check": "python vigil/scripts/manage-external-requirements.py validate --check-generated",
+      "exit_code": 0,
+      "output_tail": "External requirements valid: 85 source versions, 1099 requirements\n"
+    },
+    {
+      "check": "python vigil/scripts/validate-external-requirement-fidelity.py",
+      "exit_code": 0,
+      "output_tail": "{\n  \"effective_partial_due_fidelity\": 1,\n  \"eu_ai_act_migration_state\": \"migrated\",\n  \"explicit_fidelity_entries\": 21,\n  \"fidelity_assured_effective_complete_sources\": 18,\n  \"historical_complete_sources\": 19,\n  \"staged_reextraction_requirements\": 102,\n  \"staged_reextraction_retirements\": 8\n}\nWARNING: effective downgrade: NIST-AI-100-1 1.0 was historically complete but is not fidelity-assured\n"
+    },
+    {
+      "check": "python vigil/scripts/validate-external-requirement-metadata.py",
+      "exit_code": 0,
+      "output_tail": "{\n  \"records\": 1099,\n  \"canonical_records\": 1099,\n  \"staged_records\": 0,\n  \"metadata_complete\": 1024,\n  \"review_required_fields\": 600,\n  \"review_required_records\": 75,\n  \"reextraction_backlog_entries\": 0,\n  \"records_flagged_for_reextraction\": 0\n}\nExternal requirement metadata review contract valid\n"
+    },
+    {
+      "check": "python vigil/scripts/validate-vigil-referential-integrity.py",
+      "exit_code": 0,
+      "output_tail": "Cross-dataset referential integrity OK; no substantive adjudication performed\n"
+    },
+    {
+      "check": "python vigil/tests/test_external_requirement_fidelity.py",
+      "exit_code": 0,
+      "output_tail": "...\n----------------------------------------------------------------------\nRan 3 tests in 0.097s\n\nOK\n"
+    },
+    {
+      "check": "python vigil/tests/test_external_requirements.py",
+      "exit_code": 0,
+      "output_tail": "....................\n----------------------------------------------------------------------\nRan 20 tests in 0.859s\n\nOK\n"
+    },
+    {
+      "check": "python vigil/tests/test_external_sources.py",
+      "exit_code": 0,
+      "output_tail": "External source registry valid: 85 source versions, 0 review-required or review-due\n...............\n----------------------------------------------------------------------\nRan 15 tests in 0.046s\n\nOK\n"
+    },
+    {
+      "check": "python vigil/tests/test_external_requirement_metadata.py",
+      "exit_code": 0,
+      "output_tail": "External requirement metadata-review contract regression passed\n"
+    },
+    {
+      "check": "python vigil/scripts/seed-reviewed-source-metadata.py (dry run)",
+      "exit_code": 0,
+      "output_tail": "Reviewed-source metadata seed valid: 495 requirements; 0 new ledger entries; 0 backlog entries\n"
+    }
+  ],
+  "unchanged_failing_gates": "Stage 2 occurrence-assessment and full Incident validation remain unresolved; canonical Incidents are unchanged."
+}

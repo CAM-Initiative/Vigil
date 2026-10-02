@@ -43,7 +43,8 @@ INDEX_ENTRY_KEYS = {
     "primary_family_id",
     "occurred_from",
     "source_roles",
-    "external_assessments",
+    "external_assessment_count",
+    "external_requirement_assessment_count",
     "search_terms",
     "path",
     "github_blob_url",
@@ -162,7 +163,8 @@ def expected_projection(record: dict[str, Any]) -> dict[str, Any]:
             and isinstance((role := item.get("source_role")), str)
             and role.strip()
         }),
-        "external_assessments": record.get("external_assessments", []),
+        "external_assessment_count": len(record.get("external_assessments", [])),
+        "external_requirement_assessment_count": len(record.get("external_requirement_assessments", [])),
         "path": path,
         "github_blob_url": f"https://github.com/{REPOSITORY}/blob/{BRANCH}/{path}",
         "raw_url": f"https://raw.githubusercontent.com/{REPOSITORY}/{BRANCH}/{path}",
@@ -201,7 +203,9 @@ def validate_generated_incident_projection(
         expected = expected_projection(record)
         for key, value in expected.items():
             if value in (None, "", [], {}):
-                if key in {"secondary_classifications", "external_assessments"}:
+                if key in {
+                    "secondary_classifications",
+                }:
                     if entry.get(key) != []:
                         errors.append(f"{path}: {record_id} {key} must preserve an empty array")
                 elif key in entry:

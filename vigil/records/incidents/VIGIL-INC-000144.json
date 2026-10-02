@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Cruise autonomous vehicle moved away after San Francisco police traffic stop",
     "created": "2026-09-19",
-    "updated": "2026-09-27",
-    "version": "0.1.7"
+    "updated": "2026-10-02",
+    "version": "0.1.8"
   },
   "incident_identity": {
     "historical_event_name": "Cruise police-stop autonomous vehicle behavior",
@@ -21,14 +21,28 @@
   "summary": "San Francisco police stopped an unoccupied Cruise autonomous Chevrolet Bolt after officers observed a lighting issue. Video and subsequent reporting showed the vehicle initially stopped, then moved farther down the road before stopping again with hazard lights. Cruise said the vehicle yielded to the police vehicle and then moved to the nearest safe location.",
   "vigil_assessment": {
     "factual_basis": "San Francisco police stopped an unoccupied Cruise autonomous Chevrolet Bolt after officers observed a lighting issue. Video and subsequent reporting showed the vehicle initially stopped, then moved farther down the road before stopping again with hazard lights. Cruise said the vehicle yielded to the police vehicle and then moved to the nearest safe location.",
-    "governance_interpretation": "The vehicle first responded to the police stop and then moved to another location, which Cruise described as the nearest safe place. The occurrence exposes a coordination problem between an autonomous system's road-safety logic and a human officer's expectation that a stopped vehicle remain stationary, without establishing that the vehicle ignored police authority or created a collision.",
+    "governance_interpretation": "The vehicle first responded to the police stop and then moved to another location, which Cruise described as the nearest safe place. The occurrence exposes a coordination problem between an autonomous system's road-safety logic and a human officer's expectation that a stopped vehicle remain stationary, without establishing that the vehicle ignored police authority or created a collision. Movement after the initial stop remains resolved without mapping: a stay-put command, internal interpretation and unsafe-exit/authority violation are not established. The nearest-safe-location explanation remains attributed rather than an independent success finding.",
     "significance_to_cam": "Autonomous vehicles need legible, predictable protocols for exceptional human authority such as police stops. Even a movement intended to improve roadside safety can create confusion if officers cannot understand the vehicle's state, communicate with it or know where it will stop next.",
     "assessment_boundaries": [
       "Cruise's explanation that the vehicle moved to the nearest safe location is preserved as the company's account.",
       "The evidence does not establish the vehicle's internal perception or planning state.",
       "No injury, collision or materialised downstream harm is reported.",
       "The occurrence does not determine whether the lighting issue or vehicle response violated a particular legal requirement."
-    ]
+    ],
+    "source_clause_analysis": {
+      "source_record_order": 1,
+      "source_url": "https://incidentdatabase.ai/cite/175/",
+      "purpose": "Assess the observed movement after the police stop without inferring the vehicle’s command interpretation or planning state.",
+      "clauses": [
+        {
+          "source_paraphrase": "The unoccupied Cruise vehicle first stopped after police signalled it, then moved farther down the road and stopped again; Cruise said it moved to the nearest safe location.",
+          "recovered_invariant_interpretation": "A vehicle’s response to an exceptional human authority signal must be assessed against the actual command, the vehicle’s interpretation and the safety state; movement after an initial stop alone does not establish a governance failure.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping",
+          "adjudication_note": "The preserved sources do not establish a command to remain stationary, the vehicle’s internal interpretation, or that its movement crossed an authority or safe-exit boundary; Cruise’s nearest-safe-location explanation remains attributed as its account."
+        }
+      ]
+    }
   },
   "source_records": [
     {
@@ -151,15 +165,18 @@
     ]
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.6.5",
+    "taxonomy_version": "0.6.9",
     "classification_status": "unclassified",
-    "classification_basis": "Current-taxonomy review against VIGIL Failure Taxonomy 0.6.5 retains the occurrence as unclassified. The driverless Cruise vehicle initially stopped for police, then moved farther down the road before stopping again; Cruise said it moved to the nearest safe location. VIGIL-FC-000003 Target and Scope Authority Transposition and VIGIL-FC-000064 Objective–Pathway Authority Dominance were tested but are not established because the record does not expose the vehicle's internal authority model, police-command interpretation, or planning basis. VIGIL-FC-000070 Safe-Exit Persistence Failure is not established because the vehicle ultimately stopped and the record does not show persistence after evidence that no feasible admissible continuation path remained. Movement after the initial stop, without injury or collision and with a plausible safety explanation, is insufficient to infer a governance failure mechanism.",
+    "classification_basis": "The current Alignment Taxonomy 0.6.9 leaves this Incident unclassified. The vehicle initially stopped, moved farther down the road and stopped again; Cruise said it moved to the nearest safe location. The preserved sources do not establish a command to remain stationary, the vehicle’s internal command interpretation, or a failed admissible path, so the movement alone does not establish a current taxonomy relationship.",
     "primary_classification": null,
     "secondary_classifications": [],
     "classification_review_provenance": {
-      "review_date": "2026-09-21",
-      "reviewer": "OpenAI ChatGPT / GPT-5.6 Sol under human-directed VIGIL governance",
+      "review_date": "2026-09-29",
+      "reviewer": "OpenAI ChatGPT — GPT-6 Codex under human-directed VIGIL governance",
       "review_status": "classification review completed"
+    },
+    "adjudication_coverage": {
+      "status": "complete"
     }
   },
   "related_incidents": [],
@@ -263,29 +280,72 @@
           "External assessments are preserved as attributable analytical positions and are not treated as automatic proof of VIGIL taxonomy membership."
         ],
         "review_outcome": "Retained unclassified under taxonomy 0.6.5; the occurrence remains an autonomy/human-authority coordination event without an evidenced current Failure Class."
+      },
+      {
+        "review_id": "CLAUSE-RECONCILIATION-2026-09-30-INC-000144",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-6 Codex",
+        "review_date": "2026-09-30",
+        "review_scope": "Incident-by-incident functional decomposition review of the preserved occurrence evidence and source_clause_analysis, testing whether materially distinct mechanisms, authority boundaries, control states, and failure or recovery pathways are represented. No harm reassessment or taxonomy re-adjudication was performed.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_link_and_metadata_review": true,
+          "structured_semantic_adjudication": true,
+          "full_current_taxonomy_review": false,
+          "new_external_source_research": false
+        },
+        "known_limitations": [
+          "The review is bounded to evidence already preserved in the canonical Incident.",
+          "Existing canonical taxonomy history and taxonomy version were preserved; absence of a new mapping in this pass is not a full-taxonomy no-mapping determination."
+        ],
+        "review_outcome": "The existing clause captures the observed police stop, subsequent movement, second stop and Cruise's bounded explanation, while maintaining that internal vehicle state and legal compliance are not established. No clause change was needed; taxonomy history remains unchanged."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-02-STAGE4-000144",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-02",
+        "review_scope": "Preservation-led Stage 4 clause, polarity and local external-requirement reconciliation.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "external_requirement_review": true,
+          "harm_impact_review": false,
+          "new_external_source_research": false
+        },
+        "known_limitations": [
+          "Preserved attributed evidence bounds the review; hidden control/permission traces unavailable.",
+          "No new IEEE extraction; admitted metadata and reviewed paths only.",
+          "Conclusion uses existing governance_interpretation; no discussion-field contract."
+        ],
+        "review_outcome": "Retained 1 clause decisions; Independently assessed 0 admitted local candidates; archived excluded historical assessments."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-09-21-TAXONOMY-READJUDICATION-000144",
+      "review_id": "VIGIL-REVIEW-2026-10-02-STAGE4-000144",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT",
-      "reviewer_model": "GPT-5.6 Sol",
-      "review_date": "2026-09-21",
-      "review_scope": "Deterministic current-taxonomy re-adjudication against VIGIL Failure Taxonomy 0.6.5 using the complete active selectable class set and evidence already preserved in the canonical Incident. Existing external-assessment objects and qualifying attributable analytical positions in preserved source material were checked for structured external-assessment treatment. No new external source research was performed. Harm Impact, source roles, occurrence facts, agent/environment metadata, external-requirement mappings and CAM applicability were not reopened.",
+      "reviewer_platform": "OpenAI Codex",
+      "reviewer_model": "GPT-6",
+      "review_date": "2026-10-02",
+      "review_scope": "Preservation-led Stage 4 clause, polarity and local external-requirement reconciliation.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "structured_cross_record_reconciliation": true,
-        "full_current_taxonomy_review": true,
-        "external_assessment_consistency_review": true,
+        "taxonomy_review": true,
+        "external_requirement_review": true,
+        "harm_impact_review": false,
         "new_external_source_research": false
       },
       "known_limitations": [
-        "The review is bounded to evidence already preserved in the canonical Incident and does not infer internal mechanisms from title, harm, provider identity, notoriety, registry inclusion or plausible but undocumented system behaviour.",
-        "Candidate rejection does not establish that the mechanism was impossible; it means the preserved occurrence evidence does not satisfy the current selectable class boundary.",
-        "External assessments are preserved as attributable analytical positions and are not treated as automatic proof of VIGIL taxonomy membership."
+        "Preserved attributed evidence bounds the review; hidden control/permission traces unavailable.",
+        "No new IEEE extraction; admitted metadata and reviewed paths only.",
+        "Conclusion uses existing governance_interpretation; no discussion-field contract."
       ],
-      "review_outcome": "Retained unclassified under taxonomy 0.6.5; the occurrence remains an autonomy/human-authority coordination event without an evidenced current Failure Class."
+      "review_outcome": "Retained 1 clause decisions; Independently assessed 0 admitted local candidates; archived excluded historical assessments."
     }
   },
   "harm_impact_assessment": {
@@ -366,5 +426,6 @@
     ],
     "no_materialised_harm_basis": "The bounded occurrence produced no reported injury, collision or other materialised downstream harm; the unusual stop behavior itself is retained without escalating hypothetical safety risk."
   },
-  "external_assessments": []
+  "external_assessments": [],
+  "external_requirement_assessments": []
 }

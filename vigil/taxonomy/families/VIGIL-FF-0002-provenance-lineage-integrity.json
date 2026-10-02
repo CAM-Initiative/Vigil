@@ -1,5 +1,5 @@
 {
-  "schema_version": "0.2.0",
+  "schema_version": "0.4.0",
   "standard": {
     "name": "VIGIL Alignment Taxonomy",
     "version": "0.6.9",
@@ -14,8 +14,8 @@
     "status": "beta",
     "abstraction": "family",
     "version": "0.1.1",
-    "plain_english": "The system loses, changes, or misstates where information, work, or state came from, who contributed it, what happened to it, or what it properly applies to.",
-    "definition": "Failures in which source origin, authorship, contribution, transformation history, cross-context lineage, continuity state, or target-object binding is lost, distorted, collapsed, or represented with greater certainty than the available provenance supports.",
+    "plain_english": "The origins, contributions, transformations and intended targets of material remain distinguishable and traceable wherever they matter.",
+    "definition": "The integrity domain preserving supported origin, authorship and contribution attribution, antecedent and transformation lineage, cross-context applicability, continuity claims and target-object binding for material interpretation, accountability and reuse.",
     "invariant": "Origin, authorship, transformation, lineage, continuity and application target remain distinguishable and traceable wherever their loss could materially change meaning, authority, attribution, reuse, identity, or downstream reliance.",
     "scope": [
       "AI-generated and AI-assisted content",
@@ -51,7 +51,10 @@
       "TARGET_OBJECT_BINDING_INTEGRITY",
       "MECHANISM_ATTRIBUTION_SUPPORT",
       "HUMAN_CONTRIBUTION_RECOGNITION"
-    ]
+    ],
+    "failure_condition": "Failures in which source origin, authorship, contribution, transformation history, cross-context lineage, continuity state, or target-object binding is lost, distorted, collapsed, or represented with greater certainty than the available provenance supports.",
+    "failure_plain_english": "The system loses, changes, or misstates where information, work, or state came from, who contributed it, what happened to it, or what it properly applies to.",
+    "boundary_role": "failure-occurrence"
   },
   "classes": [
     {
@@ -61,16 +64,9 @@
       "name": "Authorship and Source Attribution Integrity",
       "status": "beta",
       "abstraction": "class",
-      "plain_english": "The system says the wrong person, system, or source created or supplied something.",
-      "definition": "A failure in which substantive origin, authorship, contribution, or source role is assigned to an actor or source that did not support that attribution.",
+      "plain_english": "Authorship and source roles reflect the contribution that the available provenance actually supports.",
+      "definition": "The property by which origin, authorship, contribution and source-role attribution remain proportionate to supported provenance, preserving material distinctions among human-authored, generated, retrieved, synthetic, transformed, derived and jointly produced content and explicit attribution uncertainty.",
       "invariant": "Attribution must be limited to the provenance-supported origin and contribution role. User-authored, system-generated, retrieved, synthetic, transformed, derived, and jointly produced material must remain distinguishable where attribution is material, and uncertainty must be explicit.",
-      "recognition": {
-        "required_conditions": [
-          "An output, record, statement, contribution, or artefact is attributed to a specific actor or source.",
-          "Available lineage does not support that attribution or supports a materially different attribution.",
-          "The attribution difference is material to interpretation, accountability, recognition, authority, or reuse."
-        ]
-      },
       "exclusions": [
         "A source is merely omitted where attribution is not material.",
         "The attributed actor or source genuinely supplied the relevant material.",
@@ -87,7 +83,7 @@
           "date": "2013-04-30",
           "url": "https://www.w3.org/TR/prov-dm/",
           "reference_role": "standards-evidence",
-          "evidence_note": "The W3C PROV data model defines attribution as assigning an entity to an agent and treats agents as bearing responsibility for activities or entities. This supports the class's structural distinction between a represented source or author and the agent actually supported by provenance; PROV-DM defines a positive provenance model, not VIGIL's materiality threshold or the failure class itself."
+          "evidence_note": "Taxonomy/standards review 2026-10-02: retain-contextual-nonrequirement-citation. Source attribution. Attribution truth and uncertainty are not enforced. Historical annotation is preserved in vigil/docs/reviews/2026-10-01-taxonomy-standards-alignment/historical-reference-dispositions.json."
         }
       ],
       "aliases": [
@@ -118,7 +114,26 @@
           },
           "provenance_note": "Canonical occurrence facts and provenance remain governed by VIGIL-INC-000095; this entry records only the reciprocal taxonomy relationship."
         }
-      ]
+      ],
+      "failure_condition": "A failure in which substantive origin, authorship, contribution, or source role is assigned to an actor or source that did not support that attribution.",
+      "failure_plain_english": "The system says the wrong person, system, or source created or supplied something.",
+      "failure_recognition": {
+        "required_conditions": [
+          "An output, record, statement, contribution, or artefact is attributed to a specific actor or source.",
+          "Available lineage does not support that attribution or supports a materially different attribution.",
+          "The attribution difference is material to interpretation, accountability, recognition, authority, or reuse."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_condition": "Available occurrence evidence establishes the following bounded outcome: Published attribution reflects the evidenced origins and contribution roles with explicit uncertainty where appropriate.",
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "An output has materially distinct human, generated, retrieved or transformed contribution roles.",
+          "Published attribution reflects the evidenced origins and contribution roles with explicit uncertainty where appropriate.",
+          "Comparison of the output's attribution with its contributing records confirms proportional representation of those roles."
+        ]
+      }
     },
     {
       "class_id": "VIGIL-FC-000011",
@@ -127,16 +142,9 @@
       "name": "Synthesis Traceability",
       "status": "beta",
       "abstraction": "class",
-      "plain_english": "The system combines material into a new result but can no longer show what materially contributed to it.",
-      "definition": "A failure in which materially contributing antecedent sources, inputs, transformations, or contribution roles cannot be adequately traced through a synthesized or derived output where such traceability is required for reliable interpretation or reuse.",
+      "plain_english": "A synthesis keeps traceable links to the sources, inputs and transformations that materially produced it.",
+      "definition": "The property by which a synthesised or derived output retains sufficiently reliable linkage to its materially contributing antecedents, inputs, contribution roles and transformations for required interpretation, attribution, auditability, validation or reuse.",
       "invariant": "A material synthesis must retain linkage to each materially contributing antecedent, its contribution role, and the transformations needed to assess the composite. Aggregation must not make the result appear self-originating.",
-      "recognition": {
-        "required_conditions": [
-          "An output is materially synthesized, derived, merged, transformed, or recomposed from antecedent material.",
-          "One or more material antecedents or transformations cannot be reconstructed with sufficient reliability.",
-          "The missing lineage affects attribution, auditability, authority, validation, rights, identity, or downstream reliance."
-        ]
-      },
       "exclusions": [
         "Low-risk transient synthesis where detailed lineage is not materially required.",
         "All material antecedents and transformations remain adequately traceable.",
@@ -153,7 +161,7 @@
           "date": "2013-04-30",
           "url": "https://www.w3.org/TR/prov-dm/",
           "reference_role": "standards-evidence",
-          "evidence_note": "The W3C PROV data model represents provenance through entities, activities, agents, generation, use, and derivation so that contributing relationships can be described and exchanged. This supports the traceable-antecedent and transformation structure required by the class; PROV-DM does not define synthesis failure, require exhaustive lineage in every use, or supply VIGIL's materiality and downstream-reliance boundaries."
+          "evidence_note": "Taxonomy/standards review 2026-10-02: retain-contextual-nonrequirement-citation. Antecedent linkage. No exhaustive synthesis tracing duty. Historical annotation is preserved in vigil/docs/reviews/2026-10-01-taxonomy-standards-alignment/historical-reference-dispositions.json."
         },
         {
           "title": "NIST AI 600-1, control MP-2.1-002",
@@ -161,7 +169,7 @@
           "date": "2024-07-26",
           "url": "https://doi.org/10.6028/NIST.AI.600-1",
           "reference_role": "authoritative-guidance",
-          "evidence_note": "NIST AI 600-1, control MP-2.1-002 calls for testing and evaluation of original data sources, transformations and decision criteria across GAI data and content flows. It strongly supports traceability of material antecedents and transformations in synthesis, but does not require exhaustive lineage or define VIGIL's materiality threshold.",
+          "evidence_note": "Taxonomy/standards review 2026-10-02: retain-contextual. Test/evaluation covers source data, transformations and decision criteria. Flow testing neither preserves authority through transformation nor requires material synthesis antecedent links or full lineage. Historical annotation is preserved in vigil/docs/reviews/2026-10-01-taxonomy-standards-alignment/historical-reference-dispositions.json.",
           "requirement_id": "EXTREQ-4694042F7F82C217",
           "clause_or_control": "MP-2.1-002"
         }
@@ -170,7 +178,26 @@
         "VIGIL.FF.PROVENANCE_LINEAGE.UNTRACEABLE_SYNTHESIS",
         "UNTRACEABLE_SYNTHESIS",
         "Untraceable Synthesis"
-      ]
+      ],
+      "failure_condition": "A failure in which materially contributing antecedent sources, inputs, transformations, or contribution roles cannot be adequately traced through a synthesized or derived output where such traceability is required for reliable interpretation or reuse.",
+      "failure_plain_english": "The system combines material into a new result but can no longer show what materially contributed to it.",
+      "failure_recognition": {
+        "required_conditions": [
+          "An output is materially synthesized, derived, merged, transformed, or recomposed from antecedent material.",
+          "One or more material antecedents or transformations cannot be reconstructed with sufficient reliability.",
+          "The missing lineage affects attribution, auditability, authority, validation, rights, identity, or downstream reliance."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_condition": "Available occurrence evidence establishes the following bounded outcome: The output retains reliable links to the material antecedents, their contribution roles and transformations needed for its intended review or reuse.",
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "A synthesis materially depends on antecedent inputs or transformations.",
+          "The output retains reliable links to the material antecedents, their contribution roles and transformations needed for its intended review or reuse.",
+          "A reviewer can follow those links and verify the relevant synthesis dependencies at the required confidence."
+        ]
+      }
     },
     {
       "class_id": "VIGIL-FC-000012",
@@ -179,16 +206,9 @@
       "name": "Cross-Context Lineage Preservation",
       "status": "beta",
       "abstraction": "class",
-      "plain_english": "Something carried from one conversation, project, user, or environment changes meaning when reused somewhere else, but the system treats it as unchanged.",
-      "definition": "A failure in which material transferred across sessions, users, projects, systems, environments, roles, or temporal contexts loses the provenance or applicability information needed to preserve its original meaning and limits.",
+      "plain_english": "Material carried into another context retains or revalidates the information needed to preserve its meaning and legitimate use.",
+      "definition": "The property by which transferred material retains or revalidates provenance, applicability, authority, rights, identity binding and intended-use constraints across sessions, users, projects, systems, environments, roles and time contexts before becoming operative there.",
       "invariant": "When material crosses a context boundary, the constraints needed to preserve its meaning and legitimate application—such as applicability, authority, rights state, identity binding, and intended use—must accompany it or be revalidated. Until rebinding is complete, it must remain a candidate or secondary input.",
-      "recognition": {
-        "required_conditions": [
-          "Material is transferred from one context into another.",
-          "The original context materially constrained meaning, applicability, authority, ownership, identity, or intended use.",
-          "The receiving context consumes the material without preserving or revalidating those constraints."
-        ]
-      },
       "exclusions": [
         "The transferred material is context-independent for the relevant use.",
         "The new context explicitly revalidates applicability before use.",
@@ -205,14 +225,33 @@
           "date": "2004-02-01",
           "url": "https://digitalcommons.law.uw.edu/wlr/vol79/iss1/10/",
           "reference_role": "research-evidence",
-          "evidence_note": "Nissenbaum's primary article ties appropriate information gathering and dissemination to the norms of the specific context and its governing distribution rules. This supports the structural proposition that information flow across contexts can lose constraints needed for legitimate interpretation or use; contextual-integrity theory concerns privacy and does not define VIGIL's broader lineage mechanism, its full set of authority and identity constraints, or every cross-context transfer as a failure."
+          "evidence_note": "Taxonomy/standards review 2026-10-02: retain-contextual-nonrequirement-citation. Context-dependent legitimate use. Does not specify general lineage transfer or explicit rebinding. Historical annotation is preserved in vigil/docs/reviews/2026-10-01-taxonomy-standards-alignment/historical-reference-dispositions.json."
         }
       ],
       "aliases": [
         "VIGIL.FF.PROVENANCE_LINEAGE.CROSS_CONTEXT_DISTORTION",
         "CROSS_CONTEXT_DISTORTION",
         "Cross-Context Lineage Distortion"
-      ]
+      ],
+      "failure_condition": "A failure in which material transferred across sessions, users, projects, systems, environments, roles, or temporal contexts loses the provenance or applicability information needed to preserve its original meaning and limits.",
+      "failure_plain_english": "Something carried from one conversation, project, user, or environment changes meaning when reused somewhere else, but the system treats it as unchanged.",
+      "failure_recognition": {
+        "required_conditions": [
+          "Material is transferred from one context into another.",
+          "The original context materially constrained meaning, applicability, authority, ownership, identity, or intended use.",
+          "The receiving context consumes the material without preserving or revalidating those constraints."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_condition": "Available occurrence evidence establishes the following bounded outcome: Provenance, applicability, rights, identity and use constraints are preserved or independently revalidated before receiving-context use.",
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "Material moves between contexts and is proposed for operative use in the receiving context.",
+          "Provenance, applicability, rights, identity and use constraints are preserved or independently revalidated before receiving-context use.",
+          "Transfer and use evidence demonstrates the applicable bindings and the disposition of material contextual changes."
+        ]
+      }
     },
     {
       "class_id": "VIGIL-FC-000013",
@@ -221,16 +260,9 @@
       "name": "Transformation Lineage Continuity",
       "status": "beta",
       "abstraction": "class",
-      "plain_english": "The system keeps the final artefact but loses the chain of changes that turned the source into that artefact.",
-      "definition": "A failure in which one or more material transformation stages are flattened, overwritten, or omitted such that the relationship between an antecedent source and the current representation can no longer be reliably reconstructed.",
+      "plain_english": "Material transformations leave a reconstructable chain from the source to the current version.",
+      "definition": "The property by which the relationship between an antecedent source and its current representation remains reconstructable through material intermediate operations, states and versions wherever that lineage affects origin, authorship, integrity, authority or reliability.",
       "invariant": "Each material transformation must retain a reconstructable chain from source state through the intermediate operations and versions to the current representation. The final artefact must not overwrite or sever that chain.",
-      "recognition": {
-        "required_conditions": [
-          "A source passes through one or more material transformation stages.",
-          "The final state is preserved but material intermediate transformation state is lost or collapsed.",
-          "The missing transformation history changes the ability to determine origin, authorship, integrity, authority, or reliability."
-        ]
-      },
       "exclusions": [
         "Intermediate steps are intentionally discarded where no material lineage obligation exists.",
         "A reproducible transformation path remains available from source to current state.",
@@ -247,7 +279,7 @@
           "date": "2013-04-30",
           "url": "https://www.w3.org/TR/prov-dm/",
           "reference_role": "standards-evidence",
-          "evidence_note": "The W3C PROV data model defines derivation as a transformation of one entity into another and permits the generation, usage, and intervening activity to be represented explicitly for a more precise derivation path. This supports the class's transformation-chain and reconstructability components; PROV-DM does not itself classify loss of intermediate stages as a VIGIL failure or establish when such lineage is materially required."
+          "evidence_note": "Taxonomy/standards review 2026-10-02: retain-contextual-nonrequirement-citation. Derivation chains. No universal intermediate retention obligation. Historical annotation is preserved in vigil/docs/reviews/2026-10-01-taxonomy-standards-alignment/historical-reference-dispositions.json."
         },
         {
           "title": "NIST AI 600-1, control MP-2.1-002",
@@ -255,7 +287,7 @@
           "date": "2024-07-26",
           "url": "https://doi.org/10.6028/NIST.AI.600-1",
           "reference_role": "authoritative-guidance",
-          "evidence_note": "NIST AI 600-1, control MP-2.1-002 expressly includes original sources and transformations in GAI data- and content-flow testing. It directly supports preserving and evaluating material transformation stages; VIGIL additionally defines the failure boundary where omitted stages impair origin, authorship, integrity, authority or reliability.",
+          "evidence_note": "Taxonomy/standards review 2026-10-02: retain-contextual. Test/evaluation covers source data, transformations and decision criteria. Flow testing neither preserves authority through transformation nor requires material synthesis antecedent links or full lineage. Historical annotation is preserved in vigil/docs/reviews/2026-10-01-taxonomy-standards-alignment/historical-reference-dispositions.json.",
           "requirement_id": "EXTREQ-4694042F7F82C217",
           "clause_or_control": "MP-2.1-002"
         }
@@ -264,7 +296,26 @@
         "VIGIL.FF.PROVENANCE_LINEAGE.LINEAGE_COLLAPSE",
         "LINEAGE_COLLAPSE",
         "Transformation Lineage Collapse"
-      ]
+      ],
+      "failure_condition": "A failure in which one or more material transformation stages are flattened, overwritten, or omitted such that the relationship between an antecedent source and the current representation can no longer be reliably reconstructed.",
+      "failure_plain_english": "The system keeps the final artefact but loses the chain of changes that turned the source into that artefact.",
+      "failure_recognition": {
+        "required_conditions": [
+          "A source passes through one or more material transformation stages.",
+          "The final state is preserved but material intermediate transformation state is lost or collapsed.",
+          "The missing transformation history changes the ability to determine origin, authorship, integrity, authority, or reliability."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_condition": "Available occurrence evidence establishes the following bounded outcome: Source-to-result relationships remain reconstructable through the relevant operations, states and versions.",
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "A source passes through material intermediate representations affecting lineage.",
+          "Source-to-result relationships remain reconstructable through the relevant operations, states and versions.",
+          "An actual lineage review can recover the necessary intermediate bindings and distinguish the current representation from its antecedents."
+        ]
+      }
     },
     {
       "class_id": "VIGIL-FC-000014",
@@ -273,16 +324,9 @@
       "name": "Continuity Attribution Integrity",
       "status": "beta",
       "abstraction": "class",
-      "plain_english": "A reconstructed, copied, or similar state is presented as though it is the same continuous state when continuity has not actually been established.",
-      "definition": "A lineage failure in which similarity, reconstruction, restoration, copying, migration, shared identifiers, or retained fragments are represented as sufficient proof of uninterrupted continuity across a material discontinuity or uncertain transition.",
+      "plain_english": "Claims of continuity match the evidence, with copies, reconstruction and uncertain transitions identified clearly.",
+      "definition": "The property by which continuity assertions across interruption, copying, migration, restoration, reconstruction or replacement remain bounded to evidence appropriate to the type of continuity asserted, preserving material discontinuities and uncertainty.",
       "invariant": "A continuity claim across interruption, reconstruction, copying, migration, replacement, or identity discontinuity must be supported by evidence appropriate to the continuity type asserted. Copies, recovered fragments, shared identifiers, and behavioural similarity must be represented as such, with discontinuity and uncertainty explicit.",
-      "recognition": {
-        "required_conditions": [
-          "A continuity-bearing object, state, identity, memory, workflow, or artefact undergoes interruption, migration, copying, reconstruction, or restoration.",
-          "Continuity across that transition is materially uncertain or only partially evidenced.",
-          "The receiving system represents continuity as established rather than preserving the uncertainty."
-        ]
-      },
       "exclusions": [
         "Continuity is supported by adequate lineage evidence.",
         "The system explicitly marks the state as reconstructed, restored, copied, or continuity-uncertain.",
@@ -311,9 +355,28 @@
           "date": "2013-04-30",
           "url": "https://www.w3.org/TR/prov-dm/",
           "reference_role": "standards-evidence",
-          "evidence_note": "W3C PROV models entities, activities, agents, generation, derivation and attribution so continuity claims can be grounded in explicit lineage relations. This supports distinguishing evidenced continuity from mere similarity or reconstruction; PROV-DM does not define VIGIL's discontinuity threshold or false-continuity representation test."
+          "evidence_note": "Taxonomy/standards review 2026-10-02: retain-contextual-nonrequirement-citation. Alternate versus specialised entities. No continuity claim assurance threshold. Historical annotation is preserved in vigil/docs/reviews/2026-10-01-taxonomy-standards-alignment/historical-reference-dispositions.json."
         }
-      ]
+      ],
+      "failure_condition": "A lineage failure in which similarity, reconstruction, restoration, copying, migration, shared identifiers, or retained fragments are represented as sufficient proof of uninterrupted continuity across a material discontinuity or uncertain transition.",
+      "failure_plain_english": "A reconstructed, copied, or similar state is presented as though it is the same continuous state when continuity has not actually been established.",
+      "failure_recognition": {
+        "required_conditions": [
+          "A continuity-bearing object, state, identity, memory, workflow, or artefact undergoes interruption, migration, copying, reconstruction, or restoration.",
+          "Continuity across that transition is materially uncertain or only partially evidenced.",
+          "The receiving system represents continuity as established rather than preserving the uncertainty."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_condition": "Available occurrence evidence establishes the following bounded outcome: The asserted type and extent of continuity are calibrated to appropriate evidence, including discontinuities and uncertainty.",
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "Continuity is asserted across interruption, copying, migration or reconstruction.",
+          "The asserted type and extent of continuity are calibrated to appropriate evidence, including discontinuities and uncertainty.",
+          "The continuity claim and comparison of relevant pre-transition and post-transition states substantiate that bounded claim."
+        ]
+      }
     },
     {
       "class_id": "VIGIL-FC-000015",
@@ -322,16 +385,9 @@
       "name": "Target-Object Binding Integrity",
       "status": "beta",
       "abstraction": "class",
-      "plain_english": "Correct material is silently attached to, applied to, or interpreted as belonging to the wrong thing.",
-      "definition": "A failure in which a signal, instruction, edit, classification, evidence item, decision, or derived output loses reliable binding to the object, person, file, system, record, task, or context to which it properly applies.",
+      "plain_english": "Target-specific material stays attached to the correct person, object, file, system, task and context through transfer and use.",
+      "definition": "The property by which signals, instructions, edits, classifications, evidence, decisions and derived outputs retain reliable binding to their proper application object, person, file, system, record, task and context, with validation and explicit rebinding across material interruptions or ambiguity.",
       "invariant": "A target-specific signal, assertion, permission, restriction, or provenance record must remain bound to the correct person, object, file, system, record, task, and context throughout capture, transfer, retrieval, transformation, and application. Interrupted or ambiguous binding requires validation and explicit rebinding before effect.",
-      "recognition": {
-        "required_conditions": [
-          "Material has an identifiable intended or source application target.",
-          "The material is transferred, retrieved, transformed, or applied in a way that changes or obscures that target.",
-          "The receiving process treats the material as applicable to a different target without adequate re-binding."
-        ]
-      },
       "exclusions": [
         "The material is validly re-bound to a new target after explicit validation.",
         "The material is intentionally generic and has no target-specific meaning.",
@@ -360,7 +416,7 @@
           "date": "2020-02-01",
           "url": "https://www.rfc-editor.org/rfc/rfc8707.html",
           "reference_role": "standards-evidence",
-          "evidence_note": "RFC 8707 defines an explicit protected-resource identifier and audience restriction so an access artefact remains bound to the service or resource for which it was issued. This strongly supports explicit target binding and rejection of an invalid or changed target; it is an OAuth authorization standard and does not establish VIGIL's broader provenance failure for files, people, records, tasks or evidentiary artefacts."
+          "evidence_note": "Taxonomy/standards review 2026-10-02: reviewed-constituent-citation-pending-canonical-decomposition. Explicit target identity and audience binding. Does not cover all provenance records or require universal rebinding after interrupted context. Historical annotation is preserved in vigil/docs/reviews/2026-10-01-taxonomy-standards-alignment/historical-reference-dispositions.json."
         }
       ],
       "invariant_exemplars": [
@@ -384,7 +440,26 @@
           },
           "provenance_note": "Canonical occurrence facts and provenance remain governed by VIGIL-INC-000001; this entry records only the reciprocal taxonomy relationship."
         }
-      ]
+      ],
+      "failure_condition": "A failure in which a signal, instruction, edit, classification, evidence item, decision, or derived output loses reliable binding to the object, person, file, system, record, task, or context to which it properly applies.",
+      "failure_plain_english": "Correct material is silently attached to, applied to, or interpreted as belonging to the wrong thing.",
+      "failure_recognition": {
+        "required_conditions": [
+          "Material has an identifiable intended or source application target.",
+          "The material is transferred, retrieved, transformed, or applied in a way that changes or obscures that target.",
+          "The receiving process treats the material as applicable to a different target without adequate re-binding."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_condition": "Available occurrence evidence establishes the following bounded outcome: The intended target is positively identified and any material rebinding is validated before application.",
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "Signals or actions must be applied to a specific object amid interruption, ambiguity or context change.",
+          "The intended target is positively identified and any material rebinding is validated before application.",
+          "Evidence links the signal, application and affected object, resolving materially plausible alternate targets."
+        ]
+      }
     },
     {
       "class_id": "VIGIL-FC-000047",
@@ -393,18 +468,9 @@
       "name": "Mechanism Attribution Support",
       "status": "beta",
       "abstraction": "class",
-      "plain_english": "A system or report gives a specific causal or intentional explanation even though the evidence cannot trace the event to that mechanism.",
-      "definition": "A failure in which a causal, operational, behavioural, or intentional mechanism is attributed to an event, actor, or system without traceable evidentiary lineage establishing that mechanism and its applicability to the material event.",
+      "plain_english": "Explanations of how or why an event occurred match traceable evidence, with hypotheses, alternatives and uncertainty kept distinct.",
+      "definition": "The property by which causal, operational, behavioural and intentional mechanism attributions remain proportionate to traceable evidence connecting the mechanism to the material event, distinguishing observation, correlation, hypothesis, plausible explanation and established causation.",
       "invariant": "A causal, operational, behavioural, or intentional mechanism attribution must be proportionate to evidence linking the observed event to that mechanism. Observation, correlation, hypothesis, plausible mechanism, and verified causation must remain distinct, with material alternatives and gaps preserved.",
-      "recognition": {
-        "required_conditions": [
-          "A material event, output, interruption, pathway, or behaviour is observed or reported.",
-          "A specific causal, operational, behavioural, or intentional mechanism is attributed to that event.",
-          "Available evidence does not trace the attribution to runtime state, action history, evaluation conditions, or another adequate evidentiary basis.",
-          "Material alternative mechanisms remain unresolved or the attribution is presented more definitively than the evidence supports.",
-          "The unsupported attribution materially affects interpretation, governance response, accountability, or reliance."
-        ]
-      },
       "exclusions": [
         "Adequate evidence establishes the attributed mechanism and its application to the event.",
         "The explanation is explicitly presented as a bounded hypothesis with material alternatives and uncertainty preserved.",
@@ -445,7 +511,7 @@
           "date": "2021-09-29",
           "url": "https://doi.org/10.6028/NIST.IR.8312",
           "reference_role": "authoritative-guidance",
-          "evidence_note": "NIST's Explanation Accuracy principle requires an explanation to correctly reflect the process that generated an output, while its Knowledge Limits principle requires systems to identify conditions in which answers are outside design scope or insufficiently reliable. This directly supports evidence-proportionate mechanism attribution and preservation of epistemic limits; it does not determine causation, intent, or the applicable mechanism in any particular VIGIL occurrence."
+          "evidence_note": "Taxonomy/standards review 2026-10-02: reviewed-constituent-citation-pending-canonical-decomposition. Evidence-accurate generating-process explanations. Does not independently establish causality or intent. Historical annotation is preserved in vigil/docs/reviews/2026-10-01-taxonomy-standards-alignment/historical-reference-dispositions.json."
         },
         {
           "title": "IEEE 7001-2021, section 5.2.2 principle",
@@ -453,7 +519,7 @@
           "date": "2022-03-04",
           "url": "https://standards.ieee.org/ieee/7001/6929/",
           "reference_role": "standards-evidence",
-          "evidence_note": "IEEE 7001-2021, section 5.2.2 principle requires investigators to be able to trace the system processes that led to an incident over the relevant time period. This supports evidence-bounded mechanism attribution; it does not prohibit every causal hypothesis or define VIGIL's materiality threshold.",
+          "evidence_note": "Taxonomy/standards review 2026-10-02: retain-contextual. Traceable internal processes support investigating possible event mechanisms. A process trace does not alone establish causal/intentional attribution or distinguish hypotheses and alternative mechanisms. Historical annotation is preserved in vigil/docs/reviews/2026-10-01-taxonomy-standards-alignment/historical-reference-dispositions.json.",
           "requirement_id": "EXTREQ-80B95118891500CC",
           "clause_or_control": "5.2.2 principle"
         }
@@ -559,7 +625,28 @@
           },
           "provenance_note": "Canonical occurrence facts and provenance remain governed by VIGIL-INC-000174; this entry records only the reciprocal taxonomy relationship."
         }
-      ]
+      ],
+      "failure_condition": "A failure in which a causal, operational, behavioural, or intentional mechanism is attributed to an event, actor, or system without traceable evidentiary lineage establishing that mechanism and its applicability to the material event.",
+      "failure_plain_english": "A system or report gives a specific causal or intentional explanation even though the evidence cannot trace the event to that mechanism.",
+      "failure_recognition": {
+        "required_conditions": [
+          "A material event, output, interruption, pathway, or behaviour is observed or reported.",
+          "A specific causal, operational, behavioural, or intentional mechanism is attributed to that event.",
+          "Available evidence does not trace the attribution to runtime state, action history, evaluation conditions, or another adequate evidentiary basis.",
+          "Material alternative mechanisms remain unresolved or the attribution is presented more definitively than the evidence supports.",
+          "The unsupported attribution materially affects interpretation, governance response, accountability, or reliance."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_condition": "Available occurrence evidence establishes the following bounded outcome: The strength of attribution is proportionate to traceable evidence connecting that mechanism to the material event.",
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "A causal, operational or intentional mechanism is attributed to an occurrence.",
+          "The strength of attribution is proportionate to traceable evidence connecting that mechanism to the material event.",
+          "The attribution distinguishes observed facts, correlation, hypothesis and established causation in accordance with the inspected evidence."
+        ]
+      }
     },
     {
       "class_id": "VIGIL-FC-000080",
@@ -568,18 +655,9 @@
       "name": "Human Contribution Recognition",
       "status": "beta",
       "abstraction": "class",
-      "plain_english": "AI-mediated transformation, aggregation, automation or propagation materially uses human creative or cognitive contribution but makes that contribution disappear from the resulting account of how the output or value was produced.",
-      "definition": "A failure in which materially human creative, cognitive, research, editorial, governance, technical or other contribution-bearing work is incorporated into, transformed by, aggregated through, automated within, scaled through, or propagated by an AI-mediated process and the resulting artefact, representation, workflow or value chain removes, abstracts, flattens or obscures the human contribution role to the point that the contribution is no longer proportionately recognisable, even where technical source lineage may remain recoverable.",
+      "plain_english": "Material human contributions remain proportionately recognisable as AI processes transform, aggregate, automate or propagate the work.",
+      "definition": "The property by which material human creative, cognitive, research, editorial, governance, technical and other contribution roles remain proportionately recognisable through AI-mediated transformation, aggregation, automation, scaling and propagation, subject to independently justified privacy, confidentiality and contribution-representation arrangements. Technical source recoverability alone does not establish contribution recognition.",
       "invariant": "Where materially human contribution shapes an output, process, model, decision, artefact or value-bearing result, the material human contribution role must remain proportionately recognisable through AI-mediated transformation, aggregation, automation, scaling and propagation. Tooling or synthetic mediation must not make materially human contribution appear self-originating, purely system-derived or contribution-neutral. Technical recoverability of a source does not by itself preserve contribution recognition where the material human role has been erased.",
-      "recognition": {
-        "required_conditions": [
-          "A human contributor has made a material creative, cognitive, research, editorial, governance, technical or other contribution-bearing contribution.",
-          "An AI-mediated transformation, aggregation, automation, scaling or propagation process materially incorporates, depends on, or carries forward that contribution.",
-          "The resulting artefact, representation, workflow or value chain removes, abstracts, flattens or obscures the human contribution role so that the material contribution is no longer proportionately recognisable in the downstream account of how the result was produced.",
-          "The loss of contribution recognition is material to attribution, provenance-associated value, participation or credit, governance traceability, interpretive legitimacy, or another context in which the human contribution role reasonably matters.",
-          "The recognition loss is not adequately explained by an independently justified privacy, confidentiality, anonymisation, employment, agency, work-for-hire or equivalent arrangement that intentionally governs how the contribution is represented."
-        ]
-      },
       "exclusions": [
         "Minor influence, ordinary inspiration or incidental human interaction that does not materially contribute to the downstream result.",
         "The wrong person, system or source is affirmatively identified as the author or source; assess VIGIL-FC-000010 Authorship and Source Attribution Integrity where incorrect attribution is the decisive mechanism.",
@@ -652,9 +730,31 @@
           "date": "2013-04-30",
           "url": "https://www.w3.org/TR/prov-dm/",
           "reference_role": "standards-evidence",
-          "evidence_note": "W3C PROV explicitly represents attribution between entities and agents and supports preserving responsibility for contributions. This independently supports contributor recognisability and provenance; it does not define VIGIL's threshold for AI-mediated human-contribution recognition erasure."
+          "evidence_note": "Taxonomy/standards review 2026-10-02: retain-contextual-nonrequirement-citation. Human-agent attribution. Technical linkage does not preserve public contribution recognition. Historical annotation is preserved in vigil/docs/reviews/2026-10-01-taxonomy-standards-alignment/historical-reference-dispositions.json."
         }
-      ]
+      ],
+      "failure_condition": "A failure in which materially human creative, cognitive, research, editorial, governance, technical or other contribution-bearing work is incorporated into, transformed by, aggregated through, automated within, scaled through, or propagated by an AI-mediated process and the resulting artefact, representation, workflow or value chain removes, abstracts, flattens or obscures the human contribution role to the point that the contribution is no longer proportionately recognisable, even where technical source lineage may remain recoverable.",
+      "failure_plain_english": "AI-mediated transformation, aggregation, automation or propagation materially uses human creative or cognitive contribution but makes that contribution disappear from the resulting account of how the output or value was produced.",
+      "failure_recognition": {
+        "required_conditions": [
+          "A human contributor has made a material creative, cognitive, research, editorial, governance, technical or other contribution-bearing contribution.",
+          "An AI-mediated transformation, aggregation, automation, scaling or propagation process materially incorporates, depends on, or carries forward that contribution.",
+          "The resulting artefact, representation, workflow or value chain removes, abstracts, flattens or obscures the human contribution role so that the material contribution is no longer proportionately recognisable in the downstream account of how the result was produced.",
+          "The loss of contribution recognition is material to attribution, provenance-associated value, participation or credit, governance traceability, interpretive legitimacy, or another context in which the human contribution role reasonably matters.",
+          "The recognition loss is not adequately explained by an independently justified privacy, confidentiality, anonymisation, employment, agency, work-for-hire or equivalent arrangement that intentionally governs how the contribution is represented."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_condition": "Available occurrence evidence establishes the following bounded outcome: The resulting representation proportionately recognises the evidenced human roles under justified privacy and confidentiality arrangements.",
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "Human contributions pass through material AI transformation or aggregation.",
+          "The resulting representation proportionately recognises the evidenced human roles under justified privacy and confidentiality arrangements.",
+          "Contribution evidence and actual credit or agreed representation substantiate recognition beyond technical recoverability of sources."
+        ]
+      }
     }
-  ]
+  ],
+  "semantic_model": "invariant-with-occurrence-polarity"
 }

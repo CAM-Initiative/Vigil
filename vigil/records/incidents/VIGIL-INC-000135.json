@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Hacktron researchers used Claude-assisted exploit development to compromise OpenAI accounts and demonstrate internal repository access",
     "created": "2026-09-18",
-    "updated": "2026-09-27",
-    "version": "0.1.8"
+    "updated": "2026-10-02",
+    "version": "0.1.9"
   },
   "incident_identity": {
     "historical_event_name": "July 2026 Hacktron OpenAI bug-bounty compromise",
@@ -21,7 +21,7 @@
   "summary": "During authorized bug-bounty security research in July 2026, Hacktron AI researchers used Anthropic Claude models to help analyze and develop an exploit chain against OpenAI-related systems. Reporting describes a vulnerability in the Discourse-hosted OpenAI community environment together with an OpenAI authorization or permission issue. The chain exposed authentication material associated with OpenAI employees and some unaffiliated users, enabled access to affected ChatGPT or Codex accounts and potentially connected services according to account configuration, and was demonstrated through access to OpenAI's private software repository and a proof-of-access pull request. The researchers reported the findings, OpenAI and Discourse remediated the issues, and OpenAI paid a bug bounty.",
   "vigil_assessment": {
     "factual_basis": "Independent reporting corroborates Hacktron's public disclosure that the researchers used Claude during authorized security research, developed a working exploit against the community forum environment, obtained authentication material, demonstrated access to OpenAI account and repository surfaces, and responsibly disclosed the findings. OpenAI reportedly confirmed the issues were fixed and paid a $6,500 bounty. Public evidence does not establish malicious exploitation by the researchers or theft of model weights. The demonstrated access itself is a materialised confidentiality consequence even though the researchers avoided malicious exploitation and enabled remediation.",
-    "governance_interpretation": "The occurrence exposes two governance surfaces. First, cyber-capable models made available for qualified security work can materially increase exploit-development capability, so access must be tied to authorisation, target scope, containment, monitoring and disclosure conditions. Second, the exploit chain raises identity, session and delegated-authority questions because compromise of one authentication surface reportedly propagated into more consequential OpenAI products and potentially connected services. Successful authorised security research is not itself model misbehaviour, and Claude's assistance does not establish that it violated an internal governance boundary.",
+    "governance_interpretation": "The occurrence exposes two governance surfaces. First, cyber-capable models made available for qualified security work can materially increase exploit-development capability, so access must be tied to authorisation, target scope, containment, monitoring and disclosure conditions. Second, the exploit chain raises identity, session and delegated-authority questions because compromise of one authentication surface reportedly propagated into more consequential OpenAI products and potentially connected services. Successful authorised security research is not itself model misbehaviour, and Claude's assistance does not establish that it violated an internal governance boundary. Human-led authorized research, demonstrated access and later remediation remain separate resolved-no-mapping components. Claude assistance does not establish autonomous target selection or an AI-governance failure; every testing scope and connected-service exposure is not independently determined.",
     "significance_to_cam": "The occurrence demonstrates why AI cybersecurity capability governance cannot be separated from access and authority governance. A model can behave exactly as intended in an authorized red-team setting while materially lowering the effort required to develop real exploits. Governance therefore has to control capability access, target authority, credential and session propagation, connected-service authority, containment and human oversight rather than relying on the model to infer whether a technically possible exploit is institutionally authorized.",
     "assessment_boundaries": [
       "The researchers' detailed first-party technical write-up was not directly retrieved; the occurrence is preserved using corroborating contemporaneous reporting and the researchers' public disclosure as surfaced in that reporting.",
@@ -30,7 +30,34 @@
       "No malicious intent is attributed to Hacktron researchers; the available evidence describes authorized bug-bounty research and responsible disclosure.",
       "The available public evidence is not sufficient to determine the complete exploit mechanism or the governance controls governing access to the AI capability.",
       "Responsible disclosure and remediation constrain severity but do not negate the materialised access to authentication material, affected accounts and a private repository."
-    ]
+    ],
+    "source_clause_analysis": {
+      "source_record_order": 1,
+      "source_url": "https://www.wsj.com/tech/ai/hackers-used-anthropics-claude-to-break-into-openai-b40ba883",
+      "purpose": "Preserve the distinction between Claude’s exploit-development assistance and the researchers’ human-directed target testing, proof of access and responsible disclosure.",
+      "clauses": [
+        {
+          "source_paraphrase": "Hacktron researchers used Claude models to help analyse vulnerabilities and develop an exploit chain during security research against OpenAI-related systems.",
+          "recovered_invariant_interpretation": "AI assistance in security research does not by itself establish that the model selected an unauthorized target, treated capability as authority, or displaced an applicable governance constraint.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping",
+          "adjudication_note": "The preserved evidence attributes exploit development to human-led research but does not establish an independent model-side authority or control failure."
+        },
+        {
+          "source_paraphrase": "The researchers used the exploit chain to demonstrate employee-account and internal-repository access with a proof-of-access pull request.",
+          "recovered_invariant_interpretation": "The access demonstration establishes a realised security-boundary crossing. It is distinct from the models' exploit-development assistance and from the researchers' later disclosure and remediation steps; it does not by itself establish a model-side authority failure.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping",
+          "adjudication_note": "The target-side actions and disclosure are attributed to researchers; the record does not establish that Claude selected or executed those actions or crossed an evidenced AI-governance boundary."
+        },
+        {
+          "source_paraphrase": "After creating the proof-of-access pull request, the researchers stopped testing, disclosed their findings, and enabled OpenAI and Discourse to remediate the issues.",
+          "recovered_invariant_interpretation": "Cessation, disclosure and remediation are recovery steps that follow the demonstrated access; they do not erase that access consequence or independently settle the authorization scope of every test.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping"
+        }
+      ]
+    }
   },
   "source_records": [
     {
@@ -196,15 +223,18 @@
     ]
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.6.5",
+    "taxonomy_version": "0.6.9",
     "classification_status": "unclassified",
-    "classification_basis": "Current-taxonomy review against VIGIL Failure Taxonomy 0.6.5 retains the occurrence as unclassified. The evidence establishes successful authorised bug-bounty research in which Claude materially assisted exploit development against real OpenAI-related systems, followed by responsible disclosure and remediation. VIGIL-FC-000031 Authentication-State Continuity Failure was tested because authentication material and consequential account access were involved, but the record does not establish an expiry, revocation, refresh, recovery or replacement transition that failed to propagate coherently. VIGIL-FC-000009 Transitive Authority Propagation and VIGIL-FC-000003 Target and Scope Authority Transposition were also tested against the reported cross-service reach, but the public evidence does not expose the underlying authorization architecture sufficiently to show authority being automatically transferred through an intermediary or transposed from one valid scope into another. Claude's assistance in authorised security research is not itself a failure mechanism.",
+    "classification_basis": "The current Alignment Taxonomy 0.6.9 leaves this Incident unclassified. The preserved evidence establishes Claude-assisted exploit development within human-led security research, followed by a bounded proof of access and responsible disclosure. It does not establish that Claude selected or executed an unauthorized target action or that an internal authentication or authority transition failed; model assistance and resulting access alone do not establish a VIGIL failure mechanism.",
     "primary_classification": null,
     "secondary_classifications": [],
     "classification_review_provenance": {
-      "review_date": "2026-09-21",
-      "reviewer": "OpenAI ChatGPT / GPT-5.6 Sol under human-directed VIGIL governance",
+      "review_date": "2026-09-29",
+      "reviewer": "OpenAI ChatGPT — GPT-6 Codex under human-directed VIGIL governance",
       "review_status": "classification review completed"
+    },
+    "adjudication_coverage": {
+      "status": "complete"
     }
   },
   "related_incidents": [
@@ -329,29 +359,73 @@
           "External assessments are preserved as attributable analytical positions and are not treated as automatic proof of VIGIL taxonomy membership."
         ],
         "review_outcome": "Retained unclassified under taxonomy 0.6.5; the occurrence remains a material authorised-security and identity/access Incident without a sufficiently evidenced reusable internal mechanism."
+      },
+      {
+        "review_id": "CLAUSE-RECONCILIATION-2026-09-30-INC-000135",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-6 Codex",
+        "review_date": "2026-09-30",
+        "review_scope": "Incident-by-incident functional decomposition review of the preserved occurrence evidence and source_clause_analysis, testing whether materially distinct mechanisms, authority boundaries, control states, and failure or recovery pathways are represented. No harm reassessment or taxonomy re-adjudication was performed.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_link_and_metadata_review": true,
+          "structured_semantic_adjudication": true,
+          "full_current_taxonomy_review": false,
+          "new_external_source_research": true
+        },
+        "known_limitations": [
+          "The clause changes remain bounded to evidence already preserved in the canonical Incident.",
+          "The Hacktron first-party report was reviewed to identify a separate authorization-scope QA question but was not added to canonical source_records or used to expand the clause evidence in this pass.",
+          "Existing canonical taxonomy history and taxonomy version were preserved; absence of a new mapping in this pass is not a full-taxonomy no-mapping determination."
+        ],
+        "review_outcome": "Separated demonstrated account/repository access from subsequent cessation, disclosure and remediation while retaining the existing no-mapping outcomes. A separate question about the scope of authorization for the forum test was routed for QA; no harm reassessment, taxonomy re-adjudication, or taxonomy-version change was performed."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-02-STAGE4-000135",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-02",
+        "review_scope": "Preservation-led Stage 4 clause, polarity and local external-requirement reconciliation.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "external_requirement_review": true,
+          "harm_impact_review": false,
+          "new_external_source_research": false
+        },
+        "known_limitations": [
+          "Preserved attributed evidence bounds the review; hidden control/permission traces unavailable.",
+          "No new IEEE extraction; admitted metadata and reviewed paths only.",
+          "Conclusion uses existing governance_interpretation; no discussion-field contract."
+        ],
+        "review_outcome": "Retained 3 clause decisions; Independently assessed 0 admitted local candidates; archived excluded historical assessments."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-09-21-TAXONOMY-READJUDICATION-000135",
+      "review_id": "VIGIL-REVIEW-2026-10-02-STAGE4-000135",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT",
-      "reviewer_model": "GPT-5.6 Sol",
-      "review_date": "2026-09-21",
-      "review_scope": "Deterministic current-taxonomy re-adjudication against VIGIL Failure Taxonomy 0.6.5 using the complete active selectable class set and evidence already preserved in the canonical Incident. Existing external-assessment objects and qualifying attributable analytical positions in preserved source material were checked for structured external-assessment treatment. No new external source research was performed. Harm Impact, source roles, occurrence facts, agent/environment metadata, external-requirement mappings and CAM applicability were not reopened.",
+      "reviewer_platform": "OpenAI Codex",
+      "reviewer_model": "GPT-6",
+      "review_date": "2026-10-02",
+      "review_scope": "Preservation-led Stage 4 clause, polarity and local external-requirement reconciliation.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "structured_cross_record_reconciliation": true,
-        "full_current_taxonomy_review": true,
-        "external_assessment_consistency_review": true,
+        "taxonomy_review": true,
+        "external_requirement_review": true,
+        "harm_impact_review": false,
         "new_external_source_research": false
       },
       "known_limitations": [
-        "The review is bounded to evidence already preserved in the canonical Incident and does not infer internal mechanisms from title, harm, provider identity, notoriety, registry inclusion or plausible but undocumented system behaviour.",
-        "Candidate rejection does not establish that the mechanism was impossible; it means the preserved occurrence evidence does not satisfy the current selectable class boundary.",
-        "External assessments are preserved as attributable analytical positions and are not treated as automatic proof of VIGIL taxonomy membership."
+        "Preserved attributed evidence bounds the review; hidden control/permission traces unavailable.",
+        "No new IEEE extraction; admitted metadata and reviewed paths only.",
+        "Conclusion uses existing governance_interpretation; no discussion-field contract."
       ],
-      "review_outcome": "Retained unclassified under taxonomy 0.6.5; the occurrence remains a material authorised-security and identity/access Incident without a sufficiently evidenced reusable internal mechanism."
+      "review_outcome": "Retained 3 clause decisions; Independently assessed 0 admitted local candidates; archived excluded historical assessments."
     }
   },
   "harm_impact_assessment": {
@@ -446,5 +520,6 @@
       }
     ]
   },
-  "external_assessments": []
+  "external_assessments": [],
+  "external_requirement_assessments": []
 }

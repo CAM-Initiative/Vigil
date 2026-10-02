@@ -1,0 +1,108 @@
+# Current continuation: MEASURE 2.2 migration and NIST reverse coverage
+
+Stage 3A is complete: the retired MEASURE 2.2 parent is preserved in the retirement ledger and replaced by two context-complete canonical children. The fresh consumer scan found no consumers; no taxonomy or Incident references changed. The other twelve reviewed compounds retain identities and summaries. Canonical requirements now total **1,100**; NIST RMF has **74** records across **72** Core subcategories. Migration and subsystem validation passed.
+
+Stage 3C bounded NIST reverse coverage is reviewed: **13 constituent-support**, **29 contextual**, **32 outside taxonomy scope**. No whole-invariant direct equivalence or new Fidelity Class is asserted. Review-level correspondences remain held pending the full ordered source/reference audit. See [migration review](measure-2-2-migration-review.json) and [reverse coverage](nist-ai-rmf-reverse-coverage-review.json).
+
+The previous coherence audit and its counts describe the pre-migration checkpoint; its candidate IDs were subsequently admitted only for MEASURE 2.2. IEEE stays not-started while the user awaits permission. Stage 3D–F and Stage 4 remain pending/in progress; the Incident validator's existing diagnostics have not been mechanically repaired.
+
+## Earlier checkpoints
+
+# Current Stage 3 coherence correction
+
+The individual review of all 13 flagged parents and 31 candidates is complete. **12 coherent compounds retain their identities and summaries; only MEASURE 2.2 requires decomposition, with two context-complete proposed children.** There are no unresolved atomicity decisions and no existing repository consumer references requiring identity disposition for that subset. All 48 references to retained MEASURE 2.5 remain unchanged.
+
+See [the disposition audit](ATOMICITY-COHERENCE-REVIEW.md) and [full context/provenance JSON](atomicity-coherence-review.json). The active backlog now contains only MEASURE 2.2. Original candidates and superseded backlog decisions are preserved in the audit; draft IDs do not allocate canonical identities. OECD reverse coverage is preserved and its represented bounded scope has no known material compression after coherence review. NIST remains effectively partial pending the genuine migration.
+
+Stage 3 remains in progress. No migration tooling, canonical identity, FC mapping or Incident record changed during this correction. The IEEE copy is now accessible: edition and publisher-download provenance are established. Its AI-use notice requires advance written IEEE SA consent, which remains unverified; IEEE stays not-started. See [access review](ieee7003-access-review.json).
+
+## Historical checkpoint before the coherence correction
+
+The following narrative records the earlier checkpoint. Its 13-compound/31-replacement assumptions are superseded by the audit above and are not an approved migration plan.
+
+# Ordered architecture refactor — 1 October 2026
+
+Baseline: `f0984da0cc916a6763b7d69f694427009ba8dce7`, integration branch `work/integrate-external-requirements-001-179`.
+
+## Stage 1 — complete
+
+All 76 selectable classes now distinguish a neutral definition and invariant from explicit success and failure occurrence conditions. Each has individually authored success recognition addressing a relevant context, positively observed property holding, and evidence adequate to that bounded outcome. Existing failure recognition moved intact to `failure_recognition`; schema version is 0.4.0. Families retain their neutral domains and separately scoped diagnostic failure boundaries; class-specific success admission does not need a duplicated family structure.
+
+The acceptance inventory verifies that all pre-existing class fields, immutable IDs/codes/names, family membership, invariants, exclusions, boundaries, aliases, examples and references are unchanged. No boundary defect was silently repaired. Publication renderers expose both conditions and recognition structures. Isolated tests establish that neither missing polarity evidence, failed success recognition nor exclusion from failure establishes the other polarity. Evidence-admission helpers require complete condition evidence sets; citations still require substantive adjudication by their caller.
+
+## Stage 2 — structural teardown implemented; corpus adoption pending
+
+Retired the global Incident × EXTREQ candidate CSV, summary, builder and matrix-specific tests. Current maintenance instructions use the disposable one-clause resolver. Dated historical audits retain their historical matrix references. Harm Impact Matrix terminology is unaffected.
+
+The resolver reads only supported reviewed direct/strong-supporting relationships and resolving EXTREQs. An unresolved clause, contextual reference or unreviewed relationship produces no candidate. No Cartesian product or persistent candidate dataset is created.
+
+Independent occurrence assessment validation owns requirement identity, applicability, independent findings, resolving source evidence and optional clause-scoped reviewed derivation. Independently identified requirements no longer need an FC mapping. Requirement findings use `met`, `not-met`, `evidence-insufficient` and `not-assessable`; taxonomy polarity is not a compliance vocabulary. Applicability retains applicable, insufficient-evidence and not-applicable.
+
+Retired the rule requiring local successful or ambiguous relationships to be globally classified and pre-admitted as textbook exemplars. Local evidentiary polarity, whole-Incident completeness and exemplar publication are independent decisions. Removed substantive external-assessment payloads from the navigation index; counts and search terms route readers to canonical records. Regenerated the indexes using the builder. Thin cross-dataset integrity validates endpoints without adjudicating meaning.
+
+The replacement occurrence checks currently report 1,288 diagnostics across 111 Incidents. These are explicit reconciliation work, not proof that underlying facts or prior applicability decisions are false. The complete diagnostics are recorded here. **The full Incident validator is not green.** Canonical Incident records have not been rewritten to satisfy new machinery before the ordered standards audit. No existing sources, factual narratives, harm findings, taxonomy roles, applicability bases or historical provenance were deleted.
+
+## Stage 3 — in progress, not complete
+
+### Current continuation — exact-copy reviews and representation repairs
+
+Current canonical population: **1,102 EXTREQs**, across 85 registered source versions. Earlier counts and access findings below are dated work-history statements, not current inventory totals. Stage 3 remains in progress; Stage 4 has not started. No Fidelity Classes, taxonomy mappings or Incident findings were changed in this continuation.
+
+The NIST AI 100-2 review corrects three threat-definition summaries. NIST AI 100-4 now has 19 canonical records: four metadata/summary repairs, one duplicate retired with its full record and zero-consumer scan preserved, and two Section 6 lifecycle recommendations added. The exact primary-copy digests were corrected where an earlier upload had truncated or misidentified them. C2PA retains 28 represented controls and partial extraction; two summaries were repaired and the Section 18.28 schema/prose conflicts remain unresolved. CETS No. 225 retains 54 bounded records; three actor/timing/remedy qualifications were corrected, and current depositary applicability remains unverified. NIST SP 800-218A retains all 75 Table 1 recommendations/considerations, with exact primary wording and development-only voluntary scope reviewed.
+
+Licensed IEEE copies are now discoverable in the user-provided Drive collection. The retrieved IEEE 7007-2021 PDF matches its recorded SHA-256 and identifies the licensed user's IEEE Xplore download. All ten represented concept records were reviewed: three summaries now preserve government-capacity responsibility patterns or norm-aware-agent relationships. Formal ontology content remains definitional; exhaustive CLIF conformance and informative Annex D are excluded. Access to one edition does not establish access, licence conditions or completed review for another. IEEE 7003 remains on hold pending the previously identified permission issue.
+
+NIST AI 600-1 has 224 bounded records: twelve Section 2 risk definitions and 212 Section 3 suggested actions. The twelve definition summaries now describe the source-defined risk instead of adding a generic should-manage prescription. Exact PDF table reconstruction confirms all 211 earlier action summaries, and identifies the omitted action printed **GV4.3--001**. The added canonical record, **EXTREQ-970A3B381973A11E**, preserves that exact printed locator and records GV-4.3-001 only as its normalized discovery identity. It recommends policies to measure effectiveness of employed content-provenance methods; cryptography, watermarking and steganography remain examples. Fresh actor, scope, metadata, atomicity and reverse coverage review of the 211 earlier actions remains pending: text matching alone is not substantive completion. The OECD queue now reflects its already recorded 37-record substantive/reverse review rather than the stale unresolved state.
+
+Cross-source review questions remain: formal ontology logic and government responsibility-ascription maturity do not fit operational invariant records directly; representative/fair service performance and distributed benefits require a distinct outcome analysis; ordinary energy/water footprint measurement is broader than preservation of an independently applicable biospheric constraint. These are analytical scope observations, not approved gaps or proposals to create Fidelity Classes. Institutional research, workforce, policy cooperation, treaty reporting and technical protocol conformance remain intelligible external governance concepts without an FC relationship.
+
+Canada's registered 2026-09-28 Directive snapshot remains unverified after the authoritative endpoint returned an access rejection; the explanatory AIA page was not substituted for Directive duties. The source retains not-started status. Each completed represented-scope review records primary access, precise locators, before/after records, exclusions, interpretation limits and held relationship admission in its source-specific JSON audit. Remaining IEEE, AAM SDOS, IMDA, EU and NIST action reviews and the all-reference reconciliation still block Stage 3 completion.
+
+
+The audit inventories all 1,099 canonical EXTREQs and all 139 FC references with hashes and explicit pending/unresolved states. Structural source, requirement, metadata and fidelity validators pass. That result is not a fresh source-fidelity assurance or reverse semantic coverage review.
+
+A primary-text pilot reviewed eight cited provisions from official NIST AI RMF 1.0 and NIST AI 600-1 PDFs, assessing 12 existing FC references. Four are strong supporting constituent relationships; eight are contextual. None expresses a whole direct invariant. The audit records exact supported components, scope differences and downloaded primary-copy hashes. Existing reference notes are not treated as authority for their strength. The results remain review material; active relationships have not been rebuilt before completion of the ordered audit. The empty relationship registry therefore expresses pending review, not absence of correspondence.
+
+Fresh substantive access to the registered licensed IEEE editions is unavailable in this session. The official IEEE GET route returned HTTP 418 and the IEEE 7014.1 publisher page HTTP 403; no substantive exact-edition copy was available for comparison. Existing recorded licensed-access provenance is preserved and not represented as fresh access. Publisher metadata, summaries and search results are not substituted for primary clauses. Canada and IEEE 7003 remain not-started; the EU AI Act and C2PA remain partial.
+
+Continuation: the official January 2023 NIST AI RMF 1.0 PDF was compared against all 71 existing Core records. Corrected 39 summaries that omitted scope, qualifications or operational conditions, or added unsupported duties. All original IDs are preserved. Missing MANAGE 4.3 now has two independently assessable records: incident/error communication and following/documenting tracking, response and recovery processes. The bounded Core now represents all 72 subcategories with 73 records. Part 1 framing, category headings, function narrative, Profiles, appendices and the companion Playbook are excluded from this control extraction. The corpus contains 1,099 records.
+
+The dated `nist-ai-rmf-integrity-review.json` records every comparison, before/after wording, exact source identity and primary-copy hash. It does not certify per-record atomicity, all applicability fields or reverse coverage. The initial continuation changed NIST AI RMF fidelity to provisional/partial; the subsequent atomicity review below identifies specific re-extraction work, replacing the earlier sample-based assurance. Bounded Core coverage remains complete; that coverage is distinct from fidelity assurance. Existing provenance and human-review status are preserved. No FC mappings or Incident records were changed.
+
+`primary-access-review.json` records fresh access triage for the source and reference URLs, separating downloaded-but-unverified content, abstracts, short responses and access challenges. Exact-version substantive authority remains unresolved wherever it has not been inspected. In particular, the 2026 consolidated EU text returned an empty challenge response, and the IMDA page supplied identity/date without the framework body. These transport results do not erase earlier recorded primary-access provenance.
+
+Preliminary reverse-coverage issues from the RMF comparison include organization-level resource allocation, workforce diversity and proficiency, representative human-subject evaluation, fairness/bias evaluation and environmental-impact assessment. Operational evidence, oversight and safe exit may support constituent taxonomy properties, but do not establish coverage of those broader institutional or impact outcomes. These are review questions, not confirmed missing classes; the full reverse review remains pending. No class creation or boundary change follows from this observation.
+
+The second continuation completes source-specific scope-field comparison for all 73 RMF records and all 37 OECD records. It replaces shared placeholders with the governed objects, lifecycle, actors, timing, explicit information/evidence outputs, assessment methods and applicability conditions actually represented by each proposition. Eight further RMF summaries now preserve mechanism enablement, representative evaluations, unavailable-metric conditions and source-specific benefit/impact scope. In RMF, GOVERN 1.5 does not impose a documentation duty, and MAP 5.1 public incident reports are assessment inputs rather than mandated report outputs. The audit preserves prior field values and superseded review entries. RMF's accessed-copy digest is now recorded in the source-review sidecar without adding human assurance.
+
+Atomicity review identifies 60 atomic RMF records, one coherent monitoring-plan compound and twelve independent compounds needing re-extraction. OECD has 35 atomic records, one coherent aspirational-benefit principle and one independent workplace compound. OECD Section IV's “should be considered” context no longer says “requires”; Section 2 retains the government/Adherent and SME context rather than inheriting the AI-actor call. Three OECD summaries were corrected, information/traceability/progress-evidence outputs made explicit, and the fresh official-copy hash recorded with the prior copy identified in the review. The 2026 reproduction copyright year is not treated as a new instrument revision.
+
+Both sources retain complete **bounded coverage**, but fidelity is now **requires-reextraction**, effective **partial**. Thirteen exact legacy records are entered in the canonical decomposition backlog. `constituent-reextraction-proposals.json` contains 31 source-specific atomic drafts with independently allocated metadata and deterministic proposed IDs. They are REVIEW material, not canonical additions or live staged packages. The draft audit identifies 48 exact consumer occurrences involving 32 Incident files and two class files, including external references and exemplar instrument placements. Existing consumer references and findings are preserved. No old ID is silently narrowed, removed or rebound.
+
+The staging tools currently aggregate retirement identities across sources using EU-specific migration logic, and the metadata staged loader only recognises EU package names. Those source-isolation limitations are recorded in the proposal, so adding these pre-migration drafts beside migrated EU packages cannot falsely establish or disrupt completion. The current EXTREQ schema represents the atomic propositions; controlled migration/reference disposition is the unresolved machinery issue.
+
+OECD reverse coverage was reviewed across all 37 requirements against the current 76 class invariants: three support constituent properties, six are contextual, and 28 lie outside the specific operational invariant domains. None is a whole direct equivalence. These are review results only; active relationships remain empty behind the ordered corpus/reference audit. Government research investment, worker transition/social protection, skills, standards development, benefits distribution and international policy cooperation remain meaningful governance requirements without an FC. Environmental stewardship does not itself express the taxonomy's stronger ecological-constraint priority. No classes or mappings were created or altered.
+
+Permanent tests no longer assert an empty current backlog or a fixed list of “assured” source adjudications. They check backlog schema/identity integrity and the generic rule that non-assured historical completion cannot be effective completion. Historical metadata seeding now correctly stops with “manual reconciliation required” rather than replacing newer review decisions; this is an expected preservation guard, not a failed current dataset gate. The current targeted validation results are recorded separately for this continuation. Other source reviews, all-reference reconciliation, RMF reverse coverage and controlled migration remain pending; Stage 4 has not started.
+
+Next: obtain lawful substantive exact-edition primary text for inaccessible sources, complete the per-requirement primary comparison and all-reference review, classify reverse coverage and gaps, and then rebuild supported relationships. The inventories explicitly remain unresolved until that work occurs; they do not assert completed substantive review merely because every ID is listed.
+
+## Stage 4 — not started
+
+The full review of 170 current Incidents and 536 material clauses is held behind Stage 3 as instructed. The assessment diagnostics identify the structural work to combine with independent actor/system/time/jurisdiction/force and evidence review. Do not mechanically copy taxonomy findings into requirement findings, erase prior scope decisions, or manufacture positive criterion evidence to clear those diagnostics.
+
+## Validation
+
+This continuation also passes 10 targeted source, requirement, generated-output, metadata, fidelity, referential-integrity and historical-seeder checks, recorded in `stage3-validation-results.json`. The historical metadata seeder retains its original population; it does not infer field assurance for the two new records.
+
+23 targeted schema, publication, referential-integrity, provenance and retained-subsystem checks pass; exact results are recorded in `validation-results.json`. The full Incident and occurrence-assessment gates remain failing as explicitly recorded above. No successful broad corpus validation is claimed.
+
+## Supporting artefact classification
+
+LIVE: taxonomy families/schema, domain validators and evidence-admission/resolver code, empty reviewed-relationship registry, current maintenance instructions.
+
+GENERATED: public Incident index and registry manifest, built from canonical records. Publication HTML was rendered for verification; the maintained PDF remains a main-branch release workflow output.
+
+REVIEW: polarity acceptance inventory, external/reference review queues, assessment diagnostics and this status record. These are bounded audit/review inventories, not authoritative candidate datasets.
+
+RETIRE: global candidate matrix, candidate summary, builder and matrix-specific tests. Historical provenance remains available in Git and dated audit documents.

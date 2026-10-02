@@ -1,0 +1,128 @@
+{
+  "artefact_type": "AUDIT",
+  "date": "2026-10-02",
+  "baseline_commit": "a67ca3b47695b0a718dc93b52195f34d4ff4489e",
+  "incident_id": "VIGIL-INC-000023",
+  "status": "INC-000023 reconciled; remaining corpus not reviewed",
+  "retained_clause_adjudications": 0,
+  "changed_clause_adjudications": 3,
+  "eligible_registry_candidates": 2,
+  "independently_identified_requirements": 0,
+  "applicability_counts": {
+    "insufficient-evidence": 2
+  },
+  "finding_counts": {
+    "not-recorded": 2
+  },
+  "existing_assessments_retained": 0,
+  "withheld_prior_assessments": [],
+  "diagnostics_before": [],
+  "diagnostics_after": [],
+  "clauses_taxonomy_him_sources": "Evidence and HIM retained; source/polarity corrections in INC-023/024; stale success-versus-failure prose in INC-025 clarified",
+  "conclusion_fields_updated": 1,
+  "discussion_fields_added": 0,
+  "remaining_scope": "Continue to next active Incident after INC-000023; full corpus incomplete.",
+  "preserved_prechange_prose": {
+    "source_clause_analysis": {
+      "source_record_order": 1,
+      "source_url": "https://www.techradar.com/news/live/claude-outage-june-2026",
+      "purpose": "Translate TechRadar's directly observed interface states and quoted provider updates into the governing access-state invariant without importing the separate quota-reset report into this source's clause analysis.",
+      "clauses": [
+        {
+          "source_paraphrase": "Anthropic's status surface reported a partial outage and elevated model errors while TechRadar directly observed hanging responses across models.",
+          "recovered_invariant_interpretation": "A provider-side availability incident and a model-specific error must remain identifiable as operational service states rather than being silently converted into an account or plan restriction.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000032",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "During a provider-confirmed partial outage, the free-plan interface represented inability to respond as a capacity/plan state and suggested Pro, collapsing provider unavailability into a materially different access state and recovery path."
+            }
+          ],
+          "adjudication_status": "mapped"
+        },
+        {
+          "source_paraphrase": "During the outage, the free-plan interface said unexpected capacity constraints prevented a response and suggested upgrading to Pro.",
+          "recovered_invariant_interpretation": "Provider unavailability, genuine free-tier capacity exhaustion and paid-plan eligibility are different states with different recovery paths; an upgrade prompt must not represent provider failure as user-plan insufficiency.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000032",
+              "relationship": "canonical failure mapping",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "The interface used a plan-capacity state and economic recovery route during a provider-confirmed availability incident, collapsing the distinction needed for correct handling."
+            },
+            {
+              "class_id": "VIGIL-FC-000031",
+              "relationship": "rejected candidate",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "No expiry, revocation, refresh, recovery or credential-replacement transition failed to propagate to an active session."
+            },
+            {
+              "class_id": "VIGIL-FC-000048",
+              "relationship": "rejected candidate",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "The source does not identify an identity, licence, eligibility or entitlement verifier whose non-completion blocked otherwise-valid access without fallback."
+            }
+          ],
+          "adjudication_status": "resolved-no-mapping"
+        },
+        {
+          "source_paraphrase": "During provider downtime, the interface told the user that free-plan usage had been exhausted and presented a paid upgrade path.",
+          "recovered_invariant_interpretation": "A paid-service solicitation should be based on an accurate description of the user's account and service state.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000079",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The outage interface materially misrepresented provider unavailability as a free-plan capacity problem and used that false commercial premise to suggest purchasing Pro, creating an AI-mediated inducement for paid service."
+            },
+            {
+              "class_id": "VIGIL-FC-000082",
+              "relationship": "rejected candidate",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "The misleading product-status framing was used specifically to induce purchase of a paid service. FC-000082 expressly excludes a case where the only distinct governed mechanism is deceptive economic solicitation; the preserved evidence does not establish a separate trust-bearing social-engineering pathway independent of FC-000079."
+            }
+          ],
+          "adjudication_status": "mapped"
+        }
+      ]
+    },
+    "taxonomy_classification": {
+      "classification_basis": "During a provider-confirmed partial outage, the free-plan interface represented inability to respond as a capacity/plan state and suggested Pro, collapsing provider unavailability into a materially different access state and recovery path. The outage interface materially misrepresented provider unavailability as a free-plan capacity problem and used that false commercial premise to suggest purchasing Pro, creating an AI-mediated inducement for paid service.",
+      "classification_review_provenance": {
+        "review_date": "2026-09-30",
+        "reviewer": "OpenAI ChatGPT — GPT-5.6 Sol under human-directed VIGIL governance",
+        "review_status": "clause-level taxonomy adjudication completed"
+      },
+      "classification_status": "classified",
+      "primary_classification": {
+        "family_id": "VIGIL-FF-0005",
+        "class_id": "VIGIL-FC-000032",
+        "classification_role": "failure-occurrence",
+        "classification_basis": "During a provider-confirmed partial outage, the free-plan interface represented inability to respond as a capacity/plan state and suggested Pro, collapsing provider unavailability into a materially different access state and recovery path.",
+        "classification_confidence": "medium"
+      },
+      "secondary_classifications": [
+        {
+          "family_id": "VIGIL-FF-0013",
+          "class_id": "VIGIL-FC-000079",
+          "classification_role": "failure-occurrence",
+          "classification_basis": "The outage interface materially misrepresented provider unavailability as a free-plan capacity problem and used that false commercial premise to suggest purchasing Pro, creating an AI-mediated inducement for paid service.",
+          "classification_confidence": "high"
+        }
+      ],
+      "taxonomy_version": "0.6.9",
+      "classification_role": "failure-occurrence",
+      "adjudication_coverage": {
+        "status": "complete"
+      }
+    },
+    "governance_interpretation": "The incident exposed multiple operational states—provider outage, model error, plan capacity and consumed quota—but the interface directed at least one outage-affected path toward a plan-upgrade interpretation. That representation mattered because paying for a higher tier was not the recovery action for a provider-side outage. Access-state governance requires service availability, model availability, entitlement and quota state to remain distinguishable and auditable under degraded conditions.",
+    "significance_to_cam": "This incident shows why economic and continuity controls must share a reliable state model. Upgrade prompts and quota enforcement should be suppressed or qualified when the provider cannot distinguish genuine plan exhaustion from incident-induced failure. The mapping remains bounded to the observed misrepresentation; ordinary capacity constraints and outages do not by themselves constitute Access-State Differentiation."
+  },
+  "fresh_source_review": {
+    "url": "https://www.techradar.com/news/live/claude-outage-june-2026",
+    "reviewed_on": "2026-10-02",
+    "locator": "June 2 10:25:39Z update: capacity constraints plus Pro suggestion; reporter makes outage connection conditional."
+  }
+}

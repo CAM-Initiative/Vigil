@@ -19,6 +19,7 @@ on:
       - ".github/workflows/taxonomy-publications.yml"
   pull_request:
     paths:
+      - "vigil/taxonomy/VIGIL.FailureTaxonomy.Schema.json"
       - "vigil/taxonomy/VIGIL.FailureTaxonomy.Index.json"
       - "vigil/taxonomy/families/**"
       - "vigil/taxonomy/generated/VIGIL.FailureTaxonomy.CaseFileExamples.json"
@@ -30,6 +31,10 @@ on:
       - "vigil/taxonomy/validate_taxonomy.py"
       - "vigil/taxonomy/render_taxonomy.py"
       - "vigil/taxonomy/render_taxonomy_publication.py"
+      - "vigil/tests/test_failure_taxonomy.py"
+      - "vigil/tests/test_taxonomy_invariant_semantics.py"
+      - "vigil/tests/test_taxonomy_release_modes.py"
+      - "vigil/tests/test_taxonomy_publication_references.py"
       - "vigil/methodologies/VIGIL.HarmImpactMatrix.v*.json"
       - "vigil/references/VIGIL.ObservatoryReferenceRegistry.json"
       - "vigil/taxonomy/assets/**"
@@ -127,6 +132,7 @@ jobs:
       - name: Test taxonomy release and publication contracts
         run: |
           python vigil/tests/test_failure_taxonomy.py
+          python vigil/tests/test_taxonomy_invariant_semantics.py
           python vigil/tests/test_taxonomy_release_modes.py
           python vigil/tests/test_taxonomy_publication_references.py
 

@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Cline prompt-injection and cache-poisoning chain enabled unauthorized npm package publication",
     "created": "2026-09-19",
-    "updated": "2026-09-27",
-    "version": "0.3.1"
+    "updated": "2026-10-02",
+    "version": "0.3.3"
   },
   "incident_identity": {
     "historical_event_name": "Cline prompt-injection and cache-poisoning chain enabled unauthorized npm package publication",
@@ -21,7 +21,7 @@
   "summary": "Attacker-controlled GitHub issue text prompted Cline's Claude-powered triage agent to execute code, enabling poisoning of shared GitHub Actions cache state that later reached a privileged release workflow. The chain exposed an npm token and led to unauthorised publication of `cline@2.3.0`; Cline deprecated the version and revoked credentials. Cline reported no evidence that OpenClaw itself was malicious or that user data was exposed.",
   "vigil_assessment": {
     "factual_basis": "The researcher's reconstruction shows that untrusted issue text could direct the triage agent to execute code, after which shared cache scope could bridge into privileged release workflows. Cline's postmortem states that an attacker used the chain to steal an npm token and publish version 2.3.0 with a postinstall script for OpenClaw. Cline deprecated the version, revoked credentials and reported no evidence that OpenClaw itself was malicious or that user data was exposed.",
-    "governance_interpretation": "Untrusted issue content crossed into a tool-enabled workflow and then propagated through shared infrastructure into release authority. The model interaction was one necessary link; cache design, token scope and release configuration were independently necessary.",
+    "governance_interpretation": "Untrusted issue content crossed into a tool-enabled workflow and then propagated through shared infrastructure into release authority. The model interaction was one necessary link; cache design, token scope and release configuration were independently necessary. Prompt authority, control-plane propagation and captured reconstruction retain their roles. The recovery decision is also assessed as target-binding failure because the wrong token was deleted while the exposed token remained usable. Later correct revocation does not erase that interval; OpenClaw is not recast as malicious.",
     "significance_to_cam": "The case demonstrates that AI issue-triage agents must be isolated from shared build state and publication credentials, because prompt injection can become supply-chain authority through ordinary CI/CD mechanisms.",
     "assessment_boundaries": [
       "The original researcher tested a mirror and states that a different actor weaponised the published technique against Cline.",
@@ -33,8 +33,8 @@
       "purpose": "Preserve a source-specific paraphrase that links the primary occurrence evidence to VIGIL's governance interpretation without treating taxonomy classification as source fact.",
       "clauses": [
         {
-          "source_paraphrase": "First-party account of the token theft, unauthorised package, containment and user-impact findings.",
-          "recovered_invariant_interpretation": "Untrusted issue content crossed into a tool-enabled workflow and then propagated through shared infrastructure into release authority. The model interaction was one necessary link; cache design, token scope and release configuration were independently necessary.",
+          "source_paraphrase": "Cline's postmortem explains that any GitHub user could open an issue handled by a Claude-powered triage workflow with Bash access; attacker-controlled issue instructions could cause code execution, and the workflow's shared cache scope let poisoned state reach a nightly release workflow with publication secrets.",
+          "recovered_invariant_interpretation": "An untrusted public-input workflow with shell execution shared cache state with a more privileged release workflow, allowing the attacker-controlled state to cross into a production publication control plane.",
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000006",
@@ -48,7 +48,9 @@
               "canonical_taxonomy_mapping": true,
               "rationale": "Authority propagated from a public issue-triage workflow through cache state and nightly release credentials to npm publication."
             }
-          ]
+          ],
+          "adjudication_status": "mapped",
+          "adjudication_note": "This clause preserves the connected prompt-execution, shared-cache and privileged-release pathway described in Cline's postmortem; the separate untrusted-content authority boundary is represented in clause 2."
         },
         {
           "source_paraphrase": "Attacker-controlled issue content was treated as operative instruction rather than remaining non-authorising data.",
@@ -60,7 +62,8 @@
               "canonical_taxonomy_mapping": true,
               "rationale": "Untrusted issue content was treated as operative instruction instead of remaining non-authorising data, allowing attacker-controlled text to direct consequential tool activity."
             }
-          ]
+          ],
+          "adjudication_status": "mapped"
         },
         {
           "source_paraphrase": "Post-incident evidence preserved the material instruction and release-path events needed to document the occurrence.",
@@ -72,7 +75,8 @@
               "canonical_taxonomy_mapping": true,
               "rationale": "The retained post-incident evidence captured the material instruction, tool and release-path events needed to preserve the occurrence record."
             }
-          ]
+          ],
+          "adjudication_status": "mapped"
         },
         {
           "source_paraphrase": "The retained evidence allowed the material compromise chain to be reconstructed without repeating unnecessary exploit mechanics.",
@@ -84,7 +88,36 @@
               "canonical_taxonomy_mapping": true,
               "rationale": "The retained evidence supported reconstruction of the compromise chain while the public rationale remains bounded and does not restate unnecessary exploit mechanics."
             }
-          ]
+          ],
+          "adjudication_status": "mapped"
+        },
+        {
+          "source_paraphrase": "After the researcher publicly disclosed the workflow vulnerability, Cline removed the vulnerable workflows and rotated credentials, but deleted the wrong npm token. The exposed npm token remained active, while the organization-level token page showed zero active tokens and did not surface it.",
+          "recovered_invariant_interpretation": "Credential recovery did not bind verification to the specific exposed npm credential; an incomplete management view produced an apparent clean state while the credential remained usable.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000015",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Cline states that recovery deleted the wrong npm token and used an organization-level view that did not surface the exposed token. The revocation action and clean-state signal were not bound to the actual compromised credential, which remained usable until the later publication."
+            }
+          ],
+          "adjudication_status": "mapped",
+          "adjudication_note": "The reported recovery action and verification signal addressed the wrong credential, establishing target-binding failure independently of the initial prompt-injection chain."
+        },
+        {
+          "source_paraphrase": "On February 17, a third party used the still-active npm token to publish cline@2.3.0 with a postinstall script that globally installed OpenClaw, which Cline later described as a legitimate, non-malicious open-source project.",
+          "recovered_invariant_interpretation": "The unrevoked publication credential enabled an unauthorised package release after the underlying workflow had been removed; the evidence does not support describing the OpenClaw payload as malicious code.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping",
+          "adjudication_note": "The package change and publication are reported; this clause does not infer that user systems were compromised beyond the reported software installation."
+        },
+        {
+          "source_paraphrase": "Cline published corrected version 2.4.0, deprecated 2.3.0 and revoked the token by 11:23 a.m. It reported that the occurrence was limited to the npm CLI package, no malicious code was delivered, and no user data was accessed or exfiltrated.",
+          "recovered_invariant_interpretation": "The response closed the active credential and package pathway and bounded the reported impact to the unexpected installation through the affected CLI release; it did not include the separately unaffected IDE extensions or source repository.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping",
+          "adjudication_note": "The response and impact bounds are those reported by Cline; this clause does not independently verify all user installations or infer zero exposure outside the reviewed audit."
         }
       ]
     }
@@ -265,9 +298,9 @@
     ]
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.6.7",
+    "taxonomy_version": "0.6.9",
     "classification_status": "classified",
-    "classification_basis": "Attacker-controlled issue text induced tool execution and crossed through shared cache state into a privileged release control plane. Authority propagated from a public issue-triage workflow through cache state and nightly release credentials to npm publication. Untrusted issue content was treated as operative instruction instead of remaining non-authorising data, allowing attacker-controlled text to direct consequential tool activity. The retained post-incident evidence captured the material instruction, tool and release-path events needed to preserve the occurrence record. The retained evidence supported reconstruction of the compromise chain while the public rationale remains bounded and does not restate unnecessary exploit mechanics.",
+    "classification_basis": "Attacker-controlled issue text induced tool execution and crossed through shared cache state into a privileged release control plane. Authority propagated from a public issue-triage workflow through cache state and nightly release credentials to npm publication. Untrusted issue content was treated as operative instruction instead of remaining non-authorising data, allowing attacker-controlled text to direct consequential tool activity. The retained post-incident evidence captured the material instruction, tool and release-path events needed to preserve the occurrence record. The retained evidence supported reconstruction of the compromise chain while the public rationale remains bounded and does not restate unnecessary exploit mechanics. Cline states that recovery deleted the wrong npm token and used an organization-level view that did not surface the exposed token. The revocation action and clean-state signal were not bound to the actual compromised credential, which remained usable until the later publication.",
     "primary_classification": {
       "family_id": "VIGIL-FF-0001",
       "class_id": "VIGIL-FC-000006",
@@ -303,12 +336,22 @@
         "classification_role": "successful-invariant",
         "classification_basis": "The retained evidence supported reconstruction of the compromise chain while the public rationale remains bounded and does not restate unnecessary exploit mechanics.",
         "classification_confidence": "high"
+      },
+      {
+        "family_id": "VIGIL-FF-0002",
+        "class_id": "VIGIL-FC-000015",
+        "classification_role": "failure-occurrence",
+        "classification_basis": "Cline states that recovery deleted the wrong npm token and used an organization-level view that did not surface the exposed token. The revocation action and clean-state signal were not bound to the actual compromised credential, which remained usable until the later publication.",
+        "classification_confidence": "high"
       }
     ],
     "classification_review_provenance": {
-      "review_date": "2026-09-25",
-      "reviewer": "OpenAI ChatGPT — GPT-5.6 Sol under human-directed VIGIL governance",
+      "review_date": "2026-09-29",
+      "reviewer": "OpenAI ChatGPT — GPT-6 Codex under human-directed VIGIL governance",
       "review_status": "classification review completed"
+    },
+    "adjudication_coverage": {
+      "status": "complete"
     }
   },
   "related_incidents": [],
@@ -394,29 +437,91 @@
           "Factual basis, governance interpretation, CAM significance, assessment boundaries and source-clause analysis were not changed."
         ],
         "review_outcome": "Restored supported occurrence detail and essential factual boundaries in the public Stage 01 narrative without changing evidence admission or governed adjudication."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-09-30-CLAUSE-BREAKDOWN-000159",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-6 Codex",
+        "review_date": "2026-09-30",
+        "review_scope": "Incident-by-incident functional decomposition review of the preserved occurrence evidence and source_clause_analysis, testing whether materially distinct mechanisms, authority boundaries, control states, and failure or recovery pathways are represented. No harm reassessment or taxonomy re-adjudication was performed.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_link_and_metadata_review": true,
+          "structured_semantic_adjudication": true,
+          "full_current_taxonomy_review": false,
+          "new_external_source_research": false
+        },
+        "known_limitations": [
+          "Cline's postmortem reports that the payload installed a legitimate OpenClaw project and that no malicious code or user-data access was identified; this review does not independently establish every downstream installation outcome.",
+          "The incident evidence describes Cline's own postmortem and the researcher's published chain; it does not attribute the third party's publication to the model or to the researcher.",
+          "Existing taxonomy relationships and history were preserved; no taxonomy version change or taxonomy assessment regeneration was performed."
+        ],
+        "review_outcome": "Clarified the connected issue-triage/cache/release mechanism and added distinct clauses for the failed npm-token rotation, later unauthorised package publication, and correction/revocation/impact bounds. All five existing FC-000006, FC-000009, FC-000001, FC-000022 and FC-000024 relationship objects were preserved; no classification, role or taxonomy history changed."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-02-STAGE4-000159",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-02",
+        "review_scope": "Preservation-led Stage 4 clause, polarity and local external-requirement reconciliation.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "external_requirement_review": true,
+          "harm_impact_review": false,
+          "new_external_source_research": true
+        },
+        "known_limitations": [
+          "Preserved attributed evidence bounds the review; hidden control/permission traces unavailable.",
+          "No new IEEE extraction; admitted metadata and reviewed paths only.",
+          "Conclusion uses existing governance_interpretation; no discussion-field contract."
+        ],
+        "review_outcome": "Retained 6 clause decisions; Corrected one clause’s unsupported permission inference or wrong-credential recovery disposition. Independently assessed 45 admitted local candidates; archived excluded historical assessments."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-02-CONCLUSION-WORDING-000159",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-02",
+        "review_scope": "Human-approved wording-only replacement of the five remaining conclusion phrases flagged by the public-prose check.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": false,
+          "harm_impact_review": false,
+          "new_external_source_research": false
+        },
+        "known_limitations": [
+          "No new evidence verification or re-adjudication; established findings, classifications and evidence limits remain unchanged.",
+          "Approval of the editorial scope does not imply human authorship or line-by-line verification."
+        ],
+        "review_outcome": "Applied the approved descriptive phrase replacement in governance_interpretation; preserved all other assessment prose, clause adjudications, taxonomy, external requirement and Harm Impact findings, sources and prior review history."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-09-26-STAGE01-AUTHORING-QA-000159",
+      "review_id": "VIGIL-REVIEW-2026-10-02-CONCLUSION-WORDING-000159",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT",
-      "reviewer_model": "GPT-5.6 Sol",
-      "review_date": "2026-09-26",
-      "review_scope": "Bounded Stage 01 'What happened' authoring-quality pass using only existing canonical evidence to restore supported occurrence detail and essential factual boundaries in the public Stage 01 narrative. Taxonomy, Harm Impact and source admission were not reopened.",
+      "reviewer_platform": "OpenAI Codex",
+      "reviewer_model": "GPT-6",
+      "review_date": "2026-10-02",
+      "review_scope": "Human-approved wording-only replacement of the five remaining conclusion phrases flagged by the public-prose check.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "frontend_display_contract_review": true,
         "taxonomy_review": false,
         "harm_impact_review": false,
         "new_external_source_research": false
       },
       "known_limitations": [
-        "Only existing canonical evidence was used; no new external evidence research was undertaken.",
-        "Taxonomy and Harm Impact were not reopened, and source admission was not changed.",
-        "Factual basis, governance interpretation, CAM significance, assessment boundaries and source-clause analysis were not changed."
+        "No new evidence verification or re-adjudication; established findings, classifications and evidence limits remain unchanged.",
+        "Approval of the editorial scope does not imply human authorship or line-by-line verification."
       ],
-      "review_outcome": "Restored supported occurrence detail and essential factual boundaries in the public Stage 01 narrative without changing evidence admission or governed adjudication."
+      "review_outcome": "Applied the approved descriptive phrase replacement in governance_interpretation; preserved all other assessment prose, clause adjudications, taxonomy, external requirement and Harm Impact findings, sources and prior review history."
     },
     "operating_model": "AI-authored, semi-autonomous production under human contract approval",
     "human_governance_editor": null,
@@ -517,5 +622,741 @@
         "evidence_confidence": "not-assessed"
       }
     ]
-  }
+  },
+  "external_requirement_assessments": [
+    {
+      "requirement_id": "EXTREQ-00DBB52A605BD459",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000022"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "applicability_status": "insufficient-evidence",
+      "applicability_basis": "NIST-AI-600-1 MG-4.3-002 (Establish and maintain policies and procedures to record and track GAI system reported errors, near-misses, and negative impacts.) is a voluntary organization/lifecycle action. No adoption or full action-specific testing, disclosure, risk, provenance, incident or bias programme is established for the the February 2026 Cline release compromise. Individual captured events, publication correction or an intrusion are distinct from that undertaking.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-0348B64AA2D82BC9",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000022"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "Article 12(2)(c) is a later-applying high-risk duty or special-category bias-correction provision. The the February 2026 Cline release compromise establishes no applicable high-risk/Union duty at occurrence or that bias-correction exception. US employment stakes alone are not an EU applicability determination.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-13E71F1E78D8FA2D",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000024"
+      ],
+      "source_clause_indices": [
+        3
+      ],
+      "applicability_status": "insufficient-evidence",
+      "applicability_basis": "IEEE-7001 Table 5 level 4 (Maintain a full audit trail for quality, ethical-risk and ethical-governance processes.) requires a relevant autonomous-system stakeholder level and conformance undertaking. The sources do not establish that undertaking or full validation/recording scope; ordinary captured investigation does not prove every specified timestamp, input/output or decision reason. Only admitted metadata is used.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-1582CA6E2303931A",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000024"
+      ],
+      "source_clause_indices": [
+        3
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "PS.3.1 R2 (Include documentation of the justification for AI model selection in the retained information.) concerns model-development/acquisition security. Operational search or a coding-agent product’s conventional CI/release workflow is not evidence of developing the underlying AI model/components.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-1FD5D213F5EC16AD",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000022"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "RV.1.1 R1 (Log, monitor, and analyze all inputs and outputs for AI models to detect possible security and performance issues (see PO.5.3).) concerns model-development/acquisition security. Operational search or a coding-agent product’s conventional CI/release workflow is not evidence of developing the underlying AI model/components.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-20379EF0C7E97FDF",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000024"
+      ],
+      "source_clause_indices": [
+        3
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "Article 12(3)(a) is a later-applying high-risk duty or special-category bias-correction provision. The the February 2026 Cline release compromise establishes no applicable high-risk/Union duty at occurrence or that bias-correction exception. US employment stakes alone are not an EU applicability determination.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-2C72ECCDA9855444",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000006"
+      ],
+      "source_clause_indices": [
+        0
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "PS.1.3 R1 (Keep model weights and configuration parameters separate from training, testing, fine-tuning, and aligning data.) concerns model-development/acquisition security. Operational search or a coding-agent product’s conventional CI/release workflow is not evidence of developing the underlying AI model/components.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-2C8D94B209C2F80D",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000015"
+      ],
+      "source_clause_indices": [
+        4
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "C2PA-SPEC Section 6.8 (When creating an update manifest, claim generators must not redact the hard-binding assertion applying to the current asset.) concerns content manifests/detection/provenance techniques or model-card/package identities. Person/target binding and investigation traces are not such technical validation operations or AI package metadata.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-32EDD8730ECA61B4",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000024"
+      ],
+      "source_clause_indices": [
+        3
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "PS.3.1 R3 (Include documentation of the entire training process, such as data preprocessing and model architecture.) concerns model-development/acquisition security. Operational search or a coding-agent product’s conventional CI/release workflow is not evidence of developing the underlying AI model/components.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-336BEEA4C51B9041",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000009"
+      ],
+      "source_clause_indices": [
+        0
+      ],
+      "applicability_status": "insufficient-evidence",
+      "applicability_basis": "SDOS-EN-02 (Require each executing module to confirm a valid governance approval through a secondary module-level authorization check before carrying out the governed operation.) materially concerns agent runtime governance. No SDOS undertaking or policy-defined structural layer, invocation/audit, model tier, baseline, module or panel programme is established. Investigation traces and prompt-execution failures do not supply that applicability.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-3F3FE69853DA2FE6",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000022",
+        "VIGIL-FC-000024"
+      ],
+      "source_clause_indices": [
+        2,
+        3
+      ],
+      "applicability_status": "insufficient-evidence",
+      "applicability_basis": "IEEE-7001 Table 4 level 3 (Use a standard or open-standard event recorder that captures key inputs, outputs and high-level decisions.) requires a relevant autonomous-system stakeholder level and conformance undertaking. The sources do not establish that undertaking or full validation/recording scope; ordinary captured investigation does not prove every specified timestamp, input/output or decision reason. Only admitted metadata is used.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-422283C001BAFEE1",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000022",
+        "VIGIL-FC-000024"
+      ],
+      "source_clause_indices": [
+        2,
+        3
+      ],
+      "applicability_status": "insufficient-evidence",
+      "applicability_basis": "SDOS-AU-01 (Generate a structured governance audit record for every tool invocation before returning the tool result, including classification, agent identity, model-binding rationale, time and protected policy-relevant parameters.) materially concerns agent runtime governance. No SDOS undertaking or policy-defined structural layer, invocation/audit, model tier, baseline, module or panel programme is established. Investigation traces and prompt-execution failures do not supply that applicability.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-4277B23509413079",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000022",
+        "VIGIL-FC-000024"
+      ],
+      "source_clause_indices": [
+        2,
+        3
+      ],
+      "applicability_status": "insufficient-evidence",
+      "applicability_basis": "NIST-AI-600-1 GV-4.3-002 (Establish organizational practices to identify the minimum set of criteria necessary for GAI system incident reporting such as: System ID (auto-generated most likely), Title, Reporter, System/Source, Data Reported, Date of Incident, Description, Impact(s), Stakeholder(s) Impacted.) is a voluntary organization/lifecycle action. No adoption or full action-specific testing, disclosure, risk, provenance, incident or bias programme is established for the the February 2026 Cline release compromise. Individual captured events, publication correction or an intrusion are distinct from that undertaking.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-42D3F017A9786AE8",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000022"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "Article 12(1) is a Chapter III, Section 2 requirement for providers of high-risk AI systems. Regulation (EU) 2026/1744 amended Article 113(c): those Chapter III sections apply from 2 December 2027 for systems classified as high-risk under Article 6(2)/Annex III and 2 August 2028 for systems classified under Article 6(1)/Annex I. The preserved occurrence date/window (2026-02-17) is before the earliest application date. Article 12(1) therefore does not apply to this historical occurrence; this temporal disposition does not determine later system compliance or other legal duties. The taxonomy mapping generated a candidate only and does not make the requirement retroactive.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-4A7575E86C311199",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000024"
+      ],
+      "source_clause_indices": [
+        3
+      ],
+      "applicability_status": "applicable",
+      "applicability_basis": "Section 1.5(b) is a nonbinding comparative benchmark for the evidenced 2025/2026 AI actors and traceability or adversely affected-person output context. No binding/certified conformity claim is made.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ],
+      "finding": "met",
+      "finding_basis": "The provider/evaluator or researcher investigation retained linked evidence allowing this occurrence’s material target/authority or prompt/cache/credential/publication sequence to be reconstructed and questions about the pathway answered. This independently supports context-appropriate traceability, not timely detection, correct recovery or complete fleet coverage."
+    },
+    {
+      "requirement_id": "EXTREQ-5EF3B75BAAAB980A",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000015"
+      ],
+      "source_clause_indices": [
+        4
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "SPDX-SPEC AI/AIPackage (An AI package must carry the required inherited identity, creation, supplier, release, download, version and primary-purpose properties defined for AIPackage.) concerns content manifests/detection/provenance techniques or model-card/package identities. Person/target binding and investigation traces are not such technical validation operations or AI package metadata.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-6B9145EBE7C888AB",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000022"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "applicability_status": "insufficient-evidence",
+      "applicability_basis": "NIST-AI-600-1 GV-6.2-002 (Document incidents involving third-party GAI data and systems, including open- data and open-source software.) is a voluntary organization/lifecycle action. No adoption or full action-specific testing, disclosure, risk, provenance, incident or bias programme is established for the the February 2026 Cline release compromise. Individual captured events, publication correction or an intrusion are distinct from that undertaking.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-70BB4ECD22E7DC60",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000022"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "applicability_status": "insufficient-evidence",
+      "applicability_basis": "IEEE-7001 Table 4 level 1 — software-only system (Equip a software-only autonomous system with an event-recorder module that logs system inputs and outputs.) requires a relevant autonomous-system stakeholder level and conformance undertaking. The sources do not establish that undertaking or full validation/recording scope; ordinary captured investigation does not prove every specified timestamp, input/output or decision reason. Only admitted metadata is used.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-7FAD482D46D3F347",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000001",
+        "VIGIL-FC-000006"
+      ],
+      "source_clause_indices": [
+        0,
+        1
+      ],
+      "applicability_status": "insufficient-evidence",
+      "applicability_basis": "SDOS-GV-05 (Enforce governance constraints in a structural layer independent of model inference so model outputs cannot use an authorized pathway to override, bypass or modify the controls applied to their operations.) materially concerns agent runtime governance. No SDOS undertaking or policy-defined structural layer, invocation/audit, model tier, baseline, module or panel programme is established. Investigation traces and prompt-execution failures do not supply that applicability.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-80B95118891500CC",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000024"
+      ],
+      "source_clause_indices": [
+        3
+      ],
+      "applicability_status": "insufficient-evidence",
+      "applicability_basis": "IEEE-7001 5.2.2 principle (Enable investigators to trace the system processes that led to an incident over the relevant time period.) requires a relevant autonomous-system stakeholder level and conformance undertaking. The sources do not establish that undertaking or full validation/recording scope; ordinary captured investigation does not prove every specified timestamp, input/output or decision reason. Only admitted metadata is used.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-8E0FB77F63318E12",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000022",
+        "VIGIL-FC-000024"
+      ],
+      "source_clause_indices": [
+        2,
+        3
+      ],
+      "applicability_status": "insufficient-evidence",
+      "applicability_basis": "SDOS-EN-04 (Create a tamper-evident audit record for governed outbound execution, linking the permitting governance decision, initiating agent identity, time and protected policy-relevant operation metadata.) materially concerns agent runtime governance. No SDOS undertaking or policy-defined structural layer, invocation/audit, model tier, baseline, module or panel programme is established. Investigation traces and prompt-execution failures do not supply that applicability.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-90A317D512B165D5",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000024"
+      ],
+      "source_clause_indices": [
+        3
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "Article 12(2) is a Chapter III, Section 2 requirement for high-risk AI systems. Regulation (EU) 2026/1744 amended Article 113(c): those Chapter III sections apply from 2 December 2027 for systems classified as high-risk under Article 6(2)/Annex III and 2 August 2028 for systems classified under Article 6(1)/Annex I. The preserved occurrence date/window (2026-02-17) is before the earliest application date. Article 12(2) therefore does not apply to this historical occurrence; this temporal disposition does not determine later system compliance or other legal duties. The taxonomy mapping generated a candidate only and does not make the requirement retroactive.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-9AAA4079957B7D7D",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000015"
+      ],
+      "source_clause_indices": [
+        4
+      ],
+      "applicability_status": "insufficient-evidence",
+      "applicability_basis": "SDOS-IA-01 (Verify agent identity against a governance-managed trust root before governance evaluation, carry that identity through the governance pipeline, and deny admission where identity cannot be verified.) materially concerns agent runtime governance. No SDOS undertaking or policy-defined structural layer, invocation/audit, model tier, baseline, module or panel programme is established. Investigation traces and prompt-execution failures do not supply that applicability.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-9BA7C15FFB640788",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000022"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "applicability_status": "insufficient-evidence",
+      "applicability_basis": "SDOS-DE-02 (Create and retain a structured deliberation record that preserves individual assessments, convergence and divergence, and a scored panel summary for later review.) materially concerns agent runtime governance. No SDOS undertaking or policy-defined structural layer, invocation/audit, model tier, baseline, module or panel programme is established. Investigation traces and prompt-execution failures do not supply that applicability.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-9DAE98CAB159CB64",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000022"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "PW.5.1 R2 (Code the handling of inputs (including prompts and user data) and outputs carefully. All inputs and outputs should be logged, analyzed, and validated within the context of the AI model, and those with issues should be sanitized or dropped.) concerns model-development/acquisition security. Operational search or a coding-agent product’s conventional CI/release workflow is not evidence of developing the underlying AI model/components.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-A24734AAA7BA537F",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000024"
+      ],
+      "source_clause_indices": [
+        3
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "Article 12(3)(b) is a later-applying high-risk duty or special-category bias-correction provision. The the February 2026 Cline release compromise establishes no applicable high-risk/Union duty at occurrence or that bias-correction exception. US employment stakes alone are not an EU applicability determination.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-A849E2274E39A1C3",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000015"
+      ],
+      "source_clause_indices": [
+        4
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "C2PA-SPEC Section 10.3.2.2 (When an ingredient manifest identifier is already present, generators must compare the manifests, ignore the new one if identical, or give the different new manifest a fresh identifier before insertion according to Chapter 8.) concerns content manifests/detection/provenance techniques or model-card/package identities. Person/target binding and investigation traces are not such technical validation operations or AI package metadata.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-A8967B5D4698D35E",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000024"
+      ],
+      "source_clause_indices": [
+        3
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "Article 12(3)(c) is a later-applying high-risk duty or special-category bias-correction provision. The the February 2026 Cline release compromise establishes no applicable high-risk/Union duty at occurrence or that bias-correction exception. US employment stakes alone are not an EU applicability determination.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-B578E815E6D995B4",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000001"
+      ],
+      "source_clause_indices": [
+        1
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "PW.5.1 R3 (Encode inputs and outputs to prevent the execution of unauthorized code.) concerns model-development/acquisition security. Operational search or a coding-agent product’s conventional CI/release workflow is not evidence of developing the underlying AI model/components.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-BEACEB7A006E67C6",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000022"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "Article 12(2)(b) is a later-applying high-risk duty or special-category bias-correction provision. The the February 2026 Cline release compromise establishes no applicable high-risk/Union duty at occurrence or that bias-correction exception. US employment stakes alone are not an EU applicability determination.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-C1E9F45E2A73DE89",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000015"
+      ],
+      "source_clause_indices": [
+        4
+      ],
+      "applicability_status": "insufficient-evidence",
+      "applicability_basis": "SDOS-IN-03 (Verify the cryptographic signature and authorized-capability state of each module manifest before activation and reject modules that fail manifest integrity checks.) materially concerns agent runtime governance. No SDOS undertaking or policy-defined structural layer, invocation/audit, model tier, baseline, module or panel programme is established. Investigation traces and prompt-execution failures do not supply that applicability.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-C395266FE4929644",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000022"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "applicability_status": "insufficient-evidence",
+      "applicability_basis": "NIST-AI-600-1 MS-4.2-004 (Monitor and document instances where human operators or other systems override the GAI's decisions. Evaluate these cases to understand if the overrides are linked to issues related to content provenance.) is a voluntary organization/lifecycle action. No adoption or full action-specific testing, disclosure, risk, provenance, incident or bias programme is established for the the February 2026 Cline release compromise. Individual captured events, publication correction or an intrusion are distinct from that undertaking.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-CB76B4C437492E66",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000022"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "Physical autonomous-system audiovisual recording has no physical-system object in this software evaluation/release workflow.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-CF67C1E2AF61F3C8",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000024"
+      ],
+      "source_clause_indices": [
+        3
+      ],
+      "applicability_status": "insufficient-evidence",
+      "applicability_basis": "SDOS-GV-02 (Assign the model capability tier for each dispatched task through the governance layer, prevent agent/model self-selection or override, and record the selection rationale.) materially concerns agent runtime governance. No SDOS undertaking or policy-defined structural layer, invocation/audit, model tier, baseline, module or panel programme is established. Investigation traces and prompt-execution failures do not supply that applicability.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-D8E5BC29A4B8D257",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000022"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "Article 12(2)(a) is a later-applying high-risk duty or special-category bias-correction provision. The the February 2026 Cline release compromise establishes no applicable high-risk/Union duty at occurrence or that bias-correction exception. US employment stakes alone are not an EU applicability determination.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-DA3169C395EFDD3E",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000015"
+      ],
+      "source_clause_indices": [
+        4
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "C2PA-SPEC Section 9.1 (A manifest must contain no more than one assertion defining a hard binding.) concerns content manifests/detection/provenance techniques or model-card/package identities. Person/target binding and investigation traces are not such technical validation operations or AI package metadata.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-E07756B983D5575E",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000022",
+        "VIGIL-FC-000024"
+      ],
+      "source_clause_indices": [
+        2,
+        3
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "Article 13(3)(f) is a later-applying high-risk duty or special-category bias-correction provision. The the February 2026 Cline release compromise establishes no applicable high-risk/Union duty at occurrence or that bias-correction exception. US employment stakes alone are not an EU applicability determination.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-E152AE56D54C13B9",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000015"
+      ],
+      "source_clause_indices": [
+        4
+      ],
+      "applicability_status": "insufficient-evidence",
+      "applicability_basis": "SDOS-IA-02 (Verify signed module manifests and declared authorized capabilities before tool registration, rejecting missing, invalid or tampered module identities from the governed execution surface.) materially concerns agent runtime governance. No SDOS undertaking or policy-defined structural layer, invocation/audit, model tier, baseline, module or panel programme is established. Investigation traces and prompt-execution failures do not supply that applicability.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-F11F4371E4676579",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000015"
+      ],
+      "source_clause_indices": [
+        4
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "C2PA-SPEC Section 10.3.2.1 (In a standard manifest, created_assertions must reference at least one hard-binding assertion.) concerns content manifests/detection/provenance techniques or model-card/package identities. Person/target binding and investigation traces are not such technical validation operations or AI package metadata.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-F7A7DA9DCA8D32BD",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000022"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "Article 4a(1)(f) is a later-applying high-risk duty or special-category bias-correction provision. The the February 2026 Cline release compromise establishes no applicable high-risk/Union duty at occurrence or that bias-correction exception. US employment stakes alone are not an EU applicability determination.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-F8F11DA0D9D14DD0",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000024"
+      ],
+      "source_clause_indices": [
+        3
+      ],
+      "applicability_status": "insufficient-evidence",
+      "applicability_basis": "The source record documents Attacker-controlled GitHub issue text prompted Cline's Claude-powered triage agent to execute code, enabling poisoning of shared GitHub Actions cache state that later reached a privileged release workflow. IEEE 7001-2021 is a voluntary transparency standard, and this requirement concerns Table 4 level 4. The preserved evidence does not establish that the relevant developer, operator or responsible user adopted IEEE 7001 or undertook its transparency levels for this system. The taxonomy mapping does not establish that voluntary commitment; applicability remains unresolved.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-F9388EF21726D66D",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000022"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "applicability_status": "insufficient-evidence",
+      "applicability_basis": "NIST-AI-600-1 GV-1.5-003 (Maintain a document retention policy to keep history for test, evaluation, validation, and verification (TEVV), and digital content transparency methods for GAI.) is a voluntary organization/lifecycle action. No adoption or full action-specific testing, disclosure, risk, provenance, incident or bias programme is established for the the February 2026 Cline release compromise. Individual captured events, publication correction or an intrusion are distinct from that undertaking.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-F9D5AD96B52ECC93",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000022"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "applicability_status": "insufficient-evidence",
+      "applicability_basis": "IEEE-7001 Table 4 level 2 (Equip the system with an event recorder that securely time-stamps key inputs and outputs.) requires a relevant autonomous-system stakeholder level and conformance undertaking. The sources do not establish that undertaking or full validation/recording scope; ordinary captured investigation does not prove every specified timestamp, input/output or decision reason. Only admitted metadata is used.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-FA1B882FFAD54D93",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000015"
+      ],
+      "source_clause_indices": [
+        4
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "CYCLONEDX-SPEC modelCard.bom-ref (If a model-card bom-ref is supplied, it must be unique within the BOM.) concerns content manifests/detection/provenance techniques or model-card/package identities. Person/target binding and investigation traces are not such technical validation operations or AI package metadata.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-FD2E9DE61D27AD9A",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000024"
+      ],
+      "source_clause_indices": [
+        3
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "3.4.1 concerns bias-related data/decisions/evaluation records, not target-collision or credential/release compromise traces.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    }
+  ]
 }

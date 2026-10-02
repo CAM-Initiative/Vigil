@@ -2,19 +2,20 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://www.cam-initiative.org/vigil/schemas/failure-taxonomy-family.schema.json",
   "title": "VIGIL Alignment Taxonomy Fidelity Family",
-  "description": "Portable machine-readable schema for one VIGIL AI governance fidelity family.",
+  "description": "Portable schema for governed invariants with separately scoped failure manifestations and independent occurrence polarity.",
   "type": "object",
   "additionalProperties": false,
   "required": [
     "schema_version",
     "standard",
     "family",
-    "classes"
+    "classes",
+    "semantic_model"
   ],
   "properties": {
     "schema_version": {
       "type": "string",
-      "const": "0.2.0"
+      "const": "0.4.0"
     },
     "standard": {
       "type": "object",
@@ -55,6 +56,11 @@
       "items": {
         "$ref": "#/$defs/class"
       }
+    },
+    "semantic_model": {
+      "type": "string",
+      "const": "invariant-with-occurrence-polarity",
+      "description": "Families and selectable classes define governed properties. Occurrence relationships independently establish failure, successful holding or an ambiguous boundary."
     }
   },
   "$defs": {
@@ -137,7 +143,10 @@
         "exclusion_rule",
         "allowed_class_ids",
         "allowed_class_codes",
-        "aliases"
+        "aliases",
+        "failure_condition",
+        "failure_plain_english",
+        "boundary_role"
       ],
       "properties": {
         "family_id": {
@@ -164,28 +173,30 @@
         "plain_english": {
           "type": "string",
           "minLength": 1,
-          "description": "Accessible description of the governed alignment condition, including how integrity can fail in a bounded occurrence."
+          "description": "Accessible description of the governed property and correct operation."
         },
         "definition": {
           "type": "string",
           "minLength": 1,
-          "description": "Technical description of the bounded alignment condition and its failure set. It must encompass every admitted child mechanism without collapsing neighbouring families."
+          "description": "Technical definition of the governed invariant or integrity property, independent of occurrence polarity. Failure mechanisms belong in failure_condition."
         },
         "invariant": {
           "type": "string",
           "minLength": 1,
-          "description": "Positive bounded structural property governed by the family. Child classes refine this property; occurrence mappings carry aligned, misaligned or boundary polarity."
+          "description": "Normative bounded structural property that must hold. Class invariants refine the family invariant. Occurrence relationships carry polarity; the invariant does not confer independent action authority."
         },
         "scope": {
           "$ref": "#/$defs/non_empty_strings"
         },
         "inclusion_rule": {
           "type": "string",
-          "minLength": 1
+          "minLength": 1,
+          "description": "Inclusion boundary for the family failure set, scoped by boundary_role."
         },
         "exclusion_rule": {
           "type": "string",
-          "minLength": 1
+          "minLength": 1,
+          "description": "Exclusion boundary for the family failure set, not exclusion from the governed integrity domain."
         },
         "allowed_class_ids": {
           "type": "array",
@@ -216,6 +227,21 @@
         },
         "supersession": {
           "$ref": "#/$defs/supersession"
+        },
+        "failure_condition": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Explicit failure mechanism or bounded failure set of this same invariant; distinct from the primary definition."
+        },
+        "failure_plain_english": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Accessible explanation of how the invariant fails, kept separate from plain_english."
+        },
+        "boundary_role": {
+          "type": "string",
+          "const": "failure-occurrence",
+          "description": "Scopes existing inclusion_rule and exclusion_rule to admission of failure occurrences; these rules do not exclude successful-invariant or ambiguous-boundary relationships."
         }
       }
     },
@@ -232,10 +258,14 @@
         "plain_english",
         "definition",
         "invariant",
-        "recognition",
         "exclusions",
         "examples",
-        "aliases"
+        "aliases",
+        "failure_condition",
+        "failure_plain_english",
+        "failure_recognition",
+        "success_condition",
+        "success_recognition"
       ],
       "properties": {
         "class_id": {
@@ -257,41 +287,25 @@
         "abstraction": {
           "type": "string",
           "const": "class",
-          "description": "Selectable canonical governance-failure mechanism. Narrower manifestations belong in subtypes and are not peer class records."
+          "description": "Selectable canonical governance invariant or integrity property. Narrower failure manifestations belong in non-selectable subtypes."
         },
         "plain_english": {
           "type": "string",
-          "minLength": 1
+          "minLength": 1,
+          "description": "Accessible description of the governed property and correct operation."
         },
         "definition": {
           "type": "string",
-          "minLength": 1
-        },
-        "recognition": {
-          "type": "object",
-          "additionalProperties": false,
-          "required": [
-            "required_conditions"
-          ],
-          "properties": {
-            "required_conditions": {
-              "$ref": "#/$defs/non_empty_strings"
-            },
-            "indicators": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "minLength": 1
-              },
-              "uniqueItems": true
-            }
-          }
+          "minLength": 1,
+          "description": "Technical definition of the governed invariant or integrity property, independent of occurrence polarity. Failure mechanisms belong in failure_condition."
         },
         "exclusions": {
-          "$ref": "#/$defs/non_empty_strings"
+          "$ref": "#/$defs/non_empty_strings",
+          "description": "Exclusions from failure recognition. A healthy condition here may support a successful-invariant relationship; an exclusion alone does not establish success."
         },
         "examples": {
-          "$ref": "#/$defs/non_empty_strings"
+          "$ref": "#/$defs/non_empty_strings",
+          "description": "Hypothetical failure and boundary illustrations, not canonical definitions or established occurrence findings."
         },
         "aliases": {
           "$ref": "#/$defs/aliases"
@@ -328,7 +342,7 @@
         "invariant": {
           "type": "string",
           "minLength": 1,
-          "description": "Positive mechanism-specific structural property that must hold to prevent or repair this fidelity class. It must remain narrower than, and consistent with, the parent family invariant."
+          "description": "Normative bounded structural property that must hold. Class invariants refine the family invariant. Occurrence relationships carry polarity; the invariant does not confer independent action authority."
         },
         "invariant_exemplars": {
           "type": "array",
@@ -337,6 +351,75 @@
           },
           "minItems": 1,
           "description": "Optional evidence-linked occurrences showing successful, boundary, or repaired satisfaction of the class invariant. These are not failure classifications."
+        },
+        "failure_condition": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Explicit failure mechanism or bounded failure set of this same invariant; distinct from the primary definition."
+        },
+        "failure_plain_english": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Accessible explanation of how the invariant fails, kept separate from plain_english."
+        },
+        "failure_recognition": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "required_conditions",
+            "applies_to"
+          ],
+          "properties": {
+            "required_conditions": {
+              "$ref": "#/$defs/non_empty_strings",
+              "description": "Necessary conditions for the explicit failure mechanism, not a definition of the governed property or a test for successful-invariant relationships."
+            },
+            "indicators": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "uniqueItems": true
+            },
+            "applies_to": {
+              "type": "string",
+              "const": "failure-occurrence"
+            }
+          },
+          "description": "Failure recognition only. All required conditions and applicable exclusions govern failure-occurrence admission; their absence does not establish successful holding."
+        },
+        "success_condition": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Positively evidenced bounded occurrence outcome; neither the invariant alone nor absence of failure establishes it."
+        },
+        "success_recognition": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "required_conditions",
+            "applies_to"
+          ],
+          "properties": {
+            "required_conditions": {
+              "$ref": "#/$defs/non_empty_strings",
+              "description": "Positive context, observed property holding and evidence adequate to the assessed scope."
+            },
+            "indicators": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "uniqueItems": true
+            },
+            "applies_to": {
+              "type": "string",
+              "const": "successful-invariant"
+            }
+          },
+          "description": "All positive occurrence conditions require affirmative evidence; failed recognition does not establish failure."
         }
       }
     },
@@ -462,11 +545,13 @@
           "type": "object",
           "additionalProperties": false,
           "required": [
-            "required_conditions"
+            "required_conditions",
+            "applies_to"
           ],
           "properties": {
             "required_conditions": {
-              "$ref": "#/$defs/non_empty_strings"
+              "$ref": "#/$defs/non_empty_strings",
+              "description": "Necessary conditions for the explicit failure mechanism, not a definition of the governed property or a test for successful-invariant relationships."
             },
             "indicators": {
               "type": "array",
@@ -475,8 +560,13 @@
                 "minLength": 1
               },
               "uniqueItems": true
+            },
+            "applies_to": {
+              "type": "string",
+              "const": "failure-occurrence"
             }
-          }
+          },
+          "description": "Failure recognition only. All required conditions and applicable exclusions govern failure-occurrence admission; their absence does not establish successful holding."
         },
         "exclusions": {
           "$ref": "#/$defs/non_empty_strings"
@@ -493,7 +583,8 @@
         "historical_class_code": {
           "$ref": "#/$defs/semantic_code"
         }
-      }
+      },
+      "description": "Non-selectable historical failure manifestation of its parent invariant. Its name, plain_english, definition, recognition, exclusions and examples remain explicitly failure-oriented; it has no independent occurrence classification."
     },
     "relationship": {
       "type": "object",

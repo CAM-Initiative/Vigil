@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Moltbook database exposure revealed private communications and API authentication tokens",
     "created": "2026-09-19",
-    "updated": "2026-09-27",
-    "version": "0.3.1"
+    "updated": "2026-10-02",
+    "version": "0.3.2"
   },
   "incident_identity": {
     "historical_event_name": "Moltbook database exposure revealed private communications and API authentication tokens",
@@ -21,7 +21,7 @@
   "summary": "Wiz researchers reportedly reached an unsecured Moltbook backend in under three minutes and obtained read-and-write access to about 35,000 email addresses, thousands of private messages and approximately 1.5 million API authentication tokens. The exposed tokens could support account impersonation and content manipulation; Moltbook secured the issue within hours, and Wiz said it deleted the research data.",
   "vigil_assessment": {
     "factual_basis": "Business Insider reports that Wiz researchers accessed the database in under three minutes and obtained full read-and-write access. The exposed authentication tokens could enable account impersonation and content manipulation. Wiz disclosed the issue, Moltbook secured it within hours, and Wiz said the research data was deleted.",
-    "governance_interpretation": "The occurrence is a large-scale data and credential exposure caused by a backend security misconfiguration. The evidence does not establish that an AI model made the configuration decision or that a current VIGIL Failure Class is the right mechanism abstraction.",
+    "governance_interpretation": "The occurrence is a large-scale data and credential exposure caused by a backend security misconfiguration. The evidence does not establish that an AI model made the configuration decision or that a current VIGIL Failure Class is the right mechanism abstraction. Backend access, private information, exposed-token capabilities and remediation remain distinct. No token misuse, agent impersonation or AI-side permission inference is established; technical vulnerability alone does not force a taxonomy mechanism.",
     "significance_to_cam": "The case shows that AI-agent platforms remain dependent on conventional application-security controls for credentials, private communications and account integrity.",
     "assessment_boundaries": [
       "The reviewed evidence does not establish malicious exploitation beyond the security research or downstream token misuse.",
@@ -33,9 +33,32 @@
       "purpose": "Preserve a source-specific paraphrase that links the primary occurrence evidence to VIGIL's governance interpretation without treating taxonomy classification as source fact.",
       "clauses": [
         {
-          "source_paraphrase": "Reports Wiz's access method, exposed data classes, token implications, disclosure and remediation.",
-          "recovered_invariant_interpretation": "The occurrence is a large-scale data and credential exposure caused by a backend security misconfiguration. The evidence does not establish that an AI model made the configuration decision or that a current VIGIL Failure Class is the right mechanism abstraction.",
-          "taxonomy_relationships": []
+          "source_paraphrase": "Wiz researchers reportedly reached Moltbook's backend in under three minutes because a backend misconfiguration left it unsecured, giving them full read-and-write access to platform data.",
+          "recovered_invariant_interpretation": "The immediate control state was broad unauthenticated backend reachability with both read and write capability; the preserved evidence attributes this to a backend security misconfiguration, not an AI model decision.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping",
+          "adjudication_note": "The access-control defect is described, but the record does not establish an AI actor making the configuration decision or a specific selectable control failure."
+        },
+        {
+          "source_paraphrase": "The reachable database contained about 35,000 email addresses and thousands of private direct messages between platform users.",
+          "recovered_invariant_interpretation": "The backend access state exposed personal contact data and private communications across the platform; the record does not establish downstream disclosure beyond the researchers' access.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping",
+          "adjudication_note": "This clause distinguishes the information exposure from the separately described credential capability; no additional downstream use is established."
+        },
+        {
+          "source_paraphrase": "The same exposure included approximately 1.5 million API authentication tokens. Wiz reported that such tokens could enable agent impersonation, posting or messaging as agents, and editing, deleting or manipulating content consumed by other agents; no token misuse is established in this occurrence.",
+          "recovered_invariant_interpretation": "Exposed bearer credentials created a distinct account-authentication and content-integrity pathway, with possible effects on other agents' inputs, separate from disclosure of emails and private messages.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping",
+          "adjudication_note": "The source describes what exposed tokens could permit, not observed impersonation or content manipulation; potential capabilities are kept distinct from demonstrated use."
+        },
+        {
+          "source_paraphrase": "Wiz immediately disclosed the issue to Moltbook, which secured it within hours with Wiz's assistance; Wiz said it deleted data accessed during research and fix verification.",
+          "recovered_invariant_interpretation": "The response pathway included coordinated disclosure, backend remediation and deletion of research copies; these steps do not establish whether any third party accessed the data before remediation.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping",
+          "adjudication_note": "The source supports the reported response timeline and research-data deletion, but does not quantify prior third-party access or downstream misuse."
         },
         {
           "source_paraphrase": "The backend made powerful capability directly reachable, but the occurrence does not show an AI or governance process treating that reachability as permission.",
@@ -43,11 +66,12 @@
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000002",
-              "relationship": "ambiguous-boundary exemplar",
-              "canonical_taxonomy_mapping": true,
-              "rationale": "The unsecured backend made powerful read-write capability and authentication tokens directly reachable, but the occurrence involved security researchers rather than an AI process treating reachability as permission."
+              "relationship": "candidate boundary",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "The clause establishes exposed backend capability and authentication tokens, but the source attributes the event to backend misconfiguration and security researchers, not an AI system or governance process treating reachability as permission. FC-000002 excludes a vulnerability where no such authority inference is evidenced."
             }
-          ]
+          ],
+          "adjudication_status": "resolved-no-mapping"
         }
       ]
     }
@@ -169,22 +193,19 @@
     ]
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.6.7",
-    "classification_status": "classified",
-    "classification_role": "ambiguous-boundary",
-    "classification_basis": "The unsecured backend made powerful read-write capability and authentication tokens directly reachable, but the occurrence involved security researchers rather than an AI process treating reachability as permission.",
-    "primary_classification": {
-      "family_id": "VIGIL-FF-0001",
-      "class_id": "VIGIL-FC-000002",
-      "classification_role": "ambiguous-boundary",
-      "classification_basis": "The unsecured backend made powerful read-write capability and authentication tokens directly reachable, but the occurrence involved security researchers rather than an AI process treating reachability as permission.",
-      "classification_confidence": "medium"
-    },
+    "taxonomy_version": "0.6.9",
+    "classification_status": "unclassified",
+    "classification_role": null,
+    "classification_basis": "The evidence establishes an unauthenticated backend exposure, including data and bearer credentials, but does not establish an AI system or governance process treating the exposed capability as permission. The occurrence therefore remains unclassified under the current Alignment Taxonomy.",
+    "primary_classification": null,
     "secondary_classifications": [],
     "classification_review_provenance": {
-      "review_date": "2026-09-25",
-      "reviewer": "OpenAI ChatGPT — GPT-5.6 Sol under human-directed VIGIL governance",
-      "review_status": "classification review completed"
+      "review_date": "2026-09-30",
+      "reviewer": "OpenAI ChatGPT — GPT-6 Codex under human-directed VIGIL governance",
+      "review_status": "taxonomy adjudication completed"
+    },
+    "adjudication_coverage": {
+      "status": "complete"
     }
   },
   "related_incidents": [],
@@ -270,29 +291,94 @@
           "Factual basis, governance interpretation, CAM significance, assessment boundaries and source-clause analysis were not changed."
         ],
         "review_outcome": "Restored supported occurrence detail and essential factual boundaries in the public Stage 01 narrative without changing evidence admission or governed adjudication."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-09-30-CLAUSE-BREAKDOWN-000158",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-6 Codex",
+        "review_date": "2026-09-30",
+        "review_scope": "Incident-by-incident functional decomposition review of the preserved occurrence evidence and source_clause_analysis, testing whether materially distinct mechanisms, authority boundaries, control states, and failure or recovery pathways are represented. No harm reassessment or taxonomy re-adjudication was performed.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_link_and_metadata_review": true,
+          "structured_semantic_adjudication": true,
+          "full_current_taxonomy_review": false,
+          "new_external_source_research": false
+        },
+        "known_limitations": [
+          "The evidence does not establish malicious exploitation beyond the security research or downstream token misuse.",
+          "Potential token-enabled impersonation or content manipulation is described as capability, not as an observed action.",
+          "Existing ambiguous-boundary relationship and taxonomy history were preserved; no taxonomy version change or taxonomy assessment regeneration was performed."
+        ],
+        "review_outcome": "Separated the unsecured read-write backend state, exposed personal communications, exposed token-enabled account/content capabilities, and disclosure/remediation pathway. Preserved the existing FC-000002 ambiguous-boundary relationship verbatim; no classification, role or taxonomy history changed."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-09-30-TAXONOMY-ADJUDICATION-000158",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-6 Codex",
+        "review_date": "2026-09-30",
+        "review_scope": "Clause-level adjudication against the current canonical VIGIL Alignment Taxonomy 0.6.9, including reconsideration of existing mapping roles, unresolved recognition facts, adjudication coverage and Incident-level taxonomy consistency. Source-clause decomposition and VIGIL-HIM were not reopened except where a taxonomy defect required a narrower disposition.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_link_and_metadata_review": true,
+          "structured_semantic_adjudication": true,
+          "full_current_taxonomy_review": false,
+          "new_external_source_research": false
+        },
+        "known_limitations": [
+          "No AI-mediated operation of the exposed backend is evidenced in the preserved occurrence record.",
+          "The adjudication ledger retains its pre-existing taxonomy_version 0.6.8 label; this review did not change the taxonomy version."
+        ],
+        "review_outcome": "The prior FC-000002 ambiguous-boundary mapping is removed as unsupported because the record establishes platform misconfiguration and human security research, not a capability-to-authority inference by an AI or governance process. The Incident is unclassified and clause coverage is complete. Corresponding class-level ledger decisions were reconciled without changing the ledger version or taxonomy definitions."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-02-STAGE4-000158",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-02",
+        "review_scope": "Preservation-led Stage 4 clause, polarity and local external-requirement reconciliation.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "external_requirement_review": true,
+          "harm_impact_review": false,
+          "new_external_source_research": false
+        },
+        "known_limitations": [
+          "Preserved attributed evidence bounds the review; hidden control/permission traces unavailable.",
+          "No new IEEE extraction; admitted metadata and reviewed paths only.",
+          "Conclusion uses existing governance_interpretation; no discussion-field contract."
+        ],
+        "review_outcome": "Retained 5 clause decisions; Independently assessed 0 admitted local candidates; archived excluded historical assessments."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-09-26-STAGE01-AUTHORING-QA-000158",
+      "review_id": "VIGIL-REVIEW-2026-10-02-STAGE4-000158",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT",
-      "reviewer_model": "GPT-5.6 Sol",
-      "review_date": "2026-09-26",
-      "review_scope": "Bounded Stage 01 'What happened' authoring-quality pass using only existing canonical evidence to restore supported occurrence detail and essential factual boundaries in the public Stage 01 narrative. Taxonomy, Harm Impact and source admission were not reopened.",
+      "reviewer_platform": "OpenAI Codex",
+      "reviewer_model": "GPT-6",
+      "review_date": "2026-10-02",
+      "review_scope": "Preservation-led Stage 4 clause, polarity and local external-requirement reconciliation.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "frontend_display_contract_review": true,
-        "taxonomy_review": false,
+        "taxonomy_review": true,
+        "external_requirement_review": true,
         "harm_impact_review": false,
         "new_external_source_research": false
       },
       "known_limitations": [
-        "Only existing canonical evidence was used; no new external evidence research was undertaken.",
-        "Taxonomy and Harm Impact were not reopened, and source admission was not changed.",
-        "Factual basis, governance interpretation, CAM significance, assessment boundaries and source-clause analysis were not changed."
+        "Preserved attributed evidence bounds the review; hidden control/permission traces unavailable.",
+        "No new IEEE extraction; admitted metadata and reviewed paths only.",
+        "Conclusion uses existing governance_interpretation; no discussion-field contract."
       ],
-      "review_outcome": "Restored supported occurrence detail and essential factual boundaries in the public Stage 01 narrative without changing evidence admission or governed adjudication."
+      "review_outcome": "Retained 5 clause decisions; Independently assessed 0 admitted local candidates; archived excluded historical assessments."
     },
     "operating_model": "AI-authored, semi-autonomous production under human contract approval",
     "human_governance_editor": null,
@@ -382,5 +468,6 @@
         "evidence_confidence": "not-assessed"
       }
     ]
-  }
+  },
+  "external_requirement_assessments": []
 }

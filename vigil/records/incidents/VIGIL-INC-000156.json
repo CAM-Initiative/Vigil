@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Waymo robotaxis contributed to San Francisco gridlock during major power outage",
     "created": "2026-09-19",
-    "updated": "2026-09-27",
-    "version": "0.3.1"
+    "updated": "2026-10-02",
+    "version": "0.3.2"
   },
   "incident_identity": {
     "historical_event_name": "Waymo robotaxis contributed to San Francisco gridlock during major power outage",
@@ -21,7 +21,7 @@
   "summary": "During a major San Francisco power outage, Waymo vehicles encountered thousands of dark traffic signals; requests for remote confirmation surged, delays contributed to congestion, and Waymo temporarily paused service.",
   "vigil_assessment": {
     "factual_basis": "Waymo states that its vehicles safely traversed more than 7,000 dark signals but generated more simultaneous confirmation requests than the response system could promptly handle. The backlog caused some vehicles to wait longer than normal and contributed to congestion amid wider outage-related gridlock. Waymo paused service and later described fleet and response-capacity changes.",
-    "governance_interpretation": "The occurrence exposed an operational capacity boundary in a distributed autonomy-and-remote-assistance system under correlated infrastructure failure. The evidence supports service degradation, but does not establish that Waymo caused the citywide gridlock or that a selectable VIGIL failure invariant is satisfied.",
+    "governance_interpretation": "The occurrence exposed an operational capacity boundary in a distributed autonomy-and-remote-assistance system under correlated infrastructure failure. The evidence supports service degradation, but does not establish that Waymo caused the citywide gridlock or that a selectable VIGIL failure invariant is satisfied. Correlated workload, delayed confirmation, service pause and proposed fleet/protocol changes remain separate resolved-no-mapping components. A conservative local response can overload shared capacity without proving a defined class trigger or citywide causation.",
     "significance_to_cam": "The case shows that autonomy systems must be tested for correlated edge cases in which many units simultaneously seek remote confirmation during degraded public infrastructure.",
     "assessment_boundaries": [
       "PG&E's outage disabled traffic signals and caused wider city disruption; Waymo describes its vehicles as a contributor to, not the sole cause of, congestion.",
@@ -33,9 +33,25 @@
       "purpose": "Preserve a source-specific paraphrase that links the primary occurrence evidence to VIGIL's governance interpretation without treating taxonomy classification as source fact.",
       "clauses": [
         {
-          "source_paraphrase": "First-party explanation of the outage conditions, confirmation-request backlog, service pause and planned changes.",
-          "recovered_invariant_interpretation": "The occurrence exposed an operational capacity boundary in a distributed autonomy-and-remote-assistance system under correlated infrastructure failure. The evidence supports service degradation, but does not establish that Waymo caused the citywide gridlock or that a selectable VIGIL failure invariant is satisfied.",
-          "taxonomy_relationships": []
+          "source_paraphrase": "Waymo reports that its vehicles handled more than 7,000 dark traffic signals as four-way stops, while the outage produced a concentrated spike in discretionary remote confirmation requests. The resulting response backlog delayed some vehicles and contributed to congestion on streets already overwhelmed by the wider outage.",
+          "recovered_invariant_interpretation": "A fleet may handle each degraded signal conservatively yet still exceed the shared remote-assistance capacity when infrastructure failure drives many simultaneous requests. The record establishes a correlated-load and response-capacity boundary, not that Waymo caused the citywide gridlock.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping",
+          "adjudication_note": "The source describes workload concentration, delayed responses and congestion but does not establish that a selectable governance control failed a defined trigger or protective effect."
+        },
+        {
+          "source_paraphrase": "As the outage persisted and city officials asked residents to stay off the streets to prioritize first responders, Waymo temporarily paused service, directed vehicles to pull over and park appropriately, and returned them to depots in waves.",
+          "recovered_invariant_interpretation": "Service suspension and staged fleet recovery were operational control states intended to avoid adding to congestion or obstructing emergency vehicles during the recovery period.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping",
+          "adjudication_note": "This is a bounded response pathway described by Waymo; it does not establish that an emergency vehicle was obstructed or that the pause caused a separate harm."
+        },
+        {
+          "source_paraphrase": "Waymo said it was rolling out fleet-wide outage-context updates to support more decisive navigation and would improve emergency-preparedness protocols, city coordination and first-responder training based on the event.",
+          "recovered_invariant_interpretation": "The response included distinct technical and operational adaptations: changing what outage context reaches the Driver and revising emergency coordination and responder preparation.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping",
+          "adjudication_note": "These are stated response steps and plans, not evidence that they had already been fully deployed or that the incident exposed a particular selectable Fidelity Class."
         }
       ]
     }
@@ -158,16 +174,19 @@
     ]
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.6.0",
+    "taxonomy_version": "0.6.9",
     "classification_status": "unclassified",
     "classification_role": null,
     "classification_basis": "The evidence establishes correlated-load and operational-capacity degradation, but the current selectable taxonomy does not provide a sufficiently exact mechanism mapping without stretching an authority or continuity class.",
     "primary_classification": null,
     "secondary_classifications": [],
     "classification_review_provenance": {
-      "review_date": "2026-09-19",
-      "reviewer": "OpenAI Codex — GPT-5",
+      "review_date": "2026-09-29",
+      "reviewer": "OpenAI ChatGPT — GPT-6 Codex under human-directed VIGIL governance",
       "review_status": "classification review completed"
+    },
+    "adjudication_coverage": {
+      "status": "complete"
     }
   },
   "related_incidents": [
@@ -233,28 +252,73 @@
           "Agent count and topology are not inferred from silence; unknown values are retained where the preserved evidence does not resolve them."
         ],
         "review_outcome": "Expanded VIGIL-INC-000156 to the newer occurrence workflow; added canonical agent/environment metadata, migrated VIGIL-HIM from 1.0.0 to 1.0.1 without changing the existing S3 harm band because threshold criteria are unchanged, and preserved taxonomy status unclassified."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-09-30-CLAUSE-BREAKDOWN-000156",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-6 Codex",
+        "review_date": "2026-09-30",
+        "review_scope": "Incident-by-incident functional decomposition review of the preserved occurrence evidence and source_clause_analysis, testing whether materially distinct mechanisms, authority boundaries, control states, and failure or recovery pathways are represented. No harm reassessment or taxonomy re-adjudication was performed.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_link_and_metadata_review": true,
+          "structured_semantic_adjudication": true,
+          "full_current_taxonomy_review": false,
+          "new_external_source_research": false
+        },
+        "known_limitations": [
+          "The clause review is bounded to Waymo's preserved first-party account; it does not independently quantify the fleet's contribution to citywide congestion.",
+          "The reviewed source describes immediate response changes and planned adaptations but does not establish their later implementation or effectiveness.",
+          "Existing classification status and taxonomy history were preserved; no taxonomy version change or taxonomy assessment regeneration was performed."
+        ],
+        "review_outcome": "Replaced the report-level summary clause with separate clauses for the remote-confirmation capacity boundary, staged service pause and fleet return, and technical/operational response adaptations. No taxonomy relationship or classification was added, removed, or changed."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-02-STAGE4-000156",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-02",
+        "review_scope": "Preservation-led Stage 4 clause, polarity and local external-requirement reconciliation.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "external_requirement_review": true,
+          "harm_impact_review": false,
+          "new_external_source_research": false
+        },
+        "known_limitations": [
+          "Preserved attributed evidence bounds the review; hidden control/permission traces unavailable.",
+          "No new IEEE extraction; admitted metadata and reviewed paths only.",
+          "Conclusion uses existing governance_interpretation; no discussion-field contract."
+        ],
+        "review_outcome": "Retained 3 clause decisions; Independently assessed 0 admitted local candidates; archived excluded historical assessments."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-09-23-WORKFLOW-EXPANSION-000156",
+      "review_id": "VIGIL-REVIEW-2026-10-02-STAGE4-000156",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT",
-      "reviewer_model": "GPT-5.6 Sol",
-      "review_date": "2026-09-23",
-      "review_scope": "Workflow-contract expansion using evidence already preserved in the Incident: occurrence-level agent/environment metadata, source-specific Section 02 bridge, VIGIL-HIM 1.0.1 migration and provenance reconciliation. Existing factual and taxonomy adjudications were not independently reopened.",
+      "reviewer_platform": "OpenAI Codex",
+      "reviewer_model": "GPT-6",
+      "review_date": "2026-10-02",
+      "review_scope": "Preservation-led Stage 4 clause, polarity and local external-requirement reconciliation.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "structured_cross_record_reconciliation": true,
-        "structured_threshold_comparison": true,
+        "taxonomy_review": true,
+        "external_requirement_review": true,
+        "harm_impact_review": false,
         "new_external_source_research": false
       },
       "known_limitations": [
-        "No new external source research was performed in this expansion pass; source completeness and post-ingestion developments were not independently rechecked.",
-        "Existing taxonomy mappings and classification status are preserved from the prior incident adjudication and should be re-adjudicated against the then-current taxonomy when transplanted into the active refactor branch.",
-        "Agent count and topology are not inferred from silence; unknown values are retained where the preserved evidence does not resolve them."
+        "Preserved attributed evidence bounds the review; hidden control/permission traces unavailable.",
+        "No new IEEE extraction; admitted metadata and reviewed paths only.",
+        "Conclusion uses existing governance_interpretation; no discussion-field contract."
       ],
-      "review_outcome": "Expanded VIGIL-INC-000156 to the newer occurrence workflow; added canonical agent/environment metadata, migrated VIGIL-HIM from 1.0.0 to 1.0.1 without changing the existing S3 harm band because threshold criteria are unchanged, and preserved taxonomy status unclassified."
+      "review_outcome": "Retained 3 clause decisions; Independently assessed 0 admitted local candidates; archived excluded historical assessments."
     },
     "operating_model": "AI-authored, semi-autonomous production under human contract approval",
     "human_governance_editor": null,
@@ -344,5 +408,6 @@
         "evidence_confidence": "not-assessed"
       }
     ]
-  }
+  },
+  "external_requirement_assessments": []
 }

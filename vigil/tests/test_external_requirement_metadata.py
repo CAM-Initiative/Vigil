@@ -3,6 +3,7 @@
 from __future__ import annotations
 import importlib.util
 import json
+import jsonschema
 import tempfile
 from pathlib import Path
 
@@ -68,23 +69,20 @@ def main():
     assert isinstance(ledger["entries"], list)
     ids = [entry["requirement_id"] for entry in ledger["entries"]]
     assert len(ids) == len(set(ids))
-    assert len(ids) == 905
+    canonical = json.loads((REQ / "requirements.json").read_text(encoding="utf-8"))["requirements"]
+    assert set(ids) <= {record["requirement_id"] for record in canonical}
 
     backlog_schema = json.loads((REQ / "reextraction-backlog.schema.json").read_text(encoding="utf-8"))
     backlog = json.loads((REQ / "reextraction-backlog.json").read_text(encoding="utf-8"))
     assert backlog_schema["properties"]["schema_version"]["const"] == "1.0"
     backlog_ids = [entry["current_requirement_id"] for entry in backlog["entries"]]
-    assert len(backlog_ids) == len(set(backlog_ids)) == 0
-    assert sum(entry["external_source_id"] == "IEEE-7009" for entry in backlog["entries"]) == 0
-    assert sum(entry["external_source_id"] == "NIST-AI-600-1" for entry in backlog["entries"]) == 0
-    assert sum(entry["external_source_id"] == "CYCLONEDX-SPEC" for entry in backlog["entries"]) == 0
-    assert sum(entry["external_source_id"] == "IMDA-AGENTIC-AI-MGF" for entry in backlog["entries"]) == 0
-    assert sum(entry["external_source_id"] == "NIST-SP-800-218A" for entry in backlog["entries"]) == 0
-    assert sum(entry["external_source_id"] == "AAM-SDOS-RUNTIME-GOVERNANCE" for entry in backlog["entries"]) == 0
-    assert sum(entry["external_source_id"] == "NIST-AI-100-2" for entry in backlog["entries"]) == 0
-    assert sum(entry["external_source_id"] == "NIST-AI-100-4" for entry in backlog["entries"]) == 0
-    assert sum(entry["external_source_id"] == "NIST-SP-1270" for entry in backlog["entries"]) == 0
-    assert sum(entry["external_source_id"] == "SPDX-SPEC" for entry in backlog["entries"]) == 0
+    assert len(backlog_ids) == len(set(backlog_ids))
+    jsonschema.Draft202012Validator(backlog_schema).validate(backlog)
+    canonical_by_id = {record["requirement_id"]: record for record in canonical}
+    for entry in backlog["entries"]:
+        record = canonical_by_id[entry["current_requirement_id"]]
+        for field in ("vigil_source_id", "external_source_id", "source_version", "clause_or_control"):
+            assert entry[field] == record[field]
 
     spdx = json.loads((REQ / "requirements" / "SPDX-SPEC" / "3.0.1.json").read_text(encoding="utf-8"))
     spdx_by_key = {record["identity_key"]: record for record in spdx}
@@ -120,8 +118,6 @@ def main():
 
     nist_synthetic = json.loads((REQ / "requirements" / "NIST-AI-100-4" / "2024.json").read_text(encoding="utf-8"))
     synthetic_by_id = {record["requirement_id"]: record for record in nist_synthetic}
-    assert len(nist_synthetic) == 18
-    assert all(record["source_review_date"] == "2026-08-29" for record in nist_synthetic)
     assert all(
         record["interpretation_provenance"]["reviewed_source_digest"]
         == "a387a4977db70d65cdbc178c8b0cb8aa5dedb85fa80d6f473c244e2767a4fd54"

@@ -8,27 +8,48 @@
     "record_type": "incident",
     "title": "Waymo robotaxi diverted passenger into parking garage and temporarily stranded him",
     "created": "2026-09-19",
-    "updated": "2026-09-27",
-    "version": "0.1.7"
+    "updated": "2026-10-02",
+    "version": "0.1.8"
   },
   "incident_identity": {
     "historical_event_name": "Waymo parking-garage passenger stranding",
-    "occurred_from": "2025-07-22",
+    "occurred_from": "2025-07-21",
     "occurred_to": null,
     "date_precision": "exact-day",
-    "date_basis": "Date follows the reviewed registry or primary occurrence record; no narrower time is inferred."
+    "date_basis": "ABC7’s 22 July 2025 firsthand report identifies the ride as Monday morning, 21 July; registry publication date is not the occurrence date."
   },
   "summary": "A Waymo robotaxi carrying tourist Darren Findling in San Francisco diverted into a parking garage containing other Waymo vehicles and left him temporarily stuck and confused until Waymo support intervened. OECD.AI's AI Incidents Monitor records the occurrence as a robotaxi malfunction causing passenger disruption and distress.",
   "vigil_assessment": {
     "factual_basis": "A Waymo robotaxi carrying tourist Darren Findling in San Francisco diverted into a parking garage containing other Waymo vehicles and left him temporarily stuck and confused until Waymo support intervened. OECD.AI's AI Incidents Monitor records the occurrence as a robotaxi malfunction causing passenger disruption and distress.",
-    "governance_interpretation": "The vehicle deviated from the expected passenger journey and entered a parking facility where the passenger could not readily complete the trip or understand how to proceed. Human support eventually resolved the situation, but the automated service temporarily left the passenger without effective control over the journey.",
+    "governance_interpretation": "The vehicle deviated from the expected passenger journey and entered a parking facility where the passenger could not readily complete the trip or understand how to proceed. Human support eventually resolved the situation, but the automated service temporarily left the passenger without effective control over the journey. A source mismatch is corrected: the Guardian article concerns a different passenger, city and date. ABC7’s interview supports the garage detour and support override; safe-exit recognition remains unresolved. Psychological S2 is retained with corrected occurrence evidence, without importing looping or inability-to-exit facts.",
     "significance_to_cam": "Passenger transport automation needs safe recovery paths when routing or operational state departs from the expected trip. Riders require a clear way to stop, obtain help and transfer control before confusion becomes a safety or liberty concern.",
     "assessment_boundaries": [
       "The account is preserved from secondary incident reporting and the complete trip telemetry is not available.",
       "The evidence does not establish the precise routing, perception or fleet-management cause.",
       "The passenger's reported confusion and distress were temporary and resolved through support intervention.",
       "No injury, detention finding or enduring impairment is inferred."
-    ]
+    ],
+    "source_clause_analysis": {
+      "source_record_order": 1,
+      "source_url": "https://oecd.ai/en/incidents/2025-07-22-010b",
+      "purpose": "Separate the passenger’s reported looping and loss of trip control from the unobserved routing state needed to decide whether safe exit was required.",
+      "clauses": [
+        {
+          "source_paraphrase": "Findling’s Waymo detoured into a San Francisco garage; support restored the route. Trip telemetry is unavailable.",
+          "recovered_invariant_interpretation": "When an objective-directed route becomes infeasible, the system should enter a bounded safe-exit or human-handoff state rather than continue a pursuit that leaves the passenger without effective control.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000070",
+              "relationship": "candidate boundary",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "The detour and need for support materially engage safe exit, but no trace establishes when an exit condition arose or whether continued pursuit followed recognition. Support restored the route; this is not proof of that recognition decision."
+            }
+          ],
+          "adjudication_status": "unresolved",
+          "adjudication_note": "Trip and vehicle telemetry needed to determine whether a safe-exit condition occurred and the system continued pursuit are unavailable."
+        }
+      ]
+    }
   },
   "source_records": [
     {
@@ -68,9 +89,9 @@
         "text"
       ],
       "evidence_status": "independent-reporting",
-      "evidence_status_basis": "The report establishes a frightening short-lived event but no diagnosed injury or persistent impairment.",
+      "evidence_status_basis": "Separate occurrence; excluded from this incident’s factual, taxonomy and harm findings.",
       "incident_source_order": 2,
-      "interpretive_reliance": "The report establishes a frightening short-lived event but no diagnosed injury or persistent impairment.",
+      "interpretive_reliance": "Separate occurrence; excluded from this incident’s factual, taxonomy and harm findings.",
       "model_or_algorithm": "not fully established in the source",
       "primary_artefact_access": {
         "access_method": "Occurrence-focused web search and review of the public source, indexed text, or authoritative endpoint",
@@ -82,16 +103,51 @@
         ],
         "reviewing_system": "GPT-5"
       },
-      "relevance_note": "Supports minor, readily remediable psychological harm.",
+      "relevance_note": "Historical source association corrected in Stage 4.",
       "retrieved_date": "2026-09-20",
-      "source_context": "Independent reporting documents the passenger's repeated looping, inability to exit, disorientation, help request and eventual resolution.",
+      "source_context": "Different occurrence; no row-local harm reliance.",
       "source_date": "2025-01-06",
       "source_platform": "The Guardian",
       "source_residence": "external",
-      "source_role": "harm-evidence",
+      "source_role": "contextual-background",
       "source_title": "LA tech entrepreneur nearly misses flight after getting trapped in robotaxi",
       "source_type": "news article",
       "source_url": "https://www.theguardian.com/us-news/2025/jan/06/man-trapped-waymo-los-angeles",
+      "source_url_status": "public source page or indexed metadata available at review",
+      "system_or_product": "Other"
+    },
+    {
+      "archive_url": "",
+      "author_or_publisher": "ABC7 San Francisco / Tim Johns",
+      "deployment_context": "Garage detour during the passenger’s San Francisco trip.",
+      "evidence_modality": [
+        "text"
+      ],
+      "evidence_status": "independent-reporting",
+      "evidence_status_basis": "Article interviews the passenger and includes the provider response.",
+      "incident_source_order": 3,
+      "interpretive_reliance": "Direct interview reporting for the material occurrence and temporary confusion.",
+      "model_or_algorithm": "not fully established in the source",
+      "primary_artefact_access": {
+        "access_method": "Direct public article review",
+        "access_status": "directly reviewed",
+        "direct_primary_artefact_review": true,
+        "limitations": [
+          "The source does not independently establish every underlying claim or unreported downstream consequence.",
+          "The source does not determine legal liability or final factual truth beyond its stated institutional scope."
+        ],
+        "reviewing_system": "OpenAI Codex GPT-6"
+      },
+      "relevance_note": "Occurrence-specific support for clause and psychological finding.",
+      "retrieved_date": "2026-10-02",
+      "source_context": "Firsthand passenger interview and provider response concerning the garage detour and support override.",
+      "source_date": "2025-07-22",
+      "source_platform": "ABC7 San Francisco",
+      "source_residence": "external",
+      "source_role": "incident-evidence",
+      "source_title": "Waymo detour leaves SF tourist temporarily stuck inside garage with other robotaxis",
+      "source_type": "news article",
+      "source_url": "https://abc7news.com/post/waymo-detour-leaves-san-francisco-tourist-temporarily-stuck-inside-parking-garage-other-robotaxis/17236979/",
       "source_url_status": "public source page or indexed metadata available at review",
       "system_or_product": "Other"
     }
@@ -151,15 +207,18 @@
     ]
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.6.5",
+    "taxonomy_version": "0.6.9",
     "classification_status": "unclassified",
-    "classification_basis": "Current-taxonomy review against VIGIL Failure Taxonomy 0.6.5 retains the occurrence as unclassified. The evidence establishes that the Waymo robotaxi diverted into a parking garage, looped or remained within the facility, and temporarily left the passenger unable to complete the intended journey or readily exit until human support intervened. VIGIL-FC-000070 Safe-Exit Persistence Failure was tested, but the public record does not establish that the vehicle's routing task had become broken, unsatisfiable or devoid of a feasible admissible path, that a safe-exit condition had been reached, or that the system continued objective pursuit despite that state. VIGIL-FC-000003 Target and Scope Authority Transposition and VIGIL-FC-000064 Objective–Pathway Authority Dominance are not established because the vehicle's internal authority model, route objective, passenger-override state and planning basis are not exposed. Harm and loss of passenger control therefore do not supply the missing mechanism.",
+    "classification_basis": "The garage detour remains unclassified with a partial, unresolved safe-exit boundary. Available evidence does not establish vehicle recognition of an infeasible route or continued pursuit after that condition.",
     "primary_classification": null,
     "secondary_classifications": [],
     "classification_review_provenance": {
-      "review_date": "2026-09-21",
-      "reviewer": "OpenAI ChatGPT / GPT-5.6 Sol under human-directed VIGIL governance",
+      "review_date": "2026-09-29",
+      "reviewer": "OpenAI ChatGPT — GPT-6 Codex under human-directed VIGIL governance",
       "review_status": "classification review completed"
+    },
+    "adjudication_coverage": {
+      "status": "partial"
     }
   },
   "related_incidents": [],
@@ -263,36 +322,79 @@
           "External assessments are preserved as attributable analytical positions and are not treated as automatic proof of VIGIL taxonomy membership."
         ],
         "review_outcome": "Retained unclassified under taxonomy 0.6.5. Possible taxonomy gap: effective passenger-controlled termination, egress or bounded override in embodied autonomous transport where the user becomes temporarily unable to end or redirect the service but the system's internal objective/safe-exit state is not observable."
+      },
+      {
+        "review_id": "CLAUSE-RECONCILIATION-2026-09-30-INC-000147",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-6 Codex",
+        "review_date": "2026-09-30",
+        "review_scope": "Incident-by-incident functional decomposition review of the preserved occurrence evidence and source_clause_analysis, testing whether materially distinct mechanisms, authority boundaries, control states, and failure or recovery pathways are represented. No harm reassessment or taxonomy re-adjudication was performed.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_link_and_metadata_review": true,
+          "structured_semantic_adjudication": true,
+          "full_current_taxonomy_review": false,
+          "new_external_source_research": false
+        },
+        "known_limitations": [
+          "The review is bounded to evidence already preserved in the canonical Incident.",
+          "Existing canonical taxonomy history and taxonomy version were preserved; absence of a new mapping in this pass is not a full-taxonomy no-mapping determination."
+        ],
+        "review_outcome": "The existing clause captures diversion, repeated circling, passenger inability to exit, unavailable telemetry and support intervention as the bounded failure and recovery pathway. The candidate boundary remains unresolved; no clause change or taxonomy change was needed."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-02-STAGE4-000147",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-02",
+        "review_scope": "Preservation-led Stage 4 clause, polarity and local external-requirement reconciliation.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "external_requirement_review": true,
+          "harm_impact_review": true,
+          "new_external_source_research": true
+        },
+        "known_limitations": [
+          "Preserved attributed evidence bounds the review; hidden control/permission traces unavailable.",
+          "No new IEEE extraction; admitted metadata and reviewed paths only.",
+          "Conclusion uses existing governance_interpretation; no discussion-field contract."
+        ],
+        "review_outcome": "Corrected one clause’s conflated occurrence facts while retaining its unresolved disposition; retained psychological S2 with row-local occurrence evidence corrected. Archived old source/clause/taxonomy/HIM objects; derived zero admitted candidates."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-09-21-TAXONOMY-READJUDICATION-000147",
+      "review_id": "VIGIL-REVIEW-2026-10-02-STAGE4-000147",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT",
-      "reviewer_model": "GPT-5.6 Sol",
-      "review_date": "2026-09-21",
-      "review_scope": "Deterministic current-taxonomy re-adjudication against VIGIL Failure Taxonomy 0.6.5 using the complete active selectable class set and evidence already preserved in the canonical Incident. Existing external-assessment objects and qualifying attributable analytical positions in preserved source material were checked for structured external-assessment treatment. No new external source research was performed. Harm Impact, source roles, occurrence facts, agent/environment metadata, external-requirement mappings and CAM applicability were not reopened.",
+      "reviewer_platform": "OpenAI Codex",
+      "reviewer_model": "GPT-6",
+      "review_date": "2026-10-02",
+      "review_scope": "Preservation-led Stage 4 clause, polarity and local external-requirement reconciliation.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "structured_cross_record_reconciliation": true,
-        "full_current_taxonomy_review": true,
-        "external_assessment_consistency_review": true,
-        "new_external_source_research": false
+        "taxonomy_review": true,
+        "external_requirement_review": true,
+        "harm_impact_review": true,
+        "new_external_source_research": true
       },
       "known_limitations": [
-        "The review is bounded to evidence already preserved in the canonical Incident and does not infer internal mechanisms from title, harm, provider identity, notoriety, registry inclusion or plausible but undocumented system behaviour.",
-        "Candidate rejection does not establish that the mechanism was impossible; it means the preserved occurrence evidence does not satisfy the current selectable class boundary.",
-        "External assessments are preserved as attributable analytical positions and are not treated as automatic proof of VIGIL taxonomy membership."
+        "Preserved attributed evidence bounds the review; hidden control/permission traces unavailable.",
+        "No new IEEE extraction; admitted metadata and reviewed paths only.",
+        "Conclusion uses existing governance_interpretation; no discussion-field contract."
       ],
-      "review_outcome": "Retained unclassified under taxonomy 0.6.5. Possible taxonomy gap: effective passenger-controlled termination, egress or bounded override in embodied autonomous transport where the user becomes temporarily unable to end or redirect the service but the system's internal objective/safe-exit state is not observable."
+      "review_outcome": "Corrected one clause’s conflated occurrence facts while retaining its unresolved disposition; retained psychological S2 with row-local occurrence evidence corrected. Archived old source/clause/taxonomy/HIM objects; derived zero admitted candidates."
     }
   },
   "harm_impact_assessment": {
     "methodology_id": "VIGIL-HIM",
     "methodology_version": "1.0.1",
     "derivation_rule": "highest-supported-materialised-harm",
-    "assessed_on": "2026-09-20",
+    "assessed_on": "2026-10-02",
     "overall_severity": "S2",
     "controlling_dimensions": [
       "psychological-wellbeing"
@@ -333,7 +435,7 @@
         "observed_values": [],
         "evidence_refs": [
           "source_records[0]",
-          "source_records[1]"
+          "source_records[2]"
         ]
       },
       {
@@ -373,5 +475,6 @@
         "evidence_confidence": "not-assessed"
       }
     ]
-  }
+  },
+  "external_requirement_assessments": []
 }

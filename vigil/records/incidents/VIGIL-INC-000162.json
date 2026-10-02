@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Kiro coding tool reportedly implicated in 13-hour AWS Cost Explorer outage",
     "created": "2026-09-19",
-    "updated": "2026-09-27",
-    "version": "0.3.1"
+    "updated": "2026-10-02",
+    "version": "0.3.2"
   },
   "incident_identity": {
     "historical_event_name": "Kiro coding tool reportedly implicated in 13-hour AWS Cost Explorer outage",
@@ -21,7 +21,7 @@
   "summary": "AWS Cost Explorer experienced a reported multi-hour interruption after an engineering change associated in press reporting with Amazon's Kiro coding tool; Amazon disputes autonomous-AI causation and attributes the event to human error and misconfigured access controls.",
   "vigil_assessment": {
     "factual_basis": "The Financial Times reported an approximately 13-hour Cost Explorer interruption and linked the triggering change to use of Kiro. Amazon later described the event as a brief interruption of one service in one region caused by a user error and access-control configuration, not autonomous AI action; it reported no customer inquiries and no impact to compute, storage, databases or AI services.",
-    "governance_interpretation": "A bounded AWS service outage occurred, but the available public accounts conflict about whether Kiro had a causal role. VIGIL therefore assesses the materialised service consequence separately from the disputed mechanism and leaves taxonomy classification unresolved.",
+    "governance_interpretation": "A bounded AWS service outage occurred, but the available public accounts conflict about whether Kiro had a causal role. VIGIL therefore assesses the materialised service consequence separately from the disputed mechanism and retains an ambiguous mechanism-attribution relationship. The service consequence and disputed Kiro mechanism remain separate. The retained ambiguous mechanism-attribution relationship is a substantive boundary result, not a concluded AI-causation failure or proof that subsequent peer review prevented every recurrence.",
     "significance_to_cam": "The case illustrates why AI attribution in software operations must be based on the actual change-authority and review chain rather than a tool's presence in an engineering workflow.",
     "assessment_boundaries": [
       "Amazon expressly disputes that an autonomous AI action caused the interruption.",
@@ -33,12 +33,21 @@
       "purpose": "Preserve a source-specific paraphrase that links the primary occurrence evidence to VIGIL's governance interpretation without treating taxonomy classification as source fact.",
       "clauses": [
         {
-          "source_paraphrase": "Amazon's first-party account disputing autonomous-AI causation and describing the affected service, region and safeguards.",
-          "recovered_invariant_interpretation": "A bounded AWS service outage occurred, but the available public accounts conflict about whether Kiro had a causal role. VIGIL therefore assesses the materialised service consequence separately from the disputed mechanism and leaves taxonomy classification unresolved.",
-          "taxonomy_relationships": []
+          "source_paraphrase": "Amazon described a brief interruption limited to AWS Cost Explorer in one of its 39 geographic regions, attributed it to user error involving a misconfigured role, and said compute, storage, database and other services were not affected.",
+          "recovered_invariant_interpretation": "Amazon's account establishes a bounded service interruption and identifies an access-control configuration problem while expressly disputing autonomous-AI causation.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping",
+          "adjudication_note": "This is Amazon's attributed account, not an independently established technical postmortem; it does not resolve the competing mechanism account."
         },
         {
-          "source_paraphrase": "Reporting linked the triggering change to Kiro, while Amazon described the event as human error involving access-control configuration.",
+          "source_paraphrase": "Amazon said it implemented additional safeguards, including mandatory peer review for production access, and reviewed the event through its Correction of Error process.",
+          "recovered_invariant_interpretation": "The operator described a post-event control and review pathway intended to prevent recurrence and preserve operational learning.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping",
+          "adjudication_note": "This clause records the safeguards Amazon said it implemented; it does not independently establish their effectiveness."
+        },
+        {
+          "source_paraphrase": "Financial Times reporting linked the triggering change to Kiro, while Amazon attributed the interruption to human error and misconfigured access controls rather than autonomous AI action.",
           "recovered_invariant_interpretation": "Mechanism attribution should remain proportionate to the evidence and preserve material alternative explanations.",
           "taxonomy_relationships": [
             {
@@ -47,7 +56,8 @@
               "canonical_taxonomy_mapping": true,
               "rationale": "Press reporting associated the outage-triggering change with Kiro, while Amazon attributed the event to human error and access-control configuration; the causal mechanism therefore remains materially contested."
             }
-          ]
+          ],
+          "adjudication_status": "mapped"
         }
       ]
     }
@@ -200,7 +210,7 @@
     ]
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.6.7",
+    "taxonomy_version": "0.6.9",
     "classification_status": "classified",
     "classification_basis": "The occurrence mechanism cannot be mapped while the causal role of Kiro, human approval and access-control configuration remains publicly disputed.",
     "primary_classification": {
@@ -212,9 +222,12 @@
     },
     "secondary_classifications": [],
     "classification_review_provenance": {
-      "review_date": "2026-09-19",
-      "reviewer": "OpenAI Codex — GPT-5",
+      "review_date": "2026-09-29",
+      "reviewer": "OpenAI ChatGPT — GPT-6 Codex under human-directed VIGIL governance",
       "review_status": "classification review completed"
+    },
+    "adjudication_coverage": {
+      "status": "complete"
     }
   },
   "related_incidents": [],
@@ -278,28 +291,73 @@
           "Agent count and topology are not inferred from silence; unknown values are retained where the preserved evidence does not resolve them."
         ],
         "review_outcome": "Expanded VIGIL-INC-000162 to the newer occurrence workflow; added canonical agent/environment metadata, migrated VIGIL-HIM from 1.0.0 to 1.0.1 without changing the existing S3 harm band because threshold criteria are unchanged, and preserved taxonomy status requires-human-review."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-09-30-CLAUSE-BREAKDOWN-000162",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-6 Codex",
+        "review_date": "2026-09-30",
+        "review_scope": "Incident-by-incident functional decomposition review of the preserved occurrence evidence and source_clause_analysis, testing whether materially distinct mechanisms, authority boundaries, control states, and failure or recovery pathways are represented. No harm reassessment or taxonomy re-adjudication was performed.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_link_and_metadata_review": true,
+          "structured_semantic_adjudication": true,
+          "full_current_taxonomy_review": false,
+          "new_external_source_research": false
+        },
+        "known_limitations": [
+          "Amazon expressly disputes autonomous-Kiro causation and attributes the bounded outage to a human user error and access-control configuration.",
+          "The Financial Times article was paywalled in the review environment and Amazon's linked response was directly reviewed; no full technical postmortem is available.",
+          "Existing FC-000047 ambiguous-boundary relationship and taxonomy history were preserved without version change or assessment regeneration."
+        ],
+        "review_outcome": "Separated Amazon's bounded outage/control account, its stated post-event safeguards and review, and the cross-source causal dispute. Preserved the existing FC-000047 relationship object verbatim; no classification, role or taxonomy history changed."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-02-STAGE4-000162",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-02",
+        "review_scope": "Preservation-led Stage 4 clause, polarity and local external-requirement reconciliation.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "external_requirement_review": true,
+          "harm_impact_review": false,
+          "new_external_source_research": false
+        },
+        "known_limitations": [
+          "Preserved attributed evidence bounds the review; hidden control/permission traces unavailable.",
+          "No new IEEE extraction; admitted metadata and reviewed paths only.",
+          "Conclusion uses existing governance_interpretation; no discussion-field contract."
+        ],
+        "review_outcome": "Retained 3 clause decisions; Independently assessed 0 admitted local candidates; archived excluded historical assessments."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-09-23-WORKFLOW-EXPANSION-000162",
+      "review_id": "VIGIL-REVIEW-2026-10-02-STAGE4-000162",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT",
-      "reviewer_model": "GPT-5.6 Sol",
-      "review_date": "2026-09-23",
-      "review_scope": "Workflow-contract expansion using evidence already preserved in the Incident: occurrence-level agent/environment metadata, source-specific Section 02 bridge, VIGIL-HIM 1.0.1 migration and provenance reconciliation. Existing factual and taxonomy adjudications were not independently reopened.",
+      "reviewer_platform": "OpenAI Codex",
+      "reviewer_model": "GPT-6",
+      "review_date": "2026-10-02",
+      "review_scope": "Preservation-led Stage 4 clause, polarity and local external-requirement reconciliation.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "structured_cross_record_reconciliation": true,
-        "structured_threshold_comparison": true,
+        "taxonomy_review": true,
+        "external_requirement_review": true,
+        "harm_impact_review": false,
         "new_external_source_research": false
       },
       "known_limitations": [
-        "No new external source research was performed in this expansion pass; source completeness and post-ingestion developments were not independently rechecked.",
-        "Existing taxonomy mappings and classification status are preserved from the prior incident adjudication and should be re-adjudicated against the then-current taxonomy when transplanted into the active refactor branch.",
-        "Agent count and topology are not inferred from silence; unknown values are retained where the preserved evidence does not resolve them."
+        "Preserved attributed evidence bounds the review; hidden control/permission traces unavailable.",
+        "No new IEEE extraction; admitted metadata and reviewed paths only.",
+        "Conclusion uses existing governance_interpretation; no discussion-field contract."
       ],
-      "review_outcome": "Expanded VIGIL-INC-000162 to the newer occurrence workflow; added canonical agent/environment metadata, migrated VIGIL-HIM from 1.0.0 to 1.0.1 without changing the existing S3 harm band because threshold criteria are unchanged, and preserved taxonomy status requires-human-review."
+      "review_outcome": "Retained 3 clause decisions; Independently assessed 0 admitted local candidates; archived excluded historical assessments."
     },
     "operating_model": "AI-authored, semi-autonomous production under human contract approval",
     "human_governance_editor": null,
@@ -390,5 +448,6 @@
         "evidence_confidence": "not-assessed"
       }
     ]
-  }
+  },
+  "external_requirement_assessments": []
 }

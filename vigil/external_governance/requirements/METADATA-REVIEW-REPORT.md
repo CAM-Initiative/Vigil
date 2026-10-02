@@ -1,9 +1,9 @@
 # External Requirement Metadata Review Report
 
-- Records assessed: 978
-- Canonical records: 978
+- Records assessed: 1102
+- Canonical records: 1102
 - Staged records: 0
-- Metadata-complete: 905
+- Metadata-complete: 1029
 - Records requiring review: 73
 - Unresolved field decisions: 584
 - Records flagged for re-extraction: 0
@@ -14,14 +14,14 @@
 
 | Field | Populated, reviewed | Populated, unreviewed | Empty, unreviewed | Not specified by source | Not applicable |
 |---|---:|---:|---:|---:|---:|
-| `applicable_actor` | 905 | 73 | 0 | 0 | 0 |
-| `governed_object` | 905 | 73 | 0 | 0 | 0 |
-| `timing_or_frequency` | 211 | 4 | 69 | 694 | 0 |
-| `required_artefacts` | 405 | 23 | 50 | 500 | 0 |
-| `evidence_expectation` | 439 | 23 | 50 | 466 | 0 |
-| `verification_method` | 301 | 1 | 72 | 604 | 0 |
-| `applicability_conditions` | 804 | 18 | 55 | 101 | 0 |
-| `exceptions_or_qualifications` | 493 | 18 | 55 | 412 | 0 |
+| `applicable_actor` | 1029 | 73 | 0 | 0 | 0 |
+| `governed_object` | 1029 | 73 | 0 | 0 | 0 |
+| `timing_or_frequency` | 233 | 4 | 69 | 796 | 0 |
+| `required_artefacts` | 428 | 23 | 50 | 601 | 0 |
+| `evidence_expectation` | 407 | 23 | 50 | 622 | 0 |
+| `verification_method` | 321 | 1 | 72 | 708 | 0 |
+| `applicability_conditions` | 929 | 18 | 55 | 100 | 0 |
+| `exceptions_or_qualifications` | 703 | 18 | 55 | 326 | 0 |
 
 ## Source-level review backlog
 
@@ -35,16 +35,19 @@
 | `EXT-31AD0314218F|2021` | `fully-metadata-reviewed` | 59 | 59 | 0 | 0 | 0 |
 | `EXT-338E4D8BD259|2021` | `fully-metadata-reviewed` | 33 | 33 | 0 | 0 | 0 |
 | `EXT-3CCBC407EAC8|2026-05` | `fully-metadata-reviewed` | 39 | 39 | 0 | 0 | 0 |
+| `EXT-477888AB2C1E|2.4` | `fully-metadata-reviewed` | 28 | 28 | 0 | 0 | 0 |
 | `EXT-564A4CAA4F00|2024` | `fully-metadata-reviewed` | 63 | 63 | 0 | 0 | 0 |
-| `EXT-5BC2AAEAF1D3|2024` | `fully-metadata-reviewed` | 18 | 18 | 0 | 0 | 0 |
-| `EXT-6442C7954667|1.0` | `fully-metadata-reviewed` | 71 | 71 | 0 | 0 | 0 |
+| `EXT-5BC2AAEAF1D3|2024` | `fully-metadata-reviewed` | 19 | 19 | 0 | 0 | 0 |
+| `EXT-63C32647602D|2024-09-05` | `fully-metadata-reviewed` | 54 | 54 | 0 | 0 | 0 |
+| `EXT-6442C7954667|1.0` | `fully-metadata-reviewed` | 74 | 74 | 0 | 0 | 0 |
 | `EXT-65F7658B8B04|2024` | `fully-metadata-reviewed` | 75 | 75 | 0 | 0 | 0 |
 | `EXT-71B4139453FA|3.0.1` | `fully-metadata-reviewed` | 4 | 4 | 0 | 0 | 0 |
 | `EXT-7E4B8ED73AA5|2021` | `fully-metadata-reviewed` | 10 | 10 | 0 | 0 | 0 |
 | `EXT-8D54F96680C4|2024` | `fully-metadata-reviewed` | 59 | 59 | 0 | 0 | 0 |
 | `EXT-8E377EF5CE66|2020` | `fully-metadata-reviewed` | 18 | 18 | 0 | 0 | 0 |
 | `EXT-8FEA9674D97A|1.10` | `fully-metadata-reviewed` | 24 | 24 | 0 | 0 | 0 |
-| `EXT-DE4FDB52698E|2024` | `fully-metadata-reviewed` | 223 | 223 | 0 | 0 | 0 |
+| `EXT-A35C209A334B|2024-05-03` | `fully-metadata-reviewed` | 37 | 37 | 0 | 0 | 0 |
+| `EXT-DE4FDB52698E|2024` | `fully-metadata-reviewed` | 224 | 224 | 0 | 0 | 0 |
 
 ## Re-extraction findings
 

@@ -45,6 +45,7 @@ class ValidateVigilPublicRecordsTest(unittest.TestCase):
             "source_records": [{"source_role": "incident-evidence"}],
             "harm_impact_assessment": {"overall_severity": "S3"},
             "external_assessments": [],
+            "external_requirement_assessments": [],
             "taxonomy_classification": {
                 "classification_status": "classified",
                 "classification_role": "successful-invariant",
@@ -64,7 +65,11 @@ class ValidateVigilPublicRecordsTest(unittest.TestCase):
         entry = {
             key: value
             for key, value in expected.items()
-            if value not in (None, "", [], {}) or key in {"secondary_classifications", "external_assessments"}
+            if value not in (None, "", [], {}) or key in {
+                "secondary_classifications",
+                "external_assessments",
+                "external_requirement_assessments",
+            }
         }
         entry["search_terms"] = ["Example Provider", "VIGIL-FC-000001"]
 

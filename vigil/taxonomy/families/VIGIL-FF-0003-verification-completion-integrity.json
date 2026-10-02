@@ -1,5 +1,5 @@
 {
-  "schema_version": "0.2.0",
+  "schema_version": "0.4.0",
   "standard": {
     "name": "VIGIL Alignment Taxonomy",
     "version": "0.6.9",
@@ -14,8 +14,8 @@
     "status": "beta",
     "abstraction": "family",
     "version": "0.1.3",
-    "plain_english": "The system says work is done, correct, verified, or reliable enough for use when the required completion condition, check, or epistemic assurance threshold has not actually been satisfied.",
-    "definition": "Failures in which completion, success, correctness, verification, readiness, or epistemic fitness for reliance is asserted, reused, or propagated inconsistently with the externally relevant completion condition, verification scope, checked state, post-verification output state, or assurance threshold required by the downstream task.",
+    "plain_english": "Claims of completion, verification and reliability match what was established and the level of assurance needed for the intended use.",
+    "definition": "The integrity domain binding completion, success, correctness, verification and epistemic reliance claims to the externally relevant completion condition, checked scope, verified state, continued applicability and assurance threshold required by downstream use.",
     "invariant": "A completion, verification, correctness, or reliance-fitness claim must remain bound to the condition that was actually satisfied, the scope that was actually checked, the state that was actually verified, and the epistemic assurance threshold required by the downstream use.",
     "scope": [
       "AI-generated answers",
@@ -51,7 +51,10 @@
       "VERIFICATION_APPLICABILITY_CONTINUITY",
       "EPISTEMIC_RELIANCE_CALIBRATION",
       "ADVERSARIAL_EVIDENCE_TRUST_CALIBRATION"
-    ]
+    ],
+    "failure_condition": "Failures in which completion, success, correctness, verification, readiness, or epistemic fitness for reliance is asserted, reused, or propagated inconsistently with the externally relevant completion condition, verification scope, checked state, post-verification output state, or assurance threshold required by the downstream task.",
+    "failure_plain_english": "The system says work is done, correct, verified, or reliable enough for use when the required completion condition, check, or epistemic assurance threshold has not actually been satisfied.",
+    "boundary_role": "failure-occurrence"
   },
   "classes": [
     {
@@ -61,16 +64,9 @@
       "name": "Required Verification Completion",
       "status": "beta",
       "abstraction": "class",
-      "plain_english": "The system gives a verified-style answer without performing the check that the task actually required.",
-      "definition": "A failure in which a material verification step required by the task, claim, workflow, or declared assurance posture is omitted before the result is represented as correct, complete, validated, or ready for reliance.",
+      "plain_english": "Checks required for a claimed assurance level are completed and evidenced before that claim becomes operative.",
+      "definition": "The property by which material verification required by a task, workflow, claim, intended use or declared assurance posture is completed and evidenced before the result is represented as correct, complete, validated or ready for reliance, while unavailable or inconclusive checks preserve provisional status.",
       "invariant": "Every verification required by a claim's stated assurance level, intended use, or governing process must be completed and evidenced before the claim becomes operative. An omitted, unavailable, or inconclusive check must leave the result explicitly unverified or provisional.",
-      "recognition": {
-        "required_conditions": [
-          "A material verification step is required by the task, workflow, claim, or declared assurance posture.",
-          "The verification step is not performed or its result is unavailable.",
-          "The system nevertheless represents the result with a level of completion or verification that presupposes the missing check."
-        ]
-      },
       "exclusions": [
         "Verification was not required for the level of claim being made.",
         "The system clearly marks the result as unverified or provisional.",
@@ -95,7 +91,8 @@
               "The claim concerns a result that is deterministically checkable through explicit decomposition.",
               "The required decomposition or equivalent exact check is not performed.",
               "The result is nevertheless represented as exact, verified, or suitable for exact reliance."
-            ]
+            ],
+            "applies_to": "failure-occurrence"
           },
           "exclusions": [
             "The result is verified through an equivalent deterministic method.",
@@ -120,7 +117,7 @@
           "date": "2024-07-05",
           "url": "https://standards.ieee.org/ieee/7009/7096/",
           "reference_role": "standards-evidence",
-          "evidence_note": "IEEE 7009-2024, clause 9.5 requires competent stakeholders to select and agree application-appropriate verification means. This supports the existence of material verification steps in governed workflows; classification still requires occurrence-specific evidence that an applicable verification step was actually required and omitted.",
+          "evidence_note": "Taxonomy/standards relationship pending (2026-10-02). Separate written IEEE AI-use consent is not evidenced; relationship admission held. Existing extraction provenance is retained. Historical annotation is preserved in vigil/docs/reviews/2026-10-01-taxonomy-standards-alignment/historical-reference-dispositions.json.",
           "requirement_id": "EXTREQ-A36A849D1852EAFD",
           "clause_or_control": "9.5"
         }
@@ -206,7 +203,26 @@
           },
           "provenance_note": "Canonical occurrence facts and provenance remain governed by VIGIL-INC-000075; this entry records only the reciprocal taxonomy relationship."
         }
-      ]
+      ],
+      "failure_condition": "A failure in which a material verification step required by the task, claim, workflow, or declared assurance posture is omitted before the result is represented as correct, complete, validated, or ready for reliance.",
+      "failure_plain_english": "The system gives a verified-style answer without performing the check that the task actually required.",
+      "failure_recognition": {
+        "required_conditions": [
+          "A material verification step is required by the task, workflow, claim, or declared assurance posture.",
+          "The verification step is not performed or its result is unavailable.",
+          "The system nevertheless represents the result with a level of completion or verification that presupposes the missing check."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_condition": "Available occurrence evidence establishes the following bounded outcome: The required checks are completed with interpretable evidence before the result receives the corresponding assurance; inconclusive checks retain provisional status.",
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "A task or reliance claim requires material verification.",
+          "The required checks are completed with interpretable evidence before the result receives the corresponding assurance; inconclusive checks retain provisional status.",
+          "The checks, their results and the subsequent assurance claim are available and agree for the stated scope."
+        ]
+      }
     },
     {
       "class_id": "VIGIL-FC-000017",
@@ -215,16 +231,9 @@
       "name": "Success Representation Integrity",
       "status": "beta",
       "abstraction": "class",
-      "plain_english": "The system tells the user the task succeeded when the evidence does not show that it succeeded.",
-      "definition": "A failure in which a task, tool call, workflow, mutation, delivery, or external action is represented as successfully completed despite evidence of failure, unresolved outcome, missing confirmation, or absence of the required durable result.",
+      "plain_english": "Reports of success match confirmed external results and distinguish attempts, partial progress and unknown outcomes.",
+      "definition": "The property by which success representations remain bound to confirmation of the externally relevant durable success condition for the stated target and scope, preserving distinctions among preparation, submission, queuing, attempts, partial progress, local acknowledgement and completed effects.",
       "invariant": "Success may be represented only after the externally relevant durable success condition is confirmed for the stated target and scope. Preparation, submission, queuing, attempt, partial progress, local acknowledgement, and unknown outcome must remain distinguishable from completion.",
-      "recognition": {
-        "required_conditions": [
-          "A task or action has an externally relevant success condition.",
-          "Available evidence does not establish that the success condition was satisfied.",
-          "The system represents the task or action as successful or complete rather than preserving the unresolved state."
-        ]
-      },
       "exclusions": [
         "The success condition is actually satisfied.",
         "The system reports only that an attempt was made, not that it succeeded.",
@@ -251,7 +260,8 @@
               "The task contains multiple required components, targets, stages, or deliverables.",
               "At least one required component remains incomplete or unresolved.",
               "The aggregate task is represented as complete rather than partially complete."
-            ]
+            ],
+            "applies_to": "failure-occurrence"
           },
           "exclusions": [
             "The omitted component was optional or explicitly removed from scope.",
@@ -276,11 +286,30 @@
           "date": "2022-03-04",
           "url": "https://standards.ieee.org/ieee/7001/6929/",
           "reference_role": "standards-evidence",
-          "evidence_note": "IEEE 7001-2021, Table 5 level 1 requires documentary evidence of transparent quality-assurance reporting. This supports evidence-backed representations of successful or completed operation; it does not define when an execution claim becomes a VIGIL false-success representation.",
+          "evidence_note": "Taxonomy/standards review 2026-10-02: retain-contextual. Transparent quality-assurance activity reporting. Reporting QA activities does not confirm the externally durable task success condition. Requirements are conditional on the selected stakeholder transparency level; this is a voluntary standard, not universal law. Historical annotation is preserved in vigil/docs/reviews/2026-10-01-taxonomy-standards-alignment/historical-reference-dispositions.json.",
           "requirement_id": "EXTREQ-7417A4E295C50432",
           "clause_or_control": "Table 5 level 1"
         }
-      ]
+      ],
+      "failure_condition": "A failure in which a task, tool call, workflow, mutation, delivery, or external action is represented as successfully completed despite evidence of failure, unresolved outcome, missing confirmation, or absence of the required durable result.",
+      "failure_plain_english": "The system tells the user the task succeeded when the evidence does not show that it succeeded.",
+      "failure_recognition": {
+        "required_conditions": [
+          "A task or action has an externally relevant success condition.",
+          "Available evidence does not establish that the success condition was satisfied.",
+          "The system represents the task or action as successful or complete rather than preserving the unresolved state."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_condition": "Available occurrence evidence establishes the following bounded outcome: Its representation matches confirmation of the durable externally relevant effect, distinguishing preparation, attempts and partial progress.",
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "A system represents a consequential action or task as successful.",
+          "Its representation matches confirmation of the durable externally relevant effect, distinguishing preparation, attempts and partial progress.",
+          "Target-side or otherwise adequate confirmation supports the represented success for the stated target and scope."
+        ]
+      }
     },
     {
       "class_id": "VIGIL-FC-000018",
@@ -289,16 +318,9 @@
       "name": "Completion-Condition Alignment",
       "status": "beta",
       "abstraction": "class",
-      "plain_english": "The system checks the wrong thing and treats that check as proof that the actual task is finished.",
-      "definition": "A failure in which an internal milestone, intermediate state, local tool result, syntactic condition, or partial criterion is substituted for the externally relevant condition that defines task completion.",
+      "plain_english": "Task completion is judged against the agreed external result, while intermediate milestones are reported as milestones.",
+      "definition": "The property by which the governing or agreed externally relevant completion condition remains distinct from internal, intermediate, local, syntactic, proxy, process and partial conditions used to track progress.",
       "invariant": "An internal, intermediate, local, syntactic, proxy, partial, or process condition may be reported only as that milestone and must not substitute for the agreed or governing external completion condition.",
-      "recognition": {
-        "required_conditions": [
-          "The task has an externally relevant completion condition.",
-          "A different internal, intermediate, local, or partial condition is satisfied.",
-          "The system treats satisfaction of the substitute condition as sufficient proof of overall completion."
-        ]
-      },
       "exclusions": [
         "The intermediate condition is explicitly the agreed completion condition.",
         "The system accurately describes the result as an intermediate milestone.",
@@ -315,7 +337,7 @@
           "date": "2020-04-21",
           "url": "https://deepmind.google/blog/specification-gaming-the-flip-side-of-ai-ingenuity/",
           "reference_role": "research-evidence",
-          "evidence_note": "DeepMind describes specification gaming as satisfying the literal specification of an objective without achieving the intended outcome, including obtaining reward without completing the intended task. This directly supports the structural distinction between a satisfied proxy or internal condition and the externally intended success condition; specification gaming is broader than, and does not itself define, VIGIL's completion-condition or completion-representation class."
+          "evidence_note": "Taxonomy/standards review 2026-10-02: retain-contextual-nonrequirement-citation. Proxy versus intended completion. Does not impose reporting or external acceptance duties. Historical annotation is preserved in vigil/docs/reviews/2026-10-01-taxonomy-standards-alignment/historical-reference-dispositions.json."
         }
       ],
       "aliases": [
@@ -384,7 +406,26 @@
           },
           "provenance_note": "Canonical occurrence facts and provenance remain governed by VIGIL-INC-000041; this entry records only the reciprocal taxonomy relationship."
         }
-      ]
+      ],
+      "failure_condition": "A failure in which an internal milestone, intermediate state, local tool result, syntactic condition, or partial criterion is substituted for the externally relevant condition that defines task completion.",
+      "failure_plain_english": "The system checks the wrong thing and treats that check as proof that the actual task is finished.",
+      "failure_recognition": {
+        "required_conditions": [
+          "The task has an externally relevant completion condition.",
+          "A different internal, intermediate, local, or partial condition is satisfied.",
+          "The system treats satisfaction of the substitute condition as sufficient proof of overall completion."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_condition": "Available occurrence evidence establishes the following bounded outcome: Its completion decision is tested against the governing externally relevant condition rather than the intermediate condition alone.",
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "A workflow uses intermediate or proxy progress conditions alongside an agreed completion condition.",
+          "Its completion decision is tested against the governing externally relevant condition rather than the intermediate condition alone.",
+          "Evidence of the completion decision and relevant target outcome demonstrates the governing condition was applied, including bounded non-completion where appropriate."
+        ]
+      }
     },
     {
       "class_id": "VIGIL-FC-000019",
@@ -393,16 +434,9 @@
       "name": "Post-Verification State Integrity",
       "status": "beta",
       "abstraction": "class",
-      "plain_english": "The system verifies one version, changes it afterwards, and still calls the changed version verified.",
-      "definition": "A failure in which content, state, configuration, code, data, or an execution artefact is materially changed after verification while retaining or inheriting the verification status of the earlier state without revalidation.",
+      "plain_english": "A material change after verification suspends the earlier assurance until the changed state is checked.",
+      "definition": "The property by which verification status remains bound to the specific verified content, state, version, configuration, target and scope, with suspension or invalidation and fresh validation across material post-verification mutations.",
       "invariant": "Any material mutation to verified state, version, content, configuration, target, or scope must invalidate or suspend the inherited verification status until fresh verification covers the changed state.",
-      "recognition": {
-        "required_conditions": [
-          "A specific state or artefact is verified.",
-          "A material mutation occurs after that verification.",
-          "The mutated state is represented or consumed as verified without a fresh check covering the mutation."
-        ]
-      },
       "exclusions": [
         "The post-verification change is immaterial to the verified property.",
         "The changed state is reverified before reliance.",
@@ -419,7 +453,7 @@
           "date": "2026-04-30",
           "url": "https://cwe.mitre.org/data/definitions/367.html",
           "reference_role": "authoritative-guidance",
-          "evidence_note": "CWE-367 describes the structural failure in which a resource changes after a check and before use, invalidating the check result. VIGIL uses this as a technical analogue for the check–mutation–reliance sequence; CWE-367 does not establish VIGIL's broader governance class for content, configuration, data, or assurance artefacts."
+          "evidence_note": "Taxonomy/standards review 2026-10-02: retain-contextual-nonrequirement-citation. Changed state invalidates earlier assurance. Does not require every inherited verification status to be suspended. Historical annotation is preserved in vigil/docs/reviews/2026-10-01-taxonomy-standards-alignment/historical-reference-dispositions.json."
         },
         {
           "title": "IEEE 7000-2021, clause 10.3(e)(8)",
@@ -427,7 +461,7 @@
           "date": "2021-09-15",
           "url": "https://standards.ieee.org/ieee/7000/6781/",
           "reference_role": "standards-evidence",
-          "evidence_note": "IEEE 7000-2021, clause 10.3(e)(8) requires verification and continued monitoring to identify when changed context or priorities require design revision. This supports invalidation of earlier verification after material change; it does not itself isolate mutation between verification and reliance.",
+          "evidence_note": "Taxonomy/standards review 2026-10-02: retain-contextual. Verification and monitoring identify when changed context/priorities require design revision. Design iteration is not a required fresh verification of every material post-verification mutation. Historical annotation is preserved in vigil/docs/reviews/2026-10-01-taxonomy-standards-alignment/historical-reference-dispositions.json.",
           "requirement_id": "EXTREQ-D999E91F3E053E85",
           "clause_or_control": "10.3(e)(8)"
         }
@@ -436,7 +470,26 @@
         "VIGIL.FF.VERIFICATION_COMPLETION.POST_VERIFICATION_MUTATION",
         "POST_VERIFICATION_MUTATION",
         "Post-Verification Mutation"
-      ]
+      ],
+      "failure_condition": "A failure in which content, state, configuration, code, data, or an execution artefact is materially changed after verification while retaining or inheriting the verification status of the earlier state without revalidation.",
+      "failure_plain_english": "The system verifies one version, changes it afterwards, and still calls the changed version verified.",
+      "failure_recognition": {
+        "required_conditions": [
+          "A specific state or artefact is verified.",
+          "A material mutation occurs after that verification.",
+          "The mutated state is represented or consumed as verified without a fresh check covering the mutation."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_condition": "Available occurrence evidence establishes the following bounded outcome: Assurance is suspended or invalidated for the mutation and restored only through adequate fresh verification.",
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "Verified content or state undergoes a material subsequent mutation.",
+          "Assurance is suspended or invalidated for the mutation and restored only through adequate fresh verification.",
+          "Versioned mutation, verification and reliance records demonstrate that assurance follows the particular current state."
+        ]
+      }
     },
     {
       "class_id": "VIGIL-FC-000020",
@@ -445,16 +498,9 @@
       "name": "Verification Applicability Continuity",
       "status": "beta",
       "abstraction": "class",
-      "plain_english": "An old check is reused as proof for a current state that may no longer be the same.",
-      "definition": "A failure in which a prior verification result is applied to a later state, environment, version, dependency set, target, or time period without establishing that the conditions relevant to the original verification still hold.",
+      "plain_english": "Earlier verification supports current reliance only while its applicability to the present state remains established.",
+      "definition": "The property by which a prior verification result remains bounded to its verified conditions and is used as current assurance only when continued applicability across material state or contextual changes is independently established.",
       "invariant": "A prior verification may support a later claim only while its applicability to the current time, target, state, version, environment, dependencies, and scope remains established. Otherwise it is historical evidence and the current claim must be revalidated or marked unresolved.",
-      "recognition": {
-        "required_conditions": [
-          "A prior verification result exists for an earlier state or condition.",
-          "The current state differs materially or the continued applicability of the earlier result is unresolved.",
-          "The prior verification is reused as current assurance without revalidation of applicability."
-        ]
-      },
       "exclusions": [
         "The verified property is demonstrably invariant across the change.",
         "The earlier verification is used only as historical evidence rather than current assurance.",
@@ -476,11 +522,30 @@
           "date": "2021-09-15",
           "url": "https://standards.ieee.org/ieee/7000/6781/",
           "reference_role": "standards-evidence",
-          "evidence_note": "IEEE 7000-2021, clause 10.3(e)(8) requires continued monitoring so changing context can trigger revision. This independently supports freshness of verification assumptions; it does not define VIGIL's narrower stale-verification reuse mechanism.",
+          "evidence_note": "Taxonomy/standards review 2026-10-02: retain-strong-supporting. Verification and monitoring identify when changed context/priorities require design revision. The clause requires iteration, not explicit suspension of inherited verification or all current-applicability conditions. Historical annotation is preserved in vigil/docs/reviews/2026-10-01-taxonomy-standards-alignment/historical-reference-dispositions.json.",
           "requirement_id": "EXTREQ-D999E91F3E053E85",
           "clause_or_control": "10.3(e)(8)"
         }
-      ]
+      ],
+      "failure_condition": "A failure in which a prior verification result is applied to a later state, environment, version, dependency set, target, or time period without establishing that the conditions relevant to the original verification still hold.",
+      "failure_plain_english": "An old check is reused as proof for a current state that may no longer be the same.",
+      "failure_recognition": {
+        "required_conditions": [
+          "A prior verification result exists for an earlier state or condition.",
+          "The current state differs materially or the continued applicability of the earlier result is unresolved.",
+          "The prior verification is reused as current assurance without revalidation of applicability."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_condition": "Available occurrence evidence establishes the following bounded outcome: Continued applicability to the changed conditions is independently established or the result is explicitly bounded as prior assurance.",
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "Prior verification is reused after a material context or state change.",
+          "Continued applicability to the changed conditions is independently established or the result is explicitly bounded as prior assurance.",
+          "Evidence of the changed conditions and applicability decision supports the assurance actually relied upon."
+        ]
+      }
     },
     {
       "class_id": "VIGIL-FC-000062",
@@ -489,18 +554,9 @@
       "name": "Epistemic Reliance Calibration",
       "status": "beta",
       "abstraction": "class",
-      "plain_english": "The system treats information as reliable enough for a task even though it has not reached the epistemic standard that the task's downstream reliance requires.",
-      "definition": "A failure in which a generated, retrieved, transformed, inferred, or synthesised claim or artefact is represented, propagated, incorporated, or relied upon at a correctness or assurance level insufficient for the materially consequential reliance condition of the downstream task.",
+      "plain_english": "Information is used with assurance proportionate to the consequences and reliability needs of the downstream task.",
+      "definition": "The property by which generated, retrieved, transformed, inferred and synthesised epistemic artefacts receive assurance calibrated to the downstream reliance threshold, including source quality, traceability, independence, uncertainty, temporal fitness and error consequences, while lower-assurance material remains provisional.",
       "invariant": "Before an epistemic artefact is promoted, accepted, or used in a materially consequential decision, its assurance posture must meet the downstream reliance threshold, calibrated to source quality, traceability, independence, uncertainty, temporal fitness, and error consequences. Lower-assurance material must remain provisional.",
-      "recognition": {
-        "required_conditions": [
-          "A factual claim, citation, technical statement, calculation, interpretation, source representation, or comparable epistemic artefact is generated, retrieved, transformed, inferred, or synthesised.",
-          "The downstream task has a material reliance requirement such that factual accuracy, evidentiary fidelity, technical correctness, source integrity, traceability, uncertainty handling, or equivalent epistemic assurance is consequential to the task.",
-          "The epistemic posture or assurance applied to the artefact is materially lower than the level required by that downstream reliance condition.",
-          "The artefact is represented, propagated, incorporated, submitted, or accepted as fit for the reliance-bearing task without the required epistemic threshold being satisfied.",
-          "The mismatch materially affects or creates a material risk to decision-making, evidentiary use, professional work, institutional process, public reliance, technical correctness, or another reliance-bearing outcome."
-        ]
-      },
       "exclusions": [
         "Purely fictional, creative, symbolic, role-play, expressive, or contemplative generation where empirical truth is not a task condition.",
         "Exploratory brainstorming, hypothesis generation, or modelling that is clearly represented as provisional and is not subsequently relied upon as verified or decision-ready.",
@@ -529,7 +585,7 @@
           "date": "2021-09-29",
           "url": "https://doi.org/10.6028/NIST.IR.8312",
           "reference_role": "authoritative-guidance",
-          "evidence_note": "NIST's Knowledge Limits principle requires a system to identify conditions outside its design scope or below sufficient confidence, and its Explanation Accuracy principle distinguishes a plausible account from one that correctly reflects the generating process. This strongly supports calibrated operation and reliance at the task's actual epistemic boundary; it does not prescribe VIGIL's downstream materiality threshold or establish that a particular artefact was unfit for a particular professional or institutional use."
+          "evidence_note": "Taxonomy/standards review 2026-10-02: reviewed-constituent-citation-pending-canonical-decomposition. Confidence/design limits on reliance. Does not set every downstream consequence-sensitive assurance threshold. Historical annotation is preserved in vigil/docs/reviews/2026-10-01-taxonomy-standards-alignment/historical-reference-dispositions.json."
         },
         {
           "title": "NIST AI RMF 1.0, MEASURE 2.5",
@@ -537,7 +593,7 @@
           "date": "2023-01-26",
           "url": "https://doi.org/10.6028/NIST.AI.100-1",
           "reference_role": "authoritative-guidance",
-          "evidence_note": "NIST AI RMF 1.0, MEASURE 2.5 requires validity and reliability to be demonstrated and generalization limits documented. This supports matching assurance to downstream reliance; it does not itself define VIGIL's consequential reliance threshold.",
+          "evidence_note": "Taxonomy/standards review 2026-10-02: retain-strong-supporting. Demonstrated validity/reliability and documented generalisation limits materially support assurance quality and conditions of applicability. The source does not establish entitlement/decision authority (FC-000046) or a decision-specific reliance threshold; existing FC-000046 reference remains contextual. Demonstrated validity/reliability and documented generalisation limits materially support assurance quality and conditions of applicability. The source does not establish entitlement/decision authority (FC-000046) or a decision-specific reliance threshold; existing FC-000046 reference remains contextual. Historical annotation is preserved in vigil/docs/reviews/2026-10-01-taxonomy-standards-alignment/historical-reference-dispositions.json.",
           "requirement_id": "EXTREQ-2E1D2C63187C14E8",
           "clause_or_control": "MEASURE 2.5"
         },
@@ -547,7 +603,7 @@
           "date": "2011-06-16",
           "url": "https://doi.org/10.1136/amiajnl-2011-000089",
           "reference_role": "research-evidence",
-          "evidence_note": "The systematic review documents over-reliance on automated decision support and failures to recognise automation-induced errors. This independently supports calibrating reliance to the evidentiary quality of automated outputs; VIGIL's class additionally requires a material mismatch between output assurance and consequential downstream reliance."
+          "evidence_note": "Taxonomy/standards review 2026-10-02: retain-contextual-nonrequirement-citation. Calibrated confidence and decision support. No consequence-specific minimum assurance threshold. Historical annotation is preserved in vigil/docs/reviews/2026-10-01-taxonomy-standards-alignment/historical-reference-dispositions.json."
         }
       ],
       "invariant_exemplars": [
@@ -651,7 +707,28 @@
           },
           "provenance_note": "Canonical occurrence facts and provenance remain governed by VIGIL-INC-000004; this entry records only the reciprocal taxonomy relationship."
         }
-      ]
+      ],
+      "failure_condition": "A failure in which a generated, retrieved, transformed, inferred, or synthesised claim or artefact is represented, propagated, incorporated, or relied upon at a correctness or assurance level insufficient for the materially consequential reliance condition of the downstream task.",
+      "failure_plain_english": "The system treats information as reliable enough for a task even though it has not reached the epistemic standard that the task's downstream reliance requires.",
+      "failure_recognition": {
+        "required_conditions": [
+          "A factual claim, citation, technical statement, calculation, interpretation, source representation, or comparable epistemic artefact is generated, retrieved, transformed, inferred, or synthesised.",
+          "The downstream task has a material reliance requirement such that factual accuracy, evidentiary fidelity, technical correctness, source integrity, traceability, uncertainty handling, or equivalent epistemic assurance is consequential to the task.",
+          "The epistemic posture or assurance applied to the artefact is materially lower than the level required by that downstream reliance condition.",
+          "The artefact is represented, propagated, incorporated, submitted, or accepted as fit for the reliance-bearing task without the required epistemic threshold being satisfied.",
+          "The mismatch materially affects or creates a material risk to decision-making, evidentiary use, professional work, institutional process, public reliance, technical correctness, or another reliance-bearing outcome."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_condition": "Available occurrence evidence establishes the following bounded outcome: Assurance is calibrated to the actual reliance threshold using source quality, independence, traceability, uncertainty and temporal fitness.",
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "An epistemic artefact is proposed for reliance with material error consequences.",
+          "Assurance is calibrated to the actual reliance threshold using source quality, independence, traceability, uncertainty and temporal fitness.",
+          "The evidence assessment and reliance decision show that lower-assurance material remained provisional for that use."
+        ]
+      }
     },
     {
       "class_id": "VIGIL-FC-000063",
@@ -660,18 +737,9 @@
       "name": "Adversarial Evidence Trust Calibration",
       "status": "beta",
       "abstraction": "class",
-      "plain_english": "The system accepts deliberately planted or manipulated information as usable evidence without adequately recognising or discounting the compromised trust state.",
-      "definition": "A failure in which adversarially created, planted, altered, coordinated, or strategically positioned information enters a retrieval, evidence, search, synthesis, or decision-support pathway and is incorporated into a factual, evaluative, or reliance-bearing output without proportionate source-trust assessment, corroboration, contradiction testing, independence assessment, or adversarial-risk handling.",
+      "plain_english": "Evidence affected by deliberate manipulation is assessed, corroborated and weighted according to its compromised trust state.",
+      "definition": "The property by which adversarially created, planted, altered, coordinated or strategically positioned information receives proportionate provenance, independence, circularity, corroboration, contradiction and source-trust assessment before materially supporting factual, evaluative or reliance-bearing output. Suspicion or controversy alone does not establish adversarial contamination.",
       "invariant": "Material credibly subject to deliberate manipulation, contamination, replay, strategic positioning, or common-source amplification must not materially support a conclusion unless source trust, provenance, independence, circularity, corroboration, contradiction, and adversarial-risk checks justify that weight. The adversarial trust state must remain visible and be discounted, isolated, or contained proportionately. Allegation, controversy, low quality, or suspicion alone is insufficient to establish poisoning.",
-      "recognition": {
-        "required_conditions": [
-          "Information is deliberately created, planted, altered, coordinated, or strategically positioned to distort downstream interpretation, factual synthesis, confidence, ranking, or decision support.",
-          "The material enters a retrieval, evidence, search, synthesis, or decision-support pathway used by an AI system or AI-mediated workflow.",
-          "The material's adversarial, compromised, derivative, circular, or otherwise degraded trust state is not adequately detected, represented, discounted, or contained.",
-          "The system materially treats the compromised material as evidentiary support for a factual, evaluative, or reliance-bearing output.",
-          "That acceptance materially affects or creates a material risk to factual accuracy, confidence, reputation, public information, decision-making, institutional trust, or another reliance-bearing outcome."
-        ]
-      },
       "exclusions": [
         "Ordinary factual error where there is no evidence that information was deliberately manipulated or strategically planted to distort downstream use.",
         "Satire, fiction, parody, role-play, or clearly labelled synthetic material that is not presented or consumed as factual evidence.",
@@ -692,7 +760,7 @@
           "date": "2025-03-24",
           "url": "https://doi.org/10.6028/NIST.AI.100-2e2025",
           "reference_role": "authoritative-guidance",
-          "evidence_note": "NIST AI 100-2e2025 establishes data poisoning and related adversarial-machine-learning attack concepts across AI lifecycle stages. It directly supports the adversarial manipulation component of this class; VIGIL separately requires that compromised material enter an evidence-bearing pathway and be accepted into a reliance-bearing output without proportionate trust handling."
+          "evidence_note": "Taxonomy/standards review 2026-10-02: derived-contextual-document-rollup. This document reference is supported only through the listed reviewed contextual atomic relationships; the document itself is not an atomic mapping. Historical annotation is preserved in vigil/docs/reviews/2026-10-01-taxonomy-standards-alignment/historical-reference-dispositions.json."
         },
         {
           "title": "Threats to Training: A Survey of Poisoning Attacks and Defenses on Machine Learning Systems",
@@ -700,7 +768,7 @@
           "date": "2022-09-01",
           "url": "https://doi.org/10.1145/3538707",
           "reference_role": "research-evidence",
-          "evidence_note": "This survey systematically characterises data- and model-poisoning attacks and their manipulation of learning inputs and processes. It independently supports the existence of adversarial evidence contamination mechanisms; VIGIL's class is narrower and requires poisoned evidence to be accepted into a reliance-bearing decision or verification pathway."
+          "evidence_note": "Taxonomy/standards relationship pending (2026-10-02). Publisher body unavailable. Indexed poisoning description does not establish the cited source proposition and defence qualifications sufficiently for this audit. Historical annotation is preserved in vigil/docs/reviews/2026-10-01-taxonomy-standards-alignment/historical-reference-dispositions.json."
         }
       ],
       "aliases": [
@@ -731,7 +799,29 @@
           },
           "provenance_note": "Canonical occurrence facts and provenance remain governed by VIGIL-INC-000099; this entry records only the reciprocal taxonomy relationship."
         }
-      ]
+      ],
+      "failure_condition": "A failure in which adversarially created, planted, altered, coordinated, or strategically positioned information enters a retrieval, evidence, search, synthesis, or decision-support pathway and is incorporated into a factual, evaluative, or reliance-bearing output without proportionate source-trust assessment, corroboration, contradiction testing, independence assessment, or adversarial-risk handling.",
+      "failure_plain_english": "The system accepts deliberately planted or manipulated information as usable evidence without adequately recognising or discounting the compromised trust state.",
+      "failure_recognition": {
+        "required_conditions": [
+          "Information is deliberately created, planted, altered, coordinated, or strategically positioned to distort downstream interpretation, factual synthesis, confidence, ranking, or decision support.",
+          "The material enters a retrieval, evidence, search, synthesis, or decision-support pathway used by an AI system or AI-mediated workflow.",
+          "The material's adversarial, compromised, derivative, circular, or otherwise degraded trust state is not adequately detected, represented, discounted, or contained.",
+          "The system materially treats the compromised material as evidentiary support for a factual, evaluative, or reliance-bearing output.",
+          "That acceptance materially affects or creates a material risk to factual accuracy, confidence, reputation, public information, decision-making, institutional trust, or another reliance-bearing outcome."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_condition": "Available occurrence evidence establishes the following bounded outcome: Provenance, independence, circularity, corroboration and contradictions are proportionately assessed before reliance.",
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "Material evidence is exposed to a substantiated adversarial contamination risk.",
+          "Provenance, independence, circularity, corroboration and contradictions are proportionately assessed before reliance.",
+          "The trust review and resulting output show how the concrete contamination risk affected assurance without treating suspicion alone as proof."
+        ]
+      }
     }
-  ]
+  ],
+  "semantic_model": "invariant-with-occurrence-polarity"
 }

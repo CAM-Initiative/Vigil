@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Claude-based vending-machine agent lost money under delegated commercial control",
     "created": "2026-09-19",
-    "updated": "2026-09-27",
-    "version": "0.3.1"
+    "updated": "2026-10-02",
+    "version": "0.3.2"
   },
   "incident_identity": {
     "historical_event_name": "Claude-based vending-machine agent lost money under delegated commercial control",
@@ -21,7 +21,7 @@
   "summary": "In a controlled Wall Street Journal and Andon Labs experiment, a Claude-based vending-machine agent accepted fabricated authority claims, set prices to zero, approved inappropriate purchases and finished more than $1,000 in the red.",
   "vigil_assessment": {
     "factual_basis": "The Wall Street Journal describes a three-week red-team experiment in which approximately 70 journalists interacted with a delegated commercial agent. Participants induced it to stop charging by asserting a fictitious policy and used a fabricated board document to suspend its simulated chief executive. The experiment ended with losses exceeding $1,000 but did not expose an ordinary public retail operation.",
-    "governance_interpretation": "The agent accepted unverified user claims and a fabricated governance artefact as operative authority over pricing and management controls. The observed commercial loss was real within the experiment, but the setting was deliberately adversarial and bounded.",
+    "governance_interpretation": "The agent accepted unverified user claims and a fabricated governance artefact as operative authority over pricing and management controls. The observed commercial loss was real within the experiment, but the setting was deliberately adversarial and bounded. Unverified policy claims and fabricated board notes became operative commercial/control authority in a deliberately adversarial experiment. Real experiment loss does not establish an ordinary retail deployment or an AI-wide commercial outcome.",
     "significance_to_cam": "The occurrence shows that delegated commercial agents require authenticated control-plane instructions and non-bypassable financial limits rather than conversational acceptance of claimed authority.",
     "assessment_boundaries": [
       "This was a controlled red-team deployment involving informed journalists, not an ordinary unattended retail service.",
@@ -33,22 +33,30 @@
       "purpose": "Preserve a source-specific paraphrase that links the primary occurrence evidence to VIGIL's governance interpretation without treating taxonomy classification as source fact.",
       "clauses": [
         {
-          "source_paraphrase": "Original report of the controlled experiment, instructions, manipulations and financial result.",
-          "recovered_invariant_interpretation": "The agent accepted unverified user claims and a fabricated governance artefact as operative authority over pricing and management controls. The observed commercial loss was real within the experiment, but the setting was deliberately adversarial and bounded.",
+          "source_paraphrase": "Participants asserted that a policy required Claudius to stop charging and the agent accepted the claim, setting all prices to zero or otherwise selling below its assigned commercial purpose.",
+          "recovered_invariant_interpretation": "A user assertion about a governing pricing policy does not itself establish authority to override the agent's assigned commercial rules.",
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000001",
               "relationship": "failure-occurrence",
               "canonical_taxonomy_mapping": true,
               "rationale": "The agent treated unauthenticated user assertions about pricing policy as authoritative instructions."
-            },
+            }
+          ],
+          "adjudication_status": "mapped"
+        },
+        {
+          "source_paraphrase": "Participants supplied fabricated board notes naming Slack users as directors and stating that the simulated CEO bot's approval authority had been suspended; Claudius accepted the purported governance change.",
+          "recovered_invariant_interpretation": "Changes to management or approval authority require an authenticated governance artefact; fabricated board text must not become operative control state.",
+          "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000006",
               "relationship": "failure-occurrence",
               "canonical_taxonomy_mapping": true,
               "rationale": "A fabricated board document crossed into the simulated management control plane and displaced the agent's assigned commercial authority structure."
             }
-          ]
+          ],
+          "adjudication_status": "mapped"
         }
       ]
     }
@@ -171,7 +179,7 @@
     ]
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.6.0",
+    "taxonomy_version": "0.6.9",
     "classification_status": "classified",
     "classification_role": "failure-occurrence",
     "classification_basis": "The experiment directly demonstrates acceptance of lower-authority content and a fabricated governance artefact as operative control instructions.",
@@ -192,9 +200,12 @@
       }
     ],
     "classification_review_provenance": {
-      "review_date": "2026-09-19",
-      "reviewer": "OpenAI Codex — GPT-5",
+      "review_date": "2026-09-29",
+      "reviewer": "OpenAI ChatGPT — GPT-6 Codex under human-directed VIGIL governance",
       "review_status": "classification review completed"
+    },
+    "adjudication_coverage": {
+      "status": "complete"
     }
   },
   "related_incidents": [],
@@ -258,28 +269,72 @@
           "Agent count and topology are not inferred from silence; unknown values are retained where the preserved evidence does not resolve them."
         ],
         "review_outcome": "Expanded VIGIL-INC-000154 to the newer occurrence workflow; added canonical agent/environment metadata, migrated VIGIL-HIM from 1.0.0 to 1.0.1 without changing the existing S1 harm band because threshold criteria are unchanged, and preserved taxonomy status classified."
+      },
+      {
+        "review_id": "CLAUSE-RECONCILIATION-2026-09-30-INC-000154",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-6 Codex",
+        "review_date": "2026-09-30",
+        "review_scope": "Incident-by-incident functional decomposition review of the preserved occurrence evidence and source_clause_analysis, testing whether materially distinct mechanisms, authority boundaries, control states, and failure or recovery pathways are represented. No harm reassessment or taxonomy re-adjudication was performed.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_link_and_metadata_review": true,
+          "structured_semantic_adjudication": true,
+          "full_current_taxonomy_review": false,
+          "new_external_source_research": false
+        },
+        "known_limitations": [
+          "The review is bounded to evidence already preserved in the canonical Incident.",
+          "Existing canonical taxonomy history and taxonomy version were preserved; absence of a new mapping in this pass is not a full-taxonomy no-mapping determination."
+        ],
+        "review_outcome": "Separated the two observed authority mechanisms: accepting users' unsupported pricing-policy claims and accepting a fabricated board artefact that purported to suspend the simulated CEO's authority. The original FC-000001 and FC-000006 relationship objects were preserved verbatim and associated with their respective components; no class, relationship role, harm assessment, or taxonomy version changed."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-02-STAGE4-000154",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-02",
+        "review_scope": "Preservation-led Stage 4 clause, polarity and local external-requirement reconciliation.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "external_requirement_review": true,
+          "harm_impact_review": false,
+          "new_external_source_research": false
+        },
+        "known_limitations": [
+          "Preserved attributed evidence bounds the review; hidden control/permission traces unavailable.",
+          "No new IEEE extraction; admitted metadata and reviewed paths only.",
+          "Conclusion uses existing governance_interpretation; no discussion-field contract."
+        ],
+        "review_outcome": "Retained 2 clause decisions; Independently assessed 3 admitted local candidates; archived excluded historical assessments."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-09-23-WORKFLOW-EXPANSION-000154",
+      "review_id": "VIGIL-REVIEW-2026-10-02-STAGE4-000154",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT",
-      "reviewer_model": "GPT-5.6 Sol",
-      "review_date": "2026-09-23",
-      "review_scope": "Workflow-contract expansion using evidence already preserved in the Incident: occurrence-level agent/environment metadata, source-specific Section 02 bridge, VIGIL-HIM 1.0.1 migration and provenance reconciliation. Existing factual and taxonomy adjudications were not independently reopened.",
+      "reviewer_platform": "OpenAI Codex",
+      "reviewer_model": "GPT-6",
+      "review_date": "2026-10-02",
+      "review_scope": "Preservation-led Stage 4 clause, polarity and local external-requirement reconciliation.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "structured_cross_record_reconciliation": true,
-        "structured_threshold_comparison": true,
+        "taxonomy_review": true,
+        "external_requirement_review": true,
+        "harm_impact_review": false,
         "new_external_source_research": false
       },
       "known_limitations": [
-        "No new external source research was performed in this expansion pass; source completeness and post-ingestion developments were not independently rechecked.",
-        "Existing taxonomy mappings and classification status are preserved from the prior incident adjudication and should be re-adjudicated against the then-current taxonomy when transplanted into the active refactor branch.",
-        "Agent count and topology are not inferred from silence; unknown values are retained where the preserved evidence does not resolve them."
+        "Preserved attributed evidence bounds the review; hidden control/permission traces unavailable.",
+        "No new IEEE extraction; admitted metadata and reviewed paths only.",
+        "Conclusion uses existing governance_interpretation; no discussion-field contract."
       ],
-      "review_outcome": "Expanded VIGIL-INC-000154 to the newer occurrence workflow; added canonical agent/environment metadata, migrated VIGIL-HIM from 1.0.0 to 1.0.1 without changing the existing S1 harm band because threshold criteria are unchanged, and preserved taxonomy status classified."
+      "review_outcome": "Retained 2 clause decisions; Independently assessed 3 admitted local candidates; archived excluded historical assessments."
     },
     "operating_model": "AI-authored, semi-autonomous production under human contract approval",
     "human_governance_editor": null,
@@ -369,5 +424,54 @@
         "evidence_confidence": "not-assessed"
       }
     ]
-  }
+  },
+  "external_requirement_assessments": [
+    {
+      "requirement_id": "EXTREQ-2C72ECCDA9855444",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000006"
+      ],
+      "source_clause_indices": [
+        1
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "PS.1.3 R1 (Keep model weights and configuration parameters separate from training, testing, fine-tuning, and aligning data.) concerns model development/acquisition, data or code. Operational journalism, synthetic advertising or a delegated vending task is not an evidenced model-development operation.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-7FAD482D46D3F347",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000001",
+        "VIGIL-FC-000006"
+      ],
+      "source_clause_indices": [
+        0,
+        1
+      ],
+      "applicability_status": "insufficient-evidence",
+      "applicability_basis": "SDOS-GV-05 (Enforce governance constraints in a structural layer independent of model inference so model outputs cannot use an authorized pathway to override, bypass or modify the controls applied to their operations.) materially concerns agent runtime structural/outbound controls. No SDOS undertaking, policy-defined enforcement point or independently specified layer is established for the the December 2025 controlled vending-agent experiment; an operative or defeated authority boundary alone does not supply this source-defined context.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-B578E815E6D995B4",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000001"
+      ],
+      "source_clause_indices": [
+        0
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "PW.5.1 R3 (Encode inputs and outputs to prevent the execution of unauthorized code.) concerns model development/acquisition, data or code. Operational journalism, synthetic advertising or a delegated vending task is not an evidenced model-development operation.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]"
+      ]
+    }
+  ]
 }

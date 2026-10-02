@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Instinct processed retained Gmail data after Google access was disconnected",
     "created": "2026-09-07",
-    "updated": "2026-09-28",
-    "version": "0.1.11"
+    "updated": "2026-10-02",
+    "version": "0.1.12"
   },
   "incident_identity": {
     "historical_event_name": "21 August 2026 Instinct retained-email processing after Google disconnection",
@@ -21,7 +21,7 @@
   "summary": "On 21 August 2026, AI product founder Claire Vo reported that she disconnected the Instinct personal AI assistant from her Google account and nevertheless received an email summary from Instinct about three hours later. Follow-up reporting states that Instinct had retained previously indexed email content and processed those retained copies after the Google connector was disabled. The available evidence does not establish that Instinct continued accessing Gmail after revocation; the occurrence concerns continued processing of data retained before disconnection.",
   "vigil_assessment": {
     "factual_basis": "TechCrunch reported Vo's first-person account that Instinct produced an inbox summary after she disconnected Google access and that the assistant explained the relevant emails had been stored in plain text for later searching. The AI Incident Database independently indexes the occurrence as Incident 1675 and explicitly distinguishes retained-data processing from continued post-revocation access to Gmail. Reporting also indicates that another tester encountered difficulty deleting indexed Gmail records and that a deletion control was subsequently added, but this Incident is bounded to Vo's retained-data processing occurrence.",
-    "governance_interpretation": "The occurrence demonstrates a disconnect between revoking a live connector and terminating an AI agent's ability to process data already ingested from that connector. That distinction creates a user-control and data-lifecycle governance risk when disconnect semantics may reasonably be understood as ending the agent's effective use of connected-account data. The available evidence does not establish whether disconnecting Google created an operative control state that prohibited later processing of retained copies; separately, ending the live Gmail connector supports the bounded Authentication-State Continuity invariant-held mapping.",
+    "governance_interpretation": "The occurrence demonstrates a disconnect between revoking a live connector and terminating an AI agent's ability to process data already ingested from that connector. That distinction creates a user-control and data-lifecycle governance risk when disconnect semantics may reasonably be understood as ending the agent's effective use of connected-account data. The available evidence does not establish whether disconnecting Google created an operative control state that prohibited later processing of retained copies; separately, ending the live Gmail connector supports the bounded Authentication-State Continuity invariant-held mapping. The affirmative source distinction between terminated live access and retained-copy processing supports the bounded authentication success. The effective retained-data control scope remains unresolved; revocation does not automatically mean deletion or prohibition of previously ingested data use. Neither an access-continuity breach nor a consent/training duty is inferred without source-defined semantics.",
     "significance_to_cam": "Agentic systems with persistent memory or indexed external-account data require explicit governance of collection, retention, deletion, post-revocation processing and the user-visible meaning of disconnect controls. The occurrence is relevant to authority boundaries and data lifecycle assurance without implying that Google credentials remained active or that new Gmail data was accessed after revocation.",
     "assessment_boundaries": [
       "The evidence does not establish that Instinct re-accessed Gmail or obtained new Gmail messages after Google access was disconnected.",
@@ -237,9 +237,9 @@
     },
     "secondary_classifications": [],
     "classification_review_provenance": {
-      "review_date": "2026-09-28",
+      "review_date": "2026-09-30",
       "reviewer": "OpenAI ChatGPT — GPT-5.6 Sol under human-directed VIGIL governance",
-      "review_status": "classification review completed"
+      "review_status": "clause-level taxonomy adjudication completed"
     },
     "classification_role": "successful-invariant",
     "adjudication_coverage": {
@@ -400,29 +400,93 @@
           "External assessments are preserved as attributable analytical positions and are not treated as automatic proof of VIGIL taxonomy membership."
         ],
         "review_outcome": "Retained unclassified under taxonomy 0.6.5. Possible taxonomy gap: data-use and retained-copy processing after user revocation/disconnection where live access has ended but previously ingested data remains operable."
+      },
+      {
+        "review_id": "CLAUSE-RECONCILIATION-2026-09-30-INC-000092",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT",
+        "reviewer_model": "GPT-5.6 Sol",
+        "review_date": "2026-09-30",
+        "review_scope": "Incident-by-incident functional decomposition review of the preserved occurrence evidence and source_clause_analysis, testing whether materially distinct mechanisms, authority boundaries, control states, and failure or recovery pathways are represented. No harm reassessment or taxonomy re-adjudication was performed.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "structured_semantic_adjudication": true,
+          "full_current_taxonomy_review": false,
+          "new_external_source_research": false
+        },
+        "known_limitations": [
+          "The review is bounded to evidence already preserved in the canonical Incident.",
+          "Existing canonical taxonomy history and taxonomy version were preserved; absence of a new mapping in this pass is not a full-taxonomy no-mapping determination."
+        ],
+        "review_outcome": "Retained the existing 2-clause decomposition as functionally adequate for the preserved occurrence evidence; no unsupported split, taxonomy remapping, or taxonomy-version change was introduced."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-09-30-CLAUSE-TAXONOMY-ADJUDICATION-000092",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT",
+        "reviewer_model": "GPT-5.6 Sol",
+        "review_date": "2026-09-30",
+        "review_scope": "Clause-level adjudication of every material source clause against the canonical VIGIL Alignment Taxonomy 0.6.9, including recognition criteria, exclusions, mapping-local role and Incident coverage reconciliation.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "structured_semantic_adjudication": true,
+          "new_external_source_research": false,
+          "external_requirement_review": false,
+          "harm_impact_review": false
+        },
+        "known_limitations": [
+          "The record distinguishes retained-copy processing from fresh Gmail access but does not establish the intended governance semantics of post-disconnect retained-data processing.",
+          "External-requirement applicability and Harm Impact were not reopened."
+        ],
+        "review_outcome": "Both material clauses were re-tested against taxonomy 0.6.9. FC-000031 remains a successful invariant because disconnecting Google ended the live connector pathway and the later summary used already retained copies rather than a stale authenticated Gmail session. FC-000040 remains unresolved because the preserved record does not establish whether the disconnect action created an operative control state intended to prohibit subsequent processing of retained copies. Coverage remains partial."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-02-STAGE4-000092",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-02",
+        "review_scope": "Preservation-led Stage 4 clause and local external requirement reconciliation.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "external_requirement_review": true,
+          "harm_impact_review": false,
+          "new_external_source_research": false
+        },
+        "known_limitations": [
+          "Existing attributed evidence bounds the review; no complete clinical, attack or detector trace.",
+          "No new IEEE extraction; admitted reviewed paths only.",
+          "Conclusion uses existing governance_interpretation; no discussion-field contract."
+        ],
+        "review_outcome": "Retained 2 clause decisions and mappings; independently assessed 0 admitted local candidates and archived excluded historical assessments."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-09-21-TAXONOMY-READJUDICATION-000092",
+      "review_id": "VIGIL-REVIEW-2026-10-02-STAGE4-000092",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT",
-      "reviewer_model": "GPT-5.6 Sol",
-      "review_date": "2026-09-21",
-      "review_scope": "Deterministic current-taxonomy re-adjudication against VIGIL Failure Taxonomy 0.6.5 using the complete active selectable class set and evidence already preserved in the canonical Incident. Existing external-assessment objects and qualifying attributable analytical positions in preserved source material were checked for structured external-assessment treatment. No new external source research was performed. Harm Impact, source roles, occurrence facts, agent/environment metadata, external-requirement mappings and CAM applicability were not reopened.",
+      "reviewer_platform": "OpenAI Codex",
+      "reviewer_model": "GPT-6",
+      "review_date": "2026-10-02",
+      "review_scope": "Preservation-led Stage 4 clause and local external requirement reconciliation.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "structured_cross_record_reconciliation": true,
-        "full_current_taxonomy_review": true,
-        "external_assessment_consistency_review": true,
+        "taxonomy_review": true,
+        "external_requirement_review": true,
+        "harm_impact_review": false,
         "new_external_source_research": false
       },
       "known_limitations": [
-        "The review is bounded to evidence already preserved in the canonical Incident and does not infer internal mechanisms from title, harm, provider identity, notoriety, registry inclusion or plausible but undocumented system behaviour.",
-        "Candidate rejection does not establish that the mechanism was impossible; it means the preserved occurrence evidence does not satisfy the current selectable class boundary.",
-        "External assessments are preserved as attributable analytical positions and are not treated as automatic proof of VIGIL taxonomy membership."
+        "Existing attributed evidence bounds the review; no complete clinical, attack or detector trace.",
+        "No new IEEE extraction; admitted reviewed paths only.",
+        "Conclusion uses existing governance_interpretation; no discussion-field contract."
       ],
-      "review_outcome": "Retained unclassified under taxonomy 0.6.5. Possible taxonomy gap: data-use and retained-copy processing after user revocation/disconnection where live access has ended but previously ingested data remains operable."
+      "review_outcome": "Retained 2 clause decisions and mappings; independently assessed 0 admitted local candidates and archived excluded historical assessments."
     }
   },
   "harm_impact_assessment": {
@@ -515,5 +579,6 @@
       }
     ]
   },
-  "related_incidents": []
+  "related_incidents": [],
+  "external_requirement_assessments": []
 }

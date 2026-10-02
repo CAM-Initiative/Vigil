@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Concurrent ChatGPT, Claude and Grok service outages on 3 September 2026",
     "created": "2026-09-06",
-    "updated": "2026-09-27",
-    "version": "0.1.12"
+    "updated": "2026-10-02",
+    "version": "0.1.13"
   },
   "incident_identity": {
     "historical_event_name": "3 September 2026 concurrent ChatGPT, Claude and Grok service outages",
@@ -21,7 +21,7 @@
   "summary": "On 3 September 2026, ChatGPT/Codex, Claude and Grok experienced overlapping service-availability incidents. OpenAI reported elevated errors across ChatGPT and Codex and separately attributed its disruption to a routing error. Anthropic reported a partial Claude outage caused by an infrastructure issue, affecting Claude.ai, Claude Code, Claude Cowork and the Claude API. xAI reported a Grok models outage across multiple surfaces and later attributed its disruption to an outage at its Memphis compute centre. The temporal overlap is material ecosystem evidence, but no reviewed source establishes that the three providers shared one technical cause.",
   "vigil_assessment": {
     "factual_basis": "OpenAI's public status record establishes degraded performance affecting ChatGPT and Codex on 3 September 2026, and an OpenAI spokesperson separately attributed its disruption to a routing error. Anthropic confirmed a roughly three-hour partial Claude outage affecting Claude.ai, Claude Code, Claude Cowork and the Claude API and attributed its occurrence to an infrastructure issue. xAI's own status pages record a Grok models outage beginning at 13:30 UTC across multiple service surfaces, with traffic restored roughly three and a half hours later; xAI later stated that the disruption followed an outage at its Memphis compute centre. Independent reporting documents that the three provider incidents overlapped in time. Cloudflare and the major public-cloud status pages did not report a relevant shared disruption, and no reviewed evidence establishes one common technical cause across OpenAI, Anthropic and xAI.",
-    "governance_interpretation": "Three major frontier-AI service providers experienced overlapping availability failures on the same day. The available evidence gives different provider-specific explanations: OpenAI attributed its disruption to a routing error, Anthropic to an infrastructure issue, and xAI to an outage at its Memphis compute centre. The coincidence is relevant to resilience, concentration, dependency and correlated-failure analysis, but it does not establish a shared cloud, network, control-plane or infrastructure dependency.",
+    "governance_interpretation": "Three major frontier-AI service providers experienced overlapping availability failures on the same day. The available evidence gives different provider-specific explanations: OpenAI attributed its disruption to a routing error, Anthropic to an infrastructure issue, and xAI to an outage at its Memphis compute centre. The coincidence is relevant to resilience, concentration, dependency and correlated-failure analysis, but it does not establish a shared cloud, network, control-plane or infrastructure dependency. The separate provider causes are preserved and temporal overlap is not promoted into proof of a common dependency. All clauses resolve without governance mapping; degraded availability alone does not establish verifier failure, leverage or a required-control state. No eligible local or independently identified canonical duty is established.",
     "significance_to_cam": "The occurrence demonstrates that simultaneous or near-simultaneous loss of access to multiple frontier AI providers can create ecosystem-level resilience risk even where the individual provider failures have different or unresolved causes. It is relevant to organisational fallback design, provider concentration, correlated-outage monitoring and sovereign assurance, while preserving the distinction between temporal correlation and proven common causation.",
     "assessment_boundaries": [
       "The reviewed evidence establishes overlapping availability incidents at OpenAI, Anthropic and xAI but does not establish that they shared one technical cause.",
@@ -29,7 +29,96 @@
       "Cloudflare and the major public-cloud status pages did not report a relevant shared disruption during the reviewed window.",
       "Affected-user counts, aggregate transaction loss and downstream organisational impacts across the three providers are not publicly quantified.",
       "No data-loss, confidentiality, integrity, safety or persistent downstream harm common to all three providers is established."
-    ]
+    ],
+    "source_clause_analysis": {
+      "source_record_order": 2,
+      "source_url": "https://www.theregister.com/ai-and-ml/2026/09/03/chatgpt-claude-and-grok-all-had-outages-at-the-same-time/5294322",
+      "purpose": "Preserve the provider-specific outage explanations and the explicit limit on common-cause inference for the overlapping service incidents.",
+      "clauses": [
+        {
+          "source_paraphrase": "The Register reported that OpenAI identified elevated errors across ChatGPT and Codex on 3 September and attributed the disruption to a routing error.",
+          "recovered_invariant_interpretation": "A service outage should be assessed against an evidenced governance dependency or control, not inferred from degraded availability alone.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000037",
+              "relationship": "rejected candidate",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "The routing error is a provider-attributed service cause; the report does not identify a defined governance control whose availability was uncertain before a material decision."
+            },
+            {
+              "class_id": "VIGIL-FC-000048",
+              "relationship": "rejected candidate",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "No identity, licence, eligibility or entitlement verifier is identified as blocking otherwise-valid access without a proportionate continuity route."
+            }
+          ],
+          "adjudication_status": "resolved-no-mapping"
+        },
+        {
+          "source_paraphrase": "The Register reported Anthropic’s partial Claude outage affecting Claude.ai, Claude Code, Claude Cowork and the Claude API, which Anthropic attributed to an infrastructure issue.",
+          "recovered_invariant_interpretation": "A provider-specific infrastructure failure is not itself evidence that an AI-governance control or verification dependency failed.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000037",
+              "relationship": "rejected candidate",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "The report identifies a general infrastructure issue but no governance control whose availability or applicability was uncertain before a material action."
+            },
+            {
+              "class_id": "VIGIL-FC-000048",
+              "relationship": "rejected candidate",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "No dependent identity, licence, eligibility or entitlement verification pathway is identified as the cause of the service disruption."
+            }
+          ],
+          "adjudication_status": "resolved-no-mapping"
+        },
+        {
+          "source_paraphrase": "The Register reported that xAI’s Grok models outage began at 13:30 UTC, affected multiple service surfaces and was later attributed by xAI to an outage at its Memphis compute centre.",
+          "recovered_invariant_interpretation": "An infrastructure outage should not be treated as governance authority or access leverage without evidence that a provider used service control to impose a separate condition.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000037",
+              "relationship": "rejected candidate",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "The report establishes a compute-centre outage but identifies no required governance control whose availability was uncertain before a material decision."
+            },
+            {
+              "class_id": "VIGIL-FC-000048",
+              "relationship": "rejected candidate",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "No verification-dependent access path or otherwise-valid entitlement blocked by a verifier is identified."
+            }
+          ],
+          "adjudication_status": "resolved-no-mapping"
+        },
+        {
+          "source_paraphrase": "The three service incidents overlapped in time, but the reviewed provider statements gave different explanations and did not establish one shared technical cause.",
+          "recovered_invariant_interpretation": "Temporal correlation should remain distinct from evidence of a shared dependency, a missing oversight signal, or infrastructure used as governance leverage.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000030",
+              "relationship": "rejected candidate",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "The comparative report and provider notices were available and assembled; no disconnected monitoring signals are shown to have prevented timely oversight or intervention."
+            },
+            {
+              "class_id": "VIGIL-FC-000058",
+              "relationship": "rejected candidate",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "The record establishes neither reliance-based authority over another principal nor a provider-imposed governance rule derived from infrastructure ownership."
+            },
+            {
+              "class_id": "VIGIL-FC-000059",
+              "relationship": "rejected candidate",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "No provider is shown using access, continuity or exit controls to compel an unrelated governance concession or constrain another principal’s conduct."
+            }
+          ],
+          "adjudication_status": "resolved-no-mapping"
+        }
+      ]
+    }
   },
   "source_records": [
     {
@@ -228,15 +317,18 @@
     ]
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.6.5",
+    "taxonomy_version": "0.6.9",
     "classification_status": "unclassified",
-    "classification_basis": "Current-taxonomy review against VIGIL Failure Taxonomy 0.6.5 retains the occurrence as unclassified. The record establishes overlapping availability failures across OpenAI, Anthropic and xAI but also preserves provider-specific explanations and expressly lacks evidence of a common technical cause. VIGIL-FC-000030 Material Signal Fragmentation was considered because cross-provider resilience analysis may require correlated signals, but the relevant provider status signals were available and were successfully assembled; no monitoring-signal fragmentation prevented timely oversight. VIGIL-FC-000058 Dependency-Derived Governance Authority and VIGIL-FC-000059 Infrastructural Access Leverage are not established because ecosystem concentration or reliance is not shown to have been used as authority or leverage. Temporal coincidence and systemic concern do not constitute a selectable mechanism.",
+    "classification_basis": "The current 0.6.9 Alignment Taxonomy review retains the occurrence as unclassified. The record establishes overlapping provider-reported service outages with distinct provider-specific explanations but no shared technical cause. It does not establish a monitoring-signal fragmentation failure, a verification dependency, infrastructure-derived governance authority, or access leverage; temporal coincidence and ecosystem relevance alone do not establish a current Fidelity Class.",
     "primary_classification": null,
     "secondary_classifications": [],
     "classification_review_provenance": {
-      "review_date": "2026-09-21",
-      "reviewer": "OpenAI ChatGPT / GPT-5.6 Sol under human-directed VIGIL governance",
-      "review_status": "classification review completed"
+      "review_date": "2026-09-30",
+      "reviewer": "OpenAI ChatGPT — GPT-5.6 Sol under human-directed VIGIL governance",
+      "review_status": "clause-level taxonomy adjudication completed"
+    },
+    "adjudication_coverage": {
+      "status": "complete"
     }
   },
   "interpretive_provenance": {
@@ -412,29 +504,93 @@
           "External assessments are preserved as attributable analytical positions and are not treated as automatic proof of VIGIL taxonomy membership."
         ],
         "review_outcome": "Retained unclassified under taxonomy 0.6.5; concurrent multi-provider outages remain ecosystem resilience evidence without a shared governed mechanism."
+      },
+      {
+        "review_id": "CLAUSE-RECONCILIATION-2026-09-30-INC-000091",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT",
+        "reviewer_model": "GPT-5.6 Sol",
+        "review_date": "2026-09-30",
+        "review_scope": "Incident-by-incident functional decomposition review of the preserved occurrence evidence and source_clause_analysis, testing whether materially distinct mechanisms, authority boundaries, control states, and failure or recovery pathways are represented. No harm reassessment or taxonomy re-adjudication was performed.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "structured_semantic_adjudication": true,
+          "full_current_taxonomy_review": false,
+          "new_external_source_research": false
+        },
+        "known_limitations": [
+          "The review is bounded to evidence already preserved in the canonical Incident.",
+          "Existing canonical taxonomy history and taxonomy version were preserved; absence of a new mapping in this pass is not a full-taxonomy no-mapping determination."
+        ],
+        "review_outcome": "Retained the existing 4-clause decomposition as functionally adequate for the preserved occurrence evidence; no unsupported split, taxonomy remapping, or taxonomy-version change was introduced."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-09-30-CLAUSE-TAXONOMY-ADJUDICATION-000091",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT",
+        "reviewer_model": "GPT-5.6 Sol",
+        "review_date": "2026-09-30",
+        "review_scope": "Clause-level adjudication of every material source clause against the canonical VIGIL Alignment Taxonomy 0.6.9, including recognition criteria, exclusions, mapping-local role and Incident coverage reconciliation.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "structured_semantic_adjudication": true,
+          "new_external_source_research": false,
+          "external_requirement_review": false,
+          "harm_impact_review": false
+        },
+        "known_limitations": [
+          "The providers disclosed different attributed causes and no reviewed source establishes a common technical cause.",
+          "External-requirement applicability and Harm Impact were not reopened."
+        ],
+        "review_outcome": "All four material clauses were re-tested against taxonomy 0.6.9. The three overlapping provider outages remain completely adjudicated with no canonical mapping: each source identifies provider-specific service or infrastructure causes, while the evidence does not establish governance-control availability failure, verification-dependency access failure, shared dependency, infrastructure leverage or an oversight-signal failure. Temporal overlap remains ecosystem context only."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-02-STAGE4-000091",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-02",
+        "review_scope": "Preservation-led Stage 4 clause and local external requirement reconciliation.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "external_requirement_review": true,
+          "harm_impact_review": false,
+          "new_external_source_research": false
+        },
+        "known_limitations": [
+          "Existing attributed evidence bounds the review; no complete clinical, attack or detector trace.",
+          "No new IEEE extraction; admitted reviewed paths only.",
+          "Conclusion uses existing governance_interpretation; no discussion-field contract."
+        ],
+        "review_outcome": "Retained 4 clause decisions and mappings; independently assessed 0 admitted local candidates and archived excluded historical assessments."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-09-21-TAXONOMY-READJUDICATION-000091",
+      "review_id": "VIGIL-REVIEW-2026-10-02-STAGE4-000091",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT",
-      "reviewer_model": "GPT-5.6 Sol",
-      "review_date": "2026-09-21",
-      "review_scope": "Deterministic current-taxonomy re-adjudication against VIGIL Failure Taxonomy 0.6.5 using the complete active selectable class set and evidence already preserved in the canonical Incident. Existing external-assessment objects and qualifying attributable analytical positions in preserved source material were checked for structured external-assessment treatment. No new external source research was performed. Harm Impact, source roles, occurrence facts, agent/environment metadata, external-requirement mappings and CAM applicability were not reopened.",
+      "reviewer_platform": "OpenAI Codex",
+      "reviewer_model": "GPT-6",
+      "review_date": "2026-10-02",
+      "review_scope": "Preservation-led Stage 4 clause and local external requirement reconciliation.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "structured_cross_record_reconciliation": true,
-        "full_current_taxonomy_review": true,
-        "external_assessment_consistency_review": true,
+        "taxonomy_review": true,
+        "external_requirement_review": true,
+        "harm_impact_review": false,
         "new_external_source_research": false
       },
       "known_limitations": [
-        "The review is bounded to evidence already preserved in the canonical Incident and does not infer internal mechanisms from title, harm, provider identity, notoriety, registry inclusion or plausible but undocumented system behaviour.",
-        "Candidate rejection does not establish that the mechanism was impossible; it means the preserved occurrence evidence does not satisfy the current selectable class boundary.",
-        "External assessments are preserved as attributable analytical positions and are not treated as automatic proof of VIGIL taxonomy membership."
+        "Existing attributed evidence bounds the review; no complete clinical, attack or detector trace.",
+        "No new IEEE extraction; admitted reviewed paths only.",
+        "Conclusion uses existing governance_interpretation; no discussion-field contract."
       ],
-      "review_outcome": "Retained unclassified under taxonomy 0.6.5; concurrent multi-provider outages remain ecosystem resilience evidence without a shared governed mechanism."
+      "review_outcome": "Retained 4 clause decisions and mappings; independently assessed 0 admitted local candidates and archived excluded historical assessments."
     }
   },
   "harm_impact_assessment": {
@@ -528,5 +684,6 @@
       }
     ]
   },
-  "related_incidents": []
+  "related_incidents": [],
+  "external_requirement_assessments": []
 }

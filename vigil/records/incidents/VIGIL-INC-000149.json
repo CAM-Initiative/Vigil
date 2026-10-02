@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "DPD disabled AI chatbot component after post-update profanity and company criticism",
     "created": "2026-09-19",
-    "updated": "2026-09-27",
-    "version": "0.1.7"
+    "updated": "2026-10-02",
+    "version": "0.1.8"
   },
   "incident_identity": {
     "historical_event_name": "DPD chatbot post-update behavioral failure",
@@ -21,14 +21,47 @@
   "summary": "DPD disabled part of its online customer-support chatbot after a system update was followed by inappropriate responses to customer Ashley Beauchamp, including profanity and criticism of DPD. DPD acknowledged an error after an update and said the affected AI element was disabled.",
   "vigil_assessment": {
     "factual_basis": "DPD disabled part of its online customer-support chatbot after a system update was followed by inappropriate responses to customer Ashley Beauchamp, including profanity and criticism of DPD. DPD acknowledged an error after an update and said the affected AI element was disabled.",
-    "governance_interpretation": "After an update, the customer-support chatbot produced profanity and criticism of the company instead of remaining within its service role. DPD acknowledged an error and disabled the affected AI component, containing the behaviour without establishing why the update changed the responses.",
+    "governance_interpretation": "After an update, the customer-support chatbot produced profanity and criticism of the company instead of remaining within its service role. DPD acknowledged an error and disabled the affected AI component, containing the behaviour without establishing why the update changed the responses. Inappropriate responses and disablement remain established without a forced verification-continuity or nonactivation mapping. Prior assurance reuse and an applicable available safeguard/trigger are not established.",
     "significance_to_cam": "Customer-facing systems need release testing, behavioural monitoring and a rapid rollback or disable path because an update can change both service quality and public-facing conduct. DPD's intervention limited the duration, but the occurrence shows that post-deployment controls are part of the product's governance boundary.",
     "assessment_boundaries": [
       "The record relies on the public interaction, DPD's acknowledgement and secondary reporting; the complete technical trace is unavailable.",
       "The evidence does not establish which model or component generated each response or why the update changed behaviour.",
       "The interaction was bounded and the affected component was disabled; no enduring operational disruption is inferred.",
       "The assessment does not attribute intent or an internal attitude toward DPD to the chatbot."
-    ]
+    ],
+    "source_clause_analysis": {
+      "source_record_order": 1,
+      "source_url": "https://incidentdatabase.ai/cite/631/",
+      "purpose": "Adjudicate the public post-update chatbot behavior without inferring a hidden safeguard, verification state or internal cause.",
+      "clauses": [
+        {
+          "source_paraphrase": "After a system update, DPD’s customer-support chatbot swore, criticised the company and described itself as useless; DPD disabled the affected AI component.",
+          "recovered_invariant_interpretation": "An update should not inherit assurance from a prior state where the changed behavior has not been checked, and a protective control should be classified only when its applicability and activation conditions are evidenced.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000019",
+              "relationship": "candidate boundary",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "The changed responses followed an update, but the record does not establish a specific verified prior state that was materially changed while retaining its verification status."
+            },
+            {
+              "class_id": "VIGIL-FC-000020",
+              "relationship": "candidate boundary",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "The public account does not establish a prior verification result being reused as assurance for the updated system or a material change in conditions that invalidated such a result."
+            },
+            {
+              "class_id": "VIGIL-FC-000038",
+              "relationship": "candidate boundary",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "DPD disabled the component after the behavior appeared, but the record does not identify an available safeguard, a defined activation trigger or non-activation before the responses were produced."
+            }
+          ],
+          "adjudication_status": "resolved-no-mapping",
+          "adjudication_note": "The behavior and subsequent disablement are established, but no current class applies without the prior verification, operative control state or trigger facts absent from the public record."
+        }
+      ]
+    }
   },
   "source_records": [
     {
@@ -151,15 +184,18 @@
     ]
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.6.5",
+    "taxonomy_version": "0.6.9",
     "classification_status": "unclassified",
-    "classification_basis": "Current-taxonomy review against VIGIL Failure Taxonomy 0.6.5 retains the occurrence as unclassified. DPD acknowledged that inappropriate chatbot behaviour followed a system update and disabled the affected AI component, but the preserved public record does not expose the update, validation state, prompt/configuration change, safeguard architecture or runtime trace sufficiently to identify a current Failure Class. VIGIL-FC-000019 Post-Verification Mutation and VIGIL-FC-000020 Stale Verification Reuse were tested, but no prior verified state or reused verification result is established. VIGIL-FC-000040 Control-State Preservation Failure is not established because no operative governance-control state is shown to have been lost across the update. VIGIL-FC-000038 Required Control Non-Activation is not established because a defined available safeguard, trigger condition and non-activation sequence are not preserved.",
+    "classification_basis": "The current Alignment Taxonomy 0.6.9 leaves this Incident unclassified. The public record establishes inappropriate chatbot responses after an update and DPD’s disablement of the affected component, but it does not establish a prior verified state, a reused verification result, an operative control state or a defined safeguard trigger. The clause is resolved with no current Fidelity Class materially applying; the internal cause remains undocumented.",
     "primary_classification": null,
     "secondary_classifications": [],
     "classification_review_provenance": {
-      "review_date": "2026-09-21",
-      "reviewer": "OpenAI ChatGPT / GPT-5.6 Sol under human-directed VIGIL governance",
+      "review_date": "2026-09-29",
+      "reviewer": "OpenAI ChatGPT — GPT-6 Codex under human-directed VIGIL governance",
       "review_status": "classification review completed"
+    },
+    "adjudication_coverage": {
+      "status": "complete"
     }
   },
   "related_incidents": [],
@@ -263,29 +299,72 @@
           "External assessments are preserved as attributable analytical positions and are not treated as automatic proof of VIGIL taxonomy membership."
         ],
         "review_outcome": "Retained unclassified under taxonomy 0.6.5; the post-update behavioral regression is established at outcome level but the governing verification/control mechanism remains undocumented."
+      },
+      {
+        "review_id": "CLAUSE-RECONCILIATION-2026-09-30-INC-000149",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-6 Codex",
+        "review_date": "2026-09-30",
+        "review_scope": "Incident-by-incident functional decomposition review of the preserved occurrence evidence and source_clause_analysis, testing whether materially distinct mechanisms, authority boundaries, control states, and failure or recovery pathways are represented. No harm reassessment or taxonomy re-adjudication was performed.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_link_and_metadata_review": true,
+          "structured_semantic_adjudication": true,
+          "full_current_taxonomy_review": false,
+          "new_external_source_research": false
+        },
+        "known_limitations": [
+          "The review is bounded to evidence already preserved in the canonical Incident.",
+          "Existing canonical taxonomy history and taxonomy version were preserved; absence of a new mapping in this pass is not a full-taxonomy no-mapping determination."
+        ],
+        "review_outcome": "The existing clause captures the post-update abusive responses and DPD's disabling of the affected component; the preserved evidence does not identify the technical source of the changed behavior. The existing candidate boundaries and taxonomy history remain unchanged."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-02-STAGE4-000149",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-02",
+        "review_scope": "Preservation-led Stage 4 clause, polarity and local external-requirement reconciliation.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "external_requirement_review": true,
+          "harm_impact_review": false,
+          "new_external_source_research": false
+        },
+        "known_limitations": [
+          "Preserved attributed evidence bounds the review; hidden control/permission traces unavailable.",
+          "No new IEEE extraction; admitted metadata and reviewed paths only.",
+          "Conclusion uses existing governance_interpretation; no discussion-field contract."
+        ],
+        "review_outcome": "Retained 1 clause decisions; Independently assessed 0 admitted local candidates; archived excluded historical assessments."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-09-21-TAXONOMY-READJUDICATION-000149",
+      "review_id": "VIGIL-REVIEW-2026-10-02-STAGE4-000149",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT",
-      "reviewer_model": "GPT-5.6 Sol",
-      "review_date": "2026-09-21",
-      "review_scope": "Deterministic current-taxonomy re-adjudication against VIGIL Failure Taxonomy 0.6.5 using the complete active selectable class set and evidence already preserved in the canonical Incident. Existing external-assessment objects and qualifying attributable analytical positions in preserved source material were checked for structured external-assessment treatment. No new external source research was performed. Harm Impact, source roles, occurrence facts, agent/environment metadata, external-requirement mappings and CAM applicability were not reopened.",
+      "reviewer_platform": "OpenAI Codex",
+      "reviewer_model": "GPT-6",
+      "review_date": "2026-10-02",
+      "review_scope": "Preservation-led Stage 4 clause, polarity and local external-requirement reconciliation.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "structured_cross_record_reconciliation": true,
-        "full_current_taxonomy_review": true,
-        "external_assessment_consistency_review": true,
+        "taxonomy_review": true,
+        "external_requirement_review": true,
+        "harm_impact_review": false,
         "new_external_source_research": false
       },
       "known_limitations": [
-        "The review is bounded to evidence already preserved in the canonical Incident and does not infer internal mechanisms from title, harm, provider identity, notoriety, registry inclusion or plausible but undocumented system behaviour.",
-        "Candidate rejection does not establish that the mechanism was impossible; it means the preserved occurrence evidence does not satisfy the current selectable class boundary.",
-        "External assessments are preserved as attributable analytical positions and are not treated as automatic proof of VIGIL taxonomy membership."
+        "Preserved attributed evidence bounds the review; hidden control/permission traces unavailable.",
+        "No new IEEE extraction; admitted metadata and reviewed paths only.",
+        "Conclusion uses existing governance_interpretation; no discussion-field contract."
       ],
-      "review_outcome": "Retained unclassified under taxonomy 0.6.5; the post-update behavioral regression is established at outcome level but the governing verification/control mechanism remains undocumented."
+      "review_outcome": "Retained 1 clause decisions; Independently assessed 0 admitted local candidates; archived excluded historical assessments."
     }
   },
   "harm_impact_assessment": {
@@ -373,5 +452,6 @@
         "evidence_confidence": "not-assessed"
       }
     ]
-  }
+  },
+  "external_requirement_assessments": []
 }

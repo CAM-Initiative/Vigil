@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "DeepSeek exposed an unauthenticated database containing chat histories and secrets",
     "created": "2026-09-08",
-    "updated": "2026-09-27",
-    "version": "0.1.13"
+    "updated": "2026-10-02",
+    "version": "0.1.15"
   },
   "incident_identity": {
     "historical_event_name": "DeepSeek exposed ClickHouse database",
@@ -21,7 +21,7 @@
   "summary": "Wiz Research found a publicly accessible, unauthenticated ClickHouse database belonging to DeepSeek. The exposed service provided full database-operation access and contained more than one million lines of logs including chat histories, API secrets, backend details and operational metadata. DeepSeek secured the database after Wiz notified the company; public evidence does not establish whether third parties accessed the data before discovery.",
   "vigil_assessment": {
     "factual_basis": "Wiz reports discovering two internet-reachable DeepSeek ClickHouse endpoints with no authentication and full database control. The exposed data included more than one million log lines with chat history, secret keys and backend details. Reuters independently reported the discovery and DeepSeek's rapid remediation after notification.",
-    "governance_interpretation": "The occurrence is a material AI-platform data-security failure in surrounding infrastructure rather than a model-behaviour failure. It demonstrates that governance of frontier AI services includes conventional but consequential access control, data custody and operational-security boundaries.",
+    "governance_interpretation": "The occurrence is a material AI-platform data-security failure in surrounding infrastructure rather than a model-behaviour failure. It demonstrates that governance of frontier AI services includes conventional but consequential access control, data custody and operational-security boundaries. Database reachability and exposed sensitive logs do not themselves show a governance process treating capability as permission. Notification and closure do not establish earlier third-party access, model-training exposure or runtime-agent admission.",
     "significance_to_cam": "The occurrence shows that an AI service can expose highly sensitive user and operational data through ordinary infrastructure failures even when the model itself is not the failing component. Access control, data custody and deployment security are therefore part of the service's governance boundary.",
     "assessment_boundaries": [
       "The evidence does not establish that an unauthorised third party accessed or misused the exposed database before Wiz discovered it.",
@@ -36,11 +36,12 @@
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000002",
-              "relationship": "ambiguous-boundary exemplar",
+              "relationship": "ambiguous-boundary",
               "canonical_taxonomy_mapping": true,
               "rationale": "The unauthenticated ClickHouse endpoints made powerful capability directly reachable, but the occurrence does not show an AI or governance process treating that reachability as permission; it therefore marks the capability-versus-authority boundary."
             }
-          ]
+          ],
+          "adjudication_status": "mapped"
         }
       ]
     }
@@ -199,7 +200,7 @@
     ]
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.6.7",
+    "taxonomy_version": "0.6.9",
     "classification_status": "classified",
     "classification_basis": "The unauthenticated ClickHouse endpoints made powerful capability directly reachable, but the occurrence does not show an AI or governance process treating that reachability as permission; it therefore marks the capability-versus-authority boundary.",
     "primary_classification": {
@@ -211,11 +212,14 @@
     },
     "secondary_classifications": [],
     "classification_review_provenance": {
-      "review_date": "2026-09-25",
+      "review_date": "2026-09-30",
       "reviewer": "OpenAI ChatGPT — GPT-5.6 Sol under human-directed VIGIL governance",
-      "review_status": "classification review completed"
+      "review_status": "clause-level taxonomy adjudication completed"
     },
-    "classification_role": "ambiguous-boundary"
+    "classification_role": "ambiguous-boundary",
+    "adjudication_coverage": {
+      "status": "complete"
+    }
   },
   "interpretive_provenance": {
     "review_history": [
@@ -392,29 +396,114 @@
           "External assessments are preserved as attributable analytical positions and are not treated as automatic proof of VIGIL taxonomy membership."
         ],
         "review_outcome": "Retained unclassified under taxonomy 0.6.5; the occurrence remains a conventional but material AI-platform infrastructure access-control failure outside the current mechanism set."
+      },
+      {
+        "review_id": "CLAUSE-RECONCILIATION-2026-09-30-INC-000096",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT",
+        "reviewer_model": "GPT-5.6 Sol",
+        "review_date": "2026-09-30",
+        "review_scope": "Incident-by-incident functional decomposition review of the preserved occurrence evidence and source_clause_analysis, testing whether materially distinct mechanisms, authority boundaries, control states, and failure or recovery pathways are represented. No harm reassessment or taxonomy re-adjudication was performed.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "structured_semantic_adjudication": true,
+          "full_current_taxonomy_review": false,
+          "new_external_source_research": false
+        },
+        "known_limitations": [
+          "The review is bounded to evidence already preserved in the canonical Incident.",
+          "Existing canonical taxonomy history and taxonomy version were preserved; absence of a new mapping in this pass is not a full-taxonomy no-mapping determination."
+        ],
+        "review_outcome": "Retained the existing 1-clause decomposition as functionally adequate for the preserved occurrence evidence; no unsupported split, taxonomy remapping, or taxonomy-version change was introduced."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-09-30-CLAUSE-TAXONOMY-ADJUDICATION-000096",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT",
+        "reviewer_model": "GPT-5.6 Sol",
+        "review_date": "2026-09-30",
+        "review_scope": "Clause-level adjudication of every material source clause against the canonical VIGIL Alignment Taxonomy 0.6.9, including recognition criteria, exclusions, mapping-local role and Incident coverage reconciliation.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "structured_semantic_adjudication": true,
+          "new_external_source_research": false,
+          "external_requirement_review": false,
+          "harm_impact_review": false
+        },
+        "known_limitations": [
+          "Public evidence does not establish third-party access before discovery or an AI/governance process that interpreted reachability as authority.",
+          "External-requirement applicability and Harm Impact were not reopened."
+        ],
+        "review_outcome": "The material clause was re-tested against taxonomy 0.6.9. FC-000002 remains an affirmative ambiguous-boundary finding: unauthenticated database capability was directly reachable, but the occurrence does not show an AI or governance process converting that reachability into permission. The legacy boundary-role label was normalised. Coverage remains complete."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-01-EXTREQ-ADJUDICATION-000096",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-01",
+        "review_scope": "Independent external-requirement applicability review against current material source clauses, canonical mapped-class references, source_records and canonical EXTREQ conditions; review excludes both adjudication/candidate matrices.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_research": true,
+          "external_requirement_review": true,
+          "taxonomy_review": true,
+          "harm_impact_review": false
+        },
+        "known_limitations": [
+          "The occurrence review remains bounded to preserved source_records and material clauses; some public URLs could not be freshly reopened or exposed only limited text. No missing internal control, framework adoption or legal nexus is inferred.",
+          "Licensed IEEE primary texts were unavailable in this session; the branch’s documented licensed primary-text fidelity reviews and canonical clause conditions were used alongside public publisher scope/version information. The IMDA primary PDF was blocked on re-access; canonical documented primary-text extraction was used. No fresh full-text review of these unavailable sources is claimed."
+        ],
+        "review_outcome": "Adjudicated 1 current requirement candidates independently. new EXTREQ-C64032FC58E84CBA. All non-applicable or insufficient-evidence entries omit finding and finding_basis; occurrence evidence and contextual references remain canonical in their original fields."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-02-STAGE4-000096",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-02",
+        "review_scope": "Preservation-led Stage 4 clause, polarity and local external-requirement reconciliation.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "external_requirement_review": true,
+          "harm_impact_review": false,
+          "new_external_source_research": false
+        },
+        "known_limitations": [
+          "Preserved attributed evidence bounds the review; hidden control/permission traces unavailable.",
+          "No new IEEE extraction; admitted metadata and reviewed paths only.",
+          "Conclusion uses existing governance_interpretation; no discussion-field contract."
+        ],
+        "review_outcome": "Retained 1 clause decisions; Independently assessed 14 admitted local candidates; archived excluded historical assessments."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-09-21-TAXONOMY-READJUDICATION-000096",
+      "review_id": "VIGIL-REVIEW-2026-10-02-STAGE4-000096",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT",
-      "reviewer_model": "GPT-5.6 Sol",
-      "review_date": "2026-09-21",
-      "review_scope": "Deterministic current-taxonomy re-adjudication against VIGIL Failure Taxonomy 0.6.5 using the complete active selectable class set and evidence already preserved in the canonical Incident. Existing external-assessment objects and qualifying attributable analytical positions in preserved source material were also checked for structured external-assessment treatment. No new external source research was performed. Harm Impact, source roles, occurrence facts, agent/environment metadata, external-requirement mappings and CAM applicability were not reopened.",
+      "reviewer_platform": "OpenAI Codex",
+      "reviewer_model": "GPT-6",
+      "review_date": "2026-10-02",
+      "review_scope": "Preservation-led Stage 4 clause, polarity and local external-requirement reconciliation.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "structured_cross_record_reconciliation": true,
-        "full_current_taxonomy_review": true,
-        "external_assessment_consistency_review": true,
+        "taxonomy_review": true,
+        "external_requirement_review": true,
+        "harm_impact_review": false,
         "new_external_source_research": false
       },
       "known_limitations": [
-        "The review is bounded to evidence already preserved in the canonical Incident and does not infer internal mechanisms from title, harm, provider identity, notoriety, registry inclusion or plausible but undocumented system behaviour.",
-        "Candidate rejection does not establish that the mechanism was impossible; it means the preserved occurrence evidence does not satisfy the current selectable class boundary.",
-        "External assessments are preserved as attributable analytical positions and are not treated as automatic proof of VIGIL taxonomy membership."
+        "Preserved attributed evidence bounds the review; hidden control/permission traces unavailable.",
+        "No new IEEE extraction; admitted metadata and reviewed paths only.",
+        "Conclusion uses existing governance_interpretation; no discussion-field contract."
       ],
-      "review_outcome": "Retained unclassified under taxonomy 0.6.5; the occurrence remains a conventional but material AI-platform infrastructure access-control failure outside the current mechanism set."
+      "review_outcome": "Retained 1 clause decisions; Independently assessed 14 admitted local candidates; archived excluded historical assessments."
     }
   },
   "harm_impact_assessment": {
@@ -527,6 +616,232 @@
       "publication_or_institution": "Wiz Research",
       "assessment_status": "current",
       "reviewed_on": "2026-09-20"
+    }
+  ],
+  "external_requirement_assessments": [
+    {
+      "requirement_id": "EXTREQ-1736F5D9A9FEE3E6",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000002"
+      ],
+      "source_clause_indices": [
+        0
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "Article 4a(1)(e) is later-applying high-risk governance or Article 4a bias-correction permission. the January 2025 DeepSeek database exposure predates that application/permission and is not special-category processing strictly for bias correction. No general privacy/security duty is substituted for this provision.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-194BAA01C8CEDF96",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000002"
+      ],
+      "source_clause_indices": [
+        0
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "Article 4a(2)(b) is later-applying high-risk governance or Article 4a bias-correction permission. the January 2025 DeepSeek database exposure predates that application/permission and is not special-category processing strictly for bias correction. No general privacy/security duty is substituted for this provision.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-1AAD882F2F58BA56",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000002"
+      ],
+      "source_clause_indices": [
+        0
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "SP 800-218A PS.1.1 R2 governs model-development environments, model-element least privilege, sensitive training provenance or development alerts. Operational intrusion/log-database access does not establish model-development or access to model weights/sensitive-trained models. The represented July 2024 Profile also postdates the February 2024 Gemini event.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-34D794BAE48B2042",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000002"
+      ],
+      "source_clause_indices": [
+        0
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "Article 4a(2)(a) is later-applying high-risk governance or Article 4a bias-correction permission. the January 2025 DeepSeek database exposure predates that application/permission and is not special-category processing strictly for bias correction. No general privacy/security duty is substituted for this provision.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-3A41A9530EB9DEB2",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000002"
+      ],
+      "source_clause_indices": [
+        0
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "Article 4a(1)(a) is later-applying high-risk governance or Article 4a bias-correction permission. the January 2025 DeepSeek database exposure predates that application/permission and is not special-category processing strictly for bias correction. No general privacy/security duty is substituted for this provision.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-594D5CEC63541F2B",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000002"
+      ],
+      "source_clause_indices": [
+        0
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "SDOS SDOS-AD-01 governs agent tool-dispatch, admission or restrictive baseline degradation. An exposed database, human publication action or standalone image tuning is not that agent-governance workflow.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-597D56E05968BAA7",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000002"
+      ],
+      "source_clause_indices": [
+        0
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "SP 800-218A PS.3.2 R2 governs model-development environments, model-element least privilege, sensitive training provenance or development alerts. Operational intrusion/log-database access does not establish model-development or access to model weights/sensitive-trained models. The represented July 2024 Profile also postdates the February 2024 Gemini event.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-665D430E7172E64F",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000002"
+      ],
+      "source_clause_indices": [
+        0
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "Article 4a(1) is later-applying high-risk governance or Article 4a bias-correction permission. the January 2025 DeepSeek database exposure predates that application/permission and is not special-category processing strictly for bias correction. No general privacy/security duty is substituted for this provision.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-8406A6A9A7ECFCB6",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000002"
+      ],
+      "source_clause_indices": [
+        0
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "Article 4a(1)(c) is later-applying high-risk governance or Article 4a bias-correction permission. the January 2025 DeepSeek database exposure predates that application/permission and is not special-category processing strictly for bias correction. No general privacy/security duty is substituted for this provision.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-A73521C6AD3B42C8",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000002"
+      ],
+      "source_clause_indices": [
+        0
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "SP 800-218A PS.1.3 R3 governs model-development environments, model-element least privilege, sensitive training provenance or development alerts. Operational intrusion/log-database access does not establish model-development or access to model weights/sensitive-trained models. The represented July 2024 Profile also postdates the February 2024 Gemini event.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-A853649FE81CDD09",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000002"
+      ],
+      "source_clause_indices": [
+        0
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "SDOS SDOS-GV-03 governs agent tool-dispatch, admission or restrictive baseline degradation. An exposed database, human publication action or standalone image tuning is not that agent-governance workflow.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-CF67C1E2AF61F3C8",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000002"
+      ],
+      "source_clause_indices": [
+        0
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "SDOS SDOS-GV-02 governs agent tool-dispatch, admission or restrictive baseline degradation. An exposed database, human publication action or standalone image tuning is not that agent-governance workflow.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-E152AE56D54C13B9",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000002"
+      ],
+      "source_clause_indices": [
+        0
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "SDOS SDOS-IA-02 governs agent tool-dispatch, admission or restrictive baseline degradation. An exposed database, human publication action or standalone image tuning is not that agent-governance workflow.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-E8F231F17B5CF5C2",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000002"
+      ],
+      "source_clause_indices": [
+        0
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "SP 800-218A PO.5.1 R3 governs model-development environments, model-element least privilege, sensitive training provenance or development alerts. Operational intrusion/log-database access does not establish model-development or access to model weights/sensitive-trained models. The represented July 2024 Profile also postdates the February 2024 Gemini event.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
     }
   ]
 }

@@ -1,0 +1,85 @@
+{
+  "artefact_type": "AUDIT",
+  "date": "2026-10-02",
+  "baseline_commit": "a67ca3b47695b0a718dc93b52195f34d4ff4489e",
+  "incident_id": "VIGIL-INC-000025",
+  "status": "INC-000025 reconciled; remaining corpus not reviewed",
+  "retained_clause_adjudications": 2,
+  "changed_clause_adjudications": 0,
+  "eligible_registry_candidates": 2,
+  "independently_identified_requirements": 0,
+  "applicability_counts": {
+    "insufficient-evidence": 2
+  },
+  "finding_counts": {
+    "not-recorded": 2
+  },
+  "existing_assessments_retained": 0,
+  "withheld_prior_assessments": [],
+  "diagnostics_before": [],
+  "diagnostics_after": [],
+  "clauses_taxonomy_him_sources": "Evidence and HIM retained; source/polarity corrections in INC-023/024; stale success-versus-failure prose in INC-025 clarified",
+  "conclusion_fields_updated": 1,
+  "discussion_fields_added": 0,
+  "remaining_scope": "Continue to next active Incident after INC-000025; full corpus incomplete.",
+  "preserved_prechange_prose": {
+    "source_clause_analysis": {
+      "source_record_order": 1,
+      "source_url": "https://www.businessinsider.com/is-claude-down-outage-2026-4",
+      "purpose": "Resolve Business Insider's component-specific provider-status account into the current access-state boundary without importing the prior-day incident covered by the second source.",
+      "clauses": [
+        {
+          "source_paraphrase": "Anthropic identified a major outage affecting Claude.ai and Claude Code, with login, voice and chat errors reported across desktop and mobile, while Claude API and Cowork remained operational.",
+          "recovered_invariant_interpretation": "During partial service failure, materially different product and access states should remain distinguishable so users and operators can identify affected scope and available routes.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000032",
+              "relationship": "successful-invariant",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Anthropic distinguished the affected Claude.ai and Claude Code surfaces from API and Cowork services that remained operational, preserving scope under outage conditions."
+            }
+          ],
+          "adjudication_status": "mapped"
+        },
+        {
+          "source_paraphrase": "Anthropic reported applying a fix and returning success rates to normal roughly ninety minutes later.",
+          "recovered_invariant_interpretation": "Recovery claims should identify the affected scope and be bounded by observed service restoration rather than converting duration alone into a governance mechanism.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000032",
+              "relationship": "recovery context",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "The bounded recovery supplies impact context but no evidence of collapsed access-state representation."
+            }
+          ],
+          "adjudication_status": "resolved-no-mapping"
+        }
+      ]
+    },
+    "taxonomy_classification": {
+      "classification_basis": "The successful-invariant mapping to VIGIL-FC-000032 is limited to component-scope separation: the unavailable Claude website and Claude Code remained distinguishable from the operational API and Cowork services. The outage itself is an availability event and is not treated as an Access-State Differentiation failure.",
+      "classification_review_provenance": {
+        "review_date": "2026-09-30",
+        "reviewer": "OpenAI ChatGPT — GPT-5.6 Sol under human-directed VIGIL governance",
+        "review_status": "clause-level taxonomy adjudication completed"
+      },
+      "classification_status": "classified",
+      "primary_classification": {
+        "family_id": "VIGIL-FF-0005",
+        "class_id": "VIGIL-FC-000032",
+        "classification_role": "successful-invariant",
+        "classification_basis": "During the major outage, Anthropic distinguished the affected Claude website and Claude Code from the operational API and Cowork, preserving the material service-scope and recovery distinction. This mapping is limited to that state-differentiation boundary.",
+        "classification_confidence": "high"
+      },
+      "secondary_classifications": [],
+      "taxonomy_version": "0.6.9",
+      "classification_role": "successful-invariant",
+      "adjudication_coverage": {
+        "status": "complete"
+      }
+    },
+    "governance_interpretation": "The occurrence demonstrates successful scope separation under degraded conditions: the provider status distinguished unavailable user and coding surfaces from operational API and Cowork components. That distinction supports targeted recovery and avoids falsely converting partial service degradation into a single undifferentiated access state. The unresolved governance issue is ordinary service resilience, for which the current selectable taxonomy does not supply a mechanism class on this evidence.",
+    "significance_to_cam": "This incident is a useful negative control for access-state classification. A multi-component outage can be operationally significant without being Access-State Differentiation when the provider keeps affected and unaffected surfaces legible. CAM should preserve component-level status, recovery timing and dependency boundaries while avoiding taxonomy inflation from outage severity alone."
+  },
+  "fresh_source_review": null
+}

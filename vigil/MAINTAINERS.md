@@ -51,6 +51,8 @@ The taxonomy migration assurance ledger at `vigil/taxonomy/migration/Caelestis.L
 
 `related_incidents` is the sole active VIGIL-record relationship field. Current external research citations may be retained in `research_references`, and current standards or regulatory context in `standards_and_regulatory_references`; sources relied on as Incident evidence still belong in `source_records`.
 
+`external_requirement_assessments` is an optional, separate occurrence-level assessment surface. Candidates may be resolved from a material source clause through reviewed FC/EXTREQ relationships or independently identified from occurrence evidence. The field does not duplicate central requirement metadata, taxonomy roles, or external assessments, and does not assert organisation-wide compliance. Follow `vigil/docs/maintenance/EXTERNAL-REQUIREMENT-ADJUDICATION.md`; do not backfill the corpus mechanically. Candidate generation preserves the meaning of `standards_and_regulatory_references` and does not use it to create candidates.
+
 Structured Incident severity is derived through `harm_impact_assessment` and VIGIL-HIM. Overall severity is the highest supported assessed materialised-harm band; dimensions are never averaged or summed. `unreported` is not S1, and SU applies when no dimension can be defensibly banded. Severity remains independent of source metadata, diagnostic provenance, taxonomy classification and workflow priority.
 
 Occurrence-environment metadata also preserves independent dimensions. `deployment_state` records evidenced lifecycle status, `activity_contexts` records training/evaluation/research/operational activity, `external_reach` records whether real external systems, services, people or data were materially reached, and `activity_actor` identifies the actor conducting non-operational activity. Never infer deployed status from live external reach or real-world consequences. The complete adjudication rules are in `vigil/VIGIL.Schema.json` and the Incident adjudication workflow.
@@ -441,13 +443,19 @@ Each enrolled Incident must have exactly one row for every current selectable Fi
 Rows contain one semantic decision and a short occurrence-specific reason:
 
 - `failure-occurrence` — the occurrence establishes violation of the class invariant and must carry the same canonical Incident and Section 02 role;
-- `successful-invariant` — the invariant was materially tested or engaged and affirmatively preserved; the Incident mapping and an admitted reciprocal taxonomy `invariant_exemplar` are required;
-- `ambiguous-boundary` — the occurrence materially illuminates the invariant boundary but establishes neither failure nor successful preservation; the Incident mapping and an admitted reciprocal taxonomy `invariant_exemplar` are required;
+- `successful-invariant` — the invariant was materially tested or engaged and affirmatively preserved; the Incident and Section 02 must carry the same role, independently of exemplar admission;
+- `ambiguous-boundary` — the occurrence materially illuminates the invariant boundary but establishes neither failure nor successful preservation; the Incident and Section 02 must carry the same role, independently of exemplar admission;
 - `no-mapping` — sufficient recognition facts establish that the class is not materially engaged;
 - `unresolved` — a required recognition fact remains genuinely unavailable or indeterminate, and the reason must name that fact; and
 - `MISSING` — mechanical placeholder only; validation must fail until a reviewer adjudicates it.
 
 `unresolved` MUST NOT be used as a substitute for `ambiguous-boundary`. An ambiguous boundary is an affirmative taxonomy relationship; unresolved is evidence uncertainty. Ordinary absence of failure is neither a successful invariant nor an ambiguous boundary.
+
+Occurrence roles do not automatically confer taxonomy exemplar status. An explicitly admitted
+`invariant_exemplar` must have a matching class and role in the canonical Incident, Section 02
+and, where enrolled, the adjudication ledger. An occurrence need not be admitted as an exemplar
+merely because it has a successful-invariant or ambiguous-boundary mapping. Incident-level
+exemplar eligibility and clause adjudication coverage remain separately governed above.
 
 Run `python vigil/scripts/sync-vigil-taxonomy-adjudications.py` after adding a selectable class or enrolling an Incident. The sync may create `MISSING` cells but must never choose a semantic disposition. During the v0.1 failure-only migration, prior `YES` becomes `failure-occurrence`, prior `UNRESOLVED` remains `unresolved`, and prior `NO` is retained under `prior_failure_adjudication` while the role-aware decision becomes `MISSING`; the sync MUST NOT infer `no-mapping` from prior failure rejection. Run `python vigil/scripts/validate-vigil-taxonomy-adjudications.py` to enforce current-class coverage and role-by-role canonical consistency.
 
@@ -459,7 +467,13 @@ For deterministic handover, disposition polarity is evidence-sensitive: `no-mapp
 
 Adjudication reasons must also be occurrence-specific. Boilerplate templates, generic applicability statements, and duplicate normalised reasons within one Incident are validator failures. In particular, do not use forms such as `No material [class] mechanism is present ...`, `required conditions are outside the evidenced pathway`, `class does not apply`, or equivalent repetitive filler. A `no-mapping` reason must identify the recognition condition or exclusion resolved by the occurrence; an `unresolved` reason must identify the exact missing recognition fact.
 
-Stage 02 canonical role parsing is exact rather than impressionistic. Accepted values are `failure-occurrence` and `failure-occurrence contribution` for the `failure-occurrence` role, `successful-invariant` for the `successful-invariant` role, and `ambiguous-boundary exemplar` for the `ambiguous-boundary` role. Similar-sounding legacy text such as `canonical failure mapping` is not silently treated as equivalent; it is a maintainer normalisation action.
+Stage 02 canonical role parsing is exact rather than impressionistic. Accepted values are `failure-occurrence` and `failure-occurrence contribution` for the `failure-occurrence` role, `successful-invariant` for the `successful-invariant` role, and `ambiguous-boundary` or the compatible legacy label `ambiguous-boundary exemplar` for the `ambiguous-boundary` role. The legacy label alone does not establish exemplar admission. Similar-sounding legacy text such as `canonical failure mapping` is not silently treated as equivalent; it is a maintainer normalisation action.
+
+The unresolved-reason wording check recognises equivalent descriptions of absent evidence,
+including `no successor trace establishes ...`, `does not identify ...`, and facts that are
+`unavailable`. These are syntax-level signals, not proof that the named fact is required by
+the class: the reviewer must still check the canonical recognition conditions. Generic
+class-state placeholders, duplicate reasons and boilerplate remain invalid.
 
 ### Post-adjudication record-update report
 
@@ -469,7 +483,7 @@ After completing an Incident or tranche:
 
 1. run the adjudication validator;
 2. repair all matrix-quality failures first, including `MISSING`, boilerplate, duplicate reasons and invalid `NO`/`UNRESOLVED` polarity;
-3. compare each clean positive role set with the same role in canonical `taxonomy_classification` mappings and Stage 02 canonical `source_clause_analysis.taxonomy_relationships`, and verify admitted reciprocal taxonomy exemplars for successful-invariant and ambiguous-boundary mappings;
+3. compare each clean positive role set with the same role in canonical `taxonomy_classification` mappings and Stage 02 canonical `source_clause_analysis.taxonomy_relationships`, and verify matching occurrence roles for explicitly admitted taxonomy exemplars;
 4. place an Incident on the **record update required** list only when the clean matrix disagrees with either canonical surface;
 5. do not modify the canonical Incident during a matrix-only campaign unless the maintainer separately authorises record repair;
 6. stage a Gmail action only when a genuine unresolved change is required, such as a canonical Incident/Section 02 repair that was identified but not performed, a taxonomy boundary/class/family change that remains to be made, or a genuinely new taxonomy class/proposal; and
@@ -567,12 +581,16 @@ For Incident/schema/runtime changes, run:
 ```bash
 python vigil/scripts/build-vigil-public-records.py
 python vigil/tests/test_build_vigil_records.py
+python vigil/tests/test_external_requirement_assessments.py
+python vigil/tests/test_clause_requirement_resolver.py
+python vigil/tests/test_external_requirement_public_projection.py
 python vigil/tests/test_validate_vigil_record_rules.py
 python vigil/tests/test_validate_vigil_records.py
 python vigil/tests/test_validate_vigil_public_records.py
 python vigil/tests/test_vigil_pipeline_state.py
 python vigil/tests/test_vigil_source_provenance.py
 python vigil/scripts/validate-vigil-records.py
+python vigil/scripts/validate-occurrence-requirement-assessments.py
 python vigil/scripts/validate-vigil-public-records.py
 python vigil/scripts/validate-vigil-source-provenance.py
 python vigil/scripts/validate-vigil-interpretive-provenance.py
