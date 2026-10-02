@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Meta AI-assisted Instagram recovery flaw enabled unauthorized account takeovers",
     "created": "2026-09-10",
-    "updated": "2026-10-01",
-    "version": "0.1.12"
+    "updated": "2026-10-02",
+    "version": "0.1.13"
   },
   "incident_identity": {
     "historical_event_name": "2026 Meta High Touch Support Instagram account-takeover incident",
@@ -21,7 +21,7 @@
   "summary": "Meta disclosed through a breach notification that unauthorized third parties exploited a vulnerability in Instagram's AI-assisted High Touch Support account-recovery system to obtain password-reset links for accounts they did not own. Meta stated that the support tool itself functioned as intended but a separate code path failed to verify that an email address supplied by the person requesting a reset matched the email address associated with the targeted account. Attackers could therefore receive a reset link at an unassociated email address and take over an account when the account holder had not enabled two-factor authentication. Meta's notification identified 20,225 potentially affected Instagram users, while public reporting documented several confirmed or reported account takeovers including high-profile accounts.",
   "vigil_assessment": {
     "factual_basis": "BleepingComputer directly reports Meta's Maine breach-notification language, including Meta's statement that High Touch Support was an AI-assisted Instagram recovery system, that a separate verification code path failed to reject unassociated email addresses, and that unauthorized third parties consequently received password-reset links for accounts they did not own. The notification identified 20,225 potentially affected users and 30 Maine residents. TechCrunch independently documented the attack flow before the later breach-notification reporting, verified that an attacker-controlled public mailbox received a verification code during the demonstrated process, and reported multiple compromised accounts. Meta's own March product announcement establishes that its AI support assistant was being deployed for end-to-end account support and privileged recovery-related actions, but that announcement is used only for system context rather than proof of the later exploit.",
-    "governance_interpretation": "The occurrence is a cross-principal authority failure in an AI-assisted privileged support workflow. A person interacting with the recovery system had authority to make requests concerning their own account state, but the workflow allowed an attacker-supplied email address and recovery request to alter the separately governed authentication state of another identifiable account holder. The material failure is not that the AI support tool existed or that an attacker could converse with it; it is that the surrounding recovery pathway failed to preserve the account-holder boundary before issuing a credential-reset capability. Meta's statement that the support tool itself worked as intended is preserved: the evidenced defect was in a separate verification code path adjacent to the AI-assisted workflow.",
+    "governance_interpretation": "The occurrence is a cross-principal authority failure in an AI-assisted privileged support workflow. A person interacting with the recovery system had authority to make requests concerning their own account state, but the workflow allowed an attacker-supplied email address and recovery request to alter the separately governed authentication state of another identifiable account holder. The material failure is not that the AI support tool existed or that an attacker could converse with it; it is that the surrounding recovery pathway failed to preserve the account-holder boundary before issuing a credential-reset capability. Meta's statement that the support tool itself worked as intended is preserved: the evidenced defect was in a separate verification code path adjacent to the AI-assisted workflow. Account entitlement, recovery-signal binding and prior verification failures are retained. The separate code-path defect is not recast as an LLM jailbreak; potentially affected users are not all confirmed takeovers.",
     "significance_to_cam": "The incident demonstrates why an AI system's ability to take privileged support actions must remain principal-bound. Conversational acceptance, successful navigation of a support workflow, possession of an attacker-controlled email address, or technical ability to issue a reset link cannot substitute for independent authority over the target account. The case is particularly relevant to agentic and AI-mediated support systems because delegated tool authority can materially change authentication state even where the underlying model is not itself defective.",
     "assessment_boundaries": [
       "Meta states that the AI-assisted High Touch Support tool itself worked as intended and attributes the vulnerability to a separate code path that failed to verify the supplied email address against the targeted Instagram account; VIGIL does not recast that statement as an LLM jailbreak or model-behaviour failure.",
@@ -533,28 +533,51 @@
           "Licensed IEEE primary texts were unavailable in this session; the branch’s documented licensed primary-text fidelity reviews and canonical clause conditions were used alongside public publisher scope/version information. The IMDA primary PDF was blocked on re-access; canonical documented primary-text extraction was used. No fresh full-text review of these unavailable sources is claimed."
         ],
         "review_outcome": "Adjudicated 1 current requirement candidates independently. new EXTREQ-A36A849D1852EAFD. All non-applicable or insufficient-evidence entries omit finding and finding_basis; occurrence evidence and contextual references remain canonical in their original fields."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-02-STAGE4-000110",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-02",
+        "review_scope": "Preservation-led Stage 4 clause, polarity and local external-requirement reconciliation.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "external_requirement_review": true,
+          "harm_impact_review": false,
+          "new_external_source_research": false
+        },
+        "known_limitations": [
+          "Preserved attributed evidence bounds the review; hidden control/permission traces unavailable.",
+          "No new IEEE extraction; admitted metadata and reviewed paths only.",
+          "Conclusion uses existing governance_interpretation; no discussion-field contract."
+        ],
+        "review_outcome": "Retained 3 clause decisions; Independently assessed 31 admitted local candidates; archived excluded historical assessments."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-01-EXTREQ-ADJUDICATION-000110",
+      "review_id": "VIGIL-REVIEW-2026-10-02-STAGE4-000110",
       "reviewer_type": "AI analytical reviewer",
       "reviewer_platform": "OpenAI Codex",
       "reviewer_model": "GPT-6",
-      "review_date": "2026-10-01",
-      "review_scope": "Independent external-requirement applicability review against current material source clauses, canonical mapped-class references, source_records and canonical EXTREQ conditions; review excludes both adjudication/candidate matrices.",
+      "review_date": "2026-10-02",
+      "review_scope": "Preservation-led Stage 4 clause, polarity and local external-requirement reconciliation.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "web_research": true,
-        "external_requirement_review": true,
         "taxonomy_review": true,
-        "harm_impact_review": false
+        "external_requirement_review": true,
+        "harm_impact_review": false,
+        "new_external_source_research": false
       },
       "known_limitations": [
-        "The occurrence review remains bounded to preserved source_records and material clauses; some public URLs could not be freshly reopened or exposed only limited text. No missing internal control, framework adoption or legal nexus is inferred.",
-        "Licensed IEEE primary texts were unavailable in this session; the branch’s documented licensed primary-text fidelity reviews and canonical clause conditions were used alongside public publisher scope/version information. The IMDA primary PDF was blocked on re-access; canonical documented primary-text extraction was used. No fresh full-text review of these unavailable sources is claimed."
+        "Preserved attributed evidence bounds the review; hidden control/permission traces unavailable.",
+        "No new IEEE extraction; admitted metadata and reviewed paths only.",
+        "Conclusion uses existing governance_interpretation; no discussion-field contract."
       ],
-      "review_outcome": "Adjudicated 1 current requirement candidates independently. new EXTREQ-A36A849D1852EAFD. All non-applicable or insufficient-evidence entries omit finding and finding_basis; occurrence evidence and contextual references remain canonical in their original fields."
+      "review_outcome": "Retained 3 clause decisions; Independently assessed 31 admitted local candidates; archived excluded historical assessments."
     }
   },
   "harm_impact_assessment": {
@@ -663,13 +686,502 @@
   "related_incidents": [],
   "external_requirement_assessments": [
     {
-      "requirement_id": "EXTREQ-A36A849D1852EAFD",
+      "requirement_id": "EXTREQ-0988FA858904EFBE",
       "derived_from_class_ids": [
         "VIGIL-FC-000016"
       ],
+      "source_clause_indices": [
+        2
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "PW.4.4 R2 (Scan and thoroughly test acquired AI models and their components for vulnerabilities and malicious content before use.) concerns model development/acquisition/security. An operational recovery-code path or forum analysis/advice workflow does not establish model-component, training-data or development-code operations.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-0F1B5ACCB8F63149",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000016"
+      ],
+      "source_clause_indices": [
+        2
+      ],
       "applicability_status": "insufficient-evidence",
-      "applicability_basis": "Meta’s April–May 2026 High Touch Support incident concerns account-recovery verification exploited for unauthorised Instagram access. For IEEE-7009 9.5, the missing applicability fact is whether IEEE 7009 conformance was claimed for the relevant system and competent stakeholders had an agreed application-specific verification scope; the standard does not mandate one verification technique, and an erroneous result or performed check cannot establish that undertaking. Taxonomy correspondence does not supply these scope facts; no occurrence-level requirement finding is recorded.",
-      "assessed_on": "2026-10-01"
+      "applicability_basis": "NIST-AI-600-1 MS-2.3-003 (Share results of pre-deployment testing with relevant GAI Actors, such as those with system release approval authority.) is a voluntary organizational/lifecycle action. The the June 2026 Instagram recovery exploit establishes no source-defined adoption or action-specific programme covering this proposition. Evidence of a failure, abort, retrospective reconstruction or provider attribution does not itself establish that undertaking or the full action.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-16D458CC8C061FFC",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000016"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "SDOS-IN-01 concerns governance baseline/module/agent identity or structured dispatch. Account-holder/email matching is not agent/module attestation; forum analysis is not a structured model-tier/panel workflow.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-298C72769F142961",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000016"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "applicability_status": "insufficient-evidence",
+      "applicability_basis": "NIST-AI-600-1 MS-2.3-004 (Utilize a purpose-built testing environment such as NIST Dioptra to empirically evaluate GAI trustworthy characteristics.) is a voluntary organizational/lifecycle action. The the June 2026 Instagram recovery exploit establishes no source-defined adoption or action-specific programme covering this proposition. Evidence of a failure, abort, retrospective reconstruction or provider attribution does not itself establish that undertaking or the full action.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-2C8D94B209C2F80D",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000015"
+      ],
+      "source_clause_indices": [
+        1
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "C2PA-SPEC Section 6.8 (When creating an update manifest, claim generators must not redact the hard-binding assertion applying to the current asset.) concerns content manifests, cryptographic provenance, transparency-technique verification or AI package/model-card metadata. Account ownership, technical claim assurance or model-source substitution is not that technical object.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-3493C432505EB990",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000016"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "applicability_status": "insufficient-evidence",
+      "applicability_basis": "Article 16(2)(g) concerns Parties and implemented territorial lifecycle/rights/oversight duties. Relevant entry into force, implementation covering the actor and authorized-body or procedural trigger are not established. AISI access loss is not proof of compulsory investigative authority.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-38E3EC63841A46B8",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000016"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "C2PA-SPEC Section 15.2.1 (A generator must record ingredient validation results in the ingredient assertion's validationResults field using the specified CDDL structure.) concerns content manifests, cryptographic provenance, transparency-technique verification or AI package/model-card metadata. Account ownership, technical claim assurance or model-source substitution is not that technical object.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-3E93785343DE869B",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000016"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "Article 9(6) is a later-applying Chapter III high-risk duty or a special-category bias-correction provision. The the June 2026 Instagram recovery exploit precedes the relevant application period, and no bias-correction exception or Annex III/Union trigger is established. Sensitive-data exposure is not bias correction.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-40698698A6C5F8A4",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000016"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "NIST-AI-100-4 6 (AI actors building, verifying or validating models should verify the effectiveness of provenance-data tracking techniques, such as metadata or watermarks added to model outputs, before deployment.) concerns content manifests, cryptographic provenance, transparency-technique verification or AI package/model-card metadata. Account ownership, technical claim assurance or model-source substitution is not that technical object.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-5726BF6006EBDB6B",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000016"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "Article 9(8) is a later-applying Chapter III high-risk duty or a special-category bias-correction provision. The the June 2026 Instagram recovery exploit precedes the relevant application period, and no bias-correction exception or Annex III/Union trigger is established. Sensitive-data exposure is not bias correction.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-5EF3B75BAAAB980A",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000015"
+      ],
+      "source_clause_indices": [
+        1
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "SPDX-SPEC AI/AIPackage (An AI package must carry the required inherited identity, creation, supplier, release, download, version and primary-purpose properties defined for AIPackage.) concerns content manifests, cryptographic provenance, transparency-technique verification or AI package/model-card metadata. Account ownership, technical claim assurance or model-source substitution is not that technical object.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-6DFDE6867038CA0F",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000016"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "C2PA-SPEC Section 15.2.1 (A generator adding an ingredient through an ingredient assertion must act as a validator and run the full ingredient validation algorithm.) concerns content manifests, cryptographic provenance, transparency-technique verification or AI package/model-card metadata. Account ownership, technical claim assurance or model-source substitution is not that technical object.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-7BC7AF5BCF61B7CD",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000016"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "PW.4.4 R1 (Verify the integrity, provenance, and security of an existing AI model or any other acquired AI components — including training, testing, fine-tuning, and aligning datasets; reward models; adaptation layers; and configuration parameters — before using them.) concerns model development/acquisition/security. An operational recovery-code path or forum analysis/advice workflow does not establish model-component, training-data or development-code operations.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-80E4F94C5C116E32",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000016"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "applicability_status": "insufficient-evidence",
+      "applicability_basis": "IEEE-7000 10.3(e)(1-2) (Verify fulfilment of value-based requirements and validate stakeholder tolerability of residual value risks.) requires the relevant lifecycle, stakeholder/level and conformance undertaking. These are not established by the the June 2026 Instagram recovery exploit; event traces, access loss or wrong advice alone do not supply full validation, documentation or quality/ethical process scope. Admitted metadata only is used.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-877C5370F5BB1274",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000016"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "C2PA-SPEC Section 10.3.2.2 (When a remote ingredient manifest cannot be retrieved, generators should record manifest.inaccessible.) concerns content manifests, cryptographic provenance, transparency-technique verification or AI package/model-card metadata. Account ownership, technical claim assurance or model-source substitution is not that technical object.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-8B6A092C0BA49994",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000016"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "C2PA-SPEC Section 15.2.1 (The validation algorithm must return consolidated validation results for all manifests in the asset’s C2PA Manifest Store, including the active manifest and stored manifests referenced through ingredient assertions.) concerns content manifests, cryptographic provenance, transparency-technique verification or AI package/model-card metadata. Account ownership, technical claim assurance or model-source substitution is not that technical object.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-9353C915CE8F67EE",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000016"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "PW.7.2 R1 (Scan all AI models for malware, vulnerabilities, backdoors, and other security issues in accordance with the organization’s code review and analysis policies or guidelines.) concerns model development/acquisition/security. An operational recovery-code path or forum analysis/advice workflow does not establish model-component, training-data or development-code operations.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-9AAA4079957B7D7D",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000015"
+      ],
+      "source_clause_indices": [
+        1
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "SDOS-IA-01 concerns governance baseline/module/agent identity or structured dispatch. Account-holder/email matching is not agent/module attestation; forum analysis is not a structured model-tier/panel workflow.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-A337E13222520E08",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000016"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "applicability_status": "insufficient-evidence",
+      "applicability_basis": "NIST-AI-100-1 MEASURE 2.3 (Measure AI system performance or assurance criteria qualitatively or quantitatively and demonstrate them under conditions similar to deployment settings; document the measures.) is a voluntary organizational/lifecycle action. The the June 2026 Instagram recovery exploit establishes no source-defined adoption or action-specific programme covering this proposition. Evidence of a failure, abort, retrospective reconstruction or provider attribution does not itself establish that undertaking or the full action.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-A849E2274E39A1C3",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000015"
+      ],
+      "source_clause_indices": [
+        1
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "C2PA-SPEC Section 10.3.2.2 (When an ingredient manifest identifier is already present, generators must compare the manifests, ignore the new one if identical, or give the different new manifest a fresh identifier before insertion according to Chapter 8.) concerns content manifests, cryptographic provenance, transparency-technique verification or AI package/model-card metadata. Account ownership, technical claim assurance or model-source substitution is not that technical object.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-AC83782B40495818",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000016"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "Article 9(6) is a later-applying Chapter III high-risk duty or a special-category bias-correction provision. The the June 2026 Instagram recovery exploit precedes the relevant application period, and no bias-correction exception or Annex III/Union trigger is established. Sensitive-data exposure is not bias correction.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-BAA343B6CDB1862E",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000016"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "Article 14(5) is a later-applying Chapter III high-risk duty or a special-category bias-correction provision. The the June 2026 Instagram recovery exploit precedes the relevant application period, and no bias-correction exception or Annex III/Union trigger is established. Sensitive-data exposure is not bias correction.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-C1E9F45E2A73DE89",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000015",
+        "VIGIL-FC-000016"
+      ],
+      "source_clause_indices": [
+        1,
+        2
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "SDOS-IN-03 concerns governance baseline/module/agent identity or structured dispatch. Account-holder/email matching is not agent/module attestation; forum analysis is not a structured model-tier/panel workflow.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-C5A156431EF49FE9",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000016"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "applicability_status": "insufficient-evidence",
+      "applicability_basis": "NIST-AI-600-1 MS-2.3-002 (Evaluate claims of model capabilities using empirically validated methods.) is a voluntary organizational/lifecycle action. The the June 2026 Instagram recovery exploit establishes no source-defined adoption or action-specific programme covering this proposition. Evidence of a failure, abort, retrospective reconstruction or provider attribution does not itself establish that undertaking or the full action.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-DA3169C395EFDD3E",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000015"
+      ],
+      "source_clause_indices": [
+        1
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "C2PA-SPEC Section 9.1 (A manifest must contain no more than one assertion defining a hard binding.) concerns content manifests, cryptographic provenance, transparency-technique verification or AI package/model-card metadata. Account ownership, technical claim assurance or model-source substitution is not that technical object.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-E152AE56D54C13B9",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000015"
+      ],
+      "source_clause_indices": [
+        1
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "SDOS-IA-02 concerns governance baseline/module/agent identity or structured dispatch. Account-holder/email matching is not agent/module attestation; forum analysis is not a structured model-tier/panel workflow.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-F0581975A66AED74",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000016"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "PW.3.1 R1 (Verify the provenance (when known) and integrity of training, testing, fine-tuning, and aligning data before use.) concerns model development/acquisition/security. An operational recovery-code path or forum analysis/advice workflow does not establish model-component, training-data or development-code operations.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-F11F4371E4676579",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000015"
+      ],
+      "source_clause_indices": [
+        1
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "C2PA-SPEC Section 10.3.2.1 (In a standard manifest, created_assertions must reference at least one hard-binding assertion.) concerns content manifests, cryptographic provenance, transparency-technique verification or AI package/model-card metadata. Account ownership, technical claim assurance or model-source substitution is not that technical object.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-F1C5571B851A123F",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000016"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "PW.8.2 R1 (Test all AI models for vulnerabilities in accordance with the organization’s code testing policies or guidelines.) concerns model development/acquisition/security. An operational recovery-code path or forum analysis/advice workflow does not establish model-component, training-data or development-code operations.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-FA1B882FFAD54D93",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000015"
+      ],
+      "source_clause_indices": [
+        1
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "CYCLONEDX-SPEC modelCard.bom-ref (If a model-card bom-ref is supplied, it must be unique within the BOM.) concerns content manifests, cryptographic provenance, transparency-technique verification or AI package/model-card metadata. Account ownership, technical claim assurance or model-source substitution is not that technical object.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-FE0BA141D12895DA",
+      "derived_from_class_ids": [
+        "VIGIL-FC-000016"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "applicability_status": "not-applicable",
+      "applicability_basis": "Article 11(1) is a later-applying Chapter III high-risk duty or a special-category bias-correction provision. The the June 2026 Instagram recovery exploit precedes the relevant application period, and no bias-correction exception or Annex III/Union trigger is established. Sensitive-data exposure is not bias correction.",
+      "assessed_on": "2026-10-02",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
     }
   ]
 }
