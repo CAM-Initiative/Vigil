@@ -38,6 +38,7 @@ UNRESOLVED_MARKERS = (
     "not publicly",
     "does not show",
     "does not establish",
+    "does not identify",
     "not described",
     "not disclosed",
     "unresolved",
@@ -45,11 +46,19 @@ UNRESOLVED_MARKERS = (
     "unknown",
     "missing",
     "insufficient",
+    "unavailable",
+)
+UNRESOLVED_GAP_PATTERNS = (
+    # A negated subject can identify the absent evidence without the literal
+    # phrase "does not establish", e.g. "no successor trace establishes ...".
+    r"\bno\s+[^.!?\n]+?\s+(?:establish(?:es)?|shows?|identif(?:y|ies))\b",
 )
 UNRESOLVED_BOILERPLATE_PATTERNS = (
     r"(?:does not establish|lacks?|missing|unavailable) (?:the )?recognition facts? "
     r"needed to resolve (?:vigil-)?fc-?\d+",
     r"(?:candidate|class|classification) remains unresolved (?:at|on) the class boundary",
+    r"recognition facts? needed to resolve (?:vigil-)?fc-?\d+ "
+    r"(?:is|are|remains?) unavailable",
 )
 BOILERPLATE_PATTERNS = (
     r"^no material .+ mechanism is present in the bounded occurrence",
@@ -63,7 +72,10 @@ BOILERPLATE_PATTERNS = (
 def unresolved_reason_identifies_evidence_gap(reason):
     """Return whether an unresolved reason names more than matrix state."""
     lowered = reason.lower().strip()
-    return any(marker in lowered for marker in UNRESOLVED_MARKERS) and not any(
+    identifies_gap = any(marker in lowered for marker in UNRESOLVED_MARKERS) or any(
+        re.search(pattern, lowered) for pattern in UNRESOLVED_GAP_PATTERNS
+    )
+    return identifies_gap and not any(
         re.search(pattern, lowered)
         for pattern in UNRESOLVED_BOILERPLATE_PATTERNS
     )
@@ -75,6 +87,7 @@ SECTION02_RELATIONSHIP_ROLES = {
     "failure-occurrence": "failure-occurrence",
     "failure-occurrence contribution": "failure-occurrence",
     "successful-invariant": "successful-invariant",
+    "ambiguous-boundary": "ambiguous-boundary",
     "ambiguous-boundary exemplar": "ambiguous-boundary",
 }
 
@@ -153,14 +166,14 @@ def admitted_exemplars():
 
 
 def reciprocal_actions(incident_id, roles, exemplars):
+    """Check explicit exemplar admissions, not require admission for every role."""
     actions = []
-    for role in ("successful-invariant", "ambiguous-boundary"):
-        for class_id in sorted(roles[role]):
-            if incident_id not in exemplars.get((class_id, role), set()):
-                actions.append(
-                    f"{incident_id}: {role} {class_id} lacks a matching admitted "
-                    "taxonomy invariant_exemplar"
-                )
+    for (class_id, role), incident_ids in sorted(exemplars.items()):
+        if incident_id in incident_ids and class_id not in roles[role]:
+            actions.append(
+                f"{incident_id}: admitted taxonomy invariant_exemplar "
+                f"{class_id} {role} lacks a matching occurrence mapping"
+            )
     return actions
 
 
