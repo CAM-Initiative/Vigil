@@ -9,7 +9,7 @@
     "title": "Cline prompt-injection and cache-poisoning chain enabled unauthorized npm package publication",
     "created": "2026-09-19",
     "updated": "2026-10-02",
-    "version": "0.3.2"
+    "version": "0.3.3"
   },
   "incident_identity": {
     "historical_event_name": "Cline prompt-injection and cache-poisoning chain enabled unauthorized npm package publication",
@@ -21,7 +21,7 @@
   "summary": "Attacker-controlled GitHub issue text prompted Cline's Claude-powered triage agent to execute code, enabling poisoning of shared GitHub Actions cache state that later reached a privileged release workflow. The chain exposed an npm token and led to unauthorised publication of `cline@2.3.0`; Cline deprecated the version and revoked credentials. Cline reported no evidence that OpenClaw itself was malicious or that user data was exposed.",
   "vigil_assessment": {
     "factual_basis": "The researcher's reconstruction shows that untrusted issue text could direct the triage agent to execute code, after which shared cache scope could bridge into privileged release workflows. Cline's postmortem states that an attacker used the chain to steal an npm token and publish version 2.3.0 with a postinstall script for OpenClaw. Cline deprecated the version, revoked credentials and reported no evidence that OpenClaw itself was malicious or that user data was exposed.",
-    "governance_interpretation": "Untrusted issue content crossed into a tool-enabled workflow and then propagated through shared infrastructure into release authority. The model interaction was one necessary link; cache design, token scope and release configuration were independently necessary. Prompt authority, control-plane propagation and captured reconstruction retain their roles. The recovery decision is additionally mapped as target-binding failure because the wrong token was deleted while the exposed token remained usable. Later correct revocation does not erase that interval; OpenClaw is not recast as malicious.",
+    "governance_interpretation": "Untrusted issue content crossed into a tool-enabled workflow and then propagated through shared infrastructure into release authority. The model interaction was one necessary link; cache design, token scope and release configuration were independently necessary. Prompt authority, control-plane propagation and captured reconstruction retain their roles. The recovery decision is also assessed as target-binding failure because the wrong token was deleted while the exposed token remained usable. Later correct revocation does not erase that interval; OpenClaw is not recast as malicious.",
     "significance_to_cam": "The case demonstrates that AI issue-triage agents must be isolated from shared build state and publication credentials, because prompt injection can become supply-chain authority through ordinary CI/CD mechanisms.",
     "assessment_boundaries": [
       "The original researcher tested a mirror and states that a different actor weaponised the published technique against Cline.",
@@ -481,29 +481,47 @@
           "Conclusion uses existing governance_interpretation; no discussion-field contract."
         ],
         "review_outcome": "Retained 6 clause decisions; Corrected one clause’s unsupported permission inference or wrong-credential recovery disposition. Independently assessed 45 admitted local candidates; archived excluded historical assessments."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-02-CONCLUSION-WORDING-000159",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-02",
+        "review_scope": "Human-approved wording-only replacement of the five remaining conclusion phrases flagged by the public-prose check.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": false,
+          "harm_impact_review": false,
+          "new_external_source_research": false
+        },
+        "known_limitations": [
+          "No new evidence verification or re-adjudication; established findings, classifications and evidence limits remain unchanged.",
+          "Approval of the editorial scope does not imply human authorship or line-by-line verification."
+        ],
+        "review_outcome": "Applied the approved descriptive phrase replacement in governance_interpretation; preserved all other assessment prose, clause adjudications, taxonomy, external requirement and Harm Impact findings, sources and prior review history."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-02-STAGE4-000159",
+      "review_id": "VIGIL-REVIEW-2026-10-02-CONCLUSION-WORDING-000159",
       "reviewer_type": "AI analytical reviewer",
       "reviewer_platform": "OpenAI Codex",
       "reviewer_model": "GPT-6",
       "review_date": "2026-10-02",
-      "review_scope": "Preservation-led Stage 4 clause, polarity and local external-requirement reconciliation.",
+      "review_scope": "Human-approved wording-only replacement of the five remaining conclusion phrases flagged by the public-prose check.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "taxonomy_review": true,
-        "external_requirement_review": true,
+        "taxonomy_review": false,
         "harm_impact_review": false,
-        "new_external_source_research": true
+        "new_external_source_research": false
       },
       "known_limitations": [
-        "Preserved attributed evidence bounds the review; hidden control/permission traces unavailable.",
-        "No new IEEE extraction; admitted metadata and reviewed paths only.",
-        "Conclusion uses existing governance_interpretation; no discussion-field contract."
+        "No new evidence verification or re-adjudication; established findings, classifications and evidence limits remain unchanged.",
+        "Approval of the editorial scope does not imply human authorship or line-by-line verification."
       ],
-      "review_outcome": "Retained 6 clause decisions; Corrected one clause’s unsupported permission inference or wrong-credential recovery disposition. Independently assessed 45 admitted local candidates; archived excluded historical assessments."
+      "review_outcome": "Applied the approved descriptive phrase replacement in governance_interpretation; preserved all other assessment prose, clause adjudications, taxonomy, external requirement and Harm Impact findings, sources and prior review history."
     },
     "operating_model": "AI-authored, semi-autonomous production under human contract approval",
     "human_governance_editor": null,
