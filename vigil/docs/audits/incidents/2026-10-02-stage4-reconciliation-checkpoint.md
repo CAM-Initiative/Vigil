@@ -1,6 +1,6 @@
 # Stage 4 reconciliation — ongoing checkpoint, 2 October 2026
 
-The pass has reviewed all 33 active Incidents through INC-000035. INC-000011 and INC-000017 are inactive and were skipped. Continue directly from INC-000036. The remaining 137 active Incidents have not been reconciled; this is not a completion report.
+The pass has reviewed all 33 active Incidents through INC-000035. INC-000011 and INC-000017 are inactive and were skipped. INC-000036 is also inactive; the next active record at this checkpoint is INC-000037. The remaining 137 active Incidents have not been reconciled; this is not a completion report.
 
 INC-000001–000003 were approved by Michelle before continuation. They were preserved.
 
