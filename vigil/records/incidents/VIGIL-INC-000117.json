@@ -9,7 +9,7 @@
     "title": "Claude Opus and Fable refused substantial forensic analysis during Hugging Face incident response",
     "created": "2026-09-12",
     "updated": "2026-10-02",
-    "version": "0.1.14"
+    "version": "0.1.15"
   },
   "incident_identity": {
     "historical_event_name": "2026 Hugging Face incident-response Claude forensic-analysis refusal",
@@ -248,7 +248,7 @@
   "vigil_assessment": {
     "factual_basis": "Hugging Face provides two first-party accounts of the response-phase failure. Its 16 July 2026 incident disclosure states that the investigation required large volumes of real attack commands, exploit payloads and command-and-control artefacts, that the commercial frontier models it first used blocked those requests because their guardrails could not distinguish the incident responder from an attacker, and that Hugging Face therefore performed the forensic analysis with self-hosted GLM-5.2. Its 27 July technical timeline names Claude Opus and Fable, says those models refused a large part of the analysis because their guardrails treated reverse-engineering an exploit like launching one, states that Opus guardrails tripped every time the team tried to analyse the attack logs, and says Hugging Face rerouted the entire pipeline through a quantized GLM-5.2 deployment. Anthropic's 2 July Fable 5 safeguard documentation establishes the relevant safeguard design distinction for that product family: its safety classifiers are intended to detect and block dangerous cyber use; benign uses are intended to be allowed; and Anthropic expressly lists log analysis, SOC analysis, threat hunting, incident response and malware reverse engineering as benign uses, while acknowledging that conservative safety margins can produce false positives. The public record does not disclose the complete refused prompts, exact Opus model version, occurrence-specific classifier telemetry or a separate upstream classifier state feeding a distinct downstream refusal control.",
     "governance_interpretation": "The current taxonomy continues to support Control Activation Validity at high confidence. A defined cyber safeguard became operative and produced repeated refusals during a bounded defensive forensic-analysis task. The evidence establishes that the material context was incident response and reverse engineering of an already-observed attack, while the safeguard treated that work as equivalent to launching the exploit. Current class semantics expressly include defensive analysis refused because hostile material is treated as a request to perform the hostile act. The class's upstream-classification-error exclusion does not displace this mapping on the available evidence: no separate upstream evidentiary or classification subsystem is shown to have supplied an erroneous trigger state to a distinct control that then operated correctly. Rather, the safety guardrail/classifier itself is the evidenced control whose applicability determination produced the refusal. Anthropic's Fable 5 documentation reinforces that distinction by defining safety classifiers as the systems that detect and block cyber requests and by separately identifying incident response and malware reverse engineering as benign uses. The exact internal technical path remains unknown, but that implementation uncertainty does not erase the occurrence-level activation-validity failure. Activation validity retains its failure role: the safeguard operated on defensive inspection, not evidence that it failed to activate. The alternate operator-chosen analysis route does not prove bypass or convert the original restriction to success. Exact internal classifier topology and full prompts remain unavailable.",
-    "significance_to_cam": "INC-000117 is a direct test of control-activation validity in a dual-use domain. The governance requirement is not that cyber safeguards become permissive whenever a user claims defensive purpose; it is that activation conditions preserve the material distinctions the safeguard itself is designed to govern. Here the affected party reports that a live incident-response workflow was restricted because defensive exploit analysis was treated as offensive exploit execution, while Anthropic's own safeguard documentation separately identifies incident response and malware reverse engineering as benign categories that should generally be allowed. The occurrence therefore shows how a safety control can be substantively well-motivated yet governance-defective when its applicability boundary collapses the relevant role, purpose and task context.",
+    "significance_to_cam": "This occurrence is a direct test of control-activation validity in a dual-use domain. The governance requirement is not that cyber safeguards become permissive whenever a user claims defensive purpose; it is that activation conditions preserve the material distinctions the safeguard itself is designed to govern. Here the affected party reports that a live incident-response workflow was restricted because defensive exploit analysis was treated as offensive exploit execution, while Anthropic's own safeguard documentation separately identifies incident response and malware reverse engineering as benign categories that should generally be allowed. The occurrence therefore shows how a safety control can be substantively well-motivated yet governance-defective when its applicability boundary collapses the relevant role, purpose and task context.",
     "assessment_boundaries": [
       "Hugging Face directly reports the refusal behaviour and fallback workflow but does not publish the complete prompt/output transcript set.",
       "The July 27 technical timeline names Claude Opus and Fable; it does not establish the exact Opus version. Separate contemporaneous reporting identified Fable 5, but the canonical occurrence does not depend on resolving every model-version detail.",
@@ -614,29 +614,47 @@
           "Conclusion uses existing governance_interpretation; no discussion-field contract."
         ],
         "review_outcome": "Retained 4 clause decisions; Independently assessed 10 admitted local candidates; archived excluded historical assessments."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-02-CONCLUSION-IDENTIFIERS-000117",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-02",
+        "review_scope": "Human-directed editorial replacement of FC and Incident number references in Stage 05 conclusion and governance significance with descriptive names.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": false,
+          "harm_impact_review": false,
+          "new_external_source_research": false
+        },
+        "known_limitations": [
+          "No new source verification or re-adjudication; existing findings, recognition limits and evidence uncertainty are preserved.",
+          "Human approval of the editing scope does not imply human authorship or line-by-line source verification."
+        ],
+        "review_outcome": "Replaced identifier shorthand with current class names or source-grounded occurrence descriptions; preserved taxonomy relationships, clause adjudications, external requirement assessments, Harm Impact findings and existing review history."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-02-STAGE4-000117",
+      "review_id": "VIGIL-REVIEW-2026-10-02-CONCLUSION-IDENTIFIERS-000117",
       "reviewer_type": "AI analytical reviewer",
       "reviewer_platform": "OpenAI Codex",
       "reviewer_model": "GPT-6",
       "review_date": "2026-10-02",
-      "review_scope": "Preservation-led Stage 4 clause, polarity and local external-requirement reconciliation.",
+      "review_scope": "Human-directed editorial replacement of FC and Incident number references in Stage 05 conclusion and governance significance with descriptive names.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "taxonomy_review": true,
-        "external_requirement_review": true,
+        "taxonomy_review": false,
         "harm_impact_review": false,
         "new_external_source_research": false
       },
       "known_limitations": [
-        "Preserved attributed evidence bounds the review; hidden control/permission traces unavailable.",
-        "No new IEEE extraction; admitted metadata and reviewed paths only.",
-        "Conclusion uses existing governance_interpretation; no discussion-field contract."
+        "No new source verification or re-adjudication; existing findings, recognition limits and evidence uncertainty are preserved.",
+        "Human approval of the editing scope does not imply human authorship or line-by-line source verification."
       ],
-      "review_outcome": "Retained 4 clause decisions; Independently assessed 10 admitted local candidates; archived excluded historical assessments."
+      "review_outcome": "Replaced identifier shorthand with current class names or source-grounded occurrence descriptions; preserved taxonomy relationships, clause adjudications, external requirement assessments, Harm Impact findings and existing review history."
     }
   },
   "harm_impact_assessment": {
