@@ -809,7 +809,16 @@ def validate_external_requirement_assessments(
     errors: list[str],
 ) -> None:
     """Delegate independent assessment checks to the owning domain validator."""
-    from occurrence_requirement_validation import assessment_errors
+    # Tests and other callers load this hyphenated script through importlib.
+    # Resolve the sibling helper explicitly, as load_known_requirement_ids does,
+    # rather than relying on the caller's PYTHONPATH or working directory.
+    helper_path = Path(__file__).with_name("occurrence_requirement_validation.py")
+    spec = importlib.util.spec_from_file_location("vigil_occurrence_requirement_validation", helper_path)
+    if spec is None or spec.loader is None:
+        raise RuntimeError(f"Cannot load occurrence assessment helper: {helper_path}")
+    helper = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(helper)
+    assessment_errors = helper.assessment_errors
     relationships_path = VIGIL / 'external_governance/requirements/taxonomy-relationships.json'
     relationships = load_json(relationships_path)['relationships']
     errors.extend(f"{path}: {error}" for error in assessment_errors(record, known_requirement_ids, relationships))

@@ -3,6 +3,7 @@ import importlib.util
 import json
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[2]
 VIGIL = ROOT / "vigil"
@@ -132,15 +133,41 @@ class IncidentRuleTests(unittest.TestCase):
         errors = self.errors(mutate)
         self.assertTrue(any("legacy operational priority field" in error for error in errors), errors)
 
-    def test_successful_invariant_role_requires_matching_taxonomy_exemplar(self):
-        record = json.loads(
-            (VIGIL / "records" / "incidents" / "VIGIL-INC-000126.json").read_text(encoding="utf-8")
-        )
-        errors, _ = VALIDATOR.validate_record(Path(record["id"] + ".json"), record)
-        self.assertEqual(errors, [])
-        record["taxonomy_classification"]["primary_classification"]["class_id"] = "VIGIL-FC-000072"
-        errors, _ = VALIDATOR.validate_record(Path(record["id"] + ".json"), record)
-        self.assertTrue(any("invariant_exemplar" in error for error in errors), errors)
+    def taxonomy_fixture(self):
+        return {
+            "taxonomy_classification": {
+                "taxonomy_version": "0.0.0",
+                "classification_status": "classified",
+                "classification_basis": "The protective gate rejected the test request.",
+                "classification_review_provenance": {
+                    "review_date": "2026-01-01", "reviewer": "Fixture reviewer",
+                    "review_status": "Fixture review",
+                },
+                "primary_classification": {
+                    "family_id": "VIGIL-FF-000001", "class_id": "VIGIL-FC-000001",
+                    "classification_role": "successful-invariant",
+                    "classification_basis": "The protective gate rejected the test request.",
+                    "classification_confidence": "high",
+                },
+                "secondary_classifications": [],
+            },
+        }
+
+    def taxonomy_errors(self, record):
+        errors = []
+        catalogue = ({"VIGIL-FF-000001": {}}, {
+            "VIGIL-FC-000001": {"family_id": "VIGIL-FF-000001", "invariant_exemplars": []},
+        })
+        with patch.object(VALIDATOR, "taxonomy_catalogue", return_value=catalogue), \
+                patch.object(VALIDATOR, "retired_taxonomy_class_successors", return_value={}):
+            VALIDATOR.validate_incident_taxonomy(Path("fixture.json"), record, errors)
+        return errors
+
+    def test_successful_occurrence_role_does_not_require_exemplar_admission(self):
+        record = self.taxonomy_fixture()
+        self.assertEqual(self.taxonomy_errors(record), [])
+        record["taxonomy_classification"]["primary_classification"]["classification_role"] = "unsupported"
+        self.assertTrue(any("classification_role" in error for error in self.taxonomy_errors(record)))
 
     def test_adjudication_coverage_is_recomputed_from_clause_dispositions(self):
         record = json.loads(
@@ -160,14 +187,17 @@ class IncidentRuleTests(unittest.TestCase):
         self.assertTrue(any("mapped requires a canonical taxonomy relationship" in error for error in errors), errors)
 
     def test_unresolved_clause_requires_candidate_relationship(self):
-        record = json.loads(
-            (VIGIL / "records" / "incidents" / "VIGIL-INC-000126.json").read_text(encoding="utf-8")
-        )
-        clause = record["vigil_assessment"]["source_clause_analysis"]["clauses"][0]
-        clause["adjudication_status"] = "unresolved"
-        record["taxonomy_classification"]["adjudication_coverage"]["status"] = "partial"
-        errors, _ = VALIDATOR.validate_record(Path(record["id"] + ".json"), record)
+        record = self.taxonomy_fixture()
+        clause = {"adjudication_status": "unresolved", "taxonomy_relationships": []}
+        record["vigil_assessment"] = {"source_clause_analysis": {"clauses": [clause]}}
+        record["taxonomy_classification"]["adjudication_coverage"] = {"status": "partial"}
+        errors = self.taxonomy_errors(record)
         self.assertTrue(any("unresolved requires an unresolved candidate relationship" in error for error in errors), errors)
+        clause["taxonomy_relationships"] = [{
+            "class_id": "VIGIL-FC-000001", "relationship": "candidate boundary",
+            "canonical_taxonomy_mapping": False,
+        }]
+        self.assertEqual(self.taxonomy_errors(record), [])
 
     def test_resolved_without_mapping_rejects_canonical_relationship(self):
         record = json.loads(
