@@ -1,38 +1,26 @@
-# Stage 4 reconciliation checkpoint — 2 October 2026
+# Stage 4 reconciliation — ongoing checkpoint, 2 October 2026
 
-Artefact: AUDIT. Status: **partial; full corpus reconciliation not complete**.
+The pass has reviewed all 33 active Incidents through INC-000035. INC-000011 and INC-000017 are inactive and were skipped. Continue directly from INC-000036. The remaining 137 active Incidents have not been reconciled; this is not a completion report.
 
-Branch: `work/integrate-external-requirements-001-179`.
-Baseline: `a67ca3b47695b0a718dc93b52195f34d4ff4489e`.
-Latest substantive reconciliation commit: `ef596caf11fbecfd33f454f7b7d0ce228dd2853a`.
+INC-000001–000003 were approved by Michelle before continuation. They were preserved.
 
-## Completed scope
+| Measure | Current reviewed scope |
+|---|---:|
+| Material clauses | 117 |
+| Retained clause adjudications | 112 |
+| Changed clause adjudications | 5 |
+| Reviewed local EXTREQ candidates | 956 |
+| Independently identified requirements | 0 |
+| Applicable / not-applicable / unresolved applicability | 6 / 499 / 451 |
+| Findings: met / evidence-insufficient | 1 / 5 |
+| Eligible prior assessments retained / historical assessments withheld | 16 / 57 |
+| Complete / partial clause coverage | 26 / 7 |
+| Conclusion fields updated / Discussion fields added | 33 / 0 |
 
-Sequentially reconciled INC-000001, INC-000002 and INC-000003. The baseline scan covers 170 active records and 536 material clauses; it does not represent substantive review of the remaining 167 Incidents.
+Substantive corrections were bounded to existing recognition conditions. INC-018's practical Classic fallback did not establish verification noncompletion, so FC-048 changed from success to ambiguous boundary; its reciprocal exemplar and generated examples were synchronized. Fresh INC-023 reporter-source comparison showed a conditional outage/capacity connection rather than proven exhausted allowance; its FC-032 and FC-079 failures became ambiguous boundaries, and the unsupported paraphrase was corrected. INC-024 retains the false-allowance access-state failure but its FC-079 role became ambiguous because material AI mediation of the solicitation is unestablished. No Fidelity Class boundary was changed. Prior decisions remain in dated audits.
 
-- Retained 26 clause dispositions, with no changed clause adjudications.
-- Preserved all primary/secondary mappings, roles, confidence and ordering.
-- Preserved source_records, factual narrative and Harm Impact unchanged.
-- Assessed 303 candidates from the supported clause-local resolver. No retired global matrix was read, recreated or updated.
-- Recorded 204 insufficient-evidence applicability decisions, 97 not-applicable decisions and two applicable non-binding OECD benchmarks.
-- Recorded one met finding for INC-000003's disclosed incident-reconstruction traceability, and one evidence-insufficient finding for INC-000002's AI-interaction-awareness disclosure. Neither is inferred from taxonomy polarity or asserted as binding legal compliance.
-- Retained eight eligible older applicability decisions. Preserved 24 excluded older assessments verbatim in the individual audits rather than erasing their provenance or manufacturing independent identification paths.
-- Updated three Conclusion fields. In INC-000002, replaced maintenance-oriented aggregate classification copy with its existing occurrence-specific mapping bases.
-- Added no Discussion field: the current schema, template and Incident corpus have no documented discussion contract. This is a bounded presentation limitation, not a reason to stall the remaining Incident review.
-- Rebuilt the public Incident index. The mapping-local mixed roles and complete coverage of these three records remain unchanged. No Web UX repository or banner implementation was edited.
+Other clause decisions, source evidence and HIM were preserved. Stale maintenance/projection prose was clarified where necessary; INC-016's source relevance note was aligned with its existing no-root-cause limit. INC-034's historical IEEE comparator prose was bounded to current permission holds. No new IEEE extraction, licensing correspondence, or global candidate matrix was performed. No documented Discussion field contract exists on this branch; the existing governance interpretation provides the bounded Conclusion.
 
-## Validation
+Every reviewed record passes targeted record validation. The source, interpretive, system-component, authorship and public validators pass; taxonomy family schema passes; 12 relevant external-assessment/resolver/projection tests pass. Whole-corpus record validation still fails on 1,069 untouched occurrence-assessment diagnostics, down from 1,288. The 64 third-party external-assessment candidate flags are unchanged. The taxonomy adjudication ledger validator also exposes pre-existing stale version/inactive-record and unresolved-reason debt; its ledger is not represented as a clean validation result.
 
-All three touched Incidents pass targeted record validation with zero errors/warnings and zero local occurrence-assessment diagnostics. Public index, source provenance, interpretive provenance, system-component and authorship validation passed. The seven external-assessment contract tests, three resolver tests and two public-projection tests passed.
-
-**Full corpus record validation remains failing.** Occurrence-assessment diagnostics are 1,288 before and 1,192 after these three reconciliations. The 64 unresolved external-assessment source flags remain unchanged; these concern third-party-assessment admission and are distinct from EXTREQ candidate derivation. Passing local validation does not close the remaining substantive review.
-
-Current corpus assessment applicability counts (including untouched records) are 448 insufficient-evidence, 249 not-applicable and three applicable. One untouched historical assessment still contains a noncanonical finding; it must be substantively reviewed in order, not mechanically converted to not-met.
-
-## Continue
-
-Next Incident: **INC-000004**. It was inspected but not edited or marked reconciled. Continue sequentially through every remaining active Incident, skipping absent/retired IDs.
-
-Use the current local resolver and registry; independently inspect actor, object, jurisdiction, time, lifecycle, triggers, exclusions and normative force. Retain valid prior reasoning even where architecture needs repair. Do not substitute framework adoption for benchmark context, or benchmark context for binding conformance. No new IEEE extraction or licensing correspondence is authorised by this checkpoint.
-
-Remaining work includes the other 167 Incidents, their current local candidates, existing assessments, incomplete clauses, relevant source holds, external-assessment source flags, public projections and a final reconciled corpus report. No corpus completion, full validation success, newly required class or human-review status is claimed.
+No new human decision is required at this checkpoint. Continue sequentially through the remaining active corpus, retaining ordinary unresolved questions rather than treating them as blockers.
