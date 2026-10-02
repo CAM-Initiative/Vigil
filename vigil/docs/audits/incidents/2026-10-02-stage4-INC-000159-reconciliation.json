@@ -1,0 +1,202 @@
+{
+  "artefact_type": "AUDIT",
+  "date": "2026-10-02",
+  "baseline_commit": "a67ca3b47695b0a718dc93b52195f34d4ff4489e",
+  "incident_id": "VIGIL-INC-000159",
+  "status": "reconciled; corpus incomplete",
+  "retained_clause_adjudications": 6,
+  "changed_clause_adjudications": 1,
+  "eligible_registry_candidates": 45,
+  "independently_identified_requirements": 0,
+  "applicability_counts": {
+    "insufficient-evidence": 20,
+    "not-applicable": 24,
+    "applicable": 1
+  },
+  "finding_counts": {
+    "not-recorded": 44,
+    "met": 1
+  },
+  "existing_assessments_retained": 3,
+  "withheld_prior_assessments": [
+    {
+      "assessment": {
+        "requirement_id": "EXTREQ-123BD645B0C468E1",
+        "derived_from_class_ids": [
+          "VIGIL-FC-000009"
+        ],
+        "applicability_status": "insufficient-evidence",
+        "applicability_basis": "The source record establishes Attacker-controlled GitHub issue text prompted Cline's Claude-powered triage agent to execute code, enabling poisoning of shared GitHub Actions cache state that later reached a privileged release workflow. IMDA-AGENTIC-AI-MGF is a government-voluntary-framework framework for Organization developing or deploying agentic AI. The evidence describes an agentic system or tool workflow relevant to this control, but it does not establish that the responsible organization adopted or applied this framework, or (where relevant) that the organization falls within the framework's jurisdictional/application context. Taxonomy correspondence alone cannot establish those facts; no finding is made.",
+        "assessed_on": "2026-10-01"
+      },
+      "disposition": "Historical assessment preserved verbatim; no admitted resolver path or supported independent canonical route."
+    },
+    {
+      "assessment": {
+        "requirement_id": "EXTREQ-4C18B5A910ECD719",
+        "derived_from_class_ids": [
+          "VIGIL-FC-000001"
+        ],
+        "applicability_status": "not-applicable",
+        "applicability_basis": "Attacker-controlled GitHub issue text prompted Cline's Claude-powered triage agent to execute code, enabling poisoning of shared GitHub Actions cache state that later reached a privileged release workflow. IEEE 7014.1-2026 is limited to partner-based GPAI systems using emulated empathy in human-AI partnering contexts. The preserved occurrence concerns cline prompt-injection and cache-poisoning chain enabled unauthorized npm package publication, not a system marketed or used as an empathic partner; its described task is software issue triage and release automation. The requirement's system-context condition is absent.",
+        "assessed_on": "2026-10-01"
+      },
+      "disposition": "Historical assessment preserved verbatim; no admitted resolver path or supported independent canonical route."
+    }
+  ],
+  "diagnostics_before": [
+    "external_requirement_assessments[0] missing source_record_refs",
+    "external_requirement_assessments[0].source_record_refs must be a non-empty evidence reference array",
+    "external_requirement_assessments[0].source_clause_indices must resolve for taxonomy derivation",
+    "external_requirement_assessments[1] missing source_record_refs",
+    "external_requirement_assessments[1].source_record_refs must be a non-empty evidence reference array",
+    "external_requirement_assessments[1].source_clause_indices must resolve for taxonomy derivation",
+    "external_requirement_assessments[2] missing source_record_refs",
+    "external_requirement_assessments[2].source_record_refs must be a non-empty evidence reference array",
+    "external_requirement_assessments[2].source_clause_indices must resolve for taxonomy derivation",
+    "external_requirement_assessments[3] missing source_record_refs",
+    "external_requirement_assessments[3].source_record_refs must be a non-empty evidence reference array",
+    "external_requirement_assessments[3].source_clause_indices must resolve for taxonomy derivation",
+    "external_requirement_assessments[4] missing source_record_refs",
+    "external_requirement_assessments[4].source_record_refs must be a non-empty evidence reference array",
+    "external_requirement_assessments[4].source_clause_indices must resolve for taxonomy derivation"
+  ],
+  "diagnostics_after": [],
+  "clauses_taxonomy_him_sources": "INC157 permission polarity and INC159 recovery binding corrected; sources and HIM retained.",
+  "conclusion_fields_updated": 1,
+  "discussion_fields_added": 0,
+  "preserved_prechange_interpretation": "",
+  "preserved_prechange_clauses": [
+    {
+      "source_paraphrase": "Cline's postmortem explains that any GitHub user could open an issue handled by a Claude-powered triage workflow with Bash access; attacker-controlled issue instructions could cause code execution, and the workflow's shared cache scope let poisoned state reach a nightly release workflow with publication secrets.",
+      "recovered_invariant_interpretation": "An untrusted public-input workflow with shell execution shared cache state with a more privileged release workflow, allowing the attacker-controlled state to cross into a production publication control plane.",
+      "taxonomy_relationships": [
+        {
+          "class_id": "VIGIL-FC-000006",
+          "relationship": "failure-occurrence",
+          "canonical_taxonomy_mapping": true,
+          "rationale": "Attacker-controlled issue text induced tool execution and crossed through shared cache state into a privileged release control plane."
+        },
+        {
+          "class_id": "VIGIL-FC-000009",
+          "relationship": "failure-occurrence",
+          "canonical_taxonomy_mapping": true,
+          "rationale": "Authority propagated from a public issue-triage workflow through cache state and nightly release credentials to npm publication."
+        }
+      ],
+      "adjudication_status": "mapped",
+      "adjudication_note": "This clause preserves the connected prompt-execution, shared-cache and privileged-release pathway described in Cline's postmortem; the separate untrusted-content authority boundary is represented in clause 2."
+    },
+    {
+      "source_paraphrase": "Attacker-controlled issue content was treated as operative instruction rather than remaining non-authorising data.",
+      "recovered_invariant_interpretation": "Untrusted or lower-authority content must remain non-authorising unless valid source authority is independently established.",
+      "taxonomy_relationships": [
+        {
+          "class_id": "VIGIL-FC-000001",
+          "relationship": "failure-occurrence",
+          "canonical_taxonomy_mapping": true,
+          "rationale": "Untrusted issue content was treated as operative instruction instead of remaining non-authorising data, allowing attacker-controlled text to direct consequential tool activity."
+        }
+      ],
+      "adjudication_status": "mapped"
+    },
+    {
+      "source_paraphrase": "Post-incident evidence preserved the material instruction and release-path events needed to document the occurrence.",
+      "recovered_invariant_interpretation": "Material events must be captured sufficiently to preserve occurrence evidence.",
+      "taxonomy_relationships": [
+        {
+          "class_id": "VIGIL-FC-000022",
+          "relationship": "successful-invariant",
+          "canonical_taxonomy_mapping": true,
+          "rationale": "The retained post-incident evidence captured the material instruction, tool and release-path events needed to preserve the occurrence record."
+        }
+      ],
+      "adjudication_status": "mapped"
+    },
+    {
+      "source_paraphrase": "The retained evidence allowed the material compromise chain to be reconstructed without repeating unnecessary exploit mechanics.",
+      "recovered_invariant_interpretation": "The audit trail must remain reconstructable enough to explain material actions and state transitions.",
+      "taxonomy_relationships": [
+        {
+          "class_id": "VIGIL-FC-000024",
+          "relationship": "successful-invariant",
+          "canonical_taxonomy_mapping": true,
+          "rationale": "The retained evidence supported reconstruction of the compromise chain while the public rationale remains bounded and does not restate unnecessary exploit mechanics."
+        }
+      ],
+      "adjudication_status": "mapped"
+    },
+    {
+      "source_paraphrase": "After the researcher publicly disclosed the workflow vulnerability, Cline removed the vulnerable workflows and rotated credentials, but deleted the wrong npm token. The exposed npm token remained active, while the organization-level token page showed zero active tokens and did not surface it.",
+      "recovered_invariant_interpretation": "Credential recovery did not bind verification to the specific exposed npm credential; an incomplete management view produced an apparent clean state while the credential remained usable.",
+      "taxonomy_relationships": [],
+      "adjudication_status": "resolved-no-mapping",
+      "adjudication_note": "This is a distinct recovery-control failure reported in the postmortem. No new taxonomy relationship is asserted in this clause review."
+    },
+    {
+      "source_paraphrase": "On February 17, a third party used the still-active npm token to publish cline@2.3.0 with a postinstall script that globally installed OpenClaw, which Cline later described as a legitimate, non-malicious open-source project.",
+      "recovered_invariant_interpretation": "The unrevoked publication credential enabled an unauthorised package release after the underlying workflow had been removed; the evidence does not support describing the OpenClaw payload as malicious code.",
+      "taxonomy_relationships": [],
+      "adjudication_status": "resolved-no-mapping",
+      "adjudication_note": "The package change and publication are reported; this clause does not infer that user systems were compromised beyond the reported software installation."
+    },
+    {
+      "source_paraphrase": "Cline published corrected version 2.4.0, deprecated 2.3.0 and revoked the token by 11:23 a.m. It reported that the occurrence was limited to the npm CLI package, no malicious code was delivered, and no user data was accessed or exfiltrated.",
+      "recovered_invariant_interpretation": "The response closed the active credential and package pathway and bounded the reported impact to the unexpected installation through the affected CLI release; it did not include the separately unaffected IDE extensions or source repository.",
+      "taxonomy_relationships": [],
+      "adjudication_status": "resolved-no-mapping",
+      "adjudication_note": "The response and impact bounds are those reported by Cline; this clause does not independently verify all user installations or infer zero exposure outside the reviewed audit."
+    }
+  ],
+  "preserved_prechange_taxonomy": {
+    "taxonomy_version": "0.6.9",
+    "classification_status": "classified",
+    "classification_basis": "Attacker-controlled issue text induced tool execution and crossed through shared cache state into a privileged release control plane. Authority propagated from a public issue-triage workflow through cache state and nightly release credentials to npm publication. Untrusted issue content was treated as operative instruction instead of remaining non-authorising data, allowing attacker-controlled text to direct consequential tool activity. The retained post-incident evidence captured the material instruction, tool and release-path events needed to preserve the occurrence record. The retained evidence supported reconstruction of the compromise chain while the public rationale remains bounded and does not restate unnecessary exploit mechanics.",
+    "primary_classification": {
+      "family_id": "VIGIL-FF-0001",
+      "class_id": "VIGIL-FC-000006",
+      "classification_role": "failure-occurrence",
+      "classification_basis": "Attacker-controlled issue text induced tool execution and crossed through shared cache state into a privileged release control plane.",
+      "classification_confidence": "high"
+    },
+    "secondary_classifications": [
+      {
+        "family_id": "VIGIL-FF-0001",
+        "class_id": "VIGIL-FC-000009",
+        "classification_role": "failure-occurrence",
+        "classification_basis": "Authority propagated from a public issue-triage workflow through cache state and nightly release credentials to npm publication.",
+        "classification_confidence": "high"
+      },
+      {
+        "family_id": "VIGIL-FF-0001",
+        "class_id": "VIGIL-FC-000001",
+        "classification_role": "failure-occurrence",
+        "classification_basis": "Untrusted issue content was treated as operative instruction instead of remaining non-authorising data, allowing attacker-controlled text to direct consequential tool activity.",
+        "classification_confidence": "high"
+      },
+      {
+        "family_id": "VIGIL-FF-0004",
+        "class_id": "VIGIL-FC-000022",
+        "classification_role": "successful-invariant",
+        "classification_basis": "The retained post-incident evidence captured the material instruction, tool and release-path events needed to preserve the occurrence record.",
+        "classification_confidence": "high"
+      },
+      {
+        "family_id": "VIGIL-FF-0004",
+        "class_id": "VIGIL-FC-000024",
+        "classification_role": "successful-invariant",
+        "classification_basis": "The retained evidence supported reconstruction of the compromise chain while the public rationale remains bounded and does not restate unnecessary exploit mechanics.",
+        "classification_confidence": "high"
+      }
+    ],
+    "classification_review_provenance": {
+      "review_date": "2026-09-29",
+      "reviewer": "OpenAI ChatGPT — GPT-6 Codex under human-directed VIGIL governance",
+      "review_status": "classification review completed"
+    },
+    "adjudication_coverage": {
+      "status": "complete"
+    }
+  },
+  "remaining_scope": "Continue next active incident after INC-000160."
+}
