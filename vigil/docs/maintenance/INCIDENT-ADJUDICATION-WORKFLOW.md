@@ -24,7 +24,7 @@ Do not repeat rejected-class or no-mapping inventories in an Incident's classifi
 
 This boundary does not authorise compression of evidence. Preserve factual chronology, uncertainty, occurrence-specific accepted mechanism reasoning, source-clause analysis, Harm Impact findings and valid AI authorship disclosure in `interpretive_provenance`.
 
-Where an Incident also receives an external requirement assessment, use the separate scope, evidence and status rules in `vigil/docs/maintenance/EXTERNAL-REQUIREMENT-ADJUDICATION.md`. A taxonomy-derived candidate is not an applicability or finding decision, and the external assessment does not replace or inherit a taxonomy mapping role.
+Where an Incident also receives an external requirement assessment, use the separate scope, evidence and status rules in `vigil/docs/maintenance/EXTERNAL-REQUIREMENT-ADJUDICATION.md`. A taxonomy-derived candidate is not an occurrence relevance or alignment decision, and the external assessment does not replace or inherit a taxonomy mapping role.
 
 The required control sequence is:
 

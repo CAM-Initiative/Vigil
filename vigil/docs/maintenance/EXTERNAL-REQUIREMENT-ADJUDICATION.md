@@ -1,37 +1,47 @@
 # External Requirement Adjudication
 
-Status: current clause-led maintainer methodology, 1 October 2026.
+Status: occurrence-level alignment contract, 3 October 2026.
 
-The analytical sequence is source evidence → material clause → neutral FC property → separately evidenced occurrence polarity → potentially relevant EXTREQ → independent applicability → independent requirement finding.
+## Analytical sequence
 
-## Candidate resolution
+Source evidence → material clause → reviewed FC ↔ EXTREQ relationship or independent identification → candidate → genuine occurrence relevance → independent alignment assessment.
 
-Use `python vigil/scripts/resolve_clause_external_requirements.py <canonical-incident.json> --clause-index <zero-based-index>` for one adjudicated clause. The resolver reads reviewed `direct` and `strong-supporting` relationships in `external_governance/requirements/taxonomy-relationships.json`. It excludes unresolved, contextual and removed relationships. Its stdout is disposable candidate information, never a finding or canonical Incident dataset. Do not save a global Cartesian product. The former global candidate matrix and summary are retired; dated historical audits preserve their original context.
+Taxonomy and external requirements share the same substantive alignment concept: a successful invariant is Aligned, a failure occurrence is Not aligned, and an unresolved evidentiary boundary is Boundary. Assess each external proposition independently. No taxonomy result selects an external result.
 
-A requirement can also be identified independently from occurrence evidence. A missing taxonomy mechanism is recorded separately; it does not prevent independent applicability assessment or require creating an FC.
+## Candidate resolution and relevance
+
+Use `python vigil/scripts/resolve_clause_external_requirements.py <canonical-incident.json> --clause-index <zero-based-index>`. The resolver reads supported direct and strong-supporting relationships from the reviewed registry. Its disposable output identifies candidates only. Do not restore the retired global candidate matrix or create a Cartesian product. Independently identified requirements remain permitted with a substantive identification basis.
+
+Read the actual canonical requirement before deciding relevance. Wrong actor, system type, subject, lifecycle, occurrence date, commencement, jurisdiction, absent technical precondition, or overly broad correspondence can exclude a candidate. Preserve that decision in a dated audit; excluded candidates do not populate canonical assessments. A reviewed relationship alone establishes neither occurrence relevance nor alignment.
+
+Formal adoption, certification, implementation claims and conformance undertakings are not prerequisites for assessing voluntary standards. Retain real technical and contextual conditions; do not disguise an adoption gate as a missing technical precondition.
 
 ## Canonical assessment
 
-`external_requirement_assessments` is optional. Each assessment identifies a canonical `requirement_id`, an occurrence-specific `applicability_basis`, `applicability_status`, `assessed_on`, and resolving `source_record_refs` using `source_records[N]`.
+`external_requirement_assessments` is optional and contains only materially relevant occurrence assessments. Each entry requires:
 
-For taxonomy derivation, optional `derived_from_class_ids` and `source_clause_indices` must identify supported reviewed relationships on the actual canonical clause. Do not require all Incident-level mappings to be contributors. For independent identification, preserve a substantive `identification_basis` instead.
+- `requirement_id`: resolving canonical EXTREQ identifier;
+- `alignment_result`: `aligned`, `not-aligned`, or `boundary`;
+- `assessment_basis`: concise occurrence-specific relevance and evidence rationale;
+- `assessed_on`: review date;
+- `source_record_refs`: resolving `source_records[N]` evidence references.
 
-Assess actor, system/activity, time and lifecycle, jurisdiction, adoption where relevant, conditions, exclusions and normative force independently. `applicable` requires a separate `finding` and `finding_basis`: `met`, `not-met`, `evidence-insufficient`, or `not-assessable`. `insufficient-evidence` means applicability unresolved and prohibits a finding. `not-applicable` requires an affirmative scope reason and prohibits a finding. Neither taxonomy polarity nor source existence establishes applicability or compliance. An applicable recommendation retains its voluntary normative posture.
+Taxonomy derivation uses `derived_from_class_ids` and `source_clause_indices` identifying actual clause mappings and admitted relationships. Independent identification uses a substantive `identification_basis`. Neither route determines polarity.
 
-Positive requirement satisfaction needs affirmative evidence; an absence of reported failure is insufficient. Likewise, missing success evidence does not establish non-satisfaction. The basis must state the relevant bounded proposition and uncertainty. References resolve evidence but do not themselves prove its adequacy.
+Aligned needs affirmative evidence that the requirement held. Not aligned needs evidence that its proposition did not hold. Boundary requires both material relevance and an unresolved decisive occurrence fact. Absence of reported failure is not success; missing success evidence is not failure. Voluntary status, unknown adoption, unknown certification, and a weak candidate are not Boundary reasons.
 
-### Canonical publication gate
+`applicability_status`, `applicability_basis`, `finding`, and `finding_basis` are retired from canonical assessments. There is no dual legacy polarity or automatic conversion. During the dated migration, untouched legacy records fail the new contract until individually reviewed; this is an explicit incomplete migration state, not backward compatibility or permission to mechanically rewrite them.
 
-A complete candidate review belongs in the dated audit, not automatically in the public Incident record. Do **not** persist every resolver candidate merely because its FC ↔ EXTREQ relationship is supported. The canonical `external_requirement_assessments` array is an occurrence-assessment surface, not a candidate ledger.
+## Normative force and public presentation
 
-Publish an assessment when the occurrence establishes applicability and therefore requires a finding, or when an unresolved/not-applicable scope decision is itself materially useful to understanding a plausible requirement raised by the evidence. A generic missing-adoption fact for a voluntary framework, produced only because a taxonomy relationship generated a candidate, is normally audit-only. Likewise, obvious scope exclusions discovered during exhaustive candidate review remain audit-only unless recording the exclusion prevents a material public misreading.
+Resolve `normative_force` from the canonical requirement/source metadata. Do not duplicate it in Incidents or use it to select alignment polarity. Current canonical values include `government-voluntary-framework`, `voluntary-consensus-standard`, `binding-law`, `voluntary-technical-specification`, and `industry-framework`. Retain source-specific dates, legal commencement and jurisdiction conditions. An occurrence-level alignment finding does not assert certification, legal liability or organisation-wide compliance.
 
-This publication gate does not discard analytical work: the audit must preserve the reviewed candidate, disposition and basis. It prevents exhaustive taxonomy-derived candidate sets from overwhelming the bounded public Case File and from making `insufficient-evidence` look like a standards finding.
+Section 04 Compliance consumes Assessment result / External requirement / Normative force / Evidence and assessment basis. Chips are Aligned / Not aligned / Boundary. Candidate exclusions remain audit-only. The website migration is a separate downstream change.
 
-## Distinct surfaces
+## Evidence, history and validation
 
-`source_records` remains the canonical evidence block. Material source clauses carry taxonomy adjudication. Conceptual taxonomy references support the property; canonical EXTREQs express source requirements; occurrence assessments address applicability and findings. `external_assessments` remains attributed third-party analysis. `standards_and_regulatory_references` remains contextual. None of these layers automatically confers authority on another.
+Preserve `source_records`, source clauses, taxonomy, Harm Impact, uncertainty and append-only interpretive provenance. `external_assessments` remains third-party analysis and `standards_and_regulatory_references` remains contextual.
 
-## Validation and publication
+For each Incident, recover current assessments and prior dated candidate reviews, read requirement propositions, record relevance and independent evidence dispositions, update only reviewed entries, append provenance, and validate. No retained-count target applies. Preserve prior values through immutable baseline Git references and existing audits; new dated audits record candidates, old/new results, reasons, resolving evidence and validation. Do not rewrite historical audits.
 
-Run `validate-occurrence-requirement-assessments.py` and `test_external_requirement_assessments.py`. The Incident validator delegates assessment integrity to this domain module. Evidence references, canonical IDs, derivation where recorded, explicit applicability and independent findings are enforced; no validator requires matrix completeness. Public indexes route to canonical records and must not become duplicate stores of substantive assessment payloads.
+Run `validate-occurrence-requirement-assessments.py`, the canonical/public/provenance validators and the assessment/resolver/projection tests. Structural validation checks canonical IDs, evidence, admitted derivation and alignment fields. Semantic relevance, evidence sufficiency and independence remain substantive adjudication decisions; a validator cannot prove them from a label or rationale string. Builders own generated indexes and must not mutate governed source records.
