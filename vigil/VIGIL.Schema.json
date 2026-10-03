@@ -461,8 +461,8 @@
       "additionalProperties": false,
       "required": [
         "requirement_id",
-        "applicability_status",
-        "applicability_basis",
+        "alignment_result",
+        "assessment_basis",
         "assessed_on",
         "source_record_refs"
       ],
@@ -478,31 +478,6 @@
             "type": "string",
             "pattern": "^VIGIL-FC-[0-9]{6}$"
           }
-        },
-        "applicability_status": {
-          "type": "string",
-          "enum": [
-            "applicable",
-            "insufficient-evidence",
-            "not-applicable"
-          ]
-        },
-        "applicability_basis": {
-          "type": "string",
-          "minLength": 1
-        },
-        "finding": {
-          "type": "string",
-          "enum": [
-            "met",
-            "not-met",
-            "evidence-insufficient",
-            "not-assessable"
-          ]
-        },
-        "finding_basis": {
-          "type": "string",
-          "minLength": 1
         },
         "assessed_on": {
           "type": "string",
@@ -529,59 +504,24 @@
         "identification_basis": {
           "type": "string",
           "minLength": 1
-        }
-      },
-      "allOf": [
-        {
-          "if": {
-            "properties": {
-              "applicability_status": {
-                "const": "applicable"
-              }
-            },
-            "required": [
-              "applicability_status"
-            ]
-          },
-          "then": {
-            "required": [
-              "finding",
-              "finding_basis"
-            ]
-          }
         },
-        {
-          "if": {
-            "properties": {
-              "applicability_status": {
-                "enum": [
-                  "insufficient-evidence",
-                  "not-applicable"
-                ]
-              }
-            },
-            "required": [
-              "applicability_status"
-            ]
-          },
-          "then": {
-            "not": {
-              "anyOf": [
-                {
-                  "required": [
-                    "finding"
-                  ]
-                },
-                {
-                  "required": [
-                    "finding_basis"
-                  ]
-                }
-              ]
-            }
-          }
+        "alignment_result": {
+          "$ref": "#/$defs/alignment_result"
+        },
+        "assessment_basis": {
+          "type": "string",
+          "minLength": 1
         }
-      ]
+      }
+    },
+    "alignment_result": {
+      "type": "string",
+      "enum": [
+        "aligned",
+        "not-aligned",
+        "boundary"
+      ],
+      "description": "Occurrence-level alignment: successful invariant, failure occurrence, or unresolved evidentiary boundary. Taxonomy and external requirements use the same substantive polarity but require independent adjudication."
     }
   },
   "system_context_rules": {

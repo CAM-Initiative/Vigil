@@ -22,7 +22,7 @@ def resolve_clause(clause: dict, relationships: list[dict], known_ids: set[str])
             continue
         candidate = candidates.setdefault(r['requirement_id'], {
             'requirement_id': r['requirement_id'], 'derived_from_class_ids': [],
-            'relationship_ids': [], 'requires_independent_applicability': True})
+            'relationship_ids': [], 'requires_independent_relevance_and_alignment': True})
         candidate['derived_from_class_ids'].append(r['class_id'])
         candidate['relationship_ids'].append(r['relationship_id'])
     for candidate in candidates.values():

@@ -10,8 +10,8 @@ def assessment_errors(record: dict, known_ids: set[str] | None, relationships: l
         return ['external_requirement_assessments must be an array when present']
     clauses = record.get('vigil_assessment', {}).get('source_clause_analysis', {}).get('clauses', [])
     sources = record.get('source_records', [])
-    required = {'requirement_id', 'applicability_status', 'applicability_basis', 'assessed_on', 'source_record_refs'}
-    allowed = required | {'derived_from_class_ids', 'source_clause_indices', 'finding', 'finding_basis', 'identification_basis'}
+    required = {'requirement_id', 'alignment_result', 'assessment_basis', 'assessed_on', 'source_record_refs'}
+    allowed = required | {'derived_from_class_ids', 'source_clause_indices', 'identification_basis'}
     supported = {(r.get('class_id'), r.get('requirement_id')) for r in relationships
                  if r.get('review_status') == 'supported' and r.get('strength') in {'direct', 'strong-supporting'}}
     errors = []
@@ -44,10 +44,10 @@ def assessment_errors(record: dict, known_ids: set[str] | None, relationships: l
                 m = re.fullmatch(r'source_records\[(\d+)\]', ref)
                 if m is None or int(m[1]) >= len(sources):
                     errors.append(f'{label}.source_record_refs does not resolve: {ref}')
-        status = a.get('applicability_status')
-        if status not in {'applicable', 'insufficient-evidence', 'not-applicable'}:
-            errors.append(f'{label}.applicability_status is not canonical')
-        for key in ('applicability_basis',):
+        result = a.get('alignment_result')
+        if result not in {'aligned', 'not-aligned', 'boundary'}:
+            errors.append(f'{label}.alignment_result is not canonical')
+        for key in ('assessment_basis',):
             if not isinstance(a.get(key), str) or not a[key].strip():
                 errors.append(f'{label}.{key} must be non-empty')
         try:
@@ -57,13 +57,6 @@ def assessment_errors(record: dict, known_ids: set[str] | None, relationships: l
             date.fromisoformat(value)
         except (ValueError, TypeError):
             errors.append(f'{label}.assessed_on must be an ISO date')
-        if status == 'applicable':
-            if a.get('finding') not in {'met', 'not-met', 'evidence-insufficient', 'not-assessable'}:
-                errors.append(f'{label}.finding is required and must be an independent requirement outcome')
-            if not isinstance(a.get('finding_basis'), str) or not a['finding_basis'].strip():
-                errors.append(f'{label}.finding_basis is required')
-        elif 'finding' in a or 'finding_basis' in a:
-            errors.append(f'{label} must not include finding or finding_basis when applicability_status is {status}')
         ids = a.get('derived_from_class_ids', [])
         indices = a.get('source_clause_indices', [])
         if not isinstance(ids, list) or any(not isinstance(c, str) or re.fullmatch(r'VIGIL-FC-\d{6}', c) is None for c in ids):

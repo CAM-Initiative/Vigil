@@ -14,7 +14,7 @@ def main():
         errors.extend(f'{p.name}: {e}' for e in assessment_errors(json.loads(p.read_text()), known, relationships))
     if errors:
         raise SystemExit('\n'.join(errors))
-    print('Occurrence requirement assessments: evidence, applicability and independent findings OK')
+    print('Occurrence requirement assessments: evidence, derivation and independent alignment results OK')
 
 if __name__ == '__main__':
     main()
