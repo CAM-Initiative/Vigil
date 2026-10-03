@@ -20,6 +20,14 @@ Assess actor, system/activity, time and lifecycle, jurisdiction, adoption where 
 
 Positive requirement satisfaction needs affirmative evidence; an absence of reported failure is insufficient. Likewise, missing success evidence does not establish non-satisfaction. The basis must state the relevant bounded proposition and uncertainty. References resolve evidence but do not themselves prove its adequacy.
 
+### Canonical publication gate
+
+A complete candidate review belongs in the dated audit, not automatically in the public Incident record. Do **not** persist every resolver candidate merely because its FC ↔ EXTREQ relationship is supported. The canonical `external_requirement_assessments` array is an occurrence-assessment surface, not a candidate ledger.
+
+Publish an assessment when the occurrence establishes applicability and therefore requires a finding, or when an unresolved/not-applicable scope decision is itself materially useful to understanding a plausible requirement raised by the evidence. A generic missing-adoption fact for a voluntary framework, produced only because a taxonomy relationship generated a candidate, is normally audit-only. Likewise, obvious scope exclusions discovered during exhaustive candidate review remain audit-only unless recording the exclusion prevents a material public misreading.
+
+This publication gate does not discard analytical work: the audit must preserve the reviewed candidate, disposition and basis. It prevents exhaustive taxonomy-derived candidate sets from overwhelming the bounded public Case File and from making `insufficient-evidence` look like a standards finding.
+
 ## Distinct surfaces
 
 `source_records` remains the canonical evidence block. Material source clauses carry taxonomy adjudication. Conceptual taxonomy references support the property; canonical EXTREQs express source requirements; occurrence assessments address applicability and findings. `external_assessments` remains attributed third-party analysis. `standards_and_regulatory_references` remains contextual. None of these layers automatically confers authority on another.
