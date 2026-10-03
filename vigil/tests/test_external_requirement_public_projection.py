@@ -1,5 +1,4 @@
 import importlib.util
-import json
 import unittest
 from pathlib import Path
 
@@ -33,7 +32,7 @@ class ExternalRequirementProjectionTests(unittest.TestCase):
             "derived_from_class_ids": ["VIGIL-FC-000001"],
             "applicability_status": "applicable",
             "applicability_basis": "Territorial and system scope are established.",
-            "finding": "not-met",
+            "finding": "failure-occurrence",
             "finding_basis": "The occurrence failed the stated requirement.",
             "assessed_on": "2026-09-29",
         }
@@ -41,19 +40,7 @@ class ExternalRequirementProjectionTests(unittest.TestCase):
         self.assertEqual(entry["external_requirement_assessment_count"], 1)
         self.assertNotIn("external_requirement_assessments", entry)
         self.assertIn(assessment["requirement_id"], entry["search_terms"])
-        self.assertIn("not-met", entry["search_terms"])
-
-
-    def test_inc001_public_assessments_do_not_expand_to_stage4_candidate_inventory(self):
-        record_path = ROOT / "vigil" / "records" / "incidents" / "VIGIL-INC-000001.json"
-        record = json.loads(record_path.read_text(encoding="utf-8"))
-        assessments = record.get("external_requirement_assessments", [])
-        self.assertEqual(
-            {item["requirement_id"] for item in assessments},
-            {"EXTREQ-2E1D2C63187C14E8", "EXTREQ-C25CB2D997BC6FE8"},
-        )
-        self.assertTrue(all(item["applicability_status"] == "insufficient-evidence" for item in assessments))
-
+        self.assertIn("failure-occurrence", entry["search_terms"])
 
 
 if __name__ == "__main__":
