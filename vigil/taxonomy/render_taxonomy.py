@@ -743,7 +743,7 @@ def load_case_examples(path: Path = CASE_EXAMPLES) -> dict[str, list[dict]]:
 
 
 def _version_key(value: object) -> tuple[int, int, int]:
-    match = re.match(r"^(\\d+)\\.(\\d+)\\.(\\d+)", str(value or ""))
+    match = re.match(r"^(\d+)\.(\d+)\.(\d+)", str(value or ""))
     return tuple(int(part) for part in match.groups()) if match else (0, 0, 0)
 
 
