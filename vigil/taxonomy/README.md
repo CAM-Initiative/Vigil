@@ -173,7 +173,9 @@ python vigil/taxonomy/render_taxonomy_publication.py \
   --pdf
 ```
 
-The PDF is a deterministic projection of the canonical family JSON, the current VIGIL Harm & Severity methodology, and their consolidated external references; it is generated rather than hand-edited. The renderer may emit HTML internally while composing the PDF, but those files are transient build material and are not committed publication assets. Pull requests validate the taxonomy contract, rebuild the Incident-backed Case File projection, and apply evidence exclusions without requiring publication regeneration. After changes land on `main`, the publication workflow uses the repository's established PDF renderer to regenerate, validate, and commit the refreshed PDF asset.
+The unnumbered reading-guide preamble is maintained in `VIGIL.AlignmentTaxonomy.ReadingGuide.json`. It is rendered once before the Fidelity Family chapters. Family chapter numbering and standalone Family pages remain unchanged. The Harm Impact chapter and consolidated references remain at the back.
+
+The PDF is a deterministic projection of the reading guide, the canonical family JSON, the current VIGIL Harm & Severity methodology, and their consolidated external references; it is generated rather than hand-edited. The renderer may emit HTML internally while composing the PDF, but those files are transient build material and are not committed publication assets. Pull requests validate the taxonomy contract, rebuild the Incident-backed Case File projection, and apply evidence exclusions without requiring publication regeneration. After changes land on `main`, the publication workflow uses the repository's established PDF renderer to regenerate, validate, and commit the refreshed PDF asset.
 
 Generate one Markdown family reference when needed:
 
