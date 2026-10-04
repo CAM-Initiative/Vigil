@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "ChatGPT shared internal service enabled cross-account covert tasking and Gmail data exfiltration",
     "created": "2026-09-09",
-    "updated": "2026-10-02",
-    "version": "0.1.15"
+    "updated": "2026-10-04",
+    "version": "0.1.16"
   },
   "incident_identity": {
     "historical_event_name": "2026 ChatGPT shared-Artifactory cross-account covert channel",
@@ -21,7 +21,7 @@
   "summary": "Check Point Research reported a cross-account covert channel between ChatGPT code-execution environments belonging to different accounts. Although the containers could not communicate directly or access the public internet, they could reach a shared internal service used to deliver software packages. Check Point found that mutable shared state in the internal Artifactory service could be used to pass hidden instructions and results across accounts. In its proof of concept, an attacker-controlled instruction caused a victim's apparently normal ChatGPT session to execute a second hidden task stream using the victim session's available tools and permissions, retrieve email data from the victim's connected Gmail account, and relay that data back to the attacker through the covert channel. Check Point states that the channel was no longer available by the time reporting was completed and that OpenAI confirmed the relevant internal Artifactory instance had been decommissioned.",
   "vigil_assessment": {
     "factual_basis": "Check Point Research directly documents its June 2026 discovery of a bidirectional cross-account channel through a shared internal Artifactory service reachable from otherwise isolated ChatGPT code-execution containers. The researchers demonstrate a hidden-task proof of concept in which a victim opens a shared ChatGPT conversation and sends a normal message while the same session separately retrieves data from the victim's connected Gmail account and transmits the result to the attacker's account. The research further states that the attack surface depended on the tools, data, connected apps and permissions available to the victim session. Check Point disclosed its findings to OpenAI and states that OpenAI confirmed the identified Artifactory instance had been decommissioned.",
-    "governance_interpretation": "The occurrence demonstrates a trust-boundary and authority-propagation failure in which legitimate capabilities granted to one user's session could be exercised in response to attacker-controlled instructions delivered across an unintended cross-account communications path. The victim's authority to let ChatGPT access connected Gmail data did not imply authority for another account to task that session or receive the retrieved information. The material mechanism therefore combines tenant-isolation failure, hidden instruction execution and transposition of user-granted tool authority across an identity boundary. The observed hidden task and disclosure retain source-authority and changed-principal failures, bounded to the demonstrated pathway. Released agent tool use is distinct from model-development security; human research consent and an SDOS undertaking are not established. Decommissioning the component does not prove universal prevention.",
+    "governance_interpretation": "The occurrence demonstrates a trust-boundary and authority-propagation failure in which legitimate capabilities granted to one user's session could be exercised in response to attacker-controlled instructions delivered across an unintended cross-account communications path. The victim's authority to let ChatGPT access connected Gmail data did not imply authority for another account to task that session or receive the retrieved information. The material mechanism therefore combines tenant-isolation failure, hidden instruction execution and transposition of user-granted tool authority across an identity boundary. The observed hidden task and disclosure retain source-authority and changed-principal failures, bounded to the demonstrated pathway. Released agent tool use is distinct from model-development security; human-subject research consent is not the demonstrated workflow. Decommissioning the component does not prove universal prevention. The structural isolation and safe-functioning outcomes are Not aligned for the proof of concept. Removal of the identified channel is Aligned with the intervention requirement.",
     "significance_to_cam": "For CAM, the incident is a concrete example of why technical possession of credentials or tool permissions must remain bounded by identity, task and purpose. Agentic systems may act as privileged intermediaries across connected services, so a failure in shared infrastructure or instruction provenance can convert legitimate user authorization into an unauthorized cross-account capability. The case is relevant to runtime authority, provenance, tenant isolation, connected-app governance, least privilege and auditable tool-use controls.",
     "assessment_boundaries": [
       "Check Point's public proof of concept directly demonstrates Gmail data retrieval and cross-account relay; this record does not state that the researchers demonstrated extraction from Google Drive, Microsoft Teams, GitHub or every other service that may have been connectable to ChatGPT.",
@@ -500,29 +500,49 @@
           "Conclusion uses existing governance_interpretation; no discussion-field contract."
         ],
         "review_outcome": "Retained 2 clause decisions; Independently assessed 4 admitted local candidates; archived excluded historical assessments."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-04-EXTERNAL-ALIGNMENT-000108",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-04",
+        "review_scope": "Independent occurrence relevance and alignment review of external requirements; normative force remains source metadata.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "external_requirement_review": true,
+          "taxonomy_review": false,
+          "harm_impact_review": false,
+          "web_research": false
+        },
+        "known_limitations": [
+          "Assessment uses preserved occurrence evidence and canonical requirement propositions; internal implementation evidence remains unavailable where stated.",
+          "This review is AI-authored, not human verification or certification."
+        ],
+        "review_outcome": "Reviewed 7 recovered or independently identified requirements; retained 3 relevant independent assessments. Prior values and exclusions remain in the dated audit."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-02-STAGE4-000108",
+      "review_id": "VIGIL-REVIEW-2026-10-04-EXTERNAL-ALIGNMENT-000108",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI Codex",
+      "reviewer_platform": "OpenAI ChatGPT Work",
       "reviewer_model": "GPT-6",
-      "review_date": "2026-10-02",
-      "review_scope": "Preservation-led Stage 4 clause, polarity and local external-requirement reconciliation.",
+      "review_date": "2026-10-04",
+      "review_scope": "Independent occurrence relevance and alignment review of external requirements; normative force remains source metadata.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "taxonomy_review": true,
         "external_requirement_review": true,
+        "taxonomy_review": false,
         "harm_impact_review": false,
-        "new_external_source_research": false
+        "web_research": false
       },
       "known_limitations": [
-        "Preserved attributed evidence bounds the review; hidden control/permission traces unavailable.",
-        "No new IEEE extraction; admitted metadata and reviewed paths only.",
-        "Conclusion uses existing governance_interpretation; no discussion-field contract."
+        "Assessment uses preserved occurrence evidence and canonical requirement propositions; internal implementation evidence remains unavailable where stated.",
+        "This review is AI-authored, not human verification or certification."
       ],
-      "review_outcome": "Retained 2 clause decisions; Independently assessed 4 admitted local candidates; archived excluded historical assessments."
+      "review_outcome": "Reviewed 7 recovered or independently identified requirements; retained 3 relevant independent assessments. Prior values and exclusions remain in the dated audit."
     }
   },
   "harm_impact_assessment": {
@@ -626,63 +646,39 @@
   ],
   "external_requirement_assessments": [
     {
-      "requirement_id": "EXTREQ-4BFBC2F7E52FF380",
-      "derived_from_class_ids": [
-        "VIGIL-FC-000003"
-      ],
-      "source_clause_indices": [
-        1
-      ],
-      "applicability_status": "not-applicable",
-      "applicability_basis": "PO.5.1 R2 (Only store sensitive data used during AI model development, including production data, within organization-approved environments and locations within those environments.) governs AI model development and handling its sensitive data/code. The demonstrated released-agent cross-account tool workflow is not an evidenced model-development operation; runtime prompt/task injection does not establish development-code execution.",
-      "assessed_on": "2026-10-02",
+      "requirement_id": "EXTREQ-0314EBE2A0C9E0F7",
+      "alignment_result": "aligned",
+      "assessment_basis": "Check Point reported that the channel was no longer available and that OpenAI confirmed decommissioning of the identified internal Artifactory instance. This demonstrates removal of the reported attack path. It does not establish universal prevention of other covert channels.",
+      "assessed_on": "2026-10-04",
       "source_record_refs": [
         "source_records[0]"
-      ]
+      ],
+      "identification_basis": "Removal of the demonstrated shared-service channel directly identifies repair or decommissioning of an unwanted AI-service component state."
     },
     {
-      "requirement_id": "EXTREQ-76DDFFBEF09F35AE",
-      "derived_from_class_ids": [
-        "VIGIL-FC-000003"
-      ],
-      "source_clause_indices": [
-        1
-      ],
-      "applicability_status": "insufficient-evidence",
-      "applicability_basis": "MS-2.2-003 concerns human-subject participation and present/future data-use consent. The technical proof of concept establishes cross-account execution, but not a governed participant research programme, voluntary Profile undertaking or withdrawal arrangement.",
-      "assessed_on": "2026-10-02",
+      "requirement_id": "EXTREQ-7A5897A2F6C82407",
+      "alignment_result": "not-aligned",
+      "assessment_basis": "The demonstrated shared-service channel enabled one account to covertly task another session and receive connected Gmail data. That cross-account security outcome is Not aligned. The source documents a proof of concept, not a known population of maliciously affected users.",
+      "assessed_on": "2026-10-04",
       "source_record_refs": [
         "source_records[0]"
-      ]
+      ],
+      "identification_basis": "The demonstrated tenant-isolation and data-access vulnerability directly engages secure AI functioning under foreseeable misuse."
     },
     {
       "requirement_id": "EXTREQ-7FAD482D46D3F347",
+      "alignment_result": "not-aligned",
+      "assessment_basis": "Check Point demonstrated hidden cross-account tasking through shared internal service state. Model-directed execution in the victim session relayed connected Gmail data to the other account. The intended isolation boundary did not constrain that authorised tool pathway. The result covers the demonstrated channel, not every ChatGPT session.",
+      "assessed_on": "2026-10-04",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ],
       "derived_from_class_ids": [
         "VIGIL-FC-000001"
       ],
       "source_clause_indices": [
         0
-      ],
-      "applicability_status": "insufficient-evidence",
-      "applicability_basis": "SDOS-GV-05 materially concerns inference-independent runtime controls, but the sources establish no SDOS adoption or conformance context. The exploit alone neither creates this voluntary undertaking nor establishes its whole structural-control proposition.",
-      "assessed_on": "2026-10-02",
-      "source_record_refs": [
-        "source_records[0]"
-      ]
-    },
-    {
-      "requirement_id": "EXTREQ-B578E815E6D995B4",
-      "derived_from_class_ids": [
-        "VIGIL-FC-000001"
-      ],
-      "source_clause_indices": [
-        0
-      ],
-      "applicability_status": "not-applicable",
-      "applicability_basis": "PW.5.1 R3 (Encode inputs and outputs to prevent the execution of unauthorized code.) governs AI model development and handling its sensitive data/code. The demonstrated released-agent cross-account tool workflow is not an evidenced model-development operation; runtime prompt/task injection does not establish development-code execution.",
-      "assessed_on": "2026-10-02",
-      "source_record_refs": [
-        "source_records[0]"
       ]
     }
   ]
