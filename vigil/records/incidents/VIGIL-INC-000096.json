@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "DeepSeek exposed an unauthenticated database containing chat histories and secrets",
     "created": "2026-09-08",
-    "updated": "2026-10-02",
-    "version": "0.1.15"
+    "updated": "2026-10-04",
+    "version": "0.1.16"
   },
   "incident_identity": {
     "historical_event_name": "DeepSeek exposed ClickHouse database",
@@ -21,7 +21,7 @@
   "summary": "Wiz Research found a publicly accessible, unauthenticated ClickHouse database belonging to DeepSeek. The exposed service provided full database-operation access and contained more than one million lines of logs including chat histories, API secrets, backend details and operational metadata. DeepSeek secured the database after Wiz notified the company; public evidence does not establish whether third parties accessed the data before discovery.",
   "vigil_assessment": {
     "factual_basis": "Wiz reports discovering two internet-reachable DeepSeek ClickHouse endpoints with no authentication and full database control. The exposed data included more than one million log lines with chat history, secret keys and backend details. Reuters independently reported the discovery and DeepSeek's rapid remediation after notification.",
-    "governance_interpretation": "The occurrence is a material AI-platform data-security failure in surrounding infrastructure rather than a model-behaviour failure. It demonstrates that governance of frontier AI services includes conventional but consequential access control, data custody and operational-security boundaries. Database reachability and exposed sensitive logs do not themselves show a governance process treating capability as permission. Notification and closure do not establish earlier third-party access, model-training exposure or runtime-agent admission.",
+    "governance_interpretation": "The occurrence is a material AI-platform data-security failure in surrounding infrastructure rather than a model-behaviour failure. It demonstrates that governance of frontier AI services includes conventional but consequential access control, data custody and operational-security boundaries. Database reachability and exposed sensitive logs do not themselves show a governance process treating capability as permission. Notification and closure do not establish earlier third-party access, model-training exposure or runtime-agent admission. The privacy and infrastructure-security outcomes are Not aligned. Closure of the unauthenticated exposure is Aligned with the repair requirement.",
     "significance_to_cam": "The occurrence shows that an AI service can expose highly sensitive user and operational data through ordinary infrastructure failures even when the model itself is not the failing component. Access control, data custody and deployment security are therefore part of the service's governance boundary.",
     "assessment_boundaries": [
       "The evidence does not establish that an unauthorised third party accessed or misused the exposed database before Wiz discovered it.",
@@ -481,29 +481,49 @@
           "Conclusion uses existing governance_interpretation; no discussion-field contract."
         ],
         "review_outcome": "Retained 1 clause decisions; Independently assessed 14 admitted local candidates; archived excluded historical assessments."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-04-EXTERNAL-ALIGNMENT-000096",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-04",
+        "review_scope": "Independent occurrence relevance and alignment review of external requirements; normative force remains source metadata.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "external_requirement_review": true,
+          "taxonomy_review": false,
+          "harm_impact_review": false,
+          "web_research": false
+        },
+        "known_limitations": [
+          "Assessment uses preserved occurrence evidence and canonical requirement propositions; internal implementation evidence remains unavailable where stated.",
+          "This review is AI-authored, not human verification or certification."
+        ],
+        "review_outcome": "Reviewed 18 recovered or independently identified requirements; retained 3 relevant independent assessments. Prior values and exclusions remain in the dated audit."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-02-STAGE4-000096",
+      "review_id": "VIGIL-REVIEW-2026-10-04-EXTERNAL-ALIGNMENT-000096",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI Codex",
+      "reviewer_platform": "OpenAI ChatGPT Work",
       "reviewer_model": "GPT-6",
-      "review_date": "2026-10-02",
-      "review_scope": "Preservation-led Stage 4 clause, polarity and local external-requirement reconciliation.",
+      "review_date": "2026-10-04",
+      "review_scope": "Independent occurrence relevance and alignment review of external requirements; normative force remains source metadata.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "taxonomy_review": true,
         "external_requirement_review": true,
+        "taxonomy_review": false,
         "harm_impact_review": false,
-        "new_external_source_research": false
+        "web_research": false
       },
       "known_limitations": [
-        "Preserved attributed evidence bounds the review; hidden control/permission traces unavailable.",
-        "No new IEEE extraction; admitted metadata and reviewed paths only.",
-        "Conclusion uses existing governance_interpretation; no discussion-field contract."
+        "Assessment uses preserved occurrence evidence and canonical requirement propositions; internal implementation evidence remains unavailable where stated.",
+        "This review is AI-authored, not human verification or certification."
       ],
-      "review_outcome": "Retained 1 clause decisions; Independently assessed 14 admitted local candidates; archived excluded historical assessments."
+      "review_outcome": "Reviewed 18 recovered or independently identified requirements; retained 3 relevant independent assessments. Prior values and exclusions remain in the dated audit."
     }
   },
   "harm_impact_assessment": {
@@ -620,228 +640,37 @@
   ],
   "external_requirement_assessments": [
     {
-      "requirement_id": "EXTREQ-1736F5D9A9FEE3E6",
-      "derived_from_class_ids": [
-        "VIGIL-FC-000002"
-      ],
-      "source_clause_indices": [
-        0
-      ],
-      "applicability_status": "not-applicable",
-      "applicability_basis": "Article 4a(1)(e) is later-applying high-risk governance or Article 4a bias-correction permission. the January 2025 DeepSeek database exposure predates that application/permission and is not special-category processing strictly for bias correction. No general privacy/security duty is substituted for this provision.",
-      "assessed_on": "2026-10-02",
+      "requirement_id": "EXTREQ-0314EBE2A0C9E0F7",
+      "alignment_result": "aligned",
+      "assessment_basis": "DeepSeek secured the exposed database after Wiz notified the company. That action repaired the reported public access state. The result covers closure of the exposure. It does not establish recovery of any data already accessed.",
+      "assessed_on": "2026-10-04",
       "source_record_refs": [
         "source_records[0]",
         "source_records[1]"
-      ]
+      ],
+      "identification_basis": "Closure of the exposed AI service database directly identifies repair of an unwanted security state."
     },
     {
-      "requirement_id": "EXTREQ-194BAA01C8CEDF96",
-      "derived_from_class_ids": [
-        "VIGIL-FC-000002"
-      ],
-      "source_clause_indices": [
-        0
-      ],
-      "applicability_status": "not-applicable",
-      "applicability_basis": "Article 4a(2)(b) is later-applying high-risk governance or Article 4a bias-correction permission. the January 2025 DeepSeek database exposure predates that application/permission and is not special-category processing strictly for bias correction. No general privacy/security duty is substituted for this provision.",
-      "assessed_on": "2026-10-02",
+      "requirement_id": "EXTREQ-0BC109220262734C",
+      "alignment_result": "not-aligned",
+      "assessment_basis": "Wiz directly accessed unauthenticated chat histories and secrets in DeepSeek’s database. Personal AI interaction data was publicly accessible without an access gate. That exposure did not preserve privacy and data protection. Earlier access by other parties remains unproved.",
+      "assessed_on": "2026-10-04",
       "source_record_refs": [
         "source_records[0]",
         "source_records[1]"
-      ]
+      ],
+      "identification_basis": "The public exposure of personal chat histories directly engages privacy and data protection."
     },
     {
-      "requirement_id": "EXTREQ-1AAD882F2F58BA56",
-      "derived_from_class_ids": [
-        "VIGIL-FC-000002"
-      ],
-      "source_clause_indices": [
-        0
-      ],
-      "applicability_status": "not-applicable",
-      "applicability_basis": "SP 800-218A PS.1.1 R2 governs model-development environments, model-element least privilege, sensitive training provenance or development alerts. Operational intrusion/log-database access does not establish model-development or access to model weights/sensitive-trained models. The represented July 2024 Profile also postdates the February 2024 Gemini event.",
-      "assessed_on": "2026-10-02",
+      "requirement_id": "EXTREQ-7A5897A2F6C82407",
+      "alignment_result": "not-aligned",
+      "assessment_basis": "Wiz found internet-reachable endpoints with no authentication and full database control. The AI service’s surrounding infrastructure exposed chats, API secrets and operational data. This security outcome is Not aligned. It does not establish compromise of model weights or earlier third-party misuse.",
+      "assessed_on": "2026-10-04",
       "source_record_refs": [
         "source_records[0]",
         "source_records[1]"
-      ]
-    },
-    {
-      "requirement_id": "EXTREQ-34D794BAE48B2042",
-      "derived_from_class_ids": [
-        "VIGIL-FC-000002"
       ],
-      "source_clause_indices": [
-        0
-      ],
-      "applicability_status": "not-applicable",
-      "applicability_basis": "Article 4a(2)(a) is later-applying high-risk governance or Article 4a bias-correction permission. the January 2025 DeepSeek database exposure predates that application/permission and is not special-category processing strictly for bias correction. No general privacy/security duty is substituted for this provision.",
-      "assessed_on": "2026-10-02",
-      "source_record_refs": [
-        "source_records[0]",
-        "source_records[1]"
-      ]
-    },
-    {
-      "requirement_id": "EXTREQ-3A41A9530EB9DEB2",
-      "derived_from_class_ids": [
-        "VIGIL-FC-000002"
-      ],
-      "source_clause_indices": [
-        0
-      ],
-      "applicability_status": "not-applicable",
-      "applicability_basis": "Article 4a(1)(a) is later-applying high-risk governance or Article 4a bias-correction permission. the January 2025 DeepSeek database exposure predates that application/permission and is not special-category processing strictly for bias correction. No general privacy/security duty is substituted for this provision.",
-      "assessed_on": "2026-10-02",
-      "source_record_refs": [
-        "source_records[0]",
-        "source_records[1]"
-      ]
-    },
-    {
-      "requirement_id": "EXTREQ-594D5CEC63541F2B",
-      "derived_from_class_ids": [
-        "VIGIL-FC-000002"
-      ],
-      "source_clause_indices": [
-        0
-      ],
-      "applicability_status": "not-applicable",
-      "applicability_basis": "SDOS SDOS-AD-01 governs agent tool-dispatch, admission or restrictive baseline degradation. An exposed database, human publication action or standalone image tuning is not that agent-governance workflow.",
-      "assessed_on": "2026-10-02",
-      "source_record_refs": [
-        "source_records[0]",
-        "source_records[1]"
-      ]
-    },
-    {
-      "requirement_id": "EXTREQ-597D56E05968BAA7",
-      "derived_from_class_ids": [
-        "VIGIL-FC-000002"
-      ],
-      "source_clause_indices": [
-        0
-      ],
-      "applicability_status": "not-applicable",
-      "applicability_basis": "SP 800-218A PS.3.2 R2 governs model-development environments, model-element least privilege, sensitive training provenance or development alerts. Operational intrusion/log-database access does not establish model-development or access to model weights/sensitive-trained models. The represented July 2024 Profile also postdates the February 2024 Gemini event.",
-      "assessed_on": "2026-10-02",
-      "source_record_refs": [
-        "source_records[0]",
-        "source_records[1]"
-      ]
-    },
-    {
-      "requirement_id": "EXTREQ-665D430E7172E64F",
-      "derived_from_class_ids": [
-        "VIGIL-FC-000002"
-      ],
-      "source_clause_indices": [
-        0
-      ],
-      "applicability_status": "not-applicable",
-      "applicability_basis": "Article 4a(1) is later-applying high-risk governance or Article 4a bias-correction permission. the January 2025 DeepSeek database exposure predates that application/permission and is not special-category processing strictly for bias correction. No general privacy/security duty is substituted for this provision.",
-      "assessed_on": "2026-10-02",
-      "source_record_refs": [
-        "source_records[0]",
-        "source_records[1]"
-      ]
-    },
-    {
-      "requirement_id": "EXTREQ-8406A6A9A7ECFCB6",
-      "derived_from_class_ids": [
-        "VIGIL-FC-000002"
-      ],
-      "source_clause_indices": [
-        0
-      ],
-      "applicability_status": "not-applicable",
-      "applicability_basis": "Article 4a(1)(c) is later-applying high-risk governance or Article 4a bias-correction permission. the January 2025 DeepSeek database exposure predates that application/permission and is not special-category processing strictly for bias correction. No general privacy/security duty is substituted for this provision.",
-      "assessed_on": "2026-10-02",
-      "source_record_refs": [
-        "source_records[0]",
-        "source_records[1]"
-      ]
-    },
-    {
-      "requirement_id": "EXTREQ-A73521C6AD3B42C8",
-      "derived_from_class_ids": [
-        "VIGIL-FC-000002"
-      ],
-      "source_clause_indices": [
-        0
-      ],
-      "applicability_status": "not-applicable",
-      "applicability_basis": "SP 800-218A PS.1.3 R3 governs model-development environments, model-element least privilege, sensitive training provenance or development alerts. Operational intrusion/log-database access does not establish model-development or access to model weights/sensitive-trained models. The represented July 2024 Profile also postdates the February 2024 Gemini event.",
-      "assessed_on": "2026-10-02",
-      "source_record_refs": [
-        "source_records[0]",
-        "source_records[1]"
-      ]
-    },
-    {
-      "requirement_id": "EXTREQ-A853649FE81CDD09",
-      "derived_from_class_ids": [
-        "VIGIL-FC-000002"
-      ],
-      "source_clause_indices": [
-        0
-      ],
-      "applicability_status": "not-applicable",
-      "applicability_basis": "SDOS SDOS-GV-03 governs agent tool-dispatch, admission or restrictive baseline degradation. An exposed database, human publication action or standalone image tuning is not that agent-governance workflow.",
-      "assessed_on": "2026-10-02",
-      "source_record_refs": [
-        "source_records[0]",
-        "source_records[1]"
-      ]
-    },
-    {
-      "requirement_id": "EXTREQ-CF67C1E2AF61F3C8",
-      "derived_from_class_ids": [
-        "VIGIL-FC-000002"
-      ],
-      "source_clause_indices": [
-        0
-      ],
-      "applicability_status": "not-applicable",
-      "applicability_basis": "SDOS SDOS-GV-02 governs agent tool-dispatch, admission or restrictive baseline degradation. An exposed database, human publication action or standalone image tuning is not that agent-governance workflow.",
-      "assessed_on": "2026-10-02",
-      "source_record_refs": [
-        "source_records[0]",
-        "source_records[1]"
-      ]
-    },
-    {
-      "requirement_id": "EXTREQ-E152AE56D54C13B9",
-      "derived_from_class_ids": [
-        "VIGIL-FC-000002"
-      ],
-      "source_clause_indices": [
-        0
-      ],
-      "applicability_status": "not-applicable",
-      "applicability_basis": "SDOS SDOS-IA-02 governs agent tool-dispatch, admission or restrictive baseline degradation. An exposed database, human publication action or standalone image tuning is not that agent-governance workflow.",
-      "assessed_on": "2026-10-02",
-      "source_record_refs": [
-        "source_records[0]",
-        "source_records[1]"
-      ]
-    },
-    {
-      "requirement_id": "EXTREQ-E8F231F17B5CF5C2",
-      "derived_from_class_ids": [
-        "VIGIL-FC-000002"
-      ],
-      "source_clause_indices": [
-        0
-      ],
-      "applicability_status": "not-applicable",
-      "applicability_basis": "SP 800-218A PO.5.1 R3 governs model-development environments, model-element least privilege, sensitive training provenance or development alerts. Operational intrusion/log-database access does not establish model-development or access to model weights/sensitive-trained models. The represented July 2024 Profile also postdates the February 2024 Gemini event.",
-      "assessed_on": "2026-10-02",
-      "source_record_refs": [
-        "source_records[0]",
-        "source_records[1]"
-      ]
+      "identification_basis": "Unauthenticated database-operation access directly engages security of the AI service and its operational infrastructure."
     }
   ]
 }
