@@ -48,6 +48,14 @@ Do not replace the rationale with relationship-type boilerplate such as “the c
 
 Where a clause has multiple taxonomy relationships, preserve each distinct rationale in source order. Together they must form a coherent assessment without duplicating the same explanation. For adjacent, ambiguous-boundary, exemplar or other non-misalignment relationships, state precisely what the clause demonstrates and which occurrence condition is not established; semantic adjacency must not be converted into a canonical misalignment classification.
 
+## Public-language contract
+
+Before editing any VIGIL-authored prose that can appear on a public surface, read `vigil/docs/maintenance/PUBLIC-OUTPUT-STYLE.md`.
+
+Use the same controlled public vocabulary across Incident prose, taxonomy explanations, external-requirement assessments, generated projections and website-facing text. Public alignment labels are **Aligned**, **Not aligned** and **Boundary**. Do not substitute legacy state labels such as `met`, `not met`, `failure`, `success`, `applicability unresolved`, `insufficient evidence` or `not assessable` as stylistic synonyms.
+
+Write short sentences. Prefer one proposition per sentence. Name the evidence or missing decisive fact instead of adding generic caution language. Preserve quoted source language and historical audit wording when fidelity requires it. Use Australian English spelling in VIGIL-authored prose.
+
 ## Schema and publication
 
 The sole VIGIL record-rules contract is `vigil/VIGIL.Schema.json`. Subsystem schemas remain scoped to taxonomy, external governance and CAM assessment.
