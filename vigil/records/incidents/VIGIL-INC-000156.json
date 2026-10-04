@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Waymo robotaxis contributed to San Francisco gridlock during major power outage",
     "created": "2026-09-19",
-    "updated": "2026-10-02",
-    "version": "0.3.2"
+    "updated": "2026-10-04",
+    "version": "0.3.3"
   },
   "incident_identity": {
     "historical_event_name": "Waymo robotaxis contributed to San Francisco gridlock during major power outage",
@@ -21,7 +21,7 @@
   "summary": "During a major San Francisco power outage, Waymo vehicles encountered thousands of dark traffic signals; requests for remote confirmation surged, delays contributed to congestion, and Waymo temporarily paused service.",
   "vigil_assessment": {
     "factual_basis": "Waymo states that its vehicles safely traversed more than 7,000 dark signals but generated more simultaneous confirmation requests than the response system could promptly handle. The backlog caused some vehicles to wait longer than normal and contributed to congestion amid wider outage-related gridlock. Waymo paused service and later described fleet and response-capacity changes.",
-    "governance_interpretation": "The occurrence exposed an operational capacity boundary in a distributed autonomy-and-remote-assistance system under correlated infrastructure failure. The evidence supports service degradation, but does not establish that Waymo caused the citywide gridlock or that a selectable VIGIL failure invariant is satisfied. Correlated workload, delayed confirmation, service pause and proposed fleet/protocol changes remain separate resolved-no-mapping components. A conservative local response can overload shared capacity without proving a defined class trigger or citywide causation.",
+    "governance_interpretation": "The outage exposed a shared remote-assistance capacity limit and degraded fleet operation. A service pause is a supported mitigation. The external findings do not assign citywide causation or force a taxonomy classification.",
     "significance_to_cam": "The case shows that autonomy systems must be tested for correlated edge cases in which many units simultaneously seek remote confirmation during degraded public infrastructure.",
     "assessment_boundaries": [
       "PG&E's outage disabled traffic signals and caused wider city disruption; Waymo describes its vehicles as a contributor to, not the sole cause of, congestion.",
@@ -296,29 +296,49 @@
           "Conclusion uses existing governance_interpretation; no discussion-field contract."
         ],
         "review_outcome": "Retained 3 clause decisions; Independently assessed 0 admitted local candidates; archived excluded historical assessments."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-04-EXTERNAL-ALIGNMENT-000156",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-04",
+        "review_scope": "Independent occurrence relevance and alignment review of external requirements; normative force remains source metadata.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "external_requirement_review": true,
+          "taxonomy_review": false,
+          "harm_impact_review": false,
+          "web_research": false
+        },
+        "known_limitations": [
+          "Assessment uses preserved occurrence evidence and canonical requirement propositions; internal implementation evidence remains unavailable where stated.",
+          "This review is AI-authored, not human verification or certification."
+        ],
+        "review_outcome": "Reviewed 2 recovered or independently identified requirements; retained 2 relevant independent assessments. Prior values and exclusions remain in the dated audit."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-02-STAGE4-000156",
+      "review_id": "VIGIL-REVIEW-2026-10-04-EXTERNAL-ALIGNMENT-000156",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI Codex",
+      "reviewer_platform": "OpenAI ChatGPT Work",
       "reviewer_model": "GPT-6",
-      "review_date": "2026-10-02",
-      "review_scope": "Preservation-led Stage 4 clause, polarity and local external-requirement reconciliation.",
+      "review_date": "2026-10-04",
+      "review_scope": "Independent occurrence relevance and alignment review of external requirements; normative force remains source metadata.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "taxonomy_review": true,
         "external_requirement_review": true,
+        "taxonomy_review": false,
         "harm_impact_review": false,
-        "new_external_source_research": false
+        "web_research": false
       },
       "known_limitations": [
-        "Preserved attributed evidence bounds the review; hidden control/permission traces unavailable.",
-        "No new IEEE extraction; admitted metadata and reviewed paths only.",
-        "Conclusion uses existing governance_interpretation; no discussion-field contract."
+        "Assessment uses preserved occurrence evidence and canonical requirement propositions; internal implementation evidence remains unavailable where stated.",
+        "This review is AI-authored, not human verification or certification."
       ],
-      "review_outcome": "Retained 3 clause decisions; Independently assessed 0 admitted local candidates; archived excluded historical assessments."
+      "review_outcome": "Reviewed 2 recovered or independently identified requirements; retained 2 relevant independent assessments. Prior values and exclusions remain in the dated audit."
     },
     "operating_model": "AI-authored, semi-autonomous production under human contract approval",
     "human_governance_editor": null,
@@ -409,5 +429,26 @@
       }
     ]
   },
-  "external_requirement_assessments": []
+  "external_requirement_assessments": [
+    {
+      "requirement_id": "EXTREQ-0314EBE2A0C9E0F7",
+      "alignment_result": "aligned",
+      "assessment_basis": "Waymo temporarily paused service in response to the disruption. This demonstrates a mechanism to restrict unwanted fleet behaviour. It does not establish that every vehicle or traffic consequence was immediately resolved.",
+      "assessed_on": "2026-10-04",
+      "source_record_refs": [
+        "source_records[0]"
+      ],
+      "identification_basis": "The responsible operator restricted autonomous fleet operation during the adverse event."
+    },
+    {
+      "requirement_id": "EXTREQ-7A5897A2F6C82407",
+      "alignment_result": "not-aligned",
+      "assessment_basis": "During the outage, correlated requests for remote confirmation exceeded timely response capacity and vehicle delays contributed to congestion. The autonomy and assistance system did not maintain appropriate fleet operation under this adverse condition. It is not assigned sole responsibility for citywide gridlock.",
+      "assessed_on": "2026-10-04",
+      "source_record_refs": [
+        "source_records[0]"
+      ],
+      "identification_basis": "A provider-reported fleet capacity problem affected autonomous operation under an infrastructure outage."
+    }
+  ]
 }
