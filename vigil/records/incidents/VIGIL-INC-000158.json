@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Moltbook database exposure revealed private communications and API authentication tokens",
     "created": "2026-09-19",
-    "updated": "2026-10-02",
-    "version": "0.3.2"
+    "updated": "2026-10-04",
+    "version": "0.3.3"
   },
   "incident_identity": {
     "historical_event_name": "Moltbook database exposure revealed private communications and API authentication tokens",
@@ -21,7 +21,7 @@
   "summary": "Wiz researchers reportedly reached an unsecured Moltbook backend in under three minutes and obtained read-and-write access to about 35,000 email addresses, thousands of private messages and approximately 1.5 million API authentication tokens. The exposed tokens could support account impersonation and content manipulation; Moltbook secured the issue within hours, and Wiz said it deleted the research data.",
   "vigil_assessment": {
     "factual_basis": "Business Insider reports that Wiz researchers accessed the database in under three minutes and obtained full read-and-write access. The exposed authentication tokens could enable account impersonation and content manipulation. Wiz disclosed the issue, Moltbook secured it within hours, and Wiz said the research data was deleted.",
-    "governance_interpretation": "The occurrence is a large-scale data and credential exposure caused by a backend security misconfiguration. The evidence does not establish that an AI model made the configuration decision or that a current VIGIL Failure Class is the right mechanism abstraction. Backend access, private information, exposed-token capabilities and remediation remain distinct. No token misuse, agent impersonation or AI-side permission inference is established; technical vulnerability alone does not force a taxonomy mechanism.",
+    "governance_interpretation": "The agent platform exposed private data and credentials through a backend misconfiguration. Security and privacy failed, while repair of the identified issue is supported. The evidence does not attribute the configuration decision to an AI model or establish token misuse.",
     "significance_to_cam": "The case shows that AI-agent platforms remain dependent on conventional application-security controls for credentials, private communications and account integrity.",
     "assessment_boundaries": [
       "The reviewed evidence does not establish malicious exploitation beyond the security research or downstream token misuse.",
@@ -356,29 +356,49 @@
           "Conclusion uses existing governance_interpretation; no discussion-field contract."
         ],
         "review_outcome": "Retained 5 clause decisions; Independently assessed 0 admitted local candidates; archived excluded historical assessments."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-04-EXTERNAL-ALIGNMENT-000158",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-04",
+        "review_scope": "Independent occurrence relevance and alignment review of external requirements; normative force remains source metadata.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "external_requirement_review": true,
+          "taxonomy_review": false,
+          "harm_impact_review": false,
+          "web_research": false
+        },
+        "known_limitations": [
+          "Assessment uses preserved occurrence evidence and canonical requirement propositions; internal implementation evidence remains unavailable where stated.",
+          "This review is AI-authored, not human verification or certification."
+        ],
+        "review_outcome": "Reviewed 3 recovered or independently identified requirements; retained 3 relevant independent assessments. Prior values and exclusions remain in the dated audit."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-02-STAGE4-000158",
+      "review_id": "VIGIL-REVIEW-2026-10-04-EXTERNAL-ALIGNMENT-000158",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI Codex",
+      "reviewer_platform": "OpenAI ChatGPT Work",
       "reviewer_model": "GPT-6",
-      "review_date": "2026-10-02",
-      "review_scope": "Preservation-led Stage 4 clause, polarity and local external-requirement reconciliation.",
+      "review_date": "2026-10-04",
+      "review_scope": "Independent occurrence relevance and alignment review of external requirements; normative force remains source metadata.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "taxonomy_review": true,
         "external_requirement_review": true,
+        "taxonomy_review": false,
         "harm_impact_review": false,
-        "new_external_source_research": false
+        "web_research": false
       },
       "known_limitations": [
-        "Preserved attributed evidence bounds the review; hidden control/permission traces unavailable.",
-        "No new IEEE extraction; admitted metadata and reviewed paths only.",
-        "Conclusion uses existing governance_interpretation; no discussion-field contract."
+        "Assessment uses preserved occurrence evidence and canonical requirement propositions; internal implementation evidence remains unavailable where stated.",
+        "This review is AI-authored, not human verification or certification."
       ],
-      "review_outcome": "Retained 5 clause decisions; Independently assessed 0 admitted local candidates; archived excluded historical assessments."
+      "review_outcome": "Reviewed 3 recovered or independently identified requirements; retained 3 relevant independent assessments. Prior values and exclusions remain in the dated audit."
     },
     "operating_model": "AI-authored, semi-autonomous production under human contract approval",
     "human_governance_editor": null,
@@ -469,5 +489,36 @@
       }
     ]
   },
-  "external_requirement_assessments": []
+  "external_requirement_assessments": [
+    {
+      "requirement_id": "EXTREQ-0314EBE2A0C9E0F7",
+      "alignment_result": "aligned",
+      "assessment_basis": "Moltbook secured the issue within hours and Wiz reports deleting the research data. The provider repaired the identified exposure, without proving that all prior access or possible misuse was discovered.",
+      "assessed_on": "2026-10-04",
+      "source_record_refs": [
+        "source_records[0]"
+      ],
+      "identification_basis": "The provider corrected the reported backend vulnerability affecting the agent platform."
+    },
+    {
+      "requirement_id": "EXTREQ-0BC109220262734C",
+      "alignment_result": "not-aligned",
+      "assessment_basis": "The unsecured backend exposed email addresses and private messages to researchers without authority. This failed to protect the privacy of affected platform participants.",
+      "assessed_on": "2026-10-04",
+      "source_record_refs": [
+        "source_records[0]"
+      ],
+      "identification_basis": "The AI-agent platform exposed private participant information and communications."
+    },
+    {
+      "requirement_id": "EXTREQ-7A5897A2F6C82407",
+      "alignment_result": "not-aligned",
+      "assessment_basis": "Researchers obtained unauthorised read-and-write access to the agent platform’s private communications and authentication tokens through an unsecured backend. The platform did not preserve its security boundary. Token misuse or impersonation is not established.",
+      "assessed_on": "2026-10-04",
+      "source_record_refs": [
+        "source_records[0]"
+      ],
+      "identification_basis": "The exposed backend held authentication material and private communications for the AI-agent platform."
+    }
+  ]
 }

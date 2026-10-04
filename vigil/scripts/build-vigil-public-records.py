@@ -155,10 +155,8 @@ def incident_search_terms(record: dict[str, Any]) -> list[str]:
             if isinstance(item, dict)
             for value in (
                 item.get("requirement_id"),
-                item.get("applicability_status"),
-                item.get("finding"),
-                item.get("applicability_basis"),
-                item.get("finding_basis"),
+                item.get("alignment_result"),
+                item.get("assessment_basis"),
             )
             if value
         ],
