@@ -38,6 +38,8 @@ Resolve `normative_force` from the canonical requirement/source metadata. Do not
 
 Section 04 Compliance consumes Assessment result / External requirement / Normative force / Evidence and assessment basis. Chips are Aligned / Not aligned / Boundary. Candidate exclusions remain audit-only. The website migration is a separate downstream change.
 
+Public wording for these fields follows `vigil/docs/maintenance/PUBLIC-OUTPUT-STYLE.md`. Use **Aligned**, **Not aligned** and **Boundary** consistently on public surfaces. Do not reintroduce `met`, `not met`, `applicability unresolved`, `insufficient evidence` or similar legacy labels as presentation synonyms. Keep the result separate from normative force, and state the occurrence evidence in direct language rather than generic hedging.
+
 ## Evidence, history and validation
 
 Preserve `source_records`, source clauses, taxonomy, Harm Impact, uncertainty and append-only interpretive provenance. `external_assessments` remains third-party analysis and `standards_and_regulatory_references` remains contextual.
