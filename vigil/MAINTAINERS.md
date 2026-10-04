@@ -53,6 +53,25 @@ The taxonomy migration assurance ledger at `vigil/taxonomy/migration/Caelestis.L
 
 `external_requirement_assessments` is an optional, separate occurrence-level assessment surface. Candidates may be resolved from a material source clause through reviewed FC/EXTREQ relationships or independently identified from occurrence evidence. The field contains only materially relevant occurrence assessments with independent `alignment_result` (`aligned`, `not-aligned`, `boundary`) and `assessment_basis`. Normative force remains canonical requirement metadata; voluntary adoption is not an assessment gate. Candidate exclusions remain audit-only. The field does not duplicate central requirement metadata, taxonomy roles, or external assessments, and does not assert organisation-wide compliance. Follow `vigil/docs/maintenance/EXTERNAL-REQUIREMENT-ADJUDICATION.md`; do not backfill the corpus mechanically. Candidate generation preserves the meaning of `standards_and_regulatory_references` and does not use it to create candidates.
 
+## Public-language contract
+
+All VIGIL-authored public prose MUST follow `vigil/docs/maintenance/PUBLIC-OUTPUT-STYLE.md`.
+
+The public-language contract is ASD-STE100-informed controlled English. It preserves source fidelity while making VIGIL-authored analysis consistent across Case Files, generated projections, website surfaces and publications. Do not claim formal ASD-STE100 conformity unless the specific publication has been checked against the applicable standard and controlled vocabulary.
+
+Use one public term for one concept. In particular:
+
+- use **Aligned**, **Not aligned** and **Boundary** as the public alignment-result labels;
+- use **Alignment Taxonomy**, **Fidelity Class**, **external requirement**, **normative force** and **assessment basis** consistently;
+- do not rotate among legacy synonyms such as `met`, `not met`, `failure`, `success`, `applicability unresolved`, `insufficient evidence` or `not assessable` as alternate public state labels;
+- keep structured canonical relationship roles in structured fields rather than exposing them as alternate public result vocabulary;
+- write short sentences, prefer one proposition per sentence, name the decisive evidence or missing fact, and avoid generic hedging;
+- preserve quotations, source anchors, legislation, standards text and historical audit language when fidelity requires the original wording; and
+- use Australian English spelling consistently in VIGIL-authored prose.
+
+Historical audits are not rewritten solely to adopt current terminology. New public prose and new audits use the current controlled vocabulary, while migration audits may name retired terms when necessary to explain what changed.
+
+
 Structured Incident severity is derived through `harm_impact_assessment` and VIGIL-HIM. Overall severity is the highest supported assessed materialised-harm band; dimensions are never averaged or summed. `unreported` is not S1, and SU applies when no dimension can be defensibly banded. Severity remains independent of source metadata, diagnostic provenance, taxonomy classification and workflow priority.
 
 Occurrence-environment metadata also preserves independent dimensions. `deployment_state` records evidenced lifecycle status, `activity_contexts` records training/evaluation/research/operational activity, `external_reach` records whether real external systems, services, people or data were materially reached, and `activity_actor` identifies the actor conducting non-operational activity. Never infer deployed status from live external reach or real-world consequences. The complete adjudication rules are in `vigil/VIGIL.Schema.json` and the Incident adjudication workflow.
