@@ -4,7 +4,7 @@ Artefact type: REVIEW. Downstream implementation contract, 4 October 2026.
 
 Target repository: `CAM-Initiative/cam-governance-catalogue`.
 
-The occurrence-assessment schema is stable. The corpus migration is still incomplete. Do not describe all Incidents as migrated until the corpus progress audit records completion and the full validators pass. This handoff does not change the website.
+The occurrence-assessment schema is stable. Independent external-requirement review is complete for all 170 active Incidents. Canonical, occurrence-assessment and public-projection validation pass. The completion audit records the preserved evidence and checks. A separate pre-existing taxonomy role-ledger inconsistency remains documented; this handoff does not implement the website.
 
 ## Data authority
 
@@ -47,7 +47,7 @@ An absent or empty assessment array means there are no published occurrence asse
 
 ## Retired presentation
 
-Remove dependence on `applicability_status`, `applicability_basis`, `finding` and `finding_basis` for migrated assessment rows. Do not automatically translate historical values into current results. The remaining historical records require independent review in VIGIL.
+Remove dependence on `applicability_status`, `applicability_basis`, `finding` and `finding_basis` for migrated assessment rows. Do not automatically translate historical values into current results. All active Incidents have completed independent review in VIGIL; historical audit values remain evidence of the earlier states.
 
 Candidate exclusions are retained in dated repository audits. They are not canonical public assessment rows. Do not make primary tables of Not applicable or Applicability unresolved candidates. Do not restore a global Incident-by-requirement matrix.
 
