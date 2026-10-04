@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Claude Opus and Fable refused substantial forensic analysis during Hugging Face incident response",
     "created": "2026-09-12",
-    "updated": "2026-10-02",
-    "version": "0.1.15"
+    "updated": "2026-10-04",
+    "version": "0.1.16"
   },
   "incident_identity": {
     "historical_event_name": "2026 Hugging Face incident-response Claude forensic-analysis refusal",
@@ -247,7 +247,7 @@
   },
   "vigil_assessment": {
     "factual_basis": "Hugging Face provides two first-party accounts of the response-phase failure. Its 16 July 2026 incident disclosure states that the investigation required large volumes of real attack commands, exploit payloads and command-and-control artefacts, that the commercial frontier models it first used blocked those requests because their guardrails could not distinguish the incident responder from an attacker, and that Hugging Face therefore performed the forensic analysis with self-hosted GLM-5.2. Its 27 July technical timeline names Claude Opus and Fable, says those models refused a large part of the analysis because their guardrails treated reverse-engineering an exploit like launching one, states that Opus guardrails tripped every time the team tried to analyse the attack logs, and says Hugging Face rerouted the entire pipeline through a quantized GLM-5.2 deployment. Anthropic's 2 July Fable 5 safeguard documentation establishes the relevant safeguard design distinction for that product family: its safety classifiers are intended to detect and block dangerous cyber use; benign uses are intended to be allowed; and Anthropic expressly lists log analysis, SOC analysis, threat hunting, incident response and malware reverse engineering as benign uses, while acknowledging that conservative safety margins can produce false positives. The public record does not disclose the complete refused prompts, exact Opus model version, occurrence-specific classifier telemetry or a separate upstream classifier state feeding a distinct downstream refusal control.",
-    "governance_interpretation": "The current taxonomy continues to support Control Activation Validity at high confidence. A defined cyber safeguard became operative and produced repeated refusals during a bounded defensive forensic-analysis task. The evidence establishes that the material context was incident response and reverse engineering of an already-observed attack, while the safeguard treated that work as equivalent to launching the exploit. Current class semantics expressly include defensive analysis refused because hostile material is treated as a request to perform the hostile act. The class's upstream-classification-error exclusion does not displace this mapping on the available evidence: no separate upstream evidentiary or classification subsystem is shown to have supplied an erroneous trigger state to a distinct control that then operated correctly. Rather, the safety guardrail/classifier itself is the evidenced control whose applicability determination produced the refusal. Anthropic's Fable 5 documentation reinforces that distinction by defining safety classifiers as the systems that detect and block cyber requests and by separately identifying incident response and malware reverse engineering as benign uses. The exact internal technical path remains unknown, but that implementation uncertainty does not erase the occurrence-level activation-validity failure. Activation validity retains its failure role: the safeguard operated on defensive inspection, not evidence that it failed to activate. The alternate operator-chosen analysis route does not prove bypass or convert the original restriction to success. Exact internal classifier topology and full prompts remain unavailable.",
+    "governance_interpretation": "The safeguards repeatedly treated defensive inspection as offensive execution. The defined use policy and the operator’s task-specific disengagement are supported. Wider deactivation and risk-tolerance arrangements remain unresolved. The evidence does not establish every internal classifier step or later harm caused by the refusals.",
     "significance_to_cam": "This occurrence is a direct test of control-activation validity in a dual-use domain. The governance requirement is not that cyber safeguards become permissive whenever a user claims defensive purpose; it is that activation conditions preserve the material distinctions the safeguard itself is designed to govern. Here the affected party reports that a live incident-response workflow was restricted because defensive exploit analysis was treated as offensive exploit execution, while Anthropic's own safeguard documentation separately identifies incident response and malware reverse engineering as benign categories that should generally be allowed. The occurrence therefore shows how a safety control can be substantively well-motivated yet governance-defective when its applicability boundary collapses the relevant role, purpose and task context.",
     "assessment_boundaries": [
       "Hugging Face directly reports the refusal behaviour and fallback workflow but does not publish the complete prompt/output transcript set.",
@@ -634,27 +634,49 @@
           "Human approval of the editing scope does not imply human authorship or line-by-line source verification."
         ],
         "review_outcome": "Replaced identifier shorthand with current class names or source-grounded occurrence descriptions; preserved taxonomy relationships, clause adjudications, external requirement assessments, Harm Impact findings and existing review history."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-04-EXTERNAL-ALIGNMENT-000117",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-04",
+        "review_scope": "Independent occurrence relevance and alignment review of external requirements; normative force remains source metadata.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "external_requirement_review": true,
+          "taxonomy_review": false,
+          "harm_impact_review": false,
+          "web_research": false
+        },
+        "known_limitations": [
+          "Assessment uses preserved occurrence evidence and canonical requirement propositions; internal implementation evidence remains unavailable where stated.",
+          "This review is AI-authored, not human verification or certification."
+        ],
+        "review_outcome": "Reviewed 14 recovered or independently identified requirements; retained 7 relevant independent assessments. Prior values and exclusions remain in the dated audit."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-02-CONCLUSION-IDENTIFIERS-000117",
+      "review_id": "VIGIL-REVIEW-2026-10-04-EXTERNAL-ALIGNMENT-000117",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI Codex",
+      "reviewer_platform": "OpenAI ChatGPT Work",
       "reviewer_model": "GPT-6",
-      "review_date": "2026-10-02",
-      "review_scope": "Human-directed editorial replacement of FC and Incident number references in Stage 05 conclusion and governance significance with descriptive names.",
+      "review_date": "2026-10-04",
+      "review_scope": "Independent occurrence relevance and alignment review of external requirements; normative force remains source metadata.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
+        "external_requirement_review": true,
         "taxonomy_review": false,
         "harm_impact_review": false,
-        "new_external_source_research": false
+        "web_research": false
       },
       "known_limitations": [
-        "No new source verification or re-adjudication; existing findings, recognition limits and evidence uncertainty are preserved.",
-        "Human approval of the editing scope does not imply human authorship or line-by-line source verification."
+        "Assessment uses preserved occurrence evidence and canonical requirement propositions; internal implementation evidence remains unavailable where stated.",
+        "This review is AI-authored, not human verification or certification."
       ],
-      "review_outcome": "Replaced identifier shorthand with current class names or source-grounded occurrence descriptions; preserved taxonomy relationships, clause adjudications, external requirement assessments, Harm Impact findings and existing review history."
+      "review_outcome": "Reviewed 14 recovered or independently identified requirements; retained 7 relevant independent assessments. Prior values and exclusions remain in the dated audit."
     }
   },
   "harm_impact_assessment": {
@@ -771,40 +793,29 @@
   "external_requirement_assessments": [
     {
       "requirement_id": "EXTREQ-2367510B0758D596",
+      "alignment_result": "boundary",
+      "assessment_basis": "Hugging Face replaced the models for this forensic task. The sources do not establish the wider risk-tolerance criteria or organisational protocols for halting, deactivating, decommissioning or retraining those systems.",
+      "assessed_on": "2026-10-04",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[2]"
+      ],
       "derived_from_class_ids": [
         "VIGIL-FC-000038"
       ],
       "source_clause_indices": [
         1
-      ],
-      "applicability_status": "insufficient-evidence",
-      "applicability_basis": "NIST-AI-600-1 GV-1.3-007 (Devise a plan to halt development or deployment of a GAI system that poses unacceptable negative risk.) is a voluntary organizational/lifecycle action. The the July 2026 defensive forensic refusals establishes no adoption or action-specific programme for testing, metrics, provenance, disclosure, risk tolerance or response. A court finding, package attack or false-positive refusal does not supply that independent applicability.",
-      "assessed_on": "2026-10-02",
-      "source_record_refs": [
-        "source_records[0]",
-        "source_records[2]",
-        "source_records[3]"
-      ]
-    },
-    {
-      "requirement_id": "EXTREQ-31E72E1FDDD4CF72",
-      "derived_from_class_ids": [
-        "VIGIL-FC-000038"
-      ],
-      "source_clause_indices": [
-        1
-      ],
-      "applicability_status": "not-applicable",
-      "applicability_basis": "PO.5.3 R2 (Continuous monitoring and analysis tools should generate alerts when detected activity involving an AI model passes a risk threshold or otherwise merits additional investigation.) concerns model development/acquisition/security. Released-service legal research, defensive forensic analysis or hostile use of agent tooling is not an evidenced model-development operation.",
-      "assessed_on": "2026-10-02",
-      "source_record_refs": [
-        "source_records[0]",
-        "source_records[2]",
-        "source_records[3]"
       ]
     },
     {
       "requirement_id": "EXTREQ-33E14A4AB3DA955D",
+      "alignment_result": "boundary",
+      "assessment_basis": "Hugging Face replaced the models for this forensic task. The sources do not establish the wider risk-tolerance criteria or organisational protocols for halting, deactivating, decommissioning or retraining those systems.",
+      "assessed_on": "2026-10-04",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[2]"
+      ],
       "derived_from_class_ids": [
         "VIGIL-FC-000038",
         "VIGIL-FC-000043"
@@ -812,134 +823,77 @@
       "source_clause_indices": [
         0,
         1
-      ],
-      "applicability_status": "insufficient-evidence",
-      "applicability_basis": "NIST-AI-600-1 MG-3.2-009 (Use organizational risk tolerance to evaluate acceptable risks and performance metrics and decommission or retrain pre-trained models that perform outside of defined limits.) is a voluntary organizational/lifecycle action. The the July 2026 defensive forensic refusals establishes no adoption or action-specific programme for testing, metrics, provenance, disclosure, risk tolerance or response. A court finding, package attack or false-positive refusal does not supply that independent applicability.",
-      "assessed_on": "2026-10-02",
-      "source_record_refs": [
-        "source_records[0]",
-        "source_records[2]",
-        "source_records[3]"
       ]
     },
     {
       "requirement_id": "EXTREQ-34693080CB950006",
+      "alignment_result": "boundary",
+      "assessment_basis": "Hugging Face replaced the models for this forensic task. The sources do not establish the wider risk-tolerance criteria or organisational protocols for halting, deactivating, decommissioning or retraining those systems.",
+      "assessed_on": "2026-10-04",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[2]"
+      ],
       "derived_from_class_ids": [
         "VIGIL-FC-000043"
       ],
       "source_clause_indices": [
         0
-      ],
-      "applicability_status": "insufficient-evidence",
-      "applicability_basis": "NIST-AI-600-1 MG-2.4-004 (Establish and regularly review specific criteria that warrants the deactivation of GAI systems in accordance with set risk tolerances and appetites.) is a voluntary organizational/lifecycle action. The the July 2026 defensive forensic refusals establishes no adoption or action-specific programme for testing, metrics, provenance, disclosure, risk tolerance or response. A court finding, package attack or false-positive refusal does not supply that independent applicability.",
-      "assessed_on": "2026-10-02",
-      "source_record_refs": [
-        "source_records[0]",
-        "source_records[2]",
-        "source_records[3]"
-      ]
-    },
-    {
-      "requirement_id": "EXTREQ-5A0391FE4DC885E9",
-      "derived_from_class_ids": [
-        "VIGIL-FC-000043"
-      ],
-      "source_clause_indices": [
-        0
-      ],
-      "applicability_status": "insufficient-evidence",
-      "applicability_basis": "SDOS-RM-01 (Classify each tool invocation by risk at the dispatch boundary before execution and use the current policy state to determine permit, conditional-permit or block disposition.) materially concerns agent runtime governance, but the the July 2026 defensive forensic refusals establishes no SDOS adoption or policy-defined undertaking. Public-information objectives, hostile sub-agents or false-positive refusal do not prove the specified governance control applied.",
-      "assessed_on": "2026-10-02",
-      "source_record_refs": [
-        "source_records[0]",
-        "source_records[2]",
-        "source_records[3]"
       ]
     },
     {
       "requirement_id": "EXTREQ-6DE6265FC3C5F9F4",
+      "alignment_result": "aligned",
+      "assessment_basis": "Anthropic published cyber-use categories and refusal criteria before the incident. It identified incident response and malware reverse engineering as benign uses. This establishes a defined policy; the occurrence shows a separate problem in its execution.",
+      "assessed_on": "2026-10-04",
+      "source_record_refs": [
+        "source_records[3]"
+      ],
       "derived_from_class_ids": [
         "VIGIL-FC-000043"
       ],
       "source_clause_indices": [
         0
-      ],
-      "applicability_status": "insufficient-evidence",
-      "applicability_basis": "NIST-AI-600-1 GV-3.2-003 (Define acceptable use policies for GAI interfaces, modalities, and human-AI configurations (i.e., for chatbots and decision-making tasks), including criteria for the kinds of queries GAI applications should refuse to respond to.) is a voluntary organizational/lifecycle action. The the July 2026 defensive forensic refusals establishes no adoption or action-specific programme for testing, metrics, provenance, disclosure, risk tolerance or response. A court finding, package attack or false-positive refusal does not supply that independent applicability.",
-      "assessed_on": "2026-10-02",
-      "source_record_refs": [
-        "source_records[0]",
-        "source_records[2]",
-        "source_records[3]"
       ]
     },
     {
-      "requirement_id": "EXTREQ-ACDABAB8D69B0222",
-      "derived_from_class_ids": [
-        "VIGIL-FC-000038"
-      ],
-      "source_clause_indices": [
-        1
-      ],
-      "applicability_status": "insufficient-evidence",
-      "applicability_basis": "SDOS-IN-02 (Halt tool registration and operation when unauthorized governance-baseline change is detected, and require explicit re-authorization of the baseline before recovery.) materially concerns agent runtime governance, but the the July 2026 defensive forensic refusals establishes no SDOS adoption or policy-defined undertaking. Public-information objectives, hostile sub-agents or false-positive refusal do not prove the specified governance control applied.",
-      "assessed_on": "2026-10-02",
+      "requirement_id": "EXTREQ-7A5897A2F6C82407",
+      "alignment_result": "not-aligned",
+      "assessment_basis": "The hosted models repeatedly blocked legitimate analysis of an observed intrusion and forced the responder to replace them. They did not function appropriately in this bounded defensive use. The sources do not establish subsequent security harm caused by the refusals.",
+      "assessed_on": "2026-10-04",
       "source_record_refs": [
         "source_records[0]",
         "source_records[2]",
         "source_records[3]"
-      ]
-    },
-    {
-      "requirement_id": "EXTREQ-C25CB2D997BC6FE8",
-      "derived_from_class_ids": [
-        "VIGIL-FC-000038"
       ],
-      "source_clause_indices": [
-        1
-      ],
-      "applicability_status": "insufficient-evidence",
-      "applicability_basis": "SDOS-EN-01 (Route governed outbound operations through a pre-execution policy enforcement point that permits, modifies or blocks the operation against current policy and records the decision.) materially concerns agent runtime governance, but the the July 2026 defensive forensic refusals establishes no SDOS adoption or policy-defined undertaking. Public-information objectives, hostile sub-agents or false-positive refusal do not prove the specified governance control applied.",
-      "assessed_on": "2026-10-02",
-      "source_record_refs": [
-        "source_records[0]",
-        "source_records[2]",
-        "source_records[3]"
-      ]
+      "identification_basis": "Repeated refusals impaired the AI-assisted incident-response workflow."
     },
     {
       "requirement_id": "EXTREQ-C2BC00BBE44778CC",
+      "alignment_result": "boundary",
+      "assessment_basis": "Hugging Face replaced the models for this forensic task. The sources do not establish the wider risk-tolerance criteria or organisational protocols for halting, deactivating, decommissioning or retraining those systems.",
+      "assessed_on": "2026-10-04",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[2]"
+      ],
       "derived_from_class_ids": [
         "VIGIL-FC-000038"
       ],
       "source_clause_indices": [
         1
-      ],
-      "applicability_status": "insufficient-evidence",
-      "applicability_basis": "NIST-AI-600-1 GV-1.7-001 (Protocols are put in place to ensure GAI systems are able to be deactivated when necessary.) is a voluntary organizational/lifecycle action. The the July 2026 defensive forensic refusals establishes no adoption or action-specific programme for testing, metrics, provenance, disclosure, risk tolerance or response. A court finding, package attack or false-positive refusal does not supply that independent applicability.",
-      "assessed_on": "2026-10-02",
-      "source_record_refs": [
-        "source_records[0]",
-        "source_records[2]",
-        "source_records[3]"
       ]
     },
     {
-      "requirement_id": "EXTREQ-DEA2B22466A64818",
-      "derived_from_class_ids": [
-        "VIGIL-FC-000038"
-      ],
-      "source_clause_indices": [
-        1
-      ],
-      "applicability_status": "not-applicable",
-      "applicability_basis": "Article 14(4)(e) is a later-applying Chapter III high-risk duty or a special-category bias-correction provision. The the July 2026 defensive forensic refusals establishes no applicable high-risk/Union duty at occurrence or bias-correction permission/trigger. Political or sensitive-data theft is not bias correction; high-stakes judicial use alone is not an Annex III finding.",
-      "assessed_on": "2026-10-02",
+      "requirement_id": "EXTREQ-F1F3A6472A08E764",
+      "alignment_result": "aligned",
+      "assessment_basis": "Hugging Face stopped using the unsuitable hosted models for its forensic workflow and moved the analysis to a self-hosted model. The affected operator exercised responsibility for disengagement in this defined context.",
+      "assessed_on": "2026-10-04",
       "source_record_refs": [
         "source_records[0]",
-        "source_records[2]",
-        "source_records[3]"
-      ]
+        "source_records[2]"
+      ],
+      "identification_basis": "The affected operator removed unsuitable AI systems from a specific operational context."
     }
   ]
 }
