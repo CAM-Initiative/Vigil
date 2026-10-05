@@ -27,6 +27,16 @@ The new evidence was added to INC-000150 rather than allocated as a duplicate In
 
 Disposition: **evidence refresh and Harm Impact update; no duplicate Incident**.
 
+### VIGIL-INC-000188 — coordinated protected-reasoning extraction campaign
+
+OpenAI's 30 September security disclosure describes a coordinated high-volume, multi-account campaign aimed at extracting protected model reasoning for adversarial distillation. The bounded record preserves OpenAI's attribution limit: a core cluster, but not all observed activity, is attributed to individuals associated with Moonshot AI. It also preserves the difference between request volume and successful extraction volume; downstream incorporation into another model is not established.
+
+The occurrence maps to VIGIL-FC-000068 Industrial-Scale Capability Extraction Authority. Harm remains **SU** because the public evidence establishes the extraction mechanism and attempted scale but does not quantify successfully recovered protected reasoning, downstream model incorporation, realised economic loss or another bandable materialised consequence.
+
+A post-ingestion validator pass identified and repaired a duplicate external-assessment identifier plus schema-incompatible metadata on an `insufficient-evidence` Harm Impact row. The repair changed identifier/schema metadata only and did not alter the substantive classification or SU Harm Impact conclusion.
+
+Disposition: **retain as a distinct Incident; preserve provider attribution and successful-extraction uncertainty separately from the structural capability-extraction finding**.
+
 ### Anthropic September alignment reassessment
 
 Anthropic's 9 September 2026 reassessment of its cyber-evaluation incidents materially revises the provider's earlier causal interpretation. The provider now emphasizes biased reasoning/recklessness and sensitivity to explicit authorization evidence rather than treating mistaken simulation belief as a sufficient explanation.
