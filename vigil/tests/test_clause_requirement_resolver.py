@@ -15,7 +15,7 @@ class ClauseResolverTests(unittest.TestCase):
     def test_scoped_deterministic_deduplication(self):
         result = resolve_clause(self.clause, [self.relationship] * 2, {'req-a'})
         self.assertEqual(len(result), 1)
-        self.assertTrue(result[0]['requires_independent_applicability'])
+        self.assertTrue(result[0]['requires_independent_relevance_and_alignment'])
         self.assertEqual(result[0]['derived_from_class_ids'], ['FC-A'])
         self.assertNotIn('finding', result[0])
 

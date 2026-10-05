@@ -30,17 +30,15 @@ class ExternalRequirementProjectionTests(unittest.TestCase):
         assessment = {
             "requirement_id": "EXTREQ-0123456789ABCDEF",
             "derived_from_class_ids": ["VIGIL-FC-000001"],
-            "applicability_status": "applicable",
-            "applicability_basis": "Territorial and system scope are established.",
-            "finding": "failure-occurrence",
-            "finding_basis": "The occurrence failed the stated requirement.",
+            "alignment_result": "not-aligned",
+            "assessment_basis": "The occurrence failed the independently assessed proposition.",
             "assessed_on": "2026-09-29",
         }
         entry = BUILDER.incident_entry(Path("vigil/records/incidents/VIGIL-INC-000001.json"), self.record(assessment))
         self.assertEqual(entry["external_requirement_assessment_count"], 1)
         self.assertNotIn("external_requirement_assessments", entry)
         self.assertIn(assessment["requirement_id"], entry["search_terms"])
-        self.assertIn("failure-occurrence", entry["search_terms"])
+        self.assertIn("not-aligned", entry["search_terms"])
 
 
 if __name__ == "__main__":

@@ -3,9 +3,12 @@
 from __future__ import annotations
 
 import importlib.util
+import json
 import sys
+import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 TAXONOMY_ROOT = Path(__file__).resolve().parents[1] / "taxonomy"
 sys.path.insert(0, str(TAXONOMY_ROOT))
@@ -206,10 +209,27 @@ class TaxonomyPublicationReferenceTests(unittest.TestCase):
         self.assertIn("VIGIL Observatory · Technical Reference", rendered)
         self.assertIn("0.4.2", rendered)
         self.assertIn("Harm &amp; Severity version", rendered)
-        self.assertIn("1.0.0", rendered)
+        matrix = RENDERER.load_harm_methodology()
+        self.assertIn(f'<div class="cover-meta-value">{matrix["version"]}</div>', rendered)
+        self.assertIn(f'<dt>Harm &amp; Severity version</dt><dd>{matrix["version"]}</dd>', rendered)
         self.assertIn("Status: Beta", rendered)
         self.assertIn("Governance<br>Alignment<br>Taxonomy", rendered)
         self.assertIn("Technical Reference", rendered)
+
+    def test_all_publication_sections_select_highest_numeric_him_version(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            methodology_dir = root / "methodologies"
+            methodology_dir.mkdir()
+            for version in ("1.9.0", "1.10.0", "1.10.2"):
+                (methodology_dir / f"VIGIL.HarmImpactMatrix.v{version}.json").write_text(
+                    json.dumps({"version": version}), encoding="utf-8"
+                )
+            with patch.object(RENDERER.base, "ROOT", root / "taxonomy"):
+                self.assertEqual(RENDERER.load_harm_methodology()["version"], "1.10.2")
+                rendered = RENDERER.base.publication_frontmatter({"standard": {}}, [])
+                self.assertEqual(rendered.count("1.10.2"), 2)
+                self.assertIn("Version 1.10.2", RENDERER.harm_severity_html())
 
 
     def test_distinct_provisions_at_one_url_remain_distinct_citations(self):

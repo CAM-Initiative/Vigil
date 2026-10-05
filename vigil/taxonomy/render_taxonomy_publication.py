@@ -13,7 +13,6 @@ import render_taxonomy as base
 
 _original_combined_html = base.combined_html
 REFERENCE_REGISTRY = base.ROOT.parent / "references" / "VIGIL.ObservatoryReferenceRegistry.json"
-HARM_METHODOLOGIES = base.ROOT.parent / "methodologies"
 HARM_PUBLICATION_TITLE = "VIGIL Harm & Severity Methodology"
 
 
@@ -31,18 +30,8 @@ def _reference_key(reference: dict[str, Any]) -> str:
     )
 
 
-def _version_key(value: object) -> tuple[int, int, int]:
-    match = re.match(r"^(\d+)\.(\d+)\.(\d+)", _text(value))
-    return tuple(int(part) for part in match.groups()) if match else (0, 0, 0)
-
-
 def load_harm_methodology() -> dict[str, Any]:
-    candidates: list[dict[str, Any]] = []
-    for path in sorted(HARM_METHODOLOGIES.glob("VIGIL.HarmImpactMatrix.v*.json")):
-        candidates.append(json.loads(path.read_text(encoding="utf-8")))
-    if not candidates:
-        raise FileNotFoundError("No canonical VIGIL-HIM methodology document found")
-    return max(candidates, key=lambda item: _version_key(item.get("version")))
+    return base.harm_severity_methodology()
 
 
 def load_reference_registry() -> dict[str, dict[str, Any]]:
