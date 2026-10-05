@@ -25,6 +25,20 @@ Historical architecture remains recoverable through Git history and `stabilizati
 
 Before opening a pull request from `agent/incident-ecosystem-ingestion`, synchronize it with the current `main` so the PR is based on the current canonical repository state. A deliberate pre-PR rebase of this dedicated ingestion branch onto current `main` is permitted for that synchronization step when no concurrent ingestion work is in flight and the branch is not already under review. Because rebasing rewrites branch history, use it only at this bounded pre-PR boundary and update the remote with lease-protected force semantics rather than an unconditional force push. Do not use rebasing, resetting or force-pushing as routine cleanup while the ingestion branch is accumulating work.
 
+
+## High-signal ecosystem ingestion sources
+
+Scheduled or manual ecosystem ingestion SHOULD explicitly check high-signal first-party disclosure surfaces that publish bounded model-behaviour, evaluation, containment or agent incidents. At minimum, the current watch set includes:
+
+- OpenAI Alignment misalignment reports and notices, including `https://alignment.openai.com/misalignment-reports/`;
+- originating-provider incident, safety, alignment and evaluation disclosures where concrete occurrences are described;
+- AI Security Institute or comparable public safety-institute incident reports; and
+- provider research updates that materially revise the causal interpretation, evidence or control analysis of an Incident already in VIGIL.
+
+The watch set is an intake surface, not an admission list. Appearance in a monitored source does not create a VIGIL Incident, and a provider's choice to label an occurrence a demonstration, research result, misalignment report, safety finding or non-incident does not determine VIGIL admission or classification. Apply the ordinary bounded-occurrence, duplicate, evidence, Harm Impact and taxonomy workflow.
+
+When a monitored source supplies materially new evidence about an existing Incident, prefer an evidence refresh and append-only assessment update over allocating a duplicate Incident. When one publication contains multiple independently bounded trajectories, admit separate Incidents only where the affected system, action chain or governance occurrence is sufficiently distinct to support independent adjudication.
+
 ## Historical provenance
 
 Legacy record classes and migration artefacts remain recoverable through Git history. Active Incident records contain only information required by the current VIGIL data model and must not carry retired payloads, migration-source metadata or retired-record links.
