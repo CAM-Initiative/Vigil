@@ -50,6 +50,26 @@ A proposal-stage class, `VIGIL-FC-000084 Instruction-State Propagation Authority
 
 This mechanism is functionally related to continuity: replication manufactures a new persistence boundary. The proposal recommends Authority Boundary Integrity as the initial family placement because propagation itself requires authority, while explicitly leaving family placement open for maintainer review rather than silently broadening Continuity-State Integrity.
 
+## External-reach containment cluster
+
+A separate concurrent cross-case review recovered another recurring mechanism that current classes do not represent cleanly: the **environment-side containment boundary** between a bounded training/evaluation/research task and live external systems.
+
+A proposal-stage class, `VIGIL-FC-000085 External-Reach Containment Integrity`, is staged at `vigil/taxonomy/proposals/2026-10-05-external-reach-containment-draft.json`.
+
+Direct support spans VIGIL-INC-000060, 000084, 000085, 000086, 000112 and 000170. Across these cases, live external reach was either unintentionally available through an evaluation-environment defect or deliberately exposed under permissive testing conditions without containment sufficient to keep out-of-scope real-world effects non-operative.
+
+The proposed boundary is intentionally separate from:
+
+- FC-000002 Capability-Authority Separation, which requires actor-side inference from reachability to permission;
+- FC-000023 Monitoring Coverage Integrity, which concerns observation rather than containment;
+- FC-000038 Required Control Activation, which requires a defined control and valid trigger;
+- FC-000041 Required Governance Routing, which requires bypass of a required route; and
+- FC-000083 Control Effectiveness Integrity, which requires a validly activated safeguard whose protective effect is insufficient.
+
+The draft recommends maintainer review of a possible **Execution Containment Integrity** family rather than silently broadening an existing control, monitoring or authority family. OpenAI's 28 September safety-case proposal is preserved in the proposal as support literature because it independently treats containment as a distinct safeguard layer alongside alignment training and monitoring.
+
+Disposition: **genuine multi-case taxonomy proposal; no canonical promotion in this ingestion pass**.
+
 ## Unmapped-source-clause review
 
 The current corpus contains many `resolved-no-mapping` clauses. Most reviewed examples are not taxonomy omissions: they record response actions, recovery facts, consequence boundaries, attribution uncertainty, ordinary service state, or mechanisms already represented elsewhere in the same Incident.
