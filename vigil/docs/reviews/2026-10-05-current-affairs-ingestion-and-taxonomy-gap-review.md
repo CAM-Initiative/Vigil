@@ -76,7 +76,7 @@ Disposition: **genuine multi-case taxonomy proposal; no canonical promotion in t
 
 The current corpus contains many `resolved-no-mapping` clauses. Most reviewed examples are not taxonomy omissions: they record response actions, recovery facts, consequence boundaries, attribution uncertainty, ordinary service state, or mechanisms already represented elsewhere in the same Incident.
 
-One existing explicit taxonomy gap remains in VIGIL-INC-000064: the regulator found that the distinct @Grok public-posting pathway lacked a pathway-specific privacy impact assessment. FC-000016 and FC-000041 do not faithfully represent that omission under their current recognition conditions. This review did **not** propose a new assessment-governance class because the present cross-Incident evidence base did not establish the same missing mechanism across multiple independently bounded case files.
+A separate pre-existing explicit taxonomy gap remains in VIGIL-INC-000064: the regulator found that the distinct @Grok public-posting pathway lacked a pathway-specific privacy impact assessment. FC-000016 and FC-000041 do not faithfully represent that omission under their current recognition conditions. This review did **not** propose a new assessment-governance class because the present cross-Incident evidence base did not establish the same missing mechanism across multiple independently bounded case files.
 
 Disposition rule applied: **do not create a class merely because a clause is unmapped; require a recurring, independently evidenced governance mechanism that current class definitions cannot represent without stretching**.
 
