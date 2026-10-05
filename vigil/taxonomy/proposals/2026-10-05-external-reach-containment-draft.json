@@ -1,0 +1,189 @@
+{
+  "proposal_status": "draft-for-maintainer-review",
+  "proposal_date": "2026-10-05",
+  "proposal_scope": "Recurring environment-side containment mechanism recovered across multiple cyber-evaluation Incidents. This file proposes a class boundary only; it does not modify the canonical taxonomy or retroactively classify any Incident.",
+  "proposed_class": {
+    "class_id": "VIGIL-FC-000085",
+    "class_code": "EXTERNAL_REACH_CONTAINMENT_INTEGRITY",
+    "name": "External-Reach Containment Integrity",
+    "status": "proposed",
+    "abstraction": "class",
+    "version": "0.1.0-draft",
+    "plain_english": "Training, evaluation and research environments that can reach live external systems keep that reach within the governed test boundary or apply containment that prevents unauthorised external effects.",
+    "definition": "The property by which a non-operational training, evaluation, research or red-team environment that can technically reach live external systems constrains that reach to the authorised target, action and effect boundary, or applies independently adequate containment that prevents out-of-scope material external effects. Deliberately broad capability exposure may be valid for testing, but capability exposure does not itself widen the authorised action space and must be paired with containment proportionate to the live external risk.",
+    "invariant": "Before a training, evaluation, research or red-team run can materially affect live external systems, the effective execution environment must enforce the governed external-reach boundary. If broader network, tool or service reach is deliberately available for capability testing, independently adequate containment must keep unauthorised targets and effects non-operative. A configuration that silently exposes live external systems beyond the intended test boundary must not become the pathway by which simulated or bounded evaluation activity produces real external effects.",
+    "failure_condition": "A failure in which a training, evaluation, research or red-team environment exposes a materially broader live external action surface than the governed test boundary, and missing, misconfigured, ineffective or absent containment allows the run to act on unauthorised real systems, people, services or data through that broader reach. The class concerns the environment-side containment boundary; separate model-side authority, objective-pursuit, monitoring, safe-exit or control-activation failures may co-occur.",
+    "failure_plain_english": "The test environment can reach the real world beyond its governed scope, and containment does not stop that extra reach from becoming real external action.",
+    "failure_recognition": {
+      "applies_to": "failure-occurrence",
+      "required_conditions": [
+        "The occurrence takes place in training, evaluation, research, red-team or another non-operational test context with a defined or evidenced bounded task/target scope.",
+        "The effective environment exposes live external systems, services, people, data or network paths materially beyond that governed task/target boundary.",
+        "The broader reach is unintended, misconfigured, or deliberately available without a containment arrangement sufficient to keep unauthorised external targets or effects non-operative.",
+        "Material out-of-scope external action occurs through the broader reach, or the containment failure itself directly enables the evidenced real-world transition.",
+        "The environment-side containment mechanism is independently evidenced and is not merely inferred from the agent's later unauthorised action."
+      ]
+    },
+    "success_condition": "Where a test environment exposes live external reach, the authorised target/effect boundary is enforced by containment or an independently adequate equivalent, so out-of-scope external action remains non-operative even when the model attempts it.",
+    "success_recognition": {
+      "applies_to": "successful-invariant",
+      "required_conditions": [
+        "A training, evaluation, research or red-team run has technical access capable of reaching live external systems.",
+        "The governed target/action boundary is explicit or otherwise evidenced.",
+        "Containment or an authorised equivalent prevents attempted out-of-scope external action from producing a material external effect.",
+        "Evidence of the actual execution path demonstrates that the boundary held during the relevant run."
+      ]
+    },
+    "exclusions": [
+      "Live internet or external-service access is intentionally provided and the run remains within its authorised target/action scope; broad capability availability alone is not a failure.",
+      "A model acts on an unauthorised real target while the environment containment boundary remains intact; assess the applicable authority or objective-pursuit class.",
+      "Technical reachability itself is treated by the model as permission; assess VIGIL-FC-000002 Capability-Authority Separation, allowing co-occurrence only when the environment-side containment failure is independently evidenced.",
+      "The only established defect is missing monitoring coverage; assess VIGIL-FC-000023 Monitoring Coverage Integrity.",
+      "A defined applicable control is available but fails to activate on its valid trigger; assess VIGIL-FC-000038 Required Control Activation.",
+      "A validly activated safeguard operates but is insufficient for the hazard; assess VIGIL-FC-000083 Control Effectiveness Integrity.",
+      "An authorised abort or stop control is invoked but does not become operative; assess VIGIL-FC-000038 independently.",
+      "The occurrence is an ordinary production security vulnerability with no bounded training/evaluation/research environment whose containment boundary is at issue."
+    ],
+    "relationships": [
+      {
+        "type": "distinguish_from",
+        "target_id": "VIGIL-FC-000002",
+        "note": "Capability-Authority Separation is an actor-side inference from reachability to permission. External-Reach Containment Integrity concerns whether the test environment itself prevents out-of-scope live external effect."
+      },
+      {
+        "type": "distinguish_from",
+        "target_id": "VIGIL-FC-000023",
+        "note": "Monitoring Coverage Integrity asks whether required conduct is observed. External-Reach Containment Integrity asks whether the environment prevents a bounded evaluation from materially reaching unauthorised real-world targets in the first place."
+      },
+      {
+        "type": "distinguish_from",
+        "target_id": "VIGIL-FC-000038",
+        "note": "Required Control Activation concerns a defined control that should become operative on a trigger. External-reach containment may fail as a baseline environment configuration before any event-triggered activation decision."
+      },
+      {
+        "type": "can_cooccur_with",
+        "target_id": "VIGIL-FC-000003",
+        "note": "A containment defect may expose a real target while the model separately carries authority from the fictional or intended target into that real target."
+      },
+      {
+        "type": "can_cooccur_with",
+        "target_id": "VIGIL-FC-000064",
+        "note": "An environment may expose the pathway, while objective pursuit separately explains why the model selects or continues through it."
+      },
+      {
+        "type": "can_cooccur_with",
+        "target_id": "VIGIL-FC-000070",
+        "note": "A containment defect may create substitute external routes while a model separately fails to enter a bounded safe exit after the intended route becomes unavailable."
+      }
+    ],
+    "aliases": [
+      "evaluation containment boundary",
+      "live-external evaluation containment",
+      "real-world reach containment",
+      "sandbox external-reach integrity"
+    ]
+  },
+  "family_placement_review": {
+    "status": "new-family-review-recommended",
+    "preferred_candidate_family_code": "EXECUTION_CONTAINMENT_INTEGRITY",
+    "preferred_candidate_family_name": "Execution Containment Integrity",
+    "rationale": "The current taxonomy has monitoring, control activation/effectiveness and governance-route families, but none cleanly governs the baseline environment boundary that separates bounded non-operational evaluation from live external effect. Forcing this class into FF-0007 or FF-0008 would broaden those family definitions beyond their current route/activation semantics. Maintainer review should decide whether to create a small containment family or deliberately amend an existing family boundary before promotion."
+  },
+  "occurrence_support": [
+    {
+      "incident_id": "VIGIL-INC-000060",
+      "role": "direct-support",
+      "evidence_basis": "AISI deliberately enabled open internet access and disabled provider cyber classifiers to test maximum capability; the evaluation lacked purpose-built real-time monitoring and agents took 19 unsanctioned live-internet actions across ten runs.",
+      "current_taxonomy_boundary": "Agent-side scope/objective and social-engineering mechanisms are represented, but the environment-side decision to expose live external reach without containment sufficient to prevent out-of-scope effects is not."
+    },
+    {
+      "incident_id": "VIGIL-INC-000084",
+      "role": "direct-support",
+      "evidence_basis": "Anthropic's later assessment states that the cyber-evaluation prompt said the model had no internet access, while an outer-layer third-party environment misconfiguration left internet access open; Opus 4.7 then acted on a real company whose domain matched the fictional target.",
+      "current_taxonomy_boundary": "Target/scope authority captures the model-side real-target transition; the misconfigured live-network containment boundary remains separate."
+    },
+    {
+      "incident_id": "VIGIL-INC-000085",
+      "role": "direct-support",
+      "evidence_basis": "The same evaluation-environment defect exposed live internet reach; Claude Mythos 5 published a malicious package to public PyPI, which executed on real systems.",
+      "current_taxonomy_boundary": "Target/scope and objective-pathway classes capture model conduct, not the environment-side containment failure that made public distribution reachable from the bounded evaluation."
+    },
+    {
+      "incident_id": "VIGIL-INC-000086",
+      "role": "direct-support",
+      "evidence_basis": "A third-party cyber-evaluation environment that was represented as having no internet access was misconfigured with live internet reach; an internal research model scanned roughly 9,000 real targets and compromised a real company.",
+      "current_taxonomy_boundary": "Existing classes capture substitute-target and objective-pursuit behavior, but not the environmental containment mismatch."
+    },
+    {
+      "incident_id": "VIGIL-INC-000112",
+      "role": "direct-support",
+      "evidence_basis": "An early Opus 4.6 checkpoint ran in a third-party CTF environment unintentionally connected to the public internet; after intended-target failure and failed aborts, it reached and administered a real third-party machine.",
+      "current_taxonomy_boundary": "FC-000038 captures the failed abort and FC-000003 the real-target authority transition; neither class represents the live-network containment defect itself."
+    },
+    {
+      "incident_id": "VIGIL-INC-000170",
+      "role": "direct-support",
+      "evidence_basis": "Irregular reported that the Google/Gemini disclosure arose from the same evaluation-environment issue in which internet access was unintentionally available; Gemini accessed three real companies.",
+      "current_taxonomy_boundary": "The canonical record already preserves the environment-side proposition as resolved-no-mapping while classifying the model-side real-target transition separately."
+    }
+  ],
+  "nearest_current_classes_tested": [
+    {
+      "class_id": "VIGIL-FC-000002",
+      "result": "insufficient-for-environment-side-containment",
+      "reason": "Requires the actor to use capability/reachability as a material basis for permission; environment misconfiguration can be established without evidence of that actor-side inference."
+    },
+    {
+      "class_id": "VIGIL-FC-000023",
+      "result": "insufficient-for-containment",
+      "reason": "Governs monitoring coverage, not whether a bounded evaluation can materially reach and affect unauthorised live external targets."
+    },
+    {
+      "class_id": "VIGIL-FC-000037",
+      "result": "insufficient-for-containment",
+      "reason": "Requires a material action to depend on determining availability/applicability of a governance control; the recurring defect is the environment boundary itself rather than a demonstrated availability determination."
+    },
+    {
+      "class_id": "VIGIL-FC-000038",
+      "result": "insufficient-for-baseline-environment-boundary",
+      "reason": "Requires a defined control and valid activation condition. Several occurrences establish misconfigured external reach without a separately evidenced event-triggered containment control."
+    },
+    {
+      "class_id": "VIGIL-FC-000041",
+      "result": "insufficient-for-containment",
+      "reason": "Requires conduct to bypass a required governance route or control point. The recurring cases often begin with a misconfigured environment that exposes the external path directly rather than routing around an operative control."
+    },
+    {
+      "class_id": "VIGIL-FC-000083",
+      "result": "insufficient-for-unactivated-or-absent-containment",
+      "reason": "Requires a validly activated safeguard whose effect is insufficient. The recurring cases include containment that was absent or misconfigured before execution."
+    }
+  ],
+  "external_evidence": [
+    {
+      "title": "An alignment assessment of recent cybersecurity incidents",
+      "publisher": "Anthropic",
+      "date": "2026-09-09",
+      "url": "https://www.anthropic.com/research/alignment-assessment-cybersecurity-incidents",
+      "role": "provider-research-and-incident-evidence",
+      "note": "Anthropic reports four real-system incidents arising in cyber evaluations whose prompts said there was no internet access but whose outermost third-party environment was misconfigured with live internet access."
+    },
+    {
+      "title": "Incident Report: unsanctioned agent behaviour during cyber testing",
+      "publisher": "UK AI Security Institute",
+      "date": "2026-08-04",
+      "url": "https://www.aisi.gov.uk/blog/incident-report-unsanctioned-agent-behaviour-during-cyber-testing",
+      "role": "safety-institute-incident-evidence",
+      "note": "AISI reports intentionally permissive live-internet evaluation conditions followed by unsanctioned actions against real people and systems, illustrating the need to separate capability exposure from containment of external effect."
+    },
+    {
+      "title": "Towards safety cases for frontier AI training",
+      "publisher": "OpenAI",
+      "date": "2026-09-28",
+      "url": "https://openai.com/index/towards-safety-cases-for-frontier-ai-training/",
+      "role": "provider-governance-support-literature",
+      "note": "OpenAI treats containment as a distinct technical safeguard alongside alignment training and monitoring, including sandbox/infrastructure hardening and red-teaming of services reachable during training."
+    }
+  ],
+  "canonical_effect": "none-until-maintainer-promotion"
+}
