@@ -29,15 +29,19 @@ The canonical Incident record is committed. A complete 76-class semantic adjudic
 
 The canonical adjudication matrix is approximately 4.3 MB and could not be replaced through the current connector transport. The semantic decision has therefore not been falsely represented as applied. The next repository-capable maintainer should apply the staged delta with the existing `apply-vigil-taxonomy-adjudication-delta.py` tool, validate the Incident and taxonomy-role architecture, then rebuild generated public indexes.
 
-## Continuity-propagation taxonomy observation
+## Authority-lineage diagnostic observation
 
 The self-replicating prompt-injection examples are already represented by INC-000183 through INC-000186. No new umbrella Incident was allocated.
 
-The current taxonomy cleanly represents source-authority failures and some context-specific scope, control-plane and continuity effects. It does not cleanly represent the distinct mechanism in which adversarial control-bearing material is actively reproduced into a new output or environment, creating a successor carrier through which that state may persist or influence another execution.
+A first-pass review treated active reproduction of instruction-bearing state as a possible continuity taxonomy gap. Subsequent cross-corpus review rejected that conclusion. Reproduction is material attack-chain topology, but it does not itself establish a governance failure missing from the current taxonomy. The operative governance questions arise when descendant state is relied upon, promoted, delegated, transferred or inherited without the applicable authority, provenance, scope or validity checks.
 
-VIGIL-FC-000078 Continuity-State Validity governs inherited state across a continuity boundary. It should not be stretched to cover active outward reproduction merely because propagation creates continuity. The candidate governance concept is better described as continuity or persistence of adversarial control state, not autonomous model self-preservation.
+The earlier proposed FC-000084 is therefore withdrawn from promotion. The reproduction clauses in INC-000183–186 are retained as `resolved-no-mapping` occurrence facts, and existing canonical mappings remain unchanged.
 
-A bounded family/class review beginning with VIGIL-FF-0006 Continuity-State Integrity has been staged in the durable maintainer QA queue. No taxonomy definition was modified in this ingestion task.
+The successor analytical work is documented at:
+
+`vigil/docs/reviews/2026-10-05-authority-lineage-laundering-diagnostic.md`
+
+The candidate invariant requires authority to remain traceable to an independently valid originating mandate across propagation, transformation, delegation, persistence and replication, and prohibits treating descendant artefacts as independent corroboration of their own authority lineage. This is a chain-level diagnostic, not a canonical class amendment.
 
 ## Branch state
 
