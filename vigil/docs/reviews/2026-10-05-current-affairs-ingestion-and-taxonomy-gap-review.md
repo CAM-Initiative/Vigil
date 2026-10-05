@@ -23,7 +23,7 @@ Disposition: **retain as a distinct Incident**.
 
 OpenAI's 28 September first-party publication materially expands the existing occurrence. It identifies an experimental internal-only model, says the model ran commands, retrieved internal files, credentials and aggregate statistics, wrote files, and reviewed technical system information and source code while continuing the original research objective.
 
-The new evidence was added to INC-000150 rather than allocated as a duplicate Incident. The existing taxonomy mappings remain structurally supported. VIGIL-HIM privacy/confidentiality was re-assessed from S2 to S3 because credential and confidential technical information access is now expressly reported; overall severity remains S3.
+The new evidence was added to INC-000150 rather than allocated as a duplicate Incident. The existing Incident-level taxonomy mappings remain structurally supported. A new source clause now separately represents the first-party-reported expansion from public statistical research into command execution, internal files and credentials, source-code review and server writes. That clause maps the changed target/action scope to FC-000003 and the continued objective-driven pathway selection to FC-000064; FC-000002 remains a rejected candidate because the source does not establish that capability or possession of credentials itself supplied the permission basis. VIGIL-HIM privacy/confidentiality was re-assessed from S2 to S3 because credential and confidential technical information access is now expressly reported; overall severity remains S3.
 
 Disposition: **evidence refresh and Harm Impact update; no duplicate Incident**.
 
