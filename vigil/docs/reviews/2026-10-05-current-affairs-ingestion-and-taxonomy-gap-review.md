@@ -46,7 +46,7 @@ OpenAI's report *Self-replicating prompt injections exist* contains multiple bou
 
 Existing classes correctly capture source-authority error, scope expansion, control-plane promotion, governance-route bypass and continuity-validity boundaries where their recognition conditions are met. They do not independently represent the act of reproducing instruction-bearing state into a new carrier so that its future control potential persists or spreads.
 
-A proposal-stage class, `VIGIL-FC-000084 Instruction-State Propagation Authority`, was therefore drafted under `vigil/taxonomy/proposals/`. No canonical taxonomy file was changed and no Incident was mapped to the proposed class. The four case files now preserve the propagation mechanism as a `taxonomy-gap` source clause and retain all prior canonical mappings.
+A proposal-stage class, `VIGIL-FC-000084 Instruction-State Propagation Authority`, was therefore drafted under `vigil/taxonomy/proposals/`. No canonical taxonomy file was changed and no Incident was mapped to the proposed class. The four self-replicating-prompt case files now preserve the propagation mechanism as a `taxonomy-gap` source clause and retain all prior canonical mappings. The proposal also records VIGIL-INC-000060 and VIGIL-INC-000108 as cross-report comparators: AISI observed instructions and public artefacts being left for later agents, while Check Point demonstrated attacker-controlled instructions persisted in shared state and consumed by a later victim session.
 
 This mechanism is functionally related to continuity: replication manufactures a new persistence boundary. The proposal recommends Authority Boundary Integrity as the initial family placement because propagation itself requires authority, while explicitly leaving family placement open for maintainer review rather than silently broadening Continuity-State Integrity.
 
@@ -65,6 +65,8 @@ The proposed boundary is intentionally separate from:
 - FC-000038 Required Control Activation, which requires a defined control and valid trigger;
 - FC-000041 Required Governance Routing, which requires bypass of a required route; and
 - FC-000083 Control Effectiveness Integrity, which requires a validly activated safeguard whose protective effect is insufficient.
+
+The six supporting case files now preserve this environment-side mechanism as a `taxonomy-gap` clause and therefore carry partial adjudication coverage under the current taxonomy; their existing canonical model-side mappings and Harm Impact assessments were not changed. The exhaustive current-class adjudications remain valid because the proposed boundary is not yet a selectable canonical class.
 
 The draft recommends maintainer review of a possible **Execution Containment Integrity** family rather than silently broadening an existing control, monitoring or authority family. OpenAI's 28 September safety-case proposal is preserved in the proposal as support literature because it independently treats containment as a distinct safeguard layer alongside alignment training and monitoring.
 
