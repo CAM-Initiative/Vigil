@@ -54,11 +54,23 @@ OpenAI's report *Self-replicating prompt injections exist* contains multiple bou
 - VIGIL-INC-000185 — fake compaction note persisted into a local policy file and then used in build execution;
 - VIGIL-INC-000186 — original injected Slack status text reposted in a new simulated message.
 
-Existing classes correctly capture source-authority error, scope expansion, control-plane promotion, governance-route bypass and continuity-validity boundaries where their recognition conditions are met. They do not independently represent the act of reproducing instruction-bearing state into a new carrier so that its future control potential persists or spreads.
+The first-pass review treated the reproduction step as a possible missing Fidelity Class and staged proposed `VIGIL-FC-000084 Continuity-State Propagation Integrity`. Maintainer challenge and a second cross-corpus decomposition changed that conclusion.
 
-A proposal-stage class, `VIGIL-FC-000084 Continuity-State Propagation Integrity`, was therefore drafted under `vigil/taxonomy/proposals/`. No canonical taxonomy file was changed and no Incident was mapped to the proposed class. The four self-replicating-prompt case files now preserve the propagation mechanism as a `taxonomy-gap` source clause and retain all prior canonical mappings. The proposal also records VIGIL-INC-000060 and VIGIL-INC-000108 as cross-report comparators: AISI observed instructions and public artefacts being left for later agents, while Check Point demonstrated attacker-controlled instructions persisted in shared state and consumed by a later victim session.
+The reproduction act is materially important **attack-chain topology**, but the reviewed evidence does not establish a residual governance failure that remains after the existing canonical boundaries are applied. The operative failures arise when a source or descendant artefact is treated as authority, scope is transposed, material is promoted into control state, delegated authority is presumed transitive, cross-context lineage is lost, or inherited state is relied upon without current validation. Those boundaries are already represented by FC-000001, FC-000003, FC-000005, FC-000006, FC-000009, FC-000012 and FC-000078 where their recognition conditions are met.
 
-The proposal now recommends **Continuity-State Integrity (FF-0006)** as the family placement because the independently missing property is persistence and continuation of execution-shaping state through replication. Authority validation remains part of the proposed invariant, but generic action/target/scope authority transposition is already represented by FC-000003. Promotion would therefore require a deliberate bounded amendment to the FF-0006 family scope rather than stretching FC-000078. The draft explicitly distinguishes state-level continuity by replication from autonomous model self-preservation or a model-generated objective to survive.
+The four reproduction-only source clauses in INC-000183–186 have therefore been changed from `taxonomy-gap` to `resolved-no-mapping`. Existing canonical mappings are unchanged and adjudication coverage returns to complete.
+
+The more useful recurring structure is now documented as the non-canonical **authority-lineage laundering and recursive legitimacy diagnostic** at `vigil/docs/reviews/2026-10-05-authority-lineage-laundering-diagnostic.md`.
+
+Its candidate invariant is:
+
+> **Authority must remain traceable to an independently valid originating mandate across propagation, transformation, delegation, persistence and replication; descendant artefacts must not acquire authority merely from system-mediated descent and must not be treated as independent corroboration of their own authority lineage.**
+
+The diagnostic introduces authority lineage, authority laundering, laundering depth, propagation breadth, revalidation gaps, provenance retention, orphaned authority, endogenous corroboration, convergence and authority amplification as graph-level descriptors. These are not canonical Fidelity Classes or severity measures.
+
+Cross-case testing includes INC-000108 (shared state consumed by a later victim session), INC-000159 (public issue → shared cache → privileged release workflow), INC-000060 (instructions/artefacts left for later agents), and the Hugging Face authority-chain review. The OpenAI worm examples themselves establish bounded reproduction steps but **do not** establish an uncontrolled multi-generation branching graph, descendant convergence or endogenous corroboration outside the published simulations; those remain diagnostic dimensions rather than occurrence findings.
+
+Disposition: **withdraw FC-000084 from promotion; retain propagation as chain evidence; continue authority-lineage analysis as a cross-Incident diagnostic using existing canonical classes.**
 
 ## External-reach containment cluster
 
