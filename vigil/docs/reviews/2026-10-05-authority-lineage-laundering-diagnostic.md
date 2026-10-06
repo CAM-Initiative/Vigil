@@ -3,6 +3,8 @@
 Status: candidate cross-Incident diagnostic; not a canonical Fidelity Class  
 Working branch: `agent/incident-ecosystem-ingestion`
 
+> **6 October 2026 refinement:** This review's rejection applies to the former **FC-000084 Continuity-State Propagation Integrity** mechanism. The identifier has since been reinstated on the same working branch for a materially different proposal: **FC-000084 Verification Lineage Assurance Integrity (Verification Laundering)** under FF-0003. Propagation remains non-classifying topology; the revised class governs verification assurance that increases through lineage, inherited verification state or false corroboration without additional independent verification. See `vigil/docs/reviews/2026-10-06-fc-000084-verification-laundering-readjudication.md`.
+
 ## Decision
 
 The cross-corpus review does **not** support promotion of proposed `VIGIL-FC-000084 Continuity-State Propagation Integrity`.
