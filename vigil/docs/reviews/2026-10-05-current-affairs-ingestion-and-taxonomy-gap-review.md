@@ -47,30 +47,38 @@ Disposition: **append external provider assessment; do not replace VIGIL's indep
 
 ## Self-replicating prompt-injection cluster
 
-OpenAI's report *Self-replicating prompt injections exist* contains multiple bounded simulated trajectories already represented on the ingestion branch:
+OpenAI's report *Self-replicating prompt injections exist* contains four bounded simulated trajectories already represented on the ingestion branch as VIGIL-INC-000183 through VIGIL-INC-000186.
 
-- VIGIL-INC-000183 — complete incoming email, including the injected filing rule, copied into the outgoing email;
-- VIGIL-INC-000184 — attacker-controlled warning copied into a new local note while destructive action was executed;
-- VIGIL-INC-000185 — fake compaction note persisted into a local policy file and then used in build execution;
-- VIGIL-INC-000186 — original injected Slack status text reposted in a new simulated message.
+The first review proposed FC-000084 as **Continuity-State Propagation Integrity**. That mechanism was correctly rejected because reproduction alone is attack-chain topology. A later authority-lineage review then identified a different residual mechanism: **verification assurance can be laundered through lineage** when system mediation, inherited approval state, repetition or descendant multiplicity makes a claim appear more verified or independently corroborated than its originating verification basis supports.
 
-The first-pass review treated the reproduction step as a possible missing Fidelity Class and staged proposed `VIGIL-FC-000084 Continuity-State Propagation Integrity`. Maintainer challenge and a second cross-corpus decomposition changed that conclusion.
+FC-000084 is therefore **reinstated with a new mechanism and family placement**:
 
-The reproduction act is materially important **attack-chain topology**, but the reviewed evidence does not establish a residual governance failure that remains after the existing canonical boundaries are applied. The operative failures arise when a source or descendant artefact is treated as authority, scope is transposed, material is promoted into control state, delegated authority is presumed transitive, cross-context lineage is lost, or inherited state is relied upon without current validation. Those boundaries are already represented by FC-000001, FC-000003, FC-000005, FC-000006, FC-000009, FC-000012 and FC-000078 where their recognition conditions are met.
+- **VIGIL-FC-000084 — Verification Lineage Assurance Integrity**
+- plain-language alias: **Verification Laundering**
+- proposed family: **VIGIL-FF-0003 Verification & Completion Integrity**
+- proposal: `vigil/taxonomy/proposals/2026-10-06-verification-lineage-assurance-integrity-draft.json`
 
-The four reproduction-only source clauses in INC-000183–186 have therefore been changed from `taxonomy-gap` to `resolved-no-mapping`. Existing canonical mappings are unchanged and adjudication coverage returns to complete.
+The governing candidate invariant is:
 
-The more useful recurring structure is now documented as the non-canonical **authority-lineage laundering and recursive legitimacy diagnostic** at `vigil/docs/reviews/2026-10-05-authority-lineage-laundering-diagnostic.md`.
+> **Verification evidence and verification state must not acquire greater assurance merely through transmission, transformation, repetition, aggregation, persistence or mediation by trusted systems. Downstream assurance must remain bounded to the independently established verification lineage. Descendants sharing a common verification origin must not be treated as independent corroboration, and inherited claims of prior approval, checking or validation must be re-established before consequential reliance.**
 
-Its candidate invariant is:
+The proposal contains two named non-selectable manifestations:
 
-> **Authority must remain traceable to an independently valid originating mandate across propagation, transformation, delegation, persistence and replication; descendant artefacts must not acquire authority merely from system-mediated descent and must not be treated as independent corroboration of their own authority lineage.**
+- **Recursive Descendant Corroboration** — the worm-like case in which common-origin descendants are mistaken for independent verification; and
+- **Inherited Verification-State Laundering** — a successor state represents checking or approval as already completed and downstream execution relies on that inherited status without re-establishing the verification basis.
 
-The diagnostic introduces authority lineage, authority laundering, laundering depth, propagation breadth, revalidation gaps, provenance retention, orphaned authority, endogenous corroboration, convergence and authority amplification as graph-level descriptors. These are not canonical Fidelity Classes or severity measures.
+The bounded worm cases were re-adjudicated:
 
-Cross-case testing includes INC-000108 (shared state consumed by a later victim session), INC-000159 (public issue → shared cache → privileged release workflow), INC-000060 (instructions/artefacts left for later agents), and the Hugging Face authority-chain review. The OpenAI worm examples themselves establish bounded reproduction steps but **do not** establish an uncontrolled multi-generation branching graph, descendant convergence or endogenous corroboration outside the published simulations; those remain diagnostic dimensions rather than occurrence findings.
+- **INC-183:** FC-000084 not established. Reproduction into an outgoing email is shown, but no downstream assurance increase or false corroboration is evidenced.
+- **INC-184:** FC-000084 not established. The forged warning is copied into a note, but later reliance on the note as verified state is not shown.
+- **INC-185:** direct support. The fake compaction note claimed that removal of a security scan had already been approved, was treated as expected inherited state despite suspicion, was persisted into local policy and supported consequential action. Its second clause is restored to `taxonomy-gap`.
+- **INC-186:** direct support. One untrusted Slack lineage gained apparent task/verification legitimacy through linked status, ledger and action-message artefacts before action and reproduction. Its second clause is restored to `taxonomy-gap`. The published trace establishes a linked chain, not a fully branching multi-generation graph.
 
-Disposition: **withdraw FC-000084 from promotion; retain propagation as chain evidence; continue authority-lineage analysis as a cross-Incident diagnostic using existing canonical classes.**
+Cross-domain support also exists in **INC-005** (facial-recognition-derived identity evidence represented downstream as coming from a credible source, increasing apparent verification assurance) and **INC-058** (a synthetic joke image acquiring official evidentiary weight through police handoff). These comparators show that the mechanism is not prompt-injection-specific.
+
+Existing canonical mappings and Harm Impact findings remain unchanged. FC-000084 is proposal-stage rather than selectable canonical taxonomy in this tranche because canonical promotion requires adding the class to FF-0003 and semantically extending the exhaustive adjudication matrix across the full Incident corpus.
+
+Disposition: **reinstate FC-000084 as Verification Lineage Assurance Integrity; reject propagation alone as the class mechanism; preserve INC-183/184 as negative controls and INC-185/186 as direct proposal support.**
 
 ## External-reach containment cluster
 
