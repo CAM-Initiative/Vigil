@@ -29,19 +29,25 @@ The canonical Incident record is committed. A complete 76-class semantic adjudic
 
 The canonical adjudication matrix is approximately 4.3 MB and could not be replaced through the current connector transport. The semantic decision has therefore not been falsely represented as applied. The next repository-capable maintainer should apply the staged delta with the existing `apply-vigil-taxonomy-adjudication-delta.py` tool, validate the Incident and taxonomy-role architecture, then rebuild generated public indexes.
 
-## Authority-lineage diagnostic observation
+## Authority-lineage and verification-laundering observation
 
-The self-replicating prompt-injection examples are already represented by INC-000183 through INC-000186. No new umbrella Incident was allocated.
+The self-replicating prompt-injection examples are represented by INC-000183 through INC-000186. No new umbrella Incident was allocated.
 
-A first-pass review treated active reproduction of instruction-bearing state as a possible continuity taxonomy gap. Subsequent cross-corpus review rejected that conclusion. Reproduction is material attack-chain topology, but it does not itself establish a governance failure missing from the current taxonomy. The operative governance questions arise when descendant state is relied upon, promoted, delegated, transferred or inherited without the applicable authority, provenance, scope or validity checks.
+The earlier continuity-propagation proposal remains rejected: reproduction alone is attack-chain topology rather than an independent governance failure. Subsequent review identified a different recurring mechanism and reinstated the FC-000084 identifier as **Verification Lineage Assurance Integrity** under proposed family FF-0003 Verification & Completion Integrity.
 
-The earlier proposed FC-000084 is therefore withdrawn from promotion. The reproduction clauses in INC-000183–186 are retained as `resolved-no-mapping` occurrence facts, and existing canonical mappings remain unchanged.
+The revised proposal is:
 
-The successor analytical work is documented at:
+`vigil/taxonomy/proposals/2026-10-06-verification-lineage-assurance-integrity-draft.json`
 
-`vigil/docs/reviews/2026-10-05-authority-lineage-laundering-diagnostic.md`
+Its plain-language alias is **Verification Laundering**. It governs assurance that increases through system mediation, inherited verification state, repetition or false corroboration without additional independent verification. The worm-specific manifestation is **Recursive Descendant Corroboration**: descendants sharing a common verification origin must not be counted as independent confirmation merely because propagation has created several apparently separate artefacts.
 
-The candidate invariant requires authority to remain traceable to an independently valid originating mandate across propagation, transformation, delegation, persistence and replication, and prohibits treating descendant artefacts as independent corroboration of their own authority lineage. This is a chain-level diagnostic, not a canonical class amendment.
+INC-000185 and INC-000186 now preserve direct proposal support as `taxonomy-gap` clauses with partial adjudication coverage. INC-000183 and INC-000184 were re-tested and remain `resolved-no-mapping` because their published traces establish reproduction without the required verification-assurance increase. Existing canonical mappings remain unchanged.
+
+The bounded re-adjudication is documented at:
+
+`vigil/docs/reviews/2026-10-06-fc-000084-verification-laundering-readjudication.md`
+
+The broader authority-laundering graph diagnostic remains useful and separate; FC-000084 captures the verification-assurance mechanism rather than generic propagation or authority laundering.
 
 ## Branch state
 
