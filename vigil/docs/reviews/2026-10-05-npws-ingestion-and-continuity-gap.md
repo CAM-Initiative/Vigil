@@ -31,23 +31,23 @@ The canonical adjudication matrix is approximately 4.3 MB and could not be repla
 
 ## Authority-lineage and verification-laundering observation
 
-The self-replicating prompt-injection examples are represented by INC-000183 through INC-000186. No new umbrella Incident was allocated.
+The self-replicating prompt-injection examples are represented by INC-000183 through INC-000186. No umbrella Incident was allocated.
 
-The earlier continuity-propagation proposal remains rejected: reproduction alone is attack-chain topology rather than an independent governance failure. Subsequent review identified a different recurring mechanism and reinstated the FC-000084 identifier as **Verification Lineage Assurance Integrity** under proposed family FF-0003 Verification & Completion Integrity.
+The relevant proposed class is **VIGIL-FC-000084 — Verification Lineage Assurance Integrity** under FF-0003 Verification & Completion Integrity. Its plain-language alias is **Verification Laundering**.
 
-The revised proposal is:
+FC-000084 governs verification assurance that increases through trusted-system mediation, inherited verification state, repetition, aggregation or false corroboration without additional independent verification. The worm-specific manifestation is **Recursive Descendant Corroboration**: descendants sharing a common verification origin must not be treated as independent confirmation merely because they appear across several artefacts or paths.
+
+The 6 October full-corpus review tested all 179 canonical Incidents and found 14 failure-occurrences, 7 successful-invariants, 5 ambiguous boundaries, 5 unresolved cases and 148 no-mappings. Within the worm cluster, INC-000185 and INC-000186 support failure-occurrence, while INC-000183 and INC-000184 remain no-mapping because their published traces establish reproduction without the required verification-assurance increase.
+
+Full review:
+
+`vigil/docs/reviews/2026-10-06-fc-000084-full-corpus-adjudication.md`
+
+Proposal:
 
 `vigil/taxonomy/proposals/2026-10-06-verification-lineage-assurance-integrity-draft.json`
 
-Its plain-language alias is **Verification Laundering**. It governs assurance that increases through system mediation, inherited verification state, repetition or false corroboration without additional independent verification. The worm-specific manifestation is **Recursive Descendant Corroboration**: descendants sharing a common verification origin must not be counted as independent confirmation merely because propagation has created several apparently separate artefacts.
-
-INC-000185 and INC-000186 now preserve direct proposal support as `taxonomy-gap` clauses with partial adjudication coverage. INC-000183 and INC-000184 were re-tested and remain `resolved-no-mapping` because their published traces establish reproduction without the required verification-assurance increase. Existing canonical mappings remain unchanged.
-
-The bounded re-adjudication is documented at:
-
-`vigil/docs/reviews/2026-10-06-fc-000084-verification-laundering-readjudication.md`
-
-The broader authority-laundering graph diagnostic remains useful and separate; FC-000084 captures the verification-assurance mechanism rather than generic propagation or authority laundering.
+The broader authority-laundering graph diagnostic remains separate: FC-000084 captures the verification-assurance mechanism, while authority classes classify the later conversion of that assurance into permission or control.
 
 ## Branch state
 
