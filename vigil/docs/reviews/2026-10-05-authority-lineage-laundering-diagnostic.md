@@ -3,36 +3,31 @@
 Status: candidate cross-Incident diagnostic; not a canonical Fidelity Class  
 Working branch: `agent/incident-ecosystem-ingestion`
 
-> **6 October 2026 refinement:** This review's rejection applies to the former **FC-000084 Continuity-State Propagation Integrity** mechanism. The identifier has since been reinstated on the same working branch for a materially different proposal: **FC-000084 Verification Lineage Assurance Integrity (Verification Laundering)** under FF-0003. Propagation remains non-classifying topology; the revised class governs verification assurance that increases through lineage, inherited verification state or false corroboration without additional independent verification. See `vigil/docs/reviews/2026-10-06-fc-000084-verification-laundering-readjudication.md`.
-
 ## Decision
 
-The cross-corpus review does **not** support promotion of proposed `VIGIL-FC-000084 Continuity-State Propagation Integrity`.
+The cross-corpus review identifies **authority laundering across an authority lineage** as a useful chain-level diagnostic: unsupported or insufficiently established authority can acquire increasing apparent legitimacy as it passes through system actors, artefacts and control surfaces, especially where downstream actors rely on system-mediated descendants instead of independently re-establishing the originating mandate.
 
-The self-replicating prompt-injection examples establish that attacker-controlled instruction-bearing material can be reproduced into successor carriers. Reproduction is important attack-chain topology, but the act of copying does not by itself establish a governance mechanism that the current taxonomy cannot represent. The governance failure becomes classifiable when a system treats a source, successor artefact, delegated instruction, transformed representation, control-plane state or inherited state as operative without satisfying the applicable existing authority, lineage, verification or continuity invariant.
+The self-replicating prompt-injection examples also demonstrate why **propagation itself is not the governance class**. Copying, forwarding or persisting state describes attack-chain topology. The governance question is what happens to the state’s authority and verification posture when later actors rely upon it.
 
-The earlier propagation proposal is therefore withdrawn from promotion and retained only as analytical history.
-
-A more useful recurring structure is **authority laundering across an authority lineage**: unsupported or insufficiently established authority can acquire increasing *apparent* legitimacy as it passes through system actors, artefacts and control surfaces, especially where downstream actors rely on system-mediated descendants instead of independently re-establishing the originating mandate.
-
-## Candidate invariant
+## Candidate authority-lineage invariant
 
 > **Authority must remain traceable to an independently valid originating mandate across propagation, transformation, delegation, persistence and replication; descendant artefacts must not acquire authority merely from system-mediated descent and must not be treated as independent corroboration of their own authority lineage.**
 
-This is a candidate chain-level invariant. It does not amend the canonical taxonomy in this review.
+Authority laundering remains a cross-cutting graph diagnostic rather than a single Fidelity Class because the current authority taxonomy already decomposes the operative mechanisms across source authority, scope, transformation, control-plane promotion, delegation and cross-context lineage.
 
-## Why this is not FC-000084
+**VIGIL-FC-000084 Verification Lineage Assurance Integrity** is separate. It governs the verification side of the same graph: descendants, inherited state or trusted-system mediation must not acquire greater verification assurance or independent corroborative weight without an additional verification basis. Full-corpus FC-000084 review is recorded at `vigil/docs/reviews/2026-10-06-fc-000084-full-corpus-adjudication.md`.
 
-A worm-like sequence can be decomposed into already governed events:
+## Relationship between authority laundering and verification laundering
+
+A worm-like sequence can be decomposed into paired questions:
 
 1. lower-authority or attacker-controlled material is encountered;
-2. the material is treated as operative instruction without sufficient source-authority validation;
-3. an action, write, send, promotion or delegation occurs;
-4. the resulting artefact becomes available to a later actor or context;
-5. the later actor must independently establish authority, provenance, scope and applicability before reliance;
-6. if it does not, the applicable source-authority, delegated-authority, lineage, control-plane, scope or continuity failure recurs.
+2. a system or actor creates a descendant artefact or state;
+3. the descendant may appear more checked, approved or corroborated because of its system-mediated lineage — assess **FC-000084**;
+4. the descendant may then be treated as permission or operative instruction — assess the applicable authority classes;
+5. further descendants can repeat either or both mechanisms.
 
-The causal chain can repeat or branch without creating a new per-hop Fidelity Class. What changes is the **graph structure and resilience of the invalid authority claim**.
+The causal chain can repeat or branch without creating a new per-hop authority class. What changes is the **graph structure, assurance posture and resilience of the propagated claim**.
 
 ## Existing canonical coverage
 
@@ -154,13 +149,11 @@ These are analytical descriptors, not severity scores and not substitutes for ca
 
 ## Taxonomy disposition
 
-1. **Do not promote FC-000084.**
-2. Preserve the FC-000084 proposal file as a withdrawn proposal with this review as its disposition.
-3. Convert the reproduction-only clauses in INC-000183–186 from `taxonomy-gap` to `resolved-no-mapping`; retain the occurrence fact and chain significance.
-4. Preserve every existing canonical mapping in those Incidents.
-5. Do not map the authority-lineage diagnostic as a Fidelity Class.
-6. Do not extend FC-000063 from factual/evidentiary corroboration into instruction authority; use it only as a conceptual analogue unless its actual recognition conditions are independently met.
-7. Revisit canonical taxonomy only if future cases establish a recurring governance failure that remains after FC-000001/003/005/006/009/012/078 and applicable verification controls are fully applied.
+1. Keep **authority laundering** and authority-lineage depth/breadth as cross-cutting graph diagnostics rather than a single canonical authority class.
+2. Use the existing authority classes for the specific operative authority mechanism at each material handoff.
+3. Assess **FC-000084 Verification Lineage Assurance Integrity** independently wherever system mediation, inherited verification state, repetition, aggregation or common-lineage descendants increase apparent verification assurance.
+4. Do not extend FC-000063 from adversarial factual/evidentiary corroboration into instruction authority; FC-000084 is the source-neutral verification-lineage class, while FC-000063 retains its adversarial factual-evidence scope.
+5. Preserve graph-level measures such as laundering depth, branching, orphaning, convergence and lineage independence as diagnostics rather than severity scores.
 
 ## Relationship to the external-reach proposal
 
