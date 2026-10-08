@@ -77,7 +77,7 @@ def assessment_errors(record: dict, known_ids: set[str] | None, relationships: l
                     errors.append(f'{label}.source_clause_indices do not resolve')
                 elif set(episode_refs) != {clauses[index].get('episode_id') for index in indices}:
                     errors.append(f'{label}.source_episode_refs disagree with source_clause_indices')
-        if not isinstance(ids, list) or any(not isinstance(c, str) or re.fullmatch(r'VIGIL-FC-\\d{6}', c) is None for c in ids):
+        if not isinstance(ids, list) or any(not isinstance(c, str) or re.fullmatch(r'VIGIL-FC-\d{6}', c) is None for c in ids):
             errors.append(f'{label}.derived_from_class_ids must contain canonical Fidelity Class IDs')
         elif ids:
             if len(ids) != len(set(ids)):
