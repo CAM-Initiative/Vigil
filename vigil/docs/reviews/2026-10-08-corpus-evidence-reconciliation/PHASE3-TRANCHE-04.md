@@ -20,7 +20,7 @@ Ten canonical Incidents were reconstructed with source-backed material episode I
 | INC-070 | 4 → 4 | 0 | Kept discoverable access, unauthorised recordings, AI republishing and one evidenced removal distinct, without treating all webinars as non-consensual. |
 | INC-073 | 4 → 4 | 12 | Separated reported fraudulent account-pool access, reason-trace extraction, downstream model training and partial disruption; original unresolved FC-083 effectiveness candidate retained. |
 | INC-035 | 2 → 2 | 1 | Distinguished provider-reported foreign-national export-control directive scope from Anthropic's wider customer access suspension; unpublished directive remains unverified. |
-| **Total** | **32 → 30** | **131** | **Ten individually audited canonical records** |
+| **Total** | **33 → 30** | **131** | **Ten individually audited canonical records** |
 
 ## Key preserved uncertainty
 
