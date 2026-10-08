@@ -1,9 +1,18 @@
 # Validator and source-event integrity repair — maintainer decision proposal
 
 **Date:** 2026-10-08
-**Status:** Proposal only. No validator, schema, builder, CI workflow, taxonomy or canonical record modification authorised by this file.
+**Status:** Historical proposal with an approved, bounded implementation checkpoint on 2026-10-08. Approval covered opt-in episode/provenance validation, stable EXTREQ episode references, three specified canonical repairs, new tests and a diagnostic pre-build index check. The original proposal text below records the pre-change design; it is not permission for broad corpus migration.
 
-## 1. Current behaviour
+## Implementation checkpoint — 8 October 2026
+
+- **Canonical repairs:** INC-084, INC-129 and INC-141 were reconciled source-first, with baseline and new episode crosswalks in `INC-XXXXXX-repair-manifest.json`. The repaired canonical records retain source records, original taxonomy class IDs, independently assessed EXTREQ alignment/basis and HIM results. Six plus one plus twenty-one existing indexed EXTREQ rows were explicitly remapped and paired with stable source-episode references.
+- **Opt-in structural checks:** `vigil/scripts/source_episode_validation.py` validates unique incident-local episode identifiers and per-episode source-record references. The existing Incident validator calls it. `vigil/scripts/occurrence_requirement_validation.py` validates stable `source_episode_refs` and rejects a mismatch against legacy numeric clause indices, without demanding migration for untouched historical records. The strict EXTREQ schema accepts the optional new field.
+- **Tests:** `vigil/tests/test_source_episode_integrity.py` contains ten regression tests; the existing VIGIL records workflow and the 10 new tests passed on the approved bounded implementation.
+- **Generated outputs:** the active ingestion branch was added to the push build workflow so the repository's canonical `build-vigil-public-records.py` (not manual JSON edits) can refresh stale committed public indexes. The resulting generated-index commit was `bbef8ec6360721da097b86cfe4d6417ef09f7b97`. The pre-build freshness check is diagnostic, not a new automatic record rewrite.
+- **Not implemented or authorised:** no automatic semantic duplicate detection, chronology inference, source-exhaustiveness certificate, required whole-corpus episode-ID migration, stage-renderer rewrite, class role/polarity reassignment, HIM recalibration, or bulk repair of the remaining incidents. All those need separate source-level judgment and any applicable governance approval.
+- **Post-change read-only result:** the opt-in contract validated the current 179 Incident corpus under CI with no new legacy-record migration failures. This is structural validation, not source-evidence verification.
+
+## 1. Pre-change behaviour (historical)
 
 - `vigil/scripts/validate-vigil-records.py` checks the existing clause `adjudication_status` values, whether `mapped` has a canonical relationship, `resolved-no-mapping` does not, and whether the stored `adjudication_coverage.status` agrees. It does not determine that clauses are unique material events, chronologically correct, exhaustive or source-provenanced.
 - `vigil/scripts/occurrence_requirement_validation.py` checks that `external_requirement_assessments[].source_clause_indices` refer to in-range clauses supporting the referenced canonical class and reviewed FC–EXTREQ relationship. A semantically stale *in-range* pointer can still pass, especially when the same class recurs.
