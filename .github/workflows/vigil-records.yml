@@ -115,7 +115,7 @@ jobs:
           fi
 
       - name: Notify CAM catalogue of refreshed VIGIL records
-        if: github.event_name == 'push' && github.actor != 'github-actions[bot]'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && github.actor != 'github-actions[bot]'
         env:
           CAM_CATALOGUE_DISPATCH_TOKEN: ${{ secrets.CAM_CATALOGUE_DISPATCH_TOKEN }}
         run: |
