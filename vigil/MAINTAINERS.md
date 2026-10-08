@@ -449,6 +449,20 @@ Publication consumers must:
 
 The current canonical compatibility source is `external_assessments[].classification_or_rating`. A proposed additive data shape for a future database-backed implementation is documented in `vigil/docs/design/EXTERNAL-ALIGNMENT-CLASSIFICATION.md`. That proposal is non-normative and does not change `VIGIL.Schema.json` until separately approved under the schema/validator stop conditions.
 
+## Optional stable source-event references — 2026-10-08
+
+The source-first repair of INC-084, INC-129 and INC-141 introduced an **opt-in**, incident-local episode contract. It does not retrospectively require migration of historical records.
+
+- In a migrated Incident, **every** `vigil_assessment.source_clause_analysis.clauses[]` entry uses one unique `episode_id` (`E001`, `E002`, etc.) and a non-empty, resolvable `source_record_refs[]` list pointing to canonical `source_records[N]`.
+- Material events are bounded occurrence episodes, not one source clause per Fidelity Class. A single episode may carry multiple separate, well-reasoned taxonomy relationships. Conversely, genuine separate actions and the successor's observed responses remain separate episodes.
+- External requirement assessments derived from taxonomy classes in a migrated Incident use `source_episode_refs[]`; `source_clause_indices` may remain for older readers but must resolve to the **same** episode identities. Never renumber indices solely by array position.
+- Clause lists present a source-supported relative order; overlapping/concurrent execution is described explicitly in the clause wording and review manifest. An episode ID does not assert a precise date or universal event ordering.
+- Structural validators check only uniqueness and referential consistency; they cannot establish whether an event is omitted, duplicated semantically, correctly sequenced or exhaustively supported by primary evidence.
+- Store a dated original-to-new crosswalk and per-requirement row disposition with each substantive repair. Preserve source records, interpretive provenance, class polarity, independent EXTREQ alignment, and HIM assessment unless separately re-adjudicated.
+- Regenerate public indexes **only** with `vigil/scripts/build-vigil-public-records.py`. The VIGIL records workflow now reports stale checked-in indexes before rebuilding them and refreshes outputs on pushes to the canonical ingestion branch. A clean CI run is not a human evidence review.
+
+See `vigil/docs/reviews/2026-10-08-corpus-evidence-reconciliation/` for the bounded pilot and repair manifests, validator implementation checkpoint and the remaining unreviewed corpus.
+
 ## Clause-level Alignment Taxonomy adjudication
 
 ### Canonical decision and completeness
