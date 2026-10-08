@@ -50,6 +50,12 @@ Do not replace the rationale with relationship-type boilerplate such as “the c
 
 Where a clause has multiple taxonomy relationships, preserve each distinct rationale in source order. Together they must form a coherent assessment without duplicating the same explanation. For adjacent, ambiguous-boundary, exemplar or other non-misalignment relationships, state precisely what the clause demonstrates and which occurrence condition is not established; semantic adjacency must not be converted into a canonical misalignment classification.
 
+## Source-first episode identity (opt-in)
+
+For an Incident that has adopted stable episodes, keep one unique `episode_id` and resolvable `source_record_refs[]` on every source clause. For a class-derived `external_requirement_assessments[]` row in such an Incident, record the intended `source_episode_refs[]` and verify any retained numeric `source_clause_indices` identify the same episodes. An episode can support multiple distinct taxonomy relationships; do not create separate evidentiary episodes for each class, infer event chronology from labels, or claim that these checks certify source exhaustiveness.
+
+Legacy Incidents without episode IDs remain valid. A migration requires a dated source-first review manifest and substantive record-level authorisation. See `vigil/MAINTAINERS.md`.
+
 ## Public-language contract
 
 Before editing any VIGIL-authored prose that can appear on a public surface, read `vigil/docs/maintenance/PUBLIC-OUTPUT-STYLE.md`.
