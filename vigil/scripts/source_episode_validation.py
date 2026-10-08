@@ -9,7 +9,7 @@ from __future__ import annotations
 import re
 
 EPISODE_ID = re.compile(r"E[0-9]{3,}")
-SOURCE_RECORD_REF = re.compile(r"source_records\\[([0-9]+)\\]")
+SOURCE_RECORD_REF = re.compile(r"source_records\[([0-9]+)\]")
 
 
 def episode_errors(record: dict) -> list[str]:
