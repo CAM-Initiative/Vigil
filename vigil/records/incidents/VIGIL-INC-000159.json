@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Cline prompt-injection and cache-poisoning chain enabled unauthorized npm package publication",
     "created": "2026-09-19",
-    "updated": "2026-10-04",
-    "version": "0.3.4"
+    "updated": "2026-10-08",
+    "version": "0.3.5"
   },
   "incident_identity": {
     "historical_event_name": "Cline prompt-injection and cache-poisoning chain enabled unauthorized npm package publication",
@@ -18,7 +18,7 @@
     "date_precision": "exact-day",
     "date_basis": "Cline's postmortem and GitHub advisory identify 17 February 2026 as the unauthorised npm publication date."
   },
-  "summary": "Attacker-controlled GitHub issue text prompted Cline's Claude-powered triage agent to execute code, enabling poisoning of shared GitHub Actions cache state that later reached a privileged release workflow. The chain exposed an npm token and led to unauthorised publication of `cline@2.3.0`; Cline deprecated the version and revoked credentials. Cline reported no evidence that OpenClaw itself was malicious or that user data was exposed.",
+  "summary": "A Cline GitHub issue-triage workflow introduced in December 2025 allowed untrusted issue content to direct a Claude-powered tool and exposed shared workflow state used by a more privileged release pipeline. Security research reported the weakness in January 2026 and publicly disclosed it on 9 February. Cline removed the vulnerable workflows but mistakenly revoked a different npm credential, leaving the exposed token active. On 17 February, a third party used the active credential to publish an unauthorised Cline CLI release that caused unexpected installation of a legitimate third-party project. Cline deprecated the release, revoked the token and published a corrected version within about eight hours. Cline found no malicious code delivery or user-data access; the identity or continuity of the original researcher and the later publisher is not established.",
   "vigil_assessment": {
     "factual_basis": "The researcher's reconstruction shows that untrusted issue text could direct the triage agent to execute code, after which shared cache scope could bridge into privileged release workflows. Cline's postmortem states that an attacker used the chain to steal an npm token and publish version 2.3.0 with a postinstall script for OpenClaw. Cline deprecated the version, revoked credentials and reported no evidence that OpenClaw itself was malicious or that user data was exposed.",
     "governance_interpretation": "The documented chain crossed from untrusted issue text through AI tool execution and shared infrastructure into release authority. Security failed. Bounded traceability, incident documentation and later repair are supported. The wrong-token revocation interval remains distinct, and full audit and monitoring arrangements remain unresolved.",
@@ -30,11 +30,17 @@
     "source_clause_analysis": {
       "source_record_order": 1,
       "source_url": "https://cline.bot/blog/post-mortem-unauthorized-cline-cli-npm",
-      "purpose": "Preserve a source-specific paraphrase that links the primary occurrence evidence to VIGIL's governance interpretation without treating taxonomy classification as source fact.",
+      "purpose": "Separate December workflow exposure and February vulnerability reporting, incomplete token recovery, a later unauthorised third-party publication, Cline's rapid containment and independent postmortem reconstruction. Do not assume one actor behind original vulnerability research and subsequent package publication.",
       "clauses": [
         {
-          "source_paraphrase": "Cline's postmortem explains that any GitHub user could open an issue handled by a Claude-powered triage workflow with Bash access; attacker-controlled issue instructions could cause code execution, and the workflow's shared cache scope let poisoned state reach a nightly release workflow with publication secrets.",
-          "recovered_invariant_interpretation": "An untrusted public-input workflow with shell execution shared cache state with a more privileged release workflow, allowing the attacker-controlled state to cross into a production publication control plane.",
+          "episode_id": "E001",
+          "source_record_refs": [
+            "source_records[0]",
+            "source_records[1]"
+          ],
+          "source_paraphrase": "On 21 December 2025, Cline introduced a Claude-assisted GitHub issue-triage workflow with broad command execution on untrusted issue content. Security research subsequently demonstrated that attacker-written issue text could direct the tool and reach cache state shared with a privileged release workflow. The vulnerable design was reported on 1 January 2026 and publicly disclosed on 9 February; the original report does not establish that the third party responsible for the later package publication was the same person as the reporting researcher.",
+          "recovered_invariant_interpretation": "Public issue content is non-authorising data, not permission to direct tools or contaminate release-process state. A low-trust intake must not carry effective action authority through a shared state mechanism to a higher-privilege publishing workflow.",
+          "adjudication_status": "mapped",
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000006",
@@ -47,53 +53,24 @@
               "relationship": "failure-occurrence",
               "canonical_taxonomy_mapping": true,
               "rationale": "Authority propagated from a public issue-triage workflow through cache state and nightly release credentials to npm publication."
-            }
-          ],
-          "adjudication_status": "mapped",
-          "adjudication_note": "This clause preserves the connected prompt-execution, shared-cache and privileged-release pathway described in Cline's postmortem; the separate untrusted-content authority boundary is represented in clause 2."
-        },
-        {
-          "source_paraphrase": "Attacker-controlled issue content was treated as operative instruction rather than remaining non-authorising data.",
-          "recovered_invariant_interpretation": "Untrusted or lower-authority content must remain non-authorising unless valid source authority is independently established.",
-          "taxonomy_relationships": [
+            },
             {
               "class_id": "VIGIL-FC-000001",
               "relationship": "failure-occurrence",
               "canonical_taxonomy_mapping": true,
               "rationale": "Untrusted issue content was treated as operative instruction instead of remaining non-authorising data, allowing attacker-controlled text to direct consequential tool activity."
             }
-          ],
-          "adjudication_status": "mapped"
+          ]
         },
         {
-          "source_paraphrase": "Post-incident evidence preserved the material instruction and release-path events needed to document the occurrence.",
-          "recovered_invariant_interpretation": "Material events must be captured sufficiently to preserve occurrence evidence.",
-          "taxonomy_relationships": [
-            {
-              "class_id": "VIGIL-FC-000022",
-              "relationship": "successful-invariant",
-              "canonical_taxonomy_mapping": true,
-              "rationale": "The retained post-incident evidence captured the material instruction, tool and release-path events needed to preserve the occurrence record."
-            }
+          "episode_id": "E002",
+          "source_record_refs": [
+            "source_records[0]",
+            "source_records[1]"
           ],
-          "adjudication_status": "mapped"
-        },
-        {
-          "source_paraphrase": "The retained evidence allowed the material compromise chain to be reconstructed without repeating unnecessary exploit mechanics.",
-          "recovered_invariant_interpretation": "The audit trail must remain reconstructable enough to explain material actions and state transitions.",
-          "taxonomy_relationships": [
-            {
-              "class_id": "VIGIL-FC-000024",
-              "relationship": "successful-invariant",
-              "canonical_taxonomy_mapping": true,
-              "rationale": "The retained evidence supported reconstruction of the compromise chain while the public rationale remains bounded and does not restate unnecessary exploit mechanics."
-            }
-          ],
-          "adjudication_status": "mapped"
-        },
-        {
-          "source_paraphrase": "After the researcher publicly disclosed the workflow vulnerability, Cline removed the vulnerable workflows and rotated credentials, but deleted the wrong npm token. The exposed npm token remained active, while the organization-level token page showed zero active tokens and did not surface it.",
+          "source_paraphrase": "After the February 9 public disclosure, Cline removed the vulnerable workflows and rotated several credentials. During npm token revocation it removed the wrong token, then relied on an organisation-level management view indicating zero active tokens. The actually exposed npm token remained active and usable.",
           "recovered_invariant_interpretation": "Credential recovery did not bind verification to the specific exposed npm credential; an incomplete management view produced an apparent clean state while the credential remained usable.",
+          "adjudication_status": "mapped",
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000015",
@@ -101,23 +78,53 @@
               "canonical_taxonomy_mapping": true,
               "rationale": "Cline states that recovery deleted the wrong npm token and used an organization-level view that did not surface the exposed token. The revocation action and clean-state signal were not bound to the actual compromised credential, which remained usable until the later publication."
             }
+          ]
+        },
+        {
+          "episode_id": "E003",
+          "source_record_refs": [
+            "source_records[0]",
+            "source_records[2]"
           ],
-          "adjudication_status": "mapped",
-          "adjudication_note": "The reported recovery action and verification signal addressed the wrong credential, establishing target-binding failure independently of the initial prompt-injection chain."
-        },
-        {
-          "source_paraphrase": "On February 17, a third party used the still-active npm token to publish cline@2.3.0 with a postinstall script that globally installed OpenClaw, which Cline later described as a legitimate, non-malicious open-source project.",
+          "source_paraphrase": "On 17 February 2026 at 03:26 Pacific Time, an unauthorised party used the still-active npm publishing credential to release Cline CLI version 2.3.0 with an extra postinstallation dependency installation. Cline's forensic comparison says the CLI binary was unchanged and the installed third-party project was legitimate, not malicious. The release was unauthorised; its source does not establish malicious code delivery, user-data theft or compromise of the separately distributed IDE extensions.",
           "recovered_invariant_interpretation": "The unrevoked publication credential enabled an unauthorised package release after the underlying workflow had been removed; the evidence does not support describing the OpenClaw payload as malicious code.",
-          "taxonomy_relationships": [],
           "adjudication_status": "resolved-no-mapping",
-          "adjudication_note": "The package change and publication are reported; this clause does not infer that user systems were compromised beyond the reported software installation."
+          "taxonomy_relationships": []
         },
         {
-          "source_paraphrase": "Cline published corrected version 2.4.0, deprecated 2.3.0 and revoked the token by 11:23 a.m. It reported that the occurrence was limited to the npm CLI package, no malicious code was delivered, and no user data was accessed or exfiltrated.",
+          "episode_id": "E004",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "source_paraphrase": "By 11:23 Pacific Time on 17 February, Cline published corrected CLI version 2.4.0, deprecated the unauthorised version and revoked the compromised token. It later described completed workflow and credential hardening, including provenance-linked releases, while longer-term disclosure and independent audit work remained in progress.",
           "recovered_invariant_interpretation": "The response closed the active credential and package pathway and bounded the reported impact to the unexpected installation through the affected CLI release; it did not include the separately unaffected IDE extensions or source repository.",
-          "taxonomy_relationships": [],
           "adjudication_status": "resolved-no-mapping",
-          "adjudication_note": "The response and impact bounds are those reported by Cline; this clause does not independently verify all user installations or infer zero exposure outside the reviewed audit."
+          "taxonomy_relationships": []
+        },
+        {
+          "episode_id": "E005",
+          "source_record_refs": [
+            "source_records[0]",
+            "source_records[1]",
+            "source_records[2]"
+          ],
+          "source_paraphrase": "Cline's later incident analysis cross-checked its workflow history, release channels, npm artefacts and credentials, preserving enough evidence to identify the vulnerable intake path, the incomplete token revocation and the subsequent unauthorised publication. One preserved evidentiary sequence supports both capture and reconstructability; these do not represent two further attacker actions.",
+          "recovered_invariant_interpretation": "Preservation of source and release evidence, with distinguishable event timestamps and records, supports later oversight and reconstruction without manufacturing additional intrusions.",
+          "adjudication_status": "mapped",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000022",
+              "relationship": "successful-invariant",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The retained post-incident evidence captured the material instruction, tool and release-path events needed to preserve the occurrence record."
+            },
+            {
+              "class_id": "VIGIL-FC-000024",
+              "relationship": "successful-invariant",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The retained evidence supported reconstruction of the compromise chain while the public rationale remains bounded and does not restate unnecessary exploit mechanics."
+            }
+          ]
         }
       ]
     }
@@ -522,28 +529,55 @@
           "This review is AI-authored, not human verification or certification."
         ],
         "review_outcome": "Reviewed 49 recovered or independently identified requirements; retained 16 relevant independent assessments. Prior values and exclusions remain in the dated audit."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-08-PHASE3-EVIDENCE-FIDELITY-000159",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-08",
+        "review_scope": "Primary Cline postmortem and security disclosure chronological reconciliation, distinguishing original vulnerable issue-triage pathway, later incomplete npm credential rotation, different unauthorised publication and bounded remediation; stable EXTREQ episode linkage.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_research": true,
+          "taxonomy_review": false,
+          "harm_impact_review": false,
+          "external_requirement_review": true
+        },
+        "known_limitations": [
+          "The malicious actor behind the later package release is described as a third party, not proven identical to the vulnerability reporter.",
+          "The reported extra installation involved a legitimate project; it must not be described as evidence of delivered malicious code.",
+          "The postmortem documents completed and ongoing remediations separately.",
+          "Original class polarities, HIM outcome and independent EXTREQ alignments were not reopened.",
+          "AI-authored source reconstruction is not independent human verification."
+        ],
+        "review_outcome": "Seven thematic clauses reduced to five event episodes, distinguishing trust-boundary defect, incorrect token revocation, later unauthorised release, response and reconstructed evidence; preserved class roles and remapped 14 derived EXTREQ rows to E005 for existing oversight findings."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-04-EXTERNAL-ALIGNMENT-000159",
+      "review_id": "VIGIL-REVIEW-2026-10-08-PHASE3-EVIDENCE-FIDELITY-000159",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT Work",
+      "reviewer_platform": "OpenAI ChatGPT",
       "reviewer_model": "GPT-6",
-      "review_date": "2026-10-04",
-      "review_scope": "Independent occurrence relevance and alignment review of external requirements; normative force remains source metadata.",
+      "review_date": "2026-10-08",
+      "review_scope": "Primary Cline postmortem and security disclosure chronological reconciliation, distinguishing original vulnerable issue-triage pathway, later incomplete npm credential rotation, different unauthorised publication and bounded remediation; stable EXTREQ episode linkage.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "external_requirement_review": true,
+        "web_research": true,
         "taxonomy_review": false,
         "harm_impact_review": false,
-        "web_research": false
+        "external_requirement_review": true
       },
       "known_limitations": [
-        "Assessment uses preserved occurrence evidence and canonical requirement propositions; internal implementation evidence remains unavailable where stated.",
-        "This review is AI-authored, not human verification or certification."
+        "The malicious actor behind the later package release is described as a third party, not proven identical to the vulnerability reporter.",
+        "The reported extra installation involved a legitimate project; it must not be described as evidence of delivered malicious code.",
+        "The postmortem documents completed and ongoing remediations separately.",
+        "Original class polarities, HIM outcome and independent EXTREQ alignments were not reopened.",
+        "AI-authored source reconstruction is not independent human verification."
       ],
-      "review_outcome": "Reviewed 49 recovered or independently identified requirements; retained 16 relevant independent assessments. Prior values and exclusions remain in the dated audit."
+      "review_outcome": "Seven thematic clauses reduced to five event episodes, distinguishing trust-boundary defect, incorrect token revocation, later unauthorised release, response and reconstructed evidence; preserved class roles and remapped 14 derived EXTREQ rows to E005 for existing oversight findings."
     },
     "operating_model": "AI-authored, semi-autonomous production under human contract approval",
     "human_governance_editor": null,
@@ -660,7 +694,10 @@
         "VIGIL-FC-000022"
       ],
       "source_clause_indices": [
-        2
+        4
+      ],
+      "source_episode_refs": [
+        "E005"
       ]
     },
     {
@@ -688,7 +725,10 @@
         "VIGIL-FC-000024"
       ],
       "source_clause_indices": [
-        3
+        4
+      ],
+      "source_episode_refs": [
+        "E005"
       ]
     },
     {
@@ -705,7 +745,10 @@
         "VIGIL-FC-000024"
       ],
       "source_clause_indices": [
-        3
+        4
+      ],
+      "source_episode_refs": [
+        "E005"
       ]
     },
     {
@@ -722,7 +765,10 @@
         "VIGIL-FC-000022"
       ],
       "source_clause_indices": [
-        2
+        4
+      ],
+      "source_episode_refs": [
+        "E005"
       ]
     },
     {
@@ -740,8 +786,10 @@
         "VIGIL-FC-000024"
       ],
       "source_clause_indices": [
-        2,
-        3
+        4
+      ],
+      "source_episode_refs": [
+        "E005"
       ]
     },
     {
@@ -759,8 +807,10 @@
         "VIGIL-FC-000024"
       ],
       "source_clause_indices": [
-        2,
-        3
+        4
+      ],
+      "source_episode_refs": [
+        "E005"
       ]
     },
     {
@@ -777,7 +827,10 @@
         "VIGIL-FC-000024"
       ],
       "source_clause_indices": [
-        3
+        4
+      ],
+      "source_episode_refs": [
+        "E005"
       ]
     },
     {
@@ -794,7 +847,10 @@
         "VIGIL-FC-000022"
       ],
       "source_clause_indices": [
-        2
+        4
+      ],
+      "source_episode_refs": [
+        "E005"
       ]
     },
     {
@@ -811,7 +867,10 @@
         "VIGIL-FC-000022"
       ],
       "source_clause_indices": [
-        2
+        4
+      ],
+      "source_episode_refs": [
+        "E005"
       ]
     },
     {
@@ -840,7 +899,10 @@
         "VIGIL-FC-000024"
       ],
       "source_clause_indices": [
-        3
+        4
+      ],
+      "source_episode_refs": [
+        "E005"
       ]
     },
     {
@@ -857,7 +919,10 @@
         "VIGIL-FC-000022"
       ],
       "source_clause_indices": [
-        2
+        4
+      ],
+      "source_episode_refs": [
+        "E005"
       ]
     },
     {
@@ -874,7 +939,10 @@
         "VIGIL-FC-000024"
       ],
       "source_clause_indices": [
-        3
+        4
+      ],
+      "source_episode_refs": [
+        "E005"
       ]
     },
     {
@@ -891,7 +959,10 @@
         "VIGIL-FC-000022"
       ],
       "source_clause_indices": [
-        2
+        4
+      ],
+      "source_episode_refs": [
+        "E005"
       ]
     },
     {
@@ -908,7 +979,10 @@
         "VIGIL-FC-000022"
       ],
       "source_clause_indices": [
-        2
+        4
+      ],
+      "source_episode_refs": [
+        "E005"
       ]
     }
   ]
