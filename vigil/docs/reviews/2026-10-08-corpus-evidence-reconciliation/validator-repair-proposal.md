@@ -43,7 +43,7 @@
 
 Frozen inventory at `d845b4b`: **179** canonical Incidents, **592** source-record entries, **557** source-clause entries, **1,315** external-requirement assessment rows. **88** Incidents contain position-based EXTREQ assessment links; **1,051** assessment rows use them. **61** Incidents contain four or more source records. These are exposure counts, **not** counts of incorrect mappings, source omissions or required migrations.
 
-Backfilling episode IDs and per-clause provenance could require review across the whole 179. Exact semantic-change counts are unknown until source-first manifests are assessed. The six pilot records and the four preliminary first-tranche reviews are not source-exhaustiveness certified.
+Backfilling episode IDs and per-clause provenance could require review across the whole 179. Exact semantic-change counts are unknown until source-first manifests are assessed. The six bounded-pilot records, eight preliminary new source-first reviews and one supplemental INC-088 pilot review are not source-exhaustiveness certified. INC-003 had its concealment correction before the bounded six-case pilot.
 
 ## 6. Repair implications
 
