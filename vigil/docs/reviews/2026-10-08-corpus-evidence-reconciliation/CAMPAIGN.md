@@ -3,7 +3,7 @@
 **Date:** 2026-10-08
 **Branch:** `agent/incident-ecosystem-ingestion`
 **Frozen canonical baseline:** `d845b4b31af8a7416f0df9c1a77a06073f7afc51`
-**Status:** Corpus-wide frozen structural inventory completed. Phase 1 three-case repair and Phase 2 opt-in validators completed; first Phase 3 five-case source-first tranche also committed (INC-088, 130, 138, 151, 177). Eight bounded repairs total. Five prior pilot-only cases, one source spot-check and 165 awaiting source-first review remain; evidence exhaustiveness and human verification are not certified.
+**Status:** Frozen structural inventory of 179 Incidents complete. Phase 1 (three cases), first Phase 3 tranche (five cases), and second Phase 3 tranche (three cases) have produced 11 bounded source-first repairs in total. Five pilot-only cases, one preliminary spot-check and 162 cases awaiting source-first review remain. The opt-in episode/EXTREQ validator contract and deterministic index pipeline are active. No full-corpus source-exhaustiveness or human verification claim.
 
 ## Immutable baseline and coverage semantics
 
@@ -48,3 +48,7 @@ G. Run existing validators and retained-subsystem tests in a repository-capable 
 ## Phase 3 checkpoint — 8 October 2026
 
 Five additional bounded canonical Incidents were source-first reconciled in `PHASE3-TRANCHE-01.md`, with corresponding per-case manifests and crosswalks. Across this tranche, 51 indexed external-requirement assessment rows were linked to reviewed stable episodes without changing their independent alignment findings. One evidence-attribution issue justified reopening the financial-economic HIM dimension of INC-151 (S3 → unreported while reputation/dignity and overall remain S3). INC-088 now has two unresolved material source episodes and therefore partial rather than complete recorded-clause adjudication. The remaining candidate records are ordered for follow-up in `PHASE3-TRANCHE-02-QUEUE.json`; that queue is structural prioritisation, not a review finding. The catalogue dispatch is gated to actual `main` pushes so unmerged ingestion work does not trigger website synchronisation; the old dispatch credential produced a 401 and may require renewal before future `main` dispatch.
+
+## Phase 3 tranche 2 checkpoint — 8 October 2026
+
+Three additional canonical repairs (INC-085/086/150) and their old/new episode and EXTREQ row crosswalks are recorded in `PHASE3-TRANCHE-02.md` and `INC-XXXXXX-phase3-tranche02-repair-manifest.json` files. Forty-six position-based EXTREQ rows now resolve to stable episode identities without changing independent assessment results. Three higher-risk cases (INC-171/064/060) were examined for source issues but remain unchanged and not certified; the case-specific source and harm issues are enumerated in the tranche report. The VIGIL records validation suite returned green after the INC-085 public-prose correction. A concurrent unrelated INC-032 change was preserved. The remaining 162 awaiting cases are not to be bulk-migrated from structural scores.
