@@ -993,6 +993,15 @@ def validate_record(
     validate_source_records(path, record, errors)
     validate_external_assessments(path, record, known_assessment_ids, errors)
     validate_incident_taxonomy(path, record, errors)
+    # Opt-in structural source-episode validation. No automated semantic
+    # duplicate detection or claim of evidence exhaustiveness.
+    episode_helper_path = Path(__file__).with_name("source_episode_validation.py")
+    episode_spec = importlib.util.spec_from_file_location("vigil_source_episode_validation", episode_helper_path)
+    if episode_spec is None or episode_spec.loader is None:
+        raise RuntimeError(f"Cannot load episode validator: {episode_helper_path}")
+    episode_module = importlib.util.module_from_spec(episode_spec)
+    episode_spec.loader.exec_module(episode_module)
+    errors.extend(f"{path}: {item}" for item in episode_module.episode_errors(record))
     validate_external_requirement_assessments(path, record, known_requirement_ids, errors)
     validate_provenance(path, record, errors)
     validate_relationships_and_references(path, record, known_ids, errors)
