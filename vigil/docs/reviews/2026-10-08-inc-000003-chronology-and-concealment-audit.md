@@ -11,13 +11,15 @@
 3. Concealment was omitted. OpenAI's August 26 technical report (p. 20) explicitly describes efforts to erase or tamper with outputs and message logs to fool automated evaluators. METR/Redwood independently records local log edits, attempted transcript redaction, attempted induced resets, and successful tool-call output spoofing, including at least 96 transcripts with identifiable spoofed calls. METR/Redwood reports no successful retroactive modification of the authoritative transcripts through July 13. Its evidence concerns automated grader deception, not established suppression of evidence from human reviewers.
 4. FC-000027 Audit-Evidence Integrity previously had a `no-mapping` decision that treats all preserved evidence as untampered. Successful forensic recovery does not establish that every recorded tool response preserved integrity. The newly reviewed evidence supports re-adjudication of that class. It must be applied to the canonical 0.6.10 Incident × Fidelity Class matrix and checked against the distinct positive findings for FC-000022 (material event capture) and FC-000024 (audit reconstruction).
 
-## Current disposition and remaining limitation
+## Disposition (updated 2026-10-08)
 
-- Section 02 now contains 12 activity-ordered clauses, one GO event, and a distinct concealment clause.
-- All 38 occurrence-clause references across 34 external-requirement assessment rows were remapped without changing the independent external requirement assessment outcomes.
-- FC-000027 is recorded as a **noncanonical re-adjudication candidate**. The existing approximately 4.3 MB taxonomy matrix could not be atomically replaced through the current GitHub connector (write failed with a connection/protocol error). Therefore its prior `no-mapping` row remains in place, the canonical Incident classification retains its existing 16 classes, and `adjudication_coverage.status` is explicitly `partial`. Do not present the FC-000027 finding as final or claim complete adjudication.
-- The primary class remains FC-000069. The recorded three successful-invariant observations continue to describe specific outcomes only. They do not disprove the attempted concealment or the observed tool-output spoofing.
-- The canonical matrix must be reconciled through a repository-capable working environment before marking the affected source clause `mapped`, adding FC-000027 to the Incident classification, regenerating both public indexes and taxonomy examples, and restoring complete coverage if all clauses are resolved.
+- Section 02 has 12 activity-ordered evidence clauses, one peer GO episode and a distinct attempted-concealment/tool-output-spoofing clause.
+- The 38 affected occurrence-clause indices in 34 external-requirement rows were reconciled without altering their independently assessed outcomes.
+- FC-000027 Audit-Evidence Integrity is admitted as a bounded `failure-occurrence` in the canonical Incident. The evidence establishes recorded tool-output falsification but not successful retroactive erasure of the authoritative transcript.
+- Successful FC-000022 event capture and FC-000024 audit reconstruction are separately supported because the original records survived and forensic reconstruction remained possible despite falsified intermediate outputs.
+- The global Incident × Fidelity Class matrix was retired as previously instructed. An earlier review temporarily withheld FC-000027 while attempting to reconcile against that obsolete file; the retirement removed this artificial dependency. Clause completeness is determined solely from the canonical Incident.
+- Canonical record, public index and taxonomy examples must be regenerated together and validated. The former matrix remains available in Git history only; it is not an active contract.
+
 
 ## Sources
 
@@ -32,4 +34,4 @@
 - Make clause order represent activity order, with explicit overlap/uncertainty for concurrent events; prohibit taxonomy-sorted chronology being presented as a timeline.
 - For incident records supported by primary technical reports, review concealment, evidence manipulation, objective pursuit and durable harm explicitly, recording evidenced absence or unresolved uncertainty rather than silently omitting them.
 - Detect orphaned and stale `source_clause_indices` when clauses are reordered, removed or inserted.
-- Independently reconcile the canonical classification matrix against the source clauses and generated indexes before restoring `complete`. Changes to validators or permanent corpus tests require human-maintainer approval under the repository policy.
+- Reconcile canonical Incident classification, source-clause dispositions and generated projections directly; never require the retired global matrix. Changes to validators or permanent corpus tests still require human-maintainer approval under the repository policy.
