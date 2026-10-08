@@ -3,7 +3,7 @@
 **Date:** 2026-10-08
 **Branch:** `agent/incident-ecosystem-ingestion`
 **Frozen canonical baseline:** `d845b4b31af8a7416f0df9c1a77a06073f7afc51`
-**Status:** Whole-corpus inventory completed; bounded canonical repairs implemented for INC-084, INC-129 and INC-141; opt-in episode/provenance validator contract, regression tests and pre-build freshness diagnostic implemented; deterministic public Incident index refreshed. Corpus-wide source-exhaustiveness and human verification remain pending.
+**Status:** Corpus-wide frozen structural inventory completed. Phase 1 three-case repair and Phase 2 opt-in validators completed; first Phase 3 five-case source-first tranche also committed (INC-088, 130, 138, 151, 177). Eight bounded repairs total. Five prior pilot-only cases, one source spot-check and 165 awaiting source-first review remain; evidence exhaustiveness and human verification are not certified.
 
 ## Immutable baseline and coverage semantics
 
@@ -44,3 +44,7 @@ G. Run existing validators and retained-subsystem tests in a repository-capable 
 - **Systemic controls:** Human approval for bounded Phase 1 and the opt-in Phase 2 was supplied on 2026-10-08. `source_episode_validation.py`, `occurrence_requirement_validation.py`, `validate-vigil-records.py`, `VIGIL.Schema.json`, regression tests and the VIGIL records CI workflow now enforce the opt-in episode contract while retaining legacy acceptance. No mandatory whole-corpus migration, automatic duplicate classification or source-exhaustiveness assertion is authorised. Generated outputs were refreshed by the deterministic builder after enabling push validation on the canonical ingestion branch.
 
 **Mandatory review stop:** this approved opt-in control applies only to migrated records. After testing, report exact failing legacy records (if any) before proposing broad migration; obtain separate approval before any further mass canonical repair. For any incident with disputed source meaning, stop that Incident rather than force a tidy clause list.
+
+## Phase 3 checkpoint — 8 October 2026
+
+Five additional bounded canonical Incidents were source-first reconciled in `PHASE3-TRANCHE-01.md`, with corresponding per-case manifests and crosswalks. Across this tranche, 51 indexed external-requirement assessment rows were linked to reviewed stable episodes without changing their independent alignment findings. One evidence-attribution issue justified reopening the financial-economic HIM dimension of INC-151 (S3 → unreported while reputation/dignity and overall remain S3). INC-088 now has two unresolved material source episodes and therefore partial rather than complete recorded-clause adjudication. The remaining candidate records are ordered for follow-up in `PHASE3-TRANCHE-02-QUEUE.json`; that queue is structural prioritisation, not a review finding. The catalogue dispatch is gated to actual `main` pushes so unmerged ingestion work does not trigger website synchronisation; the old dispatch credential produced a 401 and may require renewal before future `main` dispatch.
