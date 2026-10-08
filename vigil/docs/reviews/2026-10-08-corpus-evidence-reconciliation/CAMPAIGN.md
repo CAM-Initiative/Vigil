@@ -3,7 +3,7 @@
 **Date:** 2026-10-08
 **Branch:** `agent/incident-ecosystem-ingestion`
 **Frozen canonical baseline:** `d845b4b31af8a7416f0df9c1a77a06073f7afc51`
-**Status:** Frozen structural inventory of 179 Incidents complete. Phase 1 (three cases), first Phase 3 tranche (five cases), and second Phase 3 tranche (three cases) have produced 11 bounded source-first repairs in total. Five pilot-only cases, one preliminary spot-check and 162 cases awaiting source-first review remain. The opt-in episode/EXTREQ validator contract and deterministic index pipeline are active. No full-corpus source-exhaustiveness or human verification claim.
+**Status:** Frozen 179-Incident structural inventory completed; 13 bounded source-first canonical repairs (Phase 1 plus three Phase 3 tranches), five previous pilot-only cases, one preliminary source spotcheck, and 160 awaiting source-first review. Opt-in episode/EXTREQ contract and deterministic public index refresh are operational. Neither evidence exhaustiveness nor independent human verification has been certified.
 
 ## Immutable baseline and coverage semantics
 
@@ -52,3 +52,7 @@ Five additional bounded canonical Incidents were source-first reconciled in `PHA
 ## Phase 3 tranche 2 checkpoint — 8 October 2026
 
 Three additional canonical repairs (INC-085/086/150) and their old/new episode and EXTREQ row crosswalks are recorded in `PHASE3-TRANCHE-02.md` and `INC-XXXXXX-phase3-tranche02-repair-manifest.json` files. Forty-six position-based EXTREQ rows now resolve to stable episode identities without changing independent assessment results. Three higher-risk cases (INC-171/064/060) were examined for source issues but remain unchanged and not certified; the case-specific source and harm issues are enumerated in the tranche report. The VIGIL records validation suite returned green after the INC-085 public-prose correction. A concurrent unrelated INC-032 change was preserved. The remaining 162 awaiting cases are not to be bulk-migrated from structural scores.
+
+## Phase 3 third-tranche checkpoint — 8 October 2026
+
+Two more canonically repaired cases (INC-060, INC-159) have explicit original-to-repaired source-episode crosswalks and 22 class-derived external-governance assessment rows re-linked by stable episode. See `PHASE3-TRANCHE-03.md` and the per-case manifests. INC-171, 064 and 174 remain held for source-first/harm-attribution or classification-recognition review; only read-only findings were recorded in `PHASE3-TRANCHE-03-HELD-EVIDENCE.md`. The corpus census is 13 repaired, five prior pilot-only, one source spotcheck and 160 awaiting. No bulk migration or mechanical re-adjudication is authorised.
