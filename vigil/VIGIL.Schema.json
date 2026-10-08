@@ -316,7 +316,8 @@
       ],
       "harm_impact_methodology_version_rule": "VIGIL-HIM 1.0.1 is the current methodology. Existing 1.0.0 assessments remain valid historical adjudications until individually re-reviewed. Re-reviewed or newly adjudicated Incidents must use 1.0.1 and the matching versioned threshold IDs; methodology versions must not be mechanically relabelled without substantive review.",
       "external_requirement_assessment_rule": "External requirements and taxonomy share Aligned, Not aligned and Boundary semantics. Assess each relevant external requirement independently from occurrence evidence. Clause-scoped reviewed relationships or independent identification can identify candidates; candidate relevance and alignment are separate decisions. Normative force remains canonical requirement metadata. Evidence references resolve in source_records.",
-      "external_requirement_assessment_reference_rule": "Optional derived_from_class_ids identify supported reviewed FC/EXTREQ relationships on the recorded source_clause_indices. No exhaustive contributor list is required. Independent identification uses identification_basis without requiring an FC mapping.",
+      "external_requirement_assessment_reference_rule": "Optional derived_from_class_ids identify supported reviewed FC/EXTREQ relationships on the recorded source_clause_indices or, for migrated records, source_episode_refs. No exhaustive contributor list is required. Independent identification uses identification_basis without requiring an FC mapping.",
+      "source_episode_reference_rule": "Optional incident-local E001-style episode_id and source_record_refs on every clause, when adopted by an Incident, provide stable episode identity and source provenance. Migrated derived EXTREQ assessments require source_episode_refs, optionally alongside legacy source_clause_indices; where both are given they must identify the same episodes. Historical Incidents without episode IDs remain valid. This rule is referential only and does not certify semantic event distinctness, chronology or source exhaustiveness.",
       "external_requirement_assessment_alignment_values": [
         "aligned",
         "not-aligned",
@@ -493,6 +494,15 @@
           "items": {
             "type": "integer",
             "minimum": 0
+          }
+        },
+        "source_episode_refs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^E[0-9]{3,}$"
           }
         },
         "identification_basis": {
