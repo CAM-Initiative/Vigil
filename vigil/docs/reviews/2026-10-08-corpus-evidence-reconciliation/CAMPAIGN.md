@@ -3,7 +3,7 @@
 **Date:** 2026-10-08
 **Branch:** `agent/incident-ecosystem-ingestion`
 **Frozen canonical baseline:** `d845b4b31af8a7416f0df9c1a77a06073f7afc51`
-**Status:** Whole-corpus structural ledger completed; four additional source-first preliminary reviews recorded; canonical edits not yet made; semantic control approval pending.
+**Status:** Whole-corpus structural ledger completed; seven new source-first preliminary reviews plus two pilot follow-up reviews recorded; canonical edits not yet made; semantic control approval pending.
 
 ## Immutable baseline and coverage semantics
 
@@ -11,7 +11,7 @@ Twelve `inventory-NN.json` files cover 179 unique canonical active Incidents. `i
 
 The earlier bounded pilot covers INC-001, 023, 024, 065, 088 and 112 and remains provisionally reconciled for its documented scope. Its four outstanding classes of limitation are still open: source-exhaustiveness, per-clause lineage, residual INC-088 class/evidence review and exact generated-output parity.
 
-Four first-tranche case files contain preliminary source-first findings: INC-084, INC-141, INC-151 and INC-177. No incident record changed in this tranche.
+Seven preliminary source-first case reviews are recorded for INC-084, INC-129, INC-130, INC-138, INC-141, INC-151 and INC-177. The prior pilot cases INC-003 and INC-088 have supplemental source-reading manifests. These are evidence-review notes only; no Incident record changed in this tranche. Of 179 records, six retain the bounded-pilot status, seven have a new primary-source spot-check, and 166 still await source-first review.
 
 ## Two separate completion axes
 
@@ -38,9 +38,9 @@ G. Run existing validators and retained-subsystem tests in a repository-capable 
 
 ## Priorities and bounded stop points
 
-- **Pilot follow-up:** INC-003 per-clause lineage for documented concealment; INC-088 attempted XSS and moderator impersonation; generated index exact parity.
+- **Pilot follow-up:** INC-003 now has confirmed existing concealment capture but still needs per-clause lineage. INC-088's first-hand research source confirms attempted XSS with no observed successful script execution, plus impersonation of site moderators/admins, neither independently modelled as a current material source clause. These require controlled class-recognition review; generated index exact parity remains unverified.
 - **First tranche:** INC-084 (omitted production-record modification and temporal ordering), INC-141 (collision before later reporting), INC-151 (source-description-as-clause and loss attribution), INC-177 (multiple phases compressed; timing/retrospective finding). Preliminary case files committed; exact canonical repair manifests remain the next step.
-- **Next source-first tranche:** INC-130, INC-138, INC-129 and other high-risk candidates. Queue is provisional; inventory flags are candidates only.
+- **Second source-first follow-up:** INC-129 has one compaction persona block parsed into many clause fragments; INC-130 and INC-138 each split one compaction summary into two proposition-oriented clauses. Supplemental candidate manifests have been committed for all three. Preserve distinct classification rationale without multiplying the number of events. **Next tranche:** prepare exact old/new canonical episode crosswalks for the reviewed cases, then prioritise further high-harm and multi-source incidents from the 166 unreviewed entries. Queue is provisional; inventory flags alone are not evidence findings.
 - **Systemic controls:** see `validator-repair-proposal.md`. No semantic schema, validator, permanent test, builder or CI enforcement rule is changed pending maintainer review and approval.
 
 **Mandatory review stop:** after a proposed control is approved, apply read-only checks, report exact affected records and obtain separate approval before any broad record migration. For any incident with disputed source meaning, stop that Incident rather than force a tidy clause list.
