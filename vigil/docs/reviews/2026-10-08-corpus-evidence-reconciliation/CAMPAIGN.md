@@ -3,7 +3,7 @@
 **Date:** 2026-10-08
 **Branch:** `agent/incident-ecosystem-ingestion`
 **Frozen canonical baseline:** `d845b4b31af8a7416f0df9c1a77a06073f7afc51`
-**Status:** Frozen 179-Incident structural inventory completed; 13 bounded source-first canonical repairs (Phase 1 plus three Phase 3 tranches), five previous pilot-only cases, one preliminary source spotcheck, and 160 awaiting source-first review. Opt-in episode/EXTREQ contract and deterministic public index refresh are operational. Neither evidence exhaustiveness nor independent human verification has been certified.
+**Status:** Frozen structural census of 179 Incidents; 23 bounded source-first canonical repairs (Phase 1 plus four Phase 3 tranches), four earlier pilot-only cases, one preliminary spotcheck and 151 awaiting source-first review. Episode/EXTREQ validator, generated public-index workflow and ten-case expanded tranche crosswalks operational. No independently human-certified source exhaustiveness.
 
 ## Immutable baseline and coverage semantics
 
@@ -56,3 +56,7 @@ Three additional canonical repairs (INC-085/086/150) and their old/new episode a
 ## Phase 3 third-tranche checkpoint — 8 October 2026
 
 Two more canonically repaired cases (INC-060, INC-159) have explicit original-to-repaired source-episode crosswalks and 22 class-derived external-governance assessment rows re-linked by stable episode. See `PHASE3-TRANCHE-03.md` and the per-case manifests. INC-171, 064 and 174 remain held for source-first/harm-attribution or classification-recognition review; only read-only findings were recorded in `PHASE3-TRANCHE-03-HELD-EVIDENCE.md`. The corpus census is 13 repaired, five prior pilot-only, one source spotcheck and 160 awaiting. No bulk migration or mechanical re-adjudication is authorised.
+
+## Phase 3 expanded tranche checkpoint — 9 October 2026
+
+The ten-case source-first group INC-035/041/055/063/066/070/073/110/112/116 is documented in `PHASE3-TRANCHE-04.md` with ten original/new source-episode and external-requirement manifests. Across these cases, 131 position-based EXTREQ rows were re-anchored to stable episodes; their independent assessment outcomes were retained. One prior pilot (INC-112) advanced to source-first repaired. No new normative findings, harm reassessments or class-role changes were made. Cases with contested occurrence identity or unverified causal attribution remain intentionally held.
