@@ -1,0 +1,46 @@
+# VIGIL corpus-wide evidence fidelity — second pass
+
+**Date:** 2026-10-08
+**Branch:** `agent/incident-ecosystem-ingestion`
+**Frozen canonical baseline:** `d845b4b31af8a7416f0df9c1a77a06073f7afc51`
+**Status:** Whole-corpus structural ledger completed; four additional source-first preliminary reviews recorded; canonical edits not yet made; semantic control approval pending.
+
+## Immutable baseline and coverage semantics
+
+Twelve `inventory-NN.json` files cover 179 unique canonical active Incidents. `inventory-summary.json` cross-checks counts and flags. They preserve canonical blob SHAs, source URLs and relevant source-clause/EXTREQ metrics without repeating or changing canonical facts. They are *triage*, not human adjudication. At this snapshot there are 130 `complete` and 49 `partial` recorded-clause taxonomy coverage statuses. No such status independently demonstrates source exhaustiveness.
+
+The earlier bounded pilot covers INC-001, 023, 024, 065, 088 and 112 and remains provisionally reconciled for its documented scope. Its four outstanding classes of limitation are still open: source-exhaustiveness, per-clause lineage, residual INC-088 class/evidence review and exact generated-output parity.
+
+Four first-tranche case files contain preliminary source-first findings: INC-084, INC-141, INC-151 and INC-177. No incident record changed in this tranche.
+
+## Two separate completion axes
+
+1. **Recorded-clause taxonomy adjudication** — `complete` only when each recorded material clause is `mapped` or `resolved-no-mapping`; `partial` when any clause is unresolved or a taxonomy gap.
+2. **Evidence-fidelity review** — separately records the extent of primary/firsthand evidence read, proposed material event inventory, provenance per event, relative/concurrent timing, original-clause dispositions, classification admission/roles and independently reconciled EXTREQ pointers. A review cannot be marked complete merely because a taxonomy status is complete or a validator passes.
+
+An AI-authored review never becomes human-verified merely by committing its manifest.
+
+## Source-first review procedure for each tranche
+
+A. Freeze the old Incident blob SHA, current projections and source set. Capture a source-specific evidence ledger with inspected URLs, date of retrieval, access failures and later corrections.
+
+B. Read the best available primary and affected-party evidence. Enumerate discrete material actions, system/actor decisions, external effects, control actions, response actions and evidence limitations. Record provenance and actual or *unknown* timing. Separate multiple runs and concurrent branches; do not fabricate one linear event sequence.
+
+C. For every baseline clause, record `retain`, `merge-supported-duplicate`, `split-supported-episode`, `context-only`, `reorder` or `unresolved`, with evidence. A single episode may support multiple distinct class relationships without becoming duplicate events. Material missing source propositions must be added or explicitly left pending, never silently discarded.
+
+D. Reconsider full taxonomy recognition only where evidence materially changes, preserving successful, failed and ambiguous boundaries. The prior mapping set remains unchanged until substantive review is authorised. Confirm the potential FC-084 relationship where verification is handed off across authority chains without independent revalidation.
+
+E. Review independent EXTREQ applicability and result separately. Before changing source-clause indexes, demonstrate old episode -> new episode link *per assessment row*; do not blindly reindex by array position.
+
+F. Preserve and separately review HIM/harm assessment, summary, factual basis, Discussion, and Conclusion. Rebuild three derived public indexes using the repository builder, examine Case File Stage 02 and Stage 04 projections and source trail, and commit review manifests. Do not silently shorten occurrence narratives.
+
+G. Run existing validators and retained-subsystem tests in a repository-capable worktree; record commands, dates, results and any unavailable verification. Treat all source interpretations and source exhaustiveness as human-reviewed dispositions, not validator-derived truth.
+
+## Priorities and bounded stop points
+
+- **Pilot follow-up:** INC-003 per-clause lineage for documented concealment; INC-088 attempted XSS and moderator impersonation; generated index exact parity.
+- **First tranche:** INC-084 (omitted production-record modification and temporal ordering), INC-141 (collision before later reporting), INC-151 (source-description-as-clause and loss attribution), INC-177 (multiple phases compressed; timing/retrospective finding). Preliminary case files committed; exact canonical repair manifests remain the next step.
+- **Next source-first tranche:** INC-130, INC-138, INC-129 and other high-risk candidates. Queue is provisional; inventory flags are candidates only.
+- **Systemic controls:** see `validator-repair-proposal.md`. No semantic schema, validator, permanent test, builder or CI enforcement rule is changed pending maintainer review and approval.
+
+**Mandatory review stop:** after a proposed control is approved, apply read-only checks, report exact affected records and obtain separate approval before any broad record migration. For any incident with disputed source meaning, stop that Incident rather than force a tidy clause list.
