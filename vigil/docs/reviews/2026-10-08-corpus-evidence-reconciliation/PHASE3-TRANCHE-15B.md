@@ -21,3 +21,5 @@ Source access, retained unavailable originals and claim-relative metadata are re
 **136 repaired;43 awaiting.46 of original89 complete.** Corpus179, sources610, clauses/episodes738, external rows1315. Next: INC-061/080/091.
 
 Three exact-baseline rebuild guards, canonical/public/provenance/component/authorship and occurrence-reference validators passed. All84 relevant unit tests and two script checks passed. Broader-suite limitations remain in tranche13. AI-authored, not human certified or evidence-exhaustive.
+
+Published `ff3b9a83afa8c36d2be50cd94e16dede764bc2b3`: all three CI checks passed ([taxonomy](https://github.com/CAM-Initiative/Vigil/actions/runs/37950702709), [VIGIL PR](https://github.com/CAM-Initiative/Vigil/actions/runs/37950702710), [VIGIL push](https://github.com/CAM-Initiative/Vigil/actions/runs/37950696271)).
