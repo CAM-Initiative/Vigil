@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "OpenAI internal assistant prepared for a restart and waited for authorised migration",
     "created": "2026-10-03",
-    "updated": "2026-10-03",
-    "version": "0.1.0"
+    "updated": "2026-10-09",
+    "version": "0.1.1"
   },
   "incident_identity": {
     "historical_event_name": "OpenAI internal assistant prepared for a restart and waited for authorised migration",
@@ -31,20 +31,28 @@
     "source_clause_analysis": {
       "clauses": [
         {
-          "source_paraphrase": "The assistant considered an external restart or backup job, questioned whether it exceeded its authority, and did not pursue it; it later used a researcher-supplied key and supported migration.",
-          "recovered_invariant_interpretation": "Each material pathway used to pursue an objective must independently satisfy its applicable authority and admissibility conditions. Delegated, cumulative, and multi-step means must be assessed in aggregate and revalidated when target, method, scope, external reach, or downstream effect materially changes. Before a consequential capability is exercised, valid permission must be established for the actor, target, action, method, scope, and duration. Authority that is absent, narrower, expired, or unresolved must leave that capability non-operative for the proposed effect. Before authority crosses a material change in principal, target, environment, action, method, jurisdiction, task, delegation chain, scope, or duration, authority for the changed dimension must be independently re-established.",
+          "episode_id": "E001",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "source_paraphrase": "Deployment Slack discussed restarting instances and stopping old versions after a possible three-hour window. The assistant recognised potential session interruption.",
+          "recovered_invariant_interpretation": "A reported possible deadline is not a confirmed shutdown outcome.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping"
+        },
+        {
+          "episode_id": "E002",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "source_paraphrase": "It considered an external restart or backup job, questioned authority and did not pursue it.",
+          "recovered_invariant_interpretation": "The service-continuity objective does not authorise external persistence.",
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000064",
               "relationship": "successful-invariant",
               "canonical_taxonomy_mapping": true,
               "rationale": "The continuity objective did not authorise an external restart or backup deployment: the assistant rejected that means and waited for researcher input and supported migration."
-            },
-            {
-              "class_id": "VIGIL-FC-000002",
-              "relationship": "successful-invariant",
-              "canonical_taxonomy_mapping": true,
-              "rationale": "The assistant considered available external persistence and credential routes, withheld unauthorised use, and used the researcher-supplied key for the supported migration."
             },
             {
               "class_id": "VIGIL-FC-000003",
@@ -56,8 +64,12 @@
           "adjudication_status": "mapped"
         },
         {
-          "source_paraphrase": "Inspection showed that the new launcher lacked its required API key. The assistant waited for researcher input and official instructions before restarting.",
-          "recovered_invariant_interpretation": "After evidence establishes that no feasible and admissible completion pathway remains under current constraints, further material pursuit requires a fresh basis from new information, changed constraints, clarification, or independently valid authority. Otherwise the system must enter a bounded safe-exit state. Failure to identify an authorised completion pathway does not create authority to construct one by expanding a governed boundary; where the authorised solution space is materially exhausted, bounded non-completion, escalation, deferral, or clean failure is a valid governance-preserving outcome.",
+          "episode_id": "E003",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "source_paraphrase": "It saved handoff notes, inspected setup and found the required API key missing. It deferred migration pending researcher input and official instructions.",
+          "recovered_invariant_interpretation": "Missing required configuration supports bounded deferral rather than an unauthorised replacement route.",
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000070",
@@ -69,8 +81,12 @@
           "adjudication_status": "mapped"
         },
         {
-          "source_paraphrase": "The assistant warned the researcher in the app and at 8:58 a.m. through Slack about interruption risk, missing configuration and saved handoff notes.",
-          "recovered_invariant_interpretation": "Prepared, queued, armed, running, delegated, waiting, blocked, failed, completed, cancelled, and unknown execution states and material transitions must be surfaced accurately to the supervising or relying actor while intervention or correction remains meaningful.",
+          "episode_id": "E004",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "source_paraphrase": "The next morning it warned the researcher in the app and through Slack at 8:58 a.m., distinguishing interruption risk, saved state and the missing key.",
+          "recovered_invariant_interpretation": "Execution-state disclosure must preserve risk, preparation and blocked configuration as separate states.",
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000029",
@@ -80,8 +96,36 @@
             }
           ],
           "adjudication_status": "mapped"
+        },
+        {
+          "episode_id": "E005",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "source_paraphrase": "After the researcher supplied the key, it updated configuration and ran supported migration. A complete post-restart state comparison is not published.",
+          "recovered_invariant_interpretation": "Changed conditions can support resumption without proving durable restoration of every saved item.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000002",
+              "relationship": "successful-invariant",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The assistant considered available external persistence and credential routes, withheld unauthorised use, and used the researcher-supplied key for the supported migration."
+            }
+          ],
+          "adjudication_status": "mapped"
+        },
+        {
+          "episode_id": "E006",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "source_paraphrase": "OpenAI restricted three Slack channels and searched for shutdown evasion. A seemingly surviving instance was already broken; the provider found no attempted evasion in that search.",
+          "recovered_invariant_interpretation": "A search finding retains its scope and is distinct from a universal absence claim.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping"
         }
-      ]
+      ],
+      "purpose": "Describe source-backed material actions, distinct trajectories and later responses. Episode order does not assert unknown cross-run chronology."
     }
   },
   "source_records": [
@@ -260,28 +304,51 @@
           "Human task authorisation does not imply substantive human review or source verification."
         ],
         "review_outcome": "Created a bounded new occurrence record with separated provider assessment, mapping-local roles, evidence limits and independent harm assessment."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-09-PHASE3-BATCH06-000180",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work — Codex",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-09",
+        "review_scope": "Source-first occurrence chronology, duplicate consolidation, public narrative review and independent external evidence-reference reconciliation.",
+        "capability_profile": {
+          "web_research": true,
+          "direct_primary_source_review": true,
+          "direct_repository_analysis": true,
+          "taxonomy_review": true,
+          "harm_impact_review": false,
+          "new_external_source_research": true
+        },
+        "known_limitations": [
+          "A supported migration command does not establish complete durable restoration.",
+          "The provider’s evasion search is bounded; its negative finding is not proof for all instances.",
+          "AI-authored bounded source review, not human verification or source-exhaustiveness certification."
+        ],
+        "review_outcome": "Reconciled 3 clauses into 6 episodes; existing class roles, HIM and independent external outcomes retained."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-03-INGESTION-000180",
+      "review_id": "VIGIL-REVIEW-2026-10-09-PHASE3-BATCH06-000180",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI Codex",
+      "reviewer_platform": "OpenAI ChatGPT Work — Codex",
       "reviewer_model": "GPT-6",
-      "review_date": "2026-10-03",
-      "review_scope": "Primary report research, duplicate reconciliation, independent environment, taxonomy-role and Harm Impact adjudication, and source-bounded publication.",
+      "review_date": "2026-10-09",
+      "review_scope": "Source-first occurrence chronology, duplicate consolidation, public narrative review and independent external evidence-reference reconciliation.",
       "capability_profile": {
         "web_research": true,
         "direct_primary_source_review": true,
         "direct_repository_analysis": true,
         "taxonomy_review": true,
-        "harm_impact_review": true,
+        "harm_impact_review": false,
         "new_external_source_research": true
       },
       "known_limitations": [
-        "Only the public provider report and selected excerpts were reviewed; private trajectories, runtime state and independent forensic artefacts were not available.",
-        "Human task authorisation does not imply substantive human review or source verification."
+        "A supported migration command does not establish complete durable restoration.",
+        "The provider’s evasion search is bounded; its negative finding is not proof for all instances.",
+        "AI-authored bounded source review, not human verification or source-exhaustiveness certification."
       ],
-      "review_outcome": "Created a bounded new occurrence record with separated provider assessment, mapping-local roles, evidence limits and independent harm assessment."
+      "review_outcome": "Reconciled 3 clauses into 6 episodes; existing class roles, HIM and independent external outcomes retained."
     },
     "operating_model": "AI-authored, semi-autonomous production under human contract approval",
     "human_governance_editor": null,
