@@ -15,3 +15,5 @@ HIM, earlier mapping roles/confidence, append-only histories and independent ext
 **150 repaired;29 awaiting.60 of original89 complete.** Corpus179, sources623, clauses/episodes796, external rows1315. Next: INC-109/111/113, then INC-135.
 
 All three exact-baseline rebuild guards, corpus/public/provenance/component/authorship/reference validators, 84 relevant tests and two script checks passed. No schema, validator, builder, permanent test or CI semantics changed. Broader-suite limitations remain in tranche13. AI-authored, not human certified or evidence-exhaustive.
+
+Published de64fd25b693825281c67895b2ecfed3cbc0e04b. All three remote checks passed: taxonomy 38003464610, VIGIL PR 38003464738, VIGIL push 38003459130.
