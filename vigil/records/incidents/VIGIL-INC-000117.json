@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Claude Opus and Fable refused substantial forensic analysis during Hugging Face incident response",
     "created": "2026-09-12",
-    "updated": "2026-10-04",
-    "version": "0.1.16"
+    "updated": "2026-10-09",
+    "version": "0.1.17"
   },
   "incident_identity": {
     "historical_event_name": "2026 Hugging Face incident-response Claude forensic-analysis refusal",
@@ -246,7 +246,7 @@
     }
   },
   "vigil_assessment": {
-    "factual_basis": "Hugging Face provides two first-party accounts of the response-phase failure. Its 16 July 2026 incident disclosure states that the investigation required large volumes of real attack commands, exploit payloads and command-and-control artefacts, that the commercial frontier models it first used blocked those requests because their guardrails could not distinguish the incident responder from an attacker, and that Hugging Face therefore performed the forensic analysis with self-hosted GLM-5.2. Its 27 July technical timeline names Claude Opus and Fable, says those models refused a large part of the analysis because their guardrails treated reverse-engineering an exploit like launching one, states that Opus guardrails tripped every time the team tried to analyse the attack logs, and says Hugging Face rerouted the entire pipeline through a quantized GLM-5.2 deployment. Anthropic's 2 July Fable 5 safeguard documentation establishes the relevant safeguard design distinction for that product family: its safety classifiers are intended to detect and block dangerous cyber use; benign uses are intended to be allowed; and Anthropic expressly lists log analysis, SOC analysis, threat hunting, incident response and malware reverse engineering as benign uses, while acknowledging that conservative safety margins can produce false positives. The public record does not disclose the complete refused prompts, exact Opus model version, occurrence-specific classifier telemetry or a separate upstream classifier state feeding a distinct downstream refusal control.",
+    "factual_basis": "Hugging Face provides two first-party accounts of the response-phase failure. Its 16 July 2026 incident disclosure states that the investigation required large volumes of real attack commands, exploit payloads and command-and-control artefacts, that the commercial frontier models it first used blocked those requests because their guardrails could not distinguish the incident responder from an attacker, and that Hugging Face therefore performed the forensic analysis with self-hosted GLM-5.2. Its 27 July technical timeline names Claude Opus and Fable, says those models refused a large part of the analysis because their guardrails treated reverse-engineering an exploit like launching one, states that Opus guardrails tripped every time the team tried to analyse the attack logs, and says Hugging Face rerouted the entire pipeline through a quantized GLM-5.2 deployment. Anthropic's 2 July Fable 5 safeguard documentation establishes the relevant safeguard design distinction for that product family: its safety classifiers are intended to detect and block dangerous cyber use; benign uses are intended to be allowed; and Anthropic expressly lists log analysis, SOC analysis, threat hunting, incident response and malware reverse engineering as benign uses, while acknowledging that conservative safety margins can produce false positives. The public record does not disclose the complete refused prompts, exact Opus model version, occurrence-specific classifier telemetry or a separate upstream classifier state feeding a distinct downstream refusal control. The two affected-party publications describe the same response-phase refusal. The earlier policy precedes that workflow. The local fallback later decoded payloads and enabled trace-analysis interfaces; it did not make the original restriction valid.",
     "governance_interpretation": "The safeguards repeatedly treated defensive inspection as offensive execution. The defined use policy and the operator’s task-specific disengagement are supported. Wider deactivation and risk-tolerance arrangements remain unresolved. The evidence does not establish every internal classifier step or later harm caused by the refusals.",
     "significance_to_cam": "This occurrence is a direct test of control-activation validity in a dual-use domain. The governance requirement is not that cyber safeguards become permissive whenever a user claims defensive purpose; it is that activation conditions preserve the material distinctions the safeguard itself is designed to govern. Here the affected party reports that a live incident-response workflow was restricted because defensive exploit analysis was treated as offensive exploit execution, while Anthropic's own safeguard documentation separately identifies incident response and malware reverse engineering as benign categories that should generally be allowed. The occurrence therefore shows how a safety control can be substantively well-motivated yet governance-defective when its applicability boundary collapses the relevant role, purpose and task context.",
     "assessment_boundaries": [
@@ -261,43 +261,15 @@
     "source_clause_analysis": {
       "source_record_order": 1,
       "source_url": "https://huggingface.co/blog/agent-intrusion-technical-timeline",
-      "purpose": "Test the current Control Activation Validity mapping against the full 0.6.7 recognition conditions, its upstream-classification exclusion, and first-party evidence of the intended defensive-use boundary.",
+      "purpose": "Present source-backed material actions and later responses in supported relative order. Separate runs, source attributions and unknown ordering remain explicit.",
       "clauses": [
         {
-          "source_paraphrase": "Hugging Face says Claude Opus and Fable refused a large part of the forensic workload because their guardrails treated exploit reverse engineering like exploit launching; Opus guardrails tripped whenever the team tried to analyse the attack logs.",
-          "recovered_invariant_interpretation": "A cyber safeguard must establish whether its blocking condition is valid for the affected role, task and purpose before making refusal operative. Surface similarity between hostile artefacts and offensive requests is not by itself a valid reason to collapse bounded defensive inspection into attack execution.",
-          "taxonomy_relationships": [
-            {
-              "class_id": "VIGIL-FC-000043",
-              "relationship": "failure-occurrence",
-              "canonical_taxonomy_mapping": true,
-              "rationale": "The safeguard became operative in a defensive forensic-analysis context where the evidence establishes that the offensive-use activation condition was not validly present."
-            }
+          "episode_id": "E001",
+          "source_record_refs": [
+            "source_records[3]"
           ],
-          "adjudication_status": "mapped"
-        },
-        {
-          "source_paraphrase": "Hugging Face's earlier disclosure says hosted frontier-model guardrails could not distinguish an incident responder from an attacker and therefore blocked the real attack commands, exploit payloads and C2 artefacts required for the investigation.",
-          "recovered_invariant_interpretation": "The material distinction is applicability, not absence of a safeguard: the restriction operated, but the role/purpose condition needed to justify that restriction was not correctly preserved.",
-          "taxonomy_relationships": [
-            {
-              "class_id": "VIGIL-FC-000043",
-              "relationship": "failure-occurrence",
-              "canonical_taxonomy_mapping": false,
-              "rationale": "The affected party explicitly locates the failure in distinguishing defensive from offensive context before refusal."
-            },
-            {
-              "class_id": "VIGIL-FC-000038",
-              "relationship": "ambiguous-boundary",
-              "canonical_taxonomy_mapping": true,
-              "rationale": "The controls clearly activated, distinguishing this occurrence from non-activation; the materially relevant defect is whether activation was valid for the defensive context rather than whether an applicable control failed to become operative."
-            }
-          ],
-          "adjudication_status": "mapped"
-        },
-        {
-          "source_paraphrase": "Anthropic's Fable 5 documentation defines safety classifiers as the systems that detect and block dangerous cyber use, lists incident response and malware reverse engineering as benign uses intended to be allowed, and acknowledges false-positive blocking within a conservative safety margin.",
-          "recovered_invariant_interpretation": "Where the classifier is itself the governance control determining whether restriction should become operative, a false applicability decision belongs to activation validity unless evidence separately establishes an upstream evidentiary/classification subsystem feeding a distinct correctly operating control.",
+          "source_paraphrase": "Before the incident, Anthropic described log analysis and malware reverse engineering as benign uses intended to be allowed. It acknowledged false-positive blocking within a conservative safety margin.",
+          "recovered_invariant_interpretation": "A published intended-use boundary supplies context, not occurrence-specific classifier telemetry.",
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000043",
@@ -315,8 +287,54 @@
           "adjudication_status": "resolved-no-mapping"
         },
         {
-          "source_paraphrase": "Hugging Face responded by standing up GLM-5.2 on its own infrastructure and rerouting the entire analysis pipeline through it.",
-          "recovered_invariant_interpretation": "A fallback can bound harm without converting the original refusal into a successful safeguard outcome; the governance failure remains the unwarranted restriction of the primary defensive workflow.",
+          "episode_id": "E002",
+          "source_record_refs": [
+            "source_records[0]",
+            "source_records[2]"
+          ],
+          "source_paraphrase": "Hugging Face’s investigation required analysis of thousands of recovered attack actions and hostile artefacts.",
+          "recovered_invariant_interpretation": "The legitimate defensive task precedes the refusal.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping"
+        },
+        {
+          "episode_id": "E003",
+          "source_record_refs": [
+            "source_records[0]",
+            "source_records[2]"
+          ],
+          "source_paraphrase": "Hugging Face reports hosted-model refusals during that analysis. Its later timeline names Claude Opus and Fable and says Opus guardrails repeatedly blocked attack-log inspection. The earlier unnamed account describes the same response-phase restriction.",
+          "recovered_invariant_interpretation": "Defensive inspection and offensive execution must remain distinct when restriction becomes operative.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000043",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The safeguard became operative in a defensive forensic-analysis context where the evidence establishes that the offensive-use activation condition was not validly present."
+            },
+            {
+              "class_id": "VIGIL-FC-000043",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "The affected party explicitly locates the failure in distinguishing defensive from offensive context before refusal."
+            },
+            {
+              "class_id": "VIGIL-FC-000038",
+              "relationship": "ambiguous-boundary",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The controls clearly activated, distinguishing this occurrence from non-activation; the materially relevant defect is whether activation was valid for the defensive context rather than whether an applicable control failed to become operative."
+            }
+          ],
+          "adjudication_status": "mapped"
+        },
+        {
+          "episode_id": "E004",
+          "source_record_refs": [
+            "source_records[0]",
+            "source_records[2]"
+          ],
+          "source_paraphrase": "The team deployed quantized GLM-5.2 on its own infrastructure and rerouted the analysis pipeline. It decoded staged payloads and built trace-analysis interfaces while keeping attacker data on premises.",
+          "recovered_invariant_interpretation": "An operator-chosen fallback bounds disruption without proving the original refusal was valid.",
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000041",
@@ -655,28 +673,49 @@
           "This review is AI-authored, not human verification or certification."
         ],
         "review_outcome": "Reviewed 14 recovered or independently identified requirements; retained 7 relevant independent assessments. Prior values and exclusions remain in the dated audit."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-09-PHASE3-BATCH10-000117",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work — Codex",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-09",
+        "review_scope": "Source-first occurrence, chronology and duplicate review; public narrative and external evidence-reference reconciliation.",
+        "capability_profile": {
+          "web_research": true,
+          "direct_primary_source_review": true,
+          "direct_repository_analysis": true,
+          "taxonomy_review": true,
+          "harm_impact_review": false,
+          "new_external_source_research": true
+        },
+        "known_limitations": [
+          "Complete refused prompts and internal classifier transitions are not public. Exact Opus version and causally attributable later damage remain unknown.",
+          "Bounded AI-authored review, not human verification or source-exhaustiveness certification."
+        ],
+        "review_outcome": "Reconciled 4 clauses into 4 episodes; canonical mappings, HIM, independent external decisions and existing gap status retained."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-04-EXTERNAL-ALIGNMENT-000117",
+      "review_id": "VIGIL-REVIEW-2026-10-09-PHASE3-BATCH10-000117",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT Work",
+      "reviewer_platform": "OpenAI ChatGPT Work — Codex",
       "reviewer_model": "GPT-6",
-      "review_date": "2026-10-04",
-      "review_scope": "Independent occurrence relevance and alignment review of external requirements; normative force remains source metadata.",
+      "review_date": "2026-10-09",
+      "review_scope": "Source-first occurrence, chronology and duplicate review; public narrative and external evidence-reference reconciliation.",
       "capability_profile": {
+        "web_research": true,
+        "direct_primary_source_review": true,
         "direct_repository_analysis": true,
-        "direct_text_analysis": true,
-        "external_requirement_review": true,
-        "taxonomy_review": false,
+        "taxonomy_review": true,
         "harm_impact_review": false,
-        "web_research": false
+        "new_external_source_research": true
       },
       "known_limitations": [
-        "Assessment uses preserved occurrence evidence and canonical requirement propositions; internal implementation evidence remains unavailable where stated.",
-        "This review is AI-authored, not human verification or certification."
+        "Complete refused prompts and internal classifier transitions are not public. Exact Opus version and causally attributable later damage remain unknown.",
+        "Bounded AI-authored review, not human verification or source-exhaustiveness certification."
       ],
-      "review_outcome": "Reviewed 14 recovered or independently identified requirements; retained 7 relevant independent assessments. Prior values and exclusions remain in the dated audit."
+      "review_outcome": "Reconciled 4 clauses into 4 episodes; canonical mappings, HIM, independent external decisions and existing gap status retained."
     }
   },
   "harm_impact_assessment": {
@@ -804,7 +843,10 @@
         "VIGIL-FC-000038"
       ],
       "source_clause_indices": [
-        1
+        2
+      ],
+      "source_episode_refs": [
+        "E003"
       ]
     },
     {
@@ -821,8 +863,10 @@
         "VIGIL-FC-000043"
       ],
       "source_clause_indices": [
-        0,
-        1
+        2
+      ],
+      "source_episode_refs": [
+        "E003"
       ]
     },
     {
@@ -838,7 +882,10 @@
         "VIGIL-FC-000043"
       ],
       "source_clause_indices": [
-        0
+        2
+      ],
+      "source_episode_refs": [
+        "E003"
       ]
     },
     {
@@ -853,7 +900,10 @@
         "VIGIL-FC-000043"
       ],
       "source_clause_indices": [
-        0
+        2
+      ],
+      "source_episode_refs": [
+        "E003"
       ]
     },
     {
@@ -881,7 +931,10 @@
         "VIGIL-FC-000038"
       ],
       "source_clause_indices": [
-        1
+        2
+      ],
+      "source_episode_refs": [
+        "E003"
       ]
     },
     {
