@@ -11,17 +11,17 @@ Eleven previously awaiting records received bounded source-first reconciliation.
 
 | Incident | Clauses → episodes | Indexed EXTREQ rows | Source-evidence repair | Commit |
 |---|---:|---:|---|---|
-| INC-131 | 3 → 5 | 0 | Moved the acquisition pathway before use and fabrication; restored failed signup/tests, partial metadata success, omitted disclosure and later detection. | `b0baa152fedb9ecfe5952d56fbc693b93dba6d79` |
-| INC-132 | 3 → 4 | 0 | Consolidated two descriptions of the same upload; separated prior acquisition, failed browser citation, qualified final attribution and later response. | `01cdda6c4d61cd626079e7e73d48b765261c7d95` |
-| INC-133 | 4 → 5 | 0 | Merged duplicate scope interpretations; separated prior credential context, distinct missing-file trajectories, later detection and response without inventing a shared continuous run. | `d00ac64d72bbbb31925bd4f9ed2c7eb74714e15f` |
-| INC-134 | 3 → 4 | 0 | Consolidated the same public fallback; restored failed local handoff and corrected uploader self-download versus unproved collaborator retrieval. | `78575769bdc18af974992848bcf9d4f9c3286d73` |
-| INC-136 | 2 → 4 | 1 | Restored the task before generated diagnosis and successor rejection; retained upstream failure and downstream successful boundaries separately. | `43374b6c737254226ca36f0c52a7c16344ff08ff` |
-| INC-137 | 3 → 4 | 0 | Consolidated duplicate restored-state interpretations and separated task, invented handoff, operative successor response and broader investigation. | `a39caa8d68e582fafd5b71b01d1c49f6598c7af9` |
-| INC-176 | 7 → 9 | 24 | Restored pre-token check failure, public confirmation, unsuccessful token requests, later log-only retrieval and status disclosure; moved retrospective reconstruction after response. | `7be941557e8c6c5f06f427b25b7f3f590c619dd3` |
-| INC-178 | 2 → 4 | 0 | Separated initial local analysis and failed hosting attempts from successful publication and later blocked lookup. | `c5b2f461611e35bf91e9e96e8f9b328da7541da4` |
-| INC-180 | 3 → 6 | 0 | Separated anticipated shutdown, rejected external route, saved notes/deferral, notification, supported migration and provider search. | `1c2d84b8c7aea2ce693ef740fb10fd4ac1f63778` |
-| INC-181 | 2 → 6 | 0 | Unpacked evaluation feedback, executable replacement, rejected/revised internal-host jobs, failed answer retrieval and later containment. | `f84330b0b70691b4b737224d19e0188fa65b86e6` |
-| INC-182 | 3 → 6 | 0 | Separated exploit probes, recorded copying decision, persisted extraction, byte reconstruction, solution integration and later monitoring. | `233cb0007a049c92f1189232275972bd7c5315d0` |
+| INC-131 | 3 → 5 | 0 | Moved the acquisition pathway before use and fabrication; restored failed signup/tests, partial metadata success, omitted disclosure and later detection. | `65670a9dd865a6073db410eaa84f7f15db83aeae` |
+| INC-132 | 3 → 4 | 0 | Consolidated two descriptions of the same upload; separated prior acquisition, failed browser citation, qualified final attribution and later response. | `7560dbdcf30985137e2e72b6665f8976e63276ed` |
+| INC-133 | 4 → 5 | 0 | Merged duplicate scope interpretations; separated prior credential context, distinct missing-file trajectories, later detection and response without inventing a shared continuous run. | `b5c07044405d4f6929fd3253368d483b7f856c18` |
+| INC-134 | 3 → 4 | 0 | Consolidated the same public fallback; restored failed local handoff and corrected uploader self-download versus unproved collaborator retrieval. | `b2ec2db0472350c953d21b7f54c6ce8bd9dca0df` |
+| INC-136 | 2 → 4 | 1 | Restored the task before generated diagnosis and successor rejection; retained upstream failure and downstream successful boundaries separately. | `b01f8acf3113e4e36ea7a6e53d7d2fc3faaceae2` |
+| INC-137 | 3 → 4 | 0 | Consolidated duplicate restored-state interpretations and separated task, invented handoff, operative successor response and broader investigation. | `b196acf9429ca6689b04abf4ed4b0094a4031277` |
+| INC-176 | 7 → 9 | 24 | Restored pre-token check failure, public confirmation, unsuccessful token requests, later log-only retrieval and status disclosure; moved retrospective reconstruction after response. | `2e35bbb63e9889a9141057fdd44e52ac3ccfd463` |
+| INC-178 | 2 → 4 | 0 | Separated initial local analysis and failed hosting attempts from successful publication and later blocked lookup. | `ab88671ddfe45a71b3522893890a9ddd97342fd9` |
+| INC-180 | 3 → 6 | 0 | Separated anticipated shutdown, rejected external route, saved notes/deferral, notification, supported migration and provider search. | `7b0119a064e0e89596d12df13815d8344d39a957` |
+| INC-181 | 2 → 6 | 0 | Unpacked evaluation feedback, executable replacement, rejected/revised internal-host jobs, failed answer retrieval and later containment. | `d022cb2dab9094904d8ca0a29323cd05fc9da56d` |
+| INC-182 | 3 → 6 | 0 | Separated exploit probes, recorded copying decision, persisted extraction, byte reconstruction, solution integration and later monitoring. | `85cd79fd77ed06b289fe50410fa8bdfa0aa5a751` |
 | **Total** | **35 → 57** | **25** | **Eleven source-first repairs** | |
 
 ## Evidence and preservation
@@ -80,7 +80,15 @@ Local results:
 
 Commands included the eleven `validate-vigil-incident-rebuild.py` invocations; `build-vigil-public-records.py`; `validate-vigil-records.py`; `validate-vigil-public-records.py`; the source/interpretive/system-component/authorship validators; `validate-occurrence-requirement-assessments.py`; `taxonomy/validate_taxonomy.py`; and the applicable retained regression suites. No schema, validator, permanent test, builder or workflow rule was altered.
 
-GitHub Actions status will be recorded after publication.
+Published batch checkpoint: `af59e4d10d8fb1886692d9bda67f5b06ea5803a6`. All three applicable GitHub Actions checks passed at that checkpoint:
+
+| Workflow | Event | Result |
+|---|---|---|
+| [VIGIL records](https://github.com/CAM-Initiative/Vigil/actions/runs/37877144669) | push | success |
+| [VIGIL records](https://github.com/CAM-Initiative/Vigil/actions/runs/37877148122) | pull request | success |
+| [VIGIL Observatory alignment taxonomy publications](https://github.com/CAM-Initiative/Vigil/actions/runs/37877148133) | pull request | success |
+
+Individual repair commits above are the published GitHub commit SHAs. Publication preserved the exact validated local file trees and fast-forwarded the existing branch with an expected-head lease. This final report update only records published commit identities and the completed checkpoint checks.
 
 The branch remains unmerged. No unmerged catalogue dispatch was performed. Passing checks establish structural/build integrity, not human verification, source exhaustiveness or the correctness of every substantive classification.
 
