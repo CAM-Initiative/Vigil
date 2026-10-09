@@ -10,19 +10,19 @@ Thirteen previously awaiting records were reconciled. **34 clauses became 62 sou
 
 | Incident | Clauses → episodes | Indexed EXTREQ | Material repair | Commit |
 |---|---:|---:|---|---|
-| INC-015 | 4 → 6 | 1 | Restored the premature resolved update, return to monitoring, further affected users and email sequence; separated an unconfirmed later individual ban. | `9c76d680272b381059b37c3918d3ac17ba3ec691` |
-| INC-016 | 2 → 4 | 1 | Merged symptom and route-labelling interpretations of the same initial state; separated gradual recovery, applied mitigation and final resolution. | `432dd7c8015314093476af5a6cc3b747c246be35` |
-| INC-018 | 4 → 5 | 1 | Merged duplicated Classic fallback, restored the required app update and separated first fix, recurrence and final recovery. | `77cd4a6ce4b23c3b956c0554cd9c484e1f75b9a4` |
-| INC-019 | 2 → 3 | 0 | Separated onset notice, mitigation and resolution; bounded the 105-minute figure to the public update window. | `c5b508a1b830ee72f3e00f6793d70cd8c9d29b1b` |
-| INC-020 | 2 → 3 | 0 | Separated scope, recovery and occurrence identity; corrected the current component list from twelve to eleven while auditing the historical discrepancy. | `f674d592cecb111dfe53532de8c05546ace6ed59` |
-| INC-021 | 3 → 5 | 1 | Merged duplicate route-identification descriptions; retained heterogeneous fallbacks and later attributed account complaints without conflating them with the separate suspension incident. | `5f7cc3b278c76a74ed3b41d9667148aa46eca931` |
-| INC-022 | 2 → 5 | 1 | Restored mitigation actions and three recovery stages; corrected authentication recovery from 82 to 62 minutes and kept 82 minutes for edge availability. | `b93af06d9b56b0cb1b7508cb82d24269d8fd36a6` |
-| INC-027 | 3 → 5 | 0 | Restored identification and three separate function-recovery transitions; preserved the unresolved meaning of the initial 403 response. | `fe5285b6beb6fee2d7fd26738044cf935477315f` |
-| INC-038 | 2 → 3 | 0 | Separated initial identification, continued investigation and final recovery without equating the eleven-day public interval with a continuous total outage. | `eae1f48c64bdacf3c506ffe80024a047f30dd3b9` |
-| INC-039 | 2 → 3 | 1 | Merged two interpretations of the same partial-restoration state; restored the later broad resolution while preserving missing feature-specific recovery and log-loss evidence. | `d5be84f1cc9e1ab2ce4805adb40d08c28d0a89ba` |
-| INC-095 | 3 → 6 | 7 | Separated upstream compromise, publication, working Linux PyPI payload, nonfunctional npm payload, external detection/removal and investigation closure. | `0b5371b21f4adf231de7a8e057619934252fe007` |
-| INC-107 | 3 → 8 | 0 | Merged duplicate log/reconstruction clauses and restored access, download, patch-before-discovery, containment, notification and corrected disclosure stages. | `e9524eaeec0100a35c71ad242a1c051030c31ab5` |
-| INC-108 | 2 → 6 | 1 | Restored infrastructure test, instruction seeding, hidden task, concealment and decommissioning-before-disclosure chronology; distinguished the demonstrated proof of concept from possible delivery routes. | `d093baac4c8fb738f31399429c1ab5f21169d232` |
+| INC-015 | 4 → 6 | 1 | Restored the premature resolved update, return to monitoring, further affected users and email sequence; separated an unconfirmed later individual ban. | `4ae94d4b321c46cce6c4ff9f45013cb6e13e5223` |
+| INC-016 | 2 → 4 | 1 | Merged symptom and route-labelling interpretations of the same initial state; separated gradual recovery, applied mitigation and final resolution. | `17ccfaf96a8693733601f9e11086710ec5d0909d` |
+| INC-018 | 4 → 5 | 1 | Merged duplicated Classic fallback, restored the required app update and separated first fix, recurrence and final recovery. | `7b9a479ed47e69cd7f6a645bf4765e7fa7cbf89c` |
+| INC-019 | 2 → 3 | 0 | Separated onset notice, mitigation and resolution; bounded the 105-minute figure to the public update window. | `21fa20b1c73fc8007434c341a145af25ef9ce2b0` |
+| INC-020 | 2 → 3 | 0 | Separated scope, recovery and occurrence identity; corrected the current component list from twelve to eleven while auditing the historical discrepancy. | `6e5f44b7c76c4e03326b5b6b04327e4d536a543f` |
+| INC-021 | 3 → 5 | 1 | Merged duplicate route-identification descriptions; retained heterogeneous fallbacks and later attributed account complaints without conflating them with the separate suspension incident. | `2ccabf482bb31fae7b10e41ce191f1bffe77695c` |
+| INC-022 | 2 → 5 | 1 | Restored mitigation actions and three recovery stages; corrected authentication recovery from 82 to 62 minutes and kept 82 minutes for edge availability. | `d2c464b5fe1df238539160b3b0a720a7c8c1f300` |
+| INC-027 | 3 → 5 | 0 | Restored identification and three separate function-recovery transitions; preserved the unresolved meaning of the initial 403 response. | `109776508fa108d5c77cd6207fe955a037f00942` |
+| INC-038 | 2 → 3 | 0 | Separated initial identification, continued investigation and final recovery without equating the eleven-day public interval with a continuous total outage. | `39353121bce4a26f28e593c720c3fc8fa6d8f986` |
+| INC-039 | 2 → 3 | 1 | Merged two interpretations of the same partial-restoration state; restored the later broad resolution while preserving missing feature-specific recovery and log-loss evidence. | `7104e5a7a4e9276ba2025b2af223e4789add666f` |
+| INC-095 | 3 → 6 | 7 | Separated upstream compromise, publication, working Linux PyPI payload, nonfunctional npm payload, external detection/removal and investigation closure. | `ccf3db09183023d981cbfe4746e63238c6952fa1` |
+| INC-107 | 3 → 8 | 0 | Merged duplicate log/reconstruction clauses and restored access, download, patch-before-discovery, containment, notification and corrected disclosure stages. | `c37d4b5d658bbbcd787195a7e8dd26a490381638` |
+| INC-108 | 2 → 6 | 1 | Restored infrastructure test, instruction seeding, hidden task, concealment and decommissioning-before-disclosure chronology; distinguished the demonstrated proof of concept from possible delivery routes. | `b74046b181ffaf2e0d13099c240c2bf434dfa76d` |
 
 ## Evidence and interpretation
 
