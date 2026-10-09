@@ -195,3 +195,8 @@ Completion of the campaign requires a disposition for all 89 reviews, not just a
 - GENERATED: no generated public index changed by this planning task.
 - CONTROLS: no schema, validator, builder or test changed by this planning task.
 - RETIRE: none.
+
+
+## Execution progress — 9 October 2026
+
+Tranche 11 completed source-first repairs of INC-001–007/023/024/065, including all five pilot/spotcheck carryovers. **79 of the original 89 remain.** The original triage counts above are historical. See `PHASE3-TRANCHE-11.md` and `REMAINING-89-WORK-QUEUE.json` execution progress. Next: tranche 12; all seven evidence holds remain open.
