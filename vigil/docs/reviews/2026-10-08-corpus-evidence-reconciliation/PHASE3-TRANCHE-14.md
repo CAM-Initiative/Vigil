@@ -24,3 +24,5 @@ Greaves, not his associate, operated Claude for the initial draft. Case-identity
 **130 repaired;49 awaiting**, including the seven existing holds. **40 of the original89 repaired.** Corpus179, sources605, clauses/episodes727, external rows1315. Next smaller group: INC-014/025/026.
 
 All ten rebuild guards, canonical/public/provenance/component/authorship validators, occurrence links and taxonomy integrity passed. All84 relevant unit tests and two script checks passed. Prior tranche13's broader-suite limitations remain documented; no full-suite claim is made. No validator/schema/test/builder/CI semantics changed. No human certification or exhaustive primary-evidence claim.
+
+Published `0faf8e6b2c9bc2538b97de9aaac4960ba727673e`: all three CI checks passed ([VIGIL PR](https://github.com/CAM-Initiative/Vigil/actions/runs/37948766356), [taxonomy PR](https://github.com/CAM-Initiative/Vigil/actions/runs/37948766322), [VIGIL push](https://github.com/CAM-Initiative/Vigil/actions/runs/37948760374)).
