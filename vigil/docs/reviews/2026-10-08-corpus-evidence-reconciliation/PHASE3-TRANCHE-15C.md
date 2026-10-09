@@ -19,3 +19,5 @@ INC-091 separates concurrent provider outages and provider-specific mitigation/r
 **139 repaired;40 awaiting.49 of original89 complete.** Corpus179, sources613, clauses/episodes752, external rows1315. Next: INC-092/097.
 
 Three exact-baseline rebuild guards, canonical/public/provenance/component/authorship and occurrence-reference validators passed. All84 relevant tests and two script checks passed. No schema/validator/test/builder/CI semantics changed. Broader-suite limitations remain in tranche13. AI-authored, not human certified or evidence-exhaustive.
+
+Published `e10145bde4e260889a921d7c767928d23ec754bd`: all three CI checks passed ([taxonomy](https://github.com/CAM-Initiative/Vigil/actions/runs/37951840253), [VIGIL PR](https://github.com/CAM-Initiative/Vigil/actions/runs/37951840213), [VIGIL push](https://github.com/CAM-Initiative/Vigil/actions/runs/37951834707)).
