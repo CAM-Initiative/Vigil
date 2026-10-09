@@ -3,7 +3,7 @@
 **Date:** 2026-10-08
 **Branch:** `agent/incident-ecosystem-ingestion`
 **Frozen canonical baseline:** `d845b4b31af8a7416f0df9c1a77a06073f7afc51`
-**Status:** Frozen structural census of 179 Incidents; 44 bounded source-first canonical repairs (Phase 1 plus six Phase 3 tranches), four earlier pilot-only cases, one preliminary spotcheck and 130 awaiting source-first review. Episode/EXTREQ validator, generated public-index workflow and ten-case expanded tranche crosswalks operational. No independently human-certified source exhaustiveness.
+**Status:** Frozen structural census of 179 Incidents; 56 bounded source-first canonical repairs (Phase 1 plus seven Phase 3 tranches), four earlier pilot-only cases, one preliminary spotcheck and 118 awaiting source-first review. Episode/EXTREQ validator, generated public-index workflow and ten-case expanded tranche crosswalks operational. No independently human-certified source exhaustiveness.
 
 ## Immutable baseline and coverage semantics
 
@@ -74,3 +74,10 @@ The live census is 33 bounded source-first repaired, four pilot-only, one prelim
 Eleven fresh awaiting cases (INC-131/132/133/134/136/137/176/178/180/181/182) were reconciled from exact checkpoint `b99a47a869ed3c78398043b4604b4c90ffd15748`. Their 35 original clauses became 57 material episodes. Twenty-five position-linked EXTREQ rows were reconciled individually, bringing the cumulative count to 332. See `PHASE3-TRANCHE-06.md` and eleven original/new episode manifests. The review restores acquisition, failed alternatives, successor decisions, partial versus completed outcomes and later responses. In INC-134 it corrects unsupported collaborator delivery to uploader self-download and explicitly narrows one clause rationale from achieved task completion to attempted completion. No canonical mapping, role, confidence, HIM or independent external alignment result/basis changed.
 
 The census is now 44 source-first repaired, four pilot-only, one preliminary spotcheck and 130 awaiting, totalling 179. No new hold or taxonomy action was created; earlier held cases remain unchanged. All eleven rebuild guards, 84 unit tests, provenance and generated-index parity checks passed locally. The report records remote CI evidence after publication to the existing unmerged branch. These checks do not certify human review, substantive correctness or evidence exhaustiveness.
+
+
+## Phase 3 seventh-tranche checkpoint — 9 October 2026
+
+Twelve fresh awaiting records (INC-157/161/170/172/175/179/183/184/185/186/187/188) were reviewed from exact checkpoint `717d7b550d60e66f6441ea5614fb307ae8c95242`. Their 34 clauses became 58 material episodes; 64 indexed EXTREQ rows were individually reconciled, bringing the cumulative count to 396. See `PHASE3-TRANCHE-07.md` and the twelve original/new audit manifests. The census is 56 repaired, four pilot-only, one spotcheck and 118 awaiting, totalling 179. The user has authorised continued execution through the full remaining corpus; a tranche checkpoint is not campaign completion.
+
+All existing mappings, relationships, rationales, sources, HIM, independent external decisions and coverage were preserved. Existing containment/verification-assurance gaps remain unresolved; in this exact tree FC-084 is a proposal, not a selectable canonical class. Propagation alone does not establish assurance inflation. Primary/first-hand reports were prioritised; indexed, mirrored and licensed syndicated material is explicitly distinguished where origin retrieval failed. No new unresolved action or evidence hold was introduced. Twelve rebuild guards, 84 unit tests, provenance, occurrence-reference checks and 179-entry public-index parity passed locally. Remote CI is verified after publication. Human verification and source exhaustiveness remain uncertified.
