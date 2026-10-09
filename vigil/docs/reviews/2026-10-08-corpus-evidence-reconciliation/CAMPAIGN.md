@@ -153,3 +153,7 @@ Ten further reviews complete. 120 bounded source-first repaired; 59 awaiting inc
 ### Tranche16B checkpoint — 9 October 2026
 
 147 bounded source-first repaired;32 awaiting including seven documented holds. Original89 completed57. Cumulative indexed EXTREQ reconciliations: 881. AI-authored, not human certified. See [PHASE3-TRANCHE-16B.md](PHASE3-TRANCHE-16B.md). Next smaller group: INC-090/093/106.
+
+### Tranche16C checkpoint — 9 October 2026
+
+150 bounded source-first repaired;29 awaiting including seven documented holds. Original89 completed60. Cumulative indexed EXTREQ reconciliations: 899. AI-authored, not human certified. See [PHASE3-TRANCHE-16C.md](PHASE3-TRANCHE-16C.md). Next smaller group: INC-109/111/113, then INC-135.
