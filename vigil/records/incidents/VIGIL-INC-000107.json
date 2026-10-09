@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Mathspace breach exposed personal data of more than one million users in Australia and New Zealand",
     "created": "2026-09-09",
-    "updated": "2026-10-04",
-    "version": "0.1.15"
+    "updated": "2026-10-09",
+    "version": "0.1.16"
   },
   "incident_identity": {
     "historical_event_name": "2026 Mathspace Metabase data breach",
@@ -18,9 +18,9 @@
     "date_precision": "date-range",
     "date_basis": "Mathspace states that unauthorised access to its self-hosted Metabase reporting system dated back to 10 August 2026, that information was downloaded from its Australian reporting database on 27 August, and that it confirmed the breach on 3 September 2026."
   },
-  "summary": "Mathspace disclosed that attackers exploited a vulnerability in its self-hosted Metabase reporting system, obtained administrator access without a legitimate login, and downloaded personal information from its Australian reporting database. Mathspace identified 1,079,819 affected people across Australia and New Zealand, including students, parents or guardians, teachers and Mathspace staff. Exposed fields included names, usernames, email addresses and account metadata. Mathspace states that academic records, assessment results, passwords, authentication tokens, SSO credentials and API credentials were not exposed.",
+  "summary": "Mathspace disclosed that attackers exploited a vulnerability in its self-hosted Metabase reporting system, obtained administrator access without a legitimate login, and downloaded personal information from its Australian reporting database. Mathspace identified 1,079,819 affected people across Australia and New Zealand, including students, parents or guardians, teachers and Mathspace staff. Exposed fields included names, usernames, email addresses and account metadata. Mathspace states that academic records, assessment results, passwords, authentication tokens, SSO credentials and API credentials were not exposed. After reviewing logs, Mathspace confirmed the breach on 3 September and disabled the affected reporting access. It notified schools and regulators on 4 September and began individual notices on 6 September. Its 8 September update clarified that earlier communications had omitted some exposed account details; recovery checks and notifications were still continuing.",
   "vigil_assessment": {
-    "factual_basis": "Mathspace's own breach notice states that Metabase published a critical security advisory and patched versions on 6 August 2026, but Mathspace's vulnerability-notification process did not identify and escalate the advisory. Unauthorised access was later traced to 10 August, data was downloaded on 27 August, the Metabase instance was updated on 29 August, and Mathspace confirmed the compromise on 3 September after reviewing historical logs. Mathspace also states that, when it updated the instance, it did not complete additional compromise checks recommended for potentially affected systems. ABC News independently reported the breach and affected population.",
+    "factual_basis": "Mathspace's own breach notice states that Metabase published a critical security advisory and patched versions on 6 August 2026, but Mathspace's vulnerability-notification process did not identify and escalate the advisory. Unauthorised access was later traced to 10 August, data was downloaded on 27 August, the Metabase instance was updated on 29 August, and Mathspace confirmed the compromise on 3 September after reviewing historical logs. Mathspace also states that, when it updated the instance, it did not complete additional compromise checks recommended for potentially affected systems. ABC News independently reported the breach and affected population. The 8 September update corrects earlier disclosure of exposed fields. It reports no evidence of subsequent publication or misuse, rather than establishing none occurred. Taking Metabase offline and revoking its access are achieved containment steps; notification and recovery checks remained ongoing.",
     "governance_interpretation": "The occurrence is a large-scale confidentiality breach involving an education platform's internal reporting environment and retained personal data. The evidence supports a chain involving delayed response to a critical vulnerability advisory and incomplete assurance after disclosure, but it does not isolate whether patch governance, monitoring, access control or data-retention practice was the decisive technical mechanism. The critical-advisory notification failure and the affirmative historical log/reconstruction successes are retained as distinct stages. Conventional reporting-database logs are not automatically evidence of model-input/output, GAI incident or agent governance controls. The preserved occurrence does not establish an affected AI lifecycle process or autonomous system. The reviewed AI-specific external requirements are therefore not relevant to this reporting-database breach.",
     "significance_to_cam": "The incident is governance-significant because it affected more than one million people, including students, across Australian and New Zealand education contexts. It highlights the consequences of delayed security-advisory escalation, retained reporting access to large personal-data populations, and incomplete compromise checks following a critical vulnerability disclosure.",
     "assessment_boundaries": [
@@ -33,11 +33,15 @@
     "source_clause_analysis": {
       "source_record_order": 1,
       "source_url": "https://blog.mathspace.co/mathspace-data-breach-what-happened-and-what-affected-users-should-know/",
-      "purpose": "Preserve the source-language or evidentiary propositions that materially explain VIGIL's governance interpretation. Paraphrases are concise, source-bounded and linked to the existing taxonomy adjudication.",
+      "purpose": "Present source-backed material actions and later responses in supported relative order. Separate runs, source attributions and unknown ordering remain explicit.",
       "clauses": [
         {
-          "source_paraphrase": "Mathspace states that its vulnerability-notification process did not identify and escalate a critical Metabase advisory and patched versions before unauthorised access occurred.",
-          "recovered_invariant_interpretation": "A defined vulnerability-notification control must become operative when a critical advisory applies to a deployed component, including escalation and compromise review.",
+          "episode_id": "E001",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "source_paraphrase": "On 6 August, Metabase published a critical advisory and patched versions. Mathspace says its existing vulnerability-notification process did not identify or escalate that advisory.",
+          "recovered_invariant_interpretation": "An applicable advisory must activate the defined notification process.",
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000038",
@@ -49,22 +53,49 @@
           "adjudication_status": "mapped"
         },
         {
-          "source_paraphrase": "Historical logs retained the material access and download events even after the vulnerable instance had been updated.",
-          "recovered_invariant_interpretation": "Materially consequential actions and state changes should leave evidence records sufficient for incident response and review.",
+          "episode_id": "E002",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "source_paraphrase": "Mathspace later traced unauthorised administrator access without legitimate login to 10 August AEST.",
+          "recovered_invariant_interpretation": "An access occurrence precedes later discovery.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping"
+        },
+        {
+          "episode_id": "E003",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "source_paraphrase": "Information was downloaded from the Australian reporting database on 27 August.",
+          "recovered_invariant_interpretation": "Initial access and the later download are separate material actions.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping"
+        },
+        {
+          "episode_id": "E004",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "source_paraphrase": "On 29 August, Mathspace updated Metabase after a later notice, but omitted recommended compromise checks.",
+          "recovered_invariant_interpretation": "Patching does not establish that an earlier compromise was absent.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping"
+        },
+        {
+          "episode_id": "E005",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "source_paraphrase": "Historical log review confirmed the pre-update compromise on 3 September and reconstructed access and download timing.",
+          "recovered_invariant_interpretation": "Capture and reconstruction are distinct supported properties of the same retrospective review.",
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000022",
               "relationship": "successful-invariant",
               "canonical_taxonomy_mapping": true,
               "rationale": "Historical logs preserved the unauthorised-access and download events sufficiently for the later compromise to be identified."
-            }
-          ],
-          "adjudication_status": "mapped"
-        },
-        {
-          "source_paraphrase": "The retained logs were sufficient to reconstruct the important access and download timeline.",
-          "recovered_invariant_interpretation": "A material event record should preserve enough ordering, identity and dependency information to reconstruct the relevant pathway.",
-          "taxonomy_relationships": [
+            },
             {
               "class_id": "VIGIL-FC-000024",
               "relationship": "successful-invariant",
@@ -73,6 +104,36 @@
             }
           ],
           "adjudication_status": "mapped"
+        },
+        {
+          "episode_id": "E006",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "source_paraphrase": "On 3 September, Mathspace took Metabase offline, revoked its API keys, disabled its Australian and US Snowflake access accounts, changed database passwords and preserved investigation copies.",
+          "recovered_invariant_interpretation": "Containment and evidence preservation do not demonstrate completed system recovery.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping"
+        },
+        {
+          "episode_id": "E007",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "source_paraphrase": "School contacts and regulators were notified on 4 September. Individual notifications began on 6 September, earlier than the schedule initially given to schools.",
+          "recovered_invariant_interpretation": "School coordination, regulator reporting and individual notices have different recipients and dates.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping"
+        },
+        {
+          "episode_id": "E008",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "source_paraphrase": "The 8 September update reported 1,079,819 affected people and clarified account metadata omitted from earlier communications. Academic records and authentication credentials were excluded. It reported no evidence of later misuse; individual notices and recovery checks remained ongoing.",
+          "recovered_invariant_interpretation": "Corrected disclosure scope and unfinished response work remain material.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping"
         }
       ]
     }
@@ -551,28 +612,51 @@
           "This review is AI-authored, not human verification or certification."
         ],
         "review_outcome": "Reviewed 41 recovered or independently identified requirements; retained 0 relevant independent assessments. Prior values and exclusions remain in the dated audit."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-09-PHASE3-BATCH08-000107",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work — Codex",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-09",
+        "review_scope": "Source-first occurrence, chronology and duplicate review; public narrative and external evidence-reference reconciliation.",
+        "capability_profile": {
+          "web_research": true,
+          "direct_primary_source_review": true,
+          "direct_repository_analysis": true,
+          "taxonomy_review": true,
+          "harm_impact_review": false,
+          "new_external_source_research": true
+        },
+        "known_limitations": [
+          "Attacker identity, full forensic report and later individual misuse are not established.",
+          "Provider statements about exclusions and containment are attributed, not independently inspected private logs.",
+          "Bounded AI-authored review, not human verification or source-exhaustiveness certification."
+        ],
+        "review_outcome": "Reconciled 3 clauses into 8 episodes; canonical mappings, HIM, independent external decisions and existing gap status retained."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-04-EXTERNAL-ALIGNMENT-000107",
+      "review_id": "VIGIL-REVIEW-2026-10-09-PHASE3-BATCH08-000107",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT Work",
+      "reviewer_platform": "OpenAI ChatGPT Work — Codex",
       "reviewer_model": "GPT-6",
-      "review_date": "2026-10-04",
-      "review_scope": "Independent occurrence relevance and alignment review of external requirements; normative force remains source metadata.",
+      "review_date": "2026-10-09",
+      "review_scope": "Source-first occurrence, chronology and duplicate review; public narrative and external evidence-reference reconciliation.",
       "capability_profile": {
+        "web_research": true,
+        "direct_primary_source_review": true,
         "direct_repository_analysis": true,
-        "direct_text_analysis": true,
-        "external_requirement_review": true,
-        "taxonomy_review": false,
+        "taxonomy_review": true,
         "harm_impact_review": false,
-        "web_research": false
+        "new_external_source_research": true
       },
       "known_limitations": [
-        "Assessment uses preserved occurrence evidence and canonical requirement propositions; internal implementation evidence remains unavailable where stated.",
-        "This review is AI-authored, not human verification or certification."
+        "Attacker identity, full forensic report and later individual misuse are not established.",
+        "Provider statements about exclusions and containment are attributed, not independently inspected private logs.",
+        "Bounded AI-authored review, not human verification or source-exhaustiveness certification."
       ],
-      "review_outcome": "Reviewed 41 recovered or independently identified requirements; retained 0 relevant independent assessments. Prior values and exclusions remain in the dated audit."
+      "review_outcome": "Reconciled 3 clauses into 8 episodes; canonical mappings, HIM, independent external decisions and existing gap status retained."
     }
   },
   "harm_impact_assessment": {
