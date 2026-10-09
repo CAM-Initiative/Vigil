@@ -3,7 +3,7 @@
 **Date:** 2026-10-08
 **Branch:** `agent/incident-ecosystem-ingestion`
 **Frozen canonical baseline:** `d845b4b31af8a7416f0df9c1a77a06073f7afc51`
-**Status:** Frozen structural census of 179 Incidents; 80 bounded source-first canonical repairs (Phase 1 plus nine Phase 3 tranches), four earlier pilot-only cases, one preliminary spotcheck and 94 awaiting source-first review. Episode/EXTREQ validator, generated public-index workflow and ten-case expanded tranche crosswalks operational. No independently human-certified source exhaustiveness.
+**Status:** Frozen structural census of 179 Incidents; 90 bounded source-first canonical repairs (Phase 1 plus ten Phase 3 tranches), four earlier pilot-only cases, one preliminary spotcheck and 84 awaiting source-first review. Episode/EXTREQ validator, generated public-index workflow and ten-case expanded tranche crosswalks operational. No independently human-certified source exhaustiveness.
 
 ## Immutable baseline and coverage semantics
 
@@ -95,3 +95,10 @@ Existing mappings, relationships, rationales, roles, confidence, harm bands, cov
 Eleven fresh awaiting records (INC-049/050/051/052/054/058/079/082/083/145/152) were repaired from `4d83f011acf825be235fff4cbd31f7d371fcbc08`. Their 29 clauses became 48 material episodes; 24 indexed EXTREQ rows were reconciled, bringing the cumulative count to 434. See `PHASE3-TRANCHE-09.md` and eleven manifests. All prior mappings, roles, rationales, HIM and independent external decisions remain. Two fresh sources preserve the specific Kohler/Bullock article alongside ASIC aggregates and DNB’s later report. The census is 80 repaired, four pilot-only, one spotcheck and 94 awaiting, totalling 179. The **99 cases without completed source-first repair** remain the active workload.
 
 INC-053 and INC-164 have specific held-evidence notes in `PHASE3-TRANCHE-09-HELD-EVIDENCE.md`; neither is counted as repaired or source-first complete. The former needs an authenticated issuer filing; the latter requires correction/re-adjudication because fresh trust evidence says the depicted doctors are not its staff. No policy/schema/class promotion occurred. Local validation passes for 179 records and 596 sources. Tranche 08’s three CI checks passed at its published checkpoint. Continue through the remaining corpus under the user’s ongoing authorisation.
+
+
+## Phase 3 tenth-tranche checkpoint — 9 October 2026
+
+Ten records (INC-013/045/094/117/118/123/124/125/126/127) repaired from `a7b07d825db94af93f3d854a41f7bc821fc16ffa`: 31 clauses became 45 episodes, with 26 indexed EXTREQ references reconciled. The cumulative reference count is 460. All mappings, class roles/rationales, HIM and independent external decisions remain. Court procedure, corrected measurements, distinct simulation variants, human-proxy outcome and later patches are restored. Two sources distinguish a directly read court recommendation from search-only later docket metadata.
+
+The live census is 90 repaired, four pilot-only, one spotcheck and 84 awaiting: **89 without completed source-first repair**. INC-120 and INC-139 are held, not counted complete. See `PHASE3-TRANCHE-10-HELD-EVIDENCE.md`. INC-120 needs actor-specific attribution correction; INC-139 needs a fresh primary reading. Four taxonomy-rule tests received an execution-only fixture repair after restored chronology exposed their dependency on INC-126 clause zero. Validator rules and the accepted/rejected record set are unchanged; the maintainer contract explicitly distinguishes execution repair from semantic control changes. Local validation passes; tranche 09’s three CI checks passed at its published head. Continue the full corpus under the user’s ongoing authorisation.

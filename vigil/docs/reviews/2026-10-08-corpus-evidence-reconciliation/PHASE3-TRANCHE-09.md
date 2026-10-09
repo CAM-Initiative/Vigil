@@ -10,17 +10,17 @@ Eleven records repaired; two reviewed and held. **29 clauses → 48 episodes; 24
 
 | Incident | Clauses → episodes | Indexed EXTREQ | Material repair | Commit |
 |---|---:|---:|---|---|
-| INC-049 | 3 → 5 | 0 | Restored post-meeting instructions before transfer outcome and separated later identification/investigation from the synthetic meeting. | `4b546c58d3d041d59d7a1eaf16ed53201be2ad90` |
-| INC-050 | 2 → 4 | 4 | Separated application, flagged first interview, further assessment and deliberately observed second interview. | `224cd81f08e72ab4e9b645079a5ce5f1087b8052` |
-| INC-051 | 3 → 5 | 1 | Reordered portrait alteration before accepted verification; restored intelligence, disputed arrest dating, seizure and institutional advice. | `65cc70d580199367953fb1681f5281b0976a7d37` |
-| INC-052 | 2 → 5 | 0 | Placed attack delivery and execution before later analytical control discussion; restored persistence and kept correlated campaigns separate. | `48799544bc5113b0ad87f85d4dc578a73e6a18e7` |
-| INC-054 | 2 → 5 | 0 | Separated pre-AI campaign, reported personal effects, repeated reports, identification and agreed civil remedy. | `5f77f0d645df721d7e77479239f8071a17f818ae` |
-| INC-058 | 3 → 4 | 6 | Separated real-event correction from synthetic handoff, identity-protective cropping and later disclosure. | `cc621f48e65459db0f6899924f6f23f12f88fe24` |
-| INC-079 | 2 → 3 | 0 | Separated creation and contribution omission from uninformed public distribution and later removal/apology. | `235a407450a9c60243e5f7edd131e20de6f435a7` |
-| INC-082 | 3 → 4 | 0 | Merged three descriptions of one synthetic advertisement; restored escalating demands, discovery, extortion, reporting and individual consequences. | `49a8ac443ae4592253922fd8d57127472bc98d4d` |
-| INC-083 | 3 → 5 | 0 | Merged thematic descriptions of the same campaign mechanism, restored follow-up funnel and separated loss/takedown aggregates and a specific false-article example. | `58fb988b8e2c2fbec654c88d209b91c15f982a97` |
-| INC-145 | 3 → 5 | 12 | Separated invitation, security escalation, observed deception, payment-stage cutoff and retrospective technical account. | `75ca36917859dc7a1633644ebf11583662f27455` |
-| INC-152 | 3 → 3 | 1 | Consolidated advertisement interpretations and restored public report, removal request and later denial in date order. | `99223273935062f17b46985d256333347d27e5f4` |
+| INC-049 | 3 → 5 | 0 | Restored post-meeting instructions before transfer outcome and separated later identification/investigation from the synthetic meeting. | `e3b4536ba0e49085a6df19f12dd06001e0ed257f` |
+| INC-050 | 2 → 4 | 4 | Separated application, flagged first interview, further assessment and deliberately observed second interview. | `0d71b758f143490be6473c9189a78032b6246a20` |
+| INC-051 | 3 → 5 | 1 | Reordered portrait alteration before accepted verification; restored intelligence, disputed arrest dating, seizure and institutional advice. | `1a26a45f5fe8988d628d7668dac61b2b4151a2e1` |
+| INC-052 | 2 → 5 | 0 | Placed attack delivery and execution before later analytical control discussion; restored persistence and kept correlated campaigns separate. | `38b2e91f318cbcf1b22512487a500e9e5b2024bb` |
+| INC-054 | 2 → 5 | 0 | Separated pre-AI campaign, reported personal effects, repeated reports, identification and agreed civil remedy. | `96fa8c50605b3627a3448b3e4cc25b994b909966` |
+| INC-058 | 3 → 4 | 6 | Separated real-event correction from synthetic handoff, identity-protective cropping and later disclosure. | `bde8651b7a3cd6bbd66bdbcab37793b14c4b0a93` |
+| INC-079 | 2 → 3 | 0 | Separated creation and contribution omission from uninformed public distribution and later removal/apology. | `d3fb16b3c5df6345531d0a41a79c495625a9eb78` |
+| INC-082 | 3 → 4 | 0 | Merged three descriptions of one synthetic advertisement; restored escalating demands, discovery, extortion, reporting and individual consequences. | `52a25598122f3c760533c744b6fc63353728f027` |
+| INC-083 | 3 → 5 | 0 | Merged thematic descriptions of the same campaign mechanism, restored follow-up funnel and separated loss/takedown aggregates and a specific false-article example. | `68d34141fdef19a7a173aeb3bc629bce6a5f3c01` |
+| INC-145 | 3 → 5 | 12 | Separated invitation, security escalation, observed deception, payment-stage cutoff and retrospective technical account. | `57920d96c86987903d038614e0856d647ddcf940` |
+| INC-152 | 3 → 3 | 1 | Consolidated advertisement interpretations and restored public report, removal request and later denial in date order. | `9faa14a50f347aa9323525bca0b609183ad5bdf0` |
 
 ## Evidence boundaries
 
@@ -45,7 +45,7 @@ INC-053 and INC-164 remain awaiting. See `PHASE3-TRANCHE-09-HELD-EVIDENCE.md` fo
 
 Eleven `INC-000NNN-phase3-tranche09-repair-manifest.json` files include baseline blobs, original clauses/sources, all evidence crosswalks, every external row and preservation checks. All eleven rebuild guards passed. Local canonical/public, source/interpretive/authorship/component and occurrence-requirement validators passed. Taxonomy integrity passed for 76 classes. 79 unit tests passed; pipeline-state and source-origin checks passed. Generated index parity is 179 entries. The record-test suite’s rejected negative fixtures are expected, not corpus failures.
 
-Published commit identities and GitHub Actions results will be recorded after branch publication. Tranche 08’s report now records its published commits and three passed checks. No schema, validator, permanent test, builder or workflow was changed.
+Published checkpoint: `a7b07d825db94af93f3d854a41f7bc821fc16ffa`. All three GitHub Actions passed: VIGIL records PR 37883780521, VIGIL records push 37883775296 and taxonomy-publication PR 37883780580. The table uses published commit identities. Tranche 08’s report now records its published commits and three passed checks. No schema, validator, permanent test, builder or workflow was changed.
 
 ## Census
 
