@@ -207,3 +207,7 @@ Tranche 12 reconciled ten more records, leaving **69 of the original 89**. See `
 ### Tranche 13 checkpoint — 9 October 2026
 
 Ten further reviews complete. 120 bounded source-first repaired; 59 awaiting including seven documented holds. No pilot/spotcheck carryovers. Cumulative indexed EXTREQ reconciliations: 696. No human certification or exhaustive primary-artefact review claimed. See [PHASE3-TRANCHE-13.md](PHASE3-TRANCHE-13.md). Next group: INC-074/114/115/140/142/153/155/165/168/169.
+
+### Tranche14 checkpoint — 9 October 2026
+
+130 bounded source-first repaired; 49 awaiting including seven documented holds. Original89 completed40. Cumulative indexed EXTREQ reconciliations: 835. AI-authored, not human certified. See [PHASE3-TRANCHE-14.md](PHASE3-TRANCHE-14.md). Smaller validated groups will now be published regularly. Next: INC-014/025/026.
