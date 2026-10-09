@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Waymo robotaxi diverted passenger into parking garage and temporarily stranded him",
     "created": "2026-09-19",
-    "updated": "2026-10-04",
-    "version": "0.1.9"
+    "updated": "2026-10-09",
+    "version": "0.1.10"
   },
   "incident_identity": {
     "historical_event_name": "Waymo parking-garage passenger stranding",
@@ -20,11 +20,11 @@
   },
   "summary": "A Waymo robotaxi carrying tourist Darren Findling in San Francisco diverted into a parking garage containing other Waymo vehicles and left him temporarily stuck and confused until Waymo support intervened. OECD.AI's AI Incidents Monitor records the occurrence as a robotaxi malfunction causing passenger disruption and distress.",
   "vigil_assessment": {
-    "factual_basis": "A Waymo robotaxi carrying tourist Darren Findling in San Francisco diverted into a parking garage containing other Waymo vehicles and left him temporarily stuck and confused until Waymo support intervened. OECD.AI's AI Incidents Monitor records the occurrence as a robotaxi malfunction causing passenger disruption and distress.",
+    "factual_basis": "A Waymo robotaxi carrying tourist Darren Findling in San Francisco diverted into a parking garage containing other Waymo vehicles and left him temporarily stuck and confused until Waymo support intervened. OECD.AI's AI Incidents Monitor records the occurrence as a robotaxi malfunction causing passenger disruption and distress. The passenger account and provider explanation are preserved separately. The January Los Angeles looping story remains a different occurrence and contributes no findings here.",
     "governance_interpretation": "The garage detour disrupted normal passenger service, while support provided an override. These are separate outcome and recovery findings. Evidence from the different looping occurrence is not used to enlarge this case.",
     "significance_to_cam": "Passenger transport automation needs safe recovery paths when routing or operational state departs from the expected trip. Riders require a clear way to stop, obtain help and transfer control before confusion becomes a safety or liberty concern.",
     "assessment_boundaries": [
-      "The account is preserved from secondary incident reporting and the complete trip telemetry is not available.",
+      "Public passenger interview and provider statements were inspected. The evidence does not establish a failed admissible route followed by materially continued pursuit; private telemetry is not a general prerequisite for that finding.",
       "The evidence does not establish the precise routing, perception or fleet-management cause.",
       "The passenger's reported confusion and distress were temporary and resolved through support intervention.",
       "No injury, detention finding or enduring impairment is inferred."
@@ -32,21 +32,54 @@
     "source_clause_analysis": {
       "source_record_order": 1,
       "source_url": "https://oecd.ai/en/incidents/2025-07-22-010b",
-      "purpose": "Separate the passenger’s reported looping and loss of trip control from the unobserved routing state needed to decide whether safe exit was required.",
+      "purpose": "Separate evidenced occurrence stages and their distinct governance questions.",
       "clauses": [
         {
-          "source_paraphrase": "Findling’s Waymo detoured into a San Francisco garage; support restored the route. Trip telemetry is unavailable.",
-          "recovered_invariant_interpretation": "When an objective-directed route becomes infeasible, the system should enter a bounded safe-exit or human-handoff state rather than continue a pursuit that leaves the passenger without effective control.",
+          "source_paraphrase": "Findling’s vehicle diverted into a garage containing other Waymo vehicles during his San Francisco trip.",
+          "recovered_invariant_interpretation": "A detour does not by itself establish absence of a feasible admissible route.",
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000070",
               "relationship": "candidate boundary",
               "canonical_taxonomy_mapping": false,
-              "rationale": "The detour and need for support materially engage safe exit, but no trace establishes when an exit condition arose or whether continued pursuit followed recognition. Support restored the route; this is not proof of that recognition decision."
+              "rationale": "The detour and need for support engage safe exit, but the evidence does not establish that no feasible admissible completion path remained or that material pursuit continued without an adequate fresh basis. Support restoration is not proof of those conditions."
             }
           ],
           "adjudication_status": "unresolved",
-          "adjudication_note": "Trip and vehicle telemetry needed to determine whether a safe-exit condition occurred and the system continued pursuit are unavailable."
+          "source_record_refs": [
+            "source_records[2]"
+          ],
+          "episode_id": "E001"
+        },
+        {
+          "source_paraphrase": "The passenger contacted support after becoming unsure what to do.",
+          "recovered_invariant_interpretation": "Passenger uncertainty and support availability remain distinct.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping",
+          "source_record_refs": [
+            "source_records[2]"
+          ],
+          "episode_id": "E002"
+        },
+        {
+          "source_paraphrase": "Support reportedly overrode the vehicle and restored the route.",
+          "recovered_invariant_interpretation": "Human recovery does not prove the vehicle had executed a safe-exit decision.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping",
+          "source_record_refs": [
+            "source_records[2]"
+          ],
+          "episode_id": "E003"
+        },
+        {
+          "source_paraphrase": "Waymo said the garage appeared to be the quickest route; the passenger reported replacement rides.",
+          "recovered_invariant_interpretation": "Routing explanation and customer remedy are separately attributed responses.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping",
+          "source_record_refs": [
+            "source_records[2]"
+          ],
+          "episode_id": "E004"
         }
       ]
     }
@@ -129,14 +162,13 @@
       "interpretive_reliance": "Direct interview reporting for the material occurrence and temporary confusion.",
       "model_or_algorithm": "not fully established in the source",
       "primary_artefact_access": {
-        "access_method": "Direct public article review",
-        "access_status": "directly reviewed",
-        "direct_primary_artefact_review": true,
+        "access_method": "Public retrieval and direct text inspection; any retrieval failure specified below",
+        "access_status": "indirectly reviewed",
+        "direct_primary_artefact_review": false,
         "limitations": [
-          "The source does not independently establish every underlying claim or unreported downstream consequence.",
-          "The source does not determine legal liability or final factual truth beyond its stated institutional scope."
+          "Passenger interview and provider statement read; full telemetry and original recording not inspected."
         ],
-        "reviewing_system": "OpenAI Codex GPT-6"
+        "reviewing_system": "OpenAI ChatGPT — GPT-6"
       },
       "relevance_note": "Occurrence-specific support for clause and psychological finding.",
       "retrieved_date": "2026-10-02",
@@ -386,28 +418,49 @@
           "This review is AI-authored, not human verification or certification."
         ],
         "review_outcome": "Reviewed 2 recovered or independently identified requirements; retained 2 relevant independent assessments. Prior values and exclusions remain in the dated audit."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-09-PHASE3-TRANCHE17A-000147",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-09",
+        "review_scope": "Source-first occurrence reconstruction, current taxonomy boundary review and semantic external-requirement linkage.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "external_requirement_review": true,
+          "web_research": true,
+          "harm_impact_review": false
+        },
+        "known_limitations": [
+          "AI-authored, not human certified. Private sessions, checking traces and undisclosed decision paths remain unavailable.",
+          "Existing HIM retained; no full eleven-dimension re-adjudication."
+        ],
+        "review_outcome": "Separate detour, passenger help request, support override and attributed explanation/remedy. Apply safe-exit recognition at its stated evidence level; remove an implied requirement for private recognition telemetry. Preserve the unresolved missing route/continuation facts and exclusion of the distinct Los Angeles story."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-04-EXTERNAL-ALIGNMENT-000147",
+      "review_id": "VIGIL-REVIEW-2026-10-09-PHASE3-TRANCHE17A-000147",
       "reviewer_type": "AI analytical reviewer",
       "reviewer_platform": "OpenAI ChatGPT Work",
       "reviewer_model": "GPT-6",
-      "review_date": "2026-10-04",
-      "review_scope": "Independent occurrence relevance and alignment review of external requirements; normative force remains source metadata.",
+      "review_date": "2026-10-09",
+      "review_scope": "Source-first occurrence reconstruction, current taxonomy boundary review and semantic external-requirement linkage.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
+        "taxonomy_review": true,
         "external_requirement_review": true,
-        "taxonomy_review": false,
-        "harm_impact_review": false,
-        "web_research": false
+        "web_research": true,
+        "harm_impact_review": false
       },
       "known_limitations": [
-        "Assessment uses preserved occurrence evidence and canonical requirement propositions; internal implementation evidence remains unavailable where stated.",
-        "This review is AI-authored, not human verification or certification."
+        "AI-authored, not human certified. Private sessions, checking traces and undisclosed decision paths remain unavailable.",
+        "Existing HIM retained; no full eleven-dimension re-adjudication."
       ],
-      "review_outcome": "Reviewed 2 recovered or independently identified requirements; retained 2 relevant independent assessments. Prior values and exclusions remain in the dated audit."
+      "review_outcome": "Separate detour, passenger help request, support override and attributed explanation/remedy. Apply safe-exit recognition at its stated evidence level; remove an implied requirement for private recognition telemetry. Preserve the unresolved missing route/continuation facts and exclusion of the distinct Los Angeles story."
     }
   },
   "harm_impact_assessment": {

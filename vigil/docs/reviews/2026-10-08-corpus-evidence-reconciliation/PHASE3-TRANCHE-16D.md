@@ -14,3 +14,5 @@ Exact canonical baseline `de64fd25b693825281c67895b2ecfed3cbc0e04b`.
 **154 bounded source-first repaired;25 awaiting including documented evidence holds. Original89 completed64. Cumulative indexed EXTREQ reconciliations: 931. AI-authored, not human certified.** Current corpus metrics: {"scope": "Current corpus after tranche16d; original planning metrics preserved.", "record_count": 179, "source_count": 624, "clause_or_episode_count": 809, "external_requirement_rows": 1315, "coverage_counts": {"complete": 129, "partial": 50}}.
 
 All exact-baseline rebuild guards, corpus/public/source/interpretive/component/authorship/reference validators passed. All 84 selected tests and both pipeline/provenance script checks passed. No schema, validator, builder, permanent test or CI semantic changes. Broader-suite limitations remain documented in tranche13.
+
+Published c6b1c1fc7dd676a50d708ca36a7c89ed6984db8f; all three remote checks passed: taxonomy 38003928885, VIGIL PR 38003928840, VIGIL push 38003920563.
