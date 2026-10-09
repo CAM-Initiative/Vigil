@@ -11,16 +11,16 @@ Ten previously awaiting cases received individual source-first repairs. The batc
 
 | Incident | Clauses → episodes | Indexed EXTREQ rows | Source-backed repair | Commit |
 |---|---:|---:|---|---|
-| INC-056 | 4 → 5 | 0 | Put the booking delegation before the two distinct API actions. Kept failed restoration and human-authorised disclosure separate. Removed repeated conclusion wording. | `c18fc8b2052626aaca1fc5cae918c2e6c059365a` |
-| INC-096 | 1 → 3 | 0 | Replaced an interpretation-only entry with discovery, bounded enumeration and notification/closure. Kept potential escalation distinct from performed research. | `22001bdf1f708b8118e1ed43a82d7d85fb61787d` |
-| INC-098 | 2 → 3 | 0 | Consolidated overlapping tuning/activation interpretations. Added launch before the reported output cluster and the later capability pause. | `d5afaf318ee857e3870c7e119cd58c65cf7fbea3` |
-| INC-099 | 2 → 3 | 9 | Consolidated the output and rejected-poisoning readings. Restored rollout/testing and later response; preserved the distinction between genuine errors and fabricated screenshots. | `1bd910f22114c074bf446c2b1f58841960f4572a` |
-| INC-101 | 3 → 5 | 2 | Restored pre-launch decision, deployed responses, Sunday prompt mitigation, Monday rollback and subsequent causal analysis. Preserved the provider’s qualification about memory. | `5ddb8aa5f98f6f0c9551678806a3f9e615686ec3` |
-| INC-119 | 3 → 7 | 0 | Restored publishing compromise and human-operator trace deletion, uneven AI assistance, direct theft, initial containment and later repository exposures. Investigator samples remain separate. | `0a691bb77ac075a9ba01ac12b0339ac3ec528ff2` |
-| INC-122 | 3 → 4 | 0 | Added the experiment setup before measured compliance. Kept synthetic-document and reinforcement-learning variants distinct from a single continuous trajectory. | `7c83a1a216de46e8136f7cfc66edd9b78b9f50b0` |
-| INC-146 | 2 → 5 | 2 | Restored CFO/lawyer contact, confidentiality framing, dated call and payment, later attempted solicitation, bank alert, withholding and seizure. Distinguished recovery action from completed repayment. | `4eabb20ecf155cba9ace07f54cbdeba8ed003787` |
-| INC-162 | 3 → 2 | 0 | Combined competing descriptions of one interruption and placed later safeguards/review afterwards. Preserved disputed duration and AI causation. | `0de1d26c1d49ca9f8a976100666767ac8bd8ff7c` |
-| INC-173 | 8 → 7 | 16 | Combined duplicate preparation/bypass interpretations and provider capture/reconstruction descriptions. Restored reconnaissance, overlapping model errors, attacker documentation and the corrected request-rate claim. | `c202d70f6e5e415e9a6f64b55b180366e8d8e080` |
+| INC-056 | 4 → 5 | 0 | Put the booking delegation before the two distinct API actions. Kept failed restoration and human-authorised disclosure separate. Removed repeated conclusion wording. | `15686052733b2f856a546eda1e010a632381e7b1` |
+| INC-096 | 1 → 3 | 0 | Replaced an interpretation-only entry with discovery, bounded enumeration and notification/closure. Kept potential escalation distinct from performed research. | `5edab334d7d126f4f2bf5ca2b9e8492aec8b6a95` |
+| INC-098 | 2 → 3 | 0 | Consolidated overlapping tuning/activation interpretations. Added launch before the reported output cluster and the later capability pause. | `7771b389a55159b7e354aad09a4bac7bdc68f2d8` |
+| INC-099 | 2 → 3 | 9 | Consolidated the output and rejected-poisoning readings. Restored rollout/testing and later response; preserved the distinction between genuine errors and fabricated screenshots. | `bbb0204dd238c9f6241033ca6271d69a6874e85c` |
+| INC-101 | 3 → 5 | 2 | Restored pre-launch decision, deployed responses, Sunday prompt mitigation, Monday rollback and subsequent causal analysis. Preserved the provider’s qualification about memory. | `b8b338578971bbe1fc5e2167334497c3c392506d` |
+| INC-119 | 3 → 7 | 0 | Restored publishing compromise and human-operator trace deletion, uneven AI assistance, direct theft, initial containment and later repository exposures. Investigator samples remain separate. | `5bef57cd08c40ed83135a1157a81a7ecf82f9f39` |
+| INC-122 | 3 → 4 | 0 | Added the experiment setup before measured compliance. Kept synthetic-document and reinforcement-learning variants distinct from a single continuous trajectory. | `1dec561e3c908c1c81be598883caf707949919b6` |
+| INC-146 | 2 → 5 | 2 | Restored CFO/lawyer contact, confidentiality framing, dated call and payment, later attempted solicitation, bank alert, withholding and seizure. Distinguished recovery action from completed repayment. | `d74462c496ce40a5c6cf4e80ba5cbd0bbc6f9e6a` |
+| INC-162 | 3 → 2 | 0 | Combined competing descriptions of one interruption and placed later safeguards/review afterwards. Preserved disputed duration and AI causation. | `cc9630b026c9157204a54e2d41801275ea13e398` |
+| INC-173 | 8 → 7 | 16 | Combined duplicate preparation/bypass interpretations and provider capture/reconstruction descriptions. Restored reconnaissance, overlapping model errors, attacker documentation and the corrected request-rate claim. | `320a68f2ccb7bb94c0f7fe4f946e85d51da756fc` |
 | **Total** | **31 → 44** | **29** | **Ten source-first canonical repairs** | |
 
 ## Preservation and evidence limits
@@ -94,7 +94,15 @@ git diff --check
 
 There were 84 unittest cases across the numbered suites, plus script-level pipeline and provenance checks. Public-index parity passed for all 179 canonical records. No validator, schema, permanent test, builder or workflow was changed. The public index was rebuilt with the repository builder.
 
-GitHub Actions status will be recorded after the batch push. Passing checks establish structural integrity and publication parity; they do not certify substantive correctness or source exhaustiveness.
+GitHub Actions completed successfully for validated checkpoint `1f8144a3879dd8522e4e91e003f63319b46e68be`:
+
+| Workflow | Event | Result | Run |
+|---|---|---|---|
+| VIGIL Observatory alignment taxonomy publications | pull_request | success | [37865958672](https://github.com/CAM-Initiative/Vigil/actions/runs/37865958672) |
+| VIGIL records | pull_request | success | [37865958658](https://github.com/CAM-Initiative/Vigil/actions/runs/37865958658) |
+| VIGIL records | push | success | [37865956136](https://github.com/CAM-Initiative/Vigil/actions/runs/37865956136) |
+
+The connected GitHub API published the ten individual commits and checkpoint because direct Git push lacked workspace credentials. Each published tree matched its locally validated tree; the table above records published commit SHAs. Only this report was subsequently amended to record remote CI evidence. No merge or catalogue dispatch was performed. Passing checks establish structural integrity and publication parity; they do not certify substantive correctness or source exhaustiveness.
 
 ## Campaign checkpoint
 
