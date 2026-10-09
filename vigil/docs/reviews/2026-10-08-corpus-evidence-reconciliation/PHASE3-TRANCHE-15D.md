@@ -16,3 +16,5 @@ INC-097 separates launch policy, affirmative publication, audience confusion, pr
 **141 repaired;38 awaiting.51 of original89 complete.** Corpus179, sources616, clauses/episodes758, external rows1315. Tranche15 is complete. Next: INC-033/040/057.
 
 Two exact-baseline rebuild guards, corpus/public/provenance/component/authorship and occurrence-reference validators passed. All84 relevant tests and two script checks passed. No schema/validator/test/builder/CI semantics changed. Broader-suite limitations remain in tranche13. AI-authored, not human certified or evidence-exhaustive.
+
+Published `7c5c2dbc09e752df663e37376158dc5161003b0a`: all three CI checks passed ([taxonomy](https://github.com/CAM-Initiative/Vigil/actions/runs/37952472637), [VIGIL PR](https://github.com/CAM-Initiative/Vigil/actions/runs/37952472633), [VIGIL push](https://github.com/CAM-Initiative/Vigil/actions/runs/37952463723)).
