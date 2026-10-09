@@ -3,7 +3,7 @@
 **Date:** 2026-10-08
 **Branch:** `agent/incident-ecosystem-ingestion`
 **Frozen canonical baseline:** `d845b4b31af8a7416f0df9c1a77a06073f7afc51`
-**Status:** Frozen structural census of 179 Incidents; 23 bounded source-first canonical repairs (Phase 1 plus four Phase 3 tranches), four earlier pilot-only cases, one preliminary spotcheck and 151 awaiting source-first review. Episode/EXTREQ validator, generated public-index workflow and ten-case expanded tranche crosswalks operational. No independently human-certified source exhaustiveness.
+**Status:** Frozen structural census of 179 Incidents; 33 bounded source-first canonical repairs (Phase 1 plus five Phase 3 tranches), four earlier pilot-only cases, one preliminary spotcheck and 141 awaiting source-first review. Episode/EXTREQ validator, generated public-index workflow and ten-case expanded tranche crosswalks operational. No independently human-certified source exhaustiveness.
 
 ## Immutable baseline and coverage semantics
 
@@ -60,3 +60,10 @@ Two more canonically repaired cases (INC-060, INC-159) have explicit original-to
 ## Phase 3 expanded tranche checkpoint — 9 October 2026
 
 The ten-case source-first group INC-035/041/055/063/066/070/073/110/112/116 is documented in `PHASE3-TRANCHE-04.md` with ten original/new source-episode and external-requirement manifests. Across these cases, 131 position-based EXTREQ rows were re-anchored to stable episodes; their independent assessment outcomes were retained. One prior pilot (INC-112) advanced to source-first repaired. No new normative findings, harm reassessments or class-role changes were made. Cases with contested occurrence identity or unverified causal attribution remain intentionally held.
+
+
+## Phase 3 fifth-tranche checkpoint — 9 October 2026
+
+Ten further cases (INC-056/096/098/099/101/119/122/146/162/173) were source-first reconciled from branch baseline `8af8f01dadaee01817f341ad8ae55c642ed67468`. See `PHASE3-TRANCHE-05.md` and ten individual manifests for source access, old/new episodes, all preserved class rationales and individual EXTREQ evidence crosswalks. The batch replaces 31 clauses with 44 material episodes and reconciles 29 indexed EXTREQ rows; cumulative reconciled rows are 307. Source records, existing class/role/confidence findings, HIM and independent external assessment outcomes remain unchanged. Competing outage accounts in INC-162 and source-specific dataset boundaries in INC-119 remain explicit. No previously held case was promoted or newly held case introduced.
+
+The live census is 33 bounded source-first repaired, four pilot-only, one preliminary spotcheck and 141 awaiting review, totalling 179. Frozen inventory metrics remain historical; separately labelled live metrics reflect current canonical records. All ten rebuild guards, 84 unit tests, provenance checks and generated-index parity passed locally. These checks do not certify human verification or source exhaustiveness. Remote workflow evidence is recorded in the tranche report after publishing to the existing working branch; the branch remains unmerged.
