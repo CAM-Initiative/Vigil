@@ -19,3 +19,5 @@ INC-057 separates four employee allegations, their query periods, audits and adm
 **144 repaired;35 awaiting.54 of original89 complete.** Corpus179, sources619, clauses/episodes769, external rows1315. Next small group: INC-075/081/089.
 
 Three exact-baseline rebuild guards, all corpus/public/provenance/component/authorship and occurrence-reference validators passed. All84 relevant tests and two script checks passed. No schema/validator/test/builder/CI semantics changed. Broader-suite limitations remain in tranche13. AI-authored, not human certified or evidence-exhaustive.
+
+Published `2d14d2acc9ae786a6cbdd6828702106ce881aef3`: all three checks passed ([taxonomy](https://github.com/CAM-Initiative/Vigil/actions/runs/37954079151), [VIGIL PR](https://github.com/CAM-Initiative/Vigil/actions/runs/37954078695), [VIGIL push](https://github.com/CAM-Initiative/Vigil/actions/runs/37954070465)).
