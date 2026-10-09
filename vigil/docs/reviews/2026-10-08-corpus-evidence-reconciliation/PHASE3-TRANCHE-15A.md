@@ -17,3 +17,5 @@ Tom’s Hardware, Mint, Business Insider, TechRadar and updated Times of India o
 **133 repaired;46 awaiting.43 of original89 complete.** Corpus179, sources606, clauses/episodes729, external rows1315. Next: INC-031/044/059.
 
 Three exact-baseline rebuild guards, corpus/public/provenance/component/authorship and occurrence-reference validators passed. All84 relevant unit tests and two script checks passed. Taxonomy recognition/exclusions were revisited; no taxonomy/schema/validator/test/builder/CI rule changed. Broader-suite limitations remain in tranche13. AI-authored, not human-certified or evidence-exhaustive.
+
+Published `8e1457ee0d6c43ac0e2e273418379c71d70330c3`: all three CI runs passed (37949551691, 37949551653, 37949543678).
