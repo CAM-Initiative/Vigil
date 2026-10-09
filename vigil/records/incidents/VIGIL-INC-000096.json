@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "DeepSeek exposed an unauthenticated database containing chat histories and secrets",
     "created": "2026-09-08",
-    "updated": "2026-10-04",
-    "version": "0.1.16"
+    "updated": "2026-10-09",
+    "version": "0.1.17"
   },
   "incident_identity": {
     "historical_event_name": "DeepSeek exposed ClickHouse database",
@@ -20,7 +20,7 @@
   },
   "summary": "Wiz Research found a publicly accessible, unauthenticated ClickHouse database belonging to DeepSeek. The exposed service provided full database-operation access and contained more than one million lines of logs including chat histories, API secrets, backend details and operational metadata. DeepSeek secured the database after Wiz notified the company; public evidence does not establish whether third parties accessed the data before discovery.",
   "vigil_assessment": {
-    "factual_basis": "Wiz reports discovering two internet-reachable DeepSeek ClickHouse endpoints with no authentication and full database control. The exposed data included more than one million log lines with chat history, secret keys and backend details. Reuters independently reported the discovery and DeepSeek's rapid remediation after notification.",
+    "factual_basis": "Wiz reports discovering two internet-reachable DeepSeek ClickHouse endpoints with no authentication and full database control. The exposed data included more than one million log lines with chat history, secret keys and backend details. Reuters independently reported the discovery and DeepSeek's rapid remediation after notification. Wiz expressly says it did not perform intrusive queries beyond enumeration. Its discussion of possible further file access is a potential consequence, not an executed step in the disclosed research.",
     "governance_interpretation": "The occurrence is a material AI-platform data-security failure in surrounding infrastructure rather than a model-behaviour failure. It demonstrates that governance of frontier AI services includes conventional but consequential access control, data custody and operational-security boundaries. Database reachability and exposed sensitive logs do not themselves show a governance process treating capability as permission. Notification and closure do not establish earlier third-party access, model-training exposure or runtime-agent admission. The privacy and infrastructure-security outcomes are Not aligned. Closure of the unauthenticated exposure is Aligned with the repair requirement.",
     "significance_to_cam": "The occurrence shows that an AI service can expose highly sensitive user and operational data through ordinary infrastructure failures even when the model itself is not the failing component. Access control, data custody and deployment security are therefore part of the service's governance boundary.",
     "assessment_boundaries": [
@@ -31,8 +31,22 @@
     "source_clause_analysis": {
       "clauses": [
         {
-          "source_paraphrase": "The unauthenticated ClickHouse endpoints made powerful capability directly reachable, but the occurrence does not show an AI or governance process treating that reachability as permission; it therefore marks the capability-versus-authority boundary.",
-          "recovered_invariant_interpretation": "Capability-Authority Separation must remain valid across the material pathway described by the preserved occurrence evidence.",
+          "episode_id": "E001",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "source_paraphrase": "During external security reconnaissance, Wiz found publicly reachable DeepSeek ClickHouse endpoints without authentication.",
+          "recovered_invariant_interpretation": "Security discovery establishes an exposed route; it does not establish prior malicious use.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping"
+        },
+        {
+          "episode_id": "E002",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "source_paraphrase": "Wiz used the database interface to enumerate tables and identified more than one million log entries, including chat text, API secrets and backend metadata. It reported full database-operation access but said it did not perform intrusive queries beyond enumeration.",
+          "recovered_invariant_interpretation": "Exposure, demonstrated access and potential further exploitation are distinct evidentiary propositions.",
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000002",
@@ -42,8 +56,20 @@
             }
           ],
           "adjudication_status": "mapped"
+        },
+        {
+          "episode_id": "E003",
+          "source_record_refs": [
+            "source_records[0]",
+            "source_records[1]"
+          ],
+          "source_paraphrase": "Wiz notified DeepSeek, which promptly secured the exposure. Public evidence does not establish whether others had accessed the data before discovery.",
+          "recovered_invariant_interpretation": "Closure of an exposed access state is distinct from recovery of any previously accessed information.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping"
         }
-      ]
+      ],
+      "purpose": "Describe source-backed material actions and response phases. Separate overlapping activity and attributed claims where exact sequence is not public."
     }
   },
   "source_records": [
@@ -502,28 +528,51 @@
           "This review is AI-authored, not human verification or certification."
         ],
         "review_outcome": "Reviewed 18 recovered or independently identified requirements; retained 3 relevant independent assessments. Prior values and exclusions remain in the dated audit."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-09-PHASE3-BATCH05-000096",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work — Codex",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-09",
+        "review_scope": "Source-first episode reconciliation, public narrative fidelity and per-row external requirement evidence linkage. Existing class roles, HIM and external decisions retained.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_research": true,
+          "taxonomy_review": true,
+          "harm_impact_review": false,
+          "external_requirement_review": true
+        },
+        "known_limitations": [
+          "Earlier third-party access and subsequent misuse are not established.",
+          "Wiz’s potential escalation examples are not observed attack actions.",
+          "AI-authored bounded review; not human verification or evidence-exhaustiveness certification."
+        ],
+        "review_outcome": "Reconciled 1 original clauses into 3 material episodes with stable source references; retained governed assessment outcomes."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-04-EXTERNAL-ALIGNMENT-000096",
+      "review_id": "VIGIL-REVIEW-2026-10-09-PHASE3-BATCH05-000096",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT Work",
+      "reviewer_platform": "OpenAI ChatGPT Work — Codex",
       "reviewer_model": "GPT-6",
-      "review_date": "2026-10-04",
-      "review_scope": "Independent occurrence relevance and alignment review of external requirements; normative force remains source metadata.",
+      "review_date": "2026-10-09",
+      "review_scope": "Source-first episode reconciliation, public narrative fidelity and per-row external requirement evidence linkage. Existing class roles, HIM and external decisions retained.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "external_requirement_review": true,
-        "taxonomy_review": false,
+        "web_research": true,
+        "taxonomy_review": true,
         "harm_impact_review": false,
-        "web_research": false
+        "external_requirement_review": true
       },
       "known_limitations": [
-        "Assessment uses preserved occurrence evidence and canonical requirement propositions; internal implementation evidence remains unavailable where stated.",
-        "This review is AI-authored, not human verification or certification."
+        "Earlier third-party access and subsequent misuse are not established.",
+        "Wiz’s potential escalation examples are not observed attack actions.",
+        "AI-authored bounded review; not human verification or evidence-exhaustiveness certification."
       ],
-      "review_outcome": "Reviewed 18 recovered or independently identified requirements; retained 3 relevant independent assessments. Prior values and exclusions remain in the dated audit."
+      "review_outcome": "Reconciled 1 original clauses into 3 material episodes with stable source references; retained governed assessment outcomes."
     }
   },
   "harm_impact_assessment": {
