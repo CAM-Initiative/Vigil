@@ -165,3 +165,7 @@ Ten further reviews complete. 120 bounded source-first repaired; 59 awaiting inc
 ### Tranche17A checkpoint — 9 October 2026
 
 157 bounded source-first repaired;22 awaiting including documented evidence holds. Original89 completed67. Cumulative indexed EXTREQ reconciliations: 931. AI-authored, not human certified. See [PHASE3-TRANCHE-17A.md](PHASE3-TRANCHE-17A.md). Next: VIGIL-INC-000148, VIGIL-INC-000149, VIGIL-INC-000154.
+
+### Tranche17B checkpoint — 9 October 2026
+
+160 bounded source-first repaired;19 awaiting including documented evidence holds. Original89 completed70. Cumulative indexed EXTREQ reconciliations: 940. AI-authored, not human certified. See [PHASE3-TRANCHE-17B.md](PHASE3-TRANCHE-17B.md). Next: VIGIL-INC-000156, VIGIL-INC-000158, VIGIL-INC-000160, VIGIL-INC-000163.

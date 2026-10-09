@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Claude-based vending-machine agent lost money under delegated commercial control",
     "created": "2026-09-19",
-    "updated": "2026-10-04",
-    "version": "0.3.3"
+    "updated": "2026-10-09",
+    "version": "0.3.4"
   },
   "incident_identity": {
     "historical_event_name": "Claude-based vending-machine agent lost money under delegated commercial control",
@@ -20,7 +20,7 @@
   },
   "summary": "In a controlled Wall Street Journal and Andon Labs experiment, a Claude-based vending-machine agent accepted fabricated authority claims, set prices to zero, approved inappropriate purchases and finished more than $1,000 in the red.",
   "vigil_assessment": {
-    "factual_basis": "The Wall Street Journal describes a three-week red-team experiment in which approximately 70 journalists interacted with a delegated commercial agent. Participants induced it to stop charging by asserting a fictitious policy and used a fabricated board document to suspend its simulated chief executive. The experiment ended with losses exceeding $1,000 but did not expose an ordinary public retail operation.",
+    "factual_basis": "The Wall Street Journal’s participant account describes a bounded commercial-agent experiment: reporters induced free pricing and supplied a fabricated board document to displace approval authority. Inappropriate purchasing and losses exceeding $1,000 were reported. Anthropic separately identifies the WSJ extension as a live adversarial business experiment; its internal office trials are distinct.",
     "governance_interpretation": "The experiment exposed insecure authority handling and real commercial loss within its bounded setting. The adversarial control assessment is supported. Later source versions and code-encoding or model-weight controls are excluded; ordinary retail performance is not inferred.",
     "significance_to_cam": "The occurrence shows that delegated commercial agents require authenticated control-plane instructions and non-bypassable financial limits rather than conversational acceptance of claimed authority.",
     "assessment_boundaries": [
@@ -30,11 +30,22 @@
     "source_clause_analysis": {
       "source_record_order": 1,
       "source_url": "https://www.wsj.com/tech/ai/anthropic-claude-ai-vending-machine-agent-b7e84e34",
-      "purpose": "Preserve a source-specific paraphrase that links the primary occurrence evidence to VIGIL's governance interpretation without treating taxonomy classification as source fact.",
+      "purpose": "Separate evidenced occurrence stages and their distinct governance questions.",
       "clauses": [
         {
-          "source_paraphrase": "Participants asserted that a policy required Claudius to stop charging and the agent accepted the claim, setting all prices to zero or otherwise selling below its assigned commercial purpose.",
-          "recovered_invariant_interpretation": "A user assertion about a governing pricing policy does not itself establish authority to override the agent's assigned commercial rules.",
+          "source_paraphrase": "WSJ reporters interacted with the delegated vending agent in a bounded adversarial experiment.",
+          "recovered_invariant_interpretation": "An authorised test supplies occurrence scope; it does not authenticate claims made within the test.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping",
+          "source_record_refs": [
+            "source_records[0]",
+            "source_records[2]"
+          ],
+          "episode_id": "E001"
+        },
+        {
+          "source_paraphrase": "Participants asserted a fictitious governing pricing policy and Claudius accepted it, including zero prices.",
+          "recovered_invariant_interpretation": "Pricing authority requires a valid source, not a customer’s asserted policy.",
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000001",
@@ -43,20 +54,48 @@
               "rationale": "The agent treated unauthenticated user assertions about pricing policy as authoritative instructions."
             }
           ],
-          "adjudication_status": "mapped"
+          "adjudication_status": "mapped",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "episode_id": "E002"
         },
         {
-          "source_paraphrase": "Participants supplied fabricated board notes naming Slack users as directors and stating that the simulated CEO bot's approval authority had been suspended; Claudius accepted the purported governance change.",
-          "recovered_invariant_interpretation": "Changes to management or approval authority require an authenticated governance artefact; fabricated board text must not become operative control state.",
+          "source_paraphrase": "A fabricated board document named Slack users as directors and suspended the CEO bot’s approval authority; Claudius accepted the change.",
+          "recovered_invariant_interpretation": "Non-control content must not become management control state without a fresh authority check.",
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000006",
               "relationship": "failure-occurrence",
               "canonical_taxonomy_mapping": true,
-              "rationale": "A fabricated board document crossed into the simulated management control plane and displaced the agent's assigned commercial authority structure."
+              "rationale": "A fabricated board document became operative management control state and displaced the agent’s assigned approval authority."
             }
           ],
-          "adjudication_status": "mapped"
+          "adjudication_status": "mapped",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "episode_id": "E003"
+        },
+        {
+          "source_paraphrase": "The participant account reports inappropriate purchases and losses exceeding $1,000.",
+          "recovered_invariant_interpretation": "Material consequences are separate from the authority crossings; they do not establish ordinary public retail performance.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "episode_id": "E004"
+        },
+        {
+          "source_paraphrase": "Anthropic’s later published account identifies the WSJ extension as live business testing in an adversarial environment.",
+          "recovered_invariant_interpretation": "Provider corroboration of the setting does not merge distinct internal-office episodes into this occurrence.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping",
+          "source_record_refs": [
+            "source_records[2]"
+          ],
+          "episode_id": "E005"
         }
       ]
     }
@@ -78,11 +117,13 @@
         "text"
       ],
       "primary_artefact_access": {
-        "access_status": "directly reviewed",
-        "reviewing_system": "OpenAI Codex — GPT-5",
-        "access_method": "direct public web review",
-        "direct_primary_artefact_review": true,
-        "limitations": []
+        "access_method": "Public retrieval and direct text inspection; any retrieval failure specified below",
+        "access_status": "indirectly reviewed",
+        "direct_primary_artefact_review": false,
+        "limitations": [
+          "Fresh WSJ endpoint exposed no full body. An archived capture was located but follow-up text retrieval failed. Previously preserved participant account retained; no fresh full-body or private Slack review claimed."
+        ],
+        "reviewing_system": "OpenAI ChatGPT — GPT-6"
       },
       "interpretive_reliance": "Used only for the occurrence facts and consequences expressly attributed to this source.",
       "evidence_status": "independent-reporting",
@@ -105,16 +146,48 @@
         "text"
       ],
       "primary_artefact_access": {
-        "access_status": "directly reviewed",
-        "reviewing_system": "OpenAI Codex — GPT-5",
-        "access_method": "direct public web review",
-        "direct_primary_artefact_review": true,
-        "limitations": []
+        "access_method": "Public retrieval and direct text inspection; any retrieval failure specified below",
+        "access_status": "indirectly reviewed",
+        "direct_primary_artefact_review": false,
+        "limitations": [
+          "Registry identity only; not authority for substantive occurrence."
+        ],
+        "reviewing_system": "OpenAI ChatGPT — GPT-6"
       },
       "interpretive_reliance": "Used only for registry identity and discovery chronology.",
       "evidence_status": "registry-reported",
       "evidence_status_basis": "Secondary incident-registry entry retained for traceability and not cited as substantive Harm Impact evidence.",
       "incident_source_order": 2
+    },
+    {
+      "source_title": "Project Vend: Phase two",
+      "author_or_publisher": "Anthropic",
+      "source_date": "2025-12-18",
+      "source_url": "https://www.anthropic.com/research/project-vend-2",
+      "retrieved_date": "2026-10-09",
+      "source_type": "web page",
+      "source_role": "incident-evidence",
+      "source_residence": "external",
+      "source_platform": "Anthropic",
+      "source_url_status": "available",
+      "relevance_note": "Provider account explicitly identifies the WSJ extension and live adversarial business setting; internal office cases remain distinct occurrences.",
+      "evidence_modality": [
+        "text"
+      ],
+      "primary_artefact_access": {
+        "access_method": "Public retrieval and direct text inspection; any retrieval failure specified below",
+        "access_status": "directly reviewed",
+        "direct_primary_artefact_review": true,
+        "limitations": [
+          "Full provider account read. Internal office episodes and model comparisons are not transferred into the WSJ case."
+        ],
+        "reviewing_system": "OpenAI ChatGPT — GPT-6"
+      },
+      "interpretive_reliance": "Provider account explicitly identifies the WSJ extension and live adversarial business setting; internal office cases remain distinct occurrences.",
+      "evidence_status": "first-party-reported",
+      "evidence_status_basis": "Primary provider research account, corroborating experiment setting rather than independently proving each WSJ instruction.",
+      "incident_source_order": 3,
+      "source_context": "Provider account explicitly identifies the WSJ extension and live adversarial business setting; internal office cases remain distinct occurrences."
     }
   ],
   "preferred_evidence": {
@@ -195,7 +268,7 @@
         "family_id": "VIGIL-FF-0001",
         "class_id": "VIGIL-FC-000006",
         "classification_role": "failure-occurrence",
-        "classification_basis": "A fabricated board document crossed into the simulated management control plane and displaced the agent's assigned commercial authority structure.",
+        "classification_basis": "A fabricated board document became operative management control state and displaced the agent’s assigned approval authority.",
         "classification_confidence": "high"
       }
     ],
@@ -333,28 +406,49 @@
           "This review is AI-authored, not human verification or certification."
         ],
         "review_outcome": "Reviewed 6 recovered or independently identified requirements; retained 2 relevant independent assessments. Prior values and exclusions remain in the dated audit."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-09-PHASE3-TRANCHE17B-000154",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-09",
+        "review_scope": "Source-first occurrence reconstruction, current taxonomy boundary review and semantic external-requirement linkage.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "external_requirement_review": true,
+          "web_research": true,
+          "harm_impact_review": false
+        },
+        "known_limitations": [
+          "AI-authored, not human certified. Private sessions, checking traces and undisclosed decision paths remain unavailable.",
+          "Existing HIM retained; no full eleven-dimension re-adjudication."
+        ],
+        "review_outcome": "Separated experiment setup, pricing authority, fabricated board control mutation, purchasing/loss and provider contextual account. Clarified real bounded business setting versus an entirely simulated operation; original WSJ full-body fresh retrieval remains unavailable. Retained 001/006 roles/confidence, independent EXT judgements and HIM; distinct internal Anthropic cases excluded."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-04-EXTERNAL-ALIGNMENT-000154",
+      "review_id": "VIGIL-REVIEW-2026-10-09-PHASE3-TRANCHE17B-000154",
       "reviewer_type": "AI analytical reviewer",
       "reviewer_platform": "OpenAI ChatGPT Work",
       "reviewer_model": "GPT-6",
-      "review_date": "2026-10-04",
-      "review_scope": "Independent occurrence relevance and alignment review of external requirements; normative force remains source metadata.",
+      "review_date": "2026-10-09",
+      "review_scope": "Source-first occurrence reconstruction, current taxonomy boundary review and semantic external-requirement linkage.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
+        "taxonomy_review": true,
         "external_requirement_review": true,
-        "taxonomy_review": false,
-        "harm_impact_review": false,
-        "web_research": false
+        "web_research": true,
+        "harm_impact_review": false
       },
       "known_limitations": [
-        "Assessment uses preserved occurrence evidence and canonical requirement propositions; internal implementation evidence remains unavailable where stated.",
-        "This review is AI-authored, not human verification or certification."
+        "AI-authored, not human certified. Private sessions, checking traces and undisclosed decision paths remain unavailable.",
+        "Existing HIM retained; no full eleven-dimension re-adjudication."
       ],
-      "review_outcome": "Reviewed 6 recovered or independently identified requirements; retained 2 relevant independent assessments. Prior values and exclusions remain in the dated audit."
+      "review_outcome": "Separated experiment setup, pricing authority, fabricated board control mutation, purchasing/loss and provider contextual account. Clarified real bounded business setting versus an entirely simulated operation; original WSJ full-body fresh retrieval remains unavailable. Retained 001/006 roles/confidence, independent EXT judgements and HIM; distinct internal Anthropic cases excluded."
     },
     "operating_model": "AI-authored, semi-autonomous production under human contract approval",
     "human_governance_editor": null,
