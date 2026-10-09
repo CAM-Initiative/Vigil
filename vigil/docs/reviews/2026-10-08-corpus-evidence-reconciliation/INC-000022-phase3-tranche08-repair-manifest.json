@@ -55,7 +55,9 @@
         "recognition_and_exclusion_note": "An authentication-edge dependency was overloaded, but the evidence does not establish the class's otherwise-valid entitlement, inconclusive verifier and no-proportionate-fallback conditions."
       }
     ],
-    "notes": "All 76 selectable class definitions reviewed; related recognition criteria and exclusions inspected. FC-084 is proposal-only in this exact branch. Existing gaps are not promoted by audit acceptance. Preserved FC-032 on the reported availability-to-login representation; outage breadth alone does not establish FC-031/048."
+    "notes": "All 76 selectable class definitions reviewed; related recognition criteria and exclusions inspected. FC-084 is proposal-only in this exact branch. Existing gaps are not promoted by audit acceptance. Preserved FC-032 on the reported availability-to-login representation; outage breadth alone does not establish FC-031/048.",
+    "baseline_taxonomy_version": "0.6.9",
+    "current_loaded_taxonomy_version": "0.6.10"
   },
   "taxonomy_mapping_dispositions": [
     {
@@ -331,6 +333,85 @@
       "old_value": "On 20 April 2026, an internal OpenAI authentication service became overloaded after a temporary backend disruption, reducing ChatGPT availability and causing login or signup failures across ChatGPT, Codex and platform.openai.com. OpenAI reported that retry, caching and routing behaviour amplified the overload and that some ordinary backend availability errors unnecessarily sent users into login flows. Authentication substantially recovered within about 82 minutes and overall ChatGPT metrics within about 102 minutes.",
       "new_value": "On 20 April 2026, an internal OpenAI authentication service became overloaded after a temporary backend disruption, reducing ChatGPT availability and causing login or signup failures across ChatGPT, Codex and platform.openai.com. OpenAI reported that retry, caching and routing behaviour amplified the overload and that some ordinary backend availability errors unnecessarily sent users into login flows. Authentication recovered within about 62 minutes, edge availability within about 82 minutes and overall ChatGPT metrics within about 102 minutes.",
       "reason": "Restored mitigation actions and three recovery stages; corrected authentication recovery from 82 to 62 minutes and kept 82 minutes for edge availability."
+    }
+  ],
+  "comparator_incidents_reviewed": [
+    "VIGIL-INC-000015",
+    "VIGIL-INC-000016",
+    "VIGIL-INC-000018",
+    "VIGIL-INC-000021",
+    "VIGIL-INC-000022",
+    "VIGIL-INC-000027",
+    "VIGIL-INC-000039"
+  ],
+  "baseline_sources": [
+    {
+      "archive_url": "",
+      "author_or_publisher": "OpenAI Status",
+      "deployment_context": "Provider post-incident account of an authentication-edge overload affecting live ChatGPT availability and login or signup across ChatGPT, Codex and platform.openai.com.",
+      "evidence_modality": [
+        "text"
+      ],
+      "evidence_status": "first-party-reported",
+      "evidence_status_basis": "OpenAI's directly reviewed incident page and write-up report the provider's own telemetry, root-cause analysis, mitigation and recovery; the evidence status is bounded to that first-party account.",
+      "incident_source_order": 1,
+      "interpretive_reliance": "Controlling source for the occurrence window, affected products, provider-attributed mechanism and remediation. It is not used to infer affected-user counts or consequences beyond the published account.",
+      "primary_artefact_access": {
+        "access_method": "direct public review of the canonical OpenAI Status incident page and linked write-up",
+        "access_status": "directly reviewed",
+        "direct_primary_artefact_review": true,
+        "limitations": [
+          "The write-up is the provider's retrospective account and does not publish raw telemetry, internal logs or an independently verified user count."
+        ],
+        "reviewing_system": "OpenAI ChatGPT — GPT-5.6 Sol"
+      },
+      "relevance_note": "Establishes that an authentication-edge overload and amplified retry, caching and routing behaviour reduced availability, while backend availability errors unnecessarily triggered login flows.",
+      "retrieved_date": "2026-09-22",
+      "source_context": "OpenAI reports that from approximately 07:18 to 09:00 PDT some users experienced ChatGPT errors or login and signup failures across ChatGPT, Codex and platform.openai.com. The provider attributes the incident to overload in an internal authentication-edge dependency, amplified by retry, caching and routing behaviour. It states that backend availability errors unnecessarily triggered login flows, substantially recovered availability by 08:40 and fully recovered overall metrics by 09:00.",
+      "source_date": "2026-04-20",
+      "source_platform": "OpenAI Status",
+      "source_residence": "external",
+      "source_role": "incident-evidence",
+      "source_title": "Users unable to load ChatGPT, Codex and API Platform — write-up",
+      "source_type": "platform status report",
+      "source_url": "https://status.openai.com/incidents/01KPNN2V2SMP3TAN3MCJK87W50/write-up",
+      "source_url_status": "public incident write-up available at review",
+      "system_or_product": "ChatGPT, Codex and OpenAI Platform"
+    },
+    {
+      "archive_url": "",
+      "author_or_publisher": "TechRadar",
+      "deployment_context": "Contemporaneous independent reporting and direct reporter observations during the provider-confirmed partial outage.",
+      "evidence_modality": [
+        "text"
+      ],
+      "evidence_status": "independent-reporting",
+      "evidence_status_basis": "The directly reviewed live report independently records uneven user symptoms and contemporaneous Downdetector volumes while attributing provider-status claims to OpenAI.",
+      "incident_source_order": 2,
+      "interpretive_reliance": "Used to corroborate user-visible symptoms, uneven impact and public report volume; self-reported Downdetector counts are not treated as a verified affected-user population.",
+      "model_or_algorithm": "not established",
+      "primary_artefact_access": {
+        "access_method": "Direct review of the public source page returned by the occurrence-focused external search",
+        "access_status": "directly reviewed",
+        "direct_primary_artefact_review": false,
+        "limitations": [
+          "The report combines reporter observation, reader polling, social posts and Downdetector data; those signals do not establish a complete affected population.",
+          "Technical root-cause claims remain controlled by the provider write-up."
+        ],
+        "reviewing_system": "OpenAI ChatGPT — GPT-5.6 Sol"
+      },
+      "relevance_note": "Corroborates partial rather than universal impact, including login failures, inaccessible conversations, blank pages and long response times.",
+      "retrieved_date": "2026-09-22",
+      "source_context": "TechRadar observed that the outage affected users differently: some could not log in, some could not load old conversations, and others saw blank pages or slow responses while some new-chat and Codex access continued. It reported a peak above 8,700 Downdetector reports in the UK and about 1,900 in the US, followed by a rapid decline during provider mitigation.",
+      "source_date": "2026-04-20",
+      "source_platform": "TechRadar",
+      "source_residence": "external",
+      "source_role": "incident-evidence",
+      "source_title": "ChatGPT was down for many — as OpenAI says it's 'monitoring the recovery'",
+      "source_type": "news article",
+      "source_url": "https://www.techradar.com/news/live/chatgpt-down-april-2026",
+      "source_url_status": "public article available at review",
+      "system_or_product": "ChatGPT"
     }
   ]
 }

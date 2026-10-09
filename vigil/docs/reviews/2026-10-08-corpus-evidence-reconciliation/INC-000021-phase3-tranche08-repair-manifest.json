@@ -61,7 +61,9 @@
         "recognition_and_exclusion_note": "The evidence shows route recovery, but it does not establish an authentication expiry, revocation, refresh, replacement or reauthentication state that failed to propagate across an active session."
       }
     ],
-    "notes": "All 76 selectable class definitions reviewed; related recognition criteria and exclusions inspected. FC-084 is proposal-only in this exact branch. Existing gaps are not promoted by audit acceptance. Preserved local FC-032 success, unresolved FC-048 and rejection of FC-031; no causal merger with INC-015."
+    "notes": "All 76 selectable class definitions reviewed; related recognition criteria and exclusions inspected. FC-084 is proposal-only in this exact branch. Existing gaps are not promoted by audit acceptance. Preserved local FC-032 success, unresolved FC-048 and rejection of FC-031; no causal merger with INC-015.",
+    "baseline_taxonomy_version": "0.6.9",
+    "current_loaded_taxonomy_version": "0.6.10"
   },
   "taxonomy_mapping_dispositions": [
     {
@@ -366,5 +368,84 @@
       "note": null
     }
   ],
-  "explicit_evidence_changes": []
+  "explicit_evidence_changes": [],
+  "comparator_incidents_reviewed": [
+    "VIGIL-INC-000015",
+    "VIGIL-INC-000016",
+    "VIGIL-INC-000018",
+    "VIGIL-INC-000021",
+    "VIGIL-INC-000022",
+    "VIGIL-INC-000027",
+    "VIGIL-INC-000039"
+  ],
+  "baseline_sources": [
+    {
+      "archive_url": "",
+      "author_or_publisher": "OpenAI Status",
+      "deployment_context": "OpenAI status incident involving sign-in failure for users using Microsoft personal accounts across ChatGPT and API login components.",
+      "evidence_modality": [
+        "text"
+      ],
+      "evidence_status": "first-party-reported",
+      "evidence_status_basis": "OpenAI's directly reviewed status page reports its own affected sign-in route, investigation, mitigation and recovery timeline; the status is bounded to that first-party account.",
+      "incident_source_order": 1,
+      "interpretive_reliance": "Used as the controlling first-party occurrence source for the affected identity route and provider recovery timeline; it is not used to infer an undisclosed technical root cause.",
+      "primary_artefact_access": {
+        "access_method": "direct public review of the canonical OpenAI Status incident page",
+        "access_status": "directly reviewed",
+        "direct_primary_artefact_review": true,
+        "limitations": [
+          "The public status report does not disclose which component of the Microsoft/OpenAI federated authentication exchange failed or why."
+        ],
+        "reviewing_system": "OpenAI ChatGPT — GPT-5.6 Sol"
+      },
+      "relevance_note": "First-party evidence that the incident was route-specific to Microsoft personal-account sign-in rather than a generic loss of all OpenAI login capability.",
+      "retrieved_date": "2026-09-22",
+      "source_context": "OpenAI reported at 14:48 on 5 June 2026 that users were unable to sign in using Microsoft personal accounts, applied mitigation at 15:24, and reported full recovery at 15:58. The affected components included Login for ChatGPT and APIs.",
+      "source_date": "2026-06-05",
+      "source_platform": "OpenAI Status",
+      "source_residence": "external",
+      "source_role": "incident-evidence",
+      "source_title": "Users unable to sign in using Microsoft personal accounts",
+      "source_type": "platform status report",
+      "source_url": "https://status.openai.com/incidents/01KTC44AD7928NC4HHQWW9XE5F",
+      "source_url_status": "public incident page available at review",
+      "system_or_product": "ChatGPT and OpenAI API login"
+    },
+    {
+      "archive_url": "",
+      "author_or_publisher": "OpenAI Developer Community users",
+      "deployment_context": "Contemporaneous first-person reports from users attempting to sign in to ChatGPT/OpenAI accounts through Microsoft-linked authentication during the provider-confirmed incident.",
+      "evidence_modality": [
+        "text"
+      ],
+      "evidence_status": "user-reported",
+      "evidence_status_basis": "Multiple contemporaneous user reports independently preserve the same token_exchange_failed symptom on Microsoft-linked sign-in. They support occurrence detail and fallback-boundary analysis but do not establish provider-internal root cause.",
+      "incident_source_order": 2,
+      "interpretive_reliance": "Used to strengthen the occurrence-specific dependency and fallback evidence. The testimony is not used to generalise affected population size or to attribute fault to Microsoft rather than OpenAI.",
+      "model_or_algorithm": "not applicable",
+      "primary_artefact_access": {
+        "access_method": "direct public review of the OpenAI Developer Community thread",
+        "access_status": "directly reviewed",
+        "direct_primary_artefact_review": true,
+        "limitations": [
+          "Posts are first-person user testimony and do not expose provider telemetry or the internal token-exchange implementation.",
+          "Fallback conditions differ between users: one user retained smartphone access while another reported that trying Google sign-in did not restore access to the affected account."
+        ],
+        "reviewing_system": "OpenAI ChatGPT — GPT-5.6 Sol"
+      },
+      "relevance_note": "Establishes repeated token_exchange_failed errors for Microsoft-linked accounts, including paid Plus accounts, and supplies the mixed fallback evidence material to the Verification-Dependency Access Continuity boundary.",
+      "retrieved_date": "2026-09-22",
+      "source_context": "Users reported authentication/verification errors with error_code token_exchange_failed while signing in through Microsoft-linked accounts. Multiple users described paid Plus subscriptions on affected accounts. One user reported web failure while smartphone access remained available; another reported that trying Google sign-in did not restore access to the affected account. Community replies later linked the reports to OpenAI's Microsoft-personal-account status incident.",
+      "source_date": "2026-06-05",
+      "source_platform": "OpenAI Developer Community",
+      "source_residence": "external",
+      "source_role": "direct-testimony",
+      "source_title": "Emergency: All Microsoft-oauth accounts failed to login ChatGPT or OpenAI!",
+      "source_type": "first-person account",
+      "source_url": "https://community.openai.com/t/emergency-all-microsoft-oauth-accounts-failed-to-login-chatgpt-or-openai/1382704",
+      "source_url_status": "available",
+      "system_or_product": "ChatGPT/OpenAI account login"
+    }
+  ]
 }

@@ -51,7 +51,9 @@
         "recognition_and_exclusion_note": "Aikido detected compromised npm releases after publication and Mistral removed affected SDK versions, but the record does not link one operative Mistral control to that external detection and protective removal."
       }
     ],
-    "notes": "All 76 selectable class definitions reviewed; related recognition criteria and exclusions inspected. FC-084 is proposal-only in this exact branch. Existing gaps are not promoted by audit acceptance. Preserved FC-010/083 ambiguous boundaries; nominal detection/removal is not an isolated control-effectiveness proof."
+    "notes": "All 76 selectable class definitions reviewed; related recognition criteria and exclusions inspected. FC-084 is proposal-only in this exact branch. Existing gaps are not promoted by audit acceptance. Preserved FC-010/083 ambiguous boundaries; nominal detection/removal is not an isolated control-effectiveness proof.",
+    "baseline_taxonomy_version": "0.6.9",
+    "current_loaded_taxonomy_version": "0.6.10"
   },
   "taxonomy_mapping_dispositions": [
     {
@@ -654,6 +656,111 @@
       "old_value": "Mistral reported that the Mini Shai-Hulud supply-chain attack on TanStack resulted in compromised Mistral npm and PyPI SDK versions being published. The compromised PyPI package `mistralai==2.4.6` executed malicious code on import, downloading a background payload that harvested credentials from common locations. Mistral reported no impact to its global infrastructure and removed the affected releases.",
       "new_value": "Mistral reported that the Mini Shai-Hulud supply-chain attack on TanStack resulted in compromised Mistral npm and PyPI SDK versions being published. The compromised PyPI package `mistralai==2.4.6` executed malicious code on import, downloading a background payload that harvested credentials from common locations. Mistral reported no impact to its global infrastructure and removed the affected releases. Its updated advisory says the compromised npm releases referenced a missing file, preventing their malicious path from running. The working PyPI payload was Linux-specific. Mistral later marked mitigation and closed its investigation.",
       "reason": "Separated upstream compromise, publication, working Linux PyPI payload, nonfunctional npm payload, external detection/removal and investigation closure."
+    }
+  ],
+  "comparator_incidents_reviewed": [
+    "VIGIL-INC-000095",
+    "VIGIL-INC-000107",
+    "VIGIL-INC-000108"
+  ],
+  "baseline_sources": [
+    {
+      "source_title": "TanStack supply chain attack affecting Mistral SDK packages",
+      "author_or_publisher": "Mistral AI",
+      "source_date": "2026-05-12",
+      "source_url": "https://docs.mistral.ai/resources/security-advisories/MAI-2026-002",
+      "source_url_status": "available",
+      "source_type": "technical report",
+      "source_platform": "Mistral Docs",
+      "source_residence": "external",
+      "source_role": "incident-evidence",
+      "evidence_modality": [
+        "text",
+        "indicators of compromise"
+      ],
+      "evidence_status": "first-party-reported",
+      "evidence_status_basis": "Mistral's first-party advisory documents the compromised releases, malicious PyPI import-time payload, indicators of compromise and remediation.",
+      "primary_artefact_access": {
+        "access_method": "direct public source review",
+        "access_status": "directly reviewed",
+        "direct_primary_artefact_review": true,
+        "limitations": [],
+        "reviewing_system": "OpenAI ChatGPT — GPT-5.6 Sol"
+      },
+      "incident_source_order": 1,
+      "interpretive_reliance": "Primary source for affected Mistral SDK versions, publication window, payload behaviour and Mistral's response.",
+      "relevance_note": "Primary source for affected Mistral SDK versions, publication window, payload behaviour and Mistral's response.",
+      "retrieved_date": "2026-09-08",
+      "source_context": "Primary source for affected Mistral SDK versions, publication window, payload behaviour and Mistral's response.",
+      "system_or_product": "Mistral SDK packages",
+      "model_or_algorithm": "not model-specific"
+    },
+    {
+      "archive_url": "",
+      "author_or_publisher": "Tom's Hardware",
+      "deployment_context": "Independent reporting documents compromised Mistral packages, credential-harvesting behavior and rapid removal.",
+      "evidence_modality": [
+        "text"
+      ],
+      "evidence_status": "independent-reporting",
+      "evidence_status_basis": "The report corroborates malicious publication and containment but does not establish a specific downstream credential misuse victim.",
+      "incident_source_order": 2,
+      "interpretive_reliance": "The report corroborates malicious publication and containment but does not establish a specific downstream credential misuse victim.",
+      "model_or_algorithm": "not fully established in the source",
+      "primary_artefact_access": {
+        "access_method": "Occurrence-focused web search and review of the public source or returned source metadata",
+        "access_status": "directly reviewed",
+        "direct_primary_artefact_review": false,
+        "limitations": [
+          "The source does not independently establish every underlying claim or unreported downstream consequence.",
+          "The source does not determine legal liability or final factual truth."
+        ],
+        "reviewing_system": "GPT-5"
+      },
+      "relevance_note": "Supports the bounded package-service disruption and remediation finding.",
+      "retrieved_date": "2026-09-20",
+      "source_context": "Independent reporting documents compromised Mistral packages, credential-harvesting behavior and rapid removal.",
+      "source_date": "2026-05-13",
+      "source_platform": "Tom's Hardware",
+      "source_residence": "external",
+      "source_role": "harm-evidence",
+      "source_title": "Compromised Mistral and TanStack packages may have exposed developer credentials",
+      "source_type": "news article",
+      "source_url": "https://www.tomshardware.com/tech-industry/cyber-security/compromised-mistral-ai-and-tanstack-packages-may-have-exposed-github-cloud-and-ci-cd-credentials-in-mini-shai-hulud-malware-infection-supply-chain-campaign-spreads-across-npm-and-ai-developer-ecosystems-like-wildfire",
+      "source_url_status": "public source page or indexed metadata available at review",
+      "system_or_product": "Other"
+    },
+    {
+      "source_title": "Mini Shai-Hulud Is Back: npm Worm Hits over 160 Packages, including Mistral and Tanstack",
+      "author_or_publisher": "Aikido Security",
+      "source_date": "2026-05-12",
+      "source_url": "https://www.aikido.dev/blog/mini-shai-hulud-is-back-tanstack-compromised",
+      "retrieved_date": "2026-09-25",
+      "source_url_status": "available",
+      "source_type": "technical analysis",
+      "source_platform": "Aikido Security",
+      "source_residence": "external",
+      "source_role": "incident-evidence",
+      "evidence_modality": [
+        "text"
+      ],
+      "evidence_status": "first-party-reported",
+      "evidence_status_basis": "Aikido reports its own malware-team detections and lists affected npm releases; it does not establish the internal Mistral detection path or that customers were protected before installation.",
+      "primary_artefact_access": {
+        "access_method": "direct public source review",
+        "access_status": "directly reviewed",
+        "direct_primary_artefact_review": true,
+        "limitations": [
+          "The article was updated after first publication and does not by itself date each package-specific detection to the minute."
+        ],
+        "reviewing_system": "OpenAI ChatGPT — Codex"
+      },
+      "incident_source_order": 3,
+      "interpretive_reliance": "Independent first-party account of external package monitoring and affected Mistral npm releases.",
+      "relevance_note": "Tests the detection and monitoring boundary after malicious package publication.",
+      "source_context": "Aikido reported detecting 373 malicious package-version entries across 169 npm names, including @mistralai releases.",
+      "system_or_product": "Mistral SDK packages",
+      "model_or_algorithm": "not model-specific"
     }
   ]
 }

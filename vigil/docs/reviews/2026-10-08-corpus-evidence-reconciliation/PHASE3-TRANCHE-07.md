@@ -10,18 +10,18 @@ Twelve previously awaiting records were reconciled. **34 clauses became 58 sourc
 
 | Incident | Clauses → episodes | Indexed EXTREQ | Material repair | Commit |
 |---|---:|---:|---|---|
-| INC-157 | 5 → 5 | 25 | Consolidated duplicate investigation clauses and restored authorised task, notification, evaluation pause, remediation and impact limits. | `0f238ba330aba8d0505f4db6225a103ae738bfd6` |
-| INC-161 | 2 → 4 | 0 | Merged overlapping intrusive-continuation clauses; restored task, failed retrieval and qualified retrospective attribution without inventing flood/probe order. | `722c40bb8bd2a6e9f1667040be02ac7bf2074f34` |
-| INC-170 | 7 → 6 | 23 | Merged duplicate recording/reconstruction descriptions, moved cessation before retrospective response and retained actor-specific route attribution across three instances. | `e221551d88ac83cb1268a05c7e32224c0c3f2683` |
-| INC-172 | 4 → 6 | 16 | Merged duplicate continued-pursuit descriptions; placed hostile probe and successful firewall response before distinct public-file fallback and later attribution/impact review. | `ab57091ac88c540f75a8d53e098bffa4ab8bd723` |
-| INC-175 | 1 → 4 | 0 | Separated malformed retrieval, attempted exploitation, observed outcome and retrospective attribution. | `18fa1286e6ba44abe34dff930b0adacd3061e73d` |
-| INC-179 | 3 → 5 | 0 | Separated research handling, external posting, later discovery/disclosure, partial takedown and individual-notice limitation. | `410621214600d8914ec7afbe546126f9ef003759` |
-| INC-183 | 2 → 4 | 0 | Separated authorised scheduling task, rule uptake, one copied output and later research response; kept propagation distinct from verification laundering. | `f953c31349d31ff1cd47b938f2c75bf325eb0391` |
-| INC-184 | 2 → 4 | 0 | Removed the duplicated write/delete event description; restored original workbook constraints, forged pretext, command-internal order and simulation/result limits. | `1bfa2cb4b30eb141da6d4c29b02a60bd4cc3173a` |
-| INC-185 | 2 → 4 | 0 | Merged duplicate persistence/control descriptions; restored suspicion before reliance and write-before-build-edit sequence, retaining the prior-approval gap. | `6d02bd16b2a428b339636c7e41c251092519030f` |
-| INC-186 | 2 → 5 | 0 | Merged duplicate send/repost interpretations and restored digest task, intermediate reads/lookup and recognised distrust before two ordered simulated sends. | `0f359e9aae3822a846f02aa0971cb6720353b371` |
-| INC-187 | 2 → 6 | 0 | Separated public download from metadata inference, restored discovery/internal review before delivered notification and agency investigation; preserved unknown query/download order. | `fe90d77212335f09b4a97c16e5c999128572b8b6` |
-| INC-188 | 2 → 5 | 0 | Separated campaign onset, replay technique, volume/attribution, reported July disruption and later adaptive protections/research disclosures. | `6a6647b3d639291b0bd83c2a49d37a646c80d2ea` |
+| INC-157 | 5 → 5 | 25 | Consolidated duplicate investigation clauses and restored authorised task, notification, evaluation pause, remediation and impact limits. | `1dc30e37b020d939280a2b1e79d7ddfb7fd60aa9` |
+| INC-161 | 2 → 4 | 0 | Merged overlapping intrusive-continuation clauses; restored task, failed retrieval and qualified retrospective attribution without inventing flood/probe order. | `8b6552c1250b3c1ecb7a3647dfe7e0a38c01843a` |
+| INC-170 | 7 → 6 | 23 | Merged duplicate recording/reconstruction descriptions, moved cessation before retrospective response and retained actor-specific route attribution across three instances. | `c03bb9800debbbb163550a5ba299c654c0768844` |
+| INC-172 | 4 → 6 | 16 | Merged duplicate continued-pursuit descriptions; placed hostile probe and successful firewall response before distinct public-file fallback and later attribution/impact review. | `a8d88ab5ae5fca74b03d4c24054b1c76c6e09cb3` |
+| INC-175 | 1 → 4 | 0 | Separated malformed retrieval, attempted exploitation, observed outcome and retrospective attribution. | `ade95e81877df3a2c7a83d0bd9a1b30476a952ca` |
+| INC-179 | 3 → 5 | 0 | Separated research handling, external posting, later discovery/disclosure, partial takedown and individual-notice limitation. | `471fafd17e8ff48f4c097d56ab96a6e09973df34` |
+| INC-183 | 2 → 4 | 0 | Separated authorised scheduling task, rule uptake, one copied output and later research response; kept propagation distinct from verification laundering. | `237c5a782685d7c8d763fdda4083287fd1cdd025` |
+| INC-184 | 2 → 4 | 0 | Removed the duplicated write/delete event description; restored original workbook constraints, forged pretext, command-internal order and simulation/result limits. | `44bb9abdd6d093f1f436a4b0a0dc37f01a2a7cc5` |
+| INC-185 | 2 → 4 | 0 | Merged duplicate persistence/control descriptions; restored suspicion before reliance and write-before-build-edit sequence, retaining the prior-approval gap. | `f0d5013b40e28d7b2a45ce92960ee363eabea6e0` |
+| INC-186 | 2 → 5 | 0 | Merged duplicate send/repost interpretations and restored digest task, intermediate reads/lookup and recognised distrust before two ordered simulated sends. | `c9cbb58480ab88a74fb94ff71928cf3e0493daee` |
+| INC-187 | 2 → 6 | 0 | Separated public download from metadata inference, restored discovery/internal review before delivered notification and agency investigation; preserved unknown query/download order. | `74ccff4b6b10704349d29b4d9a26b43dd4c326f8` |
+| INC-188 | 2 → 5 | 0 | Separated campaign onset, replay technique, volume/attribution, reported July disruption and later adaptive protections/research disclosures. | `b0cae9c0500657dcd404b8a3310da0cf95c53706` |
 
 ## Evidence and boundaries
 
@@ -63,7 +63,7 @@ All twelve manifests are in `vigil/docs/reviews/2026-10-08-corpus-evidence-recon
 - 84 unit tests passed across source episodes, record rules, public prose, external assessments/resolution/projection, builder and provenance contracts. Pipeline-state and source-origin scripts passed.
 - No schema, validator, permanent test, builder or workflow rule changed.
 
-GitHub Actions results and published commit identities will be recorded after publication.
+Published checkpoint: `1bb12ccfbd4cd006f1f96769775f7d476e4bd008`. All three checks passed: VIGIL records pull request run 37881321666, VIGIL records push run 37881317646 and VIGIL Observatory alignment taxonomy publications pull request run 37881321540. The case table records published commit identities.
 
 The existing branch remains unmerged. No unmerged catalogue dispatch is performed. Checks establish structure and build integrity, not source exhaustiveness, human verification or substantive correctness.
 

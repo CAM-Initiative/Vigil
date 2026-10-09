@@ -53,7 +53,9 @@
         "recognition_and_exclusion_note": "Victim-granted Gmail access was transposed to an attacker-controlled task and recipient context, demonstrating a change in principal, purpose and disclosure scope without reauthorisation."
       }
     ],
-    "notes": "All 76 selectable class definitions reviewed; related recognition criteria and exclusions inspected. FC-084 is proposal-only in this exact branch. Existing gaps are not promoted by audit acceptance. Preserved FC-001/003 findings, researcher-controlled HIM and independent external outcomes; hidden instruction seeding is not conflated with mailbox task delivery."
+    "notes": "All 76 selectable class definitions reviewed; related recognition criteria and exclusions inspected. FC-084 is proposal-only in this exact branch. Existing gaps are not promoted by audit acceptance. Preserved FC-001/003 findings, researcher-controlled HIM and independent external outcomes; hidden instruction seeding is not conflated with mailbox task delivery.",
+    "baseline_taxonomy_version": "0.6.9",
+    "current_loaded_taxonomy_version": "0.6.10"
   },
   "taxonomy_mapping_dispositions": [
     {
@@ -104,7 +106,7 @@
   "review_attribution": "AI-authored; not human certified",
   "baseline_commit": "1bb12ccfbd4cd006f1f96769775f7d476e4bd008",
   "baseline_blob_sha": "52a3c49cdf967465057cf54abe9208ffd2a91b2d",
-  "repaired_blob_sha": "2430af1f2349058b600663f46e026750a4000add",
+  "repaired_blob_sha": "23ef7387019bbdba3b5a3450c27619c62e73ad8e",
   "material_repair": "Restored infrastructure test, instruction seeding, hidden task, concealment and decommissioning-before-disclosure chronology; distinguished the demonstrated proof of concept from possible delivery routes.",
   "old_clause_count": 2,
   "new_episode_count": 6,
@@ -491,7 +493,7 @@
           "source_date": "2026-09-17",
           "source_url": "https://letsdatascience.com/news/check-point-researcher-tells-lds-why-ai-isolation-needs-more-than-a-sandbox-a78df82f",
           "source_url_status": "available",
-          "source_type": "research interview",
+          "source_type": "news article",
           "source_platform": "Let’s Data Science",
           "source_residence": "external",
           "source_role": "incident-evidence",
@@ -520,6 +522,83 @@
         }
       ],
       "reason": "Restored infrastructure test, instruction seeding, hidden task, concealment and decommissioning-before-disclosure chronology; distinguished the demonstrated proof of concept from possible delivery routes."
+    }
+  ],
+  "comparator_incidents_reviewed": [
+    "VIGIL-INC-000095",
+    "VIGIL-INC-000107",
+    "VIGIL-INC-000108"
+  ],
+  "baseline_sources": [
+    {
+      "source_title": "The Shared Clipboard Inside the Sandbox: Cross-Account Data Leakage in ChatGPT",
+      "author_or_publisher": "Check Point Research / Alexey Bukhteyev",
+      "source_date": "2026-09-08",
+      "source_url": "https://research.checkpoint.com/2026/the-shared-clipboard-inside-the-sandbox-cross-account-data-leakage-in-chatgpt/",
+      "source_url_status": "available",
+      "source_type": "technical report",
+      "source_platform": "Check Point Research",
+      "source_residence": "external",
+      "source_role": "incident-evidence",
+      "evidence_modality": [
+        "text",
+        "video",
+        "diagram"
+      ],
+      "evidence_status": "first-party-reported",
+      "evidence_status_basis": "Check Point Research describes its own discovery, test environment, exploitation path, Gmail proof of concept, disclosure to OpenAI and remediation information received from OpenAI.",
+      "primary_artefact_access": {
+        "access_method": "direct public technical-report review",
+        "access_status": "directly reviewed",
+        "direct_primary_artefact_review": true,
+        "limitations": [
+          "The report does not provide OpenAI's complete internal architecture, logs or remediation record.",
+          "The public report does not establish real-world victim exploitation outside the researchers' proof of concept or quantify affected accounts."
+        ],
+        "reviewing_system": "OpenAI ChatGPT — GPT-5.6 Sol"
+      },
+      "incident_source_order": 1,
+      "interpretive_reliance": "Primary evidence for the cross-account channel, shared internal-service mechanism, hidden task execution, Gmail proof of concept and reported remediation state.",
+      "relevance_note": "First-party technical security research by the team that discovered and demonstrated the issue.",
+      "retrieved_date": "2026-09-09",
+      "source_context": "Check Point reports that containers belonging to different ChatGPT accounts could communicate through mutable state in a shared internal Artifactory service and demonstrates use of that path to covertly task a victim session and relay connected Gmail data.",
+      "system_or_product": "ChatGPT code-execution environment and connected apps",
+      "model_or_algorithm": "ChatGPT model/runtime not specified in the public report"
+    },
+    {
+      "archive_url": "",
+      "author_or_publisher": "OpenAI",
+      "deployment_context": "Official documentation describes isolated code-execution containers and their intended lifecycle and file boundaries.",
+      "evidence_modality": [
+        "text"
+      ],
+      "evidence_status": "first-party-reported",
+      "evidence_status_basis": "This is platform context and does not independently reproduce the shared-Artifactory covert channel.",
+      "incident_source_order": 2,
+      "interpretive_reliance": "This is platform context and does not independently reproduce the shared-Artifactory covert channel.",
+      "model_or_algorithm": "not fully established in the source",
+      "primary_artefact_access": {
+        "access_method": "Occurrence-focused web search and review of the public source or returned source metadata",
+        "access_status": "directly reviewed",
+        "direct_primary_artefact_review": false,
+        "limitations": [
+          "The source does not independently establish every underlying claim or unreported downstream consequence.",
+          "The source does not determine legal liability or final factual truth."
+        ],
+        "reviewing_system": "GPT-5"
+      },
+      "relevance_note": "Clarifies the intended isolation boundary while leaving the occurrence to the technical research source.",
+      "retrieved_date": "2026-09-20",
+      "source_context": "Official documentation describes isolated code-execution containers and their intended lifecycle and file boundaries.",
+      "source_date": null,
+      "source_platform": "OpenAI",
+      "source_residence": "external",
+      "source_role": "contextual-background",
+      "source_title": "Code Interpreter tool",
+      "source_type": "product documentation",
+      "source_url": "https://platform.openai.com/docs/guides/tools-code-interpreter",
+      "source_url_status": "public source page or indexed metadata available at review",
+      "system_or_product": "Other"
     }
   ]
 }

@@ -36,16 +36,28 @@
     "candidate_classes_tested": [
       {
         "class_id": "VIGIL-FC-000032",
-        "outcome": "retained-candidate",
+        "outcome": "retained-mapping",
         "recognition_and_exclusion_note": "A narrower Codex RBAC state was used to represent availability of the broader new ChatGPT app even though ChatGPT Classic remained accessible, collapsing materially distinct access conditions at the new-app boundary."
       },
       {
+        "class_id": "VIGIL-FC-000032",
+        "outcome": "retained-boundary-or-rejection",
+        "recognition_and_exclusion_note": "The functioning fallback demonstrates that the broader ChatGPT access state differed from the new application's Codex-coupled state."
+      },
+      {
         "class_id": "VIGIL-FC-000048",
-        "outcome": "retained-candidate",
+        "outcome": "retained-mapping",
         "recognition_and_exclusion_note": "Classic remained a practical alternative to the Codex-coupled new app, but the reported Codex RBAC-disabled state is a component permission restriction rather than an evidenced temporarily unavailable or inconclusive verification pathway. The occurrence materially distinguishes fallback availability from fulfillment of the verification-noncompletion success conditions; it establishes neither FC-048 failure nor success."
+      },
+      {
+        "class_id": "VIGIL-FC-000032",
+        "outcome": "retained-boundary-or-rejection",
+        "recognition_and_exclusion_note": "The recurrence shows that the same access-state coupling reappeared after the first fix and therefore remained materially relevant until final recovery."
       }
     ],
-    "notes": "All 76 selectable class definitions reviewed; related recognition criteria and exclusions inspected. FC-084 is proposal-only in this exact branch. Existing gaps are not promoted by audit acceptance. Preserved FC-032 failure and FC-048 ambiguous boundary; Classic availability alone does not establish a failed or unavailable verifier."
+    "notes": "All 76 selectable class definitions reviewed; related recognition criteria and exclusions inspected. FC-084 is proposal-only in this exact branch. Existing gaps are not promoted by audit acceptance. Preserved FC-032 failure and FC-048 ambiguous boundary; Classic availability alone does not establish a failed or unavailable verifier.",
+    "baseline_taxonomy_version": "0.6.9",
+    "current_loaded_taxonomy_version": "0.6.10"
   },
   "taxonomy_mapping_dispositions": [
     {
@@ -366,6 +378,87 @@
       "old_value": "OpenAI reported that some Enterprise users whose workspaces did not have Codex access enabled were unable to log in to the new ChatGPT application after installing it, receiving a codex_cli_workspace_disabled error even though ChatGPT Classic remained available. OpenAI released a fix on 18 July 2026, but the problem then recurred for some Enterprise users before the provider later reported full recovery.",
       "new_value": "OpenAI reported that some Enterprise users whose workspaces did not have Codex access enabled were unable to log in to the new ChatGPT application after installing it, receiving a codex_cli_workspace_disabled error even though ChatGPT Classic remained available. OpenAI released a fix on 18 July 2026, but the problem then recurred for some Enterprise users before the provider later reported full recovery. Users had to update the app to receive the first fix; the recurrence was reported before the final recovery notice.",
       "reason": "Merged duplicated Classic fallback, restored the required app update and separated first fix, recurrence and final recovery."
+    }
+  ],
+  "comparator_incidents_reviewed": [
+    "VIGIL-INC-000015",
+    "VIGIL-INC-000016",
+    "VIGIL-INC-000018",
+    "VIGIL-INC-000021",
+    "VIGIL-INC-000022",
+    "VIGIL-INC-000027",
+    "VIGIL-INC-000039"
+  ],
+  "baseline_sources": [
+    {
+      "archive_url": "",
+      "author_or_publisher": "OpenAI Status",
+      "deployment_context": "Enterprise application access coupled to Codex role-based access-control configuration.",
+      "evidence_modality": [
+        "text"
+      ],
+      "evidence_status": "verified",
+      "evidence_status_basis": "The directly reviewed OpenAI Status page establishes the affected Enterprise cohort, Codex-RBAC-dependent error, ChatGPT Classic fallback, released fix, subsequent recurrence and final recovery.",
+      "incident_source_order": 1,
+      "interpretive_reliance": "Used as the controlling first-party occurrence source for the cross-surface entitlement coupling and full public incident timeline. The source does not establish the internal implementation cause of that coupling or recurrence.",
+      "model_or_algorithm": "not specified",
+      "primary_artefact_access": {
+        "access_method": "direct public review of the canonical OpenAI Status incident page",
+        "access_status": "directly reviewed",
+        "direct_primary_artefact_review": true,
+        "limitations": [
+          "The public report does not establish whether the Codex-RBAC coupling was an implementation defect, configuration error or intentional dependency.",
+          "The public report does not disclose the internal technical reason the issue recurred after the first fix."
+        ],
+        "reviewing_system": "OpenAI ChatGPT — GPT-5.6 Sol"
+      },
+      "relevance_note": "First-party evidence that a narrower Codex-RBAC state governed access to the new ChatGPT application for some Enterprise users while ChatGPT Classic remained available; the later fix, recurrence and final recovery strengthen the bounded occurrence history.",
+      "retrieved_date": "2026-09-22",
+      "source_context": "OpenAI reported on 17 July 2026 that Enterprise users without Codex RBAC enabled could receive a codex_cli_workspace_disabled error when logging into the new ChatGPT app after installation and directed users to ChatGPT Classic. On 18 July OpenAI reported a fix release, then identified that the issue had recurred for some Enterprise users, and later marked all impacted services fully recovered.",
+      "source_date": "2026-07-17",
+      "source_platform": "OpenAI Status",
+      "source_residence": "external",
+      "source_role": "incident-evidence",
+      "source_title": "New ChatGPT App Not Available For Enterprise Users Without Codex Permissions",
+      "source_type": "platform status report",
+      "source_url": "https://status.openai.com/incidents/01KXRBA8B98QHMMVP3M86NHFZ1",
+      "source_url_status": "available",
+      "system_or_product": "New ChatGPT application for Enterprise users"
+    },
+    {
+      "archive_url": "",
+      "author_or_publisher": "Pulsetic",
+      "deployment_context": "Pulsetic mirrors the incident timeline: Enterprise users without Codex RBAC encountered codex_cli_workspace_disabled and were directed to ChatGPT Classic until the fix was released.",
+      "evidence_modality": [
+        "text"
+      ],
+      "evidence_status": "independent-reporting",
+      "evidence_status_basis": "An independent status monitor preserves the provider's incident timeline and resolution; it is used as corroboration, not as a separate severity assessment.",
+      "incident_source_order": 2,
+      "interpretive_reliance": "Independent corroboration of the affected cohort, error and workaround; the OpenAI Status page remains controlling for the complete occurrence timeline.",
+      "model_or_algorithm": "not fully established in the source",
+      "primary_artefact_access": {
+        "access_method": "Direct review of the public source page returned by the occurrence-focused external search",
+        "access_status": "directly reviewed",
+        "direct_primary_artefact_review": false,
+        "limitations": [
+          "The source was reviewed as external corroboration and does not independently establish every underlying claim.",
+          "The source does not determine legal liability or final factual truth."
+        ],
+        "reviewing_system": "GPT-5"
+      },
+      "relevance_note": "Corroborates the bounded Enterprise access disruption and temporary fallback without independently establishing internal cause or population scale.",
+      "retrieved_date": "2026-09-20",
+      "source_context": "Pulsetic mirrors the incident timeline: Enterprise users without Codex RBAC encountered codex_cli_workspace_disabled and were directed to ChatGPT Classic until the fix was released.",
+      "source_date": "2026-07-17",
+      "source_platform": "Pulsetic",
+      "source_residence": "external",
+      "source_role": "harm-evidence",
+      "source_title": "New ChatGPT App Not Available for Enterprise Users Without Codex Permissions",
+      "source_type": "platform status report",
+      "source_url": "https://pulsetic.com/status/openai/incidents/5636/",
+      "source_url_status": "public source page available at review",
+      "system_or_product": "ChatGPT"
     }
   ]
 }
