@@ -22,3 +22,8 @@ Fresh source additions record the Hanover live disclosure, AP's licensed GPB pub
 The live census is **100 repaired and 79 awaiting**, with no pilot-only or spotcheck-only cases. The seven holds remain INC-053/064/120/139/164/171/174. The canonical corpus contains **179 records, 603 sources, 674 clauses/episodes and 1315 external assessment rows**. The remaining-89 plan keeps its frozen baseline metrics and now includes execution progress. Next group: INC-009/010/012/028/032/034/037/042/078/121.
 
 All ten rebuild guards passed against the explicit baseline. Canonical/public, source/interpretive/authorship/component, occurrence-reference and taxonomy integrity checks passed; 84 unit tests plus source-provenance and pipeline-state checks passed. Public outputs were deterministically rebuilt. No schema, validator, test or CI semantics changed. Remote CI will be recorded after publication. Review is AI-authored and bounded; human verification and source exhaustiveness remain uncertified.
+
+
+## Published checkpoint and remote CI
+
+Published head: `6b20389747b17b3cc483b9673e30e1e37abdc7bd`; remote tree matched the locally validated tree. All three runs passed: [VIGIL records push](https://github.com/CAM-Initiative/Vigil/actions/runs/37941928360), [VIGIL records PR](https://github.com/CAM-Initiative/Vigil/actions/runs/37941936090), [taxonomy publications](https://github.com/CAM-Initiative/Vigil/actions/runs/37941935999).
