@@ -203,3 +203,7 @@ Tranche 11 completed source-first repairs of INC-001–007/023/024/065, includin
 
 
 Tranche 12 reconciled ten more records, leaving **69 of the original 89**. See `PHASE3-TRANCHE-12.md` for direct/indirect source access and remaining recognition limits. Next: tranche 13.
+
+### Tranche 13 checkpoint — 9 October 2026
+
+Ten further reviews complete. 120 bounded source-first repaired; 59 awaiting including seven documented holds. No pilot/spotcheck carryovers. Cumulative indexed EXTREQ reconciliations: 696. No human certification or exhaustive primary-artefact review claimed. See [PHASE3-TRANCHE-13.md](PHASE3-TRANCHE-13.md). Next group: INC-074/114/115/140/142/153/155/165/168/169.

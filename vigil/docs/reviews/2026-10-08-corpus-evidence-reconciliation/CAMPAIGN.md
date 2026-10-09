@@ -121,3 +121,7 @@ Ten reviews (INC-001–007/023/024/065) from `189e99df60c1e1cb2fcb6896c642b3ed0c
 ## Phase 3 twelfth-tranche checkpoint — 9 October 2026
 
 INC-009/010/012/028/032/034/037/042/078/121 were individually reconciled from `6b20389747b17b3cc483b9673e30e1e37abdc7bd`: 19 clauses became 30 episodes and 16 indexed EXTREQ rows were reconciled (653 cumulative). The census is 110 repaired, 69 awaiting; the seven holds remain. Captures for INC-032 were mislabelled in reverse and are corrected; INC-037’s unsupported rewrite allegation is removed. Direct sampled visual review of INC-010 does not certify its audio. Private, unavailable and indirect artefact limits remain case-specific. All class roles/confidence, HIM bands and independent external results remain. See `PHASE3-TRANCHE-12.md` and ten manifests. All guards, validators, 84 tests and two script checks passed locally. Tranche 11’s three remote checks passed on published head `6b20389747b17b3cc483b9673e30e1e37abdc7bd`. Continue the remaining corpus; this is not campaign completion.
+
+### Tranche 13 checkpoint — 9 October 2026
+
+Ten further reviews complete. 120 bounded source-first repaired; 59 awaiting including seven documented holds. No pilot/spotcheck carryovers. Cumulative indexed EXTREQ reconciliations: 696. No human certification or exhaustive primary-artefact review claimed. See [PHASE3-TRANCHE-13.md](PHASE3-TRANCHE-13.md). Next group: INC-074/114/115/140/142/153/155/165/168/169.

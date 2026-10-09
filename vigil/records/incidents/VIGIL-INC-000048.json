@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "NarxCare score linked to opioid withdrawal and termination of care for a chronic-pain patient",
     "created": "2026-08-30",
-    "updated": "2026-10-03",
-    "version": "1.2.6"
+    "updated": "2026-10-09",
+    "version": "1.2.7"
   },
   "incident_identity": {
     "historical_event_name": "Kathryn NarxCare clinical-restriction occurrence",
@@ -33,11 +33,21 @@
     "source_clause_analysis": {
       "source_record_order": 1,
       "source_url": "https://www.wired.com/story/opioid-drug-addiction-algorithm-chronic-pain/",
-      "purpose": "Preserve short source-language anchors that materially drive VIGIL's governance interpretation while separating occurrence facts from mechanism-level inference.",
+      "purpose": "Separate the evidenced occurrence stages and their distinct governance questions.",
       "clauses": [
         {
-          "source_anchor": "how high some scores are in your chart",
-          "recovered_invariant_interpretation": "A predictive or inferential signal may inform clinical review, but the existence or magnitude of a score does not itself establish authority to deny, terminate or materially restrict care.",
+          "source_paraphrase": "Kathryn entered hospital with endometriosis-related pain and received intravenous opioids during observation.",
+          "recovered_invariant_interpretation": "Clinical antecedents must remain distinct from the later restrictive decision.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "episode_id": "E001"
+        },
+        {
+          "source_paraphrase": "At the hospital, a staff member referred to how high NarxCare-related scores were in Kathryn’s chart immediately before opioid medication was stopped; the reporting does not preserve the full clinical decision pathway.",
+          "recovered_invariant_interpretation": "A score signal is not itself evidence of the full prescribing decision.",
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000046",
@@ -47,11 +57,24 @@
             }
           ],
           "adjudication_status": "mapped",
-          "source_paraphrase": "At the hospital, a staff member referred to how high NarxCare-related scores were in Kathryn’s chart immediately before opioid medication was stopped; the reporting does not preserve the full clinical decision pathway."
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "episode_id": "E002"
         },
         {
-          "source_anchor": "a report from the NarxCare database",
-          "recovered_invariant_interpretation": "Where algorithmic or database-derived evidence contributes to ending an established care relationship, the operative human or institutional decision authority, reasons and review pathway should remain identifiable and independently supportable.",
+          "source_paraphrase": "She was discharged while still in pain.",
+          "recovered_invariant_interpretation": "Discharge is a realised outcome separate from the score-related statement.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "episode_id": "E003"
+        },
+        {
+          "source_paraphrase": "About two weeks later, Kathryn’s gynecology office ended the treatment relationship in a letter citing a report from the NarxCare database; the record does not preserve the clinician’s full reasons or review pathway.",
+          "recovered_invariant_interpretation": "A later report-citing termination is a separate care decision.",
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000046",
@@ -61,7 +84,20 @@
             }
           ],
           "adjudication_status": "unresolved",
-          "source_paraphrase": "About two weeks later, Kathryn’s gynecology office ended the treatment relationship in a letter citing a report from the NarxCare database; the record does not preserve the clinician’s full reasons or review pathway."
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "episode_id": "E004"
+        },
+        {
+          "source_paraphrase": "Bamboo Health’s current FAQ says NarxCare supports clinical review and must not be the sole basis for medication decisions.",
+          "recovered_invariant_interpretation": "Current intended use does not prove the earlier clinician’s reasoning.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping",
+          "source_record_refs": [
+            "source_records[2]"
+          ],
+          "episode_id": "E005"
         }
       ]
     }
@@ -85,14 +121,13 @@
         "reported documentary evidence"
       ],
       "primary_artefact_access": {
-        "access_status": "directly reviewed",
-        "reviewing_system": "OpenAI ChatGPT — GPT-5.6 Sol",
-        "access_method": "direct public web review",
+        "access_method": "Public source retrieval and direct text inspection",
+        "access_status": "fresh retrieval limited; prior preserved evidence retained",
         "direct_primary_artefact_review": false,
         "limitations": [
-          "WIRED reports the contents of the gynecology termination letter; VIGIL has not directly reviewed the original letter.",
-          "VIGIL has not reviewed Kathryn's medical chart, the underlying NarxCare report or complete clinician decision records."
-        ]
+          "Occurrence paragraphs directly inspected. Exact scores, chart and complete clinical decision pathway unavailable."
+        ],
+        "reviewing_system": "OpenAI ChatGPT — GPT-6"
       },
       "interpretive_reliance": "Used for occurrence facts and materialised care consequences. It is not treated as proof that NarxCare alone determined the clinical decisions.",
       "evidence_status": "independent-reporting",
@@ -150,13 +185,13 @@
         "text"
       ],
       "primary_artefact_access": {
+        "access_method": "Public source retrieval and direct text inspection",
         "access_status": "directly reviewed",
-        "reviewing_system": "OpenAI ChatGPT — GPT-5.6 Sol",
-        "access_method": "direct public web review",
         "direct_primary_artefact_review": true,
         "limitations": [
-          "Current provider guidance describes intended use and does not establish how the product was actually used in Kathryn's historical occurrence."
-        ]
+          "Current FAQ directly inspected; it cannot retrospectively establish Kathryn’s care process."
+        ],
+        "reviewing_system": "OpenAI ChatGPT — GPT-6"
       },
       "interpretive_reliance": "Used to define the provider-described decision-authority boundary, not to prove compliance with that boundary in the occurrence.",
       "evidence_status": "verified",
@@ -419,25 +454,25 @@
   "related_incidents": [],
   "interpretive_provenance": {
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-03-EXTERNAL-ALIGNMENT-000048",
+      "review_id": "VIGIL-REVIEW-2026-10-09-PHASE3-TRANCHE13-000048",
       "reviewer_type": "AI analytical reviewer",
       "reviewer_platform": "OpenAI ChatGPT Work",
       "reviewer_model": "GPT-6",
-      "review_date": "2026-10-03",
-      "review_scope": "Independent occurrence relevance and alignment review of external requirements; normative force remains source metadata.",
+      "review_date": "2026-10-09",
+      "review_scope": "Source-first occurrence reconstruction, current taxonomy boundary review and semantic external-requirement linkage.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
+        "taxonomy_review": true,
         "external_requirement_review": true,
-        "taxonomy_review": false,
-        "harm_impact_review": false,
-        "web_research": false
+        "web_research": true,
+        "harm_impact_review": false
       },
       "known_limitations": [
-        "Assessment uses preserved occurrence evidence and canonical requirement propositions; internal implementation evidence remains unavailable where stated.",
-        "This review is AI-authored, not human verification or certification."
+        "AI-authored; not human certified. Original private chats, medical records and meeting traces remain unavailable.",
+        "Existing harm bands retained; no complete eleven-dimension harm re-adjudication."
       ],
-      "review_outcome": "Reviewed 6 recovered or independently identified requirements; retained 0 materially relevant independent alignment assessments. Candidate exclusions and prior values remain in the dated audit."
+      "review_outcome": "Separate admission, score-linked medication restriction, discharge, later relationship termination and current provider position; retain unknown clinical decision pathway."
     },
     "historical_reviewer_note": "Earlier migration, severity and metadata review history remains recoverable through Git history. This rebuild supersedes the sparse incident-facing treatment without asserting that earlier automated passes directly reviewed the newly added source package.",
     "human_governance_editor": {
@@ -612,6 +647,27 @@
           "This review is AI-authored, not human verification or certification."
         ],
         "review_outcome": "Reviewed 6 recovered or independently identified requirements; retained 0 materially relevant independent alignment assessments. Candidate exclusions and prior values remain in the dated audit."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-09-PHASE3-TRANCHE13-000048",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-09",
+        "review_scope": "Source-first occurrence reconstruction, current taxonomy boundary review and semantic external-requirement linkage.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "external_requirement_review": true,
+          "web_research": true,
+          "harm_impact_review": false
+        },
+        "known_limitations": [
+          "AI-authored; not human certified. Original private chats, medical records and meeting traces remain unavailable.",
+          "Existing harm bands retained; no complete eleven-dimension harm re-adjudication."
+        ],
+        "review_outcome": "Separate admission, score-linked medication restriction, discharge, later relationship termination and current provider position; retain unknown clinical decision pathway."
       }
     ]
   },
