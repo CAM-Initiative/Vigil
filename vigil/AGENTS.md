@@ -36,7 +36,7 @@ The full field-to-render contract is maintained in `vigil/MAINTAINERS.md` under 
 
 ## Clause-level taxonomy assessment contract
 
-The retired global Incident × Fidelity Class adjudication matrix is not a canonical data source or validation prerequisite. Do not restore `vigil/taxonomy/VIGIL.FailureTaxonomy.Adjudications.json`, its synchronisation scripts, or its former mandatory coverage-by-class requirement. Use `source_clause_analysis.clauses[].adjudication_status`, the canonical taxonomy mappings, and the stored derived `adjudication_coverage.status` as the Incident adjudication contract. Keep rejected class candidates and exhaustive review notes in dated audit or rebuild manifests, not another cross-product matrix.
+Do not create, restore or require a separate global Incident-by-Fidelity-Class adjudication dataset or mandatory coverage-by-class table. Use `source_clause_analysis.clauses[].adjudication_status`, the canonical taxonomy mappings, and the stored derived `adjudication_coverage.status` as the Incident adjudication contract. Keep rejected class candidates and exhaustive review notes in dated audit or rebuild manifests, not another cross-product dataset.
 
 When an Incident contains `vigil_assessment.source_clause_analysis.clauses[]`, its public clause-level assessment has three distinct layers:
 
