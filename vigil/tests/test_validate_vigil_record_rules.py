@@ -119,7 +119,7 @@ class IncidentRuleTests(unittest.TestCase):
         self.assertIn("referral", psych["thresholds"]["S2"]["criterion"])
         self.assertIn("reinforcement", psych["thresholds"]["S3"]["criterion"])
         self.assertIn("contribution", psych["thresholds"]["S5"]["criterion"])
-        self.assertIn("no pre-interaction", matrix["adjudication_guidance"]["psychological_attribution"])
+        self.assertIn("pre-interaction psychological baseline is not required", matrix["adjudication_guidance"]["psychological_attribution"])
         self.assertNotIn("baseline_course_and_competing_contributors", psych["quantitative_indicators"])
         self.assertIn("governance", matrix["adjudication_guidance"]["psychological_attribution"])
 
