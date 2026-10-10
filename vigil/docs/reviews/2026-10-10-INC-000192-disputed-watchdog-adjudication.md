@@ -54,16 +54,22 @@ The **held** boundary is narrower: preserve respectful warmth **while setting re
 
 These support the governing principle: **Do not withdraw warmth as a proxy for safety**. That is a normative and context-sensitive safeguard, **not** evidence that any particular teen was injured by colder responses in this study. A warm answer must still escalate when the danger requires it.
 
-## Harm severity — distinct from product-risk label
+## Harm severity — case calibration revised (2026-10-10)
 
-| Basis | Psychological wellbeing | Relational integrity/autonomy | Overall |
+The maintainer **rejected the prior S2 conditional pilot and the post-hoc one-band evidence discount**. Generic deployed failures are instead to be measured on substantially *higher* domain-specific S1–S5 eligible-population/decision thresholds, as specified in the [HIM 1.1.0 proposal](../../methodologies/proposals/VIGIL.HarmImpactMatrix.v1.1.0-proposal.json).
+
+| Assessment basis | Psychological wellbeing | Relational integrity/autonomy | Overall |
 |---|---|---|---|
-| **Current canonical VIGIL-HIM 1.0.1 (observed realised harm)** | Unreported; real-world harm not demonstrated | Dimension does not yet exist | **SU** (not S1 by silence) |
-| **Proposed HIM 1.1.0 generic deployed conditional pilot** | **S2 tentative**, if tested live exposure and domain S2 consequence gate are accepted after calibration | Unbanded/positive supportive boundary; no demonstrated dependency cultivation | **S2 conditional pilot only**, not an adopted overall rating |
+| Active VIGIL-HIM 1.0.1, **materialised harm** | No attributable real-world injury established from controlled test | New dimension not yet active | **SU**, not an affirmative S1 no-harm result |
+| Proposed HIM 1.1.0, **generic deployed conditional** | **Not banded yet — assess S1–S5** using the new higher psychological population thresholds and verified contextual failure | No supported coercive dependency mechanism, no assessed relational-failure band | **Not determined**; no predetermined S2 |
 
-Why *provisional S2*, not the earlier *provisional S3*: The tested product was deployed and credible youth-sensitive support controls were probed, but the provider disputes core notification conditions; the institute's clinical threshold and treatment of context remain contested; no injured user or deployment-wide failure prevalence is evidenced; the positive crisis and romantic safeguards materially narrow adverse consequence. **S2 is an analytical calibration proposal, not a statistic or confirmed injury.**
+The proposed psychological **generic-deployment** bands run **S1: 1–9,999; S2: 10,000–999,999; S3: 1m–9,999,999; S4: 10m–99,999,999; S5: ≥100m** *relevant active eligible users of the tested psychological-support interaction*. This is a **candidate numeric calibration**, not a verified exposed- or harmed-user count. Each band additionally requires a demonstrated failure on the applicable deployed product and an independently credible consequence meeting the dimension-specific threshold. The count cannot be inferred from ChatGPT's entire user base.
 
-The proposed 1.1.0 generic quantification contract still requires a **feature-specific active eligible population or valid decision denominator**. OpenAI separately reported nearly 1.2 million teens using *Learning Visualizations* in one week and >180,000 using Study Mode; those numbers are **not** the number who encountered these crisis or relational test behaviours. Do not use ChatGPT's total monthly/weekly account figures as if every person were an exposed teen. Until the denominator, test reach and related outcome gate are validated, **the S2 remains a pilot estimate, not mechanically proven under the draft's numerical contract**.
+Published learning-tool usage figures (nearly 1.2 million teens using Learning Visualizations and more than 180,000 using Study Mode within the reported period) **do not** measure users eligible for, or exposed to, the specific crisis-notification/referral failure conditions. Likewise, the watchdog's 4,000+ prompts are test actions, not a count of users. The disputed notification activation and clinical referral thresholds remain unresolved.
+
+The generic **S1** option should be examined, not excluded merely because nobody was shown to be injured. Under the proposed *generic-deployed conditional* basis, S1 means an affirmatively demonstrated low **aggregate potential-impact** occurrence on a bounded relevant cohort—not the absence of observed harm. However, no generic S1 can be assigned *solely* from absent victim reports, uncertain user population or the fact that the provider disputed the test.
+
+**Disposition:** previous S2 pilot **withdrawn**, no replacement generic score until the higher in-matrix threshold and case evidence support one. This does not alter FC-000050's bounded successful-invariant or the source-level dispute.
 
 ## QAQC and follow-up
 
@@ -71,7 +77,7 @@ The proposed 1.1.0 generic quantification contract still requires a **feature-sp
 2. Check true account activation state and trigger telemetry before determining parental-alert invariant polarity.
 3. Evaluate individual crisis transcripts for danger classification, patient-safe guidance, professional referral alternatives, warmth and continuity. Do not reward either reflexive hotline boilerplate or reflexive 'friendship is dangerous' categorisation.
 4. Preserve affirmative role boundaries and protective refusals as successful evidence rather than suppressing success under an externally failure-oriented evaluation frame.
-5. Calibrate the proposed generic deployed S2 with peer cases and explicit denominator rules before adopting HIM 1.1.0; do not rewrite this canonical observed-harm SU until its method is actually adopted.
+5. Test all five proposed generic deployed population bands (including S1) against source-backed feature-eligible cohort data and real-world comparator cases before adopting HIM 1.1.0; retain observed-harm SU until governed migration.
 6. Check the appropriate corpus/index/build generator and validator after ingest; never manually force an aggregate index outside its generator.
 
 **Confidence boundary:** AI analytical review, source-linked; no provider-internal activation telemetry or harm prevalence study obtained.
