@@ -193,3 +193,8 @@ INC-102/103 source-first reviews completed against `866f31f68ad5bd1378baa86de59d
 ### 10 October 2026 — tranche 18C checkpoint
 
 INC-104/105 bounded source-first reviews completed against `27ae2544fc572d9a96f890a593bc4e88800e885a`. See [PHASE3-TRANCHE-18C.md](PHASE3-TRANCHE-18C.md) and individual manifests. Historical campaign **170/179 completed; 9 remaining including seven original holds**. Original 89-case backlog **80 completed**. Active corpus **182**; post-baseline acceptance pending. Forty-six derived external rows reconciled (cumulative 1,012); independent results retained. INC-104 physical S3 withdrawn to insufficient-evidence; overall psychological S4 retained. Concurrent INC-012 proposal/approval hold is preserved separately and must be disclosed at final inventory, not enacted or counted as one of the seven original holds. Next INC-166/167.
+
+
+### 10 October 2026 — tranche 18D research interrupted
+
+Executor disconnected (`409 Conflict, environment_offline`). INC-166/167 research is preserved in [PHASE3-TRANCHE-18D-RECOVERY.md](PHASE3-TRANCHE-18D-RECOVERY.md); **neither case is repaired or counted complete**. Last validated corpus HEAD `023671ae1978d16e8983962c2dde4ac1b896c6a3` has successful records/taxonomy PR CI. Campaign remains **170/179 completed; nine original pending including seven holds**, active182 with189–191 acceptance pending. Concurrent proposal-only HIM1.1.0/12-dimension drafts through `febcff56ed53e684def002734b37221b246027f1` are preserved, not adopted. Separate INC-012 approval hold persists. PR118 remains draft. Resume on actual remote HEAD with new exact baselines when the executor reconnects.
