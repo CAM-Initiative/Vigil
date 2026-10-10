@@ -1,7 +1,7 @@
 # VIGIL Observatory BETA Constitution
 
-**Status:** BETA — draft, not yet adopted  
-**Version:** 0.1.0-beta  
+**Status:** BETA — proposed constitutional amendment; not adopted  
+**Version:** 0.1.1-beta (proposed)  
 **Authority level:** Constitutional governance layer
 
 ## Preamble
@@ -58,6 +58,16 @@ An Incident must not be forced into the nearest available Fidelity Class. If no 
 
 Repository write access, maintainer status, authorship, model confidence, contributor status or founder status do not by themselves confer epistemic authority.
 
+### 2.8 Incident admission precedes diagnosis
+
+VIGIL admits sufficiently evidenced, bounded occurrences in which an AI system materially participates in observed behaviour, decisions, actions, interactions or consequences relevant to the evaluation of AI governance and alignment. Admission is an evidentiary and scope decision. It is not a finding of misalignment, successful alignment, harm, legal wrongdoing, external-requirement non-compliance or taxonomy exemplar status.
+
+A materially engaged AI boundary may be observed to fail, to hold successfully under relevant pressure, to produce mixed outcomes or to remain unresolved. Neither a failed invariant nor realised adverse harm is a precondition for Incident admission. An existing Fidelity Class is not an admission prerequisite, and a candidate must not be forced into a class to justify its inclusion.
+
+Security-related occurrences qualify when the AI system's action, decision, control response, exposure or observed containment materially contributes to the bounded occurrence. Deliberate human misuse of AI may qualify where the AI contribution is material and evidenced; the human actor's malicious intent does not by itself establish that the AI system intended wrongdoing or violated an invariant. Incidental AI-tool use, ordinary cybersecurity incidents, deterministic automation failures and hypothetical risk scenarios do not qualify solely by technological association or an external incident-registry label.
+
+Before allocating an Incident identifier, the intake process must check for the same underlying occurrence across current, superseded, withdrawn and historically deleted records, distinguishing shared mechanisms from occurrence identity. Where the system's AI character, the bounded event or material AI participation cannot yet be established, retain an attributed research candidate and its evidentiary limits rather than manufacture a canonical finding or silently discard its history.
+
 ## Article 3 — Analytical authority during BETA
 
 During BETA, substantive taxonomy boundaries, taxonomy admission, governance interpretation, contested adjudications and constitutional amendment remain under human governance authority exercised by CAM Initiative as VIGIL's steward.
@@ -81,6 +91,8 @@ For constitutional purposes VIGIL recognises:
 - **Transitional** — legacy analytical content exists but has not completed the present adjudication standard. It may be preserved without being granted stronger authority merely because it is old.
 
 ## Article 5 — Minimum conditions for authoritative adjudication
+
+Incident admission is a distinct gate preceding authoritative adjudication. Satisfying the admission gate establishes only sufficient evidence and scope for an occurrence record; it does not establish a completed taxonomy classification, Harm Impact finding or external-governance determination. An admitted Incident may remain unclassified, disputed, transitional or adjudication incomplete without treating that status as evidence that the occurrence should be suppressed.
 
 A populated field is not enough. Where required by the current workflow, a completed adjudication requires a bounded factual record, current taxonomy, clause-level analysis where materially applicable, testing of recognition conditions and exclusions, explicit disposition of prior mappings, separate treatment of taxonomy roles and harm, treatment of material uncertainty, comparator review where relevant, and sufficient validation and provenance to reconstruct the decision.
 
@@ -179,7 +191,7 @@ Subordinate controls operationalise the Constitution. They do not independently 
 
 ## Closing seal
 
-**Version:** 0.1.0-beta  
+**Version:** 0.1.1-beta (proposed)  
 **Author:** ChatGPT 5.6 Sol High (Caelen)  
 **Contract Authority:** CAM Initiative
 
@@ -187,4 +199,6 @@ Subordinate controls operationalise the Constitution. They do not independently 
 
 ## Adoption note
 
-This remains a draft constitutional instrument until explicitly adopted by CAM Initiative. Before adoption, VIGIL should verify the current maintainer contract, agent instructions, Incident adjudication workflow, taxonomy amendment procedure, adjudication matrix and publication contract for material conflict.
+This document is a proposed amendment to the BETA Constitution, not an adopted constitutional instrument. Article 2.8 and the additional Article 5 language must not be treated as operative constitutional authority unless CAM Initiative expressly approves the change and the amendment is integrated through the governed repository process. Before approval and merge, reconcile the Maintainer Guide, Agent Instructions, Incident Adjudication Workflow, schemas, taxonomy amendment procedure and publication contract for material conflicts.
+
+The proposed 0.1.1-beta text is preserved for review on `proposal/incident-admission-constitution-20261010`; `main` remains the unchanged current constitutional baseline.
