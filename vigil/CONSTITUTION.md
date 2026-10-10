@@ -18,7 +18,7 @@ This Constitution is intentionally **BETA**. It does not freeze the present taxo
 
 This Constitution governs who may propose, perform, review, approve and implement changes to VIGIL's canonical analytical state; how incomplete, contested, corrected and superseded adjudications are treated; how challenges are received and reviewed; how taxonomy insufficiency is handled; and how this Constitution may be amended.
 
-Operational procedure is delegated to subordinate instruments including `vigil/MAINTAINERS.md`, `vigil/AGENTS.md`, `vigil/docs/maintenance/INCIDENT-ADJUDICATION-WORKFLOW.md`, schemas, the adjudication matrix, manifests and validators.
+Operational procedure is delegated to subordinate instruments including `vigil/MAINTAINERS.md`, `vigil/AGENTS.md`, `vigil/docs/maintenance/INCIDENT-ADJUDICATION-WORKFLOW.md`, schemas, review manifests and validators.
 
 Where a subordinate rule conflicts with this Constitution, the conflict must be escalated for human review.
 
@@ -171,7 +171,7 @@ Where two interpretations remain plausible during BETA, prefer the interpretatio
 1. VIGIL Observatory BETA Constitution
 2. VIGIL Maintainer Guide and Agent Instructions
 3. Incident Adjudication Workflow and taxonomy amendment procedures
-4. Schemas, adjudication matrix, manifests and validators
+4. Schemas, review manifests and validators
 5. Canonical Incident and taxonomy state
 6. Generated public projections
 
@@ -187,4 +187,4 @@ Subordinate controls operationalise the Constitution. They do not independently 
 
 ## Adoption note
 
-This remains a draft constitutional instrument until explicitly adopted by CAM Initiative. Before adoption, VIGIL should verify the current maintainer contract, agent instructions, Incident adjudication workflow, taxonomy amendment procedure, adjudication matrix and publication contract for material conflict.
+This remains a draft constitutional instrument until explicitly adopted by CAM Initiative. Before adoption, VIGIL should verify the current maintainer contract, agent instructions, Incident adjudication workflow, taxonomy amendment procedure, clause-level adjudication and publication contracts for material conflict.
