@@ -18,7 +18,9 @@ class IncidentRuleTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.record = json.loads(
-            (VIGIL / "records" / "incidents" / "VIGIL-INC-000001.json").read_text(encoding="utf-8")
+            # Version-specific tests need the historical eleven-row assessment,
+            # regardless of later substantive changes to the live Incident.
+            (VIGIL / "tests" / "fixtures" / "VIGIL-INC-000001-HIM-1.0.1.json").read_text(encoding="utf-8")
         )
 
     def errors(self, mutate=lambda record: None):
@@ -29,6 +31,11 @@ class IncidentRuleTests(unittest.TestCase):
 
     def test_valid_incident_passes(self):
         self.assertEqual(self.errors(), [])
+        live = json.loads(
+            (VIGIL / "records" / "incidents" / "VIGIL-INC-000001.json").read_text(encoding="utf-8")
+        )
+        errors, _ = VALIDATOR.validate_record(Path(live["id"] + ".json"), live)
+        self.assertEqual(errors, [])
 
     def test_retired_record_type_is_rejected(self):
         self.assertTrue(self.errors(lambda record: record.update(record_type="failure_mode")))
