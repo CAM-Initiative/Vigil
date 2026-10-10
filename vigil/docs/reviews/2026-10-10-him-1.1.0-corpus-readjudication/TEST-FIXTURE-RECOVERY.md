@@ -15,3 +15,11 @@ This is execution-only fixture isolation under the explicit MAINTAINERS Gate1 ex
 ## Verification
 
 Before repair:36 rule tests ran with3 failures, all identified above; canonical corpus validation passed. After fixture isolation: all36 rule tests pass against the substantively migrated local record. Source snapshot equality was checked. All original tests and assertions remain; live valid-record coverage is added within the existing positive test. The repair is committed separately from the Incident tranche.
+
+## Historical INC-003 regression isolation
+
+The next tranche exposed the same coupling in `test_inc003_s5_asset_rebuild_regression`. Unlike a version-aware general rule, this test explicitly requires the historical1.0.1 PAD-S5 ID and historical sole controlling dimension. It therefore cannot operate on a substantively reassessed1.1.0 record even if the resulting band remains S5. One of36 tests initially failed while canonical/rebuild validation passed.
+
+The exact pre-migration INC-003 record at0a481aeee6047e372b9fdbb6752449881a5d481c is frozen in the test-fixture directory. Its original S5 assertions and complete evidence remain unchanged. Only its data binding changes from the evolving canonical path to the historical snapshot. The live corpus is still validated by the canonical validator and retained corpus tests; the family-binding negative test still reads the live INC-003. This preserves historical assessment integrity without using a historical regression fixture as authority to freeze every future version of the Incident’s answer.
+
+The MAINTAINERS contract also states that permanent validation must not freeze an Incident’s current answer. No methodology, recognised threshold, negative mutation or accepted/rejected canonical rule changes. This is the same execution-only fixture exception; no broader semantic control change is approved.

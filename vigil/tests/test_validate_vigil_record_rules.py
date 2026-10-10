@@ -457,7 +457,7 @@ class IncidentRuleTests(unittest.TestCase):
 
     def test_inc003_s5_asset_rebuild_regression(self):
         record = json.loads(
-            (VIGIL / "records" / "incidents" / "VIGIL-INC-000003.json").read_text(encoding="utf-8")
+            (VIGIL / "tests" / "fixtures" / "VIGIL-INC-000003-HIM-1.0.1.json").read_text(encoding="utf-8")
         )
         assessment = record["harm_impact_assessment"]
         self.assertEqual(assessment["overall_severity"], "S5")
