@@ -55,6 +55,46 @@ Relevant VIGIL calibration cases:
 
 These example dispositions are **existing incident records**, not endorsements of their accuracy beyond preserved evidence, and are not changed by this proposal.
 
+## Epistemic failure → downstream reliance → reputational harm (S1–S5 calibration)
+
+**Answer:** An epistemic failure **can** cause actual reputational or dignitary harm through downstream reliance, but the mapping is not automatic. The epistemic Fidelity Classes describe **mechanisms**; the Harm Impact Matrix describes **consequences**. Existing FC-000062 (Epistemic Reliance Calibration), FC-000063 (Adversarial Evidence Trust Calibration), FC-000016 (Required Verification Completion) and FC-000010 (Authorship and Source Attribution Integrity) may be relevant to the initial defect. None alone establishes a reputational severity band.
+
+### Evidence chain — four independent checks
+
+1. **Epistemic defect** — identify the original false assertion, fabricated or misattributed citation, contaminated source or unsupported assurance claim, including source and version.
+2. **Actual consequential reliance or dissemination** — identify who relied, how, when, and in what professional/institutional/public context (e.g. filing, official report, employment action or consequential attribution). A fabricated citation sitting unused in a draft does not prove reliance. A direct private dignitary insult is a separate valid pathway that does *not* require third-party reliance.
+3. **Reputation-bearing subject** — specify **whose** standing was affected: a falsely accused individual, a lawyer who signed and lodged synthetic citations, an organisation that adopted the assertion, etc. Distinguish the person targeted by misinformation from the actor who trusted/repeated it.
+4. **Distinct adverse reputational outcome** — verify embarrassment, public correction with adverse impact, documented credibility challenge, lost professional opportunity, disciplinary consequence, persisting stigma or credible inability to restore standing. Mere media reach, criticism, admission of error or correction notice is not proof of serious reputation loss. **Do not double count** independent financial, procedural, liberty or service harm as reputation without separate evidence.
+
+### Proposed measured thresholds — specific materialised-harm Incidents ONLY
+
+These **augment**, without replacing, the existing `reputation-dignity.thresholds[S1–S5].criterion` strings in the 1.1.0 draft. The draft JSON contains `epistemic_downstream_reliance_threshold` in all five bands with these quantifiable recognition checks:
+
+| Band | Verifiable indicators | Consequence gate |
+|---|---|---|
+| **S1** | Affirmative bounded check finds **zero adverse reputational consequences** from tested downstream reliance | Demonstrated no material standing/dignity injury; silence is **unreported**, not S1 |
+| **S2** | ≥1 documented attributable apology, correction, public professional embarrassment or local dignitary affront; illustrative **≤7 days** to correct; **zero** substantial lost roles/opportunities | Minor, local and readily recoverable standing/dignity harm |
+| **S3** | ≥1 verified **materially adverse third-party credibility reaction** or bounded lost opportunity; or independently sustained impaired standing of roughly **8–30 days** | Meaningful yet reversible harm; a routine apology alone stays S2 |
+| **S4** | ≥1 **substantial** documented role/livelihood/reputational loss or professional restriction; or sustained adverse standing around **31–365 days** with serious actual consequences | Severe or persistent harm, even to one person/organisation |
+| **S5** | ≥1 independently evidenced **catastrophic and effectively irreversible** reputation/dignity outcome **plus** grave safety, liberty or societal consequences; permanent exclusion can be assessed prospectively when established, without waiting 365 days | S5 is not triggered by virality, loss of followers, or a merely hypothetical ruined career |
+
+**Metrics to preserve with provenance:** unique third-party reliance/filing actions; distinct reputation-bearing targets; correction/withdrawal dates; independent adverse credibility decisions; lost roles/opportunities; duration of evidenced impaired standing; formal restrictions and their duration; whether external dissemination was corrected and could realistically be recalled.
+
+These temporal bands (**7 / 30 / 365 days**) are **illustrative draft discriminators**, not externally mandated psychological/reputation science. The seriousness gate can independently support a higher band: a single grave professional consequence does not need a large audience or an arbitrary waiting period. A widely shared error with no demonstrated harm does not meet S4 merely because of the audience count.
+
+### Four corpus tests
+
+| Record | Epistemic/reliance outcome | Reputational disposition |
+|---|---|---|
+| **INC-000165** | False Claude legal quotations reached a federal filing; counsel corrected and apologised | **S2 materialised** — bounded professional embarrassment, independently evidenced |
+| **INC-000168** | Fictitious AI legal citations entered Victoria Supreme Court proceedings; counsel apologised and proceedings were delayed | **S2 materialised** — apology/embarrassment; procedural delay is a **different consequence** |
+| **INC-000089** | Hallucinated sources entered Australian parliamentary submissions and some committee reporting | **Unreported** reputation — epistemic propagation is demonstrated, but individual/organisational adverse standing has not been separately established |
+| **INC-000043** | Gemini directly delivered a demeaning private response | **S2 materialised dignitary offence** — illustrates that a *direct insult* does **not** require third-party downstream reliance |
+
+**Aggregate Harm boundary:** These are observed-consequence thresholds for a **specific Incident**; they do **not** employ the generic model-wide Aggregate Harm population gates. The current Aggregate Harm draft covers five other scale-sensitive dimensions and **does not automatically include reputation/dignity**. Generic false-information benchmark findings with no actual injured subject may need a future *separate* Aggregate Harm reputation pathway, but that addition requires its **own** published/cohort-reliance denominators, consequence evidence, calibration and explicit approval—not a reuse of provider user counts.
+
+**Implementation boundary:** All existing 1.0.1 domain criteria, canonical Incident scores and taxonomy definitions are preserved. The proposed 1.1.0 linkage and S1–S5 indicators require regression testing on other professional/institutional cases before adoption.
+
 ## Two exclusive Incident assessment pathways (maintainer clarification)
 
 **Do not apply platform-scale thresholds to a particular real-world harm case.** The proposed *Aggregate Harm* approach exists **only** to resolve severity for *generic product-level findings and deployed-system watchdog/benchmark evaluations* where no particular harmed individual, group or other bounded real-world consequence case has been established.
