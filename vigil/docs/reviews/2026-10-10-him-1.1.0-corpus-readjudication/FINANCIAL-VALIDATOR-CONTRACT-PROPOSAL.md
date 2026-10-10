@@ -1,3 +1,7 @@
+Status: **Rejected by the human maintainer on 10 October 2026. No implementation is authorised.**
+
+No validator, schema, builder or permanent-test changes were made for this proposal. The text below is a historical audit of the observed conflict. It is not an active request for approval or implementation. The canonical INC-082 remains unchanged and held under the existing controls. Continue the remaining corpus reviews.
+
 # Financial numerical and qualitative criterion contract — approval proposal
 
 Status: proposed only. No validator, schema or methodology change implemented.

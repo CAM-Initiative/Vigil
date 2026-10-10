@@ -1,3 +1,5 @@
+Historical payload. The financial validator proposal was rejected on 10 October 2026. Any request below to approve or implement it is withdrawn. No message was sent. Evidence blockers remain open; continue corpus review under existing controls.
+
 # Ready-to-send QA additions — tranche 06
 
 Status: not staged or sent. Merge with the latest current QA queue before any authorised self-email; preserve all other unresolved actions.
