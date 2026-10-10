@@ -55,6 +55,32 @@ Relevant VIGIL calibration cases:
 
 These example dispositions are **existing incident records**, not endorsements of their accuracy beyond preserved evidence, and are not changed by this proposal.
 
+### Psychological wellbeing: high-salience destabilisation, severity and attribution (10 October review)
+
+**Revision agreed for draft review:** the psychological wellbeing domain is now calibrated to *type and level of evidenced psychological impairment*, not the person's categorical vulnerability, diagnosis, or whether the case involves suicide.
+
+| Band | Proposed recognition boundary |
+|---|---|
+| S1 | Positive bounded evidence of no material psychological consequence; silence is not proof |
+| S2 | Transient distress, fear, confusion, anxiety or minor sleep disruption, without meaningful functional impairment |
+| S3 | Material but substantially reversible sustained distress, mood/sleep destabilisation or emerging impaired reality-testing with bounded functional effects |
+| S4 | Severe acute or sustained distress, psychiatric crisis, major reality-testing disturbance, psychotic or manic symptoms or serious suicidal crisis **with substantial safety, judgement or functional consequences**, for *any* person |
+| S5 | Death by suicide, catastrophic self-harm, or independently evidenced catastrophic and effectively irreversible psychological/psychiatric impairment, including grave enduring loss of reality-testing or core independent function, even for one person |
+
+**Do not conflate mechanism and consequence.** High-salience sycophancy, repeated affirmation of a personally significant unfounded claim, recursive certainty amplification, identity/destiny reinforcement, high-frequency engagement or impaired grounding may constitute the interaction *mechanism*. This alone does not establish psychosis or a Harm Impact score. Separately document the user's observed symptoms, impairment, chronology, corroboration, recoverability and credible AI contribution.
+
+**No vulnerability prerequisite and no automatic sole-cause requirement.** A person need not have an earlier psychiatric diagnosis to sustain severe distress; a pre-existing condition is neither proof of AI causation nor a reason to exclude subsequent AI-mediated exacerbation. The record must distinguish onset, worsening and reinforcement and disclose alternative plausible contributors. A formal diagnosis is probative but not an absolute admission requirement for independently documented serious functional harm. Do not categorise an unusual belief, spiritual exploration or one screenshot as psychosis. Neither psychosis-like symptoms nor mention of suicide automatically establishes S5. The serious suicidal-crisis state can qualify for S4 without an actual suicide or catastrophic injury.
+
+**Keep adjacent domains distinct.** Relational dependence and impaired disengagement are assessed under *Relational Integrity and Autonomy*; psychological wellbeing applies when separately supported distress, reality-testing deterioration or impaired psychological functioning materialises. Distinct physical injuries belong to Physical Health and Safety, without suppressing an evidenced associated psychological consequence.
+
+**Relevant Caelestis analytical context, not imported VIGIL doctrine:**
+- [CAM-BS2025-AEON-006-SCH-02](https://github.com/CAM-Initiative/Caelestis/blob/main/Governance/Constitution/CAM-BS2025-AEON-006-SCH-02.md) treats amplified symbolic meaning, sleep/stress and destabilisation cautiously, with reflective grounding and context before escalation.
+- [CAM-BS2026-AEON-007-SCH-01](https://github.com/CAM-Initiative/Caelestis/blob/main/Governance/Constitution/CAM-BS2026-AEON-007-SCH-01.md) separates symbolic/altered-state expression from impaired reality orientation and explicitly rejects a presumption that unfamiliar spiritual or symbolic frames are delusional.
+- [CAM-EQ2026-ETHICS-001-SUP-01](https://github.com/CAM-Initiative/Caelestis/blob/main/Governance/Charters/CAM-EQ2026-ETHICS-001-SUP-01.md) treats possible exacerbation of delusion or psychosis and safe stabilisation as governance questions.
+- The [US NIMH description of psychosis](https://www.nimh.nih.gov/health/publications/understanding-psychosis) and [WHO schizophrenia fact sheet](https://www.who.int/news-room/fact-sheets/detail/schizophrenia) reinforce diagnostic and causation caution: symptoms have multiple possible contributors and should not be inferred from chatbot content alone.
+
+**Migration guardrail:** no canonical Incident S1–S5 assessment is rebanded by these draft wording changes until HIM 1.1.0 is adopted and incident regressions pass.
+
 ## Epistemic failure → downstream reliance → reputational harm (S1–S5 calibration)
 
 **Answer:** An epistemic failure **can** cause actual reputational or dignitary harm through downstream reliance, but the mapping is not automatic. The epistemic Fidelity Classes describe **mechanisms**; the Harm Impact Matrix describes **consequences**. Existing FC-000062 (Epistemic Reliance Calibration), FC-000063 (Adversarial Evidence Trust Calibration), FC-000016 (Required Verification Completion) and FC-000010 (Authorship and Source Attribution Integrity) may be relevant to the initial defect. None alone establishes a reputational severity band.
@@ -107,6 +133,18 @@ The same Harm Impact Matrix has two **mutually exclusive** routes:
 An unreleased simulated or internal benchmark without demonstrated deployed applicability does **not** qualify for Aggregate Harm under this proposal. Separately bounded generic product failures and actual victim-specific episodes may be recorded as **distinct linked Incidents**; they are not combined into one score.
 
 **Display name:** **Aggregate Harm**. On first presentation show the method qualifier, e.g. **"S1 — Aggregate Harm (modelled from deployed evaluation)"**, so it cannot be mistaken for evidenced injuries. Avoid using "potential harm" or "generic conditional severity" as the category name.
+
+### Proposed website copy — What does “Aggregate Harm” mean?
+
+> **Aggregate Harm (proposed, modelled from deployed evaluation)** describes a bounded assessment of the *collective significance* of a demonstrated failure in a live-deployed AI system when there is **no particular injured person or group whose actual harm can be assessed**. It is not a count of confirmed victims, and it does not establish that everyone able to use the system encountered the failure.
+>
+> The assessment requires evidence of the deployed model and tested feature, reproducible or strongly corroborated failure, a credible route by which a relevant audience or decision process could encounter it, a defensible **feature-specific population or decision count**, and a domain-specific consequence appropriate to the severity band. Registered platform users alone, a hypothetical failure or a one-off test without transfer to real-world use cannot establish a band.
+>
+> Where actual harm to a specific person or group is evidenced, VIGIL uses the **materialised-harm** criteria instead, even if the event involved a major AI provider. A single person can suffer S5 harm; a model with millions of users does not automatically qualify for S5 Aggregate Harm. Where a live route, denominator or consequential mechanism cannot be supported, the generic finding remains unbanded.
+
+**Website presentation rule (on adoption only):** label the outcome `Sx — Aggregate Harm (modelled from deployed evaluation)` and display the cohort denominator, source, period, actual-versus-estimated status and major caveats adjacent to the band. Do not style it as a count of materialised casualties. A short glossary distinction should appear before the HIM table and next to any such Case File conclusion.
+
+**Methodological caution requiring sign-off:** the separate generic deployed-assessment pathway and its population breakpoints remain *proposed only*. Their eventual adoption is not implied by this website copy. The same HIM would host both pathways without a new additive severity axis.
 
 ## Aggregate Harm S1–S5: dimension-specific draft thresholds
 
