@@ -218,3 +218,7 @@ INC-164/174 source-first holds closed with residual facts preserved;178/179 hist
 ### 10 October2026 — tranche19D
 
 INC-171 bounded source-first hold resolved with disputed/private facts preserved;179/179 historical and89/89 backlog complete. See [tranche19D](PHASE3-TRANCHE-19D.md) and manifest. Sixteen positional external rows reconciled; cumulative1,051. Post-baseline189–191 acceptance and final integrity inventory remain; completion is not complete taxonomy or independent human certification.
+
+### 10 October2026 — tranche20A
+
+Post-baseline189–191 ingestion assessed substantively and repaired with individual manifests; see [tranche20A](PHASE3-TRANCHE-20A.md). Historical179/179 unchanged. Concurrent192 joins final active183 inventory; its acceptance and final corpus verification remain.
