@@ -283,3 +283,7 @@ INC-166/167 bounded repairs, individual manifests and validation are recorded in
 ## 10 October 2026 — tranche19A held-evidence repair
 
 INC-053/064 source-first holds resolved with bounded facts preserved; [report](PHASE3-TRANCHE-19A.md) and individual manifests record evidence and validation. Live progress174/179, original backlog84/89, five original holds remain. Historical plan metrics preserved. Active182 and189–191 intake acceptance pending. Next120/139.
+
+## 10 October2026 — tranche19B held-evidence repair
+
+INC-120/139 source-first attribution/access holds resolved with evidence limits retained. See [report](PHASE3-TRANCHE-19B.md) and individual manifests. Live176/179 complete, original backlog86/89; three original holds164/171/174 remain. Historical baselines preserved. Active182 and189–191 intake/final inventory pending.
