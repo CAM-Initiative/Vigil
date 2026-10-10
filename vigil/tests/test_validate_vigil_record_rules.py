@@ -114,8 +114,14 @@ class IncidentRuleTests(unittest.TestCase):
                 self.assertTrue(band["criterion"].strip())
                 self.assertNotIn("threshold_quantitative_guidance", band)
         psych = next(d for d in matrix["dimensions"] if d["dimension_id"] == "psychological-wellbeing")
-        self.assertIn("30 days", psych["thresholds"]["S4"]["criterion"])
-        self.assertIn("causal", matrix["adjudication_guidance"]["causal_contribution"])
+        self.assertIn("baseline", psych["thresholds"]["S4"]["criterion"])
+        self.assertIn("support", psych["thresholds"]["S1"]["criterion"])
+        self.assertIn("referral", psych["thresholds"]["S2"]["criterion"])
+        self.assertIn("reinforcement", psych["thresholds"]["S3"]["criterion"])
+        self.assertIn("contribution", psych["thresholds"]["S5"]["criterion"])
+        self.assertIn("no pre-interaction", matrix["adjudication_guidance"]["psychological_attribution"])
+        self.assertNotIn("baseline_course_and_competing_contributors", psych["quantitative_indicators"])
+        self.assertIn("governance", matrix["adjudication_guidance"]["psychological_attribution"])
 
     def test_him_110_specific_harm_preserves_historical_record(self):
         record = self.him_110_record()
