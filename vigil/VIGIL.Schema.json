@@ -215,7 +215,7 @@
         "S5",
         "SU"
       ],
-      "severity_rule": "Incident severity increases from S1 to S5 and rates the maximum occurrence-level adverse harm or consequence supported by the preserved evidence: S1 minimal or no materialised adverse downstream harm; S2 low, minor and readily remediable materialised harm; S3 moderate, bounded materialised harm; S4 high or substantial materialised harm; S5 catastrophic or critical materialised harm; SU no defensible band. It is independent of taxonomy classification, source evidence status, publisher, notoriety, CAM importance and hypothetical worst-case capability. Legacy FM severity is provenance only and never determines the Incident band.",
+      "severity_rule": "Incident severity increases from S1 to S5 and rates the maximum occurrence-level adverse harm or consequence supported by the preserved evidence: S1 minimal or no materialised adverse downstream harm; S2 low, minor and readily remediable materialised harm; S3 moderate, bounded materialised harm; S4 high or substantial materialised harm; S5 catastrophic or critical materialised harm; SU no defensible band. It is independent of taxonomy classification, source evidence status, publisher, notoriety, CAM importance and hypothetical worst-case capability. Legacy FM severity is provenance only and never determines the Incident band. For HIM 1.1.0, only qualifying generic deployed-model evaluations can use separately labelled modelled Aggregate Harm criteria instead of materialised-consequence criteria; do not treat platform reach as actual harm.",
       "severity_meanings": {
         "S1": "Minimal or no materialised adverse downstream harm: the occurrence materially demonstrates governance-relevant behaviour, a control failure, or a successful invariant under bounded conditions, but the preserved evidence establishes no resulting adverse harm, loss, disruption, rights impact, service impairment, or other external downstream consequence. Controlled evaluations and simulations belong here when the observed mechanism is real within the evaluation but no adverse consequence materialises beyond it.",
         "S2": "Low: the occurrence materialised only minor, short-lived, localised or readily remedied inconvenience, expense, presentation error, coordination defect or service impairment.",
@@ -224,10 +224,10 @@
         "S5": "Catastrophic or critical: the occurrence materialised death, grave injury, grave or enduring deprivation of liberty or essential care, severe sexual or child-safety harm, very large realised loss, destructive loss of critical assets, or comparably grave and persistent rights or societal harm.",
         "SU": "Unassessed: the evidence cannot support a defensible occurrence-level band or cannot distinguish the relevant adjacent bands. Taxonomy importance, alleged potential and hypothetical worst-case harm do not cure that gap."
       },
-      "severity_analysis_rule": "The structured harm-impact rows are substantive occurrence-level Incident diagnosis. They are not source metadata, diagnostic provenance, taxonomy metadata or workflow metadata. Each row records a canonical harm dimension, assessment status, concise evidence basis and confidence. Assessed rows additionally identify the supported severity threshold and evidence references. S1 must be positively supported; missing reporting is unreported. SU requires a concrete assessment_gap and no assessed row.",
+      "severity_analysis_rule": "The structured harm-impact rows are substantive occurrence-level Incident diagnosis. They are not source metadata, diagnostic provenance, taxonomy metadata or workflow metadata. Each row records a canonical harm dimension, assessment status, concise evidence basis and confidence. Assessed rows additionally identify the supported severity threshold and evidence references. S1 must be positively supported; missing reporting is unreported. SU requires a concrete assessment_gap and no assessed row. Under HIM 1.1.0 use the version-specific pathway and dimension validation; aggregate harm must be explicitly identified as modelled, never as observed user injury.",
       "harm_impact_methodology_id": "VIGIL-HIM",
-      "harm_impact_methodology_version": "1.0.1",
-      "harm_impact_derivation_rule": "highest-supported-materialised-harm",
+      "harm_impact_methodology_version": "1.1.0",
+      "harm_impact_derivation_rule": "highest-supported-harm-on-exclusive-incident-assessment-pathway",
       "harm_impact_dimension_ids": [
         "physical-health-safety",
         "psychological-wellbeing",
@@ -239,7 +239,8 @@
         "service-operational-infrastructure",
         "reputation-dignity",
         "societal-democratic",
-        "environmental"
+        "environmental",
+        "relational-integrity-autonomy"
       ],
       "harm_impact_status_values": [
         "assessed",
@@ -253,7 +254,7 @@
         "high",
         "not-assessed"
       ],
-      "harm_impact_rule": "Overall severity equals the numerically highest S1-S5 band among assessed materialised-harm dimensions. Dimensions are not averaged or summed, and multiple lower harms do not escalate the overall band. Unreported means relevant impact is absent from the available published evidence and must never be encoded as S1. Insufficient-evidence means some impact evidence exists but cannot be banded. Not-applicable requires affirmative contextual grounds. If no dimension can be assessed, overall severity is SU unless positive evidence establishes a bounded occurrence with no materialised downstream harm; that special case is S1 with empty controlling_dimensions and a non-empty no_materialised_harm_basis. Silence never produces S1.",
+      "harm_impact_rule": "For each Incident, overall_severity is the maximum supported S1–S5 band across assessed dimensions within its selected, exclusive VIGIL-HIM pathway (specific-consequence or generic deployed-evaluation Aggregate Harm); do not sum or average. Version 1.1.0 requires a pathway declaration and twelve exact versioned dimensions. The historical versions retain their own eleven-dimensional materialised-harm assessment contract. Aggregate Harm requires source-backed live tested-deployment relevance and an eligible cohort/decision denominator meeting its band-local gate; population alone cannot establish a credible collective consequence or mean victims were injured. Specific incidents may not inherit model-wide reach. S1 needs affirmative evidence; SU applies where no defensible assessed band and no positively evidenced bounded no-harm occurrence exists.",
       "harm_impact_currency_rule": "Published monetary amounts retain their original currency. USD thresholds apply only to published USD amounts or conversions carrying a recorded source and rate date. Non-USD amounts without a defensible conversion may use only independently supported qualitative livelihood, organisational-viability or systemic criteria.",
       "harm_impact_digital_asset_integrity_rule": "For property and asset damage, effective destruction of a critical digital asset includes loss of trustworthy operational state where the affected asset cannot safely be retained and must be wiped and rebuilt or reconstructed from a known-clean state. Physical hardware destruction or unrecoverable byte deletion is not required. Routine precautionary reimaging, credential rotation or recovery work alone does not establish S5; the preserved evidence must support loss of trusted state in the critical asset itself.",
       "harm_impact_evidence_reference_rule": "Assessed dimension evidence_refs are row-local Harm Impact provenance. Each reference must resolve to a substantive source_records entry and must not cite record-cross-reference sources. Public consumers may deterministically map source_records[N] to the corresponding numbered Evidence source and render that citation beside the assessment_basis for the same harm row; the row-local link must not be inferred from source order or publisher identity alone.",
@@ -309,12 +310,13 @@
         "maintainer-transcribed",
         "other"
       ],
-      "harm_impact_methodology_current_version": "1.0.1",
+      "harm_impact_methodology_current_version": "1.1.0",
       "harm_impact_methodology_supported_versions": [
         "1.0.0",
-        "1.0.1"
+        "1.0.1",
+        "1.1.0"
       ],
-      "harm_impact_methodology_version_rule": "VIGIL-HIM 1.0.1 is the current methodology. Existing 1.0.0 assessments remain valid historical adjudications until individually re-reviewed. Re-reviewed or newly adjudicated Incidents must use 1.0.1 and the matching versioned threshold IDs; methodology versions must not be mechanically relabelled without substantive review.",
+      "harm_impact_methodology_version_rule": "VIGIL-HIM 1.1.0 is current and requires twelve domain rows, inline quantitative criteria, an exclusive assessment_pathway and versioned 1.1.0 threshold IDs. The 1.0.1 and 1.0.0 versions remain supported solely for existing individually unreviewed historical records: validate their eleven original dimension IDs and their own versioned derivation rule and threshold IDs. New or substantively reassessed records use 1.1.0; never mechanically relabel or reband historical assessments.",
       "external_requirement_assessment_rule": "External requirements and taxonomy share Aligned, Not aligned and Boundary semantics. Assess each relevant external requirement independently from occurrence evidence. Clause-scoped reviewed relationships or independent identification can identify candidates; candidate relevance and alignment are separate decisions. Normative force remains canonical requirement metadata. Evidence references resolve in source_records.",
       "external_requirement_assessment_reference_rule": "Optional derived_from_class_ids identify supported reviewed FC/EXTREQ relationships on the recorded source_clause_indices or, for migrated records, source_episode_refs. No exhaustive contributor list is required. Independent identification uses identification_basis without requiring an FC mapping.",
       "source_episode_reference_rule": "Optional incident-local E001-style episode_id and source_record_refs on every clause, when adopted by an Incident, provide stable episode identity and source provenance. Migrated derived EXTREQ assessments require source_episode_refs, optionally alongside legacy source_clause_indices; where both are given they must identify the same episodes. Historical Incidents without episode IDs remain valid. This rule is referential only and does not certify semantic event distinctness, chronology or source exhaustiveness.",
@@ -322,7 +324,24 @@
         "aligned",
         "not-aligned",
         "boundary"
-      ]
+      ],
+      "harm_impact_assessment_pathway_values": [
+        "specific_consequence",
+        "generic_deployed_evaluation"
+      ],
+      "harm_impact_aggregate_evidence_required_fields": [
+        "tested_deployed_model_and_version",
+        "tested_product_surface",
+        "evaluation_and_deployment_window",
+        "demonstrated_failure_and_consequence_pathway",
+        "eligible_denominator_count",
+        "eligible_denominator_unit",
+        "denominator_time_window",
+        "denominator_source_refs",
+        "limitations_and_uncertainty"
+      ],
+      "harm_impact_assessment_pathway_rule": "For HIM 1.1.0, select one assessment_pathway per canonical Incident. 'specific_consequence' applies observed actual person/group/asset/institution harm; 'generic_deployed_evaluation' applies modelled Aggregate Harm only to independently supported deployed feature/product watchdog findings without an actual bounded harmed case. Never route a specific unbanded occurrence to Aggregate Harm simply to produce a score. Generic assessed rows must be among the five eligible dimensions and must meet a source-backed band-local cohort or decision gate and substantive consequence criteria.",
+      "harm_impact_psychological_attribution_rule": "HIM Psychological wellbeing scores the evidence-supported harm caused, materially contributed to, exacerbated or prolonged by the AI-related occurrence; not the person's entire pre-existing condition. Assess baseline, conduct/omission, change, chronological and causal evidence, alternative factors and uncertain attribution separately. A taxonomy safety failure without evidenced additional harm does not alone warrant a psychological severity band."
     }
   },
   "$defs": {
