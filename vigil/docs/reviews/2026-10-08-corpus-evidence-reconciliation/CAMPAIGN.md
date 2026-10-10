@@ -210,3 +210,7 @@ INC-053/064 source-first holds resolved with bounded facts preserved; [report](P
 ## 10 October2026 — tranche19B held-evidence repair
 
 INC-120/139 source-first attribution/access holds resolved with evidence limits retained. See [report](PHASE3-TRANCHE-19B.md) and individual manifests. Live176/179 complete, original backlog86/89; three original holds164/171/174 remain. Historical baselines preserved. Active182 and189–191 intake/final inventory pending.
+
+### 10 October2026 — tranche19C
+
+INC-164/174 source-first holds closed with residual facts preserved;178/179 historical and88/89 backlog complete. INC-171 remains, then189–191 intake acceptance and final corpus inventory. See [tranche19C](PHASE3-TRANCHE-19C.md) and individual manifests. Seven positional external rows reconciled; cumulative1,035.
