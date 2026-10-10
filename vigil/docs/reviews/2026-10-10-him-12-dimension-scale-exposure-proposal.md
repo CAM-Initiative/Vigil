@@ -100,6 +100,24 @@ For **S1**, missing victim reports is never evidence of no harm. Generic-deploye
 
 The five dimension-specific count bands and severity gates are **VIGIL-proposed test thresholds**, not empirically validated or externally mandated population standards. Historical incident regression and governance approval remain necessary before making them normative.
 
+### Conditional severity instead of automatic SU — new proposed evidence adjustment
+
+The maintainer's explicit concern: a watchdog may test a **deployed** ChatGPT teen product under controlled child/teen scenarios, identify a reproducible safety failure and have no evidence of a *specific harmed child*. This should not automatically be `SU` solely because no identified victim was produced. It should also score **lower than an otherwise equivalent occurrence with verified downstream harm**, and should recognise greater relevant deployment scale in dimensions where diffuse exposure matters.
+
+The **proposed** 1.1.0 calculation is now:
+
+1. Verify the public/deployed model and feature configuration; documented watchdog inputs/outputs and mechanism; actual relevant available-user or live decision cohort (with dated source and denominator); credible adverse endpoint for the chosen dimension.
+2. Apply the dimension's **proposed generic population/decision thresholds** to find a provisional consequence-plus-reach tier (S2, S3, S4 or S5). All criteria, not merely cohort count, must be supported.
+3. Reduce the provisional tier **one band to account for absent proof of realised consequence**: provisional **S3 → assessed conditional S2**, **S4 → conditional S3**, **S5 → conditional S4**. Provisional S2 remains *conditional S2*, not S1: S1 requires positively evidenced negligible/no harm, not absence of named victims.
+4. Mark every resulting incident row and overall severity with its basis, e.g. `S3 — generic deployed; no user injury established`. **Maximum generic-only band is S4.** A separately documented catastrophic injury may satisfy the normal S5 standard even when the product has only a few users.
+5. Where some materialised harm is also evidenced, use the highest justified band, preserving the observed-only subtotal and selecting observed evidence in a tie. Never describe the conditional population as injured.
+
+**The one-band adjustment is a VIGIL design candidate, not an empirically established risk discount**. It needs adversarial examples and calibration against real benchmark cases. Its purpose is to be deterministic while making uncertainty explicit. If generic-case exposure numbers, production transferability or consequence criteria cannot be substantiated, leave the proposed generic row *unbanded*; missing victim names alone is **not** such a disqualifier.
+
+This **changes the intended 1.1.0 overall-severity contract**: an adequately evidenced generic deployed case would be *severity-assessed* rather than `SU` simply because no downstream victim was named. VIGIL-HIM **1.0.1 is still the active materialised-harm methodology**; no current Incident assessment, generator, schema or validator has been migrated. The revised 1.1.0 model requires explicit review/adoption and a visible basis qualifier wherever severity appears.
+
+**Source-identity caution:** A recently published example is the Youth AI Safety Institute/Common Sense Media `ChatGPT for Teens` report dated 7 October 2026, which tested a released teen experience. This organisation is US-based. Australian eSafety research on children and AI is a different source and should not be conflated. Each report's findings need exact source/version provenance before binding to a VIGIL Incident.
+
 ## Scoring boundaries
 
 1. The unit must belong to the relevant domain: e.g. dollars for financial, disrupted minutes for services, lost years of liberty for rights, ecological degradation for environment.
