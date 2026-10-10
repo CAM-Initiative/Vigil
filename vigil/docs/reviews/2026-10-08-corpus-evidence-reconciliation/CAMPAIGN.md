@@ -236,3 +236,7 @@ All179 original reviews,89-case backlog and four later intakes have bounded sour
 ### Concurrent methodology adoption reconciled
 
 Separate thread adopted HIM1.1.0 and version-aware controls through9666e02. All183 Incident records remain unchanged, historically assessed under1.0.1. No automatic migration/rebanding. Final report addendum distinguishes current twelve-domain authority from valid eleven-domain historical assessments. Case-level1.1.0 reassessment/empirical Aggregate Harm calibration remains separate work.
+
+### Verified human-review package
+
+Final applicable a70b72e records/taxonomy CI passed with jobs executed,397 ahead/zero behind main. Current PR118 carries authoritative final-head checks and review status after documentation-only closure. Corpus source-evidence acceptance is complete; separate HIM1.1.0 reassessment, partial taxonomy,012 precise approval hold, broad audit-test maintenance and evidence/deployment limitations remain disclosed. No merge authorised.
