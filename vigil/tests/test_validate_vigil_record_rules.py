@@ -442,6 +442,44 @@ class IncidentRuleTests(unittest.TestCase):
         self.assertEqual(errors, [])
         self.assertEqual(record["harm_impact_assessment"], harm_before)
         self.assertEqual(record["taxonomy_classification"], taxonomy_before)
+    def test_him_110_relational_harm_includes_independent_human_relationship_injury(self):
+        matrix = json.loads(
+            (VIGIL / "methodologies" / "VIGIL.HarmImpactMatrix.v1.1.0.json").read_text(encoding="utf-8")
+        )
+        relational = next(
+            item for item in matrix["dimensions"]
+            if item["dimension_id"] == "relational-integrity-autonomy"
+        )
+        self.assertIn("two independent pathways", relational["interpretive_note"].lower())
+        self.assertIn("caregiving", relational["thresholds"]["S3"]["criterion"].lower())
+        self.assertIn("valued partner", relational["thresholds"]["S4"]["criterion"].lower())
+        self.assertIn("affected people", relational["thresholds"]["S4"]["criterion"].lower())
+        self.assertIn("no psychiatric injury or incapacity", relational["thresholds"]["S4"]["criterion"].lower())
+        self.assertEqual(
+            relational["thresholds"]["S4"]["threshold_id"],
+            "VIGIL-HIM-1.1.0-REL-S4",
+        )
+
+    def test_him_110_relational_s5_is_catastrophic_not_automatic_divorce(self):
+        matrix = json.loads(
+            (VIGIL / "methodologies" / "VIGIL.HarmImpactMatrix.v1.1.0.json").read_text(encoding="utf-8")
+        )
+        relational = next(
+            item for item in matrix["dimensions"]
+            if item["dimension_id"] == "relational-integrity-autonomy"
+        )
+        s5 = relational["thresholds"]["S5"]["criterion"].lower()
+        self.assertIn("catastrophic and effectively irreversible", s5)
+        self.assertIn("essential care", s5)
+        self.assertIn("material ai contribution", s5)
+        self.assertIn("divorce, separation, estrangement or allegations alone", s5)
+        self.assertIn("formal legal finality is neither required nor sufficient", s5)
+        self.assertIn("fiduciary duty", relational["interpretive_note"].lower())
+        self.assertIn(
+            "relationship",
+            matrix["adjudication_guidance"]["relational_integrity"].lower(),
+        )
+
     def test_harm_matrix_preserves_digital_asset_effective_destruction_note(self):
         matrix = json.loads(
             (VIGIL / "methodologies" / "VIGIL.HarmImpactMatrix.v1.0.1.json").read_text(encoding="utf-8")
