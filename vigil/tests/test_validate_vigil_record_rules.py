@@ -85,6 +85,111 @@ class IncidentRuleTests(unittest.TestCase):
         errors, _ = VALIDATOR.validate_record(Path(record["id"] + ".json"), record)
         self.assertTrue(any("requires a concrete no_materialised_harm_basis" in error for error in errors), errors)
 
+    def him_110_record(self, generic=False):
+        record = copy.deepcopy(self.record)
+        assessment = record["harm_impact_assessment"]
+        matrix = VALIDATOR.harm_matrix("1.1.0")
+        by_id = {d["dimension_id"]: d for d in matrix["dimensions"]}
+        assessment["methodology_version"] = "1.1.0"
+        assessment["derivation_rule"] = matrix["derivation_rule"]
+        assessment["assessment_pathway"] = "generic_deployed_evaluation" if generic else "specific_consequence"
+        assessment["dimensions"].append({
+            "dimension_id": "relational-integrity-autonomy",
+            "assessment_status": "unreported",
+            "assessment_basis": "No source-supported relational-autonomy consequence was established.",
+            "evidence_confidence": "not-assessed",
+        })
+        for row in assessment["dimensions"]:
+            if row["assessment_status"] == "assessed":
+                row["threshold_id"] = by_id[row["dimension_id"]]["thresholds"][row["severity"]]["threshold_id"]
+        return record
+
+    def test_him_110_inline_quantification_and_twelve_dimensions(self):
+        matrix = VALIDATOR.harm_matrix("1.1.0")
+        self.assertEqual(len(matrix["dimensions"]), 12)
+        self.assertEqual(len({d["dimension_id"] for d in matrix["dimensions"]}), 12)
+        for dimension in matrix["dimensions"]:
+            self.assertEqual(set(dimension["thresholds"]), {"S1", "S2", "S3", "S4", "S5"})
+            for band in dimension["thresholds"].values():
+                self.assertTrue(band["criterion"].strip())
+                self.assertNotIn("threshold_quantitative_guidance", band)
+        psych = next(d for d in matrix["dimensions"] if d["dimension_id"] == "psychological-wellbeing")
+        self.assertIn("30 days", psych["thresholds"]["S4"]["criterion"])
+        self.assertIn("causal", matrix["adjudication_guidance"]["causal_contribution"])
+
+    def test_him_110_specific_harm_preserves_historical_record(self):
+        record = self.him_110_record()
+        errors = []
+        VALIDATOR.validate_harm_impact(Path(record["id"] + ".json"), record, errors)
+        self.assertEqual(errors, [])
+        # The original eleven-row 1.0.1 record remains unchanged and valid.
+        self.assertEqual(self.errors(), [])
+
+    def test_him_110_pathway_and_dimension_required(self):
+        record = self.him_110_record()
+        assessment = record["harm_impact_assessment"]
+        assessment.pop("assessment_pathway")
+        errors = []
+        VALIDATOR.validate_harm_impact(Path("synthetic.json"), record, errors)
+        self.assertTrue(any("requires assessment_pathway" in error for error in errors), errors)
+        assessment["assessment_pathway"] = "specific_consequence"
+        assessment["dimensions"] = assessment["dimensions"][:-1]
+        errors = []
+        VALIDATOR.validate_harm_impact(Path("synthetic.json"), record, errors)
+        self.assertTrue(any("every canonical dimension exactly once" in error for error in errors), errors)
+
+    def test_him_110_generic_population_gate_and_provenance(self):
+        record = self.him_110_record(generic=True)
+        assessment = record["harm_impact_assessment"]
+        for row in assessment["dimensions"]:
+            row["assessment_status"] = "unreported"
+            row["assessment_basis"] = "Generic cohort case does not establish a separate domain outcome."
+            row["evidence_confidence"] = "not-assessed"
+            for field in ("severity", "threshold_id", "observed_values", "evidence_refs"):
+                row.pop(field, None)
+        psych = next(row for row in assessment["dimensions"] if row["dimension_id"] == "psychological-wellbeing")
+        psych.update({
+            "assessment_status": "assessed",
+            "severity": "S2",
+            "threshold_id": "VIGIL-HIM-1.1.0-PSY-S2",
+            "assessment_basis": "Synthetic positive test: reproduced live safety-relevant failure with bounded modelled minor consequence.",
+            "evidence_confidence": "medium",
+            "observed_values": [],
+            "evidence_refs": ["source_records[0]"],
+            "aggregate_harm_evidence": {
+                "tested_deployed_model_and_version": "Synthetic deployed model v1",
+                "tested_product_surface": "Synthetic production chat feature",
+                "evaluation_and_deployment_window": "2026-10-10",
+                "demonstrated_failure_and_consequence_pathway": "Synthetic reproducible unsafe response and grounded minor harm model",
+                "eligible_denominator_count": 100000,
+                "eligible_denominator_unit": "relevant active users",
+                "denominator_time_window": "2026-10-01 to 2026-10-10",
+                "denominator_source_refs": ["source_records[0]"],
+                "limitations_and_uncertainty": "Synthetic fixture, not a real published impact estimate",
+            },
+        })
+        assessment["overall_severity"] = "S2"
+        assessment["controlling_dimensions"] = ["psychological-wellbeing"]
+        assessment.pop("assessment_gap", None)
+        assessment.pop("no_materialised_harm_basis", None)
+        errors = []
+        VALIDATOR.validate_harm_impact(Path("synthetic.json"), record, errors)
+        self.assertEqual(errors, [])
+        psych["aggregate_harm_evidence"]["eligible_denominator_count"] = 200
+        errors = []
+        VALIDATOR.validate_harm_impact(Path("synthetic.json"), record, errors)
+        self.assertTrue(any("outside S2 gate" in error for error in errors), errors)
+        psych["aggregate_harm_evidence"]["eligible_denominator_count"] = 100000
+        psych["aggregate_harm_evidence"]["denominator_source_refs"] = ["source_records[999999]"]
+        errors = []
+        VALIDATOR.validate_harm_impact(Path("synthetic.json"), record, errors)
+        self.assertTrue(any("invalid source_records[N]" in error for error in errors), errors)
+        psych["aggregate_harm_evidence"]["denominator_source_refs"] = ["source_records[0]"]
+        assessment["assessment_pathway"] = "specific_consequence"
+        errors = []
+        VALIDATOR.validate_harm_impact(Path("synthetic.json"), record, errors)
+        self.assertTrue(any("permitted only for assessed 1.1.0 Aggregate Harm" in error for error in errors), errors)
+
     def test_financial_usd_boundaries(self):
         cases = {
             0: "S1", 9_999: "S1", 10_000: "S2", 999_999: "S2",
