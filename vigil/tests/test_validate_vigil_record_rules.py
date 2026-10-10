@@ -475,6 +475,10 @@ class IncidentRuleTests(unittest.TestCase):
         self.assertIn("divorce, separation, estrangement or allegations alone", s5)
         self.assertIn("formal legal finality is neither required nor sufficient", s5)
         self.assertIn("fiduciary duty", relational["interpretive_note"].lower())
+        self.assertIn("vulnerability is context-specific", relational["interpretive_note"].lower())
+        self.assertIn("vulnerability by itself does not establish", relational["interpretive_note"].lower())
+        self.assertIn("vulnerability warrants proportionate safeguards", matrix["adjudication_guidance"]["relational_integrity"].lower())
+        self.assertIn("not a scored harm", matrix["dimension_quantification_policy"]["relational_vulnerability_boundary"].lower())
         self.assertIn(
             "relationship",
             matrix["adjudication_guidance"]["relational_integrity"].lower(),
