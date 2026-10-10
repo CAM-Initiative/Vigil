@@ -1,10 +1,16 @@
 # VIGIL-HIM 1.1.0 — domain-specific quantifiable Harm Impact thresholds
 
 **Date:** 2026-10-10  
-**Status:** UNADOPTED DRAFT / methodology review; 1.0.1 remains the active authority  
+**Status:** HISTORICAL DEVELOPMENT REVIEW — superseded by canonical HIM 1.1.0 on the working branch; 1.0.1 remains valid for its historical incident assessments  
 **Working branch:** `agent/incident-ecosystem-ingestion`  
-**Machine-readable proposal:** `vigil/methodologies/proposals/VIGIL.HarmImpactMatrix.v1.1.0-proposal.json`  
+**Machine-readable proposal:** `vigil/methodologies/proposals/VIGIL.HarmImpactMatrix.v1.1.0-proposal.json`
+**Current controlling methodology:** `vigil/methodologies/VIGIL.HarmImpactMatrix.v1.1.0.json`; this review contains earlier draft rationale and is not controlling where its wording or status differs.  
 **Revision note:** This revision **replaces** the earlier shared population ladder (S2 1–99, S3 100–9,999, S4 10,000–999,999, S5 ≥1,000,000). That ladder conflated individual harm severity with impact reach and is **not proposed for adoption**.
+
+
+## Post-adoption clarification — psychological assessment without a baseline requirement
+
+The current canonical HIM 1.1.0 expressly **does not require, infer, or reconstruct a pre-interaction psychiatric baseline**. Earlier draft passages in this review discussing baseline, incremental impairment or diagnosis as if required have been superseded. The controlling psychological threshold criteria instead document (1) the evidenced wellbeing/crisis signals, (2) system responses including support, stabilisation, appropriate human referral, protective/unsafe refusal, abandonment or harmful reinforcement, and (3) any independently supported interaction-related psychological consequences. Known earlier clinical conditions may provide context if independently available but are neither a prerequisite nor themselves a harm score. A control failure without proved downstream adverse consequence is assessed under the Alignment Taxonomy, not automatically as S2–S5 psychological injury. See the canonical `adjudication_guidance.psychological_attribution` and `vigil/docs/incident-severity-standard.md`.
 
 ## Maintainer clarification
 
