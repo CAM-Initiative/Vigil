@@ -222,3 +222,7 @@ INC-171 bounded source-first hold resolved with disputed/private facts preserved
 ### 10 October2026 — tranche20A
 
 Post-baseline189–191 ingestion assessed substantively and repaired with individual manifests; see [tranche20A](PHASE3-TRANCHE-20A.md). Historical179/179 unchanged. Concurrent192 joins final active183 inventory; its acceptance and final corpus verification remain.
+
+## Phase3 tranche20B — concurrent watchdog acceptance
+
+INC-192 seven strands became28 source-first episodes, preserving disputed activation, bounded050 success, ordinary warmth, active HIM1.0.1 SU and concurrent unadopted Aggregate Harm proposal. All four post-baseline intakes now bounded reviewed;183-record final inventory/CI pending. See PHASE3-TRANCHE-20B.md and192 manifest.
