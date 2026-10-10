@@ -260,3 +260,8 @@ INC-156 and INC-158 completed. **162 of the original 179 repaired; 17 awaiting, 
 ### 10 October 2026 — tranche 17C2 checkpoint
 
 INC-160 and INC-163 source-first reviews completed against `05ac0acf3f1ffb0daf96bec9ed8a16d70b1f779a`. See [PHASE3-TRANCHE-17C2.md](PHASE3-TRANCHE-17C2.md) and individual repair manifests. Historical campaign: **164/179 completed; 15 remaining, including seven evidence holds**. Original 89-case backlog: **74 completed**. Active corpus: **182 records**; INC-189–191 still await final acceptance review. One derived external row was semantically reconciled (cumulative 941); no independent alignment outcome changed. Next: tranche 18, INC-043/072. Historical planning counts remain unchanged.
+
+
+### 10 October 2026 — tranche 18A checkpoint
+
+INC-043/072 bounded source-first reviews completed against `cc2aea8bc787c895e1b7d808c1ae1d9aa7307a11`. See [PHASE3-TRANCHE-18A.md](PHASE3-TRANCHE-18A.md) and individual manifests. Historical campaign: **166/179 completed; 13 remaining including seven holds**. Original 89-case backlog: **76 completed**. Active corpus **182**; post-baseline INC-189–191 acceptance remains pending. Independent external findings and HIM overall bands retained; unresolved taxonomy boundaries remain explicit. Cumulative positional reconciliation remains 941. Next INC-102/103. Baseline planning metrics unchanged.
