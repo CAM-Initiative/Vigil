@@ -521,8 +521,6 @@ def validate_harm_impact(path: Path, record: dict[str, Any], errors: list[str]) 
     ))
     if methodology_version not in supported_versions:
         errors.append(f"{path}: harm impact methodology_version is not supported")
-    if assessment.get("derivation_rule") != contract["harm_impact_derivation_rule"]:
-        errors.append(f"{path}: harm impact derivation_rule is not canonical")
     if parse_date(assessment.get("assessed_on")) is None:
         errors.append(f"{path}: harm_impact_assessment.assessed_on must be an ISO date")
     if not non_empty(assessment.get("coverage_note")):
@@ -538,7 +536,18 @@ def validate_harm_impact(path: Path, record: dict[str, Any], errors: list[str]) 
     if matrix.get("derivation_rule") != assessment.get("derivation_rule"):
         errors.append(f"{path}: harm impact derivation_rule does not match methodology file")
     dimensions_by_id = {item["dimension_id"]: item for item in matrix["dimensions"]}
-    expected_ids = set(contract["harm_impact_dimension_ids"])
+    expected_ids = set(dimensions_by_id)
+    current_version = contract.get("harm_impact_methodology_current_version", contract["harm_impact_methodology_version"])
+    if methodology_version == current_version and expected_ids != set(contract["harm_impact_dimension_ids"]):
+        errors.append(f"{path}: current HIM dimension IDs do not match schema contract")
+    pathway = assessment.get("assessment_pathway")
+    specific_path = pathway == "specific_consequence"
+    generic_path = pathway == "generic_deployed_evaluation"
+    if methodology_version == "1.1.0":
+        if pathway not in contract["harm_impact_assessment_pathway_values"]:
+            errors.append(f"{path}: HIM 1.1.0 requires assessment_pathway (specific_consequence or generic_deployed_evaluation)")
+    elif "assessment_pathway" in assessment:
+        errors.append(f"{path}: historical HIM assessments cannot retroactively declare a 1.1.0 assessment_pathway")
     rows = assessment.get("dimensions")
     if not isinstance(rows, list):
         errors.append(f"{path}: harm_impact_assessment.dimensions must be an array")
@@ -571,6 +580,40 @@ def validate_harm_impact(path: Path, record: dict[str, Any], errors: list[str]) 
         if status == "assessed":
             severity = row.get("severity")
             threshold_id = row.get("threshold_id")
+            aggregate_evidence = row.get("aggregate_harm_evidence")
+            if methodology_version == "1.1.0" and generic_path:
+                if not isinstance(aggregate_evidence, dict):
+                    errors.append(f"{label}.aggregate_harm_evidence is required for a generic deployed-evaluation assessed row")
+                else:
+                    missing_agg = set(contract["harm_impact_aggregate_evidence_required_fields"]) - set(aggregate_evidence)
+                    if missing_agg:
+                        errors.append(f"{label}.aggregate_harm_evidence missing {', '.join(sorted(missing_agg))}")
+                    for agg_field in contract["harm_impact_aggregate_evidence_required_fields"]:
+                        if agg_field in {"eligible_denominator_count", "denominator_source_refs"}:
+                            continue
+                        if not non_empty(aggregate_evidence.get(agg_field)):
+                            errors.append(f"{label}.aggregate_harm_evidence.{agg_field} must be non-empty")
+                    count = aggregate_evidence.get("eligible_denominator_count")
+                    if type(count) is not int or count < 1:
+                        errors.append(f"{label}.aggregate_harm_evidence.eligible_denominator_count must be a positive integer")
+                    elif severity in SEVERITY_RANK:
+                        matrix_band = dimensions_by_id.get(str(dimension_id), {}).get("thresholds", {}).get(severity, {})
+                        lower = matrix_band.get("aggregate_eligible_denominator_min")
+                        upper = matrix_band.get("aggregate_eligible_denominator_max")
+                        if lower is None:
+                            errors.append(f"{label}: this harm dimension is not eligible for Aggregate Harm banding")
+                        elif count < lower or (upper is not None and count > upper):
+                            errors.append(f"{label}: Aggregate Harm denominator {count} is outside S{severity[1:]} gate {lower}–{upper or 'unbounded'}")
+                    agg_refs = aggregate_evidence.get("denominator_source_refs")
+                    if not isinstance(agg_refs, list) or not agg_refs:
+                        errors.append(f"{label}.aggregate_harm_evidence.denominator_source_refs must have source_records[N] provenance")
+                    else:
+                        for agg_ref in agg_refs:
+                            mt = re.fullmatch(r"source_records\[(\d+)\]", str(agg_ref))
+                            if mt is None or not isinstance(source_records, list) or int(mt.group(1)) >= len(source_records):
+                                errors.append(f"{label}.aggregate_harm_evidence.denominator_source_refs contains invalid source_records[N] reference")
+            elif "aggregate_harm_evidence" in row:
+                errors.append(f"{label}.aggregate_harm_evidence is permitted only for assessed 1.1.0 Aggregate Harm rows")
             if severity not in SEVERITY_RANK:
                 errors.append(f"{label}.severity must be S1-S5 when assessed")
             else:
@@ -617,7 +660,7 @@ def validate_harm_impact(path: Path, record: dict[str, Any], errors: list[str]) 
             if row.get("evidence_confidence") == "not-assessed":
                 errors.append(f"{label}.evidence_confidence cannot be not-assessed when assessed")
         else:
-            for field in ("severity", "threshold_id", "observed_values", "evidence_refs"):
+            for field in ("severity", "threshold_id", "observed_values", "evidence_refs", "aggregate_harm_evidence"):
                 if field in row:
                     errors.append(f"{label}.{field} is forbidden when status is {status}")
             if row.get("evidence_confidence") != "not-assessed":
@@ -643,6 +686,8 @@ def validate_harm_impact(path: Path, record: dict[str, Any], errors: list[str]) 
             errors.append(f"{path}: no_materialised_harm_basis is reserved for bounded S1 assessments with no materialised harm")
     else:
         if overall == "S1":
+            if generic_path:
+                errors.append(f"{path}: Aggregate Harm S1 requires an assessed modelled dimension, not a no-materialised-harm fallback")
             if controlling:
                 errors.append(f"{path}: no-materialised-harm S1 must not have controlling_dimensions")
             if not non_empty(assessment.get("no_materialised_harm_basis")):
