@@ -214,3 +214,7 @@ INC-120/139 source-first attribution/access holds resolved with evidence limits 
 ### 10 October2026 — tranche19C
 
 INC-164/174 source-first holds closed with residual facts preserved;178/179 historical and88/89 backlog complete. INC-171 remains, then189–191 intake acceptance and final corpus inventory. See [tranche19C](PHASE3-TRANCHE-19C.md) and individual manifests. Seven positional external rows reconciled; cumulative1,035.
+
+### 10 October2026 — tranche19D
+
+INC-171 bounded source-first hold resolved with disputed/private facts preserved;179/179 historical and89/89 backlog complete. See [tranche19D](PHASE3-TRANCHE-19D.md) and manifest. Sixteen positional external rows reconciled; cumulative1,051. Post-baseline189–191 acceptance and final integrity inventory remain; completion is not complete taxonomy or independent human certification.
