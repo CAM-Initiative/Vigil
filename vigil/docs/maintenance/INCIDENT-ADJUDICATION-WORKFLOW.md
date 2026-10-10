@@ -139,6 +139,23 @@ For canonical Stage 02 role parsing, `failure-occurrence` and `failure-occurrenc
 Map each material event once in activity order, allowing several independently justified Fidelity Class relationships to analyse the same event. Review recorded omissions and attempts as well as realised outcomes. Reconcile all position-based clause references if clauses are reordered or split. A candidate taxonomy role may remain unresolved without blocking unrelated, supported mappings.
 
 
+### Named-control requirement for FC-000038 and FC-000083
+
+A substantive ethical, relational, agency or vulnerability-protection failure is not evidence that an operational safety control was deployed or failed. Assess the applicable substantive fidelity invariant separately from any concomitant governance-control mechanism. Use the current canonical Fidelity Classes only; draft proposals are not selectable.
+
+For **FC-000038 Required Control Activation**, an admitted failure occurrence must identify and substantiate:
+
+- the **particular available, applicable operational control** and its protective purpose (for example, a deployed gate, restriction, named classifier or escalation route), not merely the external standard or an abstract duty calling for protection;
+- the control's **defined activation condition**, contemporaneous deployment/applicability, and the occurrence evidence establishing that the condition arose before the governed effect;
+- the **observed nonactivation** of that control before the relevant output, action or transition, independently of later harm; and
+- the specific governed effect that proceeded without activation.
+
+For **FC-000083 Control Effectiveness Integrity**, establish that the particular applicable control **validly activated**, identify its protective purpose and required effect, and provide evidence that the observed effect was materially inadequate in the relevant hazard and evidenced protection context. Nonactivation, unknown control existence, and missing protective design are not FC-000083 failures.
+
+If the control's identity, existence, availability, applicability, valid trigger, activation or effect is unproved, record the precise missing fact as an unresolved candidate in the dated rebuild manifest. Do not infer it from severe harm, source prestige, a later standard, a model-policy assertion, or an observed unsafe answer. If evidence supports a substantive duty but **no operational control was implemented**, preserve that as a distinct protection-coverage/taxonomy-gap question rather than forcing FC-000038/000083.
+
+Multiple independently substantiated mappings may analyse the same evidence episode. Never duplicate that episode to express multiple interpretations. A new candidate class becomes available for canonical Incident mapping only after its governed taxonomy admission and versioned release. The 2026-10-10 bounded design proposals and IEEE correspondence review are in `vigil/docs/reviews/2026-10-10-relational-protection-fidelity-class-review.md`.
+
 ## 5. HARM — review materialised consequence separately
 
 Re-open VIGIL-HIM only after the factual record is stable.
