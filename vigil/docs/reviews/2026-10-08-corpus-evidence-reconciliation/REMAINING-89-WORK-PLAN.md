@@ -275,3 +275,7 @@ INC-102/103 source-first reviews completed against `866f31f68ad5bd1378baa86de59d
 ### 10 October 2026 — tranche 18C checkpoint
 
 INC-104/105 bounded source-first reviews completed against `27ae2544fc572d9a96f890a593bc4e88800e885a`. See [PHASE3-TRANCHE-18C.md](PHASE3-TRANCHE-18C.md) and individual manifests. Historical campaign **170/179 completed; 9 remaining including seven original holds**. Original 89-case backlog **80 completed**. Active corpus **182**; post-baseline acceptance pending. Forty-six derived external rows reconciled (cumulative 1,012); independent results retained. INC-104 physical S3 withdrawn to insufficient-evidence; overall psychological S4 retained. Concurrent INC-012 proposal/approval hold is preserved separately and must be disclosed at final inventory, not enacted or counted as one of the seven original holds. Next INC-166/167.
+
+## 10 October 2026 — tranche 18D completion
+
+INC-166/167 bounded repairs, individual manifests and validation are recorded in [PHASE3-TRANCHE-18D.md](PHASE3-TRANCHE-18D.md). Historical baseline figures remain unchanged. Live progress: 172/179 complete, seven original holds pending; original backlog 82/89 complete. Active corpus 182, post-baseline189–191 acceptance pending. Concurrent methodology proposals and INC-012 approval hold preserved and unenacted. Next held INC-053/064.

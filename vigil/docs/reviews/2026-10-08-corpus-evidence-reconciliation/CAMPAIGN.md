@@ -198,3 +198,7 @@ INC-104/105 bounded source-first reviews completed against `27ae2544fc572d9a96f8
 ### 10 October 2026 — tranche 18D research interrupted
 
 Executor disconnected (`409 Conflict, environment_offline`). INC-166/167 research is preserved in [PHASE3-TRANCHE-18D-RECOVERY.md](PHASE3-TRANCHE-18D-RECOVERY.md); **neither case is repaired or counted complete**. Last validated corpus HEAD `023671ae1978d16e8983962c2dde4ac1b896c6a3` has successful records/taxonomy PR CI. Campaign remains **170/179 completed; nine original pending including seven holds**, active182 with189–191 acceptance pending. Concurrent proposal-only HIM1.1.0/12-dimension drafts through `febcff56ed53e684def002734b37221b246027f1` are preserved, not adopted. Separate INC-012 approval hold persists. PR118 remains draft. Resume on actual remote HEAD with new exact baselines when the executor reconnects.
+
+## 10 October 2026 — tranche 18D completion
+
+INC-166/167 bounded repairs, individual manifests and validation are recorded in [PHASE3-TRANCHE-18D.md](PHASE3-TRANCHE-18D.md). Historical baseline figures remain unchanged. Live progress: 172/179 complete, seven original holds pending; original backlog 82/89 complete. Active corpus 182, post-baseline189–191 acceptance pending. Concurrent methodology proposals and INC-012 approval hold preserved and unenacted. Next held INC-053/064.
