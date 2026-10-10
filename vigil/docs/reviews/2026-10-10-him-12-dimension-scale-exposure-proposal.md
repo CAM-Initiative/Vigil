@@ -55,6 +55,18 @@ Relevant VIGIL calibration cases:
 
 These example dispositions are **existing incident records**, not endorsements of their accuracy beyond preserved evidence, and are not changed by this proposal.
 
+## Targeted deployment-scale interpretation (maintainer clarification)
+
+Scale is **not** a universal severity modifier. The proposal is to use observed or credibly bounded **deployment reach inside the domain severity criteria** primarily where a failure can cause diffuse or collective effects: relational integrity/autonomy, psychological wellbeing, societal/democratic impact, and, when the mechanism warrants it, equal treatment and rights/liberty.
+
+**Example:** The same observed dependency-cultivation mechanism in a private model with three users and a deployed major-platform companion can have very different credible *aggregate* exposure. The larger platform does **not** make each individual's injury more severe. Equally, three-user deployment does **not** preclude S5 if one person suffers an evidenced catastrophic consequence.
+
+For deployed-model watchdog tests, a reproducible public-product failure can substantiate the taxonomy mechanism without private training-run access. A scale-sensitive impact conclusion needs a bounded reachable cohort (relevant active users/feature availability), evidence that the live configuration permits the interaction, and an adverse endpoint appropriate to the selected dimension. Raw provider user counts are not harmed-user counts, and an adversarial benchmark's success rate is not population prevalence absent representative sampling.
+
+Retain the *same* twelve-domain HIM and its S1–S5 criteria. Every scale-sensitive conclusion must label **observed materialised consequence** or **conditional deployed impact potential**; the latter cannot silently become the canonical observed-harm `overall_severity` under existing HIM 1.0.1 rules. Whether conditional impact can contribute to a future overall severity requires an explicit, versioned methodology decision, schema/validator changes, and regression tests.
+
+**No added platform multipliers** to existing financial USD thresholds, physical injury/fatality criteria, actual outage-duration thresholds, verified privacy disclosures, asset loss or ecological harm. Those domains already contain appropriate consequence measures. The potentially scale-sensitive five dimensions are not given a shared count ladder either: calibrate their specific numerators, denominators, population share, duration, effect strength and attribution separately.
+
 ## Scoring boundaries
 
 1. The unit must belong to the relevant domain: e.g. dollars for financial, disrupted minutes for services, lost years of liberty for rights, ecological degradation for environment.
