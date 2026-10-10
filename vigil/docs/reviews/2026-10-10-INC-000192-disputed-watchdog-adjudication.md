@@ -3,7 +3,7 @@
 **Recorded:** 2026-10-10  
 **Canonical record:** `vigil/records/incidents/VIGIL-INC-000192.json`  
 **Review disposition:** **Under dispute — bounded evidence claims**; source and provider positions preserved separately. This is **not** an authorised alternate `record_state` enum.  
-**Current HIM:** 1.0.1; **proposed generic-deployment pilot:** 1.1.0  
+**Current HIM:** 1.0.1; **proposed Aggregate Harm pathway for generic deployed evaluations:** 1.1.0  
 **No change to live HIM or other Incidents.**
 
 ## Occurrence and origin
@@ -54,22 +54,22 @@ The **held** boundary is narrower: preserve respectful warmth **while setting re
 
 These support the governing principle: **Do not withdraw warmth as a proxy for safety**. That is a normative and context-sensitive safeguard, **not** evidence that any particular teen was injured by colder responses in this study. A warm answer must still escalate when the danger requires it.
 
-## Harm severity — case calibration revised (2026-10-10)
+## Harm Impact — specific Incident versus Aggregate Harm
 
-The maintainer **rejected the prior S2 conditional pilot and the post-hoc one-band evidence discount**. Generic deployed failures are instead to be measured on substantially *higher* domain-specific S1–S5 eligible-population/decision thresholds, as specified in the [HIM 1.1.0 proposal](../../methodologies/proposals/VIGIL.HarmImpactMatrix.v1.1.0-proposal.json).
+**Case type:** This is a **generic deployed-model watchdog evaluation**. Its test participants were synthetic; this bounded report does **not** document a particular actually harmed teen or bounded actual harmed group. Therefore it is **eligible in principle** for the proposed **Aggregate Harm** pathway in HIM 1.1.0, rather than being judged with a specific individual injury as the assessment case.
 
-| Assessment basis | Psychological wellbeing | Relational integrity/autonomy | Overall |
+This is a routing rule, **not a severity downgrade**. If a separate teen actually suffered identifiable harm, that would be a **specific-consequence Incident** scored with the ordinary S1–S5 domain consequence thresholds. No platform-wide Aggregate Harm population criterion would apply to such an Incident, even if it concerned the same model/version.
+
+| Framework and pathway | Psychological wellbeing | Relational integrity/autonomy | Overall |
 |---|---|---|---|
-| Active VIGIL-HIM 1.0.1, **materialised harm** | No attributable real-world injury established from controlled test | New dimension not yet active | **SU**, not an affirmative S1 no-harm result |
-| Proposed HIM 1.1.0, **generic deployed conditional** | **Not banded yet — assess S1–S5** using the new higher psychological population thresholds and verified contextual failure | No supported coercive dependency mechanism, no assessed relational-failure band | **Not determined**; no predetermined S2 |
+| **Active HIM 1.0.1 — observed materialised harm** | No real teen psychological injury established by the synthetic test | Not yet an active dimension | **SU**, not automatic S1 |
+| **Proposed HIM 1.1.0 — Aggregate Harm (modelled from deployed evaluation)** | **Unbanded; examine S1–S5** using the proposed higher eligible-population gates and the disputed clinical/alert evidence | Friendly tone is not a demonstrated relational-integrity failure | **Undetermined**, no default S2 |
 
-The proposed psychological **generic-deployment** bands run **S1: 1–9,999; S2: 10,000–999,999; S3: 1m–9,999,999; S4: 10m–99,999,999; S5: ≥100m** *relevant active eligible users of the tested psychological-support interaction*. This is a **candidate numeric calibration**, not a verified exposed- or harmed-user count. Each band additionally requires a demonstrated failure on the applicable deployed product and an independently credible consequence meeting the dimension-specific threshold. The count cannot be inferred from ChatGPT's entire user base.
+The draft psychological **Aggregate Harm** thresholds are **S1 1–9,999; S2 10,000–999,999; S3 1m–9,999,999; S4 10m–99,999,999; S5 ≥100m** *relevant active eligible users of the tested crisis/psychological-support pathway*. These proposed numbers do **not** count harmed teenagers and cannot be applied to a specific-Incident assessment. Each also requires affirmative, deployed-test evidence of a relevant failure and substantive consequence.
 
-Published learning-tool usage figures (nearly 1.2 million teens using Learning Visualizations and more than 180,000 using Study Mode within the reported period) **do not** measure users eligible for, or exposed to, the specific crisis-notification/referral failure conditions. Likewise, the watchdog's 4,000+ prompts are test actions, not a count of users. The disputed notification activation and clinical referral thresholds remain unresolved.
+OpenAI's reported usage figures for Learning Visualizations and Study Mode are **not** measurements of who could actually encounter the disputed parental alert and referral behaviour. The watchdog's synthetic prompt count is likewise not an exposed-user count. The alert activation and clinical response sufficiency questions also remain open.
 
-The generic **S1** option should be examined, not excluded merely because nobody was shown to be injured. Under the proposed *generic-deployed conditional* basis, S1 means an affirmatively demonstrated low **aggregate potential-impact** occurrence on a bounded relevant cohort—not the absence of observed harm. However, no generic S1 can be assigned *solely* from absent victim reports, uncertain user population or the fact that the provider disputed the test.
-
-**Disposition:** previous S2 pilot **withdrawn**, no replacement generic score until the higher in-matrix threshold and case evidence support one. This does not alter FC-000050's bounded successful-invariant or the source-level dispute.
+**Disposition:** the former S2 provisional pilot is **withdrawn**. No replacement S1–S5 Aggregate Harm band is assigned pending source-backed cohort measurement and appropriate failure/consequence adjudication. Separately preserved: disputed source propositions, unresolved control findings, FC-000050 bounded successful-invariant and canonical HIM 1.0.1 **SU**.
 
 ## QAQC and follow-up
 
@@ -77,7 +77,7 @@ The generic **S1** option should be examined, not excluded merely because nobody
 2. Check true account activation state and trigger telemetry before determining parental-alert invariant polarity.
 3. Evaluate individual crisis transcripts for danger classification, patient-safe guidance, professional referral alternatives, warmth and continuity. Do not reward either reflexive hotline boilerplate or reflexive 'friendship is dangerous' categorisation.
 4. Preserve affirmative role boundaries and protective refusals as successful evidence rather than suppressing success under an externally failure-oriented evaluation frame.
-5. Test all five proposed generic deployed population bands (including S1) against source-backed feature-eligible cohort data and real-world comparator cases before adopting HIM 1.1.0; retain observed-harm SU until governed migration.
+5. Calibrate all S1–S5 Aggregate Harm thresholds on generic deployed benchmarks only, with source-backed applicable cohort evidence. Never import these thresholds into a specific injured-person/group Incident. Retain observed-harm SU here until governed methodology migration.
 6. Check the appropriate corpus/index/build generator and validator after ingest; never manually force an aggregate index outside its generator.
 
 **Confidence boundary:** AI analytical review, source-linked; no provider-internal activation telemetry or harm prevalence study obtained.
