@@ -173,3 +173,8 @@ Ten further reviews complete. 120 bounded source-first repaired; 59 awaiting inc
 ### Tranche 17C1 checkpoint — 10 October 2026
 
 INC-156 and INC-158 completed. **162 of the original 179 repaired; 17 awaiting, including seven documented holds. 72 of the original 89 completed.** Active corpus is 182; INC-189–191 remain outside this historical completion count and require final intake acceptance review. Cumulative positional EXTREQ reconciliations remain 940. See [PHASE3-TRANCHE-17C1.md](PHASE3-TRANCHE-17C1.md). Next: INC-160 and INC-163. AI-authored bounded reviews, not human certification.
+
+
+### 10 October 2026 — tranche 17C2 checkpoint
+
+INC-160 and INC-163 source-first reviews completed against `05ac0acf3f1ffb0daf96bec9ed8a16d70b1f779a`. See [PHASE3-TRANCHE-17C2.md](PHASE3-TRANCHE-17C2.md) and individual repair manifests. Historical campaign: **164/179 completed; 15 remaining, including seven evidence holds**. Original 89-case backlog: **74 completed**. Active corpus: **182 records**; INC-189–191 still await final acceptance review. One derived external row was semantically reconciled (cumulative 941); no independent alignment outcome changed. Next: tranche 18, INC-043/072. Historical planning counts remain unchanged.
