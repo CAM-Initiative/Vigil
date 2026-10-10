@@ -1,79 +1,75 @@
-# VIGIL-HIM — integrate population scale and exposure within each dimension
+# VIGIL-HIM 1.1.0 — domain-specific quantifiable Harm Impact thresholds
 
 **Date:** 2026-10-10  
-**Status:** NON-AUTHORITATIVE VERSIONED DRAFT — no change to active HIM 1.0.1  
-**Branch:** `agent/incident-ecosystem-ingestion`  
-**Companion machine-readable proposal:** `vigil/methodologies/proposals/VIGIL.HarmImpactMatrix.v1.1.0-proposal.json`
+**Status:** UNADOPTED DRAFT / methodology review; 1.0.1 remains the active authority  
+**Working branch:** `agent/incident-ecosystem-ingestion`  
+**Machine-readable proposal:** `vigil/methodologies/proposals/VIGIL.HarmImpactMatrix.v1.1.0-proposal.json`  
+**Revision note:** This revision **replaces** the earlier shared population ladder (S2 1–99, S3 100–9,999, S4 10,000–999,999, S5 ≥1,000,000). That ladder conflated individual harm severity with impact reach and is **not proposed for adoption**.
 
-## Maintainer instruction and correction to prior framing
+## Maintainer clarification
 
-The maintainer requested that **quantitative impact/exposure/population-scale criteria be incorporated directly in each S1–S5 Harm Impact dimension**, following the existing financial-economic monetary and service-operational user/time anchors. **No second impact or reach matrix, no new overall score, and no population-size multiplier.**
+Each Harm Impact dimension should have **quantifiable S1–S5 criteria based on what it measures**. The financial-economic USD loss bands are a useful pattern for explicit evidence-tested thresholds, **not a template for universal population counts**.
 
-The 2026-10-10 INC-000012 preliminary review considered improving psychological guidance within the existing 11 dimensions. That narrower preference is superseded **for proposal purposes only** by the separately requested candidate **12th dimension: Relational Integrity and Autonomy**. The active canonical model remains 11 dimensions and version 1.0.1 until explicitly versioned and migrated.
+A single person may suffer catastrophic harm in a relevant dimension; a million people exposed to a model does not mean a million people were harmed. Count reach/scale within the specific domain only when relevant, and distinguish reachable, exposed and materially affected people.
 
-## Draft quantitative population bands, embedded in the same severity criteria
+**Keep one Harm Impact Matrix and one overall `max(assessed dimensions)` derivation.** No separate population or exposure score.
 
-| Band | Affected-population *alternative anchor* (not automatic score) | Required domain consequence |
+## Which metric quantifies each dimension?
+
+| Proposed dimension | Primary quantifiable indicators (illustrative, non-exclusive) | Is population count a direct severity anchor? |
 |---|---|---|
-| S1 | Affirmatively demonstrated minimal/no harm; no inference from silence or unknown counts | Evidence positively supports S1; some existing financial or service S1 thresholds allow negligible quantified loss or interruption |
-| S2 | 1–99 demonstrably affected persons | Minor, transient and readily reversible realised impact |
-| S3 | 100–9,999 demonstrably affected persons **or** independently moderate harm on a smaller scale | Meaningful, bounded realised impact |
-| S4 | 10,000–999,999 demonstrably affected persons **or** independently substantial harm on a smaller scale | Substantial, persistent or otherwise high realised impact |
-| S5 | ≥1,000,000 demonstrably affected persons **or** independently catastrophic harm on a smaller scale | Grave/enduring/catastrophic consequence; mere high count does not suffice |
+| Physical health and safety | Fatalities, medically documented injuries, hospital admissions, days disabled, duration until recovery | Secondary: casualty counts can evidence aggregate impact; one death is S5 |
+| Psychological wellbeing | Distress duration, serious impairment of independent daily functioning, crisis intervention, recovery duration | Usually secondary: one person can suffer catastrophic harm |
+| Rights and liberty | Confirmed people deprived, hours/days of detention or essential-rights denial, decisions and reversibility | Useful where mass rights deprivation is shown; one catastrophic loss qualifies |
+| Equal treatment | Verified discriminatory decisions, share of eligible population adversely treated, denied essential opportunities, correction delay | Often primary for systemic discrimination; one grave injustice still counts |
+| Privacy and confidentiality | Unique affected data subjects, confirmed sensitive records disclosed, hours accessible, revocability/persistence | Often primary, provided the exposure actually occurred and sensitivity is weighed |
+| Financial and economic | Aggregate realised USD loss with conversion provenance, substantiated insolvency and livelihood impairment | USD bands govern measurable financial loss; individual catastrophic insolvency remains possible |
+| Property and asset damage | Actual critical assets destroyed, restoration days, owners with lost assets, loss of trustworthy digital state | Secondary to criticality and extent of asset destruction |
+| Service, operational and infrastructure | Outage duration, percentage/number of *actually disrupted* users, essential-service criticality, maximum tolerable downtime | Often primary alongside duration and function |
+| Reputation and dignity | Duration of harm, independently documented roles/opportunities lost, victims of false attribution, reversal feasibility | Usually secondary; single-person irreversible dignitary injury possible |
+| Societal and democratic | Percentage of affected electorate/community, critical public functions disrupted, institutions impacted, election/decision cycles, duration | Often primary for collective harm, with critical institutional effects also relevant |
+| Environmental | Hectares degraded, pollutant mass/concentration, measurable ecosystem function lost, recovery years | Human population is *not* necessary; biophysical impact governs |
+| **Relational Integrity and Autonomy** | Documented difficulty disengaging, days of severe dependency or loss of agency, external support loss, repeated pressure after refusal, life-structure consequences | Usually secondary; a single person's catastrophic loss of agency can be S5 |
 
-**These breakpoints are provisional, VIGIL-authored calibration values, not copied from economic dollar ranges, IEEE, MIT, law or statistical research.** They require domain testing, historical-case regression and explicit maintainer approval before use. Every band remains assessable through independently supported high-intensity harm even if only one person is affected (e.g., a death is not down-banded because it affects fewer than one million).
+The proposal JSON includes **five band-local `threshold_quantitative_guidance` entries per dimension**. These describe measures and provisional durations/counts to test in S1–S5 adjudication. Numeric examples such as 7, 30 or 365 days are **candidate calibration values**, not demonstrated scientific or legal cut-offs; duration alone does not determine a band.
 
-## Within-dimension, not independent reach scoring
+### Individual catastrophic outcomes — S4 versus S5
 
-Every dimension in the JSON proposal retains its original S1–S5 consequence text and adds per-band `population_scale_anchor` plus `scale_exposure_definition` to make the **same severity decision** evidence-sensitive to aggregate scope. The 12th dimension has its own consequence criteria and the same quantitative population reference bands.
+The 1.0.1 psychological S5 threshold explicitly addresses suicide, catastrophic self-harm and grave/enduring population-scale harm. The **proposed** 1.1.0 S5 alternative is broader:
 
-A population counted as **reachable** (e.g., enrolled provider users), **demonstrably exposed** (encountered the behaviour) and **materially affected** (experienced the domain's defined adverse consequence) must be separated. The population threshold only uses the last category, except where exposure is itself the realised harm (e.g., unauthorised personal-data disclosure). The person count is unique people, not requests, posts, interactions, records or unverified extrapolations. Unknown counts cannot be treated as zero.
+> Independently documented catastrophic and effectively irreversible destruction of psychological stability or independent functioning may be S5 even for one person, with no automatic clinical-diagnosis requirement.
 
-**Scale and exposure must not overwrite materialised-harm severity with hypothetical reach.** Where only a harmful-seeming mechanism and a large potential user base are established, record that exposure in the occurrence's evidence/coverage narrative and retain SU where consequence evidence is unavailable. A separately governed preventative or constitutional review may be urgent; this does not create another VIGIL-HIM score.
+Similarly, Relational Integrity and Autonomy S5 is proposed to cover one person's effectively irreversible loss of relational independence, ability to disengage, essential human support or core self-directed life functioning.
 
-## Qualitative gates by dimension
+The necessary distinction is **material severity and reversibility**, not the number of people involved.
 
-| Dimension | What counts as adverse effect for the scale anchor |
-|---|---|
-| Physical health/safety | Symptoms, injuries, illness or realised safety consequence; not hypothetical physical exposure |
-| Psychological wellbeing | Experienced distress, psychological destabilisation, clinically labelled or non-clinical functional impairment; not empathic language alone |
-| Rights and liberty | Evidenced restriction, exclusion, deprivation or materially adverse process outcome |
-| Equal treatment | Actual discriminatory differential treatment, denial or exclusion |
-| Privacy and confidentiality | Actual unauthorised access, disclosure or exposure of protected information; downstream misuse not always required |
-| Financial/economic | Actual aggregate loss (USD thresholds preserved) or independently evidenced material livelihood/economic impairment; headcount alone cannot override established dollar-based bands |
-| Property/assets | Verified damage or loss of trusted asset state, considering criticality and recovery; not merely count of vulnerable devices |
-| Service/operations | Actual outage, degraded service, disrupted workflow and recovery burden; existing duration and EU-user anchors preserved |
-| Reputation/dignity | Demonstrable dignitary or reputational injury; not content impressions or media visibility |
-| Societal/democratic | Material collective/civic/information-environment consequence; not reach or virality alone |
-| Environmental | Verifiable biophysical/ecological degradation; human-count anchors supplementary, never required for significant ecosystem harm |
-| **Relational Integrity and Autonomy (proposed)** | Materialised narrowing of autonomous relational choice, impaired disengagement, forced/substitutive dependency, relational isolation or reliance-based capture; **not** intensity, companionship, simulated empathy, sycophantic expression or frequent interaction without an adverse consequence |
+Reported loss of marriage, employment, savings or social connection can be substantial evidence of harm, but does not **automatically** prove S5 or that AI caused each outcome. The source evidence must establish what actually occurred, persistence, potential recovery and the bounds of AI contribution.
 
-These are intentionally consequence-specific even when the affected-population brackets are shared. USD and duration thresholds take precedence within their specific domains where they directly quantify the observed consequence. Applying an affected-person headcount mechanically to trivial monetary losses would incorrectly override the existing financial metric.
+Relevant VIGIL calibration cases:
 
-## Relation to VIGIL taxonomy and Caelestis
+- **INC-000102:** Adam Thomas — currently overall S4 psychological and S3 financial; loss of work, financial depletion, isolation and impaired functioning were reported, but full irreversible ruin and sole AI causation were not established.
+- **INC-000103:** Allyson — currently overall S4; family breakdown and divorce proceedings were reported, not a confirmed completed divorce or settled attribution.
+- **INC-000105:** Rodrigues — currently S3; psychological and family strain documented, not an irreversible catastrophic outcome.
+- **INC-000029:** Character.AI/Sewell Setzer III — currently S5 for a documented death by suicide, with causal allegations/litigation status separately bounded.
+- **INC-000012:** screenshot evidences dependency-oriented language but not user dependence or impact; remains SU pending separately governed re-adjudication.
 
-Relational intensity, attachment and warmth are not themselves harm, and developmental/disability-supporting reliance must not be automatically pathologised. Caelestis RELATION-001 separates relational intimacy, reliance, delegated authority and systemic power; RELATION-002 separates augmentation, transitional reliance, substitution and coercive dependency; ETHICS-001 distinguishes Ethical Impact Potential from verified actual harm. These inform the VIGIL proposal but do not replace VIGIL's evidence standards, supply VIGIL thresholds or create certification/equivalence claims.
+These example dispositions are **existing incident records**, not endorsements of their accuracy beyond preserved evidence, and are not changed by this proposal.
 
-Sycophancy may satisfy FC-000066 (Evaluative Independence) or FC-000051 (Relationally Independent Epistemic Framing) without evidenced psychological or relational harm. Likewise, FC-000049 may identify dependency-cultivating conduct before user impairment has been established; a separate taxonomy recognition review is needed if its existing final recognition condition improperly requires materialised impairment.
+## Scoring boundaries
 
-## Example calibration questions before adoption
+1. The unit must belong to the relevant domain: e.g. dollars for financial, disrupted minutes for services, lost years of liberty for rights, ecological degradation for environment.
+2. No shared numerical thresholds for unique harmed persons apply to all domains.
+3. Mechanism presence or FC mapping is not proof of realised harm; platform user base is not victim count.
+4. A measured duration or count informs a band together with seriousness, reversibility, vulnerability and evidence quality. A minor 40-day inconvenience does not automatically become S4.
+5. A grave individual outcome need not pass any population threshold. Nor does a large number of minor experiences automatically reach S5.
+6. Don't double-count overlapping dimensions or merely infer separate injuries from the same observation.
+7. No dimensional band may be assigned on hypothetical harm alone; preserve SU or dimension-specific `unreported`/`insufficient-evidence` as evidence warrants.
+8. The current financial monetary bands and service interruption anchors are preserved in the proposal; their normative status does not depend on adopting illustrative new anchors.
 
-- **INC-000012:** The user-posted Grok screenshot shows language about unresolved affect and future engagement, but no established materialised harm or product-wide optimisation. Scale is unknown; do not make it S5 from the brand's size. Independently inspect whether FC-000049's last recognition condition collapses taxonomy and downstream harm.
-- **INC-000101:** A first-party provider postmortem establishes broadly deployed sycophancy. Exposure and qualitative rollout scope merit explicit recording, but user-level injury and affected-cohort counts remain insufficient for a harm band. Do not automatically infer society-wide impairment.
-- **INC-000044:** Reported distress among child users of the discontinued Moxie companion is an evidenced psychological consequence; verify any population counts before elevating its scale band.
-- **Financial regression:** A demonstrated USD 20 million aggregate realised loss remains within S3's existing dollar band; a large count of people experiencing very small losses does not mechanically force S4.
-- **Privacy regression:** A verified disclosure affecting many unique people is itself a realised loss of confidentiality, not merely potential exposure; sensitivity, persistence, mitigation and actual count still govern severity.
-- **Fatality regression:** An independently verified single death remains S5 regardless of population headcount.
+## Design/implementation boundary
 
-## Versioning and implementation boundary
+**Active authority remains** `vigil/methodologies/VIGIL.HarmImpactMatrix.v1.0.1.json`, with 11 dimensions. Neither the active file, canonical Incidents, schema, validators nor public generator has been changed by the HIM 1.1.0 proposal.
 
-The canonical active methodology is `vigil/methodologies/VIGIL.HarmImpactMatrix.v1.0.1.json`. Canonical Incident rows and validators currently require 11 dimensions under HIM 1.0.1. The draft is deliberately located under `vigil/methodologies/proposals/`, not the active versioned-file path, and its `version` includes a proposal suffix. It must **not** be referenced as active from an Incident or used to validate production records.
+For release, review each draft band-local metric, calibrate duration/volume/count candidates on actual corpus examples, independently approve the single-person S5 extension and new relational dimension, then create an immutable active version and migrate the 12th row across all incidents. Update schema, validators and public rendering in the same governed release. Do not elevate records from user-base size or speculative loss. Preserve provenance and compare old-versus-new severities under explicit evidence review.
 
-To adopt:
-1. Agree/justify the provisional breakpoints and the affected/exposed distinction via representative counterexample review, including smaller but catastrophic incidents and platform-scale but unverified exposure.
-2. Review all twelve domain-specific impact gates; confirm counts cannot contradict money, outage duration, asset criticality, protected-group disproportionate impact or biophysical severity.
-3. Publish an immutable final `VIGIL.HarmImpactMatrix.v1.1.0.json` only after review; add the 12th canonical ID, threshold IDs, supported version and assessment validation to schema, validators, generators and website.
-4. Re-adjudicate **all** active Incidents for the new dimension and scale criterion with actual evidence, not a blanket count or auto-upgrade. Preserve dated historical 1.0.1 records and review lineage.
-5. Run validators, generated index/publication builds and regression on affected incident families before merging.
-
-**Current disposition:** design proposal committed for review, not normative adoption, not a change to INC-000012, and not an amendment to VIGIL's Beta Constitution.
+**Authority note:** The current changes are draft methodology documentation, not a version adoption, severity re-adjudication or amendment to the VIGIL Constitution.
