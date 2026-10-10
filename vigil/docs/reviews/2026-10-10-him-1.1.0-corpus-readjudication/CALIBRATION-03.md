@@ -16,3 +16,7 @@ All twelve dimensions were individually considered. Previous assessments remain 
 ## Validation
 
 Both exact-baseline rebuild guards passed, along with canonical/public record validation, all source/interpretive/system/authorship provenance checks and episode/external-reference validation. All49 selected tests passed (36 record rules,13 external/resolver/public projection). The three generated outputs rebuild byte-identically. Every field outside HIM, append-only reviewer provenance and revision metadata remains identical to baseline. Prior subgroup02 remote workflows passed: records38055254731 and taxonomy38055254719. New remote-head checks remain required after publication.
+
+## Superseding incident 103 correction — 10 October 2026
+
+The INC-103 S3 result above is a historical checkpoint, superseded by [the relational correction](INC-000103-RELATIONAL-CORRECTION.md) and its [manifest](INC-000103-RELATIONAL-CORRECTION-manifest.json). Current overall severity is S4, controlled by Relational Integrity and Autonomy. Rights/liberty is unbanded because material AI attribution is unresolved. The prior psychological S4 is not reinstated. The original review remains intact as assessment history.
