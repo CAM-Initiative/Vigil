@@ -32,9 +32,24 @@ def main() -> None:
         if missing:
             raise SystemExit(f"{row.get('reference_id')}: missing {', '.join(missing)}")
     matrix = json.loads(MATRIX.read_text(encoding="utf-8"))
-    unresolved = sorted(set(matrix.get("reference_ids", [])) - set(ids))
+    matrix_reference_ids = matrix.get("reference_ids", [])
+    if len(matrix_reference_ids) != len(set(matrix_reference_ids)):
+        raise SystemExit("Harm Impact Matrix has duplicate reference IDs")
+    unresolved = sorted(set(matrix_reference_ids) - set(ids))
     if unresolved:
         raise SystemExit(f"Harm Impact Matrix has unresolved reference IDs: {', '.join(unresolved)}")
+    # HIM 1.1.0 introduces domain-local applicability mappings. Ensure that
+    # references attached to a particular harm dimension exist in the registry
+    # and are included in the top-level methodology reference inventory.
+    for dimension in matrix.get("dimensions", []):
+        dimension_refs = dimension.get("reference_ids", [])
+        if matrix.get("version") == "1.1.0" and not dimension_refs:
+            raise SystemExit(f"{dimension.get('dimension_id')}: missing domain reference IDs")
+        if len(dimension_refs) != len(set(dimension_refs)):
+            raise SystemExit(f"{dimension.get('dimension_id')}: duplicate domain reference IDs")
+        unknown = sorted(set(dimension_refs) - set(matrix_reference_ids))
+        if unknown:
+            raise SystemExit(f"{dimension.get('dimension_id')}: reference IDs not in methodology inventory: {', '.join(unknown)}")
     threshold_ids = [
         threshold.get("threshold_id")
         for dimension in matrix.get("dimensions", [])
