@@ -17,10 +17,10 @@ Existing source evidence, supported factual detail, taxonomy relationships, mapp
 The three governed surfaces have deliberately different jobs:
 
 - **Incident = public evidentiary and adjudicative result.** It carries the accepted taxonomy relationships, concise occurrence-specific aggregate and mapping-local bases, material uncertainty, harm reasoning, governance interpretation and substantive comparison with external assessments.
-- **Clause-level Incident adjudication = authoritative occurrence results.** `vigil_assessment.source_clause_analysis.clauses[]` records material evidence episodes and their dispositions; `taxonomy_classification` carries the accepted Fidelity Class mappings, roles and coverage. The retired global Incident × Fidelity Class matrix must not be consulted or recreated.
+- **Clause-level Incident adjudication = authoritative occurrence results.** `vigil_assessment.source_clause_analysis.clauses[]` records material evidence episodes and their dispositions; `taxonomy_classification` carries the accepted Fidelity Class mappings, roles and coverage. Occurrence findings must not be derived from a separate exhaustive Incident-by-class dataset.
 - **Review/audit artefact = process history.** Baselines, source and mapping dispositions, migration rationale, comparator work, repository repairs and validator history belong in the rebuild manifest or `vigil/docs/reviews/` and `vigil/docs/audits/`.
 
-Do not repeat rejected-class or no-mapping inventories in an Incident's classification basis, mapping-local basis or external-assessment comparison. Repository workflow details—including branches, pull requests, matrix synchronisation, validator repair and whether new research was performed—are not public Incident content. `diagnostic_provenance` is retired and forbidden on active Incidents. `classification_review_provenance` is compact metadata only: review date, reviewer, review status and, when one exists, a stable review reference. Detailed review history must remain outside that block.
+Do not repeat rejected-class or no-mapping inventories in an Incident's classification basis, mapping-local basis or external-assessment comparison. Repository workflow details—including branches, pull requests, validator repair and whether new research was performed—are not public Incident content. `diagnostic_provenance` is retired and forbidden on active Incidents. `classification_review_provenance` is compact metadata only: review date, reviewer, review status and, when one exists, a stable review reference. Detailed review history must remain outside that block.
 
 This boundary does not authorise compression of evidence. Preserve factual chronology, uncertainty, occurrence-specific accepted mechanism reasoning, source-clause analysis, Harm Impact findings and valid AI authorship disclosure in `interpretive_provenance`.
 
@@ -182,7 +182,7 @@ python vigil/scripts/validate-authorship-provenance.py
 
 The adjudication workflow has an explicit maintainer-output channel. When a rebuild establishes that unresolved work must occur outside the current Incident edit, the reviewing agent must stage that next action in Gmail rather than leaving it only in chat, a branch note or an ephemeral handoff.
 
-**Do not use Gmail as a success, progress or no-change report.** A completed clean adjudication, an unchanged taxonomy, or an exact match between the adjudication matrix and the canonical Incident/Section 02 surfaces requires no notification. Gmail is reserved for a genuine unresolved next action.
+**Do not use Gmail as a success, progress or no-change report.** A completed clean adjudication, an unchanged taxonomy, or consistency between canonical Incident classification and source-clause assessment requires no notification. Gmail is reserved for a genuine unresolved next action.
 
 Two escalation classes use this channel:
 
