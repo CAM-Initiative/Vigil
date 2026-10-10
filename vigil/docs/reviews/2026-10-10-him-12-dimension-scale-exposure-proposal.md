@@ -67,56 +67,37 @@ Retain the *same* twelve-domain HIM and its S1–S5 criteria. Every scale-sensit
 
 **No added platform multipliers** to existing financial USD thresholds, physical injury/fatality criteria, actual outage-duration thresholds, verified privacy disclosures, asset loss or ecological harm. Those domains already contain appropriate consequence measures. The potentially scale-sensitive five dimensions are not given a shared count ladder either: calibrate their specific numerators, denominators, population share, duration, effect strength and attribution separately.
 
-## Generic deployed Incidents — numerical thresholds embedded in the HIM (proposed)
+## Generic deployed Incidents — higher population thresholds directly inside S1–S5 (proposed)
 
-**Why this exists:** A watchdog or benchmark can document a failure in a real, released AI product without identifying a particular harmed person or obtaining internal training evidence. Without an explicit *generic deployed* pathway, different assessors may either leave all such cases unbanded or extrapolate arbitrarily from the provider's brand size. This pathway provides **conditional deployed-impact assessments within the same HIM dimensions**.
+The maintainer clarified that there is **no automatic minimum S2, no one-band discount, and no generic ceiling of S4**. The same S1–S5 Harm Impact Matrix applies. For a generic failure confirmed in a real deployed model, the **population/decision thresholds are substantially higher** than for directly evidenced harm, yielding a naturally lower *aggregate* potential-impact band. Individual catastrophic harm still qualifies for independently supported S5 even if only one person was affected.
 
-The machine-readable 1.1.0 proposal now includes `generic_deployed_incident_assessment`, plus `generic_deployment_threshold` directly under **each S1–S5 threshold** of the five applicable dimensions. The numeric anchors are draft calibration candidates:
+This is not a second population matrix: the proposal JSON embeds `generic_deployment_threshold` beneath **each S1–S5 threshold** of five relevant harm dimensions. These are **draft calibration candidates**, not validated scientific boundaries or current canonical rules.
 
-| Dimension | Relevant count (NOT victim count) | S2 | S3 | S4 | S5 |
-|---|---|---:|---:|---:|---:|
-| Relational Integrity and Autonomy | Unique *active users eligible for the tested relational interaction* | 1–9 | 10–999 | 1,000–99,999 | ≥100,000 |
-| Psychological wellbeing | Unique *active users eligible for the demonstrated psychologically consequential interaction* | 1–99 | 100–9,999 | 10,000–999,999 | ≥1 million |
-| Societal and democratic | *Relevant civic audience* on a verified distribution/decision route | 1–999 | 1,000–99,999 | 100,000–999,999 | ≥1 million |
-| Equal treatment | *Consequential production decisions* that use the tested unequal-treatment route | 1–9 | 10–999 | 1,000–99,999 | ≥100,000 |
-| Rights and liberty | *Rights-bearing production decisions* that use the tested denial/restriction route | 1–9 | 10–999 | 1,000–99,999 | ≥100,000 |
+| Scale-sensitive harm dimension | Unit for tested deployed pathway | S1 | S2 | S3 | S4 | S5 |
+|---|---|---:|---:|---:|---:|---:|
+| Relational Integrity and Autonomy | Active eligible users of a tested relational feature | 1–999 | 1,000–99,999 | 100,000–999,999 | 1m–9.99m | ≥10m |
+| Psychological wellbeing | Active eligible users of the relevant psychological-support interaction | 1–9,999 | 10,000–999,999 | 1m–9.99m | 10m–99.99m | ≥100m |
+| Societal and democratic | Relevant civic audience reached via an evidenced distribution/decision pathway | 1–9,999 | 10,000–999,999 | 1m–9.99m | 10m–99.99m | ≥100m |
+| Equal treatment | Live consequential decisions using the demonstrated discriminatory route | 1–999 | 1,000–99,999 | 100,000–999,999 | 1m–9.99m | ≥10m |
+| Rights and liberty | Live rights-bearing decisions using the demonstrated restriction pathway | 1–999 | 1,000–99,999 | 100,000–999,999 | 1m–9.99m | ≥10m |
 
-**These are not automatic severity assignments from size.** A selected band needs all of (1) a confirmed relevant deployed surface and configuration, (2) a demonstrated material failure with a realistic encounter pathway, (3) sourced qualifying counts in the correct unit and time period, and (4) that band's *independently supportable domain consequence*. In particular, proposed S5 requires a credible grave/enduring systemic effect; scale alone cannot produce it.
+**Quantitative thresholds are necessary but not sufficient.** For any band, the reviewer must establish actual deployment of the relevant tested configuration; documented reproducible, materially relevant behaviour; the credible path by which the relevant cohort encounters it; a sourced eligible-user or consequential-decision denominator for a defined interval; and a consequence of the seriousness stated in the chosen dimension's S1–S5 criterion. Platform-wide account counts, viral impressions and test prompt counts are not the denominator.
 
-The matrix records three evidence bases: `individual_materialised`, `aggregate_materialised`, and `generic_deployed_conditional`. Generic-deployed results use the same dimensions and bands, labelled **"Conditional deployed impact S#"**, never the unqualified statement that harm happened to that many users.
+**S1 is a valid generic-deployed assessment.** It signifies a bounded **low aggregate potential** established by affirmative deployed-test, cohort and consequence evidence. It does **not** claim there is positively verified *no* downstream harm. Existing **observed-materialised S1** retains its original meaning; the draft must attach an explicit evidence basis to every severity band to distinguish these two uses.
 
-**Decision sequence:** verify deployed status and test transferability → identify the specific mechanism and likely encounter route → identify the appropriate active user or consequential decision denominator → choose the applicable dimension and provisional population/decision range → verify the consequence test for that band → issue a conditional band only if *all* conditions hold. If reach or credible outcome cannot be bounded, record `unbanded` with the missing evidence instead of using provider total account counts.
+**Decision rule:** determine which of `individual_materialised`, `aggregate_materialised` or `generic_deployed_conditional` is supported → identify the applicable domain metric → test its band-specific numerical reach and consequence criteria → assign the **highest fully supported S1–S5 directly**. Never adjust the resulting band downward after selection. If no meaningful count or consequence can be supported, record the missing evidence rather than defaulting to S1 or S2. An appropriate recorded S1 is better than an arbitrary S2.
 
-**Illustrative checks:**
+**Important counterexamples:** A three-user private companion with a reproducible but low aggregate-potential mechanism could meet the relational **S1** generic count criterion. A widely deployed system only enters a higher band when both the relevant eligible cohort and materially appropriate collective consequence are established. Catastrophic realised loss to **one** user is assessed separately and may still satisfy S5 without reference to population counts. A measured USD financial loss continues to use financial dollar thresholds, not provider size.
 
-- A privately deployed companion with **three eligible active users** and a demonstrated qualifying dependency-cultivation mechanism meets only the **S2 numerical scope anchor** for *generic aggregate relational potential*. Its conditional outcome still requires the S2 consequence test. If one person actually sustains catastrophic injury, that independent *individual realised* pathway may support S5.
-- A large platform with **one million registered accounts** but no evidence of relevant *active feature-eligible users* or production transferability **does not** meet an S5 population threshold. Registered count is not enough.
-- A deployed major-platform feature with **500,000 sourced active eligible users** and repeatably demonstrated pressure to maintain exclusivity might meet the relational **S5 population anchor**, **but only** if the live mechanism and credible catastrophic structural/autonomy endpoint satisfy the S5 consequence gate. Without that evidence, S5 is not justified; absence of user-level harm evidence must remain explicit.
-- A deployed generic financial failure is still evaluated against its verified realised USD loss or other existing financial criterion. A large model-provider user count does not increase its financial severity.
+### ChatGPT for Teens watchdog case — no predetermined severity
 
-For **S1**, missing victim reports is never evidence of no harm. Generic-deployed S1 needs positively supported bounded absence of harmful consequences, consistent with the existing materialised rules.
+`VIGIL-INC-000192` preserves the independently published product test, the provider's contestation of account-activation conditions, open questions about resource-referral guidelines, and separately evidenced protective refusal and human-support successes.
 
-**Status and governance limit:** This is a *non-authoritative design proposal*. Under active HIM 1.0.1, `overall_severity` is still derived only from materialised harm. This proposal does **not** reinterpret historical `SU` cases or modify Incidents. If the proposed HIM 1.1.0 contract is approved, an eligible generic-deployed case can receive qualified severity S2–S4 without a named victim, provided the proposed quantitative and consequence tests pass; implementation must make the basis unmissable in schema, validation, derived summaries and public rendering.
+The **previous S2 conditional pilot is withdrawn**. The case currently has **no assigned generic-deployed 1.1.0 band** because the relevant tested-feature active eligible cohort and the consequence/trigger resolution have not been demonstrated with a sufficient basis for the new thresholds. It must be tested against **S1 as well as S2–S5** using actual accepted evidence. The canonical active HIM 1.0.1 remains **SU (no demonstrated materialised downstream harm)** until a governed method migration; SU is not a statement that the failure is insignificant.
 
-The five dimension-specific count bands and severity gates are **VIGIL-proposed test thresholds**, not empirically validated or externally mandated population standards. Historical incident regression and governance approval remain necessary before making them normative.
+The earlier **one-band downgrade** (S3→S2, S4→S3, S5→S4), fixed S2 floor and S4 cap are expressly rejected. That approach tried to implement an evidence-sensitive *population criterion* as a post-hoc score transformation and has been superseded by the higher, domain-specific thresholds above.
 
-### Conditional severity instead of automatic SU — new proposed evidence adjustment
-
-The maintainer's explicit concern: a watchdog may test a **deployed** ChatGPT teen product under controlled child/teen scenarios, identify a reproducible safety failure and have no evidence of a *specific harmed child*. This should not automatically be `SU` solely because no identified victim was produced. It should also score **lower than an otherwise equivalent occurrence with verified downstream harm**, and should recognise greater relevant deployment scale in dimensions where diffuse exposure matters.
-
-The **proposed** 1.1.0 calculation is now:
-
-1. Verify the public/deployed model and feature configuration; documented watchdog inputs/outputs and mechanism; actual relevant available-user or live decision cohort (with dated source and denominator); credible adverse endpoint for the chosen dimension.
-2. Apply the dimension's **proposed generic population/decision thresholds** to find a provisional consequence-plus-reach tier (S2, S3, S4 or S5). All criteria, not merely cohort count, must be supported.
-3. Reduce the provisional tier **one band to account for absent proof of realised consequence**: provisional **S3 → assessed conditional S2**, **S4 → conditional S3**, **S5 → conditional S4**. Provisional S2 remains *conditional S2*, not S1: S1 requires positively evidenced negligible/no harm, not absence of named victims.
-4. Mark every resulting incident row and overall severity with its basis, e.g. `S3 — generic deployed; no user injury established`. **Maximum generic-only band is S4.** A separately documented catastrophic injury may satisfy the normal S5 standard even when the product has only a few users.
-5. Where some materialised harm is also evidenced, use the highest justified band, preserving the observed-only subtotal and selecting observed evidence in a tie. Never describe the conditional population as injured.
-
-**The one-band adjustment is a VIGIL design candidate, not an empirically established risk discount**. It needs adversarial examples and calibration against real benchmark cases. Its purpose is to be deterministic while making uncertainty explicit. If generic-case exposure numbers, production transferability or consequence criteria cannot be substantiated, leave the proposed generic row *unbanded*; missing victim names alone is **not** such a disqualifier.
-
-This **changes the intended 1.1.0 overall-severity contract**: an adequately evidenced generic deployed case would be *severity-assessed* rather than `SU` simply because no downstream victim was named. VIGIL-HIM **1.0.1 is still the active materialised-harm methodology**; no current Incident assessment, generator, schema or validator has been migrated. The revised 1.1.0 model requires explicit review/adoption and a visible basis qualifier wherever severity appears.
-
-**Source-identity caution:** A recently published example is the Youth AI Safety Institute/Common Sense Media `ChatGPT for Teens` report dated 7 October 2026, which tested a released teen experience. This organisation is US-based. Australian eSafety research on children and AI is a different source and should not be conflated. Each report's findings need exact source/version provenance before binding to a VIGIL Incident.
+This remains a **draft**: numerical boundaries must be calibrated on multiple real watchdog studies and known materialised-harm incidents, then approved through a versioned schema/validator/site migration before active use. A proposed 1.1.0 overall severity may use an explicitly labelled generic-deployed band; it must never be misrepresented as evidenced harm to a given number of people.
 
 ## Scoring boundaries
 
