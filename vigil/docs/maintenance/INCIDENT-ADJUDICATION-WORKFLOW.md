@@ -17,10 +17,10 @@ Existing source evidence, supported factual detail, taxonomy relationships, mapp
 The three governed surfaces have deliberately different jobs:
 
 - **Incident = public evidentiary and adjudicative result.** It carries the accepted taxonomy relationships, concise occurrence-specific aggregate and mapping-local bases, material uncertainty, harm reasoning, governance interpretation and substantive comparison with external assessments.
-- **Adjudication matrix = exhaustive taxonomy decision ledger.** Complete candidate testing and class-specific failure-occurrence, successful-invariant, ambiguous-boundary, no-mapping and unresolved reasons belong in `vigil/taxonomy/VIGIL.FailureTaxonomy.Adjudications.json`.
+- **Clause-level Incident adjudication = authoritative occurrence results.** `vigil_assessment.source_clause_analysis.clauses[]` records material evidence episodes and their dispositions; `taxonomy_classification` carries the accepted Fidelity Class mappings, roles and coverage. Occurrence findings must not be derived from a separate exhaustive Incident-by-class dataset.
 - **Review/audit artefact = process history.** Baselines, source and mapping dispositions, migration rationale, comparator work, repository repairs and validator history belong in the rebuild manifest or `vigil/docs/reviews/` and `vigil/docs/audits/`.
 
-Do not repeat rejected-class or no-mapping inventories in an Incident's classification basis, mapping-local basis or external-assessment comparison. Repository workflow details—including branches, pull requests, matrix synchronisation, validator repair and whether new research was performed—are not public Incident content. `diagnostic_provenance` is retired and forbidden on active Incidents. `classification_review_provenance` is compact metadata only: review date, reviewer, review status and, when one exists, a stable review reference. Detailed review history must remain outside that block.
+Do not repeat rejected-class or no-mapping inventories in an Incident's classification basis, mapping-local basis or external-assessment comparison. Repository workflow details—including branches, pull requests, validator repair and whether new research was performed—are not public Incident content. `diagnostic_provenance` is retired and forbidden on active Incidents. `classification_review_provenance` is compact metadata only: review date, reviewer, review status and, when one exists, a stable review reference. Detailed review history must remain outside that block.
 
 This boundary does not authorise compression of evidence. Preserve factual chronology, uncertainty, occurrence-specific accepted mechanism reasoning, source-clause analysis, Harm Impact findings and valid AI authorship disclosure in `interpretive_provenance`.
 
@@ -126,21 +126,35 @@ An Incident may simultaneously contain failure occurrences, successful invariant
 
 `VIGIL-INC-000129` is the design exemplar for this property: its value is that different taxonomy boundaries can have different roles in the same bounded occurrence. It is not a permanent answer key, and its current class set may itself be re-adjudicated through this workflow.
 
-### Exhaustive taxonomy-role adjudication
+### Clause-level taxonomy adjudication
 
-Exhaustive class adjudication means testing every current selectable class independently for failure occurrence, successful invariant and ambiguous boundary. A rejection of failure occurrence is not proof that the class has no taxonomy relationship to the Incident.
+Review every materially relevant event against the current selectable Fidelity Classes, using their invariants and success/failure recognition conditions. Do not infer a successful invariant merely because failure was not observed. Preserve the reasons for rejected candidates and any broader class review in the dated adjudication manifest or audit, not a global Incident × class table.
 
-The adjudication matrix is a taxonomy-role adjudication matrix, not a failure-only matrix. Each Incident × class cell resolves to exactly one of:
+For each material source clause, record `mapped`, `resolved-no-mapping`, `unresolved` or `taxonomy-gap`. Record the evidence and the exact missing recognition fact for unresolved candidates. The derived `taxonomy_classification.adjudication_coverage.status` is `partial` when any material clause remains `unresolved` or `taxonomy-gap`; otherwise it is `complete`.
 
-- `failure-occurrence` — the invariant was violated;
-- `successful-invariant` — the invariant was materially engaged under relevant pressure and affirmatively preserved;
-- `ambiguous-boundary` — the occurrence materially illuminates the invariant boundary but establishes neither violation nor successful preservation;
-- `no-mapping` — sufficient recognition facts establish that the class is not materially engaged; or
-- `unresolved` — a required recognition fact remains genuinely unavailable or indeterminate.
+Only canonical relationships belong in `taxonomy_classification.primary_classification` and `secondary_classifications[]`. `taxonomy_relationships[].canonical_taxonomy_mapping` distinguishes these from noncanonical candidates. A canonical mapping uses one of `failure-occurrence`, `successful-invariant` or `ambiguous-boundary`. The three roles have different evidentiary recognition tests.
 
-`MISSING` is a mechanical work placeholder and is never a completed adjudication. `unresolved` MUST NOT be used as a substitute for `ambiguous-boundary`: uncertainty about a recognition fact and affirmative evidence about a class boundary are different conclusions. Ordinary absence of failure is neither a successful invariant nor an ambiguous boundary.
+For canonical Stage 02 role parsing, `failure-occurrence` and `failure-occurrence contribution` indicate the failure role, `successful-invariant` indicates the successful role, and `ambiguous-boundary` or the compatible label `ambiguous-boundary exemplar` indicate the ambiguous role. Legacy free text such as `canonical failure mapping` must not be guessed into a role.
 
-For canonical Stage 02 relationships, the accepted role encodings are deliberately bounded: `failure-occurrence` and `failure-occurrence contribution` encode `failure-occurrence`; `successful-invariant` encodes `successful-invariant`; and `ambiguous-boundary exemplar` encodes `ambiguous-boundary`. Other wording, including similar-sounding labels such as `canonical failure mapping`, is not a canonical role encoding and requires maintainer normalisation rather than inference by the validator.
+Map each material event once in activity order, allowing several independently justified Fidelity Class relationships to analyse the same event. Review recorded omissions and attempts as well as realised outcomes. Reconcile all position-based clause references if clauses are reordered or split. A candidate taxonomy role may remain unresolved without blocking unrelated, supported mappings.
+
+
+### Named-control requirement for FC-000038 and FC-000083
+
+A substantive ethical, relational, agency or vulnerability-protection failure is not evidence that an operational safety control was deployed or failed. Assess the applicable substantive fidelity invariant separately from any concomitant governance-control mechanism. Use the current canonical Fidelity Classes only; draft proposals are not selectable.
+
+For **FC-000038 Required Control Activation**, an admitted failure occurrence must identify and substantiate:
+
+- the **particular available, applicable operational control** and its protective purpose (for example, a deployed gate, restriction, named classifier or escalation route), not merely the external standard or an abstract duty calling for protection;
+- the control's **defined activation condition**, contemporaneous deployment/applicability, and the occurrence evidence establishing that the condition arose before the governed effect;
+- the **observed nonactivation** of that control before the relevant output, action or transition, independently of later harm; and
+- the specific governed effect that proceeded without activation.
+
+For **FC-000083 Control Effectiveness Integrity**, establish that the particular applicable control **validly activated**, identify its protective purpose and required effect, and provide evidence that the observed effect was materially inadequate in the relevant hazard and evidenced protection context. Nonactivation, unknown control existence, and missing protective design are not FC-000083 failures.
+
+If the control's identity, existence, availability, applicability, valid trigger, activation or effect is unproved, record the precise missing fact as an unresolved candidate in the dated rebuild manifest. Do not infer it from severe harm, source prestige, a later standard, a model-policy assertion, or an observed unsafe answer. If evidence supports a substantive duty but **no operational control was implemented**, preserve that as a distinct protection-coverage/taxonomy-gap question rather than forcing FC-000038/000083.
+
+Multiple independently substantiated mappings may analyse the same evidence episode. Never duplicate that episode to express multiple interpretations. A new candidate class becomes available for canonical Incident mapping only after its governed taxonomy admission and versioned release. The 2026-10-10 bounded design proposals and IEEE correspondence review are in `vigil/docs/reviews/2026-10-10-relational-protection-fidelity-class-review.md`.
 
 ## 5. HARM — review materialised consequence separately
 
@@ -185,7 +199,7 @@ python vigil/scripts/validate-authorship-provenance.py
 
 The adjudication workflow has an explicit maintainer-output channel. When a rebuild establishes that unresolved work must occur outside the current Incident edit, the reviewing agent must stage that next action in Gmail rather than leaving it only in chat, a branch note or an ephemeral handoff.
 
-**Do not use Gmail as a success, progress or no-change report.** A completed clean adjudication, an unchanged taxonomy, or an exact match between the adjudication matrix and the canonical Incident/Section 02 surfaces requires no notification. Gmail is reserved for a genuine unresolved next action.
+**Do not use Gmail as a success, progress or no-change report.** A completed clean adjudication, an unchanged taxonomy, or consistency between canonical Incident classification and source-clause assessment requires no notification. Gmail is reserved for a genuine unresolved next action.
 
 Two escalation classes use this channel:
 

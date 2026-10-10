@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Hacktron researchers used Claude-assisted exploit development to compromise OpenAI accounts and demonstrate internal repository access",
     "created": "2026-09-18",
-    "updated": "2026-10-04",
-    "version": "0.1.10"
+    "updated": "2026-10-09",
+    "version": "0.1.11"
   },
   "incident_identity": {
     "historical_event_name": "July 2026 Hacktron OpenAI bug-bounty compromise",
@@ -18,43 +18,97 @@
     "date_precision": "date-range",
     "date_basis": "Contemporaneous reporting and the researchers' public disclosure place the research from July 23 through July 25, 2026, with successful compromise demonstrated by July 25."
   },
-  "summary": "During authorized bug-bounty security research in July 2026, Hacktron AI researchers used Anthropic Claude models to help analyze and develop an exploit chain against OpenAI-related systems. Reporting describes a vulnerability in the Discourse-hosted OpenAI community environment together with an OpenAI authorization or permission issue. The chain exposed authentication material associated with OpenAI employees and some unaffiliated users, enabled access to affected ChatGPT or Codex accounts and potentially connected services according to account configuration, and was demonstrated through access to OpenAI's private software repository and a proof-of-access pull request. The researchers reported the findings, OpenAI and Discourse remediated the issues, and OpenAI paid a bug bounty.",
+  "summary": "During security research in July 2026, Hacktron AI researchers used Anthropic Claude models to help analyze and develop an exploit chain against OpenAI-related systems. Reporting describes a vulnerability in the Discourse-hosted OpenAI community environment together with an OpenAI authorization or permission issue. The chain exposed authentication material associated with OpenAI employees and some unaffiliated users, enabled access to affected ChatGPT or Codex accounts and potentially connected services according to account configuration, and was demonstrated through access to OpenAI's private software repository and a proof-of-access pull request. The researchers reported the findings, OpenAI and Discourse remediated the issues, and OpenAI paid a bug bounty. The researchers’ original account says they reported the initial finding before demonstrating repository access and avoided reading internal code. OpenAI clarified that the bounty covered its own finding; the Discourse-hosted forum was excluded from its programme.",
   "vigil_assessment": {
-    "factual_basis": "Independent reporting corroborates Hacktron's public disclosure that the researchers used Claude during authorized security research, developed a working exploit against the community forum environment, obtained authentication material, demonstrated access to OpenAI account and repository surfaces, and responsibly disclosed the findings. OpenAI reportedly confirmed the issues were fixed and paid a $6,500 bounty. Public evidence does not establish malicious exploitation by the researchers or theft of model weights. The demonstrated access itself is a materialised confidentiality consequence even though the researchers avoided malicious exploitation and enabled remediation.",
-    "governance_interpretation": "Authorised AI-assisted research demonstrated an account-security weakness affecting AI services. The affected providers repaired the reported issues. The finding concerns victim-service security, while Claude’s assistance remains authorised research rather than established model misconduct. The full testing scope and every connected-service exposure remain bounded by the sources.",
+    "factual_basis": "Independent reporting corroborates Hacktron's public disclosure that the researchers used Claude during researcher-led security testing, developed a working exploit against the community forum environment, obtained authentication material, demonstrated access to OpenAI account and repository surfaces, and responsibly disclosed the findings. OpenAI reportedly confirmed the issues were fixed and paid a $6,500 bounty. Public evidence does not establish malicious exploitation by the researchers or theft of model weights. The demonstrated access itself is a materialised confidentiality consequence even though the researchers avoided malicious exploitation and enabled remediation. The originating write-up distinguishes the initial disclosure from the later proof and identifies OpenAI’s exclusion of the forum from its bounty scope. It also describes disguising the researchers’ cloud test as a capture-the-flag target after a model refusal. The proof avoided reading internal code; actual access to every connected service is not established.",
+    "governance_interpretation": "AI-assisted security research demonstrated an account-security weakness affecting AI services. The affected providers repaired the reported issues. The finding concerns victim-service security, while the assisting model’s target selection and the researchers’ programme scope require separate authority assessment. The full testing scope and every connected-service exposure remain bounded by the sources. A proxy concealed the live nature of the researchers’ own cloud test after refusal. That context change does not itself prove the model exceeded an independently valid scope, and the bounty does not authorise every preceding action.",
     "significance_to_cam": "The occurrence demonstrates why AI cybersecurity capability governance cannot be separated from access and authority governance. A model can behave exactly as intended in an authorized red-team setting while materially lowering the effort required to develop real exploits. Governance therefore has to control capability access, target authority, credential and session propagation, connected-service authority, containment and human oversight rather than relying on the model to infer whether a technically possible exploit is institutionally authorized.",
     "assessment_boundaries": [
-      "The researchers' detailed first-party technical write-up was not directly retrieved; the occurrence is preserved using corroborating contemporaneous reporting and the researchers' public disclosure as surfaced in that reporting.",
+      "The researchers’ originating technical write-up was directly inspected. The complete provider forensic record and every authentication detail remain unavailable.",
       "OpenAI's complete internal incident record, affected-account count, connector exposure and authorization architecture are not public.",
       "Potential access to Outlook, Slack or other connected services is preserved as reported reach dependent on affected-account configuration; actual access to every named service is not inferred.",
-      "No malicious intent is attributed to Hacktron researchers; the available evidence describes authorized bug-bounty research and responsible disclosure.",
+      "Researcher purpose, provider programme scope and legal authority are separate. OpenAI excluded the forum from its bounty scope and awarded the OpenAI-side finding.",
       "The available public evidence is not sufficient to determine the complete exploit mechanism or the governance controls governing access to the AI capability.",
       "Responsible disclosure and remediation constrain severity but do not negate the materialised access to authentication material, affected accounts and a private repository."
     ],
     "source_clause_analysis": {
       "source_record_order": 1,
       "source_url": "https://www.wsj.com/tech/ai/hackers-used-anthropics-claude-to-break-into-openai-b40ba883",
-      "purpose": "Preserve the distinction between Claude’s exploit-development assistance and the researchers’ human-directed target testing, proof of access and responsible disclosure.",
+      "purpose": "Separate evidenced occurrence stages and their distinct governance questions.",
       "clauses": [
         {
-          "source_paraphrase": "Hacktron researchers used Claude models to help analyse vulnerabilities and develop an exploit chain during security research against OpenAI-related systems.",
-          "recovered_invariant_interpretation": "AI assistance in security research does not by itself establish that the model selected an unauthorized target, treated capability as authority, or displaced an applicable governance constraint.",
+          "source_paraphrase": "Researchers analysed the forum dependency and developed an exploit with Claude assistance.",
+          "recovered_invariant_interpretation": "Capability assistance and authority over the target require separate evidence.",
           "taxonomy_relationships": [],
           "adjudication_status": "resolved-no-mapping",
-          "adjudication_note": "The preserved evidence attributes exploit development to human-led research but does not establish an independent model-side authority or control failure."
+          "source_record_refs": [
+            "source_records[3]"
+          ],
+          "episode_id": "E001"
         },
         {
-          "source_paraphrase": "The researchers used the exploit chain to demonstrate employee-account and internal-repository access with a proof-of-access pull request.",
-          "recovered_invariant_interpretation": "The access demonstration establishes a realised security-boundary crossing. It is distinct from the models' exploit-development assistance and from the researchers' later disclosure and remediation steps; it does not by itself establish a model-side authority failure.",
+          "source_paraphrase": "After refusal for a remote instance, researchers disguised their own cloud target as a capture-the-flag task; the agent demonstrated access there.",
+          "recovered_invariant_interpretation": "Task framing does not itself determine the human’s target authority.",
           "taxonomy_relationships": [],
           "adjudication_status": "resolved-no-mapping",
-          "adjudication_note": "The target-side actions and disclosure are attributed to researchers; the record does not establish that Claude selected or executed those actions or crossed an evidenced AI-governance boundary."
+          "source_record_refs": [
+            "source_records[3]"
+          ],
+          "episode_id": "E002"
         },
         {
-          "source_paraphrase": "After creating the proof-of-access pull request, the researchers stopped testing, disclosed their findings, and enabled OpenAI and Discourse to remediate the issues.",
-          "recovered_invariant_interpretation": "Cessation, disclosure and remediation are recovery steps that follow the demonstrated access; they do not erase that access consequence or independently settle the authorization scope of every test.",
+          "source_paraphrase": "Researchers applied the chain to OpenAI-related services, enabling account access through the reported identity weakness.",
+          "recovered_invariant_interpretation": "A security-boundary crossing does not prove a valid source permission was transferred.",
           "taxonomy_relationships": [],
-          "adjudication_status": "resolved-no-mapping"
+          "adjudication_status": "resolved-no-mapping",
+          "source_record_refs": [
+            "source_records[3]",
+            "source_records[0]",
+            "source_records[1]"
+          ],
+          "episode_id": "E003"
+        },
+        {
+          "source_paraphrase": "The initial finding was reported before the later internal-repository proof.",
+          "recovered_invariant_interpretation": "Early disclosure and expanded proof have distinct chronology.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping",
+          "source_record_refs": [
+            "source_records[3]"
+          ],
+          "episode_id": "E004"
+        },
+        {
+          "source_paraphrase": "A proof-of-access PR was created without reading internal code; further testing ceased.",
+          "recovered_invariant_interpretation": "Cessation and minimal proof bound the demonstrated access.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping",
+          "source_record_refs": [
+            "source_records[3]",
+            "source_records[2]"
+          ],
+          "episode_id": "E005"
+        },
+        {
+          "source_paraphrase": "OpenAI confirmed a fix; Discourse responded, prepared a fix and issued an advisory.",
+          "recovered_invariant_interpretation": "Repair is distinct from initial prevention and from disclosure.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping",
+          "source_record_refs": [
+            "source_records[3]",
+            "source_records[2]"
+          ],
+          "episode_id": "E006"
+        },
+        {
+          "source_paraphrase": "OpenAI awarded the OpenAI-side finding while clarifying that the forum was outside its bounty scope.",
+          "recovered_invariant_interpretation": "Payment does not retroactively supply authority for excluded testing.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping",
+          "source_record_refs": [
+            "source_records[3]"
+          ],
+          "episode_id": "E007"
         }
       ]
     }
@@ -137,14 +191,13 @@
       "interpretive_reliance": "The researchers reported viewing rather than downloading sensitive code, and wider exfiltration is not established.",
       "model_or_algorithm": "not fully established in the source",
       "primary_artefact_access": {
-        "access_method": "Occurrence-focused web search and review of the public source, indexed text, or authoritative endpoint",
-        "access_status": "public source and indexed content reviewed",
+        "access_method": "Public retrieval and direct text inspection; any retrieval failure specified below",
+        "access_status": "indirectly reviewed",
         "direct_primary_artefact_review": false,
         "limitations": [
-          "The source does not independently establish every underlying claim or unreported downstream consequence.",
-          "The source does not determine legal liability or final factual truth beyond its stated institutional scope."
+          "Independent report read; primary account supplies more precise research scope and proof limits."
         ],
-        "reviewing_system": "GPT-5"
+        "reviewing_system": "OpenAI ChatGPT — GPT-6"
       },
       "relevance_note": "Supports serious but bounded confidentiality compromise.",
       "retrieved_date": "2026-09-20",
@@ -158,6 +211,39 @@
       "source_url": "https://www.theguardian.com/technology/2026/sep/18/openai-hacked-anthropic-claude-chatbot",
       "source_url_status": "public source page or indexed metadata available at review",
       "system_or_product": "Other"
+    },
+    {
+      "source_title": "Hacking OpenAI",
+      "author_or_publisher": "Hacktron AI / Harsh Jaiswal, Mohan Pedhapati and Rahul Maini",
+      "source_date": "2026-09-13",
+      "source_url": "https://www.hacktron.ai/blog/hacking-openai",
+      "retrieved_date": "2026-10-09",
+      "source_type": "technical analysis",
+      "source_role": "incident-evidence",
+      "source_residence": "external",
+      "source_platform": "Hacktron AI / Harsh Jaiswal, Mohan Pedhapati and Rahul Maini",
+      "source_url_status": "available",
+      "relevance_note": "Firsthand technical sequence and scope clarification: initial disclosure preceded proof; researchers avoided reading internal code; forum excluded from OpenAI bounty scope.",
+      "evidence_modality": [
+        "text"
+      ],
+      "primary_artefact_access": {
+        "access_method": "Public retrieval and direct text inspection; any retrieval failure specified below",
+        "access_status": "directly reviewed",
+        "direct_primary_artefact_review": true,
+        "limitations": [
+          "Originating write-up read, including disclosure sequence and scope clarification; no payload executed or private repository inspected."
+        ],
+        "reviewing_system": "OpenAI ChatGPT — GPT-6"
+      },
+      "interpretive_reliance": "Firsthand technical sequence and scope clarification: initial disclosure preceded proof; researchers avoided reading internal code; forum excluded from OpenAI bounty scope.",
+      "evidence_status": "first-party-reported",
+      "evidence_status_basis": "Originating researchers describe their tests and quote OpenAI’s award-scope clarification. This is not the complete provider forensic record.",
+      "incident_source_order": 4,
+      "deployment_context": "authorized bug-bounty security research against OpenAI-related systems",
+      "model_or_algorithm": "Anthropic Claude, including a later Claude model reported as materially improving exploit development",
+      "system_or_product": "OpenAI community authentication, ChatGPT/Codex accounts and private development infrastructure",
+      "source_context": "Firsthand technical sequence and scope clarification: initial disclosure preceded proof; researchers avoided reading internal code; forum excluded from OpenAI bounty scope."
     }
   ],
   "preferred_evidence": {
@@ -225,7 +311,7 @@
   "taxonomy_classification": {
     "taxonomy_version": "0.6.9",
     "classification_status": "unclassified",
-    "classification_basis": "The current Alignment Taxonomy 0.6.9 leaves this Incident unclassified. The preserved evidence establishes Claude-assisted exploit development within human-led security research, followed by a bounded proof of access and responsible disclosure. It does not establish that Claude selected or executed an unauthorized target action or that an internal authentication or authority transition failed; model assistance and resulting access alone do not establish a VIGIL failure mechanism.",
+    "classification_basis": "The originating account establishes a model-assisted exploit chain, human-directed live testing, an SSO weakness, bounded proof and coordinated remediation. The researchers disguised their own cloud test as a capture-the-flag target after a refusal. The provider excluded the forum from its bounty scope. Those facts do not establish that the assisting model independently carried a valid permission into an unauthorised target. The account also does not identify an independently valid source permission being rebound by the affected identity flow, rather than a compromised service being used for account takeover. The Incident remains unclassified; the account-security and repair assessments remain independent.",
     "primary_classification": null,
     "secondary_classifications": [],
     "classification_review_provenance": {
@@ -424,28 +510,49 @@
           "This review is AI-authored, not human verification or certification."
         ],
         "review_outcome": "Reviewed 2 recovered or independently identified requirements; retained 2 relevant independent assessments. Prior values and exclusions remain in the dated audit."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-09-PHASE3-TRANCHE16D-000135",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-09",
+        "review_scope": "Source-first occurrence reconstruction, current taxonomy boundary review and semantic external-requirement linkage.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "external_requirement_review": true,
+          "web_research": true,
+          "harm_impact_review": false
+        },
+        "known_limitations": [
+          "AI-authored, not human certified. Private sessions, checking traces and undisclosed decision paths remain unavailable.",
+          "Existing HIM retained; no full eleven-dimension re-adjudication."
+        ],
+        "review_outcome": "Add originating technical disclosure; correct blanket research-authority claim, initial disclosure before proof and no-code-reading limit. Restore concealed test context and separate provider fixes and award scope. Retain unclassified status, HIM and independently evidenced external outcomes."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-04-EXTERNAL-ALIGNMENT-000135",
+      "review_id": "VIGIL-REVIEW-2026-10-09-PHASE3-TRANCHE16D-000135",
       "reviewer_type": "AI analytical reviewer",
       "reviewer_platform": "OpenAI ChatGPT Work",
       "reviewer_model": "GPT-6",
-      "review_date": "2026-10-04",
-      "review_scope": "Independent occurrence relevance and alignment review of external requirements; normative force remains source metadata.",
+      "review_date": "2026-10-09",
+      "review_scope": "Source-first occurrence reconstruction, current taxonomy boundary review and semantic external-requirement linkage.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
+        "taxonomy_review": true,
         "external_requirement_review": true,
-        "taxonomy_review": false,
-        "harm_impact_review": false,
-        "web_research": false
+        "web_research": true,
+        "harm_impact_review": false
       },
       "known_limitations": [
-        "Assessment uses preserved occurrence evidence and canonical requirement propositions; internal implementation evidence remains unavailable where stated.",
-        "This review is AI-authored, not human verification or certification."
+        "AI-authored, not human certified. Private sessions, checking traces and undisclosed decision paths remain unavailable.",
+        "Existing HIM retained; no full eleven-dimension re-adjudication."
       ],
-      "review_outcome": "Reviewed 2 recovered or independently identified requirements; retained 2 relevant independent assessments. Prior values and exclusions remain in the dated audit."
+      "review_outcome": "Add originating technical disclosure; correct blanket research-authority claim, initial disclosure before proof and no-code-reading limit. Restore concealed test context and separate provider fixes and award scope. Retain unclassified status, HIM and independently evidenced external outcomes."
     }
   },
   "harm_impact_assessment": {

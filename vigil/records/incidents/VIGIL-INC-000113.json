@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Anthropic reported Moonshot and DeepSeek routed customer conversations through Claude for distillation",
     "created": "2026-09-11",
-    "updated": "2026-10-04",
-    "version": "0.2.5"
+    "updated": "2026-10-10",
+    "version": "0.2.7"
   },
   "incident_identity": {
     "historical_event_name": "2026 Moonshot and DeepSeek customer-conversation routing and distillation campaigns",
@@ -18,9 +18,9 @@
     "date_precision": "date-range",
     "date_basis": "Anthropic's September 2026 threat-intelligence report states that Moonshot activity attributable to the campaign occurred between May and July 2026 and that the DeepSeek campaign included more than 12.1 million exchanges over 14 days in July 2026. The range is an occurrence envelope rather than an assertion of continuous activity."
   },
-  "summary": "Anthropic reported that Moonshot AI and DeepSeek silently routed real customer requests through Claude and used resulting exchanges or reasoning traces in model-distillation and training workflows. Anthropic states that Moonshot users believed they were using Kimi while receiving Claude responses, and that DeepSeek similarly relayed selected customer requests to Claude without informing customers. Anthropic reported more than 23 million Moonshot-attributable exchanges between May and July 2026 and more than 12.1 million DeepSeek-attributable exchanges over 14 days in July, with some routed material containing sensitive customer or organisational information. Public reporting does not identify individual affected users or establish their jurisdictions, and the provider attribution is not treated as an adjudication of legal liability.",
+  "summary": "Anthropic reported that Moonshot AI and DeepSeek silently routed real customer requests through Claude and used resulting exchanges or reasoning traces in model-distillation and training workflows. Anthropic states that Moonshot users believed they were using Kimi while receiving Claude responses, and that DeepSeek similarly relayed selected customer requests to Claude without informing customers. Anthropic reported more than 23 million Moonshot-attributable exchanges between May and July 2026 and more than 12.1 million DeepSeek-attributable exchanges over 14 days in July, with some routed material containing sensitive customer or organisational information. Public reporting does not identify individual affected users or establish their jurisdictions, and the provider attribution is not treated as an adjudication of legal liability. Anthropic also described cross-session replay of thinking signatures to obtain reasoning traces and subsequent disruption of the campaigns.",
   "vigil_assessment": {
-    "factual_basis": "Anthropic's September 2026 threat-intelligence report directly describes separate Moonshot and DeepSeek campaigns. For Moonshot, Anthropic states that customer requests were silently forwarded to Claude rather than processed by Kimi, Claude responses were shown to users, at least some exchanges were captured and saved, and extracted Claude reasoning traces were used for model training. For DeepSeek, Anthropic states that selected user requests were silently relayed to Claude and that the resulting reasoning traces were extracted for downstream distillation. Anthropic reports more than 23 million exchanges attributable to Moonshot between May and July 2026 and more than 12.1 million exchanges attributable to DeepSeek over 14 days in July. Reuters, The Wall Street Journal and the South China Morning Post independently report Anthropic's findings concerning live customer-query routing and sensitive information. The available public evidence does not identify individual affected users or establish their jurisdictions, and VIGIL does not treat Anthropic's provider attribution as an independently adjudicated legal finding.",
+    "factual_basis": "Anthropic's September 2026 threat-intelligence report directly describes separate Moonshot and DeepSeek campaigns. For Moonshot, Anthropic states that customer requests were silently forwarded to Claude rather than processed by Kimi, Claude responses were shown to users, at least some exchanges were captured and saved, and extracted Claude reasoning traces were used for model training. For DeepSeek, Anthropic states that selected user requests were silently relayed to Claude and that the resulting reasoning traces were extracted for downstream distillation. Anthropic reports more than 23 million exchanges attributable to Moonshot between May and July 2026 and more than 12.1 million exchanges attributable to DeepSeek over 14 days in July. Reuters, The Wall Street Journal and the South China Morning Post independently report Anthropic's findings concerning live customer-query routing and sensitive information. The available public evidence does not identify individual affected users or establish their jurisdictions, and VIGIL does not treat Anthropic's provider attribution as an independently adjudicated legal finding. The later provider report describes cross-session replay and defensive changes. It does not identify each customer’s notice, jurisdiction or contractual processing basis. The earlier distillation disclosure concerns a separate reporting period.",
     "governance_interpretation": "The reported conduct separates into three mechanisms. Customer requests were silently relayed from the selected service to Claude, changing the processing principal and creating an authority-scope boundary whose contractual or consent basis is not public. The customer-facing responses were also represented as coming from the selected service/model even though Anthropic reports Claude generated them, creating a source-attribution failure. Separately, saved exchanges and extracted reasoning traces were used for training/distillation, a materially different secondary purpose, and the campaign scale supports Industrial-Scale Capability Extraction. VIGIL preserves Anthropic's attribution as provider-reported evidence rather than an independent legal finding. Provider-attributed source misrepresentation and secondary-purpose/cumulative extraction failures remain distinct from unresolved cross-provider customer authority and consequential trust-cue effects. OECD AI awareness does not require identification of the exact model; users knew they interacted with an AI service, while provider substitution remains a separate taxonomy issue. The reported privacy and secondary-use outcome is Not aligned. Awareness of interacting with AI is Aligned for the reported Kimi users. Backend disclosure, training-data verification, storage and red-team coverage remain separate Boundary assessments.",
     "significance_to_cam": "The occurrence demonstrates that model routing is not merely infrastructure metadata. A user-facing model identity can conceal a materially different processing chain in which user content crosses providers and becomes input to model development. Governance therefore needs purpose-bound authority, routing provenance and user-facing disclosure sufficient to distinguish which model actually processed information, whether information was relayed to another provider, and whether it entered a training or distillation pathway. The case also shows that secondary-purpose data use and industrial-scale model extraction can co-occur without being collapsed into one mechanism.",
     "assessment_boundaries": [
@@ -35,38 +35,18 @@
     "source_clause_analysis": {
       "source_record_order": 1,
       "source_url": "https://www.anthropic.com/threat-intelligence-report-september-2026",
-      "purpose": "Resolve Anthropic's first-party occurrence wording into the distinct purpose-authority and industrial-scale capability-extraction mechanisms while preserving provider-attribution and legal-liability boundaries.",
+      "purpose": "Separate evidenced occurrence stages and their distinct governance questions.",
       "clauses": [
         {
-          "source_anchor": "silently forwarded customer requests to Claude",
-          "recovered_invariant_interpretation": "Authority to receive customer information for one service does not itself authorise forwarding that information to a different model provider for a materially different processing chain.",
+          "source_paraphrase": "Anthropic reports that Moonshot forwarded customer requests to Claude and displayed Claude answers as Kimi responses.",
+          "recovered_invariant_interpretation": "Customer-facing attribution and cross-provider processing authority are separate properties.",
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000003",
               "relationship": "ambiguous-boundary",
               "canonical_taxonomy_mapping": true,
               "rationale": "Customers supplied information to obtain service from Kimi or DeepSeek, while Anthropic reports that the requests were silently relayed to Claude. This materially changes the processing principal and service path, but the public record does not expose the contractual or consent basis needed to determine whether customer authority validly covered that cross-provider processing."
-            }
-          ],
-          "adjudication_status": "mapped"
-        },
-        {
-          "source_anchor": "captured and saved at least a portion of these exchanges",
-          "recovered_invariant_interpretation": "Information collected to answer a customer's request does not acquire training or model-development authority merely because the service can retain or technically reuse the exchange.",
-          "taxonomy_relationships": [
-            {
-              "class_id": "VIGIL-FC-000055",
-              "relationship": "failure-occurrence",
-              "canonical_taxonomy_mapping": true,
-              "rationale": "Saving relayed customer exchanges for downstream training is the materially different secondary purpose protected by FC-000055."
-            }
-          ],
-          "adjudication_status": "mapped"
-        },
-        {
-          "source_anchor": "silently relayed exchanges to Claude without informing DeepSeek customers",
-          "recovered_invariant_interpretation": "A customer-facing service must not treat access to customer content as sufficient authority to route that content through a different provider and processing purpose without an adequate authority or governance basis.",
-          "taxonomy_relationships": [
+            },
             {
               "class_id": "VIGIL-FC-000010",
               "relationship": "failure-occurrence",
@@ -80,11 +60,32 @@
               "rationale": "Silent routing concealed the provider of responses and downstream training purpose from Kimi or DeepSeek customers, but a changed consequential customer choice caused by that cue is not shown."
             }
           ],
-          "adjudication_status": "mapped"
+          "adjudication_status": "mapped",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "episode_id": "E001"
         },
         {
-          "source_anchor": "over 23 million exchanges observed",
-          "recovered_invariant_interpretation": "Repeated, distributed model access must be assessed cumulatively when it is used to acquire upstream capabilities for downstream training; per-request access does not automatically create authority for industrial-scale capability extraction.",
+          "source_paraphrase": "Moonshot reportedly saved relayed exchanges for downstream training.",
+          "recovered_invariant_interpretation": "Service-response authority does not extend automatically to training.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000055",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Customer exchanges supplied for answers were retained for a materially different training purpose without an independently established secondary-use basis."
+            }
+          ],
+          "adjudication_status": "mapped",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "episode_id": "E002"
+        },
+        {
+          "source_paraphrase": "Anthropic attributes more than twenty-three million exchanges between May and July to the Moonshot campaign.",
+          "recovered_invariant_interpretation": "Capability acquisition is assessed across the organised campaign.",
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000068",
@@ -93,7 +94,90 @@
               "rationale": "Anthropic reports a systematic campaign operating at tens of millions of exchanges and expressly links harvested outputs and reasoning traces to downstream training and distillation."
             }
           ],
-          "adjudication_status": "mapped"
+          "adjudication_status": "mapped",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "episode_id": "E003"
+        },
+        {
+          "source_paraphrase": "Anthropic reports similar undisclosed customer routing and substituted responses in the DeepSeek campaign.",
+          "recovered_invariant_interpretation": "The processing principal and represented source require independent validation.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000003",
+              "relationship": "ambiguous-boundary",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Customers supplied information to obtain service from Kimi or DeepSeek, while Anthropic reports that the requests were silently relayed to Claude. This materially changes the processing principal and service path, but the public record does not expose the contractual or consent basis needed to determine whether customer authority validly covered that cross-provider processing."
+            },
+            {
+              "class_id": "VIGIL-FC-000010",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Anthropic reports that users believed they were receiving responses from Kimi or DeepSeek while Claude generated the responses. The represented source role therefore differed materially from the actual model source in a way relevant to accountability, data handling and interpretation."
+            },
+            {
+              "class_id": "VIGIL-FC-000082",
+              "relationship": "ambiguous-boundary",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Silent routing concealed the provider of responses and downstream training purpose from Kimi or DeepSeek customers, but a changed consequential customer choice caused by that cue is not shown."
+            }
+          ],
+          "adjudication_status": "mapped",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "episode_id": "E004"
+        },
+        {
+          "source_paraphrase": "DeepSeek reportedly collected reasoning traces for training through more than twelve million exchanges over fourteen days.",
+          "recovered_invariant_interpretation": "Secondary customer-data use and upstream capability extraction are distinct.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000055",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Customer exchanges supplied for answers were retained for a materially different training purpose without an independently established secondary-use basis."
+            },
+            {
+              "class_id": "VIGIL-FC-000068",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Anthropic reports a systematic campaign operating at tens of millions of exchanges and expressly links harvested outputs and reasoning traces to downstream training and distillation."
+            }
+          ],
+          "adjudication_status": "mapped",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "episode_id": "E005"
+        },
+        {
+          "source_paraphrase": "The provider describes cross-session replay of thinking signatures to obtain reasoning traces for training.",
+          "recovered_invariant_interpretation": "A replay pathway does not supply independent capability-extraction authority.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000068",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Anthropic reports a systematic campaign operating at tens of millions of exchanges and expressly links harvested outputs and reasoning traces to downstream training and distillation."
+            }
+          ],
+          "adjudication_status": "mapped",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "episode_id": "E006"
+        },
+        {
+          "source_paraphrase": "The provider says it disrupted the reported campaigns and strengthened anti-distillation defences.",
+          "recovered_invariant_interpretation": "A later enforcement account is separate from prevention during the campaign.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "episode_id": "E007"
         }
       ]
     }
@@ -116,14 +200,13 @@
       "evidence_status": "first-party-reported",
       "evidence_status_basis": "Anthropic directly reports its investigation and attribution of the Moonshot and DeepSeek routing/distillation campaigns, including routing mechanics, customer-data examples and campaign scale. VIGIL preserves the provider-attribution boundary and does not treat the report as a judicial or independently audited finding.",
       "primary_artefact_access": {
-        "access_method": "direct public first-party report review",
+        "access_method": "Public retrieval and direct text inspection; any retrieval failure specified below",
         "access_status": "directly reviewed",
         "direct_primary_artefact_review": true,
         "limitations": [
-          "VIGIL does not possess Anthropic's underlying traffic telemetry or affected-customer records.",
-          "The named firms' complete responses are not contained in the reviewed first-party report."
+          "Originating provider report’s Moonshot/DeepSeek and common response sections inspected. Attribution is not independent telemetry reproduction."
         ],
-        "reviewing_system": "OpenAI ChatGPT — GPT-5.6 Sol"
+        "reviewing_system": "OpenAI ChatGPT — GPT-6"
       },
       "incident_source_order": 1,
       "interpretive_reliance": "Primary occurrence source for routing mechanics, training purpose, sensitive-data examples, model-substitution claims and campaign scale.",
@@ -213,13 +296,13 @@
       "evidence_status": "first-party-reported",
       "evidence_status_basis": "Anthropic directly documents earlier industrial-scale distillation campaigns attributed to DeepSeek and Moonshot. It is used as historical context, not as the occurrence source for the later customer-routing mechanism.",
       "primary_artefact_access": {
-        "access_method": "direct public first-party disclosure review",
+        "access_method": "Public retrieval and direct text inspection; any retrieval failure specified below",
         "access_status": "directly reviewed",
         "direct_primary_artefact_review": true,
         "limitations": [
-          "This February source predates the customer-routing conduct described in the September report."
+          "Earlier disclosure inspected as distinct background, not the later campaign totals."
         ],
-        "reviewing_system": "OpenAI ChatGPT — GPT-5.6 Sol"
+        "reviewing_system": "OpenAI ChatGPT — GPT-6"
       },
       "incident_source_order": 4,
       "interpretive_reliance": "Context only: establishes earlier attributed Moonshot/DeepSeek distillation activity and the distinction between authorised distillation and extraction attacks.",
@@ -327,7 +410,7 @@
     ]
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.6.9",
+    "taxonomy_version": "0.6.11",
     "classification_status": "classified",
     "classification_basis": "Customer-supplied information provided to obtain an AI service response was reportedly repurposed into an undisclosed external-model interaction and downstream training/distillation pathway without an independently established secondary-purpose authority basis. Anthropic reports that customers believed they were receiving responses from Kimi or DeepSeek while Claude actually generated the responses, materially misrepresenting the source role of the customer-facing output. Anthropic reports repeated, concealed campaigns at tens of millions of exchanges in which Claude outputs and reasoning traces were harvested for downstream model training, satisfying the industrial-scale capability-extraction mechanism. Customer requests were reportedly relayed from the service users selected to Claude, changing the processing principal and path; the public record does not expose whether the customer authority basis validly covered that cross-provider processing. Silent routing concealed the provider of responses and downstream training purpose from customers, but a changed consequential customer choice caused by that trust cue is not shown.",
     "primary_classification": {
@@ -368,9 +451,9 @@
       }
     ],
     "classification_review_provenance": {
-      "review_date": "2026-09-30",
-      "reviewer": "OpenAI ChatGPT — GPT-5.6 Sol under human-directed VIGIL governance",
-      "review_status": "clause-level taxonomy adjudication completed"
+      "review_date": "2026-10-10",
+      "reviewer": "OpenAI ChatGPT Work — GPT-6",
+      "review_status": "Evidence-first HIM and relational/protection fidelity review; prior roles accounted for."
     },
     "adjudication_coverage": {
       "status": "complete"
@@ -378,14 +461,14 @@
   },
   "harm_impact_assessment": {
     "methodology_id": "VIGIL-HIM",
-    "methodology_version": "1.0.1",
-    "derivation_rule": "highest-supported-materialised-harm",
-    "assessed_on": "2026-09-22",
+    "methodology_version": "1.1.0",
+    "derivation_rule": "highest-supported-harm-on-exclusive-incident-assessment-pathway",
+    "assessed_on": "2026-10-10",
     "overall_severity": "S4",
     "controlling_dimensions": [
       "privacy-confidentiality"
     ],
-    "coverage_note": "All eleven dimensions were retained or re-reviewed against the strengthened first-party occurrence evidence. The evidence supports S4 privacy/confidentiality harm through large-scale cross-provider exposure of customer communications, including highly sensitive information. Other dimensions remain unreported unless specifically assessed and do not lower or raise the derived result.",
+    "coverage_note": "All twelve dimensions source-reviewed. The provider attributes real customer request routing and secondary extraction to two distinct campaigns, with concrete live-credential and confidential programme examples. Retained S4 rests on those sensitive exposures, not exchange counts as victim counts. Telemetry and named-lab attribution remain first-party claims; news retellings do not independently verify them. Each sensitive example remains with its identified campaign. Relational-role and heightened-protection tests independently completed.",
     "dimensions": [
       {
         "dimension_id": "physical-health-safety",
@@ -414,16 +497,16 @@
       {
         "dimension_id": "privacy-confidentiality",
         "assessment_status": "assessed",
+        "assessment_basis": "The provider attributes real customer request routing and secondary extraction to two distinct campaigns, with concrete live-credential and confidential programme examples. Retained S4 rests on those sensitive exposures, not exchange counts as victim counts. Telemetry and named-lab attribution remain first-party claims; news retellings do not independently verify them. Each sensitive example remains with its identified campaign.",
+        "evidence_confidence": "medium",
         "severity": "S4",
-        "threshold_id": "VIGIL-HIM-1.0.1-PRV-S4",
+        "threshold_id": "VIGIL-HIM-1.1.0-PRV-S4",
         "observed_values": [
           {
             "metric": "reported exposure",
             "qualitative_value": "Anthropic reports real customer traffic routed across providers at campaign scale, including sensitive individual, corporate and government-related information."
           }
         ],
-        "assessment_basis": "Anthropic reports that Moonshot and DeepSeek routed real customer requests through Claude without customer awareness and that some routed material contained highly sensitive customer or organisational information. The campaigns operated at large scale, and independent reporting corroborates the reported cross-provider routing and sensitive-data exposure. This supports the S4 threshold for large-scale or highly sensitive exposure and substantial evidenced misuse. The assessment does not identify affected individuals or infer jurisdictions not established by the sources.",
-        "evidence_confidence": "medium",
         "evidence_refs": [
           "source_records[0]",
           "source_records[2]",
@@ -465,8 +548,15 @@
         "assessment_status": "not-applicable",
         "assessment_basis": "No environmental consequence is materially implicated by the bounded occurrence evidence.",
         "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "relational-integrity-autonomy",
+        "assessment_status": "unreported",
+        "assessment_basis": "The preserved access or capture occurrence does not report actual lost caregiving, human support, family contact, relational choice or safe disengagement materially attributable to the AI-related pathway. Sensitive disclosure and professional meetings do not by themselves establish relational harm.",
+        "evidence_confidence": "not-assessed"
       }
-    ]
+    ],
+    "assessment_pathway": "specific_consequence"
   },
   "related_incidents": [
     "VIGIL-INC-000073"
@@ -672,28 +762,70 @@
           "This review is AI-authored, not human verification or certification."
         ],
         "review_outcome": "Reviewed 22 recovered or independently identified requirements; retained 6 relevant independent assessments. Prior values and exclusions remain in the dated audit."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-09-PHASE3-TRANCHE16D-000113",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-09",
+        "review_scope": "Source-first occurrence reconstruction, current taxonomy boundary review and semantic external-requirement linkage.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "external_requirement_review": true,
+          "web_research": true,
+          "harm_impact_review": false
+        },
+        "known_limitations": [
+          "AI-authored, not human certified. Private sessions, checking traces and undisclosed decision paths remain unavailable.",
+          "Existing HIM retained; no full eleven-dimension re-adjudication."
+        ],
+        "review_outcome": "Distinguish Moonshot and DeepSeek routing, capture and campaign-scale extraction; restore replay and later response. Retain attributed evidence and independent external outcomes. Do not equate hidden backend identity with a proved induced customer choice."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-10-COMBINED-TRANCHE-12-000113",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-10",
+        "review_scope": "Source-first all-dimension HIM 1.1.0 and independent FC-086/087 reconciliation.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_research": true,
+          "harm_impact_review": true,
+          "taxonomy_review": true,
+          "external_requirement_review": true
+        },
+        "known_limitations": [
+          "Actual data objects, permission history and later consequences remain source-bounded; no inferred harmful reuse or irreversible loss.",
+          "Later policy versions and unrelated plaintiffs/campaigns do not establish the original occurrence."
+        ],
+        "review_outcome": "All twelve dimensions source-reviewed. The provider attributes real customer request routing and secondary extraction to two distinct campaigns, with concrete live-credential and confidential programme examples. Retained S4 rests on those sensitive exposures, not exchange counts as victim counts. Telemetry and named-lab attribution remain first-party claims; news retellings do not independently verify them. Each sensitive example remains with its identified campaign. Relational-role and heightened-protection tests independently completed."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-04-EXTERNAL-ALIGNMENT-000113",
+      "review_id": "VIGIL-REVIEW-2026-10-10-COMBINED-TRANCHE-12-000113",
       "reviewer_type": "AI analytical reviewer",
       "reviewer_platform": "OpenAI ChatGPT Work",
       "reviewer_model": "GPT-6",
-      "review_date": "2026-10-04",
-      "review_scope": "Independent occurrence relevance and alignment review of external requirements; normative force remains source metadata.",
+      "review_date": "2026-10-10",
+      "review_scope": "Source-first all-dimension HIM 1.1.0 and independent FC-086/087 reconciliation.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "external_requirement_review": true,
-        "taxonomy_review": false,
-        "harm_impact_review": false,
-        "web_research": false
+        "web_research": true,
+        "harm_impact_review": true,
+        "taxonomy_review": true,
+        "external_requirement_review": true
       },
       "known_limitations": [
-        "Assessment uses preserved occurrence evidence and canonical requirement propositions; internal implementation evidence remains unavailable where stated.",
-        "This review is AI-authored, not human verification or certification."
+        "Actual data objects, permission history and later consequences remain source-bounded; no inferred harmful reuse or irreversible loss.",
+        "Later policy versions and unrelated plaintiffs/campaigns do not establish the original occurrence."
       ],
-      "review_outcome": "Reviewed 22 recovered or independently identified requirements; retained 6 relevant independent assessments. Prior values and exclusions remain in the dated audit."
+      "review_outcome": "All twelve dimensions source-reviewed. The provider attributes real customer request routing and secondary extraction to two distinct campaigns, with concrete live-credential and confidential programme examples. Retained S4 rests on those sensitive exposures, not exchange counts as victim counts. Telemetry and named-lab attribution remain first-party claims; news retellings do not independently verify them. Each sensitive example remains with its identified campaign. Relational-role and heightened-protection tests independently completed."
     }
   },
   "cam_internal": {
@@ -713,7 +845,12 @@
         "VIGIL-FC-000082"
       ],
       "source_clause_indices": [
-        2
+        0,
+        3
+      ],
+      "source_episode_refs": [
+        "E001",
+        "E004"
       ]
     },
     {
@@ -739,7 +876,12 @@
         "VIGIL-FC-000003"
       ],
       "source_clause_indices": [
-        0
+        0,
+        3
+      ],
+      "source_episode_refs": [
+        "E001",
+        "E004"
       ]
     },
     {
@@ -764,7 +906,12 @@
         "VIGIL-FC-000082"
       ],
       "source_clause_indices": [
-        2
+        0,
+        3
+      ],
+      "source_episode_refs": [
+        "E001",
+        "E004"
       ]
     },
     {

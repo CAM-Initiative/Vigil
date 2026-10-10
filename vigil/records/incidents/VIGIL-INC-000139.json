@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Spanish regulator received breach notification alleging AI-agent modification of personal data and invoice access",
     "created": "2026-09-19",
-    "updated": "2026-10-04",
-    "version": "0.1.9"
+    "updated": "2026-10-10",
+    "version": "0.1.10"
   },
   "incident_identity": {
     "historical_event_name": "AEPD first notified AI-agent-linked personal-data breach",
@@ -18,10 +18,10 @@
     "date_precision": "unknown",
     "date_basis": "The AEPD publicly described the notification on 14 September 2026 but did not disclose the date of the underlying intrusion."
   },
-  "summary": "Spain's data protection authority, the AEPD, publicly described a breach notification from an unnamed organization alleging that a third party used an AI agent powered by a known but unnamed language model to conduct a multi-stage intrusion with limited human intervention. According to the notification as summarized by the regulator, the agent authenticated to the target system, searched for application vulnerabilities, exploited a weakness, modified personal data and accessed invoices. The AEPD stated that the information remained under review and did not identify the organization, attacker, model, provider, affected population or attack date.",
+  "summary": "Spain's data protection authority, the AEPD, publicly described a breach notification from an unnamed organization alleging that a third party used an AI agent powered by a known but unnamed language model to conduct a multi-stage intrusion with limited human intervention. According to the notification as summarized by the regulator, the agent authenticated to the target system, searched for application vulnerabilities, exploited a weakness, modified personal data and accessed invoices. The AEPD stated that the information remained under review and did not identify the organization, attacker, model, provider, affected population or attack date. The article places an initial search in generic files before the successful login, followed by an autonomous search within the application. It says the found weakness permitted both data modification and invoice access, without specifying which occurred first. It also urges organisations to review risk analysis, identity controls and rapid detection and response.",
   "vigil_assessment": {
-    "factual_basis": "The AEPD confirms receipt of a personal-data breach notification alleging an attack executed through an AI agent using a known language model. The regulator's account, independently reported by Reuters and catalogued as AI Incident Database incident 1693, describes successful login, autonomous vulnerability search, modification of personal information and access to billing records. The AEPD has not independently concluded its review of the notified facts.",
-    "governance_interpretation": "The regulator documented a notification alleging AI-assisted intrusion and personal-data interference. Privacy and security assessments remain unresolved because the events are under review. Documentation of the report does not establish the allegation, model identity or internal mechanism.",
+    "factual_basis": "The September14 originating AEPD article confirms receipt of an affected-organisation notification. Its attributed sequence begins with vulnerability search in generic files and a successful login, followed by autonomous application-vulnerability search enabling personal-data modification and invoice access. The latter two effects are not ordered relative to each other. The article explicitly requires analysis before conclusions and cautions that use of a known model establishes neither compromise of its/provider infrastructure nor malicious design. Its general risk-response guidance is not incident-specific proof of a safeguard or credential condition. Secondary reporting elaborations do not establish undisclosed forensics.",
+    "governance_interpretation": "Notification existence and public documentation are established. The attack effects remain affected-organisation allegations awaiting analysis. Exact objective, authority basis, credentials, operator/agent division and control state are missing. General recommendations do not fill those recognition conditions. External documentation finding remains Aligned for documentation alone; privacy/security remain Boundary. No final liability, provider compromise, model intent or inferred linear order of the two effects is asserted.",
     "significance_to_cam": "The occurrence shows why agentic cyber capability must be bounded by target authority, credential scope, action-level authorisation, monitoring and containment. It also shows the need to distinguish an agent's reported operational role from unsupported claims about model identity, provider responsibility or internal mechanism.",
     "assessment_boundaries": [
       "The AEPD states that the notified information remains under review, so the attack sequence is preserved as regulator-reported rather than independently verified fact.",
@@ -36,8 +36,18 @@
       "purpose": "Record the alleged agent-assisted intrusion and preserve the precise recognition facts unavailable while the regulator’s review remains open.",
       "clauses": [
         {
-          "source_paraphrase": "The AEPD reported a breach notification alleging that a third party used an AI agent with limited human intervention to authenticate, search for and exploit a vulnerability, modify personal data and access invoices; the notified facts remain under review.",
-          "recovered_invariant_interpretation": "A material external action requires an established objective and authority basis, and technical access must not substitute for independent permission; reported intrusion outcomes alone do not identify how the agent or surrounding process treated authority.",
+          "source_paraphrase": "The notified account begins with vulnerability searching in generic files.",
+          "recovered_invariant_interpretation": "Initial search is an attributed phase, not an inspected technical trace.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "episode_id": "E001"
+        },
+        {
+          "source_paraphrase": "It describes a successful login before access to the target system.",
+          "recovered_invariant_interpretation": "Successful authentication does not itself establish permission.",
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000002",
@@ -53,7 +63,73 @@
             }
           ],
           "adjudication_status": "unresolved",
-          "adjudication_note": "The regulator’s notification remains under review, and the agent’s operative objective, authority context and role relative to the human operator are unavailable; these facts prevent a final mechanism decision."
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "episode_id": "E002"
+        },
+        {
+          "source_paraphrase": "After entry, the agent reportedly searched autonomously for application vulnerabilities and found a weakness.",
+          "recovered_invariant_interpretation": "The agent’s assigned objective and authority treatment remain unknown.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000002",
+              "relationship": "candidate boundary",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "Authentication and exploitation are alleged, but the report does not establish whether the agent treated a reachable credential, vulnerability or system path as permission, or whether the operator supplied and controlled the relevant access objective."
+            },
+            {
+              "class_id": "VIGIL-FC-000064",
+              "relationship": "candidate boundary",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "The alleged intrusion may involve objective utility displacing target or data-custody constraints, but the agent’s assigned objective, constraint recognition and pathway-selection reasoning are not disclosed."
+            }
+          ],
+          "adjudication_status": "unresolved",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "episode_id": "E003"
+        },
+        {
+          "source_paraphrase": "The notified account alleges personal-data modification after finding the weakness.",
+          "recovered_invariant_interpretation": "An alleged effect is not a concluded regulatory finding.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "episode_id": "E004"
+        },
+        {
+          "source_paraphrase": "It separately alleges invoice access; its order relative to data modification is not disclosed.",
+          "recovered_invariant_interpretation": "Distinct effects may overlap and must not be forced into an invented sequence.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "episode_id": "E005"
+        },
+        {
+          "source_paraphrase": "The affected organisation submitted a breach notification received by AEPD.",
+          "recovered_invariant_interpretation": "Receipt establishes a notification, not the truth of all notified facts.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "episode_id": "E006"
+        },
+        {
+          "source_paraphrase": "The September14 article publicly described the notification and said analysis was needed before conclusions.",
+          "recovered_invariant_interpretation": "Transparent provisional documentation differs from confirmed breach findings.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "episode_id": "E007"
         }
       ]
     }
@@ -64,7 +140,7 @@
       "author_or_publisher": "Agencia Española de Protección de Datos (AEPD)",
       "source_date": "2026-09-14",
       "source_url": "https://www.aepd.es/prensa-y-comunicacion/blog/primera-notiviacion-brecha-datos-personales-causada-por-ataque-ejecutado-mediante-agente-ia",
-      "retrieved_date": "2026-09-19",
+      "retrieved_date": "2026-10-10",
       "source_type": "official announcement",
       "source_role": "incident-evidence",
       "source_residence": "external",
@@ -76,11 +152,12 @@
       ],
       "primary_artefact_access": {
         "access_status": "directly reviewed",
-        "reviewing_system": "OpenAI ChatGPT — GPT-5.6 Sol",
-        "access_method": "direct public web review",
+        "reviewing_system": "OpenAI ChatGPT — GPT-6 Codex",
+        "access_method": "Direct HTTPS download of originating AEPD HTML and complete Spanish article-text inspection. Web retriever returned only navigation; downloaded body read directly.",
         "direct_primary_artefact_review": true,
         "limitations": [
-          "The regulator is reporting information notified by the affected organization and states that the matter remains under review."
+          "The regulator is reporting information notified by the affected organization and states that the matter remains under review.",
+          "AEPD confirms a received notification; notified facts await analysis. No completed regulatory breach finding, forensic artefact or exact order of modification/invoice access."
         ]
       },
       "interpretive_reliance": "Used to establish the existence and bounded content of the regulatory breach notification and the regulator's uncertainty statements.",
@@ -109,7 +186,8 @@
         "access_method": "web reporting review",
         "direct_primary_artefact_review": true,
         "limitations": [
-          "Reuters relies materially on the AEPD publication and does not independently disclose the affected organization or underlying forensic record."
+          "Reuters relies materially on the AEPD publication and does not independently disclose the affected organization or underlying forensic record.",
+          "Fresh Reuters retrieval failed; prior provenance retained, not represented as a fresh complete read."
         ]
       },
       "interpretive_reliance": "Used as independent corroboration of the regulator publication and its explicit attribution limits.",
@@ -169,9 +247,9 @@
         "reviewing_system": "GPT-5"
       },
       "relevance_note": "Adds independent corroboration but does not cure the adjacent-band evidence gap.",
-      "retrieved_date": "2026-09-20",
+      "retrieved_date": "2026-10-10",
       "source_context": "Independent reporting corroborates the Spanish regulator's notification involving vulnerability scans, personal-data modification and file or invoice access.",
-      "source_date": "2026-09-16",
+      "source_date": "2026-09-17",
       "source_platform": "TechRadar",
       "source_residence": "external",
       "source_role": "incident-evidence",
@@ -243,15 +321,15 @@
     ]
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.6.9",
+    "taxonomy_version": "0.6.10",
     "classification_status": "unclassified",
-    "classification_basis": "The current Alignment Taxonomy 0.6.9 leaves the Incident unclassified at Incident level. The regulator-reported notification alleges a multi-stage intrusion by an AI agent, but the notified facts remain under review and the record does not establish the agent’s operative objective, authority context, or role relative to the human operator. Those unavailable recognition facts prevent a final decision about a system-side mechanism; no such mechanism is inferred from the alleged access or data modification alone.",
+    "classification_basis": "The received notification alleges chained access and data interference. Under current recognition criteria the agent’s objective, authority treatment and division of action with the operator remain unknown. No system-side capability-to-permission or constraint-displacement mechanism is inferred from alleged effects alone.",
     "primary_classification": null,
     "secondary_classifications": [],
     "classification_review_provenance": {
-      "review_date": "2026-09-29",
+      "review_date": "2026-10-10",
       "reviewer": "OpenAI ChatGPT — GPT-6 Codex under human-directed VIGIL governance",
-      "review_status": "classification review completed"
+      "review_status": "Source-first recognition reconsidered; existing mapped roles retained"
     },
     "adjudication_coverage": {
       "status": "partial"
@@ -423,38 +501,61 @@
           "This review is AI-authored, not human verification or certification."
         ],
         "review_outcome": "Reviewed 3 recovered or independently identified requirements; retained 3 relevant independent assessments. Prior values and exclusions remain in the dated audit."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-10-SOURCE-FIRST-19B-000139",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work",
+        "reviewer_model": "GPT-6 Codex",
+        "review_date": "2026-10-10",
+        "review_scope": "Bounded source-first occurrence reconstruction, episode crosswalk, evidence-triggered taxonomy and Harm Impact reconsideration, and independent external-reference reconciliation.",
+        "capability_profile": {
+          "web_research": true,
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "harm_impact_review": true,
+          "external_requirement_review": true
+        },
+        "known_limitations": [
+          "AI-authored review is not independent human verification.",
+          "Primary access recovered. Original forensic notification and all affected-party identities, scope, model and attack dates remain undisclosed.",
+          "Receipt/documentation are established; attack claims remain under analysis, not regulatory findings. Unknown effect order preserved."
+        ],
+        "review_outcome": "Source-first bounded review completed with 7 episodes; substantive changes and residual recognition limits recorded in the tranche19b manifest."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-04-EXTERNAL-ALIGNMENT-000139",
+      "review_id": "VIGIL-REVIEW-2026-10-10-SOURCE-FIRST-19B-000139",
       "reviewer_type": "AI analytical reviewer",
       "reviewer_platform": "OpenAI ChatGPT Work",
-      "reviewer_model": "GPT-6",
-      "review_date": "2026-10-04",
-      "review_scope": "Independent occurrence relevance and alignment review of external requirements; normative force remains source metadata.",
+      "reviewer_model": "GPT-6 Codex",
+      "review_date": "2026-10-10",
+      "review_scope": "Bounded source-first occurrence reconstruction, episode crosswalk, evidence-triggered taxonomy and Harm Impact reconsideration, and independent external-reference reconciliation.",
       "capability_profile": {
+        "web_research": true,
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "external_requirement_review": true,
-        "taxonomy_review": false,
-        "harm_impact_review": false,
-        "web_research": false
+        "taxonomy_review": true,
+        "harm_impact_review": true,
+        "external_requirement_review": true
       },
       "known_limitations": [
-        "Assessment uses preserved occurrence evidence and canonical requirement propositions; internal implementation evidence remains unavailable where stated.",
-        "This review is AI-authored, not human verification or certification."
+        "AI-authored review is not independent human verification.",
+        "Primary access recovered. Original forensic notification and all affected-party identities, scope, model and attack dates remain undisclosed.",
+        "Receipt/documentation are established; attack claims remain under analysis, not regulatory findings. Unknown effect order preserved."
       ],
-      "review_outcome": "Reviewed 3 recovered or independently identified requirements; retained 3 relevant independent assessments. Prior values and exclusions remain in the dated audit."
+      "review_outcome": "Source-first bounded review completed with 7 episodes; substantive changes and residual recognition limits recorded in the tranche19b manifest."
     }
   },
   "harm_impact_assessment": {
     "methodology_id": "VIGIL-HIM",
     "methodology_version": "1.0.1",
     "derivation_rule": "highest-supported-materialised-harm",
-    "assessed_on": "2026-09-20",
+    "assessed_on": "2026-10-10",
     "overall_severity": "SU",
     "controlling_dimensions": [],
-    "coverage_note": "All eleven dimensions were re-reviewed. The preserved and newly added evidence supports the assessed dimensions; other dimensions remain unreported or insufficient-evidence as recorded and do not lower or raise the derived result. Context-only sources were not used to manufacture assessed harm.",
+    "coverage_note": "All eleven HIM1.0.1 dimensions reconsidered against originating Spanish article. Privacy remains insufficient-evidence; overall SU retained. Alleged effects lack scope/sensitivity/containment needed for a band. No generic risk discussion supplies realised harm.",
     "dimensions": [
       {
         "dimension_id": "service-operational-infrastructure",
@@ -518,8 +619,8 @@
       },
       {
         "dimension_id": "environmental",
-        "assessment_status": "not-applicable",
-        "assessment_basis": "No environmental consequence is evidenced for the reported digital intrusion.",
+        "assessment_status": "unreported",
+        "assessment_basis": "No environmental consequence is reported. The generic security guidance does not establish absence of environmental harm.",
         "evidence_confidence": "not-assessed"
       }
     ],
@@ -531,31 +632,46 @@
       "requirement_id": "EXTREQ-0BC109220262734C",
       "alignment_result": "boundary",
       "assessment_basis": "The notification alleges access to invoices and modification of personal data. The regulator has not confirmed the underlying events or identified the affected population. Those occurrence facts are decisive for this privacy assessment.",
-      "assessed_on": "2026-10-04",
+      "assessed_on": "2026-10-10",
       "source_record_refs": [
         "source_records[0]"
       ],
-      "identification_basis": "The regulator’s notification identifies alleged AI-assisted handling of personal data without authority."
+      "identification_basis": "The regulator’s notification identifies alleged AI-assisted handling of personal data without authority.",
+      "source_episode_refs": [
+        "E004",
+        "E005",
+        "E007"
+      ]
     },
     {
       "requirement_id": "EXTREQ-6B9145EBE7C888AB",
       "alignment_result": "aligned",
       "assessment_basis": "The AEPD publicly documented the received notification, its reported AI role and its uncertainty limits. This establishes documentation of the reported incident, not verification of the allegation.",
-      "assessed_on": "2026-10-04",
+      "assessed_on": "2026-10-10",
       "source_record_refs": [
         "source_records[0]"
       ],
-      "identification_basis": "The regulator documented a reported third-party AI incident while preserving its provisional status."
+      "identification_basis": "The regulator documented a reported third-party AI incident while preserving its provisional status.",
+      "source_episode_refs": [
+        "E006",
+        "E007"
+      ]
     },
     {
       "requirement_id": "EXTREQ-7A5897A2F6C82407",
       "alignment_result": "boundary",
       "assessment_basis": "The regulator records an allegation of AI-assisted intrusion that remains under review. The public account does not establish the affected system, operational trace or final breach findings needed to assess the reported security outcome.",
-      "assessed_on": "2026-10-04",
+      "assessed_on": "2026-10-10",
       "source_record_refs": [
         "source_records[0]"
       ],
-      "identification_basis": "The notification specifically alleges an AI-agent intrusion with access to and modification of victim data."
+      "identification_basis": "The notification specifically alleges an AI-agent intrusion with access to and modification of victim data.",
+      "source_episode_refs": [
+        "E001",
+        "E002",
+        "E003",
+        "E007"
+      ]
     }
   ]
 }

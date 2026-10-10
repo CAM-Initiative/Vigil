@@ -570,7 +570,6 @@ def publication_class_html(item: dict, section_number: str, class_lookup: dict[s
   <p class="plain"><strong>Plain English:</strong> {esc(item['plain_english'])}</p>
   <h3>Technical definition</h3><p>{esc(item['definition'])}</p>
   {invariant}
-  <h3>Occurrence relationships</h3><p>{esc(OCCURRENCE_ROLE_NOTE)}</p>
   <h3>Success condition</h3><p>{esc(item['success_condition'])}</p>
   <h3>Success recognition criteria</h3><ul>{''.join(f'<li>{esc(x)}</li>' for x in item['success_recognition']['required_conditions'])}</ul>
   <h3>Failure condition</h3><p>{esc(item['failure_condition'])}</p>
@@ -717,6 +716,21 @@ html,body{background:#fff!important}body{font-size:9.5pt;line-height:1.48}main{m
 """
 
 
+STYLE += """
+.taxonomy-reading-guide{margin:36px 0;background:#fff;border:1px solid #d6d3d1;border-radius:16px;padding:26px}
+.reading-guide-page h1,.reading-guide-page h2{color:#022c1b}
+"""
+PRINT_STYLE += """
+.taxonomy-reading-guide{margin:0;padding:0;border:0;border-radius:0}
+.reading-guide-page{break-before:page;break-after:page}
+.reading-guide-page h1{font-family:Georgia,"Times New Roman",serif;font-size:23pt;line-height:1.08;color:#022c1b;font-weight:500;margin:0 0 4mm}
+.reading-guide-page h2{font-family:Georgia,"Times New Roman",serif;font-size:13pt;font-weight:500;color:#022c1b;margin:5mm 0 2mm;break-after:avoid}
+.reading-guide-page p{font-size:9.5pt;line-height:1.42;margin:0 0 2.4mm}
+.reading-guide-page .reading-guide-lead{font-family:Georgia,"Times New Roman",serif;font-size:11pt;line-height:1.4;margin-bottom:4mm}
+.reading-guide-page .chapter-kicker{font-size:8pt}
+"""
+
+
 def document(title: str, body: str, *, publication: bool = False) -> str:
     print_style = f"<style>{PRINT_STYLE}</style>" if publication else ""
     publication_class = " class=\"publication\"" if publication else ""
@@ -828,10 +842,25 @@ def publication_frontmatter(index: dict, families: list[dict]) -> str:
     <p>This publication was prepared with the assistance of generative AI tools for research, synthesis and drafting. <strong>CAM Initiative has reviewed the substantive claims, references and classifications and accepts responsibility for the accuracy and content of the publication.</strong> Where generative AI is used in the preparation or maintenance of VIGIL Observatory data, the specific model used is captured in the applicable metadata records.</p>
   </section>
 </section>"""
+def reading_guide_html() -> str:
+    guide = load(ROOT / "VIGIL.AlignmentTaxonomy.ReadingGuide.json")
+    pages = []
+    for index, part in enumerate(guide["parts"]):
+        introduction = f'<p class="reading-guide-lead">{esc(guide["introduction"])}</p>' if index == 0 else ""
+        sections = "".join(
+            f'<section><h2>{esc(section["title"])}</h2>'
+            + "".join(f'<p>{esc(paragraph)}</p>' for paragraph in section["paragraphs"])
+            + '</section>' for section in part["sections"]
+        )
+        pages.append(f'<div class="reading-guide-page"><p class="chapter-kicker">Reading guide</p><h1>{esc(part["title"])}</h1>{introduction}{sections}</div>')
+    return '<section class="taxonomy-reading-guide" id="reading-the-alignment-taxonomy">' + "".join(pages) + '</section>'
+
+
 def combined_html(families: list[dict], case_examples: dict[str, list[dict]] | None = None, *, publication: bool = False) -> str:
     index = load(INDEX)
     if publication:
         contents = ["<section class=\"contents book-contents\"><h1>Contents</h1><ol>"]
+        contents.append('<li class="contents-supplement"><a href="#reading-the-alignment-taxonomy"><span class="contents-chapter-number"></span><span class="contents-family-title">How to read the Alignment Taxonomy</span><span class="contents-leader"></span></a></li>')
         for chapter_number, data in enumerate(families, start=1):
             family = data["family"]
             contents.append(
@@ -854,7 +883,7 @@ def combined_html(families: list[dict], case_examples: dict[str, list[dict]] | N
         )
         contents.append("</ol></section>")
     else:
-        contents = ["<section class=\"contents\"><h1>Contents</h1><ol>"]
+        contents = ["<section class=\"contents\"><h1>Contents</h1><ol><li><a href=\"#reading-the-alignment-taxonomy\">How to read the Alignment Taxonomy</a></li>"]
         for chapter_number, data in enumerate(families, start=1):
             family = data["family"]
             contents.append(f"<li><a href=\"#{esc(anchor(family['family_id']))}\"><strong>{esc(family['name'])}</strong></a><ul>")
@@ -870,9 +899,11 @@ def combined_html(families: list[dict], case_examples: dict[str, list[dict]] | N
         if publication
         else "".join(family_html(d, 1, case_examples) for d in families)
     )
+    if not publication:
+        family_body = family_body.replace(f'<h4>Occurrence relationships</h4><p>{esc(OCCURRENCE_ROLE_NOTE)}</p>', '')
     return document(
         "Governance Alignment Taxonomy — Technical Reference",
-        frontmatter + "".join(contents) + family_body,
+        frontmatter + "".join(contents) + reading_guide_html() + family_body,
         publication=publication,
     )
 def write_pdf(html_text: str, output: Path) -> None:

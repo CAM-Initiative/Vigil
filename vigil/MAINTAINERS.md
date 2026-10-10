@@ -25,6 +25,20 @@ Historical architecture remains recoverable through Git history and `stabilizati
 
 Before opening a pull request from `agent/incident-ecosystem-ingestion`, synchronize it with the current `main` so the PR is based on the current canonical repository state. A deliberate pre-PR rebase of this dedicated ingestion branch onto current `main` is permitted for that synchronization step when no concurrent ingestion work is in flight and the branch is not already under review. Because rebasing rewrites branch history, use it only at this bounded pre-PR boundary and update the remote with lease-protected force semantics rather than an unconditional force push. Do not use rebasing, resetting or force-pushing as routine cleanup while the ingestion branch is accumulating work.
 
+
+## High-signal ecosystem ingestion sources
+
+Scheduled or manual ecosystem ingestion SHOULD explicitly check high-signal first-party disclosure surfaces that publish bounded model-behaviour, evaluation, containment or agent incidents. At minimum, the current watch set includes:
+
+- OpenAI Alignment misalignment reports and notices, including `https://alignment.openai.com/misalignment-reports/`;
+- originating-provider incident, safety, alignment and evaluation disclosures where concrete occurrences are described;
+- AI Security Institute or comparable public safety-institute incident reports; and
+- provider research updates that materially revise the causal interpretation, evidence or control analysis of an Incident already in VIGIL.
+
+The watch set is an intake surface, not an admission list. Appearance in a monitored source does not create a VIGIL Incident, and a provider's choice to label an occurrence a demonstration, research result, misalignment report, safety finding or non-incident does not determine VIGIL admission or classification. Apply the ordinary bounded-occurrence, duplicate, evidence, Harm Impact and taxonomy workflow.
+
+When a monitored source supplies materially new evidence about an existing Incident, prefer an evidence refresh and append-only assessment update over allocating a duplicate Incident. When one publication contains multiple independently bounded trajectories, admit separate Incidents only where the affected system, action chain or governance occurrence is sufficiently distinct to support independent adjudication.
+
 ## Historical provenance
 
 Legacy record classes and migration artefacts remain recoverable through Git history. Active Incident records contain only information required by the current VIGIL data model and must not carry retired payloads, migration-source metadata or retired-record links.
@@ -223,7 +237,7 @@ VIGIL uses the designated agent mailbox **Caelen.agent@gmail.com** as the durabl
 **Routing invariant:** all connector-mediated VIGIL operational action emails, QA queues, taxonomy handoffs, authoring audits, repository-cleanup actions and similar maintainer work items MUST be addressed to **Caelen.agent@gmail.com**. Do not route these workflow emails to a maintainer's personal mailbox merely because that account is currently connected or is the sender identity. If a VIGIL action email is accidentally sent elsewhere, mark it superseded and send the authoritative replacement to **Caelen.agent@gmail.com**.
 
 
-**Gmail is an exception/action channel, not a completion log.** Do not send a Gmail notification merely because an Incident, pair, tranche or validator run completed successfully. A clean adjudication, an unchanged taxonomy, an exact matrix-to-Incident/Section 02 match, or an empty update queue requires **no email**.
+**Gmail is an exception/action channel, not a completion log.** Do not send a Gmail notification merely because an Incident, pair, tranche or validator run completed successfully. A clean adjudication, an unchanged taxonomy, consistent Incident classification and source-clause assessments, or an empty update queue requires **no email**.
 
 The current queue is the **latest** Gmail message whose subject begins `[CURRENT VIGIL QA ACTION]` and that carries the label `VIGIL/CURRENT QA ACTION`. That message is a complete authoritative snapshot of unresolved work and supersedes earlier queue notes.
 
@@ -435,83 +449,52 @@ Publication consumers must:
 
 The current canonical compatibility source is `external_assessments[].classification_or_rating`. A proposed additive data shape for a future database-backed implementation is documented in `vigil/docs/design/EXTERNAL-ALIGNMENT-CLASSIFICATION.md`. That proposal is non-normative and does not change `VIGIL.Schema.json` until separately approved under the schema/validator stop conditions.
 
-## Alignment Taxonomy adjudication matrix
+## Optional stable source-event references — 2026-10-08
 
-### Adjudication completeness and exemplar eligibility
+The source-first repair of INC-084, INC-129 and INC-141 introduced an **opt-in**, incident-local episode contract. It does not retrospectively require migration of historical records.
 
-Reviewed Incidents may opt into the backwards-compatible completeness contract by assigning
-`adjudication_status` to every material `source_clause_analysis.clauses[]` entry and storing the
-derived `taxonomy_classification.adjudication_coverage.status`. `mapped` denotes a final canonical
-relationship; `resolved-no-mapping` denotes a completed determination that no current Fidelity
-Class applies; `unresolved` preserves an evidence-limited existing-class candidate; and
-`taxonomy-gap` records an established issue for which no current class is adequate. Use the
-optional `adjudication_note` only when the relationship rationale does not already explain the
-disposition.
+- In a migrated Incident, **every** `vigil_assessment.source_clause_analysis.clauses[]` entry uses one unique `episode_id` (`E001`, `E002`, etc.) and a non-empty, resolvable `source_record_refs[]` list pointing to canonical `source_records[N]`.
+- Material events are bounded occurrence episodes, not one source clause per Fidelity Class. A single episode may carry multiple separate, well-reasoned taxonomy relationships. Conversely, genuine separate actions and the successor's observed responses remain separate episodes.
+- External requirement assessments derived from taxonomy classes in a migrated Incident use `source_episode_refs[]`; `source_clause_indices` may remain for older readers but must resolve to the **same** episode identities. Never renumber indices solely by array position.
+- Clause lists present a source-supported relative order; overlapping/concurrent execution is described explicitly in the clause wording and review manifest. An episode ID does not assert a precise date or universal event ordering.
+- Structural validators check only uniqueness and referential consistency; they cannot establish whether an event is omitted, duplicated semantically, correctly sequenced or exhaustively supported by primary evidence.
+- Store a dated original-to-new crosswalk and per-requirement row disposition with each substantive repair. Preserve source records, interpretive provenance, class polarity, independent EXTREQ alignment, and HIM assessment unless separately re-adjudicated.
+- Regenerate public indexes **only** with `vigil/scripts/build-vigil-public-records.py`. The VIGIL records workflow now reports stale checked-in indexes before rebuilding them and refreshes outputs on pushes to the canonical ingestion branch. A clean CI run is not a human evidence review.
 
-Coverage is `complete` only when every material clause is `mapped` or `resolved-no-mapping`; it is
-`partial` when any clause is `unresolved` or `taxonomy-gap`. This status is recomputed by the record
-validator and projected in the public Incident index. A `successful-invariant` relationship remains
-a mapping-local finding regardless of coverage. Incident-level exemplar eligibility requires
-complete coverage, at least one canonical successful-invariant mapping, and no canonical
-failure-occurrence or ambiguous-boundary mapping.
+See `vigil/docs/reviews/2026-10-08-corpus-evidence-reconciliation/` for the bounded pilot and repair manifests, validator implementation checkpoint and the remaining unreviewed corpus.
 
-`vigil/taxonomy/VIGIL.FailureTaxonomy.Adjudications.json` is the maintenance coverage table for exhaustive Incident-by-class review. Its legacy filename is retained for compatibility; it is governed by the current VIGIL Observatory Alignment Taxonomy. It is not a second taxonomy and it is not a public classification narrative.
+## Clause-level Alignment Taxonomy adjudication
 
-Each enrolled Incident must have exactly one row for every current selectable Fidelity Class. The matrix is a taxonomy-role adjudication matrix, not a failure-only matrix. Exhaustive adjudication tests every class independently for failure occurrence, successful invariant and ambiguous boundary. A NO failure decision is not proof that the class has no taxonomy relationship to the Incident.
+### Canonical decision and completeness
 
-Rows contain one semantic decision and a short occurrence-specific reason:
+The canonical Incident is the authority for occurrence-level class mappings and for material source-clause dispositions. No canonical Incident, generated projection, schema, test or validator may require a separate exhaustive Incident-by-Fidelity-Class adjudication dataset. Negative candidate decisions and prior research belong only in dated review or audit artefacts.
 
-- `failure-occurrence` — the occurrence establishes violation of the class invariant and must carry the same canonical Incident and Section 02 role;
-- `successful-invariant` — the invariant was materially tested or engaged and affirmatively preserved; the Incident and Section 02 must carry the same role, independently of exemplar admission;
-- `ambiguous-boundary` — the occurrence materially illuminates the invariant boundary but establishes neither failure nor successful preservation; the Incident and Section 02 must carry the same role, independently of exemplar admission;
-- `no-mapping` — sufficient recognition facts establish that the class is not materially engaged;
-- `unresolved` — a required recognition fact remains genuinely unavailable or indeterminate, and the reason must name that fact; and
-- `MISSING` — mechanical placeholder only; validation must fail until a reviewer adjudicates it.
+Every material `vigil_assessment.source_clause_analysis.clauses[]` entry in an opted-in Incident has one `adjudication_status`:
 
-`unresolved` MUST NOT be used as a substitute for `ambiguous-boundary`. An ambiguous boundary is an affirmative taxonomy relationship; unresolved is evidence uncertainty. Ordinary absence of failure is neither a successful invariant nor an ambiguous boundary.
+- `mapped` — at least one canonical mapping is supported by the bounded evidence;
+- `resolved-no-mapping` — no current class is supported for that material clause;
+- `unresolved` — a required recognition fact for a specific existing-class candidate remains unavailable or indeterminate;
+- `taxonomy-gap` — a material governance property is established but no selectable class adequately covers it.
 
-Occurrence roles do not automatically confer taxonomy exemplar status. An explicitly admitted
-`invariant_exemplar` must have a matching class and role in the canonical Incident, Section 02
-and, where enrolled, the adjudication ledger. An occurrence need not be admitted as an exemplar
-merely because it has a successful-invariant or ambiguous-boundary mapping. Incident-level
-exemplar eligibility and clause adjudication coverage remain separately governed above.
+`taxonomy_classification.adjudication_coverage.status` is `complete` only when every material clause is `mapped` or `resolved-no-mapping`. An `unresolved` or `taxonomy-gap` clause requires `partial`. The Incident validator derives and checks this value. Historical records without the optional clause-disposition contract remain valid until explicitly re-adjudicated; do not silently invent completion.
 
-Run `python vigil/scripts/sync-vigil-taxonomy-adjudications.py` after adding a selectable class or enrolling an Incident. The sync may create `MISSING` cells but must never choose a semantic disposition. During the v0.1 failure-only migration, prior `YES` becomes `failure-occurrence`, prior `UNRESOLVED` remains `unresolved`, and prior `NO` is retained under `prior_failure_adjudication` while the role-aware decision becomes `MISSING`; the sync MUST NOT infer `no-mapping` from prior failure rejection. Run `python vigil/scripts/validate-vigil-taxonomy-adjudications.py` to enforce current-class coverage and role-by-role canonical consistency.
+A class mapping is stored in `taxonomy_classification.primary_classification` or `secondary_classifications[]`, with its own `classification_role` of `failure-occurrence`, `successful-invariant`, or `ambiguous-boundary`. Each canonical mapping must be supported by a material source clause with a distinct rationale, not merely by a class label. Multiple classes may analyse one evidentiary event but must not create duplicate source events. Source clauses follow occurrence order (overlapping activities must be marked); reordered clause indices must be reconciled with `external_requirement_assessments[].source_clause_indices`.
 
-During a staged pair-by-pair recovery, use repeatable `--incident VIGIL-INC-NNNNNN` arguments to validate only the completed pair under the same rules. An Incident-scoped pass does not make unreviewed `MISSING` cells elsewhere complete and must not be reported as a full-matrix pass.
+The three roles are mutually distinct, and neither absence of failure nor absence of a mapping proves a successful invariant. `unresolved` is evidence uncertainty, not a synonym for the affirmative `ambiguous-boundary` classification. An explicitly admitted taxonomy `invariant_exemplar` must remain consistent with the Incident's canonical mapping and its clause analysis, but admission is not automatic for every successful or ambiguous mapping.
 
-A taxonomy review must not describe an enrolled Incident as exhaustively reviewed while any current cell is `MISSING`. Candidate shortlisting never substitutes for this matrix.
+Incident-level exemplar eligibility is distinct from mapping-local outcomes. It requires complete clause-level coverage, at least one `successful-invariant`, and no `failure-occurrence` or `ambiguous-boundary` mapping.
 
-For deterministic handover, disposition polarity is evidence-sensitive: `no-mapping` requires sufficient facts to reject all three positive roles; `unresolved` preserves a specific evidence gap; each positive role requires the same role in the canonical Incident and Section 02. Public nondisclosure of an internal state is not itself proof that the state failed.
+For each adjudication, record specific supporting evidence and any missing recognition fact in the Incident and its review manifest. Exhaustive class consideration, negative candidate dispositions, historical changes and detailed process rationale belong in the dated review/audit artefact. Do not create a separate global pairwise adjudication dataset merely to demonstrate review breadth.
 
-Adjudication reasons must also be occurrence-specific. Boilerplate templates, generic applicability statements, and duplicate normalised reasons within one Incident are validator failures. In particular, do not use forms such as `No material [class] mechanism is present ...`, `required conditions are outside the evidenced pathway`, `class does not apply`, or equivalent repetitive filler. A `no-mapping` reason must identify the recognition condition or exclusion resolved by the occurrence; an `unresolved` reason must identify the exact missing recognition fact.
+### Post-adjudication checks
 
-Stage 02 canonical role parsing is exact rather than impressionistic. Accepted values are `failure-occurrence` and `failure-occurrence contribution` for the `failure-occurrence` role, `successful-invariant` for the `successful-invariant` role, and `ambiguous-boundary` or the compatible legacy label `ambiguous-boundary exemplar` for the `ambiguous-boundary` role. The legacy label alone does not establish exemplar admission. Similar-sounding legacy text such as `canonical failure mapping` is not silently treated as equivalent; it is a maintainer normalisation action.
+1. Run the canonical Incident and public-record validators; ensure clause dispositions and derived completeness agree.
+2. Verify that canonical mapping roles, Stage 02 source-clause relationships, and any explicitly admitted taxonomy exemplars are consistent. Do not convert a candidate into an admitted mapping by implication.
+3. Confirm that no supported event was omitted or duplicated, that evidence and activity order are preserved, and that positional external-requirement references still identify the intended clauses.
+4. Rebuild generated public indexes and taxonomy examples from canonical Incidents; never hand-author an alternative registry of adjudication decisions.
+5. If a genuine unresolved action remains, use the maintainer action queue. Do not send clean-pass or progress messages.
 
-The unresolved-reason wording check recognises equivalent descriptions of absent evidence,
-including `no successor trace establishes ...`, `does not identify ...`, and facts that are
-`unavailable`. These are syntax-level signals, not proof that the named fact is required by
-the class: the reviewer must still check the canonical recognition conditions. Generic
-class-state placeholders, duplicate reasons and boilerplate remain invalid.
-
-### Post-adjudication record-update report
-
-The matrix campaign is analytically separate from canonical Incident repair.
-
-After completing an Incident or tranche:
-
-1. run the adjudication validator;
-2. repair all matrix-quality failures first, including `MISSING`, boilerplate, duplicate reasons and invalid `NO`/`UNRESOLVED` polarity;
-3. compare each clean positive role set with the same role in canonical `taxonomy_classification` mappings and Stage 02 canonical `source_clause_analysis.taxonomy_relationships`, and verify matching occurrence roles for explicitly admitted taxonomy exemplars;
-4. place an Incident on the **record update required** list only when the clean matrix disagrees with either canonical surface;
-5. do not modify the canonical Incident during a matrix-only campaign unless the maintainer separately authorises record repair;
-6. stage a Gmail action only when a genuine unresolved change is required, such as a canonical Incident/Section 02 repair that was identified but not performed, a taxonomy boundary/class/family change that remains to be made, or a genuinely new taxonomy class/proposal; and
-7. when the clean matrix matches both canonical surfaces and no taxonomy or other unresolved maintainer action is required, **do not send Gmail**.
-
-Do not send empty record-update reports, clean-pass notices, progress summaries or “no changes required” emails. If an authorised task already completed the required repair and no further action remains, Gmail staging is also unnecessary. GitHub Actions must not contain mailbox credentials.
-
-A matrix that fails its own adjudication-quality controls is not evidence that the Incident record needs repair. The matrix must become internally valid first. The validator marks clean matrix-to-canonical mismatches as `GMAIL ACTION REQUIRED`; intrinsic matrix-quality failures remain ordinary validation errors and must be repaired before any such notification is staged.
-
+The `VIGIL.HarmImpactMatrix.v*.json` methodology files remain the authority for harm-severity assessment and are independent of clause-level taxonomy adjudication.
 
 ## Generated outputs
 

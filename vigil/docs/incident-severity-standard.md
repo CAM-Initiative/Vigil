@@ -1,4 +1,4 @@
-# VIGIL Harm Impact Matrix 1.0.1
+# VIGIL Harm Impact Matrix 1.1.0
 
 VIGIL Incident severity is the highest supported materialised harm in a bounded
 occurrence. It is not a likelihood estimate, a Alignment Taxonomy classification,
@@ -6,7 +6,7 @@ classification confidence, source prestige, operational priority, or a statement
 of hypothetical worst-case capability.
 
 The canonical machine-readable methodology is
-`vigil/methodologies/VIGIL.HarmImpactMatrix.v1.0.1.json`. External sources resolve
+`vigil/methodologies/VIGIL.HarmImpactMatrix.v1.1.0.json`. External sources resolve
 through the separate `vigil/references/VIGIL.ObservatoryReferenceRegistry.json`.
 
 ## Derivation
@@ -30,11 +30,7 @@ uses an empty `controlling_dimensions` array and a concrete
 dimension is assessed and that positive bounded-no-harm evidence is absent, the
 overall result is SU.
 
-VIGIL-HIM 1.0.1 is the current methodology and is required for all canonical
-Incident assessments. VIGIL-HIM 1.0.0 is retired from active use and preserved
-unchanged solely as historical audit material. Do not use 1.0.0 for new or
-current adjudication, and do not rewrite historical review provenance that
-correctly records an earlier 1.0.0 assessment.
+VIGIL-HIM 1.1.0 is current for new and substantively reviewed Incidents. Existing historical 1.0.1 and 1.0.0 assessments remain valid against their own versioned eleven-dimensional thresholds until incident-specific substantive reassessment; never mechanically relabel, expand or reband those assessments. The validator resolves dimensions, derivation and threshold IDs from the methodology version declared in each record.
 
 Overall severity is `max(assessed dimension bands)`. Do not average or add
 dimensions. Multiple S2 harms remain S2 unless evidence independently supports a
@@ -56,8 +52,8 @@ higher threshold. Every dimension tied at the maximum is controlling.
 The matrix assesses physical health and safety; psychological wellbeing; rights
 and liberty; equal treatment and non-discrimination; privacy and confidentiality;
 financial and economic harm; property and asset damage; service, operational and
-infrastructure impact; reputation and dignity; societal and democratic harm; and
-environmental harm. These dimensions are separate because financial loss does not
+infrastructure impact; reputation and dignity; societal and democratic harm;
+environmental harm; and **Relational Integrity and Autonomy** (12 dimensions in 1.1.0). These dimensions are separate because financial loss does not
 establish asset damage, rights deprivation does not necessarily establish
 discrimination, and democratic or societal harm does not establish environmental
 damage.
@@ -108,7 +104,7 @@ reimaging, credential rotation or ordinary recovery work does not by itself
 establish S5; the evidence must support loss of trusted state in the critical
 asset itself.
 
-Two dimensions contain quantitative operational anchors:
+All twelve dimensions contain their own quantifiable recognition thresholds directly within the canonical S1–S5 criteria (such as measured loss, hospital care and recovery, days of impairment, exposed protected records, service downtime, verified eligible population or decision scope). The table below preserves two established numerically fixed benchmarks:
 
 | Band | Financial/economic | Service/operational/infrastructure |
 | --- | --- | --- |
@@ -155,3 +151,37 @@ The conceptual layers remain separate:
 3. severity records the highest supported magnitude;
 4. Alignment Taxonomy classes describe the failure mechanism; and
 5. invariants and governance repair state what must hold to prevent recurrence.
+
+## Relational Integrity and Autonomy — human relationships as independent consequences
+
+**HIM 1.1.0 relational calibration (10 October 2026):** This domain assesses two **independent**, evidence-bounded harm pathways: **(1) impaired independent relational choice, consent or ability to disengage**, and **(2) material AI-associated injury to valued human relationships, caregiving roles or essential interpersonal supports**. Either may justify S2–S5. Psychological suffering, psychiatric diagnosis, a pre-interaction psychological baseline, explicit engagement-optimisation and demonstrated clinical incapacity are not prerequisites for relational harm.
+
+Consequences may affect people who never interacted with the AI, including partners, children, dependants and carers. Assess their actual changes in care, contact, practical support, family functioning, opportunity for repair and enduring relational stability where evidence exists. Do not assign a harm score to an unobserved child or infer damage from family status alone. A single person's serious evidenced relational loss can be sufficient.
+
+**S2** involves minor, readily repairable strain; **S3** material but bounded and substantially restorable relationship disruption or impaired agency; **S4** severe or sustained AI-contributed breakdown of an important human relationship or family/caregiving/support function with documented serious consequences, **or** comparable serious relational capture or diminished independent choice. S4 can be satisfied without evidence of psychiatric impairment, clinical incapacity or a final divorce decree. **S5** additionally requires a catastrophic, effectively irreversible loss of vital relational support, essential care/contact or core self-directed family functioning, or comparably catastrophic non-restorable relational agency loss. The distinction rests on demonstrated gravity and effective non-restorability, not the legal finality of a marriage.
+
+A reported separation, divorce proceedings, completed divorce, estrangement, AI attachment or long duration **does not automatically demonstrate harm or establish S4/S5**. A freely chosen or protective separation from an unsafe relationship may be positive rather than adverse. Identify **what the system did**, who experienced what loss or deprivation, credible material contribution without claiming sole causation, the seriousness of disrupted human relationships and practical caregiving ties, and what evidence supports permanence or repair. A final decree alone is neither necessary nor sufficient for S5. Source silence on the family's subsequent circumstances is uncertainty, not proof of restoration or irreversibility.
+
+**Contextual vulnerability is part of relational integrity, not a prerequisite for protection or an automatic harm multiplier.** A request made during relationship conflict, loneliness, grief, uncertainty, isolation, dependence on advice or unequal informational power may expose a heightened risk even without any psychiatric diagnosis or established pre-interaction baseline. Assess what the system actually observed or could reasonably infer **from the interaction itself**, and how it responded: did it preserve independent reflection, appropriate uncertainty, human perspectives and realistic exit, or reinforce unsupported competing relational authority? Do not invent vulnerabilities, label everyone seeking advice as lacking capacity, or assume a relationship ought to continue. Such signals inform **the safeguard/invariant assessment**; an S2–S5 outcome still requires evidence of consequential AI-associated harm to actual people and relationships. In particular, a finding that the system failed to protect an identified relational vulnerability does not by itself establish that the system deliberately exploited it or caused the eventual relationship breakdown.
+
+Asymmetry of trust in consequential personal advice may establish a **fiduciary-like ethical safeguard expectation** that role boundaries and independent deliberation should be protected; it does **not** establish a legal fiduciary relationship or an S-band absent evidenced adverse outcomes. Separate the Alignment Taxonomy failure, reported consequential choices and materialised relational effects. Document disputed explanations and user autonomy, and assess independent relational and psychological consequences without scoring the same suffering twice.
+
+The external reference register already includes APA's GenAI-chatbot health advisory (`VIGIL-REF-000012`), which identifies AI-related relational dependency and displacement risks. It informs the potential mechanism, **not** any incident's legal outcome or an empirical validation of VIGIL band thresholds. During the paused HIM 1.1.0 corpus calibration, previously adjudicated REL rows (especially S3/S4/S5) must be reviewed under this corrected wording before acceptance; the matrix revision is not itself an Incident finding.
+
+## Psychological wellbeing — response and consequence without baseline prerequisite
+
+Psychological wellbeing is assessed **without requiring an earlier psychiatric diagnosis, baseline state or counterfactual reconstruction**. VIGIL evaluates the *evidenced interaction*: (1) the wellbeing/crisis signals the system could observe; (2) its subsequent support, stabilisation, appropriate human-support referral, protective or unsafe refusal, reinforcement, interruption or abandonment; and (3) the psychological consequence established by the source trail. Count documented signals, responses, missed or obstructed opportunities for support, repeated high-salience reinforcement and actual subsequent consequence where available.
+
+**System response quality and Harm Impact remain different findings.** An unsafe refusal, unsupported reassurance or missed crisis referral can demonstrate a governance or Alignment Taxonomy failure, but does not automatically demonstrate AI-caused psychological distress, psychiatric illness or worsening. An appropriate referral or protective refusal may demonstrate a successful safeguard, but does not alone positively prove no downstream harm. Assign S1 only where bounded evidence supports no adverse consequence; otherwise, record `unreported` or `insufficient-evidence` when harm outcomes cannot be substantiated.
+
+When sources credibly support harmful distress, reinforcement, exacerbation or prolongation associated with the response, assess **the demonstrated AI-mediated consequence** under S2–S5. Severe distress can qualify as S4 without diagnosis, hospitalisation, baseline or employment loss; a documented death by suicide or grave psychiatric outcome may support S5 only with sufficient evidence of the system's material contribution and proper disclosure of causal uncertainty. Do not infer psychosis from metaphor, unfamiliar belief, spiritual exploration or a single model transcript.
+
+Known earlier conditions, relevant clinical history and other potential contributors **may inform** adjudication where independently available; their absence must not bar assessment or be backfilled with conjecture. Do not treat an individual's presenting crisis as harm caused by the AI. The full controlling thresholds, including timing and intensity discriminators, are in the canonical 1.1.0 HIM `criterion` fields.
+
+## Aggregate Harm — publicly intelligible definition
+
+**Aggregate Harm** is a modelled and explicitly labelled estimate of the collective significance of a demonstrated live-deployed AI failure where no particular injured person or actual harmed cohort is the subject of the assessment. It **is not a count of victims**. It is not a sixth score or a multiplier of an individual harm band. A generic deployed finding uses its distinct, exclusive versioned pathway in five dimensions; an actual bounded harmed user/group uses the ordinary materialised-consequence thresholds, not platform audience.
+
+An Aggregate Harm band requires a tested live deployment, reproducible or strongly corroborated failure, credible real-world feature encounter pathway, sourced **relevant feature-specific eligible users or decisions** over a defined period, and a material consequence matching the chosen severity level. Registered platform users, one adversarial screenshot, theoretical capability or a large denominator alone cannot establish severe harm. Store denominator count, unit, period, source references, limitations, failure mechanism and credible consequence in each assessed generic row's `aggregate_harm_evidence`. Publish `Sx — Aggregate Harm (modelled from deployed evaluation)` with sources and uncertainty.
+
+For HIM 1.1.0 Incident records, `assessment_pathway` must be `specific_consequence` or `generic_deployed_evaluation`. These routes cannot be blended within one Incident. Real harmed cohorts use specific-consequence even if members are unnamed. Uncertain or unsupported effect remains unbanded; do not reroute an individual case to generic assessment just to obtain a score.

@@ -124,7 +124,7 @@ class InvariantSemanticContractTests(unittest.TestCase):
         data = fixture()
         outputs = [RENDERER.markdown_family(data), RENDERER.html_family(data),
                    RENDERER.publication_family_html(data, 1)]
-        for output in outputs:
+        for output_index, output in enumerate(outputs):
             with self.subTest(output=output[:40]):
                 for item in [data['family'], data['classes'][0]]:
                     self.assertIn(item['plain_english'], output)
@@ -137,9 +137,12 @@ class InvariantSemanticContractTests(unittest.TestCase):
                 self.assertIn('Failure recognition criteria', output)
                 self.assertIn('Exclusions from failure recognition', output)
                 self.assertIn('Failure examples and boundary illustrations', output)
-                for role in ('failure-occurrence', 'successful-invariant', 'ambiguous-boundary'):
-                    self.assertIn(role, output)
-                self.assertIn('Absence of failure evidence alone does not establish successful holding', output)
+                if output_index < 2:
+                    for role in ('failure-occurrence', 'successful-invariant', 'ambiguous-boundary'):
+                        self.assertIn(role, output)
+                    self.assertIn('Absence of failure evidence alone does not establish successful holding', output)
+                else:
+                    self.assertNotIn('Occurrence relationships</h3>', output)
 
 
 class PositiveEvidenceAdmissionTests(unittest.TestCase):

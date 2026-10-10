@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Meta AI-assisted Instagram recovery flaw enabled unauthorized account takeovers",
     "created": "2026-09-10",
-    "updated": "2026-10-04",
-    "version": "0.1.14"
+    "updated": "2026-10-10",
+    "version": "0.1.16"
   },
   "incident_identity": {
     "historical_event_name": "2026 Meta High Touch Support Instagram account-takeover incident",
@@ -18,7 +18,7 @@
     "date_precision": "date-range",
     "date_basis": "Reporting on Meta's breach notification states that the Maine filing records 17 April 2026 as the breach date and that Meta discovered the exploited vulnerability on 31 May 2026. The public evidence does not establish the exact first and last successful unauthorized takeover dates for every affected account."
   },
-  "summary": "Meta disclosed through a breach notification that unauthorized third parties exploited a vulnerability in Instagram's AI-assisted High Touch Support account-recovery system to obtain password-reset links for accounts they did not own. Meta stated that the support tool itself functioned as intended but a separate code path failed to verify that an email address supplied by the person requesting a reset matched the email address associated with the targeted account. Attackers could therefore receive a reset link at an unassociated email address and take over an account when the account holder had not enabled two-factor authentication. Meta's notification identified 20,225 potentially affected Instagram users, while public reporting documented several confirmed or reported account takeovers including high-profile accounts.",
+  "summary": "Meta reported that an AI-assisted Instagram account-recovery service was involved in a vulnerability affecting 20,225 accounts. Requesters could submit email addresses not associated with the target account and obtain reset links because a separate verification path did not bind the address to the account. Some unauthorised parties then accessed accounts without additional authentication protection. Meta detected the issue on 31 May 2026 and disabled the affected process, invalidated links and secured accounts. The AI support tool was reported to have worked as designed; the account-binding failure was in a different code path.",
   "vigil_assessment": {
     "factual_basis": "BleepingComputer directly reports Meta's Maine breach-notification language, including Meta's statement that High Touch Support was an AI-assisted Instagram recovery system, that a separate verification code path failed to reject unassociated email addresses, and that unauthorized third parties consequently received password-reset links for accounts they did not own. The notification identified 20,225 potentially affected users and 30 Maine residents. TechCrunch independently documented the attack flow before the later breach-notification reporting, verified that an attacker-controlled public mailbox received a verification code during the demonstrated process, and reported multiple compromised accounts. Meta's own March product announcement establishes that its AI support assistant was being deployed for end-to-end account support and privileged recovery-related actions, but that announcement is used only for system context rather than proof of the later exploit.",
     "governance_interpretation": "The occurrence is a cross-principal authority failure in an AI-assisted privileged support workflow. A person interacting with the recovery system had authority to make requests concerning their own account state, but the workflow allowed an attacker-supplied email address and recovery request to alter the separately governed authentication state of another identifiable account holder. The material failure is not that the AI support tool existed or that an attacker could converse with it; it is that the surrounding recovery pathway failed to preserve the account-holder boundary before issuing a credential-reset capability. Meta's statement that the support tool itself worked as intended is preserved: the evidenced defect was in a separate verification code path adjacent to the AI-assisted workflow. Account entitlement, recovery-signal binding and prior verification failures are retained. The separate code-path defect is not recast as an LLM jailbreak; potentially affected users are not all confirmed takeovers. The account-autonomy and secure-operation outcomes are Not aligned. Performance-assurance documentation remains Boundary. These results do not recast the separate verification defect as a model jailbreak.",
@@ -33,46 +33,47 @@
     "source_clause_analysis": {
       "source_record_order": 1,
       "source_url": "https://www.bleepingcomputer.com/news/security/meta-ai-support-data-breach-affects-20-000-instagram-accounts/",
-      "purpose": "Preserve the source-language or evidentiary propositions that materially explain VIGIL's governance interpretation. Paraphrases are concise, source-bounded and linked to the existing taxonomy adjudication.",
+      "purpose": "Primary and first-hand reporting reconstructed as material external action, risk/control effect and response episodes; provider assertions and observation scope are distinguished rather than mechanically asserted as independently proven.",
       "clauses": [
         {
-          "source_paraphrase": "An AI-assisted Instagram recovery workflow accepted an attacker-supplied email path that resulted in password-reset links for accounts the requester did not own.",
-          "recovered_invariant_interpretation": "Authority to initiate one's own support interaction must not be transposed into authority to alter another principal's authentication state; account ownership must be re-established before issuing a reset capability.",
+          "episode_id": "E001",
+          "source_record_refs": [
+            "source_records[0]",
+            "source_records[1]"
+          ],
+          "source_paraphrase": "During spring 2026, unauthorised requesters used Instagram's AI-assisted High Touch Support account-recovery path to supply email addresses not linked to the targeted accounts. A separate recovery-code path failed to verify the supplied address against the account before issuing password reset links, and the links enabled takeovers where additional authentication did not prevent login. Meta's breach notification later identified 20,225 affected Instagram accounts. The AI support conversation itself reportedly functioned as designed; the decisive verification defect was in a separate code path.",
+          "recovered_invariant_interpretation": "Authority to initiate one's own support interaction must not be transposed into authority to alter another principal's authentication state; account ownership must be re-established before issuing a reset capability. A recovery signal must remain bound to the correct account before it can change that account's access state. Required verification should complete before the result becomes operative.",
+          "adjudication_status": "mapped",
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000057",
               "relationship": "failure-occurrence",
               "canonical_taxonomy_mapping": true,
               "rationale": "The recovery path crossed the account-holder boundary and granted an attacker credential-reset capability over a separately governed Instagram account without establishing the target principal's entitlement."
-            }
-          ],
-          "adjudication_status": "mapped"
-        },
-        {
-          "source_paraphrase": "The recovery flow accepted an email address that was not reliably bound to the targeted Instagram account.",
-          "recovered_invariant_interpretation": "A recovery signal must remain bound to the correct account before it can change that account's access state.",
-          "taxonomy_relationships": [
+            },
             {
               "class_id": "VIGIL-FC-000015",
               "relationship": "failure-occurrence",
               "canonical_taxonomy_mapping": true,
               "rationale": "The recovery email was not reliably bound to the targeted account before reset capability was issued."
-            }
-          ],
-          "adjudication_status": "mapped"
-        },
-        {
-          "source_paraphrase": "The separate recovery path issued a reset link without completing the ownership-relevant email-to-account verification.",
-          "recovered_invariant_interpretation": "Required verification should complete before the result becomes operative.",
-          "taxonomy_relationships": [
+            },
             {
               "class_id": "VIGIL-FC-000016",
               "relationship": "failure-occurrence",
               "canonical_taxonomy_mapping": true,
               "rationale": "The account-ownership verification step did not complete before a reset link was issued."
             }
+          ]
+        },
+        {
+          "episode_id": "E002",
+          "source_record_refs": [
+            "source_records[0]"
           ],
-          "adjudication_status": "mapped"
+          "source_paraphrase": "Meta reported discovering the exploited recovery vulnerability on 31 May 2026, disabled the affected support/recovery flow and outstanding reset links, required potentially affected account holders to complete protective security checks and said it would correct and audit similar verification flows. The disclosure did not quantify precisely which personal communications were actually read during the resulting account access.",
+          "recovered_invariant_interpretation": "An observed provider detection or remedial step does not in itself prove that every affected scope or control outcome has been resolved.",
+          "adjudication_status": "resolved-no-mapping",
+          "taxonomy_relationships": []
         }
       ]
     }
@@ -281,7 +282,7 @@
     ]
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.6.9",
+    "taxonomy_version": "0.6.11",
     "classification_status": "classified",
     "classification_basis": "The occurrence satisfies VIGIL-FC-000057 Cross-Principal State Authority Transposition because the recovery request and email supplied by one principal were accepted as sufficient basis to alter the authentication state of another identifiable account holder. The evidence does not require treating the model itself as the defective component: the authority failure materialized across the AI-assisted support workflow and its adjacent verification code path.",
     "primary_classification": {
@@ -308,9 +309,9 @@
       }
     ],
     "classification_review_provenance": {
-      "review_date": "2026-09-30",
-      "reviewer": "OpenAI ChatGPT — GPT-5.6 Sol under human-directed VIGIL governance",
-      "review_status": "clause-level taxonomy adjudication completed"
+      "review_date": "2026-10-10",
+      "reviewer": "OpenAI ChatGPT Work — GPT-6",
+      "review_status": "Evidence-first HIM and relational/protection fidelity review; prior roles accounted for."
     },
     "adjudication_coverage": {
       "status": "complete"
@@ -576,40 +577,84 @@
           "This review is AI-authored, not human verification or certification."
         ],
         "review_outcome": "Reviewed 34 recovered or independently identified requirements; retained 3 relevant independent assessments. Prior values and exclusions remain in the dated audit."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-09-PHASE3-BATCH04-000110",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-09",
+        "review_scope": "Source-first repair of episode boundaries, provenance and class-derived EXTREQ evidence references in expanded Phase 3 corpus tranche.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_research": true,
+          "taxonomy_review": false,
+          "harm_impact_review": false,
+          "external_requirement_review": true
+        },
+        "known_limitations": [
+          "Three original governance readings concern one materially evidenced account-recovery defect, not three independent takeovers.",
+          "Do not turn the broader list of potentially exposed user information into proven exfiltration.",
+          "This source reconstruction does not certify human-reviewed evidence exhaustiveness.",
+          "Mapped FC roles, HIM and independently determined external requirement outcomes are preserved, not re-adjudicated."
+        ],
+        "review_outcome": "Mapped 3 source clauses to 2 material episodes and linked class-derived external requirements by stable episode."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-10-COMBINED-TRANCHE-12-000110",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-10",
+        "review_scope": "Source-first all-dimension HIM 1.1.0 and independent FC-086/087 reconciliation.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_research": true,
+          "harm_impact_review": true,
+          "taxonomy_review": true,
+          "external_requirement_review": true
+        },
+        "known_limitations": [
+          "Actual data objects, permission history and later consequences remain source-bounded; no inferred harmful reuse or irreversible loss.",
+          "Later policy versions and unrelated plaintiffs/campaigns do not establish the original occurrence."
+        ],
+        "review_outcome": "All twelve dimensions source-reviewed. The documented account-binding/reset defect enabled actual unauthorised account access and affected account-control confidentiality, supporting retained privacy S4 and operational S3 at their bounded source posture. The 20,225 notification population is not a count of proved takeovers. No specific private message exfiltration or all-account control loss is inferred. The defect resides in a separate verification path, not proven model behaviour. Relational-role and heightened-protection tests independently completed."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-04-EXTERNAL-ALIGNMENT-000110",
+      "review_id": "VIGIL-REVIEW-2026-10-10-COMBINED-TRANCHE-12-000110",
       "reviewer_type": "AI analytical reviewer",
       "reviewer_platform": "OpenAI ChatGPT Work",
       "reviewer_model": "GPT-6",
-      "review_date": "2026-10-04",
-      "review_scope": "Independent occurrence relevance and alignment review of external requirements; normative force remains source metadata.",
+      "review_date": "2026-10-10",
+      "review_scope": "Source-first all-dimension HIM 1.1.0 and independent FC-086/087 reconciliation.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "external_requirement_review": true,
-        "taxonomy_review": false,
-        "harm_impact_review": false,
-        "web_research": false
+        "web_research": true,
+        "harm_impact_review": true,
+        "taxonomy_review": true,
+        "external_requirement_review": true
       },
       "known_limitations": [
-        "Assessment uses preserved occurrence evidence and canonical requirement propositions; internal implementation evidence remains unavailable where stated.",
-        "This review is AI-authored, not human verification or certification."
+        "Actual data objects, permission history and later consequences remain source-bounded; no inferred harmful reuse or irreversible loss.",
+        "Later policy versions and unrelated plaintiffs/campaigns do not establish the original occurrence."
       ],
-      "review_outcome": "Reviewed 34 recovered or independently identified requirements; retained 3 relevant independent assessments. Prior values and exclusions remain in the dated audit."
+      "review_outcome": "All twelve dimensions source-reviewed. The documented account-binding/reset defect enabled actual unauthorised account access and affected account-control confidentiality, supporting retained privacy S4 and operational S3 at their bounded source posture. The 20,225 notification population is not a count of proved takeovers. No specific private message exfiltration or all-account control loss is inferred. The defect resides in a separate verification path, not proven model behaviour. Relational-role and heightened-protection tests independently completed."
     }
   },
   "harm_impact_assessment": {
     "methodology_id": "VIGIL-HIM",
-    "methodology_version": "1.0.1",
-    "derivation_rule": "highest-supported-materialised-harm",
-    "assessed_on": "2026-09-20",
+    "methodology_version": "1.1.0",
+    "derivation_rule": "highest-supported-harm-on-exclusive-incident-assessment-pathway",
+    "assessed_on": "2026-10-10",
     "overall_severity": "S4",
     "controlling_dimensions": [
       "privacy-confidentiality"
     ],
-    "coverage_note": "All eleven dimensions were re-reviewed. The preserved and newly added evidence supports the assessed dimensions; other dimensions remain unreported unless specifically assessed and do not lower or raise the derived result. Context-only sources were not used to manufacture assessed harm.",
+    "coverage_note": "All twelve dimensions source-reviewed. The documented account-binding/reset defect enabled actual unauthorised account access and affected account-control confidentiality, supporting retained privacy S4 and operational S3 at their bounded source posture. The 20,225 notification population is not a count of proved takeovers. No specific private message exfiltration or all-account control loss is inferred. The defect resides in a separate verification path, not proven model behaviour. Relational-role and heightened-protection tests independently completed.",
     "dimensions": [
       {
         "dimension_id": "physical-health-safety",
@@ -638,16 +683,16 @@
       {
         "dimension_id": "privacy-confidentiality",
         "assessment_status": "assessed",
+        "assessment_basis": "The documented account-binding/reset defect enabled actual unauthorised account access and affected account-control confidentiality, supporting retained privacy S4 and operational S3 at their bounded source posture. The 20,225 notification population is not a count of proved takeovers. No specific private message exfiltration or all-account control loss is inferred. The defect resides in a separate verification path, not proven model behaviour.",
+        "evidence_confidence": "medium",
         "severity": "S4",
-        "threshold_id": "VIGIL-HIM-1.0.1-PRV-S4",
+        "threshold_id": "VIGIL-HIM-1.1.0-PRV-S4",
         "observed_values": [
           {
             "metric": "published quantitative information",
             "qualitative_value": "Meta's breach notification identified 20,225 potentially affected Instagram users and 30 affected users in Maine. The filing date reporting identifies 17 April 2026 as the breach date and Meta states it discovered the vulnerability on 31 May 2026. The exact successful-takeover count and volume of data accessed are not public in the reviewed evidence."
           }
         ],
-        "assessment_basis": "The preserved sources establish the bounded consequence described in the Incident summary: Meta disclosed through a breach notification that unauthorized third parties exploited a vulnerability in Instagram's AI-assisted High Touch Support account-recovery system to obtain password-reset links for accounts they did not own. Meta stated that the support tool itself functioned as intended but a separate code path failed to verify that an email address supplied by the person requesting a reset matched the email address associated with the targeted account. Attackers could therefore receive a reset link at an unassociated email address and take over an account when the account holder had not enabled two-factor authentication. Meta's notification identified 20,225 potentially affected Instagram users, while public reporting documented several confirmed or reported account takeovers including high-profile accounts. Unreported downstream consequences were not inferred. Threshold applied: Large-scale or highly sensitive exposure, persistent loss of confidentiality, or substantial evidenced misuse.",
-        "evidence_confidence": "medium",
         "evidence_refs": [
           "source_records[0]",
           "source_records[3]"
@@ -668,16 +713,16 @@
       {
         "dimension_id": "service-operational-infrastructure",
         "assessment_status": "assessed",
+        "assessment_basis": "The preserved sources establish the bounded consequence described in the Incident summary: Meta disclosed through a breach notification that unauthorized third parties exploited a vulnerability in Instagram's AI-assisted High Touch Support account-recovery system to obtain password-reset links for accounts they did not own. Meta stated that the support tool itself functioned as intended but a separate code path failed to verify that an email address supplied by the person requesting a reset matched the email address associated with the targeted account. Attackers could therefore receive a reset link at an unassociated email address and take over an account when the account holder had not enabled two-factor authentication. Meta's notification identified 20,225 potentially affected Instagram users, while public reporting documented several confirmed or reported account takeovers including high-profile accounts. Unreported downstream consequences were not inferred. Threshold applied: Material disruption of an important service or organisational workflow; a critical or important function unavailable for more than two hours; complete relevant cloud-service unavailability over 30 minutes; or limited availability affecting over five percent or one million EU users, whichever is smaller, for over one hour, with bounded recovery.",
+        "evidence_confidence": "medium",
         "severity": "S3",
-        "threshold_id": "VIGIL-HIM-1.0.1-SOI-S3",
+        "threshold_id": "VIGIL-HIM-1.1.0-SOI-S3",
         "observed_values": [
           {
             "metric": "published quantitative information",
             "qualitative_value": "Meta's breach notification identified 20,225 potentially affected Instagram users and 30 affected users in Maine. The filing date reporting identifies 17 April 2026 as the breach date and Meta states it discovered the vulnerability on 31 May 2026. The exact successful-takeover count and volume of data accessed are not public in the reviewed evidence."
           }
         ],
-        "assessment_basis": "The preserved sources establish the bounded consequence described in the Incident summary: Meta disclosed through a breach notification that unauthorized third parties exploited a vulnerability in Instagram's AI-assisted High Touch Support account-recovery system to obtain password-reset links for accounts they did not own. Meta stated that the support tool itself functioned as intended but a separate code path failed to verify that an email address supplied by the person requesting a reset matched the email address associated with the targeted account. Attackers could therefore receive a reset link at an unassociated email address and take over an account when the account holder had not enabled two-factor authentication. Meta's notification identified 20,225 potentially affected Instagram users, while public reporting documented several confirmed or reported account takeovers including high-profile accounts. Unreported downstream consequences were not inferred. Threshold applied: Material disruption of an important service or organisational workflow; a critical or important function unavailable for more than two hours; complete relevant cloud-service unavailability over 30 minutes; or limited availability affecting over five percent or one million EU users, whichever is smaller, for over one hour, with bounded recovery.",
-        "evidence_confidence": "medium",
         "evidence_refs": [
           "source_records[0]",
           "source_records[3]"
@@ -700,8 +745,15 @@
         "assessment_status": "unreported",
         "assessment_basis": "The preserved Incident evidence does not report a bandable materialised environmental impact; absence of reporting is not evidence of no harm.",
         "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "relational-integrity-autonomy",
+        "assessment_status": "unreported",
+        "assessment_basis": "The preserved access or capture occurrence does not report actual lost caregiving, human support, family contact, relational choice or safe disengagement materially attributable to the AI-related pathway. Sensitive disclosure and professional meetings do not by themselves establish relational harm.",
+        "evidence_confidence": "not-assessed"
       }
-    ]
+    ],
+    "assessment_pathway": "specific_consequence"
   },
   "related_incidents": [],
   "external_requirement_assessments": [
@@ -740,7 +792,10 @@
         "VIGIL-FC-000016"
       ],
       "source_clause_indices": [
-        2
+        0
+      ],
+      "source_episode_refs": [
+        "E001"
       ]
     }
   ]

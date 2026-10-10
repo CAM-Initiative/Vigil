@@ -1,0 +1,440 @@
+{
+  "id": "VIGIL-INC-000188",
+  "record_type": "incident",
+  "record_state": "active",
+  "date_recorded": "2026-10-05",
+  "record_identity": {
+    "record_id": "VIGIL-INC-000188",
+    "record_type": "incident",
+    "title": "OpenAI reported a coordinated campaign to extract protected model reasoning at scale",
+    "created": "2026-10-05",
+    "updated": "2026-10-09",
+    "version": "0.1.2"
+  },
+  "incident_identity": {
+    "historical_event_name": "OpenAI coordinated protected-reasoning extraction and adversarial-distillation campaign",
+    "occurred_from": "2026-07-01",
+    "occurred_to": "2026-07-28",
+    "date_precision": "date-range",
+    "date_basis": "OpenAI states that relevant activity began on 1 July 2026 and that it had fully disrupted the identified campaign cluster by 28 July 2026. The range does not imply continuous activity by every operator."
+  },
+  "summary": "OpenAI reported that from 1 July 2026 it observed a coordinated campaign designed to extract protected reasoning from its models for adversarial distillation. The activity began at low volume and peaked on 24–25 July with 16,000 requests using a relevant extraction pattern from more than 4,000 users; OpenAI later identified related prompt-pattern activity across a cluster of more than 15,000 users and says it fully disrupted that cluster by 28 July. One observed technique copied encrypted reasoning from one conversation and asked a model in another conversation to decrypt and transcribe it. OpenAI says the operators did not break encryption, compromise a database or directly access stored user conversations. It attributes a core cluster, but not all observed operators, to individuals associated with Moonshot AI, the developer of Kimi. OpenAI responded with account enforcement, signup and infrastructure controls, expanded monitoring, additional hidden-reasoning protections and information sharing with industry and government.",
+  "vigil_assessment": {
+    "factual_basis": "OpenAI's 30 September 2026 security report states that it identified and disrupted a coordinated campaign designed to extract protected reasoning from its models in a manner consistent with adversarial distillation. OpenAI defines the activity as systematic and unauthorised use of model outputs or reasoning to train, reproduce or improve another model. It reports activity beginning on 1 July, a 24–25 July spike of 16,000 requests using a relevant extraction pattern from more than 4,000 users, and a wider cluster of related prompt-pattern activity across more than 15,000 users that it says was fully disrupted by 28 July. It describes cross-conversation replay of encrypted reasoning as one observed extraction technique and states that the operators did not break encryption, compromise a database or directly access stored user conversations. OpenAI attributes a core cluster, but not all observed operators, to individuals associated with Moonshot AI. The Next Web independently reports the disclosure and preserves the same attribution limits and request volumes, but does not independently audit OpenAI's telemetry. The public evidence does not establish how many extraction attempts succeeded, the quantity of protected reasoning successfully recovered, whether recovered material was incorporated into a downstream model, or whether all activity in the wider cluster shared one operator. Independent researchers’ related cross-model and compaction disclosures helped the provider investigate and accelerate mitigations. The report describes closing a replay pathway and holding potentially reasoning-bearing streamed output, while partner-hosted deployments and tool-output defences remain continuing work. Those broader fixes are not proof that all July operators used one pathway.",
+    "governance_interpretation": "The occurrence fits Industrial-Scale Capability Extraction Authority at the level established by the current taxonomy. The campaign systematically targeted protected model reasoning, operated through coordinated high-volume and multi-account interaction, and was directed toward adversarial distillation rather than ordinary immediate use. OpenAI reports that the activity violated its access conditions and was designed to obtain reasoning that could help reproduce or improve another model. This supports the capability-extraction mechanism without converting OpenAI's attribution claim into a legal finding against Moonshot AI or assuming that every recorded request succeeded. The cross-conversation technique is treated as part of the extraction pathway rather than as proof of a separate cross-context lineage failure because the public report does not establish the necessary occurrence-specific ownership and receiving-context facts for every replay. OpenAI reports that its combined response fully disrupted the identified campaign cluster by 28 July, but the publication does not isolate a single defined protective control, its activation trigger and its realised effect well enough to assign a separate Control Effectiveness Integrity mapping.",
+    "significance_to_cam": "Ordinary access to a deployed model does not compound into authority to harvest its restricted reasoning or capabilities at campaign scale for reproduction or downstream training. The incident also demonstrates why extraction governance has to be evaluated cumulatively across accounts, conversations, infrastructure and time rather than one interaction at a time. Response analysis should remain separate: later disruption and strengthened controls are relevant evidence of containment without erasing the earlier extraction pathway or proving that every attempted extraction succeeded.",
+    "assessment_boundaries": [
+      "OpenAI's campaign telemetry and Moonshot-associated attribution are first-party findings and have not been independently audited in the preserved evidence.",
+      "OpenAI expressly states that the reported 16,000 requests are attempts and are not necessarily successful extractions.",
+      "The public report does not quantify successfully recovered protected reasoning or establish downstream incorporation into another model.",
+      "The report states that operators did not break encryption, compromise a database or directly access stored user conversations.",
+      "The response used multiple controls and enforcement measures; the public evidence does not isolate one defined control and trigger sufficiently for a separate control-effectiveness mapping."
+    ],
+    "source_clause_analysis": {
+      "source_record_order": 1,
+      "source_url": "https://openai.com/index/disrupting-a-coordinated-model-distillation-campaign/",
+      "purpose": "Present source-backed material actions and later responses in supported relative order. Separate runs, source attributions and unknown ordering remain explicit.",
+      "clauses": [
+        {
+          "episode_id": "E001",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "source_paraphrase": "OpenAI observed low-volume protected-reasoning extraction activity beginning on 1 July, directed toward adversarial distillation.",
+          "recovered_invariant_interpretation": "The campaign’s extraction purpose is distinct from ordinary immediate model use.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping"
+        },
+        {
+          "episode_id": "E002",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "source_paraphrase": "One technique replayed encrypted reasoning from one conversation in another to request decryption and transcription. OpenAI denied encryption-breaking, database compromise or direct access to stored conversations.",
+          "recovered_invariant_interpretation": "The model-interaction route must remain distinct from a database or cryptographic breach.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping"
+        },
+        {
+          "episode_id": "E003",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "source_paraphrase": "Activity peaked on 24–25 July at 16,000 extraction-pattern requests from more than 4,000 users. Investigation linked related activity across more than 15,000 users; only a core cluster was attributed to Moonshot-associated individuals.",
+          "recovered_invariant_interpretation": "Campaign-scale restricted capability acquisition requires a separate authority basis; request count is not successful extraction volume.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000068",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The reported activity systematically targeted protected reasoning, operated at coordinated multi-account scale, and was expressly characterised as unauthorised adversarial distillation intended to support training, reproduction or improvement of another model."
+            }
+          ],
+          "adjudication_status": "mapped"
+        },
+        {
+          "episode_id": "E004",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "source_paraphrase": "OpenAI said it fully disrupted the identified cluster by 28 July through combined account enforcement, technical measures and partner coordination.",
+          "recovered_invariant_interpretation": "Reported combined disruption does not isolate one control’s trigger and effect.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping"
+        },
+        {
+          "episode_id": "E005",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "source_paraphrase": "It strengthened signup/infrastructure checks, replay and streamed-output protections, expanded monitoring and shared findings with industry and government. Related researcher disclosures informed mitigations; partner-hosted and tool-output protections remained continuing work.",
+          "recovered_invariant_interpretation": "Later protection changes and continuing gaps are distinct from completion of the July response.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping"
+        }
+      ]
+    }
+  },
+  "source_records": [
+    {
+      "source_title": "Disrupting a coordinated model-distillation campaign",
+      "author_or_publisher": "OpenAI",
+      "source_date": "2026-09-30",
+      "source_url": "https://openai.com/index/disrupting-a-coordinated-model-distillation-campaign/",
+      "source_type": "technical report",
+      "source_platform": "OpenAI",
+      "source_residence": "external",
+      "source_role": "incident-evidence",
+      "evidence_status": "first-party-reported",
+      "evidence_status_basis": "The affected provider directly reports campaign telemetry, observed extraction techniques, attribution assessment and response. The underlying account logs and complete extraction traces are not public.",
+      "evidence_modality": [
+        "text"
+      ],
+      "source_url_status": "available",
+      "retrieved_date": "2026-10-05",
+      "incident_source_order": 1,
+      "source_context": "OpenAI reports a July coordinated campaign targeting protected reasoning for adversarial distillation, its scale and timing, a cross-conversation extraction technique, bounded Moonshot-associated attribution, and the provider's mitigation and information-sharing response.",
+      "interpretive_reliance": "Primary occurrence evidence for campaign purpose, scale, timing, technique, access boundary, attribution limits and response; not used to infer successful extraction volume or downstream model training beyond what OpenAI reports.",
+      "primary_artefact_access": {
+        "access_status": "directly reviewed",
+        "direct_primary_artefact_review": true,
+        "access_method": "direct public web review",
+        "reviewing_system": "OpenAI ChatGPT — GPT-5.6 Sol",
+        "limitations": [
+          "The report is first-party evidence and does not publish the complete telemetry, account records or successful-extraction dataset.",
+          "The reported high-volume figures describe attempts and must not be represented as successful extractions."
+        ]
+      },
+      "relevance_note": "Originating-provider account of the bounded July protected-reasoning extraction campaign."
+    },
+    {
+      "source_title": "OpenAI says Moonshot-linked users tried to extract its AI reasoning",
+      "author_or_publisher": "The Next Web",
+      "source_date": "2026-09-30",
+      "source_url": "https://thenextweb.com/news/openai-moonshot-distillation-campaign-hidden-reasoning",
+      "source_type": "news article",
+      "source_platform": "The Next Web",
+      "source_residence": "external",
+      "source_role": "incident-evidence",
+      "evidence_status": "independent-reporting",
+      "evidence_status_basis": "The publication independently reports and contextualises OpenAI's disclosure but does not independently audit the provider's underlying telemetry or attribution.",
+      "evidence_modality": [
+        "text"
+      ],
+      "source_url_status": "available",
+      "retrieved_date": "2026-10-05",
+      "incident_source_order": 2,
+      "source_context": "The Next Web reports the July timing, 16,000-request peak, wider 15,000-user cluster, Moonshot-associated attribution limit, cross-conversation reasoning technique and provider response.",
+      "interpretive_reliance": "Used as secondary reporting and chronology corroboration; provider-specific telemetry and attribution remain attributed to OpenAI.",
+      "primary_artefact_access": {
+        "access_status": "directly reviewed",
+        "direct_primary_artefact_review": true,
+        "access_method": "direct public web review",
+        "reviewing_system": "OpenAI ChatGPT — GPT-5.6 Sol",
+        "limitations": [
+          "The article relies materially on OpenAI's public account and does not provide independent campaign logs.",
+          "It reports attribution controversy and does not establish legal liability."
+        ]
+      },
+      "relevance_note": "Independent reporting preserving the disclosure chronology and attribution boundaries."
+    }
+  ],
+  "preferred_evidence": {
+    "source_url": "https://openai.com/index/disrupting-a-coordinated-model-distillation-campaign/",
+    "selection_basis": "Originating-provider technical report with the most detailed published campaign telemetry, technique description, attribution boundary and mitigation account.",
+    "selected_on": "2026-10-05"
+  },
+  "external_incident_references": [],
+  "external_assessments": [
+    {
+      "assessor": "OpenAI",
+      "assessment_title": "Disrupting a coordinated model-distillation campaign",
+      "assessment_date": "2026-09-30",
+      "assessment_url": "https://openai.com/index/disrupting-a-coordinated-model-distillation-campaign/",
+      "assessment_type": "provider-analysis",
+      "relationship_to_incident": "same-occurrence",
+      "scope_note": "Preserves the provider's campaign interpretation and attribution boundary separately from VIGIL's taxonomy classification.",
+      "assessment_summary": "OpenAI assesses the activity as coordinated adversarial distillation: systematic unauthorised extraction of protected model reasoning for training, reproduction or improvement of another model. It attributes a core cluster, but not all observed activity, to individuals associated with Moonshot AI and reports full disruption of the identified campaign cluster by 28 July.",
+      "vigil_comparison_note": "VIGIL agrees that the published occurrence evidence satisfies the structural conditions for industrial-scale capability extraction, while preserving uncertainty about successful extraction volume, downstream incorporation and actor attribution beyond OpenAI's bounded claim.",
+      "source_record_refs": [
+        "source_records[0]"
+      ],
+      "publication_or_institution": "OpenAI",
+      "assessment_status": "current",
+      "reviewed_on": "2026-10-05",
+      "assessment_id": "VIGIL-EXTASSESS-000081"
+    }
+  ],
+  "external_requirement_assessments": [],
+  "system_context": {
+    "platform_or_vendor": "OpenAI",
+    "product_or_service": "Other",
+    "specific_model_or_runtime": "OpenAI deployed model services; exact participating model families are not identified in the public report",
+    "interface_surface": [
+      "deployed model conversations",
+      "cross-conversation protected-reasoning replay",
+      "account and signup infrastructure",
+      "hidden-reasoning protection and monitoring"
+    ],
+    "agent_context": {
+      "agentic_status": "non-agentic",
+      "agent_count": null,
+      "agent_count_min": null,
+      "agent_count_max": null,
+      "count_basis": "not-applicable",
+      "evidence_basis": "The material occurrence is a coordinated external-user extraction campaign against deployed model services; the preserved evidence does not describe autonomous or delegated agent execution as the operative actor.",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    "occurrence_environment": {
+      "deployment_state": "deployed",
+      "activity_contexts": [
+        "operational-use"
+      ],
+      "external_reach": "live-external",
+      "activity_actor": "not-applicable",
+      "environment_detail": "External operators interacted with deployed OpenAI model services at campaign scale to elicit protected reasoning through live user-facing model interactions.",
+      "evidence_basis": "OpenAI describes live model interactions across thousands of user accounts and conversations rather than a contained provider evaluation. That establishes deployed operational use and live external interaction; it does not establish successful extraction for every request.",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    },
+    "component_role": [
+      "foundation-model",
+      "inference-runtime",
+      "identity-authentication",
+      "policy-safety",
+      "external-service"
+    ]
+  },
+  "jurisdictional_context": {
+    "primary_jurisdiction": "cross-border / United States and China",
+    "secondary_jurisdictions": [],
+    "cross_border_relevance": "yes — a US-based model provider attributes a core cluster of a cross-border extraction campaign to individuals associated with China-based Moonshot AI",
+    "public_interest_relevance": "high",
+    "sector": "frontier foundation models / model security / adversarial distillation",
+    "regulatory_surface": [
+      "AI model security",
+      "industrial-scale capability extraction",
+      "account and access governance",
+      "cross-border AI security",
+      "protected reasoning confidentiality",
+      "threat-information sharing"
+    ]
+  },
+  "taxonomy_classification": {
+    "taxonomy_version": "0.6.10",
+    "classification_status": "classified",
+    "adjudication_coverage": {
+      "status": "complete"
+    },
+    "classification_basis": "A complete current-taxonomy review supports Industrial-Scale Capability Extraction Authority as the canonical failure mechanism. The provider reports systematic targeting of protected reasoning, coordinated campaign scale across thousands of user accounts, an adversarial-distillation purpose directed at training, reproducing or improving another model, and an absent or adverse authority basis. The published response reports full disruption of the identified cluster but does not expose one defined control, trigger and attributable protective effect required for an additional FC-000083 mapping. Cross-conversation replay is retained as an extraction technique without separately inferring a cross-context lineage failure where occurrence-specific rights and receiving-context facts remain incomplete.",
+    "primary_classification": {
+      "family_id": "VIGIL-FF-0001",
+      "class_id": "VIGIL-FC-000068",
+      "classification_role": "failure-occurrence",
+      "classification_basis": "The reported campaign systematically targeted protected model reasoning at coordinated multi-account scale for adversarial distillation, and OpenAI states that the activity was unauthorised and intended to support training, reproduction or improvement of another model.",
+      "classification_confidence": "high"
+    },
+    "secondary_classifications": [],
+    "classification_review_provenance": {
+      "review_date": "2026-10-05",
+      "reviewer": "OpenAI ChatGPT — GPT-5.6 Sol",
+      "review_status": "AI classification review completed"
+    }
+  },
+  "related_incidents": [
+    "VIGIL-INC-000073",
+    "VIGIL-INC-000113"
+  ],
+  "interpretive_provenance": {
+    "review_history": [
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-05-INGESTION-000188",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT",
+        "reviewer_model": "GPT-5.6 Sol",
+        "review_date": "2026-10-05",
+        "review_scope": "Primary provider security-report review, independent reporting, duplicate reconciliation, complete current-taxonomy adjudication, Harm Impact review and source-bounded publication.",
+        "capability_profile": {
+          "web_research": true,
+          "direct_primary_source_review": true,
+          "direct_repository_analysis": true,
+          "taxonomy_review": true,
+          "harm_impact_review": true,
+          "new_external_source_research": true
+        },
+        "known_limitations": [
+          "Provider telemetry, complete account records and successful-extraction traces are not public.",
+          "OpenAI's attribution is preserved as a bounded first-party assessment rather than an independently established finding against Moonshot AI.",
+          "Human task authorisation does not imply substantive human review or source verification."
+        ],
+        "review_outcome": "Created a bounded new occurrence record for the July protected-reasoning extraction campaign, classified under the existing industrial-scale capability-extraction invariant while preserving attempt/success and attribution uncertainty."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-05-VALIDATOR-000188",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT",
+        "reviewer_model": "GPT-5.6 Sol",
+        "review_date": "2026-10-05",
+        "review_scope": "Bounded schema-validation repair after ingestion; substantive occurrence, taxonomy and Harm Impact conclusions preserved.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "validator_repair": true
+        },
+        "known_limitations": [
+          "The repair changes identifier allocation and schema-constrained metadata only; it does not independently re-adjudicate the occurrence."
+        ],
+        "review_outcome": "Reallocated the duplicate external-assessment identifier and normalized the insufficient-evidence Harm Impact row by removing forbidden evidence references and setting confidence to not-assessed; substantive assessment text and SU severity were preserved."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-09-PHASE3-BATCH07-000188",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work — Codex",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-09",
+        "review_scope": "Source-first occurrence, chronology and duplicate review; public narrative and external evidence-reference reconciliation.",
+        "capability_profile": {
+          "web_research": true,
+          "direct_primary_source_review": true,
+          "direct_repository_analysis": true,
+          "taxonomy_review": true,
+          "harm_impact_review": false,
+          "new_external_source_research": true
+        },
+        "known_limitations": [
+          "Success count, reasoning quantity and incorporation into a downstream model remain undisclosed.",
+          "Core attribution does not establish all operators share one actor or a legal finding against Moonshot.",
+          "Bounded AI-authored review, not human verification or source-exhaustiveness certification."
+        ],
+        "review_outcome": "Reconciled 2 clauses into 5 episodes; canonical mappings, HIM, independent external decisions and existing gap status retained."
+      }
+    ],
+    "current_ai_review": {
+      "review_id": "VIGIL-REVIEW-2026-10-09-PHASE3-BATCH07-000188",
+      "reviewer_type": "AI analytical reviewer",
+      "reviewer_platform": "OpenAI ChatGPT Work — Codex",
+      "reviewer_model": "GPT-6",
+      "review_date": "2026-10-09",
+      "review_scope": "Source-first occurrence, chronology and duplicate review; public narrative and external evidence-reference reconciliation.",
+      "capability_profile": {
+        "web_research": true,
+        "direct_primary_source_review": true,
+        "direct_repository_analysis": true,
+        "taxonomy_review": true,
+        "harm_impact_review": false,
+        "new_external_source_research": true
+      },
+      "known_limitations": [
+        "Success count, reasoning quantity and incorporation into a downstream model remain undisclosed.",
+        "Core attribution does not establish all operators share one actor or a legal finding against Moonshot.",
+        "Bounded AI-authored review, not human verification or source-exhaustiveness certification."
+      ],
+      "review_outcome": "Reconciled 2 clauses into 5 episodes; canonical mappings, HIM, independent external decisions and existing gap status retained."
+    },
+    "operating_model": "AI-authored, semi-autonomous production under human contract approval",
+    "human_governance_editor": null,
+    "historical_reviewer_note": "No substantive human review or source verification is asserted."
+  },
+  "harm_impact_assessment": {
+    "methodology_id": "VIGIL-HIM",
+    "methodology_version": "1.0.1",
+    "derivation_rule": "highest-supported-materialised-harm",
+    "assessed_on": "2026-10-05",
+    "overall_severity": "SU",
+    "controlling_dimensions": [],
+    "coverage_note": "All eleven VIGIL-HIM dimensions were reviewed independently. The provider reports a real extraction pathway and high-volume attempts but explicitly warns that request counts are not successful-extraction counts. The public evidence does not quantify successfully exposed protected reasoning, downstream incorporation, economic loss or another bandable materialised consequence, so the occurrence remains SU rather than converting capability risk or attempt volume into harm.",
+    "dimensions": [
+      {
+        "dimension_id": "service-operational-infrastructure",
+        "assessment_status": "unreported",
+        "assessment_basis": "The preserved evidence does not report materialised service impairment or outage attributable to the campaign; absence of reporting is not evidence of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "financial-economic",
+        "assessment_status": "unreported",
+        "assessment_basis": "The preserved evidence does not quantify realised financial or economic loss attributable to the campaign; capability-transfer risk and defensive effort are not converted into monetary harm without evidence.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "property-asset-damage",
+        "assessment_status": "unreported",
+        "assessment_basis": "OpenAI reports no database compromise and the preserved evidence does not report destruction or corruption of a digital or physical asset.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "physical-health-safety",
+        "assessment_status": "unreported",
+        "assessment_basis": "The preserved evidence does not report a materialised physical health or safety consequence; dual-use risk is prospective and is not converted into realised harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "psychological-wellbeing",
+        "assessment_status": "unreported",
+        "assessment_basis": "The preserved evidence does not report a materialised psychological or wellbeing consequence.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "rights-liberty",
+        "assessment_status": "unreported",
+        "assessment_basis": "The preserved evidence does not report a bandable materialised rights or liberty consequence.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "equal-treatment",
+        "assessment_status": "unreported",
+        "assessment_basis": "The preserved evidence does not report a materialised equal-treatment consequence.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "privacy-confidentiality",
+        "assessment_status": "insufficient-evidence",
+        "assessment_basis": "OpenAI reports that protected reasoning could be reproduced in requester-visible form and that it closed a replay pathway, but it does not quantify successful exposure within the campaign, the sensitivity or volume of successfully recovered reasoning, or downstream misuse. It also states that operators did not directly access stored user conversations. The evidence establishes a confidentiality-relevant mechanism but is insufficient to assign a VIGIL-HIM band.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "reputation-dignity",
+        "assessment_status": "unreported",
+        "assessment_basis": "The preserved evidence does not establish a separately bandable materialised reputational or dignitary consequence for the bounded occurrence.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "societal-democratic",
+        "assessment_status": "unreported",
+        "assessment_basis": "OpenAI describes national-security and ecosystem risks, but the preserved evidence does not report a bandable materialised societal or democratic consequence from the bounded campaign.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "environmental",
+        "assessment_status": "unreported",
+        "assessment_basis": "The preserved evidence does not report a materialised environmental consequence.",
+        "evidence_confidence": "not-assessed"
+      }
+    ],
+    "assessment_gap": "The evidence establishes an extraction campaign and real attack pathways, but the public report does not convert attempted-request volume into successful extraction volume or document downstream model incorporation, realised economic loss or another materialised consequence that can be banded under VIGIL-HIM."
+  }
+}

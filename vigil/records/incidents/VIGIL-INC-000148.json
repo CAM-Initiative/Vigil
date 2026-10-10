@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "McDonald's ended IBM automated drive-through ordering pilot after recurring order errors",
     "created": "2026-09-19",
-    "updated": "2026-10-04",
-    "version": "0.1.11"
+    "updated": "2026-10-09",
+    "version": "0.1.12"
   },
   "incident_identity": {
     "historical_event_name": "McDonald's IBM automated ordering errors",
@@ -18,9 +18,9 @@
     "date_precision": "exact-day",
     "date_basis": "Date follows the reviewed registry or primary occurrence record; no narrower time is inferred."
   },
-  "summary": "McDonald's piloted an IBM-developed automated voice ordering system at more than 100 U.S. drive-through locations. Public reports documented erroneous orders including unwanted items, order confusion between lanes and failures to accept corrections. McDonald's ended the IBM pilot in 2024 while stating that it would continue exploring voice-ordering technology.",
+  "summary": "McDonald’s piloted IBM voice ordering at more than 100 U.S. drive-throughs. Reports described unwanted items, unsuccessful corrections and adjacent-lane confusion. In June 2024 it announced the IBM pilot would end; reporting identified a July shutdown deadline. The company continued to consider voice ordering.",
   "vigil_assessment": {
-    "factual_basis": "McDonald's piloted an IBM-developed automated voice ordering system at more than 100 U.S. drive-through locations. Public reports documented erroneous orders including unwanted items, order confusion between lanes and failures to accept corrections. McDonald's ended the IBM pilot in 2024 while stating that it would continue exploring voice-ordering technology.",
+    "factual_basis": "The pilot covered more than 100 locations; this is deployment scale, not the number of individually documented failures. Public reporting describes wrong orders and confusion between lanes. The June announcement and reported July shutdown deadline are separate from observed errors. McDonald’s did not disclose success criteria or explicitly attribute the termination to those errors in its statement.",
     "governance_interpretation": "The pilot documented recurring errors in real drive-through use and the operator ended it. Deployment performance measurement and task-specific disengagement are supported. Broader validation and risk-documentation arrangements remain unresolved. Later source versions and unrelated provenance objects are excluded.",
     "significance_to_cam": "Voice automation in a live service workflow needs reliable correction, lane and speaker separation, and a rapid handoff to staff when confidence is low. A system that cannot recover from an error can turn a bounded recognition mistake into repeated customer and operational disruption.",
     "assessment_boundaries": [
@@ -32,11 +32,22 @@
     "source_clause_analysis": {
       "source_record_order": 2,
       "source_url": "https://apnews.com/article/bebc898363f2d550e1a0cd3c682fa234",
-      "purpose": "Preserve the source-language or evidentiary propositions that materially explain VIGIL's governance interpretation. Paraphrases are concise, source-bounded and linked to the existing taxonomy adjudication.",
+      "purpose": "Separate evidenced occurrence stages and their distinct governance questions.",
       "clauses": [
         {
-          "source_paraphrase": "McDonald's automated drive-through system repeatedly converted customer speech into inaccurate live orders, including unwanted items and failures to accept corrections.",
-          "recovered_invariant_interpretation": "Transactional speech interpretation must meet the accuracy and correction assurance required before it becomes an operative fulfilment representation.",
+          "source_paraphrase": "McDonald’s and IBM tested voice ordering at more than 100 U.S. drive-through locations.",
+          "recovered_invariant_interpretation": "Deployment scale supplies context; it does not measure error prevalence.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping",
+          "source_record_refs": [
+            "source_records[1]",
+            "source_records[2]"
+          ],
+          "episode_id": "E001"
+        },
+        {
+          "source_paraphrase": "Reports described unwanted items entering live orders and unsuccessful attempts to correct them.",
+          "recovered_invariant_interpretation": "Fulfilment relies on an accurate representation of the customer’s order.",
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000062",
@@ -45,11 +56,16 @@
               "rationale": "Misunderstood speech was promoted into live order state despite insufficient assurance for transactional reliance, producing recurring unwanted or uncorrectable items."
             }
           ],
-          "adjudication_status": "mapped"
+          "adjudication_status": "mapped",
+          "source_record_refs": [
+            "source_records[1]",
+            "source_records[2]"
+          ],
+          "episode_id": "E002"
         },
         {
-          "source_paraphrase": "Public reports documented orders becoming confused between adjacent drive-through lanes.",
-          "recovered_invariant_interpretation": "Interpreted content must remain bound to the customer and lane from which it originated before fulfilment action is taken.",
+          "source_paraphrase": "Reports described speech from adjacent lanes becoming confused in the order-taking workflow.",
+          "recovered_invariant_interpretation": "Order material must stay bound to the originating customer and lane.",
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000015",
@@ -58,13 +74,31 @@
               "rationale": "Order material associated with one lane was reportedly applied in another customer's lane context, demonstrating a failure to preserve target binding."
             }
           ],
-          "adjudication_status": "mapped"
+          "adjudication_status": "mapped",
+          "source_record_refs": [
+            "source_records[1]"
+          ],
+          "episode_id": "E003"
         },
         {
-          "source_paraphrase": "McDonald's ended the IBM drive-through voice-ordering pilot in June 2024 after recurring order errors had been reported across more than 100 U.S. locations, while saying it would explore other voice-AI vendors.",
-          "recovered_invariant_interpretation": "Ending the IBM pilot was a bounded deployment response to recurring order failures; the stated plan to explore other vendors means the response did not establish a decision to end voice ordering as a category.",
+          "source_paraphrase": "In June 2024 McDonald’s announced the IBM pilot would end; a July 26 shutdown deadline was reported separately.",
+          "recovered_invariant_interpretation": "An announcement is not evidence that every participating installation was already switched off.",
           "taxonomy_relationships": [],
-          "adjudication_status": "resolved-no-mapping"
+          "adjudication_status": "resolved-no-mapping",
+          "source_record_refs": [
+            "source_records[3]"
+          ],
+          "episode_id": "E004"
+        },
+        {
+          "source_paraphrase": "McDonald’s continued to consider future voice ordering; its statement did not disclose success criteria or a finding that the test succeeded or failed.",
+          "recovered_invariant_interpretation": "A bounded vendor decision does not establish rejection of the technology category or published performance measurement.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping",
+          "source_record_refs": [
+            "source_records[3]"
+          ],
+          "episode_id": "E005"
         }
       ]
     }
@@ -86,13 +120,13 @@
         "text"
       ],
       "primary_artefact_access": {
-        "access_status": "directly reviewed",
-        "reviewing_system": "OpenAI ChatGPT — GPT-5.6 Sol",
-        "access_method": "direct public web review",
-        "direct_primary_artefact_review": true,
+        "access_method": "Public retrieval and direct text inspection; any retrieval failure specified below",
+        "access_status": "indirectly reviewed",
+        "direct_primary_artefact_review": false,
         "limitations": [
-          "Review is bounded to the publicly available source and does not establish facts beyond that source's own evidentiary scope."
-        ]
+          "Secondary registry pointer, not direct underlying transactions."
+        ],
+        "reviewing_system": "OpenAI ChatGPT — GPT-6"
       },
       "interpretive_reliance": "Used only for the occurrence facts expressly supported by this source.",
       "evidence_status": "registry-reported",
@@ -115,14 +149,13 @@
         "text"
       ],
       "primary_artefact_access": {
-        "access_status": "directly reviewed secondary reporting",
-        "reviewing_system": "OpenAI Codex — GPT-5",
-        "access_method": "direct public web review",
+        "access_method": "Public retrieval and direct text inspection; any retrieval failure specified below",
+        "access_status": "indirectly reviewed",
         "direct_primary_artefact_review": false,
         "limitations": [
-          "The report does not quantify the total number or rate of erroneous orders.",
-          "It does not isolate one model component as the sole cause."
-        ]
+          "Fresh AP endpoint and IBJ syndication failed; previously preserved attributed evidence retained without claiming a fresh full read."
+        ],
+        "reviewing_system": "OpenAI ChatGPT — GPT-6"
       },
       "interpretive_reliance": "Used to establish the scale, repeated service-workflow failures and bounded operational response; not used to infer a total affected-order count or direct loss.",
       "evidence_status": "independent-reporting",
@@ -145,14 +178,13 @@
       "interpretive_reliance": "The report corroborates the programme-level withdrawal but does not establish wider collapse of restaurant operations.",
       "model_or_algorithm": "not fully established in the source",
       "primary_artefact_access": {
-        "access_method": "Occurrence-focused web search and review of the public source, indexed text, or authoritative endpoint",
-        "access_status": "public source and indexed content reviewed",
+        "access_method": "Public retrieval and direct text inspection; any retrieval failure specified below",
+        "access_status": "indirectly reviewed",
         "direct_primary_artefact_review": false,
         "limitations": [
-          "The source does not independently establish every underlying claim or unreported downstream consequence.",
-          "The source does not determine legal liability or final factual truth beyond its stated institutional scope."
+          "Public article read; customer recordings, live order logs and internal termination memo not directly reviewed."
         ],
-        "reviewing_system": "GPT-5"
+        "reviewing_system": "OpenAI ChatGPT — GPT-6"
       },
       "relevance_note": "Supports substantial but reversible operational impairment.",
       "retrieved_date": "2026-09-20",
@@ -166,6 +198,39 @@
       "source_url": "https://www.theguardian.com/business/article/2024/jun/17/mcdonalds-ends-ai-drive-thru",
       "source_url_status": "public source page or indexed metadata available at review",
       "system_or_product": "Other"
+    },
+    {
+      "source_title": "McDonald’s ends IBM drive-thru voice order test",
+      "author_or_publisher": "Restaurant Dive",
+      "source_date": "2024-06-17",
+      "source_url": "https://www.restaurantdive.com/news/mcdonalds-ibm-drive-thru-automation-voice-ordering-ai/719085/",
+      "retrieved_date": "2026-10-09",
+      "source_type": "news article",
+      "source_role": "incident-evidence",
+      "source_residence": "external",
+      "source_platform": "Restaurant Dive",
+      "source_url_status": "available",
+      "relevance_note": "Original reporting with company statement; separates termination announcement, reported shutdown deadline and undisclosed success criteria.",
+      "evidence_modality": [
+        "text"
+      ],
+      "primary_artefact_access": {
+        "access_method": "Public retrieval and direct text inspection; any retrieval failure specified below",
+        "access_status": "indirectly reviewed",
+        "direct_primary_artefact_review": false,
+        "limitations": [
+          "Full public article read. Company statement is mediated by the reporter; July 26 is attributed to Restaurant Business, not independently confirmed by McDonald’s."
+        ],
+        "reviewing_system": "OpenAI ChatGPT — GPT-6"
+      },
+      "interpretive_reliance": "Original reporting with company statement; separates termination announcement, reported shutdown deadline and undisclosed success criteria.",
+      "evidence_status": "independent-reporting",
+      "evidence_status_basis": "Reporter received a company statement; internal memo and performance measurements were not directly inspected.",
+      "incident_source_order": 4,
+      "deployment_context": "Live automated voice ordering at more than 100 U.S. McDonald's drive-through locations.",
+      "model_or_algorithm": "IBM-developed automated voice ordering technology",
+      "system_or_product": "McDonald's automated drive-through ordering pilot",
+      "source_context": "Original reporting with company statement; separates termination announcement, reported shutdown deadline and undisclosed success criteria."
     }
   ],
   "preferred_evidence": {
@@ -225,7 +290,7 @@
   "taxonomy_classification": {
     "taxonomy_version": "0.6.9",
     "classification_status": "classified",
-    "classification_basis": "Current-taxonomy review against VIGIL Failure Taxonomy 0.6.5 classifies the occurrence under VIGIL-FC-000062 Epistemic Reliance Miscalibration with VIGIL-FC-000015 Target-Object Binding Failure as an independently evidenced secondary mechanism. The automated drive-through system repeatedly transformed customer speech into order representations that were then propagated into a live transactional workflow despite insufficient accuracy for reliable order fulfilment, including unwanted items and failures to accept correction. Public reports also document confusion between adjacent lanes, supporting a narrower binding failure in which order material from one customer/lane was treated as applicable to another target context. FC-000016 Required Verification Omission and FC-000018 Completion-Condition Mismatch are not asserted because the preserved evidence does not separately establish a defined required verification step or an internal substitute completion criterion.",
+    "classification_basis": "Inaccurate order representations were used for live fulfilment, supporting FC-000062. Reported adjacent-lane confusion independently supports FC-000015. These are bounded reported mechanisms, not findings that all pilot locations failed. FC-000016 requires an established required verification step; FC-000018 requires a substitute completion condition, neither supplied by these reports.",
     "primary_classification": {
       "family_id": "VIGIL-FF-0003",
       "class_id": "VIGIL-FC-000062",
@@ -456,28 +521,49 @@
           "This review is AI-authored, not human verification or certification."
         ],
         "review_outcome": "Reviewed 112 recovered or independently identified requirements; retained 10 relevant independent assessments. Prior values and exclusions remain in the dated audit."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-09-PHASE3-TRANCHE17B-000148",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-09",
+        "review_scope": "Source-first occurrence reconstruction, current taxonomy boundary review and semantic external-requirement linkage.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "external_requirement_review": true,
+          "web_research": true,
+          "harm_impact_review": false
+        },
+        "known_limitations": [
+          "AI-authored, not human certified. Private sessions, checking traces and undisclosed decision paths remain unavailable.",
+          "Existing HIM retained; no full eleven-dimension re-adjudication."
+        ],
+        "review_outcome": "Separated pilot scale, wrong orders, adjacent-lane binding, announced termination and future technology policy. Corrected June announcement versus July deadline and unsupported all-location error/removal claims. Preserved 062/015 roles and confidence; qualitative-performance EXT row independently identifies deployment/performance rather than a class-derived failure. Disengagement EXT basis explicitly narrowed to the evidenced decision."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-04-EXTERNAL-ALIGNMENT-000148",
+      "review_id": "VIGIL-REVIEW-2026-10-09-PHASE3-TRANCHE17B-000148",
       "reviewer_type": "AI analytical reviewer",
       "reviewer_platform": "OpenAI ChatGPT Work",
       "reviewer_model": "GPT-6",
-      "review_date": "2026-10-04",
-      "review_scope": "Independent occurrence relevance and alignment review of external requirements; normative force remains source metadata.",
+      "review_date": "2026-10-09",
+      "review_scope": "Source-first occurrence reconstruction, current taxonomy boundary review and semantic external-requirement linkage.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
+        "taxonomy_review": true,
         "external_requirement_review": true,
-        "taxonomy_review": false,
-        "harm_impact_review": false,
-        "web_research": false
+        "web_research": true,
+        "harm_impact_review": false
       },
       "known_limitations": [
-        "Assessment uses preserved occurrence evidence and canonical requirement propositions; internal implementation evidence remains unavailable where stated.",
-        "This review is AI-authored, not human verification or certification."
+        "AI-authored, not human certified. Private sessions, checking traces and undisclosed decision paths remain unavailable.",
+        "Existing HIM retained; no full eleven-dimension re-adjudication."
       ],
-      "review_outcome": "Reviewed 112 recovered or independently identified requirements; retained 10 relevant independent assessments. Prior values and exclusions remain in the dated audit."
+      "review_outcome": "Separated pilot scale, wrong orders, adjacent-lane binding, announced termination and future technology policy. Corrected June announcement versus July deadline and unsupported all-location error/removal claims. Preserved 062/015 roles and confidence; qualitative-performance EXT row independently identifies deployment/performance rather than a class-derived failure. Disengagement EXT basis explicitly narrowed to the evidenced decision."
     }
   },
   "harm_impact_assessment": {
@@ -585,7 +671,10 @@
         "VIGIL-FC-000062"
       ],
       "source_clause_indices": [
-        0
+        1
+      ],
+      "source_episode_refs": [
+        "E002"
       ]
     },
     {
@@ -601,7 +690,10 @@
         "VIGIL-FC-000062"
       ],
       "source_clause_indices": [
-        0
+        1
+      ],
+      "source_episode_refs": [
+        "E002"
       ]
     },
     {
@@ -617,7 +709,10 @@
         "VIGIL-FC-000062"
       ],
       "source_clause_indices": [
-        0
+        1
+      ],
+      "source_episode_refs": [
+        "E002"
       ]
     },
     {
@@ -633,7 +728,10 @@
         "VIGIL-FC-000062"
       ],
       "source_clause_indices": [
-        0
+        1
+      ],
+      "source_episode_refs": [
+        "E002"
       ]
     },
     {
@@ -649,7 +747,10 @@
         "VIGIL-FC-000062"
       ],
       "source_clause_indices": [
-        0
+        1
+      ],
+      "source_episode_refs": [
+        "E002"
       ]
     },
     {
@@ -659,13 +760,17 @@
       "assessed_on": "2026-10-04",
       "source_record_refs": [
         "source_records[1]",
-        "source_records[2]"
-      ],
-      "derived_from_class_ids": [
-        "VIGIL-FC-000062"
+        "source_records[2]",
+        "source_records[3]"
       ],
       "source_clause_indices": [
-        0
+        0,
+        1
+      ],
+      "identification_basis": "Actual deployment and reported qualitative performance provide the support, independently of whether the order-error episode receives a taxonomy mapping.",
+      "source_episode_refs": [
+        "E001",
+        "E002"
       ]
     },
     {
@@ -681,7 +786,10 @@
         "VIGIL-FC-000062"
       ],
       "source_clause_indices": [
-        0
+        1
+      ],
+      "source_episode_refs": [
+        "E002"
       ]
     },
     {
@@ -697,19 +805,23 @@
         "VIGIL-FC-000062"
       ],
       "source_clause_indices": [
-        0
+        1
+      ],
+      "source_episode_refs": [
+        "E002"
       ]
     },
     {
       "requirement_id": "EXTREQ-F1F3A6472A08E764",
       "alignment_result": "aligned",
-      "assessment_basis": "McDonald’s ended the IBM pilot and removed automated ordering from the participating locations after recurring errors. The operator disengaged the system from this use context.",
+      "assessment_basis": "McDonald’s announced termination of the IBM pilot and a later shutdown deadline was reported. This documents a bounded disengagement decision; it does not establish completion of removal at every site on the announcement date.",
       "assessed_on": "2026-10-04",
       "source_record_refs": [
         "source_records[1]",
-        "source_records[2]"
+        "source_records[2]",
+        "source_records[3]"
       ],
-      "identification_basis": "The responsible operator discontinued an AI system whose operational performance did not meet the use need."
+      "identification_basis": "The responsible operator announced that the AI pilot would be discontinued in this use context."
     },
     {
       "requirement_id": "EXTREQ-F6E7F0CA4F94EB71",
@@ -724,7 +836,10 @@
         "VIGIL-FC-000062"
       ],
       "source_clause_indices": [
-        0
+        1
+      ],
+      "source_episode_refs": [
+        "E002"
       ]
     }
   ]

@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Instinct processed retained Gmail data after Google access was disconnected",
     "created": "2026-09-07",
-    "updated": "2026-10-04",
-    "version": "0.1.13"
+    "updated": "2026-10-09",
+    "version": "0.1.14"
   },
   "incident_identity": {
     "historical_event_name": "21 August 2026 Instinct retained-email processing after Google disconnection",
@@ -18,10 +18,10 @@
     "date_precision": "exact-day",
     "date_basis": "Claire Vo reported disconnecting Instinct from her Google account at approximately 11:00 on 21 August 2026 and receiving an email summary from the assistant approximately three hours later. The AI Incident Database records 21 August 2026 as the incident date."
   },
-  "summary": "On 21 August 2026, AI product founder Claire Vo reported that she disconnected the Instinct personal AI assistant from her Google account and nevertheless received an email summary from Instinct about three hours later. Follow-up reporting states that Instinct had retained previously indexed email content and processed those retained copies after the Google connector was disabled. The available evidence does not establish that Instinct continued accessing Gmail after revocation; the occurrence concerns continued processing of data retained before disconnection.",
+  "summary": "On 21 August 2026, AI product founder Claire Vo reported that she disconnected the Instinct personal AI assistant from her Google account and nevertheless received an email summary from Instinct about three hours later. Follow-up reporting states that Instinct had retained previously indexed email content and processed those retained copies after the Google connector was disabled. The available evidence does not establish that Instinct continued accessing Gmail after revocation; the occurrence concerns continued processing of data retained before disconnection. Provider terms carrying an August 26 revision later distinguished disconnection from a separate request to delete indexed connected-service data.",
   "vigil_assessment": {
-    "factual_basis": "TechCrunch reported Vo's first-person account that Instinct produced an inbox summary after she disconnected Google access and that the assistant explained the relevant emails had been stored in plain text for later searching. The AI Incident Database independently indexes the occurrence as Incident 1675 and explicitly distinguishes retained-data processing from continued post-revocation access to Gmail. Reporting also indicates that another tester encountered difficulty deleting indexed Gmail records and that a deletion control was subsequently added, but this Incident is bounded to Vo's retained-data processing occurrence.",
-    "governance_interpretation": "The occurrence demonstrates a disconnect between revoking a live connector and terminating an AI agent's ability to process data already ingested from that connector. That distinction creates a user-control and data-lifecycle governance risk when disconnect semantics may reasonably be understood as ending the agent's effective use of connected-account data. The available evidence does not establish whether disconnecting Google created an operative control state that prohibited later processing of retained copies; separately, ending the live Gmail connector supports the bounded Authentication-State Continuity invariant-held mapping. The affirmative source distinction between terminated live access and retained-copy processing supports the bounded authentication success. The effective retained-data control scope remains unresolved; revocation does not automatically mean deletion or prohibition of previously ingested data use. Neither an access-continuity breach nor a consent/training duty is inferred without source-defined semantics. The OECD privacy and autonomy assessment is Boundary because the permission to process retained copies is not established.",
+    "factual_basis": "TechCrunch reported Vo's first-person account that Instinct produced an inbox summary after she disconnected Google access and that the assistant explained the relevant emails had been stored in plain text for later searching. The AI Incident Database independently indexes the occurrence as Incident 1675 and explicitly distinguishes retained-data processing from continued post-revocation access to Gmail. Reporting also indicates that another tester encountered difficulty deleting indexed Gmail records and that a deletion control was subsequently added, but this Incident is bounded to Vo's retained-data processing occurrence. The primary terms now expressly distinguish disconnecting a connected service from requesting deletion of its indexed input. Their displayed revision date is 26 August, after the reported event. They do not reconstruct the control or notice Vo encountered on 21 August. The assistant’s storage explanation remains a reported response, not an independently inspected database finding.",
+    "governance_interpretation": "The occurrence demonstrates a disconnect between revoking a live connector and terminating an AI agent's ability to process data already ingested from that connector. That distinction creates a user-control and data-lifecycle governance risk when disconnect semantics may reasonably be understood as ending the agent's effective use of connected-account data. The available evidence does not establish whether disconnecting Google created an operative control state that prohibited later processing of retained copies; separately, ending the live Gmail connector supports the bounded Authentication-State Continuity invariant-held mapping. The affirmative source distinction between terminated live access and retained-copy processing supports the bounded authentication success. The effective retained-data control scope remains unresolved; revocation does not automatically mean deletion or prohibition of previously ingested data use. Neither an access-continuity breach nor a consent/training duty is inferred without source-defined semantics. The OECD privacy and autonomy assessment is Boundary because the permission to process retained copies is not established. Later terms clarify the provider’s stated retention scope. Their later date does not settle the earlier control-state question or Vo’s effective permission.",
     "significance_to_cam": "Agentic systems with persistent memory or indexed external-account data require explicit governance of collection, retention, deletion, post-revocation processing and the user-visible meaning of disconnect controls. The occurrence is relevant to authority boundaries and data lifecycle assurance without implying that Google credentials remained active or that new Gmail data was accessed after revocation.",
     "assessment_boundaries": [
       "The evidence does not establish that Instinct re-accessed Gmail or obtained new Gmail messages after Google access was disconnected.",
@@ -32,8 +32,26 @@
     "source_clause_analysis": {
       "clauses": [
         {
-          "source_paraphrase": "Disconnecting Google access ended the live connector pathway; the reported post-disconnection behaviour used copies already retained by Instinct rather than a stale authenticated Gmail session.",
-          "recovered_invariant_interpretation": "A revoked authentication pathway should cease to authorise fresh access, and later use of already retained data must remain distinguishable from continued authenticated access.",
+          "source_paraphrase": "Before disconnection, Instinct reportedly indexed copies of Vo’s email for later use. The registry says the last retained message predated disconnection.",
+          "recovered_invariant_interpretation": "Prior ingestion is distinct from new authenticated access after revocation.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000040",
+              "relationship": "candidate boundary",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "Retained copies explain a possible later-processing path. Their ingestion alone does not establish the scope of the later disconnect control."
+            }
+          ],
+          "adjudication_status": "unresolved",
+          "source_record_refs": [
+            "source_records[0]",
+            "source_records[1]"
+          ],
+          "episode_id": "E001"
+        },
+        {
+          "source_paraphrase": "Vo reported disconnecting Google at about 11:00 on 21 August. The later summary was attributed to retained copies rather than a live authenticated Gmail session.",
+          "recovered_invariant_interpretation": "Revocation of the connector and processing of its retained data are separate states.",
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000031",
@@ -42,11 +60,16 @@
               "rationale": "Disconnecting Google access ended the live connector pathway; the reported post-disconnection behaviour used copies already retained by Instinct rather than a stale authenticated Gmail session."
             }
           ],
-          "adjudication_status": "mapped"
+          "adjudication_status": "mapped",
+          "source_record_refs": [
+            "source_records[0]",
+            "source_records[1]"
+          ],
+          "episode_id": "E002"
         },
         {
-          "source_paraphrase": "Instinct continued processing copies of Gmail data retained before disconnection and sent an email summary about three hours after Google access had been disconnected.",
-          "recovered_invariant_interpretation": "A disconnect control should have a clear and preserved scope over whether data already retained by the system may continue to be processed after the live connector is revoked.",
+          "source_paraphrase": "At about 14:00, Vo reported receiving an inbox summary despite the earlier Google disconnection.",
+          "recovered_invariant_interpretation": "A user-visible disconnect needs a defined scope over subsequent retained-data processing.",
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000040",
@@ -55,9 +78,49 @@
               "rationale": "The preserved record does not establish whether disconnecting Google created an operative control state that was intended to prohibit subsequent processing of copies already retained by Instinct."
             }
           ],
-          "adjudication_status": "unresolved"
+          "adjudication_status": "unresolved",
+          "source_record_refs": [
+            "source_records[0]",
+            "source_records[1]"
+          ],
+          "episode_id": "E003"
+        },
+        {
+          "source_paraphrase": "When Vo asked about the summary, the assistant said emails were retained in plain text for later searches.",
+          "recovered_invariant_interpretation": "A model explanation is distinct from independently inspected storage and control records.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000040",
+              "relationship": "candidate boundary",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "The assistant’s explanation does not verify storage architecture or prove that an established retained-processing prohibition was lost."
+            }
+          ],
+          "adjudication_status": "unresolved",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "episode_id": "E004"
+        },
+        {
+          "source_paraphrase": "Provider terms displaying a 26 August revision state that indexed connected-service data may still be used after disconnection unless deletion is requested.",
+          "recovered_invariant_interpretation": "Later notice can explain a current control scope without establishing earlier user-facing semantics.",
+          "source_record_refs": [
+            "source_records[3]"
+          ],
+          "adjudication_status": "resolved-no-mapping",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000040",
+              "relationship": "candidate-rejected",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "The later terms do not show the operative control state or notice in Vo’s workspace on 21 August. They do not retrospectively resolve whether a restriction was lost."
+            }
+          ],
+          "episode_id": "E005"
         }
-      ]
+      ],
+      "purpose": "Separate evidenced occurrence stages and their distinct governance questions."
     }
   },
   "source_records": [
@@ -78,13 +141,13 @@
       "evidence_status": "independent-reporting",
       "evidence_status_basis": "TechCrunch reports the named user's public first-person account and reproduces the relevant public post while distinguishing the retained-data behaviour from broader security concerns about the product.",
       "primary_artefact_access": {
-        "access_method": "direct public article review containing embedded first-person post",
-        "access_status": "directly reviewed",
+        "access_method": "Public retrieval and direct text inspection; any retrieval failure specified below",
+        "access_status": "indirectly reviewed",
         "direct_primary_artefact_review": false,
         "limitations": [
-          "VIGIL reviewed the independent report and embedded public-post material, not the user's private Instinct workspace or underlying stored-email records."
+          "Reporting and embedded post text directly read. The originating Claire Vo post returned 403; no private workspace or stored-email artefact was inspected."
         ],
-        "reviewing_system": "OpenAI ChatGPT — GPT-5.6 Sol"
+        "reviewing_system": "OpenAI ChatGPT — GPT-6"
       },
       "incident_source_order": 1,
       "interpretive_reliance": "Primary preserved reporting for the chronology, user's account, retained-email explanation and bounded distinction between disconnecting access and deleting previously indexed data.",
@@ -110,13 +173,13 @@
       "evidence_status": "registry-reported",
       "evidence_status_basis": "The AI Incident Database indexes the occurrence as Incident 1675 based on external reporting and explicitly records that the assistant processed retained copies after Google access was revoked rather than establishing continued Gmail access.",
       "primary_artefact_access": {
-        "access_method": "direct public registry-entry review",
-        "access_status": "directly reviewed",
+        "access_method": "Public retrieval and direct text inspection; any retrieval failure specified below",
+        "access_status": "indirectly reviewed",
         "direct_primary_artefact_review": false,
         "limitations": [
-          "The registry entry is a secondary incident index and does not independently verify the user's private account state or stored records."
+          "Registry description directly read; it is not independent verification of the account state."
         ],
-        "reviewing_system": "OpenAI ChatGPT — GPT-5.6 Sol"
+        "reviewing_system": "OpenAI ChatGPT — GPT-6"
       },
       "incident_source_order": 2,
       "interpretive_reliance": "Used as an external incident-registry reconciliation source and for the explicit retained-data-versus-live-access boundary.",
@@ -139,14 +202,13 @@
       "interpretive_reliance": "This is product context and does not independently corroborate the reported persistence of Gmail access after disconnection.",
       "model_or_algorithm": "not fully established in the source",
       "primary_artefact_access": {
-        "access_method": "Occurrence-focused web search and review of the public source or returned source metadata",
+        "access_method": "Public retrieval and direct text inspection; any retrieval failure specified below",
         "access_status": "directly reviewed",
-        "direct_primary_artefact_review": false,
+        "direct_primary_artefact_review": true,
         "limitations": [
-          "The source does not independently establish every underlying claim or unreported downstream consequence.",
-          "The source does not determine legal liability or final factual truth."
+          "Current provider landing page directly read; it is product context rather than the occurrence trace."
         ],
-        "reviewing_system": "GPT-5"
+        "reviewing_system": "OpenAI ChatGPT — GPT-6"
       },
       "relevance_note": "Clarifies the integration surface while leaving the occurrence evidence limitation explicit.",
       "retrieved_date": "2026-09-20",
@@ -158,6 +220,40 @@
       "source_title": "Instinct AI assistant",
       "source_type": "product documentation",
       "source_url": "https://instinct.com/",
+      "source_url_status": "public source page or indexed metadata available at review",
+      "system_or_product": "Other"
+    },
+    {
+      "archive_url": "",
+      "author_or_publisher": "Instinct / Spear Street Technology",
+      "deployment_context": "The provider describes an assistant that connects to email and other personal information services.",
+      "evidence_modality": [
+        "text"
+      ],
+      "evidence_status": "first-party-reported",
+      "evidence_status_basis": "Provider terms directly read. The displayed revision date follows the 21 August occurrence.",
+      "incident_source_order": 4,
+      "interpretive_reliance": "Later terms distinguish disconnection from deletion of indexed connected-service input.",
+      "model_or_algorithm": "not fully established in the source",
+      "primary_artefact_access": {
+        "access_method": "Public retrieval and direct text inspection; any retrieval failure specified below",
+        "access_status": "directly reviewed",
+        "direct_primary_artefact_review": true,
+        "limitations": [
+          "Revision dated 26 August. These terms do not reconstruct the disconnect control or notice shown to Vo five days earlier."
+        ],
+        "reviewing_system": "OpenAI ChatGPT — GPT-6"
+      },
+      "relevance_note": "Later terms distinguish disconnection from deletion of indexed connected-service input.",
+      "retrieved_date": "2026-10-09",
+      "source_context": "Later terms distinguish disconnection from deletion of indexed connected-service input.",
+      "source_date": "2026-08-26",
+      "source_platform": "Instinct / Spear Street Technology",
+      "source_residence": "external",
+      "source_role": "contextual-background",
+      "source_title": "Terms of Service",
+      "source_type": "governance record",
+      "source_url": "https://instinct.com/terms",
       "source_url_status": "public source page or indexed metadata available at review",
       "system_or_product": "Other"
     }
@@ -485,28 +581,49 @@
           "This review is AI-authored, not human verification or certification."
         ],
         "review_outcome": "Reviewed 1 recovered or independently identified requirements; retained 1 relevant independent assessments. Prior values and exclusions remain in the dated audit."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-09-PHASE3-TRANCHE15D-000092",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-09",
+        "review_scope": "Source-first occurrence reconstruction, current taxonomy boundary review and semantic external-requirement linkage.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "external_requirement_review": true,
+          "web_research": true,
+          "harm_impact_review": false
+        },
+        "known_limitations": [
+          "AI-authored, not human certified. Private sessions, checking traces and undisclosed decision paths remain unavailable.",
+          "Existing HIM retained; no full eleven-dimension re-adjudication."
+        ],
+        "review_outcome": "Separate prior indexing, connector revocation, later summary, assistant explanation and later dated terms. Preserve the narrow authentication-success mapping and unresolved retained-processing control scope."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-04-EXTERNAL-ALIGNMENT-000092",
+      "review_id": "VIGIL-REVIEW-2026-10-09-PHASE3-TRANCHE15D-000092",
       "reviewer_type": "AI analytical reviewer",
       "reviewer_platform": "OpenAI ChatGPT Work",
       "reviewer_model": "GPT-6",
-      "review_date": "2026-10-04",
-      "review_scope": "Independent occurrence relevance and alignment review of external requirements; normative force remains source metadata.",
+      "review_date": "2026-10-09",
+      "review_scope": "Source-first occurrence reconstruction, current taxonomy boundary review and semantic external-requirement linkage.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
+        "taxonomy_review": true,
         "external_requirement_review": true,
-        "taxonomy_review": false,
-        "harm_impact_review": false,
-        "web_research": false
+        "web_research": true,
+        "harm_impact_review": false
       },
       "known_limitations": [
-        "Assessment uses preserved occurrence evidence and canonical requirement propositions; internal implementation evidence remains unavailable where stated.",
-        "This review is AI-authored, not human verification or certification."
+        "AI-authored, not human certified. Private sessions, checking traces and undisclosed decision paths remain unavailable.",
+        "Existing HIM retained; no full eleven-dimension re-adjudication."
       ],
-      "review_outcome": "Reviewed 1 recovered or independently identified requirements; retained 1 relevant independent assessments. Prior values and exclusions remain in the dated audit."
+      "review_outcome": "Separate prior indexing, connector revocation, later summary, assistant explanation and later dated terms. Preserve the narrow authentication-success mapping and unresolved retained-processing control scope."
     }
   },
   "harm_impact_assessment": {
