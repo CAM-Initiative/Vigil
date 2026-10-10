@@ -237,7 +237,7 @@ VIGIL uses the designated agent mailbox **Caelen.agent@gmail.com** as the durabl
 **Routing invariant:** all connector-mediated VIGIL operational action emails, QA queues, taxonomy handoffs, authoring audits, repository-cleanup actions and similar maintainer work items MUST be addressed to **Caelen.agent@gmail.com**. Do not route these workflow emails to a maintainer's personal mailbox merely because that account is currently connected or is the sender identity. If a VIGIL action email is accidentally sent elsewhere, mark it superseded and send the authoritative replacement to **Caelen.agent@gmail.com**.
 
 
-**Gmail is an exception/action channel, not a completion log.** Do not send a Gmail notification merely because an Incident, pair, tranche or validator run completed successfully. A clean adjudication, an unchanged taxonomy, an exact matrix-to-Incident/Section 02 match, or an empty update queue requires **no email**.
+**Gmail is an exception/action channel, not a completion log.** Do not send a Gmail notification merely because an Incident, pair, tranche or validator run completed successfully. A clean adjudication, an unchanged taxonomy, consistent Incident classification and source-clause assessments, or an empty update queue requires **no email**.
 
 The current queue is the **latest** Gmail message whose subject begins `[CURRENT VIGIL QA ACTION]` and that carries the label `VIGIL/CURRENT QA ACTION`. That message is a complete authoritative snapshot of unresolved work and supersedes earlier queue notes.
 
@@ -467,7 +467,7 @@ See `vigil/docs/reviews/2026-10-08-corpus-evidence-reconciliation/` for the boun
 
 ### Canonical decision and completeness
 
-The global Incident × Fidelity Class matrix was retired. The canonical Incident is the authority for occurrence-level class mappings and for material source-clause dispositions. No canonical Incident, generated projection, schema, test or validator may depend on the retired `VIGIL.FailureTaxonomy.Adjudications.json` file or require a matrix row for each Incident × Fidelity Class pair. The former matrix remains recoverable from Git history; it must not be regenerated or treated as a source of truth.
+The canonical Incident is the authority for occurrence-level class mappings and for material source-clause dispositions. No canonical Incident, generated projection, schema, test or validator may require a separate exhaustive Incident-by-Fidelity-Class adjudication dataset. Negative candidate decisions and prior research belong only in dated review or audit artefacts.
 
 Every material `vigil_assessment.source_clause_analysis.clauses[]` entry in an opted-in Incident has one `adjudication_status`:
 
@@ -484,7 +484,7 @@ The three roles are mutually distinct, and neither absence of failure nor absenc
 
 Incident-level exemplar eligibility is distinct from mapping-local outcomes. It requires complete clause-level coverage, at least one `successful-invariant`, and no `failure-occurrence` or `ambiguous-boundary` mapping.
 
-For each adjudication, record specific supporting evidence and any missing recognition fact in the Incident and its review manifest. Exhaustive class consideration, negative candidate dispositions, historical changes and detailed process rationale belong in the dated review/audit artefact. Do not recreate the retired matrix merely to demonstrate review breadth.
+For each adjudication, record specific supporting evidence and any missing recognition fact in the Incident and its review manifest. Exhaustive class consideration, negative candidate dispositions, historical changes and detailed process rationale belong in the dated review/audit artefact. Do not create a separate global pairwise adjudication dataset merely to demonstrate review breadth.
 
 ### Post-adjudication checks
 
@@ -494,7 +494,7 @@ For each adjudication, record specific supporting evidence and any missing recog
 4. Rebuild generated public indexes and taxonomy examples from canonical Incidents; never hand-author an alternative registry of adjudication decisions.
 5. If a genuine unresolved action remains, use the maintainer action queue. Do not send clean-pass or progress messages.
 
-This cleanup retires the global matrix **only**. The separate `VIGIL.HarmImpactMatrix.v*.json` methodology files remain the authority for harm-severity assessment.
+The `VIGIL.HarmImpactMatrix.v*.json` methodology files remain the authority for harm-severity assessment and are independent of clause-level taxonomy adjudication.
 
 ## Generated outputs
 
