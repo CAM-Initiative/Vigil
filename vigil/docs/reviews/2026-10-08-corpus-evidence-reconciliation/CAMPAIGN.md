@@ -202,3 +202,7 @@ Executor disconnected (`409 Conflict, environment_offline`). INC-166/167 researc
 ## 10 October 2026 — tranche 18D completion
 
 INC-166/167 bounded repairs, individual manifests and validation are recorded in [PHASE3-TRANCHE-18D.md](PHASE3-TRANCHE-18D.md). Historical baseline figures remain unchanged. Live progress: 172/179 complete, seven original holds pending; original backlog 82/89 complete. Active corpus 182, post-baseline189–191 acceptance pending. Concurrent methodology proposals and INC-012 approval hold preserved and unenacted. Next held INC-053/064.
+
+## 10 October 2026 — tranche19A held-evidence repair
+
+INC-053/064 source-first holds resolved with bounded facts preserved; [report](PHASE3-TRANCHE-19A.md) and individual manifests record evidence and validation. Live progress174/179, original backlog84/89, five original holds remain. Historical plan metrics preserved. Active182 and189–191 intake acceptance pending. Next120/139.
