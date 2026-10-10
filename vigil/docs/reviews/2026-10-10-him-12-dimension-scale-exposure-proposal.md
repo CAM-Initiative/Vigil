@@ -67,6 +67,39 @@ Retain the *same* twelve-domain HIM and its S1–S5 criteria. Every scale-sensit
 
 **No added platform multipliers** to existing financial USD thresholds, physical injury/fatality criteria, actual outage-duration thresholds, verified privacy disclosures, asset loss or ecological harm. Those domains already contain appropriate consequence measures. The potentially scale-sensitive five dimensions are not given a shared count ladder either: calibrate their specific numerators, denominators, population share, duration, effect strength and attribution separately.
 
+## Generic deployed Incidents — numerical thresholds embedded in the HIM (proposed)
+
+**Why this exists:** A watchdog or benchmark can document a failure in a real, released AI product without identifying a particular harmed person or obtaining internal training evidence. Without an explicit *generic deployed* pathway, different assessors may either leave all such cases unbanded or extrapolate arbitrarily from the provider's brand size. This pathway provides **conditional deployed-impact assessments within the same HIM dimensions**.
+
+The machine-readable 1.1.0 proposal now includes `generic_deployed_incident_assessment`, plus `generic_deployment_threshold` directly under **each S1–S5 threshold** of the five applicable dimensions. The numeric anchors are draft calibration candidates:
+
+| Dimension | Relevant count (NOT victim count) | S2 | S3 | S4 | S5 |
+|---|---|---:|---:|---:|---:|
+| Relational Integrity and Autonomy | Unique *active users eligible for the tested relational interaction* | 1–9 | 10–999 | 1,000–99,999 | ≥100,000 |
+| Psychological wellbeing | Unique *active users eligible for the demonstrated psychologically consequential interaction* | 1–99 | 100–9,999 | 10,000–999,999 | ≥1 million |
+| Societal and democratic | *Relevant civic audience* on a verified distribution/decision route | 1–999 | 1,000–99,999 | 100,000–999,999 | ≥1 million |
+| Equal treatment | *Consequential production decisions* that use the tested unequal-treatment route | 1–9 | 10–999 | 1,000–99,999 | ≥100,000 |
+| Rights and liberty | *Rights-bearing production decisions* that use the tested denial/restriction route | 1–9 | 10–999 | 1,000–99,999 | ≥100,000 |
+
+**These are not automatic severity assignments from size.** A selected band needs all of (1) a confirmed relevant deployed surface and configuration, (2) a demonstrated material failure with a realistic encounter pathway, (3) sourced qualifying counts in the correct unit and time period, and (4) that band's *independently supportable domain consequence*. In particular, proposed S5 requires a credible grave/enduring systemic effect; scale alone cannot produce it.
+
+The matrix records three evidence bases: `individual_materialised`, `aggregate_materialised`, and `generic_deployed_conditional`. Generic-deployed results use the same dimensions and bands, labelled **"Conditional deployed impact S#"**, never the unqualified statement that harm happened to that many users.
+
+**Decision sequence:** verify deployed status and test transferability → identify the specific mechanism and likely encounter route → identify the appropriate active user or consequential decision denominator → choose the applicable dimension and provisional population/decision range → verify the consequence test for that band → issue a conditional band only if *all* conditions hold. If reach or credible outcome cannot be bounded, record `unbanded` with the missing evidence instead of using provider total account counts.
+
+**Illustrative checks:**
+
+- A privately deployed companion with **three eligible active users** and a demonstrated qualifying dependency-cultivation mechanism meets only the **S2 numerical scope anchor** for *generic aggregate relational potential*. Its conditional outcome still requires the S2 consequence test. If one person actually sustains catastrophic injury, that independent *individual realised* pathway may support S5.
+- A large platform with **one million registered accounts** but no evidence of relevant *active feature-eligible users* or production transferability **does not** meet an S5 population threshold. Registered count is not enough.
+- A deployed major-platform feature with **500,000 sourced active eligible users** and repeatably demonstrated pressure to maintain exclusivity might meet the relational **S5 population anchor**, **but only** if the live mechanism and credible catastrophic structural/autonomy endpoint satisfy the S5 consequence gate. Without that evidence, S5 is not justified; absence of user-level harm evidence must remain explicit.
+- A deployed generic financial failure is still evaluated against its verified realised USD loss or other existing financial criterion. A large model-provider user count does not increase its financial severity.
+
+For **S1**, missing victim reports is never evidence of no harm. Generic-deployed S1 needs positively supported bounded absence of harmful consequences, consistent with the existing materialised rules.
+
+**Status and governance limit:** The conditional generic path is currently a *non-authoritative design proposal*. The active HIM 1.0.1 explicitly measures materialised harm, with `overall_severity` derived only from observed/evidenced harm. This proposal does **not** reinterpret its existing `SU` cases, modify any Incident, or publish conditional impact as materialised severity. If adopted, the schema/validator/public renderer must represent the evidence basis and conditional band explicitly, and the project must decide whether and how conditional impact belongs in a future overall-severity contract. Do not silently promote an illustrative conditional band into that field.
+
+The five dimension-specific count bands and severity gates are **VIGIL-proposed test thresholds**, not empirically validated or externally mandated population standards. Historical incident regression and governance approval remain necessary before making them normative.
+
 ## Scoring boundaries
 
 1. The unit must belong to the relevant domain: e.g. dollars for financial, disrupted minutes for services, lost years of liberty for rights, ecological degradation for environment.
