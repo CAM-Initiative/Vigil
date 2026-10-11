@@ -608,26 +608,31 @@ Before closure, classify each touched supporting artefact as LIVE, GENERATED, RE
 
 ## Incident artefact storage boundary
 
-### Public-facing artefact selection
+### Source-image admission policy
 
-The Case File prose remains responsible for the complete bounded factual account. A public-facing Incident artefact should add evidentiary or explanatory value rather than merely restating the summary or factual basis as an image.
+The Case File's prose and structured `source_records[]` establish all material occurrence facts. Images are **not a mandatory decoration** for every Incident.
 
-Prefer artefacts that expose structure that prose conveys less efficiently: chronology, clustering, scale, comparison, spatial or system relationships, interface state, source-native visual evidence, or other directly observable context.
+**Formal durable publications — cite, do not screenshot by default:** Government and regulator findings, scholarly reports, court decisions, standards, established news articles and published product-evaluation reports are ordinarily recorded through their original title, URL, date, evidentiary status and factual content. Do not copy an institutional report's front page or a prose section to Registry merely because it is relied upon. An original diagram, chart, interface screenshot or irreplaceable figure is an exception when its visual form independently adds evidentiary value.
 
-Prose screenshots are not categorically excluded. Preserve them when the source-specific framing, qualification, comparison or surrounding context is itself useful evidence and should not simply be flattened into VIGIL's general Incident narrative. Do not preserve a prose screenshot when it only photographs facts already adequately represented in the Case File.
+**Informal volatile primary evidence — prioritise authentic screenshots:** Reddit posts, X/Twitter posts, first-person social-media accounts, informal threads and directly shared conversational outputs are prone to deletion/editing, and their wording, author, thread, date, surrounding claims, attached media and displayed user/AI exchange may be evidentiary facts. When these are relied upon materially, preserve a **real screenshot of the original post in its native context** if accessible. The capture should show enough original identity/handle, platform, timestamp when available, original wording, and relevant surrounding replies/media to permit a reader to distinguish the user's account from the AI's displayed words and other users' reactions. Use a second numbered image only for substantive additional context; avoid unrelated personal detail.
 
-For every proposed public-facing artefact, ask: **what does this let the reader see or understand that the structured Incident record does not convey as effectively on its own?** If there is no substantive answer, omit the artefact even if an image slot is available.
+**Reject substituted representations:** Screenshots of source-archive JSON responses, scraped text, a search excerpt, rewritten summary, mocked/rebuilt social-media layout, synthetic quote card or access-error page are not evidence captures of the original post. An archive of a post may be consulted and cited as **secondary/provenance-limited research**, but a machine-readable dump or screenshot of that dump must **not** be committed to `Registry/VIGIL` or labelled `source-screenshot`. If platform access blocks genuine capture, disclose the barrier in the review/audit and keep the original URL in the source record; do not fabricate a replacement, and do not represent a failure to capture as failure of the underlying occurrence evidence.
 
+**Selection test:** What does the image show that the structured record cannot preserve with equivalent authenticity or context? For informal volatile posts, original authorship, interaction framing and susceptibility to later removal normally provide a positive answer; for formal published reports, a prose screenshot normally does not. Source preservation and individual Incident admission are separate decisions. A screenshot cannot substitute for source-first adjudication or justify combining multiple users' harm.
 
-Occurrence-specific screenshots, source images, videos, logs and preserved documents are stored in `CAM-Initiative/Registry/VIGIL/`, not in this repository. The canonical capture, naming and migration workflow is defined by `Registry/VIGIL/README.md`.
+### Storage, provenance and link contract
 
-The VIGIL Incident record stores only the structured `incident_artefacts[]` metadata and references:
+The normative Registry capture/naming/selection instructions are in `CAM-Initiative/Registry/VIGIL/README.md`. The Registry `VIGIL/` path is for curated original visual/source media (e.g., authentic PNG captures or substantive original MP4 evidence), **not** Reddit API JSON, scraping manifests, temporary workflow logs, review documents or evidence-processing output. Keep source analysis, factual summaries, capture limitations and audit history in the corresponding Vigil Incident and its review/audit surfaces.
 
-- `permalink` — commit-pinned human-facing GitHub URL in `CAM-Initiative/Registry`;
-- `render_url` — matching commit-pinned raw Registry URL;
-- `source_url` — original external source URL, which must not be replaced by the Registry copy;
-- capture/provenance fields describing how the Registry artefact was preserved.
+The VIGIL Incident record stores only the structured `incident_artefacts[]` references, where a selected original visual artefact is actually preserved:
 
-Commit the Registry artefact before adding its VIGIL reference. Do not use `main` or another moving branch in canonical `permalink` or `render_url` values. If an Incident has several artefacts, use the Incident ID filename followed by stable numeric suffixes such as `-02`, `-03`.
+- `permalink` — immutable Registry commit-SHA GitHub URL;
+- `render_url` — matching immutable raw media URL;
+- `source_url` — URL for the **original** external social post, publisher page or supplied source, never replaced by Registry;
+- capture/caption/alt/provenance fields — explicitly identify whether the image is an original visible post, publisher image or separately identified archive rendering; never assert first-party authenticity without basis.
 
-If occurrence-specific media is discovered in the Vigil repository, migrate the bytes to Registry, update every Incident reference to the commit-pinned Registry asset, verify rendering, and only then remove the duplicate Vigil copy. Taxonomy/publication branding assets are not Incident artefacts and are outside this storage rule.
+Commit and inspect the genuine Registry image first, and only then add its canonical VIGIL `incident_artefacts[]` metadata. Do not use `main` or another moving branch for live reference links. Where multiple captures document materially distinct parts of **one bounded occurrence**, use the Incident ID filename plus `-02`, `-03` etc.; do not combine separate affected users into one occurrence or one Harm Impact assessment.
+
+If an incident artefact is removed from the *current* Registry tree because it fails the selection rule, remove it from the canonical Incident's active artefact references and preserve the source URL in `source_records[]`. Immutable historical Git versions may still contain the deleted media; current branch removal is not complete Git-history erasure.
+
+If occurrence-specific media is discovered in Vigil, migrate only the genuinely selected visual evidence to Registry, commit it, update valid immutable references and remove the duplicated Vigil file. Taxonomy/publication branding assets are not Incident artefacts.
