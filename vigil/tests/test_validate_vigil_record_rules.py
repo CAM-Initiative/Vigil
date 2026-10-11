@@ -152,6 +152,7 @@ class IncidentRuleTests(unittest.TestCase):
         cases = [
             ("000055", "property-asset-damage", "VIGIL-HIM-1.1.0-PAD-S2"),
             ("000056", "service-operational-infrastructure", "VIGIL-HIM-1.1.0-SOI-S2"),
+            ("000073", "privacy-confidentiality", "VIGIL-HIM-1.1.0-PRV-S2"),
         ]
         for number, dimension, threshold_id in cases:
             with self.subTest(incident=number):
