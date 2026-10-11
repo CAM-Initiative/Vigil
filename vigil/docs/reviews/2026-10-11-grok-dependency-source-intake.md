@@ -32,6 +32,16 @@ Original Reddit pages, old.reddit.com and Reddit embed endpoints returned HTTP 4
 
 The updated Registry capture selection contract is `CAM-Initiative/Registry/VIGIL/README.md`; VIGIL enforcement guidance is `vigil/MAINTAINERS.md` and the incident artefact rule in `vigil/VIGIL.Schema.json`.
 
+## 2026-10-11 contextual screenshot acquisition follow-up
+
+The requested image is **the original Reddit post as visually displayed**: author/handle, subreddit, date where available, complete material text and any original surrounding comments or image/message context. Do not create synthetic Reddit facsimiles, summary/quote cards, or screenshots of archive metadata. Each affected user remains a separate candidate with its own HIM.
+
+Automated Chromium reviewed the original `www.reddit.com`, `sh.reddit.com`, `new.reddit.com`, `np.reddit.com` paths for each of 1tb5j7j, 1qv2dgc, 1s76p1z and 1teyg2w: all returned HTTP **403**, with no genuine native-page content to screenshot (Registry Actions run `38128363875`). Internet Archive's availability endpoint yielded no usable historical original-page replay for these four URLs. A second-party screenshot service (`image.thum.io`) produced only the same Reddit network-security block screen, visually reviewed before admission; WordPress MShots returned a small GIF placeholder (Registry Actions runs `38128512182`, `38128575250`). Neither was committed as source evidence.
+
+The author-attached `i.redd.it/0p6d8qdv8q0h1.png` media on 1tb5j7j was accessible and visually inspected. It is a stylised **illustration of deleting Ani**, not the original Reddit post UI, primary dialogue, or independent evidence of the claimed conversation (Registry Actions run `38128633147`). Accordingly, this image was not added as a VIGIL source screenshot.
+
+**Capture status: all four authentic original-post screenshots remain outstanding.** No new PNG/JSON asset was committed to Registry/VIGIL and no new canonical IDs were allocated by this follow-up. Genuine source-native captures must come from a readable Reddit session, legitimate original-platform archive rendition, or submitted original user screenshot; provenance, context and redactions require checking before commit. Do not imply completion merely because readable archive text exists. User may provide original-page captures; alternatively a browser session that can authenticate/access Reddit can be used by an authorised maintainer. Avoid using screenshot services that only show access blocks.
+
 ## Remaining work / change isolation
 
 1. Verify each candidate still absent and its ID unallocated on the *current* ingestion branch.
