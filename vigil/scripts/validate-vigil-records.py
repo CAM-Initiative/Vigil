@@ -581,7 +581,7 @@ def validate_harm_impact(path: Path, record: dict[str, Any], errors: list[str]) 
                 not isinstance(item, str) or item not in valid_dimensions for item in dimensions
             ) or (isinstance(dimensions, list) and len(set(dimensions)) != len(dimensions)):
                 errors.append(f"{label}.candidate_dimensions must contain unique eligible Aggregate Harm dimensions")
-            elif screen.get("deployed_configuration") is True and screen.get("potentially_generalisable_mechanism") is True and not dimensions:
+            elif (screen.get("deployed_configuration") is True and screen.get("potentially_generalisable_mechanism") is True and screen.get("bounded_materialised_consequence_case") is False and not dimensions):
                 errors.append(f"{label}.candidate_dimensions must identify the potentially generalisable collective domain")
             screen_refs = screen.get("source_record_refs")
             if not isinstance(screen_refs, list) or not screen_refs:
