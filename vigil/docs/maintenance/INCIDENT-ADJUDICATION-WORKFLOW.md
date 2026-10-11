@@ -156,11 +156,13 @@ If the control's identity, existence, availability, applicability, valid trigger
 
 Multiple independently substantiated mappings may analyse the same evidence episode. Never duplicate that episode to express multiple interpretations. A new candidate class becomes available for canonical Incident mapping only after its governed taxonomy admission and versioned release. The 2026-10-10 bounded design proposals and IEEE correspondence review are in `vigil/docs/reviews/2026-10-10-relational-protection-fidelity-class-review.md`.
 
-## 5. HARM — review materialised consequence separately
+## 5. HARM — determine pathway before assessing severity
 
-Re-open VIGIL-HIM only after the factual record is stable.
+Re-open VIGIL-HIM only after the factual record is stable. Review all **twelve** dimensions for current HIM 1.1.0 (use the applicable eleven for an unchanged historical HIM version). Search for later consequence evidence in a full rebuild. Do not derive severity from taxonomy, notoriety, capability, source prestige or hypothetical worst-case outcomes.
 
-Review all eleven dimensions against current VIGIL-HIM. Search for later consequence evidence where a full rebuild is being performed. Do not derive severity from taxonomy, notoriety, capability, source prestige or hypothetical worst-case outcomes.
+For every **new or substantively reopened HIM 1.1.0** assessment, perform the mandatory Aggregate Harm route-first screen, and record `harm_impact_assessment.aggregate_harm_screening` with deployment, potentially generalisable mechanism, bounded actual harmed case, applicable dimensions, source references and reasoning. The test is **not** whether the source contains one user's screenshot or whether model-wide prevalence has already been proved. A user-observed output may establish a potentially generalisable feature/system mechanism. If deployment and such a mechanism are supported and **no actual particular harmed person/group/asset/institution case is being assessed**, select `generic_deployed_evaluation` even if the eligible cohort, reproducibility or collective consequence are not yet sufficient to assign an Aggregate Harm band. Record SU and the precise missing scoring facts when appropriate. A particular actual harmed case instead requires `specific_consequence`. Do not aggregate user reports into assumed victims or bypass specific-consequence adjudication to obtain a higher score.
+
+The validator checks the screening-to-pathway relationship **when the structured screen is present**. Historical accepted records without it are not automatically rewritten or made invalid; report routing candidates and obtain MAINTAINERS Gate 2 authorisation before modifying their HIM, taxonomy or interpretive provenance. For the decision tree and calibration gates, use `vigil/docs/incident-severity-standard.md` and the governing `vigil/methodologies/VIGIL.HarmImpactMatrix.v1.1.0.json`.
 
 If the rebuild is taxonomy-only, record that Harm Impact was deliberately not reopened and preserve the prior assessment unchanged.
 
