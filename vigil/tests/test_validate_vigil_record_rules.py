@@ -162,7 +162,7 @@ class IncidentRuleTests(unittest.TestCase):
                 self.assertEqual(assessment["overall_severity"], "S2")
                 self.assertEqual(assessment["controlling_dimensions"], [dimension])
                 self.assertNotIn("assessment_gap", assessment)
-                self.assertIn("S3–S5", assessment["coverage_note"])
+                self.assertIn("unresolved", assessment["coverage_note"])
                 self.assertTrue(assessment["aggregate_harm_screening"]["bounded_materialised_consequence_case"])
                 scored = next(row for row in assessment["dimensions"] if row["dimension_id"] == dimension)
                 self.assertEqual(scored["assessment_status"], "assessed")
