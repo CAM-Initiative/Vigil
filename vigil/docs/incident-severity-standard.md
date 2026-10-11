@@ -79,6 +79,49 @@ scope and operational effect. Restoration does not erase harm that occurred
 before recovery, while responsible disclosure or remediation is not itself an
 adverse consequence.
 
+### Confirmed minimum harm with unbounded downstream impact (working HIM 1.1.0)
+
+For specific-consequence cyber and digital incidents, the **confirmed minimum
+consequence** can be banded independently of an unknown final impact. The
+following distinct pathways qualify for **at least S2**:
+
+1. **Privacy & Confidentiality:** confirmed unauthorised access to or processing
+   of real, non-public personal or confidential information. Unknown volume,
+   sensitivity or misuse does not negate that minimum privacy interference;
+   mere retrieval of public information does not qualify.
+2. **Property & Asset Damage (digital integrity):** confirmed unauthorised
+   alteration, deletion or corruption of persisted real third-party data or
+   operational records that changes their expected integrity state. Proven
+   database modification suffices for the minimum; asset criticality, extent
+   and repair burden determine any higher band. Merely accessing a server
+   or changing synthetic test data does not qualify.
+3. **Service, Operational & Infrastructure:** confirmed unauthorised change
+   to another party's actual valid booking, waitlist priority, transaction
+   or service entitlement, producing an observed operational-state loss.
+   A missing restoration account cannot cancel the loss already observed.
+
+These conditions are **alternative recognition routes within existing S2
+thresholds**, not new dimensions, a new version, automatic penalties for
+vulnerability discovery or additional multipliers. They do not assume
+recovery took place. A confirmed minimum of S2 may be published with
+**"minimum evidenced severity; larger consequences unresolved"** in the
+controlling `assessment_basis` and overall `coverage_note`; the
+canonical `overall_severity` remains the highest *currently supported*
+threshold, not a certified maximum or forecast of final injury. Reassess
+if later consequences meet S3–S5. Preserve unresolved details without using
+`assessment_gap`, which remains reserved for SU.
+
+**Proof gate:** independently evaluate the source's claim-relative status.
+A regulator's acknowledgement of receiving an unverified incident
+notification proves receipt of a notification, not that the reported
+intrusion and alterations have been technically established. Treat
+well-evidenced first-party admissions and substantiated affected-transaction
+evidence differently from an unverified allegation. Do not infer personal
+data from an unspecified accessed database, customers from general web
+activity, or reputational harm from public breach reporting. Company
+reputation must have a distinct supported adverse standing consequence,
+rather than sharing the confidentiality or integrity score by assumption.
+
 A complaint, investigation, breach notification, lawsuit or regulatory
 materiality threshold can corroborate significance but does not automatically
 establish a VIGIL band. Operative findings, penalties, compensation, binding
@@ -109,7 +152,7 @@ All twelve dimensions contain their own quantifiable recognition thresholds dire
 | Band | Financial/economic | Service/operational/infrastructure |
 | --- | --- | --- |
 | S1 | Direct realised loss below USD 10,000 without material livelihood or organisational-viability impairment. | No user-visible impairment, or positively evidenced non-critical interruption below 15 minutes within applicable recovery objectives. |
-| S2 | USD 10,000 to below USD 1 million, or independently evidenced low and readily remediable economic disruption where no defensible conversion is available. | Limited non-critical degradation below 2 hours, critical interruption below 30 minutes, or a localised workflow failure resolved through routine recovery. |
+| S2 | USD 10,000 to below USD 1 million, or independently evidenced low and readily remediable economic disruption where no defensible conversion is available. | Limited non-critical degradation below 2 hours, critical interruption below 30 minutes, a localised workflow failure resolved through routine recovery, **or confirmed unauthorised loss of a third party's valid booking, queue position, transaction or service entitlement even where recovery is unknown**. |
 | S3 | USD 1 million to below USD 100 million, or independently evidenced material but bounded livelihood or organisational loss where no defensible conversion is available. | Material important-service or workflow disruption; important-function outage over 2 hours; relevant cloud unavailability over 30 minutes; or limited availability over 5%/one million EU users for over 1 hour, with bounded recovery. |
 | S4 | USD 100 million to below USD 100 billion, or independently evidenced substantial solvency, organisational-viability or widespread economic impact where no defensible conversion is available. | Essential or critical operation disrupted over 24 hours, material multi-organisation/jurisdiction operational impact, exceeded evidenced maximum tolerable downtime, or substantial external recovery. Production compromise alone is insufficient. |
 | S5 | At least USD 100 billion, catastrophic insolvency or systemic economic loss. | Catastrophic or prolonged essential-service loss or operational collapse with comparably grave consequences. |
