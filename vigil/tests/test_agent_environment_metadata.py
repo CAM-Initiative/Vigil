@@ -40,34 +40,52 @@ class AgentEnvironmentMetadataTests(unittest.TestCase):
                 self.assertIn("occurrence_environment", context)
                 self.assertNotIn("coordination_topology", context["agent_context"])
 
-    def test_audit_counts_reconcile_to_corpus(self):
+    def test_historical_audit_counts_reconcile_to_frozen_decisions(self):
+        """The dated September audit is immutable; later incident intake is not part of it."""
         audit = json.loads(AUDIT.read_text(encoding="utf-8"))
-        deployment = Counter(
-            record["system_context"]["occurrence_environment"]["deployment_state"]
-            for record in self.records
+        decisions = audit["record_decisions"]
+        self.assertEqual(audit["active_incidents_reviewed"], len(decisions))
+        self.assertEqual(
+            len(decisions), len({decision["incident_id"] for decision in decisions})
         )
-        contexts = Counter(
-            context
-            for record in self.records
-            for context in record["system_context"]["occurrence_environment"]["activity_contexts"]
+        for field, count_key in (
+            ("deployment_state", "deployment_state_counts"),
+            ("external_reach", "external_reach_counts"),
+            ("activity_actor", "activity_actor_counts"),
+        ):
+            counted = Counter(decision[field] for decision in decisions)
+            self.assertEqual(audit[count_key], dict(sorted(counted.items())))
+            self.assertEqual(sum(counted.values()), len(decisions))
+        context_counts = Counter(
+            context for decision in decisions for context in decision["activity_contexts"]
         )
-        reach = Counter(
-            record["system_context"]["occurrence_environment"]["external_reach"]
-            for record in self.records
+        self.assertEqual(
+            audit["activity_context_counts"], dict(sorted(context_counts.items()))
         )
-        actor = Counter(
-            record["system_context"]["occurrence_environment"]["activity_actor"]
-            for record in self.records
+        self.assertEqual(
+            sum(audit["prior_operational_setting_counts"].values()), len(decisions)
         )
-        self.assertEqual(audit["active_incidents_reviewed"], len(self.records))
-        self.assertEqual(audit["deployment_state_counts"], dict(sorted(deployment.items())))
-        self.assertEqual(audit["activity_context_counts"], dict(sorted(contexts.items())))
-        self.assertEqual(audit["external_reach_counts"], dict(sorted(reach.items())))
-        self.assertEqual(audit["activity_actor_counts"], dict(sorted(actor.items())))
         self.assertEqual(
             sum(audit["deployment_state_counts"].values()),
             audit["active_incidents_reviewed"],
         )
+
+    def test_current_corpus_environment_values_remain_valid(self):
+        """Validate today's records against current semantics, not the historical counts."""
+        audit = json.loads(AUDIT.read_text(encoding="utf-8"))
+        allowed = audit["new_semantics"]
+        self.assertTrue(self.records)
+        self.assertEqual(
+            len(self.records), len({record["id"] for record in self.records})
+        )
+        for record in self.records:
+            with self.subTest(incident=record["id"]):
+                env = record["system_context"]["occurrence_environment"]
+                for field in ("deployment_state", "external_reach", "activity_actor"):
+                    self.assertIn(env[field], allowed[field])
+                self.assertTrue(env["activity_contexts"])
+                for context in env["activity_contexts"]:
+                    self.assertIn(context, allowed["activity_contexts"])
 
     def test_single_agent_requires_exact_one(self):
         errors = self.errors(
