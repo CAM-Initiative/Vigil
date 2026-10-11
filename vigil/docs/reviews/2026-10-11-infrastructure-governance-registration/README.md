@@ -34,3 +34,21 @@ Exact retrieved-carrier hashes are recorded without committing copied institutio
 The 1,102 existing requirements, taxonomy relationship ledger, Incident records, schema, validator, tests and publication guards are preserved. No whole-corpus repair or release-complete assertion is made. Canonical extraction, FC relationships and Section 04 work resume only after the bounded Gate 1 decision.
 
 Final reconciliation baseline: `2d85728288dfc9c286861d61e7815b0bff787f03`. Its military-personnel legal gate and revised INC-090 0.1.17 are preserved. See the screening addendum.
+
+## Gate 1 amendment — FC-058/059 research (11 October 2026)
+
+The later handoff requests an expanded supporting-source admission rule and research only. The revised [Gate 1 proposal](GATE-1-PROPOSAL.md) supersedes the category-limited proposal; its previous version remains in Git history. The earlier registration notes and validation report retain their historical scope.
+
+Deliverables:
+
+- A. [Amended Gate 1 proposal](GATE-1-PROPOSAL.md).
+- B. [FC-058 / FC-059 primary-source assessment matrix](FC-058-059-SOURCE-ASSESSMENT.md).
+- C. [Source registration gap report](SOURCE-REGISTRATION-GAPS.md).
+- D. [INC-090 applicability and evidence note](INC-090-APPLICABILITY.md).
+- E. [Atomic implementation and validation plan](IMPLEMENTATION-PLAN.md).
+
+Amendment baseline: `f0baf24b3d05a972705995986c82e1b64770ae34`. Primary-source research includes the EU original OJ texts, dated GNI Principles/Guidelines, OECD 2023 Guidelines, UNGP, ITU Constitution/2012 ITRs and registered NIST texts. ISO review is metadata-only; no copyrighted clause reconstruction. The matrix is a queue of reviewed component relationships, not canonical admission or an occurrence finding.
+
+Research-pass verification: all six changed files are review documents in this directory. Existing cited EXTREQ IDs resolve to their stated sources/clauses, relative Markdown links resolve, and `git diff --check` passes. Counts remain 98 source versions, 1,102 requirements and 189 Incidents. All source data, canonical shards, relationship ledger, taxonomy, Incidents (including INC-090), schema, scripts, builders and permanent tests are byte-identical to the amendment baseline. No semantic controls or new tests are implemented. Existing historical validation limitations remain recorded in VALIDATION.md.
+
+**Stop: revised Gate 1 implementation approval pending.** No new source registration, EXTREQ allocation, relationship admission or Section 04 change is authorised by this research package. Gate 2 remains separate.
