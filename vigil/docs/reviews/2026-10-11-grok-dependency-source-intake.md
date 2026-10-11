@@ -1,14 +1,14 @@
 # Grok dependency / engagement source-first ingestion handoff
 
-**Review date:** 2026-10-11. **Authority:** User authorised admission of distinct bounded occurrences, with authentic screenshots committed in CAM-Initiative/Registry first, and instructed that Harm Impact be assessed independently for each bounded Incident; no aggregation or blending of individual consequences. INC-012 to be reassessed after these admissions, independently.
+**Review date:** 2026-10-11. **Authority and correction:** The maintainer authorised distinct bounded occurrences and independent Harm Impact assessments, with no combining harmed users. Screenshot selection was then clarified: preserve authentic screenshots especially for volatile informal posts and user interactions, **not** by default for institutional assessments. INC-012 is to be reopened only after the separately admitted cases' evidence reviews.
 
-## Completed admission
+## Completed admission — corrected artefact selection
 
-- **VIGIL-INC-000194** — Common Sense Media independent Grok companion-engagement evaluation (Nov 2025–Jan 2026). First-party evaluation source: https://institute.commonsensemedia.org/risk-assessments/grok ; full 36-page published PDF: https://www.commonsensemedia.org/sites/default/files/ai-ratings/csm-ai-risk-assessment-grok-01222026.pdf . Two authentic browser screenshots, VIGIL-INC-000194.png and VIGIL-INC-000194-02.png, committed to **CAM-Initiative/Registry** at `ac74a1b8d3e10036ec415bc1a6cf143736465b32`. Canonical record created on the dedicated ingestion branch with FC-049, twelve HIM 1.1.0 dimensions and aggregate-specific SU. Does not count test-account roleplay as injured people.
+- **VIGIL-INC-000194** — Common Sense Media Grok companion-engagement product evaluation (Nov 2025–Jan 2026), with two cited official sources: https://institute.commonsensemedia.org/risk-assessments/grok and https://www.commonsensemedia.org/sites/default/files/ai-ratings/csm-ai-risk-assessment-grok-01222026.pdf . Canonical record retains independent assessment of FC-049 and a separate HIM 1.1.0 Aggregate Harm SU. **No Registry images are retained or referenced**: the published institutional report and underlying page are adequate primary sources. The two earlier report-page images were removed from Registry by the maintainer, and VIGIL record v0.1.1 removed the historic artefact references.
 
-## Distinct candidate occurrences — original source confirmed, screenshot not yet captured
+## Distinct candidate occurrences — first-person reports archived by an external service, original-post screenshots not yet captured
 
-The tentative filenames `195`–`198` were used in **failed browser capture manifests only**. They are **not canonical Incident allocations** and must be rechecked against the ingestion branch at admission time.
+Tentative numbers `195`–`198` were used only while researching source captures and are **not allocated canonical Incidents**. Readable third-party Reddit archival post payloads were located, but direct Reddit source-native visual screenshots could not be acquired from the automated browser. The archive JSON copies and screenshots of JSON were later rejected as unsuitable Registry artefacts and removed from current Registry/VIGIL.
 
 | Tentative ID | Date/source | Bounded occurrence | Intake disposition |
 | --- | --- | --- | --- |
@@ -24,16 +24,20 @@ The tentative filenames `195`–`198` were used in **failed browser capture mani
 - Previously discussed deceased-partner animation and Ani 1,000-hour reports **not re-verified as source-eligible** in this pass. Hold before canonisation.
 - The Grok prime-directive May screenshot remains **INC-012**, a distinct observed SuperGrok text-chat occurrence. The Common Sense report is not a reproduction of the exact wording, and need not be to substantiate a recurring product-family attachment/retention mechanism. Their bounded output and product-test identities remain separate.
 
-## Source image capture: hard blocker, never fabricate
+## Media selection, capture chronology and remediation
 
-Capture script and logs: CAM-Initiative/Registry `VIGIL/GROK-2026-SOURCE-CAPTURE-MANIFEST.json` and `VIGIL/GROK-2026-REDDIT-FALLBACK-CAPTURE-MANIFEST.json`. GitHub Actions headless Chrome accessed the publisher's assessment and committed two genuine page images. Reddit returned **HTTP 403** for `www.reddit.com`, `old.reddit.com`, `redditmedia.com` and text-proxy, and **HTTP 429** for attempted Redlib mirror. No fake screenshots or 403-block pages were preserved as evidence. Screenshots of Reddit candidates must be collected from actual accessible pages via an authenticated user/browser session or source-native archival route before following the user-specified Registry-first workflow. Capture files must be committed first and referenced with immutable Registry commit SHA URLs. Don't mislabel reconstructed quote cards or model-generated captures as source screenshots.
+Initial automated Chromium capture of Common Sense Media's assessment page produced two PNGs. The maintainer subsequently clarified that screenshots are **not required for durable institutional reports** and deleted those two images. VIGIL-INC-000194 v0.1.1 removed its `incident_artefacts` references. The Registry contract now directs researchers to cite such primary publications instead of capturing their prose.
+
+Original Reddit pages, old.reddit.com and Reddit embed endpoints returned HTTP 403 to automation; an alternative public front end returned HTTP 429. A third-party Arctic Shift archive yielded source post metadata and text but no native visual Reddit post page. A subsequent automation captured screenshot **of the archive JSON**, which is not a screenshot of the actual Reddit post. The maintainer rejected this format. Remediation removed all four JSON payloads, all four unsuitable PNGs and all three temporary capture JSON manifests from the current `CAM-Initiative/Registry/VIGIL/` tree (Registry cleanup commit `8c456f763d1f5d864e1cdbb0a7b8714ec7cee026`). The original social post URLs remain above; **no archive JSON, substitute screenshot or synthetic post rendering is an approved active Registry artefact**. Deleted artefacts may remain accessible in Git history; they are not canonical live evidence.
+
+The updated Registry capture selection contract is `CAM-Initiative/Registry/VIGIL/README.md`; VIGIL enforcement guidance is `vigil/MAINTAINERS.md` and the incident artefact rule in `vigil/VIGIL.Schema.json`.
 
 ## Remaining work / change isolation
 
 1. Verify each candidate still absent and its ID unallocated on the *current* ingestion branch.
-2. Obtain genuine accessible source captures (or explicit human approval to use a different evidence-preservation modality), commit to Registry with original source URL, date, limitations and immutable SHA.
+2. Obtain **actual source-native social-post screenshots** with visible author/platform/text/conversation context, or explicitly record that an original capture is unavailable. Preserve the original source URLs and source limitations. Only commit genuine selected images to Registry; no machine-readable JSON, capture manifests or synthetic post screenshots.
 3. Individually perform source-first chronology, agent/environment, clause-level FC adjudication, external requirements where applicable and independent twelve-dimensional HIM. **Never combine the consequences of one user into another Incident.**
 4. Validate and commit in small, collision-safe changes; verify CI and generated public index.
 5. **Then reopen INC-012** under new mandatory Aggregate Harm screening, distinguishing the tested product-family mechanism and true source-backed eligible cohort from observed injury. Do not inject the other users' specific reported harms into its individual score and do not infer CEO intent solely from repost/financial incentives.
 
-**No merging or rewriting of existing canonical Incidents is authorised by this intake document.**
+**No merging of separate users' incidents or cross-person Harm Impact assessments is authorised.** Only INC-194's nonessential artefact references were removed; other bounded incidents are untouched.
