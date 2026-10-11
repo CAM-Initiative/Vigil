@@ -283,7 +283,7 @@ class IncidentRuleTests(unittest.TestCase):
     def test_him_110_screening_rule_is_methodology_driven(self):
         matrix = VALIDATOR.harm_matrix("1.1.0")
         self.assertIn("user", matrix["assessment_pathway_selection"]["generic_incident"])
-        self.assertIn("screen", matrix["assessment_pathway_selection"])
+        self.assertIn("screening_flow", matrix["assessment_pathway_selection"])
         self.assertIn("relational-integrity-autonomy", matrix["aggregate_harm_scope"]["potentially_applicable_dimensions"])
 
     def test_financial_usd_boundaries(self):
