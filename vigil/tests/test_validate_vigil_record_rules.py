@@ -203,6 +203,89 @@ class IncidentRuleTests(unittest.TestCase):
         VALIDATOR.validate_harm_impact(Path("synthetic.json"), record, errors)
         self.assertTrue(any("permitted only for assessed 1.1.0 Aggregate Harm" in error for error in errors), errors)
 
+    def test_him_110_aggregate_screen_routes_user_observed_deployed_mechanism(self):
+        # Regression for INC-012-style evidence: a user-posted screenshot is not
+        # evidence of a specifically harmed person and cannot defeat screening.
+        record = self.him_110_record()
+        assessment = record["harm_impact_assessment"]
+        for row in assessment["dimensions"]:
+            row.update(
+                assessment_status="unreported",
+                assessment_basis="No independently evidenced downstream consequence or modelled cohort.",
+                evidence_confidence="not-assessed",
+            )
+            for field in ("severity", "threshold_id", "observed_values", "evidence_refs", "aggregate_harm_evidence"):
+                row.pop(field, None)
+        assessment["overall_severity"] = "SU"
+        assessment["controlling_dimensions"] = []
+        assessment.pop("no_materialised_harm_basis", None)
+        assessment["assessment_gap"] = "The screenshot establishes an observed deployed mechanism, not tested prevalence or eligible cohort."
+        assessment["aggregate_harm_screening"] = {
+            "deployed_configuration": True,
+            "potentially_generalisable_mechanism": True,
+            "bounded_materialised_consequence_case": False,
+            "candidate_dimensions": ["relational-integrity-autonomy"],
+            "source_record_refs": ["source_records[0]"],
+            "rationale": "One live-user observation supports a potentially generalisable relational mechanism; actual harmed user and repeatability are not established.",
+        }
+
+        # Incorrect individual-harm routing is rejected even with SU.
+        errors = []
+        VALIDATOR.validate_harm_impact(Path("INC012-like.json"), record, errors)
+        self.assertTrue(any("assessment_pathway must be generic_deployed_evaluation" in e for e in errors), errors)
+
+        # Correct Aggregate Harm routing can retain SU without inventing victims.
+        assessment["assessment_pathway"] = "generic_deployed_evaluation"
+        errors = []
+        VALIDATOR.validate_harm_impact(Path("INC012-like.json"), record, errors)
+        self.assertEqual(errors, [])
+
+        # Evidence/source and dimensional routing conditions cannot be bypassed.
+        screen = assessment["aggregate_harm_screening"]
+        screen["candidate_dimensions"] = []
+        errors = []
+        VALIDATOR.validate_harm_impact(Path("INC012-like.json"), record, errors)
+        self.assertTrue(any("must identify the potentially generalisable collective domain" in e for e in errors), errors)
+        screen["candidate_dimensions"] = ["relational-integrity-autonomy"]
+        screen["source_record_refs"] = ["source_records[999999]"]
+        errors = []
+        VALIDATOR.validate_harm_impact(Path("INC012-like.json"), record, errors)
+        self.assertTrue(any("invalid source_records[N]" in e for e in errors), errors)
+
+        # Actual materialised harm to a bounded person must instead be specific.
+        screen["source_record_refs"] = ["source_records[0]"]
+        screen["bounded_materialised_consequence_case"] = True
+        errors = []
+        VALIDATOR.validate_harm_impact(Path("specific-injury-like.json"), record, errors)
+        self.assertTrue(any("assessment_pathway must be specific_consequence" in e for e in errors), errors)
+        assessment["assessment_pathway"] = "specific_consequence"
+        errors = []
+        VALIDATOR.validate_harm_impact(Path("specific-injury-like.json"), record, errors)
+        self.assertEqual(errors, [])
+
+        # Production-unverified findings do not inherit aggregate-scale routing.
+        screen["bounded_materialised_consequence_case"] = False
+        screen["deployed_configuration"] = False
+        errors = []
+        VALIDATOR.validate_harm_impact(Path("not-deployed.json"), record, errors)
+        self.assertEqual(errors, [])
+
+    def test_him_110_screening_is_additive_to_existing_corpus(self):
+        record = self.him_110_record()
+        errors = []
+        VALIDATOR.validate_harm_impact(Path("legacy-unscreened.json"), record, errors)
+        self.assertEqual(errors, [])
+        record["harm_impact_assessment"]["aggregate_harm_screening"] = None
+        errors = []
+        VALIDATOR.validate_harm_impact(Path("invalid-screen.json"), record, errors)
+        self.assertTrue(any("aggregate_harm_screening must be an object" in e for e in errors), errors)
+
+    def test_him_110_screening_rule_is_methodology_driven(self):
+        matrix = VALIDATOR.harm_matrix("1.1.0")
+        self.assertIn("user", matrix["assessment_pathway_selection"]["generic_incident"])
+        self.assertIn("screen", matrix["assessment_pathway_selection"])
+        self.assertIn("relational-integrity-autonomy", matrix["aggregate_harm_scope"]["potentially_applicable_dimensions"])
+
     def test_financial_usd_boundaries(self):
         cases = {
             0: "S1", 9_999: "S1", 10_000: "S2", 999_999: "S2",
