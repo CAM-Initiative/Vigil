@@ -94,11 +94,21 @@ class RegistrySourceRoleTests(unittest.TestCase):
         self.assertEqual(assessment["overall_severity"], "S1")
         self.assertEqual(financial["assessment_status"], "assessed")
         self.assertEqual(financial["severity"], "S1")
-        self.assertEqual(financial["threshold_id"], "VIGIL-HIM-1.0.1-FIN-S1")
+        self.assertEqual(
+            financial["threshold_id"],
+            f'VIGIL-HIM-{assessment["methodology_version"]}-FIN-S1',
+        )
+        self.assertEqual(assessment["methodology_version"], "1.1.0")
         self.assertIn("US$599.27", financial["assessment_basis"])
+        # The quantified loss relies on the tribunal decision and the historical
+        # official exchange-rate series, not a secondary newspaper retelling.
         self.assertEqual(financial["evidence_refs"], [
-            "source_records[1]", "source_records[2]", "source_records[3]",
+            "source_records[2]", "source_records[3]",
         ])
+        for ref in financial["evidence_refs"]:
+            source = record["source_records"][int(ref[15:-1])]
+            self.assertEqual(source["source_role"], "harm-evidence")
+            self.assertEqual(source["evidence_status"], "verified")
 
 
 if __name__ == "__main__":
