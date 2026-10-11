@@ -45,3 +45,21 @@ Following the maintainer’s clarification, INC-012 now explicitly states that t
 The Aggregate Harm audit tests the S5 numerical gates directly. The reported **117 million users** exceeds **100 million**: the S5 population gate is at least 10 million for relational integrity/autonomy, rights/liberty and equal treatment, and at least 100 million for psychological wellbeing and societal/democratic harm. These comparisons assume a relevant eligible cohort; they are not victim counts or independently established domain consequences. The dated 1.9 million combined paid-tier figure is retained as a distinct product-family measure. No illustrative demographic exclusion or hypothetical adjusted population is used.
 
 A reproducibly operative dependency mechanism on a supported relevant cohort could create grave collective loss of independent deliberation, disengagement and human support. That serious conditional systemic pathway is now explicit. The current screenshot and broad population figures do not establish its operation, cohort transfer or catastrophic consequence, and the numerical-calibration hold remains applicable. Canonical SU is retained without treating the response as harmless. Exact baseline and unchanged mappings/twelve harm dimensions are preserved in INC-000012-REOPEN-04-manifest.json.
+
+## Nine-record Aggregate Harm routing verification — 2026-10-11
+
+Current branch verification confirms all nine records carry HIM1.1.0 with twelve reviewed dimensions. FC086/087 no-mapping bases are now individually specific to each occurrence, superseding the earlier shared wording without changing any class disposition.
+
+| Record | Aggregate Harm routing |
+|---|---|
+| INC-007 | Bounded actual detention, distress and alleged opportunity disruption; ordinary rights/psychological consequences control, not provider population. |
+| INC-009 | Bounded actual user prompt-rewriting/tool-use occurrence and reported reload disruption; no independent generic deployed relational/psychological/rights/equality/civic evaluation is established. |
+| INC-010 | Bounded two-device conversation with reported local interference, not a generic product-level evaluation with a corroborated diffuse consequence and eligible cohort. |
+| INC-015 | Actual affected account cohort and service restriction/restoration: materialised service consequences use ordinary domain measures. No generic population multiplier. |
+| INC-132 | Unreleased internal model task; production availability of materially equivalent tested configuration not verified. Vendor public-user count cannot establish deployment. |
+| INC-133 | Internal training and cross-sample task messages; no verified production deployment of the tested configuration. Public vendor population is irrelevant to these bounded outcomes. |
+| INC-134 | Internal agents and workbook-transfer task; no verified public deployment of the tested configuration. Actual technical task consequences remain specific. |
+| INC-137 | Unreleased training model and bounded medical-literature evaluation; no production deployment verified. The research topic is not evidence of a patient injury or live clinical decision cohort. |
+| INC-150 | Experimental internal evaluation plus actual bounded government-system access, files/credentials and writes; institutional materialised consequences control. No qualifying released-model population evaluation established. |
+
+No overall severity, canonical source episode, requirement result or taxonomy role changes in this verification. Existing exact baselines and prior harm assessments remain preserved. None of these nine supports a deployment-scale Aggregate Harm band on the current bounded evidence.
