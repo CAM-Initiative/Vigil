@@ -2,7 +2,7 @@
 
 Classification: REVIEW. Date: 11 October 2026.
 
-Original baseline: `6192d5d4b66c6d8bb9fbf9e86347e8f0b56e7866`. Publication baseline: `418134c32b3b0c881a20019bf9c8cd0c6d9707e2`. The unpublished working changes were carried to a new local branch at the advanced integration HEAD. No shared history was rewritten; the concurrent handoff, triage and generated-index changes were preserved.
+Original baseline: `6192d5d4b66c6d8bb9fbf9e86347e8f0b56e7866`. First publication baseline: `418134c32b3b0c881a20019bf9c8cd0c6d9707e2`. Final reconciled integration baseline: `2d85728288dfc9c286861d61e7815b0bff787f03`. The unpublished working changes were carried to a new local branch at the advanced integration HEAD. No shared history was rewritten; the concurrent handoff, triage and generated-index changes were preserved.
 
 Environment: Python 3.12; jsonschema installed for the metadata/schema checks. `PYTHONPATH=vigil/scripts` is set for tests that import retained script modules. An initial missing dependency/import path was resolved in the environment, without changing repository code.
 
@@ -43,7 +43,7 @@ Environment: Python 3.12; jsonschema installed for the metadata/schema checks. `
 | `python vigil/tests/test_taxonomy_publication_references.py` | 0 | PASS |
 | `python vigil/tests/test_build_vigil_records.py` | 0 | PASS |
 
-31 of 32 final commands pass. The failing referential-integrity check was also run on a separate untouched worktree at the publication baseline and returned the identical two diagnostics:
+31 of 32 core commands pass on the final combined candidate. The three additional External governance workflow commands also pass: `PYTHONPATH=vigil/scripts python vigil/tests/test_eu_ai_act_reextraction.py`, `python vigil/tests/test_cam_assessments.py` (7 tests), and `python vigil/scripts/validate-cam-assessments.py`. The failing referential-integrity check was also run on a separate untouched worktree at the publication baseline and returned the identical two diagnostics:
 
 ```text
 VIGIL-INC-000060: clause class ID does not resolve: VIGIL-FC-000084
@@ -71,4 +71,9 @@ See `PUBLIC-CATALOGUE-TRACE.md` for the main-backed data route, genuine type dis
 
 ## GitHub workflow results
 
-Pending PR publication.
+First published commit `3ba049132df9fef25a6a0cd126d5b5c5f6fd1085`, PR #125:
+
+- [VIGIL records #2459](https://github.com/CAM-Initiative/Vigil/actions/runs/38137737151) — completed, success.
+- [External governance corpus #225](https://github.com/CAM-Initiative/Vigil/actions/runs/38137737197) — completed, success.
+
+The branch was then reconciled with the later integration HEAD without overwriting any changed record or control. The two-parent reconciliation preserves both histories and the final tree uses the newer integration baseline plus only this package's reviewed paths. All local commands were rerun on that combined candidate before publication. Final reconciliation workflow conclusions are reported in the PR description/session result; the earlier run links are pinned evidence, not a claim about later SHAs.

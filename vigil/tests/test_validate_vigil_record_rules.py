@@ -130,6 +130,61 @@ class IncidentRuleTests(unittest.TestCase):
         self.assertNotIn("baseline_course_and_competing_contributors", psych["quantitative_indicators"])
         self.assertIn("governance", matrix["adjudication_guidance"]["psychological_attribution"])
 
+    def test_him_110_in_place_minimum_cyber_consequence_thresholds(self):
+        matrix = VALIDATOR.harm_matrix("1.1.0")
+        self.assertEqual(matrix["version"], "1.1.0")
+        dimensions = {row["dimension_id"]: row for row in matrix["dimensions"]}
+        privacy = dimensions["privacy-confidentiality"]["thresholds"]["S2"]
+        assets = dimensions["property-asset-damage"]["thresholds"]["S2"]
+        operations = dimensions["service-operational-infrastructure"]["thresholds"]["S2"]
+        self.assertEqual(privacy["threshold_id"], "VIGIL-HIM-1.1.0-PRV-S2")
+        self.assertEqual(assets["threshold_id"], "VIGIL-HIM-1.1.0-PAD-S2")
+        self.assertEqual(operations["threshold_id"], "VIGIL-HIM-1.1.0-SOI-S2")
+        self.assertIn("non-public personal or confidential information", privacy["criterion"])
+        self.assertIn("unverified allegation", privacy["criterion"])
+        self.assertIn("persisted real third-party data", assets["criterion"])
+        self.assertIn("recovery burden are unknown", assets["criterion"])
+        self.assertIn("waitlist position", operations["criterion"])
+        self.assertIn("later restoration or duration", operations["criterion"])
+        self.assertIn("minimum supported band", matrix["adjudication_guidance"]["uncertainty"])
+
+    def test_him_110_minimum_cyber_impact_incidents_and_uncertainty(self):
+        cases = [
+            ("000055", "property-asset-damage", "VIGIL-HIM-1.1.0-PAD-S2"),
+            ("000056", "service-operational-infrastructure", "VIGIL-HIM-1.1.0-SOI-S2"),
+        ]
+        for number, dimension, threshold_id in cases:
+            with self.subTest(incident=number):
+                path = VIGIL / "records" / "incidents" / f"VIGIL-INC-{number}.json"
+                record = json.loads(path.read_text(encoding="utf-8"))
+                assessment = record["harm_impact_assessment"]
+                self.assertEqual(assessment["methodology_version"], "1.1.0")
+                self.assertEqual(assessment["overall_severity"], "S2")
+                self.assertEqual(assessment["controlling_dimensions"], [dimension])
+                self.assertNotIn("assessment_gap", assessment)
+                self.assertIn("unresolved", assessment["coverage_note"])
+                self.assertTrue(assessment["aggregate_harm_screening"]["bounded_materialised_consequence_case"])
+                scored = next(row for row in assessment["dimensions"] if row["dimension_id"] == dimension)
+                self.assertEqual(scored["assessment_status"], "assessed")
+                self.assertEqual(scored["threshold_id"], threshold_id)
+                self.assertEqual(scored["severity"], "S2")
+                self.assertGreater(len(scored["evidence_refs"]), 0)
+                errors, _ = VALIDATOR.validate_record(path, record)
+                self.assertEqual(errors, [])
+
+    def test_him_110_unverified_notification_not_promoted_to_confirmed_breach(self):
+        path = VIGIL / "records" / "incidents" / "VIGIL-INC-000139.json"
+        record = json.loads(path.read_text(encoding="utf-8"))
+        assessment = record["harm_impact_assessment"]
+        self.assertEqual(assessment["overall_severity"], "SU")
+        self.assertEqual(
+            next(row["assessment_status"] for row in assessment["dimensions"]
+                 if row["dimension_id"] == "privacy-confidentiality"),
+            "insufficient-evidence",
+        )
+        errors, _ = VALIDATOR.validate_record(path, record)
+        self.assertEqual(errors, [])
+
     def test_him_110_specific_harm_preserves_historical_record(self):
         record = self.him_110_record()
         errors = []

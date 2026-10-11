@@ -32,3 +32,5 @@ Exact retrieved-carrier hashes are recorded without committing copied institutio
 - AUDIT / RETIRE: no existing artefact is rewritten or retired by this package.
 
 The 1,102 existing requirements, taxonomy relationship ledger, Incident records, schema, validator, tests and publication guards are preserved. No whole-corpus repair or release-complete assertion is made. Canonical extraction, FC relationships and Section 04 work resume only after the bounded Gate 1 decision.
+
+Final reconciliation baseline: `2d85728288dfc9c286861d61e7815b0bff787f03`. Its military-personnel legal gate and revised INC-090 0.1.17 are preserved. See the screening addendum.
