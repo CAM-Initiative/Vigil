@@ -1,5 +1,7 @@
 # INC-055 and INC-139 — independent third-party impact investigation
 
+**Later 11 October calibration:** HIM 1.1.0 was amended in place on the working branch. INC-055 is now S2 minimum for confirmed database integrity modification; INC-056 is also S2 minimum for a cancelled third-party booking. INC-139 remains SU while the reported changes await substantiation. The earlier dispositions below are a historical evidence-research snapshot, not the current HIM result.
+
 **Date:** 11 October 2026  
 **Branch:** `agent/incident-ecosystem-ingestion`  
 **Methodology:** adopted VIGIL-HIM 1.1.0.  
