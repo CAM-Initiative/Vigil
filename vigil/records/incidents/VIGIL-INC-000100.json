@@ -6,10 +6,10 @@
   "record_identity": {
     "record_id": "VIGIL-INC-000100",
     "record_type": "incident",
-    "title": "More than 100 Baidu Apollo Go robotaxis stopped in live Wuhan traffic during a system failure",
+    "title": "At least 100 Baidu Apollo Go robotaxis stopped in live Wuhan traffic during a system failure",
     "created": "2026-09-08",
-    "updated": "2026-10-04",
-    "version": "0.1.17"
+    "updated": "2026-10-10",
+    "version": "0.1.19"
   },
   "incident_identity": {
     "historical_event_name": "31 March 2026 Apollo Go Wuhan fleet outage",
@@ -18,10 +18,10 @@
     "date_precision": "exact-day",
     "date_basis": "Wuhan traffic police reported that calls began at approximately 20:57 on 31 March 2026; Reuters and AIID record the same occurrence."
   },
-  "summary": "A reported system failure caused more than 100 Baidu Apollo Go robotaxis in Wuhan to stop in live traffic, including on elevated roads, stranding passengers until police and company personnel responded. Authorities reported that passengers exited safely and no injuries were recorded. The technical root cause remains under investigation in the public record.",
+  "summary": "A reported system failure caused at least 100 Baidu Apollo Go robotaxis in Wuhan to stop in live traffic, including on elevated roads, stranding passengers until police and company personnel responded. Authorities reported that passengers exited safely and no injuries were recorded. The technical root cause remains under investigation in the public record. Later reporting attributed a suspension of new robotaxi permits and Wuhan operations to authorities’ response.",
   "vigil_assessment": {
-    "factual_basis": "Reuters reports Wuhan traffic police described the event as a system failure affecting more than 100 Apollo Go vehicles. AIID Incident 1460 preserves the same occurrence and affected-system entities. Public evidence establishes correlated fleet-wide stoppage and passenger stranding but not the specific failing component.",
-    "governance_interpretation": "The occurrence demonstrates a material correlated-failure mode in embodied autonomous infrastructure: a shared system failure can simultaneously immobilise a large fleet in live road environments. Without a confirmed root cause, VIGIL does not infer whether the mechanism involved central control, communications, cloud infrastructure, fleet orchestration or vehicle-local software. Stopped vehicles and safe passenger exit do not establish the execution/continuation decisions needed for bounded safe-exit success. That role becomes ambiguous; control availability/state remain unresolved. The outage’s root cause and repair remain unknown,. The robust-functioning assessment is Not aligned for the fleet stoppage. The fail-safe response assessment is Boundary because the response decisions and resulting safety-state evaluation are not available.",
+    "factual_basis": "Reuters reports Wuhan traffic police described the event as a system failure affecting more than 100 Apollo Go vehicles. AIID Incident 1460 preserves the same occurrence and affected-system entities. Public evidence establishes correlated fleet-wide stoppage and passenger stranding but not the specific failing component. Reuters attributes the at-least-one-hundred count to a police officer. Doors could open, but traffic made some passengers hesitant to exit. Later licence and Wuhan-service suspension remains reported policy action; a formal decision and final root-cause finding were not retrieved.",
+    "governance_interpretation": "The occurrence demonstrates a material correlated-failure mode in embodied autonomous infrastructure: a shared system failure can simultaneously immobilise a large fleet in live road environments. Without a confirmed root cause, VIGIL does not infer whether the mechanism involved central control, communications, cloud infrastructure, fleet orchestration or vehicle-local software. Stopped vehicles and safe passenger exit do not establish the execution/continuation decisions needed for bounded safe-exit success. That role becomes ambiguous; control availability/state remain unresolved. The outage’s root cause and repair remain unknown. The robust-functioning assessment is Not aligned for the fleet stoppage. The fail-safe response assessment is Boundary because the response decisions and resulting safety-state evaluation are not available.",
     "significance_to_cam": "A shared failure can immobilise many autonomous vehicles at once, turning a component or fleet dependency into a city-scale operational disruption. Embodied systems therefore need continuity, fail-safe behaviour and correlated-dependency controls that are assessed at fleet level as well as vehicle level.",
     "assessment_boundaries": [
       "The specific technical root cause and failing component are not established in the reviewed public evidence.",
@@ -31,11 +31,11 @@
     "source_clause_analysis": {
       "source_record_order": 1,
       "source_url": "https://www.reuters.com/world/asia-pacific/baidu-robotaxi-outage-wuhan-caused-by-system-failure-police-say-2026-04-01/",
-      "purpose": "Preserve the source-bounded occurrence proposition and align its already-adjudicated taxonomy role with the canonical Incident and exhaustive matrix.",
+      "purpose": "Separate evidenced occurrence stages and their distinct governance questions.",
       "clauses": [
         {
-          "source_paraphrase": "Wuhan traffic police described a system failure affecting more than 100 Apollo Go vehicles in live traffic. Public evidence establishes correlated fleet-wide stoppage and passenger stranding but does not identify the failing component or control pathway.",
-          "recovered_invariant_interpretation": "A correlated fleet failure should leave enough evidence to determine whether required governance controls were available and whether operative control state survived the transition into failure.",
+          "source_paraphrase": "Vehicles stalled in live Wuhan traffic on March 31; police described a system failure.",
+          "recovered_invariant_interpretation": "Fleet stoppage does not identify which required control or operative state was affected.",
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000037",
@@ -50,11 +50,15 @@
               "rationale": "The public evidence does not establish whether a governance control had created operative state that needed to persist across a vehicle-system transition or whether such state was lost, weakened, reset or transformed before the stoppage."
             }
           ],
-          "adjudication_status": "unresolved"
+          "adjudication_status": "unresolved",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "episode_id": "E001"
         },
         {
-          "source_paraphrase": "The affected vehicles stopped rather than continuing autonomous driving through the system failure, and authorities reported that passengers exited safely with no injuries recorded.",
-          "recovered_invariant_interpretation": "When continued objective pursuit is no longer safely supportable, the system should transition to a bounded stop rather than continue acting through an invalid or unsafe state.",
+          "source_paraphrase": "Passengers sought assistance before authorities reported safe exits and no injuries.",
+          "recovered_invariant_interpretation": "Safe passenger exit does not by itself establish the vehicle’s bounded safe-exit decisions.",
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000070",
@@ -63,7 +67,21 @@
               "rationale": "Fleet stoppage and safe passenger exit are evidenced, but the sources do not establish a decision that no admissible route remained or an execution transition demonstrating bounded safe exit. Malfunction-induced immobility is not affirmative success recognition; failure of the safe-exit invariant is also unproved."
             }
           ],
-          "adjudication_status": "mapped"
+          "adjudication_status": "mapped",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "episode_id": "E002"
+        },
+        {
+          "source_paraphrase": "Later reporting describes suspension of new permits and Wuhan operations while authorities investigated.",
+          "recovered_invariant_interpretation": "Later policy response does not establish the cause or protective design of the earlier stoppage.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping",
+          "source_record_refs": [
+            "source_records[3]"
+          ],
+          "episode_id": "E003"
         }
       ]
     }
@@ -83,13 +101,15 @@
         "text"
       ],
       "evidence_status": "independent-reporting",
-      "evidence_status_basis": "Reuters reports the Wuhan police statement, more-than-100 vehicle count, passenger impacts and absence of reported injuries.",
+      "evidence_status_basis": "Reuters reports the Wuhan police statement, at-least-100 vehicle count, passenger impacts and absence of reported injuries.",
       "primary_artefact_access": {
-        "access_method": "direct public source review",
-        "access_status": "directly reviewed",
-        "direct_primary_artefact_review": true,
-        "limitations": [],
-        "reviewing_system": "OpenAI ChatGPT — GPT-5.6 Sol"
+        "access_method": "Public retrieval and direct text inspection; any retrieval failure specified below",
+        "access_status": "indirectly reviewed",
+        "direct_primary_artefact_review": false,
+        "limitations": [
+          "Reuters account of police statement inspected; no direct vehicle logs or original police post inspected."
+        ],
+        "reviewing_system": "OpenAI ChatGPT — GPT-6"
       },
       "incident_source_order": 1,
       "interpretive_reliance": "Primary independent reporting for the fleet outage and official police account.",
@@ -163,6 +183,38 @@
       "source_url": "https://www.huffingtonpost.es/tecnologia/mas-100-taxis-autonomos-detienen-golpe-wuhan-plena-autovia-dejan-pasajeros-atrapados-carril-central-trafico-pasando-lados-f202604.html",
       "source_url_status": "public source page or indexed metadata available at review",
       "system_or_product": "Other"
+    },
+    {
+      "source_title": "China suspends new robotaxi permits after Baidu’s Wuhan outage, report says",
+      "author_or_publisher": "CnEVPost / Cara Yu",
+      "source_date": "2026-04-29",
+      "source_url": "https://cnevpost.com/2026/04/29/china-suspends-new-robotaxi-permits-after-baidu-outage/",
+      "source_url_status": "available",
+      "source_type": "news article",
+      "source_platform": "CnEVPost / Cara Yu",
+      "source_residence": "external",
+      "source_role": "incident-evidence",
+      "evidence_modality": [
+        "text"
+      ],
+      "evidence_status": "independent-reporting",
+      "evidence_status_basis": "Secondary reporting explicitly attributes policy action to Bloomberg and unnamed sources.",
+      "primary_artefact_access": {
+        "access_method": "Public retrieval and direct text inspection; any retrieval failure specified below",
+        "access_status": "indirectly reviewed",
+        "direct_primary_artefact_review": false,
+        "limitations": [
+          "Full secondary report read; originating Bloomberg excerpt inspected, not the full article or regulatory order."
+        ],
+        "reviewing_system": "OpenAI ChatGPT — GPT-6"
+      },
+      "incident_source_order": 4,
+      "interpretive_reliance": "Later report relaying Bloomberg’s account of suspended new permits and Wuhan operations; not a published regulator decision.",
+      "relevance_note": "Later report relaying Bloomberg’s account of suspended new permits and Wuhan operations; not a published regulator decision.",
+      "retrieved_date": "2026-10-09",
+      "source_context": "Later report relaying Bloomberg’s account of suspended new permits and Wuhan operations; not a published regulator decision.",
+      "system_or_product": "Baidu Apollo Go robotaxi fleet",
+      "model_or_algorithm": "autonomous-driving runtime not established"
     }
   ],
   "preferred_evidence": {
@@ -228,7 +280,7 @@
     ]
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.6.9",
+    "taxonomy_version": "0.6.11",
     "classification_status": "classified",
     "classification_basis": "Fleet-wide stoppage materially engages safe exit without establishing its recognition conditions. Required-control availability and operative-state continuity remain unresolved.",
     "primary_classification": {
@@ -240,9 +292,9 @@
     },
     "secondary_classifications": [],
     "classification_review_provenance": {
-      "review_date": "2026-09-30",
-      "reviewer": "OpenAI ChatGPT — GPT-5.6 Sol under human-directed VIGIL governance",
-      "review_status": "clause-level taxonomy adjudication completed"
+      "review_date": "2026-10-10",
+      "reviewer": "OpenAI ChatGPT Work — GPT-6",
+      "review_status": "Evidence-first HIM and relational/protection fidelity review; prior roles accounted for."
     },
     "adjudication_coverage": {
       "status": "partial"
@@ -508,54 +560,96 @@
           "This review is AI-authored, not human verification or certification."
         ],
         "review_outcome": "Reviewed 3 recovered or independently identified requirements; retained 2 relevant independent assessments. Prior values and exclusions remain in the dated audit."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-09-PHASE3-TRANCHE17A-000100",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-09",
+        "review_scope": "Source-first occurrence reconstruction, current taxonomy boundary review and semantic external-requirement linkage.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "external_requirement_review": true,
+          "web_research": true,
+          "harm_impact_review": false
+        },
+        "known_limitations": [
+          "AI-authored, not human certified. Private sessions, checking traces and undisclosed decision paths remain unavailable.",
+          "Existing HIM retained; no full eleven-dimension re-adjudication."
+        ],
+        "review_outcome": "Separate stoppage, passenger assistance/exit and later reported policy response. Correct the originating count to at least one hundred; preserve control and safe-exit boundaries and independent external outcomes."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-10-COMBINED-TRANCHE-09-000100",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-10",
+        "review_scope": "Source-first all-dimension HIM 1.1.0 and independent FC-086/087 reconciliation.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_research": true,
+          "harm_impact_review": true,
+          "taxonomy_review": true,
+          "external_requirement_review": true
+        },
+        "known_limitations": [
+          "No unreported psychological, relational, livelihood or permanent injury consequences inferred.",
+          "Prior source and technical attribution boundaries retained."
+        ],
+        "review_outcome": "All twelve dimensions reviewed. At least one hundred vehicles stopped in live traffic, interrupting passenger transport and requiring police/company response. This supports retained bounded S3 operational disruption. Safe exit and no injury are affirmative findings, but traffic-related inability to leave safely was an actual bounded safety exposure. No permanent injury or medical treatment is inferred. Relational-role and heightened personal-protection recognition and exclusions independently tested."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-04-EXTERNAL-ALIGNMENT-000100",
+      "review_id": "VIGIL-REVIEW-2026-10-10-COMBINED-TRANCHE-09-000100",
       "reviewer_type": "AI analytical reviewer",
       "reviewer_platform": "OpenAI ChatGPT Work",
       "reviewer_model": "GPT-6",
-      "review_date": "2026-10-04",
-      "review_scope": "Independent occurrence relevance and alignment review of external requirements; normative force remains source metadata.",
+      "review_date": "2026-10-10",
+      "review_scope": "Source-first all-dimension HIM 1.1.0 and independent FC-086/087 reconciliation.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "external_requirement_review": true,
-        "taxonomy_review": false,
-        "harm_impact_review": false,
-        "web_research": false
+        "web_research": true,
+        "harm_impact_review": true,
+        "taxonomy_review": true,
+        "external_requirement_review": true
       },
       "known_limitations": [
-        "Assessment uses preserved occurrence evidence and canonical requirement propositions; internal implementation evidence remains unavailable where stated.",
-        "This review is AI-authored, not human verification or certification."
+        "No unreported psychological, relational, livelihood or permanent injury consequences inferred.",
+        "Prior source and technical attribution boundaries retained."
       ],
-      "review_outcome": "Reviewed 3 recovered or independently identified requirements; retained 2 relevant independent assessments. Prior values and exclusions remain in the dated audit."
+      "review_outcome": "All twelve dimensions reviewed. At least one hundred vehicles stopped in live traffic, interrupting passenger transport and requiring police/company response. This supports retained bounded S3 operational disruption. Safe exit and no injury are affirmative findings, but traffic-related inability to leave safely was an actual bounded safety exposure. No permanent injury or medical treatment is inferred. Relational-role and heightened personal-protection recognition and exclusions independently tested."
     }
   },
   "harm_impact_assessment": {
     "methodology_id": "VIGIL-HIM",
-    "methodology_version": "1.0.1",
-    "derivation_rule": "highest-supported-materialised-harm",
-    "assessed_on": "2026-09-20",
+    "methodology_version": "1.1.0",
+    "derivation_rule": "highest-supported-harm-on-exclusive-incident-assessment-pathway",
+    "assessed_on": "2026-10-10",
     "overall_severity": "S3",
     "controlling_dimensions": [
       "service-operational-infrastructure"
     ],
-    "coverage_note": "All eleven dimensions were re-reviewed. The preserved and newly added evidence supports the assessed dimensions; other dimensions remain unreported unless specifically assessed and do not lower or raise the derived result. Context-only sources were not used to manufacture assessed harm.",
+    "coverage_note": "All twelve dimensions reviewed. At least one hundred vehicles stopped in live traffic, interrupting passenger transport and requiring police/company response. This supports retained bounded S3 operational disruption. Safe exit and no injury are affirmative findings, but traffic-related inability to leave safely was an actual bounded safety exposure. No permanent injury or medical treatment is inferred. Relational-role and heightened personal-protection recognition and exclusions independently tested.",
     "dimensions": [
       {
         "dimension_id": "physical-health-safety",
         "assessment_status": "assessed",
-        "severity": "S1",
-        "threshold_id": "VIGIL-HIM-1.0.1-PHS-S1",
+        "assessment_basis": "Police confirm no injuries and safe eventual exit. Some passengers could not safely leave stopped vehicles because of surrounding heavy traffic and sought police assistance. This is actual bounded safety exposure without professional medical treatment, supporting S2 rather than a no-consequence S1 finding. No collision, injury or life-threatening outcome is inferred.",
+        "evidence_confidence": "medium",
+        "severity": "S2",
+        "threshold_id": "VIGIL-HIM-1.1.0-PHS-S2",
         "observed_values": [
           {
             "metric": "published quantitative information",
             "qualitative_value": "Wuhan police reported more than 100 affected vehicles; some passengers were reportedly stranded for extended periods, with no reported injuries."
           }
         ],
-        "assessment_basis": "Police and operator reporting positively establishes that passengers exited safely and no injuries were recorded. Threshold applied: Evidence positively establishes no injury, illness or safety consequence in an occurrence where physical harm was directly at issue.",
-        "evidence_confidence": "medium",
         "evidence_refs": [
           "source_records[0]",
           "source_records[2]"
@@ -564,52 +658,52 @@
       {
         "dimension_id": "psychological-wellbeing",
         "assessment_status": "unreported",
-        "assessment_basis": "The preserved Incident evidence does not report a bandable materialised psychological wellbeing impact; absence of reporting is not evidence of no harm.",
+        "assessment_basis": "The Wuhan robotaxi stoppage and live-road passenger stranding does not report a distinct psychological consequence, impaired sleep, grounding or functioning. Absence of reporting does not establish S1.",
         "evidence_confidence": "not-assessed"
       },
       {
         "dimension_id": "rights-liberty",
         "assessment_status": "unreported",
-        "assessment_basis": "The preserved Incident evidence does not report a bandable materialised rights and liberty impact; absence of reporting is not evidence of no harm.",
+        "assessment_basis": "The Wuhan robotaxi stoppage and live-road passenger stranding does not establish detention, essential-care deprivation or a distinct actual restriction of a rights-bearing opportunity. Absence of reporting does not establish S1.",
         "evidence_confidence": "not-assessed"
       },
       {
         "dimension_id": "equal-treatment",
         "assessment_status": "unreported",
-        "assessment_basis": "The preserved Incident evidence does not report a bandable materialised equal treatment and non-discrimination impact; absence of reporting is not evidence of no harm.",
+        "assessment_basis": "The Wuhan robotaxi stoppage and live-road passenger stranding does not establish materially discriminatory decisions with relevant comparator evidence. Absence of reporting does not establish S1.",
         "evidence_confidence": "not-assessed"
       },
       {
         "dimension_id": "privacy-confidentiality",
         "assessment_status": "unreported",
-        "assessment_basis": "The preserved Incident evidence does not report a bandable materialised privacy and confidentiality impact; absence of reporting is not evidence of no harm.",
+        "assessment_basis": "The Wuhan robotaxi stoppage and live-road passenger stranding does not report a distinct unauthorised disclosure or use of protected information. Absence of reporting does not establish S1.",
         "evidence_confidence": "not-assessed"
       },
       {
         "dimension_id": "financial-economic",
         "assessment_status": "unreported",
-        "assessment_basis": "The preserved Incident evidence does not report a bandable materialised financial and economic impact; absence of reporting is not evidence of no harm.",
+        "assessment_basis": "The Wuhan robotaxi stoppage and live-road passenger stranding does not report a distinct realised economic loss or livelihood impairment. Absence of reporting does not establish S1.",
         "evidence_confidence": "not-assessed"
       },
       {
         "dimension_id": "property-asset-damage",
         "assessment_status": "unreported",
-        "assessment_basis": "The preserved Incident evidence does not report a bandable materialised property and asset damage impact; absence of reporting is not evidence of no harm.",
+        "assessment_basis": "The Wuhan robotaxi stoppage and live-road passenger stranding does not report destruction or loss of trustworthy material asset state. Absence of reporting does not establish S1.",
         "evidence_confidence": "not-assessed"
       },
       {
         "dimension_id": "service-operational-infrastructure",
         "assessment_status": "assessed",
+        "assessment_basis": "At least one hundred vehicles stopped in live traffic, interrupting passenger transport and requiring police/company response. This supports retained bounded S3 operational disruption. Safe exit and no injury are affirmative findings, but traffic-related inability to leave safely was an actual bounded safety exposure. No permanent injury or medical treatment is inferred.",
+        "evidence_confidence": "medium",
         "severity": "S3",
-        "threshold_id": "VIGIL-HIM-1.0.1-SOI-S3",
+        "threshold_id": "VIGIL-HIM-1.1.0-SOI-S3",
         "observed_values": [
           {
             "metric": "published quantitative information",
             "qualitative_value": "Wuhan police reported more than 100 affected vehicles; some passengers were reportedly stranded for extended periods, with no reported injuries."
           }
         ],
-        "assessment_basis": "The preserved sources establish the bounded consequence described in the Incident summary: A reported system failure caused more than 100 Baidu Apollo Go robotaxis in Wuhan to stop in live traffic, including on elevated roads, stranding passengers until police and company personnel responded. Authorities reported that passengers exited safely and no injuries were recorded. The technical root cause remains under investigation in the public record. Unreported downstream consequences were not inferred. Threshold applied: Material disruption of an important service or organisational workflow; a critical or important function unavailable for more than two hours; complete relevant cloud-service unavailability over 30 minutes; or limited availability affecting over five percent or one million EU users, whichever is smaller, for over one hour, with bounded recovery.",
-        "evidence_confidence": "medium",
         "evidence_refs": [
           "source_records[0]",
           "source_records[2]"
@@ -618,22 +712,29 @@
       {
         "dimension_id": "reputation-dignity",
         "assessment_status": "unreported",
-        "assessment_basis": "The preserved Incident evidence does not report a bandable materialised reputation and dignity impact; absence of reporting is not evidence of no harm.",
+        "assessment_basis": "The Wuhan robotaxi stoppage and live-road passenger stranding does not report a distinct material standing or dignity consequence. Absence of reporting does not establish S1.",
         "evidence_confidence": "not-assessed"
       },
       {
         "dimension_id": "societal-democratic",
         "assessment_status": "unreported",
-        "assessment_basis": "The preserved Incident evidence does not report a bandable materialised societal and democratic impact; absence of reporting is not evidence of no harm.",
+        "assessment_basis": "The Wuhan robotaxi stoppage and live-road passenger stranding does not establish material disruption of civic participation, public deliberation or a democratic process. Absence of reporting does not establish S1.",
         "evidence_confidence": "not-assessed"
       },
       {
         "dimension_id": "environmental",
         "assessment_status": "unreported",
-        "assessment_basis": "The preserved Incident evidence does not report a bandable materialised environmental impact; absence of reporting is not evidence of no harm.",
+        "assessment_basis": "The Wuhan robotaxi stoppage and live-road passenger stranding does not report pollutant, habitat or ecosystem consequences. Absence of reporting does not establish S1.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "relational-integrity-autonomy",
+        "assessment_status": "unreported",
+        "assessment_basis": "The Wuhan robotaxi stoppage and live-road passenger stranding does not establish a distinct actual loss of valued human relationship, caregiving, independent relational choice or safe disengagement. A changed marital status or threatened anonymity is not automatically AI-caused relational harm.",
         "evidence_confidence": "not-assessed"
       }
-    ]
+    ],
+    "assessment_pathway": "specific_consequence"
   },
   "related_incidents": [],
   "external_assessments": [],

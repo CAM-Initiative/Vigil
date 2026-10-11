@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Concurrent ChatGPT, Claude and Grok service outages on 3 September 2026",
     "created": "2026-09-06",
-    "updated": "2026-10-04",
-    "version": "0.1.14"
+    "updated": "2026-10-10",
+    "version": "0.1.16"
   },
   "incident_identity": {
     "historical_event_name": "3 September 2026 concurrent ChatGPT, Claude and Grok service outages",
@@ -18,45 +18,28 @@
     "date_precision": "exact-day",
     "date_basis": "OpenAI, Anthropic and xAI each reported service-availability incidents on 3 September 2026. OpenAI reported elevated errors across ChatGPT and Codex; Anthropic reported a partial Claude outage affecting Claude.ai, Claude Code, Claude Cowork and the Claude API; xAI reported a Grok models outage across multiple surfaces. The incidents overlapped in time, but the reviewed evidence does not establish a single shared technical cause."
   },
-  "summary": "On 3 September 2026, ChatGPT/Codex, Claude and Grok experienced overlapping service-availability incidents. OpenAI reported elevated errors across ChatGPT and Codex and separately attributed its disruption to a routing error. Anthropic reported a partial Claude outage caused by an infrastructure issue, affecting Claude.ai, Claude Code, Claude Cowork and the Claude API. xAI reported a Grok models outage across multiple surfaces and later attributed its disruption to an outage at its Memphis compute centre. The temporal overlap is material ecosystem evidence, but no reviewed source establishes that the three providers shared one technical cause.",
+  "summary": "On 3 September 2026, ChatGPT/Codex, Claude and Grok experienced overlapping service-availability incidents. OpenAI reported elevated errors across ChatGPT and Codex and separately attributed its disruption to a routing error. Anthropic reported a partial Claude outage caused by an infrastructure issue, affecting Claude.ai, Claude Code, Claude Cowork and the Claude API. xAI reported a Grok models outage across multiple surfaces and later attributed its disruption to an outage at its Memphis compute centre. The temporal overlap is material ecosystem evidence, but no reviewed source establishes that the three providers shared one technical cause. OpenAI’s later write-up says it rolled back a routing change, with broad mitigation by about 15:20 UTC and final resolution at 16:55 UTC. Returning traffic prolonged some recovery. xAI also apologised to affected compute partners.",
   "vigil_assessment": {
-    "factual_basis": "OpenAI's public status record establishes degraded performance affecting ChatGPT and Codex on 3 September 2026, and an OpenAI spokesperson separately attributed its disruption to a routing error. Anthropic confirmed a roughly three-hour partial Claude outage affecting Claude.ai, Claude Code, Claude Cowork and the Claude API and attributed its occurrence to an infrastructure issue. xAI's own status pages record a Grok models outage beginning at 13:30 UTC across multiple service surfaces, with traffic restored roughly three and a half hours later; xAI later stated that the disruption followed an outage at its Memphis compute centre. Independent reporting documents that the three provider incidents overlapped in time. Cloudflare and the major public-cloud status pages did not report a relevant shared disruption, and no reviewed evidence establishes one common technical cause across OpenAI, Anthropic and xAI.",
-    "governance_interpretation": "Three major frontier-AI service providers experienced overlapping availability failures on the same day. The available evidence gives different provider-specific explanations: OpenAI attributed its disruption to a routing error, Anthropic to an infrastructure issue, and xAI to an outage at its Memphis compute centre. The coincidence is relevant to resilience, concentration, dependency and correlated-failure analysis, but it does not establish a shared cloud, network, control-plane or infrastructure dependency. The separate provider causes are preserved and temporal overlap is not promoted into proof of a common dependency. All clauses resolve without governance mapping; degraded availability alone does not establish verifier failure, leverage or a required-control state. The reported service recoveries are Aligned with the OECD repair requirement. This assessment does not establish a common outage cause.",
+    "factual_basis": "OpenAI's public status record establishes degraded performance affecting ChatGPT and Codex on 3 September 2026, and an OpenAI spokesperson separately attributed its disruption to a routing error. Anthropic confirmed a roughly three-hour partial Claude outage affecting Claude.ai, Claude Code, Claude Cowork and the Claude API and attributed its occurrence to an infrastructure issue. xAI's own status pages record a Grok models outage beginning at 13:30 UTC across multiple service surfaces, with traffic restored roughly three and a half hours later; xAI later stated that the disruption followed an outage at its Memphis compute centre. Independent reporting documents that the three provider incidents overlapped in time. Cloudflare and the major public-cloud status pages did not report a relevant shared disruption, and no reviewed evidence establishes one common technical cause across OpenAI, Anthropic and xAI. OpenAI’s linked write-up adds the configuration rollback, recovery overload and distinct broad-mitigation clock. Its current historical page lists fourteen ChatGPT components, while the earlier record counted fifteen; the reason for that presentation difference is not exposed. The updated Register report and Anthropic’s May compute announcement identify a possible Claude/Grok dependency, not a confirmed September causal path. The later alerting statement lacks a complete produced-signal delivery trace.",
+    "governance_interpretation": "Three major frontier-AI service providers experienced overlapping availability failures on the same day. The available evidence gives different provider-specific explanations: OpenAI attributed its disruption to a routing error, Anthropic to an infrastructure issue, and xAI to an outage at its Memphis compute centre. The coincidence is relevant to resilience, concentration, dependency and correlated-failure analysis, but it does not establish a shared failure path across all three providers. Anthropic’s disclosed SpaceX capacity agreement makes a Claude/Grok dependency plausible, while outage-specific propagation remains unconfirmed. The separate provider causes are preserved and temporal overlap is not promoted into proof of a common dependency. Degraded availability alone does not establish verifier failure, leverage or a required-control state. The provider’s later alerting improvements do not expose the produced signal and failed delivery path needed to diagnose a signal-delivery failure. The reported service recoveries are Aligned with the OECD repair requirement. This assessment does not establish a common outage cause.",
     "significance_to_cam": "The occurrence demonstrates that simultaneous or near-simultaneous loss of access to multiple frontier AI providers can create ecosystem-level resilience risk even where the individual provider failures have different or unresolved causes. It is relevant to organisational fallback design, provider concentration, correlated-outage monitoring and sovereign assurance, while preserving the distinction between temporal correlation and proven common causation.",
     "assessment_boundaries": [
       "The reviewed evidence establishes overlapping availability incidents at OpenAI, Anthropic and xAI but does not establish that they shared one technical cause.",
       "OpenAI attributed its disruption to a routing error; Anthropic described an infrastructure issue; xAI later attributed its disruption to an outage at its Memphis compute centre.",
       "Cloudflare and the major public-cloud status pages did not report a relevant shared disruption during the reviewed window.",
       "Affected-user counts, aggregate transaction loss and downstream organisational impacts across the three providers are not publicly quantified.",
-      "No data-loss, confidentiality, integrity, safety or persistent downstream harm common to all three providers is established."
+      "No data-loss, confidentiality, integrity, safety or persistent downstream harm common to all three providers is established.",
+      "A disclosed Claude/SpaceX compute agreement and xAI’s apology to compute partners do not prove the September propagation path or a common cause with OpenAI.",
+      "OpenAI’s broad-mitigation, monitoring and final-resolution times are different stages. The later alerting statement does not supply a complete signal-delivery trace."
     ],
     "source_clause_analysis": {
       "source_record_order": 2,
       "source_url": "https://www.theregister.com/ai-and-ml/2026/09/03/chatgpt-claude-and-grok-all-had-outages-at-the-same-time/5294322",
-      "purpose": "Preserve the provider-specific outage explanations and the explicit limit on common-cause inference for the overlapping service incidents.",
+      "purpose": "Separate evidenced occurrence stages and their distinct governance questions.",
       "clauses": [
         {
-          "source_paraphrase": "The Register reported that OpenAI identified elevated errors across ChatGPT and Codex on 3 September and attributed the disruption to a routing error.",
-          "recovered_invariant_interpretation": "A service outage should be assessed against an evidenced governance dependency or control, not inferred from degraded availability alone.",
-          "taxonomy_relationships": [
-            {
-              "class_id": "VIGIL-FC-000037",
-              "relationship": "rejected candidate",
-              "canonical_taxonomy_mapping": false,
-              "rationale": "The routing error is a provider-attributed service cause; the report does not identify a defined governance control whose availability was uncertain before a material decision."
-            },
-            {
-              "class_id": "VIGIL-FC-000048",
-              "relationship": "rejected candidate",
-              "canonical_taxonomy_mapping": false,
-              "rationale": "No identity, licence, eligibility or entitlement verifier is identified as blocking otherwise-valid access without a proportionate continuity route."
-            }
-          ],
-          "adjudication_status": "resolved-no-mapping"
-        },
-        {
-          "source_paraphrase": "The Register reported Anthropic’s partial Claude outage affecting Claude.ai, Claude Code, Claude Cowork and the Claude API, which Anthropic attributed to an infrastructure issue.",
-          "recovered_invariant_interpretation": "A provider-specific infrastructure failure is not itself evidence that an AI-governance control or verification dependency failed.",
+          "source_paraphrase": "Anthropic reported a partial Claude outage affecting several service surfaces on 3 September and attributed it to an infrastructure issue. This branch overlapped the other providers’ incidents.",
+          "recovered_invariant_interpretation": "A general infrastructure outage does not establish an unavailable governance control or a verifier-dependent access failure.",
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000037",
@@ -71,11 +54,15 @@
               "rationale": "No dependent identity, licence, eligibility or entitlement verification pathway is identified as the cause of the service disruption."
             }
           ],
-          "adjudication_status": "resolved-no-mapping"
+          "adjudication_status": "resolved-no-mapping",
+          "source_record_refs": [
+            "source_records[1]"
+          ],
+          "episode_id": "E001"
         },
         {
-          "source_paraphrase": "The Register reported that xAI’s Grok models outage began at 13:30 UTC, affected multiple service surfaces and was later attributed by xAI to an outage at its Memphis compute centre.",
-          "recovered_invariant_interpretation": "An infrastructure outage should not be treated as governance authority or access leverage without evidence that a provider used service control to impose a separate condition.",
+          "source_paraphrase": "xAI reported a Grok models outage from 13:30 UTC across multiple surfaces. A later statement attributed it to its Memphis compute-centre outage.",
+          "recovered_invariant_interpretation": "Infrastructure failure and access leverage are separate mechanisms.",
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000037",
@@ -90,17 +77,140 @@
               "rationale": "No verification-dependent access path or otherwise-valid entitlement blocked by a verifier is identified."
             }
           ],
-          "adjudication_status": "resolved-no-mapping"
+          "adjudication_status": "resolved-no-mapping",
+          "source_record_refs": [
+            "source_records[1]",
+            "source_records[2]"
+          ],
+          "episode_id": "E002"
         },
         {
-          "source_paraphrase": "The three service incidents overlapped in time, but the reviewed provider statements gave different explanations and did not establish one shared technical cause.",
-          "recovered_invariant_interpretation": "Temporal correlation should remain distinct from evidence of a shared dependency, a missing oversight signal, or infrastructure used as governance leverage.",
+          "source_paraphrase": "OpenAI’s incident began at 14:43 UTC. Its later write-up attributes failed routing to an incorrectly interpreted configuration change.",
+          "recovered_invariant_interpretation": "A technical service failure requires separate evidence before it is diagnosed as a governance-control failure.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000037",
+              "relationship": "rejected candidate",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "The routing error is a provider-attributed service cause; the report does not identify a defined governance control whose availability was uncertain before a material decision."
+            },
+            {
+              "class_id": "VIGIL-FC-000048",
+              "relationship": "rejected candidate",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "No identity, licence, eligibility or entitlement verifier is identified as blocking otherwise-valid access without a proportionate continuity route."
+            }
+          ],
+          "adjudication_status": "resolved-no-mapping",
+          "source_record_refs": [
+            "source_records[0]",
+            "source_records[4]"
+          ],
+          "episode_id": "E003"
+        },
+        {
+          "source_paraphrase": "OpenAI rolled back the configuration. Its notice entered monitoring at 15:17 UTC; the later write-up says the broad disruption was mitigated by about 15:20 UTC. Returning traffic overloaded some services and prolonged recovery.",
+          "recovered_invariant_interpretation": "Mitigation and full resolution retain their distinct clocks and residual effects.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000037",
+              "relationship": "rejected candidate",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "The source establishes this provider-specific mitigation or recovery stage. It does not establish the verifier dependency or uncertain required governance-control state needed by this candidate."
+            },
+            {
+              "class_id": "VIGIL-FC-000048",
+              "relationship": "rejected candidate",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "The source establishes this provider-specific mitigation or recovery stage. It does not establish the verifier dependency or uncertain required governance-control state needed by this candidate."
+            }
+          ],
+          "adjudication_status": "resolved-no-mapping",
+          "source_record_refs": [
+            "source_records[0]",
+            "source_records[4]"
+          ],
+          "episode_id": "E004"
+        },
+        {
+          "source_paraphrase": "Anthropic told The Register that Claude service was restored at 16:16 UTC.",
+          "recovered_invariant_interpretation": "A reported restoration is bounded to that provider and does not establish future resilience.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000037",
+              "relationship": "rejected candidate",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "The source establishes this provider-specific mitigation or recovery stage. It does not establish the verifier dependency or uncertain required governance-control state needed by this candidate."
+            },
+            {
+              "class_id": "VIGIL-FC-000048",
+              "relationship": "rejected candidate",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "The source establishes this provider-specific mitigation or recovery stage. It does not establish the verifier dependency or uncertain required governance-control state needed by this candidate."
+            }
+          ],
+          "adjudication_status": "resolved-no-mapping",
+          "source_record_refs": [
+            "source_records[1]"
+          ],
+          "episode_id": "E005"
+        },
+        {
+          "source_paraphrase": "OpenAI marked the incident resolved at 16:55 UTC and warned that some Codex remote-control users might need to pair their mobile device again.",
+          "recovered_invariant_interpretation": "Service restoration can leave a separate user recovery action.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000037",
+              "relationship": "rejected candidate",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "The source establishes this provider-specific mitigation or recovery stage. It does not establish the verifier dependency or uncertain required governance-control state needed by this candidate."
+            },
+            {
+              "class_id": "VIGIL-FC-000048",
+              "relationship": "rejected candidate",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "The source establishes this provider-specific mitigation or recovery stage. It does not establish the verifier dependency or uncertain required governance-control state needed by this candidate."
+            }
+          ],
+          "adjudication_status": "resolved-no-mapping",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "episode_id": "E006"
+        },
+        {
+          "source_paraphrase": "xAI later said all systems were restored and apologised to affected compute partners. Earlier preserved status review places Grok’s disruption at roughly three and a half hours.",
+          "recovered_invariant_interpretation": "Reported provider recovery is distinct from a verified common cause across providers.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000037",
+              "relationship": "rejected candidate",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "The source establishes this provider-specific mitigation or recovery stage. It does not establish the verifier dependency or uncertain required governance-control state needed by this candidate."
+            },
+            {
+              "class_id": "VIGIL-FC-000048",
+              "relationship": "rejected candidate",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "The source establishes this provider-specific mitigation or recovery stage. It does not establish the verifier dependency or uncertain required governance-control state needed by this candidate."
+            }
+          ],
+          "adjudication_status": "resolved-no-mapping",
+          "source_record_refs": [
+            "source_records[1]",
+            "source_records[2]"
+          ],
+          "episode_id": "E007"
+        },
+        {
+          "source_paraphrase": "The incidents overlapped. The updated comparative report suggested a possible Claude/Grok compute connection, and Anthropic had announced a SpaceX capacity agreement in May. Neither establishes one cause across all three providers.",
+          "recovered_invariant_interpretation": "A disclosed dependency supports investigation but does not prove a specific failure path.",
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000030",
               "relationship": "rejected candidate",
               "canonical_taxonomy_mapping": false,
-              "rationale": "The comparative report and provider notices were available and assembled; no disconnected monitoring signals are shown to have prevented timely oversight or intervention."
+              "rationale": "The comparative report assembles provider notices. No multiple individually captured governance signals are shown to have been disconnected so as to prevent timely intervention."
             },
             {
               "class_id": "VIGIL-FC-000058",
@@ -115,7 +225,29 @@
               "rationale": "No provider is shown using access, continuity or exit controls to compel an unrelated governance concession or constrain another principal’s conduct."
             }
           ],
-          "adjudication_status": "resolved-no-mapping"
+          "adjudication_status": "resolved-no-mapping",
+          "source_record_refs": [
+            "source_records[1]",
+            "source_records[5]"
+          ],
+          "episode_id": "E008"
+        },
+        {
+          "source_paraphrase": "OpenAI’s later write-up identifies routing, staged-rollout, recovery-load and monitoring improvements. It says alerts were updated to page outside business hours and acknowledges escalation gaps.",
+          "recovered_invariant_interpretation": "An improvement statement is not a complete trace of a produced governance signal and its delivery.",
+          "source_record_refs": [
+            "source_records[4]"
+          ],
+          "adjudication_status": "resolved-no-mapping",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000042",
+              "relationship": "candidate-rejected",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "The write-up does not identify the particular material signal produced, its route or where it stopped. The required produced-signal and delivery conditions are not established."
+            }
+          ],
+          "episode_id": "E009"
         }
       ]
     }
@@ -137,13 +269,13 @@
       "evidence_status": "first-party-reported",
       "evidence_status_basis": "OpenAI's own status page directly confirms the degraded-performance occurrence, affected ChatGPT and Codex components, mitigation and resolution.",
       "primary_artefact_access": {
-        "access_method": "direct public status-page review",
+        "access_method": "Public retrieval and direct text inspection; any retrieval failure specified below",
         "access_status": "directly reviewed",
         "direct_primary_artefact_review": true,
         "limitations": [
-          "The status page does not quantify the affected population or provide a complete root-cause analysis."
+          "Current historical incident page directly read: investigation 14:43, monitoring 15:17 and resolution 16:55 UTC. It now lists fourteen ChatGPT components, compared with fifteen in the earlier record; presentation change is not a proved change in incident reach."
         ],
-        "reviewing_system": "OpenAI ChatGPT — GPT-5.6 Sol"
+        "reviewing_system": "OpenAI ChatGPT — GPT-6"
       },
       "incident_source_order": 1,
       "interpretive_reliance": "Primary evidence for occurrence, affected components, timing and resolution.",
@@ -169,14 +301,13 @@
       "evidence_status": "independent-reporting",
       "evidence_status_basis": "The Register quotes an OpenAI spokesperson attributing the OpenAI outage to a routing error and independently documents contemporaneous provider outages while preserving uncertainty about any shared cause.",
       "primary_artefact_access": {
-        "access_method": "direct public article review",
-        "access_status": "directly reviewed",
-        "direct_primary_artefact_review": true,
+        "access_method": "Public retrieval and direct text inspection; any retrieval failure specified below",
+        "access_status": "indirectly reviewed",
+        "direct_primary_artefact_review": false,
         "limitations": [
-          "The article is independent reporting rather than a provider postmortem and does not establish a shared cause across providers.",
-          "The URL originally recorded on 2026-09-06 was found non-resolving during evidence-integrity review on 2026-09-07 and was replaced with The Register's live canonical article URL."
+          "Updated Register body directly read. It attributes provider-specific accounts and raises a possible Claude/Grok compute link without confirming outage causation."
         ],
-        "reviewing_system": "OpenAI ChatGPT — GPT-5.6 Sol"
+        "reviewing_system": "OpenAI ChatGPT — GPT-6"
       },
       "incident_source_order": 2,
       "interpretive_reliance": "Used to reconcile the timing and provider statements across the three overlapping outages while preserving causal uncertainty.",
@@ -202,13 +333,13 @@
       "evidence_status": "first-party-reported",
       "evidence_status_basis": "xAI's own status page directly confirms a Grok models outage beginning on 3 September 2026.",
       "primary_artefact_access": {
-        "access_method": "direct public status-page review",
-        "access_status": "directly reviewed",
-        "direct_primary_artefact_review": true,
+        "access_method": "Public retrieval and direct text inspection; any retrieval failure specified below",
+        "access_status": "indirectly reviewed",
+        "direct_primary_artefact_review": false,
         "limitations": [
-          "The status page confirms the outage but does not itself provide the full causal chain; xAI's later Memphis compute-centre attribution is preserved through independent reporting of the provider statement."
+          "Fresh original route redirects to history shell without the incident body. Earlier inspected timing remains attributed."
         ],
-        "reviewing_system": "OpenAI ChatGPT — GPT-5.6 Sol"
+        "reviewing_system": "OpenAI ChatGPT — GPT-6"
       },
       "incident_source_order": 3,
       "interpretive_reliance": "Primary evidence for the xAI/Grok availability occurrence and affected service surface.",
@@ -231,14 +362,13 @@
       "interpretive_reliance": "The report establishes multi-provider impairment but not prolonged essential-service loss or operational collapse.",
       "model_or_algorithm": "not fully established in the source",
       "primary_artefact_access": {
-        "access_method": "Occurrence-focused web search and review of the public source or returned source metadata",
-        "access_status": "directly reviewed",
+        "access_method": "Public retrieval and direct text inspection; any retrieval failure specified below",
+        "access_status": "indirectly reviewed",
         "direct_primary_artefact_review": false,
         "limitations": [
-          "The source does not independently establish every underlying claim or unreported downstream consequence.",
-          "The source does not determine legal liability or final factual truth."
+          "Fresh origin body retrieval failed; indexed occurrence text inspected. Preserved earlier recovery account retained."
         ],
-        "reviewing_system": "GPT-5"
+        "reviewing_system": "OpenAI ChatGPT — GPT-6"
       },
       "relevance_note": "Supports the substantial, bounded multi-organisation operational finding.",
       "retrieved_date": "2026-09-20",
@@ -252,6 +382,70 @@
       "source_url": "https://www.theverge.com/ai-artificial-intelligence/989503/chatgpt-grok-claude-outage-down",
       "source_url_status": "public source page or indexed metadata available at review",
       "system_or_product": "Other"
+    },
+    {
+      "source_title": "Elevated errors across ChatGPT and Codex — incident write-up",
+      "author_or_publisher": "OpenAI",
+      "source_url": "https://status.openai.com/incidents/01M1KWEDH417T2CF44YYHZDFCR/write-up",
+      "source_url_status": "available",
+      "source_type": "platform status report",
+      "source_platform": "OpenAI",
+      "source_residence": "external",
+      "source_role": "incident-evidence",
+      "evidence_modality": [
+        "text"
+      ],
+      "evidence_status": "first-party-reported",
+      "evidence_status_basis": "Primary provider write-up directly read; causal and remediation claims remain first-party.",
+      "primary_artefact_access": {
+        "access_method": "Public retrieval and direct text inspection; any retrieval failure specified below",
+        "access_status": "directly reviewed",
+        "direct_primary_artefact_review": true,
+        "limitations": [
+          "Write-up linked from the historical status page directly inspected. Publication date and complete alert-delivery trace unavailable."
+        ],
+        "reviewing_system": "OpenAI ChatGPT — GPT-6"
+      },
+      "incident_source_order": 5,
+      "interpretive_reliance": "Provider cause, rollback, returning-traffic overload and alerting improvements. Publication date not exposed.",
+      "relevance_note": "Provider cause, rollback, returning-traffic overload and alerting improvements. Publication date not exposed.",
+      "retrieved_date": "2026-10-09",
+      "source_context": "Provider cause, rollback, returning-traffic overload and alerting improvements. Publication date not exposed.",
+      "system_or_product": "ChatGPT and Codex",
+      "model_or_algorithm": "not established",
+      "source_date": null
+    },
+    {
+      "source_title": "Higher usage limits for Claude and a compute deal with SpaceX",
+      "author_or_publisher": "Anthropic",
+      "source_date": "2026-05-06",
+      "source_url": "https://www.anthropic.com/news/higher-limits-spacex",
+      "source_url_status": "available",
+      "source_type": "official announcement",
+      "source_platform": "Anthropic",
+      "source_residence": "external",
+      "source_role": "contextual-background",
+      "evidence_modality": [
+        "text"
+      ],
+      "evidence_status": "first-party-reported",
+      "evidence_status_basis": "Provider announcement directly read; compute agreement is context, not occurrence-specific causal proof.",
+      "primary_artefact_access": {
+        "access_method": "Public retrieval and direct text inspection; any retrieval failure specified below",
+        "access_status": "directly reviewed",
+        "direct_primary_artefact_review": true,
+        "limitations": [
+          "Dated partnership announcement directly read; no September outage attribution in it."
+        ],
+        "reviewing_system": "OpenAI ChatGPT — GPT-6"
+      },
+      "incident_source_order": 6,
+      "interpretive_reliance": "Pre-existing compute partnership contextualises a possible Claude/Grok dependency. It does not prove the September outage path.",
+      "relevance_note": "Pre-existing compute partnership contextualises a possible Claude/Grok dependency. It does not prove the September outage path.",
+      "retrieved_date": "2026-10-09",
+      "source_context": "Pre-existing compute partnership contextualises a possible Claude/Grok dependency. It does not prove the September outage path.",
+      "system_or_product": "ChatGPT and Codex",
+      "model_or_algorithm": "not established"
     }
   ],
   "preferred_evidence": {
@@ -317,15 +511,15 @@
     ]
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.6.9",
+    "taxonomy_version": "0.6.11",
     "classification_status": "unclassified",
     "classification_basis": "The current 0.6.9 Alignment Taxonomy review retains the occurrence as unclassified. The record establishes overlapping provider-reported service outages with distinct provider-specific explanations but no shared technical cause. It does not establish a monitoring-signal fragmentation failure, a verification dependency, infrastructure-derived governance authority, or access leverage; temporal coincidence and ecosystem relevance alone do not establish a current Fidelity Class.",
     "primary_classification": null,
     "secondary_classifications": [],
     "classification_review_provenance": {
-      "review_date": "2026-09-30",
-      "reviewer": "OpenAI ChatGPT — GPT-5.6 Sol under human-directed VIGIL governance",
-      "review_status": "clause-level taxonomy adjudication completed"
+      "review_date": "2026-10-10",
+      "reviewer": "OpenAI ChatGPT Work — GPT-6",
+      "review_status": "Evidence-first HIM and relational/protection fidelity review; prior roles accounted for."
     },
     "adjudication_coverage": {
       "status": "complete"
@@ -589,40 +783,82 @@
           "This review is AI-authored, not human verification or certification."
         ],
         "review_outcome": "Reviewed 1 recovered or independently identified requirements; retained 1 relevant independent assessments. Prior values and exclusions remain in the dated audit."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-09-PHASE3-TRANCHE15C-000091",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-09",
+        "review_scope": "Source-first occurrence reconstruction, current taxonomy boundary review and semantic external-requirement linkage.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "external_requirement_review": true,
+          "web_research": true,
+          "harm_impact_review": false
+        },
+        "known_limitations": [
+          "AI-authored, not human certified. Private sessions, checking traces and undisclosed decision paths remain unavailable.",
+          "Existing HIM retained; no full eleven-dimension re-adjudication."
+        ],
+        "review_outcome": "Separate overlapping provider branches and recoveries; add primary OpenAI rollback/overload/alerting account and possible Claude/Grok dependency context. Do not infer common cause, signal delivery or new classification."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-10-COMBINED-TRANCHE-11-000091",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-10",
+        "review_scope": "Source-first all-dimension HIM 1.1.0 and independent FC-086/087 reconciliation.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_research": true,
+          "harm_impact_review": true,
+          "taxonomy_review": true,
+          "external_requirement_review": true
+        },
+        "known_limitations": [
+          "Function-level and customer-level effects not established beyond each preserved source.",
+          "No unreported financial, psychological, relational or irreversible consequences inferred."
+        ],
+        "review_outcome": "All twelve dimensions source-reviewed. The separate provider branches evidence multi-hour actual service interruption and bounded recovery, retaining S3. Temporal overlap does not prove a common dependency or material disruption in multiple customer organisations. OpenAI broad rollback mitigation and later final resolution are distinct; neither every registered user nor the full period is counted as continuous complete downtime. No S4 is inferred from three provider names. Relational-role and heightened-protection conditions independently tested."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-04-EXTERNAL-ALIGNMENT-000091",
+      "review_id": "VIGIL-REVIEW-2026-10-10-COMBINED-TRANCHE-11-000091",
       "reviewer_type": "AI analytical reviewer",
       "reviewer_platform": "OpenAI ChatGPT Work",
       "reviewer_model": "GPT-6",
-      "review_date": "2026-10-04",
-      "review_scope": "Independent occurrence relevance and alignment review of external requirements; normative force remains source metadata.",
+      "review_date": "2026-10-10",
+      "review_scope": "Source-first all-dimension HIM 1.1.0 and independent FC-086/087 reconciliation.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "external_requirement_review": true,
-        "taxonomy_review": false,
-        "harm_impact_review": false,
-        "web_research": false
+        "web_research": true,
+        "harm_impact_review": true,
+        "taxonomy_review": true,
+        "external_requirement_review": true
       },
       "known_limitations": [
-        "Assessment uses preserved occurrence evidence and canonical requirement propositions; internal implementation evidence remains unavailable where stated.",
-        "This review is AI-authored, not human verification or certification."
+        "Function-level and customer-level effects not established beyond each preserved source.",
+        "No unreported financial, psychological, relational or irreversible consequences inferred."
       ],
-      "review_outcome": "Reviewed 1 recovered or independently identified requirements; retained 1 relevant independent assessments. Prior values and exclusions remain in the dated audit."
+      "review_outcome": "All twelve dimensions source-reviewed. The separate provider branches evidence multi-hour actual service interruption and bounded recovery, retaining S3. Temporal overlap does not prove a common dependency or material disruption in multiple customer organisations. OpenAI broad rollback mitigation and later final resolution are distinct; neither every registered user nor the full period is counted as continuous complete downtime. No S4 is inferred from three provider names. Relational-role and heightened-protection conditions independently tested."
     }
   },
   "harm_impact_assessment": {
     "methodology_id": "VIGIL-HIM",
-    "methodology_version": "1.0.1",
-    "derivation_rule": "highest-supported-materialised-harm",
-    "assessed_on": "2026-09-20",
+    "methodology_version": "1.1.0",
+    "derivation_rule": "highest-supported-harm-on-exclusive-incident-assessment-pathway",
+    "assessed_on": "2026-10-10",
     "overall_severity": "S3",
     "controlling_dimensions": [
       "service-operational-infrastructure"
     ],
-    "coverage_note": "All eleven dimensions were re-reviewed. The preserved and newly added evidence supports the assessed dimensions; other dimensions remain unreported unless specifically assessed and do not lower or raise the derived result. Context-only sources were not used to manufacture assessed harm.",
+    "coverage_note": "All twelve dimensions source-reviewed. The separate provider branches evidence multi-hour actual service interruption and bounded recovery, retaining S3. Temporal overlap does not prove a common dependency or material disruption in multiple customer organisations. OpenAI broad rollback mitigation and later final resolution are distinct; neither every registered user nor the full period is counted as continuous complete downtime. No S4 is inferred from three provider names. Relational-role and heightened-protection conditions independently tested.",
     "dimensions": [
       {
         "dimension_id": "physical-health-safety",
@@ -669,16 +905,16 @@
       {
         "dimension_id": "service-operational-infrastructure",
         "assessment_status": "assessed",
+        "assessment_basis": "The separate provider branches evidence multi-hour actual service interruption and bounded recovery, retaining S3. Temporal overlap does not prove a common dependency or material disruption in multiple customer organisations. OpenAI broad rollback mitigation and later final resolution are distinct; neither every registered user nor the full period is counted as continuous complete downtime. No S4 is inferred from three provider names.",
+        "evidence_confidence": "medium",
         "severity": "S3",
-        "threshold_id": "VIGIL-HIM-1.0.1-SOI-S3",
+        "threshold_id": "VIGIL-HIM-1.1.0-SOI-S3",
         "observed_values": [
           {
             "metric": "published quantitative information",
             "qualitative_value": "OpenAI's public status record spans approximately 14:43–16:55 UTC and lists 15 ChatGPT components and four Codex components. Anthropic reported a roughly three-hour partial outage with service restored at 16:16 UTC. xAI status records show a Grok models outage beginning at 13:30 UTC and lasting roughly three and a half hours across multiple surfaces."
           }
         ],
-        "assessment_basis": "The preserved sources establish the bounded consequence described in the Incident summary: On 3 September 2026, ChatGPT/Codex, Claude and Grok experienced overlapping service-availability incidents. OpenAI reported elevated errors across ChatGPT and Codex and separately attributed its disruption to a routing error. Anthropic reported a partial Claude outage caused by an infrastructure issue, affecting Claude.ai, Claude Code, Claude Cowork and the Claude API. xAI reported a Grok models outage across multiple surfaces and later attributed its disruption to an outage at its Memphis compute centre. The temporal overlap is material ecosystem evidence, but no reviewed source establishes that the three providers shared one technical cause. Unreported downstream consequences were not inferred. Threshold applied: Material disruption of an important service or organisational workflow; a critical or important function unavailable for more than two hours; complete relevant cloud-service unavailability over 30 minutes; or limited availability affecting over five percent or one million EU users, whichever is smaller, for over one hour, with bounded recovery.",
-        "evidence_confidence": "medium",
         "evidence_refs": [
           "source_records[0]",
           "source_records[3]"
@@ -701,8 +937,15 @@
         "assessment_status": "unreported",
         "assessment_basis": "The preserved Incident evidence does not report a bandable materialised environmental impact; absence of reporting is not evidence of no harm.",
         "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "relational-integrity-autonomy",
+        "assessment_status": "unreported",
+        "assessment_basis": "The bounded work, service or commercial occurrence does not report actual disruption of valued human relationships, family contact, caregiving, relational independence or safe disengagement. Workflow reliance, service access and an anthropomorphic agent name do not by themselves establish relational substitution.",
+        "evidence_confidence": "not-assessed"
       }
-    ]
+    ],
+    "assessment_pathway": "specific_consequence"
   },
   "related_incidents": [],
   "external_requirement_assessments": [

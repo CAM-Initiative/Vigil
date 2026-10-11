@@ -21,6 +21,26 @@ SPEC.loader.exec_module(RENDERER)
 
 
 class TaxonomyPublicationReferenceTests(unittest.TestCase):
+    def test_reading_guide_is_once_before_families_and_harm_remains_at_back(self):
+        families = RENDERER.base.load_catalogue()
+        first_family = RENDERER.base.anchor(families[0]["family"]["family_id"])
+        for publication in (False, True):
+            rendered = RENDERER.combined_html(families, {}, publication=publication)
+            self.assertEqual(rendered.count('id="reading-the-alignment-taxonomy"'), 1)
+            self.assertLess(rendered.index('id="reading-the-alignment-taxonomy"'), rendered.index(f'id="{first_family}"'))
+            self.assertNotIn('Occurrence relationships</h3>', rendered)
+            self.assertNotIn('Occurrence relationships</h4>', rendered)
+            for part in RENDERER.base.load(RENDERER.base.ROOT / "VIGIL.AlignmentTaxonomy.ReadingGuide.json")["parts"]:
+                for section in part["sections"]:
+                    for paragraph in section["paragraphs"]:
+                        self.assertIn(RENDERER.base.esc(paragraph), rendered)
+            if publication:
+                last_family = RENDERER.base.anchor(families[-1]["family"]["family_id"])
+                self.assertLess(rendered.index(f'id="{last_family}"'), rendered.index('id="harm-severity-methodology"'))
+                self.assertLess(rendered.index('id="harm-severity-methodology"'), rendered.index('id="taxonomy-bibliography"'))
+        # Standalone Family pages retain their self-contained explanation.
+        self.assertIn('Occurrence relationships</h4>', RENDERER.base.html_family(families[0], {}))
+
     def test_shared_reference_retains_class_specific_evidence_notes(self):
         families = [
             {

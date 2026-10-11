@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Thin cross-dataset ID integrity; no substantive adjudication or global matrix."""
+"""Thin cross-dataset ID integrity; no substantive adjudication."""
 import json
 from pathlib import Path
 from external_requirements_io import load_requirements

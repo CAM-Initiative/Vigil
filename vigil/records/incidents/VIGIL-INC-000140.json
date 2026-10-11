@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Air Canada chatbot gave incorrect bereavement-fare information to Jake Moffatt",
     "created": "2026-09-19",
-    "updated": "2026-10-04",
-    "version": "0.1.11"
+    "updated": "2026-10-10",
+    "version": "0.1.13"
   },
   "incident_identity": {
     "historical_event_name": "Air Canada bereavement-fare chatbot misinformation",
@@ -31,11 +31,11 @@
     "source_clause_analysis": {
       "source_record_order": 3,
       "source_url": "https://www.canlii.org/en/bc/bccrt/doc/2024/2024bccrt149/2024bccrt149.html",
-      "purpose": "Preserve the source-language or evidentiary propositions that materially explain VIGIL's governance interpretation. Paraphrases are concise, source-bounded and linked to the existing taxonomy adjudication.",
+      "purpose": "Separate evidenced occurrence stages and their distinct governance questions.",
       "clauses": [
         {
-          "source_paraphrase": "Air Canada's chatbot said a bereavement refund could be requested after travel; the customer relied on that statement, while the actual policy required an application before travel, and the tribunal found negligent misrepresentation.",
-          "recovered_invariant_interpretation": "A customer-facing policy statement intended to guide a consequential financial decision must meet the policy-fidelity and source assurance required for that reliance.",
+          "source_paraphrase": "The chatbot said Moffatt could seek a bereavement-fare refund after travel, and he relied on that advice to buy tickets.",
+          "recovered_invariant_interpretation": "Customer policy advice requires assurance before financial reliance.",
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000062",
@@ -44,7 +44,43 @@
               "rationale": "An incorrect statement was presented as usable Air Canada policy through the customer interface and relied upon in a consequential fare decision despite insufficient assurance against the authoritative policy."
             }
           ],
-          "adjudication_status": "mapped"
+          "adjudication_status": "mapped",
+          "source_record_refs": [
+            "source_records[1]",
+            "source_records[2]"
+          ],
+          "episode_id": "E001"
+        },
+        {
+          "source_paraphrase": "Air Canada refused the refund because its policy required application before travel.",
+          "recovered_invariant_interpretation": "Refusal under actual policy is distinct from the advice.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping",
+          "source_record_refs": [
+            "source_records[1]",
+            "source_records[2]"
+          ],
+          "episode_id": "E002"
+        },
+        {
+          "source_paraphrase": "Moffatt pursued a tribunal claim after refusal.",
+          "recovered_invariant_interpretation": "Challenge route and disposition are distinct.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping",
+          "source_record_refs": [
+            "source_records[2]"
+          ],
+          "episode_id": "E003"
+        },
+        {
+          "source_paraphrase": "The tribunal found negligent misrepresentation and ordered C$812.02 in damages, interest and fees.",
+          "recovered_invariant_interpretation": "An award does not establish payment or internal chatbot architecture.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping",
+          "source_record_refs": [
+            "source_records[2]"
+          ],
+          "episode_id": "E004"
         }
       ]
     }
@@ -125,14 +161,13 @@
       "interpretive_reliance": "The public decision page was identified and its disposition was corroborated through independent reporting; automated direct retrieval was access-limited.",
       "model_or_algorithm": "not fully established in the source",
       "primary_artefact_access": {
-        "access_method": "Occurrence-focused web search and review of the public source, indexed text, or authoritative endpoint",
-        "access_status": "public source and indexed content reviewed",
+        "access_method": "Public retrieval and direct text inspection; any retrieval failure specified below",
+        "access_status": "indirectly reviewed",
         "direct_primary_artefact_review": false,
         "limitations": [
-          "The source does not independently establish every underlying claim or unreported downstream consequence.",
-          "The source does not determine legal liability or final factual truth beyond its stated institutional scope."
+          "Fresh CanLII and PDF mirror retrieval failed; direct mirror download returned 403. Prior judgment account retained without fresh primary-text review."
         ],
-        "reviewing_system": "GPT-5"
+        "reviewing_system": "OpenAI ChatGPT — GPT-6"
       },
       "relevance_note": "Provides the authoritative adjudicative source for the realised award and legal finding.",
       "retrieved_date": "2026-09-20",
@@ -238,7 +273,7 @@
     ]
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.6.9",
+    "taxonomy_version": "0.6.11",
     "classification_status": "classified",
     "classification_basis": "Current-taxonomy review against VIGIL Failure Taxonomy 0.6.5 classifies the occurrence under VIGIL-FC-000062 Epistemic Reliance Miscalibration. Air Canada's chatbot represented an incorrect bereavement-fare rule on a customer-service surface as if it were usable company policy; Moffatt relied on that representation in a consequential fare decision, and the tribunal later found negligent misrepresentation. The downstream task required policy accuracy sufficient for customer financial reliance, while the generated statement did not meet that assurance threshold. VIGIL-FC-000016 Required Verification Omission is not added because the preserved occurrence does not separately establish a defined verification step that the chatbot or deployment workflow was required to perform and omitted before the answer was presented.",
     "primary_classification": {
@@ -250,9 +285,9 @@
     },
     "secondary_classifications": [],
     "classification_review_provenance": {
-      "review_date": "2026-09-29",
-      "reviewer": "OpenAI ChatGPT — GPT-6 Codex under human-directed VIGIL governance",
-      "review_status": "classification review completed"
+      "review_date": "2026-10-10",
+      "reviewer": "OpenAI ChatGPT Work — GPT-6",
+      "review_status": "Evidence-first HIM and relational/protection fidelity review; prior roles accounted for."
     },
     "adjudication_coverage": {
       "status": "complete"
@@ -463,84 +498,85 @@
           "This review is AI-authored, not human verification or certification."
         ],
         "review_outcome": "Reviewed 102 recovered or independently identified requirements; retained 0 relevant independent assessments. Prior values and exclusions remain in the dated audit."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-09-PHASE3-TRANCHE14-000140",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-09",
+        "review_scope": "Source-first occurrence reconstruction, current taxonomy boundary review and semantic external-requirement linkage.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "external_requirement_review": true,
+          "web_research": true,
+          "harm_impact_review": false
+        },
+        "known_limitations": [
+          "AI-authored, not human certified. Private sessions, checking traces and undisclosed decision paths remain unavailable.",
+          "Existing HIM retained; no full eleven-dimension re-adjudication."
+        ],
+        "review_outcome": "Separate advice/reliance, refusal, challenge and tribunal remedy; preserve unavailable primary routes and unknown architecture/payment."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-10-COMBINED-TRANCHE-06-000140",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-10",
+        "review_scope": "Source-first all-dimension HIM 1.1.0 and independent FC-086/087 reconciliation.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_research": true,
+          "harm_impact_review": true,
+          "taxonomy_review": true,
+          "external_requirement_review": true
+        },
+        "known_limitations": [
+          "Current originating judgment and exchange-rate endpoint could not be freshly retrieved; their prior reviewed source/access statements remain intact.",
+          "Payment, appeal and later household impact were not independently recovered.",
+          "The public account does not establish the chatbot’s complete input context or an independently heightened bereavement-protection duty."
+        ],
+        "review_outcome": "Financial S1 retained. The adjudicated fare difference is distinct from interest, tribunal fees and the total award. No material livelihood impairment or heightened bereavement-response duty is established; no band is changed solely for the methodology update."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-04-EXTERNAL-ALIGNMENT-000140",
+      "review_id": "VIGIL-REVIEW-2026-10-10-COMBINED-TRANCHE-06-000140",
       "reviewer_type": "AI analytical reviewer",
       "reviewer_platform": "OpenAI ChatGPT Work",
       "reviewer_model": "GPT-6",
-      "review_date": "2026-10-04",
-      "review_scope": "Independent occurrence relevance and alignment review of external requirements; normative force remains source metadata.",
+      "review_date": "2026-10-10",
+      "review_scope": "Source-first all-dimension HIM 1.1.0 and independent FC-086/087 reconciliation.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "external_requirement_review": true,
-        "taxonomy_review": false,
-        "harm_impact_review": false,
-        "web_research": false
+        "web_research": true,
+        "harm_impact_review": true,
+        "taxonomy_review": true,
+        "external_requirement_review": true
       },
       "known_limitations": [
-        "Assessment uses preserved occurrence evidence and canonical requirement propositions; internal implementation evidence remains unavailable where stated.",
-        "This review is AI-authored, not human verification or certification."
+        "Current originating judgment and exchange-rate endpoint could not be freshly retrieved; their prior reviewed source/access statements remain intact.",
+        "Payment, appeal and later household impact were not independently recovered.",
+        "The public account does not establish the chatbot’s complete input context or an independently heightened bereavement-protection duty."
       ],
-      "review_outcome": "Reviewed 102 recovered or independently identified requirements; retained 0 relevant independent assessments. Prior values and exclusions remain in the dated audit."
+      "review_outcome": "Financial S1 retained. The adjudicated fare difference is distinct from interest, tribunal fees and the total award. No material livelihood impairment or heightened bereavement-response duty is established; no band is changed solely for the methodology update."
     }
   },
   "harm_impact_assessment": {
     "methodology_id": "VIGIL-HIM",
-    "methodology_version": "1.0.1",
-    "derivation_rule": "highest-supported-materialised-harm",
-    "assessed_on": "2026-09-20",
+    "methodology_version": "1.1.0",
+    "derivation_rule": "highest-supported-harm-on-exclusive-incident-assessment-pathway",
+    "assessed_on": "2026-10-10",
     "overall_severity": "S1",
     "controlling_dimensions": [
       "financial-economic"
     ],
-    "coverage_note": "All eleven dimensions were re-reviewed. The tribunal award and the Bank of Canada decision-date rate support financial S1; other dimensions remain unreported and no higher materialised consequence is established.",
+    "coverage_note": "Financial S1 retained. The adjudicated fare difference is distinct from interest, tribunal fees and the total award. No material livelihood impairment or heightened bereavement-response duty is established; no band is changed solely for the methodology update.",
     "dimensions": [
-      {
-        "dimension_id": "service-operational-infrastructure",
-        "assessment_status": "unreported",
-        "assessment_basis": "No separately bandable materialised impact in this dimension is established beyond the occurrence-specific assessment.",
-        "evidence_confidence": "not-assessed"
-      },
-      {
-        "dimension_id": "financial-economic",
-        "assessment_status": "assessed",
-        "assessment_basis": "The Civil Resolution Tribunal ordered Air Canada to pay C$650.88 in damages, C$36.14 interest and C$125 in fees, totalling C$812.02. The Bank of Canada decision-date rate of US$0.7380 per C$1 converts that total to US$599.27, below USD 10,000 and without evidence of livelihood or organisational-viability impairment. Threshold applied: Aggregate direct realised loss below USD 10,000, provided the evidence does not establish material livelihood or organisational-viability impairment.",
-        "evidence_confidence": "high",
-        "severity": "S1",
-        "threshold_id": "VIGIL-HIM-1.0.1-FIN-S1",
-        "observed_values": [
-          {
-            "metric": "tribunal award including damages, interest and fees",
-            "value": 812.02,
-            "unit": "CAD"
-          },
-          {
-            "metric": "decision-date Bank of Canada CAD/USD rate",
-            "value": 0.738,
-            "unit": "USD per CAD",
-            "rate_date": "2024-02-14"
-          },
-          {
-            "metric": "converted tribunal award",
-            "value": 599.27,
-            "unit": "USD"
-          }
-        ],
-        "evidence_refs": [
-          "source_records[1]",
-          "source_records[2]",
-          "source_records[3]"
-        ]
-      },
-      {
-        "dimension_id": "property-asset-damage",
-        "assessment_status": "unreported",
-        "assessment_basis": "No separately bandable materialised impact in this dimension is established beyond the occurrence-specific assessment.",
-        "evidence_confidence": "not-assessed"
-      },
       {
         "dimension_id": "physical-health-safety",
         "assessment_status": "unreported",
@@ -572,6 +608,47 @@
         "evidence_confidence": "not-assessed"
       },
       {
+        "dimension_id": "financial-economic",
+        "assessment_status": "assessed",
+        "assessment_basis": "The tribunal determined C$650.88 as the fare difference caused by reliance on the chatbot. It separately awarded C$36.14 interest and C$125 fees, totalling C$812.02. The historically sourced 14 February 2024 Bank of Canada rate of US$0.7380 per C$1 places even that total at US$599.27. The award is not proof of payment or the whole sum being underlying fare loss. The adjudicated fare/resource burden is below US$10,000 and no material livelihood impairment is evidenced. The alternative S2 low-disruption and S3 material-livelihood criteria are considered; neither overrides the defensible small USD quantum and absence of a reported qualifying livelihood consequence.",
+        "evidence_confidence": "medium",
+        "severity": "S1",
+        "threshold_id": "VIGIL-HIM-1.1.0-FIN-S1",
+        "observed_values": [
+          {
+            "metric": "adjudicated fare difference",
+            "value": 650.88,
+            "unit": "CAD"
+          },
+          {
+            "metric": "total ordered damages interest and fees",
+            "value": 812.02,
+            "unit": "CAD"
+          },
+          {
+            "metric": "historically sourced conversion of total award",
+            "value": 599.27,
+            "unit": "USD"
+          }
+        ],
+        "evidence_refs": [
+          "source_records[2]",
+          "source_records[3]"
+        ]
+      },
+      {
+        "dimension_id": "property-asset-damage",
+        "assessment_status": "unreported",
+        "assessment_basis": "No separately bandable materialised impact in this dimension is established beyond the occurrence-specific assessment.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "service-operational-infrastructure",
+        "assessment_status": "unreported",
+        "assessment_basis": "No separately bandable materialised impact in this dimension is established beyond the occurrence-specific assessment.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
         "dimension_id": "reputation-dignity",
         "assessment_status": "unreported",
         "assessment_basis": "No separately bandable materialised impact in this dimension is established beyond the occurrence-specific assessment.",
@@ -588,8 +665,15 @@
         "assessment_status": "unreported",
         "assessment_basis": "No separately bandable materialised impact in this dimension is established beyond the occurrence-specific assessment.",
         "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "relational-integrity-autonomy",
+        "assessment_status": "unreported",
+        "assessment_basis": "The occurrence does not report material loss of informed intimate or family choice, valued human relationships, caregiving or essential interpersonal support. Transactional deception, distress or service disruption alone does not establish a distinct relational consequence.",
+        "evidence_confidence": "not-assessed"
       }
-    ]
+    ],
+    "assessment_pathway": "specific_consequence"
   },
   "external_assessments": [
     {

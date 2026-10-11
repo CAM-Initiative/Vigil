@@ -11,7 +11,7 @@ def assessment_errors(record: dict, known_ids: set[str] | None, relationships: l
     clauses = record.get('vigil_assessment', {}).get('source_clause_analysis', {}).get('clauses', [])
     sources = record.get('source_records', [])
     required = {'requirement_id', 'alignment_result', 'assessment_basis', 'assessed_on', 'source_record_refs'}
-    allowed = required | {'derived_from_class_ids', 'source_clause_indices', 'identification_basis'}
+    allowed = required | {'derived_from_class_ids', 'source_clause_indices', 'source_episode_refs', 'identification_basis'}
     supported = {(r.get('class_id'), r.get('requirement_id')) for r in relationships
                  if r.get('review_status') == 'supported' and r.get('strength') in {'direct', 'strong-supporting'}}
     errors = []
@@ -59,16 +59,42 @@ def assessment_errors(record: dict, known_ids: set[str] | None, relationships: l
             errors.append(f'{label}.assessed_on must be an ISO date')
         ids = a.get('derived_from_class_ids', [])
         indices = a.get('source_clause_indices', [])
+        episode_refs = a.get('source_episode_refs')
+        migrated = any(isinstance(c, dict) and 'episode_id' in c for c in clauses)
+        episodes = {c.get('episode_id'): (i, c) for i, c in enumerate(clauses)
+                    if isinstance(c, dict) and isinstance(c.get('episode_id'), str)}
+        if episode_refs is not None:
+            if (not isinstance(episode_refs, list) or not episode_refs or
+                    any(not isinstance(eid, str) or re.fullmatch(r'E[0-9]{3,}', eid) is None
+                        for eid in episode_refs)):
+                errors.append(f'{label}.source_episode_refs must contain canonical incident-local episode IDs')
+            elif len(episode_refs) != len(set(episode_refs)):
+                errors.append(f'{label}.source_episode_refs contains duplicates')
+            elif any(eid not in episodes for eid in episode_refs):
+                errors.append(f'{label}.source_episode_refs contains an unresolved episode')
+            elif isinstance(indices, list) and indices:
+                if any(type(index) is not int or index < 0 or index >= len(clauses) for index in indices):
+                    errors.append(f'{label}.source_clause_indices do not resolve')
+                elif set(episode_refs) != {clauses[index].get('episode_id') for index in indices}:
+                    errors.append(f'{label}.source_episode_refs disagree with source_clause_indices')
         if not isinstance(ids, list) or any(not isinstance(c, str) or re.fullmatch(r'VIGIL-FC-\d{6}', c) is None for c in ids):
             errors.append(f'{label}.derived_from_class_ids must contain canonical Fidelity Class IDs')
         elif ids:
             if len(ids) != len(set(ids)):
                 errors.append(f'{label}.derived_from_class_ids contains duplicates')
-            if not isinstance(indices, list) or not indices or any(type(c) is not int or c < 0 or c >= len(clauses) for c in indices):
-                errors.append(f'{label}.source_clause_indices must resolve for taxonomy derivation')
+            if migrated and episode_refs is None:
+                errors.append(f'{label}.source_episode_refs required for derived assessment in episode-migrated record')
+            valid_indices = isinstance(indices, list) and bool(indices) and all(
+                type(c) is int and 0 <= c < len(clauses) for c in indices)
+            valid_episodes = (isinstance(episode_refs, list) and bool(episode_refs)
+                              and all(isinstance(eid, str) and eid in episodes for eid in episode_refs))
+            if not valid_indices and not valid_episodes:
+                errors.append(f'{label}.source_clause_indices or source_episode_refs must resolve for taxonomy derivation')
             else:
-                mapped = {r.get('class_id') for index in indices for r in clauses[index].get('taxonomy_relationships', [])
-                          if r.get('canonical_taxonomy_mapping') is True}
+                selected = ([clauses[index] for index in indices] if valid_indices
+                            else [episodes[eid][1] for eid in episode_refs])
+                mapped = {r.get('class_id') for clause in selected for r in clause.get('taxonomy_relationships', [])
+                          if isinstance(r, dict) and r.get('canonical_taxonomy_mapping') is True}
                 for cid in ids:
                     if cid not in mapped or (cid, req) not in supported:
                         errors.append(f'{label}.derived_from_class_ids lacks a supported clause-scoped relationship: {cid}')

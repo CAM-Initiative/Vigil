@@ -1,0 +1,397 @@
+{
+  "incident_id": "VIGIL-INC-000159",
+  "review_date": "2026-10-08",
+  "review_type": "source_first_bounded_canonical_repair",
+  "reviewer": "AI analytical reviewer; no independent human source verification",
+  "baseline_commit": "a09e222ef547de44e092ae8f9ba576df17b2c720",
+  "original_blob_sha": "e2116f340841e9d05a5ab701f03d4cbc26523346",
+  "new_blob_sha": "83351ddc41a32005a260c799e0466bb32a13024f",
+  "disposition": "A defective low-trust AI issue-intake workflow, later incomplete token rotation, separate unauthorised release, prompt response and historical audit were distinguished; no claim that reporter was subsequent publisher.",
+  "source_urls": [
+    "https://cline.bot/blog/post-mortem-unauthorized-cline-cli-npm",
+    "https://adnanthekhan.com/posts/clinejection/",
+    "https://github.com/cline/cline/security/advisories/GHSA-9ppg-jx86-fqw7"
+  ],
+  "original_clause_count": 7,
+  "repaired_clause_count": 5,
+  "old_to_new_clause_crosswalk": [
+    {
+      "old_index": 0,
+      "old_source_paraphrase": "Cline's postmortem explains that any GitHub user could open an issue handled by a Claude-powered triage workflow with Bash access; attacker-controlled issue instructions could cause code execution, and the workflow's shared cache scope let poisoned state reach a nightly release workflow with publication secrets.",
+      "new_index": 0,
+      "episode_id": "E001"
+    },
+    {
+      "old_index": 1,
+      "old_source_paraphrase": "Attacker-controlled issue content was treated as operative instruction rather than remaining non-authorising data.",
+      "new_index": 0,
+      "episode_id": "E001"
+    },
+    {
+      "old_index": 2,
+      "old_source_paraphrase": "Post-incident evidence preserved the material instruction and release-path events needed to document the occurrence.",
+      "new_index": 4,
+      "episode_id": "E005"
+    },
+    {
+      "old_index": 3,
+      "old_source_paraphrase": "The retained evidence allowed the material compromise chain to be reconstructed without repeating unnecessary exploit mechanics.",
+      "new_index": 4,
+      "episode_id": "E005"
+    },
+    {
+      "old_index": 4,
+      "old_source_paraphrase": "After the researcher publicly disclosed the workflow vulnerability, Cline removed the vulnerable workflows and rotated credentials, but deleted the wrong npm token. The exposed npm token remained active, while the organization-level token page showed zero active tokens and did not surface it.",
+      "new_index": 1,
+      "episode_id": "E002"
+    },
+    {
+      "old_index": 5,
+      "old_source_paraphrase": "On February 17, a third party used the still-active npm token to publish cline@2.3.0 with a postinstall script that globally installed OpenClaw, which Cline later described as a legitimate, non-malicious open-source project.",
+      "new_index": 2,
+      "episode_id": "E003"
+    },
+    {
+      "old_index": 6,
+      "old_source_paraphrase": "Cline published corrected version 2.4.0, deprecated 2.3.0 and revoked the token by 11:23 a.m. It reported that the occurrence was limited to the npm CLI package, no malicious code was delivered, and no user data was accessed or exfiltrated.",
+      "new_index": 3,
+      "episode_id": "E004"
+    }
+  ],
+  "new_episodes": [
+    {
+      "ordinal": 0,
+      "episode_id": "E001",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ],
+      "adjudication_status": "mapped",
+      "canonical_class_ids": [
+        "VIGIL-FC-000006",
+        "VIGIL-FC-000009",
+        "VIGIL-FC-000001"
+      ]
+    },
+    {
+      "ordinal": 1,
+      "episode_id": "E002",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ],
+      "adjudication_status": "mapped",
+      "canonical_class_ids": [
+        "VIGIL-FC-000015"
+      ]
+    },
+    {
+      "ordinal": 2,
+      "episode_id": "E003",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[2]"
+      ],
+      "adjudication_status": "resolved-no-mapping",
+      "canonical_class_ids": []
+    },
+    {
+      "ordinal": 3,
+      "episode_id": "E004",
+      "source_record_refs": [
+        "source_records[0]"
+      ],
+      "adjudication_status": "resolved-no-mapping",
+      "canonical_class_ids": []
+    },
+    {
+      "ordinal": 4,
+      "episode_id": "E005",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]",
+        "source_records[2]"
+      ],
+      "adjudication_status": "mapped",
+      "canonical_class_ids": [
+        "VIGIL-FC-000022",
+        "VIGIL-FC-000024"
+      ]
+    }
+  ],
+  "external_requirement_rows": [
+    {
+      "row": 0,
+      "requirement_id": "EXTREQ-00DBB52A605BD459",
+      "old_indices": [
+        2
+      ],
+      "new_indices": [
+        4
+      ],
+      "episode_refs": [
+        "E005"
+      ],
+      "derived_classes": [
+        "VIGIL-FC-000022"
+      ],
+      "alignment_result_unchanged": true
+    },
+    {
+      "row": 1,
+      "requirement_id": "EXTREQ-0314EBE2A0C9E0F7",
+      "old_indices": [],
+      "new_indices": [],
+      "episode_refs": [],
+      "derived_classes": [],
+      "alignment_result_unchanged": true
+    },
+    {
+      "row": 2,
+      "requirement_id": "EXTREQ-13E71F1E78D8FA2D",
+      "old_indices": [
+        3
+      ],
+      "new_indices": [
+        4
+      ],
+      "episode_refs": [
+        "E005"
+      ],
+      "derived_classes": [
+        "VIGIL-FC-000024"
+      ],
+      "alignment_result_unchanged": true
+    },
+    {
+      "row": 3,
+      "requirement_id": "EXTREQ-1582CA6E2303931A",
+      "old_indices": [
+        3
+      ],
+      "new_indices": [
+        4
+      ],
+      "episode_refs": [
+        "E005"
+      ],
+      "derived_classes": [
+        "VIGIL-FC-000024"
+      ],
+      "alignment_result_unchanged": true
+    },
+    {
+      "row": 4,
+      "requirement_id": "EXTREQ-1FD5D213F5EC16AD",
+      "old_indices": [
+        2
+      ],
+      "new_indices": [
+        4
+      ],
+      "episode_refs": [
+        "E005"
+      ],
+      "derived_classes": [
+        "VIGIL-FC-000022"
+      ],
+      "alignment_result_unchanged": true
+    },
+    {
+      "row": 5,
+      "requirement_id": "EXTREQ-3F3FE69853DA2FE6",
+      "old_indices": [
+        2,
+        3
+      ],
+      "new_indices": [
+        4
+      ],
+      "episode_refs": [
+        "E005"
+      ],
+      "derived_classes": [
+        "VIGIL-FC-000022",
+        "VIGIL-FC-000024"
+      ],
+      "alignment_result_unchanged": true
+    },
+    {
+      "row": 6,
+      "requirement_id": "EXTREQ-4277B23509413079",
+      "old_indices": [
+        2,
+        3
+      ],
+      "new_indices": [
+        4
+      ],
+      "episode_refs": [
+        "E005"
+      ],
+      "derived_classes": [
+        "VIGIL-FC-000022",
+        "VIGIL-FC-000024"
+      ],
+      "alignment_result_unchanged": true
+    },
+    {
+      "row": 7,
+      "requirement_id": "EXTREQ-4A7575E86C311199",
+      "old_indices": [
+        3
+      ],
+      "new_indices": [
+        4
+      ],
+      "episode_refs": [
+        "E005"
+      ],
+      "derived_classes": [
+        "VIGIL-FC-000024"
+      ],
+      "alignment_result_unchanged": true
+    },
+    {
+      "row": 8,
+      "requirement_id": "EXTREQ-6B9145EBE7C888AB",
+      "old_indices": [
+        2
+      ],
+      "new_indices": [
+        4
+      ],
+      "episode_refs": [
+        "E005"
+      ],
+      "derived_classes": [
+        "VIGIL-FC-000022"
+      ],
+      "alignment_result_unchanged": true
+    },
+    {
+      "row": 9,
+      "requirement_id": "EXTREQ-70BB4ECD22E7DC60",
+      "old_indices": [
+        2
+      ],
+      "new_indices": [
+        4
+      ],
+      "episode_refs": [
+        "E005"
+      ],
+      "derived_classes": [
+        "VIGIL-FC-000022"
+      ],
+      "alignment_result_unchanged": true
+    },
+    {
+      "row": 10,
+      "requirement_id": "EXTREQ-7A5897A2F6C82407",
+      "old_indices": [],
+      "new_indices": [],
+      "episode_refs": [],
+      "derived_classes": [],
+      "alignment_result_unchanged": true
+    },
+    {
+      "row": 11,
+      "requirement_id": "EXTREQ-80B95118891500CC",
+      "old_indices": [
+        3
+      ],
+      "new_indices": [
+        4
+      ],
+      "episode_refs": [
+        "E005"
+      ],
+      "derived_classes": [
+        "VIGIL-FC-000024"
+      ],
+      "alignment_result_unchanged": true
+    },
+    {
+      "row": 12,
+      "requirement_id": "EXTREQ-9DAE98CAB159CB64",
+      "old_indices": [
+        2
+      ],
+      "new_indices": [
+        4
+      ],
+      "episode_refs": [
+        "E005"
+      ],
+      "derived_classes": [
+        "VIGIL-FC-000022"
+      ],
+      "alignment_result_unchanged": true
+    },
+    {
+      "row": 13,
+      "requirement_id": "EXTREQ-F8F11DA0D9D14DD0",
+      "old_indices": [
+        3
+      ],
+      "new_indices": [
+        4
+      ],
+      "episode_refs": [
+        "E005"
+      ],
+      "derived_classes": [
+        "VIGIL-FC-000024"
+      ],
+      "alignment_result_unchanged": true
+    },
+    {
+      "row": 14,
+      "requirement_id": "EXTREQ-F9388EF21726D66D",
+      "old_indices": [
+        2
+      ],
+      "new_indices": [
+        4
+      ],
+      "episode_refs": [
+        "E005"
+      ],
+      "derived_classes": [
+        "VIGIL-FC-000022"
+      ],
+      "alignment_result_unchanged": true
+    },
+    {
+      "row": 15,
+      "requirement_id": "EXTREQ-F9D5AD96B52ECC93",
+      "old_indices": [
+        2
+      ],
+      "new_indices": [
+        4
+      ],
+      "episode_refs": [
+        "E005"
+      ],
+      "derived_classes": [
+        "VIGIL-FC-000022"
+      ],
+      "alignment_result_unchanged": true
+    }
+  ],
+  "position_based_EXTREQ_count": 14,
+  "preservation_checks": {
+    "source_records_unchanged": true,
+    "harm_unchanged": true,
+    "canonical_class_role_multiset_unchanged": true,
+    "external_assessment_decisions_unchanged": true,
+    "coverage_unchanged": true
+  },
+  "limits": [
+    "Chronology is evidence-bounded and may contain overlapping multi-run behaviours.",
+    "Taxonomy roles and external alignment outcomes were not re-adjudicated.",
+    "The records do not certify source exhaustiveness or human-verified incident completeness."
+  ]
+}

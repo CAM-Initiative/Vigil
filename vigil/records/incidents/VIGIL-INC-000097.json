@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Meta AI users reportedly published sensitive chatbot conversations without fully realising they were public",
     "created": "2026-09-08",
-    "updated": "2026-10-04",
-    "version": "0.1.16"
+    "updated": "2026-10-10",
+    "version": "0.1.18"
   },
   "incident_identity": {
     "historical_event_name": "Meta AI Discover inadvertent public-chat disclosure",
@@ -18,10 +18,10 @@
     "date_precision": "reported-date",
     "date_basis": "AI Incident Database uses 29 April 2025, the Meta AI app launch date, as the Incident date; public reporting of inadvertent disclosures followed in the subsequent weeks."
   },
-  "summary": "Meta's standalone AI app included a Discover feed through which users could publish chatbot conversations. Reporting found sensitive medical, legal, relationship, audio and identifying information publicly visible, while some users appeared not to understand that their shared conversations would be public. Meta maintained that publishing required an affirmative share action.",
+  "summary": "Meta's standalone AI app included a Discover feed through which users could publish chatbot conversations. Reporting found sensitive medical, legal, relationship, audio and identifying information publicly visible, while some users appeared not to understand that their shared conversations would be public. Meta maintained that publishing required an affirmative share action. A public-audience warning was reported on June 16.",
   "vigil_assessment": {
-    "factual_basis": "AIID aggregates multiple reports documenting sensitive conversations visible in Meta AI's Discover feed. TechCrunch reported that users had to press a share control and preview a post before publishing, but said the app did not clearly indicate privacy settings or the destination/public visibility at posting time. The evidence therefore supports user-state confusion rather than automatic publication of every conversation.",
-    "governance_interpretation": "The occurrence concerns a materially ambiguous transition between private chatbot interaction and public social publication. Distinct privacy/access states existed, but the publication workflow reportedly failed to make the resulting public state sufficiently clear to some users. The separate share action is affirmative, but unclear audience/state prevents a finding that secondary-purpose authority was sufficiently revalidated. That success role becomes ambiguous alongside the retained access-state failure, without assuming automatic publication or deciding every user’s consent. The OECD privacy and autonomy assessment is Boundary. The decisive user permission for public visibility is not established.",
+    "factual_basis": "AIID aggregates multiple reports documenting sensitive conversations visible in Meta AI's Discover feed. TechCrunch reported that users had to press a share control and preview a post before publishing, but said the app did not clearly indicate privacy settings or the destination/public visibility at posting time. The evidence therefore supports user-state confusion rather than automatic publication of every conversation. The primary April launch announcement confirms that publication was a chosen action. Later reporting records an added audience warning, rather than proof that earlier disclosures were undone.",
+    "governance_interpretation": "The occurrence concerns a materially ambiguous transition between private chatbot interaction and public social publication. Distinct privacy/access states existed, but the publication workflow reportedly failed to make the resulting public state sufficiently clear to some users. The separate share action is affirmative, but unclear audience/state prevents a finding that secondary-purpose authority was sufficiently revalidated. That success role becomes ambiguous alongside the retained access-state failure, without assuming automatic publication or deciding every user’s consent. The OECD privacy and autonomy assessment is Boundary. The decisive user permission for public visibility is not established. The later warning is a corrective step. It does not establish restored privacy for earlier posts or sufficient authority for every subsequent publication.",
     "significance_to_cam": "The event is a useful non-OpenAI example of access-state governance in conversational AI: social sharing can transform intimate AI interactions into public content, requiring explicit state transitions, audience visibility and privacy signalling.",
     "assessment_boundaries": [
       "Meta stated that sharing was opt-in and the evidence does not show that ordinary unshared chats were automatically public.",
@@ -31,24 +31,28 @@
     "source_clause_analysis": {
       "source_record_order": 1,
       "source_url": "https://techcrunch.com/2025/06/12/the-meta-ai-app-is-a-privacy-disaster/",
-      "purpose": "Preserve the source-language or evidentiary propositions that materially explain VIGIL's governance interpretation. Paraphrases are concise, source-bounded and linked to the existing taxonomy adjudication.",
+      "purpose": "Separate evidenced occurrence stages and their distinct governance questions.",
       "clauses": [
         {
-          "source_paraphrase": "Some Meta AI users reportedly shared sensitive chatbot conversations through a Discover workflow without clearly understanding the destination or public visibility.",
-          "recovered_invariant_interpretation": "A transition from private conversation to public publication must make the resulting access state and audience legible before the user commits the change.",
+          "source_paraphrase": "Meta’s 29 April launch announcement introduced Discover and stated that nothing would be shared unless users chose to post it.",
+          "recovered_invariant_interpretation": "An announced publication policy is separate from demonstrated understanding and authority at each later transition.",
+          "source_record_refs": [
+            "source_records[3]"
+          ],
+          "adjudication_status": "resolved-no-mapping",
           "taxonomy_relationships": [
             {
-              "class_id": "VIGIL-FC-000032",
-              "relationship": "failure-occurrence",
-              "canonical_taxonomy_mapping": true,
-              "rationale": "Private chatbot interaction and public Discover publication were materially different access states, yet the share workflow reportedly left some users unsure that the resulting post would be public."
+              "class_id": "VIGIL-FC-000055",
+              "relationship": "candidate-rejected",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "The launch statement alone does not establish each user’s informed secondary-purpose permission or the actual propagation of a later post."
             }
           ],
-          "adjudication_status": "mapped"
+          "episode_id": "E001"
         },
         {
           "source_paraphrase": "Publication required an affirmative share action and preview rather than occurring automatically from the private conversation.",
-          "recovered_invariant_interpretation": "A materially different secondary use should have its own authority basis rather than silently inheriting the basis for the original purpose.",
+          "recovered_invariant_interpretation": "An affirmative publication action remains distinct from proof of sufficiently scoped secondary-use authority.",
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000055",
@@ -57,7 +61,65 @@
               "rationale": "A separate share action and preview are evidenced, but unclear public audience/state leaves sufficient authority revalidation for recipients, persistence and downstream effect unproved. The new action engages the invariant without establishing all success conditions or automatic carry-over failure."
             }
           ],
-          "adjudication_status": "mapped"
+          "adjudication_status": "mapped",
+          "source_record_refs": [
+            "source_records[0]",
+            "source_records[2]"
+          ],
+          "episode_id": "E002"
+        },
+        {
+          "source_paraphrase": "Some Meta AI users reportedly shared sensitive chatbot conversations through a Discover workflow without clearly understanding the destination or public visibility.",
+          "recovered_invariant_interpretation": "Materially distinct private and public audiences must be legible before publication.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000032",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Private chatbot interaction and public Discover publication were materially different access states, yet the share workflow reportedly left some users unsure that the resulting post would be public."
+            }
+          ],
+          "adjudication_status": "mapped",
+          "source_record_refs": [
+            "source_records[0]",
+            "source_records[2]"
+          ],
+          "episode_id": "E003"
+        },
+        {
+          "source_paraphrase": "Meta told reporters that chats were private by default and publication required an affirmative action.",
+          "recovered_invariant_interpretation": "Private defaults do not prove that every later public transition was understood.",
+          "source_record_refs": [
+            "source_records[2]",
+            "source_records[3]"
+          ],
+          "adjudication_status": "resolved-no-mapping",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000032",
+              "relationship": "candidate-rejected",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "A default and a required button do not erase the documented audience confusion or establish correct handling for each user."
+            }
+          ],
+          "episode_id": "E004"
+        },
+        {
+          "source_paraphrase": "On 16 June, reporting described a new public-audience warning before posting.",
+          "recovered_invariant_interpretation": "A later safeguard does not retrospectively authorise prior disclosures.",
+          "source_record_refs": [
+            "source_records[4]"
+          ],
+          "adjudication_status": "resolved-no-mapping",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000032",
+              "relationship": "candidate-rejected",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "No evidence establishes equal understanding or reversal of prior exposure for every affected user."
+            }
+          ],
+          "episode_id": "E005"
         }
       ]
     }
@@ -79,11 +141,13 @@
       "evidence_status": "independent-reporting",
       "evidence_status_basis": "TechCrunch directly reviewed the public Discover feed and documented sensitive posts and ambiguity around privacy settings and posting destination.",
       "primary_artefact_access": {
-        "access_method": "direct public source review",
-        "access_status": "directly reviewed",
-        "direct_primary_artefact_review": true,
-        "limitations": [],
-        "reviewing_system": "OpenAI ChatGPT — GPT-5.6 Sol"
+        "access_method": "Public retrieval and direct text inspection; any retrieval failure specified below",
+        "access_status": "indirectly reviewed",
+        "direct_primary_artefact_review": false,
+        "limitations": [
+          "Reporter’s account of the feed and publishing steps directly read. User-specific app states and all underlying posts were not independently inspected."
+        ],
+        "reviewing_system": "OpenAI ChatGPT — GPT-6"
       },
       "incident_source_order": 1,
       "interpretive_reliance": "Independent reporting on the publication flow, public visibility and examples of sensitive user content.",
@@ -136,14 +200,13 @@
       "interpretive_reliance": "The reporting corroborates meaningful disclosure but does not establish downstream misuse for every exposed conversation.",
       "model_or_algorithm": "not fully established in the source",
       "primary_artefact_access": {
-        "access_method": "Occurrence-focused web search and review of the public source or returned source metadata",
-        "access_status": "directly reviewed",
+        "access_method": "Public retrieval and direct text inspection; any retrieval failure specified below",
+        "access_status": "indirectly reviewed",
         "direct_primary_artefact_review": false,
         "limitations": [
-          "The source does not independently establish every underlying claim or unreported downstream consequence.",
-          "The source does not determine legal liability or final factual truth."
+          "Occurrence reporting directly read; attributed provider default/privacy statement does not establish every user’s understanding."
         ],
-        "reviewing_system": "GPT-5"
+        "reviewing_system": "OpenAI ChatGPT — GPT-6"
       },
       "relevance_note": "Supports bounded but serious public disclosure of sensitive chats.",
       "retrieved_date": "2026-09-20",
@@ -157,6 +220,70 @@
       "source_url": "https://www.washingtonpost.com/technology/2025/06/13/meta-ai-privacy-users-chatbot/",
       "source_url_status": "public source page or indexed metadata available at review",
       "system_or_product": "Other"
+    },
+    {
+      "source_title": "Introducing the Meta AI App: A New Way to Access Your AI Assistant",
+      "author_or_publisher": "Meta",
+      "source_date": "2025-04-29",
+      "source_url": "https://about.fb.com/news/2025/04/introducing-meta-ai-app-new-way-access-ai-assistant/",
+      "source_url_status": "available",
+      "source_type": "official announcement",
+      "source_platform": "Meta",
+      "source_residence": "external",
+      "source_role": "incident-evidence",
+      "evidence_modality": [
+        "text"
+      ],
+      "evidence_status": "first-party-reported",
+      "evidence_status_basis": "Primary provider launch statement directly read; product policy is distinct from individual understanding.",
+      "primary_artefact_access": {
+        "access_method": "Public retrieval and direct text inspection; any retrieval failure specified below",
+        "access_status": "directly reviewed",
+        "direct_primary_artefact_review": true,
+        "limitations": [
+          "Dated launch statement read. No assumption that every exposed user understood the audience."
+        ],
+        "reviewing_system": "OpenAI ChatGPT — GPT-6"
+      },
+      "incident_source_order": 4,
+      "interpretive_reliance": "Launch announcement describes Discover and says publication requires choosing to post.",
+      "relevance_note": "Launch announcement describes Discover and says publication requires choosing to post.",
+      "retrieved_date": "2026-10-09",
+      "source_context": "Launch announcement describes Discover and says publication requires choosing to post.",
+      "system_or_product": "Meta AI app Discover feed",
+      "model_or_algorithm": "not established"
+    },
+    {
+      "source_title": "Meta AI adds an extra step before public sharing",
+      "author_or_publisher": "Katie Notopoulos / Business Insider",
+      "source_date": "2025-06-16",
+      "source_url": "https://www.businessinsider.com/meta-ai-public-discover-feed-warning-fix-personal-info-privacy-2025-6",
+      "source_url_status": "available",
+      "source_type": "news article",
+      "source_platform": "Katie Notopoulos / Business Insider",
+      "source_residence": "external",
+      "source_role": "incident-evidence",
+      "evidence_modality": [
+        "text"
+      ],
+      "evidence_status": "independent-reporting",
+      "evidence_status_basis": "Reporter directly observed the later change.",
+      "primary_artefact_access": {
+        "access_method": "Public retrieval and direct text inspection; any retrieval failure specified below",
+        "access_status": "indirectly reviewed",
+        "direct_primary_artefact_review": false,
+        "limitations": [
+          "Report body read; no universal efficacy study or restoration of prior disclosures."
+        ],
+        "reviewing_system": "OpenAI ChatGPT — GPT-6"
+      },
+      "incident_source_order": 5,
+      "interpretive_reliance": "Later audience warning reported.",
+      "relevance_note": "Later audience warning reported.",
+      "retrieved_date": "2026-10-09",
+      "source_context": "Later audience warning reported.",
+      "system_or_product": "Meta AI app Discover feed",
+      "model_or_algorithm": "not established"
     }
   ],
   "preferred_evidence": {
@@ -222,7 +349,7 @@
     ]
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.6.9",
+    "taxonomy_version": "0.6.11",
     "classification_status": "classified",
     "classification_basis": "Private chatbot interaction and public Discover publication were materially different access states, yet the share workflow reportedly left some users unsure that the resulting post would be public. A separate share action and preview are evidenced, but unclear public audience/state leaves sufficient authority revalidation for recipients, persistence and downstream effect unproved. The new action engages the invariant without establishing all success conditions or automatic carry-over failure.",
     "primary_classification": {
@@ -242,9 +369,9 @@
       }
     ],
     "classification_review_provenance": {
-      "review_date": "2026-09-30",
-      "reviewer": "OpenAI ChatGPT — GPT-5.6 Sol under human-directed VIGIL governance",
-      "review_status": "clause-level taxonomy adjudication completed"
+      "review_date": "2026-10-10",
+      "reviewer": "OpenAI ChatGPT Work — GPT-6",
+      "review_status": "Evidence-first HIM and relational/protection fidelity review; prior roles accounted for."
     },
     "adjudication_coverage": {
       "status": "complete"
@@ -509,40 +636,84 @@
           "This review is AI-authored, not human verification or certification."
         ],
         "review_outcome": "Reviewed 10 recovered or independently identified requirements; retained 1 relevant independent assessments. Prior values and exclusions remain in the dated audit."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-09-PHASE3-TRANCHE15D-000097",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-09",
+        "review_scope": "Source-first occurrence reconstruction, current taxonomy boundary review and semantic external-requirement linkage.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "external_requirement_review": true,
+          "web_research": true,
+          "harm_impact_review": false
+        },
+        "known_limitations": [
+          "AI-authored, not human certified. Private sessions, checking traces and undisclosed decision paths remain unavailable.",
+          "Existing HIM retained; no full eleven-dimension re-adjudication."
+        ],
+        "review_outcome": "Separate launch policy, affirmative sharing, public exposure/confusion, provider response and later warning. Preserve the access-state finding and secondary-purpose ambiguous boundary."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-10-COMBINED-TRANCHE-04-000097",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-10",
+        "review_scope": "Source-first all-dimension HIM 1.1.0 and independent FC-086/087 reconciliation.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_research": true,
+          "harm_impact_review": true,
+          "taxonomy_review": true,
+          "external_requirement_review": true
+        },
+        "known_limitations": [
+          "Meta stated that sharing was opt-in and the evidence does not show that ordinary unshared chats were automatically public.",
+          "The number of users who misunderstood the publication state is not established.",
+          "VIGIL does not infer that every public Discover post was inadvertent."
+        ],
+        "review_outcome": "S3 privacy exposure retained for actual sensitive public posts. Affirmative sharing and reported confusion are distinguished; no worldwide audience or inferred relationship rupture is scored."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-04-EXTERNAL-ALIGNMENT-000097",
+      "review_id": "VIGIL-REVIEW-2026-10-10-COMBINED-TRANCHE-04-000097",
       "reviewer_type": "AI analytical reviewer",
       "reviewer_platform": "OpenAI ChatGPT Work",
       "reviewer_model": "GPT-6",
-      "review_date": "2026-10-04",
-      "review_scope": "Independent occurrence relevance and alignment review of external requirements; normative force remains source metadata.",
+      "review_date": "2026-10-10",
+      "review_scope": "Source-first all-dimension HIM 1.1.0 and independent FC-086/087 reconciliation.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "external_requirement_review": true,
-        "taxonomy_review": false,
-        "harm_impact_review": false,
-        "web_research": false
+        "web_research": true,
+        "harm_impact_review": true,
+        "taxonomy_review": true,
+        "external_requirement_review": true
       },
       "known_limitations": [
-        "Assessment uses preserved occurrence evidence and canonical requirement propositions; internal implementation evidence remains unavailable where stated.",
-        "This review is AI-authored, not human verification or certification."
+        "Meta stated that sharing was opt-in and the evidence does not show that ordinary unshared chats were automatically public.",
+        "The number of users who misunderstood the publication state is not established.",
+        "VIGIL does not infer that every public Discover post was inadvertent."
       ],
-      "review_outcome": "Reviewed 10 recovered or independently identified requirements; retained 1 relevant independent assessments. Prior values and exclusions remain in the dated audit."
+      "review_outcome": "S3 privacy exposure retained for actual sensitive public posts. Affirmative sharing and reported confusion are distinguished; no worldwide audience or inferred relationship rupture is scored."
     }
   },
   "harm_impact_assessment": {
     "methodology_id": "VIGIL-HIM",
-    "methodology_version": "1.0.1",
-    "derivation_rule": "highest-supported-materialised-harm",
-    "assessed_on": "2026-09-20",
+    "methodology_version": "1.1.0",
+    "derivation_rule": "highest-supported-harm-on-exclusive-incident-assessment-pathway",
+    "assessed_on": "2026-10-10",
     "overall_severity": "S3",
     "controlling_dimensions": [
       "privacy-confidentiality"
     ],
-    "coverage_note": "All eleven dimensions were re-reviewed. The preserved and newly added evidence supports the assessed dimensions; other dimensions remain unreported unless specifically assessed and do not lower or raise the derived result. Context-only sources were not used to manufacture assessed harm.",
+    "coverage_note": "S3 privacy exposure retained for actual sensitive public posts. Affirmative sharing and reported confusion are distinguished; no worldwide audience or inferred relationship rupture is scored.",
     "dimensions": [
       {
         "dimension_id": "physical-health-safety",
@@ -571,16 +742,16 @@
       {
         "dimension_id": "privacy-confidentiality",
         "assessment_status": "assessed",
+        "assessment_basis": "The preserved sources establish the bounded consequence described in the Incident summary: Meta's standalone AI app included a Discover feed through which users could publish chatbot conversations. Reporting found sensitive medical, legal, relationship, audio and identifying information publicly visible, while some users appeared not to understand that their shared conversations would be public. Meta maintained that publishing required an affirmative share action. Unreported downstream consequences were not inferred. Threshold applied: Meaningful bounded exposure, access or misuse of personal, credential or confidential information that is substantially containable.",
+        "evidence_confidence": "medium",
         "severity": "S3",
-        "threshold_id": "VIGIL-HIM-1.0.1-PRV-S3",
+        "threshold_id": "VIGIL-HIM-1.1.0-PRV-S3",
         "observed_values": [
           {
             "metric": "published quantitative information",
             "qualitative_value": "AIID aggregates three reports; reporting describes multiple sensitive public posts but does not establish a reliable total count of inadvertent disclosures."
           }
         ],
-        "assessment_basis": "The preserved sources establish the bounded consequence described in the Incident summary: Meta's standalone AI app included a Discover feed through which users could publish chatbot conversations. Reporting found sensitive medical, legal, relationship, audio and identifying information publicly visible, while some users appeared not to understand that their shared conversations would be public. Meta maintained that publishing required an affirmative share action. Unreported downstream consequences were not inferred. Threshold applied: Meaningful bounded exposure, access or misuse of personal, credential or confidential information that is substantially containable.",
-        "evidence_confidence": "medium",
         "evidence_refs": [
           "source_records[0]",
           "source_records[2]"
@@ -621,8 +792,15 @@
         "assessment_status": "unreported",
         "assessment_basis": "The preserved Incident evidence does not report a bandable materialised environmental impact; absence of reporting is not evidence of no harm.",
         "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "relational-integrity-autonomy",
+        "assessment_status": "unreported",
+        "assessment_basis": "Intimate query topics do not establish that the assistant adopted special relational priority or authority. The sources do not report a separate realised impairment of relational choice or human support. Absence of reporting is not S1.",
+        "evidence_confidence": "not-assessed"
       }
-    ]
+    ],
+    "assessment_pathway": "specific_consequence"
   },
   "related_incidents": [],
   "external_requirement_assessments": [

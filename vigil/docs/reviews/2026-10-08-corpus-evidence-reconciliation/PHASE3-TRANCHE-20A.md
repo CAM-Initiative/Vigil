@@ -1,0 +1,23 @@
+# Phase3 tranche20A — post-baseline acceptance INC-189–191
+
+10 October2026; exact baseline `6b1ddc3e18df28c10ddaa79c78d26ced4d60d526`. Original intake review was inspected; it was not automatically accepted from recency/schema success. Individual repair manifests freeze complete baseline sources, episodes, classifications and eleven-dimensional HIM. No external requirements were imported or inferred.
+
+| Incident | Old episodes | Reviewed episodes | EXTREQ rows |
+| --- | ---: | ---: | ---: |
+| INC-189 | 6 | 11 | 0 |
+| INC-190 | 5 | 18 | 0 |
+| INC-191 | 4 | 16 | 0 |
+
+PixelLeak: full originating report and investigator interview freshly read. Separate CLI limitation, manufacturer billing exposure, gitshot tool route, financial-service images/recordings, payment-company repositories, vendor skill reuse and uploads, laboratory reproduction, September9 notification and September29 publication. Aggregate13,000-image/300+organisation/900+repository census is contextual, not extra victim events or one global agent run. Interview343 organisations and93% personal-account hosting remain source-qualified. Original repositories and raw screenshot census not inspected. Provider marketing claim of protection and recommendations do not establish removals or control efficacy. Scope/pathway mappings retained; proposed FC-084 remains noncanonical and unresolved. S3 confidentiality exposure retained provisionally, not financial loss or proven downstream misuse.
+
+Canadian/US attempts: full originating target/method sections and Canadian official statement read. Direct archive links404. Downloadable v3 evidence bundle recovered through HTTPS; target capture/source CSVs, response text and benchmark excerpt inspected without executing requests. Canadian metadata899 captures and13 individually timestamped tests permit request ordering. SQL-shaped and encoded-script probes remain distinct from integer/non-numeric/format/debug tests; unusual inputs are not all mechanically labelled exploits. Response excerpts and investigator interpretation are qualified; no particular activated blocking mechanism is inferred. September28 private disclosure,29 government statement and30 public publication corrected/separated. Provider remains unauthenticated.
+
+US bundle contains219,923 captures spanning late16JuneUTC and17June, distinct from independently authenticated origin requests. Nine separate parameter variants precede the final injection in a37-second sequence. Error/loading, null-field and normal public-statistic excerpts do not prove compromise or its absence globally. Benchmark resemblance and oai markers do not authenticate private task or provider. September25 private disclosure, indirect agency no-service-impact position and30September publication separated; underlying journalism fresh retrieval failed. Canadian/US SU retained: no supported materialised harm or positive whole-event S1. Both mapped pathway roles/confidence retained; no unseen runtime control inferred.
+
+Evidence limitation: supplied response .txt SHA256 values differ from source_sha256 metadata; hash semantics are undocumented and may refer to underlying original source rather than extracted text. No cryptographic authentication is claimed, no source is silently upgraded to independent forensic proof, and no invalidity is inferred from this mismatch. Bundle is investigator-supplied evidence with explicit limits. Other-country/agency folders are outside these bounded occurrences.
+
+Exact-baseline guards, full canonical/public/provenance/component/authorship, episode/external and taxonomy validators, pipeline/provenance scripts and82 selected tests passed. All three generated outputs rebuild byte-identically. Canonical Case File occurrence/classification/HIM and generated metadata inspected; website renderer not run. Historical179/179 remains;189–191 bounded acceptance complete, concurrent192 acceptance and final183-record integrity pass pending. No retired matrix or semantic validator change. AI-authored evidence review is not human certification.
+
+Validation correction: the initial selected suite flagged an internal taxonomy identifier in189 public factual prose. It was removed without altering occurrence evidence or classification; the selected82 tests were rerun. Initial local candidate was not published; final validation results refer to the corrected content.
+
+Concurrent-work reconciliation: candidate re-applied to remote8511c75 after separate INC-192/HIM proposal corrections. All concurrent source, SU/success and unadopted-methodology changes retained;189–191 exact record baselines unchanged. Rebuilt all indexes on combined183-record corpus.

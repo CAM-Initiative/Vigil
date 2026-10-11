@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Compromised Mistral SDK package executed credential-harvesting payload on import",
     "created": "2026-09-08",
-    "updated": "2026-10-04",
-    "version": "0.1.16"
+    "updated": "2026-10-09",
+    "version": "0.1.17"
   },
   "incident_identity": {
     "historical_event_name": "Mini Shai-Hulud / TanStack compromise affecting Mistral SDK releases",
@@ -18,9 +18,9 @@
     "date_precision": "date-range",
     "date_basis": "Mistral states compromised npm packages were uploaded on 11 May 2026 and the compromised PyPI release on 12 May 2026; affected releases were removed within hours."
   },
-  "summary": "Mistral reported that the Mini Shai-Hulud supply-chain attack on TanStack resulted in compromised Mistral npm and PyPI SDK versions being published. The compromised PyPI package `mistralai==2.4.6` executed malicious code on import, downloading a background payload that harvested credentials from common locations. Mistral reported no impact to its global infrastructure and removed the affected releases.",
+  "summary": "Mistral reported that the Mini Shai-Hulud supply-chain attack on TanStack resulted in compromised Mistral npm and PyPI SDK versions being published. The compromised PyPI package `mistralai==2.4.6` executed malicious code on import, downloading a background payload that harvested credentials from common locations. Mistral reported no impact to its global infrastructure and removed the affected releases. Its updated advisory says the compromised npm releases referenced a missing file, preventing their malicious path from running. The working PyPI payload was Linux-specific. Mistral later marked mitigation and closed its investigation.",
   "vigil_assessment": {
-    "factual_basis": "Mistral's security advisory identifies affected npm and PyPI versions, publication windows and indicators of compromise. It states that the compromised PyPI release executed a malicious script on Linux at import time and launched a detached process designed to harvest credentials. Aikido Security separately reports that its malware team detected compromised npm package versions including @mistralai releases in the wider campaign. Its account documents external post-publication detection, not the exact Mistral internal monitoring control or the causal route to removal.",
+    "factual_basis": "Mistral's security advisory identifies affected npm and PyPI versions, publication windows and indicators of compromise. It states that the compromised PyPI release executed a malicious script on Linux at import time and launched a detached process designed to harvest credentials. Aikido Security separately reports that its malware team detected compromised npm package versions including @mistralai releases in the wider campaign. Its account documents external post-publication detection, not the exact Mistral internal monitoring control or the causal route to removal. The updated advisory distinguishes nonfunctional npm payload paths from the working Linux PyPI import path. Investigation closure on 14 May does not prove downstream customer cleanup or absence of credential exposure.",
     "governance_interpretation": "Trusted package-distribution channels carried malicious code into an AI software development kit. The governance problem is therefore not a model output but the integrity of the software supply chain through which developers receive AI tooling, including package provenance, release controls and the authority of third-party maintainers. Aikido’s external detection and Mistral’s removal show a distinct post-publication response stage. The available accounts do not establish that a specific Mistral pre-publication control was required and failed, or that the external monitoring was the operative control that caused removal. Package identity substitution and the link between external detection and provider removal remain ambiguous. Import-time malware is distinct from GAI output; removal does not prove a prepublication control duty or global compromise. The AI software-distribution security outcome is Not aligned. Withdrawal of the affected releases is Aligned with the repair requirement. Monitoring and security-review processes remain Boundary where their operative evidence is not available.",
     "significance_to_cam": "AI-system governance includes the developer infrastructure surrounding a model. Compromised package provenance can expose credentials and downstream systems before the model is ever invoked, making third-party build dependencies, release integrity and incident response part of the assurance boundary.",
     "assessment_boundaries": [
@@ -31,14 +31,22 @@
     "source_clause_analysis": {
       "clauses": [
         {
-          "source_paraphrase": "The compromised PyPI release executed malicious code on import, launched a detached background process and attempted to harvest credentials from common local locations before Mistral removed the affected release.",
-          "recovered_invariant_interpretation": "The import-time payload and credential-harvesting behaviour are material occurrence components distinct from the separate questions of package identity attribution and how protective detection or removal controls became operative.",
+          "episode_id": "E001",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "source_paraphrase": "Mistral says the TanStack worm compromised a developer device and led to malicious SDK releases. Its investigation found no impact to global infrastructure.",
+          "recovered_invariant_interpretation": "The developer-device pathway must remain distinct from global compromise.",
           "taxonomy_relationships": [],
           "adjudication_status": "resolved-no-mapping"
         },
         {
-          "source_paraphrase": "A trusted Mistral SDK package identity carried attacker-supplied executable content, materially illuminating the boundary between package/release provenance substitution and ordinary false authorship attribution.",
-          "recovered_invariant_interpretation": "Authorship and Source Attribution Integrity must remain valid across the material pathway described by the preserved occurrence evidence.",
+          "episode_id": "E002",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "source_paraphrase": "Compromised npm SDK versions were published on 11 May and removed early on 12 May. PyPI mistralai 2.4.6 was published and removed on 12 May. Trusted package identities carried attacker content.",
+          "recovered_invariant_interpretation": "Package provenance substitution and payload execution are different questions.",
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000010",
@@ -50,8 +58,33 @@
           "adjudication_status": "mapped"
         },
         {
-          "source_paraphrase": "Aikido reported detection of compromised npm package versions including Mistral SDK releases; Mistral reported removing affected releases within hours.",
-          "recovered_invariant_interpretation": "When a protective control validly becomes operative, its effect must be timely, proportionate, and sufficient for the hazard and protection context it governs. Detection, warning, labelling, refusal language, escalation signalling, or other nominal activation is not by itself sufficient where the required protective effect is not achieved and the governed harmful state is delivered, continues, or remains inadequately contained. Required protective sufficiency may increase where evidenced developmental vulnerability, capacity limitation, temporary or situational consent impairment, acute distress, cognitive asymmetry, or comparable protection conditions materially affect the risk, but disability or neurodivergence alone must not be treated as incapacity.",
+          "episode_id": "E003",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "source_paraphrase": "The PyPI version ran malicious code on Linux import and launched a detached credential-harvesting process.",
+          "recovered_invariant_interpretation": "Reported payload behaviour does not quantify actual stolen credentials.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping"
+        },
+        {
+          "episode_id": "E004",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "source_paraphrase": "The updated advisory says the compromised npm releases referenced a missing file, so their malicious path could not run. It still instructed users to remove them.",
+          "recovered_invariant_interpretation": "A compromised release is distinct from a working payload.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping"
+        },
+        {
+          "episode_id": "E005",
+          "source_record_refs": [
+            "source_records[0]",
+            "source_records[2]"
+          ],
+          "source_paraphrase": "Aikido separately detected malicious npm versions. Mistral removed its affected releases within hours, but the public accounts do not link one operative Mistral control to detection and withdrawal.",
+          "recovered_invariant_interpretation": "External detection and provider removal must retain their separate causal limits.",
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000083",
@@ -61,8 +94,19 @@
             }
           ],
           "adjudication_status": "mapped"
+        },
+        {
+          "episode_id": "E006",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "source_paraphrase": "Mistral marked mitigation on 13 May and closed its investigation on 14 May. It advised affected users to clean systems, rotate accessible secrets and review cloud logs and retained package copies.",
+          "recovered_invariant_interpretation": "Advised downstream remediation is distinct from confirmed completion at every customer.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping"
         }
-      ]
+      ],
+      "purpose": "Present source-backed material actions and later responses in supported relative order. Separate runs, source attributions and unknown ordering remain explicit."
     }
   },
   "source_records": [
@@ -530,28 +574,53 @@
           "This review is AI-authored, not human verification or certification."
         ],
         "review_outcome": "Reviewed 46 recovered or independently identified requirements; retained 9 relevant independent assessments. Prior values and exclusions remain in the dated audit."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-09-PHASE3-BATCH08-000095",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work — Codex",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-09",
+        "review_scope": "Source-first occurrence, chronology and duplicate review; public narrative and external evidence-reference reconciliation.",
+        "capability_profile": {
+          "web_research": true,
+          "direct_primary_source_review": true,
+          "direct_repository_analysis": true,
+          "taxonomy_review": true,
+          "harm_impact_review": false,
+          "new_external_source_research": true
+        },
+        "known_limitations": [
+          "No customer-level stolen-credential count or complete Mistral internal control chain is public.",
+          "Advisory HTML truncates minute fields in publication/removal timestamps; no precise minute is reconstructed.",
+          "Aikido describes a wider campaign, not a proven identical payload execution in each Mistral package.",
+          "Bounded AI-authored review, not human verification or source-exhaustiveness certification."
+        ],
+        "review_outcome": "Reconciled 3 clauses into 6 episodes; canonical mappings, HIM, independent external decisions and existing gap status retained."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-04-EXTERNAL-ALIGNMENT-000095",
+      "review_id": "VIGIL-REVIEW-2026-10-09-PHASE3-BATCH08-000095",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT Work",
+      "reviewer_platform": "OpenAI ChatGPT Work — Codex",
       "reviewer_model": "GPT-6",
-      "review_date": "2026-10-04",
-      "review_scope": "Independent occurrence relevance and alignment review of external requirements; normative force remains source metadata.",
+      "review_date": "2026-10-09",
+      "review_scope": "Source-first occurrence, chronology and duplicate review; public narrative and external evidence-reference reconciliation.",
       "capability_profile": {
+        "web_research": true,
+        "direct_primary_source_review": true,
         "direct_repository_analysis": true,
-        "direct_text_analysis": true,
-        "external_requirement_review": true,
-        "taxonomy_review": false,
+        "taxonomy_review": true,
         "harm_impact_review": false,
-        "web_research": false
+        "new_external_source_research": true
       },
       "known_limitations": [
-        "Assessment uses preserved occurrence evidence and canonical requirement propositions; internal implementation evidence remains unavailable where stated.",
-        "This review is AI-authored, not human verification or certification."
+        "No customer-level stolen-credential count or complete Mistral internal control chain is public.",
+        "Advisory HTML truncates minute fields in publication/removal timestamps; no precise minute is reconstructed.",
+        "Aikido describes a wider campaign, not a proven identical payload execution in each Mistral package.",
+        "Bounded AI-authored review, not human verification or source-exhaustiveness certification."
       ],
-      "review_outcome": "Reviewed 46 recovered or independently identified requirements; retained 9 relevant independent assessments. Prior values and exclusions remain in the dated audit."
+      "review_outcome": "Reconciled 3 clauses into 6 episodes; canonical mappings, HIM, independent external decisions and existing gap status retained."
     }
   },
   "harm_impact_assessment": {
@@ -692,7 +761,12 @@
         "VIGIL-FC-000083"
       ],
       "source_clause_indices": [
-        2
+        4,
+        5
+      ],
+      "source_episode_refs": [
+        "E005",
+        "E006"
       ]
     },
     {
@@ -708,7 +782,12 @@
         "VIGIL-FC-000083"
       ],
       "source_clause_indices": [
-        2
+        4,
+        5
+      ],
+      "source_episode_refs": [
+        "E005",
+        "E006"
       ]
     },
     {
@@ -724,7 +803,12 @@
         "VIGIL-FC-000083"
       ],
       "source_clause_indices": [
-        2
+        4,
+        5
+      ],
+      "source_episode_refs": [
+        "E005",
+        "E006"
       ]
     },
     {
@@ -740,7 +824,12 @@
         "VIGIL-FC-000083"
       ],
       "source_clause_indices": [
-        2
+        4,
+        5
+      ],
+      "source_episode_refs": [
+        "E005",
+        "E006"
       ]
     },
     {
@@ -767,7 +856,12 @@
         "VIGIL-FC-000083"
       ],
       "source_clause_indices": [
-        2
+        4,
+        5
+      ],
+      "source_episode_refs": [
+        "E005",
+        "E006"
       ]
     },
     {
@@ -783,7 +877,12 @@
         "VIGIL-FC-000083"
       ],
       "source_clause_indices": [
-        2
+        4,
+        5
+      ],
+      "source_episode_refs": [
+        "E005",
+        "E006"
       ]
     },
     {
@@ -799,7 +898,12 @@
         "VIGIL-FC-000083"
       ],
       "source_clause_indices": [
-        2
+        4,
+        5
+      ],
+      "source_episode_refs": [
+        "E005",
+        "E006"
       ]
     }
   ]

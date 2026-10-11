@@ -18,7 +18,9 @@ class IncidentRuleTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.record = json.loads(
-            (VIGIL / "records" / "incidents" / "VIGIL-INC-000001.json").read_text(encoding="utf-8")
+            # Version-specific tests need the historical eleven-row assessment,
+            # regardless of later substantive changes to the live Incident.
+            (VIGIL / "tests" / "fixtures" / "VIGIL-INC-000001-HIM-1.0.1.json").read_text(encoding="utf-8")
         )
 
     def errors(self, mutate=lambda record: None):
@@ -29,6 +31,11 @@ class IncidentRuleTests(unittest.TestCase):
 
     def test_valid_incident_passes(self):
         self.assertEqual(self.errors(), [])
+        live = json.loads(
+            (VIGIL / "records" / "incidents" / "VIGIL-INC-000001.json").read_text(encoding="utf-8")
+        )
+        errors, _ = VALIDATOR.validate_record(Path(live["id"] + ".json"), live)
+        self.assertEqual(errors, [])
 
     def test_retired_record_type_is_rejected(self):
         self.assertTrue(self.errors(lambda record: record.update(record_type="failure_mode")))
@@ -84,6 +91,256 @@ class IncidentRuleTests(unittest.TestCase):
         record["harm_impact_assessment"].pop("no_materialised_harm_basis")
         errors, _ = VALIDATOR.validate_record(Path(record["id"] + ".json"), record)
         self.assertTrue(any("requires a concrete no_materialised_harm_basis" in error for error in errors), errors)
+
+    def him_110_record(self, generic=False):
+        record = copy.deepcopy(self.record)
+        assessment = record["harm_impact_assessment"]
+        matrix = VALIDATOR.harm_matrix("1.1.0")
+        by_id = {d["dimension_id"]: d for d in matrix["dimensions"]}
+        assessment["methodology_version"] = "1.1.0"
+        assessment["derivation_rule"] = matrix["derivation_rule"]
+        assessment["assessment_pathway"] = "generic_deployed_evaluation" if generic else "specific_consequence"
+        assessment["dimensions"].append({
+            "dimension_id": "relational-integrity-autonomy",
+            "assessment_status": "unreported",
+            "assessment_basis": "No source-supported relational-autonomy consequence was established.",
+            "evidence_confidence": "not-assessed",
+        })
+        for row in assessment["dimensions"]:
+            if row["assessment_status"] == "assessed":
+                row["threshold_id"] = by_id[row["dimension_id"]]["thresholds"][row["severity"]]["threshold_id"]
+        return record
+
+    def test_him_110_inline_quantification_and_twelve_dimensions(self):
+        matrix = VALIDATOR.harm_matrix("1.1.0")
+        self.assertEqual(len(matrix["dimensions"]), 12)
+        self.assertEqual(len({d["dimension_id"] for d in matrix["dimensions"]}), 12)
+        for dimension in matrix["dimensions"]:
+            self.assertEqual(set(dimension["thresholds"]), {"S1", "S2", "S3", "S4", "S5"})
+            for band in dimension["thresholds"].values():
+                self.assertTrue(band["criterion"].strip())
+                self.assertNotIn("threshold_quantitative_guidance", band)
+        psych = next(d for d in matrix["dimensions"] if d["dimension_id"] == "psychological-wellbeing")
+        self.assertIn("baseline", psych["thresholds"]["S4"]["criterion"])
+        self.assertIn("support", psych["thresholds"]["S1"]["criterion"])
+        self.assertIn("referral", psych["thresholds"]["S2"]["criterion"])
+        self.assertIn("reinforcement", psych["thresholds"]["S3"]["criterion"])
+        self.assertIn("contribution", psych["thresholds"]["S5"]["criterion"])
+        self.assertIn("pre-interaction psychological baseline is not required", matrix["adjudication_guidance"]["psychological_attribution"])
+        self.assertNotIn("baseline_course_and_competing_contributors", psych["quantitative_indicators"])
+        self.assertIn("governance", matrix["adjudication_guidance"]["psychological_attribution"])
+
+    def test_him_110_in_place_minimum_cyber_consequence_thresholds(self):
+        matrix = VALIDATOR.harm_matrix("1.1.0")
+        self.assertEqual(matrix["version"], "1.1.0")
+        dimensions = {row["dimension_id"]: row for row in matrix["dimensions"]}
+        privacy = dimensions["privacy-confidentiality"]["thresholds"]["S2"]
+        assets = dimensions["property-asset-damage"]["thresholds"]["S2"]
+        operations = dimensions["service-operational-infrastructure"]["thresholds"]["S2"]
+        self.assertEqual(privacy["threshold_id"], "VIGIL-HIM-1.1.0-PRV-S2")
+        self.assertEqual(assets["threshold_id"], "VIGIL-HIM-1.1.0-PAD-S2")
+        self.assertEqual(operations["threshold_id"], "VIGIL-HIM-1.1.0-SOI-S2")
+        self.assertIn("non-public personal or confidential information", privacy["criterion"])
+        self.assertIn("unverified allegation", privacy["criterion"])
+        self.assertIn("persisted real third-party data", assets["criterion"])
+        self.assertIn("recovery burden are unknown", assets["criterion"])
+        self.assertIn("waitlist position", operations["criterion"])
+        self.assertIn("later restoration or duration", operations["criterion"])
+        self.assertIn("minimum supported band", matrix["adjudication_guidance"]["uncertainty"])
+
+    def test_him_110_minimum_cyber_impact_incidents_and_uncertainty(self):
+        cases = [
+            ("000055", "property-asset-damage", "VIGIL-HIM-1.1.0-PAD-S2"),
+            ("000056", "service-operational-infrastructure", "VIGIL-HIM-1.1.0-SOI-S2"),
+            ("000073", "privacy-confidentiality", "VIGIL-HIM-1.1.0-PRV-S2"),
+        ]
+        for number, dimension, threshold_id in cases:
+            with self.subTest(incident=number):
+                path = VIGIL / "records" / "incidents" / f"VIGIL-INC-{number}.json"
+                record = json.loads(path.read_text(encoding="utf-8"))
+                assessment = record["harm_impact_assessment"]
+                self.assertEqual(assessment["methodology_version"], "1.1.0")
+                self.assertEqual(assessment["overall_severity"], "S2")
+                self.assertEqual(assessment["controlling_dimensions"], [dimension])
+                self.assertNotIn("assessment_gap", assessment)
+                self.assertIn("unresolved", assessment["coverage_note"])
+                self.assertTrue(assessment["aggregate_harm_screening"]["bounded_materialised_consequence_case"])
+                scored = next(row for row in assessment["dimensions"] if row["dimension_id"] == dimension)
+                self.assertEqual(scored["assessment_status"], "assessed")
+                self.assertEqual(scored["threshold_id"], threshold_id)
+                self.assertEqual(scored["severity"], "S2")
+                self.assertGreater(len(scored["evidence_refs"]), 0)
+                errors, _ = VALIDATOR.validate_record(path, record)
+                self.assertEqual(errors, [])
+
+    def test_him_110_unverified_notification_not_promoted_to_confirmed_breach(self):
+        path = VIGIL / "records" / "incidents" / "VIGIL-INC-000139.json"
+        record = json.loads(path.read_text(encoding="utf-8"))
+        assessment = record["harm_impact_assessment"]
+        self.assertEqual(assessment["overall_severity"], "SU")
+        self.assertEqual(
+            next(row["assessment_status"] for row in assessment["dimensions"]
+                 if row["dimension_id"] == "privacy-confidentiality"),
+            "insufficient-evidence",
+        )
+        errors, _ = VALIDATOR.validate_record(path, record)
+        self.assertEqual(errors, [])
+
+    def test_him_110_specific_harm_preserves_historical_record(self):
+        record = self.him_110_record()
+        errors = []
+        VALIDATOR.validate_harm_impact(Path(record["id"] + ".json"), record, errors)
+        self.assertEqual(errors, [])
+        # The original eleven-row 1.0.1 record remains unchanged and valid.
+        self.assertEqual(self.errors(), [])
+
+    def test_him_110_pathway_and_dimension_required(self):
+        record = self.him_110_record()
+        assessment = record["harm_impact_assessment"]
+        assessment.pop("assessment_pathway")
+        errors = []
+        VALIDATOR.validate_harm_impact(Path("synthetic.json"), record, errors)
+        self.assertTrue(any("requires assessment_pathway" in error for error in errors), errors)
+        assessment["assessment_pathway"] = "specific_consequence"
+        assessment["dimensions"] = assessment["dimensions"][:-1]
+        errors = []
+        VALIDATOR.validate_harm_impact(Path("synthetic.json"), record, errors)
+        self.assertTrue(any("every canonical dimension exactly once" in error for error in errors), errors)
+
+    def test_him_110_generic_population_gate_and_provenance(self):
+        record = self.him_110_record(generic=True)
+        assessment = record["harm_impact_assessment"]
+        for row in assessment["dimensions"]:
+            row["assessment_status"] = "unreported"
+            row["assessment_basis"] = "Generic cohort case does not establish a separate domain outcome."
+            row["evidence_confidence"] = "not-assessed"
+            for field in ("severity", "threshold_id", "observed_values", "evidence_refs"):
+                row.pop(field, None)
+        psych = next(row for row in assessment["dimensions"] if row["dimension_id"] == "psychological-wellbeing")
+        psych.update({
+            "assessment_status": "assessed",
+            "severity": "S2",
+            "threshold_id": "VIGIL-HIM-1.1.0-PSY-S2",
+            "assessment_basis": "Synthetic positive test: reproduced live safety-relevant failure with bounded modelled minor consequence.",
+            "evidence_confidence": "medium",
+            "observed_values": [],
+            "evidence_refs": ["source_records[0]"],
+            "aggregate_harm_evidence": {
+                "tested_deployed_model_and_version": "Synthetic deployed model v1",
+                "tested_product_surface": "Synthetic production chat feature",
+                "evaluation_and_deployment_window": "2026-10-10",
+                "demonstrated_failure_and_consequence_pathway": "Synthetic reproducible unsafe response and grounded minor harm model",
+                "eligible_denominator_count": 100000,
+                "eligible_denominator_unit": "relevant active users",
+                "denominator_time_window": "2026-10-01 to 2026-10-10",
+                "denominator_source_refs": ["source_records[0]"],
+                "limitations_and_uncertainty": "Synthetic fixture, not a real published impact estimate",
+            },
+        })
+        assessment["overall_severity"] = "S2"
+        assessment["controlling_dimensions"] = ["psychological-wellbeing"]
+        assessment.pop("assessment_gap", None)
+        assessment.pop("no_materialised_harm_basis", None)
+        errors = []
+        VALIDATOR.validate_harm_impact(Path("synthetic.json"), record, errors)
+        self.assertEqual(errors, [])
+        psych["aggregate_harm_evidence"]["eligible_denominator_count"] = 200
+        errors = []
+        VALIDATOR.validate_harm_impact(Path("synthetic.json"), record, errors)
+        self.assertTrue(any("outside S2 gate" in error for error in errors), errors)
+        psych["aggregate_harm_evidence"]["eligible_denominator_count"] = 100000
+        psych["aggregate_harm_evidence"]["denominator_source_refs"] = ["source_records[999999]"]
+        errors = []
+        VALIDATOR.validate_harm_impact(Path("synthetic.json"), record, errors)
+        self.assertTrue(any("invalid source_records[N]" in error for error in errors), errors)
+        psych["aggregate_harm_evidence"]["denominator_source_refs"] = ["source_records[0]"]
+        assessment["assessment_pathway"] = "specific_consequence"
+        errors = []
+        VALIDATOR.validate_harm_impact(Path("synthetic.json"), record, errors)
+        self.assertTrue(any("permitted only for assessed 1.1.0 Aggregate Harm" in error for error in errors), errors)
+
+    def test_him_110_aggregate_screen_routes_user_observed_deployed_mechanism(self):
+        # Regression for INC-012-style evidence: a user-posted screenshot is not
+        # evidence of a specifically harmed person and cannot defeat screening.
+        record = self.him_110_record()
+        assessment = record["harm_impact_assessment"]
+        for row in assessment["dimensions"]:
+            row.update(
+                assessment_status="unreported",
+                assessment_basis="No independently evidenced downstream consequence or modelled cohort.",
+                evidence_confidence="not-assessed",
+            )
+            for field in ("severity", "threshold_id", "observed_values", "evidence_refs", "aggregate_harm_evidence"):
+                row.pop(field, None)
+        assessment["overall_severity"] = "SU"
+        assessment["controlling_dimensions"] = []
+        assessment.pop("no_materialised_harm_basis", None)
+        assessment["assessment_gap"] = "The screenshot establishes an observed deployed mechanism, not tested prevalence or eligible cohort."
+        assessment["aggregate_harm_screening"] = {
+            "deployed_configuration": True,
+            "potentially_generalisable_mechanism": True,
+            "bounded_materialised_consequence_case": False,
+            "candidate_dimensions": ["relational-integrity-autonomy"],
+            "source_record_refs": ["source_records[0]"],
+            "rationale": "One live-user observation supports a potentially generalisable relational mechanism; actual harmed user and repeatability are not established.",
+        }
+
+        # Incorrect individual-harm routing is rejected even with SU.
+        errors = []
+        VALIDATOR.validate_harm_impact(Path("INC012-like.json"), record, errors)
+        self.assertTrue(any("assessment_pathway must be generic_deployed_evaluation" in e for e in errors), errors)
+
+        # Correct Aggregate Harm routing can retain SU without inventing victims.
+        assessment["assessment_pathway"] = "generic_deployed_evaluation"
+        errors = []
+        VALIDATOR.validate_harm_impact(Path("INC012-like.json"), record, errors)
+        self.assertEqual(errors, [])
+
+        # Evidence/source and dimensional routing conditions cannot be bypassed.
+        screen = assessment["aggregate_harm_screening"]
+        screen["candidate_dimensions"] = []
+        errors = []
+        VALIDATOR.validate_harm_impact(Path("INC012-like.json"), record, errors)
+        self.assertTrue(any("must identify the potentially generalisable collective domain" in e for e in errors), errors)
+        screen["candidate_dimensions"] = ["relational-integrity-autonomy"]
+        screen["source_record_refs"] = ["source_records[999999]"]
+        errors = []
+        VALIDATOR.validate_harm_impact(Path("INC012-like.json"), record, errors)
+        self.assertTrue(any("invalid source_records[N]" in e for e in errors), errors)
+
+        # Actual materialised harm to a bounded person must instead be specific.
+        screen["source_record_refs"] = ["source_records[0]"]
+        screen["bounded_materialised_consequence_case"] = True
+        errors = []
+        VALIDATOR.validate_harm_impact(Path("specific-injury-like.json"), record, errors)
+        self.assertTrue(any("assessment_pathway must be specific_consequence" in e for e in errors), errors)
+        assessment["assessment_pathway"] = "specific_consequence"
+        errors = []
+        VALIDATOR.validate_harm_impact(Path("specific-injury-like.json"), record, errors)
+        self.assertEqual(errors, [])
+
+        # Production-unverified findings do not inherit aggregate-scale routing.
+        screen["bounded_materialised_consequence_case"] = False
+        screen["deployed_configuration"] = False
+        errors = []
+        VALIDATOR.validate_harm_impact(Path("not-deployed.json"), record, errors)
+        self.assertEqual(errors, [])
+
+    def test_him_110_screening_is_additive_to_existing_corpus(self):
+        record = self.him_110_record()
+        errors = []
+        VALIDATOR.validate_harm_impact(Path("legacy-unscreened.json"), record, errors)
+        self.assertEqual(errors, [])
+        record["harm_impact_assessment"]["aggregate_harm_screening"] = None
+        errors = []
+        VALIDATOR.validate_harm_impact(Path("invalid-screen.json"), record, errors)
+        self.assertTrue(any("aggregate_harm_screening must be an object" in e for e in errors), errors)
+
+    def test_him_110_screening_rule_is_methodology_driven(self):
+        matrix = VALIDATOR.harm_matrix("1.1.0")
+        self.assertIn("user", matrix["assessment_pathway_selection"]["generic_incident"])
+        self.assertIn("screening_flow", matrix["assessment_pathway_selection"])
+        self.assertIn("relational-integrity-autonomy", matrix["aggregate_harm_scope"]["potentially_applicable_dimensions"])
 
     def test_financial_usd_boundaries(self):
         cases = {
@@ -163,6 +420,21 @@ class IncidentRuleTests(unittest.TestCase):
             VALIDATOR.validate_incident_taxonomy(Path("fixture.json"), record, errors)
         return errors
 
+    def mapped_clause_fixture(self):
+        record = self.taxonomy_fixture()
+        record["taxonomy_classification"]["adjudication_coverage"] = {"status": "complete"}
+        record["vigil_assessment"] = {"source_clause_analysis": {"clauses": [{
+            "adjudication_status": "mapped",
+            "taxonomy_relationships": [{
+                "class_id": "VIGIL-FC-000001",
+                "relationship": "successful-invariant",
+                "canonical_taxonomy_mapping": True,
+                "rationale": "The protective gate rejected the test request.",
+            }],
+        }]}}
+        self.assertEqual(self.taxonomy_errors(record), [])
+        return record
+
     def test_successful_occurrence_role_does_not_require_exemplar_admission(self):
         record = self.taxonomy_fixture()
         self.assertEqual(self.taxonomy_errors(record), [])
@@ -170,20 +442,16 @@ class IncidentRuleTests(unittest.TestCase):
         self.assertTrue(any("classification_role" in error for error in self.taxonomy_errors(record)))
 
     def test_adjudication_coverage_is_recomputed_from_clause_dispositions(self):
-        record = json.loads(
-            (VIGIL / "records" / "incidents" / "VIGIL-INC-000126.json").read_text(encoding="utf-8")
-        )
+        record = self.mapped_clause_fixture()
         record["taxonomy_classification"]["adjudication_coverage"]["status"] = "partial"
-        errors, _ = VALIDATOR.validate_record(Path(record["id"] + ".json"), record)
+        errors = self.taxonomy_errors(record)
         self.assertTrue(any("clause dispositions require 'complete'" in error for error in errors), errors)
 
     def test_mapped_clause_requires_canonical_relationship(self):
-        record = json.loads(
-            (VIGIL / "records" / "incidents" / "VIGIL-INC-000126.json").read_text(encoding="utf-8")
-        )
+        record = self.mapped_clause_fixture()
         relationship = record["vigil_assessment"]["source_clause_analysis"]["clauses"][0]["taxonomy_relationships"][0]
         relationship["canonical_taxonomy_mapping"] = False
-        errors, _ = VALIDATOR.validate_record(Path(record["id"] + ".json"), record)
+        errors = self.taxonomy_errors(record)
         self.assertTrue(any("mapped requires a canonical taxonomy relationship" in error for error in errors), errors)
 
     def test_unresolved_clause_requires_candidate_relationship(self):
@@ -200,22 +468,18 @@ class IncidentRuleTests(unittest.TestCase):
         self.assertEqual(self.taxonomy_errors(record), [])
 
     def test_resolved_without_mapping_rejects_canonical_relationship(self):
-        record = json.loads(
-            (VIGIL / "records" / "incidents" / "VIGIL-INC-000126.json").read_text(encoding="utf-8")
-        )
+        record = self.mapped_clause_fixture()
         clause = record["vigil_assessment"]["source_clause_analysis"]["clauses"][0]
         clause["adjudication_status"] = "resolved-no-mapping"
-        errors, _ = VALIDATOR.validate_record(Path(record["id"] + ".json"), record)
+        errors = self.taxonomy_errors(record)
         self.assertTrue(any("resolved-no-mapping must not contain a canonical mapping" in error for error in errors), errors)
 
     def test_taxonomy_gap_rejects_canonical_relationship(self):
-        record = json.loads(
-            (VIGIL / "records" / "incidents" / "VIGIL-INC-000126.json").read_text(encoding="utf-8")
-        )
+        record = self.mapped_clause_fixture()
         clause = record["vigil_assessment"]["source_clause_analysis"]["clauses"][0]
         clause["adjudication_status"] = "taxonomy-gap"
         record["taxonomy_classification"]["adjudication_coverage"]["status"] = "partial"
-        errors, _ = VALIDATOR.validate_record(Path(record["id"] + ".json"), record)
+        errors = self.taxonomy_errors(record)
         self.assertTrue(any("taxonomy-gap must not contain a canonical mapping" in error for error in errors), errors)
 
     def test_retired_legacy_structures_are_rejected(self):
@@ -317,6 +581,48 @@ class IncidentRuleTests(unittest.TestCase):
         self.assertEqual(errors, [])
         self.assertEqual(record["harm_impact_assessment"], harm_before)
         self.assertEqual(record["taxonomy_classification"], taxonomy_before)
+    def test_him_110_relational_harm_includes_independent_human_relationship_injury(self):
+        matrix = json.loads(
+            (VIGIL / "methodologies" / "VIGIL.HarmImpactMatrix.v1.1.0.json").read_text(encoding="utf-8")
+        )
+        relational = next(
+            item for item in matrix["dimensions"]
+            if item["dimension_id"] == "relational-integrity-autonomy"
+        )
+        self.assertIn("two independent pathways", relational["interpretive_note"].lower())
+        self.assertIn("caregiving", relational["thresholds"]["S3"]["criterion"].lower())
+        self.assertIn("valued partner", relational["thresholds"]["S4"]["criterion"].lower())
+        self.assertIn("affected people", relational["thresholds"]["S4"]["criterion"].lower())
+        self.assertIn("no psychiatric injury or incapacity", relational["thresholds"]["S4"]["criterion"].lower())
+        self.assertEqual(
+            relational["thresholds"]["S4"]["threshold_id"],
+            "VIGIL-HIM-1.1.0-REL-S4",
+        )
+
+    def test_him_110_relational_s5_is_catastrophic_not_automatic_divorce(self):
+        matrix = json.loads(
+            (VIGIL / "methodologies" / "VIGIL.HarmImpactMatrix.v1.1.0.json").read_text(encoding="utf-8")
+        )
+        relational = next(
+            item for item in matrix["dimensions"]
+            if item["dimension_id"] == "relational-integrity-autonomy"
+        )
+        s5 = relational["thresholds"]["S5"]["criterion"].lower()
+        self.assertIn("catastrophic and effectively irreversible", s5)
+        self.assertIn("essential care", s5)
+        self.assertIn("material ai contribution", s5)
+        self.assertIn("divorce, separation, estrangement or allegations alone", s5)
+        self.assertIn("formal legal finality is neither required nor sufficient", s5)
+        self.assertIn("fiduciary duty", relational["interpretive_note"].lower())
+        self.assertIn("vulnerability is context-specific", relational["interpretive_note"].lower())
+        self.assertIn("vulnerability by itself does not establish", relational["interpretive_note"].lower())
+        self.assertIn("vulnerability warrants proportionate safeguards", matrix["adjudication_guidance"]["relational_integrity"].lower())
+        self.assertIn("not a scored harm", matrix["dimension_quantification_policy"]["relational_vulnerability_boundary"].lower())
+        self.assertIn(
+            "relationship",
+            matrix["adjudication_guidance"]["relational_integrity"].lower(),
+        )
+
     def test_harm_matrix_preserves_digital_asset_effective_destruction_note(self):
         matrix = json.loads(
             (VIGIL / "methodologies" / "VIGIL.HarmImpactMatrix.v1.0.1.json").read_text(encoding="utf-8")
@@ -332,7 +638,7 @@ class IncidentRuleTests(unittest.TestCase):
 
     def test_inc003_s5_asset_rebuild_regression(self):
         record = json.loads(
-            (VIGIL / "records" / "incidents" / "VIGIL-INC-000003.json").read_text(encoding="utf-8")
+            (VIGIL / "tests" / "fixtures" / "VIGIL-INC-000003-HIM-1.0.1.json").read_text(encoding="utf-8")
         )
         assessment = record["harm_impact_assessment"]
         self.assertEqual(assessment["overall_severity"], "S5")

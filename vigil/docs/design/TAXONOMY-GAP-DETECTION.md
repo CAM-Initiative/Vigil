@@ -1,6 +1,6 @@
 # Taxonomy Gap Detection — design proposal
 
-Status: design proposal only. This document does not amend the canonical Alignment Taxonomy, `vigil/VIGIL.Schema.json`, validators, adjudication matrix semantics, or canonical Incident classifications.
+Status: design proposal only. This document does not amend the canonical Alignment Taxonomy, `vigil/VIGIL.Schema.json`, validators, clause-level adjudication semantics, or canonical Incident classifications.
 
 ## Purpose
 
@@ -167,7 +167,7 @@ A single Incident may justify a new-class proposal where:
 However, before admission of a new class, the reviewer should search the corpus for:
 
 - previously unclassified Incidents;
-- `unresolved` matrix cells;
+- `unresolved` clause-level adjudication statuses;
 - ambiguous-boundary mappings;
 - repeated governance-interpretation language;
 - source-clause analysis with similar unreconciled propositions; and

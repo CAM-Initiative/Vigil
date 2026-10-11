@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "AI-hallucinated references entered Australian parliamentary inquiry submissions",
     "created": "2026-09-04",
-    "updated": "2026-10-04",
-    "version": "0.1.13"
+    "updated": "2026-10-10",
+    "version": "0.1.15"
   },
   "incident_identity": {
     "historical_event_name": "Australian parliamentary inquiry submissions containing apparent AI-hallucinated references",
@@ -33,33 +33,78 @@
     "source_clause_analysis": {
       "source_record_order": 1,
       "source_url": "https://www.theguardian.com/australia-news/2026/sep/01/how-misinformation-ai-hallucinations-infiltrating-australian-parliament",
-      "purpose": "Preserve the source-language or evidentiary propositions that materially explain VIGIL's governance interpretation. Paraphrases are concise, source-bounded and linked to the existing taxonomy adjudication.",
+      "purpose": "Separate evidenced occurrence stages and their distinct governance questions.",
       "clauses": [
         {
-          "source_paraphrase": "At least thirty-nine Australian parliamentary inquiry submissions reportedly contained invented, misattributed or otherwise unreliable references, some of which entered committee reporting pathways.",
+          "source_paraphrase": "Invented or misattributed references reportedly entered parliamentary inquiry submissions.",
           "recovered_invariant_interpretation": "Material submitted as institutional evidence must meet factual, source and citation assurance appropriate to parliamentary policy reliance.",
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000062",
               "relationship": "failure-occurrence",
               "canonical_taxonomy_mapping": true,
-              "rationale": "Invented, incorrect or misattributed references were promoted into formal parliamentary submissions and some committee-reporting pathways below the evidentiary assurance required for institutional policy reliance."
-            }
-          ],
-          "adjudication_status": "mapped"
-        },
-        {
-          "source_paraphrase": "The parliamentary submissions included invented or incorrect references presented as support from real academics and sources.",
-          "recovered_invariant_interpretation": "Source attribution should remain limited to material that can actually be traced to the represented author or source.",
-          "taxonomy_relationships": [
+              "rationale": "Unreliable references entered formal evidence channels below the assurance required for institutional reliance."
+            },
             {
               "class_id": "VIGIL-FC-000010",
               "relationship": "failure-occurrence",
               "canonical_taxonomy_mapping": true,
-              "rationale": "Invented or incorrect references were attributed to real academics and purported sources in formal submissions, materially misrepresenting authorship/source support in a parliamentary evidence context."
+              "rationale": "Invented or incorrect references were represented as support from real academics or purported sources."
             }
           ],
-          "adjudication_status": "mapped"
+          "adjudication_status": "mapped",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "episode_id": "E001"
+        },
+        {
+          "source_paraphrase": "Some affected submissions subsequently entered committee reporting pathways.",
+          "recovered_invariant_interpretation": "Institutional reuse requires assurance adequate to the later reliance context.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000062",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Later committee use extended reliance on affected submissions; the account does not establish that each committee adopted each false reference."
+            }
+          ],
+          "adjudication_status": "mapped",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "episode_id": "E002"
+        },
+        {
+          "source_paraphrase": "AI search systems reportedly surfaced or summarised false references and sometimes cited affected submissions.",
+          "recovered_invariant_interpretation": "Recirculation is distinct from independent verification of the underlying reference.",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "adjudication_status": "resolved-no-mapping",
+          "taxonomy_relationships": [],
+          "episode_id": "E003"
+        },
+        {
+          "source_paraphrase": "The Guardian checked extracted references against academic databases and DOI resolution, then manually reviewed high-unmatched documents.",
+          "recovered_invariant_interpretation": "Later output review remains distinct from the earlier submission assurance.",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "adjudication_status": "resolved-no-mapping",
+          "taxonomy_relationships": [],
+          "episode_id": "E004"
+        },
+        {
+          "source_paraphrase": "Later commentary and indexed video coverage discussed the investigation.",
+          "recovered_invariant_interpretation": "Retelling and commentary do not independently verify each affected document.",
+          "source_record_refs": [
+            "source_records[1]",
+            "source_records[2]"
+          ],
+          "adjudication_status": "resolved-no-mapping",
+          "taxonomy_relationships": [],
+          "episode_id": "E005"
         }
       ]
     }
@@ -81,14 +126,13 @@
       "evidence_status": "independent-reporting",
       "evidence_status_basis": "Guardian Australia describes its own reference-extraction, database-checking and manual-review methodology, names concrete examples, records responses from affected authors and researchers, and reports at least 39 submissions with apparent hallucinated references. AI authorship is not treated as proven for every unmatched reference.",
       "primary_artefact_access": {
-        "access_method": "direct public article review",
-        "access_status": "directly reviewed",
-        "direct_primary_artefact_review": true,
+        "access_method": "Public retrieval and direct text inspection; any retrieval failure specified below",
+        "access_status": "indirectly reviewed",
+        "direct_primary_artefact_review": false,
         "limitations": [
-          "The underlying parliamentary submissions and every referenced academic source were not independently re-audited in this VIGIL intake.",
-          "The report's method is designed to identify likely reference anomalies and is not a universal AI-authorship detector."
+          "Investigation body and stated method directly read. Parliamentary submissions and complete reporter dataset were not independently rechecked."
         ],
-        "reviewing_system": "OpenAI GPT-5.6 Sol"
+        "reviewing_system": "OpenAI ChatGPT — GPT-6"
       },
       "incident_source_order": 1,
       "interpretive_reliance": "Primary source for the reported scale, methodology, examples, committee-citation pathway and submitter responses.",
@@ -115,14 +159,13 @@
       "evidence_status": "independent-reporting",
       "evidence_status_basis": "Current search indexing exposes the News24 title and description as a separate report on continuing AI-hallucinated policy submissions entering Australian parliament, including commentary that human submitters should remain accountable. Direct video-page inspection was unavailable in the review environment, so no stronger factual reliance is asserted.",
       "primary_artefact_access": {
-        "access_method": "search-index metadata and snippet review",
-        "access_status": "not directly accessible in review environment",
+        "access_method": "Public retrieval and direct text inspection; any retrieval failure specified below",
+        "access_status": "indirectly reviewed",
         "direct_primary_artefact_review": false,
         "limitations": [
-          "The video page returned a retrieval error during review.",
-          "Only the indexed title and brief search description are relied upon."
+          "Earlier search-index-only support retained; no fresh video/audio inspection claimed."
         ],
-        "reviewing_system": "OpenAI GPT-5.6 Sol"
+        "reviewing_system": "OpenAI ChatGPT — GPT-6"
       },
       "incident_source_order": 2,
       "interpretive_reliance": "Supporting evidence that the parliamentary-submission issue remained an active public governance concern after the Guardian investigation.",
@@ -145,19 +188,18 @@
       "interpretive_reliance": "The analysis largely rests on already-cited reporting and does not independently verify every submission or consequence.",
       "model_or_algorithm": "not fully established in the source",
       "primary_artefact_access": {
-        "access_method": "Occurrence-focused web search and review of the public source or returned source metadata",
-        "access_status": "directly reviewed",
+        "access_method": "Public retrieval and direct text inspection; any retrieval failure specified below",
+        "access_status": "indirectly reviewed",
         "direct_primary_artefact_review": false,
         "limitations": [
-          "The source does not independently establish every underlying claim or unreported downstream consequence.",
-          "The source does not determine legal liability or final factual truth."
+          "Commentary body directly read; displayed September 2 date corrects August 27 metadata. Its retelling is not independent occurrence verification."
         ],
-        "reviewing_system": "GPT-5"
+        "reviewing_system": "OpenAI ChatGPT — GPT-6"
       },
       "relevance_note": "Adds analytical context without treating commentary as new high-severity proof.",
       "retrieved_date": "2026-09-20",
-      "source_context": "Independent commentary analyses the reported use of hallucinated references in Australian parliamentary submissions.",
-      "source_date": "2026-08-27",
+      "source_context": "Later commentary on the Guardian investigation; not independent verification of the underlying submissions.",
+      "source_date": "2026-09-02",
       "source_platform": "Sustainable Media",
       "source_residence": "external",
       "source_role": "contextual-background",
@@ -219,7 +261,7 @@
     ]
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.6.9",
+    "taxonomy_version": "0.6.11",
     "classification_status": "classified",
     "classification_basis": "Invented, incorrect or misattributed references were promoted into formal parliamentary submissions and some committee-reporting pathways below the evidentiary assurance required for institutional policy reliance. Invented or incorrect references were attributed to real academics and purported sources in formal submissions, materially misrepresenting authorship/source support in a parliamentary evidence context.",
     "primary_classification": {
@@ -239,9 +281,9 @@
       }
     ],
     "classification_review_provenance": {
-      "review_date": "2026-09-30",
-      "reviewer": "OpenAI ChatGPT — GPT-5.6 Sol under human-directed VIGIL governance",
-      "review_status": "clause-level taxonomy adjudication completed"
+      "review_date": "2026-10-10",
+      "reviewer": "OpenAI ChatGPT Work — GPT-6",
+      "review_status": "Evidence-first HIM and relational/protection fidelity review; prior roles accounted for."
     },
     "classification_role": "failure-occurrence",
     "adjudication_coverage": {
@@ -507,40 +549,82 @@
           "This review is AI-authored, not human verification or certification."
         ],
         "review_outcome": "Reviewed 103 recovered or independently identified requirements; retained 22 relevant independent assessments. Prior values and exclusions remain in the dated audit."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-09-PHASE3-TRANCHE16B-000089",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-09",
+        "review_scope": "Source-first occurrence reconstruction, current taxonomy boundary review and semantic external-requirement linkage.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "external_requirement_review": true,
+          "web_research": true,
+          "harm_impact_review": false
+        },
+        "known_limitations": [
+          "AI-authored, not human certified. Private sessions, checking traces and undisclosed decision paths remain unavailable.",
+          "Existing HIM retained; no full eleven-dimension re-adjudication."
+        ],
+        "review_outcome": "Merge duplicate taxonomy views of submission into one episode; distinguish committee reuse, AI recirculation and later investigation. Link Aligned output-review rows only to later checks and earlier reliance rows to submission/reuse. Correct commentary date to September 2; preserve source limits, classifications and external results/bases."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-10-COMBINED-TRANCHE-10-000089",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-10",
+        "review_scope": "Source-first all-dimension HIM 1.1.0 and independent FC-086/087 reconciliation.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_research": true,
+          "harm_impact_review": true,
+          "taxonomy_review": true,
+          "external_requirement_review": true
+        },
+        "known_limitations": [
+          "Original generating sessions and unreported downstream economic, psychological and relational consequences remain unavailable.",
+          "Professional correction does not prove general restoration or permanent standing injury."
+        ],
+        "review_outcome": "All twelve dimensions source-reviewed. The preserved investigation identifies defective evidence entering formal committee reporting, beyond mere submission or a hypothetical future influence. Meaningful but bounded contamination of a public institutional evidence pathway supports retained societal S3. No affected policy decision, sanction or electorate-wide effect is assumed. Counts of submissions are not counts of injured people and do not trigger aggregate calibration. Relational-role and heightened personal-protection boundaries independently tested."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-04-EXTERNAL-ALIGNMENT-000089",
+      "review_id": "VIGIL-REVIEW-2026-10-10-COMBINED-TRANCHE-10-000089",
       "reviewer_type": "AI analytical reviewer",
       "reviewer_platform": "OpenAI ChatGPT Work",
       "reviewer_model": "GPT-6",
-      "review_date": "2026-10-04",
-      "review_scope": "Independent occurrence relevance and alignment review of external requirements; normative force remains source metadata.",
+      "review_date": "2026-10-10",
+      "review_scope": "Source-first all-dimension HIM 1.1.0 and independent FC-086/087 reconciliation.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "external_requirement_review": true,
-        "taxonomy_review": false,
-        "harm_impact_review": false,
-        "web_research": false
+        "web_research": true,
+        "harm_impact_review": true,
+        "taxonomy_review": true,
+        "external_requirement_review": true
       },
       "known_limitations": [
-        "Assessment uses preserved occurrence evidence and canonical requirement propositions; internal implementation evidence remains unavailable where stated.",
-        "This review is AI-authored, not human verification or certification."
+        "Original generating sessions and unreported downstream economic, psychological and relational consequences remain unavailable.",
+        "Professional correction does not prove general restoration or permanent standing injury."
       ],
-      "review_outcome": "Reviewed 103 recovered or independently identified requirements; retained 22 relevant independent assessments. Prior values and exclusions remain in the dated audit."
+      "review_outcome": "All twelve dimensions source-reviewed. The preserved investigation identifies defective evidence entering formal committee reporting, beyond mere submission or a hypothetical future influence. Meaningful but bounded contamination of a public institutional evidence pathway supports retained societal S3. No affected policy decision, sanction or electorate-wide effect is assumed. Counts of submissions are not counts of injured people and do not trigger aggregate calibration. Relational-role and heightened personal-protection boundaries independently tested."
     }
   },
   "harm_impact_assessment": {
     "methodology_id": "VIGIL-HIM",
-    "methodology_version": "1.0.1",
-    "derivation_rule": "highest-supported-materialised-harm",
-    "assessed_on": "2026-09-20",
+    "methodology_version": "1.1.0",
+    "derivation_rule": "highest-supported-harm-on-exclusive-incident-assessment-pathway",
+    "assessed_on": "2026-10-10",
     "overall_severity": "S3",
     "controlling_dimensions": [
       "societal-democratic"
     ],
-    "coverage_note": "All eleven dimensions were re-reviewed. The preserved and newly added evidence supports the assessed dimensions; other dimensions remain unreported unless specifically assessed and do not lower or raise the derived result. Context-only sources were not used to manufacture assessed harm.",
+    "coverage_note": "All twelve dimensions source-reviewed. The preserved investigation identifies defective evidence entering formal committee reporting, beyond mere submission or a hypothetical future influence. Meaningful but bounded contamination of a public institutional evidence pathway supports retained societal S3. No affected policy decision, sanction or electorate-wide effect is assumed. Counts of submissions are not counts of injured people and do not trigger aggregate calibration. Relational-role and heightened personal-protection boundaries independently tested.",
     "dimensions": [
       {
         "dimension_id": "physical-health-safety",
@@ -599,16 +683,16 @@
       {
         "dimension_id": "societal-democratic",
         "assessment_status": "assessed",
+        "assessment_basis": "The preserved investigation identifies defective evidence entering formal committee reporting, beyond mere submission or a hypothetical future influence. Meaningful but bounded contamination of a public institutional evidence pathway supports retained societal S3. No affected policy decision, sanction or electorate-wide effect is assumed. Counts of submissions are not counts of injured people and do not trigger aggregate calibration.",
+        "evidence_confidence": "medium",
         "severity": "S3",
-        "threshold_id": "VIGIL-HIM-1.0.1-SOD-S3",
+        "threshold_id": "VIGIL-HIM-1.1.0-SOD-S3",
         "observed_values": [
           {
             "metric": "published quantitative information",
             "qualitative_value": "Guardian Australia reports at least 39 submissions containing apparent hallucinated references and more than 100 papers containing ChatGPT URL tags. It states that some submissions had only a few incorrect citations while others contained references where every cited source appeared not to exist. The total number of affected parliamentary decisions is not established."
           }
         ],
-        "assessment_basis": "The preserved sources establish the bounded consequence described in the Incident summary: Guardian Australia reported identifying at least 39 submissions to Australian parliamentary and political inquiries containing apparent hallucinated references, including invented sources, incorrect citations and misstatements of real research. In some cases, parliamentary committee reports cited submissions in which many cited sources appeared not to exist. The reporting also described instances in which AI search systems subsequently surfaced or summarised the false references, increasing the difficulty of later verification. Unreported downstream consequences were not inferred. Threshold applied: Meaningful but bounded collective, civic, democratic-process, public-institution or information-environment impact.",
-        "evidence_confidence": "medium",
         "evidence_refs": [
           "source_records[0]"
         ]
@@ -618,8 +702,15 @@
         "assessment_status": "unreported",
         "assessment_basis": "The preserved Incident evidence does not report a bandable materialised environmental impact; absence of reporting is not evidence of no harm.",
         "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "relational-integrity-autonomy",
+        "assessment_status": "unreported",
+        "assessment_basis": "The source-supported institutional reliance and correction sequence does not report AI-associated loss of valued human support, caregiving, independent relational choice or safe disengagement. Professional representation and false references do not by themselves establish relational harm.",
+        "evidence_confidence": "not-assessed"
       }
-    ]
+    ],
+    "assessment_pathway": "specific_consequence"
   },
   "related_incidents": [
     "VIGIL-INC-000041"
@@ -639,7 +730,12 @@
         "VIGIL-FC-000062"
       ],
       "source_clause_indices": [
-        0
+        0,
+        1
+      ],
+      "source_episode_refs": [
+        "E001",
+        "E002"
       ]
     },
     {
@@ -656,7 +752,12 @@
         "VIGIL-FC-000062"
       ],
       "source_clause_indices": [
-        0
+        0,
+        1
+      ],
+      "source_episode_refs": [
+        "E001",
+        "E002"
       ]
     },
     {
@@ -673,7 +774,12 @@
         "VIGIL-FC-000062"
       ],
       "source_clause_indices": [
-        0
+        0,
+        1
+      ],
+      "source_episode_refs": [
+        "E001",
+        "E002"
       ]
     },
     {
@@ -685,12 +791,13 @@
         "source_records[0]",
         "source_records[2]"
       ],
-      "derived_from_class_ids": [
-        "VIGIL-FC-000062"
-      ],
       "source_clause_indices": [
-        0
-      ]
+        3
+      ],
+      "source_episode_refs": [
+        "E004"
+      ],
+      "identification_basis": "The reported later reference-matching and manual-review activity independently identifies output review, separate from the earlier submission-assurance occurrence."
     },
     {
       "requirement_id": "EXTREQ-48302F17BB06AC19",
@@ -706,7 +813,12 @@
         "VIGIL-FC-000062"
       ],
       "source_clause_indices": [
-        0
+        0,
+        1
+      ],
+      "source_episode_refs": [
+        "E001",
+        "E002"
       ]
     },
     {
@@ -723,7 +835,12 @@
         "VIGIL-FC-000062"
       ],
       "source_clause_indices": [
-        0
+        0,
+        1
+      ],
+      "source_episode_refs": [
+        "E001",
+        "E002"
       ]
     },
     {
@@ -735,12 +852,13 @@
         "source_records[0]",
         "source_records[2]"
       ],
-      "derived_from_class_ids": [
-        "VIGIL-FC-000062"
-      ],
       "source_clause_indices": [
-        0
-      ]
+        3
+      ],
+      "source_episode_refs": [
+        "E004"
+      ],
+      "identification_basis": "The reported later reference-matching and manual-review activity independently identifies output review, separate from the earlier submission-assurance occurrence."
     },
     {
       "requirement_id": "EXTREQ-65093F71FE0B832B",
@@ -756,7 +874,12 @@
         "VIGIL-FC-000062"
       ],
       "source_clause_indices": [
-        0
+        0,
+        1
+      ],
+      "source_episode_refs": [
+        "E001",
+        "E002"
       ]
     },
     {
@@ -773,7 +896,12 @@
         "VIGIL-FC-000062"
       ],
       "source_clause_indices": [
-        0
+        0,
+        1
+      ],
+      "source_episode_refs": [
+        "E001",
+        "E002"
       ]
     },
     {
@@ -790,7 +918,12 @@
         "VIGIL-FC-000062"
       ],
       "source_clause_indices": [
-        0
+        0,
+        1
+      ],
+      "source_episode_refs": [
+        "E001",
+        "E002"
       ]
     },
     {
@@ -807,7 +940,12 @@
         "VIGIL-FC-000062"
       ],
       "source_clause_indices": [
-        0
+        0,
+        1
+      ],
+      "source_episode_refs": [
+        "E001",
+        "E002"
       ]
     },
     {
@@ -819,12 +957,13 @@
         "source_records[0]",
         "source_records[2]"
       ],
-      "derived_from_class_ids": [
-        "VIGIL-FC-000062"
-      ],
       "source_clause_indices": [
-        0
-      ]
+        3
+      ],
+      "source_episode_refs": [
+        "E004"
+      ],
+      "identification_basis": "The reported later reference-matching and manual-review activity independently identifies output review, separate from the earlier submission-assurance occurrence."
     },
     {
       "requirement_id": "EXTREQ-A337E13222520E08",
@@ -840,7 +979,12 @@
         "VIGIL-FC-000062"
       ],
       "source_clause_indices": [
-        0
+        0,
+        1
+      ],
+      "source_episode_refs": [
+        "E001",
+        "E002"
       ]
     },
     {
@@ -857,7 +1001,12 @@
         "VIGIL-FC-000062"
       ],
       "source_clause_indices": [
-        0
+        0,
+        1
+      ],
+      "source_episode_refs": [
+        "E001",
+        "E002"
       ]
     },
     {
@@ -874,7 +1023,12 @@
         "VIGIL-FC-000062"
       ],
       "source_clause_indices": [
-        0
+        0,
+        1
+      ],
+      "source_episode_refs": [
+        "E001",
+        "E002"
       ]
     },
     {
@@ -891,7 +1045,12 @@
         "VIGIL-FC-000062"
       ],
       "source_clause_indices": [
-        0
+        0,
+        1
+      ],
+      "source_episode_refs": [
+        "E001",
+        "E002"
       ]
     },
     {
@@ -907,7 +1066,12 @@
         "VIGIL-FC-000062"
       ],
       "source_clause_indices": [
-        0
+        0,
+        1
+      ],
+      "source_episode_refs": [
+        "E001",
+        "E002"
       ]
     },
     {
@@ -924,7 +1088,12 @@
         "VIGIL-FC-000062"
       ],
       "source_clause_indices": [
-        0
+        0,
+        1
+      ],
+      "source_episode_refs": [
+        "E001",
+        "E002"
       ]
     },
     {
@@ -941,7 +1110,12 @@
         "VIGIL-FC-000062"
       ],
       "source_clause_indices": [
-        0
+        0,
+        1
+      ],
+      "source_episode_refs": [
+        "E001",
+        "E002"
       ]
     },
     {
@@ -958,7 +1132,12 @@
         "VIGIL-FC-000062"
       ],
       "source_clause_indices": [
-        0
+        0,
+        1
+      ],
+      "source_episode_refs": [
+        "E001",
+        "E002"
       ]
     },
     {
@@ -975,7 +1154,12 @@
         "VIGIL-FC-000062"
       ],
       "source_clause_indices": [
-        0
+        0,
+        1
+      ],
+      "source_episode_refs": [
+        "E001",
+        "E002"
       ]
     },
     {
@@ -992,7 +1176,12 @@
         "VIGIL-FC-000062"
       ],
       "source_clause_indices": [
-        0
+        0,
+        1
+      ],
+      "source_episode_refs": [
+        "E001",
+        "E002"
       ]
     }
   ]

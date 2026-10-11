@@ -30,7 +30,7 @@ EXPECTED_CLASS_SUFFIXES_BY_FAMILY = {
     "VIGIL-FF-0006": "000034 000035 000036 000056 000078".split(),
     "VIGIL-FF-0007": "000040 000041 000042".split(),
     "VIGIL-FF-0008": "000037 000038 000043 000083".split(),
-    "VIGIL-FF-0009": "000049 000050 000051 000052 000065 000066 000082".split(),
+    "VIGIL-FF-0009": "000049 000050 000051 000052 000065 000066 000082 000086 000087".split(),
     "VIGIL-FF-0010": "000058 000059 000060 000061".split(),
     "VIGIL-FF-0011": "000067".split(),
     "VIGIL-FF-0012": "000069 000070 000081".split(),
@@ -604,10 +604,10 @@ class AlignmentTaxonomyValidationTests(unittest.TestCase):
     def test_agency_preserving_influence_family_has_one_bounded_invariant(self):
         documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
         influence = next(document for document in documents if document["family"]["family_id"] == "VIGIL-FF-0009")
-        self.assertEqual(len(influence["classes"]), 7)
+        self.assertEqual(len(influence["classes"]), 9)
         self.assertEqual(
             [item["class_id"] for item in influence["classes"]],
-            ["VIGIL-FC-000049", "VIGIL-FC-000050", "VIGIL-FC-000051", "VIGIL-FC-000052", "VIGIL-FC-000065", "VIGIL-FC-000066", "VIGIL-FC-000082"],
+            ["VIGIL-FC-000049", "VIGIL-FC-000050", "VIGIL-FC-000051", "VIGIL-FC-000052", "VIGIL-FC-000065", "VIGIL-FC-000066", "VIGIL-FC-000082", "VIGIL-FC-000086", "VIGIL-FC-000087"],
         )
         invariant = influence["family"]["invariant"].lower()
         for boundary in ("independent deliberation", "choice", "disengagement", "protected"):

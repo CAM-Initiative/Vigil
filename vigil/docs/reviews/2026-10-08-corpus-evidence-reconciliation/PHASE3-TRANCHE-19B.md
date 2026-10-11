@@ -1,0 +1,24 @@
+# Phase3 tranche19B — original holds INC-120/139
+
+10 October2026. Exact canonical baseline `3f75ecdf4a8c0a9289a502d55629f41be656e48e`. Individual manifests preserve complete source, clause, mapping, HIM and external baselines.
+
+| Incident | Old clauses | Material episodes | Positional external rows |
+| --- | ---: | ---: | ---: |
+| INC-120 | 4 | 10 | 0 |
+| INC-139 | 1 | 7 | 0 |
+
+INC-120 attribution hold resolved. The fresh originating report’s specific concealment/session-splitting and many-but-not-all blocking passages describe **GTG-87001**, a different operation. General cross-case introductory observations also do not supply GTG-27005 request telemetry. The actual GTG-27005 section supplies onset, geographic-access evasion, nine associated accounts (weapons work on one), human-directed coding/testing, preparation, simulation/board maturity, unverified funding and bans. Those activities are distinct episodes; unsupported contextual claims are explicitly removed from occurrence prose, candidates and three independent external bases. The separate simulated capability evaluation retains its contextual role, not case-specific authority. No technical construction instructions are reproduced.
+
+The source-bounded historical engineering description is preserved. A rough May–August range is explicitly a reporting bound, not day-level activity proof. No model-side initiation, current weapons field deployment or verified funding is invented. Current class recognition does not establish exact monitoring coverage, routing/control or effect states; the record remains partial and unclassified. No absence of a failed safeguard is turned into a success.
+
+HIM1.0.1 S1 changes to **SU**. The previous claim that the source positively establishes no casualties/field deployment was unsupported: the provider does not report them. Absence of reporting is not positive no-harm evidence. All eleven dimensions change from unsupported not-applicable/no-harm bases to unreported; no potential weapons harm becomes realised harm. The unadopted conditional-deployment HIM proposal does not govern this repair. Complete former bands/bases remain in the manifest.
+
+INC-139 primary-access hold resolved. The web retriever returned navigation only; direct HTTPS download recovered the entire originating Spanish article and it was read. AEPD confirms receiving an affected-organisation notification and explicitly requires analysis before conclusions. Preliminary generic-file search precedes login, followed by internal autonomous vulnerability search. Personal-data modification and invoice access are distinct alleged effects with unknown mutual order. Notification and September14 provisional publication are later separate events. General security guidance supplies no case-specific credentials, controls or proof of mitigation. Provider/model compromise and malicious design are expressly not inferred. Reuters fresh retrieval failed; prior source history remains, while fresh TechRadar publication date corrects to September17.
+
+Taxonomy remains partial/unclassified, privacy insufficient-evidence and overall SU. Environmental not-applicable changes to unreported because no environmental consequence is reported, rather than affirmatively excluded. Documentation Aligned is independently preserved for documenting a notification, not verification of its claims. Privacy/security Boundary findings remain; all external rows resolve to actual episodes.
+
+All seven external independent outcomes remain unchanged. Three INC-120 bases are individually corrected to exclude misattributed concealment/blocking. No positional reconciliation added; cumulative1,028. No new taxonomy class, source identity deletion, schema/validator/test/builder semantic change or retired matrix restoration occurred. No new unresolved out-of-scope action was established beyond the preserved evidence bounds, so no completion-only Gmail replacement was sent.
+
+Exact-baseline guards, canonical/public records, source/interpretive/system/authorship provenance, occurrence/external integrity, taxonomy, both pipeline/provenance scripts and **82 selected tests passed**. All three generated outputs rebuild byte-identically. Public versions, SU severity, classifications and external projections checked with the canonical narratives. External website renderer was not run locally. Two broader baseline-reproduced audit/candidate failures remain pending final disposition; published-head CI still to be observed.
+
+Active census **182 records,648 sources,973 episodes/clauses,1,315 external rows**. Historical campaign **176/179 complete; original holds164/171/174 remain**. Original backlog **86/89 complete**. Post-baseline189–191 acceptance and final inventory remain pending. INC-012 approval hold and unadopted HIM/FC proposals remain separate. PR118 stays draft/unmerged. AI-authored bounded review is not independent human certification.
