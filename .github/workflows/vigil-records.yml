@@ -37,6 +37,11 @@ jobs:
         with:
           python-version: "3.x"
 
+      # The complete unittest discovery imports jsonschema in tests that the
+      # historical subset jobs never exercised. Install the pinned test dependency.
+      - name: Install full-suite validation dependency
+        run: python -m pip install "jsonschema==4.26.0"
+
       - name: Diagnose committed public index freshness before rebuilding
         run: |
           if python vigil/scripts/validate-vigil-public-records.py; then
@@ -71,6 +76,9 @@ jobs:
           python vigil/tests/test_authorship_provenance.py
           python vigil/scripts/validate-authorship-provenance.py
 
+      - name: Test full VIGIL corpus and maintenance contracts
+        run: python -m unittest discover -s vigil/tests -p 'test_*.py'
+
       - name: Validate active system-component metadata
         run: python vigil/scripts/validate-vigil-system-components.py
 
@@ -93,8 +101,22 @@ jobs:
             exit 1
           fi
 
-      - name: Commit generated VIGIL outputs
-        if: github.event_name == 'push'
+      # PR and ingestion-branch validation are read-only. Generated artifacts
+      # must be committed by the author, avoiding a bot-written PR HEAD with
+      # action_required / zero-job check runs.
+      - name: Require committed generated outputs on PR and working branches
+        if: github.event_name == 'pull_request' || github.ref != 'refs/heads/main'
+        run: |
+          if ! git diff --exit-code -- \
+            vigil/VIGIL.Incidents.Index.json \
+            vigil/VIGIL.Registry.Index.json \
+            vigil/taxonomy/generated/VIGIL.FailureTaxonomy.CaseFileExamples.json; then
+            echo "::error::Generated public indexes differ from committed files. Rebuild and commit before review."
+            exit 1
+          fi
+
+      - name: Commit generated VIGIL outputs on main only
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
