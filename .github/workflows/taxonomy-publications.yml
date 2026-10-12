@@ -192,7 +192,26 @@ jobs:
           missing = [value for value in required if value.lower() not in normalised_text.lower()]
           if missing:
               raise SystemExit(f"Full-reference PDF is missing rights text: {missing}")
-          print(f"PDF: {pdf.stat().st_size:,} bytes")
+
+          # Reject a deceptively valid but stale PDF: version and most recently
+          # allocated active classes must be present in the rendered publication.
+          import json
+          taxonomy_root = Path("vigil/taxonomy")
+          index = json.loads((taxonomy_root / "VIGIL.FailureTaxonomy.Index.json").read_text(encoding="utf-8"))
+          version = index["standard"]["version"]
+          active_classes = [
+              item
+              for entry in index["families"]
+              for item in json.loads((taxonomy_root / entry["file"]).read_text(encoding="utf-8"))["classes"]
+          ]
+          newest = sorted(active_classes, key=lambda item: int(item["class_id"].split("-")[-1]))[-3:]
+          missing_current = [
+              name for name in [version, *(item["name"] for item in newest)]
+              if re.sub(r"\\s+", " ", name).casefold() not in normalised_text.casefold()
+          ]
+          if missing_current:
+              raise SystemExit(f"Full-reference PDF does not match the current taxonomy release: {missing_current}")
+          print(f"PDF: {pdf.stat().st_size:,} bytes; taxonomy release {version}; {len(active_classes)} classes")
           PY
 
       - name: Commit published taxonomy release and generated outputs
