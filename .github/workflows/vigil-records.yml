@@ -93,6 +93,14 @@ jobs:
       - name: Rebuild Incident-only public VIGIL indexes
         run: python vigil/scripts/build-vigil-public-records.py
 
+      # The raw case-study index may include interaction-only source records.
+      # Apply the same publication eligibility filter before comparing or
+      # committing the maintained textbook examples, not only in the PDF job.
+      - name: Apply textbook case-study publication eligibility filter
+        run: |
+          python vigil/taxonomy/filter_publication_case_examples.py
+          python vigil/taxonomy/filter_publication_case_examples.py --check
+
       - name: Verify source records and canonical record contract were not mutated
         run: |
           if ! git diff --quiet -- vigil/records vigil/templates vigil/VIGIL.Schema.json; then
