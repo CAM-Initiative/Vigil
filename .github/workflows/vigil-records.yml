@@ -93,6 +93,14 @@ jobs:
       - name: Rebuild Incident-only public VIGIL indexes
         run: python vigil/scripts/build-vigil-public-records.py
 
+      # The raw case-study index may include interaction-only source records.
+      # Apply the same publication eligibility filter before comparing or
+      # committing the maintained textbook examples, not only in the PDF job.
+      - name: Apply textbook case-study publication eligibility filter
+        run: |
+          python vigil/taxonomy/filter_publication_case_examples.py
+          python vigil/taxonomy/filter_publication_case_examples.py --check
+
       - name: Verify source records and canonical record contract were not mutated
         run: |
           if ! git diff --quiet -- vigil/records vigil/templates vigil/VIGIL.Schema.json; then
@@ -136,15 +144,21 @@ jobs:
             fi
           fi
 
+      # Cross-repository dispatch is a delivery mechanism, not a condition for
+      # canonical validation or for building the maintained taxonomy PDF. A bad
+      # external token must never suppress the downstream publication workflow.
       - name: Notify CAM catalogue of refreshed VIGIL records
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && github.actor != 'github-actions[bot]'
+        id: catalogue-dispatch
+        continue-on-error: true
+        if: >-
+          (github.event_name == 'push' && github.ref == 'refs/heads/main' && github.actor != 'github-actions[bot]') ||
+          github.event_name == 'workflow_dispatch'
         env:
           CAM_CATALOGUE_DISPATCH_TOKEN: ${{ secrets.CAM_CATALOGUE_DISPATCH_TOKEN }}
         run: |
           if [ -z "$CAM_CATALOGUE_DISPATCH_TOKEN" ]; then
-            echo "CAM_CATALOGUE_DISPATCH_TOKEN is not configured; skipping cross-repository VIGIL sync notification."
-            echo "Add a VIGIL repository secret named CAM_CATALOGUE_DISPATCH_TOKEN with permission to dispatch workflows in CAM-Initiative/cam-governance-catalogue."
-            exit 0
+            echo "::error::CAM_CATALOGUE_DISPATCH_TOKEN is missing. Set this secret in CAM-Initiative/Vigil Actions repository secrets."
+            exit 1
           fi
 
           curl --fail-with-body \
@@ -154,3 +168,10 @@ jobs:
             --header "X-GitHub-Api-Version: 2022-11-28" \
             https://api.github.com/repos/CAM-Initiative/cam-governance-catalogue/dispatches \
             --data '{"event_type":"vigil-records-updated","client_payload":{"source_repository":"CAM-Initiative/Vigil","source_ref":"main"}}'
+
+      - name: Surface cross-repository delivery failure without blocking taxonomy publication
+        if: steps.catalogue-dispatch.outcome == 'failure'
+        run: |
+          echo "::warning::CAM catalogue dispatch failed. Confirm CAM_CATALOGUE_DISPATCH_TOKEN exists in the VIGIL repository and is authorised for repository_dispatch on the CAM catalogue. Canonical VIGIL validation and taxonomy publication remain independent."
+          echo "## Catalogue delivery warning" >> "$GITHUB_STEP_SUMMARY"
+          echo "VIGIL validation succeeded, but the CAM catalogue notification failed. Inspect the dispatch step and rotate CAM_CATALOGUE_DISPATCH_TOKEN if expired; the catalogue also has scheduled reconciliation." >> "$GITHUB_STEP_SUMMARY"
