@@ -142,14 +142,15 @@ jobs:
       - name: Notify CAM catalogue of refreshed VIGIL records
         id: catalogue-dispatch
         continue-on-error: true
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && github.actor != 'github-actions[bot]'
+        if: >-
+          (github.event_name == 'push' && github.ref == 'refs/heads/main' && github.actor != 'github-actions[bot]') ||
+          github.event_name == 'workflow_dispatch'
         env:
           CAM_CATALOGUE_DISPATCH_TOKEN: ${{ secrets.CAM_CATALOGUE_DISPATCH_TOKEN }}
         run: |
           if [ -z "$CAM_CATALOGUE_DISPATCH_TOKEN" ]; then
-            echo "CAM_CATALOGUE_DISPATCH_TOKEN is not configured; skipping cross-repository VIGIL sync notification."
-            echo "Add a VIGIL repository secret named CAM_CATALOGUE_DISPATCH_TOKEN with permission to dispatch workflows in CAM-Initiative/cam-governance-catalogue."
-            exit 0
+            echo "::error::CAM_CATALOGUE_DISPATCH_TOKEN is missing. Set this secret in CAM-Initiative/Vigil Actions repository secrets."
+            exit 1
           fi
 
           curl --fail-with-body \
@@ -163,6 +164,6 @@ jobs:
       - name: Surface cross-repository delivery failure without blocking taxonomy publication
         if: steps.catalogue-dispatch.outcome == 'failure'
         run: |
-          echo "::warning::CAM catalogue dispatch failed. Check CAM_CATALOGUE_DISPATCH_TOKEN (401 means expired/invalid credentials) and rerun the catalogue Sync VIGIL records workflow. Canonical VIGIL validation and taxonomy publication remain independent."
+          echo "::warning::CAM catalogue dispatch failed. Confirm CAM_CATALOGUE_DISPATCH_TOKEN exists in the VIGIL repository and is authorised for repository_dispatch on the CAM catalogue. Canonical VIGIL validation and taxonomy publication remain independent."
           echo "## Catalogue delivery warning" >> "$GITHUB_STEP_SUMMARY"
           echo "VIGIL validation succeeded, but the CAM catalogue notification failed. Inspect the dispatch step and rotate CAM_CATALOGUE_DISPATCH_TOKEN if expired; the catalogue also has scheduled reconciliation." >> "$GITHUB_STEP_SUMMARY"
