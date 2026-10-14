@@ -11,6 +11,27 @@
 
 The proposed admission text from commit `7a68ed560af33fe126db6022b97675f084f2f2c8` has been ported to the current Constitution without undoing changes landed in incident-ingestion PR #118. The current clause-level review contract is preserved and **the retired global adjudication matrix is not reintroduced**. Article 2.8 and the additional Article 5 text remain **proposed, not adopted**; this branch does not operationalise the rule in schemas, validators, or existing Incident findings. Maintainer/Agent/Incident Adjudication Workflow subordinate alignment is a distinct gate following express Article 13 approval. Original historical branch remains attributed here for audit, but need not remain open when the present proposal is safeguarded.
 
+## Current subordinate-control reconciliation (14 October 2026)
+
+Read-only reconciliation against the current `main` sources, not an authorisation to implement their changes:
+
+| Current authority | Current control | Follow-on action if Article 2.8 is approved |
+| --- | --- | --- |
+| `vigil/MAINTAINERS.md` | Canonical new Incident IDs originate solely on `agent/incident-ecosystem-ingestion`; source watch lists do **not** determine admission, and existing incidents take precedence over duplicates. | Define a documented, evidence-led **ADMISSION** decision before ID allocation, including candidates with successful or mixed AI-boundary outcomes, human misuse, incidental security-tool cases, current/withdrawn/deleted-incident identity screening, and under-evidenced disposition. Recreate the dedicated ingestion branch from current main when next needed, as the existing allocation rule requires; do not allocate IDs on this proposal branch. |
+| `vigil/AGENTS.md` | Agents must preserve evidence, separate interpretation, and respect maintainer approval and non-destructive rebuild gates. | Give agents candidate-research and recommendation duties only; no unilateral adoption, canonical allocation or reclassification; retain schema/validator Gate 1/Gate 2 approval restrictions. |
+| `vigil/docs/maintenance/INCIDENT-ADJUDICATION-WORKFLOW.md` | Existing `BASELINE → EVIDENCE → FACTUAL RECORD → TAXONOMY → HARM → INTERPRETATION → VALIDATION` describes **rebuilding admitted Incidents**. | Add a separate **pre-allocation intake/admission workflow**, not a destructive replacement of the existing rebuild sequence; explicitly preserve the baseline-and-mapping disposition rules for extant records. |
+| `vigil/VIGIL.Schema.json` and public projections | Canonical Incident data, harm/taxonomy and current publication are governed separately. | First review whether candidate screening requires any canonical field at all. Do not create mandatory retroactive fields or assign a failure/exemplar/HIM band merely to admit an occurrence; validate candidate data in a noncanonical research surface. |
+| External requirements and taxonomy | Source applicability, requirement alignment, class recognition and severity require independent assessments. | An admission decision alone must confer **no** compliance result, fidelity-class status, legally attributable wrongdoing, or severity. |
+
+### Known reconciliation risks and approval gate
+
+- **Constitutional adoption is pending**: Article 13 requires explicit CAM Initiative approval of the proposed text and the governance effect before changing operative authority.
+- **Dedicated ingestion branch is no longer among current open branches**: follow the existing Maintainers rule to recreate it at the current `main` head before any new ID allocation; do not allow branch deletion or this proposal to bypass that custody rule.
+- **Deleted/withdrawn records**: audit historical identifiers before any new allocation, but this proposal does not itself restore, re-admit or reclassify any prior record.
+- **Retired global matrix**: the current corpus uses clause-level adjudication. Do not restore the old adjudication-matrix references from the 10 October proposal's historical baseline.
+- **Publication**: reconcile the Knowledge Base's already published explanatory admission principle only after constitutional approval. Public exposition is not constitutional enactment.
+- **Validation**: run targeted constitutional-document review, then the applicable tests on an approved implementation PR. A known shared `VIGIL records` generated-textbook-examples mismatch (INC-000032/FC-000035) on unrelated PRs is not evidence of a defect in this two-file proposal.
+
 ## 1. Issue and purpose
 
 The current Constitution establishes evidence before conclusion (2.1), separate adjudications (2.2), admissible incompleteness (2.3), no forced taxonomy fit (2.6), successful-invariant recognition (Article 9), and governed correction. It does not explicitly define the **pre-adjudication Incident admission gate**. Without that gate, research intake may inadvertently select only apparent failures, confuse malicious human AI use with model misalignment, or include ordinary security incidents with merely incidental AI.
