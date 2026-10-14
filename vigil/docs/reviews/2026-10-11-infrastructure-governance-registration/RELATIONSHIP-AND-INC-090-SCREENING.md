@@ -46,3 +46,11 @@ Canonical evidence reference: `source_records[0]` (Reuters), reviewed anew at it
 The exact baseline INC-090 JSON is untouched. Existing assessments are an empty array. No HIM, severity, clauses, taxonomy mappings, source records, chronology or provenance changes are made. Retention is the maintainer's resolved admission decision.
 
 No new Section 04 row exists to project. Resolver/projection tests and a direct read-only projection check will be recorded in `VALIDATION.md`. A deployed catalogue rendering/preview is not verified by this repository-only package. Missing rows record the current coverage/contract hold, not a conclusion that no governance instruments exist. No renderer or publication guard is changed to force a row.
+
+## Later handoff clarification preserved
+
+The integration handoff advanced to `2d85728288dfc9c286861d61e7815b0bff787f03` during PR publication. Its military-personnel rights gate and canonical INC-090 version 0.1.17 are preserved unchanged. References above to missing civilian impact concern civilian-specific propositions only. They do not deny military personnel human rights or applicable IHL protections.
+
+Before any future case row, independently examine protected treatment and medical assistance for service personnel, any evidenced individual right-to-life pathway, and the State's sovereign self-defence entitlement. Operational loss alone does not establish the legal elements of each proposition. UN Charter Article 51 is distinct from Article 2(4): the former is a State entitlement, not an automatic private-provider delivery duty.
+
+The new handoff also queues Rome Statute Articles 8, 12, 25 and 30, the official ICC Ukraine situation/jurisdiction record, and ILC State Responsibility Article 8. Those texts and historical participation/jurisdiction materials have not been reviewed in this registration package and are not registered or extracted by implication. Criminal responsibility of an individual, territorial ICC jurisdiction and State attribution require separate source-first tests. Do not infer a crime, charge, warrant, surrender duty, State order or historical motive. These additional legal comparisons remain queued at the same Gate 1 boundary; no military-personnel rights or legal conclusion is selected from HIM severity.
