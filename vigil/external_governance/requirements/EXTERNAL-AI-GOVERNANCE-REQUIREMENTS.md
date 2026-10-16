@@ -2,8 +2,8 @@
 
 Canonical analytical catalogue derived from registered external governance sources. Inclusion does not establish CAM applicability, adoption, coverage, compliance, conformance or alignment.
 
-- Registered source versions: 98
-- Primary AI-governance source versions: 61
+- Registered source versions: 100
+- Primary AI-governance source versions: 63
 - Requirement records: 1102
 
 ## SDOS Runtime Governance Framework — Control Catalog and Reference Document — 1.10
@@ -180,6 +180,18 @@ No requirement records are asserted. No canonical extraction admitted: substanti
 | `EXTREQ-B4146C7FA881D345` | modelCard | A model card can represent model parameters, datasets, inputs, outputs, quantitative analysis, performance metrics, intended users and use cases, limitations, trade-offs, ethical and fairness considerations, and environmental information. | `informative-guidance` / `guidance` | `voluntary-technical-specification` | `conformance` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-F2C81603A7B306F6` | modelCard.bom-ref | If a model-card bom-ref is supplied, it should not start with the BOM-Link intro urn:cdx: to avoid conflicts with BOM-Links. | `recommended-practice` / `guidance` | `voluntary-technical-specification` | `conformance` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-FA1B882FFAD54D93` | modelCard.bom-ref | If a model-card bom-ref is supplied, it must be unique within the BOM. | `conformity-evidence-expectation` / `conformity-criterion` | `voluntary-technical-specification` | `conformance` | `reviewed-analytical-summary` / `direct-public-primary` |
+
+## Artificial intelligence — Quality management system for EU AI Act regulatory purposes — 2026
+
+- Source: `EXT-992C92D6CAB4` / `EN-18286`
+- Role: `primary-ai-governance`
+- Access: `official-metadata-only`
+- Extraction: `blocked-access`
+- Requirements: 0
+- Review priority: `critical-governance-source`
+- Next action: Obtain authorised access to the final EN 18286:2026 normative text with permission for the intended AI processing. Then obtain separate approval for bounded clause extraction, Annex ZA assessment and any mappings. Do not commit copyrighted text.
+
+No requirement records are asserted. Source admission and metadata review only. Zero new EXTREQs, FC relationships or EN-to-Act equivalences. Full-text extraction and legal coverage assessment are not completed.
 
 ## Regulation (EU) 2024/1689 (Artificial Intelligence Act) — 2024-07-12
 
@@ -404,6 +416,18 @@ No requirement records are asserted. Retained as a bounded supporting authority.
 - Next action: No further requirement extraction is planned in the current scope.
 
 No requirement records are asserted. Retained as a bounded supporting authority. It is not decomposed into a comprehensive first-class requirement corpus in the current scope.
+
+## Commission Implementing Decision (EU) 2026/2274 of 12 October 2026 on the harmonised standards for high-risk AI systems drafted in support of Regulation (EU) 2024/1689 of the European Parliament and of the Council — 2026-10-14
+
+- Source: `EXT-39722D487277` / `EU-DEC-IMPL-2026-2274`
+- Role: `primary-ai-governance`
+- Access: `official-metadata-only`
+- Extraction: `blocked-access`
+- Requirements: 0
+- Review priority: `high-value-governance-source`
+- Next action: Retrieve and review the official final decision, Article 1, Article 2 and Annex through an authorised access route. Confirm the exact Annex citation, entry-into-force date and any qualifications before clause extraction or legal reliance. Do not reconstruct text from indexed snippets.
+
+No requirement records are asserted. Source admission and metadata review only. Zero new EXTREQs, FC relationships or EN-to-Act equivalences. Full-text extraction and legal coverage assessment are not completed.
 
 ## Regulation (EU) 2022/868 — Data Governance Act — 2022-06-03
 
