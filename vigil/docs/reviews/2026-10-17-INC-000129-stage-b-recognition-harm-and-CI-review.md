@@ -182,3 +182,24 @@ The active canonical record **still contains HIM 1.0.1 S3**, as it did prior to 
 The existing `test_registry_source_roles.py` expects severity-linked `evidence_refs` even when the row would be unassessed. The HIM validator forbids `evidence_refs` in an unassessed row. The separate Gate 1 proposal is in section 7A; **the user has not yet clearly approved the harm score change or that permanent test adjustment**. Both remain untouched pending an explicit yes/no.
 
 **Approval requested separately:** (a) updating the obsolete, single-case repair-projection test fixture while preserving failure-only semantics; (b) changing INC-000129 to HIM 1.1.0 SU and altering the single-case harm-source test to preserve source-role evidence without requiring forbidden assessed-row fields.
+
+
+## 10. Approved Harm Impact reassessment — 17 October 2026
+
+The human maintainer expressly approved changing the incident's Harm Impact from **S3 to SU**. The maintainer also identified the need to make reputational harm quantification more objective, but **deferred any general methodology change** to a future task. No HIM thresholds, schemas or calculation rules were altered in this implementation.
+
+**Canonical record:** `vigil/records/incidents/VIGIL-INC-000129.json` moved from v0.3.10 to **v0.3.11** in commit `e02c981e4368996c10b5fbb28c7bad996469cc93`:
+
+- HIM version: `1.0.1 → 1.1.0`, derivation: `highest-supported-harm-on-exclusive-incident-assessment-pathway`.
+- Routing: `specific_consequence`, with explicit negative screening for actual deployment of the Astra training configuration. No system-wide user population or deployed Aggregate Harm was assumed.
+- Overall severity: `S3 → SU`; controlling dimensions `["reputation-dignity"] → []`.
+- Reputation/dignity: `assessed/S3 → insufficient-evidence`. Negative headlines establish that the disclosure attracted adverse commentary; the specific realised injury required by S2/S3 was not evidenced. The row retains a detailed six-source attribution in its `assessment_basis` but no forbidden `severity`, `threshold_id` or `evidence_refs` fields.
+- Eleven other HIM domains were individually screened: ten are `unreported`, and `relational-integrity-autonomy` is `not-applicable` on the bounded non-intimate coding-task evidence. Silence has not been recoded as no harm.
+- `assessment_gap` identifies the precise missing downstream causal and reputational consequence evidence. **SU is not S1 and not a statement of zero harm.**
+- All original `source_records[]`, including six news items explicitly labelled `harm-evidence`, were preserved without changing their contents or order. The original S3 decision remains recoverable through Git history and the previous October 11 blocker manifest. A new AI-review history entry records the human-approved reassessment.
+
+**Bounded test updates:** `vigil/tests/test_registry_source_roles.py` at commit `1773915b6287b883d7ed743993c404c207b1e8c6` now verifies all six media source roles remain, the full twelve-domain HIM 1.1.0 SU state, and the absence of assessed-row-only evidence fields on the insufficient-evidence reputation row. No HIM validator rule was relaxed.
+
+The obsolete case-specific failure-only repair projection test in `vigil/tests/test_build_vigil_records.py` was corrected at commit `32a60a706d8af4fd14162c6b5fc89782020929b8`: it now compares repair classifications against the incident's *actual* failure-occurrence mappings, rather than hardcoding the withdrawn FC-075 failure. It still fails if a non-failure mapping appears in Repair or if an actual failure mapping is missing. No builder semantics, generic validator logic, schema contract or taxonomy recognition rule changed.
+
+The general research question about **measurable reputational injury indicators** remains deliberately unimplemented for future HIM methodology review. HIM 1.1.0 already contains quantitative indicators and cautions against using media volume as a harm proxy; any future proposed thresholds require separate research, calibration and maintainer approval.
