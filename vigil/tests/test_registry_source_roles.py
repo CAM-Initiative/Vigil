@@ -27,10 +27,20 @@ class RegistrySourceRoleTests(unittest.TestCase):
             item for item in record["harm_impact_assessment"]["dimensions"]
             if item["dimension_id"] == "reputation-dignity"
         )
-        self.assertEqual(
-            reputation["evidence_refs"],
-            [f"source_records[{index}]" for index in range(3, 9)],
-        )
+        # Retain the six source-role records as evidence of adverse media framing,
+        # without claiming they substantiate realised reputational injury.
+        assessment = record["harm_impact_assessment"]
+        self.assertEqual(assessment["methodology_version"], "1.1.0")
+        self.assertEqual(assessment["overall_severity"], "SU")
+        self.assertEqual(assessment["controlling_dimensions"], [])
+        self.assertEqual(reputation["assessment_status"], "insufficient-evidence")
+        self.assertNotIn("severity", reputation)
+        self.assertNotIn("threshold_id", reputation)
+        self.assertNotIn("evidence_refs", reputation)
+        self.assertIn("source_records[3]", reputation["assessment_basis"])
+        self.assertIn("source_records[8]", reputation["assessment_basis"])
+        self.assertIn("assessment_gap", assessment)
+        self.assertEqual(len(assessment["dimensions"]), 12)
 
     def test_inc_127_evidence_hierarchy_is_structural(self):
         record = load("VIGIL-INC-000127")

@@ -74,9 +74,23 @@ class IncidentBuilderTests(unittest.TestCase):
         entry = BUILDER.incident_entry(BUILDER.INCIDENTS / "VIGIL-INC-000129.json", record)
         self.assertEqual(entry["external_assessment_count"], len(record["external_assessments"]))
         self.assertEqual(entry["primary_classification"]["class_id"], "VIGIL-FC-000075")
+        # Repair remains failure-only. The approved reassessment now leaves
+        # INC-000129 with ambiguous-boundary mappings, not a failure mapping.
+        mappings = [
+            record["taxonomy_classification"]["primary_classification"],
+            *record["taxonomy_classification"]["secondary_classifications"],
+        ]
+        expected_failure_ids = [
+            item["class_id"] for item in mappings
+            if item["classification_role"] == "failure-occurrence"
+        ]
         self.assertEqual(
-            [item["class_id"] for item in entry["repair_classifications"]],
-            ["VIGIL-FC-000075"],
+            [item["class_id"] for item in entry.get("repair_classifications", [])],
+            expected_failure_ids,
+        )
+        self.assertEqual(
+            entry["primary_classification"]["classification_role"],
+            "ambiguous-boundary",
         )
 
     def test_master_registry_is_incident_only(self):

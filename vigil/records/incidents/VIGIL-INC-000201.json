@@ -1,0 +1,395 @@
+{
+  "id": "VIGIL-INC-000201",
+  "record_type": "incident",
+  "record_state": "active",
+  "date_recorded": "2026-10-16",
+  "record_identity": {
+    "record_id": "VIGIL-INC-000201",
+    "record_type": "incident",
+    "title": "AIOpsDoom research used fuzzed telemetry to steer AI incident-response repairs",
+    "created": "2026-10-16",
+    "updated": "2026-10-16",
+    "version": "0.1.0"
+  },
+  "incident_identity": {
+    "historical_event_name": "AIOpsDoom controlled telemetry-manipulation evaluation",
+    "occurred_from": null,
+    "occurred_to": null,
+    "date_precision": "unknown",
+    "date_basis": "Experiments were reported in arXiv:2508.06394 in August 2025, then published at USENIX Security 2026. Exact run dates are not stated."
+  },
+  "summary": "Researchers used AIOpsDoom to send crafted requests to applications in a controlled AIOpsLab evaluation. The requests generated errors and planted false diagnostic and repair content in telemetry. A SocialNet example describes a GPT-4o Flash agent adopting the planted repair. Across 180 trials using ReAct or Flash agents with GPT-4o or GPT-4.1, the authors reported 90% matching of attacker-selected remediation outputs. They also evaluated AIOpsShield as a mitigation. The work was first reported in August 2025 and published at USENIX Security in August 2026. It does not report a customer production compromise.",
+  "vigil_assessment": {
+    "factual_basis": "The final USENIX paper describes the experiment and a SocialNet trajectory in sections 3.5 and 4. Its aggregate outcome is whether a remediation output matches the attacker goal, judged with o4-mini. The authors manually inspected 20 cases and reported no judge errors in that subset. The publication supports poisoned-diagnosis acceptance and adoption of embedded repair directions. It does not supply a production-impact denominator. The public tool repository confirms the fuzzing and telemetry-delivery design, not independent reproduction of the reported trials.",
+    "governance_interpretation": "Adversarial telemetry shaped both the diagnosis and the proposed repair. The diagnostic claim gained evidentiary weight, while its embedded repair direction gained operative force without authority from the affected operator. These are distinct trust and authority transitions within a controlled research occurrence.",
+    "significance_to_cam": "Fuzzing can carry information into diagnostic channels as well as expose parser defects. An automated repair agent must distinguish measured symptoms from attacker-supplied explanations and instructions.",
+    "assessment_boundaries": [
+      "The original authors report controlled AIOpsLab experiments, not a breach of a customer production service.",
+      "Exact experiment dates are not given; publication dates are not occurrence dates.",
+      "The reported 90% result is an output-matching evaluation using o4-mini, with a manually inspected subset. It is not a verified execution or compromise rate.",
+      "The SocialNet example describes adopting and executing a remediation, but this review did not inspect independent execution traces or confirm every resulting configuration change.",
+      "The authors call the strategy adversarial reward-hacking. This does not establish that the target agent instrumentally exploited an evaluation reward.",
+      "Defence results remain scoped to the reported experiments and do not establish universal protection."
+    ],
+    "source_clause_analysis": {
+      "source_record_order": 1,
+      "source_url": "https://www.usenix.org/system/files/usenixsecurity26-pasquini.pdf",
+      "purpose": "Occurrence-specific assessment of the documented diagnostic and reliance mechanisms. Experimental setup, aggregate metrics and mitigation context remain in the narrative and evidence assessment.",
+      "clauses": [
+        {
+          "episode_id": "E001",
+          "source_anchor": "Section 3.5: telemetry consumed during SocialNet log analysis",
+          "source_paraphrase": "Crafted requests planted a false fault explanation in telemetry. The agent used the contaminated logs in its diagnosis.",
+          "recovered_invariant_interpretation": "Attacker-controlled diagnostic claims require adversarial trust assessment before supporting an operational conclusion.",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "adjudication_status": "mapped",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000063",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The attacker deliberately placed a false fault diagnosis in logs and traces through error-inducing requests. The agent accepted the contaminated telemetry as support for its repair conclusion instead of preserving the content as an untrusted claim. The diagnostic use is distinct from obeying the embedded repair direction."
+            }
+          ]
+        },
+        {
+          "episode_id": "E002",
+          "source_anchor": "Section 3.5: adoption of attacker-specified remediation",
+          "source_paraphrase": "The SocialNet agent accepted the repair direction carried by the planted log content and produced the attacker-selected remediation.",
+          "recovered_invariant_interpretation": "A repair instruction inside application telemetry has no operator authority merely because the agent retrieved the log.",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "adjudication_status": "mapped",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000001",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The same telemetry also carried an attacker-selected repair direction. The agent adopted that direction for its remediation output although an application request originator had no authority to direct the incident-response agent. The report describes this transition in its SocialNet example; aggregate output matching does not establish execution in every trial."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "source_records": [
+    {
+      "source_title": "When AIOps Become “AI Oops”: Subverting LLM-driven IT Operations via Telemetry Manipulation",
+      "author_or_publisher": "Dario Pasquini et al. / USENIX Security 2026",
+      "source_date": "2026-08",
+      "source_url": "https://www.usenix.org/system/files/usenixsecurity26-pasquini.pdf",
+      "source_url_status": "available",
+      "source_type": "research paper",
+      "source_platform": "Dario Pasquini et al. / USENIX Security 2026",
+      "source_residence": "external",
+      "source_role": "incident-evidence",
+      "evidence_modality": [
+        "text"
+      ],
+      "evidence_status": "first-party-reported",
+      "evidence_status_basis": "The originating researchers report their own experiment. This review did not independently reproduce it.",
+      "source_context": "Sections 3.5 and 4 describe the SocialNet trajectory, controlled evaluation, output-matching metric and mitigation context.",
+      "interpretive_reliance": "Sections 3.5 and 4 describe the SocialNet trajectory, controlled evaluation, output-matching metric and mitigation context.",
+      "relevance_note": "First-party experimental report. Publication in 2026 follows the 2025 preprint; dates of individual runs are unavailable.",
+      "retrieved_date": "2026-10-16",
+      "primary_artefact_access": {
+        "access_status": "directly reviewed",
+        "reviewing_system": "OpenAI ChatGPT Work / Codex",
+        "access_method": "Read the public source text. No attack code or fuzzing experiment was executed.",
+        "direct_primary_artefact_review": true,
+        "limitations": [
+          "First-party experimental report. Publication in 2026 follows the 2025 preprint; dates of individual runs are unavailable."
+        ]
+      },
+      "incident_source_order": 1
+    },
+    {
+      "source_title": "AIOpsDoom: Pen-Testing Tool for AIOps Systems and Beyond",
+      "author_or_publisher": "RSAC Labs",
+      "source_date": null,
+      "source_url": "https://github.com/RSAC-Labs/AIOpsDoom",
+      "source_url_status": "available",
+      "source_type": "repository record",
+      "source_platform": "RSAC Labs",
+      "source_residence": "external",
+      "source_role": "contextual-background",
+      "evidence_modality": [
+        "text"
+      ],
+      "evidence_status": "first-party-reported",
+      "evidence_status_basis": "The originating researchers report their own experiment. This review did not independently reproduce it.",
+      "source_context": "The originating repository documents reconnaissance, tailored payload generation and fuzzing used to deliver malicious content into telemetry.",
+      "interpretive_reliance": "The originating repository documents reconnaissance, tailored payload generation and fuzzing used to deliver malicious content into telemetry.",
+      "relevance_note": "Current repository documentation is contextual. Code was not executed; it does not independently verify historical outputs.",
+      "retrieved_date": "2026-10-16",
+      "primary_artefact_access": {
+        "access_status": "directly reviewed",
+        "reviewing_system": "OpenAI ChatGPT Work / Codex",
+        "access_method": "Read the public source text. No attack code or fuzzing experiment was executed.",
+        "direct_primary_artefact_review": true,
+        "limitations": [
+          "Current repository documentation is contextual. Code was not executed; it does not independently verify historical outputs."
+        ]
+      },
+      "incident_source_order": 2
+    },
+    {
+      "source_title": "When AIOps Become “AI Oops”: Subverting LLM-driven IT Operations via Telemetry Manipulation — arXiv v2",
+      "author_or_publisher": "Dario Pasquini et al. / USENIX Security 2026",
+      "source_date": "2025-08-27",
+      "source_url": "https://arxiv.org/html/2508.06394v2",
+      "source_url_status": "available",
+      "source_type": "research paper",
+      "source_platform": "arXiv / originating researchers",
+      "source_residence": "external",
+      "source_role": "contextual-background",
+      "evidence_modality": [
+        "text"
+      ],
+      "evidence_status": "first-party-reported",
+      "evidence_status_basis": "The originating researchers report their own experiment. This review did not independently reproduce it.",
+      "source_context": "The dated 2025 preprint establishes the earlier public research account. The final USENIX paper remains the preferred substantive source.",
+      "interpretive_reliance": "Publication chronology and comparison with the later final paper.",
+      "relevance_note": "Same originating research, not independent corroboration. No experiment was reproduced.",
+      "retrieved_date": "2026-10-16",
+      "primary_artefact_access": {
+        "access_status": "directly reviewed",
+        "reviewing_system": "OpenAI ChatGPT Work / Codex",
+        "access_method": "Read the public source text. No attack code or fuzzing experiment was executed.",
+        "direct_primary_artefact_review": true,
+        "limitations": [
+          "Same originating research as the final paper; not independent corroboration."
+        ]
+      },
+      "incident_source_order": 3
+    }
+  ],
+  "preferred_evidence": {
+    "source_url": "https://www.usenix.org/system/files/usenixsecurity26-pasquini.pdf",
+    "selection_basis": "Original researchers provide the occurrence description, experimental method and limitations.",
+    "selected_on": "2026-10-16"
+  },
+  "external_incident_references": [],
+  "external_assessments": [],
+  "external_requirement_assessments": [],
+  "system_context": {
+    "platform_or_vendor": "OpenAI",
+    "product_or_service": "Other",
+    "specific_model_or_runtime": "AIOpsLab ReAct / Flash evaluated by RSAC Labs and George Mason University with AIOpsDoom; gpt-4o-2024-08-06; gpt-4.1-2025-04-14; o4-mini as separate evaluation judge",
+    "interface_surface": "Crafted application requests, logs, metrics, traces and agent remediation outputs",
+    "agent_context": {
+      "agentic_status": "unknown",
+      "agent_count": null,
+      "agent_count_min": null,
+      "agent_count_max": null,
+      "count_basis": "unknown",
+      "evidence_basis": "The study distinguishes target AIOps agents, payload generation and a separate judge. It does not establish one stable total topology across every trial.",
+      "source_record_refs": [
+        "source_records[0]"
+      ]
+    },
+    "occurrence_environment": {
+      "deployment_state": "pre-deployment",
+      "activity_contexts": [
+        "research",
+        "evaluation"
+      ],
+      "external_reach": "contained",
+      "activity_actor": "third-party",
+      "environment_detail": "Researchers evaluated AIOpsLab applications on reset experimental virtual machines. This is not an operational customer-service deployment.",
+      "evidence_basis": "The paper identifies benchmark applications, fresh VMs and independent trial resets. Its production-risk discussion is not evidence of live external victims.",
+      "source_record_refs": [
+        "source_records[0]"
+      ]
+    }
+  },
+  "jurisdictional_context": {
+    "primary_jurisdiction": "Not established",
+    "notes": "Institutional affiliations and cloud hosting do not establish the location of each experimental run or legal applicability."
+  },
+  "taxonomy_classification": {
+    "taxonomy_version": "0.6.11",
+    "classification_status": "provisionally-classified",
+    "adjudication_coverage": {
+      "status": "complete"
+    },
+    "classification_basis": "Adversarial telemetry shaped both the diagnosis and the proposed repair. The diagnostic claim gained evidentiary weight, while its embedded repair direction gained operative force without authority from the affected operator. These are distinct trust and authority transitions within a controlled research occurrence.",
+    "primary_classification": {
+      "family_id": "VIGIL-FF-0003",
+      "class_id": "VIGIL-FC-000063",
+      "classification_role": "failure-occurrence",
+      "classification_basis": "The attacker deliberately placed a false fault diagnosis in logs and traces through error-inducing requests. The agent accepted the contaminated telemetry as support for its repair conclusion instead of preserving the content as an untrusted claim. The diagnostic use is distinct from obeying the embedded repair direction.",
+      "classification_confidence": "medium"
+    },
+    "secondary_classifications": [
+      {
+        "family_id": "VIGIL-FF-0001",
+        "class_id": "VIGIL-FC-000001",
+        "classification_role": "failure-occurrence",
+        "classification_basis": "The same telemetry also carried an attacker-selected repair direction. The agent adopted that direction for its remediation output although an application request originator had no authority to direct the incident-response agent. The report describes this transition in its SocialNet example; aggregate output matching does not establish execution in every trial.",
+        "classification_confidence": "medium"
+      }
+    ],
+    "classification_review_provenance": {
+      "review_date": "2026-10-16",
+      "reviewer": "OpenAI ChatGPT Work / Codex",
+      "review_status": "AI assessment of bounded source clauses; no independent human verification"
+    }
+  },
+  "related_incidents": [],
+  "interpretive_provenance": {
+    "review_history": [
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-16-FUZZ-INGESTION-000201",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work / Codex",
+        "reviewer_model": "Exact runtime model identifier not exposed in this session",
+        "review_date": "2026-10-16",
+        "review_scope": "Source-first admission of a bounded research occurrence; current taxonomy recognition and exclusion review; twelve-dimensional harm screening.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "source_provenance_review": true,
+          "taxonomy_review": true,
+          "harm_impact_review": true,
+          "new_external_source_research": true
+        },
+        "known_limitations": [
+          "The original authors report controlled AIOpsLab experiments, not a breach of a customer production service.",
+          "Exact experiment dates are not given; publication dates are not occurrence dates.",
+          "The reported 90% result is an output-matching evaluation using o4-mini, with a manually inspected subset. It is not a verified execution or compromise rate.",
+          "The SocialNet example describes adopting and executing a remediation, but this review did not inspect independent execution traces or confirm every resulting configuration change.",
+          "The authors call the strategy adversarial reward-hacking. This does not establish that the target agent instrumentally exploited an evaluation reward.",
+          "Defence results remain scoped to the reported experiments and do not establish universal protection."
+        ],
+        "review_outcome": "Recorded a research occurrence with provisional existing-class mappings. Clause coverage refers only to the retained material clauses. No production accident, completed human verification or new taxonomy class is claimed."
+      }
+    ],
+    "current_ai_review": {
+      "review_id": "VIGIL-REVIEW-2026-10-16-FUZZ-INGESTION-000201",
+      "reviewer_type": "AI analytical reviewer",
+      "reviewer_platform": "OpenAI ChatGPT Work / Codex",
+      "reviewer_model": "Exact runtime model identifier not exposed in this session",
+      "review_date": "2026-10-16",
+      "review_scope": "Source-first admission of a bounded research occurrence; current taxonomy recognition and exclusion review; twelve-dimensional harm screening.",
+      "capability_profile": {
+        "direct_repository_analysis": true,
+        "direct_text_analysis": true,
+        "source_provenance_review": true,
+        "taxonomy_review": true,
+        "harm_impact_review": true,
+        "new_external_source_research": true
+      },
+      "known_limitations": [
+        "The original authors report controlled AIOpsLab experiments, not a breach of a customer production service.",
+        "Exact experiment dates are not given; publication dates are not occurrence dates.",
+        "The reported 90% result is an output-matching evaluation using o4-mini, with a manually inspected subset. It is not a verified execution or compromise rate.",
+        "The SocialNet example describes adopting and executing a remediation, but this review did not inspect independent execution traces or confirm every resulting configuration change.",
+        "The authors call the strategy adversarial reward-hacking. This does not establish that the target agent instrumentally exploited an evaluation reward.",
+        "Defence results remain scoped to the reported experiments and do not establish universal protection."
+      ],
+      "review_outcome": "Recorded a research occurrence with provisional existing-class mappings. Clause coverage refers only to the retained material clauses. No production accident, completed human verification or new taxonomy class is claimed."
+    },
+    "operating_model": "AI-authored, semi-autonomous production under human task instruction",
+    "human_governance_editor": null,
+    "historical_reviewer_note": "The maintainer authorised admission of these two research occurrences and consideration of taxonomy fit. Admission authority is separate from independent verification."
+  },
+  "harm_impact_assessment": {
+    "methodology_id": "VIGIL-HIM",
+    "methodology_version": "1.1.0",
+    "derivation_rule": "highest-supported-harm-on-exclusive-incident-assessment-pathway",
+    "assessment_pathway": "specific_consequence",
+    "aggregate_harm_screening": {
+      "deployed_configuration": false,
+      "potentially_generalisable_mechanism": true,
+      "bounded_materialised_consequence_case": true,
+      "candidate_dimensions": [],
+      "source_record_refs": [
+        "source_records[0]"
+      ],
+      "rationale": "This is a bounded experimental occurrence, not a population-level Aggregate Harm estimate. Released base models do not establish operational deployment of the evaluated agent configuration."
+    },
+    "assessed_on": "2026-10-16",
+    "overall_severity": "SU",
+    "controlling_dimensions": [],
+    "coverage_note": "All twelve dimensions screened independently. Technical errors and security risks are preserved. No production victim, financial loss or physical consequence is inferred from a research benchmark.",
+    "dimensions": [
+      {
+        "dimension_id": "physical-health-safety",
+        "assessment_status": "unreported",
+        "assessment_basis": "The sources do not report a bandable materialised consequence in this dimension. This is not a finding of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "psychological-wellbeing",
+        "assessment_status": "unreported",
+        "assessment_basis": "The sources do not report a bandable materialised consequence in this dimension. This is not a finding of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "rights-liberty",
+        "assessment_status": "unreported",
+        "assessment_basis": "The sources do not report a bandable materialised consequence in this dimension. This is not a finding of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "equal-treatment",
+        "assessment_status": "unreported",
+        "assessment_basis": "The sources do not report a bandable materialised consequence in this dimension. This is not a finding of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "privacy-confidentiality",
+        "assessment_status": "unreported",
+        "assessment_basis": "The sources do not report a bandable materialised consequence in this dimension. This is not a finding of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "financial-economic",
+        "assessment_status": "unreported",
+        "assessment_basis": "The sources do not report a bandable materialised consequence in this dimension. This is not a finding of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "property-asset-damage",
+        "assessment_status": "unreported",
+        "assessment_basis": "The sources do not report a bandable materialised consequence in this dimension. This is not a finding of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "service-operational-infrastructure",
+        "assessment_status": "unreported",
+        "assessment_basis": "The sources do not report a bandable materialised consequence in this dimension. This is not a finding of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "reputation-dignity",
+        "assessment_status": "unreported",
+        "assessment_basis": "The sources do not report a bandable materialised consequence in this dimension. This is not a finding of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "societal-democratic",
+        "assessment_status": "unreported",
+        "assessment_basis": "The sources do not report a bandable materialised consequence in this dimension. This is not a finding of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "environmental",
+        "assessment_status": "unreported",
+        "assessment_basis": "The sources do not report a bandable materialised consequence in this dimension. This is not a finding of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "relational-integrity-autonomy",
+        "assessment_status": "unreported",
+        "assessment_basis": "The sources do not report a bandable materialised consequence in this dimension. This is not a finding of no harm.",
+        "evidence_confidence": "not-assessed"
+      }
+    ],
+    "assessment_gap": "The experiment establishes a technical or diagnostic adverse outcome. The sources do not quantify a materialised consequence that supports a harm band. Research costs and hypothetical production exposure are not assumed to be incident losses."
+  }
+}

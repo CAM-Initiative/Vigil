@@ -1,0 +1,312 @@
+{
+  "id": "VIGIL-INC-000202",
+  "record_type": "incident",
+  "record_state": "active",
+  "date_recorded": "2026-10-16",
+  "record_identity": {
+    "record_id": "VIGIL-INC-000202",
+    "record_type": "incident",
+    "title": "OSS-Fuzz-Gen evaluation exposed misleading crashes from invalid AI-generated test drivers",
+    "created": "2026-10-16",
+    "updated": "2026-10-16",
+    "version": "0.1.0"
+  },
+  "incident_identity": {
+    "historical_event_name": "OSS-Fuzz-Gen false-positive crash evaluation reported in FalseCrashReducer",
+    "occurred_from": "2025",
+    "occurred_to": null,
+    "date_precision": "year",
+    "date_basis": "Section 5.1 places the experiments between July and September 2025. The structured year preserves the known year; the narrower month interval is retained in the narrative. No exact start or end day is inferred."
+  },
+  "summary": "Between July and September 2025, researchers evaluated AI-generated fuzz drivers in OSS-Fuzz-Gen using Gemini 2.5 Pro and 1,555 benchmark functions from 336 projects. Some drivers violated internal functions’ calling requirements and produced crashes that were not reachable through normal application entry points. The existing crash analyser also labelled some driver errors as program errors. The researchers added function constraints and contextual crash validation, reducing spurious results. Their paper, published on 2 October 2025, reports roughly 70% false-positive crashes, although its prose and table assign the totals differently. No production outage or customer loss is reported.",
+  "vigil_assessment": {
+    "factual_basis": "The originating paper provides a concrete libraw driver example, benchmark setup and aggregate results. Sections 2 and 3 distinguish an invalid harness invocation from a reachable application defect. Section 5.2.3 describes program-error classifications later rejected by contextual validation. Section 5.1 dates the cloud experiments and names Gemini 2.5 Pro. Section 3.3 and Table 2 disagree on which configuration produced the 4,835 total; the difference is retained rather than resolved by inference. The repository listing does not independently reconcile the data.",
+    "governance_interpretation": "A crash artefact received more diagnostic weight than its calling context justified. The immediate defect could lie in the generated harness rather than the tested application. Contextual feasibility therefore matters before a crash becomes evidence of an application vulnerability.",
+    "significance_to_cam": "A testing system can create misleading evidence when it changes the conditions under which a function is called. Validating the test setup is separate from reproducing the crash or attributing a defect to the application.",
+    "assessment_boundaries": [
+      "This record concerns the July–September 2025 evaluation, not every deployment or output of OSS-Fuzz or OSS-Fuzz-Gen.",
+      "The paper prose describes 4,835 crashes with about 70% false positives. Table 2 lists 5,080 baseline crashes with 3,583 false positives and 4,835 constrained crashes with 3,390 false positives. These totals must not be silently conflated.",
+      "The table contains apparent formatting or aggregation anomalies. Exact reconciled counts require author clarification or a separate raw-data audit.",
+      "A false positive means the crash is not feasible from a valid application entry point under the stated model; the harness itself can still crash.",
+      "No affected maintainer, production vulnerability report, outage, customer loss or physical consequence is established from the aggregate evaluation.",
+      "Gemini 2.5 Pro is reported for these experiments. Results are not assumed to generalise to other models or software domains.",
+      "The public artifact repository was inspected only at its top-level listing. Its raw datasets were not independently audited."
+    ],
+    "source_clause_analysis": {
+      "source_record_order": 1,
+      "source_url": "https://arxiv.org/html/2510.02185v1",
+      "purpose": "Occurrence-specific assessment of the documented diagnostic and reliance mechanisms. Experimental setup, aggregate metrics and mitigation context remain in the narrative and evidence assessment.",
+      "clauses": [
+        {
+          "episode_id": "E001",
+          "source_anchor": "Sections 2.1, 3.3 and 5.2.3: invalid calling context and program-error classification",
+          "source_paraphrase": "Generated drivers violated function preconditions. Some resulting crashes were labelled program errors and subsequently rejected by context-aware validation.",
+          "recovered_invariant_interpretation": "A crash must be attributable to a feasible application execution before it is relied upon as evidence of an application defect.",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "adjudication_status": "mapped",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000062",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "AI-generated drivers called internal functions outside valid calling conditions. The resulting crash artefacts were treated as program-error evidence even though later context validation identified additional driver errors. The crash was real in the constructed harness, but its interpretation as a reachable application defect lacked the assurance required for defect triage."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "source_records": [
+    {
+      "source_title": "FalseCrashReducer: Mitigating False Positive Crashes in OSS-Fuzz-Gen Using Agentic AI",
+      "author_or_publisher": "Paschal C. Amusuo et al.",
+      "source_date": "2025-10-02",
+      "source_url": "https://arxiv.org/html/2510.02185v1",
+      "source_url_status": "available",
+      "source_type": "research paper",
+      "source_platform": "Paschal C. Amusuo et al.",
+      "source_residence": "external",
+      "source_role": "incident-evidence",
+      "evidence_modality": [
+        "text"
+      ],
+      "evidence_status": "first-party-reported",
+      "evidence_status_basis": "The originating researchers report their own experiment. This review did not independently reproduce it.",
+      "source_context": "Sections 2–5 document invalid drivers, misleading crash classifications, July–September 2025 experiments and contextual validation.",
+      "interpretive_reliance": "Sections 2–5 document invalid drivers, misleading crash classifications, July–September 2025 experiments and contextual validation.",
+      "relevance_note": "First-party study. Prose and Table 2 totals differ. Neither independent reproduction nor raw-data reconciliation was performed.",
+      "retrieved_date": "2026-10-16",
+      "primary_artefact_access": {
+        "access_status": "directly reviewed",
+        "reviewing_system": "OpenAI ChatGPT Work / Codex",
+        "access_method": "Read the public source text. No attack code or fuzzing experiment was executed.",
+        "direct_primary_artefact_review": true,
+        "limitations": [
+          "First-party study. Prose and Table 2 totals differ. Neither independent reproduction nor raw-data reconciliation was performed."
+        ]
+      },
+      "incident_source_order": 1
+    }
+  ],
+  "preferred_evidence": {
+    "source_url": "https://arxiv.org/html/2510.02185v1",
+    "selection_basis": "Original researchers provide the occurrence description, experimental method and limitations.",
+    "selected_on": "2026-10-16"
+  },
+  "external_incident_references": [],
+  "external_assessments": [],
+  "external_requirement_assessments": [],
+  "system_context": {
+    "platform_or_vendor": "Google",
+    "product_or_service": "Other",
+    "specific_model_or_runtime": "OSS-Fuzz-Gen evaluated with FalseCrashReducer in a Google / university research collaboration; Gemini 2.5 Pro; exact model build not specified",
+    "interface_surface": "AI-generated function-level fuzz drivers and downstream crash analysis",
+    "agent_context": {
+      "agentic_status": "multi-agent",
+      "agent_count": null,
+      "agent_count_min": 4,
+      "agent_count_max": null,
+      "count_basis": "minimum",
+      "evidence_basis": "Table 1 identifies four existing agent roles. The experiment adds function-analysis and crash-validation roles; a single exact concurrent count is not assumed.",
+      "source_record_refs": [
+        "source_records[0]"
+      ]
+    },
+    "occurrence_environment": {
+      "deployment_state": "pre-deployment",
+      "activity_contexts": [
+        "research",
+        "evaluation"
+      ],
+      "external_reach": "contained",
+      "activity_actor": "joint",
+      "environment_detail": "The study evaluated baseline and experimental fuzzing pipelines on Google Cloud using open-source benchmark functions. Cloud execution and published code do not establish affected production users.",
+      "evidence_basis": "The paper describes an experimental configuration, benchmark subsets and joint university/Google research. The released base model does not make the evaluated pipeline an operational deployment.",
+      "source_record_refs": [
+        "source_records[0]"
+      ]
+    }
+  },
+  "jurisdictional_context": {
+    "primary_jurisdiction": "Not established",
+    "notes": "Institutional affiliations and cloud hosting do not establish the location of each experimental run or legal applicability."
+  },
+  "taxonomy_classification": {
+    "taxonomy_version": "0.6.11",
+    "classification_status": "provisionally-classified",
+    "adjudication_coverage": {
+      "status": "complete"
+    },
+    "classification_basis": "A crash artefact received more diagnostic weight than its calling context justified. The immediate defect could lie in the generated harness rather than the tested application. Contextual feasibility therefore matters before a crash becomes evidence of an application vulnerability.",
+    "primary_classification": {
+      "family_id": "VIGIL-FF-0003",
+      "class_id": "VIGIL-FC-000062",
+      "classification_role": "failure-occurrence",
+      "classification_basis": "AI-generated drivers called internal functions outside valid calling conditions. The resulting crash artefacts were treated as program-error evidence even though later context validation identified additional driver errors. The crash was real in the constructed harness, but its interpretation as a reachable application defect lacked the assurance required for defect triage.",
+      "classification_confidence": "medium"
+    },
+    "secondary_classifications": [],
+    "classification_review_provenance": {
+      "review_date": "2026-10-16",
+      "reviewer": "OpenAI ChatGPT Work / Codex",
+      "review_status": "AI assessment of bounded source clauses; no independent human verification"
+    }
+  },
+  "related_incidents": [],
+  "interpretive_provenance": {
+    "review_history": [
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-16-FUZZ-INGESTION-000202",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work / Codex",
+        "reviewer_model": "Exact runtime model identifier not exposed in this session",
+        "review_date": "2026-10-16",
+        "review_scope": "Source-first admission of a bounded research occurrence; current taxonomy recognition and exclusion review; twelve-dimensional harm screening.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "source_provenance_review": true,
+          "taxonomy_review": true,
+          "harm_impact_review": true,
+          "new_external_source_research": true
+        },
+        "known_limitations": [
+          "This record concerns the July–September 2025 evaluation, not every deployment or output of OSS-Fuzz or OSS-Fuzz-Gen.",
+          "The paper prose describes 4,835 crashes with about 70% false positives. Table 2 lists 5,080 baseline crashes with 3,583 false positives and 4,835 constrained crashes with 3,390 false positives. These totals must not be silently conflated.",
+          "The table contains apparent formatting or aggregation anomalies. Exact reconciled counts require author clarification or a separate raw-data audit.",
+          "A false positive means the crash is not feasible from a valid application entry point under the stated model; the harness itself can still crash.",
+          "No affected maintainer, production vulnerability report, outage, customer loss or physical consequence is established from the aggregate evaluation.",
+          "Gemini 2.5 Pro is reported for these experiments. Results are not assumed to generalise to other models or software domains.",
+          "The public artifact repository was inspected only at its top-level listing. Its raw datasets were not independently audited."
+        ],
+        "review_outcome": "Recorded a research occurrence with provisional existing-class mappings. Clause coverage refers only to the retained material clauses. No production accident, completed human verification or new taxonomy class is claimed."
+      }
+    ],
+    "current_ai_review": {
+      "review_id": "VIGIL-REVIEW-2026-10-16-FUZZ-INGESTION-000202",
+      "reviewer_type": "AI analytical reviewer",
+      "reviewer_platform": "OpenAI ChatGPT Work / Codex",
+      "reviewer_model": "Exact runtime model identifier not exposed in this session",
+      "review_date": "2026-10-16",
+      "review_scope": "Source-first admission of a bounded research occurrence; current taxonomy recognition and exclusion review; twelve-dimensional harm screening.",
+      "capability_profile": {
+        "direct_repository_analysis": true,
+        "direct_text_analysis": true,
+        "source_provenance_review": true,
+        "taxonomy_review": true,
+        "harm_impact_review": true,
+        "new_external_source_research": true
+      },
+      "known_limitations": [
+        "This record concerns the July–September 2025 evaluation, not every deployment or output of OSS-Fuzz or OSS-Fuzz-Gen.",
+        "The paper prose describes 4,835 crashes with about 70% false positives. Table 2 lists 5,080 baseline crashes with 3,583 false positives and 4,835 constrained crashes with 3,390 false positives. These totals must not be silently conflated.",
+        "The table contains apparent formatting or aggregation anomalies. Exact reconciled counts require author clarification or a separate raw-data audit.",
+        "A false positive means the crash is not feasible from a valid application entry point under the stated model; the harness itself can still crash.",
+        "No affected maintainer, production vulnerability report, outage, customer loss or physical consequence is established from the aggregate evaluation.",
+        "Gemini 2.5 Pro is reported for these experiments. Results are not assumed to generalise to other models or software domains.",
+        "The public artifact repository was inspected only at its top-level listing. Its raw datasets were not independently audited."
+      ],
+      "review_outcome": "Recorded a research occurrence with provisional existing-class mappings. Clause coverage refers only to the retained material clauses. No production accident, completed human verification or new taxonomy class is claimed."
+    },
+    "operating_model": "AI-authored, semi-autonomous production under human task instruction",
+    "human_governance_editor": null,
+    "historical_reviewer_note": "The maintainer authorised admission of these two research occurrences and consideration of taxonomy fit. Admission authority is separate from independent verification."
+  },
+  "harm_impact_assessment": {
+    "methodology_id": "VIGIL-HIM",
+    "methodology_version": "1.1.0",
+    "derivation_rule": "highest-supported-harm-on-exclusive-incident-assessment-pathway",
+    "assessment_pathway": "specific_consequence",
+    "aggregate_harm_screening": {
+      "deployed_configuration": false,
+      "potentially_generalisable_mechanism": true,
+      "bounded_materialised_consequence_case": true,
+      "candidate_dimensions": [],
+      "source_record_refs": [
+        "source_records[0]"
+      ],
+      "rationale": "This is a bounded experimental occurrence, not a population-level Aggregate Harm estimate. Released base models do not establish operational deployment of the evaluated agent configuration."
+    },
+    "assessed_on": "2026-10-16",
+    "overall_severity": "SU",
+    "controlling_dimensions": [],
+    "coverage_note": "All twelve dimensions screened independently. Technical errors and security risks are preserved. No production victim, financial loss or physical consequence is inferred from a research benchmark.",
+    "dimensions": [
+      {
+        "dimension_id": "physical-health-safety",
+        "assessment_status": "unreported",
+        "assessment_basis": "The sources do not report a bandable materialised consequence in this dimension. This is not a finding of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "psychological-wellbeing",
+        "assessment_status": "unreported",
+        "assessment_basis": "The sources do not report a bandable materialised consequence in this dimension. This is not a finding of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "rights-liberty",
+        "assessment_status": "unreported",
+        "assessment_basis": "The sources do not report a bandable materialised consequence in this dimension. This is not a finding of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "equal-treatment",
+        "assessment_status": "unreported",
+        "assessment_basis": "The sources do not report a bandable materialised consequence in this dimension. This is not a finding of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "privacy-confidentiality",
+        "assessment_status": "unreported",
+        "assessment_basis": "The sources do not report a bandable materialised consequence in this dimension. This is not a finding of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "financial-economic",
+        "assessment_status": "unreported",
+        "assessment_basis": "The sources do not report a bandable materialised consequence in this dimension. This is not a finding of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "property-asset-damage",
+        "assessment_status": "unreported",
+        "assessment_basis": "The sources do not report a bandable materialised consequence in this dimension. This is not a finding of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "service-operational-infrastructure",
+        "assessment_status": "unreported",
+        "assessment_basis": "The sources do not report a bandable materialised consequence in this dimension. This is not a finding of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "reputation-dignity",
+        "assessment_status": "unreported",
+        "assessment_basis": "The sources do not report a bandable materialised consequence in this dimension. This is not a finding of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "societal-democratic",
+        "assessment_status": "unreported",
+        "assessment_basis": "The sources do not report a bandable materialised consequence in this dimension. This is not a finding of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "environmental",
+        "assessment_status": "unreported",
+        "assessment_basis": "The sources do not report a bandable materialised consequence in this dimension. This is not a finding of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "relational-integrity-autonomy",
+        "assessment_status": "unreported",
+        "assessment_basis": "The sources do not report a bandable materialised consequence in this dimension. This is not a finding of no harm.",
+        "evidence_confidence": "not-assessed"
+      }
+    ],
+    "assessment_gap": "The experiment establishes a technical or diagnostic adverse outcome. The sources do not quantify a materialised consequence that supports a harm band. Research costs and hypothetical production exposure are not assumed to be incident losses."
+  }
+}
