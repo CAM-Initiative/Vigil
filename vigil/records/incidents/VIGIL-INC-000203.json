@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Dixell refrigeration-control compromises at French supermarkets on 12–13 October 2026",
     "created": "2026-10-16",
-    "updated": "2026-10-16",
-    "version": "0.1.0"
+    "updated": "2026-10-17",
+    "version": "0.1.1"
   },
   "incident_identity": {
     "historical_event_name": "Dixell refrigeration-control compromises at French supermarkets on 12–13 October 2026",
@@ -18,21 +18,23 @@
     "date_precision": "date-range",
     "date_basis": "Le Monde reports another overnight refrigeration-controller incident, 12–13 October 2026, involving Dixell-controlled sites, following the 11–12 October Danfoss occurrence."
   },
-  "summary": "During the night of 12–13 October 2026, French supermarkets operating Dixell refrigeration management equipment experienced unauthorised changes to cooling and defrost settings. A refrigeration technician reported that a Bordeaux-area store detected abnormal temperatures and intervened before losing stock. At an E.Leclerc store in Lescure-d'Albigeois, refrigerated stock was discarded after the cold chain was disrupted. A technician reported very rapid parameter changes, including a freezer setting changed from −22°C to 150°C; this was a reported setpoint value, not a measured cabinet temperature. CERT-FR added Dixell XWEB and Copeland XWEB to its wider refrigeration-security alert. Neither a common operator with the previous night's Danfoss events nor an initial access mechanism has been established.",
+  "summary": "During the night of 12–13 October 2026, refrigeration systems using Dixell management equipment were compromised at French supermarkets, a distinct subsequent wave from the 11–12 October Danfoss events. At about 4 am, a Bordeaux-area store's monitoring system identified abnormal temperatures. Its teams and refrigeration specialists intervened before food needed to be discarded. A technician described rapid changes to defrost and temperature parameters, including a reported freezer setpoint changed from −22°C to 150°C; the 150°C value was a configuration setting, not a measured physical temperature. At E.Leclerc Lescure-d'Albigeois, staff found refrigeration controls unresponsive around 4 am, leading to extensive refrigerated and frozen stock disposal. Its director said passwords and firewall settings had been changed following the previous night's warnings. Storage cold rooms and the independently operating Drive order-collection system were unaffected. The operator, initial access method and any causal connection to the Danfoss wave remain unresolved.",
   "vigil_assessment": {
-    "factual_basis": "Le Monde reports a distinct overnight 12–13 October wave at Dixell-managed stores, with contrasting site outcomes: a Bordeaux-area store avoided stock loss after detection and intervention, while an E.Leclerc in the Tarn discarded refrigerated inventory. A quoted refrigeration specialist inferred automation from a rate of two or three parameter changes per second. The reported 150°C value describes a setting, not verified physical heating to that temperature. CERT-FR expanded its national alert to Dixell XWEB and Copeland XWEB but did not identify a shared perpetrator, exploit or fleet-management origin. The evidence does not establish AI-assisted development, formal fuzz testing or a defensive test triggered by the earlier Danfoss event.",
-    "governance_interpretation": "Unauthorised changes to live Dixell-managed refrigeration controls were associated with disrupted cold storage and discarded inventory at one reported store. At another, detection and intervention prevented stock loss. The technical command source and operator are unknown, and the later timing does not prove a common campaign with Danfoss. This is a separately bounded cyber-physical context occurrence, not a finding that an AI system conducted tests or caused damage.",
-    "significance_to_cam": "The separate episode permits assessment of material refrigeration disruption alongside a documented site-level containment response. Its proximity to the earlier Danfoss event is a research lead, not evidence of a shared operator, AI model or unsafe defensive-testing workflow.",
+    "factual_basis": "Le Monde provides a distinct 12–13 October Dixell account. In a Bordeaux-area supermarket, remote supervision detected the abnormal change around 4 am and local intervention prevented inventory loss. A technician inferred software automation from two or three setting changes per second, but no underlying sequence is published. The reported change from −22°C to 150°C is a setpoint alteration and cannot be treated as a measured cabinet temperature. La Dépêche interviewed Yoan Rivera at Dixell-equipped E.Leclerc Lescure-d'Albigeois: he reported discovering disrupted controls about 4 am on 13 October, changes to passwords and firewall configuration on 12 October, extensive display-area cold-chain losses, recovery work from 7 am, and unaffected reserve cold rooms and independently operated Drive services. These defensive changes do not identify the compromise route or show that either night's changes were safety testing. CERT-FR's 13 October update also lists Copeland XWEB, but does not prove that every Copeland compromise formed part of this Dixell occurrence. GitHub projects from 2024–2025 show possible independent read-only monitoring, dashboard simulation and Modbus integrations, not the source of the French commands.",
+    "governance_interpretation": "Unauthorised configuration changes in Dixell-managed refrigeration caused material loss at Lescure-d'Albigeois, whereas remote warning and intervention prevented inventory destruction at a separate Bordeaux-area store. Within Lescure-d'Albigeois, reserve storage and a separate order-collection service preserved operation despite the sales-floor equipment failure. Protective changes made in response to the Danfoss wave did not avert the reported subsequent compromise, but their effectiveness and configuration cannot be determined from the director's account. No source identifies the operator, intent, model or shared mechanism between the two nights.",
+    "significance_to_cam": "This separate occurrence demonstrates consequential remote-control interference alongside locally successful detection, containment and infrastructure separation. The distinction between setpoint commands and physical temperatures is material to diagnosis. Open-source XWEB telemetry collection, model-driven dashboards and local Modbus bridges illustrate multiple legitimate software access layers, but none is an identified incident tool.",
     "assessment_boundaries": [
       "No independent evidence attributes the Dixell compromise to AI, autonomous agents, generated testing code, fuzzing, Mistral, Astra or another named model.",
       "A technician inferred automation from rapid parameter updates; no underlying execution trace or testing sequence has been published.",
       "The 150°C figure is a reported configuration setting, not a measured freezer temperature.",
-      "One Bordeaux-area store reportedly avoided food loss after intervention; this positive outcome must not be conflated with the stock loss at the Tarn store.",
       "The same operator, platform, maintenance contractor or command origin has not been proven across the two nights.",
       "CERT-FR's inclusion of Copeland XWEB in the wider alert does not establish that every Copeland installation shared the reported Dixell occurrence.",
       "The first wave's national store counts and approximately US$112,000 Intermarché loss are not assigned to this occurrence.",
-      "No quantified Dixell-wave financial loss or physical injury is established by the preserved sources.",
-      "The non-AI context admission is authorised by the maintainer; no class-level taxonomy or AI mechanism finding has been completed."
+      "The non-AI context admission is authorised by the maintainer; no class-level taxonomy or AI mechanism finding has been completed.",
+      "Lescure-d'Albigeois reports pre-incident password and firewall changes; no technical record shows whether they were comprehensive, misconfigured or related to the later compromise.",
+      "A Bordeaux-area store avoided stock loss; at Lescure-d'Albigeois cold rooms and the independent Drive continued to operate. These are separate successful protective outcomes, not an overall absence of disruption.",
+      "The reported affected equipment lengths at Lescure-d'Albigeois describe installation size, not quantities of destroyed food, and no monetary loss was published for that store.",
+      "The publicly listed Dixell GitHub repositories are pre-incident technical comparators: monitoring requests, simulated API responses or local Modbus operation. No link to the French incident or an AI model has been shown."
     ]
   },
   "source_records": [
@@ -95,6 +97,126 @@
         ]
       },
       "incident_source_order": 2
+    },
+    {
+      "source_title": "E.Leclerc Lescure-d'Albigeois director describes Dixell compromise after defensive changes",
+      "author_or_publisher": "La Dépêche du Midi / Nawel Omara",
+      "source_date": "2026-10-13",
+      "source_url": "https://www.ladepeche.fr/2026/10/13/reportage-nous-avons-du-tout-jeter-une-cyberattaque-provoque-des-pertes-massives-dans-un-e-leclerc-proche-dalbi-13598650.php",
+      "source_url_status": "available",
+      "source_type": "news article",
+      "source_platform": "La Dépêche du Midi / Nawel Omara",
+      "source_residence": "external",
+      "source_role": "incident-evidence",
+      "evidence_modality": [
+        "text"
+      ],
+      "evidence_status": "independent-reporting",
+      "evidence_status_basis": "Independent local reporting of an interview, observation or industry analysis, subject to stated source limits.",
+      "source_context": "Director Yoan Rivera identified a 4 am discovery on 13 October. The store used Dixell rather than Danfoss and had changed passwords and firewall settings following warnings the previous day. Around 250 metres of refrigerated cases and 100 metres of freezers were affected, with extensive discarded stock; exact monetary loss was not available. Recovery efforts started around 7 am. Separate reserve cold rooms and an independently operated Drive order-collection system remained operational.",
+      "interpretive_reliance": "Director Yoan Rivera identified a 4 am discovery on 13 October. The store used Dixell rather than Danfoss and had changed passwords and firewall settings following warnings the previous day. Around 250 metres of refrigerated cases and 100 metres of freezers were affected, with extensive discarded stock; exact monetary loss was not available. Recovery efforts started around 7 am. Separate reserve cold rooms and an independently operated Drive order-collection system remained operational.",
+      "relevance_note": "Affected-party account published in independent reporting. Password/firewall changes do not prove which safeguards failed or that precautionary work caused the second event.",
+      "retrieved_date": "2026-10-17",
+      "primary_artefact_access": {
+        "access_status": "directly reviewed",
+        "reviewing_system": "OpenAI ChatGPT / GitHub connector and web research",
+        "access_method": "Read publicly indexed publisher text and/or directly available article text. No private logs or forensic files inspected.",
+        "direct_primary_artefact_review": true,
+        "limitations": [
+          "Affected-party account published in independent reporting. Password/firewall changes do not prove which safeguards failed or that precautionary work caused the second event."
+        ]
+      },
+      "incident_source_order": 3
+    },
+    {
+      "source_title": "capture_dixell_v2 — monitor readings from Dixell XWEB300D",
+      "author_or_publisher": "florintanasa",
+      "source_date": "2024-04-18",
+      "source_url": "https://github.com/florintanasa/capture_dixell_v2",
+      "source_url_status": "available",
+      "source_type": "repository record",
+      "source_platform": "GitHub",
+      "source_residence": "external",
+      "source_role": "contextual-background",
+      "evidence_modality": [
+        "text"
+      ],
+      "evidence_status": "first-party-reported",
+      "evidence_status_basis": "Repository's own README, metadata and code structure establish only what its publicly documented implementation offers; no deployment or incident connection is established.",
+      "source_context": "Pre-incident open-source project demonstrates scripted requests to an XWEB300D monitoring interface and recurring storage of controller readings, using a command-line client and a scheduled service. Its documented operation is collection of monitoring data, not bulk changes to live operating settings.",
+      "interpretive_reliance": "Pre-incident open-source project demonstrates scripted requests to an XWEB300D monitoring interface and recurring storage of controller readings, using a command-line client and a scheduled service. Its documented operation is collection of monitoring data, not bulk changes to live operating settings.",
+      "relevance_note": "Illustrative independent read-only monitoring integration, not a suspected executable, testing campaign or command source.",
+      "retrieved_date": "2026-10-17",
+      "primary_artefact_access": {
+        "access_status": "directly reviewed",
+        "reviewing_system": "OpenAI ChatGPT / GitHub connector and web research",
+        "access_method": "Directly inspected repository metadata, README and relevant source structure through the connected GitHub repository interface. No software was executed or tested against live equipment.",
+        "direct_primary_artefact_review": true,
+        "limitations": [
+          "Illustrative independent read-only monitoring integration, not a suspected executable, testing campaign or command source."
+        ]
+      },
+      "incident_source_order": 4
+    },
+    {
+      "source_title": "dixell-api-test — refrigeration dashboard with stored XWEB-like API responses",
+      "author_or_publisher": "Rus1999",
+      "source_date": "2025-11-07",
+      "source_url": "https://github.com/Rus1999/dixell-api-test",
+      "source_url_status": "available",
+      "source_type": "repository record",
+      "source_platform": "GitHub",
+      "source_residence": "external",
+      "source_role": "contextual-background",
+      "evidence_modality": [
+        "text"
+      ],
+      "evidence_status": "first-party-reported",
+      "evidence_status_basis": "Repository's own README, metadata and code structure establish only what its publicly documented implementation offers; no deployment or incident connection is established.",
+      "source_context": "Pre-incident demonstration includes a geminiSolution folder and example device data listing commands such as defrost, alarm mute and setpoint editing. Its inspected server exposes a stored sample runtime response rather than an evidenced live controller command connection.",
+      "interpretive_reliance": "Pre-incident demonstration includes a geminiSolution folder and example device data listing commands such as defrost, alarm mute and setpoint editing. Its inspected server exposes a stored sample runtime response rather than an evidenced live controller command connection.",
+      "relevance_note": "Illustrative simulated dashboard/API data model, not working mass-control code. The folder name is not proof of Gemini-generated code or incident involvement.",
+      "retrieved_date": "2026-10-17",
+      "primary_artefact_access": {
+        "access_status": "directly reviewed",
+        "reviewing_system": "OpenAI ChatGPT / GitHub connector and web research",
+        "access_method": "Directly inspected repository metadata, README and relevant source structure through the connected GitHub repository interface. No software was executed or tested against live equipment.",
+        "direct_primary_artefact_review": true,
+        "limitations": [
+          "Illustrative simulated dashboard/API data model, not working mass-control code. The folder name is not proof of Gemini-generated code or incident involvement."
+        ]
+      },
+      "incident_source_order": 5
+    },
+    {
+      "source_title": "esphome-modbus-master — custom Modbus master for Dixell XR-series devices",
+      "author_or_publisher": "MosquitoByte",
+      "source_date": "2024-05-30",
+      "source_url": "https://github.com/MosquitoByte/esphome-modbus-master",
+      "source_url_status": "available",
+      "source_type": "repository record",
+      "source_platform": "GitHub",
+      "source_residence": "external",
+      "source_role": "contextual-background",
+      "evidence_modality": [
+        "text"
+      ],
+      "evidence_status": "first-party-reported",
+      "evidence_status_basis": "Repository's own README, metadata and code structure establish only what its publicly documented implementation offers; no deployment or incident connection is established.",
+      "source_context": "Pre-incident ESPHome/Modbus project documents a local device-control bridge including Dixell XR-series controllers. It does not document an XWEB fleet service, internet-wide management or use in French supermarkets.",
+      "interpretive_reliance": "Pre-incident ESPHome/Modbus project documents a local device-control bridge including Dixell XR-series controllers. It does not document an XWEB fleet service, internet-wide management or use in French supermarkets.",
+      "relevance_note": "A field-protocol integration comparator only, not evidence of compatibility with every compromised XWEB model or an attack artefact.",
+      "retrieved_date": "2026-10-17",
+      "primary_artefact_access": {
+        "access_status": "directly reviewed",
+        "reviewing_system": "OpenAI ChatGPT / GitHub connector and web research",
+        "access_method": "Directly inspected repository metadata, README and relevant source structure through the connected GitHub repository interface. No software was executed or tested against live equipment.",
+        "direct_primary_artefact_review": true,
+        "limitations": [
+          "A field-protocol integration comparator only, not evidence of compatibility with every compromised XWEB model or an attack artefact."
+        ]
+      },
+      "incident_source_order": 6
     }
   ],
   "preferred_evidence": {
@@ -181,15 +303,38 @@
           "Taxonomy assessment remains unclassified and partial."
         ],
         "review_outcome": "Created a second source-bounded incident, with S3 materialised cold-chain and inventory consequences, source-attributed successful local containment, and no model attribution."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-17-DIXELL-EVIDENCE-REFRESH",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT / connected GitHub research",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-17",
+        "review_scope": "Source-first enrichment of the 12–13 October Dixell occurrence, including direct store-director chronology, successful boundaries and pre-incident GitHub architecture comparators.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "source_provenance_review": true,
+          "harm_impact_review": true,
+          "taxonomy_review": false
+        },
+        "known_limitations": [
+          "Public articles are not private forensic control logs; some publisher pages were accessible via indexed text only.",
+          "The affected-store controller inventory, command-source logs and service-provider identities remain unpublished.",
+          "GitHub example projects are technically illustrative and are not attributed to the occurrence.",
+          "No AI participation or actor intent has been established.",
+          "No completed clause-level taxonomy review or new canonical class mapping is claimed."
+        ],
+        "review_outcome": "Expanded site-specific facts and direct evidence of separate operating protections; retained S3 operational/asset harm, unreported financial band and unclassified/partial status. No inference of shared causation."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-16-INGESTION-000203",
+      "review_id": "VIGIL-REVIEW-2026-10-17-DIXELL-EVIDENCE-REFRESH",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT (GitHub repository maintenance)",
+      "reviewer_platform": "OpenAI ChatGPT / connected GitHub research",
       "reviewer_model": "GPT-6",
-      "review_date": "2026-10-16",
-      "review_scope": "Separated the 12–13 October Dixell source episode from the initial Danfoss record and conducted bounded source-linked HIM screening.",
+      "review_date": "2026-10-17",
+      "review_scope": "Source-first enrichment of the 12–13 October Dixell occurrence, including direct store-director chronology, successful boundaries and pre-incident GitHub architecture comparators.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
@@ -198,12 +343,13 @@
         "taxonomy_review": false
       },
       "known_limitations": [
-        "Relies on source records preserved in the existing intake; no private controller logs were reviewed.",
-        "No quantified financial loss established for the second wave.",
-        "No common actor, cloud platform, contractor or AI-assisted testing activity established.",
-        "Taxonomy assessment remains unclassified and partial."
+        "Public articles are not private forensic control logs; some publisher pages were accessible via indexed text only.",
+        "The affected-store controller inventory, command-source logs and service-provider identities remain unpublished.",
+        "GitHub example projects are technically illustrative and are not attributed to the occurrence.",
+        "No AI participation or actor intent has been established.",
+        "No completed clause-level taxonomy review or new canonical class mapping is claimed."
       ],
-      "review_outcome": "Created a second source-bounded incident, with S3 materialised cold-chain and inventory consequences, source-attributed successful local containment, and no model attribution."
+      "review_outcome": "Expanded site-specific facts and direct evidence of separate operating protections; retained S3 operational/asset harm, unreported financial band and unclassified/partial status. No inference of shared causation."
     },
     "operating_model": "AI-authored, semi-autonomous production under human task instruction",
     "human_governance_editor": null,
@@ -230,7 +376,7 @@
       "property-asset-damage",
       "service-operational-infrastructure"
     ],
-    "coverage_note": "All twelve HIM dimensions screened for the distinct 12–13 October Dixell occurrence. The reported stock loss and service disruption support S3; a separate store's successful intervention is preserved. No first-wave economic amount or multi-organisation S4 scope is transferred.",
+    "coverage_note": "All twelve HIM 1.1.0 dimensions screened for the second Dixell occurrence. S3 reflects confirmed materialised sales-floor stock loss and interruption at the Tarn store. Separate reserve cold rooms and Drive operation remained available there, and a Bordeaux-area store prevented stock loss. None of the Danfoss wave's losses or national counts is transferred.",
     "dimensions": [
       {
         "dimension_id": "physical-health-safety",
@@ -271,24 +417,26 @@
       {
         "dimension_id": "property-asset-damage",
         "assessment_status": "assessed",
-        "assessment_basis": "An E.Leclerc store in the Tarn reportedly discarded refrigerated inventory following disrupted cooling. This is meaningful bounded physical inventory loss requiring replacement. The quantity, monetary loss, repair duration and equipment damage are not documented.",
+        "assessment_basis": "Lescure-d'Albigeois management reported discarding extensive refrigerated and frozen goods following lost cold-chain control in the sales area; replacement was required. Reserve cold rooms were spared. The quantity, direct financial value, precise restoration duration and permanent hardware damage are not established, so this remains bounded S3 inventory loss.",
         "evidence_confidence": "medium",
         "severity": "S3",
         "threshold_id": "VIGIL-HIM-1.1.0-PAD-S3",
         "evidence_refs": [
-          "source_records[0]"
+          "source_records[0]",
+          "source_records[2]"
         ],
         "observed_values": []
       },
       {
         "dimension_id": "service-operational-infrastructure",
         "assessment_status": "assessed",
-        "assessment_basis": "Dixell parameter interference disrupted refrigeration and cold-chain operations at the Tarn E.Leclerc and required removal of stock. A separate Bordeaux-area store detected the changes and intervened before losses. This establishes material disruption of an important local workflow at S3, not first-wave multi-organisation S4 loss.",
+        "assessment_basis": "The Tarn E.Leclerc experienced substantive refrigeration and cold-chain workflow disruption, extensive stock withdrawal and active recovery work beginning about 7 am. At that site, reserve cold rooms and independently operating Drive services remained available. The Bordeaux-area store prevented food loss through early detection and intervention. S3 reflects demonstrated material local service disruption rather than transferring the earlier Danfoss wave's S4 multi-organisation consequences.",
         "evidence_confidence": "medium",
         "severity": "S3",
         "threshold_id": "VIGIL-HIM-1.1.0-SOI-S3",
         "evidence_refs": [
-          "source_records[0]"
+          "source_records[0]",
+          "source_records[2]"
         ],
         "observed_values": []
       },
