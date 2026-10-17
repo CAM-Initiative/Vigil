@@ -138,3 +138,47 @@ The incident's four other ambiguous-boundary mappings, taxonomy exemplars, secon
 1. Submit this adjudication to the human maintainer with the explicit Gate 1 test adjustment described above.
 2. On approval, reconcile the canonical Incident classification (including any promoted/resolved ambiguous-boundary roles), the corresponding taxonomy exemplar, the independent external requirement derivation and HIM v1.1.0 as **one bounded coordinated semantic update**.
 3. Rebuild the generated indexes deterministically, run full CI and report actual results; historical audits and source records remain intact.
+
+
+## 9. Approval and implementation addendum (17 October 2026)
+
+**Human direction received:** The maintainer explicitly approved the Stage B assessment and the four supporting papers, but requested clarification of the separate Harm Impact approval. This is approval to correct the taxonomy/adjudication polarity and cite comparator research, **not an unambiguous instruction to change S3 to SU or alter the permanent Harm Impact provenance test**.
+
+**Implemented on `agent/incident-ecosystem-ingestion`:**
+
+- `VIGIL-INC-000129.json` advanced from v0.3.9 to **v0.3.10** at commit `6fa7f4024c2e0981ffb6047c449abc18a11a5269`.
+- The primary Pragmatic Constraint Rendering Integrity occurrence mapping changed from `failure-occurrence` to `ambiguous-boundary`: the generated wording engages the class, but the independently established pre-compaction governing comparator required to prove distortion is missing. Disposition **role-changed** (not secretly removed).
+- The secondary Continuity-State Validity mapping changed from `successful-invariant` to `ambiguous-boundary`: no published successor-state validation, repair or quarantine is evidenced. Disposition **role-changed**. No failure is inferred from absence of proved success.
+- Four other canonical ambiguous-boundary mappings were retained unchanged; source episodes E001 and E002 remained materially intact and retain canonical class relationships with updated rationale. The incident is now `classification-disputed`, preserving that accepted polarity claims are not demonstrated.
+- The independent external requirement `EXTREQ-B266BCD5C9F680AB` remains `boundary`; it now has an independent first-party-occurrence relevance basis, without a misleading derived-success linkage to the contested FC-078 mapping.
+- The four approved papers were added as **`research_references`**, not `source_records`: https://arxiv.org/abs/2605.24279, https://proceedings.mlr.press/v306/ye26b.html, https://arxiv.org/abs/2507.21509 and https://arxiv.org/abs/2404.13208.
+- The admitted FC-078 success exemplar in `VIGIL-FF-0006-work-state-continuity-integrity.json` is now **deprecated**, with prior admission history and the evidentiary reclassification recorded; commit `ce169c5764c2326d60e0c85f279d5db3f05b8064`.
+- Source evidence, existing Harm Impact assessment, other taxonomy relationships, and interpretive history were preserved. **No semantic validator or permanent test changes were made.**
+
+The original Stage B disposition suggestion of `removed-unsupported` for the two historical polarity findings is implemented as the **narrower, source-faithful role-change to ambiguous-boundary**, rather than removing the materially engaged Fidelity Classes altogether. This explicitly preserves the two unresolved behavioural questions and avoids inventing a different primary merely to satisfy the canonical schema.
+
+### 9.1 New CI contract mismatch exposed by the approved taxonomy correction — approval required before test alteration
+
+A subsequent workflow run (https://github.com/CAM-Initiative/Vigil/actions/runs/38989302595) completed the public prose test and provenance checks, but failed the complete unit suite at `test_external_assessment_navigation_count_does_not_affect_taxonomy_or_repair`. The test in `vigil/tests/test_build_vigil_records.py` hardcodes INC-000129 as having a *failure*-role `repair_classifications` array containing FC-075. After its human-approved adjudication becomes ambiguous-boundary, the deterministic builder correctly produces **no failure repair mapping**, and its normal `prune()` omits the empty field. The test's direct access to `entry["repair_classifications"]` raises `KeyError`. This is a stale fixture assumption, not a substantive violation or a reason to manufacture a failure role.
+
+**Gate 1 proposal under `vigil/MAINTAINERS.md`:**
+
+1. **Current:** A specific fixture assertion requires `repair_classifications` to be present for INC-000129 and to contain FC-075, even if that incident no longer has a failure-occurrence mapping.
+2. **Proposed:** Assert that the builder's `repair_classifications` projection is equal to the failure-only mappings actually present in the canonical Incident; for INC-000129 v0.3.10 that is an empty array using `entry.get("repair_classifications", [])`. Independently continue to check `primary_classification.class_id` and the navigation count. Do **not** change the builder, validator, role enum, the general rule that repair is failure-only, or unrelated tests.
+3. **Pass/fail delta:** Formerly this incident with zero failure mappings causes the hardcoded assertion to error; after the test update it passes. If repair incorrectly includes an ambiguous-boundary or successful-invariant mapping, it still fails. A record with a real failure mapping missing from the repair projection still fails against the dynamically derived expected IDs.
+4. **Affected surface:** A single test fixture in `vigil/tests/test_build_vigil_records.py`, the Incident index's repair projection for INC-000129, and resulting Case File repair display.
+5. **Corpus impact:** One known fixture/incident. No corpus-wide records or builder output rules to change.
+6. **Repair implication:** One source-faithful unit-test update; no Incident prose or taxonomy should be revised to pass it.
+7. **Risk:** A blanket suppression of repair tests could hide real missing failure mappings. Keep the assertion for all actual failure mappings and independently verify no false repair entries.
+8. **Right place:** The existing builder already correctly omits empty repair arrays. The unit test—not the canonical Incident, builder contract or renderer—contains an outdated hardcoded assumption about a particular incident.
+9. **Stop:** Do not change this permanent test before explicit human Gate 1 approval. After approval, make the single focused test adjustment, run the unit test/full suite, and stop for any unexpected new defect.
+
+**Separate existing CI failure:** the generated public Incident and taxonomy examples indexes differ from committed sources. The current workflow requires deterministic generated artefact rebuild and commit on the working branch, not any relaxation of its freshness guard.
+
+### 9.2 Harm hold, plainly stated
+
+The active canonical record **still contains HIM 1.0.1 S3**, as it did prior to this turn. The already documented 11 October audit concludes that the six media items prove widely distributed adverse framing, *not* an independently substantiated S3 reputational consequence. The proposed outcome is HIM 1.1.0 **SU: insufficient evidence to assign an occurrence-level severity band**, with the six media sources retained and the reputation row marked `insufficient-evidence`. This is explicitly **not S1 or a finding of no harm**.
+
+The existing `test_registry_source_roles.py` expects severity-linked `evidence_refs` even when the row would be unassessed. The HIM validator forbids `evidence_refs` in an unassessed row. The separate Gate 1 proposal is in section 7A; **the user has not yet clearly approved the harm score change or that permanent test adjustment**. Both remain untouched pending an explicit yes/no.
+
+**Approval requested separately:** (a) updating the obsolete, single-case repair-projection test fixture while preserving failure-only semantics; (b) changing INC-000129 to HIM 1.1.0 SU and altering the single-case harm-source test to preserve source-role evidence without requiring forbidden assessed-row fields.
