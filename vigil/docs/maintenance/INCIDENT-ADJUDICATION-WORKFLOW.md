@@ -226,7 +226,9 @@ Before accepting a rebuilt Incident:
 1. complete an adjudication manifest based on `vigil/templates/incident-rebuild-adjudication-template.json`;
 2. run the rebuild guard against the baseline and candidate;
 3. run the ordinary VIGIL builders and validators;
-4. inspect the generated/public projection for information loss or role collapse.
+4. inspect the generated/public projection for information loss or role collapse;
+5. check each affected mapping's original and revised rationale against the source episode, criteria, exclusions and any documented independent VIGIL interpretation, including mixed-role findings and the aggregate explanation;
+6. confirm unchanged HIM, external assessment results, source history and review history unless separate evidence and scope justify their modification.
 
 Example:
 
