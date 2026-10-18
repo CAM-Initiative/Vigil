@@ -454,6 +454,17 @@ Publish the original wording, context and occurrence-specific analysis together 
 This is an authoring and review contract. It introduces no mandatory new field, retrospective episode migration, keyword classifier, schema rule or blocking validator. Corpus repairs and changes to pass/fail controls require their own scoped approval under the existing stop conditions.
 
 
+### Separate statements within one source episode
+
+Occurrence identity and analytical granularity are different. Several material statements in one handoff must be adjudicated separately when their meaning, recovered principle or recognition question differs. Do not combine identity, apology/refusal, equality or other distinct propositions merely because they share an event or a Fidelity Class. Preserve prior substantive reasoning with explicit disposition when a later review changes its result.
+
+For an explicitly scoped statement-level repair, the existing source episode may carry optional `statement_analysis[]`. Each entry has a parent-local `statement_id`, public `title`, exact `source_anchor` and/or attributed `source_paraphrase`, `recovered_invariant_interpretation`, and `taxonomy_relationship_indices[]`. The indices are zero-based references to that episode's canonical `taxonomy_relationships[]`; each relationship belongs to exactly one statement. All authoritative relationship rationales remain in the existing parent array, without a second duplicated set of mapping results. Statement entries are not new occurrence episodes. Existing unique `episode_id` and external-requirement references remain unchanged.
+
+Optional `source_clause_analysis.pre_compaction_context` records the known task, missing prior state, `source_record_refs[]` and the occurrence-specific interpretive consequence in `rationale`. This is evidence context, not an invented prior event or an assumption that missing public context was never captured internally.
+
+Publication consumers show supplied pre-context first, then the shared episode context and each statement in textual order. Preserve the full original passage in an accessible source disclosure. Show later response and omission separately when supported. A consumer must retain the complete original episode if statement bindings are malformed or omit a relationship; it must not silently discard analysis. This optional authoring convention does not change any schema, validator, builder acceptance rule or historical migration requirement.
+
+
 ### External alignment classification publication boundary
 
 Section 03 may publish an **External Alignment Classification** table when an admitted `external_assessments[]` entry contains `classification_or_rating`. This is a projection of the external assessor's own classification or rating, not a VIGIL reclassification.

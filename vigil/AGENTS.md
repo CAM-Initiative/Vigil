@@ -52,6 +52,8 @@ Where a clause has multiple taxonomy relationships, preserve each distinct ratio
 
 For wording-dependent observations, follow **Wording-dependent evidence and chronological source clauses** in `vigil/MAINTAINERS.md`. Keep the chronology and exact material words with their speaker, source and context. Connect each relevant rationale to those words and distinguish statements from observed responses. Declare unavailable transcripts; do not invent quotations or split one passage into one episode per class. This is a conditional evidence rule, not a requirement to quote every clause or migrate every Incident.
 
+A single source episode can contain several independently adjudicated statements. Use the optional statement-binding convention in **Separate statements within one source episode** in `vigil/MAINTAINERS.md` for scoped repairs. Preserve the episode ID and source references; do not collapse distinct statement meanings or create an event per class.
+
 ## Source-first episode identity (opt-in)
 
 For an Incident that has adopted stable episodes, keep one unique `episode_id` and resolvable `source_record_refs[]` on every source clause. For a class-derived `external_requirement_assessments[]` row in such an Incident, record the intended `source_episode_refs[]` and verify any retained numeric `source_clause_indices` identify the same episodes. An episode can support multiple distinct taxonomy relationships; do not create separate evidentiary episodes for each class, infer event chronology from labels, or claim that these checks certify source exhaustiveness.
