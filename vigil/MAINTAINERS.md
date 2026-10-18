@@ -130,6 +130,25 @@ Run `vigil/scripts/validate-vigil-incident-rebuild.py` before ordinary corpus va
 
 The rebuild guard is intentionally generic. `VIGIL-INC-000129` informed its design because that Incident demonstrates mixed mapping roles and repeated re-adjudication, but permanent validation must not freeze one Incident's current answer.
 
+### VIGIL independent adjudication authority — source interpretation boundary
+
+VIGIL's current versioned Alignment Taxonomy is the authority for **VIGIL's own classification criteria**, not a claim of legal, regulatory, technical or factual supremacy over source institutions. First-party, investigative and other external publications are evidence and attributable interpretations. Their prestige, vocabulary, silence on a mechanism, or external classification is neither a positive nor a negative VIGIL recognition test.
+
+For each proposed change, keep four distinct layers:
+
+1. **Occurrence claims:** identify the actor, action, target, time and source, with access modality, attribution, corroboration, and counterevidence. Distinguish direct observation from a source's explanation.
+2. **External interpretations:** retain each materially relevant institution's explanation on its own terms, including competing interpretations, but do not translate its verdict automatically into a VIGIL class or role.
+3. **VIGIL recognition:** apply the exact class invariant, required success/failure conditions and exclusions at the class's defined level of abstraction, with occurrence-specific evidence for each required condition.
+4. **VIGIL adjudication:** decide the role, confidence and mapping only from that criterion test, with the precise unresolved conditions, if any, and the prior VIGIL decision explicitly compared.
+
+An original VIGIL divergence from third-party interpretation is neither an error nor protected doctrine. Retain it if the current criterion/evidence test supports it; revise it when materially contradicted, disproved or unsupported. Never use external silence, the absence of private implementation telemetry, or pressure for agreement as an unrecorded reason for removal or polarity downgrade. Never protect an existing conclusion by ignoring evidence or adding recognition conditions not in the class.
+
+**Minimum traceable decision per materially reviewed mapping:** pinned Incident ref and taxonomy version/ref; class ID and original role/basis; exact class conditions and exclusions examined (quote the version-specific text, since individual conditions lack immutable IDs); episode/source references; condition-by-condition result and missing fact; neighbouring-class discrimination; external interpretation and any material VIGIL divergence; proposed role/basis/confidence and a disposition with substantive explanation. Negative candidates and full criterion matrices stay in **per-Incident dated review artefacts**, not canonical Incident fields or a global Incident × Class dataset.
+
+The current schema and rebuild guard establish structure and accounted-for change, **not** semantic truth. A passing guard cannot certify that a VIGIL divergence or bounded success survived a rewritten aggregate explanation. Audit the before/after mapping-local bases, distinct source-clause rationales, mixed episode roles, summary synthesis, unaffected external assessments, HIM and prior interpretive history before claiming a faithful adjudication. A single Fidelity Class may legitimately have failed in an earlier episode and succeeded later; do not force the episode relationships into its Incident-level mapping role or infer that the later success retroactively resolves the earlier failure.
+
+Until a separately scoped Gate 1 proposal measures and obtains approval for new permanent controls, these are editorial/adjudicative instructions and dated audit requirements; they do not automatically alter the semantic pass/fail behaviour of the validators.
+
 ### Taxonomy evidence-abstraction rule
 
 Taxonomy adjudication MUST apply each Fidelity Class at the level of abstraction stated by its canonical definition, invariant, recognition criteria and exclusions.
