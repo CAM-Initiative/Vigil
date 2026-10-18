@@ -1,0 +1,34 @@
+name: Temporary retrospective VIGIL check (branch only)
+on:
+  push:
+    branches:
+      - work/incident-taxonomy-reasoning-readjudication-20261018
+    paths:
+      - '.github/workflows/temporary-retrospective-validation-20261018.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate-existing-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.x'
+      - name: Install existing corpus test dependency
+        run: python -m pip install 'jsonschema==4.26.0'
+      - name: Rebuild generated public indexes in CI checkout (no commit)
+        run: python vigil/scripts/build-vigil-public-records.py
+      - name: Run existing canonical and public validators
+        run: |
+          python vigil/scripts/validate-vigil-records.py
+          python vigil/scripts/validate-vigil-public-records.py
+          python vigil/scripts/validate-vigil-source-provenance.py
+          python vigil/scripts/validate-vigil-interpretive-provenance.py
+          python vigil/scripts/validate-vigil-system-components.py
+          python vigil/scripts/validate-authorship-provenance.py
+      - name: Run existing full corpus regression tests
+        run: python -m unittest discover -s vigil/tests -p 'test_*.py'
+      - name: Validate taxonomy using existing rules
+        run: python vigil/taxonomy/validate_taxonomy.py
