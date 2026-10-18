@@ -534,7 +534,7 @@ For each adjudication, record specific supporting evidence and any missing recog
 2. Verify that canonical mapping roles, Stage 02 source-clause relationships, and any explicitly admitted taxonomy exemplars are consistent. Do not convert a candidate into an admitted mapping by implication.
 3. Confirm that no supported event was omitted or duplicated, that evidence and activity order are preserved, and that positional external-requirement references still identify the intended clauses.
 4. Rebuild generated public indexes and taxonomy examples from canonical Incidents; never hand-author an alternative registry of adjudication decisions.
-5. If a genuine unresolved action remains, use the maintainer action queue. Do not send clean-pass or progress messages.
+5. If a genuine actionable task remains, reconcile it with GitHub Issues and record the issue link in the dated audit. Do not open clean-pass, progress-only or uncertainty-only Issues.
 
 The `VIGIL.HarmImpactMatrix.v*.json` methodology files remain the authority for harm-severity assessment and are independent of clause-level taxonomy adjudication.
 
