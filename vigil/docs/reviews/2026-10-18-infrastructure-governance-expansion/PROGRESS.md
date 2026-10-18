@@ -40,3 +40,42 @@ Stage A commit: `774aad7`. Added 15 requirements from exact official primary tex
 Source decisions, rejected/contextual candidates, dates, applicable actors and source-specific holds are in SOURCE-REVIEW.md and the three source JSON reviews. Requirement schemas and source/scope/metadata/fidelity/assurance schemas pass. Both managers build successfully; fidelity and metadata validators pass. NIS2 retail/entity/transposition conditions and CRA commencement/reporting distinctions prevent manufactured legal findings. Existing EN access holds remain unchanged.
 
 Next: validate the extraction milestone, commit, then finish source-linked independent occurrence proposals and full pipeline QA.
+
+## Completed implementation and proposal checkpoint
+
+Branch: `work/infrastructure-governance-reconciled-20261014`.
+Exact validated implementation HEAD: `9ff08b0177614748e86185d18285c7a82c591e53`.
+A following documentation/report-only checkpoint records this result; obtain that final checkpoint identity with `git log -1 --format=%H`. A commit cannot contain its own hash.
+
+Completed milestones:
+
+- `774aad7`: approved Gate 1 eligibility, scope compatibility, fidelity and retained-review traceability, with isolated fixtures and read-only baseline impact evidence.
+- `8413453`: 15 bounded primary-text requirements, 17 strong-supporting component relationships, two source registrations, unchanged old IDs and explicit access/coverage holds.
+- `9ff08b0`: require resolving evidence for every supported direct/strong supporting relationship; one valid relation cannot mask an unreviewed second relation. Added malformed-review rejection and generic candidate/projection independence regressions.
+- Final documentation checkpoint: three independent occurrence proposals, full pipeline evidence, generated metadata review reports and integration/recovery instructions.
+
+Final counts: 102 registered source versions, 1,117 requirements, 735 relationships, 189 canonical Incidents on this branch. The 15 new requirements have reviewed metadata; the existing unresolved metadata queue remains 584 fields in 73 old records. All 1,102 old requirement values and 718 old relationship values are preserved. No Incident, class definition, recognition condition, HIM or schema is changed.
+
+The ingestion branch advanced from `59a19ab5c35832d2a255ad377645a2de8c02fb9e` to `adac7b35b5f8edd3a0f9d666666ff3b6a40dd123` during work. Its intervening hold-register commit did not change INC-199/200/203. The proposals pin the newer HEAD and exact record-byte digests; no divergent history is imported.
+
+### Validation
+
+All 259 tests pass (no skipped or expected-failure summary). Relevant standalone external-source, requirement, metadata, fidelity, resolver, role-independence, occurrence, projection, EU re-extraction and CAM suites pass. All source/requirement/sidecar schemas and 21 proposed assessment rows pass their schema and resolving-evidence checks. `pipeline-qa.json` retains the per-clause disposable candidate results; none contains occurrence polarity.
+
+Final command results: 31 passed checks and one unchanged baseline failure, recorded in final-results.json. Source and requirement managers pass with generated checks. Canonical/public/source/interpretive/system/authorship/rights, occurrence, CAM and taxonomy validators pass. The thin referential-integrity validator still reports only INC-060 and INC-189 references to FC-084, identically to the baseline. No introduced failure or Gate 2 repair was found.
+
+Public outputs were exercised with the supported builder and publication-eligibility filter. All three outputs match the committed baseline byte-for-byte after filtering the established INC-032 interaction-record exclusion. The full suite also exercises builders; its transient unfiltered example is removed by the documented filter. No unrelated generated public diff is retained. Metadata reports were refreshed only by their validator's `--write-report` mode. `git diff --check` passes.
+
+### Occurrence and publication boundary
+
+There are 21 retained occurrence proposals (INC-199: 5; INC-200: 8; INC-203: 8) and 24 excluded requirement candidates. They have not been applied or published. Bordeaux's bounded Aligned containment subreview remains distinct from Lescure's Boundary facts and from unauthorised configuration changes. Full row explanations and source links are in the proposal files. No one-to-one mapping from a taxonomy result to external polarity is used.
+
+No new remote branch, PR, merge, force operation, website change or ingestion-branch write was performed. Commits are local; no push or publication is claimed. No additional credential was requested. The official research domains were saved in the environment draft; this does not establish publication of a new environment version.
+
+### Outstanding holds and exact next action
+
+The authorised development, bounded extraction, relationship review, occurrence-proposal and repository QA stages are complete. Next, review INTEGRATION-HANDOFF.md and perform a separately authorised integration so the central requirement IDs resolve before applying occurrence proposals on the ingestion branch. Recheck intervening evidence and append provenance there. Do not mechanically merge divergent histories or overwrite records.
+
+IEC 62443-3-3 requires authorised text and intended-processing permission before clause extraction. EN 18286 and the citation decision retain their prior source-specific access holds. NIS2 entity/transposition and CRA commencement/reporting conditions remain separate from these technical alignment proposals. No new source is needed merely to increase counts. The old FC-084 reference defects remain outside this bounded task.
+
+Gmail is unavailable; action-queue staging was not completed. MAINTAINER-ACTION-EMAIL.md preserves the full payload and instructs a connected session to merge it with the latest labelled queue, preserving every unresolved item. Do not send it as an unmerged replacement.
