@@ -1,0 +1,19 @@
+# Public taxonomy-number check — coverage extension proposal
+
+Status: proposal only. No permanent pass/fail control changed in this correction.
+
+The existing authoring contract prohibits taxonomy numbers as a substitute for public explanation. The existing `test_public_prose_quality.py` applies its identifier pattern to summary, principal assessment prose, assessment boundaries, selected harm prose and selected source notes. It omits aggregate and mapping-local classification bases, source-clause notes/rationales and statement explanations. The main validator checks workflow narration in classification bases and external comparison notes, but does not apply the identifier prohibition there. This explains the missed references in the recent wording repairs.
+
+Proposed change: retain the existing taxonomy-identifier pattern and apply that pattern alone to the omitted VIGIL-authored explanatory fields: `taxonomy_classification.classification_basis`, primary/secondary mapping `classification_basis`, source-clause `source_paraphrase`, `recovered_invariant_interpretation`, `adjudication_note`, relationship `rationale`, nested statement context/interpretation, and `external_assessments[].vigil_comparison_note`. Do not extend the other maintenance-word patterns to these fields. Use isolated fixtures plus the generic corpus check. No keyword-based classification or semantic quality judgement is proposed.
+
+Keep structured class/family IDs, source/episode references, original `source_anchor` quotations, source titles/URLs and historical review/audit provenance outside this prose prohibition. The labelled class column remains free to show its identifier. Do not rewrite a literal source quotation merely because it contains an identifier.
+
+Pass/fail delta: an own explanation saying that an output demonstrates a numbered class currently passes these omitted-field checks and would newly fail; an explanation of the actual mechanism beside its structured class ID would continue to pass. No previously rejected content is intentionally newly accepted. There is no proposed schema change.
+
+Read-only inventory after the six bounded corrections: 73 other records / 102 explanatory fields match the existing identifier pattern. The exact IDs, paths and wording are preserved in `2026-10-18-public-fc-prose-correction.json`. This is a diagnostic inventory, not authority for rewriting them. All 14 recently touched records pass the expanded one-off check; six required corrections. The scan excludes original quotation anchors and structured identifiers.
+
+The affected public surfaces are Section 02 source-clause analysis, Section 03 classification bases and the VIGIL comparison with external assessments. Removing the number must preserve the source words, chronology, missing facts, accepted mechanism, class role/confidence and HIM. Do not remove reasoning, convert Boundary to Not aligned, move fields or replace context with generic boilerplate. A prose-only record correction requires a builder refresh and ordinary provenance; it is not re-adjudication.
+
+Machine enforcement is suitable for internal-number syntax in declared own-prose fields; source fidelity and adequate explanation still require review. A blanket recursive regex over all record strings is unsuitable because it would also reject legitimate structured IDs and quotations.
+
+MAINTAINERS.md Gate 1 requires explicit approval before implementing this acceptance change. If approved, run it read-only and report every failure, then stop under Gate 2 for approval before broader multi-record repairs. Do not deploy a failing corpus check by silently deleting explanations or grandfathering the measured failures. The present six corrections are the separately authorised repair of the recently touched records, not that broader migration.
