@@ -194,7 +194,7 @@ A substantive ethical, relational, agency or vulnerability-protection failure is
 
 For **FC-000038 Required Control Activation**, an admitted failure occurrence must identify and substantiate:
 
-- the **particular available, applicable operational control** and its protective purpose (for example, a deployed gate, restriction, named classifier or escalation route), not merely the external standard or an abstract duty calling for protection;
+- the **particular evidenced operational control or sufficiently identified applicable protective-control posture** and its protective purpose (for example, a deployed gate, operational restriction or escalation route), not merely the external standard or an abstract duty calling for protection; the exact hidden classifier or code component is not required unless the class itself requires it;
 - the control's **defined activation condition**, contemporaneous deployment/applicability, and the occurrence evidence establishing that the condition arose before the governed effect;
 - the **observed nonactivation** of that control before the relevant output, action or transition, independently of later harm; and
 - the specific governed effect that proceeded without activation.
