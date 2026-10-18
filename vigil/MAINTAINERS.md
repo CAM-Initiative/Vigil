@@ -265,7 +265,7 @@ Use categories: **taxonomy-gap**, **evidence-required**, **record-maintenance**,
 
 Link the confirmed issue number and URL in the dated review manifest or Incident completion audit, never in a new global incident-by-class dataset. Issue creation is not automatic approval to change taxonomy, schema, validators, other Incidents or the website. If GitHub access is unavailable, preserve a ready-to-file issue payload in the dated audit and report that staging was not completed; do not revert to Gmail.
 
-The historical Gmail queue is a **migration source only**. Reconcile the latest correctly labelled authoritative snapshot and its supersession notes against current `main`, the working branch and already-open Issues; migrate only outstanding, distinct tasks. Do not import historical embedded snapshots as new work or claim the migration complete before it is audited. See `vigil/docs/maintenance/GMAIL-TO-GITHUB-ISSUES-MIGRATION.md`. Existing approvals and workstream pauses remain in force.
+The historical Gmail queue is a **migration source only**. Reconcile the latest correctly labelled authoritative snapshot and its supersession notes against current `main`, the working branch and already-open Issues; migrate only outstanding, distinct tasks. Do not import historical embedded snapshots as new work or claim the migration complete before it is audited. See the one-time historical queue transition in `vigil/docs/maintenance/INCIDENT-ADJUDICATION-WORKFLOW.md`. Existing approvals and workstream pauses remain in force.
 
 ### Mapping preservation invariant
 
