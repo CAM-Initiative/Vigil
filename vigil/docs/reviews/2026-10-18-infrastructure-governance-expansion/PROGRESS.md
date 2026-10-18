@@ -32,3 +32,11 @@ The additive admission gate uses existing canonical fields and JSON review-artef
 Nine isolated admission regressions pass. Existing external requirements (20 tests), fidelity (4 tests), sources, metadata, resolver, occurrence-role independence, assessment and projection suites pass. All seven read-only Stage A validators pass, including both generated-output checks. The metadata test's first direct invocation lacked PYTHONPATH; the documented `PYTHONPATH=vigil/scripts` correction passes without code changes. See stage-a-results.json and stage-a-logs. No canonical data changed and no Gate 2 corpus repair was needed. The two baseline referential-integrity defects remain held.
 
 Next: review the retrieved official CSF 2.0 and current final OT guide, preserve bounded outcomes and source-specific access/licensing holds, then promote only reviewed invariant relationships.
+
+## Stages B/C candidate complete
+
+Stage A commit: `774aad7`. Added 15 requirements from exact official primary text: CSF 2.0 (8), OT guide Rev.3 (5), base SSDF 1.1 (2). Retained 17 independently reviewed strong-supporting component relationships. Counts: 102 source versions, 1,117 requirements, 735 relationships. Two new exact source versions are registered: NIST SP 800-82 Rev.3 and IEC 62443-3-3:2013. IEC remains metadata-only, blocked-access, zero requirements. All 1,102 old requirements and 718 old relationship values remain unchanged. Partial extraction and provisional source fidelity preserve unreviewed remainders.
+
+Source decisions, rejected/contextual candidates, dates, applicable actors and source-specific holds are in SOURCE-REVIEW.md and the three source JSON reviews. Requirement schemas and source/scope/metadata/fidelity/assurance schemas pass. Both managers build successfully; fidelity and metadata validators pass. NIS2 retail/entity/transposition conditions and CRA commencement/reporting distinctions prevent manufactured legal findings. Existing EN access holds remain unchanged.
+
+Next: validate the extraction milestone, commit, then finish source-linked independent occurrence proposals and full pipeline QA.

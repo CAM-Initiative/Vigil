@@ -2,9 +2,9 @@
 
 Canonical analytical catalogue derived from registered external governance sources. Inclusion does not establish CAM applicability, adoption, coverage, compliance, conformance or alignment.
 
-- Registered source versions: 100
+- Registered source versions: 102
 - Primary AI-governance source versions: 63
-- Requirement records: 1102
+- Requirement records: 1117
 
 ## SDOS Runtime Governance Framework — Control Catalog and Reference Document — 1.10
 
@@ -536,6 +536,18 @@ No requirement records are asserted. Source registration only. Existing contract
 - Next action: Use as a terminology and method cross-reference; obtain lawful primary text only if clause-level conformance analysis becomes necessary.
 
 No requirement records are asserted. Registered for FMEA/FMECA failure-mode, effects, cause, criticality and reporting-structure comparison. No clause-level normative extraction is claimed.
+
+## Industrial communication networks — Network and system security — Part 3-3: System security requirements and security levels — 2013
+
+- Source: `EXT-C05FD0343310` / `IEC-62443-3-3`
+- Role: `supporting-external-authority`
+- Access: `official-metadata-only`
+- Extraction: `blocked-access`
+- Requirements: 0
+- Review priority: `supporting-specialist-source`
+- Next action: Obtain authorised primary text and permission for intended processing; select exact system requirements and review scope before any extraction.
+
+No requirement records are asserted. Metadata-only registration of Part 3-3, Edition 1.0; no clauses reconstructed from the abstract or other parts of the series.
 
 ## IEEE Standard Classification for Software Anomalies — 2009
 
@@ -2056,12 +2068,21 @@ No requirement records are asserted. Retained for terminology, examples, strateg
 - Source: `EXT-09F549521716` / `NIST-CSF-2-0`
 - Role: `supporting-external-authority`
 - Access: `direct-public-primary`
-- Extraction: `supporting-only`
-- Requirements: 0
-- Review priority: `low-immediate-priority`
-- Next action: No further requirement extraction is planned in the current scope.
+- Extraction: `partial`
+- Requirements: 8
+- Review priority: `supporting-specialist-source`
+- Next action: Retain the bounded reviewed selection. Expand only after a specific unsupported proposition is identified and independently reviewed.
 
-No requirement records are asserted. Retained as a bounded supporting authority. It is not decomposed into a comprehensive first-class requirement corpus in the current scope.
+| Requirement | Clause/control | Summary | Posture / type | External authority | Relationship | Review / access |
+| --- | --- | --- | --- | --- | --- | --- |
+| `EXTREQ-186266B5896332A7` | PR.AA-05 | Define access permissions, entitlements and authorisations in a policy. Manage, enforce and review them using least privilege and separation of duties. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-2D0252D6865FB9DF` | RC.RP-05 | Verify restored-asset integrity, restore systems and services, and confirm normal operating status. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-510142D12255806C` | PR.PS-01 | Establish and apply configuration management practices. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-8664EF5872201BF3` | RS.MI-01 | Contain cybersecurity incidents. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-8C67B5EEFB0AA897` | RC.RP-01 | Execute the recovery portion of the incident response plan once the incident response process initiates it. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-9BFEC90D284F0A9C` | PR.IR-01 | Protect networks and environments from unauthorised logical access and usage. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-B3C2C06EC24BD021` | RC.RP-03 | Verify the integrity of backups and other restoration assets before using them for restoration. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-CC9B3D4127206817` | DE.CM-01 | Monitor networks and network services to find potentially adverse events. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 
 ## Towards a Standard for Identifying and Managing Bias in Artificial Intelligence — 2022
 
@@ -2095,12 +2116,15 @@ No requirement records are asserted. Retained as a bounded supporting authority.
 - Source: `EXT-4AADC9C1B06B` / `NIST-SP-800-218`
 - Role: `supporting-external-authority`
 - Access: `direct-public-primary`
-- Extraction: `supporting-only`
-- Requirements: 0
-- Review priority: `low-immediate-priority`
-- Next action: No further requirement extraction is planned in the current scope.
+- Extraction: `partial`
+- Requirements: 2
+- Review priority: `supporting-specialist-source`
+- Next action: Retain the bounded reviewed selection. Expand only after a specific unsupported proposition is identified and independently reviewed.
 
-No requirement records are asserted. Retained as a bounded supporting authority. It is not decomposed into a comprehensive first-class requirement corpus in the current scope.
+| Requirement | Clause/control | Summary | Posture / type | External authority | Relationship | Review / access |
+| --- | --- | --- | --- | --- | --- | --- |
+| `EXTREQ-5B9F66AA08C91BF4` | PW.9.1 | Define a secure baseline for each setting that affects security or is security-related. Default settings should be secure and do not weaken security functions provided by the platform, network infrastructure or services. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-FE4169ADFE882091` | PW.9.2 | Implement the default settings, or applicable groups of default settings, and document each setting for software administrators. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 
 ## Secure Software Development Practices for Generative AI and Dual-Use Foundation Models: An SSDF Community Profile — 2024
 
@@ -2189,6 +2213,24 @@ No requirement records are asserted. Retained as a bounded supporting authority.
 | `EXTREQ-F0581975A66AED74` | PW.3.1 R1 | Verify the provenance (when known) and integrity of training, testing, fine-tuning, and aligning data before use. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-F1C5571B851A123F` | PW.8.2 R1 | Test all AI models for vulnerabilities in accordance with the organization’s code testing policies or guidelines. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-FC3775D684CD5F14` | PW.8.1 R1 | Include AI models in code testing policies and guidelines. Several forms of code testing can be used for AI models, including unit testing, integration testing, penetration testing, red teaming, use case testing, and adversarial testing. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+
+## Guide to Operational Technology (OT) Security — 3
+
+- Source: `EXT-96F325C2A871` / `NIST-SP-800-82`
+- Role: `supporting-external-authority`
+- Access: `direct-public-primary`
+- Extraction: `partial`
+- Requirements: 5
+- Review priority: `supporting-specialist-source`
+- Next action: Retain the bounded reviewed selection. Expand only after a specific unsupported proposition is identified and independently reviewed.
+
+| Requirement | Clause/control | Summary | Posture / type | External authority | Relationship | Review / access |
+| --- | --- | --- | --- | --- | --- | --- |
+| `EXTREQ-285491D9AB39831D` | 6.2.10 — removal of no-longer-required access | For temporary OT remote access, consider removing access when it is no longer required. Automatic timers or a change process can support confirmation of removal. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-36E4D12953E576C3` | 6.3.2.2 — OT system-use monitoring | Use strong device monitoring, logging and auditing to collect, correlate and analyse security information and communicate actionable security status across the complete OT system. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-4BF7D68ABF83E78A` | 6.2.4.2 — approved baseline and pre-deployment changes | Document the approved baseline configuration for OT devices. Establish a development-lifecycle approach to document, test and approve changes before deploying them to the OT environment. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-9F96B74F2FC30649` | 6.4.4 — remote or unstaffed incident mitigation | For physically remote or unstaffed OT components, consider response coordination time and whether the system needs capabilities to minimise incident impacts until personnel arrive. Understand and communicate operational impacts of mitigation shutdowns or disconnections. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-C11C08CA4DEBB562` | 6.2.10 — justified and bounded remote access | Provide OT remote access only when justified and limit it to the business need. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 
 ## Towards a common reporting framework for AI incidents — 2025
 

@@ -2,9 +2,9 @@
 
 Public knowledge catalogue of external governance sources and their bounded relevance to AI governance. The summaries describe source subject matter; they do not provide legal advice or establish that a source applies to any particular system or organisation.
 
-- Source versions: 100
+- Source versions: 102
 - Review-due source versions: 0
-- Registry updated through: 2026-10-16T01:16:42Z
+- Registry updated through: 2026-10-18T00:00:00Z
 
 ## SDOS Runtime Governance Framework — Control Catalog and Reference Document
 
@@ -345,6 +345,23 @@ IEC 60812 describes failure modes and effects analysis and failure modes, effect
 - **Review method:** official-metadata-only-review · supporting-only-review
 - **Review freshness:** current
 - **Official source:** https://webstore.iec.ch/en/publication/26359
+
+## Industrial communication networks — Network and system security — Part 3-3: System security requirements and security levels
+
+IEC 62443-3-3:2013 is an international standard addressing system security requirements and security levels for industrial automation and control systems. The official catalogue identifies Edition 1.0 and states that the available copy incorporates the April 2014 corrigendum. Its system-level subject matter is relevant to refrigeration-control infrastructure and the security of connected industrial environments. This entry records official metadata only. Normative text and permission for the intended processing remain unavailable. No clause-level requirement, security-level equivalence, certification claim or occurrence assessment is derived from the catalogue description. Other parts of the IEC 62443 series require separate edition-specific review.
+
+- **Issuer:** International Electrotechnical Commission
+- **Version:** `2013`
+- **Lifecycle state:** `published`
+- **AI-governance relevance:** security, robustness, safety
+- **Applicable lifecycle stages:** design, deployment, operation-use
+- **Relevance scope:** System-level industrial-control security standard registered for source-specific access review; catalogue metadata cannot establish normative requirements or conformance.
+- **Last substantive review:** 2026-10-18
+- **Next substantive review:** 2027-01-16
+- **Substantive reviewer:** OpenAI / Codex / Exact runtime model identity not disclosed
+- **Review method:** official-metadata-only-review · blocked-primary-text-review
+- **Review freshness:** current
+- **Official source:** https://webstore.iec.ch/en/publication/7033
 
 ## IEEE Standard Classification for Software Anomalies
 
@@ -1512,10 +1529,10 @@ The NIST Cybersecurity Framework 2.0 provides voluntary guidance for managing cy
 - **AI-governance relevance:** accountability, incident-governance, inventory, monitoring, risk-management, robustness, security, supply-chain
 - **Applicable lifecycle stages:** governance, design, development, deployment, operation-use, monitoring, incident-response, change-management, supply-chain, cross-lifecycle
 - **Relevance scope:** A generally applicable NIST cybersecurity framework with material relevance to AI systems and infrastructure; it is voluntary and outcome-oriented.
-- **Last substantive review:** 2026-08-24
-- **Next substantive review:** 2026-11-22
-- **Substantive reviewer:** OpenAI / ChatGPT / GPT-5.6 Sol
-- **Review method:** direct-public-primary-review · supporting-only-review
+- **Last substantive review:** 2026-10-18
+- **Next substantive review:** 2027-01-16
+- **Substantive reviewer:** OpenAI / Codex / Exact runtime model identity not disclosed
+- **Review method:** direct-public-primary-review · partial-review
 - **Review freshness:** current
 - **Official source:** https://doi.org/10.6028/NIST.CSWP.29
 
@@ -1546,10 +1563,10 @@ NIST Special Publication 800-218 defines the Secure Software Development Framewo
 - **AI-governance relevance:** accountability, assurance, change-management, documentation, provenance, security, supply-chain, traceability
 - **Applicable lifecycle stages:** governance, design, development, testing-evaluation, deployment, incident-response, change-management, supply-chain
 - **Relevance scope:** A generally applicable NIST secure-development framework with foundational relevance to AI software and supply chains; it is voluntary guidance.
-- **Last substantive review:** 2026-08-24
-- **Next substantive review:** 2026-11-22
-- **Substantive reviewer:** OpenAI / ChatGPT / GPT-5.6 Sol
-- **Review method:** direct-public-primary-review · supporting-only-review
+- **Last substantive review:** 2026-10-18
+- **Next substantive review:** 2027-01-16
+- **Substantive reviewer:** OpenAI / Codex / Exact runtime model identity not disclosed
+- **Review method:** direct-public-primary-review · partial-review
 - **Review freshness:** current
 - **Official source:** https://doi.org/10.6028/NIST.SP.800-218
 
@@ -1569,6 +1586,23 @@ NIST Special Publication 800-218A is an AI-focused community profile of the Secu
 - **Review method:** direct-public-primary-review · bounded-complete-review
 - **Review freshness:** current
 - **Official source:** https://doi.org/10.6028/NIST.SP.800-218A
+
+## Guide to Operational Technology (OT) Security
+
+NIST SP 800-82 Revision 3 provides guidance for protecting operational technology while respecting performance, reliability and safety requirements. It covers industrial control systems and other systems that interact with physical processes. The guide addresses access control, configuration management, monitoring, incident response and recovery in the operational environment. Its recommendations distinguish operational constraints from conventional information technology assumptions. Nongovernmental organisations may use the guide voluntarily. The represented provisions concern a bounded selection of remote access, configuration change, monitoring and mitigation recommendations. They do not reproduce every control baseline or establish that any organisation has adopted the guide.
+
+- **Issuer:** National Institute of Standards and Technology
+- **Version:** `3`
+- **Lifecycle state:** `final`
+- **AI-governance relevance:** security, safety, monitoring, change-management, incident-governance, robustness
+- **Applicable lifecycle stages:** design, deployment, operation-use, monitoring, incident-response, change-management
+- **Relevance scope:** Voluntary OT security guidance for cyber-physical infrastructure, including systems accessible to AI-assisted tools. Neither AI use nor source adoption is presumed.
+- **Last substantive review:** 2026-10-18
+- **Next substantive review:** 2027-01-16
+- **Substantive reviewer:** OpenAI / Codex / Exact runtime model identity not disclosed
+- **Review method:** direct-public-primary-review · partial-review
+- **Review freshness:** current
+- **Official source:** https://doi.org/10.6028/NIST.SP.800-82r3
 
 ## Towards a common reporting framework for AI incidents
 
