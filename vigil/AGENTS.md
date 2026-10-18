@@ -10,6 +10,12 @@ Canonical records are stored only under `vigil/records/incidents/`. FM, OBS, RES
 
 The taxonomy, external-governance datasets and CAM assessment are separate retained subsystems. VIGIL does not amend CAM/Caelestis doctrine, determine liability or establish final factual truth.
 
+## Independent classification authority (mandatory)
+
+External first-party accounts, investigators, research, standards and regulators can establish occurrence facts, contextual limitations or their own independent assessments. They do **not** decide VIGIL's Alignment Taxonomy classification. VIGIL's selectable class definitions, versioned recognition conditions and exclusions govern the VIGIL finding. Explicitly compare any revised finding with the prior VIGIL reasoning, including supported divergences from external reporting. Do not preserve an unsupported VIGIL finding merely because it is distinctive; do not erase a supported one merely because a third party did not recognise that mechanism.
+
+For substantive re-adjudication, first create a claim/criterion/source-linked decision and before/after preservation record under the Incident workflow. Protect mixed episode outcomes and accepted negative or bounded interpretations; an aggregate explanation must not silently omit independently supported episode findings. Automated checks can detect structural anomalies, not settle substantive disagreements. The current documentation/template changes do not authorise validator, schema, website or mass-record changes.
+
 ## Incident authority and provenance
 
 - Preserve `source_records` as the only canonical source-evidence block.
