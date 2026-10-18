@@ -132,6 +132,26 @@ For a full rebuild the maintainer must:
 - keep consequence/severity reasoning out of taxonomy membership;
 - allow the Incident to remain unclassified when the mechanism is not evidenced.
 
+### Reproducible classification decision packet
+
+For each materially reviewed **existing mapping** and independently plausible new or no-mapping candidate, record a dated, occurrence-specific decision before editing canonical text. Use the per-Incident manifest or dated audit (not a global Incident-by-class dataset), and keep the accepted, concise result in the canonical mapping and clause fields.
+
+The minimum decision packet is:
+
+1. **Pinned inputs:** Incident baseline commit and version; exact taxonomy version and reference; tested class ID; previous mapping role, confidence and basis (or no prior mapping). Never substitute the newest taxonomy wording for the earlier decision without marking the version difference.
+2. **Evidence claims:** the precise episode IDs, source refs, decisive observed or attributed facts, source access limits and contrary evidence. Separate the source's report of an event from its theory of why the event happened.
+3. **Class test:** literal, version-specific text of every relevant success/failure required condition and exclusion; for each condition state `established`, `contradicted` or `unknown`, with evidence references and missing decisive fact. Current recognition entries do not have immutable condition IDs, so identify them by their quoted text and pinned taxonomy ref; do not treat an unversioned array position as an identifier.
+4. **Abstraction and neighbours:** apply minimum sufficient evidence at the class-defined governance level. Test materially adjacent classes and identify the distinct additional condition that each would require. Do not invent hidden implementation requirements.
+5. **External interpretation and VIGIL divergence:** separately report relevant external conclusions and the prior VIGIL interpretation. Explicitly decide whether each material difference survives, needs correction or remains unresolved, and explain the **recognition/evidence** reason, never institutional prestige or silence.
+6. **Proposed outcome:** `failure-occurrence`, `successful-invariant`, `ambiguous-boundary`, `resolved-no-mapping`, `unresolved` or `taxonomy-gap` as appropriate to the class mapping versus episode layer. State the mapping disposition, confidence, occurrence-specific mapping basis and distinct episode-relationship rationales; keep different record-layer statuses separate.
+7. **Preservation:** compare prior/new mappings, evidence, rationales, aggregate explanation and mixed episode outcomes; check independent external assessments, external-requirement derivations, HIM and review history for collateral change. An unchanged mapping can still have a materially rewritten basis; account for that rewrite explicitly.
+
+A Boundary requires positive evidence engaging the class invariant with unresolved outcome polarity; mere topical similarity or failure to prove either polarity does not qualify. All required failure or success conditions must be established for the corresponding role. External disagreement or inaccessible vendor internals are not automatically missing required conditions. Conversely, demonstrably missing recognition evidence must not be filled by VIGIL's prior preference.
+
+**Order:** adjudicate from the source packet and canonical criteria first, then compare the proposed answer with the prior VIGIL record and relevant external interpretations, then write an evidence-grounded revision. This reduces anchoring on either a prestigious external conclusion or the previous VIGIL answer. If source context or taxonomy version is insufficient to decide a required condition, hold that candidate without rewriting it as a stronger or weaker proven finding.
+
+This is a review protocol, **not** an automated semantic verdict. The manifest template offers a machine-readable expression of these decisions for future API use, but the current rebuild guard does not yet require its new fields. No new permanent validator or canonical schema requirement arises from this documentation alone.
+
 ### Prior-mapping disposition rule
 
 Every taxonomy mapping present in the baseline must appear in the adjudication manifest with exactly one disposition:
