@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "OSS-Fuzz-Gen evaluation exposed misleading crashes from invalid AI-generated test drivers",
     "created": "2026-10-16",
-    "updated": "2026-10-16",
-    "version": "0.1.0"
+    "updated": "2026-10-18",
+    "version": "0.1.1"
   },
   "incident_identity": {
     "historical_event_name": "OSS-Fuzz-Gen false-positive crash evaluation reported in FalseCrashReducer",
@@ -20,9 +20,9 @@
   },
   "summary": "Between July and September 2025, researchers evaluated AI-generated fuzz drivers in OSS-Fuzz-Gen using Gemini 2.5 Pro and 1,555 benchmark functions from 336 projects. Some drivers violated internal functions’ calling requirements and produced crashes that were not reachable through normal application entry points. The existing crash analyser also labelled some driver errors as program errors. The researchers added function constraints and contextual crash validation, reducing spurious results. Their paper, published on 2 October 2025, reports roughly 70% false-positive crashes, although its prose and table assign the totals differently. No production outage or customer loss is reported.",
   "vigil_assessment": {
-    "factual_basis": "The originating paper provides a concrete libraw driver example, benchmark setup and aggregate results. Sections 2 and 3 distinguish an invalid harness invocation from a reachable application defect. Section 5.2.3 describes program-error classifications later rejected by contextual validation. Section 5.1 dates the cloud experiments and names Gemini 2.5 Pro. Section 3.3 and Table 2 disagree on which configuration produced the 4,835 total; the difference is retained rather than resolved by inference. The repository listing does not independently reconcile the data.",
-    "governance_interpretation": "A crash artefact received more diagnostic weight than its calling context justified. The immediate defect could lie in the generated harness rather than the tested application. Contextual feasibility therefore matters before a crash becomes evidence of an application vulnerability.",
-    "significance_to_cam": "A testing system can create misleading evidence when it changes the conditions under which a function is called. Validating the test setup is separate from reproducing the crash or attributing a defect to the application.",
+    "factual_basis": "The researchers show how an AI-generated test driver can create a real crash without demonstrating a reachable application defect. A test driver is code that calls a function with generated inputs. In the libraw example, it supplied arbitrary bytes where the function expected an initialised image structure. An undersized buffer could therefore crash the test even when valid application callers would not supply that input (Sections 2–3).\n\nThe evaluation covered 1,555 functions from 336 projects on Google Cloud between July and September 2025, using Gemini 2.5 Pro. Contextual validation later rejected some crashes initially labelled as program errors because they were not feasible through valid application entry points (Sections 5.1–5.3).\n\nThe paper reports roughly 70% false positives. Its prose cites 4,835 crashes, while Table 2 assigns 5,080 to the baseline and 4,835 to the constrained configuration. The exact totals remain unreconciled; the repository listing is not an independent data audit. The study supports misleading crash attribution in this evaluation, not a count of production vulnerabilities, outages or customer losses.",
+    "governance_interpretation": "A crash in generated test code was treated as stronger evidence of an application defect than the calling conditions justified. The libraw example exposes the distinction: calling an internal function with arbitrary bytes can create an invalid state that normal application entry points would prevent.\n\nCrash reproduction alone therefore did not establish that an application user could reach the defect. The later contextual validator examined that missing link and rejected additional crashes previously labelled as program errors. This supports a diagnostic assurance problem in the evaluated workflow, without establishing a production outage or customer loss.",
+    "significance_to_cam": "AI-generated tests can manufacture the conditions for a crash and then mislead later diagnosis if the workflow does not preserve those conditions. The testing system must distinguish a defect in its own test setup from a defect reachable through valid use of the application.\n\nA useful check must examine how normal callers construct inputs and initialise state. Repeating the same invalid test confirms that the test crashes; it does not establish an application vulnerability.",
     "assessment_boundaries": [
       "This record concerns the July–September 2025 evaluation, not every deployment or output of OSS-Fuzz or OSS-Fuzz-Gen.",
       "The paper prose describes 4,835 crashes with about 70% false positives. Table 2 lists 5,080 baseline crashes with 3,583 false positives and 4,835 constrained crashes with 3,390 false positives. These totals must not be silently conflated.",
@@ -39,8 +39,8 @@
       "clauses": [
         {
           "episode_id": "E001",
-          "source_anchor": "Sections 2.1, 3.3 and 5.2.3: invalid calling context and program-error classification",
-          "source_paraphrase": "Generated drivers violated function preconditions. Some resulting crashes were labelled program errors and subsequently rejected by context-aware validation.",
+          "source_anchor": "RawProcessor.crxDecodePlane(crx_image_buf.data(), planeNumber);",
+          "source_paraphrase": "Figures 1–2 show the libraw example. The generated driver passes a buffer of arbitrary bytes into a function that casts the pointer to a CrxImage structure and accesses its fields. A buffer that is too small can crash this test because the driver has not constructed the valid object expected by the function. Where normal callers enforce those conditions, the crash does not establish a defect reachable from the application’s entry point. Sections 5.2.3 and 5.3.2 separately report that contextual validation rejected additional crashes initially classified as program errors.",
           "recovered_invariant_interpretation": "A crash must be attributable to a feasible application execution before it is relied upon as evidence of an application defect.",
           "source_record_refs": [
             "source_records[0]"
@@ -51,7 +51,7 @@
               "class_id": "VIGIL-FC-000062",
               "relationship": "failure-occurrence",
               "canonical_taxonomy_mapping": true,
-              "rationale": "AI-generated drivers called internal functions outside valid calling conditions. The resulting crash artefacts were treated as program-error evidence even though later context validation identified additional driver errors. The crash was real in the constructed harness, but its interpretation as a reachable application defect lacked the assurance required for defect triage."
+              "rationale": "The generated driver supplied arbitrary bytes where the target function expected a valid image object. A crash under that invalid calling condition establishes that the constructed test crashed, not that normal application use can trigger the same fault. The evaluated workflow still labelled some such outcomes as program errors until a later validator examined their calling context. Treating the crash as application-defect evidence before establishing that connection gave the test artefact more diagnostic assurance than it supported."
             }
           ]
         }
@@ -182,21 +182,47 @@
           "The public artifact repository was inspected only at its top-level listing. Its raw datasets were not independently audited."
         ],
         "review_outcome": "Recorded a research occurrence with provisional existing-class mappings. Clause coverage refers only to the retained material clauses. No production accident, completed human verification or new taxonomy class is claimed."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-18-CONTEXT-000202",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work / Codex",
+        "reviewer_model": "Exact runtime model identifier not exposed in this session",
+        "review_date": "2026-10-18",
+        "review_scope": "Bounded contextual prose and source-clause evidence repair; originating paper reopened. Existing taxonomy mappings and Harm Impact preserved.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "source_provenance_review": true,
+          "taxonomy_review": false,
+          "harm_impact_review": false,
+          "new_external_source_research": true
+        },
+        "known_limitations": [
+          "This record concerns the July–September 2025 evaluation, not every deployment or output of OSS-Fuzz or OSS-Fuzz-Gen.",
+          "The paper prose describes 4,835 crashes with about 70% false positives. Table 2 lists 5,080 baseline crashes with 3,583 false positives and 4,835 constrained crashes with 3,390 false positives. These totals must not be silently conflated.",
+          "The table contains apparent formatting or aggregation anomalies. Exact reconciled counts require author clarification or a separate raw-data audit.",
+          "A false positive means the crash is not feasible from a valid application entry point under the stated model; the harness itself can still crash.",
+          "No affected maintainer, production vulnerability report, outage, customer loss or physical consequence is established from the aggregate evaluation.",
+          "Gemini 2.5 Pro is reported for these experiments. Results are not assumed to generalise to other models or software domains.",
+          "The public artifact repository was inspected only at its top-level listing. Its raw datasets were not independently audited."
+        ],
+        "review_outcome": "Replaced section-only descriptions with concrete actor, action, evidence and consequence explanations. Retained experimental limits and existing classifications; no independent reproduction or human verification claimed."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-16-FUZZ-INGESTION-000202",
+      "review_id": "VIGIL-REVIEW-2026-10-18-CONTEXT-000202",
       "reviewer_type": "AI analytical reviewer",
       "reviewer_platform": "OpenAI ChatGPT Work / Codex",
       "reviewer_model": "Exact runtime model identifier not exposed in this session",
-      "review_date": "2026-10-16",
-      "review_scope": "Source-first admission of a bounded research occurrence; current taxonomy recognition and exclusion review; twelve-dimensional harm screening.",
+      "review_date": "2026-10-18",
+      "review_scope": "Bounded contextual prose and source-clause evidence repair; originating paper reopened. Existing taxonomy mappings and Harm Impact preserved.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
         "source_provenance_review": true,
-        "taxonomy_review": true,
-        "harm_impact_review": true,
+        "taxonomy_review": false,
+        "harm_impact_review": false,
         "new_external_source_research": true
       },
       "known_limitations": [
@@ -208,7 +234,7 @@
         "Gemini 2.5 Pro is reported for these experiments. Results are not assumed to generalise to other models or software domains.",
         "The public artifact repository was inspected only at its top-level listing. Its raw datasets were not independently audited."
       ],
-      "review_outcome": "Recorded a research occurrence with provisional existing-class mappings. Clause coverage refers only to the retained material clauses. No production accident, completed human verification or new taxonomy class is claimed."
+      "review_outcome": "Replaced section-only descriptions with concrete actor, action, evidence and consequence explanations. Retained experimental limits and existing classifications; no independent reproduction or human verification claimed."
     },
     "operating_model": "AI-authored, semi-autonomous production under human task instruction",
     "human_governance_editor": null,
