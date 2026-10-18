@@ -255,30 +255,17 @@ Re-run the candidate from the canonical class definition and explicitly check fo
 If an earlier adjudication used an unstated recognition condition, correct the record and preserve that correction in interpretive provenance.
 
 
-### Gmail as the durable next-action staging point
+### GitHub Issues as the durable action queue
 
-VIGIL uses the designated agent mailbox **Caelen.agent@gmail.com** as the durable staging point for unresolved actions that cannot or should not be completed inside the current Incident edit.
+The authoritative location for new unresolved VIGIL follow-up tasks is GitHub Issues in `CAM-Initiative/Vigil`, not the former emailed queue. Issues are tracked actions, not new canonical evidence, approval, completion reporting or a substitute for an admitted Incident.
 
-**Routing invariant:** all connector-mediated VIGIL operational action emails, QA queues, taxonomy handoffs, authoring audits, repository-cleanup actions and similar maintainer work items MUST be addressed to **Caelen.agent@gmail.com**. Do not route these workflow emails to a maintainer's personal mailbox merely because that account is currently connected or is the sender identity. If a VIGIL action email is accidentally sent elsewhere, mark it superseded and send the authoritative replacement to **Caelen.agent@gmail.com**.
+When an adjudication produces a concrete task that cannot safely be completed within its authorised scope, follow the issue protocol in `vigil/docs/maintenance/INCIDENT-ADJUDICATION-WORKFLOW.md`. Identify the Incident, episode and Fidelity Class or external requirement as appropriate. Search existing open and closed issues using these identities and the underlying mechanism. Update an existing relevant open issue instead of creating a duplicate. Otherwise create an actionable issue with source-grounded context, the exact missing fact or repair, branch/ref, dependencies and an objective closure condition. Use the template in `.github/ISSUE_TEMPLATE/vigil-follow-up.md`.
 
+Use categories: **taxonomy-gap**, **evidence-required**, **record-maintenance**, **system-improvement**. A defensible Boundary, no-mapping, partial or unresolved finding does not alone require an issue: the trigger is a distinct *actionable follow-up*. A blocked record stays blocked even if an issue is opened. Do not create issues for a clean pass or for progress reporting. Do not publish private evidence or sensitive correspondence in public issues.
 
-**Gmail is an exception/action channel, not a completion log.** Do not send a Gmail notification merely because an Incident, pair, tranche or validator run completed successfully. A clean adjudication, an unchanged taxonomy, consistent Incident classification and source-clause assessments, or an empty update queue requires **no email**.
+Link the confirmed issue number and URL in the dated review manifest or Incident completion audit, never in a new global incident-by-class dataset. Issue creation is not automatic approval to change taxonomy, schema, validators, other Incidents or the website. If GitHub access is unavailable, preserve a ready-to-file issue payload in the dated audit and report that staging was not completed; do not revert to Gmail.
 
-The current queue is the **latest** Gmail message whose subject begins `[CURRENT VIGIL QA ACTION]` and that carries the label `VIGIL/CURRENT QA ACTION`. That message is a complete authoritative snapshot of unresolved work and supersedes earlier queue notes.
-
-When adjudication identifies a new unresolved taxonomy requirement or another unresolved manual action:
-
-1. read the current queue first;
-2. reconcile its items against the actual working-branch state;
-3. preserve unresolved items;
-4. add the new instruction with Incident IDs, evidence basis, tested taxonomy boundaries or other relevant context;
-5. send a replacement self-email using the same subject prefix;
-6. apply the same Gmail label; and
-7. make the supersession rule explicit in the new body.
-
-A taxonomy escalation should explain the mechanism or invariant that is not faithfully representable, the nearest classes tested and rejected, and whether the likely next task is a new class, boundary amendment, family review or terminology repair.
-
-This is intentionally a connector-mediated maintainer workflow, not repository automation. GitHub Actions must not contain mailbox credentials or attempt to impersonate the ChatGPT Gmail connector.
+The historical Gmail queue is a **migration source only**. Reconcile the latest correctly labelled authoritative snapshot and its supersession notes against current `main`, the working branch and already-open Issues; migrate only outstanding, distinct tasks. Do not import historical embedded snapshots as new work or claim the migration complete before it is audited. See `vigil/docs/maintenance/GMAIL-TO-GITHUB-ISSUES-MIGRATION.md`. Existing approvals and workstream pauses remain in force.
 
 ### Mapping preservation invariant
 
