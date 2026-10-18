@@ -1,6 +1,6 @@
 # Wording-specific evidence checks — Gate 1 proposal
 
-Status: proposed, awaiting human-maintainer approval. No blocking control changed.
+Status: approved by the human maintainer on 18 October 2026: “blocking validation is approved as a validation update.” Implemented as recorded in `2026-10-18-wording-validation-implementation.json`. The proposal below preserves the approved scope.
 
 ## Current behaviour
 

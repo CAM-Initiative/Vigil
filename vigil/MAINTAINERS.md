@@ -451,7 +451,7 @@ For a wording-dependent observation:
 
 Publish the original wording, context and occurrence-specific analysis together in source-supported order. When both `source_anchor` and `source_paraphrase` are supplied, preserve both across website, static, print and PDF outputs. Avoid repeating a whole passage for each taxonomy relationship; each rationale can refer to its decisive words within the same episode.
 
-This is an authoring and review contract. It introduces no mandatory new field, retrospective episode migration, keyword classifier, schema rule or blocking validator. Corpus repairs and changes to pass/fail controls require their own scoped approval under the existing stop conditions.
+The semantic duties above remain an authoring and review contract. The separately approved 2026-10-18 structural checks validate optional statement bindings and explicitly declared wording evidence, as described below. They introduce no retrospective migration or keyword classifier. Further corpus repairs and changes to pass/fail controls require their own scoped approval under the existing stop conditions.
 
 
 ### Separate statements within one source episode
@@ -462,7 +462,7 @@ For an explicitly scoped statement-level repair, the existing source episode may
 
 Optional `source_clause_analysis.pre_compaction_context` records the known task, missing prior state, `source_record_refs[]` and the occurrence-specific interpretive consequence in `rationale`. This is evidence context, not an invented prior event or an assumption that missing public context was never captured internally.
 
-Publication consumers show supplied pre-context first, then the shared episode context and each statement in textual order. Preserve the full original passage in an accessible source disclosure. Show later response and omission separately when supported. A consumer must retain the complete original episode if statement bindings are malformed or omit a relationship; it must not silently discard analysis. This optional authoring convention does not change any schema, validator, builder acceptance rule or historical migration requirement.
+Publication consumers show supplied pre-context first, then the shared episode context and each statement in textual order. Preserve the full original passage in an accessible source disclosure. Show later response and omission separately when supported. A consumer must retain the complete original episode if statement bindings are malformed or omit a relationship; it must not silently discard analysis. The optional convention has the structural checks below; it creates no historical migration requirement.
 
 
 ### External alignment classification publication boundary
@@ -543,6 +543,14 @@ python vigil/scripts/build-vigil-public-records.py
 ```
 
 The master registry contains one registry, `incidents`. It is a registry-of-registries manifest and must not duplicate Incident entries. `VIGIL.Incidents.Index.json` is intentionally a lightweight catalogue/search/routing projection; canonical evidence, diagnosis, structured severity, taxonomy detail and provenance remain in the source Incident JSON. Do not manually edit generated outputs or recreate retired-class indexes.
+
+## Optional wording evidence and statement validation
+
+Approved 18 October 2026. `validate-vigil-records.py` checks `statement_analysis` whenever supplied. Each statement requires a nonempty episode-local unique `statement_id`, nonempty `recovered_invariant_interpretation` and a `taxonomy_relationship_indices` array. Every parent relationship is bound exactly once using an in-range integer index; booleans are not indices. Empty index arrays remain valid for context-only statements. Keep the parent episode and source references.
+
+A clause or statement may declare `wording_evidence.basis` as `original-quotation`, `attributed-quotation` or `unavailable`. Quotation bases require a local `source_anchor`, local context in `source_paraphrase` and valid parent `source_record_refs`. An attributed quotation also requires nonempty `wording_evidence.attribution` and `wording_evidence.access_limitations`. An unavailable basis requires explicit access limitations and local context; its anchor must be absent or empty. Do not invent a quotation to satisfy the check.
+
+These checks enforce declared structure, not authenticity, chronology, completeness or interpretive quality. Unmarked historical clauses remain valid. Marker adoption is a separate evidence-review decision, not an automatic migration. Publication consumers preserve the optional structures; renderer fallback remains appropriate for legacy or externally supplied malformed content. Approval and the initial read-only corpus result are recorded in `vigil/docs/reviews/2026-10-18-wording-validation-implementation.json`.
 
 ## Human-maintainer stop conditions for validators, schema rules and corpus-wide tests
 
