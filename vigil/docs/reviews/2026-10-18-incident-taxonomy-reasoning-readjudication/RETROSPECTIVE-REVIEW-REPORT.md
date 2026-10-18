@@ -30,10 +30,10 @@ Earlier workstream edits to a small number of **external requirement derivation 
 
 ## Validation
 
-Temporary branch-only Actions run: <https://github.com/CAM-Initiative/Vigil/actions/runs/39145959347> — **SUCCESS** after the first run detected three internal-class prose references across INC-003 and INC-004. No permanent validator was modified or disabled.
+Temporary branch-only Actions run: <https://github.com/CAM-Initiative/Vigil/actions/runs/39145959347> — **SUCCESS** after the first run detected four internal-class prose references across INC-003 and INC-004. No permanent validator was modified or disabled.
 
 Existing scripts run in Actions' temporary Git checkout, with `jsonschema==4.26.0` installed:
-`build-vigil-public-records.py`, `validate-vigil-records.py`, `validate-vigil-public-records.py`, `validate-vigil-source-provenance.py`, `validate-vigil-interpretive-provenance.py`, `validate-vigil-system-components.py`, `validate-authorship-provenance.py`, the full `vigil/tests` unittest discovery suite and `vigil/taxonomy/validate_taxonomy.py`. The generated public indexes were rebuilt only inside the CI checkout, **not committed or published**. The temporary workflow was removed afterwards, with the successful Action run URL and bounded audit retained.
+`build-vigil-public-records.py`, `validate-vigil-records.py`, `validate-vigil-public-records.py`, `validate-vigil-source-provenance.py`, `validate-vigil-interpretive-provenance.py`, `validate-vigil-system-components.py`, `validate-authorship-provenance.py`, the full `vigil/tests` unittest discovery suite (**280 tests, all passed**) and `vigil/taxonomy/validate_taxonomy.py`. The generated public indexes were rebuilt only inside the CI checkout, **not committed or published**. The temporary workflow was removed afterwards, with the successful Action run URL and bounded audit retained.
 
 **Interpretation:** Green CI establishes structural and current automated regression integrity at the tested commit, not semantic proof that disputed Fidelity Class roles are correct. The wider 194-record programme remains paused.
 
