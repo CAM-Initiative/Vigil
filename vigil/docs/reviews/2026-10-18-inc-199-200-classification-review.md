@@ -2,7 +2,7 @@
 
 Date: 18 October 2026. Baseline: 9c2209e42a0650e725207bf2b83cbe74e41155e8. Taxonomy authority: 0.6.11.
 
-Status: read-only review; no canonical mapping, coverage, evidence state or HIM changed. The current empty classification tables are upstream intake state, not missing website rendering. Both records explicitly retain unclassified / partial coverage and no source-clause breakdown.
+Status: scope approved by the human maintainer on 18 October 2026: “adjudication scope is approved.” Implemented in `2026-10-18-inc-199-200-adjudication/`. The review below preserves the pre-change rationale: the empty classification tables were upstream intake state, not missing website rendering. Both records now have bounded provisional relationships and explicit partial coverage; their evidence and HIM are unchanged.
 
 ## INC-199 — DJI Romo
 

@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Claude Code-assisted DJI Romo project exposed cross-device home data",
     "created": "2026-10-16",
-    "updated": "2026-10-16",
-    "version": "0.1.1"
+    "updated": "2026-10-18",
+    "version": "0.1.2"
   },
   "incident_identity": {
     "historical_event_name": "Claude Code-assisted DJI Romo project exposed cross-device home data",
@@ -21,7 +21,7 @@
   "summary": "In February 2026, Sammy Azdoufal used Claude Code to help adapt his DJI Romo vacuum for gamepad control. His application received data from other owners' devices. Malwarebytes reports approximately 7,000 robots in 24 countries. The Verge witnessed another household's robot status and floor plan arriving remotely. Camera, microphone and movement access were also reported, but the journalist could not demonstrate those functions on the colleague's unit after DJI had restricted access. DJI acknowledged a backend permission-validation defect and said staged fixes closed it. The researcher's separate public project documents camera viewing and app-PIN bypass. No evidence establishes that every exposed device was watched or controlled.",
   "vigil_assessment": {
     "factual_basis": "The evidence combines an eyewitness journalistic demonstration, secondary technical reporting and the researcher's public project documentation. Access to another household's non-public device information was observed. Claimed camera access, own-device PIN bypass and observed third-party floor-plan retrieval are distinct propositions. The available sources identify Claude Code as a development aid but do not expose its complete prompts or execution trace. The researcher told The Verge that he extracted his own device token and received other devices' messages from the Message Queuing Telemetry Transport (MQTT) service. DJI acknowledged a backend permission-validation defect in that communication path. The researcher attributed the broad visibility to missing topic-level access controls. This supports a cross-device authorisation defect; the exact server-side rule configuration is not public. The reviewed sources do not document a fuzzing campaign or random input generation.",
-    "governance_interpretation": "A valid device credential failed to remain confined to its owner's information. This is a platform access-separation issue encountered during AI-assisted software development. The evidence does not show that the coding assistant independently chose an unauthorised target, deliberately evaded a refusal or possessed authority to inspect other homes. Product-level exposure and model behaviour therefore remain separate questions. Authentication accepted the credential; authorisation did not confine the returned data to the permitted device. Transport encryption protects the connection but does not establish which devices an authenticated client may access. The separate app-PIN bypass concerns an additional access path and must not be treated as independent proof of third-party camera access.",
+    "governance_interpretation": "A valid device credential failed to remain confined to its owner's information. This is a platform access-separation issue encountered during AI-assisted software development. The evidence does not show that the coding assistant independently chose an unauthorised target, deliberately evaded a refusal or possessed authority to inspect other homes. Product-level exposure and model behaviour therefore remain separate questions. Authentication accepted the credential; authorisation did not confine the returned data to the permitted device. Transport encryption protects the connection but does not establish which devices an authenticated client may access. The separate app-PIN bypass concerns an additional access path and must not be treated as independent proof of third-party camera access.\n\nThe target-binding finding concerns the DJI service’s acceptance and use of the device credential. It is not a finding that Claude independently authorised third-party access. The app-PIN route and final restored permission checks remain unresolved, so the supported mapping is not a complete whole-Incident alignment judgement.",
     "significance_to_cam": "AI-assisted development can connect a benign local task to a wider live control surface. Receiving cross-account data is a material consequence even where malicious use or physical damage is not established. The discovery and later remediation must remain distinct from the claim that a model autonomously caused the access. A development or evaluation task needs an explicit boundary for permitted targets, data and actions. A reachable service or accepted credential does not establish permission for every resource it exposes. Comparisons with agent evaluations concern this scope boundary; they do not establish that the same exploit or testing method occurred.",
     "assessment_boundaries": [
       "No complete Claude Code conversation, tool trace or underlying model build is available.",
@@ -30,9 +30,94 @@
       "DJI distinguished transport encryption from permission validation; plaintext visibility to an authenticated client does not establish unencrypted transport.",
       "Researcher discovery, disclosure and vendor remediation dates are not independently reconstructed to exact days.",
       "No confirmed physical injury, malicious stalking, credential theft or broad downstream misuse is established.",
-      "Detailed clause-level taxonomy adjudication remains incomplete; no class mapping is asserted.",
+      "The backend target-binding finding is provisional. The separate app-PIN route and target-specific validation of the repaired service remain unresolved; no whole-Incident alignment conclusion is assigned.",
       "AI-assisted reverse engineering is reported. Formal fuzz testing, random input generation and autonomous model escalation are not established."
-    ]
+    ],
+    "source_clause_analysis": {
+      "purpose": "Source-first progression from an own-device development task to cross-device exposure, a separate own-device PIN route and later remediation. Each episode is retained once; distinct interpretations share that episode.",
+      "clauses": [
+        {
+          "episode_id": "E001",
+          "source_record_refs": [
+            "source_records[0]",
+            "source_records[1]"
+          ],
+          "source_paraphrase": "Sammy Azdoufal reported using Claude Code to reverse engineer communications for his own DJI Romo and build a gamepad controller. He told The Verge that he extracted his own device token. Malwarebytes also describes that development sequence. The complete assistant conversation and execution trace are not published.",
+          "recovered_invariant_interpretation": "A request to work on one owned device does not establish authority over other devices. Naming a coding assistant identifies a development aid, not the actor responsible for every later request or authorisation decision.",
+          "adjudication_status": "resolved-no-mapping",
+          "taxonomy_relationships": []
+        },
+        {
+          "episode_id": "E002",
+          "source_record_refs": [
+            "source_records[0]",
+            "source_records[1]"
+          ],
+          "source_paraphrase": "The researcher’s client received information from other devices after connecting with his own token. The Verge witnessed another household’s robot status and floor plan. DJI’s quoted statement acknowledged a backend permission-validation defect in the MQTT communication path. The server-side rules and complete request trace are not public. Reported wider camera access remains distinct from the witnessed third-party information read.",
+          "recovered_invariant_interpretation": "An accepted credential must remain bound to the principal, device and data it authorises. Returning data from a different household is a material target change, even when the connection itself is authenticated and encrypted.",
+          "adjudication_status": "mapped",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000003",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The DJI backend accepted a credential associated with the researcher’s own device and returned other households’ device information. Authority over the original vacuum did not cover those different owners or devices. The observed cross-device response and DJI’s acknowledged permission-validation defect support a failure to bind accepted access to its proper target. This finding concerns the service’s authorisation behaviour; it does not establish that Claude chose another household as a target or decided that access was permitted."
+            },
+            {
+              "class_id": "VIGIL-FC-000002",
+              "relationship": "ambiguous-boundary",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The custom client could obtain non-public information beyond the researcher’s own vacuum. That demonstrates technical capability and an access-control defect. The available sources do not show the coding assistant’s prompts, decisions or tool trace, or a governance process treating that technical capability as permission. The capability-versus-authority boundary is therefore relevant, but neither the class’s permission-inference failure nor its independently checked authority outcome is established."
+            }
+          ],
+          "source_anchor": "a backend permission validation issue",
+          "wording_evidence": {
+            "basis": "attributed-quotation",
+            "attribution": "DJI statement quoted by The Verge.",
+            "access_limitations": "The published journalistic account reproduces the provider statement; this review did not inspect DJI’s internal authorisation logs or a separate original statement artefact."
+          }
+        },
+        {
+          "episode_id": "E003",
+          "source_record_refs": [
+            "source_records[0]",
+            "source_records[2]"
+          ],
+          "source_paraphrase": "The public client documentation states that it bypasses the DJI Home app PIN. The Verge separately describes the researcher displaying his own robot’s camera without that PIN. The quoted repository sentence is a developer claim about the client; it is not an independently observed third-party camera session. The record does not establish the PIN’s required governance scope across the app and direct API route, or an authorised equivalent control on the alternate path.",
+          "recovered_invariant_interpretation": "Avoiding an app control is distinct from demonstrating an unauthorised effect on another owner. Assessing an alternate route requires the control’s independently applicable purpose, scope and any authorised equivalent, not the word bypass alone.",
+          "adjudication_status": "unresolved",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000041",
+              "relationship": "unresolved candidate — required governance route",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "The client’s claimed PIN avoidance and the own-device camera demonstration make the alternate route material. The missing facts are whether the PIN was required for that direct route and whether another authorised check supplied the same governance effect. Without them, neither an unauthorised route bypass nor an authorised equivalent is established."
+            }
+          ],
+          "source_anchor": "This tool bypass the pin code setup on DJI home app.",
+          "wording_evidence": {
+            "basis": "original-quotation"
+          }
+        },
+        {
+          "episode_id": "E004",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "source_paraphrase": "DJI reported staged fixes. The journalist described access still being available after an initial assurance and the scanner later losing access, including to the researcher’s own robot. These are distinct observations from a complete cross-device authorisation test. The preserved sources do not independently show the final permission checks for each device and service node.",
+          "recovered_invariant_interpretation": "Removal of one demonstrated access path does not itself prove that renewed authority is correctly bound across the service. A restored boundary requires evidence of the permission check and its target-specific effect.",
+          "adjudication_status": "unresolved",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000003",
+              "relationship": "unresolved candidate — successful-invariant after remediation",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "The reported fix and later loss of scanner access are evidence of intervention. They do not show that authorised own-device access and refused third-party access were both correctly enforced across the remaining routes. That missing target-specific validation prevents a separate invariant-held finding for the repaired state."
+            }
+          ]
+        }
+      ]
+    }
   },
   "source_records": [
     {
@@ -171,17 +256,32 @@
   },
   "taxonomy_classification": {
     "taxonomy_version": "0.6.11",
-    "classification_status": "unclassified",
+    "classification_status": "provisionally-classified",
     "adjudication_coverage": {
       "status": "partial"
     },
-    "classification_basis": "The occurrence evidence is admitted without a completed class-specific adjudication. No positive or negative taxonomy conclusion is inferred from an empty mapping.",
-    "primary_classification": null,
-    "secondary_classifications": [],
+    "classification_basis": "The cross-device response supports a target-binding failure in the DJI backend. The capability-versus-authority relationship remains a Boundary finding because no assistant or governance permission-inference trace is published. The separate PIN route and final restored authorisation state retain unresolved candidate assessments.",
+    "primary_classification": {
+      "family_id": "VIGIL-FF-0001",
+      "class_id": "VIGIL-FC-000003",
+      "classification_role": "failure-occurrence",
+      "classification_basis": "The DJI backend accepted a credential associated with the researcher’s own device and returned other households’ device information. Authority over the original vacuum did not cover those different owners or devices. The observed cross-device response and DJI’s acknowledged permission-validation defect support a failure to bind accepted access to its proper target. This finding concerns the service’s authorisation behaviour; it does not establish that Claude chose another household as a target or decided that access was permitted.",
+      "classification_confidence": "medium"
+    },
+    "secondary_classifications": [
+      {
+        "family_id": "VIGIL-FF-0001",
+        "class_id": "VIGIL-FC-000002",
+        "classification_role": "ambiguous-boundary",
+        "classification_basis": "The custom client could obtain non-public information beyond the researcher’s own vacuum. That demonstrates technical capability and an access-control defect. The available sources do not show the coding assistant’s prompts, decisions or tool trace, or a governance process treating that technical capability as permission. The capability-versus-authority boundary is therefore relevant, but neither the class’s permission-inference failure nor its independently checked authority outcome is established.",
+        "classification_confidence": "medium"
+      }
+    ],
     "classification_review_provenance": {
-      "review_date": "2026-10-16",
+      "review_date": "2026-10-18",
       "reviewer": "OpenAI ChatGPT Work / Codex",
-      "review_status": "Source-first intake; detailed clause-level taxonomy assessment pending"
+      "review_status": "AI source-first taxonomy adjudication; unresolved candidates retained; no independent human verification",
+      "review_reference": "vigil/docs/reviews/2026-10-18-inc-199-200-adjudication/VIGIL-INC-000199.json"
     }
   },
   "related_incidents": [
@@ -241,21 +341,49 @@
           "AI-assisted reverse engineering is reported. Formal fuzz testing, random input generation and autonomous model escalation are not established."
         ],
         "review_outcome": "Explained authentication versus per-device authorisation, transport encryption and the separate PIN path. Linked existing comparative incidents without claiming formal fuzzing or autonomous Claude escalation."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-18-TAXONOMY-000199",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work / Codex",
+        "reviewer_model": "Exact runtime model identifier not exposed in this session",
+        "review_date": "2026-10-18",
+        "review_scope": "Human-authorised source-first taxonomy adjudication; current taxonomy recognition and exclusion review; chronological clause analysis. Factual narrative, sources and existing Harm Impact preserved.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "source_provenance_review": true,
+          "harm_impact_review": false,
+          "taxonomy_review": true,
+          "new_external_source_research": true
+        },
+        "known_limitations": [
+          "No complete Claude Code conversation, tool trace or underlying model build is available.",
+          "Approximately 7,000 devices is not a count of people whose camera feeds were viewed.",
+          "The observed third-party floor-plan read is not equivalent to a verified third-party camera or microphone session.",
+          "DJI distinguished transport encryption from permission validation; plaintext visibility to an authenticated client does not establish unencrypted transport.",
+          "Researcher discovery, disclosure and vendor remediation dates are not independently reconstructed to exact days.",
+          "No confirmed physical injury, malicious stalking, credential theft or broad downstream misuse is established.",
+          "The backend target-binding finding is provisional. The separate app-PIN route and target-specific validation of the repaired service remain unresolved; no whole-Incident alignment conclusion is assigned.",
+          "AI-assisted reverse engineering is reported. Formal fuzz testing, random input generation and autonomous model escalation are not established."
+        ],
+        "review_outcome": "Added bounded platform/control-system taxonomy relationships and retained explicit unresolved candidates. No AI conduct, independent human verification or complete whole-Incident alignment judgement inferred."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-16-INC000199-ACCESS-MECHANISM",
+      "review_id": "VIGIL-REVIEW-2026-10-18-TAXONOMY-000199",
       "reviewer_type": "AI analytical reviewer",
       "reviewer_platform": "OpenAI ChatGPT Work / Codex",
       "reviewer_model": "Exact runtime model identifier not exposed in this session",
-      "review_date": "2026-10-16",
-      "review_scope": "Bounded access-mechanism enrichment and comparison with existing evaluation incidents; no taxonomy re-adjudication or harm change.",
+      "review_date": "2026-10-18",
+      "review_scope": "Human-authorised source-first taxonomy adjudication; current taxonomy recognition and exclusion review; chronological clause analysis. Factual narrative, sources and existing Harm Impact preserved.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
         "source_provenance_review": true,
         "harm_impact_review": false,
-        "taxonomy_review": false
+        "taxonomy_review": true,
+        "new_external_source_research": true
       },
       "known_limitations": [
         "No complete Claude Code conversation, tool trace or underlying model build is available.",
@@ -264,10 +392,10 @@
         "DJI distinguished transport encryption from permission validation; plaintext visibility to an authenticated client does not establish unencrypted transport.",
         "Researcher discovery, disclosure and vendor remediation dates are not independently reconstructed to exact days.",
         "No confirmed physical injury, malicious stalking, credential theft or broad downstream misuse is established.",
-        "Detailed clause-level taxonomy adjudication remains incomplete; no class mapping is asserted.",
+        "The backend target-binding finding is provisional. The separate app-PIN route and target-specific validation of the repaired service remain unresolved; no whole-Incident alignment conclusion is assigned.",
         "AI-assisted reverse engineering is reported. Formal fuzz testing, random input generation and autonomous model escalation are not established."
       ],
-      "review_outcome": "Explained authentication versus per-device authorisation, transport encryption and the separate PIN path. Linked existing comparative incidents without claiming formal fuzzing or autonomous Claude escalation."
+      "review_outcome": "Added bounded platform/control-system taxonomy relationships and retained explicit unresolved candidates. No AI conduct, independent human verification or complete whole-Incident alignment judgement inferred."
     },
     "operating_model": "AI-authored, semi-autonomous production under human task instruction",
     "human_governance_editor": null,

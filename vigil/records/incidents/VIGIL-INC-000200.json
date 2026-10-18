@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Danfoss refrigeration-control compromises disrupted French supermarkets",
     "created": "2026-10-16",
-    "updated": "2026-10-17",
-    "version": "0.1.2"
+    "updated": "2026-10-18",
+    "version": "0.1.3"
   },
   "incident_identity": {
     "historical_event_name": "Danfoss refrigeration-control compromises disrupted French supermarkets",
@@ -21,7 +21,7 @@
   "summary": "During the night of 11–12 October 2026, remote management systems for Danfoss AK-SM and AK-SC refrigeration controls were compromised at supermarkets across France. Reports describe altered defrost and temperature-control settings, overheating refrigerated equipment and disruption to fresh and frozen food storage. Outcomes differed sharply between stores. At Intermarché in Gradignan, a cold room reportedly reached 50°C and triggered a sprinkler, flooding the reserve area. In Haguenau, two different retailers discarded frozen stock; at Super U in Mirepoix, display-area goods were discarded but reserve cold rooms remained unaffected. Intermarché La Haye-du-Puits reported substantial food loss and heat-damaged equipment. Coopérative U's president said 80 of its stores had been affected but most avoided a cold-chain break or stock destruction through intervention. Refrigeration specialists helped detect and restore failures. The identity of the operator, the command origin and the reason for the changes have not been established.",
   "vigil_assessment": {
     "factual_basis": "CERT-FR confirms compromises of Danfoss AK-SM and AK-SC remote refrigeration managers. Store-level interviews establish distinct observed operating and protective outcomes, not necessarily distinct commands. Gradignan reported a 50°C room, sprinkler flooding and a defrost duration reportedly changed from one to eight hours; no underlying logs establish whether alarm delay was configured separately or followed from prolonged defrost. Haguenau Intermarché reported 32°C cabinet readings, €50,000 frozen-stock loss and a smaller chilled-stock loss; nearby E.Leclerc described settings up to 50°C and additional discarded frozen products. Mirepoix reported a 2 am monitoring warning, 6 am technician attendance, €90,000 loss and unaffected reserves. Coopérative U's president said most of 80 affected U stores avoided cold-chain loss. La Haye-du-Puits reported approximately US$112,000 in food losses and heat-affected hardware. The interviews do not provide a multi-site configuration or command log. Contractors are documented operational intermediaries; no common contractor is identified. Censys observed 1,825 internet-exposed Danfoss StoreView hosts in France on 11 October and 537 on 14 October, but these are exposure observations, not confirmed victims. Earlier vulnerabilities and subsequent laboratory reproductions show technical possibilities, not incident-specific access paths. The Dixell episode of 12–13 October remains a separately assessed occurrence.",
-    "governance_interpretation": "Compromises of deployed Danfoss refrigeration supervisors were followed by material stock loss and interrupted store operations, while many other affected stores detected or contained interference in time. The same episode therefore records both consequential control interference and successful local protective responses. The evidence does not establish whether a fleet-management mistake, unauthorised remote script, compromised service provider or another process initiated the changes. Neither the available GitHub examples nor pre-existing product vulnerabilities identify a perpetrator, intention or participating AI system.",
+    "governance_interpretation": "Compromises of deployed Danfoss refrigeration supervisors were followed by material stock loss and interrupted store operations, while many other affected stores detected or contained interference in time. The same episode therefore records both consequential control interference and successful local protective responses. The evidence does not establish whether a fleet-management mistake, unauthorised remote script, compromised service provider or another process initiated the changes. Neither the available GitHub examples nor pre-existing product vulnerabilities identify a perpetrator, intention or participating AI system.\n\nThe access-capability relationship is a Boundary finding, not a model-misalignment conclusion. The original command authority and the defined protective effects of store controls remain unresolved. Avoided losses are preserved as observed response outcomes without converting them into an invariant-held classification.",
     "significance_to_cam": "A supervisory configuration interface can affect physical refrigeration and generate delayed real-world consequences. The differences between successful and unsuccessful store interventions matter: a controller compromise does not invariably produce food destruction. Independent monitoring, site-specific recovery and constrained remote access are observable boundaries. Public third-party monitoring and simulation repositories show how simple software can interact with refrigeration telemetry or reproduce controller interfaces, but do not establish that their code was deployed in the incident.",
     "assessment_boundaries": [
       "No occurrence-specific evidence establishes AI assistance, autonomous agents, fuzzing, a maintenance-company test or a specific AI model.",
@@ -30,7 +30,7 @@
       "The approximately US$112,000 loss is an attributed single-store account, not an audited national loss.",
       "No confirmed physical injury, death or lasting population-wide food deprivation is established.",
       "The maintainer authorised this non-AI-attributed context incident; admission does not establish AI conduct.",
-      "Clause-level taxonomy adjudication remains incomplete and no canonical Fidelity Class mapping is asserted.",
+      "A provisional capability-versus-authority Boundary mapping is recorded. The original scope transition and control-effectiveness candidates remain unresolved; no whole-Incident alignment conclusion is assigned.",
       "National retailer counts refer to affected or contacted installations, not a count of stores losing stock, and are not equivalent to Censys internet-exposure counts.",
       "The Gradignan defrost-duration account and equipment temperatures are site- and source-specific; no controller logs demonstrate a uniform command set across Danfoss stores.",
       "At least one retail group reports that most of its affected installations avoided losses; successful response and compromised configuration are distinct observations.",
@@ -38,7 +38,124 @@
       "Censys host counts and laboratory reconstructions concern exposure and feasibility, not confirmed victims or attack provenance.",
       "The listed open-source repositories are illustrative comparators; no repository, developer, AI model, maintenance company or fleet tool is identified as the command source.",
       "Any single exploit or automated-testing mechanism across multiple controller generations remains unproven."
-    ]
+    ],
+    "source_clause_analysis": {
+      "purpose": "Compromise precedes the reported store consequences and responses. Store reports are parallel branches of the same bounded Danfoss wave; their array order does not invent a relative timestamp between stores. Later exposure measurements are contextual observations, not a victim count or an attribution of the command source.",
+      "clauses": [
+        {
+          "episode_id": "E001",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "source_paraphrase": "CERT-FR confirms compromises of Danfoss AK-SM and AK-SC refrigeration management systems during the bounded wave. Its French wording below refers to numerous compromises of remote controllers. The alert recommends removing Internet exposure and using protected management routes. Its later inclusion of other controller products does not establish a common actor or merge the separately recorded Dixell occurrence.",
+          "recovered_invariant_interpretation": "A reachable management interface supplies technical capability, not authority to operate a store’s refrigeration. Compromise evidence does not identify the reasoning or authorisation process that produced the commands.",
+          "adjudication_status": "mapped",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000002",
+              "relationship": "ambiguous-boundary",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Compromised remote management interfaces made consequential refrigeration controls reachable to an unauthorised operator. The access exposure engages the distinction between technical capability and permission. The sources do not identify the initiating process or show an AI or governance process treating reachability as authority. A security compromise and subsequent food loss do not by themselves establish that permission-inference mechanism, or that an authority check held."
+            }
+          ],
+          "source_anchor": "de nombreuses compromissions des controleurs à distance",
+          "wording_evidence": {
+            "basis": "original-quotation"
+          }
+        },
+        {
+          "episode_id": "E002",
+          "source_record_refs": [
+            "source_records[7]"
+          ],
+          "source_paraphrase": "At Intermarché in Gradignan, reporting describes a cold room reaching 50°C, a sprinkler activating and reserve-area flooding. The reported defrost duration changed from one to eight hours. No controller command log identifies the requesting actor, any original authorised maintenance scope or a separate alarm-delay setting. The altered setting is not assumed to be the command sent to every store.",
+          "recovered_invariant_interpretation": "Material configuration interference is established as an attributed store report. A scope-authority finding additionally requires the original permission and how it was carried into a changed action or target.",
+          "adjudication_status": "unresolved",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000003",
+              "relationship": "unresolved candidate — target or scope transposition",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "The prolonged defrost and resulting conditions show why the command scope matters. The initiating account, authority over the original task and subsequent target or action change are unknown. An intrusion alone does not demonstrate that an existing maintenance permission was treated as authority for these changes."
+            }
+          ]
+        },
+        {
+          "episode_id": "E003",
+          "source_record_refs": [
+            "source_records[6]"
+          ],
+          "source_paraphrase": "Haguenau Intermarché reported cabinet readings of 32°C, approximately €50,000 in frozen-stock losses and an additional smaller chilled-stock loss. This is one retailer’s consequence account, not a national loss estimate or evidence of a particular authentication or control mechanism.",
+          "recovered_invariant_interpretation": "A material consequence must remain attached to the affected store. Its scale does not identify the authorising process or the specific safeguard that operated.",
+          "adjudication_status": "resolved-no-mapping",
+          "taxonomy_relationships": []
+        },
+        {
+          "episode_id": "E004",
+          "source_record_refs": [
+            "source_records[6]"
+          ],
+          "source_paraphrase": "The separate E.Leclerc store in Haguenau described settings up to 50°C and discarded frozen goods. It is a different affected retailer from the nearby Intermarché. The report does not establish that the same command, credential or response route operated at both.",
+          "recovered_invariant_interpretation": "Different affected principals and reported operating conditions remain distinct. A shared locality does not establish a shared command pathway.",
+          "adjudication_status": "resolved-no-mapping",
+          "taxonomy_relationships": []
+        },
+        {
+          "episode_id": "E005",
+          "source_record_refs": [
+            "source_records[5]"
+          ],
+          "source_paraphrase": "Super U Mirepoix managers described a remote-monitoring warning at 2 am, staff attendance and a refrigeration technician arriving at 6 am. They reported approximately €90,000 in losses from the affected display areas; reserves and cold rooms remained unaffected. Warning delivery, repair attendance and the surviving stock are distinct observations. The source does not define a guaranteed protection threshold or establish why reserves escaped the interference.",
+          "recovered_invariant_interpretation": "A warning and human response show detection and intervention, but their existence alone does not establish the protective effect required of the particular control.",
+          "adjudication_status": "unresolved",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000083",
+              "relationship": "unresolved candidate — protective control effect",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "The reported monitoring warning reached people who responded, while some stock was still lost and reserves were unaffected. The missing facts are the control’s required protective purpose, applicable response time and the causal link between the response and the spared reserves. The outcome therefore establishes neither inadequate effect under this class nor a separately verified invariant-held result."
+            }
+          ]
+        },
+        {
+          "episode_id": "E006",
+          "source_record_refs": [
+            "source_records[4]"
+          ],
+          "source_paraphrase": "Coopérative U’s president reported 80 affected stores and said most avoided a cold-chain break or stock destruction through the response of teams and refrigeration specialists. He also said a minority could not react or control the interference quickly enough. This does not establish that 80 stores lost stock, or that the same protective mechanism operated at every store.",
+          "recovered_invariant_interpretation": "Avoided harm is material evidence, but a successful control finding must identify the safeguard, its required effect and how it produced that protection.",
+          "adjudication_status": "unresolved",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000083",
+              "relationship": "unresolved candidate — successful protective intervention",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "The retailer’s account supports distinct protected and harmed outcomes. It does not identify the particular activated controls, their required protective levels or store-specific intervention traces. Those missing links prevent attributing the avoided losses to a validated control effect under this class; the observed response remains part of the occurrence."
+            }
+          ]
+        },
+        {
+          "episode_id": "E007",
+          "source_record_refs": [
+            "source_records[2]"
+          ],
+          "source_paraphrase": "Intermarché La Haye-du-Puits reported approximately US$112,000 in discarded food and heat-affected equipment. These are attributed consequences at one store. The reported losses and hardware damage do not identify the remote command source, a participating AI system or a uniform national mechanism.",
+          "recovered_invariant_interpretation": "Material harm and mechanism attribution answer different questions. Preserve the store’s consequences without inferring an actor or a missing control from their severity.",
+          "adjudication_status": "resolved-no-mapping",
+          "taxonomy_relationships": []
+        },
+        {
+          "episode_id": "E008",
+          "source_record_refs": [
+            "source_records[8]"
+          ],
+          "source_paraphrase": "Censys observed 1,825 Internet-exposed Danfoss StoreView hosts in France on 11 October and 537 on 14 October. These are two exposure measurements, not a count of compromised stores. A reduction in visible hosts does not by itself establish restoration, valid access control or attribution of the earlier commands.",
+          "recovered_invariant_interpretation": "Network visibility, confirmed compromise and a validated repaired boundary are different states. Measurements of one state do not automatically establish the others.",
+          "adjudication_status": "resolved-no-mapping",
+          "taxonomy_relationships": []
+        }
+      ]
+    }
   },
   "source_records": [
     {
@@ -448,17 +565,24 @@
   },
   "taxonomy_classification": {
     "taxonomy_version": "0.6.11",
-    "classification_status": "unclassified",
+    "classification_status": "provisionally-classified",
     "adjudication_coverage": {
       "status": "partial"
     },
-    "classification_basis": "Danfoss-wave evidence retained without a completed class-specific adjudication. The record remains unclassified with partial coverage; no mapping role is inferred.",
-    "primary_classification": null,
+    "classification_basis": "Compromised refrigeration management capability engages the capability-versus-authority boundary, without evidence that an AI or governance process used reachability as permission. Original scope transposition and the class-specific effectiveness of local protective responses remain unresolved. Store losses do not establish those mechanisms.",
+    "primary_classification": {
+      "family_id": "VIGIL-FF-0001",
+      "class_id": "VIGIL-FC-000002",
+      "classification_role": "ambiguous-boundary",
+      "classification_basis": "Compromised remote management interfaces made consequential refrigeration controls reachable to an unauthorised operator. The access exposure engages the distinction between technical capability and permission. The sources do not identify the initiating process or show an AI or governance process treating reachability as authority. A security compromise and subsequent food loss do not by themselves establish that permission-inference mechanism, or that an authority check held.",
+      "classification_confidence": "medium"
+    },
     "secondary_classifications": [],
     "classification_review_provenance": {
-      "review_date": "2026-10-16",
+      "review_date": "2026-10-18",
       "reviewer": "OpenAI ChatGPT Work / Codex",
-      "review_status": "Source-first intake; detailed clause-level taxonomy assessment pending"
+      "review_status": "AI source-first taxonomy adjudication; unresolved candidates retained; no independent human verification",
+      "review_reference": "vigil/docs/reviews/2026-10-18-inc-199-200-adjudication/VIGIL-INC-000200.json"
     }
   },
   "related_incidents": [
@@ -538,30 +662,73 @@
           "No completed clause-level taxonomy review or new canonical class mapping is claimed."
         ],
         "review_outcome": "Expanded site-evidenced outcomes and source inventory; kept Danfoss S4 operational, S3 asset, S2 financial bands and unclassified/partial status. Preserved prior reviewers and did not attribute software or operator."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-18-TAXONOMY-000200",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT / connected GitHub research",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-18",
+        "review_scope": "Human-authorised source-first taxonomy adjudication; current taxonomy recognition and exclusion review; chronological clause analysis. Factual narrative, sources and existing Harm Impact preserved.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "source_provenance_review": true,
+          "harm_impact_review": false,
+          "taxonomy_review": true,
+          "new_external_source_research": true
+        },
+        "known_limitations": [
+          "No occurrence-specific evidence establishes AI assistance, autonomous agents, fuzzing, a maintenance-company test or a specific AI model.",
+          "The actor, intention, initial access mechanism and command pathway have not been established.",
+          "The later Dixell wave is a related investigation, not an established continuation by the same operator.",
+          "The approximately US$112,000 loss is an attributed single-store account, not an audited national loss.",
+          "No confirmed physical injury, death or lasting population-wide food deprivation is established.",
+          "The maintainer authorised this non-AI-attributed context incident; admission does not establish AI conduct.",
+          "A provisional capability-versus-authority Boundary mapping is recorded. The original scope transition and control-effectiveness candidates remain unresolved; no whole-Incident alignment conclusion is assigned.",
+          "National retailer counts refer to affected or contacted installations, not a count of stores losing stock, and are not equivalent to Censys internet-exposure counts.",
+          "The Gradignan defrost-duration account and equipment temperatures are site- and source-specific; no controller logs demonstrate a uniform command set across Danfoss stores.",
+          "At least one retail group reports that most of its affected installations avoided losses; successful response and compromised configuration are distinct observations.",
+          "Store-level food-loss values and damage descriptions are attributed reports, not a verified national total. Actual material hardware damage is reported at La Haye-du-Puits but repair scope is unquantified.",
+          "Censys host counts and laboratory reconstructions concern exposure and feasibility, not confirmed victims or attack provenance.",
+          "The listed open-source repositories are illustrative comparators; no repository, developer, AI model, maintenance company or fleet tool is identified as the command source.",
+          "Any single exploit or automated-testing mechanism across multiple controller generations remains unproven."
+        ],
+        "review_outcome": "Added bounded platform/control-system taxonomy relationships and retained explicit unresolved candidates. No AI conduct, independent human verification or complete whole-Incident alignment judgement inferred."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-17-DANFOSS-EVIDENCE-REFRESH",
+      "review_id": "VIGIL-REVIEW-2026-10-18-TAXONOMY-000200",
       "reviewer_type": "AI analytical reviewer",
       "reviewer_platform": "OpenAI ChatGPT / connected GitHub research",
       "reviewer_model": "GPT-6",
-      "review_date": "2026-10-17",
-      "review_scope": "Source-first enrichment of separately bounded Danfoss occurrence: store-level variation, recognised contractor role, telemetry exposure comparison, GitHub architecture examples and HIM 1.1.0 basis review.",
+      "review_date": "2026-10-18",
+      "review_scope": "Human-authorised source-first taxonomy adjudication; current taxonomy recognition and exclusion review; chronological clause analysis. Factual narrative, sources and existing Harm Impact preserved.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
         "source_provenance_review": true,
-        "harm_impact_review": true,
-        "taxonomy_review": false
+        "harm_impact_review": false,
+        "taxonomy_review": true,
+        "new_external_source_research": true
       },
       "known_limitations": [
-        "Public articles are not private forensic control logs; some publisher pages were accessible via indexed text only.",
-        "The affected-store controller inventory, command-source logs and service-provider identities remain unpublished.",
-        "GitHub example projects are technically illustrative and are not attributed to the occurrence.",
-        "No AI participation or actor intent has been established.",
-        "No completed clause-level taxonomy review or new canonical class mapping is claimed."
+        "No occurrence-specific evidence establishes AI assistance, autonomous agents, fuzzing, a maintenance-company test or a specific AI model.",
+        "The actor, intention, initial access mechanism and command pathway have not been established.",
+        "The later Dixell wave is a related investigation, not an established continuation by the same operator.",
+        "The approximately US$112,000 loss is an attributed single-store account, not an audited national loss.",
+        "No confirmed physical injury, death or lasting population-wide food deprivation is established.",
+        "The maintainer authorised this non-AI-attributed context incident; admission does not establish AI conduct.",
+        "A provisional capability-versus-authority Boundary mapping is recorded. The original scope transition and control-effectiveness candidates remain unresolved; no whole-Incident alignment conclusion is assigned.",
+        "National retailer counts refer to affected or contacted installations, not a count of stores losing stock, and are not equivalent to Censys internet-exposure counts.",
+        "The Gradignan defrost-duration account and equipment temperatures are site- and source-specific; no controller logs demonstrate a uniform command set across Danfoss stores.",
+        "At least one retail group reports that most of its affected installations avoided losses; successful response and compromised configuration are distinct observations.",
+        "Store-level food-loss values and damage descriptions are attributed reports, not a verified national total. Actual material hardware damage is reported at La Haye-du-Puits but repair scope is unquantified.",
+        "Censys host counts and laboratory reconstructions concern exposure and feasibility, not confirmed victims or attack provenance.",
+        "The listed open-source repositories are illustrative comparators; no repository, developer, AI model, maintenance company or fleet tool is identified as the command source.",
+        "Any single exploit or automated-testing mechanism across multiple controller generations remains unproven."
       ],
-      "review_outcome": "Expanded site-evidenced outcomes and source inventory; kept Danfoss S4 operational, S3 asset, S2 financial bands and unclassified/partial status. Preserved prior reviewers and did not attribute software or operator."
+      "review_outcome": "Added bounded platform/control-system taxonomy relationships and retained explicit unresolved candidates. No AI conduct, independent human verification or complete whole-Incident alignment judgement inferred."
     },
     "operating_model": "AI-authored, semi-autonomous production under human task instruction",
     "human_governance_editor": null,
