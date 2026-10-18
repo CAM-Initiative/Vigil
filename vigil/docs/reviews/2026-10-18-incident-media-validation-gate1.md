@@ -1,6 +1,6 @@
 # Incident media validation — Gate 1 proposal
 
-Status: proposed, awaiting human-maintainer approval. No validator, schema, builder or permanent acceptance test changed by this proposal.
+Status: approved by the human maintainer on 2026-10-18 and implemented. Approval: “This is APPROVED. thank you!” The proposal below is retained as the approved scope.
 
 ## Current behaviour and measured coverage
 
@@ -43,3 +43,15 @@ The main semantic risk is mistaking a rejected display reference for invalid und
 `vigil/MAINTAINERS.md`, Gate 1: “No semantic validator/schema/test change may be implemented until the human maintainer explicitly approves that described behaviour.”
 
 Request approval of the above blocking metadata checks and fixture scope. After implementation, run the corpus read-only and stop before any broad repair if new failures occur. The separately approved 73 public-prose repairs do not change or implement this media-validation proposal.
+
+## Implementation
+
+Implemented in `vigil/scripts/validate-vigil-records.py` through `validate_incident_artefacts`, called by canonical `validate_record`. The check is offline and non-mutating. It enforces supported media families and nonempty MIME declarations, nonempty image alt text, screenshot/image compatibility and matching commit-pinned Registry permalink/raw file identities. Its errors identify the Incident path, artefact index and affected property. Original source URLs and archive links are outside this check.
+
+Twelve regression tests in `vigil/tests/test_incident_artefact_media.py` include the former Markdown-reference failure pattern, spoofed image declarations, MIME mismatch, PDF/video as screenshot, empty image descriptions, moving/short refs, mismatched file/commit, non-Registry/non-HTTP URLs and malformed entry structures. Positive cases cover every supported extension, optional absent/empty artefacts, videos without image alt text, linked PDFs and ordinary source documents. A full-validator integration test prevents accidentally leaving the helper disconnected. No canonical Incident repair is required or performed.
+
+The check establishes metadata compatibility and immutability only. It does not authenticate media, inspect remote bytes or certify that alt text adequately explains the visual evidence. The existing human/source-native capture and inspection duties remain in force.
+
+## Verification result
+
+All 194 canonical Incidents pass with the control enabled. The 23 current artefacts across 16 Incidents pass; no canonical records, sources, taxonomy mappings, Harm Impact fields or generated projections changed. All 12 new fixtures pass and full discovery passes 276 tests. Public-index, source (703 records), interpretive, component-role and authorship validators pass; `git diff --check` passes. Test-only jsonschema 4.26.0 was supplied through the environment. No remote media fetch or authenticity certification is claimed.

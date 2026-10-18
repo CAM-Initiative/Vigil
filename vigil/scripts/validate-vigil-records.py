@@ -10,6 +10,7 @@ import sys
 from datetime import date
 from pathlib import Path
 from typing import Any
+from urllib.parse import unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[2]
 VIGIL = ROOT / "vigil"
@@ -1139,6 +1140,85 @@ def validate_relationships_and_references(
                     )
 
 
+def incident_media_kind(url: Any, media_type: Any) -> str | None:
+    """Offline media-family check matching the website's supported extensions."""
+    if not isinstance(url, str) or not HTTP_URL.fullmatch(url):
+        return None
+    try:
+        parsed = urlsplit(url)
+    except ValueError:
+        return None
+    if parsed.scheme.lower() not in {"http", "https"} or not parsed.netloc:
+        return None
+    mime = media_type.split(";", 1)[0].strip().lower() if isinstance(media_type, str) else ""
+    extension = Path(parsed.path.lower()).suffix
+    if extension in {".png", ".jpg", ".jpeg", ".gif", ".webp", ".avif", ".svg"}:
+        return "image" if mime.startswith("image/") and len(mime) > 6 else None
+    if extension in {".mp4", ".webm", ".ogg", ".ogv", ".m4v", ".mov"}:
+        return "video" if mime.startswith("video/") and len(mime) > 6 else None
+    if extension == ".pdf" and mime == "application/pdf":
+        return "document"
+    return None
+
+
+def registry_media_identity(url: Any, *, permalink: bool) -> tuple[str, str] | None:
+    """Return the pinned Registry commit and file, without fetching the asset."""
+    if not isinstance(url, str) or not HTTP_URL.fullmatch(url):
+        return None
+    try:
+        parsed = urlsplit(url)
+    except ValueError:
+        return None
+    if parsed.scheme.lower() not in {"http", "https"}:
+        return None
+    if permalink:
+        if parsed.netloc.lower() != "github.com":
+            return None
+        prefix = r"/CAM-Initiative/Registry/blob/"
+    else:
+        if parsed.netloc.lower() != "raw.githubusercontent.com":
+            return None
+        prefix = r"/CAM-Initiative/Registry/"
+    match = re.fullmatch(prefix + r"([a-fA-F0-9]{40})/(VIGIL/.+)", parsed.path)
+    if not match:
+        return None
+    filename = unquote(match.group(2))
+    if any(part in {"", ".", ".."} for part in filename.split("/")):
+        return None
+    return match.group(1).lower(), filename
+
+
+def validate_incident_artefacts(path: Path, record: dict[str, Any], errors: list[str]) -> None:
+    """Reject invalid display references, without judging source authenticity."""
+    if "incident_artefacts" not in record:
+        return
+    artefacts = record["incident_artefacts"]
+    if not isinstance(artefacts, list):
+        errors.append(f"{path}: incident_artefacts must be a list when present")
+        return
+    for index, artefact in enumerate(artefacts):
+        field = f"{path}: incident_artefacts[{index}]"
+        if not isinstance(artefact, dict):
+            errors.append(f"{field} must be an object")
+            continue
+        kind = incident_media_kind(artefact.get("render_url"), artefact.get("media_type"))
+        if kind is None:
+            errors.append(f"{field}.render_url/media_type must identify supported image, video or PDF media with a compatible nonempty MIME declaration; text/Markdown references are not renderable media")
+        if artefact.get("artefact_type") == "source-screenshot" and kind != "image":
+            errors.append(f"{field}.artefact_type source-screenshot requires image media, not a document or video")
+        if kind == "image" or artefact.get("artefact_type") == "source-screenshot":
+            alt = artefact.get("alt_text")
+            if not isinstance(alt, str) or not alt.strip():
+                errors.append(f"{field}.alt_text must contain a meaningful nonempty image description")
+        identities = {}
+        for key in ("permalink", "render_url"):
+            identities[key] = registry_media_identity(artefact.get(key), permalink=key == "permalink")
+            if identities[key] is None:
+                errors.append(f"{field}.{key} must be an immutable CAM-Initiative/Registry/VIGIL file URL pinned to a 40-character commit SHA")
+        if all(identities.values()) and identities["permalink"] != identities["render_url"]:
+            errors.append(f"{field}.permalink/render_url must identify the same Registry commit and file")
+
+
 def validate_record(
     path: Path,
     record: dict[str, Any],
@@ -1234,6 +1314,7 @@ def validate_record(
     validate_incident_taxonomy(path, record, errors)
     validate_statement_analysis(path, record, errors)
     validate_taxonomy_number_prose(path, record, errors)
+    validate_incident_artefacts(path, record, errors)
     # Opt-in structural source-episode validation. No automated semantic
     # duplicate detection or claim of evidence exhaustiveness.
     episode_helper_path = Path(__file__).with_name("source_episode_validation.py")
