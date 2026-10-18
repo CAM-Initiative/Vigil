@@ -2,9 +2,9 @@
 
 Canonical analytical catalogue derived from registered external governance sources. Inclusion does not establish CAM applicability, adoption, coverage, compliance, conformance or alignment.
 
-- Registered source versions: 102
+- Registered source versions: 105
 - Primary AI-governance source versions: 63
-- Requirement records: 1117
+- Requirement records: 1121
 
 ## SDOS Runtime Governance Framework — Control Catalog and Reference Document — 1.10
 
@@ -42,6 +42,47 @@ Canonical analytical catalogue derived from registered external governance sourc
 | `EXTREQ-E413E7DE0D505870` | SDOS-RS-01 | Use accumulated governed feedback and audit data to produce post-hoc risk/safety investment evaluation with documented component metrics and statistical summaries for operator review. | `recommended-practice` / `guidance` | `industry-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-ED3205AF140C41E7` | SDOS-RM-02 | Assess task characteristics at dispatch and prevent tasks requiring higher analytical capability from being routed below the minimum capability tier identified for the task. | `recommended-practice` / `guidance` | `industry-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-EE5947EABAB44AA2` | SDOS-DE-01 | Govern multi-agent deliberation through policy-defined panel composition, common admission and identity controls, and structured auditable output; treat elevated-risk deliberation outputs as inputs to human review rather than substitutes for human oversight. | `recommended-practice` / `guidance` | `industry-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+
+## Security of Critical Infrastructure Act 2018 (Cth) — C2026C00213
+
+- Source: `EXT-C4E5D1E95363` / `AU-SOCI-ACT`
+- Role: `supporting-external-authority`
+- Access: `direct-public-primary`
+- Extraction: `partial`
+- Requirements: 4
+- Review priority: `supporting-specialist-source`
+- Next action: Retain the bounded selection. Establish actual occurrence applicability independently; obtain operational approved-form details where needed.
+
+| Requirement | Clause/control | Summary | Posture / type | External authority | Relationship | Review / access |
+| --- | --- | --- | --- | --- | --- | --- |
+| `EXTREQ-61EB42B6FA0D95A3` | s30BC(1); s30BC(2); s30BC(4) | When the complete statutory critical incident trigger is satisfied for a covered asset and its responsible entity, give ASD an incident report including information prescribed by the rules, as soon as practicable and in any event within 12 hours after the entity becomes so aware. The initial report may be oral or written; if written, use the approved form. | `mandatory-normative` / `positive-duty` | `binding-law` | `compliance` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-9C2A361D86035F6A` | s30BD(3); s30BD(5)-(8) | If the responsible entity gives an oral report under s30BD(1), make a written record in the approved form and give a copy to ASD within 48 hours after that oral report, unless the entity has a written exemption under s30BD(5) for that incident. | `mandatory-normative` / `positive-duty` | `binding-law` | `compliance` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-AF8E862790CB4724` | s30BD(1); s30BD(2); s30BD(4) | When the complete statutory other incident trigger is satisfied for a covered asset and its responsible entity, give ASD an incident report including information prescribed by the rules, as soon as practicable and in any event within 72 hours after the entity becomes so aware. The initial report may be oral or written; if written, use the approved form. | `mandatory-normative` / `positive-duty` | `binding-law` | `compliance` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-C9EB00EB18293DBF` | s30BC(3); s30BC(5)-(8) | If the responsible entity gives an oral report under s30BC(1), make a written record in the approved form and give a copy to ASD within 84 hours after that oral report, unless the entity has a written exemption under s30BC(5) for that incident. | `mandatory-normative` / `positive-duty` | `binding-law` | `compliance` | `reviewed-analytical-summary` / `direct-public-primary` |
+
+## Security of Critical Infrastructure (Application) Rules (LIN 22/026) 2022 — F2025C00404
+
+- Source: `EXT-8BD698AC427D` / `AU-SOCI-APPLICATION-RULES`
+- Role: `supporting-external-authority`
+- Access: `direct-public-primary`
+- Extraction: `supporting-only`
+- Requirements: 0
+- Review priority: `supporting-specialist-source`
+- Next action: Retain the bounded selection. Establish actual occurrence applicability independently; obtain operational approved-form details where needed.
+
+No requirement records are asserted. Primary-text review of dependency provisions only, including r5 asset classes, exclusions and grace period. Zero standalone requirements.
+
+## Security of Critical Infrastructure (Definitions) Rules (LIN 21/039) 2021 — F2023C00097
+
+- Source: `EXT-0441D5D5053F` / `AU-SOCI-DEFINITIONS-RULES`
+- Role: `supporting-external-authority`
+- Access: `direct-public-primary`
+- Extraction: `supporting-only`
+- Requirements: 0
+- Review priority: `supporting-specialist-source`
+- Next action: Retain the bounded selection. Establish actual occurrence applicability independently; obtain operational approved-form details where needed.
+
+No requirement records are asserted. Primary-text review of dependency provisions only, including r18 reporting recipient and limited exemption-authority distinction; applicable asset definitions. Zero standalone requirements.
 
 ## C2PA Technical Specification — 2.4
 

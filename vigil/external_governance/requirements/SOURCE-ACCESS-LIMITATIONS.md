@@ -4,6 +4,7 @@ Sources listed here are not represented as fully reviewed. Metadata, abstracts, 
 
 | Source | Version | Role | Access | Extraction | Inaccessible material | Maintainer action |
 | --- | --- | --- | --- | --- | --- | --- |
+| Security of Critical Infrastructure Act 2018 (Cth) | `C2026C00213` | `supporting-external-authority` | `direct-public-primary` | `partial` | Full or sufficient source text | Review specific provisions before expanding the bounded extraction; no whole-Act completeness is claimed. |
 | C2PA Technical Specification | `2.4` | `primary-ai-governance` | `direct-public-primary` | `partial` | Full or sufficient source text | Schedule remaining specification extraction and resolve the AI Disclosure prose/CDDL/example inconsistencies. |
 | Directive on Automated Decision-Making | `current-2026-09-28` | `primary-ai-governance` | `direct-public-primary` | `not-started` | Complete normative primary text in this session. | Provide or restore lawful access to substantive exact-version primary text; do not infer from metadata. |
 | Artificial intelligence — Quality management system for EU AI Act regulatory purposes | `2026` | `primary-ai-governance` | `official-metadata-only` | `blocked-access` | Final normative EN 18286:2026 text, including Annex ZA | Obtain authorised access to the final EN 18286:2026 normative text with permission for the intended AI processing. Then obtain separate approval for bounded clause extraction, Annex ZA assessment and any mappings. Do not commit copyrighted text. |

@@ -1,3 +1,5 @@
+> Update, 18 October 2026: approval received and canonical implementation validated. See [APPROVAL-AND-IMPLEMENTATION.md](APPROVAL-AND-IMPLEMENTATION.md). Earlier checkpoint text below is preserved as history.
+
 # Recovery checkpoint — 18 October 2026
 
 Branch: work/infrastructure-governance-reconciled-20261014. Parent HEAD: d07d548722453ed0885ba73f37d47f116438c08a. The commit containing this document is the SOCI review checkpoint; use git log for its exact hash. Earlier preserved local commits: 774aad7, 8413453, 9ff08b0, d07d548. No push of their chain is claimed.

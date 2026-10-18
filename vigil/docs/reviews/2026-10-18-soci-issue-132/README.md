@@ -1,3 +1,5 @@
+> Update, 18 October 2026: approval received and canonical implementation validated. See [APPROVAL-AND-IMPLEMENTATION.md](APPROVAL-AND-IMPLEMENTATION.md). Earlier checkpoint text below is preserved as history.
+
 # Issue #132 — SOCI review package
 
 Date: 18 October 2026. Classification: REVIEW. AI-authored; no human approval claimed. Research and concrete proposals complete; canonical implementation awaits the SOCI-specific decision required by handoff section 3.

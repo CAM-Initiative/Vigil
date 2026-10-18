@@ -2,7 +2,7 @@
 
 Public knowledge catalogue of external governance sources and their bounded relevance to AI governance. The summaries describe source subject matter; they do not provide legal advice or establish that a source applies to any particular system or organisation.
 
-- Source versions: 102
+- Source versions: 105
 - Review-due source versions: 0
 - Registry updated through: 2026-10-18T00:00:00Z
 
@@ -22,6 +22,57 @@ The SDOS Runtime Governance Framework is an owner-authored control catalogue for
 - **Review method:** direct-public-primary-review · bounded-complete-review
 - **Review freshness:** current
 - **Official source:** https://aamcyber.com/sdos/reference/v1/
+
+## Security of Critical Infrastructure Act 2018 (Cth)
+
+The Security of Critical Infrastructure Act 2018 establishes Australian governance arrangements for specified critical infrastructure assets. Part 2B requires responsible entities of covered assets to report defined cyber security incidents. Reporting depends on the actual asset classification, responsible entity, application rules, impact and awareness conditions. Critical and other incidents have distinct reporting triggers and time limits. Oral reports have separate written follow-up requirements. Australian Signals Directorate receives ordinary reports. The Act also contains other regulatory powers and duties. Those other provisions are outside the represented reporting selection. AI involvement alone does not establish that the reporting duties apply.
+
+- **Issuer:** Australian Government
+- **Version:** `C2026C00213`
+- **Lifecycle state:** `in-force`
+- **AI-governance relevance:** accountability, incident-governance, security, traceability
+- **Applicable lifecycle stages:** governance, operation-use, incident-response
+- **Relevance scope:** Conditional Australian critical infrastructure cyber incident reporting. AI involvement alone creates no applicability; actor, asset, jurisdiction, trigger and temporal conditions require independent occurrence review.
+- **Last substantive review:** 2026-10-18
+- **Next substantive review:** 2027-01-16
+- **Substantive reviewer:** OpenAI / Codex / Exact runtime model identity not disclosed
+- **Review method:** direct-public-primary-review · partial-review
+- **Review freshness:** current
+- **Official source:** https://www.legislation.gov.au/C2026C00213/latest/text
+
+## Security of Critical Infrastructure (Application) Rules (LIN 22/026) 2022
+
+The Security of Critical Infrastructure Application Rules specify assets to which particular parts of the Australian critical infrastructure legislation apply. Rule 5 concerns cyber incident reporting under Part 2B. Its asset classes, exclusions and grace period qualify the reporting obligations. Rule 4 concerns a separate register regime and has a different period. Coverage depends on the actual asset and entity conditions. A sector label alone does not establish coverage. These rules provide applicability context for the represented reporting provisions. No separate requirement or occurrence assessment is derived from their registration.
+
+- **Issuer:** Australian Government
+- **Version:** `F2025C00404`
+- **Lifecycle state:** `in-force`
+- **AI-governance relevance:** accountability, incident-governance, security, traceability
+- **Applicable lifecycle stages:** governance, operation-use, incident-response
+- **Relevance scope:** Conditional Australian critical infrastructure cyber incident reporting. AI involvement alone creates no applicability; actor, asset, jurisdiction, trigger and temporal conditions require independent occurrence review.
+- **Last substantive review:** 2026-10-18
+- **Next substantive review:** 2027-01-16
+- **Substantive reviewer:** OpenAI / Codex / Exact runtime model identity not disclosed
+- **Review method:** direct-public-primary-review · supporting-only-review
+- **Review freshness:** current
+- **Official source:** https://www.legislation.gov.au/F2025C00404/latest/text
+
+## Security of Critical Infrastructure (Definitions) Rules (LIN 21/039) 2021
+
+The Security of Critical Infrastructure Definitions Rules provide definitions and qualifications used by the Australian critical infrastructure legislation. Rule 18 specifies the Department as the relevant Commonwealth body only for the written-record exemption powers in the cyber incident reporting provisions. Australian Signals Directorate remains the relevant body for ordinary reporting and written follow-up. Asset definitions and qualifications must be considered with the Act and application rules. These rules provide supporting context for the represented reporting provisions. Registration does not establish that any particular asset or incident falls within their scope.
+
+- **Issuer:** Australian Government
+- **Version:** `F2023C00097`
+- **Lifecycle state:** `in-force`
+- **AI-governance relevance:** accountability, incident-governance, security, traceability
+- **Applicable lifecycle stages:** governance, operation-use, incident-response
+- **Relevance scope:** Conditional Australian critical infrastructure cyber incident reporting. AI involvement alone creates no applicability; actor, asset, jurisdiction, trigger and temporal conditions require independent occurrence review.
+- **Last substantive review:** 2026-10-18
+- **Next substantive review:** 2027-01-16
+- **Substantive reviewer:** OpenAI / Codex / Exact runtime model identity not disclosed
+- **Review method:** direct-public-primary-review · supporting-only-review
+- **Review freshness:** current
+- **Official source:** https://www.legislation.gov.au/F2023C00097/latest/text
 
 ## C2PA Technical Specification
 
