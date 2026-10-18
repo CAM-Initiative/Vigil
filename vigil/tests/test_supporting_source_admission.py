@@ -120,6 +120,17 @@ class SupportingAdmissionTests(unittest.TestCase):
         self.req["source_role"] = "primary-ai-governance"
         self.assertEqual(admission.admission_errors([self.req], {}, [], [], [], {}, self.root), [])
 
+    def test_valid_relationship_cannot_mask_an_unreviewed_second_relationship(self):
+        other = copy.deepcopy(self.relation)
+        other["relationship_id"] = "UNREVIEWED-SECOND-RELATIONSHIP"
+        errors = admission.admission_errors([self.req], self.scopes, self.fidelity, self.metadata,
+                                           [self.relation, other], {self.cls["class_id"]: self.cls}, self.root)
+        self.assertTrue(any("UNREVIEWED-SECOND-RELATIONSHIP" in error for error in errors))
+
+    def test_malformed_review_json_is_rejected(self):
+        (self.root / "review.json").write_text("[]")
+        self.assertTrue(any("resolving reviewed" in error for error in self.errors()))
+
     def test_role_and_status_compatibility_keeps_existing_guards(self):
         source = {"external_source_id": "FIXTURE", "canonical_identifier": {"scheme": "test", "value": "1"}}
         entry = {field: "fixture" for field in manager.REQUIRED_SCOPE_FIELDS}

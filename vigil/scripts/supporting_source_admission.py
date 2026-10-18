@@ -85,38 +85,51 @@ def admission_errors(requirements: list[dict], scopes: dict, fidelity: list[dict
             expected = "populated-reviewed" if req.get(field) else "not-specified-by-source"
             if states.get(field) not in ({expected} if req.get(field) else {expected, "not-applicable"}):
                 errors.append(f"{rid}: supporting metadata dimension {field} lacks a compatible reviewed disposition")
+        candidates = [relation for relation in relationships
+                      if relation.get("requirement_id") == rid
+                      and relation.get("review_status") == "supported"
+                      and relation.get("strength") in {"direct", "strong-supporting"}]
         retained = False
-        for relation in relationships:
-            if relation.get("requirement_id") != rid or relation.get("review_status") != "supported" or relation.get("strength") not in {"direct", "strong-supporting"}:
-                continue
-            cls = classes.get(relation.get("class_id"))
-            if not cls or relation.get("requirement_sha256") != digest(req) or relation.get("class_semantic_sha256") != class_digest(cls):
-                continue
-            if any(relation.get(field) != req.get(field) for field in (
-                "vigil_source_id", "external_source_id", "source_version", "clause_or_control",
-            )):
-                continue
-            if relation.get("invariant") != cls.get("invariant") or not relation.get("supported_component") or not relation.get("scope_correspondence") or not relation.get("limitation"):
-                continue
-            ref = relation.get("review_artifact")
-            if not isinstance(ref, str) or Path(ref).is_absolute():
-                continue
-            path = (root / ref).resolve()
-            if not path.is_relative_to(root):
-                continue
-            try:
-                artifact = json.loads(path.read_text(encoding="utf-8"))
-            except (OSError, ValueError):
-                continue
-            identity = artifact.get("source_identity", {})
-            if identity.get("external_source_id") != req.get("external_source_id") or identity.get("source_version") != req.get("source_version"):
-                continue
-            if not artifact.get("reviewed_on") or not artifact.get("review_basis"):
-                continue
-            # Resolve the exact retained decision, not a rationale-only assertion.
-            for entry in artifact.get("entries", []):
-                if entry.get("requirement_id") == rid and entry.get("requirement_sha256") == digest(req) and relation in entry.get("relationships", []):
-                    retained = True
+        for relation in candidates:
+            if relationship_review_resolves(req, relation, classes, root):
+                retained = True
+            else:
+                errors.append(f"{rid}: supporting relationship {relation.get('relationship_id')} has stale or unresolved review evidence")
         if not retained:
             errors.append(f"{rid}: supporting admission needs a resolving reviewed direct/strong-supporting invariant relationship")
     return errors
+
+
+def relationship_review_resolves(req: dict, relation: dict, classes: dict, root: Path) -> bool:
+    rid = req.get("requirement_id")
+    cls = classes.get(relation.get("class_id"))
+    if not cls or relation.get("requirement_sha256") != digest(req) or relation.get("class_semantic_sha256") != class_digest(cls):
+        return False
+    if any(relation.get(field) != req.get(field) for field in (
+        "vigil_source_id", "external_source_id", "source_version", "clause_or_control",
+    )):
+        return False
+    if relation.get("invariant") != cls.get("invariant") or not relation.get("supported_component") or not relation.get("scope_correspondence") or not relation.get("limitation"):
+        return False
+    ref = relation.get("review_artifact")
+    if not isinstance(ref, str) or Path(ref).is_absolute():
+        return False
+    path = (root / ref).resolve()
+    if not path.is_relative_to(root):
+        return False
+    try:
+        artifact = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return False
+    if not isinstance(artifact, dict):
+        return False
+    identity = artifact.get("source_identity", {})
+    if identity.get("external_source_id") != req.get("external_source_id") or identity.get("source_version") != req.get("source_version"):
+        return False
+    if not artifact.get("reviewed_on") or not artifact.get("review_basis"):
+        return False
+    # Resolve the exact retained decision, not a rationale-only assertion.
+    for entry in artifact.get("entries", []):
+        if isinstance(entry, dict) and entry.get("requirement_id") == rid and entry.get("requirement_sha256") == digest(req) and relation in entry.get("relationships", []):
+            return True
+    return False
