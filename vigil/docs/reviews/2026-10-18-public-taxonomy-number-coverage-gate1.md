@@ -1,6 +1,6 @@
 # Public taxonomy-number check — coverage extension proposal
 
-Status: proposal only. No permanent pass/fail control changed in this correction.
+Status: coverage extension authorised by the maintainer’s 18 October instruction that these references must be picked up as validation failures. Implemented in the canonical validator; broader record repairs remain unauthorised. The original proposal below preserves the described pass/fail scope.
 
 The existing authoring contract prohibits taxonomy numbers as a substitute for public explanation. The existing `test_public_prose_quality.py` applies its identifier pattern to summary, principal assessment prose, assessment boundaries, selected harm prose and selected source notes. It omits aggregate and mapping-local classification bases, source-clause notes/rationales and statement explanations. The main validator checks workflow narration in classification bases and external comparison notes, but does not apply the identifier prohibition there. This explains the missed references in the recent wording repairs.
 

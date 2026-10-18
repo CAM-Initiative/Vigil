@@ -544,6 +544,10 @@ python vigil/scripts/build-vigil-public-records.py
 
 The master registry contains one registry, `incidents`. It is a registry-of-registries manifest and must not duplicate Incident entries. `VIGIL.Incidents.Index.json` is intentionally a lightweight catalogue/search/routing projection; canonical evidence, diagnosis, structured severity, taxonomy detail and provenance remain in the source Incident JSON. Do not manually edit generated outputs or recreate retired-class indexes.
 
+## Public explanation identifier coverage
+
+The existing prohibition on internal taxonomy-number shorthand is also enforced by `validate-vigil-records.py` for aggregate and mapping-local classification bases, source-clause context/interpretation/notes, relationship rationales, nested statement context/interpretation and VIGIL comparisons with external assessments. This is the same identifier-syntax rule, not an extension of all maintenance-word patterns to these fields. Keep identifiers in structured classification fields and literal original source quotations; explain the occurrence in the adjacent own prose. Historical review/audit provenance is not rewritten. The 18 October coverage audit and remaining canonical validation failures are recorded in `vigil/docs/reviews/2026-10-18-public-taxonomy-number-validation-failures.json`; a failing guard does not authorise automatic corpus repair.
+
 ## Optional wording evidence and statement validation
 
 Approved 18 October 2026. `validate-vigil-records.py` checks `statement_analysis` whenever supplied. Each statement requires a nonempty episode-local unique `statement_id`, nonempty `recovered_invariant_interpretation` and a `taxonomy_relationship_indices` array. Every parent relationship is bound exactly once using an in-range integer index; booleans are not indices. Empty index arrays remain valid for context-only statements. Keep the parent episode and source references.

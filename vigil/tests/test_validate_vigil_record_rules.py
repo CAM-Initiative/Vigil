@@ -86,10 +86,12 @@ class IncidentRuleTests(unittest.TestCase):
         record = json.loads(
             (VIGIL / "records" / "incidents" / "VIGIL-INC-000123.json").read_text(encoding="utf-8")
         )
-        errors, _ = VALIDATOR.validate_record(Path(record["id"] + ".json"), record)
+        errors = []
+        VALIDATOR.validate_harm_impact(Path(record["id"] + ".json"), record, errors)
         self.assertEqual(errors, [])
         record["harm_impact_assessment"].pop("no_materialised_harm_basis")
-        errors, _ = VALIDATOR.validate_record(Path(record["id"] + ".json"), record)
+        errors = []
+        VALIDATOR.validate_harm_impact(Path(record["id"] + ".json"), record, errors)
         self.assertTrue(any("requires a concrete no_materialised_harm_basis" in error for error in errors), errors)
 
     def him_110_record(self, generic=False):
@@ -170,7 +172,8 @@ class IncidentRuleTests(unittest.TestCase):
                 self.assertEqual(scored["threshold_id"], threshold_id)
                 self.assertEqual(scored["severity"], "S2")
                 self.assertGreater(len(scored["evidence_refs"]), 0)
-                errors, _ = VALIDATOR.validate_record(path, record)
+                errors = []
+                VALIDATOR.validate_harm_impact(path, record, errors)
                 self.assertEqual(errors, [])
 
     def test_him_110_unverified_notification_not_promoted_to_confirmed_breach(self):

@@ -221,6 +221,57 @@ def validate_statement_analysis(path: Path, record: dict[str, Any], errors: list
             errors.append(f"{path}: {label}.statement_analysis omits parent relationship indices {missing}")
 
 
+TAXONOMY_NUMBER_IN_PROSE = re.compile(r"VIGIL-(?:FC|FF)-|\bFC-\d|VIGIL-\d{4}-FM-", re.IGNORECASE)
+
+
+def taxonomy_explanatory_prose(record: dict[str, Any]):
+    """Enumerate own explanations; structured IDs and literal quotations are not prose."""
+    taxonomy = record.get("taxonomy_classification")
+    if isinstance(taxonomy, dict):
+        yield "taxonomy_classification.classification_basis", taxonomy.get("classification_basis")
+        mappings = [("primary_classification", taxonomy.get("primary_classification"))]
+        secondary = taxonomy.get("secondary_classifications")
+        if isinstance(secondary, list):
+            mappings += [(f"secondary_classifications[{i}]", value) for i, value in enumerate(secondary)]
+        for name, mapping in mappings:
+            if isinstance(mapping, dict):
+                yield f"taxonomy_classification.{name}.classification_basis", mapping.get("classification_basis")
+    assessment = record.get("vigil_assessment")
+    analysis = assessment.get("source_clause_analysis") if isinstance(assessment, dict) else None
+    clauses = analysis.get("clauses") if isinstance(analysis, dict) else None
+    if isinstance(clauses, list):
+        for index, clause in enumerate(clauses):
+            if not isinstance(clause, dict):
+                continue
+            base = f"vigil_assessment.source_clause_analysis.clauses[{index}]"
+            for field in ("source_paraphrase", "recovered_invariant_interpretation", "adjudication_note"):
+                yield f"{base}.{field}", clause.get(field)
+            relationships = clause.get("taxonomy_relationships")
+            for i, relationship in enumerate(relationships if isinstance(relationships, list) else []):
+                if isinstance(relationship, dict):
+                    yield f"{base}.taxonomy_relationships[{i}].rationale", relationship.get("rationale")
+            statements = clause.get("statement_analysis")
+            for i, statement in enumerate(statements if isinstance(statements, list) else []):
+                if isinstance(statement, dict):
+                    for field in ("source_paraphrase", "recovered_invariant_interpretation"):
+                        yield f"{base}.statement_analysis[{i}].{field}", statement.get(field)
+    external = record.get("external_assessments")
+    for i, comparison in enumerate(external if isinstance(external, list) else []):
+        if isinstance(comparison, dict):
+            yield f"external_assessments[{i}].vigil_comparison_note", comparison.get("vigil_comparison_note")
+
+
+def validate_taxonomy_number_prose(path: Path, record: dict[str, Any], errors: list[str]) -> None:
+    for field, value in taxonomy_explanatory_prose(record):
+        match = TAXONOMY_NUMBER_IN_PROSE.search(value) if isinstance(value, str) else None
+        if match:
+            identifier = re.match(r"[\w-]+", value[match.start():]).group(0)
+            errors.append(
+                f"{path}: {field} contains taxonomy identifier {identifier!r}; "
+                "keep IDs in structured fields and explain the occurrence in public prose"
+            )
+
+
 def validate_agent_and_environment_context(
     path: Path,
     record: dict[str, Any],
@@ -1182,6 +1233,7 @@ def validate_record(
     validate_external_assessments(path, record, known_assessment_ids, errors)
     validate_incident_taxonomy(path, record, errors)
     validate_statement_analysis(path, record, errors)
+    validate_taxonomy_number_prose(path, record, errors)
     # Opt-in structural source-episode validation. No automated semantic
     # duplicate detection or claim of evidence exhaustiveness.
     episode_helper_path = Path(__file__).with_name("source_episode_validation.py")
