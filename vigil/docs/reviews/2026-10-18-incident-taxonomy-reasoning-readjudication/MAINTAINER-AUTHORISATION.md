@@ -1,5 +1,11 @@
 # One-off maintainer authorisation — 18 October 2026
 
+## Subsequent maintainer execution hold — 18 October 2026
+
+The maintainer paused the broad readjudication programme after inspecting early Incident changes and specifically authorised **instructions, workflow and reproducibility-contract improvements on this working branch**. The one-off approval recorded below is historical authority for the existing work, **not permission to continue applying corpus-wide canonical changes while the pause is in effect**. Do not resume automatic Incident edits, validator/schema/publication work, PR creation, merge or deployment on the strength of this document or the new protocol. Explicit maintainer resumption and any separately required Gate 1 approvals are still necessary.
+
+Read the [independent adjudication contract and read-only INC-003 pilot](INDEPENDENT-ADJUDICATION-CONTRACT-AND-PILOT.md) before proposing further substantive batches. Existing work and its prior decision history remain preserved in the branch; do not reset or discard it merely because further execution is held.
+
 **Authority:** Explicit direct instruction by VIGIL's human maintainer for the 194-record, source-first corpus-wide Alignment Taxonomy v0.7.0 re-adjudication.
 
 **Pinned input:** `290b8d82c5e238e8ccdea82aa018e491e6d229fb` (194 Incident records, 465 existing mapping entries, 1,104 source episodes at this pinned baseline, as counted from canonical files). **Working branch:** `work/incident-taxonomy-reasoning-readjudication-20261018`.
