@@ -1,3 +1,5 @@
+> **Superseded the same day:** The steward clarified that FC-081 must cover meaningful consideration of ecological **values**, not only breaches of independently binding ecological **constraints**. The current canonical name is **Ecological Values Preservation**, and the current semantic code is `ECOLOGICAL_VALUES_PRESERVATION`. This document records the *intermediate* rename only; the operative boundary and controlled code revision are documented in [2026-10-18-fc-081-ecological-values-preservation-revision.md](2026-10-18-fc-081-ecological-values-preservation-revision.md).
+
 # FC-081 — Display label refinement
 
 **Date:** 2026-10-18  
