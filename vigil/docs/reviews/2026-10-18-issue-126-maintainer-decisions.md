@@ -46,3 +46,6 @@ For implementation:
 INC-167 has no accepted new band from these decisions. The proposed scope expansion addresses methodology coverage; the missing complaint/clinical evidence, source limitations and causal uncertainty remain. Preserve the historical assessment until an admissible reassessment is implemented and reviewed.
 
 Issue 126 stays open pending canonical publication, generated outputs, dated per-record audit and corpus facts, fresh validation, and accepted dispositions for every remaining case. No merge, deployment, manuscript submission or release exception is authorised.
+
+
+Subsequent completion (18 October): [issue 126 audit](2026-10-18-issue-126-him-reassessments/README.md) and [exact-commit corpus facts](2026-10-18-issue-126-him-reassessments/SIAI-CORPUS-FACTS.md) record the implemented review at `cfeb57a996e29eb08a3d2a928a090ac5e0646fc1`. Earlier pending/candidate status above remains historical and is not the current corpus state.

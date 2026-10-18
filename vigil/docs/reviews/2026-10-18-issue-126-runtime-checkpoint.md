@@ -131,3 +131,6 @@ Risk: removing a test without preserving generic coverage could conceal stable c
 4. Commit/push reviewed data to the existing branch. Then count the active canonical records from that exact data commit, not a local candidate or generated index. Produce the final per-record and SIAI facts report with an exact commit and read-only counting script.
 5. Keep #126 open until every remaining case has an accepted reassessment or explicit maintainer-approved hold disposition. A dated audit does not approve a hold. No permission is inferred from #129's closure.
 6. Aggregate Harm calibration remains separate under #130. This exercise does not empirically validate HIM. No SIAI manuscript editing/submission, email, merge or deployment occurred.
+
+
+Subsequent completion (18 October): [issue 126 audit](2026-10-18-issue-126-him-reassessments/README.md) and [exact-commit corpus facts](2026-10-18-issue-126-him-reassessments/SIAI-CORPUS-FACTS.md) record the implemented review at `cfeb57a996e29eb08a3d2a928a090ac5e0646fc1`. Earlier pending/candidate status above remains historical and is not the current corpus state.
