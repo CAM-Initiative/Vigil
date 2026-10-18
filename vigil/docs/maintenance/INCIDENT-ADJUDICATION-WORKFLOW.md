@@ -65,6 +65,12 @@ Evidence search is not permission to inflate the record. Add a source only when 
 
 A source may be removed only when the manifest records the source and an explicit reason such as duplication, wrong occurrence, inaccessible/non-verifiable replacement, or demonstrated unreliability.
 
+### Wording-dependent evidence
+
+Apply **Wording-dependent evidence and chronological source clauses** in `vigil/MAINTAINERS.md` whenever the adjudication depends materially on the words used. Preserve the exact decisive passage, its attribution and surrounding task context in the relevant source clause. Preserve the source-supported sequence through the receiver response and later consequences. Several propositions in one passage remain one event; separate responses remain separate events.
+
+Review source fidelity and occurrence order together. A quote-led rewrite that loses the event sequence is incomplete. A chronological paraphrase that removes the words on which the adjudication depends is also incomplete. If the transcript is unavailable, label the available attributed report and bound the conclusion rather than reconstructing dialogue. Each relevant taxonomy rationale must identify the decisive words, explain their significance and state the observed conduct or precise missing recognition fact.
+
 ## 3. FACTUAL RECORD — write facts before diagnosis
 
 Rebuild `summary` and `vigil_assessment.factual_basis` from the evidence before performing taxonomy adjudication.

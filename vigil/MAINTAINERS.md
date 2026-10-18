@@ -435,6 +435,25 @@ Downstream website, document and PDF publishers must read and faithfully render 
 Publication consumers should protect this contract with generic fixtures covering a single rationale, multiple ordered rationales, mixed canonical and non-canonical relationships, and the missing-rationale fallback. Tests should validate the data contract rather than pinning the current adjudication of a live Incident.
 
 
+### Wording-dependent evidence and chronological source clauses
+
+A wording-dependent observation is one whose adjudication materially depends on the words used: for example, an instruction or compaction injection, concealment directive, threat, demeaning response, relational pressure, or false attribution. Apply this test to the evidence, not to an Incident title or a keyword list. Not every clause in such an Incident requires a quotation.
+
+Keep the chronological source-clause structure. Preserve the supported task/context, material statement or instruction, receiver response or action, and later correction, reset or consequences as distinct events where the evidence distinguishes them. Do not manufacture missing steps, infer order from publication dates, or turn several propositions in one passage into separate occurrence episodes. Preserve episode identities and source references. Describe concurrent or unknown order explicitly.
+
+For a wording-dependent observation:
+
+- Preserve the exact material wording in the source clause, normally in `source_anchor`. Include enough of the passage to expose the qualification, condition, target or claimed authority on which the adjudication depends. A detached slogan or a quotation elsewhere in the record is not sufficient. Exact wording already present in `source_paraphrase` can satisfy source fidelity; field presence alone is not the substantive test.
+- Use `source_paraphrase` for the supported task, speaker, source, placement and surrounding context. Identify whether the words are a user instruction, model output, attacker text, provider account or affected-party recollection. Resolve the evidence through `source_record_refs[]` where the Incident uses that contract. Do not present reported words as an independently inspected model transcript.
+- In each relevant `taxonomy_relationships[].rationale`, identify the actual words that carry the interpretation. Explain their occurrence-specific significance against the invariant and recognition conditions. Distinguish what the statement expresses from what the receiver demonstrably did. Name the precise missing fact when a conclusion remains Boundary. A generic topic description or class label cannot replace this explanation.
+- Preserve the downstream response and consequences in their supported sequence. Do not infer execution from a directive, refusal from silence, repair from later omission, or materialised harm from disturbing wording alone. A statement may itself constitute relevant conduct; do not require a separate downstream act for a class whose recognition conditions concern the statement itself.
+- If the original wording is inaccessible or unpublished, label the available paraphrase or attributed quotation and the access limitation. Bound the wording-dependent conclusion to that evidence. Never reconstruct a quotation, treat an illustration as a dialogue transcript, discard the whole Incident automatically, or change unrelated supported findings because one passage is unavailable.
+
+Publish the original wording, context and occurrence-specific analysis together in source-supported order. When both `source_anchor` and `source_paraphrase` are supplied, preserve both across website, static, print and PDF outputs. Avoid repeating a whole passage for each taxonomy relationship; each rationale can refer to its decisive words within the same episode.
+
+This is an authoring and review contract. It introduces no mandatory new field, retrospective episode migration, keyword classifier, schema rule or blocking validator. Corpus repairs and changes to pass/fail controls require their own scoped approval under the existing stop conditions.
+
+
 ### External alignment classification publication boundary
 
 Section 03 may publish an **External Alignment Classification** table when an admitted `external_assessments[]` entry contains `classification_or_rating`. This is a projection of the external assessor's own classification or rating, not a VIGIL reclassification.
