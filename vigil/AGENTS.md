@@ -50,6 +50,10 @@ Do not replace the rationale with relationship-type boilerplate such as “the c
 
 Where a clause has multiple taxonomy relationships, preserve each distinct rationale in source order. Together they must form a coherent assessment without duplicating the same explanation. For adjacent, ambiguous-boundary, exemplar or other non-misalignment relationships, state precisely what the clause demonstrates and which occurrence condition is not established; semantic adjacency must not be converted into a canonical misalignment classification.
 
+For wording-dependent observations, follow **Wording-dependent evidence and chronological source clauses** in `vigil/MAINTAINERS.md`. Keep the chronology and exact material words with their speaker, source and context. Connect each relevant rationale to those words and distinguish statements from observed responses. Declare unavailable transcripts; do not invent quotations or split one passage into one episode per class. This is a conditional evidence rule, not a requirement to quote every clause or migrate every Incident.
+
+A single source episode can contain several independently adjudicated statements. Use the optional statement-binding convention in **Separate statements within one source episode** in `vigil/MAINTAINERS.md` for scoped repairs. Preserve the episode ID and source references; do not collapse distinct statement meanings or create an event per class.
+
 ## Source-first episode identity (opt-in)
 
 For an Incident that has adopted stable episodes, keep one unique `episode_id` and resolvable `source_record_refs[]` on every source clause. For a class-derived `external_requirement_assessments[]` row in such an Incident, record the intended `source_episode_refs[]` and verify any retained numeric `source_clause_indices` identify the same episodes. An episode can support multiple distinct taxonomy relationships; do not create separate evidentiary episodes for each class, infer event chronology from labels, or claim that these checks certify source exhaustiveness.
@@ -150,6 +154,8 @@ When Incident adjudication produces a taxonomy gap or another unresolved maintai
 Do not leave a material next action only in conversational handoff text. Do not overwrite unresolved queue items with a one-item email. If Gmail is unavailable, explicitly report that staging was not completed and preserve the full ready-to-send payload.
 
 ## Required workflow
+
+For a newly requested Incident, carry out the complete ordinary processing in the new-entry completion section of `docs/maintenance/INCIDENT-ADJUDICATION-WORKFLOW.md`. Use the audit-only completion checklist beside the JSON intake template. Do not end the task after creating an intake record or taxonomy label. Record actual reviewed/no-retained/blocked external decisions and deliver a per-record completion report. Proposed canonical completion fields and blocking controls still require Gate 1 approval.
 
 Before editing an Incident, inspect `vigil/VIGIL.Schema.json`, the Incident template, the validator and comparable Incident records. Preserve stable IDs and substantive evidence.
 

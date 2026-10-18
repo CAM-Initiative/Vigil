@@ -47,3 +47,12 @@ Preserve `source_records`, source clauses, taxonomy, Harm Impact, uncertainty an
 For each Incident, recover current assessments and prior dated candidate reviews, read requirement propositions, record relevance and independent evidence dispositions, update only reviewed entries, append provenance, and validate. No retained-count target applies. Preserve prior values through immutable baseline Git references and existing audits; new dated audits record candidates, old/new results, reasons, resolving evidence and validation. Do not rewrite historical audits.
 
 Run `validate-occurrence-requirement-assessments.py`, the canonical/public/provenance validators and the assessment/resolver/projection tests. Structural validation checks canonical IDs, evidence, admitted derivation and alignment fields. Semantic relevance, evidence sufficiency and independence remain substantive adjudication decisions; a validator cannot prove them from a label or rationale string. Builders own generated indexes and must not mutate governed source records.
+
+
+## Complete-explanation duplication control
+
+Each retained assessment must explain its own canonical proposition against the occurrence evidence. Reusing an identical complete `assessment_basis` for different requirement IDs within one Incident is a blocking boilerplate error. The shared occurrence-requirement validator compares complete values after Unicode NFKC, case and whitespace normalisation. It reports all participating rows and requirement IDs.
+
+Shared factual sentences are permitted when the rest of each explanation addresses its own requirement. Do not clear the error by adding an identifier, row number or cosmetic synonym. Compare the actual required activity, evidence and missing decisive fact. Preserve legitimate uncertainty and common evidence. This check does not compare evidence quotations, shared taxonomy conditions or historical review entries, and it cannot certify semantic adequacy or detect paraphrased boilerplate.
+
+The control and the measured affected-record repairs were explicitly approved together under Gate 1 and Gate 2 on 18 October 2026. Implementation evidence and per-record decisions are in `../reviews/2026-10-18-duplicate-explanation-repairs/`.

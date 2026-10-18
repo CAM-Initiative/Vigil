@@ -6,6 +6,8 @@ VIGIL is an Incident-centred public evidence and diagnosis corpus. INC is the so
 
 Before editing Incidents, inspect `vigil/VIGIL.Schema.json`, `vigil/templates/incident-record-template.json`, `vigil/scripts/validate-vigil-records.py` and comparable canonical records. Preserve stable IDs, evidence, uncertainty, occurrence-level diagnosis, severity and provenance.
 
+A request to create a new Incident authorises the complete ordinary processing sequence, not intake alone. Follow the new-entry completion section in `vigil/docs/maintenance/INCIDENT-ADJUDICATION-WORKFLOW.md` and its audit checklist. An empty external-assessment list does not demonstrate review. Report evidence-limited findings separately from work not performed. New schema fields and blocking controls still require Gate 1 approval.
+
 Legacy record classes and migration artefacts remain recoverable through Git history. Do not restore them to active Incident records or require them as runtime dependencies.
 
 Build and validate with:

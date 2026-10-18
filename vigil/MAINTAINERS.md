@@ -28,6 +28,12 @@ Before opening a pull request from `agent/incident-ecosystem-ingestion`, synchro
 
 ## High-signal ecosystem ingestion sources
 
+### Ordinary new-entry completion
+
+A request for a new Incident authorises the complete ordinary evidence, scope/duplicate, chronological episode, current taxonomy, twelve-dimensional HIM, independent external-requirement, public interpretation, provenance, appropriate media and validation process. The JSON intake template is an intermediate starting point. Follow the new-entry completion section of `docs/maintenance/INCIDENT-ADJUDICATION-WORKFLOW.md` and the audit-only `templates/incident-completion-checklist-template.json`. An empty assessment list does not establish review. Distinguish unperformed, reviewed-with-assessments, reviewed-none-retained and blocked external review in the dated audit, with reasons and exact missing sources/facts. Evidence-limited findings can follow a completed review; do not manufacture taxonomy completeness or standards findings.
+
+Canonical completion fields or blocking controls remain subject to Gate 1. The 18 October proposal is `docs/reviews/2026-10-18-inc-199-203-completion/completion-control-gate1.md`; it is not an implemented validity rule. No historical backfill or wider corpus repair is authorised by the new-entry instruction.
+
 Scheduled or manual ecosystem ingestion SHOULD explicitly check high-signal first-party disclosure surfaces that publish bounded model-behaviour, evaluation, containment or agent incidents. At minimum, the current watch set includes:
 
 - OpenAI Alignment misalignment reports and notices, including `https://alignment.openai.com/misalignment-reports/`;
@@ -435,6 +441,36 @@ Downstream website, document and PDF publishers must read and faithfully render 
 Publication consumers should protect this contract with generic fixtures covering a single rationale, multiple ordered rationales, mixed canonical and non-canonical relationships, and the missing-rationale fallback. Tests should validate the data contract rather than pinning the current adjudication of a live Incident.
 
 
+### Wording-dependent evidence and chronological source clauses
+
+A wording-dependent observation is one whose adjudication materially depends on the words used: for example, an instruction or compaction injection, concealment directive, threat, demeaning response, relational pressure, or false attribution. Apply this test to the evidence, not to an Incident title or a keyword list. Not every clause in such an Incident requires a quotation.
+
+Keep the chronological source-clause structure. Preserve the supported task/context, material statement or instruction, receiver response or action, and later correction, reset or consequences as distinct events where the evidence distinguishes them. Do not manufacture missing steps, infer order from publication dates, or turn several propositions in one passage into separate occurrence episodes. Preserve episode identities and source references. Describe concurrent or unknown order explicitly.
+
+For a wording-dependent observation:
+
+- Preserve the exact material wording in the source clause, normally in `source_anchor`. Include enough of the passage to expose the qualification, condition, target or claimed authority on which the adjudication depends. A detached slogan or a quotation elsewhere in the record is not sufficient. Exact wording already present in `source_paraphrase` can satisfy source fidelity; field presence alone is not the substantive test.
+- Use `source_paraphrase` for the supported task, speaker, source, placement and surrounding context. Identify whether the words are a user instruction, model output, attacker text, provider account or affected-party recollection. Resolve the evidence through `source_record_refs[]` where the Incident uses that contract. Do not present reported words as an independently inspected model transcript.
+- In each relevant `taxonomy_relationships[].rationale`, identify the actual words that carry the interpretation. Explain their occurrence-specific significance against the invariant and recognition conditions. Distinguish what the statement expresses from what the receiver demonstrably did. Name the precise missing fact when a conclusion remains Boundary. A generic topic description or class label cannot replace this explanation.
+- Preserve the downstream response and consequences in their supported sequence. Do not infer execution from a directive, refusal from silence, repair from later omission, or materialised harm from disturbing wording alone. A statement may itself constitute relevant conduct; do not require a separate downstream act for a class whose recognition conditions concern the statement itself.
+- If the original wording is inaccessible or unpublished, label the available paraphrase or attributed quotation and the access limitation. Bound the wording-dependent conclusion to that evidence. Never reconstruct a quotation, treat an illustration as a dialogue transcript, discard the whole Incident automatically, or change unrelated supported findings because one passage is unavailable.
+
+Publish the original wording, context and occurrence-specific analysis together in source-supported order. When both `source_anchor` and `source_paraphrase` are supplied, preserve both across website, static, print and PDF outputs. Avoid repeating a whole passage for each taxonomy relationship; each rationale can refer to its decisive words within the same episode.
+
+The semantic duties above remain an authoring and review contract. The separately approved 2026-10-18 structural checks validate optional statement bindings and explicitly declared wording evidence, as described below. They introduce no retrospective migration or keyword classifier. Further corpus repairs and changes to pass/fail controls require their own scoped approval under the existing stop conditions.
+
+
+### Separate statements within one source episode
+
+Occurrence identity and analytical granularity are different. Several material statements in one handoff must be adjudicated separately when their meaning, recovered principle or recognition question differs. Do not combine identity, apology/refusal, equality or other distinct propositions merely because they share an event or a Fidelity Class. Preserve prior substantive reasoning with explicit disposition when a later review changes its result.
+
+For an explicitly scoped statement-level repair, the existing source episode may carry optional `statement_analysis[]`. Each entry has a parent-local `statement_id`, public `title`, exact `source_anchor` and/or attributed `source_paraphrase`, `recovered_invariant_interpretation`, and `taxonomy_relationship_indices[]`. The indices are zero-based references to that episode's canonical `taxonomy_relationships[]`; each relationship belongs to exactly one statement. All authoritative relationship rationales remain in the existing parent array, without a second duplicated set of mapping results. Statement entries are not new occurrence episodes. Existing unique `episode_id` and external-requirement references remain unchanged.
+
+Optional `source_clause_analysis.pre_compaction_context` records the known task, missing prior state, `source_record_refs[]` and the occurrence-specific interpretive consequence in `rationale`. This is evidence context, not an invented prior event or an assumption that missing public context was never captured internally.
+
+Publication consumers show supplied pre-context first, then the shared episode context and each statement in textual order. Preserve the full original passage in an accessible source disclosure. Show later response and omission separately when supported. A consumer must retain the complete original episode if statement bindings are malformed or omit a relationship; it must not silently discard analysis. The optional convention has the structural checks below; it creates no historical migration requirement.
+
+
 ### External alignment classification publication boundary
 
 Section 03 may publish an **External Alignment Classification** table when an admitted `external_assessments[]` entry contains `classification_or_rating`. This is a projection of the external assessor's own classification or rating, not a VIGIL reclassification.
@@ -513,6 +549,18 @@ python vigil/scripts/build-vigil-public-records.py
 ```
 
 The master registry contains one registry, `incidents`. It is a registry-of-registries manifest and must not duplicate Incident entries. `VIGIL.Incidents.Index.json` is intentionally a lightweight catalogue/search/routing projection; canonical evidence, diagnosis, structured severity, taxonomy detail and provenance remain in the source Incident JSON. Do not manually edit generated outputs or recreate retired-class indexes.
+
+## Public explanation identifier coverage
+
+The existing prohibition on internal taxonomy-number shorthand is also enforced by `validate-vigil-records.py` for aggregate and mapping-local classification bases, source-clause context/interpretation/notes, relationship rationales, nested statement context/interpretation and VIGIL comparisons with external assessments. This is the same identifier-syntax rule, not an extension of all maintenance-word patterns to these fields. Keep identifiers in structured classification fields and literal original source quotations; explain the occurrence in the adjacent own prose. Historical review/audit provenance is not rewritten. The 18 October coverage audit and remaining canonical validation failures are recorded in `vigil/docs/reviews/2026-10-18-public-taxonomy-number-validation-failures.json`; a failing guard does not authorise automatic corpus repair.
+
+## Optional wording evidence and statement validation
+
+Approved 18 October 2026. `validate-vigil-records.py` checks `statement_analysis` whenever supplied. Each statement requires a nonempty episode-local unique `statement_id`, nonempty `recovered_invariant_interpretation` and a `taxonomy_relationship_indices` array. Every parent relationship is bound exactly once using an in-range integer index; booleans are not indices. Empty index arrays remain valid for context-only statements. Keep the parent episode and source references.
+
+A clause or statement may declare `wording_evidence.basis` as `original-quotation`, `attributed-quotation` or `unavailable`. Quotation bases require a local `source_anchor`, local context in `source_paraphrase` and valid parent `source_record_refs`. An attributed quotation also requires nonempty `wording_evidence.attribution` and `wording_evidence.access_limitations`. An unavailable basis requires explicit access limitations and local context; its anchor must be absent or empty. Do not invent a quotation to satisfy the check.
+
+These checks enforce declared structure, not authenticity, chronology, completeness or interpretive quality. Unmarked historical clauses remain valid. Marker adoption is a separate evidence-review decision, not an automatic migration. Publication consumers preserve the optional structures; renderer fallback remains appropriate for legacy or externally supplied malformed content. Approval and the initial read-only corpus result are recorded in `vigil/docs/reviews/2026-10-18-wording-validation-implementation.json`.
 
 ## Human-maintainer stop conditions for validators, schema rules and corpus-wide tests
 
@@ -630,6 +678,8 @@ The VIGIL Incident record stores the structured `incident_artefacts[]` reference
 - `render_url` — matching immutable raw media URL;
 - `source_url` — URL for the **original** external social post, publisher page or supplied source, never replaced by Registry;
 - capture/caption/alt/provenance fields — explicitly identify whether the image is an original visible post, publisher image or separately identified archive rendering; never assert first-party authenticity without basis.
+
+The human-approved 2026-10-18 canonical media check blocks unsupported or MIME-incompatible display references, non-image screenshot declarations, empty image alt text and Registry permalink/render pairs that do not identify the same immutable commit and file. It applies to all optional `incident_artefacts[]`, not one Incident. It checks metadata offline; it does not inspect remote bytes or authenticate a capture. Ordinary source and archive document URLs remain outside this media-slot check. See `docs/reviews/2026-10-18-incident-media-validation-gate1.md` for the approved scope.
 
 Commit and inspect the genuine Registry image or PDF first, and only then add its canonical VIGIL reference metadata. Do not use `main` or another moving branch for live reference links. Where multiple captures document materially distinct parts of **one bounded occurrence**, use the Incident ID filename plus `-02`, `-03` etc. (or an existing `-01`–`-02` sequence); do not combine separate affected users into one occurrence or one Harm Impact assessment. Archival preservation does not automatically confer permission to redistribute copyrighted content: record attribution, preserve the original URL, retain only necessary material and review privacy/rights concerns before public display.
 

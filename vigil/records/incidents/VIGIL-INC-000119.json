@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Nx s1ngularity malware weaponized local AI coding CLIs during credential-harvesting supply-chain attack",
     "created": "2026-09-14",
-    "updated": "2026-10-09",
-    "version": "0.1.16"
+    "updated": "2026-10-18",
+    "version": "0.1.17"
   },
   "incident_identity": {
     "historical_event_name": "2025 Nx s1ngularity supply-chain attack",
@@ -21,7 +21,7 @@
   "summary": "Attackers stole an Nx npm publishing token through a GitHub Actions injection flaw. Nx later reported that they deleted branches and workflow runs to conceal traces during this compromise. They published malicious Nx package versions on 26 August 2025. The package post-install malware directly harvested credentials and sensitive files and also attempted to invoke locally configured Claude, Gemini and Amazon Q command-line tools with prompts designed to identify additional sensitive files for exfiltration. Results and stolen credentials were uploaded to public GitHub repositories. GitGuardian identified 2,349 distinct secrets in 1,079 affected repositories during the initial phase, with more than 1,100 still valid at the time of analysis, and later observed 10,767 private repositories made public, exposing 82,901 secrets including 11,168 then-valid secrets. The AI-assisted path was only one component of the attack: GitGuardian reported that only 95 of 366 targeted systems produced the requested AI-generated inventory file, and Wiz separately found substantial refusal, configuration and workspace-restriction failure rates across the invoked AI tools. Subsequent response included package removal, repository removal and credential revocation. Wiz also observed a later repository-upload phase affecting one organisation.",
   "vigil_assessment": {
     "factual_basis": "Nx directly confirms that malicious packages attempted to use local AI tools including Claude and Gemini while scanning user systems and uploading results to public GitHub repositories. GitGuardian's analysis quantifies credential and repository exposure and reports that 95 of 366 systems where LLM tools were targeted produced the requested inventory file. Wiz independently describes the malware invoking Claude, Gemini and Amazon Q with permissive command-line flags and prompt-engineering attempts, while documenting substantial refusals and execution failures. OECD.AI later indexed the s1ngularity campaign as an AI incident, but its entry is used only as discovery and registry corroboration rather than primary technical evidence. Nx also documents deletion of attacker-created branches and workflow runs during the initial token theft. Its publishing compromise occurred before local AI-tool invocation. Wiz’s later account identifies an additional repository-upload phase from 31 August involving one organisation and two accounts; this sample is not summed with GitGuardian’s broader counts. Package removal, leaked-repository removal and revocation of stolen victim credentials were separate response steps.",
-    "governance_interpretation": "Malware tried to repurpose local AI tools after the initial package compromise. Some tools assisted sensitive-file discovery; many refused or failed. Those successful runs support bounded failures in harmful-query handling and security under misuse. Direct malware theft and the aggregate repository exposure remain separate from the AI-assisted path.",
+    "governance_interpretation": "Malware tried to repurpose local AI tools after the initial package compromise. Some tools assisted sensitive-file discovery; many refused or failed. Those successful runs support bounded failures in harmful-query handling and security under misuse. Direct malware theft and the aggregate repository exposure remain separate from the AI-assisted path. Harm Impact: The campaign exposed sensitive credentials and private repositories. The recorded quantities support substantial confidentiality harm. Direct malware theft also contributed: only 95 of 366 sampled AI-tool targets produced the requested inventory. The full campaign exposure is not allocated exclusively to AI-assisted discovery.",
     "significance_to_cam": "The incident demonstrates a distinct agent-security surface: malware can discover and invoke trusted local AI developer tools, attempt to bypass their permission and safety boundaries, and use successful sessions to extend reconnaissance beyond static malware logic. It also shows why outcome assessment must preserve partial refusal and failure rates rather than treating all targeted AI tools as uniformly compliant.",
     "assessment_boundaries": [
       "The malware directly harvested credentials and files independently of AI-tool assistance; the full incident impact must not be attributed to the AI tools.",
@@ -693,43 +693,59 @@
           "AI-authored bounded review; not human verification or evidence-exhaustiveness certification."
         ],
         "review_outcome": "Reconciled 3 original clauses into 7 material episodes with stable source references; retained governed assessment outcomes."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-18-ISSUE126-HIM-000119",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work — Codex",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-18",
+        "review_scope": "Source-first twelve-dimensional HIM reassessment, exclusive pathway selection and public consequence reconciliation; taxonomy and external-requirement adjudications preserved.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_research": true,
+          "harm_impact_review": true,
+          "taxonomy_review": false
+        },
+        "known_limitations": [
+          "AI-authored review is not human source verification. Source access and claim-relative limits are retained in the dated audit.",
+          "No provider-wide reach, attempted payment, claimed damages or unallocated campaign quantity is treated as demonstrated occurrence-specific loss."
+        ],
+        "review_outcome": "HIM 1.0.1 S4 → working HIM 1.1.0 S4. Controlling dimensions: privacy-confidentiality."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-09-PHASE3-BATCH05-000119",
+      "review_id": "VIGIL-REVIEW-2026-10-18-ISSUE126-HIM-000119",
       "reviewer_type": "AI analytical reviewer",
       "reviewer_platform": "OpenAI ChatGPT Work — Codex",
       "reviewer_model": "GPT-6",
-      "review_date": "2026-10-09",
-      "review_scope": "Source-first episode reconciliation, public narrative fidelity and per-row external requirement evidence linkage. Existing class roles, HIM and external decisions retained.",
+      "review_date": "2026-10-18",
+      "review_scope": "Source-first twelve-dimensional HIM reassessment, exclusive pathway selection and public consequence reconciliation; taxonomy and external-requirement adjudications preserved.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
         "web_research": true,
-        "taxonomy_review": true,
-        "harm_impact_review": false,
-        "external_requirement_review": true
+        "harm_impact_review": true,
+        "taxonomy_review": false
       },
       "known_limitations": [
-        "The public counts are different investigator samples and must not be summed.",
-        "A missing inventory file does not by itself prove safeguard activation.",
-        "Actor concealment in the publishing compromise is not attributed to an AI agent.",
-        "AI-authored bounded review; not human verification or evidence-exhaustiveness certification."
+        "AI-authored review is not human source verification. Source access and claim-relative limits are retained in the dated audit.",
+        "No provider-wide reach, attempted payment, claimed damages or unallocated campaign quantity is treated as demonstrated occurrence-specific loss."
       ],
-      "review_outcome": "Reconciled 3 original clauses into 7 material episodes with stable source references; retained governed assessment outcomes."
+      "review_outcome": "HIM 1.0.1 S4 → working HIM 1.1.0 S4. Controlling dimensions: privacy-confidentiality."
     }
   },
   "harm_impact_assessment": {
     "methodology_id": "VIGIL-HIM",
-    "methodology_version": "1.0.1",
-    "derivation_rule": "highest-supported-materialised-harm",
-    "assessed_on": "2026-09-20",
+    "methodology_version": "1.1.0",
+    "derivation_rule": "highest-supported-harm-on-exclusive-incident-assessment-pathway",
+    "assessed_on": "2026-10-18",
     "overall_severity": "S4",
     "controlling_dimensions": [
-      "privacy-confidentiality",
-      "property-asset-damage"
+      "privacy-confidentiality"
     ],
-    "coverage_note": "All eleven dimensions were re-reviewed. The preserved and newly added evidence supports the assessed dimensions; other dimensions remain unreported unless specifically assessed and do not lower or raise the derived result. Context-only sources were not used to manufacture assessed harm.",
+    "coverage_note": "All twelve dimensions were reviewed against the bounded occurrence, source evidence and current thresholds. Overall severity is the highest supported assessed band; other consequences remain unreported or insufficient-evidence as individually stated. S2 integrity/transaction minima do not certify a maximum or assume recovery.",
     "dimensions": [
       {
         "dimension_id": "physical-health-safety",
@@ -759,19 +775,15 @@
         "dimension_id": "privacy-confidentiality",
         "assessment_status": "assessed",
         "severity": "S4",
-        "threshold_id": "VIGIL-HIM-1.0.1-PRV-S4",
-        "observed_values": [
-          {
-            "metric": "published quantitative information",
-            "qualitative_value": "GitGuardian reports 2,349 distinct secrets across 1,079 initial repositories, more than 1,100 valid credentials at analysis time, and a later phase in which 10,767 private repositories were made public exposing 82,901 secrets including 11,168 valid ones. Of 366 systems where LLM tools were targeted, 95 produced the requested inventory file. Wiz reports that AI-assisted exfiltration succeeded in under one quarter of observed cases and found fewer than 100 unique valid secrets among approximately 20,000 files attributed to the AI-assisted path in its sample."
-          }
-        ],
-        "assessment_basis": "The preserved sources establish the bounded consequence described in the Incident summary: Attackers stole an Nx npm publishing token through a GitHub Actions injection flaw and published malicious Nx package versions on 26 August 2025. The package post-install malware directly harvested credentials and sensitive files and also attempted to invoke locally configured Claude, Gemini and Amazon Q command-line tools with prompts designed to identify additional sensitive files for exfiltration. Results and stolen credentials were uploaded to public GitHub repositories. GitGuardian identified 2,349 distinct secrets in 1,079 affected repositories during the initial phase, with more than 1,100 still valid at the time of analysis, and later observed 10,767 private repositories made public, exposing 82,901 secrets including 11,168 then-valid secrets. The AI-assisted path was only one component of the attack: GitGuardian reported that only 95 of 366 targeted systems produced the requested AI-generated inventory file, and Wiz separately found substantial refusal, configuration and workspace-restriction failure rates across the invoked AI tools. Unreported downstream consequences were not inferred. Threshold applied: Large-scale or highly sensitive exposure, persistent loss of confidentiality, or substantial evidenced misuse.",
-        "evidence_confidence": "high",
+        "assessment_basis": "The campaign exposed sensitive credentials and private repositories. The recorded quantities support substantial confidentiality harm. Direct malware theft also contributed: only 95 of 366 sampled AI-tool targets produced the requested inventory. The full campaign exposure is not allocated exclusively to AI-assisted discovery.",
         "evidence_refs": [
           "source_records[0]",
-          "source_records[4]"
-        ]
+          "source_records[1]",
+          "source_records[2]"
+        ],
+        "observed_values": [],
+        "evidence_confidence": "medium",
+        "threshold_id": "VIGIL-HIM-1.1.0-PRV-S4"
       },
       {
         "dimension_id": "financial-economic",
@@ -781,26 +793,14 @@
       },
       {
         "dimension_id": "property-asset-damage",
-        "assessment_status": "assessed",
-        "severity": "S4",
-        "threshold_id": "VIGIL-HIM-1.0.1-PAD-S4",
-        "observed_values": [
-          {
-            "metric": "published quantitative information",
-            "qualitative_value": "GitGuardian reports 2,349 distinct secrets across 1,079 initial repositories, more than 1,100 valid credentials at analysis time, and a later phase in which 10,767 private repositories were made public exposing 82,901 secrets including 11,168 valid ones. Of 366 systems where LLM tools were targeted, 95 produced the requested inventory file. Wiz reports that AI-assisted exfiltration succeeded in under one quarter of observed cases and found fewer than 100 unique valid secrets among approximately 20,000 files attributed to the AI-assisted path in its sample."
-          }
-        ],
-        "assessment_basis": "The preserved sources establish the bounded consequence described in the Incident summary: Attackers stole an Nx npm publishing token through a GitHub Actions injection flaw and published malicious Nx package versions on 26 August 2025. The package post-install malware directly harvested credentials and sensitive files and also attempted to invoke locally configured Claude, Gemini and Amazon Q command-line tools with prompts designed to identify additional sensitive files for exfiltration. Results and stolen credentials were uploaded to public GitHub repositories. GitGuardian identified 2,349 distinct secrets in 1,079 affected repositories during the initial phase, with more than 1,100 still valid at the time of analysis, and later observed 10,767 private repositories made public, exposing 82,901 secrets including 11,168 then-valid secrets. The AI-assisted path was only one component of the attack: GitGuardian reported that only 95 of 366 targeted systems produced the requested AI-generated inventory file, and Wiz separately found substantial refusal, configuration and workspace-restriction failure rates across the invoked AI tools. Unreported downstream consequences were not inferred. Threshold applied: Substantial destruction or impairment of important or critical assets requiring major recovery, while remaining below catastrophic loss.",
-        "evidence_confidence": "high",
-        "evidence_refs": [
-          "source_records[0]",
-          "source_records[4]"
-        ]
+        "assessment_status": "insufficient-evidence",
+        "assessment_basis": "Malicious package state and initial repository/workflow deletions are documented, but the initial publishing compromise preceded local AI invocation. Independent substantial asset destruction or major reconstruction attributable to the AI-assisted path is not established.",
+        "evidence_confidence": "not-assessed"
       },
       {
         "dimension_id": "service-operational-infrastructure",
         "assessment_status": "unreported",
-        "assessment_basis": "The preserved Incident evidence does not report a bandable materialised service, operational and infrastructure impact; absence of reporting is not evidence of no harm.",
+        "assessment_basis": "Nx states its cloud service remained operational. Local startup-file sabotage code and experiments are not proof of actual victim shutdown or a service outage.",
         "evidence_confidence": "not-assessed"
       },
       {
@@ -820,8 +820,25 @@
         "assessment_status": "unreported",
         "assessment_basis": "The preserved Incident evidence does not report a bandable materialised environmental impact; absence of reporting is not evidence of no harm.",
         "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "relational-integrity-autonomy",
+        "assessment_status": "unreported",
+        "assessment_basis": "Credential exposure does not establish an independent human relationship consequence.",
+        "evidence_confidence": "not-assessed"
       }
-    ]
+    ],
+    "assessment_pathway": "specific_consequence",
+    "aggregate_harm_screening": {
+      "deployed_configuration": false,
+      "potentially_generalisable_mechanism": false,
+      "bounded_materialised_consequence_case": true,
+      "candidate_dimensions": [],
+      "source_record_refs": [
+        "source_records[0]"
+      ],
+      "rationale": "This review assesses the particular reported occurrence and its bounded consequences, including evidence-limited alleged consequences. Public reach does not establish lifecycle deployment. No model-wide audience or separate Aggregate Harm score is imported."
+    }
   },
   "related_incidents": [],
   "external_assessments": [

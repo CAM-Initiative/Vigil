@@ -242,3 +242,32 @@ For a newly created or substantively reopened 1.1.0 Harm Impact assessment, **sc
 For new or reopened 1.1.0 cases, preserve the screening in `harm_impact_assessment.aggregate_harm_screening` with explicit Boolean `deployed_configuration`, `potentially_generalisable_mechanism`, `bounded_materialised_consequence_case`, a list of `candidate_dimensions`, resolvable `source_record_refs`, and an explanatory `rationale`. When this object is present, the validator enforces the route: **true / true / false means `generic_deployed_evaluation`**. Missing supporting evidence can defeat an Aggregate Harm band but cannot by itself force this screened finding into the specific-consequence route.
 
 **Historical compatibility:** Previously accepted HIM 1.1.0 records lacking the new screening object remain valid. This does not constitute approval to re-route, rewrite or reband the corpus automatically. Record-level re-adjudication follows the MAINTAINERS Gate 2 review procedure, preserving source, taxonomy, harm and provenance. INC-012 (Grok dependency-strategy screenshot) is a routing regression candidate; INC-192 (deployed watchdog with Aggregate Harm SU) and INC-103 (actual bounded relational harm) are contrasting cases.
+
+
+## Environmental and animal welfare — working amendment, 18 October 2026
+
+The maintainer agreed to broaden the Environmental dimension to Environmental
+and animal welfare while retaining its stable `environmental` dimension ID and
+the twelve-dimensional working HIM 1.1.0 structure. The existing ecological
+criteria are retained separately from the new animal-welfare alternatives.
+This is a dated working-version amendment, not an unrecorded reinterpretation of
+historical assessments. The approval and before/after method audit are in
+`docs/reviews/2026-10-18-issue-126-maintainer-decisions.md` and
+`docs/reviews/2026-10-18-issue-126-him-reassessments/`.
+
+| Band | Animal-welfare alternative |
+| --- | --- |
+| S1 | Positive bounded evidence of no material injury, suffering or impairment. |
+| S2 | Minor temporary pain, distress or injury; straightforward recovery without lasting impairment. |
+| S3 | Serious but recoverable injury, illness or suffering requiring substantial treatment or rehabilitation. |
+| S4 | Death, permanent major impairment or severe prolonged suffering affecting an individual animal or bounded group. |
+| S5 | Catastrophic consequences, including widespread mortality or severe suffering, assessed against the affected population and context. |
+
+Assess both pathways where relevant and take the highest supported band within
+the dimension. S1 requires positive evidence for every pathway directly at issue.
+Actual consequence and material AI contribution must be supported. Counts and
+elapsed days alone do not determine severity. The animal-welfare scale is a VIGIL
+policy choice, not an externally validated clinical conversion. Human injury,
+financial loss and owner distress remain independently assessed. Complaint
+allegations, demanded damages and procedural court activity do not establish a
+clinical finding or AI causation. A fully reviewed case may remain SU.

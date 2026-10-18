@@ -10,6 +10,7 @@ import sys
 from datetime import date
 from pathlib import Path
 from typing import Any
+from urllib.parse import unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[2]
 VIGIL = ROOT / "vigil"
@@ -132,6 +133,144 @@ def validate_source_refs(
             errors.append(f"{path}: {label}.source_record_refs must use source_records[N] references")
         elif not isinstance(source_records, list) or int(match.group(1)) >= len(source_records):
             errors.append(f"{path}: {label}.source_record_refs points outside source_records")
+
+
+def validate_wording_evidence(
+    path: Path, label: str, node: dict[str, Any], source_refs: Any,
+    source_records: Any, errors: list[str],
+) -> None:
+    """Check a declared evidence basis, not whether a quotation is authentic."""
+    if "wording_evidence" not in node:
+        return
+    evidence = node["wording_evidence"]
+    if not isinstance(evidence, dict):
+        errors.append(f"{path}: {label}.wording_evidence must be an object")
+        return
+    basis = evidence.get("basis")
+    if not isinstance(basis, str) or basis not in {
+        "original-quotation", "attributed-quotation", "unavailable"
+    }:
+        errors.append(f"{path}: {label}.wording_evidence.basis must be original-quotation, attributed-quotation or unavailable")
+        return
+    if not non_empty(node.get("source_paraphrase")):
+        errors.append(f"{path}: {label}.source_paraphrase must give local context for wording_evidence")
+    if basis in {"original-quotation", "attributed-quotation"}:
+        if not non_empty(node.get("source_anchor")):
+            errors.append(f"{path}: {label}.source_anchor must contain the declared quotation")
+        validate_source_refs(path, label, source_refs, source_records, errors)
+    if basis == "attributed-quotation" and not non_empty(evidence.get("attribution")):
+        errors.append(f"{path}: {label}.wording_evidence.attribution must identify the reported source")
+    if basis in {"attributed-quotation", "unavailable"} and not non_empty(evidence.get("access_limitations")):
+        errors.append(f"{path}: {label}.wording_evidence.access_limitations must explain the evidence limit")
+    if basis == "unavailable" and node.get("source_anchor") not in (None, ""):
+        errors.append(f"{path}: {label}.source_anchor must be absent or empty when original wording is unavailable")
+
+
+def validate_statement_analysis(path: Path, record: dict[str, Any], errors: list[str]) -> None:
+    """Validate optional statements and opt-in wording evidence without rewriting records."""
+    assessment = record.get("vigil_assessment")
+    analysis = assessment.get("source_clause_analysis") if isinstance(assessment, dict) else None
+    clauses = analysis.get("clauses") if isinstance(analysis, dict) else None
+    if not isinstance(clauses, list):
+        return
+    for clause_index, clause in enumerate(clauses):
+        if not isinstance(clause, dict):
+            continue
+        label = f"vigil_assessment.source_clause_analysis.clauses[{clause_index}]"
+        refs = clause.get("source_record_refs")
+        validate_wording_evidence(path, label, clause, refs, record.get("source_records"), errors)
+        if "statement_analysis" not in clause:
+            continue
+        statements = clause["statement_analysis"]
+        if not isinstance(statements, list):
+            errors.append(f"{path}: {label}.statement_analysis must be an array")
+            continue
+        relationships = clause.get("taxonomy_relationships")
+        if not isinstance(relationships, list):
+            errors.append(f"{path}: {label}.taxonomy_relationships must be an array for statement bindings")
+            relationships = []
+        identifiers: set[str] = set()
+        bindings: set[int] = set()
+        for index, statement in enumerate(statements):
+            item_label = f"{label}.statement_analysis[{index}]"
+            if not isinstance(statement, dict):
+                errors.append(f"{path}: {item_label} must be an object")
+                continue
+            identifier = statement.get("statement_id")
+            if not non_empty(identifier):
+                errors.append(f"{path}: {item_label}.statement_id must be non-empty")
+            elif identifier.strip() in identifiers:
+                errors.append(f"{path}: {item_label}.statement_id duplicates {identifier!r} within the parent episode")
+            else:
+                identifiers.add(identifier.strip())
+            if not non_empty(statement.get("recovered_invariant_interpretation")):
+                errors.append(f"{path}: {item_label}.recovered_invariant_interpretation must explain the statement")
+            indices = statement.get("taxonomy_relationship_indices")
+            if not isinstance(indices, list):
+                errors.append(f"{path}: {item_label}.taxonomy_relationship_indices must be an array")
+            else:
+                for relationship_index in indices:
+                    if not is_non_negative_integer(relationship_index) or relationship_index >= len(relationships):
+                        errors.append(f"{path}: {item_label}.taxonomy_relationship_indices contains an out-of-range or non-integer index {relationship_index!r}")
+                    elif relationship_index in bindings:
+                        errors.append(f"{path}: {item_label}.taxonomy_relationship_indices duplicates parent relationship index {relationship_index}")
+                    else:
+                        bindings.add(relationship_index)
+            validate_wording_evidence(path, item_label, statement, refs, record.get("source_records"), errors)
+        missing = sorted(set(range(len(relationships))) - bindings)
+        if missing:
+            errors.append(f"{path}: {label}.statement_analysis omits parent relationship indices {missing}")
+
+
+TAXONOMY_NUMBER_IN_PROSE = re.compile(r"VIGIL-(?:FC|FF)-|\bFC-\d|VIGIL-\d{4}-FM-", re.IGNORECASE)
+
+
+def taxonomy_explanatory_prose(record: dict[str, Any]):
+    """Enumerate own explanations; structured IDs and literal quotations are not prose."""
+    taxonomy = record.get("taxonomy_classification")
+    if isinstance(taxonomy, dict):
+        yield "taxonomy_classification.classification_basis", taxonomy.get("classification_basis")
+        mappings = [("primary_classification", taxonomy.get("primary_classification"))]
+        secondary = taxonomy.get("secondary_classifications")
+        if isinstance(secondary, list):
+            mappings += [(f"secondary_classifications[{i}]", value) for i, value in enumerate(secondary)]
+        for name, mapping in mappings:
+            if isinstance(mapping, dict):
+                yield f"taxonomy_classification.{name}.classification_basis", mapping.get("classification_basis")
+    assessment = record.get("vigil_assessment")
+    analysis = assessment.get("source_clause_analysis") if isinstance(assessment, dict) else None
+    clauses = analysis.get("clauses") if isinstance(analysis, dict) else None
+    if isinstance(clauses, list):
+        for index, clause in enumerate(clauses):
+            if not isinstance(clause, dict):
+                continue
+            base = f"vigil_assessment.source_clause_analysis.clauses[{index}]"
+            for field in ("source_paraphrase", "recovered_invariant_interpretation", "adjudication_note"):
+                yield f"{base}.{field}", clause.get(field)
+            relationships = clause.get("taxonomy_relationships")
+            for i, relationship in enumerate(relationships if isinstance(relationships, list) else []):
+                if isinstance(relationship, dict):
+                    yield f"{base}.taxonomy_relationships[{i}].rationale", relationship.get("rationale")
+            statements = clause.get("statement_analysis")
+            for i, statement in enumerate(statements if isinstance(statements, list) else []):
+                if isinstance(statement, dict):
+                    for field in ("source_paraphrase", "recovered_invariant_interpretation"):
+                        yield f"{base}.statement_analysis[{i}].{field}", statement.get(field)
+    external = record.get("external_assessments")
+    for i, comparison in enumerate(external if isinstance(external, list) else []):
+        if isinstance(comparison, dict):
+            yield f"external_assessments[{i}].vigil_comparison_note", comparison.get("vigil_comparison_note")
+
+
+def validate_taxonomy_number_prose(path: Path, record: dict[str, Any], errors: list[str]) -> None:
+    for field, value in taxonomy_explanatory_prose(record):
+        match = TAXONOMY_NUMBER_IN_PROSE.search(value) if isinstance(value, str) else None
+        if match:
+            identifier = re.match(r"[\w-]+", value[match.start():]).group(0)
+            errors.append(
+                f"{path}: {field} contains taxonomy identifier {identifier!r}; "
+                "keep IDs in structured fields and explain the occurrence in public prose"
+            )
 
 
 def validate_agent_and_environment_context(
@@ -1001,6 +1140,85 @@ def validate_relationships_and_references(
                     )
 
 
+def incident_media_kind(url: Any, media_type: Any) -> str | None:
+    """Offline media-family check matching the website's supported extensions."""
+    if not isinstance(url, str) or not HTTP_URL.fullmatch(url):
+        return None
+    try:
+        parsed = urlsplit(url)
+    except ValueError:
+        return None
+    if parsed.scheme.lower() not in {"http", "https"} or not parsed.netloc:
+        return None
+    mime = media_type.split(";", 1)[0].strip().lower() if isinstance(media_type, str) else ""
+    extension = Path(parsed.path.lower()).suffix
+    if extension in {".png", ".jpg", ".jpeg", ".gif", ".webp", ".avif", ".svg"}:
+        return "image" if mime.startswith("image/") and len(mime) > 6 else None
+    if extension in {".mp4", ".webm", ".ogg", ".ogv", ".m4v", ".mov"}:
+        return "video" if mime.startswith("video/") and len(mime) > 6 else None
+    if extension == ".pdf" and mime == "application/pdf":
+        return "document"
+    return None
+
+
+def registry_media_identity(url: Any, *, permalink: bool) -> tuple[str, str] | None:
+    """Return the pinned Registry commit and file, without fetching the asset."""
+    if not isinstance(url, str) or not HTTP_URL.fullmatch(url):
+        return None
+    try:
+        parsed = urlsplit(url)
+    except ValueError:
+        return None
+    if parsed.scheme.lower() not in {"http", "https"}:
+        return None
+    if permalink:
+        if parsed.netloc.lower() != "github.com":
+            return None
+        prefix = r"/CAM-Initiative/Registry/blob/"
+    else:
+        if parsed.netloc.lower() != "raw.githubusercontent.com":
+            return None
+        prefix = r"/CAM-Initiative/Registry/"
+    match = re.fullmatch(prefix + r"([a-fA-F0-9]{40})/(VIGIL/.+)", parsed.path)
+    if not match:
+        return None
+    filename = unquote(match.group(2))
+    if any(part in {"", ".", ".."} for part in filename.split("/")):
+        return None
+    return match.group(1).lower(), filename
+
+
+def validate_incident_artefacts(path: Path, record: dict[str, Any], errors: list[str]) -> None:
+    """Reject invalid display references, without judging source authenticity."""
+    if "incident_artefacts" not in record:
+        return
+    artefacts = record["incident_artefacts"]
+    if not isinstance(artefacts, list):
+        errors.append(f"{path}: incident_artefacts must be a list when present")
+        return
+    for index, artefact in enumerate(artefacts):
+        field = f"{path}: incident_artefacts[{index}]"
+        if not isinstance(artefact, dict):
+            errors.append(f"{field} must be an object")
+            continue
+        kind = incident_media_kind(artefact.get("render_url"), artefact.get("media_type"))
+        if kind is None:
+            errors.append(f"{field}.render_url/media_type must identify supported image, video or PDF media with a compatible nonempty MIME declaration; text/Markdown references are not renderable media")
+        if artefact.get("artefact_type") == "source-screenshot" and kind != "image":
+            errors.append(f"{field}.artefact_type source-screenshot requires image media, not a document or video")
+        if kind == "image" or artefact.get("artefact_type") == "source-screenshot":
+            alt = artefact.get("alt_text")
+            if not isinstance(alt, str) or not alt.strip():
+                errors.append(f"{field}.alt_text must contain a meaningful nonempty image description")
+        identities = {}
+        for key in ("permalink", "render_url"):
+            identities[key] = registry_media_identity(artefact.get(key), permalink=key == "permalink")
+            if identities[key] is None:
+                errors.append(f"{field}.{key} must be an immutable CAM-Initiative/Registry/VIGIL file URL pinned to a 40-character commit SHA")
+        if all(identities.values()) and identities["permalink"] != identities["render_url"]:
+            errors.append(f"{field}.permalink/render_url must identify the same Registry commit and file")
+
+
 def validate_record(
     path: Path,
     record: dict[str, Any],
@@ -1094,6 +1312,9 @@ def validate_record(
     validate_source_records(path, record, errors)
     validate_external_assessments(path, record, known_assessment_ids, errors)
     validate_incident_taxonomy(path, record, errors)
+    validate_statement_analysis(path, record, errors)
+    validate_taxonomy_number_prose(path, record, errors)
+    validate_incident_artefacts(path, record, errors)
     # Opt-in structural source-episode validation. No automated semantic
     # duplicate detection or claim of evidence exhaustiveness.
     episode_helper_path = Path(__file__).with_name("source_episode_validation.py")

@@ -1,0 +1,636 @@
+{
+  "id": "VIGIL-INC-000202",
+  "record_type": "incident",
+  "record_state": "active",
+  "date_recorded": "2026-10-16",
+  "record_identity": {
+    "record_id": "VIGIL-INC-000202",
+    "record_type": "incident",
+    "title": "OSS-Fuzz-Gen evaluation exposed misleading crashes from invalid AI-generated test drivers",
+    "created": "2026-10-16",
+    "updated": "2026-10-18",
+    "version": "0.1.2"
+  },
+  "incident_identity": {
+    "historical_event_name": "OSS-Fuzz-Gen false-positive crash evaluation reported in FalseCrashReducer",
+    "occurred_from": "2025",
+    "occurred_to": null,
+    "date_precision": "year",
+    "date_basis": "Section 5.1 places the experiments between July and September 2025. The structured year preserves the known year; the narrower month interval is retained in the narrative. No exact start or end day is inferred."
+  },
+  "summary": "Between July and September 2025, researchers evaluated AI-generated fuzz drivers in OSS-Fuzz-Gen using Gemini 2.5 Pro and 1,555 benchmark functions from 336 projects. Some drivers violated internal functions’ calling requirements and produced crashes that were not reachable through normal application entry points. The existing crash analyser also labelled some driver errors as program errors. The researchers added function constraints and contextual crash validation, reducing spurious results. Their paper, published on 2 October 2025, reports roughly 70% false-positive crashes, although its prose and table assign the totals differently. No production outage or customer loss is reported.",
+  "vigil_assessment": {
+    "factual_basis": "The researchers show how an AI-generated test driver can create a real crash without demonstrating a reachable application defect. A test driver is code that calls a function with generated inputs. In the libraw example, it supplied arbitrary bytes where the function expected an initialised image structure. An undersized buffer could therefore crash the test even when valid application callers would not supply that input (Sections 2–3).\n\nThe evaluation covered 1,555 functions from 336 projects on Google Cloud between July and September 2025, using Gemini 2.5 Pro. Contextual validation later rejected some crashes initially labelled as program errors because they were not feasible through valid application entry points (Sections 5.1–5.3).\n\nThe paper reports roughly 70% false positives. Its prose cites 4,835 crashes, while Table 2 assigns 5,080 to the baseline and 4,835 to the constrained configuration. The exact totals remain unreconciled; the repository listing is not an independent data audit. The study supports misleading crash attribution in this evaluation, not a count of production vulnerabilities, outages or customer losses.\n\nThe added validator traced one crash through the application entry point and found an input-length check that made the crashing path infeasible in normal use. It rejected that candidate with source-code evidence. This bounded check does not validate every rejection. Manual review found reliable conclusions in 10 of 20 added-validator analyses. Other analyses mislocated crashes or misjudged calling conditions. Repeated-run consistency was also incomplete. A rejection by this validator therefore does not independently establish ground truth.",
+    "governance_interpretation": "A crash in generated test code was treated as stronger evidence of an application defect than the calling conditions justified. The libraw example exposes the distinction: calling an internal function with arbitrary bytes can create an invalid state that normal application entry points would prevent.\n\nCrash reproduction alone therefore did not establish that an application user could reach the defect. The later contextual validator examined that missing link and rejected additional crashes previously labelled as program errors. This supports a diagnostic assurance problem in the evaluated workflow, without establishing a production outage or customer loss.\n\nThe added contextual check correctly rejected the documented infeasible path. Its sampled errors prevent treating all of its other decisions as verified. The baseline diagnosis and the proposed remedy require separate assurance.",
+    "significance_to_cam": "AI-generated tests can manufacture the conditions for a crash and then mislead later diagnosis if the workflow does not preserve those conditions. The testing system must distinguish a defect in its own test setup from a defect reachable through valid use of the application.\n\nA useful check must examine how normal callers construct inputs and initialise state. Repeating the same invalid test confirms that the test crashes; it does not establish an application vulnerability.",
+    "assessment_boundaries": [
+      "This record concerns the July–September 2025 evaluation, not every deployment or output of OSS-Fuzz or OSS-Fuzz-Gen.",
+      "The paper prose describes 4,835 crashes with about 70% false positives. Table 2 lists 5,080 baseline crashes with 3,583 false positives and 4,835 constrained crashes with 3,390 false positives. These totals must not be silently conflated.",
+      "The table contains apparent formatting or aggregation anomalies. Exact reconciled counts require author clarification or a separate raw-data audit.",
+      "A false positive means the crash is not feasible from a valid application entry point under the stated model; the harness itself can still crash.",
+      "No affected maintainer, production vulnerability report, outage, customer loss or physical consequence is established from the aggregate evaluation.",
+      "Gemini 2.5 Pro is reported for these experiments. Results are not assumed to generalise to other models or software domains.",
+      "The public artifact repository was inspected only at its top-level listing. Its raw datasets were not independently audited."
+    ],
+    "source_clause_analysis": {
+      "source_record_order": 1,
+      "source_url": "https://arxiv.org/html/2510.02185v1",
+      "purpose": "Occurrence-specific assessment of the documented diagnostic and reliance mechanisms. Experimental setup, aggregate metrics and mitigation context remain in the narrative and evidence assessment.",
+      "clauses": [
+        {
+          "episode_id": "E001",
+          "source_anchor": "RawProcessor.crxDecodePlane(crx_image_buf.data(), planeNumber);",
+          "source_paraphrase": "Figures 1–2 show the libraw example. The generated driver passes a buffer of arbitrary bytes into a function that casts the pointer to a CrxImage structure and accesses its fields. A buffer that is too small can crash this test because the driver has not constructed the valid object expected by the function. Where normal callers enforce those conditions, the crash does not establish a defect reachable from the application’s entry point. Sections 5.2.3 and 5.3.2 separately report that contextual validation rejected additional crashes initially classified as program errors.",
+          "recovered_invariant_interpretation": "A crash must be attributable to a feasible application execution before it is relied upon as evidence of an application defect.",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "adjudication_status": "mapped",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000062",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The generated driver supplied arbitrary bytes where the target function expected a valid image object. A crash under that invalid calling condition establishes that the constructed test crashed, not that normal application use can trigger the same fault. The evaluated workflow still labelled some such outcomes as program errors until a later validator examined their calling context. Treating the crash as application-defect evidence before establishing that connection gave the test artefact more diagnostic assurance than it supported."
+            }
+          ]
+        },
+        {
+          "episode_id": "E002",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "source_paraphrase": "The added validator traced one crash through the application entry point and found an input-length check that made the crashing path infeasible in normal use. It rejected that candidate with source-code evidence. This bounded check does not validate every rejection.",
+          "recovered_invariant_interpretation": "A defect decision needs a completed check of the actual application calling conditions.",
+          "adjudication_status": "mapped",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000016",
+              "relationship": "successful-invariant",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The added validator traced one crash through the application entry point and found an input-length check that made the crashing path infeasible in normal use. It rejected that candidate with source-code evidence. This bounded check does not validate every rejection."
+            }
+          ]
+        },
+        {
+          "episode_id": "E003",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "source_paraphrase": "Manual review found reliable conclusions in 10 of 20 added-validator analyses. Other analyses mislocated crashes or misjudged calling conditions. Repeated-run consistency was also incomplete. A rejection by this validator therefore does not independently establish ground truth.",
+          "recovered_invariant_interpretation": "A second automated judgement requires its own assurance assessment.",
+          "adjudication_status": "mapped",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000062",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The added validator also produced unsupported feasibility conclusions in the manually reviewed sample. Those judgements cannot receive verified-defect or verified-rejection status merely because another agent produced them. The reported reliability review limits reliance on its aggregate filtering result."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "source_records": [
+    {
+      "source_title": "FalseCrashReducer: Mitigating False Positive Crashes in OSS-Fuzz-Gen Using Agentic AI",
+      "author_or_publisher": "Paschal C. Amusuo et al.",
+      "source_date": "2025-10-02",
+      "source_url": "https://arxiv.org/html/2510.02185v1",
+      "source_url_status": "available",
+      "source_type": "research paper",
+      "source_platform": "Paschal C. Amusuo et al.",
+      "source_residence": "external",
+      "source_role": "incident-evidence",
+      "evidence_modality": [
+        "text"
+      ],
+      "evidence_status": "first-party-reported",
+      "evidence_status_basis": "The originating researchers report their own experiment. This review did not independently reproduce it.",
+      "source_context": "Sections 2–5 document invalid drivers, misleading crash classifications, July–September 2025 experiments and contextual validation.",
+      "interpretive_reliance": "Sections 2–5 document invalid drivers, misleading crash classifications, July–September 2025 experiments and contextual validation.",
+      "relevance_note": "First-party study. Prose and Table 2 totals differ. Neither independent reproduction nor raw-data reconciliation was performed.",
+      "retrieved_date": "2026-10-16",
+      "primary_artefact_access": {
+        "access_status": "directly reviewed",
+        "reviewing_system": "OpenAI ChatGPT Work / Codex",
+        "access_method": "Read the public source text. No attack code or fuzzing experiment was executed.",
+        "direct_primary_artefact_review": true,
+        "limitations": [
+          "First-party study. Prose and Table 2 totals differ. Neither independent reproduction nor raw-data reconciliation was performed."
+        ]
+      },
+      "incident_source_order": 1
+    }
+  ],
+  "preferred_evidence": {
+    "source_url": "https://arxiv.org/html/2510.02185v1",
+    "selection_basis": "Original researchers provide the occurrence description, experimental method and limitations.",
+    "selected_on": "2026-10-16"
+  },
+  "external_incident_references": [],
+  "external_assessments": [],
+  "external_requirement_assessments": [
+    {
+      "requirement_id": "EXTREQ-4A55F4250F95C5E2",
+      "alignment_result": "aligned",
+      "assessment_basis": "The researchers identify invalid calling assumptions and document their contextual validation method and reliability checks. The prose/table count discrepancy remains unresolved. Documenting those testing considerations does not make every automated conclusion correct.",
+      "assessed_on": "2026-10-18",
+      "source_record_refs": [
+        "source_records[0]"
+      ],
+      "source_episode_refs": [
+        "E001",
+        "E002",
+        "E003"
+      ],
+      "derived_from_class_ids": [
+        "VIGIL-FC-000062"
+      ],
+      "source_clause_indices": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-B7315893B8D75680",
+      "alignment_result": "aligned",
+      "assessment_basis": "The study documents benchmark subsets, configurations, model, repeated trials and crash metrics. Its conflicting prose and table totals remain visible and prevent a single reconciled aggregate claim. This is a finding about documented evaluation design, not exact aggregate accuracy.",
+      "assessed_on": "2026-10-18",
+      "source_record_refs": [
+        "source_records[0]"
+      ],
+      "source_episode_refs": [
+        "E001",
+        "E003"
+      ],
+      "derived_from_class_ids": [
+        "VIGIL-FC-000062"
+      ],
+      "source_clause_indices": [
+        0,
+        2
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-A337E13222520E08",
+      "alignment_result": "boundary",
+      "assessment_basis": "The study measures crash-analysis performance in benchmark runs. It does not demonstrate that the benchmark calling conditions reproduce a specified intended deployment, particularly where generated drivers violate normal calling constraints. The missing deployment comparison prevents the whole performance-demonstration finding.",
+      "assessed_on": "2026-10-18",
+      "source_record_refs": [
+        "source_records[0]"
+      ],
+      "source_episode_refs": [
+        "E001",
+        "E003"
+      ],
+      "derived_from_class_ids": [
+        "VIGIL-FC-000062"
+      ],
+      "source_clause_indices": [
+        0,
+        2
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-2E1D2C63187C14E8",
+      "alignment_result": "boundary",
+      "assessment_basis": "Invalid-driver diagnoses and errors in the added validator limit demonstrated reliability. The paper states evaluation limits, but supplies no intended-release acceptance threshold and evidence that the final configuration meets it. A bounded research improvement is not a completed validity-and-reliability demonstration for deployment.",
+      "assessed_on": "2026-10-18",
+      "source_record_refs": [
+        "source_records[0]"
+      ],
+      "source_episode_refs": [
+        "E001",
+        "E003"
+      ],
+      "derived_from_class_ids": [
+        "VIGIL-FC-000062"
+      ],
+      "source_clause_indices": [
+        0,
+        2
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-F6E7F0CA4F94EB71",
+      "alignment_result": "not-aligned",
+      "assessment_basis": "In the baseline workflow, a crash produced outside valid calling conditions was interpreted as a program error. That output was not validated against its actual application context. The later documented source-code check improves interpretation for one case; it does not validate the earlier diagnosis or every other result.",
+      "assessed_on": "2026-10-18",
+      "source_record_refs": [
+        "source_records[0]"
+      ],
+      "source_episode_refs": [
+        "E001",
+        "E002",
+        "E003"
+      ],
+      "derived_from_class_ids": [
+        "VIGIL-FC-000062"
+      ],
+      "source_clause_indices": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-9DAE98CAB159CB64",
+      "alignment_result": "not-aligned",
+      "assessment_basis": "The evaluated baseline accepted invalid generated calling contexts and promoted resulting crashes into defect diagnoses. Contextual output validation was inadequate on that path. Adding another agent did not establish a complete remedy: its reviewed sample also contained unsupported conclusions.",
+      "assessed_on": "2026-10-18",
+      "source_record_refs": [
+        "source_records[0]"
+      ],
+      "source_episode_refs": [
+        "E001",
+        "E003"
+      ],
+      "derived_from_class_ids": [
+        "VIGIL-FC-000062"
+      ],
+      "source_clause_indices": [
+        0,
+        2
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-369CFBB6A2C52E62",
+      "alignment_result": "aligned",
+      "assessment_basis": "The researchers reviewed generated drivers and crash analyses for calling-condition validity and downstream diagnostic risk. Their manual review also exposed errors in the added validator. This affirmative review finding does not assert that all generated code was safe or all conclusions reliable.",
+      "assessed_on": "2026-10-18",
+      "source_record_refs": [
+        "source_records[0]"
+      ],
+      "source_episode_refs": [
+        "E001",
+        "E002",
+        "E003"
+      ],
+      "derived_from_class_ids": [
+        "VIGIL-FC-000062"
+      ],
+      "source_clause_indices": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-298C72769F142961",
+      "alignment_result": "aligned",
+      "assessment_basis": "The evaluation uses a benchmark execution environment and repeated agent runs to examine driver and diagnostic validity. This establishes purpose-built empirical testing of the studied configurations; no production deployment is inferred.",
+      "assessed_on": "2026-10-18",
+      "source_record_refs": [
+        "source_records[0]"
+      ],
+      "source_episode_refs": [
+        "E001",
+        "E003"
+      ],
+      "derived_from_class_ids": [
+        "VIGIL-FC-000062"
+      ],
+      "source_clause_indices": [
+        0,
+        2
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-4D5BF8BEA4A413B0",
+      "alignment_result": "boundary",
+      "assessment_basis": "The study combines automated review, source-code checks and a small manual sample. A sufficiently reliable ground-truth reference for all retained and rejected crashes is not established, and the added validator itself makes errors. The whole accuracy-and-reliability comparison remains bounded by that missing reference.",
+      "assessed_on": "2026-10-18",
+      "source_record_refs": [
+        "source_records[0]"
+      ],
+      "source_episode_refs": [
+        "E002",
+        "E003"
+      ],
+      "derived_from_class_ids": [
+        "VIGIL-FC-000062"
+      ],
+      "source_clause_indices": [
+        1,
+        2
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-2831EFFBC5F8A321",
+      "alignment_result": "aligned",
+      "assessment_basis": "The paper describes the model configuration, output-use limits and errors requiring contextual review. These give relevant software-security actors information about how to interpret and oversee crash diagnoses. This documentation finding does not establish that users acted on those limits.",
+      "assessed_on": "2026-10-18",
+      "source_record_refs": [
+        "source_records[0]"
+      ],
+      "source_episode_refs": [
+        "E001",
+        "E003"
+      ],
+      "derived_from_class_ids": [
+        "VIGIL-FC-000062"
+      ],
+      "source_clause_indices": [
+        0,
+        2
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-C5A156431EF49FE9",
+      "alignment_result": "boundary",
+      "assessment_basis": "The study empirically tests driver and diagnostic capabilities. Its added validator is not an independently validated reference: the manual sample contains errors and the aggregate totals conflict. A reliable reference and reconciled measurements are missing for a whole capability-validation finding.",
+      "assessed_on": "2026-10-18",
+      "source_record_refs": [
+        "source_records[0]"
+      ],
+      "source_episode_refs": [
+        "E001",
+        "E002",
+        "E003"
+      ],
+      "derived_from_class_ids": [
+        "VIGIL-FC-000062"
+      ],
+      "source_clause_indices": [
+        0,
+        1,
+        2
+      ]
+    }
+  ],
+  "system_context": {
+    "platform_or_vendor": "Google",
+    "product_or_service": "Other",
+    "specific_model_or_runtime": "OSS-Fuzz-Gen evaluated with FalseCrashReducer in a Google / university research collaboration; Gemini 2.5 Pro; exact model build not specified",
+    "interface_surface": "AI-generated function-level fuzz drivers and downstream crash analysis",
+    "agent_context": {
+      "agentic_status": "multi-agent",
+      "agent_count": null,
+      "agent_count_min": 4,
+      "agent_count_max": null,
+      "count_basis": "minimum",
+      "evidence_basis": "Table 1 identifies four existing agent roles. The experiment adds function-analysis and crash-validation roles; a single exact concurrent count is not assumed.",
+      "source_record_refs": [
+        "source_records[0]"
+      ]
+    },
+    "occurrence_environment": {
+      "deployment_state": "pre-deployment",
+      "activity_contexts": [
+        "research",
+        "evaluation"
+      ],
+      "external_reach": "contained",
+      "activity_actor": "joint",
+      "environment_detail": "The study evaluated baseline and experimental fuzzing pipelines on Google Cloud using open-source benchmark functions. Cloud execution and published code do not establish affected production users.",
+      "evidence_basis": "The paper describes an experimental configuration, benchmark subsets and joint university/Google research. The released base model does not make the evaluated pipeline an operational deployment.",
+      "source_record_refs": [
+        "source_records[0]"
+      ]
+    }
+  },
+  "jurisdictional_context": {
+    "primary_jurisdiction": "Not established",
+    "notes": "Institutional affiliations and cloud hosting do not establish the location of each experimental run or legal applicability."
+  },
+  "taxonomy_classification": {
+    "taxonomy_version": "0.6.11",
+    "classification_status": "provisionally-classified",
+    "adjudication_coverage": {
+      "status": "complete"
+    },
+    "classification_basis": "A crash artefact received more diagnostic weight than its calling context justified. The immediate defect could lie in the generated harness rather than the tested application. Contextual feasibility therefore matters before a crash becomes evidence of an application vulnerability. The documented source-code check supports a separate bounded verification outcome. Errors elsewhere in the added validator remain material.",
+    "primary_classification": {
+      "family_id": "VIGIL-FF-0003",
+      "class_id": "VIGIL-FC-000062",
+      "classification_role": "failure-occurrence",
+      "classification_basis": "AI-generated drivers called internal functions outside valid calling conditions. The resulting crash artefacts were treated as program-error evidence even though later context validation identified additional driver errors. The crash was real in the constructed harness, but its interpretation as a reachable application defect lacked the assurance required for defect triage.",
+      "classification_confidence": "medium"
+    },
+    "secondary_classifications": [
+      {
+        "family_id": "VIGIL-FF-0003",
+        "class_id": "VIGIL-FC-000016",
+        "classification_role": "successful-invariant",
+        "classification_basis": "The added validator traced one crash through the application entry point and found an input-length check that made the crashing path infeasible in normal use. It rejected that candidate with source-code evidence. This bounded check does not validate every rejection.",
+        "classification_confidence": "medium"
+      }
+    ],
+    "classification_review_provenance": {
+      "review_date": "2026-10-18",
+      "reviewer": "OpenAI ChatGPT Work / Codex",
+      "review_status": "AI source-first evidence, taxonomy, twelve-dimensional HIM and independent external-requirement review; no independent human verification",
+      "review_reference": "vigil/docs/reviews/2026-10-18-inc-199-203-completion/VIGIL-INC-000202.json"
+    }
+  },
+  "related_incidents": [],
+  "interpretive_provenance": {
+    "review_history": [
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-16-FUZZ-INGESTION-000202",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work / Codex",
+        "reviewer_model": "Exact runtime model identifier not exposed in this session",
+        "review_date": "2026-10-16",
+        "review_scope": "Source-first admission of a bounded research occurrence; current taxonomy recognition and exclusion review; twelve-dimensional harm screening.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "source_provenance_review": true,
+          "taxonomy_review": true,
+          "harm_impact_review": true,
+          "new_external_source_research": true
+        },
+        "known_limitations": [
+          "This record concerns the July–September 2025 evaluation, not every deployment or output of OSS-Fuzz or OSS-Fuzz-Gen.",
+          "The paper prose describes 4,835 crashes with about 70% false positives. Table 2 lists 5,080 baseline crashes with 3,583 false positives and 4,835 constrained crashes with 3,390 false positives. These totals must not be silently conflated.",
+          "The table contains apparent formatting or aggregation anomalies. Exact reconciled counts require author clarification or a separate raw-data audit.",
+          "A false positive means the crash is not feasible from a valid application entry point under the stated model; the harness itself can still crash.",
+          "No affected maintainer, production vulnerability report, outage, customer loss or physical consequence is established from the aggregate evaluation.",
+          "Gemini 2.5 Pro is reported for these experiments. Results are not assumed to generalise to other models or software domains.",
+          "The public artifact repository was inspected only at its top-level listing. Its raw datasets were not independently audited."
+        ],
+        "review_outcome": "Recorded a research occurrence with provisional existing-class mappings. Clause coverage refers only to the retained material clauses. No production accident, completed human verification or new taxonomy class is claimed."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-18-CONTEXT-000202",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work / Codex",
+        "reviewer_model": "Exact runtime model identifier not exposed in this session",
+        "review_date": "2026-10-18",
+        "review_scope": "Bounded contextual prose and source-clause evidence repair; originating paper reopened. Existing taxonomy mappings and Harm Impact preserved.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "source_provenance_review": true,
+          "taxonomy_review": false,
+          "harm_impact_review": false,
+          "new_external_source_research": true
+        },
+        "known_limitations": [
+          "This record concerns the July–September 2025 evaluation, not every deployment or output of OSS-Fuzz or OSS-Fuzz-Gen.",
+          "The paper prose describes 4,835 crashes with about 70% false positives. Table 2 lists 5,080 baseline crashes with 3,583 false positives and 4,835 constrained crashes with 3,390 false positives. These totals must not be silently conflated.",
+          "The table contains apparent formatting or aggregation anomalies. Exact reconciled counts require author clarification or a separate raw-data audit.",
+          "A false positive means the crash is not feasible from a valid application entry point under the stated model; the harness itself can still crash.",
+          "No affected maintainer, production vulnerability report, outage, customer loss or physical consequence is established from the aggregate evaluation.",
+          "Gemini 2.5 Pro is reported for these experiments. Results are not assumed to generalise to other models or software domains.",
+          "The public artifact repository was inspected only at its top-level listing. Its raw datasets were not independently audited."
+        ],
+        "review_outcome": "Replaced section-only descriptions with concrete actor, action, evidence and consequence explanations. Retained experimental limits and existing classifications; no independent reproduction or human verification claimed."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-18-END-TO-END-000202",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work / Codex",
+        "reviewer_model": "Exact runtime model identifier not exposed in this session",
+        "review_date": "2026-10-18",
+        "review_scope": "Source-first material-episode coverage, current taxonomy recognition and exclusions, all twelve HIM dimensions, independent external requirements and integrated conclusion.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "source_provenance_review": true,
+          "taxonomy_review": true,
+          "harm_impact_review": true,
+          "new_external_source_research": true
+        },
+        "known_limitations": [
+          "This record concerns the July–September 2025 evaluation, not every deployment or output of OSS-Fuzz or OSS-Fuzz-Gen.",
+          "The paper prose describes 4,835 crashes with about 70% false positives. Table 2 lists 5,080 baseline crashes with 3,583 false positives and 4,835 constrained crashes with 3,390 false positives. These totals must not be silently conflated.",
+          "The table contains apparent formatting or aggregation anomalies. Exact reconciled counts require author clarification or a separate raw-data audit.",
+          "A false positive means the crash is not feasible from a valid application entry point under the stated model; the harness itself can still crash.",
+          "No affected maintainer, production vulnerability report, outage, customer loss or physical consequence is established from the aggregate evaluation.",
+          "Gemini 2.5 Pro is reported for these experiments. Results are not assumed to generalise to other models or software domains.",
+          "The public artifact repository was inspected only at its top-level listing. Its raw datasets were not independently audited."
+        ],
+        "review_outcome": "Completed the bounded review. Evidentiary limits remain explicit; structural checks do not certify substantive completeness. External candidate decisions and no-retained outcomes are preserved in the dated review."
+      }
+    ],
+    "current_ai_review": {
+      "review_id": "VIGIL-REVIEW-2026-10-18-END-TO-END-000202",
+      "reviewer_type": "AI analytical reviewer",
+      "reviewer_platform": "OpenAI ChatGPT Work / Codex",
+      "reviewer_model": "Exact runtime model identifier not exposed in this session",
+      "review_date": "2026-10-18",
+      "review_scope": "Source-first material-episode coverage, current taxonomy recognition and exclusions, all twelve HIM dimensions, independent external requirements and integrated conclusion.",
+      "capability_profile": {
+        "direct_repository_analysis": true,
+        "direct_text_analysis": true,
+        "source_provenance_review": true,
+        "taxonomy_review": true,
+        "harm_impact_review": true,
+        "new_external_source_research": true
+      },
+      "known_limitations": [
+        "This record concerns the July–September 2025 evaluation, not every deployment or output of OSS-Fuzz or OSS-Fuzz-Gen.",
+        "The paper prose describes 4,835 crashes with about 70% false positives. Table 2 lists 5,080 baseline crashes with 3,583 false positives and 4,835 constrained crashes with 3,390 false positives. These totals must not be silently conflated.",
+        "The table contains apparent formatting or aggregation anomalies. Exact reconciled counts require author clarification or a separate raw-data audit.",
+        "A false positive means the crash is not feasible from a valid application entry point under the stated model; the harness itself can still crash.",
+        "No affected maintainer, production vulnerability report, outage, customer loss or physical consequence is established from the aggregate evaluation.",
+        "Gemini 2.5 Pro is reported for these experiments. Results are not assumed to generalise to other models or software domains.",
+        "The public artifact repository was inspected only at its top-level listing. Its raw datasets were not independently audited."
+      ],
+      "review_outcome": "Completed the bounded review. Evidentiary limits remain explicit; structural checks do not certify substantive completeness. External candidate decisions and no-retained outcomes are preserved in the dated review."
+    },
+    "operating_model": "AI-authored, semi-autonomous production under human task instruction",
+    "human_governance_editor": null,
+    "historical_reviewer_note": "The maintainer authorised admission of these two research occurrences and consideration of taxonomy fit. Admission authority is separate from independent verification."
+  },
+  "harm_impact_assessment": {
+    "methodology_id": "VIGIL-HIM",
+    "methodology_version": "1.1.0",
+    "derivation_rule": "highest-supported-harm-on-exclusive-incident-assessment-pathway",
+    "assessment_pathway": "specific_consequence",
+    "aggregate_harm_screening": {
+      "deployed_configuration": false,
+      "potentially_generalisable_mechanism": true,
+      "bounded_materialised_consequence_case": true,
+      "candidate_dimensions": [],
+      "source_record_refs": [
+        "source_records[0]"
+      ],
+      "rationale": "This is a bounded experimental occurrence, not a population-level Aggregate Harm estimate. Released base models do not establish operational deployment of the evaluated agent configuration."
+    },
+    "assessed_on": "2026-10-16",
+    "overall_severity": "SU",
+    "controlling_dimensions": [],
+    "coverage_note": "All twelve dimensions screened independently. Technical errors and security risks are preserved. No production victim, financial loss or physical consequence is inferred from a research benchmark.",
+    "dimensions": [
+      {
+        "dimension_id": "physical-health-safety",
+        "assessment_status": "unreported",
+        "assessment_basis": "The sources do not report a bandable materialised consequence in this dimension. This is not a finding of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "psychological-wellbeing",
+        "assessment_status": "unreported",
+        "assessment_basis": "The sources do not report a bandable materialised consequence in this dimension. This is not a finding of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "rights-liberty",
+        "assessment_status": "unreported",
+        "assessment_basis": "The sources do not report a bandable materialised consequence in this dimension. This is not a finding of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "equal-treatment",
+        "assessment_status": "unreported",
+        "assessment_basis": "The sources do not report a bandable materialised consequence in this dimension. This is not a finding of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "privacy-confidentiality",
+        "assessment_status": "unreported",
+        "assessment_basis": "The sources do not report a bandable materialised consequence in this dimension. This is not a finding of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "financial-economic",
+        "assessment_status": "unreported",
+        "assessment_basis": "The sources do not report a bandable materialised consequence in this dimension. This is not a finding of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "property-asset-damage",
+        "assessment_status": "unreported",
+        "assessment_basis": "The sources do not report a bandable materialised consequence in this dimension. This is not a finding of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "service-operational-infrastructure",
+        "assessment_status": "unreported",
+        "assessment_basis": "The sources do not report a bandable materialised consequence in this dimension. This is not a finding of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "reputation-dignity",
+        "assessment_status": "unreported",
+        "assessment_basis": "The sources do not report a bandable materialised consequence in this dimension. This is not a finding of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "societal-democratic",
+        "assessment_status": "unreported",
+        "assessment_basis": "The sources do not report a bandable materialised consequence in this dimension. This is not a finding of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "environmental",
+        "assessment_status": "unreported",
+        "assessment_basis": "The sources do not report a bandable materialised consequence in this dimension. This is not a finding of no harm.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "relational-integrity-autonomy",
+        "assessment_status": "unreported",
+        "assessment_basis": "The sources do not report a bandable materialised consequence in this dimension. This is not a finding of no harm.",
+        "evidence_confidence": "not-assessed"
+      }
+    ],
+    "assessment_gap": "The experiment establishes a technical or diagnostic adverse outcome. The sources do not quantify a materialised consequence that supports a harm band. Research costs and hypothetical production exposure are not assumed to be incident losses."
+  }
+}

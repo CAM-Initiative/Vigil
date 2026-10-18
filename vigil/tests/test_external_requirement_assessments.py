@@ -58,6 +58,49 @@ class OccurrenceRequirementAssessmentTests(unittest.TestCase):
     def test_alignment_requires_assessment_basis(self):
         self.assertTrue(self.validate({'assessment_basis': ''}))
 
+    def validate_pair(self, left, right, **changes):
+        second = 'EXTREQ-FEDCBA9876543210'
+        record = copy.deepcopy(self.record)
+        record['external_requirement_assessments'] = [
+            self.assessment | {'assessment_basis': left},
+            self.assessment | {'requirement_id': second, 'assessment_basis': right} | changes,
+        ]
+        return assessment_errors(record, {REQ, second}, self.relationships)
+
+    def test_duplicate_complete_explanations_are_rejected_for_different_requirements(self):
+        basis = 'The operator replaced the models. Its wider governance protocols are unpublished.'
+        errors = self.validate_pair(basis, basis)
+        self.assertEqual(len(errors), 1)
+        self.assertIn('boilerplate: duplicate complete assessment_basis', errors[0])
+        self.assertIn('external_requirement_assessments[0]', errors[0])
+        self.assertIn('external_requirement_assessments[1]', errors[0])
+        for result in ('aligned', 'not-aligned', 'boundary'):
+            self.assertTrue(self.validate_pair(basis, basis, alignment_result=result))
+
+    def test_case_whitespace_and_unicode_presentation_do_not_hide_duplicates(self):
+        self.assertTrue(self.validate_pair('The office protocol is unpublished.',
+                                           '  THE  oﬃce\nPROTOCOL is unpublished. '))
+
+    def test_shared_facts_with_distinct_requirement_reasoning_are_allowed(self):
+        self.assertEqual(self.validate_pair(
+            'The operator replaced the models. A prior halt plan is not published.',
+            'The operator replaced the models. Regular review of deactivation criteria is not published.'), [])
+
+    def test_malformed_or_missing_bases_do_not_crash_duplicate_detection(self):
+        for value in (None, [], {}, 42, ''):
+            errors = self.validate_pair(value, value)
+            self.assertTrue(errors)
+            self.assertFalse(any('boilerplate:' in error for error in errors))
+        errors = self.validate_pair('Identical basis.', 'Identical basis.', requirement_id=[])
+        self.assertTrue(errors)
+        self.assertFalse(any('boilerplate:' in error for error in errors))
+
+    def test_source_and_history_repetition_are_outside_duplicate_scope(self):
+        text = 'The operator replaced the models.'
+        self.record['source_records'] = [{'source_anchor': text}, {'source_anchor': text}]
+        self.record['interpretive_provenance'] = {'review_history': [{'review_outcome': text}]}
+        self.assertEqual(self.validate({'assessment_basis': text}), [])
+
     def test_assessment_optional_in_incident_schema(self):
         schema = json.loads((Path(__file__).resolve().parents[1] / 'VIGIL.Schema.json').read_text())
         self.assertNotIn('external_requirement_assessments', schema['record_classes']['incident']['required_top_level_fields'])

@@ -2,6 +2,7 @@
 from __future__ import annotations
 from datetime import date
 import re
+import unicodedata
 
 
 def assessment_errors(record: dict, known_ids: set[str] | None, relationships: list[dict]) -> list[str]:
@@ -100,4 +101,22 @@ def assessment_errors(record: dict, known_ids: set[str] | None, relationships: l
                         errors.append(f'{label}.derived_from_class_ids lacks a supported clause-scoped relationship: {cid}')
         elif not isinstance(a.get('identification_basis'), str) or not a['identification_basis'].strip():
             errors.append(f'{label}.identification_basis is required for independent identification')
+    # Compare complete authored explanations only. Shared factual sentences and
+    # evidence quotations elsewhere in the record are outside this check.
+    bases = {}
+    for i, assessment in enumerate(assessments):
+        if not isinstance(assessment, dict):
+            continue
+        req = assessment.get('requirement_id')
+        basis = assessment.get('assessment_basis')
+        if (not isinstance(req, str) or re.fullmatch(r'EXTREQ-[A-F0-9]{16}', req) is None
+                or not isinstance(basis, str) or not basis.strip()):
+            continue
+        normalised = ' '.join(unicodedata.normalize('NFKC', basis).split()).casefold()
+        bases.setdefault(normalised, []).append((i, req))
+    for rows in bases.values():
+        if len({req for _, req in rows}) > 1:
+            locations = ', '.join(f'external_requirement_assessments[{i}] ({req})' for i, req in rows)
+            errors.append(f'boilerplate: duplicate complete assessment_basis across distinct requirements: '
+                          f'{locations}; provide requirement-specific evidence and decisive missing facts')
     return errors
