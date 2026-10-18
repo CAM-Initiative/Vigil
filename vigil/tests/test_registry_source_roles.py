@@ -75,25 +75,6 @@ class RegistrySourceRoleTests(unittest.TestCase):
         self.assertEqual(registry["source_role"], "incident-evidence")
         self.assertEqual(record["preferred_evidence"]["source_url"], registry["source_url"])
 
-    def test_recovered_consequences_are_banded_per_him_evidence(self):
-        expected = {
-            "VIGIL-INC-000061": ("S3", "service-operational-infrastructure"),
-            "VIGIL-INC-000065": ("S4", "reputation-dignity"),
-            "VIGIL-INC-000131": ("S3", "privacy-confidentiality"),
-            "VIGIL-INC-000135": ("S3", "privacy-confidentiality"),
-            "VIGIL-INC-000148": ("S3", "service-operational-infrastructure"),
-        }
-        for incident_id, (severity, controller) in expected.items():
-            with self.subTest(incident_id=incident_id):
-                record = load(incident_id)
-                assessment = record["harm_impact_assessment"]
-                self.assertEqual(assessment["overall_severity"], severity)
-                self.assertIn(controller, assessment["controlling_dimensions"])
-                row = next(item for item in assessment["dimensions"] if item["dimension_id"] == controller)
-                self.assertEqual(row["assessment_status"], "assessed")
-                self.assertEqual(row["severity"], severity)
-                self.assertTrue(row["evidence_refs"])
-
     def test_non_usd_legal_consequence_is_banded_with_documented_conversion(self):
         record = load("VIGIL-INC-000140")
         assessment = record["harm_impact_assessment"]

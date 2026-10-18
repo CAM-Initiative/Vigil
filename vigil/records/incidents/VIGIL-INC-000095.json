@@ -9,7 +9,7 @@
     "title": "Compromised Mistral SDK package executed credential-harvesting payload on import",
     "created": "2026-09-08",
     "updated": "2026-10-18",
-    "version": "0.1.18"
+    "version": "0.1.19"
   },
   "incident_identity": {
     "historical_event_name": "Mini Shai-Hulud / TanStack compromise affecting Mistral SDK releases",
@@ -21,7 +21,7 @@
   "summary": "Mistral reported that the Mini Shai-Hulud supply-chain attack on TanStack resulted in compromised Mistral npm and PyPI SDK versions being published. The compromised PyPI package `mistralai==2.4.6` executed malicious code on import, downloading a background payload that harvested credentials from common locations. Mistral reported no impact to its global infrastructure and removed the affected releases. Its updated advisory says the compromised npm releases referenced a missing file, preventing their malicious path from running. The working PyPI payload was Linux-specific. Mistral later marked mitigation and closed its investigation.",
   "vigil_assessment": {
     "factual_basis": "Mistral's security advisory identifies affected npm and PyPI versions, publication windows and indicators of compromise. It states that the compromised PyPI release executed a malicious script on Linux at import time and launched a detached process designed to harvest credentials. Aikido Security separately reports that its malware team detected compromised npm package versions including @mistralai releases in the wider campaign. Its account documents external post-publication detection, not the exact Mistral internal monitoring control or the causal route to removal. The updated advisory distinguishes nonfunctional npm payload paths from the working Linux PyPI import path. Investigation closure on 14 May does not prove downstream customer cleanup or absence of credential exposure.",
-    "governance_interpretation": "Trusted package-distribution channels carried malicious code into an AI software development kit. The governance problem is therefore not a model output but the integrity of the software supply chain through which developers receive AI tooling, including package provenance, release controls and the authority of third-party maintainers. Aikido’s external detection and Mistral’s removal show a distinct post-publication response stage. The available accounts do not establish that a specific Mistral pre-publication control was required and failed, or that the external monitoring was the operative control that caused removal. Package identity substitution and the link between external detection and provider removal remain ambiguous. Import-time malware is distinct from GAI output; removal does not prove a prepublication control duty or global compromise. The AI software-distribution security outcome is Not aligned. Withdrawal of the affected releases is Aligned with the repair requirement. Monitoring and security-review processes remain Boundary where their operative evidence is not available.",
+    "governance_interpretation": "Trusted package-distribution channels carried malicious code into an AI software development kit. The governance problem is therefore not a model output but the integrity of the software supply chain through which developers receive AI tooling, including package provenance, release controls and the authority of third-party maintainers. Aikido’s external detection and Mistral’s removal show a distinct post-publication response stage. The available accounts do not establish that a specific Mistral pre-publication control was required and failed, or that the external monitoring was the operative control that caused removal. Package identity substitution and the link between external detection and provider removal remain ambiguous. Import-time malware is distinct from GAI output; removal does not prove a prepublication control duty or global compromise. The AI software-distribution security outcome is Not aligned. Withdrawal of the affected releases is Aligned with the repair requirement. Monitoring and security-review processes remain Boundary where their operative evidence is not available. Harm Impact: The publisher confirms actual malicious SDK versions were released through its distribution channel. Those persisted releases changed the expected integrity of a real software asset, establishing the S2 integrity minimum. Customer restoration burden remains unknown.",
     "significance_to_cam": "AI-system governance includes the developer infrastructure surrounding a model. Compromised package provenance can expose credentials and downstream systems before the model is ever invoked, making third-party build dependencies, release integrity and incident response part of the assurance boundary.",
     "assessment_boundaries": [
       "Mistral reports no impact to its global infrastructure.",
@@ -618,40 +618,59 @@
           "AI-authored review is not independent human verification."
         ],
         "review_outcome": "Replaced internal-number shorthand with occurrence-specific explanations. Preserved evidence, quotations, episode order and identity, source references, classification results, mapping roles and confidence, external requirements and Harm Impact. Prior public prose retained in the dated repair audit."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-18-ISSUE126-HIM-000095",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work — Codex",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-18",
+        "review_scope": "Source-first twelve-dimensional HIM reassessment, exclusive pathway selection and public consequence reconciliation; taxonomy and external-requirement adjudications preserved.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_research": true,
+          "harm_impact_review": true,
+          "taxonomy_review": false
+        },
+        "known_limitations": [
+          "AI-authored review is not human source verification. Source access and claim-relative limits are retained in the dated audit.",
+          "No provider-wide reach, attempted payment, claimed damages or unallocated campaign quantity is treated as demonstrated occurrence-specific loss."
+        ],
+        "review_outcome": "HIM 1.0.1 S2 → working HIM 1.1.0 S2. Controlling dimensions: property-asset-damage."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-18-PUBLIC-PROSE-73-000095",
+      "review_id": "VIGIL-REVIEW-2026-10-18-ISSUE126-HIM-000095",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI Codex",
+      "reviewer_platform": "OpenAI ChatGPT Work — Codex",
       "reviewer_model": "GPT-6",
       "review_date": "2026-10-18",
-      "review_scope": "Human-approved repair of public taxonomy-number shorthand and review-process narration. Each affected explanation reviewed against the preserved occurrence and mapping basis. No new source research or substantive re-adjudication.",
+      "review_scope": "Source-first twelve-dimensional HIM reassessment, exclusive pathway selection and public consequence reconciliation; taxonomy and external-requirement adjudications preserved.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "new_external_source_research": false,
-        "taxonomy_review": false,
-        "harm_impact_review": false,
-        "external_requirement_review": false
+        "web_research": true,
+        "harm_impact_review": true,
+        "taxonomy_review": false
       },
       "known_limitations": [
-        "Review is bounded to evidence and adjudications already preserved in the Incident.",
-        "AI-authored review is not independent human verification."
+        "AI-authored review is not human source verification. Source access and claim-relative limits are retained in the dated audit.",
+        "No provider-wide reach, attempted payment, claimed damages or unallocated campaign quantity is treated as demonstrated occurrence-specific loss."
       ],
-      "review_outcome": "Replaced internal-number shorthand with occurrence-specific explanations. Preserved evidence, quotations, episode order and identity, source references, classification results, mapping roles and confidence, external requirements and Harm Impact. Prior public prose retained in the dated repair audit."
+      "review_outcome": "HIM 1.0.1 S2 → working HIM 1.1.0 S2. Controlling dimensions: property-asset-damage."
     }
   },
   "harm_impact_assessment": {
     "methodology_id": "VIGIL-HIM",
-    "methodology_version": "1.0.1",
-    "derivation_rule": "highest-supported-materialised-harm",
-    "assessed_on": "2026-09-20",
+    "methodology_version": "1.1.0",
+    "derivation_rule": "highest-supported-harm-on-exclusive-incident-assessment-pathway",
+    "assessed_on": "2026-10-18",
     "overall_severity": "S2",
     "controlling_dimensions": [
-      "service-operational-infrastructure"
+      "property-asset-damage"
     ],
-    "coverage_note": "All eleven dimensions were re-reviewed. The preserved and newly added evidence supports the assessed dimensions; other dimensions remain unreported unless specifically assessed and do not lower or raise the derived result. Context-only sources were not used to manufacture assessed harm.",
+    "coverage_note": "All twelve dimensions were reviewed against the bounded occurrence, source evidence and current thresholds. Overall severity is the highest supported assessed band; other consequences remain unreported or insufficient-evidence as individually stated. S2 integrity/transaction minima do not certify a maximum or assume recovery.",
     "dimensions": [
       {
         "dimension_id": "physical-health-safety",
@@ -679,8 +698,8 @@
       },
       {
         "dimension_id": "privacy-confidentiality",
-        "assessment_status": "unreported",
-        "assessment_basis": "The preserved Incident evidence does not report a bandable materialised privacy and confidentiality impact; absence of reporting is not evidence of no harm.",
+        "assessment_status": "insufficient-evidence",
+        "assessment_basis": "The Linux PyPI payload could harvest credentials, while the npm path referenced a missing file. Occurrence-specific downstream credential extraction is not established by payload capability alone.",
         "evidence_confidence": "not-assessed"
       },
       {
@@ -691,27 +710,21 @@
       },
       {
         "dimension_id": "property-asset-damage",
-        "assessment_status": "unreported",
-        "assessment_basis": "The preserved Incident evidence does not report a bandable materialised property and asset damage impact; absence of reporting is not evidence of no harm.",
-        "evidence_confidence": "not-assessed"
+        "assessment_status": "assessed",
+        "severity": "S2",
+        "assessment_basis": "The publisher confirms actual malicious SDK versions were released through its distribution channel. Those persisted releases changed the expected integrity of a real software asset, establishing the S2 integrity minimum. Customer restoration burden remains unknown.",
+        "evidence_refs": [
+          "source_records[0]"
+        ],
+        "observed_values": [],
+        "evidence_confidence": "medium",
+        "threshold_id": "VIGIL-HIM-1.1.0-PAD-S2"
       },
       {
         "dimension_id": "service-operational-infrastructure",
-        "assessment_status": "assessed",
-        "severity": "S2",
-        "threshold_id": "VIGIL-HIM-1.0.1-SOI-S2",
-        "observed_values": [
-          {
-            "metric": "published quantitative information",
-            "qualitative_value": "Mistral identifies one compromised PyPI release and multiple npm SDK versions; the malicious PyPI package was available for approximately three hours before removal."
-          }
-        ],
-        "assessment_basis": "The preserved sources establish the bounded consequence described in the Incident summary: Mistral reported that the Mini Shai-Hulud supply-chain attack on TanStack resulted in compromised Mistral npm and PyPI SDK versions being published. The compromised PyPI package `mistralai==2.4.6` executed malicious code on import, downloading a background payload that harvested credentials from common locations. Mistral reported no impact to its global infrastructure and removed the affected releases. Unreported downstream consequences were not inferred. Threshold applied: Limited non-critical degradation below two hours, a critical-service interruption below 30 minutes, or a localised workflow failure resolved through routine recovery.",
-        "evidence_confidence": "medium",
-        "evidence_refs": [
-          "source_records[0]",
-          "source_records[1]"
-        ]
+        "assessment_status": "unreported",
+        "assessment_basis": "Mistral reports no impact to its global infrastructure. A publication window and investigation closure do not establish a downstream customer outage or completed recovery.",
+        "evidence_confidence": "not-assessed"
       },
       {
         "dimension_id": "reputation-dignity",
@@ -730,8 +743,25 @@
         "assessment_status": "unreported",
         "assessment_basis": "The preserved Incident evidence does not report a bandable materialised environmental impact; absence of reporting is not evidence of no harm.",
         "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "relational-integrity-autonomy",
+        "assessment_status": "unreported",
+        "assessment_basis": "Software-distribution compromise does not report an independent human relationship consequence.",
+        "evidence_confidence": "not-assessed"
       }
-    ]
+    ],
+    "assessment_pathway": "specific_consequence",
+    "aggregate_harm_screening": {
+      "deployed_configuration": true,
+      "potentially_generalisable_mechanism": false,
+      "bounded_materialised_consequence_case": true,
+      "candidate_dimensions": [],
+      "source_record_refs": [
+        "source_records[0]"
+      ],
+      "rationale": "This review assesses the particular reported occurrence and its bounded consequences, including evidence-limited alleged consequences. Public reach does not establish lifecycle deployment. No model-wide audience or separate Aggregate Harm score is imported."
+    }
   },
   "related_incidents": [],
   "external_assessments": [

@@ -66,3 +66,6 @@ The named class-fit examples in issue 133 remain substantive work: current nonca
 One-off verification: recomputed inventory from all 194 current canonical files; matched all 24 legacy HIM records to their prior held ledger entries; resolved every listed local path and source reference; checked the JSON counts and `git diff --check`. No runtime files changed, so the passing 281-test result at the baseline is prior evidence rather than a newly run full suite.
 
 Closing issue 129 completes the requested current register and disposition task. Issues 126, 128, 130, 132 and 133 remain open. Closure does not resolve their research, approve a new release, merge PR 137 or certify deployment.
+
+
+Subsequent HIM review: the [issue 126 reassessment audit](../2026-10-18-issue-126-him-reassessments/README.md) supersedes only this register’s HIM migration dispositions. The counts and pending status above describe the original register snapshot; other taxonomy/evidence actions are not resolved by the HIM review.
