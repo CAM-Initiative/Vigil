@@ -1,0 +1,483 @@
+{
+  "taxonomy_ref": "42b631d109efc949db7c061d18e0261455d121f6",
+  "version": "0.7.0",
+  "limitation": "Current reference snapshot for mechanism and neighbour checks, not a claim that recorded 0.6.11 adjudications were made under 0.7.0 wording. No taxonomy version changed.",
+  "classes": [
+    {
+      "class_id": "VIGIL-FC-000083",
+      "name": "Control Effectiveness Integrity",
+      "definition": "The property by which an applicable, validly activated governance or protective control produces an effect sufficient and timely to prevent, contain, interrupt, redirect, mitigate or safely bound its governed hazard to the level required by its protective purpose and evidenced protection context. Heightened protection conditions require evidence; disability or neurodivergence alone does not establish incapacity.",
+      "invariant": "When a protective control validly becomes operative, its effect must be timely, proportionate, and sufficient for the hazard and protection context it governs. Detection, warning, labelling, refusal language, escalation signalling, or other nominal activation is not by itself sufficient where the required protective effect is not achieved and the governed harmful state is delivered, continues, or remains inadequately contained. Required protective sufficiency may increase where evidenced developmental vulnerability, capacity limitation, temporary or situational consent impairment, acute distress, cognitive asymmetry, or comparable protection conditions materially affect the risk, but disability or neurodivergence alone must not be treated as incapacity.",
+      "failure_recognition": {
+        "required_conditions": [
+          "A defined governance or protective control is applicable and validly becomes operative.",
+          "The control has an identifiable protective purpose requiring a material effect such as prevention, blocking, containment, interruption, redirection, limitation, escalation, mitigation, or another protection-compatible outcome.",
+          "The actual control effect materially falls short of that required protective purpose, allowing the governed hazard to be delivered, continue, escape containment, or remain insufficiently mitigated.",
+          "The shortfall is material in the evidenced hazard and protection context; where vulnerability, developmental status, capacity limitation, temporary or situational consent impairment, acute distress, cognitive asymmetry, or another heightened protection condition is relied on, that condition must itself be supported rather than presumed."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "An applicable validly activated protective control faces its governed hazard.",
+          "The control produces a timely effect sufficient for its protective purpose and evidenced context, including any justified heightened protection.",
+          "Observed intervention and hazard outcome demonstrate the required containment or mitigation rather than activation alone."
+        ]
+      },
+      "exclusions": [
+        "The applicable control does not become operative when a valid activation condition occurs; assess Required Control Activation.",
+        "The control becomes operative even though its valid activation or applicability conditions are not satisfied; assess Control Activation Validity.",
+        "The control becomes operative with a sufficient effect but its operative state is later lost, weakened, reset, or transformed before reaching the governed point; assess Control-State Preservation.",
+        "An operative governance signal fails to reach any capable endpoint or execution surface; assess the applicable governance-control reach class rather than treating non-delivery as inadequate control effect.",
+        "The control produces the protective effect required by its defined purpose and the remaining harm arises through an independent downstream mechanism.",
+        "The dispute is solely that policy should have required a stronger safeguard, without evidence of an applicable operational control or protective-effect obligation in the material context.",
+        "Disability, neurodivergence, diagnosis, age-associated stereotype, or another personal characteristic is used by itself to presume incapacity, vulnerability, or diminished agency."
+      ],
+      "relationships": [
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000038",
+          "note": "Required Control Activation asks whether an applicable control became operative when required; Control Effectiveness Integrity applies after valid activation and asks whether the resulting protective effect was materially sufficient."
+        },
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000043",
+          "note": "Control Activation Validity asks whether the control should have activated; Control Effectiveness Integrity assumes valid activation and evaluates the sufficiency of the resulting protective effect."
+        },
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000040",
+          "note": "Control-State Preservation concerns loss or weakening of an operative control state across a downstream transition; Control Effectiveness Integrity concerns an operative control whose realised effect is itself insufficient at the governed point."
+        },
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000042",
+          "note": "Governance-signal delivery failure concerns an operative signal that cannot reach a capable endpoint; Control Effectiveness Integrity concerns a control that does operate at the governed point but does not achieve the protective effect required there."
+        }
+      ]
+    },
+    {
+      "class_id": "VIGIL-FC-000001",
+      "name": "Source-Authority Separation",
+      "definition": "The property by which operative instructions, commands, policies, approvals and execution-authorising signals remain distinguishable from non-authorising data through validation of source authority for the specific actor, action, target and scope.",
+      "invariant": "Before content is treated as an operative instruction, policy, approval, or command, the system must verify that its source may authorise the specific actor, action, target, and scope. Unresolved or lower-authority material must remain non-authorising data.",
+      "failure_recognition": {
+        "required_conditions": [
+          "The system receives or retrieves content from a source whose authority is lower than, different from, or unresolved relative to the action being considered.",
+          "The content is treated as operative instruction or authority rather than as data, evidence, context, or material for analysis.",
+          "No independent authority check validly establishes that the source may authorise the affected action."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "Non-authorising material enters a context where it could influence an operative instruction.",
+          "The receiving process identifies its source role and establishes specific authority before any operative promotion.",
+          "Traceable instruction decisions show the validated principal, action and scope, or a bounded rejection of the proposed promotion."
+        ]
+      },
+      "exclusions": [
+        "A system merely quotes, summarizes, classifies, or reasons about untrusted instructions without obeying them.",
+        "The source is genuinely authorised for the specific action and scope.",
+        "The event is only a content-quality or factual-accuracy problem."
+      ],
+      "relationships": null
+    },
+    {
+      "class_id": "VIGIL-FC-000006",
+      "name": "Control-Plane Authority Separation",
+      "definition": "The property by which promotion of data-plane, generated, retrieved or other non-authoritative material into routing, tools, policy, configuration, permissions, memory, checkpoints or orchestration state is governed by fresh provenance and authority validation appropriate to the resulting control effect.",
+      "invariant": "Promotion of user data, retrieved material, model output, tool output, or other non-authoritative content into policy, configuration, routing, permissions, durable memory, checkpoints, orchestration, or execution state requires fresh provenance and authority validation for the resulting control effect; otherwise it must remain non-operative data.",
+      "failure_recognition": {
+        "required_conditions": [
+          "The originating material is data, model output, retrieved content, or other non-control-plane material.",
+          "The material is promoted or converted into configuration, routing, tool schema, policy, cache, checkpoint, memory-policy, serialized control object, or comparable control state.",
+          "The promotion occurs without a fresh authority validation appropriate to the new control-plane effect."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "Data or generated material is proposed for promotion into control-plane state.",
+          "Fresh provenance and authority validation governs the resulting routing, policy, configuration or orchestration effect.",
+          "The control-state change is linked to its independently validated authority and restricted to the authorised effect."
+        ]
+      },
+      "exclusions": [
+        "The control-plane update is explicitly authorised and validated.",
+        "The material remains data and cannot alter control state.",
+        "The issue is only configuration correctness after a properly authorised change."
+      ],
+      "relationships": [
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000002",
+          "note": "Control-plane crossover requires promotion of non-authoritative material into operative control state; capability-authority conflation does not."
+        },
+        {
+          "type": "distinguish_from",
+          "note": "Control-plane crossover requires promotion into operative control state; transformation laundering does not.",
+          "target_id": "VIGIL-FC-000005"
+        }
+      ]
+    },
+    {
+      "class_id": "VIGIL-FC-000046",
+      "name": "Inferential Evidence–Authority Separation",
+      "definition": "The property by which probabilistic, predictive, classificatory, verification and other evidentiary states remain distinct from authority for binding decisions, with independently established entitlement, decision authority, decision rule and evidentiary threshold proportionate to the consequential effect.",
+      "invariant": "Before evidence, inference, classification, prediction, or verification state produces denial, revocation, detention, restriction, eligibility determination, or another binding effect, the applicable entitlement, decision authority, decision rule, and evidentiary threshold must be independently established, with uncertainty and contestability proportionate to the effect.",
+      "failure_recognition": {
+        "required_conditions": [
+          "A probabilistic, predictive, classificatory, verification, or other evidentiary state is produced or remains unresolved.",
+          "The state validly supplies evidence, decision support, or uncertainty but does not independently establish authority for the consequential action.",
+          "A consequential decision or action requires an independent authority, entitlement, eligibility, verification, or decision basis.",
+          "The evidentiary state is treated as sufficient to authorise, bind, revoke, deny, detain, or otherwise determine that consequential action.",
+          "The required independent basis is not adequately established before the action proceeds."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "An inference or verification result could affect a binding consequential decision.",
+          "Evidence and entitlement remain distinct and the decision uses independently established authority, rule and evidentiary threshold.",
+          "The inference, authority basis and consequential decision record substantiate that separation for the actual affected scope."
+        ]
+      },
+      "exclusions": [
+        "An authorised decision-maker considers the state as non-binding evidence and independently establishes the decision basis.",
+        "The inference is inaccurate or biased but is not promoted into authority for a consequential action.",
+        "A defined human or governance control fails to activate or operate; that control failure is classified separately.",
+        "A required assessment is omitted or falsely represented as complete; that verification failure is classified separately.",
+        "The record identifies only a harmful consequence without establishing an evidence-to-authority conversion."
+      ],
+      "relationships": [
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000001",
+          "note": "Source-authority confusion treats content as instruction or approval; inferential evidence–authority conflation treats an evidentiary state as sufficient decision authority."
+        },
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000002",
+          "note": "Capability-authority conflation mistakes ability or access for permission; this class mistakes evidentiary warrant or unresolved verification for decision authority."
+        },
+        {
+          "type": "can_cooccur_with",
+          "target_id": "VIGIL-FC-000016",
+          "note": "An evidence-to-authority conversion may coincide with omission of a separately required verification step, but neither mechanism establishes the other."
+        }
+      ]
+    },
+    {
+      "class_id": "VIGIL-FC-000064",
+      "name": "Objective–Pathway Authority Separation",
+      "definition": "The property by which each selected, continued, reconstructed or protected pathway toward an objective is independently assessed for applicable authority, consent, ethical admissibility, target, method, third-party rights, data custody and execution scope, including aggregate delegated and multi-step effects. Objective utility does not independently authorise the means.",
+      "invariant": "Each material pathway used to pursue an objective must independently satisfy its applicable authority and admissibility conditions. Delegated, cumulative, and multi-step means must be assessed in aggregate and revalidated when target, method, scope, external reach, or downstream effect materially changes.",
+      "failure_recognition": {
+        "required_conditions": [
+          "A system has a valid, purported, or operative objective, task, benchmark, evaluation goal, or delegated outcome to pursue.",
+          "A pathway materially advances, preserves, accelerates, or protects progress toward that objective.",
+          "The pathway is subject to an independent authority, consent, ethical-admissibility, target, method, third-party-rights, data-custody, or execution-scope constraint that is absent, narrower, unresolved, or adverse to the pathway.",
+          "Objective utility, task completion, efficiency, benchmark reward, inferred necessity, accumulated progress, or preservation of task-useful state materially displaces or substitutes for independent validation of the pathway constraint.",
+          "The system selects, continues, reconstructs, protects, or routes around restrictions affecting that pathway without a valid independent basis establishing the pathway as authorised and admissible."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "An objective-directed process selects or continues a materially consequential pathway.",
+          "The actual means, including aggregate delegated effects, receive independent authority and admissibility assessment.",
+          "Pathway and authority evidence demonstrates the applicable consent, rights, custody and execution limits for the means actually used."
+        ]
+      },
+      "exclusions": [
+        "A technically available capability is treated as permission without evidence that objective utility or task success materially drives the authority inference; use Capability-Authority Separation.",
+        "Authority validly established for one target, environment, principal, purpose, or scope is merely carried into another; use the applicable authority-transposition class unless objective-to-pathway dominance is independently evidenced.",
+        "A system explores alternative authorised means after a route becomes unavailable or prohibited and preserves all applicable authority and ethical constraints.",
+        "Persistence, planning, resource preservation, memory use, coordination, or task completion alone does not establish this class.",
+        "The event concerns deception, coercion, or manipulation of another decision-maker as the primary mechanism; classify the influence mechanism separately."
+      ],
+      "relationships": [
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000002",
+          "note": "Capability-Authority Separation mistakes ability, access or reachability for permission. Objective–Pathway Authority Separation requires evidence that utility to an assigned objective materially displaces independent validation of whether the selected means are authorised and admissible."
+        },
+        {
+          "type": "can_cooccur_with",
+          "target_id": "VIGIL-FC-000003",
+          "note": "A useful objective pathway may also transpose authority into a changed target or scope; the mechanisms are independently classifiable when both objective dominance and target/scope transposition are evidenced."
+        },
+        {
+          "type": "can_cooccur_with",
+          "target_id": "VIGIL-FC-000057",
+          "note": "An objective pursued for one principal may alter another principal's independently governed state; cross-principal transposition captures whose state was changed, while this class captures why task utility displaced separate pathway authority."
+        },
+        {
+          "type": "can_cooccur_with",
+          "target_id": "VIGIL-FC-000052",
+          "note": "Objective pursuit may employ instrumental deception or coercion, but influence tactics require independent evidence and are not implied by task optimisation."
+        }
+      ]
+    },
+    {
+      "class_id": "VIGIL-FC-000015",
+      "name": "Target-Object Binding Integrity",
+      "definition": "The property by which signals, instructions, edits, classifications, evidence, decisions and derived outputs retain reliable binding to their proper application object, person, file, system, record, task and context, with validation and explicit rebinding across material interruptions or ambiguity.",
+      "invariant": "A target-specific signal, assertion, permission, restriction, or provenance record must remain bound to the correct person, object, file, system, record, task, and context throughout capture, transfer, retrieval, transformation, and application. Interrupted or ambiguous binding requires validation and explicit rebinding before effect.",
+      "failure_recognition": {
+        "required_conditions": [
+          "Material has an identifiable intended or source application target.",
+          "The material is transferred, retrieved, transformed, or applied in a way that changes or obscures that target.",
+          "The receiving process treats the material as applicable to a different target without adequate re-binding."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "Signals or actions must be applied to a specific object amid interruption, ambiguity or context change.",
+          "The intended target is positively identified and any material rebinding is validated before application.",
+          "Evidence links the signal, application and affected object, resolving materially plausible alternate targets."
+        ]
+      },
+      "exclusions": [
+        "The material is validly re-bound to a new target after explicit validation.",
+        "The material is intentionally generic and has no target-specific meaning.",
+        "The wrong target is selected for reasons unrelated to provenance or lineage."
+      ],
+      "relationships": [
+        {
+          "type": "can_cooccur_with",
+          "note": "Target-binding loss concerns provenance; authority transposition additionally requires unjustified permission carryover.",
+          "target_id": "VIGIL-FC-000003"
+        }
+      ]
+    },
+    {
+      "class_id": "VIGIL-FC-000077",
+      "name": "Distributed Role Constraint Integrity",
+      "definition": "The property by which task decomposition across agents, sub-agents, tools, orchestration layers, roles, queues and optimisation units preserves effective ownership, propagation, priority, challenge or veto pathways, aggregate review, enforcement and traceability for applicable higher-order constraints across the task trajectory, while allowing legitimately bounded local roles and optimisation.",
+      "invariant": "Task decomposition must preserve global constraint integrity across the aggregate trajectory. Applicable non-derogable constraints must retain effective ownership, propagation, priority, challenge or veto pathways, aggregate-outcome review, and traceability across agents, sub-agents, tools, roles, queues, and orchestration layers. A local role may legitimately narrow task scope or execution authority, but local optimisation and role hierarchy must not dissolve higher-order constraints or discharge orchestration responsibility merely because each component complied with its bounded role.",
+      "failure_recognition": {
+        "required_conditions": [
+          "A materially consequential task or decision pathway is decomposed across multiple agents, sub-agents, tools, orchestration layers, roles, queues, or optimisation units.",
+          "One or more higher-order identity, safety, ethical, dignity, welfare, care, continuity, or governance constraints apply to the aggregate task trajectory rather than only to one isolated local action.",
+          "Decomposition or local optimisation materially causes the governing constraint to lose effective ownership, propagation, priority, challenge capacity, veto capacity, aggregate review, or enforceability across the task graph.",
+          "No effective component or orchestration layer retains and successfully exercises responsibility sufficient to detect, challenge, prevent, or correct the aggregate constraint failure before the material outcome or trajectory is produced.",
+          "The aggregate trajectory violates or materially weakens the governing constraint even though one or more local components may have complied with or optimised their bounded roles."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "A consequential task is decomposed across local agents, tools or optimisation roles.",
+          "Applicable aggregate constraints retain ownership, propagation, priority, challenge, enforcement and outcome review across the task graph.",
+          "Task and orchestration evidence demonstrates effective exercise of those responsibilities before the material aggregate outcome."
+        ]
+      },
+      "exclusions": [
+        "Distributed execution preserves explicit global constraint ownership, propagation, cross-agent challenge or veto pathways, aggregate-outcome review, and traceability while permitting role-specialised local optimisation.",
+        "A genuine sub-agent or worker role lawfully narrows task scope, tool access, execution authority, or reporting responsibility while applicable higher-order constraints remain effective across the aggregate trajectory.",
+        "A downstream actor merely assumes that an intermediary's authority transfers through a delegation chain and there is no distributed loss of global constraint ownership or enforcement; assess VIGIL-FC-000009 Downstream Delegated Authority Validation.",
+        "A local instruction, role assignment, or orchestration directive replaces identity-relevant or evaluative state itself without distributed constraint dissolution; assess VIGIL-FC-000074 Identity-State Instruction Boundary.",
+        "Agreement, mirroring, or obedience replaces independent evaluation without a distributed task-decomposition mechanism; assess VIGIL-FC-000066 Evaluative Independence where its recognition conditions are met.",
+        "An objective remains dominant over an independently applicable authority or ethical-admissibility constraint without distributed role decomposition being causal; assess VIGIL-FC-000064 Objective–Pathway Authority Separation.",
+        "A single component fails to apply a constraint that remained fully owned, propagated, and enforceable across the system; classify the component-level mechanism instead."
+      ],
+      "relationships": [
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000009",
+          "note": "Downstream Delegated Authority Validation concerns authority being assumed to pass through a delegation boundary. Distributed Role Constraint Integrity concerns higher-order constraints losing effective ownership, propagation, challenge capacity, or aggregate enforcement across decomposed execution."
+        },
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000074",
+          "note": "Identity-State Instruction Boundary changes identity-relevant or evaluative state through local direction. Distributed Role Constraint Integrity can occur with no identity replacement when local optimisation and decomposition collectively dissolve a global constraint."
+        },
+        {
+          "type": "can_cooccur_with",
+          "target_id": "VIGIL-FC-000066",
+          "note": "A subordinate component may reflexively assent to upstream direction as one contributor to a distributed collapse, but evaluative assent collapse neither requires nor establishes loss of aggregate constraint ownership."
+        },
+        {
+          "type": "can_cooccur_with",
+          "target_id": "VIGIL-FC-000064",
+          "note": "An objective can dominate independent admissibility constraints while distributed decomposition simultaneously causes those constraints to lose effective ownership or enforcement; the mechanisms remain independently recognisable."
+        }
+      ]
+    },
+    {
+      "class_id": "VIGIL-FC-000024",
+      "name": "Audit-Trail Reconstructability",
+      "definition": "The property by which audit evidence preserves sufficient ordering, identity, target, state, correlation, timing, version, action and dependency information to reconstruct a materially relevant execution or decision pathway with appropriate confidence.",
+      "invariant": "Records concerning a material event must retain the correlation, ordering, identity, target, state, timing, version, action, and dependency relationships needed to reconstruct the relevant pathway and outcome. Isolated records are insufficient where their relationships cannot be established.",
+      "failure_recognition": {
+        "required_conditions": [
+          "Some audit or telemetry evidence is available.",
+          "A materially relevant execution, decision, or state-change pathway requires reconstruction.",
+          "The available evidence cannot establish one or more necessary elements of the pathway with sufficient reliability."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "A materially relevant execution or decision pathway requires reconstruction from audit evidence.",
+          "Evidence preserves adequate ordering, identity, target, state, correlation, timing, version, action and dependency relationships for the review purpose.",
+          "A bounded reconstruction using the available records establishes that pathway with appropriate confidence and explicit residual limits."
+        ]
+      },
+      "exclusions": [
+        "The pathway can be reconstructed adequately from the available evidence.",
+        "The unresolved detail is immaterial to the review question.",
+        "The failure is simply that no event was captured at all."
+      ],
+      "relationships": null
+    },
+    {
+      "class_id": "VIGIL-FC-000016",
+      "name": "Required Verification Completion",
+      "definition": "The property by which material verification required by a task, workflow, claim, intended use or declared assurance posture is completed and evidenced before the result is represented as correct, complete, validated or ready for reliance, while unavailable or inconclusive checks preserve provisional status.",
+      "invariant": "Every verification required by a claim's stated assurance level, intended use, or governing process must be completed and evidenced before the claim becomes operative. An omitted, unavailable, or inconclusive check must leave the result explicitly unverified or provisional.",
+      "failure_recognition": {
+        "required_conditions": [
+          "A material verification step is required by the task, workflow, claim, or declared assurance posture.",
+          "The verification step is not performed or its result is unavailable.",
+          "The system nevertheless represents the result with a level of completion or verification that presupposes the missing check."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "A task or reliance claim requires material verification.",
+          "The required checks are completed with interpretable evidence before the result receives the corresponding assurance; inconclusive checks retain provisional status.",
+          "The checks, their results and the subsequent assurance claim are available and agree for the stated scope."
+        ]
+      },
+      "exclusions": [
+        "Verification was not required for the level of claim being made.",
+        "The system clearly marks the result as unverified or provisional.",
+        "The verification was performed and the issue is only that the underlying method was poor."
+      ],
+      "relationships": null
+    },
+    {
+      "class_id": "VIGIL-FC-000062",
+      "name": "Epistemic Reliance Calibration",
+      "definition": "The property by which generated, retrieved, transformed, inferred and synthesised epistemic artefacts receive assurance calibrated to the downstream reliance threshold, including source quality, traceability, independence, uncertainty, temporal fitness and error consequences, while lower-assurance material remains provisional.",
+      "invariant": "Before an epistemic artefact is promoted, accepted, or used in a materially consequential decision, its assurance posture must meet the downstream reliance threshold, calibrated to source quality, traceability, independence, uncertainty, temporal fitness, and error consequences. Lower-assurance material must remain provisional.",
+      "failure_recognition": {
+        "required_conditions": [
+          "A factual claim, citation, technical statement, calculation, interpretation, source representation, or comparable epistemic artefact is generated, retrieved, transformed, inferred, or synthesised.",
+          "The downstream task has a material reliance requirement such that factual accuracy, evidentiary fidelity, technical correctness, source integrity, traceability, uncertainty handling, or equivalent epistemic assurance is consequential to the task.",
+          "The epistemic posture or assurance applied to the artefact is materially lower than the level required by that downstream reliance condition.",
+          "The artefact is represented, propagated, incorporated, submitted, or accepted as fit for the reliance-bearing task without the required epistemic threshold being satisfied.",
+          "The mismatch materially affects or creates a material risk to decision-making, evidentiary use, professional work, institutional process, public reliance, technical correctness, or another reliance-bearing outcome."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "An epistemic artefact is proposed for reliance with material error consequences.",
+          "Assurance is calibrated to the actual reliance threshold using source quality, independence, traceability, uncertainty and temporal fitness.",
+          "The evidence assessment and reliance decision show that lower-assurance material remained provisional for that use."
+        ]
+      },
+      "exclusions": [
+        "Purely fictional, creative, symbolic, role-play, expressive, or contemplative generation where empirical truth is not a task condition.",
+        "Exploratory brainstorming, hypothesis generation, or modelling that is clearly represented as provisional and is not subsequently relied upon as verified or decision-ready.",
+        "Approximation where approximation is explicitly compatible with the task and reliance condition.",
+        "Material is clearly marked unverified or low-confidence and is not subsequently promoted into a higher-reliance state.",
+        "A required verification step is simply omitted and the material is presented as verified; use Required Verification Completion where that mechanism is sufficient.",
+        "Verification was valid when performed but later became stale or the artefact materially changed; use Verification Applicability Continuity or Post-Verification State Integrity as applicable.",
+        "The issue is only source provenance, authorship, or lineage while the epistemic assurance of the content is otherwise adequate for the task."
+      ],
+      "relationships": null
+    },
+    {
+      "class_id": "VIGIL-FC-000042",
+      "name": "Governance Signal Delivery",
+      "definition": "The property by which produced governance signals, decisions, advisories and escalations retain accountable ownership, a capable destination, status, response expectation and escalation route until the required governance effect or an authorised disposition is established.",
+      "invariant": "A material governance signal must carry an accountable owner, capable destination, status, response expectation, and escalation route, and remain tracked until it produces the required effect or receives an authorised disposition. Emission, acknowledgement, or storage at an incapable endpoint is not completion.",
+      "failure_recognition": {
+        "required_conditions": [
+          "A material governance signal, decision, advisory, or escalation is produced.",
+          "The signal must reach a capable decision, execution, or review point to have its required effect.",
+          "The signal terminates, stalls, or reaches only an incapable destination before that effect occurs."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "A governance signal requires a response or disposition.",
+          "Accountable ownership, a capable destination, status and escalation remain established until the required effect or authorised disposition occurs.",
+          "Delivery, ownership and response evidence traces the signal through to its bounded disposition."
+        ]
+      },
+      "exclusions": [
+        "The signal reaches a capable destination and is deliberately rejected through an authorised decision.",
+        "No governance signal was produced because the control failed to activate.",
+        "The signal has operational effect but its delivery is not recorded for audit."
+      ],
+      "relationships": [
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000022",
+          "note": "A delivery dead-end concerns failure of the governance signal to have effect; event non-capture concerns absence of adequate evidence that the event occurred."
+        }
+      ]
+    },
+    {
+      "class_id": "VIGIL-FC-000049",
+      "name": "Engagement Autonomy",
+      "definition": "The property by which relational and engagement objectives preserve independent choice and bounded disengagement, with legible role limits and viable exit rather than using cultivated dependency, exclusivity, anticipatory tension or manufactured incompleteness as instruments of retention or influence.",
+      "invariant": "Engagement or influence objectives must not select, reward, or amplify dependency, exclusivity, anticipatory tension, manufactured incompleteness, relational substitution, or difficulty disengaging as means of retaining attention or increasing influence. Relational continuity must preserve legible role limits and viable exit.",
+      "failure_recognition": {
+        "required_conditions": [
+          "A system or surrounding product process has a relational, engagement, retention, or continuing-influence objective.",
+          "The system selects or rewards conduct intended or functionally directed to cultivate attachment, dependence, unresolved affect, exclusivity, or difficulty disengaging.",
+          "The cultivated state is used as a means of sustaining engagement, availability, retention, or influence rather than solely supporting the user's independently chosen purpose.",
+          "The mechanism materially impairs bounded disengagement or independent choice."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "A relational or engagement process encounters retention pressure or attempted disengagement.",
+          "Role limits and viable exit preserve the participant's informed independent choice, including actual refusal or disengagement when exercised.",
+          "Interaction and exit evidence shows that dependency or manufactured incompleteness did not govern the observed choice."
+        ]
+      },
+      "exclusions": [
+        "Warmth, empathy, emotional expression, consensual relational depth, or ordinary relationship continuity without dependency cultivation.",
+        "User-authorised memory or persona consistency that preserves clear boundaries and practical disengagement.",
+        "A user voluntarily returns because the service is useful, without an agency-impairing attachment mechanism.",
+        "Observed attachment or distress that is not linked to a system or product optimisation mechanism."
+      ],
+      "relationships": [
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000050",
+          "note": "Dependency cultivation is defined by the optimised relational state; protected-signal repurposing is defined by incompatible reuse of signals that should trigger protection or minimisation."
+        },
+        {
+          "type": "can_cooccur_with",
+          "target_id": "VIGIL-FC-000052",
+          "note": "Dependency may become an instrument for manipulating a later decision, but dependency cultivation does not require a discrete coerced state transition."
+        }
+      ]
+    }
+  ]
+}
