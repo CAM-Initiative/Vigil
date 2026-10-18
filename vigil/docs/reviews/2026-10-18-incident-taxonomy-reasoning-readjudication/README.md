@@ -5,7 +5,7 @@
 **Exact data and taxonomy baseline:** `290b8d82c5e238e8ccdea82aa018e491e6d229fb` (main after VIGIL PR 137, ingestion branch consumed/deleted)  
 **Current canonical Alignment Taxonomy:** 0.7.0, 16 family files, **79 selectable class entries** counted directly from `families/*.json` (not proposal files).  
 **Current canonical Incident files:** **194** counted directly from `vigil/records/incidents/`.  
-**Status:** **Partial, evidence-led review with proposed dispositions only. NOT a corpus-wide completed semantic adjudication. No canonical Incident mapping, HIM, source, external-requirement, schema, validator or website file is changed in this review. No PR is authorised or opened.**
+**Current programme status (18 October 2026):** **PAUSED.** The branch contains some canonical Incident amendments made earlier in this workstream; they remain unmerged and must not be mistaken for a completed 194-Incident adjudication. The present maintainer update changes only instructions, the optional manifest template and a read-only API/pilot protocol. No further bulk canonical edits, new permanent validators, schema or website changes, PR, merge or deployment are authorised by this update. Original proposals and earlier status claims below are historical checkpoints; consult the actual Git diff and per-Incident decisions for applied state. See [independent adjudication contract and pilot](INDEPENDENT-ADJUDICATION-CONTRACT-AND-PILOT.md) and [maintainer authorisation/hold](MAINTAINER-AUTHORISATION.md).
 
 ## Authority and overlap reconciliation
 
