@@ -171,7 +171,7 @@ A missing baseline mapping with no disposition is a rebuild failure.
 
 ### Mixed relationships are valid
 
-An Incident may simultaneously contain failure occurrences, successful invariants and ambiguous boundaries. Do not collapse a mixed Incident into a single “good” or “bad” label.
+An Incident may simultaneously contain failure occurrences, successful invariants and ambiguous boundaries. Do not collapse a mixed Incident into a single “good” or “bad” label. A class-level failure mapping may coexist with a later bounded success for that same class at a distinct episode. Preserve both episode outcomes and their source-local rationales; do not force all episode roles to match the Incident-level class role. Verify that the aggregate explanation does not silently lose either materially supported finding.
 
 `VIGIL-INC-000129` is the design exemplar for this property: its value is that different taxonomy boundaries can have different roles in the same bounded occurrence. It is not a permanent answer key, and its current class set may itself be re-adjudicated through this workflow.
 
