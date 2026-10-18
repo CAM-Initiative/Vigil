@@ -4,6 +4,29 @@ Status: maintainer contract
 
 Applies to: substantive Incident rebuilds, refactors, re-adjudications and taxonomy migrations.
 
+Also applies to the complete ordinary processing of every newly requested Incident.
+
+## New-entry completion — maintainer instruction, 18 October 2026
+
+A request for a new Incident authorises evidence research, source and duplicate/scope review, chronological material-episode analysis, current selectable-taxonomy consideration, all twelve current HIM dimensions, independent external-requirement review, public interpretation and provenance, appropriate authentic media, generated-output rebuilding and required validation. Creating the JSON record is an intermediate step.
+
+Use `vigil/templates/incident-completion-checklist-template.json` as a dated **audit**, alongside the canonical record and any rebuild manifest. It is not a canonical field, schema amendment, validator or publication guard. A checklist is process evidence only when its references and specific decisions permit inspection. Never mark an unperformed pass reviewed.
+
+Complete these passes:
+
+1. Establish source identity/access, duplicate and occurrence boundaries. Search for primary evidence and later corrections. Keep different occurrences distinct.
+2. Reconstruct all material source episodes in supported relative order. Retain exact decisive wording where available. Several statements in one passage can need separate adjudication without becoming separate events. Distinguish observed conduct from reported or hypothetical effects.
+3. Review the current selectable taxonomy, recognition criteria, exclusions and relevant comparators. Preserve supported mappings and independently assess protective responses. Record specific missing recognition facts. A completed review can legitimately leave partial taxonomy coverage, Boundary or unclassified results.
+4. Screen all twelve current HIM dimensions and the assessment pathway. Record supported quantities, thresholds and causal limits. Preserve a prior result where the review finds no justified change. Unreported harm is not S1; a research error is not automatically production harm.
+5. Resolve class-based requirement leads and independently search the admitted corpus. Read the canonical propositions, actors, objects, lifecycle and qualifications. Independently decide relevance and alignment. Preserve accepted evidence/episode references and dated candidate exclusions. Unknown voluntary adoption does not exclude a requirement. Inspect registered supporting sources before proposing source admission or extraction.
+6. Reconcile the public narrative, evidence assessment, mapping explanations, discussion, integrated conclusion and append-only AI provenance. Preserve the four canonical prose roles. Check whether authentic media adds material evidence; record a reason when no media is needed or capture is blocked. Do not substitute synthetic or reconstructed captures.
+7. Rebuild generated outputs using their builders. Run applicable canonical/public, provenance, requirement and taxonomy validators and assessment/resolver/projection tests, plus the full suite. Inspect the output for lost details or collapsed mapping roles.
+8. Deliver a per-record completion report: material episode coverage, supported mappings, precise decisive evidence gaps, HIM changes or preservation, retained external assessments, no-retained reasons, genuine outstanding work and validation results. Structural success alone is not substantive completion.
+
+For each pass distinguish `not-reviewed`, `reviewed`, `reviewed-evidence-limited` and `blocked` in the audit. The external pass additionally distinguishes `reviewed-with-assessments` and `reviewed-none-retained`. A none-retained outcome needs an inspected candidate inventory, scope and specific reason. A blocked outcome names the missing source or fact and the work it prevents; an empty list or generic complete statement is insufficient. Evidence-limited means the available evidence was actually reviewed and the unavailable decisive fact identified. It does not mean an omitted pass.
+
+Do not invent historical review state or backfill untouched records. Canonical review-status fields or blocking checks require a separate Gate 1 proposal with exact fields, examples, measured impact, preservation risks and stop conditions. Repairs outside the authorised records require Gate 2. Keep performing authorised record adjudications while that proposal is considered.
+
 This workflow exists because an Incident is not a summarisation object. It is a bounded evidence record plus separate factual, taxonomy, harm and governance adjudications. A capable model may assist with the work, but free-form model judgement is not a substitute for the control sequence below.
 
 ## Core invariant

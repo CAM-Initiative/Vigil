@@ -28,6 +28,12 @@ Before opening a pull request from `agent/incident-ecosystem-ingestion`, synchro
 
 ## High-signal ecosystem ingestion sources
 
+### Ordinary new-entry completion
+
+A request for a new Incident authorises the complete ordinary evidence, scope/duplicate, chronological episode, current taxonomy, twelve-dimensional HIM, independent external-requirement, public interpretation, provenance, appropriate media and validation process. The JSON intake template is an intermediate starting point. Follow the new-entry completion section of `docs/maintenance/INCIDENT-ADJUDICATION-WORKFLOW.md` and the audit-only `templates/incident-completion-checklist-template.json`. An empty assessment list does not establish review. Distinguish unperformed, reviewed-with-assessments, reviewed-none-retained and blocked external review in the dated audit, with reasons and exact missing sources/facts. Evidence-limited findings can follow a completed review; do not manufacture taxonomy completeness or standards findings.
+
+Canonical completion fields or blocking controls remain subject to Gate 1. The 18 October proposal is `docs/reviews/2026-10-18-inc-199-203-completion/completion-control-gate1.md`; it is not an implemented validity rule. No historical backfill or wider corpus repair is authorised by the new-entry instruction.
+
 Scheduled or manual ecosystem ingestion SHOULD explicitly check high-signal first-party disclosure surfaces that publish bounded model-behaviour, evaluation, containment or agent incidents. At minimum, the current watch set includes:
 
 - OpenAI Alignment misalignment reports and notices, including `https://alignment.openai.com/misalignment-reports/`;

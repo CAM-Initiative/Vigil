@@ -155,6 +155,8 @@ Do not leave a material next action only in conversational handoff text. Do not 
 
 ## Required workflow
 
+For a newly requested Incident, carry out the complete ordinary processing in the new-entry completion section of `docs/maintenance/INCIDENT-ADJUDICATION-WORKFLOW.md`. Use the audit-only completion checklist beside the JSON intake template. Do not end the task after creating an intake record or taxonomy label. Record actual reviewed/no-retained/blocked external decisions and deliver a per-record completion report. Proposed canonical completion fields and blocking controls still require Gate 1 approval.
+
 Before editing an Incident, inspect `vigil/VIGIL.Schema.json`, the Incident template, the validator and comparable Incident records. Preserve stable IDs and substantive evidence.
 
 Run at least:
