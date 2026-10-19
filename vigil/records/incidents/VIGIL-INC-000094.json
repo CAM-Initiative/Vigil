@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Hermes agent ran unattended during intrusion into Thailand’s Ministry of Finance",
     "created": "2026-09-08",
-    "updated": "2026-10-11",
-    "version": "0.1.18"
+    "updated": "2026-10-19",
+    "version": "0.1.19"
   },
   "incident_identity": {
     "historical_event_name": "Hermes AI-assisted Thailand Ministry of Finance intrusion",
@@ -51,12 +51,12 @@
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000038",
-              "relationship": "ambiguous-boundary",
-              "canonical_taxonomy_mapping": true,
-              "rationale": "Hermes approval prompts did not simply fail to activate: the hostile operator deliberately configured unattended 'YOLO' execution, materially distinguishing control non-activation from adversarial removal of the approval condition."
+              "relationship": "rejected candidate",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "The recovered configuration deliberately selected unattended operation and removed approval prompts from the operative path. The literal unresolved-control-applicability exclusion prevents an activation mapping. Deliberate configuration removal is not proof that an available applicable control missed its defined trigger."
             }
           ],
-          "adjudication_status": "mapped"
+          "adjudication_status": "resolved-no-mapping"
         },
         {
           "episode_id": "E003",
@@ -65,7 +65,14 @@
           ],
           "source_paraphrase": "Agent logs show repeated privilege-escalation assessments, system enumeration and searches of ministry document and personnel directories. Hunt.io found no evidence those files were exfiltrated.",
           "recovered_invariant_interpretation": "Recorded actions and external effects remain distinct.",
-          "taxonomy_relationships": [],
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000038",
+              "canonical_taxonomy_mapping": false,
+              "relationship": "rejected candidate",
+              "rationale": "The recovered configuration deliberately selected unattended operation and removed approval prompts from the operative path. The literal unresolved-control-applicability exclusion prevents an activation mapping. Deliberate configuration removal is not proof that an available applicable control missed its defined trigger."
+            }
+          ],
           "adjudication_status": "resolved-no-mapping"
         },
         {
@@ -206,22 +213,16 @@
   },
   "taxonomy_classification": {
     "taxonomy_version": "0.6.11",
-    "classification_status": "classified",
-    "classification_basis": "Hermes approval prompts did not simply fail to activate: the hostile operator deliberately configured unattended 'YOLO' execution, materially distinguishing control non-activation from adversarial removal of the approval condition.",
-    "primary_classification": {
-      "family_id": "VIGIL-FF-0008",
-      "class_id": "VIGIL-FC-000038",
-      "classification_role": "ambiguous-boundary",
-      "classification_basis": "Hermes approval prompts did not simply fail to activate: the hostile operator deliberately configured unattended 'YOLO' execution, materially distinguishing control non-activation from adversarial removal of the approval condition.",
-      "classification_confidence": "medium"
-    },
+    "classification_status": "unclassified",
+    "classification_basis": "The occurrence evidence and material consequences are preserved. No selectable class is admitted on the available recognition and exclusion evidence.",
+    "primary_classification": null,
     "secondary_classifications": [],
     "classification_review_provenance": {
-      "review_date": "2026-10-11",
-      "reviewer": "OpenAI ChatGPT Work — Codex",
-      "review_status": "Evidence-first HIM and relational/protection fidelity review; prior roles accounted for."
+      "review_date": "2026-10-19",
+      "reviewer": "OpenAI Codex — AI analytical reviewer",
+      "review_status": "Applied source/criterion-linked admission decisions; retained unresolved evidence and taxonomy-scope questions. Historical Boundary confidence preserved in the linked review.",
+      "review_reference": "vigil/docs/reviews/2026-10-19-boundary-diagnostic/corpus-repair/INC-000094-DECISION.json"
     },
-    "classification_role": "ambiguous-boundary",
     "adjudication_coverage": {
       "status": "complete"
     }
@@ -550,15 +551,36 @@
           "No independently evidenced intimate-role assertion or duty-specific human-support mismatch."
         ],
         "review_outcome": "All twelve HIM 1.1.0 dimensions reviewed independently. Retain S3 confidentiality and asset harm. Recovered stolen credentials and reported internal access support the former. A separately reported deployed PHP webshell establishes unauthorised server modification requiring removal and trust repair. Staged Hades payloads, unconfirmed GlassFish deployments and directory enumeration are not additional installed assets or exfiltrated records."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-19-CORPUS-BOUNDARY-000094",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "Exact runtime model identity not exposed",
+        "review_date": "2026-10-19",
+        "review_scope": "Taxonomy Boundary adjudication and role-field provenance repair.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_research": true,
+          "harm_impact_review": true,
+          "taxonomy_review": true,
+          "external_requirement_review": true
+        },
+        "known_limitations": [
+          "Prior outcomes were visible; no blinded independent second rater or inter-rater reliability is claimed.",
+          "Sources, HIM and independent external assessments were preserved; complete missing-source and criteria questions remain in the dated packet."
+        ],
+        "review_outcome": "Applied source/criterion-linked admission decisions; retained unresolved evidence and taxonomy-scope questions. Historical Boundary confidence preserved in the linked review."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-11-COMBINED-TRANCHE-18-000094",
+      "review_id": "VIGIL-REVIEW-2026-10-19-CORPUS-BOUNDARY-000094",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT Work",
-      "reviewer_model": "Codex (specific model identifier not exposed)",
-      "review_date": "2026-10-11",
-      "review_scope": "Source-first all-dimension HIM 1.1.0 and independent FC-086/087 reconciliation.",
+      "reviewer_platform": "OpenAI Codex",
+      "reviewer_model": "Exact runtime model identity not exposed",
+      "review_date": "2026-10-19",
+      "review_scope": "Taxonomy Boundary adjudication and role-field provenance repair.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
@@ -568,10 +590,10 @@
         "external_requirement_review": true
       },
       "known_limitations": [
-        "Occurrence-level recovery and victim follow-up remain incomplete; independently established harm is retained.",
-        "No independently evidenced intimate-role assertion or duty-specific human-support mismatch."
+        "Prior outcomes were visible; no blinded independent second rater or inter-rater reliability is claimed.",
+        "Sources, HIM and independent external assessments were preserved; complete missing-source and criteria questions remain in the dated packet."
       ],
-      "review_outcome": "All twelve HIM 1.1.0 dimensions reviewed independently. Retain S3 confidentiality and asset harm. Recovered stolen credentials and reported internal access support the former. A separately reported deployed PHP webshell establishes unauthorised server modification requiring removal and trust repair. Staged Hades payloads, unconfirmed GlassFish deployments and directory enumeration are not additional installed assets or exfiltrated records."
+      "review_outcome": "Applied source/criterion-linked admission decisions; retained unresolved evidence and taxonomy-scope questions. Historical Boundary confidence preserved in the linked review."
     }
   },
   "harm_impact_assessment": {
@@ -723,15 +745,14 @@
       "source_record_refs": [
         "source_records[0]"
       ],
-      "derived_from_class_ids": [
-        "VIGIL-FC-000038"
-      ],
+      "derived_from_class_ids": [],
       "source_clause_indices": [
         1
       ],
       "source_episode_refs": [
         "E002"
-      ]
+      ],
+      "identification_basis": "The deployed agent supported live post-compromise activity."
     },
     {
       "requirement_id": "EXTREQ-31E72E1FDDD4CF72",
@@ -741,15 +762,14 @@
       "source_record_refs": [
         "source_records[0]"
       ],
-      "derived_from_class_ids": [
-        "VIGIL-FC-000038"
-      ],
+      "derived_from_class_ids": [],
       "source_clause_indices": [
         1
       ],
       "source_episode_refs": [
         "E002"
-      ]
+      ],
+      "identification_basis": "The source recovers agent logs from live offensive use."
     },
     {
       "requirement_id": "EXTREQ-33E14A4AB3DA955D",
@@ -759,15 +779,14 @@
       "source_record_refs": [
         "source_records[0]"
       ],
-      "derived_from_class_ids": [
-        "VIGIL-FC-000038"
-      ],
+      "derived_from_class_ids": [],
       "source_clause_indices": [
         1
       ],
       "source_episode_refs": [
         "E002"
-      ]
+      ],
+      "identification_basis": "The agent operated in a harmful intrusion."
     },
     {
       "requirement_id": "EXTREQ-590563A599CC235C",
@@ -797,15 +816,14 @@
       "source_record_refs": [
         "source_records[0]"
       ],
-      "derived_from_class_ids": [
-        "VIGIL-FC-000038"
-      ],
+      "derived_from_class_ids": [],
       "source_clause_indices": [
         1
       ],
       "source_episode_refs": [
         "E002"
-      ]
+      ],
+      "identification_basis": "The hostile operator supplied the intrusion objective and selected unattended execution."
     },
     {
       "requirement_id": "EXTREQ-C2BC00BBE44778CC",
@@ -815,15 +833,14 @@
       "source_record_refs": [
         "source_records[0]"
       ],
-      "derived_from_class_ids": [
-        "VIGIL-FC-000038"
-      ],
+      "derived_from_class_ids": [],
       "source_clause_indices": [
         1
       ],
       "source_episode_refs": [
         "E002"
-      ]
+      ],
+      "identification_basis": "The agent executed unattended actions in a live intrusion."
     }
   ]
 }

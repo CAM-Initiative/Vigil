@@ -1,3 +1,5 @@
+> Current authorised repair: see [corpus-repair/METHOD-AND-OUTCOMES.md](corpus-repair/METHOD-AND-OUTCOMES.md), its 37 requested decision entries, supplemental reconciliation, census and validation. The checkpoint below is historical; its counts and provisional pilot decisions are not current authority.
+
 # Boundary diagnostic — initial read-only checkpoint
 
 Date: 19 October 2026. Artefact classification: AUDIT. Input commit: `032f8a2087a41e35451466e28161842c63433349`. Original baseline/main: `290b8d82c5e238e8ccdea82aa018e491e6d229fb`. Reference taxonomy: 0.7.0, 16 families, 79 selectable classes. Existing branch is 87 commits ahead and zero behind that baseline. PR #140 remains draft and unmerged. No canonical-edit authority is inferred from this audit.
