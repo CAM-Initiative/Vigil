@@ -369,5 +369,54 @@
   ],
   "untouched_incidents_byte_identical": 184,
   "protected_authority_and_code_files_unchanged": true,
-  "limits": "These checks establish structure and explicit preservation, not substantive correctness. No full-corpus re-adjudication was performed. Initial run detected two work-product issues, now repaired; historical six fixture failures did not recur."
+  "limits": "These checks establish structure and explicit preservation, not substantive correctness. No full-corpus re-adjudication was performed. Initial run detected two work-product issues, now repaired; historical six fixture failures did not recur.",
+  "post_test_generation": {
+    "reason": "Full tests call the builder and re-emit raw examples. Rebuild plus publication filter MUST run after full discovery before publication. Initial CI detected that ordering error; no canonical or rule change was needed.",
+    "deterministic": true,
+    "before": {
+      "vigil/VIGIL.Incidents.Index.json": "f30cbf3b492d358d72639fe10a316f9b98fa2785bbb3eeddc8387aa538ca1fe1",
+      "vigil/VIGIL.Registry.Index.json": "6cb521faa0618f81ee67c7c561c28ef43330579db48dda809ae28c08b98b78eb",
+      "vigil/taxonomy/generated/VIGIL.FailureTaxonomy.CaseFileExamples.json": "904ba1a1699f1df0dc266ae206d4359c3c046f9b8489379c0ad1c78553e13d73"
+    },
+    "after": {
+      "vigil/VIGIL.Incidents.Index.json": "f30cbf3b492d358d72639fe10a316f9b98fa2785bbb3eeddc8387aa538ca1fe1",
+      "vigil/VIGIL.Registry.Index.json": "6cb521faa0618f81ee67c7c561c28ef43330579db48dda809ae28c08b98b78eb",
+      "vigil/taxonomy/generated/VIGIL.FailureTaxonomy.CaseFileExamples.json": "904ba1a1699f1df0dc266ae206d4359c3c046f9b8489379c0ad1c78553e13d73"
+    },
+    "checks": [
+      {
+        "command": [
+          "python",
+          "vigil/scripts/build-vigil-public-records.py"
+        ],
+        "exit_code": 0,
+        "output": "Wrote lightweight Incident index for 194 canonical records (1378831 bytes) and registry manifest (1096 bytes).\n"
+      },
+      {
+        "command": [
+          "python",
+          "vigil/taxonomy/filter_publication_case_examples.py"
+        ],
+        "exit_code": 0,
+        "output": "Excluded textbook case-study Incidents whose preferred evidence is an interaction record: VIGIL-INC-000032, VIGIL-INC-000043\n"
+      },
+      {
+        "command": [
+          "python",
+          "vigil/taxonomy/filter_publication_case_examples.py",
+          "--check"
+        ],
+        "exit_code": 0,
+        "output": "Textbook case-study evidence-type exclusions verified.\n"
+      },
+      {
+        "command": [
+          "python",
+          "vigil/scripts/validate-vigil-public-records.py"
+        ],
+        "exit_code": 0,
+        "output": "VIGIL lightweight public Incident index validation passed: 194 records.\n"
+      }
+    ]
+  }
 }
