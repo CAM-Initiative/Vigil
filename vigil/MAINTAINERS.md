@@ -58,8 +58,7 @@ Do not falsify historical review dates or rewrite historical audits and reviews 
 - `vigil/external_governance/sources/` — external-source registry.
 - `vigil/external_governance/requirements/` — external-governance requirements and projections.
 - `vigil/cam_assessment/` — CAM applicability and coverage assessment.
-- `vigil/docs/reviews/` — bounded reviews that remain operationally useful.
-- `vigil/docs/audits/` — retained non-normative historical audit evidence.
+- `vigil/docs/reviews/` — selected dated decision packets and adopted-control provenance relevant to the retained corpus. Superseded audits are recoverable at the pinned pre-cleanup Git commit; they are not current verification.
 
 The taxonomy migration assurance ledger at `vigil/taxonomy/migration/Caelestis.LegacyFailure.MigrationLedger.json` remains live taxonomy validation evidence. It does not reactivate FM as a VIGIL record class.
 
@@ -497,7 +496,7 @@ The source-first repair of INC-084, INC-129 and INC-141 introduced an **opt-in**
 - Store a dated original-to-new crosswalk and per-requirement row disposition with each substantive repair. Preserve source records, interpretive provenance, class polarity, independent EXTREQ alignment, and HIM assessment unless separately re-adjudicated.
 - Regenerate public indexes **only** with `vigil/scripts/build-vigil-public-records.py`. The VIGIL records workflow now reports stale checked-in indexes before rebuilding them and refreshes outputs on pushes to the canonical ingestion branch. A clean CI run is not a human evidence review.
 
-See `vigil/docs/reviews/2026-10-08-corpus-evidence-reconciliation/` for the bounded pilot and repair manifests, validator implementation checkpoint and the remaining unreviewed corpus.
+The 8 October source-evidence pilot and intermediate repair manifests are historical snapshots recoverable from Git history (pre-cleanup commit `290b8d82c5e238e8ccdea82aa018e491e6d229fb`). Their structural checks and past coverage counts do not establish that the present corpus has been independently readjudicated.
 
 ## Clause-level Alignment Taxonomy adjudication
 

@@ -19,23 +19,24 @@ This document distinguishes a scholarly release from ongoing adjudication and in
 
 A published `source_records` URL is a citation and evidence locator, **not necessarily an archived copy of third-party material**. Check third-party rights, link stability and preserved source access before the deposit.
 
-## Staging cleanup and preservation
+## Curated corpus and historical-review retirement
 
-This housekeeping tranche removes only obsolete operational artefacts:
+**Research-release curation is selective, not archival maximalism.** The active repository is not a complete institutional work log. On 19 October, a second aggressive housekeeping tranche retires **1108 tracked historical files**, following the earlier bounded deletion of 13 superseded materials. The number and precise list are reproducible from the draft cleanup PR and its pinned parent snapshots. The staging tree is still **NOT approved as paper-ready**.
 
-- a superseded HIM 1.0.1 resumption handoff (the substantive corpus audit and methodology remain);
-- a 2026-10-02 one-paragraph completion checkpoint (the complete reconciliation report remains);
-- five single-use **working** HIM 1.0.1 evidence migration scripts, created for a historical corpus version and not used by the current builders or tests.
+Retired surfaces in this tranche:
+- all legacy `vigil/docs/audits/` material (419 files), covering prior model-generated corpus claims, intermediate source and taxonomy audits, migration/reconciliation reports, and duplicated snapshots;
+- most `vigil/docs/reviews/` material (676 files), including earlier model-era corpus campaigns, dated handoffs, unadopted proposals and obsolete issue/checkpoint inventories;
+- historical completed migration scripts and unadopted taxonomy/HIM proposals (13 files).
 
-All of these remain recoverable from the pinned pre-cleanup Git commit above. Historical audit conclusions must not be silently rewritten simply because a later state supersedes them.
+These deletions are **not findings that every earlier audit was factually wrong**. They mean those earlier artefacts do not meet the acceptance bar to participate in the current citable research record. Their original content and commit history remain recoverable from `290b8d82c5e238e8ccdea82aa018e491e6d229fb` and its ancestors, but are not treated as validated methodological evidence.
 
-The following categories are deliberately **not bulk-deleted**:
+Retained selected recent packets under `vigil/docs/reviews/` include the bounded HIM 1.1.0 completion and corpus-count report, adopted animal-welfare method amendment, source/requirement explanation repair reviews, recent admission/record-completion decisions, selected governance-class admissions and approved validator-scope evidence. These are **traceability records, not proof of independent human validation**. The final Boundary adjudication PR #140 must produce a fresh explicitly approved evidence/methodological packet for the paper.
 
-- `vigil/docs/audits/` and substantive `vigil/docs/reviews/` — some are necessary evidence of historical source access, adjudication decisions, preserved counterexamples and version changes;
-- open issue / Gate 1 proposals and governance approvals — some still govern authorisation, unresolved evidence and future schema changes;
-- current source, references, independent external assessments and generated indexes — publication lineage would be damaged by removing them.
+**Functional preservation rule:** retain the canonical Incidents, their versioned taxonomy/HIM/EXTREQ contracts and source references, public generated data, active builders, validators, tests, rights, citation and normative maintenance instructions. The cleanup must not alter their bytes or claim successful substantive re-adjudication from green CI.
 
-Obsolete website implementation handoffs and open action payloads are separately flagged for review: current audit notes and active review packets refer to them. They should only be retired after pointers are reconciled and their unresolved work is preserved in an authoritative issue or review document.
+**Review-document acceptance rule:** retain a working audit only when it is current, tied to a specific still-applicable accepted decision or methodological change, references verifiable inputs, and cannot be replaced by canonical records plus exact Git history. Interesting future possibilities are not sufficient reason to keep old review debris. Draft and rejected proposals should live in Git history or tracked issues, not beside the released study.
+
+The release archive is a **selected versioned research artefact, not a reproducibility certificate for historical model-written decisions**. Journal methods must say what was independently checked, by whom, and what remains evidence-limited. An old snapshot's validator-success report does not establish original-source authentication, construct validity, inter-rater agreement or reviewer independence.
 
 ## Crucial licensing and access gate
 

@@ -88,15 +88,14 @@ vigil/
   templates/               Incident authoring template
   scripts/                 live builders and validators
   tests/                   executable tests
-  docs/reviews/            bounded current reviews
-  docs/audits/             non-normative historical audits
+  docs/reviews/            selected current decision records and reproducibility audits
 ```
 
 See [`vigil/MAINTAINERS.md`](vigil/MAINTAINERS.md) for authority boundaries and maintenance rules.
 
 ## Research release and Zenodo
 
-The live GitHub repository includes maintenance history, provisional reviews and open governance work as well as the published corpus. Not every branch, proposal or review is a completed research finding.
+The live repository keeps only selected recent decision records and adopted-control histories alongside the canonical research. Earlier automated audit campaigns, draft proposals and operational handoffs are deliberately absent from the working tree and remain recoverable at pre-cleanup commit `290b8d82c5e238e8ccdea82aa018e491e6d229fb`. They must not be presented as independent verification of the present corpus.
 
 See [Zenodo release readiness](ZENODO-RELEASE-READINESS.md) for the frozen-snapshot, citation, provenance, evidence-audit and **proprietary licensing** checks required before archiving a release. The current taxonomy readjudication (draft PR #140) is incomplete, so current `main` must not be described as its fully adjudicated final research corpus.
 
