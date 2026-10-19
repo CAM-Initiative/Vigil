@@ -94,3 +94,7 @@ These cases are **regression scenarios, not hand-authored permanent canonical an
 - Any new mandatory semantic validator/schema test or bulk repair triggered by it remains subject to the measured Gate 1 / Gate 2 process. Proposed future checks must state current versus proposed pass/fail, affected records, false-positive and information-loss risk, and the stop condition before implementation.
 - Broad corpus readjudication: **paused pending explicit maintainer resumption**. Do not treat this contract update as authorisation to resume batch Incident rewrites, open a PR or deploy.
 
+
+## Subsequent canonical Boundary control
+
+On 19 October 2026 the maintainer approved required mapping-local `boundary_adjudication` in every canonical Boundary finding. The audit packet remains supporting evidence and process history. Follow the updated workflow, schema contract and dedicated template; audit-only diagnosis does not satisfy Incident validation. The broad canonical-edit hold remains effective.

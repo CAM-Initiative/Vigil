@@ -183,3 +183,15 @@ python vigil/tests/test_external_requirement_public_projection.py
 Run taxonomy, external-governance and CAM-assessment validators when those retained subsystems are touched.
 
 Do not reset, rebase, merge, cherry-pick, force-push or rewrite shared history as maintenance. Do not restore retired records from main, migration inputs or generated artefacts.
+
+## Canonical Boundary adjudication — approved 19 October 2026
+
+Every admitted `ambiguous-boundary` primary or secondary taxonomy mapping MUST contain a completed `boundary_adjudication` object in the Incident itself. A dated audit packet is supporting review history, never a substitute for the canonical explanation. Use `vigil/templates/boundary-adjudication-template.json`; the authoritative shape is `boundary_adjudication_contract` in `vigil/VIGIL.Schema.json`.
+
+The object records `taxonomy_version`, positive `material_engagement`, non-empty `unresolved_conditions`, `diagnostic_reasons`, `decisive_blocker` and `resolution_requirements`. Each unresolved condition records its `polarity` (failure-occurrence or successful-invariant), literal `condition`, occurrence-specific `assessment`, and resolvable `source_record_refs` and `episode_refs`. Explain why neither outcome is established; do not assume a failure-side unknown proves success or vice versa. Historical taxonomy metadata remains separate from the version applied in this adjudication.
+
+Permitted diagnostic reasons are `insufficient-evidence`, `conflicting-evidence` and `recognition-criteria-insufficiency`, including multiple contributing reasons. Identify the precise missing fact and potential resolving source, incompatible evidence and needed reconciliation, or criteria deficiency and separate taxonomy review. Unsupported class engagement is a candidate for removal or alternative disposition, not a completed Boundary. Review not performed is an audit hold, not a completed adjudication. These reasons explain the existing role; they are not additional canonical classification roles.
+
+The validator rejects absent/incomplete objects, invalid reasons and unresolved source/episode references. It cannot certify that prose is substantively correct or that all relevant criteria have been examined. Preserve historical recorded confidence and provenance; this control does not authorise deleting them or adding confidence for certainty about uncertainty. Keep complete criterion matrices, rejected candidates and review process history in audit packets. The canonical object contains accepted occurrence-specific reasoning only.
+
+Approval covers this control, documentation, templates and isolated tests. After implementation run the corpus read-only and report exact failures. Do not mechanically fill objects, reclassify findings, change recognition conditions or amend independent assessments. Substantive corpus repair remains subject to explicit maintainer authorisation. This requirement supersedes earlier audit-only placement of Boundary diagnostic reasons. Website display is separate renderer work; no presentation or builder change is authorised here.
