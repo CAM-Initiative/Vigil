@@ -193,6 +193,12 @@ Statements such as `internal mechanism unknown`, `exact control unknown`, `root 
 
 Do not add unstated recognition conditions such as an exact model build, exact internal component, source-code access, hidden system prompt, classifier score, execution trace or vendor root-cause determination unless the class definition actually depends on that information.
 
+### Exclusion precedence and condition-specific adjudication
+
+An exclusion is part of the class's actual recognition boundary, not explanatory context. Test each literal exclusion on the evidence before accepting **any** canonical role. A positively established exclusion defeats failure, success **and** ambiguous-boundary admission for that class. This includes exclusions whose operative condition is that a required fact remains unresolved. Do not convert an excluded or not-yet-engaged candidate into a canonical Boundary merely because the general topic is relevant; preserve the precise unresolved candidate or separately evidenced taxonomy gap in the review packet/appropriate episode disposition. An exclusion requiring another class's *sufficient* coverage applies only where that sufficiency is actually demonstrated.
+
+For every necessary success or failure recognition condition, identify its own status and the specific occurrence proposition, source/episode evidence and counterevidence supporting it. Copying the overall classification basis into each condition entry is **not** a condition-by-condition assessment. One evidence item can establish several conditions, but its distinct significance to each must be articulated. Positive success is assessed against the entire required protective sequence, not the favourable outcome alone. If any necessary condition is unknown, record why and whether a decisive source is reasonably recoverable, without inventing a technical root-cause requirement.
+
 ### Policy, control and outcome evidence
 
 Keep policy, control and occurrence evidence analytically distinct.
