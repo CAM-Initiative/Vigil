@@ -226,80 +226,18 @@ python vigil/scripts/validate-authorship-provenance.py
 ```
 
 
-## Gmail staging for unresolved action
+## GitHub Issues for unresolved follow-up
 
-The adjudication workflow has an explicit maintainer-output channel. When a rebuild establishes that unresolved work must occur outside the current Incident edit, the reviewing agent must stage that next action in Gmail rather than leaving it only in chat, a branch note or an ephemeral handoff.
+**GitHub Issues are the canonical durable tracker for future VIGIL work.** An unresolved task belongs in the owning repository's issue tracker, not a repository review/approval-request file or authoritative self-email queue. Check existing issues before creating a duplicate; link the exact source commit, affected Incidents, relevant class/requirement scope, decisive evidence and constraints.
 
-**Do not use Gmail as a success, progress or no-change report.** A completed clean adjudication, an unchanged taxonomy, or consistency between canonical Incident classification and source-clause assessment requires no notification. Gmail is reserved for a genuine unresolved next action.
+**Taxonomy action:** open or update an issue only when an evidenced material invariant cannot be faithfully represented by current class recognition conditions. Preserve the nearest classes tested, positive/exclusion criteria, exact missing conditions, comparators and whether the future decision is a new class, class-boundary change, family review or terminology repair. Keep current Incident uncertainty; an issue is not authority to create a Fidelity Class.
 
-Two escalation classes use this channel:
+**Maintainer action:** track unresolved source/media/provenance recovery, cross-record repair, blocked evidence, occurrence re-bounding, external requirement extraction, deployment/repository integration, or control changes outside the edit's approval. Preserve exact success criteria and Gate 1/2 stop conditions. File cross-repository issues in the responsible repository and link back where useful.
 
-### Taxonomy action required
+Do not file issues or send mail to announce clean completion, unchanged assessments or green CI. When the action is completed within scope, use normal canonical provenance rather than inventing a backlog item.
 
-Stage a taxonomy action when the occurrence contains a materially evidenced governance mechanism or invariant that cannot be represented faithfully by the current taxonomy without stretching an existing class beyond its definition, recognition criteria or exclusions.
+Authorised operational email may notify the designated agent mailbox and link to the GitHub issue, but it is not a second authoritative task register. Existing Gmail QA-queue messages must be reconciled without silently discarding unresolved work; [issue #147](https://github.com/CAM-Initiative/Vigil/issues/147) owns that transition. Do not insert private messages, secrets or credentials into public issues. If GitHub access is unavailable, respond with **ISSUE NOT CREATED** and a complete ready-to-file issue payload rather than claiming the issue exists.
 
-Typical triggers include:
-
-- no current class fits despite a well-evidenced mechanism;
-- the same uncaptured mechanism recurs across more than one Incident;
-- an existing class boundary is demonstrably too broad, too narrow or internally conflates distinct mechanisms;
-- a recovered invariant has no corresponding current taxonomy boundary; or
-- correct classification would require redefining an existing class rather than merely applying it.
-
-Do **not** create or amend the taxonomy opportunistically inside the Incident rebuild. Finish the Incident as far as the current taxonomy permits, preserve the gap explicitly, and stage a taxonomy instruction containing:
-
-- affected Incident ID(s);
-- concise mechanism/invariant description;
-- evidence supporting the gap;
-- nearest current classes tested;
-- why each current class is insufficient;
-- whether the likely action is a new class, class-boundary amendment, family review or terminology repair;
-- any cross-Incident comparators; and
-- the exact branch/ref from which the instruction was generated.
-
-### Maintainer action required
-
-Stage a maintainer action when the rebuild cannot be completed safely without another task, including:
-
-- a canonical Incident or Section 02 update that the adjudication shows is required but the current task is not authorised to perform;
-- manual recovery of a source or artefact;
-- occurrence re-bounding or possible retirement;
-- unresolved branch-state conflict;
-- inaccessible primary evidence that materially affects adjudication;
-- a material cross-record consistency issue;
-- a taxonomy ambiguity requiring separate taxonomy work;
-- a source-provenance repair outside the current record; or
-- another stop condition that should survive beyond the current chat.
-
-If the required repair is completed within the authorised task and no unresolved follow-up remains, do not stage a Gmail action merely to report that it was fixed.
-
-### Gmail queue protocol
-
-The Gmail staging queue is the authenticated maintainer Gmail account emailing itself.
-
-The authoritative action queue uses:
-
-- subject prefix: `[CURRENT VIGIL QA ACTION]`;
-- Gmail label: `VIGIL/CURRENT QA ACTION`.
-
-When Gmail access is available, the reviewing agent must:
-
-1. search Gmail for the latest message with the exact subject prefix and label;
-2. read that current authoritative queue before writing a replacement;
-3. merge the new action into the existing unresolved queue, removing an older item only when the record/branch state shows it has already been resolved;
-4. send a new self-email with the same exact subject prefix and a current date;
-5. apply the `VIGIL/CURRENT QA ACTION` label to the new message; and
-6. state in the body that the new note supersedes earlier queue notes.
-
-Do not send a one-item replacement that accidentally erases unresolved staged work. The newest labelled message is a complete queue snapshot, not an append-only fragment.
-
-Do not create or replace a queue message merely because an adjudication batch completed or because the validator passed. A new Gmail queue message is warranted only when the unresolved queue materially changes: a genuine action is added, materially revised, or an existing queued action is resolved and therefore removed. An empty/no-op adjudication result is not a Gmail event.
-
-Use explicit headings such as `TAXONOMY ACTION REQUIRED`, `MANUAL ACTION REQUIRED`, and `NO LONGER ACTIONABLE / RESOLVED` where useful. Each item must contain enough repository and evidence context for a later agent to act without reconstructing the originating conversation.
-
-Do not put personal email addresses, credentials, secrets or connector identifiers into this public repository. The connector resolves the authenticated mailbox at execution time.
-
-If Gmail access is unavailable, do not claim that staging occurred. Surface `GMAIL STAGING NOT COMPLETED` with the complete ready-to-stage instruction payload so a later connected session can send it.
 
 ## Review modes
 
