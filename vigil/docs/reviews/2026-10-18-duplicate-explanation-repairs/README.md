@@ -2,7 +2,7 @@
 
 Date: 18 October 2026. Baseline: `333bf9d34ef3973068dfacf26815686b1740ddc3`. Branch: `agent/incident-ecosystem-ingestion`; existing draft PR 137.
 
-Michelle explicitly approved both Gate 1 (the described blocker) and Gate 2 (its affected failures). The earlier proposal and inventory remain historical artefacts. This audit records implementation and the subsequent review; no further approval was requested for that scope.
+Michelle explicitly approved both Gate 1 (the described blocker) and Gate 2 (its affected failures). The superseded Gate 1 proposal remains available in the pinned Git history; the substantive before/after inventories and implementation audit remain in this directory. This audit records implementation and the subsequent review; no further approval was requested for that scope.
 
 ## Implemented rule
 

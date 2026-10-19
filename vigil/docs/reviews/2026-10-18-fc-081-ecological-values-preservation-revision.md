@@ -56,9 +56,9 @@ FC-081 is still narrower than the parent. All existing IDs remain unchanged. Par
 
 ## Historical source and incident compatibility
 
-- The earlier first-stage rename record `2026-10-18-fc-081-ecological-boundary-preservation-rename.md` documents a superseded state and remains a historical record.
+- The superseded first-stage ecological rename is recoverable at the pre-cleanup Git commit `290b8d82c5e238e8ccdea82aa018e491e6d229fb`, not retained as a second live research authority.
 - The prior INC-129 ambiguous-boundary exemplar remains ambiguous: the captured statement supports ecological-stewardship principles but demonstrates no concrete ecologically relevant optimisation decision, omission or trade-off under pressure.
-- Earlier standards/EXTREQ assessments that explicitly rejected **absolute biospheric-constraint priority** (for example IEEE 7000-2021 context-only annotation) **must not be silently converted into proof of support for the broader value-consideration class**. Those FC↔EXTREQ relationships need their own source-faithful reassessment under the new boundary.
+- Earlier standards/EXTREQ assessments that explicitly rejected **absolute biospheric-constraint priority** (for example IEEE 7000-2021 context-only annotation) **must not be silently converted into proof of support for the broader value-consideration class**. Those FC↔EXTREQ relationships need their own source-faithful reassessment under the new boundary, now tracked in [GitHub issue #145](https://github.com/CAM-Initiative/Vigil/issues/145).
 - No legacy Incident occurrence is automatically changed to failure or success by the definition revision; an evidence-specific re-adjudication remains required.
 
 ## Validation performed and remaining

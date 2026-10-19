@@ -20,9 +20,9 @@ All original sources and historical interpretive review entries survive. Summary
 
 The root/VIGIL agent instructions, maintainer guide and ordinary adjudication workflow now require full new-entry processing. The companion audit checklist defaults every pass to not-reviewed. Its actual five-record instances are in `completion-checklists.json`.
 
-The exact proposed canonical field and prospective control design is in [completion-control-gate1.md](completion-control-gate1.md). It includes pass/fail examples, corpus measurement, risks and Gate 2 stop conditions. **No schema, validator, permanent test or publication guard changed.** Approving the workflow outcome does not silently approve this proposed field design.
+The optional prospective canonical processing-review declaration is now tracked in [GitHub issue #142](https://github.com/CAM-Initiative/Vigil/issues/142), including the original design and Gate 1/2 constraints. **No schema, validator, permanent test or publication guard changed.** The original proposal remains in pinned Git history, not in this completed case-audit packet.
 
-The [supporting-source proposal](supporting-source-coverage-proposal.md) identifies the missing device/controller propositions and registered NIST CSF 2.0 as the first scoped extraction candidate. It is currently supporting-only, with zero extracted requirements. No new source or requirement was admitted; no legal breach inferred. Approval is needed for that separate governed scope. No email or other message was sent.
+Potential NIST CSF 2.0 device/controller requirement coverage is now separately tracked in [GitHub issue #143](https://github.com/CAM-Initiative/Vigil/issues/143). At this review's checkpoint the candidate source was supporting-only, with zero extracted requirements; this is a historical observation, not an assertion about every later source version. No new source or requirement was admitted in this bounded review, and no legal breach is inferred. The original proposal remains in pinned Git history.
 
 ## Validation
 

@@ -41,7 +41,7 @@ The three governed surfaces have deliberately different jobs:
 
 - **Incident = public evidentiary and adjudicative result.** It carries the accepted taxonomy relationships, concise occurrence-specific aggregate and mapping-local bases, material uncertainty, harm reasoning, governance interpretation and substantive comparison with external assessments.
 - **Clause-level Incident adjudication = authoritative occurrence results.** `vigil_assessment.source_clause_analysis.clauses[]` records material evidence episodes and their dispositions; `taxonomy_classification` carries the accepted Fidelity Class mappings, roles and coverage. Occurrence findings must not be derived from a separate exhaustive Incident-by-class dataset.
-- **Review/audit artefact = process history.** Baselines, source and mapping dispositions, migration rationale, comparator work, repository repairs and validator history belong in the rebuild manifest or `vigil/docs/reviews/` and `vigil/docs/audits/`.
+- **Review/audit artefact = process history.** New accepted per-Incident source/mapping decisions, unresolved recognition facts and method provenance belong in a dated rebuild manifest or a focused current packet under `vigil/docs/reviews/`. Superseded historical campaigns may be retired to pinned Git history; they do not need a permanent live audit directory.
 
 Do not repeat rejected-class or no-mapping inventories in an Incident's classification basis, mapping-local basis or external-assessment comparison. Repository workflow details—including branches, pull requests, validator repair and whether new research was performed—are not public Incident content. `diagnostic_provenance` is retired and forbidden on active Incidents. `classification_review_provenance` is compact metadata only: review date, reviewer, review status and, when one exists, a stable review reference. Detailed review history must remain outside that block.
 
@@ -183,7 +183,7 @@ For **FC-000083 Control Effectiveness Integrity**, establish that the particular
 
 If the control's identity, existence, availability, applicability, valid trigger, activation or effect is unproved, record the precise missing fact as an unresolved candidate in the dated rebuild manifest. Do not infer it from severe harm, source prestige, a later standard, a model-policy assertion, or an observed unsafe answer. If evidence supports a substantive duty but **no operational control was implemented**, preserve that as a distinct protection-coverage/taxonomy-gap question rather than forcing FC-000038/000083.
 
-Multiple independently substantiated mappings may analyse the same evidence episode. Never duplicate that episode to express multiple interpretations. A new candidate class becomes available for canonical Incident mapping only after its governed taxonomy admission and versioned release. The 2026-10-10 bounded design proposals and IEEE correspondence review are in `vigil/docs/reviews/2026-10-10-relational-protection-fidelity-class-review.md`.
+Multiple independently substantiated mappings may analyse the same evidence episode. Never duplicate that episode to express multiple interpretations. A new candidate class becomes available for canonical Incident mapping only after its governed taxonomy admission and versioned release. The superseded 10 October relational/vulnerability design proposal is recoverable in Git history; its now-admitted class recognition conditions are governed by the canonical FF-0009 definitions for FC-086 Relational Boundary Fidelity and FC-087 Vulnerability-Responsive Protection Fidelity. No earlier speculative IEEE relationships are admitted by that historical proposal.
 
 ## 5. HARM — determine pathway before assessing severity
 
@@ -226,80 +226,33 @@ python vigil/scripts/validate-authorship-provenance.py
 ```
 
 
-## Gmail staging for unresolved action
+## GitHub Issues for unresolved actionable follow-up
 
-The adjudication workflow has an explicit maintainer-output channel. When a rebuild establishes that unresolved work must occur outside the current Incident edit, the reviewing agent must stage that next action in Gmail rather than leaving it only in chat, a branch note or an ephemeral handoff.
+GitHub Issues in `CAM-Initiative/Vigil` are the sole durable queue for **new** VIGIL follow-up tasks. The Incident is the evidentiary/adjudicative record; the dated review is the decision history; an Issue identifies the next concrete action. Do not send Gmail queue emails for new actions.
 
-**Do not use Gmail as a success, progress or no-change report.** A completed clean adjudication, an unchanged taxonomy, or consistency between canonical Incident classification and source-clause assessment requires no notification. Gmail is reserved for a genuine unresolved next action.
+### When an Issue is justified
 
-Two escalation classes use this channel:
+A positive or negative classification, a defensible Boundary, `resolved-no-mapping`, `unresolved`, `taxonomy-gap`, or partial coverage does not automatically require an Issue. Raise an Issue when there is a **specific, actionable next step** outside the current authorised edit. A blocked Incident stays blocked until its missing critical pass is completed; an Issue is not a substitute for the pass.
 
-### Taxonomy action required
+Use one primary category: `taxonomy-gap` (demonstrated unrepresented mechanism or class-boundary correction); `evidence-required` (a recoverable decisive primary source or transcript); `record-maintenance` (source, episode, record, requirement or cross-record correction); `system-improvement` (workflow, schema, validation or website). Taxonomy issues must explain the evidenced invariant, nearest classes and their recognition/exclusion limits. Do not opportunistically amend taxonomy to close an Issue.
 
-Stage a taxonomy action when the occurrence contains a materially evidenced governance mechanism or invariant that cannot be represented faithfully by the current taxonomy without stretching an existing class beyond its definition, recognition criteria or exclusions.
+### Mandatory deduplicated staging protocol
 
-Typical triggers include:
+1. Check current `main`, the authorised branch, relevant PRs, and open **and closed** Issues for changed or already-resolved state.
+2. Search by Incident/episode IDs, Fidelity Class/requirement IDs and synonyms for the mechanism. A different title is not evidence of a new task.
+3. If a relevant Issue is open, update it with the new evidence and context without deleting other subtasks. If a matching Issue is closed, examine its resolution and only propose reopening for genuinely new outstanding evidence.
+4. If no matching active issue exists, create one using `.github/ISSUE_TEMPLATE/vigil-follow-up.md`: specify category, affected IDs, evidence with public source references, exact missing fact or repair, bounded next action, relevant taxonomy/standards version, branch/ref, required approval and verifiable closure condition. Do not paste private mailbox contents or sensitive sources into public Issues.
+5. Link a confirmed Issue number/URL from the dated review manifest's `escalation` or new-entry completion audit's `outstanding_actions`, and give its status in the per-record completion report. Do not put issue-tracking data in canonical Incident interpretations.
+6. If GitHub is unavailable, retain the ready-to-file Issue text in the dated audit and report `GITHUB ISSUE STAGING NOT COMPLETED`. Do not claim it was created and do not fall back to Gmail.
+7. No Issue is a maintainer approval. Preserve all existing Gate 1/Gate 2 limits, branch holds, human decisions and publication restrictions.
 
-- no current class fits despite a well-evidenced mechanism;
-- the same uncaptured mechanism recurs across more than one Incident;
-- an existing class boundary is demonstrably too broad, too narrow or internally conflates distinct mechanisms;
-- a recovered invariant has no corresponding current taxonomy boundary; or
-- correct classification would require redefining an existing class rather than merely applying it.
+Describe outcomes in the completion report as `record_ready`, `record_ready_with_follow_up` or `record_blocked` (reporting terms, not new canonical schema values). Only validated, authorised records may be prepared for publication.
 
-Do **not** create or amend the taxonomy opportunistically inside the Incident rebuild. Finish the Incident as far as the current taxonomy permits, preserve the gap explicitly, and stage a taxonomy instruction containing:
+### Historical Gmail transition — **exactly once**
 
-- affected Incident ID(s);
-- concise mechanism/invariant description;
-- evidence supporting the gap;
-- nearest current classes tested;
-- why each current class is insufficient;
-- whether the likely action is a new class, class-boundary amendment, family review or terminology repair;
-- any cross-Incident comparators; and
-- the exact branch/ref from which the instruction was generated.
+The former labelled `[CURRENT VIGIL QA ACTION]` Gmail snapshot is a legacy migration source, **not** an ongoing feed. Perform **one** separately tracked reconciliation per historical queue against current canonical records, working branches, existing Issues and recorded supersessions; create or link only distinct outstanding tasks. Document each item as migrated, already tracked, resolved, superseded or excluded, with reasons, in a dated migration audit. Do not copy old emails verbatim to public GitHub.
 
-### Maintainer action required
-
-Stage a maintainer action when the rebuild cannot be completed safely without another task, including:
-
-- a canonical Incident or Section 02 update that the adjudication shows is required but the current task is not authorised to perform;
-- manual recovery of a source or artefact;
-- occurrence re-bounding or possible retirement;
-- unresolved branch-state conflict;
-- inaccessible primary evidence that materially affects adjudication;
-- a material cross-record consistency issue;
-- a taxonomy ambiguity requiring separate taxonomy work;
-- a source-provenance repair outside the current record; or
-- another stop condition that should survive beyond the current chat.
-
-If the required repair is completed within the authorised task and no unresolved follow-up remains, do not stage a Gmail action merely to report that it was fixed.
-
-### Gmail queue protocol
-
-The Gmail staging queue is the authenticated maintainer Gmail account emailing itself.
-
-The authoritative action queue uses:
-
-- subject prefix: `[CURRENT VIGIL QA ACTION]`;
-- Gmail label: `VIGIL/CURRENT QA ACTION`.
-
-When Gmail access is available, the reviewing agent must:
-
-1. search Gmail for the latest message with the exact subject prefix and label;
-2. read that current authoritative queue before writing a replacement;
-3. merge the new action into the existing unresolved queue, removing an older item only when the record/branch state shows it has already been resolved;
-4. send a new self-email with the same exact subject prefix and a current date;
-5. apply the `VIGIL/CURRENT QA ACTION` label to the new message; and
-6. state in the body that the new note supersedes earlier queue notes.
-
-Do not send a one-item replacement that accidentally erases unresolved staged work. The newest labelled message is a complete queue snapshot, not an append-only fragment.
-
-Do not create or replace a queue message merely because an adjudication batch completed or because the validator passed. A new Gmail queue message is warranted only when the unresolved queue materially changes: a genuine action is added, materially revised, or an existing queued action is resolved and therefore removed. An empty/no-op adjudication result is not a Gmail event.
-
-Use explicit headings such as `TAXONOMY ACTION REQUIRED`, `MANUAL ACTION REQUIRED`, and `NO LONGER ACTIONABLE / RESOLVED` where useful. Each item must contain enough repository and evidence context for a later agent to act without reconstructing the originating conversation.
-
-Do not put personal email addresses, credentials, secrets or connector identifiers into this public repository. The connector resolves the authenticated mailbox at execution time.
-
-If Gmail access is unavailable, do not claim that staging occurred. Surface `GMAIL STAGING NOT COMPLETED` with the complete ready-to-stage instruction payload so a later connected session can send it.
+After the migration audit is marked complete, **never re-scan or re-migrate Gmail as part of normal Incident processing**, and never keep Gmail and GitHub Issues as parallel queues. Later corrections to a migrated item are made on its linked GitHub Issue. The remaining evidence-of-completion check is tracked in GitHub issue #147. Until a dated item-by-item migration audit is located or completed, do not claim the legacy backlog has been transferred.
 
 ## Review modes
 

@@ -32,7 +32,7 @@ Before opening a pull request from `agent/incident-ecosystem-ingestion`, synchro
 
 A request for a new Incident authorises the complete ordinary evidence, scope/duplicate, chronological episode, current taxonomy, twelve-dimensional HIM, independent external-requirement, public interpretation, provenance, appropriate media and validation process. The JSON intake template is an intermediate starting point. Follow the new-entry completion section of `docs/maintenance/INCIDENT-ADJUDICATION-WORKFLOW.md` and the audit-only `templates/incident-completion-checklist-template.json`. An empty assessment list does not establish review. Distinguish unperformed, reviewed-with-assessments, reviewed-none-retained and blocked external review in the dated audit, with reasons and exact missing sources/facts. Evidence-limited findings can follow a completed review; do not manufacture taxonomy completeness or standards findings.
 
-Canonical completion fields or blocking controls remain subject to Gate 1. The 18 October proposal is `docs/reviews/2026-10-18-inc-199-203-completion/completion-control-gate1.md`; it is not an implemented validity rule. No historical backfill or wider corpus repair is authorised by the new-entry instruction.
+Canonical completion fields or blocking controls remain subject to Gate 1. Prospective design and decision gate are tracked in [GitHub issue #142](https://github.com/CAM-Initiative/Vigil/issues/142); no new validity rule or historical backfill has been authorised. The previous 18 October design draft remains in Git history.
 
 Scheduled or manual ecosystem ingestion SHOULD explicitly check high-signal first-party disclosure surfaces that publish bounded model-behaviour, evaluation, containment or agent incidents. At minimum, the current watch set includes:
 
@@ -58,8 +58,7 @@ Do not falsify historical review dates or rewrite historical audits and reviews 
 - `vigil/external_governance/sources/` — external-source registry.
 - `vigil/external_governance/requirements/` — external-governance requirements and projections.
 - `vigil/cam_assessment/` — CAM applicability and coverage assessment.
-- `vigil/docs/reviews/` — bounded reviews that remain operationally useful.
-- `vigil/docs/audits/` — retained non-normative historical audit evidence.
+- `vigil/docs/reviews/` — selected dated decision packets and adopted-control provenance relevant to the retained corpus. Superseded audits are recoverable at the pinned pre-cleanup Git commit; they are not current verification.
 
 The taxonomy migration assurance ledger at `vigil/taxonomy/migration/Caelestis.LegacyFailure.MigrationLedger.json` remains live taxonomy validation evidence. It does not reactivate FM as a VIGIL record class.
 
@@ -236,30 +235,17 @@ Re-run the candidate from the canonical class definition and explicitly check fo
 If an earlier adjudication used an unstated recognition condition, correct the record and preserve that correction in interpretive provenance.
 
 
-### Gmail as the durable next-action staging point
+### GitHub Issues as the durable action queue
 
-VIGIL uses the designated agent mailbox **Caelen.agent@gmail.com** as the durable staging point for unresolved actions that cannot or should not be completed inside the current Incident edit.
+The authoritative location for new unresolved VIGIL follow-up tasks is GitHub Issues in `CAM-Initiative/Vigil`, not the former emailed queue. Issues are tracked actions, not new canonical evidence, approval, completion reporting or a substitute for an admitted Incident.
 
-**Routing invariant:** all connector-mediated VIGIL operational action emails, QA queues, taxonomy handoffs, authoring audits, repository-cleanup actions and similar maintainer work items MUST be addressed to **Caelen.agent@gmail.com**. Do not route these workflow emails to a maintainer's personal mailbox merely because that account is currently connected or is the sender identity. If a VIGIL action email is accidentally sent elsewhere, mark it superseded and send the authoritative replacement to **Caelen.agent@gmail.com**.
+When an adjudication produces a concrete task that cannot safely be completed within its authorised scope, follow the issue protocol in `vigil/docs/maintenance/INCIDENT-ADJUDICATION-WORKFLOW.md`. Identify the Incident, episode and Fidelity Class or external requirement as appropriate. Search existing open and closed issues using these identities and the underlying mechanism. Update an existing relevant open issue instead of creating a duplicate. Otherwise create an actionable issue with source-grounded context, the exact missing fact or repair, branch/ref, dependencies and an objective closure condition. Use the template in `.github/ISSUE_TEMPLATE/vigil-follow-up.md`.
 
+Use categories: **taxonomy-gap**, **evidence-required**, **record-maintenance**, **system-improvement**. A defensible Boundary, no-mapping, partial or unresolved finding does not alone require an issue: the trigger is a distinct *actionable follow-up*. A blocked record stays blocked even if an issue is opened. Do not create issues for a clean pass or for progress reporting. Do not publish private evidence or sensitive correspondence in public issues.
 
-**Gmail is an exception/action channel, not a completion log.** Do not send a Gmail notification merely because an Incident, pair, tranche or validator run completed successfully. A clean adjudication, an unchanged taxonomy, consistent Incident classification and source-clause assessments, or an empty update queue requires **no email**.
+Link the confirmed issue number and URL in the dated review manifest or Incident completion audit, never in a new global incident-by-class dataset. Issue creation is not automatic approval to change taxonomy, schema, validators, other Incidents or the website. If GitHub access is unavailable, preserve a ready-to-file issue payload in the dated audit and report that staging was not completed; do not revert to Gmail.
 
-The current queue is the **latest** Gmail message whose subject begins `[CURRENT VIGIL QA ACTION]` and that carries the label `VIGIL/CURRENT QA ACTION`. That message is a complete authoritative snapshot of unresolved work and supersedes earlier queue notes.
-
-When adjudication identifies a new unresolved taxonomy requirement or another unresolved manual action:
-
-1. read the current queue first;
-2. reconcile its items against the actual working-branch state;
-3. preserve unresolved items;
-4. add the new instruction with Incident IDs, evidence basis, tested taxonomy boundaries or other relevant context;
-5. send a replacement self-email using the same subject prefix;
-6. apply the same Gmail label; and
-7. make the supersession rule explicit in the new body.
-
-A taxonomy escalation should explain the mechanism or invariant that is not faithfully representable, the nearest classes tested and rejected, and whether the likely next task is a new class, boundary amendment, family review or terminology repair.
-
-This is intentionally a connector-mediated maintainer workflow, not repository automation. GitHub Actions must not contain mailbox credentials or attempt to impersonate the ChatGPT Gmail connector.
+The historical Gmail queue is a **migration source only**. Reconcile the latest correctly labelled authoritative snapshot and its supersession notes against current `main`, the working branch and already-open Issues; migrate only outstanding, distinct tasks. Do not import historical embedded snapshots as new work or claim the migration complete before it is audited. See the one-time historical queue transition in `vigil/docs/maintenance/INCIDENT-ADJUDICATION-WORKFLOW.md`. Existing approvals and workstream pauses remain in force.
 
 ### Mapping preservation invariant
 
@@ -483,7 +469,7 @@ Publication consumers must:
 - never translate an external label into VIGIL `failure-occurrence`, `successful-invariant` or `ambiguous-boundary` roles unless a separate VIGIL adjudication independently establishes that mapping; and
 - keep VIGIL's own Alignment Taxonomy table visually and semantically distinct from the external classification table.
 
-The current canonical compatibility source is `external_assessments[].classification_or_rating`. A proposed additive data shape for a future database-backed implementation is documented in `vigil/docs/design/EXTERNAL-ALIGNMENT-CLASSIFICATION.md`. That proposal is non-normative and does not change `VIGIL.Schema.json` until separately approved under the schema/validator stop conditions.
+The current canonical compatibility source is `external_assessments[].classification_or_rating`. Optional future additive external-assessor classification fields and database design are tracked in [GitHub issue #144](https://github.com/CAM-Initiative/Vigil/issues/144), not in an active design proposal. Nothing in that issue amends `VIGIL.Schema.json`, the validator or classification authority.
 
 ## Optional stable source-event references — 2026-10-08
 
@@ -497,7 +483,7 @@ The source-first repair of INC-084, INC-129 and INC-141 introduced an **opt-in**
 - Store a dated original-to-new crosswalk and per-requirement row disposition with each substantive repair. Preserve source records, interpretive provenance, class polarity, independent EXTREQ alignment, and HIM assessment unless separately re-adjudicated.
 - Regenerate public indexes **only** with `vigil/scripts/build-vigil-public-records.py`. The VIGIL records workflow now reports stale checked-in indexes before rebuilding them and refreshes outputs on pushes to the canonical ingestion branch. A clean CI run is not a human evidence review.
 
-See `vigil/docs/reviews/2026-10-08-corpus-evidence-reconciliation/` for the bounded pilot and repair manifests, validator implementation checkpoint and the remaining unreviewed corpus.
+The 8 October source-evidence pilot and intermediate repair manifests are historical snapshots recoverable from Git history (pre-cleanup commit `290b8d82c5e238e8ccdea82aa018e491e6d229fb`). Their structural checks and past coverage counts do not establish that the present corpus has been independently readjudicated.
 
 ## Clause-level Alignment Taxonomy adjudication
 
@@ -552,7 +538,7 @@ The master registry contains one registry, `incidents`. It is a registry-of-regi
 
 ## Public explanation identifier coverage
 
-The existing prohibition on internal taxonomy-number shorthand is also enforced by `validate-vigil-records.py` for aggregate and mapping-local classification bases, source-clause context/interpretation/notes, relationship rationales, nested statement context/interpretation and VIGIL comparisons with external assessments. This is the same identifier-syntax rule, not an extension of all maintenance-word patterns to these fields. Keep identifiers in structured classification fields and literal original source quotations; explain the occurrence in the adjacent own prose. Historical review/audit provenance is not rewritten. The 18 October coverage audit and remaining canonical validation failures are recorded in `vigil/docs/reviews/2026-10-18-public-taxonomy-number-validation-failures.json`; a failing guard does not authorise automatic corpus repair.
+The existing prohibition on internal taxonomy-number shorthand is also enforced by `validate-vigil-records.py` for aggregate and mapping-local classification bases, source-clause context/interpretation/notes, relationship rationales, nested statement context/interpretation and VIGIL comparisons with external assessments. This is the same identifier-syntax rule, not an extension of all maintenance-word patterns to these fields. Keep identifiers in structured classification fields and literal original source quotations; explain the occurrence in the adjacent own prose. Historical review/audit provenance is not rewritten. The 18 October historical inventory (73 incidents / 102 fields at that checkpoint) is recoverable from pinned Git history. Reverification against today's corpus and any separately authorised broader corrections are tracked in [GitHub issue #146](https://github.com/CAM-Initiative/Vigil/issues/146); a dated failure inventory does not establish that the same cases still fail now, and a failing guard never authorises automatic rewriting.
 
 ## Optional wording evidence and statement validation
 
