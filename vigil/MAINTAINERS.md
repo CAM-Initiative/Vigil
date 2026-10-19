@@ -32,7 +32,7 @@ Before opening a pull request from `agent/incident-ecosystem-ingestion`, synchro
 
 A request for a new Incident authorises the complete ordinary evidence, scope/duplicate, chronological episode, current taxonomy, twelve-dimensional HIM, independent external-requirement, public interpretation, provenance, appropriate media and validation process. The JSON intake template is an intermediate starting point. Follow the new-entry completion section of `docs/maintenance/INCIDENT-ADJUDICATION-WORKFLOW.md` and the audit-only `templates/incident-completion-checklist-template.json`. An empty assessment list does not establish review. Distinguish unperformed, reviewed-with-assessments, reviewed-none-retained and blocked external review in the dated audit, with reasons and exact missing sources/facts. Evidence-limited findings can follow a completed review; do not manufacture taxonomy completeness or standards findings.
 
-Canonical completion fields or blocking controls remain subject to Gate 1. The 18 October proposal is `docs/reviews/2026-10-18-inc-199-203-completion/completion-control-gate1.md`; it is not an implemented validity rule. No historical backfill or wider corpus repair is authorised by the new-entry instruction.
+Canonical completion fields or blocking controls remain subject to Gate 1. Prospective design and decision gate are tracked in [GitHub issue #142](https://github.com/CAM-Initiative/Vigil/issues/142); no new validity rule or historical backfill has been authorised. The previous 18 October design draft remains in Git history.
 
 Scheduled or manual ecosystem ingestion SHOULD explicitly check high-signal first-party disclosure surfaces that publish bounded model-behaviour, evaluation, containment or agent incidents. At minimum, the current watch set includes:
 
@@ -58,8 +58,7 @@ Do not falsify historical review dates or rewrite historical audits and reviews 
 - `vigil/external_governance/sources/` — external-source registry.
 - `vigil/external_governance/requirements/` — external-governance requirements and projections.
 - `vigil/cam_assessment/` — CAM applicability and coverage assessment.
-- `vigil/docs/reviews/` — bounded reviews that remain operationally useful.
-- `vigil/docs/audits/` — retained non-normative historical audit evidence.
+- `vigil/docs/reviews/` — selected dated decision packets and adopted-control provenance relevant to the retained corpus. Superseded audits are recoverable at the pinned pre-cleanup Git commit; they are not current verification.
 
 The taxonomy migration assurance ledger at `vigil/taxonomy/migration/Caelestis.LegacyFailure.MigrationLedger.json` remains live taxonomy validation evidence. It does not reactivate FM as a VIGIL record class.
 
@@ -489,7 +488,7 @@ Publication consumers must:
 - never translate an external label into VIGIL `failure-occurrence`, `successful-invariant` or `ambiguous-boundary` roles unless a separate VIGIL adjudication independently establishes that mapping; and
 - keep VIGIL's own Alignment Taxonomy table visually and semantically distinct from the external classification table.
 
-The current canonical compatibility source is `external_assessments[].classification_or_rating`. A proposed additive data shape for a future database-backed implementation is documented in `vigil/docs/design/EXTERNAL-ALIGNMENT-CLASSIFICATION.md`. That proposal is non-normative and does not change `VIGIL.Schema.json` until separately approved under the schema/validator stop conditions.
+The current canonical compatibility source is `external_assessments[].classification_or_rating`. Optional future additive external-assessor classification fields and database design are tracked in [GitHub issue #144](https://github.com/CAM-Initiative/Vigil/issues/144), not in an active design proposal. Nothing in that issue amends `VIGIL.Schema.json`, the validator or classification authority.
 
 ## Optional stable source-event references — 2026-10-08
 
@@ -503,7 +502,7 @@ The source-first repair of INC-084, INC-129 and INC-141 introduced an **opt-in**
 - Store a dated original-to-new crosswalk and per-requirement row disposition with each substantive repair. Preserve source records, interpretive provenance, class polarity, independent EXTREQ alignment, and HIM assessment unless separately re-adjudicated.
 - Regenerate public indexes **only** with `vigil/scripts/build-vigil-public-records.py`. The VIGIL records workflow now reports stale checked-in indexes before rebuilding them and refreshes outputs on pushes to the canonical ingestion branch. A clean CI run is not a human evidence review.
 
-See `vigil/docs/reviews/2026-10-08-corpus-evidence-reconciliation/` for the bounded pilot and repair manifests, validator implementation checkpoint and the remaining unreviewed corpus.
+The 8 October source-evidence pilot and intermediate repair manifests are historical snapshots recoverable from Git history (pre-cleanup commit `290b8d82c5e238e8ccdea82aa018e491e6d229fb`). Their structural checks and past coverage counts do not establish that the present corpus has been independently readjudicated.
 
 ## Clause-level Alignment Taxonomy adjudication
 
@@ -558,7 +557,7 @@ The master registry contains one registry, `incidents`. It is a registry-of-regi
 
 ## Public explanation identifier coverage
 
-The existing prohibition on internal taxonomy-number shorthand is also enforced by `validate-vigil-records.py` for aggregate and mapping-local classification bases, source-clause context/interpretation/notes, relationship rationales, nested statement context/interpretation and VIGIL comparisons with external assessments. This is the same identifier-syntax rule, not an extension of all maintenance-word patterns to these fields. Keep identifiers in structured classification fields and literal original source quotations; explain the occurrence in the adjacent own prose. Historical review/audit provenance is not rewritten. The 18 October coverage audit and remaining canonical validation failures are recorded in `vigil/docs/reviews/2026-10-18-public-taxonomy-number-validation-failures.json`; a failing guard does not authorise automatic corpus repair.
+The existing prohibition on internal taxonomy-number shorthand is also enforced by `validate-vigil-records.py` for aggregate and mapping-local classification bases, source-clause context/interpretation/notes, relationship rationales, nested statement context/interpretation and VIGIL comparisons with external assessments. This is the same identifier-syntax rule, not an extension of all maintenance-word patterns to these fields. Keep identifiers in structured classification fields and literal original source quotations; explain the occurrence in the adjacent own prose. Historical review/audit provenance is not rewritten. The 18 October historical inventory (73 incidents / 102 fields at that checkpoint) is recoverable from pinned Git history. Reverification against today's corpus and any separately authorised broader corrections are tracked in [GitHub issue #146](https://github.com/CAM-Initiative/Vigil/issues/146); a dated failure inventory does not establish that the same cases still fail now, and a failing guard never authorises automatic rewriting.
 
 ## Optional wording evidence and statement validation
 

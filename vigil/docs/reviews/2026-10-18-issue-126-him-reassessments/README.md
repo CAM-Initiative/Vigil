@@ -56,7 +56,7 @@ The current corpus includes one record in monitoring state; use the reproducible
 - GENERATED: builder-owned public indexes and filtered taxonomy examples.
 - REVIEW: METHOD-AMENDMENT.md.
 - AUDIT: this directory’s before/after records, source/access notes, hold dispositions, validation, read-only counting script, prior methodology snapshot and removed-test text.
-- Historical: the runtime checkpoint, maintainer decision log and earlier registers remain dated evidence; successor pointers prevent their counts being mistaken for current state.
+- Historical: the interrupted-runtime checkpoint is recoverable at the pinned pre-cleanup Git commit; the maintainer decision log and earlier registers remain dated evidence. This completed audit and its exact-commit counting report supersede the old status and counts.
 
 No manuscript, email, merge or deployment is performed.
 

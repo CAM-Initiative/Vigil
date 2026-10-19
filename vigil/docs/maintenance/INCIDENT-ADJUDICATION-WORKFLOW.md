@@ -41,7 +41,7 @@ The three governed surfaces have deliberately different jobs:
 
 - **Incident = public evidentiary and adjudicative result.** It carries the accepted taxonomy relationships, concise occurrence-specific aggregate and mapping-local bases, material uncertainty, harm reasoning, governance interpretation and substantive comparison with external assessments.
 - **Clause-level Incident adjudication = authoritative occurrence results.** `vigil_assessment.source_clause_analysis.clauses[]` records material evidence episodes and their dispositions; `taxonomy_classification` carries the accepted Fidelity Class mappings, roles and coverage. Occurrence findings must not be derived from a separate exhaustive Incident-by-class dataset.
-- **Review/audit artefact = process history.** Baselines, source and mapping dispositions, migration rationale, comparator work, repository repairs and validator history belong in the rebuild manifest or `vigil/docs/reviews/` and `vigil/docs/audits/`.
+- **Review/audit artefact = process history.** New accepted per-Incident source/mapping decisions, unresolved recognition facts and method provenance belong in a dated rebuild manifest or a focused current packet under `vigil/docs/reviews/`. Superseded historical campaigns may be retired to pinned Git history; they do not need a permanent live audit directory.
 
 Do not repeat rejected-class or no-mapping inventories in an Incident's classification basis, mapping-local basis or external-assessment comparison. Repository workflow details—including branches, pull requests, validator repair and whether new research was performed—are not public Incident content. `diagnostic_provenance` is retired and forbidden on active Incidents. `classification_review_provenance` is compact metadata only: review date, reviewer, review status and, when one exists, a stable review reference. Detailed review history must remain outside that block.
 
@@ -203,7 +203,7 @@ For **FC-000083 Control Effectiveness Integrity**, establish that the particular
 
 If the evidence does not sufficiently establish the applicable control or protective-control posture, existence, availability, applicability, valid trigger, activation or effect required by the class, record the precise missing fact as an unresolved candidate in the dated rebuild manifest. Do not infer it from severe harm, source prestige, a later standard, a model-policy assertion, or an observed unsafe answer. If evidence supports a substantive duty but **no operational control was implemented**, preserve that as a distinct protection-coverage/taxonomy-gap question rather than forcing FC-000038/000083.
 
-Multiple independently substantiated mappings may analyse the same evidence episode. Never duplicate that episode to express multiple interpretations. A new candidate class becomes available for canonical Incident mapping only after its governed taxonomy admission and versioned release. The 2026-10-10 bounded design proposals and IEEE correspondence review are in `vigil/docs/reviews/2026-10-10-relational-protection-fidelity-class-review.md`.
+Multiple independently substantiated mappings may analyse the same evidence episode. Never duplicate that episode to express multiple interpretations. A new candidate class becomes available for canonical Incident mapping only after its governed taxonomy admission and versioned release. The superseded 10 October relational/vulnerability design proposal is recoverable in Git history; its now-admitted class recognition conditions are governed by the canonical FF-0009 definitions for FC-086 Relational Boundary Fidelity and FC-087 Vulnerability-Responsive Protection Fidelity. No earlier speculative IEEE relationships are admitted by that historical proposal.
 
 ## 5. HARM — determine pathway before assessing severity
 
@@ -274,7 +274,7 @@ Describe outcomes in the completion report as `record_ready`, `record_ready_with
 
 The former labelled `[CURRENT VIGIL QA ACTION]` Gmail snapshot is a legacy migration source, **not** an ongoing feed. Perform **one** separately tracked reconciliation per historical queue against current canonical records, working branches, existing Issues and recorded supersessions; create or link only distinct outstanding tasks. Document each item as migrated, already tracked, resolved, superseded or excluded, with reasons, in a dated migration audit. Do not copy old emails verbatim to public GitHub.
 
-After the migration audit is marked complete, **never re-scan or re-migrate Gmail as part of normal Incident processing**, and never keep Gmail and GitHub Issues as parallel queues. Later corrections to a migrated item are made on its linked GitHub Issue. The detailed one-time procedure is `vigil/docs/maintenance/GMAIL-TO-GITHUB-ISSUES-MIGRATION.md`. Until that audit is genuinely complete, do not claim the legacy backlog has been transferred.
+After the migration audit is marked complete, **never re-scan or re-migrate Gmail as part of normal Incident processing**, and never keep Gmail and GitHub Issues as parallel queues. Later corrections to a migrated item are made on its linked GitHub Issue. The remaining evidence-of-completion check is tracked in GitHub issue #147. Until a dated item-by-item migration audit is located or completed, do not claim the legacy backlog has been transferred.
 
 ## Review modes
 
