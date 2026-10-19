@@ -32,7 +32,7 @@ Before opening a pull request from `agent/incident-ecosystem-ingestion`, synchro
 
 A request for a new Incident authorises the complete ordinary evidence, scope/duplicate, chronological episode, current taxonomy, twelve-dimensional HIM, independent external-requirement, public interpretation, provenance, appropriate media and validation process. The JSON intake template is an intermediate starting point. Follow the new-entry completion section of `docs/maintenance/INCIDENT-ADJUDICATION-WORKFLOW.md` and the audit-only `templates/incident-completion-checklist-template.json`. An empty assessment list does not establish review. Distinguish unperformed, reviewed-with-assessments, reviewed-none-retained and blocked external review in the dated audit, with reasons and exact missing sources/facts. Evidence-limited findings can follow a completed review; do not manufacture taxonomy completeness or standards findings.
 
-Canonical completion fields or blocking controls remain subject to Gate 1. The 18 October proposal is `docs/reviews/2026-10-18-inc-199-203-completion/completion-control-gate1.md`; it is not an implemented validity rule. No historical backfill or wider corpus repair is authorised by the new-entry instruction.
+Canonical completion fields or blocking controls remain subject to Gate 1. Prospective design and decision gate are tracked in [GitHub issue #142](https://github.com/CAM-Initiative/Vigil/issues/142); no new validity rule or historical backfill has been authorised. The previous 18 October design draft remains in Git history.
 
 Scheduled or manual ecosystem ingestion SHOULD explicitly check high-signal first-party disclosure surfaces that publish bounded model-behaviour, evaluation, containment or agent incidents. At minimum, the current watch set includes:
 
@@ -482,7 +482,7 @@ Publication consumers must:
 - never translate an external label into VIGIL `failure-occurrence`, `successful-invariant` or `ambiguous-boundary` roles unless a separate VIGIL adjudication independently establishes that mapping; and
 - keep VIGIL's own Alignment Taxonomy table visually and semantically distinct from the external classification table.
 
-The current canonical compatibility source is `external_assessments[].classification_or_rating`. A proposed additive data shape for a future database-backed implementation is documented in `vigil/docs/design/EXTERNAL-ALIGNMENT-CLASSIFICATION.md`. That proposal is non-normative and does not change `VIGIL.Schema.json` until separately approved under the schema/validator stop conditions.
+The current canonical compatibility source is `external_assessments[].classification_or_rating`. Optional future additive external-assessor classification fields and database design are tracked in [GitHub issue #144](https://github.com/CAM-Initiative/Vigil/issues/144), not in an active design proposal. Nothing in that issue amends `VIGIL.Schema.json`, the validator or classification authority.
 
 ## Optional stable source-event references — 2026-10-08
 
