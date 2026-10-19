@@ -90,18 +90,36 @@ class BoundaryAdjudicationTests(unittest.TestCase):
             self.assertEqual(self.errors(), [])
 
     def test_mapping_validator_enforces_both_positions(self):
-        mapping = dict(self.mapping, family_id='F', class_id='C', classification_basis='Specific occurrence basis.', classification_confidence='medium')
+        mapping = dict(self.mapping, family_id='F', class_id='C', classification_basis='Specific occurrence basis.')
         mapping.pop('boundary_adjudication')
         for label in ['primary_classification', 'secondary_classifications[0]']:
             errors = []
             V.validate_taxonomy_mapping(Path('synthetic.json'), mapping, label, {'F': {}}, {'C': {'family_id': 'F'}}, {}, errors, self.record)
             self.assertTrue(any(label + '.boundary_adjudication' in e for e in errors))
 
-    def test_historical_confidence_unchanged(self):
-        self.mapping['classification_confidence'] = 'medium'
-        original = copy.deepcopy(self.mapping)
-        self.errors()
-        self.assertEqual(self.mapping, original)
+    def mapping_errors(self, mapping):
+        errors = []
+        V.validate_taxonomy_mapping(Path('synthetic.json'), mapping, 'mapping', {'F': {}}, {'C': {'family_id': 'F'}}, {}, errors, self.record)
+        return errors
+
+    def test_role_specific_fields(self):
+        mapping = dict(self.mapping, family_id='F', class_id='C', classification_basis='Specific occurrence basis.')
+        self.assertEqual(self.mapping_errors(mapping), [])
+        for value in ['medium', None]:
+            mapping['classification_confidence'] = value
+            original = copy.deepcopy(mapping)
+            self.assertTrue(self.mapping_errors(mapping))
+            self.assertEqual(mapping, original)
+        mapping.pop('classification_confidence')
+        for role in ['failure-occurrence', 'successful-invariant']:
+            decisive = dict(mapping, classification_role=role)
+            decisive.pop('boundary_adjudication')
+            self.assertTrue(self.mapping_errors(decisive))
+            decisive['classification_confidence'] = 'medium'
+            self.assertEqual(self.mapping_errors(decisive), [])
+            for value in [self.value, None]:
+                decisive['boundary_adjudication'] = value
+                self.assertTrue(self.mapping_errors(decisive))
 
 
 if __name__ == '__main__':

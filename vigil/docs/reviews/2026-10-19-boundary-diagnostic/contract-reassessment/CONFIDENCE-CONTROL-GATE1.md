@@ -1,3 +1,5 @@
+> SUPERSEDED 19 October 2026: The maintainer explicitly directed that Boundary confidence is forbidden, decisive confidence is required, and superseded Boundary details must leave the current mapping on a decisive role change. The optional-confidence proposal below is historical and is not current authority. The role-specific control is being implemented under that instruction.
+
 # Gate 1 proposal: confidence requiredness for Boundary mappings
 
 Status: proposed; no schema, validator or permanent test edited.

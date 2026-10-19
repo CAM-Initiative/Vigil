@@ -477,7 +477,7 @@ def validate_taxonomy_mapping(
     if not isinstance(mapping, dict):
         errors.append(f"{path}: {label} must be an object")
         return None
-    required = {"family_id", "class_id", "classification_role", "classification_basis", "classification_confidence"}
+    required = {"family_id", "class_id", "classification_role", "classification_basis"}
     missing = sorted(required - set(mapping))
     if missing:
         errors.append(f"{path}: {label} missing {', '.join(missing)}")
@@ -498,9 +498,15 @@ def validate_taxonomy_mapping(
             f"{path}: {label}.classification_basis must describe the occurrence directly "
             "and must not use an Incident ID as a narrative referent"
         )
-    if mapping.get("classification_confidence") not in {"low", "medium", "high"}:
-        errors.append(f"{path}: {label}.classification_confidence must be low, medium, or high")
     role = mapping.get("classification_role")
+    if role == "ambiguous-boundary":
+        if "classification_confidence" in mapping:
+            errors.append(f"{path}: {label}.classification_confidence is forbidden for ambiguous-boundary; preserve historical values in review history")
+    elif role in {"failure-occurrence", "successful-invariant"}:
+        if mapping.get("classification_confidence") not in {"low", "medium", "high"}:
+            errors.append(f"{path}: {label}.classification_confidence must be low, medium, or high for a decisive finding")
+        if "boundary_adjudication" in mapping:
+            errors.append(f"{path}: {label}.boundary_adjudication is forbidden for a decisive finding; preserve superseded details in review history")
     if role not in {"failure-occurrence", "successful-invariant", "ambiguous-boundary"}:
         errors.append(
             f"{path}: {label}.classification_role must be failure-occurrence, successful-invariant or ambiguous-boundary"
