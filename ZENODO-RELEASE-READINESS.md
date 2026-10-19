@@ -21,16 +21,16 @@ A published `source_records` URL is a citation and evidence locator, **not neces
 
 ## Curated corpus and historical-review retirement
 
-**Research-release curation is selective, not archival maximalism.** The active repository is not a complete institutional work log. On 19 October, a second aggressive housekeeping tranche retires **1108 tracked historical files**, following the earlier bounded deletion of 13 superseded materials. The number and precise list are reproducible from the draft cleanup PR and its pinned parent snapshots. The staging tree is still **NOT approved as paper-ready**.
+**Research-release curation is selective, not archival maximalism.** The active repository is not a complete institutional work log. On 19 October, a second aggressive housekeeping tranche retires **1098 tracked historical files**, following the earlier bounded deletion of 13 superseded materials. The number and precise list are reproducible from the draft cleanup PR and its pinned parent snapshots. The staging tree is still **NOT approved as paper-ready**.
 
 Retired surfaces in this tranche:
 - all legacy `vigil/docs/audits/` material (419 files), covering prior model-generated corpus claims, intermediate source and taxonomy audits, migration/reconciliation reports, and duplicated snapshots;
-- most `vigil/docs/reviews/` material (676 files), including earlier model-era corpus campaigns, dated handoffs, unadopted proposals and obsolete issue/checkpoint inventories;
+- most `vigil/docs/reviews/` material (666 files), including earlier model-era corpus campaigns, dated handoffs, unadopted proposals and obsolete issue/checkpoint inventories;
 - historical completed migration scripts and unadopted taxonomy/HIM proposals (13 files).
 
 These deletions are **not findings that every earlier audit was factually wrong**. They mean those earlier artefacts do not meet the acceptance bar to participate in the current citable research record. Their original content and commit history remain recoverable from `290b8d82c5e238e8ccdea82aa018e491e6d229fb` and its ancestors, but are not treated as validated methodological evidence.
 
-Retained selected recent packets under `vigil/docs/reviews/` include the bounded HIM 1.1.0 completion and corpus-count report, adopted animal-welfare method amendment, source/requirement explanation repair reviews, recent admission/record-completion decisions, selected governance-class admissions and approved validator-scope evidence. These are **traceability records, not proof of independent human validation**. The final Boundary adjudication PR #140 must produce a fresh explicitly approved evidence/methodological packet for the paper.
+Retained selected recent packets under `vigil/docs/reviews/` include the bounded HIM 1.1.0 completion and corpus-count report, adopted animal-welfare method amendment, source/requirement explanation repair reviews, recent admission/record-completion decisions, selected governance-class admissions and approved validator-scope evidence. These are **traceability records, not proof of independent human validation**. Ten additional older source-linked snapshots are deliberately retained because nine current canonical `review_reference` fields point to exact older HIM reconsideration manifests and one existing regression test reads a dated environment audit. They are **legacy reference evidence, not accepted contemporary independent review**. The final Boundary adjudication PR #140 must produce a fresh explicitly approved evidence/methodological packet for the paper.
 
 **Functional preservation rule:** retain the canonical Incidents, their versioned taxonomy/HIM/EXTREQ contracts and source references, public generated data, active builders, validators, tests, rights, citation and normative maintenance instructions. The cleanup must not alter their bytes or claim successful substantive re-adjudication from green CI.
 
