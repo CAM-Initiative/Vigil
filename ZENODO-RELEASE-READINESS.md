@@ -37,6 +37,14 @@ The following categories are deliberately **not bulk-deleted**:
 
 Obsolete website implementation handoffs and open action payloads are separately flagged for review: current audit notes and active review packets refer to them. They should only be retired after pointers are reconciled and their unresolved work is preserved in an authoritative issue or review document.
 
+## Crucial licensing and access gate
+
+VIGIL’s current `LICENSE.md` and `RIGHTS.json` assert **proprietary / all-rights-reserved** materials. Zenodo’s deposit interface can default to **CC BY 4.0** unless a deliberate, valid licence choice is made, and its GitHub connector resolves licence metadata from `.zenodo.json`, then `CITATION.cff`, then the GitHub repository, then a default.
+
+**Do not publish a GitHub release through Zenodo on the assumption that the presence of `LICENSE.md` automatically preserves the proprietary terms.** The existing `CITATION.cff` does not specify a Zenodo-recognised licence. Confirm the licence and any access conditions with the human rights-holder and verify the actual previewed deposit metadata before publication. Do not insert an invented SPDX licence, imply CC BY / open source, or claim this cleanup permits reuse.
+
+Zenodo supports custom licences through its deposit interface, but the GitHub-integration compatibility of a custom proprietary licence must be confirmed before relying on an automatic release. If the automatic integration cannot faithfully express the rights, use an appropriately configured manual Zenodo deposit or resolve the metadata first.
+
 ## Publication gate
 
 1. Finish and approve the source-first Boundary diagnostic audit and mapping dispositions tracked in **draft VIGIL PR #140**. The branch is not yet a fully independently re-adjudicated 194-record research corpus.

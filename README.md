@@ -94,6 +94,12 @@ vigil/
 
 See [`vigil/MAINTAINERS.md`](vigil/MAINTAINERS.md) for authority boundaries and maintenance rules.
 
+## Research release and Zenodo
+
+The live GitHub repository includes maintenance history, provisional reviews and open governance work as well as the published corpus. Not every branch, proposal or review is a completed research finding.
+
+See [Zenodo release readiness](ZENODO-RELEASE-READINESS.md) for the frozen-snapshot, citation, provenance, evidence-audit and **proprietary licensing** checks required before archiving a release. The current taxonomy readjudication (draft PR #140) is incomplete, so current `main` must not be described as its fully adjudicated final research corpus.
+
 ## Authorship and relationship to CAM
 
 VIGIL Observatory is predominantly AI-authored and AI-assisted in its evidence review, structured analysis, corpus maintenance and repository implementation. Substantive taxonomy and governance adjudication remain under human authority. AI systems may prepare classifications, identify candidate failure mechanisms, compare evidence and draft repository changes, but classification boundaries, taxonomy admission, governance interpretation and contested adjudications are subject to human direction and approval.
