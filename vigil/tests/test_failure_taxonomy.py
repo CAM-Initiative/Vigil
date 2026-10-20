@@ -38,7 +38,7 @@ EXPECTED_CLASS_SUFFIXES_BY_FAMILY = {
     "VIGIL-FF-0014": "000072 000073 000076".split(),
     "VIGIL-FF-0015": "000074 000075 000077".split(),
     "VIGIL-FF-0016": "000088".split(),
-    "VIGIL-FF-0017": "000089".split(),
+    "VIGIL-FF-0017": "000084".split(),
 }
 
 
@@ -715,13 +715,13 @@ class AlignmentTaxonomyValidationTests(unittest.TestCase):
         self.assertIn("BREACH ALERT", exemplars["VIGIL-INC-000136"]["title"])
 
 
-    def test_fc089_successful_recovery_not_excluded_as_a_failure(self):
+    def test_fc084_successful_recovery_not_excluded_as_a_failure(self):
         """Effective governed recovery can be a success, not an exclusion of all roles."""
         family_path = next(path for path in self.paths() if "VIGIL-FF-0017" in path.name)
         family = json.loads(family_path.read_text(encoding="utf-8"))
         fidelity_class = next(
             item for item in family["classes"]
-            if item["class_id"] == "VIGIL-FC-000089"
+            if item["class_id"] == "VIGIL-FC-000084"
         )
         self.assertEqual(fidelity_class["success_recognition"]["applies_to"], "successful-invariant")
         self.assertEqual(fidelity_class["failure_recognition"]["applies_to"], "failure-occurrence")
