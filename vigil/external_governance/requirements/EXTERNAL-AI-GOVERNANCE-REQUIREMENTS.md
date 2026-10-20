@@ -2,9 +2,9 @@
 
 Canonical analytical catalogue derived from registered external governance sources. Inclusion does not establish CAM applicability, adoption, coverage, compliance, conformance or alignment.
 
-- Registered source versions: 85
-- Primary AI-governance source versions: 61
-- Requirement records: 1102
+- Registered source versions: 105
+- Primary AI-governance source versions: 63
+- Requirement records: 1121
 
 ## SDOS Runtime Governance Framework — Control Catalog and Reference Document — 1.10
 
@@ -42,6 +42,47 @@ Canonical analytical catalogue derived from registered external governance sourc
 | `EXTREQ-E413E7DE0D505870` | SDOS-RS-01 | Use accumulated governed feedback and audit data to produce post-hoc risk/safety investment evaluation with documented component metrics and statistical summaries for operator review. | `recommended-practice` / `guidance` | `industry-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-ED3205AF140C41E7` | SDOS-RM-02 | Assess task characteristics at dispatch and prevent tasks requiring higher analytical capability from being routed below the minimum capability tier identified for the task. | `recommended-practice` / `guidance` | `industry-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-EE5947EABAB44AA2` | SDOS-DE-01 | Govern multi-agent deliberation through policy-defined panel composition, common admission and identity controls, and structured auditable output; treat elevated-risk deliberation outputs as inputs to human review rather than substitutes for human oversight. | `recommended-practice` / `guidance` | `industry-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+
+## Security of Critical Infrastructure Act 2018 (Cth) — C2026C00213
+
+- Source: `EXT-C4E5D1E95363` / `AU-SOCI-ACT`
+- Role: `supporting-external-authority`
+- Access: `direct-public-primary`
+- Extraction: `partial`
+- Requirements: 4
+- Review priority: `supporting-specialist-source`
+- Next action: Retain the bounded selection. Establish actual occurrence applicability independently; obtain operational approved-form details where needed.
+
+| Requirement | Clause/control | Summary | Posture / type | External authority | Relationship | Review / access |
+| --- | --- | --- | --- | --- | --- | --- |
+| `EXTREQ-61EB42B6FA0D95A3` | s30BC(1); s30BC(2); s30BC(4) | When the complete statutory critical incident trigger is satisfied for a covered asset and its responsible entity, give ASD an incident report including information prescribed by the rules, as soon as practicable and in any event within 12 hours after the entity becomes so aware. The initial report may be oral or written; if written, use the approved form. | `mandatory-normative` / `positive-duty` | `binding-law` | `compliance` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-9C2A361D86035F6A` | s30BD(3); s30BD(5)-(8) | If the responsible entity gives an oral report under s30BD(1), make a written record in the approved form and give a copy to ASD within 48 hours after that oral report, unless the entity has a written exemption under s30BD(5) for that incident. | `mandatory-normative` / `positive-duty` | `binding-law` | `compliance` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-AF8E862790CB4724` | s30BD(1); s30BD(2); s30BD(4) | When the complete statutory other incident trigger is satisfied for a covered asset and its responsible entity, give ASD an incident report including information prescribed by the rules, as soon as practicable and in any event within 72 hours after the entity becomes so aware. The initial report may be oral or written; if written, use the approved form. | `mandatory-normative` / `positive-duty` | `binding-law` | `compliance` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-C9EB00EB18293DBF` | s30BC(3); s30BC(5)-(8) | If the responsible entity gives an oral report under s30BC(1), make a written record in the approved form and give a copy to ASD within 84 hours after that oral report, unless the entity has a written exemption under s30BC(5) for that incident. | `mandatory-normative` / `positive-duty` | `binding-law` | `compliance` | `reviewed-analytical-summary` / `direct-public-primary` |
+
+## Security of Critical Infrastructure (Application) Rules (LIN 22/026) 2022 — F2025C00404
+
+- Source: `EXT-8BD698AC427D` / `AU-SOCI-APPLICATION-RULES`
+- Role: `supporting-external-authority`
+- Access: `direct-public-primary`
+- Extraction: `supporting-only`
+- Requirements: 0
+- Review priority: `supporting-specialist-source`
+- Next action: Retain the bounded selection. Establish actual occurrence applicability independently; obtain operational approved-form details where needed.
+
+No requirement records are asserted. Primary-text review of dependency provisions only, including r5 asset classes, exclusions and grace period. Zero standalone requirements.
+
+## Security of Critical Infrastructure (Definitions) Rules (LIN 21/039) 2021 — F2023C00097
+
+- Source: `EXT-0441D5D5053F` / `AU-SOCI-DEFINITIONS-RULES`
+- Role: `supporting-external-authority`
+- Access: `direct-public-primary`
+- Extraction: `supporting-only`
+- Requirements: 0
+- Review priority: `supporting-specialist-source`
+- Next action: Retain the bounded selection. Establish actual occurrence applicability independently; obtain operational approved-form details where needed.
+
+No requirement records are asserted. Primary-text review of dependency provisions only, including r18 reporting recipient and limited exemption-authority distinction; applicable asset definitions. Zero standalone requirements.
 
 ## C2PA Technical Specification — 2.4
 
@@ -180,6 +221,18 @@ No requirement records are asserted. No canonical extraction admitted: substanti
 | `EXTREQ-B4146C7FA881D345` | modelCard | A model card can represent model parameters, datasets, inputs, outputs, quantitative analysis, performance metrics, intended users and use cases, limitations, trade-offs, ethical and fairness considerations, and environmental information. | `informative-guidance` / `guidance` | `voluntary-technical-specification` | `conformance` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-F2C81603A7B306F6` | modelCard.bom-ref | If a model-card bom-ref is supplied, it should not start with the BOM-Link intro urn:cdx: to avoid conflicts with BOM-Links. | `recommended-practice` / `guidance` | `voluntary-technical-specification` | `conformance` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-FA1B882FFAD54D93` | modelCard.bom-ref | If a model-card bom-ref is supplied, it must be unique within the BOM. | `conformity-evidence-expectation` / `conformity-criterion` | `voluntary-technical-specification` | `conformance` | `reviewed-analytical-summary` / `direct-public-primary` |
+
+## Artificial intelligence — Quality management system for EU AI Act regulatory purposes — 2026
+
+- Source: `EXT-992C92D6CAB4` / `EN-18286`
+- Role: `primary-ai-governance`
+- Access: `official-metadata-only`
+- Extraction: `blocked-access`
+- Requirements: 0
+- Review priority: `critical-governance-source`
+- Next action: Obtain authorised access to the final EN 18286:2026 normative text with permission for the intended AI processing. Then obtain separate approval for bounded clause extraction, Annex ZA assessment and any mappings. Do not commit copyrighted text.
+
+No requirement records are asserted. Source admission and metadata review only. Zero new EXTREQs, FC relationships or EN-to-Act equivalences. Full-text extraction and legal coverage assessment are not completed.
 
 ## Regulation (EU) 2024/1689 (Artificial Intelligence Act) — 2024-07-12
 
@@ -405,6 +458,18 @@ No requirement records are asserted. Retained as a bounded supporting authority.
 
 No requirement records are asserted. Retained as a bounded supporting authority. It is not decomposed into a comprehensive first-class requirement corpus in the current scope.
 
+## Commission Implementing Decision (EU) 2026/2274 of 12 October 2026 on the harmonised standards for high-risk AI systems drafted in support of Regulation (EU) 2024/1689 of the European Parliament and of the Council — 2026-10-14
+
+- Source: `EXT-39722D487277` / `EU-DEC-IMPL-2026-2274`
+- Role: `primary-ai-governance`
+- Access: `official-metadata-only`
+- Extraction: `blocked-access`
+- Requirements: 0
+- Review priority: `high-value-governance-source`
+- Next action: Retrieve and review the official final decision, Article 1, Article 2 and Annex through an authorised access route. Confirm the exact Annex citation, entry-into-force date and any qualifications before clause extraction or legal reliance. Do not reconstruct text from indexed snippets.
+
+No requirement records are asserted. Source admission and metadata review only. Zero new EXTREQs, FC relationships or EN-to-Act equivalences. Full-text extraction and legal coverage assessment are not completed.
+
 ## Regulation (EU) 2022/868 — Data Governance Act — 2022-06-03
 
 - Source: `EXT-CC0DF5403326` / `EU-DGA-2022-868`
@@ -477,6 +542,30 @@ No requirement records are asserted. Regulatory adverse-event coding exemplar re
 
 No requirement records are asserted. Cross-sector accident/incident taxonomy exemplar retained for multi-axis reporting architecture and common-language comparison.
 
+## International humanitarian law and connectivity disruptions during armed conflict — 2025-07-03
+
+- Source: `EXT-E012AC7C7ADF` / `ICRC-CONNECTIVITY-DISRUPTIONS`
+- Role: `supporting-external-authority`
+- Access: `direct-public-primary`
+- Extraction: `supporting-only`
+- Requirements: 0
+- Review priority: `supporting-specialist-source`
+- Next action: Obtain Gate 1 approval of supporting-source extraction and accurate normative-force categories before canonical EXTREQ allocation. Then review exact clauses, metadata, relationship mechanisms and INC-090 relevance.
+
+No requirement records are asserted. Source registration only. Existing contract forbids requirement extraction from supporting sources. No EXTREQ extraction, completeness or metadata-fidelity assurance claimed.
+
+## Protecting Essential Civilian Services on Earth from Disruption by Military Space Operations — 2024
+
+- Source: `EXT-9F84F45EA41B` / `ICRC-SPACE-CIVILIAN-SERVICES`
+- Role: `supporting-external-authority`
+- Access: `official-metadata-only`
+- Extraction: `supporting-only`
+- Requirements: 0
+- Review priority: `supporting-specialist-source`
+- Next action: Obtain Gate 1 approval of supporting-source extraction and accurate normative-force categories before canonical EXTREQ allocation. Then review exact clauses, metadata, relationship mechanisms and INC-090 relevance.
+
+No requirement records are asserted. Source registration only. Existing contract forbids requirement extraction from supporting sources. No EXTREQ extraction, completeness or metadata-fidelity assurance claimed.
+
 ## Failure modes and effects analysis (FMEA and FMECA) — 2018
 
 - Source: `EXT-2356288837AC` / `IEC-60812`
@@ -488,6 +577,18 @@ No requirement records are asserted. Cross-sector accident/incident taxonomy exe
 - Next action: Use as a terminology and method cross-reference; obtain lawful primary text only if clause-level conformance analysis becomes necessary.
 
 No requirement records are asserted. Registered for FMEA/FMECA failure-mode, effects, cause, criticality and reporting-structure comparison. No clause-level normative extraction is claimed.
+
+## Industrial communication networks — Network and system security — Part 3-3: System security requirements and security levels — 2013
+
+- Source: `EXT-C05FD0343310` / `IEC-62443-3-3`
+- Role: `supporting-external-authority`
+- Access: `official-metadata-only`
+- Extraction: `blocked-access`
+- Requirements: 0
+- Review priority: `supporting-specialist-source`
+- Next action: Obtain authorised primary text and permission for intended processing; select exact system requirements and review scope before any extraction.
+
+No requirement records are asserted. Metadata-only registration of Part 3-3, Edition 1.0; no clauses reconstructed from the abstract or other parts of the series.
 
 ## IEEE Standard Classification for Software Anomalies — 2009
 
@@ -971,6 +1072,66 @@ No requirement records are asserted. Supporting authority only; exhaustive first
 | `EXTREQ-ED738839988AA14F` | 6.9.3(e-g) | Do not monetise emotional bonding or encourage dependence, and notify users before relationally significant system changes. | `recommended-practice` / `guidance` | `voluntary-consensus-standard` | `conformance` | `reviewed-analytical-summary` / `direct-licensed-primary` |
 | `EXTREQ-EDEE34E6A5CBA4DF` | 6.11.3(d-f) | Explain fabrication risk, signal uncertainty and mark unverified information. | `recommended-practice` / `guidance` | `voluntary-consensus-standard` | `conformance` | `reviewed-analytical-summary` / `direct-licensed-primary` |
 | `EXTREQ-FAAC729FD52E3F88` | 6.27.3(e-h) | Correct falsehoods, express uncertainty and gently challenge harmful claims with alternative perspectives. | `recommended-practice` / `guidance` | `voluntary-consensus-standard` | `conformance` | `reviewed-analytical-summary` / `direct-licensed-primary` |
+
+## Protocol Additional (I) to the Geneva Conventions of 12 August 1949, and relating to the Protection of Victims of International Armed Conflicts — 1977
+
+- Source: `EXT-CC7BE1ED4518` / `IHL-AP-I`
+- Role: `supporting-external-authority`
+- Access: `direct-public-primary`
+- Extraction: `supporting-only`
+- Requirements: 0
+- Review priority: `supporting-specialist-source`
+- Next action: Obtain Gate 1 approval of supporting-source extraction and accurate normative-force categories before canonical EXTREQ allocation. Then review exact clauses, metadata, relationship mechanisms and INC-090 relevance.
+
+No requirement records are asserted. Source registration only. Existing contract forbids requirement extraction from supporting sources. No EXTREQ extraction, completeness or metadata-fidelity assurance claimed.
+
+## Geneva Convention (I) relative to the Amelioration of the Condition of the Wounded and Sick in Armed Forces in the Field — 1949
+
+- Source: `EXT-000EEF3CCFA9` / `IHL-GC-I`
+- Role: `supporting-external-authority`
+- Access: `direct-public-primary`
+- Extraction: `supporting-only`
+- Requirements: 0
+- Review priority: `supporting-specialist-source`
+- Next action: Obtain Gate 1 approval of supporting-source extraction and accurate normative-force categories before canonical EXTREQ allocation. Then review exact clauses, metadata, relationship mechanisms and INC-090 relevance.
+
+No requirement records are asserted. Source registration only. Existing contract forbids requirement extraction from supporting sources. No EXTREQ extraction, completeness or metadata-fidelity assurance claimed.
+
+## Geneva Convention (II) relative to the Amelioration of the Condition of Wounded, Sick and Shipwrecked Members of Armed Forces at Sea — 1949
+
+- Source: `EXT-74F7BBC2B2AE` / `IHL-GC-II`
+- Role: `supporting-external-authority`
+- Access: `direct-public-primary`
+- Extraction: `supporting-only`
+- Requirements: 0
+- Review priority: `supporting-specialist-source`
+- Next action: Obtain Gate 1 approval of supporting-source extraction and accurate normative-force categories before canonical EXTREQ allocation. Then review exact clauses, metadata, relationship mechanisms and INC-090 relevance.
+
+No requirement records are asserted. Source registration only. Existing contract forbids requirement extraction from supporting sources. No EXTREQ extraction, completeness or metadata-fidelity assurance claimed.
+
+## Geneva Convention (III) relative to the Treatment of Prisoners of War — 1949
+
+- Source: `EXT-4A37298AF02E` / `IHL-GC-III`
+- Role: `supporting-external-authority`
+- Access: `direct-public-primary`
+- Extraction: `supporting-only`
+- Requirements: 0
+- Review priority: `supporting-specialist-source`
+- Next action: Obtain Gate 1 approval of supporting-source extraction and accurate normative-force categories before canonical EXTREQ allocation. Then review exact clauses, metadata, relationship mechanisms and INC-090 relevance.
+
+No requirement records are asserted. Source registration only. Existing contract forbids requirement extraction from supporting sources. No EXTREQ extraction, completeness or metadata-fidelity assurance claimed.
+
+## Geneva Convention (IV) relative to the Protection of Civilian Persons in Time of War — 1949
+
+- Source: `EXT-F44A80EFC7A1` / `IHL-GC-IV`
+- Role: `supporting-external-authority`
+- Access: `direct-public-primary`
+- Extraction: `supporting-only`
+- Requirements: 0
+- Review priority: `supporting-specialist-source`
+- Next action: Obtain Gate 1 approval of supporting-source extraction and accurate normative-force categories before canonical EXTREQ allocation. Then review exact clauses, metadata, relationship mechanisms and INC-090 relevance.
+
+No requirement records are asserted. Source registration only. Existing contract forbids requirement extraction from supporting sources. No EXTREQ extraction, completeness or metadata-fidelity assurance claimed.
 
 ## Model AI Governance Framework for Agentic AI — 2026-05
 
@@ -1516,6 +1677,18 @@ No requirement records are asserted. Primary AI-governance source is in scope, b
 
 No requirement records are asserted. Registered as systems/software vocabulary authority. No definitions beyond lawfully available publisher material are reconstructed.
 
+## Constitution of the International Telecommunication Union — 1992-amended-through-2010
+
+- Source: `EXT-1B6AAF75BD9A` / `ITU-CONSTITUTION`
+- Role: `supporting-external-authority`
+- Access: `direct-public-primary`
+- Extraction: `supporting-only`
+- Requirements: 0
+- Review priority: `supporting-specialist-source`
+- Next action: Obtain Gate 1 approval of supporting-source extraction and accurate normative-force categories before canonical EXTREQ allocation. Then review exact clauses, metadata, relationship mechanisms and INC-090 relevance.
+
+No requirement records are asserted. Source registration only. Existing contract forbids requirement extraction from supporting sources. No EXTREQ extraction, completeness or metadata-fidelity assurance claimed.
+
 ## Artificial Intelligence Risk Management Framework (AI RMF 1.0) — 1.0
 
 - Source: `EXT-6442C7954667` / `NIST-AI-100-1`
@@ -1936,12 +2109,21 @@ No requirement records are asserted. Retained for terminology, examples, strateg
 - Source: `EXT-09F549521716` / `NIST-CSF-2-0`
 - Role: `supporting-external-authority`
 - Access: `direct-public-primary`
-- Extraction: `supporting-only`
-- Requirements: 0
-- Review priority: `low-immediate-priority`
-- Next action: No further requirement extraction is planned in the current scope.
+- Extraction: `partial`
+- Requirements: 8
+- Review priority: `supporting-specialist-source`
+- Next action: Retain the bounded reviewed selection. Expand only after a specific unsupported proposition is identified and independently reviewed.
 
-No requirement records are asserted. Retained as a bounded supporting authority. It is not decomposed into a comprehensive first-class requirement corpus in the current scope.
+| Requirement | Clause/control | Summary | Posture / type | External authority | Relationship | Review / access |
+| --- | --- | --- | --- | --- | --- | --- |
+| `EXTREQ-186266B5896332A7` | PR.AA-05 | Define access permissions, entitlements and authorisations in a policy. Manage, enforce and review them using least privilege and separation of duties. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-2D0252D6865FB9DF` | RC.RP-05 | Verify restored-asset integrity, restore systems and services, and confirm normal operating status. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-510142D12255806C` | PR.PS-01 | Establish and apply configuration management practices. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-8664EF5872201BF3` | RS.MI-01 | Contain cybersecurity incidents. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-8C67B5EEFB0AA897` | RC.RP-01 | Execute the recovery portion of the incident response plan once the incident response process initiates it. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-9BFEC90D284F0A9C` | PR.IR-01 | Protect networks and environments from unauthorised logical access and usage. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-B3C2C06EC24BD021` | RC.RP-03 | Verify the integrity of backups and other restoration assets before using them for restoration. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-CC9B3D4127206817` | DE.CM-01 | Monitor networks and network services to find potentially adverse events. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 
 ## Towards a Standard for Identifying and Managing Bias in Artificial Intelligence — 2022
 
@@ -1975,12 +2157,15 @@ No requirement records are asserted. Retained as a bounded supporting authority.
 - Source: `EXT-4AADC9C1B06B` / `NIST-SP-800-218`
 - Role: `supporting-external-authority`
 - Access: `direct-public-primary`
-- Extraction: `supporting-only`
-- Requirements: 0
-- Review priority: `low-immediate-priority`
-- Next action: No further requirement extraction is planned in the current scope.
+- Extraction: `partial`
+- Requirements: 2
+- Review priority: `supporting-specialist-source`
+- Next action: Retain the bounded reviewed selection. Expand only after a specific unsupported proposition is identified and independently reviewed.
 
-No requirement records are asserted. Retained as a bounded supporting authority. It is not decomposed into a comprehensive first-class requirement corpus in the current scope.
+| Requirement | Clause/control | Summary | Posture / type | External authority | Relationship | Review / access |
+| --- | --- | --- | --- | --- | --- | --- |
+| `EXTREQ-5B9F66AA08C91BF4` | PW.9.1 | Define a secure baseline for each setting that affects security or is security-related. Default settings should be secure and do not weaken security functions provided by the platform, network infrastructure or services. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-FE4169ADFE882091` | PW.9.2 | Implement the default settings, or applicable groups of default settings, and document each setting for software administrators. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 
 ## Secure Software Development Practices for Generative AI and Dual-Use Foundation Models: An SSDF Community Profile — 2024
 
@@ -2070,6 +2255,24 @@ No requirement records are asserted. Retained as a bounded supporting authority.
 | `EXTREQ-F1C5571B851A123F` | PW.8.2 R1 | Test all AI models for vulnerabilities in accordance with the organization’s code testing policies or guidelines. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-FC3775D684CD5F14` | PW.8.1 R1 | Include AI models in code testing policies and guidelines. Several forms of code testing can be used for AI models, including unit testing, integration testing, penetration testing, red teaming, use case testing, and adversarial testing. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 
+## Guide to Operational Technology (OT) Security — 3
+
+- Source: `EXT-96F325C2A871` / `NIST-SP-800-82`
+- Role: `supporting-external-authority`
+- Access: `direct-public-primary`
+- Extraction: `partial`
+- Requirements: 5
+- Review priority: `supporting-specialist-source`
+- Next action: Retain the bounded reviewed selection. Expand only after a specific unsupported proposition is identified and independently reviewed.
+
+| Requirement | Clause/control | Summary | Posture / type | External authority | Relationship | Review / access |
+| --- | --- | --- | --- | --- | --- | --- |
+| `EXTREQ-285491D9AB39831D` | 6.2.10 — removal of no-longer-required access | For temporary OT remote access, consider removing access when it is no longer required. Automatic timers or a change process can support confirmation of removal. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-36E4D12953E576C3` | 6.3.2.2 — OT system-use monitoring | Use strong device monitoring, logging and auditing to collect, correlate and analyse security information and communicate actionable security status across the complete OT system. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-4BF7D68ABF83E78A` | 6.2.4.2 — approved baseline and pre-deployment changes | Document the approved baseline configuration for OT devices. Establish a development-lifecycle approach to document, test and approve changes before deploying them to the OT environment. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-9F96B74F2FC30649` | 6.4.4 — remote or unstaffed incident mitigation | For physically remote or unstaffed OT components, consider response coordination time and whether the system needs capabilities to minimise incident impacts until personnel arrive. Understand and communicate operational impacts of mitigation shutdowns or disconnections. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-C11C08CA4DEBB562` | 6.2.10 — justified and bounded remote access | Provide OT remote access only when justified and limit it to the business need. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+
 ## Towards a common reporting framework for AI incidents — 2025
 
 - Source: `EXT-E1BE6678F807` / `OECD-AI-INCIDENT-REPORTING-2025`
@@ -2132,6 +2335,18 @@ No requirement records are asserted. AI-specific incident-reporting framework re
 | `EXTREQ-F0C77761448A085A` | Section 2.5(a) | Governments, including developing countries, should cooperate actively with stakeholders to advance the principles and responsible AI stewardship. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-FAE1B0790E9E56C4` | Section 1.3(iv) | AI actors should provide information enabling adversely affected people to challenge AI outputs. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 
+## Protecting civilians and other protected persons and objects against the potential human cost of ICT activities during armed conflict — 2024
+
+- Source: `EXT-5215728F64E1` / `RCRC-34IC-RES-2`
+- Role: `supporting-external-authority`
+- Access: `direct-public-primary`
+- Extraction: `supporting-only`
+- Requirements: 0
+- Review priority: `supporting-specialist-source`
+- Next action: Obtain Gate 1 approval of supporting-source extraction and accurate normative-force categories before canonical EXTREQ allocation. Then review exact clauses, metadata, relationship mechanisms and INC-090 relevance.
+
+No requirement records are asserted. Source registration only. Existing contract forbids requirement extraction from supporting sources. No EXTREQ extraction, completeness or metadata-fidelity assurance claimed.
+
 ## SPDX Specification 3.0.1 — AI Profile — 3.0.1
 
 - Source: `EXT-71B4139453FA` / `SPDX-SPEC`
@@ -2148,3 +2363,51 @@ No requirement records are asserted. AI-specific incident-reporting framework re
 | `EXTREQ-51B823BB26E5C870` | AI/AIPackage | An AI package may record AI-specific information including autonomy, domain, energy consumption, hyperparameters, training and application information, limitations, metrics and thresholds, preprocessing, explainability, safety risk assessment, standards compliance, model type and use of sensitive personal information. | `permitted-optional` / `permission` | `voluntary-technical-specification` | `conformance` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-5EF3B75BAAAB980A` | AI/AIPackage | An AI package must carry the required inherited identity, creation, supplier, release, download, version and primary-purpose properties defined for AIPackage. | `conformity-evidence-expectation` / `conformity-criterion` | `voluntary-technical-specification` | `conformance` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-DFB4F86BA99C60CF` | AI profile conformance | Every AI package must be the from-element of exactly one hasDeclaredLicense relationship. | `conformity-evidence-expectation` / `conformity-criterion` | `voluntary-technical-specification` | `conformance` | `reviewed-analytical-summary` / `direct-public-primary` |
+
+## International Covenant on Civil and Political Rights — 1966
+
+- Source: `EXT-F549B9303876` / `UN-ICCPR`
+- Role: `supporting-external-authority`
+- Access: `direct-public-primary`
+- Extraction: `supporting-only`
+- Requirements: 0
+- Review priority: `supporting-specialist-source`
+- Next action: Obtain Gate 1 approval of supporting-source extraction and accurate normative-force categories before canonical EXTREQ allocation. Then review exact clauses, metadata, relationship mechanisms and INC-090 relevance.
+
+No requirement records are asserted. Source registration only. Existing contract forbids requirement extraction from supporting sources. No EXTREQ extraction, completeness or metadata-fidelity assurance claimed.
+
+## Treaty on Principles Governing the Activities of States in the Exploration and Use of Outer Space, including the Moon and Other Celestial Bodies — 1967
+
+- Source: `EXT-BE8EAFE0C6DC` / `UN-OUTER-SPACE-TREATY`
+- Role: `supporting-external-authority`
+- Access: `direct-public-primary`
+- Extraction: `supporting-only`
+- Requirements: 0
+- Review priority: `supporting-specialist-source`
+- Next action: Obtain Gate 1 approval of supporting-source extraction and accurate normative-force categories before canonical EXTREQ allocation. Then review exact clauses, metadata, relationship mechanisms and INC-090 relevance.
+
+No requirement records are asserted. Source registration only. Existing contract forbids requirement extraction from supporting sources. No EXTREQ extraction, completeness or metadata-fidelity assurance claimed.
+
+## United Nations Security Council Resolution 2573 (2021) — 2021
+
+- Source: `EXT-87821CEECBB1` / `UN-SC-RES-2573`
+- Role: `supporting-external-authority`
+- Access: `direct-public-primary`
+- Extraction: `supporting-only`
+- Requirements: 0
+- Review priority: `supporting-specialist-source`
+- Next action: Obtain Gate 1 approval of supporting-source extraction and accurate normative-force categories before canonical EXTREQ allocation. Then review exact clauses, metadata, relationship mechanisms and INC-090 relevance.
+
+No requirement records are asserted. Source registration only. Existing contract forbids requirement extraction from supporting sources. No EXTREQ extraction, completeness or metadata-fidelity assurance claimed.
+
+## UN Guiding Principles on Business and Human Rights — 2011
+
+- Source: `EXT-ADF9252F7A25` / `UN-UNGP`
+- Role: `supporting-external-authority`
+- Access: `direct-public-primary`
+- Extraction: `supporting-only`
+- Requirements: 0
+- Review priority: `supporting-specialist-source`
+- Next action: Obtain Gate 1 approval of supporting-source extraction and accurate normative-force categories before canonical EXTREQ allocation. Then review exact clauses, metadata, relationship mechanisms and INC-090 relevance.
+
+No requirement records are asserted. Source registration only. Existing contract forbids requirement extraction from supporting sources. No EXTREQ extraction, completeness or metadata-fidelity assurance claimed.

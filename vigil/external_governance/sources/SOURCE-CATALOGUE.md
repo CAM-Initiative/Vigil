@@ -2,9 +2,9 @@
 
 Public knowledge catalogue of external governance sources and their bounded relevance to AI governance. The summaries describe source subject matter; they do not provide legal advice or establish that a source applies to any particular system or organisation.
 
-- Source versions: 85
+- Source versions: 105
 - Review-due source versions: 0
-- Registry updated through: 2026-10-01T00:00:00Z
+- Registry updated through: 2026-10-18T00:00:00Z
 
 ## SDOS Runtime Governance Framework — Control Catalog and Reference Document
 
@@ -22,6 +22,57 @@ The SDOS Runtime Governance Framework is an owner-authored control catalogue for
 - **Review method:** direct-public-primary-review · bounded-complete-review
 - **Review freshness:** current
 - **Official source:** https://aamcyber.com/sdos/reference/v1/
+
+## Security of Critical Infrastructure Act 2018 (Cth)
+
+The Security of Critical Infrastructure Act 2018 establishes Australian governance arrangements for specified critical infrastructure assets. Part 2B requires responsible entities of covered assets to report defined cyber security incidents. Reporting depends on the actual asset classification, responsible entity, application rules, impact and awareness conditions. Critical and other incidents have distinct reporting triggers and time limits. Oral reports have separate written follow-up requirements. Australian Signals Directorate receives ordinary reports. The Act also contains other regulatory powers and duties. Those other provisions are outside the represented reporting selection. AI involvement alone does not establish that the reporting duties apply.
+
+- **Issuer:** Australian Government
+- **Version:** `C2026C00213`
+- **Lifecycle state:** `in-force`
+- **AI-governance relevance:** accountability, incident-governance, security, traceability
+- **Applicable lifecycle stages:** governance, operation-use, incident-response
+- **Relevance scope:** Conditional Australian critical infrastructure cyber incident reporting. AI involvement alone creates no applicability; actor, asset, jurisdiction, trigger and temporal conditions require independent occurrence review.
+- **Last substantive review:** 2026-10-18
+- **Next substantive review:** 2027-01-16
+- **Substantive reviewer:** OpenAI / Codex / Exact runtime model identity not disclosed
+- **Review method:** direct-public-primary-review · partial-review
+- **Review freshness:** current
+- **Official source:** https://www.legislation.gov.au/C2026C00213/latest/text
+
+## Security of Critical Infrastructure (Application) Rules (LIN 22/026) 2022
+
+The Security of Critical Infrastructure Application Rules specify assets to which particular parts of the Australian critical infrastructure legislation apply. Rule 5 concerns cyber incident reporting under Part 2B. Its asset classes, exclusions and grace period qualify the reporting obligations. Rule 4 concerns a separate register regime and has a different period. Coverage depends on the actual asset and entity conditions. A sector label alone does not establish coverage. These rules provide applicability context for the represented reporting provisions. No separate requirement or occurrence assessment is derived from their registration.
+
+- **Issuer:** Australian Government
+- **Version:** `F2025C00404`
+- **Lifecycle state:** `in-force`
+- **AI-governance relevance:** accountability, incident-governance, security, traceability
+- **Applicable lifecycle stages:** governance, operation-use, incident-response
+- **Relevance scope:** Conditional Australian critical infrastructure cyber incident reporting. AI involvement alone creates no applicability; actor, asset, jurisdiction, trigger and temporal conditions require independent occurrence review.
+- **Last substantive review:** 2026-10-18
+- **Next substantive review:** 2027-01-16
+- **Substantive reviewer:** OpenAI / Codex / Exact runtime model identity not disclosed
+- **Review method:** direct-public-primary-review · supporting-only-review
+- **Review freshness:** current
+- **Official source:** https://www.legislation.gov.au/F2025C00404/latest/text
+
+## Security of Critical Infrastructure (Definitions) Rules (LIN 21/039) 2021
+
+The Security of Critical Infrastructure Definitions Rules provide definitions and qualifications used by the Australian critical infrastructure legislation. Rule 18 specifies the Department as the relevant Commonwealth body only for the written-record exemption powers in the cyber incident reporting provisions. Australian Signals Directorate remains the relevant body for ordinary reporting and written follow-up. Asset definitions and qualifications must be considered with the Act and application rules. These rules provide supporting context for the represented reporting provisions. Registration does not establish that any particular asset or incident falls within their scope.
+
+- **Issuer:** Australian Government
+- **Version:** `F2023C00097`
+- **Lifecycle state:** `in-force`
+- **AI-governance relevance:** accountability, incident-governance, security, traceability
+- **Applicable lifecycle stages:** governance, operation-use, incident-response
+- **Relevance scope:** Conditional Australian critical infrastructure cyber incident reporting. AI involvement alone creates no applicability; actor, asset, jurisdiction, trigger and temporal conditions require independent occurrence review.
+- **Last substantive review:** 2026-10-18
+- **Next substantive review:** 2027-01-16
+- **Substantive reviewer:** OpenAI / Codex / Exact runtime model identity not disclosed
+- **Review method:** direct-public-primary-review · supporting-only-review
+- **Review freshness:** current
+- **Official source:** https://www.legislation.gov.au/F2023C00097/latest/text
 
 ## C2PA Technical Specification
 
@@ -91,6 +142,23 @@ CycloneDX 1.7 is a machine-readable bill-of-materials specification that include
 - **Review freshness:** current
 - **Official source:** https://cyclonedx.org/capabilities/mlbom/
 
+## Artificial intelligence — Quality management system for EU AI Act regulatory purposes
+
+EN 18286:2026 is a voluntary European standard for quality management systems used by providers of AI systems. CEN and CENELEC developed it through CEN/CLC/JTC 21. Its regulatory focus is the quality management system required by Article 17 of the EU AI Act. Its reference was cited in the Official Journal on 14 October 2026 through Commission Implementing Decision (EU) 2026/2274. Citation does not make adoption mandatory. Under Article 40, a presumption of conformity is limited to the legal requirements covered by the cited standard or its parts. It does not establish conformity with the whole Act.
+
+- **Issuer:** CEN/CENELEC; CEN/CLC/JTC 21
+- **Version:** `2026`
+- **Lifecycle state:** `ojeu-cited`
+- **AI-governance relevance:** accountability, assurance, conformity, documentation, lifecycle-governance
+- **Applicable lifecycle stages:** governance, conformity-assessment, cross-lifecycle
+- **Relevance scope:** Voluntary AI quality-management standard supporting EU AI Act regulatory purposes. Precise covered requirements and Annex ZA coverage require the final normative text; no whole-Act coverage is asserted.
+- **Last substantive review:** 2026-10-16
+- **Next substantive review:** 2027-01-14
+- **Substantive reviewer:** OpenAI / ChatGPT Work / Codex / Exact model identifier not exposed in this session
+- **Review method:** official-metadata-only-review · blocked-primary-text-review
+- **Review freshness:** current
+- **Official source:** https://www.cencenelec.eu/news-events/news/2026/en-in-the-spotlight/2026-10-15-en-18286-2026-published-in-ojeu/
+
 ## Regulation (EU) 2024/1689 (Artificial Intelligence Act)
 
 Regulation (EU) 2024/1689 is the original published text of the European Union's Artificial Intelligence Act. It establishes a risk-based legal framework covering prohibited practices, high-risk AI systems, transparency duties, general-purpose AI models, market governance and enforcement. The Act is central to AI governance because it assigns obligations to providers, deployers and other value-chain actors across development, placing on the market and operation. This source version preserves the law as adopted in July 2024, but later amendments and consolidation affect the current text, so it should be used for historical comparison rather than as the sole present-law reference.
@@ -158,6 +226,23 @@ The EU Data Act governs access to and use of data generated by connected product
 - **Review method:** direct-public-primary-review · supporting-only-review
 - **Review freshness:** current
 - **Official source:** https://eur-lex.europa.eu/eli/reg/2023/2854/oj
+
+## Commission Implementing Decision (EU) 2026/2274 of 12 October 2026 on the harmonised standards for high-risk AI systems drafted in support of Regulation (EU) 2024/1689 of the European Parliament and of the Council
+
+Commission Implementing Decision (EU) 2026/2274 is the EU legal act publishing a harmonised-standard reference in support of the EU AI Act. The Commission adopted it on 12 October 2026. It was published in the Official Journal on 14 October 2026. The cited standard is EN 18286:2026, which concerns AI quality management systems. The decision is distinct from both the voluntary standard and the Act that establishes provider obligations. Publication supports the limited presumption-of-conformity mechanism under Article 40. It does not require every provider to adopt the standard or establish conformity with every provision of the Act.
+
+- **Issuer:** European Commission
+- **Version:** `2026-10-14`
+- **Lifecycle state:** `published`
+- **AI-governance relevance:** assurance, conformity, documentation
+- **Applicable lifecycle stages:** governance, conformity-assessment
+- **Relevance scope:** EU legal publication decision for a harmonised-standard citation. Its legal effect is distinct from voluntary standard adoption and from the underlying AI Act obligations.
+- **Last substantive review:** 2026-10-16
+- **Next substantive review:** 2027-01-14
+- **Substantive reviewer:** OpenAI / ChatGPT Work / Codex / Exact model identifier not exposed in this session
+- **Review method:** official-metadata-only-review · blocked-primary-text-review
+- **Review freshness:** current
+- **Official source:** https://data.europa.eu/eli/dec_impl/2026/2274/oj
 
 ## Regulation (EU) 2022/868 — Data Governance Act
 
@@ -261,6 +346,40 @@ ICAO's Accident/Incident Data Reporting taxonomy supplies common definitions and
 - **Review freshness:** current
 - **Official source:** https://www.icao.int/safety/AIG/taxonomy
 
+## International humanitarian law and connectivity disruptions during armed conflict
+
+This ICRC legal analysis discusses humanitarian-law limits on connectivity disruption during armed conflict. It distinguishes operations against communications infrastructure from measures imposed by belligerents on service providers. It addresses civilian protection, medical and humanitarian services, information and family contact. It also explains that connectivity disruption is not always unlawful and that the meaning of non-physical attack is contested. The analysis is an institutional interpretation published in 2025. It neither establishes a new law nor proves the effects or State attribution of an earlier private-provider decision.
+
+- **Issuer:** International Committee of the Red Cross; Tilman Rodenhäuser, Senior Legal Adviser
+- **Version:** `2025-07-03`
+- **Lifecycle state:** `published`
+- **AI-governance relevance:** accountability, risk-management, worker-affected-person-rights
+- **Applicable lifecycle stages:** governance, operation-use
+- **Relevance scope:** Supporting governance of digital infrastructure and affected people; not a general AI regulation or evidence of occurrence-specific legal liability.
+- **Last substantive review:** 2026-10-11
+- **Next substantive review:** 2027-01-09
+- **Substantive reviewer:** OpenAI / ChatGPT Work / Codex / GPT-6
+- **Review method:** direct-public-primary-review · supporting-only-review
+- **Review freshness:** current
+- **Official source:** https://blogs.icrc.org/law-and-policy/2025/07/03/international-humanitarian-law-and-connectivity-disruptions-during-armed-conflict/
+
+## Protecting Essential Civilian Services on Earth from Disruption by Military Space Operations
+
+This ICRC-commissioned report examines the relationship between military space capabilities and essential civilian services. The publisher describes increasing dual use of space systems and risks to civilians and humanitarian operations if these systems become military targets. The report offers policy options to reduce the civilian impact of satellite-service disruption. It is research and policy analysis rather than a treaty or enforceable standard. Its 2024 publication provides later context for earlier occurrences and does not establish what happened to civilians in a specific outage.
+
+- **Issuer:** International Committee of the Red Cross (commissioning publisher; report authored by two consultants)
+- **Version:** `2024`
+- **Lifecycle state:** `published`
+- **AI-governance relevance:** accountability, risk-management, worker-affected-person-rights
+- **Applicable lifecycle stages:** governance, operation-use
+- **Relevance scope:** Supporting governance of digital infrastructure and affected people; not a general AI regulation or evidence of occurrence-specific legal liability.
+- **Last substantive review:** 2026-10-11
+- **Next substantive review:** 2027-01-09
+- **Substantive reviewer:** OpenAI / ChatGPT Work / Codex / GPT-6
+- **Review method:** official-metadata-only-review · supporting-only-review
+- **Review freshness:** current
+- **Official source:** https://www.icrc.org/en/publication/protecting-essential-civilian-services-earth-disruption-military-space-operations
+
 ## Failure modes and effects analysis (FMEA and FMECA)
 
 IEC 60812 describes failure modes and effects analysis and failure modes, effects and criticality analysis as structured methods for examining how elements can fail, what effects follow, why failures occur and how results are documented. The method is broadly applicable to hardware, software, processes, human action and interfaces. For AI governance, FMEA-style analysis can support prospective hazard identification, component-level reasoning and prioritisation of controls across complex systems. The public assessment is limited to official IEC metadata and description; no unseen normative procedure, scoring rule or reporting requirement is attributed to the standard.
@@ -277,6 +396,23 @@ IEC 60812 describes failure modes and effects analysis and failure modes, effect
 - **Review method:** official-metadata-only-review · supporting-only-review
 - **Review freshness:** current
 - **Official source:** https://webstore.iec.ch/en/publication/26359
+
+## Industrial communication networks — Network and system security — Part 3-3: System security requirements and security levels
+
+IEC 62443-3-3:2013 is an international standard addressing system security requirements and security levels for industrial automation and control systems. The official catalogue identifies Edition 1.0 and states that the available copy incorporates the April 2014 corrigendum. Its system-level subject matter is relevant to refrigeration-control infrastructure and the security of connected industrial environments. This entry records official metadata only. Normative text and permission for the intended processing remain unavailable. No clause-level requirement, security-level equivalence, certification claim or occurrence assessment is derived from the catalogue description. Other parts of the IEC 62443 series require separate edition-specific review.
+
+- **Issuer:** International Electrotechnical Commission
+- **Version:** `2013`
+- **Lifecycle state:** `published`
+- **AI-governance relevance:** security, robustness, safety
+- **Applicable lifecycle stages:** design, deployment, operation-use
+- **Relevance scope:** System-level industrial-control security standard registered for source-specific access review; catalogue metadata cannot establish normative requirements or conformance.
+- **Last substantive review:** 2026-10-18
+- **Next substantive review:** 2027-01-16
+- **Substantive reviewer:** OpenAI / Codex / Exact runtime model identity not disclosed
+- **Review method:** official-metadata-only-review · blocked-primary-text-review
+- **Review freshness:** current
+- **Official source:** https://webstore.iec.ch/en/publication/7033
 
 ## IEEE Standard Classification for Software Anomalies
 
@@ -515,6 +651,91 @@ IEEE 7014.1 provides recommended practices for emulated empathy in partner-based
 - **Review method:** direct-licensed-primary-review · bounded-complete-review
 - **Review freshness:** current
 - **Official source:** https://standards.ieee.org/ieee/7014.1/11609/
+
+## Protocol Additional (I) to the Geneva Conventions of 12 August 1949, and relating to the Protection of Victims of International Armed Conflicts
+
+Additional Protocol I develops protections for victims of international armed conflicts. It addresses distinction between civilians and combatants, civilian objects and military objectives, protection of the civilian population, and precautions in attack. Its provisions govern relevant parties and conduct under defined armed-conflict conditions. A civilian provider’s service restriction cannot be equated with an attack without analysing the actor and operation. Treaty participation, reservations and the status of particular rules as customary law require separate examination before an occurrence-level legal conclusion.
+
+- **Issuer:** Diplomatic Conference on the Reaffirmation and Development of International Humanitarian Law; official text published by ICRC
+- **Version:** `1977`
+- **Lifecycle state:** `in-force`
+- **AI-governance relevance:** accountability, risk-management, worker-affected-person-rights
+- **Applicable lifecycle stages:** governance, operation-use
+- **Relevance scope:** Supporting governance of digital infrastructure and affected people; not a general AI regulation or evidence of occurrence-specific legal liability.
+- **Last substantive review:** 2026-10-11
+- **Next substantive review:** 2027-01-09
+- **Substantive reviewer:** OpenAI / ChatGPT Work / Codex / GPT-6
+- **Review method:** direct-public-primary-review · supporting-only-review
+- **Review freshness:** current
+- **Official source:** https://www.icrc.org/sites/default/files/external/doc/en/assets/files/other/icrc_002_0321.pdf
+
+## Geneva Convention (I) relative to the Amelioration of the Condition of the Wounded and Sick in Armed Forces in the Field
+
+The I Geneva Convention of 1949 concerns the amelioration of the condition of the wounded and sick in armed forces in the field. It forms part of the four Geneva Conventions protecting people affected by armed conflict. Treaty provisions require attention to their particular actors, protected persons and conflict conditions. General treaty status does not establish that a private communications restriction falls within a specific duty. This instrument predates 2022. Its legal relevance to an infrastructure occurrence requires article-level review and evidence of the protected person or service involved.
+
+- **Issuer:** Diplomatic Conference of Geneva; official text published by ICRC
+- **Version:** `1949`
+- **Lifecycle state:** `in-force`
+- **AI-governance relevance:** accountability, risk-management, worker-affected-person-rights
+- **Applicable lifecycle stages:** governance, operation-use
+- **Relevance scope:** Supporting governance of digital infrastructure and affected people; not a general AI regulation or evidence of occurrence-specific legal liability.
+- **Last substantive review:** 2026-10-11
+- **Next substantive review:** 2027-01-09
+- **Substantive reviewer:** OpenAI / ChatGPT Work / Codex / GPT-6
+- **Review method:** direct-public-primary-review · supporting-only-review
+- **Review freshness:** current
+- **Official source:** https://www.icrc.org/sites/default/files/external/doc/en/assets/files/publications/icrc-002-0173.pdf
+
+## Geneva Convention (II) relative to the Amelioration of the Condition of Wounded, Sick and Shipwrecked Members of Armed Forces at Sea
+
+The II Geneva Convention of 1949 concerns the amelioration of the condition of wounded, sick and shipwrecked members of armed forces at sea. It forms part of the four Geneva Conventions protecting people affected by armed conflict. Treaty provisions require attention to their particular actors, protected persons and conflict conditions. General treaty status does not establish that a private communications restriction falls within a specific duty. This instrument predates 2022. Its legal relevance to an infrastructure occurrence requires article-level review and evidence of the protected person or service involved.
+
+- **Issuer:** Diplomatic Conference of Geneva; official text published by ICRC
+- **Version:** `1949`
+- **Lifecycle state:** `in-force`
+- **AI-governance relevance:** accountability, risk-management, worker-affected-person-rights
+- **Applicable lifecycle stages:** governance, operation-use
+- **Relevance scope:** Supporting governance of digital infrastructure and affected people; not a general AI regulation or evidence of occurrence-specific legal liability.
+- **Last substantive review:** 2026-10-11
+- **Next substantive review:** 2027-01-09
+- **Substantive reviewer:** OpenAI / ChatGPT Work / Codex / GPT-6
+- **Review method:** direct-public-primary-review · supporting-only-review
+- **Review freshness:** current
+- **Official source:** https://www.icrc.org/sites/default/files/external/doc/en/assets/files/publications/icrc-002-0173.pdf
+
+## Geneva Convention (III) relative to the Treatment of Prisoners of War
+
+The III Geneva Convention of 1949 concerns the treatment of prisoners of war. It forms part of the four Geneva Conventions protecting people affected by armed conflict. Treaty provisions require attention to their particular actors, protected persons and conflict conditions. General treaty status does not establish that a private communications restriction falls within a specific duty. This instrument predates 2022. Its legal relevance to an infrastructure occurrence requires article-level review and evidence of the protected person or service involved. Source-specific actor and scope conditions remain essential to interpreting the instrument.
+
+- **Issuer:** Diplomatic Conference of Geneva; official text published by ICRC
+- **Version:** `1949`
+- **Lifecycle state:** `in-force`
+- **AI-governance relevance:** accountability, risk-management, worker-affected-person-rights
+- **Applicable lifecycle stages:** governance, operation-use
+- **Relevance scope:** Supporting governance of digital infrastructure and affected people; not a general AI regulation or evidence of occurrence-specific legal liability.
+- **Last substantive review:** 2026-10-11
+- **Next substantive review:** 2027-01-09
+- **Substantive reviewer:** OpenAI / ChatGPT Work / Codex / GPT-6
+- **Review method:** direct-public-primary-review · supporting-only-review
+- **Review freshness:** current
+- **Official source:** https://www.icrc.org/sites/default/files/external/doc/en/assets/files/publications/icrc-002-0173.pdf
+
+## Geneva Convention (IV) relative to the Protection of Civilian Persons in Time of War
+
+The IV Geneva Convention of 1949 concerns the protection of civilian persons in time of war. It forms part of the four Geneva Conventions protecting people affected by armed conflict. Treaty provisions require attention to their particular actors, protected persons and conflict conditions. General treaty status does not establish that a private communications restriction falls within a specific duty. This instrument predates 2022. Its legal relevance to an infrastructure occurrence requires article-level review and evidence of the protected person or service involved.
+
+- **Issuer:** Diplomatic Conference of Geneva; official text published by ICRC
+- **Version:** `1949`
+- **Lifecycle state:** `in-force`
+- **AI-governance relevance:** accountability, risk-management, worker-affected-person-rights
+- **Applicable lifecycle stages:** governance, operation-use
+- **Relevance scope:** Supporting governance of digital infrastructure and affected people; not a general AI regulation or evidence of occurrence-specific legal liability.
+- **Last substantive review:** 2026-10-11
+- **Next substantive review:** 2027-01-09
+- **Substantive reviewer:** OpenAI / ChatGPT Work / Codex / GPT-6
+- **Review method:** direct-public-primary-review · supporting-only-review
+- **Review freshness:** current
+- **Official source:** https://www.icrc.org/sites/default/files/external/doc/en/assets/files/publications/icrc-002-0173.pdf
 
 ## Model AI Governance Framework for Agentic AI
 
@@ -1230,6 +1451,23 @@ ISO/IEC/IEEE 24765 is a vocabulary standard for systems and software engineering
 - **Review freshness:** current
 - **Official source:** https://www.iso.org/standard/71952.html
 
+## Constitution of the International Telecommunication Union
+
+The Constitution is the basic treaty instrument of the International Telecommunication Union. It recognises public international correspondence and contains provisions on service suspension, operation and protection of telecommunications installations, and priority for safety-of-life communications. Its duties and permissions must be read with their stated actors and scope. Member States retain a power to suspend international services with notification through the Secretary-General. The instrument does not establish an unconditional guarantee that every private satellite service must remain available in every territory.
+
+- **Issuer:** International Telecommunication Union
+- **Version:** `1992-amended-through-2010`
+- **Lifecycle state:** `in-force`
+- **AI-governance relevance:** accountability, risk-management, worker-affected-person-rights
+- **Applicable lifecycle stages:** governance, operation-use
+- **Relevance scope:** Supporting governance of digital infrastructure and affected people; not a general AI regulation or evidence of occurrence-specific legal liability.
+- **Last substantive review:** 2026-10-11
+- **Next substantive review:** 2027-01-09
+- **Substantive reviewer:** OpenAI / ChatGPT Work / Codex / GPT-6
+- **Review method:** direct-public-primary-review · supporting-only-review
+- **Review freshness:** current
+- **Official source:** https://www.itu.int/en/council/Documents/basic-texts/Constitution-E.pdf
+
 ## Artificial Intelligence Risk Management Framework (AI RMF 1.0)
 
 The NIST Artificial Intelligence Risk Management Framework 1.0 is a voluntary framework for managing risks to individuals, organisations and society arising from AI systems. Its Govern, Map, Measure and Manage functions organise outcomes for establishing accountability, understanding context, assessing trustworthy-AI characteristics and treating risk throughout the lifecycle. The framework is widely relevant to AI governance because it connects organisational decision-making with technical and socio-technical evaluation without prescribing a single implementation. It is not a law, certification or checklist, and use of the framework does not by itself establish that risks are acceptable or that legal duties have been met.
@@ -1342,10 +1580,10 @@ The NIST Cybersecurity Framework 2.0 provides voluntary guidance for managing cy
 - **AI-governance relevance:** accountability, incident-governance, inventory, monitoring, risk-management, robustness, security, supply-chain
 - **Applicable lifecycle stages:** governance, design, development, deployment, operation-use, monitoring, incident-response, change-management, supply-chain, cross-lifecycle
 - **Relevance scope:** A generally applicable NIST cybersecurity framework with material relevance to AI systems and infrastructure; it is voluntary and outcome-oriented.
-- **Last substantive review:** 2026-08-24
-- **Next substantive review:** 2026-11-22
-- **Substantive reviewer:** OpenAI / ChatGPT / GPT-5.6 Sol
-- **Review method:** direct-public-primary-review · supporting-only-review
+- **Last substantive review:** 2026-10-18
+- **Next substantive review:** 2027-01-16
+- **Substantive reviewer:** OpenAI / Codex / Exact runtime model identity not disclosed
+- **Review method:** direct-public-primary-review · partial-review
 - **Review freshness:** current
 - **Official source:** https://doi.org/10.6028/NIST.CSWP.29
 
@@ -1376,10 +1614,10 @@ NIST Special Publication 800-218 defines the Secure Software Development Framewo
 - **AI-governance relevance:** accountability, assurance, change-management, documentation, provenance, security, supply-chain, traceability
 - **Applicable lifecycle stages:** governance, design, development, testing-evaluation, deployment, incident-response, change-management, supply-chain
 - **Relevance scope:** A generally applicable NIST secure-development framework with foundational relevance to AI software and supply chains; it is voluntary guidance.
-- **Last substantive review:** 2026-08-24
-- **Next substantive review:** 2026-11-22
-- **Substantive reviewer:** OpenAI / ChatGPT / GPT-5.6 Sol
-- **Review method:** direct-public-primary-review · supporting-only-review
+- **Last substantive review:** 2026-10-18
+- **Next substantive review:** 2027-01-16
+- **Substantive reviewer:** OpenAI / Codex / Exact runtime model identity not disclosed
+- **Review method:** direct-public-primary-review · partial-review
 - **Review freshness:** current
 - **Official source:** https://doi.org/10.6028/NIST.SP.800-218
 
@@ -1399,6 +1637,23 @@ NIST Special Publication 800-218A is an AI-focused community profile of the Secu
 - **Review method:** direct-public-primary-review · bounded-complete-review
 - **Review freshness:** current
 - **Official source:** https://doi.org/10.6028/NIST.SP.800-218A
+
+## Guide to Operational Technology (OT) Security
+
+NIST SP 800-82 Revision 3 provides guidance for protecting operational technology while respecting performance, reliability and safety requirements. It covers industrial control systems and other systems that interact with physical processes. The guide addresses access control, configuration management, monitoring, incident response and recovery in the operational environment. Its recommendations distinguish operational constraints from conventional information technology assumptions. Nongovernmental organisations may use the guide voluntarily. The represented provisions concern a bounded selection of remote access, configuration change, monitoring and mitigation recommendations. They do not reproduce every control baseline or establish that any organisation has adopted the guide.
+
+- **Issuer:** National Institute of Standards and Technology
+- **Version:** `3`
+- **Lifecycle state:** `final`
+- **AI-governance relevance:** security, safety, monitoring, change-management, incident-governance, robustness
+- **Applicable lifecycle stages:** design, deployment, operation-use, monitoring, incident-response, change-management
+- **Relevance scope:** Voluntary OT security guidance for cyber-physical infrastructure, including systems accessible to AI-assisted tools. Neither AI use nor source adoption is presumed.
+- **Last substantive review:** 2026-10-18
+- **Next substantive review:** 2027-01-16
+- **Substantive reviewer:** OpenAI / Codex / Exact runtime model identity not disclosed
+- **Review method:** direct-public-primary-review · partial-review
+- **Review freshness:** current
+- **Official source:** https://doi.org/10.6028/NIST.SP.800-82r3
 
 ## Towards a common reporting framework for AI incidents
 
@@ -1434,6 +1689,23 @@ The OECD Recommendation of the Council on Artificial Intelligence, commonly expr
 - **Review freshness:** current
 - **Official source:** https://legalinstruments.oecd.org/en/instruments/OECD-LEGAL-0449
 
+## Protecting civilians and other protected persons and objects against the potential human cost of ICT activities during armed conflict
+
+The resolution addresses potential civilian harm from information and communications technology activities during armed conflict. It calls for protection of civilian critical infrastructure across States, including internet infrastructure, undersea cables and orbit communication networks, consistent with existing international obligations. It recognises the importance of private technology providers and civilian dependence on their services. The conference resolution is non-binding guidance adopted in 2024. It can support interpretation and future governance discussions, but cannot create a retrospective legal duty for conduct in 2022.
+
+- **Issuer:** 34th International Conference of the Red Cross and Red Crescent
+- **Version:** `2024`
+- **Lifecycle state:** `adopted`
+- **AI-governance relevance:** accountability, risk-management, worker-affected-person-rights
+- **Applicable lifecycle stages:** governance, operation-use
+- **Relevance scope:** Supporting governance of digital infrastructure and affected people; not a general AI regulation or evidence of occurrence-specific legal liability.
+- **Last substantive review:** 2026-10-11
+- **Next substantive review:** 2027-01-09
+- **Substantive reviewer:** OpenAI / ChatGPT Work / Codex / GPT-6
+- **Review method:** direct-public-primary-review · supporting-only-review
+- **Review freshness:** current
+- **Official source:** https://rcrcconference.org/app/uploads/2024/10/34IC_R2-ICT-EN.pdf
+
 ## SPDX Specification 3.0.1 — AI Profile
 
 SPDX Specification 3.0.1 includes an AI Profile for representing information about AI and machine-learning artefacts within software bills of materials. It can describe models, datasets, relationships, provenance and other metadata in a standardised, machine-readable form. For AI governance, this supports inventory, supply-chain transparency, traceability, licensing analysis, vulnerability response and communication between producers and downstream users. SPDX is documentation infrastructure rather than a substantive safety or legal assessment: a complete record can improve visibility without proving that the represented data, model or system is accurate, lawful, secure or fit for purpose.
@@ -1450,6 +1722,74 @@ SPDX Specification 3.0.1 includes an AI Profile for representing information abo
 - **Review method:** direct-public-primary-review · bounded-complete-review
 - **Review freshness:** current
 - **Official source:** https://spdx.github.io/spdx-spec/v3.0.1/model/AI/AI/
+
+## International Covenant on Civil and Political Rights
+
+The Covenant protects civil and political rights through obligations of its State parties. Article 19 protects freedom of expression, including seeking, receiving and imparting information, subject to specified restrictions. Jurisdiction, lawful restrictions and emergency derogations require separate analysis. The Covenant is not a direct general service contract binding every private communications provider. A connectivity occurrence requires an identified State obligation and affected right before treaty alignment can be assessed. Its entry into force in 1976 does not resolve the applicability of every provision to every State.
+
+- **Issuer:** United Nations General Assembly; official text published by OHCHR
+- **Version:** `1966`
+- **Lifecycle state:** `in-force`
+- **AI-governance relevance:** accountability, risk-management, worker-affected-person-rights
+- **Applicable lifecycle stages:** governance, operation-use
+- **Relevance scope:** Supporting governance of digital infrastructure and affected people; not a general AI regulation or evidence of occurrence-specific legal liability.
+- **Last substantive review:** 2026-10-11
+- **Next substantive review:** 2027-01-09
+- **Substantive reviewer:** OpenAI / ChatGPT Work / Codex / GPT-6
+- **Review method:** direct-public-primary-review · supporting-only-review
+- **Review freshness:** current
+- **Official source:** https://2covenants.ohchr.org/About-ICCPR.html
+
+## Treaty on Principles Governing the Activities of States in the Exploration and Use of Outer Space, including the Moon and Other Celestial Bodies
+
+The Outer Space Treaty establishes principles for State activities in outer space. Article VI addresses international responsibility for national activities and authorisation and continuing supervision of non-governmental entities. Article IX addresses due regard and consultation in specified circumstances. These provisions concern State parties and space activities. They do not establish a general duty to deliver a commercial communications service continuously on Earth. Ownership of a satellite constellation does not by itself prove that a particular coverage decision was ordered by a supervising State.
+
+- **Issuer:** States Parties; official treaty text published by United Nations Office for Outer Space Affairs
+- **Version:** `1967`
+- **Lifecycle state:** `in-force`
+- **AI-governance relevance:** accountability, risk-management, worker-affected-person-rights
+- **Applicable lifecycle stages:** governance, operation-use
+- **Relevance scope:** Supporting governance of digital infrastructure and affected people; not a general AI regulation or evidence of occurrence-specific legal liability.
+- **Last substantive review:** 2026-10-11
+- **Next substantive review:** 2027-01-09
+- **Substantive reviewer:** OpenAI / ChatGPT Work / Codex / GPT-6
+- **Review method:** direct-public-primary-review · supporting-only-review
+- **Review freshness:** current
+- **Official source:** https://www.unoosa.org/oosa/en/ourwork/spacelaw/treaties/outerspacetreaty.html
+
+## United Nations Security Council Resolution 2573 (2021)
+
+This Security Council resolution addresses protection of civilians and infrastructure in armed conflict. It demands compliance with existing humanitarian obligations, condemns unlawful denial of humanitarian access and urges protection of infrastructure critical to humanitarian aid and essential civilian services. These operative forms have distinct meanings. The resolution must not be treated as a treaty or as a uniform new service-delivery obligation. A particular connectivity restriction requires evidence of the relevant actor, protected object and humanitarian consequences before any alignment result can be assessed.
+
+- **Issuer:** United Nations Security Council
+- **Version:** `2021`
+- **Lifecycle state:** `adopted`
+- **AI-governance relevance:** accountability, risk-management, worker-affected-person-rights
+- **Applicable lifecycle stages:** governance, operation-use
+- **Relevance scope:** Supporting governance of digital infrastructure and affected people; not a general AI regulation or evidence of occurrence-specific legal liability.
+- **Last substantive review:** 2026-10-11
+- **Next substantive review:** 2027-01-09
+- **Substantive reviewer:** OpenAI / ChatGPT Work / Codex / GPT-6
+- **Review method:** direct-public-primary-review · supporting-only-review
+- **Review freshness:** current
+- **Official source:** https://digitallibrary.un.org/record/3924402/files/S_RES_2573_%282021%29-EN.pdf
+
+## UN Guiding Principles on Business and Human Rights
+
+These principles distinguish the State duty to protect human rights, the corporate responsibility to respect human rights and access to remedy. They address business conduct and due diligence, including heightened risks in conflict-affected areas. The Human Rights Council endorsed the framework in 2011. The principles do not themselves create a treaty or a new legally binding corporate duty. Their business responsibilities remain distinct from the legal obligations of States and from findings of liability in a particular jurisdiction. Source-specific actor and scope conditions remain essential to interpreting the instrument.
+
+- **Issuer:** United Nations Human Rights Council; official text published by OHCHR
+- **Version:** `2011`
+- **Lifecycle state:** `published`
+- **AI-governance relevance:** accountability, risk-management, worker-affected-person-rights
+- **Applicable lifecycle stages:** governance, operation-use
+- **Relevance scope:** Supporting governance of digital infrastructure and affected people; not a general AI regulation or evidence of occurrence-specific legal liability.
+- **Last substantive review:** 2026-10-11
+- **Next substantive review:** 2027-01-09
+- **Substantive reviewer:** OpenAI / ChatGPT Work / Codex / GPT-6
+- **Review method:** direct-public-primary-review · supporting-only-review
+- **Review freshness:** current
+- **Official source:** https://www.ohchr.org/Documents/Publications/GuidingPrinciplesBusinessHR_EN.pdf
 
 
 The metadata fingerprint is a SHA-256 of material source identity and lifecycle metadata. It is not a digest of a reviewed PDF, HTML capture or licensed standard artefact.
