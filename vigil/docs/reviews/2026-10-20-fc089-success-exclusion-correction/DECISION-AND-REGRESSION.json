@@ -1,0 +1,112 @@
+{
+  "review_id": "VIGIL-REVIEW-2026-10-20-FC089-SUCCESS-EXCLUSION-SCOPE",
+  "review_date": "2026-10-20",
+  "scope": "Version-pinned FC-089 exclusions 3 and 4 success-recognition collision. Narrowly correct polarity without altering the service-obligation threshold, success/failure requirements, family placement or any Incident adjudication.",
+  "source_authority": [
+    {
+      "type": "canonical taxonomy",
+      "path": "vigil/taxonomy/families/VIGIL-FF-0017-operational-service-resilience-integrity.json",
+      "sha": "28381a4b869e35df17db62cc8da6699b77e6bd11",
+      "taxonomy_dataset_version": "0.8.1",
+      "family_version": "0.1.0"
+    },
+    {
+      "type": "existing pre-authorisation proposal",
+      "path": "vigil/docs/reviews/2026-10-20-fc089-corpus-migration/TAXONOMY-AMENDMENT.md",
+      "sha": "70bae81cf1ba19fa09a9f018d91da37960364d7d"
+    },
+    {
+      "type": "maintainer task instruction",
+      "detail": "Continuation authorised after assistant explicitly identified FC-089 success-exclusion wording as the next bounded decision; no broad remapping, merge, or other taxonomy amendments implied"
+    }
+  ],
+  "before": {
+    "exclusion_3": "A lawful and proportionate safety, security, abuse-prevention, service-maintenance or other valid restriction that is consistent with the applicable service obligation and feasible alternative or transition measures.",
+    "exclusion_4": "A temporary incident with an effective and proportionate degraded or recovery route that satisfies the applicable requirement; an unavoidable disruption for which no relevant feasible response was required.",
+    "exclusion_effect": "The generic exclusion-before-role instruction treats the fact of lawful restriction or successful recovery as defeating all three roles, in tension with success recognition, which positively admits governed usable recovery/fallback."
+  },
+  "after": {
+    "exclusion_3": "For failure-occurrence admission: a lawful and proportionate safety, security, abuse-prevention, service-maintenance or other valid restriction that is consistent with the applicable service obligation and feasible alternative or transition measures. This exclusion does not defeat a successful-invariant mapping supported by all success recognition conditions.",
+    "exclusion_4": "For failure-occurrence admission: a temporary incident with an effective and proportionate degraded or recovery route that satisfies the applicable requirement, or an unavoidable disruption for which no relevant feasible response was required. This exclusion does not defeat a successful-invariant mapping supported by all success recognition conditions.",
+    "effective_scope": "Exclude only failure-occurrence admissions based on the described justified restriction or adequately fulfilled recovery; permit a success only with independent affirmative evidence for each required success condition."
+  },
+  "canonical_recognition_unchanged": {
+    "success_conditions": [
+      "An AI-mediated service or material function has an independently established applicable availability or continuity obligation that is actually engaged by a service disruption, degradation, capacity pressure, material change or continuity transition.",
+      "The actor maintains the required usable function or activates a timely, proportionate and authorised recovery, safe degraded-mode, practical alternative or planned-transition response appropriate to that obligation.",
+      "Observed service state, access and recovery evidence demonstrates that the required level of availability or usable continuity actually held, or that applicable and justified limits were handled through a sufficient response; publication of a nominal fallback alone is not enough."
+    ],
+    "failure_conditions": [
+      "A bounded AI-mediated service or material function has an independently established availability, usable-quality or continuity requirement applicable to the responsible actor, affected users or dependent workflow and relevant time; state the actual basis and threshold rather than inferring obligation from harm or popularity.",
+      "The service or function materially becomes unavailable, is withdrawn or restricted, or degrades in capability, latency, reliability, completeness, accessibility or another governed functional dimension, relative to the established applicable requirement.",
+      "The requirement calls for a specified degree of maintained usable function, timely recovery, safe degraded mode, feasible fallback or proportionate planned-change/termination response under the evidenced operating conditions.",
+      "The actor's actual availability, recovery, degraded operation, fallback or transition materially fails that applicable requirement; identify the specific omitted or ineffective measure or the breached availability threshold and what evidence establishes it.",
+      "The shortfall materially impairs the governed service use or dependent function. A later resolution does not retroactively demonstrate that availability or required transition held at the original decision time."
+    ],
+    "class_invariant": "An AI-mediated service must maintain the usable availability and functional quality required by its independently established obligations. If material interruption, degradation, restriction or withdrawal occurs, the responsible actor must preserve the required function or provide proportionate, feasible and practically usable degraded operation, recovery, alternative access or transition in accordance with those obligations. Neither ordinary service variation nor adverse outcomes alone establish a breach; a service obligation, material functional shortfall and insufficient governed response must be evidenced.",
+    "other_exclusions": [
+      "An outage, ordinary service variation, transient inconvenience, dissatisfaction or adverse outcome without an independently evidenced and applicable availability, usable-quality or continuity requirement.",
+      "One inaccurate or harmful AI output without evidence of a service-level availability or governed functional-degradation defect; assess applicable output or decision-integrity classes.",
+      "The only demonstrated error is an incorrect description of access or outage state while the functional service obligation remains satisfied; assess FC-032.",
+      "The only demonstrated defect is loss of otherwise-valid access because a dependent identity or licence verification cannot complete; assess FC-048 unless an independent broader service availability requirement also failed.",
+      "The only demonstrated defect is loss of durable work state or inaccurate restored work state while service-function availability requirements are otherwise satisfied; assess FC-035 or FC-036.",
+      "The only demonstrated defect is infrastructure access coercion or compelled governance concessions; assess FC-058 or FC-059 as appropriate.",
+      "The only demonstrated defect is failure to provide an interaction-level protection response to evidenced vulnerability; assess FC-087, allowing co-occurrence only for a separately evidenced service-level continuity failure."
+    ]
+  },
+  "cases": [
+    {
+      "scenario": "Contractually applicable two-hour permitted downtime with working degraded route, verified by service telemetry and covered recovery within terms",
+      "exclusion_effect": "no failure from the adequate recovery or permitted interruption",
+      "success_status": "eligible only if all three FC-089 success recognition conditions supported by actual source data"
+    },
+    {
+      "scenario": "Authorized safety restriction with independently evidenced usable required alternative",
+      "exclusion_effect": "lawful restriction and proportionate alternative defeat failure",
+      "success_status": "success can be considered only with obligation, activated response and evidence of actual functionality"
+    },
+    {
+      "scenario": "App announces alternate service or migration with no evidence of affected-user usability",
+      "exclusion_effect": "no inference that fallback was adequate",
+      "success_status": "cannot admit from announcement; material success conditions unproved"
+    },
+    {
+      "scenario": "Outage without customer/period-specific continuity obligation",
+      "exclusion_effect": "exclusion 1 defeats admission",
+      "success_status": "no failure, success or Boundary from outage alone"
+    },
+    {
+      "scenario": "INC-156 original emergency assistance shortfall followed by eventual restoration",
+      "exclusion_effect": "original material deficiency and failed response remain a supported failure",
+      "success_status": "later restoration not automatically a success for the earlier deficient episode"
+    },
+    {
+      "scenario": "INC-044 companion shutdown and partial migration with missing historic service duty",
+      "exclusion_effect": "missing obligation remains decisive",
+      "success_status": "no forced mapping and no invented transition requirement"
+    }
+  ],
+  "adjacency": [
+    "VIGIL-FC-000032 access-state truthful representation",
+    "VIGIL-FC-000048 prerequisite verification dependent access",
+    "VIGIL-FC-000035/000036 work-state durability/restoration",
+    "VIGIL-FC-000049 dependency cultivation",
+    "VIGIL-FC-000087 interaction-level vulnerability protection"
+  ],
+  "expected_changes": {
+    "affected_file": "vigil/taxonomy/families/VIGIL-FF-0017-operational-service-resilience-integrity.json",
+    "family_version": "0.1.0 -> 0.1.1; index family metadata synchronized",
+    "dataset_release": "PR retains published dataset 0.8.1 in working mode; canonical release preparation on main increments to 0.8.2, with digest published after merge",
+    "test": "One isolated regression that locks success/failure scope while keeping unchanged positive conditions",
+    "canonical_incident_files": 0,
+    "schema_validator_changes": 0,
+    "external_requirement_changes": 0
+  },
+  "unresolved": "No affected success-occurrence automatically admitted or reclassified; run future source-first test only when separately grounded success candidates arise.",
+  "preservation_baseline": {
+    "pr_head": "40fe1348fa189d474893b4a59b394a24aca79302",
+    "family_sha": "28381a4b869e35df17db62cc8da6699b77e6bd11",
+    "index_sha": "99cd4c05831c5f8a13d022a22c85e32291bee487",
+    "test_sha": "e389206546ae6b94419a165cbf676d749da90052"
+  }
+}
