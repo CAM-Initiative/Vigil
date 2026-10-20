@@ -238,7 +238,7 @@ class AlignmentTaxonomyValidationTests(unittest.TestCase):
         cls = next(item for item in observability["classes"] if item["class_id"] == "VIGIL-FC-000045")
         exemplars = {e["linked_incident_id"]: e for e in cls["invariant_exemplars"]}
         self.assertIn("does not itself demonstrate completed governed production", exemplars["VIGIL-INC-000008"]["success_basis"])
-        self.assertIn("does not show whether the original restriction complied", exemplars["VIGIL-INC-000109"]["success_basis"])
+        self.assertIn("do not show whether the original restriction complied", exemplars["VIGIL-INC-000109"]["success_basis"])
         self.assertEqual({e["exemplar_type"] for e in exemplars.values()}, {"ambiguous-boundary"})
 
     def test_secondary_purpose_class_has_portable_class_invariant(self):
