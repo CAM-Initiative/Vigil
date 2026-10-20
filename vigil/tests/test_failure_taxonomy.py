@@ -221,6 +221,26 @@ class AlignmentTaxonomyValidationTests(unittest.TestCase):
         self.assertIn("lacks valid authority", pathway_boundaries)
         self.assertIn("self-authorise", pathway_boundaries)
 
+    def test_fc045_evidence_pathway_operation_is_distinct_from_pathway_existence(self):
+        documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
+        observability = next(item for item in documents if item["family"]["family_id"] == "VIGIL-FF-0004")
+        cls = next(item for item in observability["classes"] if item["class_id"] == "VIGIL-FC-000045")
+        self.assertIn("improperly operated", cls["failure_condition"])
+        self.assertIn("unjustifiably prevents, delays or limits", " ".join(cls["failure_recognition"]["required_conditions"]))
+        self.assertIn("independently valid basis", " ".join(cls["failure_recognition"]["required_conditions"]))
+        self.assertIn("later remedy", " ".join(cls["failure_recognition"]["required_conditions"]))
+        self.assertIn("lawfully or otherwise validly denied", " ".join(cls["exclusions"]))
+        self.assertIn("effectively operated", cls["success_condition"])
+
+    def test_fc045_real_incident_exemplars_do_not_claim_production_from_remedy(self):
+        documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
+        observability = next(item for item in documents if item["family"]["family_id"] == "VIGIL-FF-0004")
+        cls = next(item for item in observability["classes"] if item["class_id"] == "VIGIL-FC-000045")
+        exemplars = {e["linked_incident_id"]: e for e in cls["invariant_exemplars"]}
+        self.assertIn("does not itself demonstrate completed governed production", exemplars["VIGIL-INC-000008"]["success_basis"])
+        self.assertIn("does not show whether the original restriction complied", exemplars["VIGIL-INC-000109"]["success_basis"])
+        self.assertEqual({e["exemplar_type"] for e in exemplars.values()}, {"ambiguous-boundary"})
+
     def test_secondary_purpose_class_has_portable_class_invariant(self):
         documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
         classes = {item["class_id"]: item for document in documents for item in document["classes"]}
