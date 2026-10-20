@@ -1,6 +1,6 @@
 # Grouped proposal: preserve FC-089 success recognition
 
-**Status: proposed; maintainer approval required.** Authority reviewed: taxonomy 0.8.1 at `be4bf1c784f956ff32c27377ff9e48c94a6fcb77`. This file does not amend approved authority. Track through existing issue #150, with #154 remaining the independent external-standard source queue.
+**Status: implemented on PR #140 (20 October 2026).** This document preserves the original exact proposal and counterexamples against taxonomy 0.8.1 at `be4bf1c784f956ff32c27377ff9e48c94a6fcb77`. The bounded correction is applied to FC-089 exclusions 3 and 4, with version-aligned FF-0017 metadata and an isolated success-recognition regression test. Its [dated implementation decision and before/after audit](../2026-10-20-fc089-success-exclusion-correction/DECISION-AND-REGRESSION.json) is authoritative for this completion. The PR retains published dataset metadata v0.8.1 until main's established release-preparation workflow advances the dataset. Existing issue #150 remains open for separate FC-049 dependency questions; #154 remains independent external-standard source work.
 
 ## Diagnosis
 
