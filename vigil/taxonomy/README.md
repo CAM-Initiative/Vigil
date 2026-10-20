@@ -29,6 +29,8 @@ families/
   VIGIL-FF-0013-economic-influence-integrity.json
   VIGIL-FF-0014-governance-independence-neutrality-integrity.json
   VIGIL-FF-0015-identity-evaluative-integrity.json
+  VIGIL-FF-0016-human-dignity-standing-integrity.json
+  VIGIL-FF-0017-operational-service-resilience-integrity.json
 generated/
   VIGIL.FailureTaxonomy.CaseFileExamples.json
   VIGIL.Observatory.AlignmentTaxonomy.FullReference.pdf
