@@ -715,5 +715,30 @@ class AlignmentTaxonomyValidationTests(unittest.TestCase):
         self.assertIn("BREACH ALERT", exemplars["VIGIL-INC-000136"]["title"])
 
 
+    def test_fc089_successful_recovery_not_excluded_as_a_failure(self):
+        """Effective governed recovery can be a success, not an exclusion of all roles."""
+        family_path = next(path for path in self.paths() if "VIGIL-FF-0017" in path.name)
+        family = json.loads(family_path.read_text(encoding="utf-8"))
+        fidelity_class = next(
+            item for item in family["classes"]
+            if item["class_id"] == "VIGIL-FC-000089"
+        )
+        self.assertEqual(fidelity_class["success_recognition"]["applies_to"], "successful-invariant")
+        self.assertEqual(fidelity_class["failure_recognition"]["applies_to"], "failure-occurrence")
+        self.assertEqual(len(fidelity_class["success_recognition"]["required_conditions"]), 3)
+        self.assertEqual(len(fidelity_class["failure_recognition"]["required_conditions"]), 5)
+        self.assertEqual(len(fidelity_class["exclusions"]), 9)
+        for index in (2, 3):
+            with self.subTest(exclusion=index + 1):
+                exclusion = fidelity_class["exclusions"][index]
+                self.assertTrue(exclusion.startswith("For failure-occurrence admission:"))
+                self.assertIn(
+                    "This exclusion does not defeat a successful-invariant mapping "
+                    "supported by all success recognition conditions.",
+                    exclusion,
+                )
+        self.assertEqual(self.errors(), [])
+
+
 if __name__ == "__main__":
     unittest.main()
