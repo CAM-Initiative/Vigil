@@ -5,6 +5,8 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
+import subprocess
 from datetime import date
 from pathlib import Path
 
@@ -85,6 +87,19 @@ def prepare_release(publication_date: str) -> bool:
         index.get("standard", {}).get("status"),
     )
 
+    # Use the version selected once on the working branch; never derive a
+    # subsequent patch from its candidate identifier.
+    candidate = index.get("working_release")
+    if candidate is not None:
+        if (
+            candidate.get("version") != new_version
+            or candidate.get("change_level") != change_level
+            or candidate.get("base_version") != previous_version
+            or candidate.get("state") != "unpublished"
+        ):
+            raise ValueError("working_release does not match the single next release from published main")
+        del index["working_release"]
+
     release = {
         "version": new_version,
         "publication_date": publication_date,
@@ -114,6 +129,33 @@ def prepare_release(publication_date: str) -> bool:
     return True
 
 
+def require_main_release_context() -> None:
+    """Fail closed when a release is requested outside the main branch."""
+    if os.environ.get("GITHUB_ACTIONS") == "true":
+        if os.environ.get("GITHUB_REF") != "refs/heads/main":
+            raise SystemExit(
+                "Taxonomy release preparation is main-only; pull requests retain the published version."
+            )
+        return
+
+    try:
+        branch = subprocess.run(
+            ["git", "symbolic-ref", "--quiet", "--short", "HEAD"],
+            cwd=ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+    except (OSError, subprocess.CalledProcessError) as exc:
+        raise SystemExit(
+            "Taxonomy release preparation requires a checked-out main branch."
+        ) from exc
+    if branch != "main":
+        raise SystemExit(
+            f"Taxonomy release preparation is main-only (current branch: {branch})."
+        )
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -122,6 +164,7 @@ def main() -> None:
         help="fixed publication date for the main-branch release (default: current UTC runner date)",
     )
     args = parser.parse_args()
+    require_main_release_context()
     prepare_release(args.publication_date)
 
 

@@ -10,6 +10,16 @@ Canonical records are stored only under `vigil/records/incidents/`. FM, OBS, RES
 
 The taxonomy, external-governance datasets and CAM assessment are separate retained subsystems. VIGIL does not amend CAM/Caelestis doctrine, determine liability or establish final factual truth.
 
+## Independent classification authority (mandatory)
+
+External first-party accounts, investigators, research, standards and regulators can establish occurrence facts, contextual limitations or their own independent assessments. They do **not** decide VIGIL's Alignment Taxonomy classification. VIGIL's selectable class definitions, versioned recognition conditions and exclusions govern the VIGIL finding. Explicitly compare any revised finding with the prior VIGIL reasoning, including supported divergences from external reporting. Do not preserve an unsupported VIGIL finding merely because it is distinctive; do not erase a supported one merely because a third party did not recognise that mechanism.
+
+For any substantive Boundary review, proposed mapping removal, role change or no-mapping decision, follow the **source-first adjudication sequence** in the Incident workflow. Review the complete Incident and discover applicable governance properties and classes before comparing with existing selections. A Boundary-explanation exercise cannot establish mapping exhaustiveness. Do not treat missing facts in a preserved source packet as evidence of non-applicability without checking whether decisive sources are reasonably recoverable. An independently supported failure is not merely Boundary because its internal technical cause is unknown. Preserve material taxonomy gaps without requiring a new class proposal.
+
+Before proposing any taxonomy role, apply the Incident workflow's **decision-integrity procedure**: an operative literal exclusion defeats a class mapping including Boundary; each necessary success/failure condition requires its own evidence-specific reasoning (not a repeated class-wide basis); and completed *listed-clause* coverage is not a completed source-first substantive review. Reconcile all decision-packet statuses before claiming completion. Start packets with actual unreviewed statuses, never pre-filled positive attestations.
+
+For substantive re-adjudication, first create a claim/criterion/source-linked decision and before/after preservation record under the Incident workflow. Protect mixed episode outcomes and accepted negative or bounded interpretations; an aggregate explanation must not silently omit independently supported episode findings. Automated checks can detect structural anomalies, not settle substantive disagreements. The current documentation/template changes do not authorise validator, schema, website or mass-record changes.
+
 ## Incident authority and provenance
 
 - Preserve `source_records` as the only canonical source-evidence block.
@@ -177,3 +187,15 @@ python vigil/tests/test_external_requirement_public_projection.py
 Run taxonomy, external-governance and CAM-assessment validators when those retained subsystems are touched.
 
 Do not reset, rebase, merge, cherry-pick, force-push or rewrite shared history as maintenance. Do not restore retired records from main, migration inputs or generated artefacts.
+
+## Canonical Boundary adjudication — approved 19 October 2026
+
+Every admitted `ambiguous-boundary` primary or secondary taxonomy mapping MUST contain a completed `boundary_adjudication` object in the Incident itself. A dated audit packet is supporting review history, never a substitute for the canonical explanation. Use `vigil/templates/boundary-adjudication-template.json`; the authoritative shape is `boundary_adjudication_contract` in `vigil/VIGIL.Schema.json`.
+
+The object records `taxonomy_version`, positive `material_engagement`, non-empty `unresolved_conditions`, `diagnostic_reasons`, `decisive_blocker` and `resolution_requirements`. Each unresolved condition records its `polarity` (failure-occurrence or successful-invariant), literal `condition`, occurrence-specific `assessment`, and resolvable `source_record_refs` and `episode_refs`. Explain why neither outcome is established; do not assume a failure-side unknown proves success or vice versa. Historical taxonomy metadata remains separate from the version applied in this adjudication.
+
+Permitted diagnostic reasons are `insufficient-evidence`, `conflicting-evidence` and `recognition-criteria-insufficiency`, including multiple contributing reasons. Identify the precise missing fact and potential resolving source, incompatible evidence and needed reconciliation, or criteria deficiency and separate taxonomy review. Unsupported class engagement is a candidate for removal or alternative disposition, not a completed Boundary. Review not performed is an audit hold, not a completed adjudication. These reasons explain the existing role; they are not additional canonical classification roles.
+
+The validator rejects absent/incomplete objects, invalid reasons and unresolved source/episode references. It cannot certify that prose is substantively correct or that all relevant criteria have been examined. Boundary mappings require completed boundary_adjudication and must omit classification_confidence. Failure-occurrence and successful-invariant mappings require classification_confidence (low, medium or high) and must omit boundary_adjudication. On a role change, preserve the previous mapping and superseded values in dated review history before removing role-inapplicable fields from the current mapping. Historical confidence is provenance, never a current Boundary rating. Keep complete criterion matrices, rejected candidates and review process history in audit packets. The canonical object contains accepted occurrence-specific reasoning only.
+
+Approval covers this control, documentation, templates and isolated tests. After implementation run the corpus read-only and report exact failures. Do not mechanically fill objects, reclassify findings, change recognition conditions or amend independent assessments. Substantive corpus repair remains subject to explicit maintainer authorisation. This requirement supersedes earlier audit-only placement of Boundary diagnostic reasons. Website display is separate renderer work; no presentation or builder change is authorised here.

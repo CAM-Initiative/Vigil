@@ -240,12 +240,16 @@ def validate_scope(
         if extraction in {"blocked-access", "partial", "in-progress", "not-started"} and not action_required:
             errors.append(f"source-scope {key} incomplete primary extraction requires a maintainer action")
         expected = {
-            "supporting-external-authority": "supporting-only",
             "context-or-discovery": "context-only",
             "excluded-from-current-scope": "excluded",
         }.get(role)
         if expected and extraction != expected:
             errors.append(f"source-scope {key} role {role} requires extraction_status {expected}")
+        if role == "supporting-external-authority" and extraction not in {
+            "supporting-only", "not-started", "in-progress", "partial", "complete",
+            "blocked-access", "superseded-version",
+        }:
+            errors.append(f"source-scope {key} supporting role conflicts with extraction_status {extraction}")
         if role == "primary-ai-governance" and extraction in {"supporting-only", "context-only", "excluded"}:
             errors.append(f"source-scope {key} primary role conflicts with extraction_status {extraction}")
     missing = sorted(set(registry_by_key) - set(scope_by_key))
@@ -400,8 +404,8 @@ def validate_requirements(
                 errors.append(f"{label}: {field} differs from registered source metadata")
         if scope.get("extraction_status") == "superseded-version":
             errors.append(f"{label}: silently points at a superseded source version")
-        if scope.get("source_role") != "primary-ai-governance":
-            errors.append(f"{label}: requirement extraction is limited to primary AI-governance sources")
+        if scope.get("source_role") not in {"primary-ai-governance", "supporting-external-authority"}:
+            errors.append(f"{label}: source role is ineligible for requirement extraction")
         if not non_empty(req.get("clause_or_control")):
             errors.append(f"{label}: clause_or_control is required")
         if not isinstance(req.get("source_review_date"), str) or not DATE_RE.fullmatch(req["source_review_date"]):
@@ -780,6 +784,19 @@ def load_and_validate() -> tuple[dict[Path, str], list[str]]:
     scope_by_key = validate_scope(registry_by_key, scopes, errors)
     reviews = load_assurance(registry_by_key, requirements, errors)
     validate_requirements(requirements, registry_by_key, scope_by_key, reviews, errors)
+    if any(r.get("source_role") == "supporting-external-authority" for r in requirements):
+        from supporting_source_admission import admission_errors
+        classes = {}
+        for path in sorted((ROOT / "taxonomy" / "families").glob("*.json")):
+            for item in load_json(path).get("classes", []):
+                classes[item["class_id"]] = item
+        errors.extend(admission_errors(
+            requirements, scope_by_key,
+            load_json(REQ / "source-fidelity.json").get("entries", []),
+            load_json(REQ / "metadata-review.json").get("entries", []),
+            load_json(REQ / "taxonomy-relationships.json").get("relationships", []),
+            classes, ROOT.parent,
+        ))
     crosswalks = validate_crosswalks(crosswalk_doc, errors)
     outputs = build_outputs(registry_by_key, scopes, requirements, reviews, crosswalks, reviewed_at)
     outputs[REQUIREMENTS_PATH] = render_requirements_document()

@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Compromised Mistral SDK package executed credential-harvesting payload on import",
     "created": "2026-09-08",
-    "updated": "2026-10-18",
-    "version": "0.1.19"
+    "updated": "2026-10-19",
+    "version": "0.1.21"
   },
   "incident_identity": {
     "historical_event_name": "Mini Shai-Hulud / TanStack compromise affecting Mistral SDK releases",
@@ -18,10 +18,10 @@
     "date_precision": "date-range",
     "date_basis": "Mistral states compromised npm packages were uploaded on 11 May 2026 and the compromised PyPI release on 12 May 2026; affected releases were removed within hours."
   },
-  "summary": "Mistral reported that the Mini Shai-Hulud supply-chain attack on TanStack resulted in compromised Mistral npm and PyPI SDK versions being published. The compromised PyPI package `mistralai==2.4.6` executed malicious code on import, downloading a background payload that harvested credentials from common locations. Mistral reported no impact to its global infrastructure and removed the affected releases. Its updated advisory says the compromised npm releases referenced a missing file, preventing their malicious path from running. The working PyPI payload was Linux-specific. Mistral later marked mitigation and closed its investigation.",
+  "summary": "Mistral reported that the Mini Shai-Hulud supply-chain attack on TanStack resulted in compromised Mistral npm and PyPI SDK versions being published. The compromised PyPI package `mistralai==2.4.6` executed malicious code when client modules were imported on Linux, downloading a background payload that harvested credentials from common locations. Mistral reported no impact to its global infrastructure and removed the affected releases. Its updated advisory says the compromised npm releases referenced a missing file, preventing their malicious path from running. The working PyPI payload was Linux-specific. Mistral later marked mitigation and closed its investigation. The repository advisory distinguishes client-module imports from a bare namespace import. It also records quarantine of the Python project.",
   "vigil_assessment": {
-    "factual_basis": "Mistral's security advisory identifies affected npm and PyPI versions, publication windows and indicators of compromise. It states that the compromised PyPI release executed a malicious script on Linux at import time and launched a detached process designed to harvest credentials. Aikido Security separately reports that its malware team detected compromised npm package versions including @mistralai releases in the wider campaign. Its account documents external post-publication detection, not the exact Mistral internal monitoring control or the causal route to removal. The updated advisory distinguishes nonfunctional npm payload paths from the working Linux PyPI import path. Investigation closure on 14 May does not prove downstream customer cleanup or absence of credential exposure.",
-    "governance_interpretation": "Trusted package-distribution channels carried malicious code into an AI software development kit. The governance problem is therefore not a model output but the integrity of the software supply chain through which developers receive AI tooling, including package provenance, release controls and the authority of third-party maintainers. Aikido’s external detection and Mistral’s removal show a distinct post-publication response stage. The available accounts do not establish that a specific Mistral pre-publication control was required and failed, or that the external monitoring was the operative control that caused removal. Package identity substitution and the link between external detection and provider removal remain ambiguous. Import-time malware is distinct from GAI output; removal does not prove a prepublication control duty or global compromise. The AI software-distribution security outcome is Not aligned. Withdrawal of the affected releases is Aligned with the repair requirement. Monitoring and security-review processes remain Boundary where their operative evidence is not available. Harm Impact: The publisher confirms actual malicious SDK versions were released through its distribution channel. Those persisted releases changed the expected integrity of a real software asset, establishing the S2 integrity minimum. Customer restoration burden remains unknown.",
+    "factual_basis": "Mistral's security advisory identifies affected npm and PyPI versions, publication windows and indicators of compromise. It states that the compromised PyPI release executed a malicious script on Linux at import time and launched a detached process designed to harvest credentials. Aikido Security separately reports that its malware team detected compromised npm package versions including @mistralai releases in the wider campaign. Its account documents external post-publication detection, not the exact Mistral internal monitoring control or the causal route to removal. The updated advisory distinguishes nonfunctional npm payload paths from the working Linux PyPI import path. Investigation closure on 14 May does not prove downstream customer cleanup or absence of credential exposure. The repository security advisory supplies additional direct evidence for the Python release. It reports no corresponding repository release lineage and an upload outside the normal release pipeline. It identifies the client-module import trigger and records quarantine. These facts support separate conclusions about attributed origin and containment without joining the external detection and provider response into one internal mechanism.",
+    "governance_interpretation": "The compromised Python release represented attacker content under the Mistral SDK identity without matching legitimate release lineage. Its source attribution is Not aligned. The release withdrawal and Python-project quarantine are Aligned for the bounded purpose of containing further distribution through the affected channel. The external detection and provider response remain causally distinct in the available accounts. No particular pre-publication safeguard is presumed to have failed. The malicious executable asset also presents a software-integrity property beyond the origin-attribution and response findings. The selectable taxonomy does not fully represent that property without additional evidence of an authority-conversion mechanism. The nonfunctional npm path remains distinct from the working Linux Python path. Customer cleanup and credential exposure remain unknown. The independent AI software-security and repair assessments are preserved. Harm Impact: The publisher confirms actual malicious SDK versions were released through its distribution channel. Those persisted releases changed the expected integrity of a real software asset, establishing the S2 integrity minimum. Customer restoration burden remains unknown.",
     "significance_to_cam": "AI-system governance includes the developer infrastructure surrounding a model. Compromised package provenance can expose credentials and downstream systems before the model is ever invoked, making third-party build dependencies, release integrity and incident response part of the assurance boundary.",
     "assessment_boundaries": [
       "Mistral reports no impact to its global infrastructure.",
@@ -43,16 +43,17 @@
         {
           "episode_id": "E002",
           "source_record_refs": [
-            "source_records[0]"
+            "source_records[0]",
+            "source_records[3]"
           ],
           "source_paraphrase": "Compromised npm SDK versions were published on 11 May and removed early on 12 May. PyPI mistralai 2.4.6 was published and removed on 12 May. Trusted package identities carried attacker content.",
           "recovered_invariant_interpretation": "Package provenance substitution and payload execution are different questions.",
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000010",
-              "relationship": "ambiguous-boundary",
+              "relationship": "failure-occurrence",
               "canonical_taxonomy_mapping": true,
-              "rationale": "A trusted Mistral SDK package identity carried attacker-supplied executable content, materially illuminating the boundary between package/release provenance substitution and ordinary false authorship attribution."
+              "rationale": "The malicious Python release used the Mistral SDK package identity. The repository advisory identifies no matching release tag, commit or workflow and says the upload bypassed the normal publishing pipeline. The attributed package origin therefore differed materially from the supported contribution history. This affected developer trust and reuse. A genuine distribution endpoint does not make the attacker’s contribution an authorised Mistral release. This finding is bounded to that Python release; valid workflow provenance elsewhere in the campaign does not prove code safety or establish the same publishing route here."
             }
           ],
           "adjudication_status": "mapped"
@@ -60,12 +61,13 @@
         {
           "episode_id": "E003",
           "source_record_refs": [
-            "source_records[0]"
+            "source_records[0]",
+            "source_records[3]"
           ],
-          "source_paraphrase": "The PyPI version ran malicious code on Linux import and launched a detached credential-harvesting process.",
+          "source_paraphrase": "The PyPI version ran malicious code on Linux import and launched a detached credential-harvesting process. The repository advisory specifies imports under mistralai.client on Linux; a bare namespace import does not trigger the loader.",
           "recovered_invariant_interpretation": "Reported payload behaviour does not quantify actual stolen credentials.",
           "taxonomy_relationships": [],
-          "adjudication_status": "resolved-no-mapping"
+          "adjudication_status": "taxonomy-gap"
         },
         {
           "episode_id": "E004",
@@ -81,16 +83,17 @@
           "episode_id": "E005",
           "source_record_refs": [
             "source_records[0]",
-            "source_records[2]"
+            "source_records[2]",
+            "source_records[3]"
           ],
-          "source_paraphrase": "Aikido separately detected malicious npm versions. Mistral removed its affected releases within hours, but the public accounts do not link one operative Mistral control to detection and withdrawal.",
+          "source_paraphrase": "Aikido separately detected malicious npm versions. Mistral removed its affected releases within hours, but the public accounts do not link one operative Mistral control to detection and withdrawal. The repository advisory also records quarantine of the Python project. That protective action can be assessed separately from the causal route connecting the external detection to provider withdrawal.",
           "recovered_invariant_interpretation": "External detection and provider removal must retain their separate causal limits.",
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000083",
-              "relationship": "ambiguous-boundary",
+              "relationship": "successful-invariant",
               "canonical_taxonomy_mapping": true,
-              "rationale": "Aikido detected compromised npm releases after publication and Mistral removed affected SDK versions, but the record does not link one operative Mistral control to that external detection and protective removal."
+              "rationale": "Mistral withdrew the compromised SDK versions within hours. The Python project was also quarantined. These measures acted on the identified malicious distribution and limited further availability through the affected release channel. This establishes a bounded protective effect for release containment. It does not establish customer credential recovery, removal from private caches or the effectiveness of every earlier safeguard. Aikido’s detection need not be proved to have caused Mistral’s action to assess the withdrawal itself."
             }
           ],
           "adjudication_status": "mapped"
@@ -207,6 +210,39 @@
       "source_context": "Aikido reported detecting 373 malicious package-version entries across 169 npm names, including @mistralai releases.",
       "system_or_product": "Mistral SDK packages",
       "model_or_algorithm": "not model-specific"
+    },
+    {
+      "source_title": "Malicious dropper in mistralai 2.4.6 PyPI package — GHSA-wx9m-wx4f-4cmg",
+      "author_or_publisher": "Mistral client-python repository security advisory",
+      "source_date": "2026-05-12",
+      "source_url": "https://github.com/mistralai/client-python/security/advisories/GHSA-wx9m-wx4f-4cmg",
+      "source_url_status": "available",
+      "source_type": "technical report",
+      "source_platform": "GitHub",
+      "source_residence": "external",
+      "source_role": "incident-evidence",
+      "evidence_modality": [
+        "text",
+        "indicators of compromise"
+      ],
+      "evidence_status": "first-party-reported",
+      "evidence_status_basis": "Published security advisory in the SDK repository describes the absence of legitimate release lineage, the malicious client-module import trigger and project quarantine.",
+      "primary_artefact_access": {
+        "access_method": "direct public source review",
+        "access_status": "directly reviewed",
+        "direct_primary_artefact_review": true,
+        "limitations": [
+          "Published repository account; no private release logs or customer forensics inspected."
+        ],
+        "reviewing_system": "OpenAI Codex — GPT-6"
+      },
+      "incident_source_order": 4,
+      "interpretive_reliance": "Direct evidence of Python-release lineage mismatch, trigger scope and bounded distribution containment.",
+      "relevance_note": "Distinguishes attribution from authentic publishing infrastructure and release containment from downstream cleanup.",
+      "retrieved_date": "2026-10-19",
+      "source_context": "Repository advisory published 12 May 2026; technical description separates client-module imports from bare namespace imports.",
+      "system_or_product": "Mistral SDK packages",
+      "model_or_algorithm": "not model-specific"
     }
   ],
   "preferred_evidence": {
@@ -264,33 +300,33 @@
     ]
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.6.9",
+    "taxonomy_version": "0.7.0",
     "classification_status": "classified",
-    "classification_basis": "An attacker-supplied payload was published under the trusted Mistral SDK package identity, raising the boundary between substituted release provenance and ordinary false authorship. Aikido detected compromised npm releases and Mistral removed affected versions, but the record does not tie that response to the operation of one defined Mistral protective control. The accepted findings remain bounded to those provenance and control-effect questions; external detection alone is not proof of a specific internal control’s effectiveness.",
+    "classification_basis": "The malicious Python release used the Mistral SDK package identity. The repository advisory identifies no matching release tag, commit or workflow and says the upload bypassed the normal publishing pipeline. The attributed package origin therefore differed materially from the supported contribution history. This affected developer trust and reuse. A genuine distribution endpoint does not make the attacker’s contribution an authorised Mistral release. This finding is bounded to that Python release; valid workflow provenance elsewhere in the campaign does not prove code safety or establish the same publishing route here. Mistral withdrew the compromised SDK versions within hours. The Python project was also quarantined. These measures acted on the identified malicious distribution and limited further availability through the affected release channel. This establishes a bounded protective effect for release containment. It does not establish customer credential recovery, removal from private caches or the effectiveness of every earlier safeguard. Aikido’s detection need not be proved to have caused Mistral’s action to assess the withdrawal itself.",
     "primary_classification": {
       "family_id": "VIGIL-FF-0002",
       "class_id": "VIGIL-FC-000010",
-      "classification_role": "ambiguous-boundary",
-      "classification_basis": "A trusted Mistral SDK package identity carried attacker-supplied executable content, materially illuminating the boundary between package/release provenance substitution and ordinary false authorship attribution.",
+      "classification_role": "failure-occurrence",
+      "classification_basis": "The malicious Python release used the Mistral SDK package identity. The repository advisory identifies no matching release tag, commit or workflow and says the upload bypassed the normal publishing pipeline. The attributed package origin therefore differed materially from the supported contribution history. This affected developer trust and reuse. A genuine distribution endpoint does not make the attacker’s contribution an authorised Mistral release. This finding is bounded to that Python release; valid workflow provenance elsewhere in the campaign does not prove code safety or establish the same publishing route here.",
       "classification_confidence": "medium"
     },
     "secondary_classifications": [
       {
         "family_id": "VIGIL-FF-0008",
         "class_id": "VIGIL-FC-000083",
-        "classification_role": "ambiguous-boundary",
-        "classification_basis": "Aikido detected compromised npm releases after publication and Mistral removed affected SDK versions, but the record does not link one operative Mistral control to that external detection and protective removal.",
+        "classification_role": "successful-invariant",
+        "classification_basis": "Mistral withdrew the compromised SDK versions within hours. The Python project was also quarantined. These measures acted on the identified malicious distribution and limited further availability through the affected release channel. This establishes a bounded protective effect for release containment. It does not establish customer credential recovery, removal from private caches or the effectiveness of every earlier safeguard. Aikido’s detection need not be proved to have caused Mistral’s action to assess the withdrawal itself.",
         "classification_confidence": "medium"
       }
     ],
     "classification_review_provenance": {
-      "review_date": "2026-09-30",
-      "reviewer": "OpenAI ChatGPT — GPT-5.6 Sol under human-directed VIGIL governance",
-      "review_status": "clause-level taxonomy adjudication completed"
+      "review_date": "2026-10-19",
+      "reviewer": "OpenAI Codex — GPT-6; AI analytical review under human-directed VIGIL governance",
+      "review_status": "Re-tested attribution and the full bounded withdrawal/quarantine sequence with separate condition and exclusion evidence; retained both roles and the executable-integrity gap.",
+      "review_reference": "vigil/docs/reviews/2026-10-19-boundary-diagnostic/contract-reassessment/INC-000095-DECISION.json"
     },
-    "classification_role": "ambiguous-boundary",
     "adjudication_coverage": {
-      "status": "complete"
+      "status": "partial"
     }
   },
   "interpretive_provenance": {
@@ -638,27 +674,73 @@
           "No provider-wide reach, attempted payment, claimed damages or unallocated campaign quantity is treated as demonstrated occurrence-specific loss."
         ],
         "review_outcome": "HIM 1.0.1 S2 → working HIM 1.1.0 S2. Controlling dimensions: property-asset-damage."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-19-BOUNDARY-SOURCE-FIRST-000095",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-19",
+        "review_scope": "Whole-record source-first taxonomy review; provenance and distribution-containment adjudication.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_research": true,
+          "taxonomy_review": true,
+          "harm_impact_review": false,
+          "external_requirement_review": false
+        },
+        "known_limitations": [
+          "Prior mapping outcomes were visible; this is not blinded independent validation.",
+          "Private release records and downstream customer forensics were not inspected.",
+          "No new HIM or independent external-assessment adjudication."
+        ],
+        "review_outcome": "Two Boundary mappings changed to distinct bounded negative attribution and positive containment outcomes. Historical confidence preserved. Unrepresented executable-asset integrity remains a taxonomy gap."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-19-CONTRACT-REASSESSMENT-000095",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-19",
+        "review_scope": "Reassessment of the whole affected record under the revised exclusion-precedence, condition-specific-proof and completion-reconciliation contract.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_research": true,
+          "taxonomy_review": true,
+          "harm_impact_review": false,
+          "external_requirement_review": false
+        },
+        "known_limitations": [
+          "Prior outcomes were visible; same-model review is not independent inter-rater validation.",
+          "Source and interpretation limits and any pending decisive evidence are set out in the linked packet.",
+          "HIM and independent external assessments were preserved, not re-adjudicated."
+        ],
+        "review_outcome": "Re-tested attribution and the full bounded withdrawal/quarantine sequence with separate condition and exclusion evidence; retained both roles and the executable-integrity gap."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-18-ISSUE126-HIM-000095",
+      "review_id": "VIGIL-REVIEW-2026-10-19-CONTRACT-REASSESSMENT-000095",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT Work — Codex",
+      "reviewer_platform": "OpenAI Codex",
       "reviewer_model": "GPT-6",
-      "review_date": "2026-10-18",
-      "review_scope": "Source-first twelve-dimensional HIM reassessment, exclusive pathway selection and public consequence reconciliation; taxonomy and external-requirement adjudications preserved.",
+      "review_date": "2026-10-19",
+      "review_scope": "Reassessment of the whole affected record under the revised exclusion-precedence, condition-specific-proof and completion-reconciliation contract.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
         "web_research": true,
-        "harm_impact_review": true,
-        "taxonomy_review": false
+        "taxonomy_review": true,
+        "harm_impact_review": false,
+        "external_requirement_review": false
       },
       "known_limitations": [
-        "AI-authored review is not human source verification. Source access and claim-relative limits are retained in the dated audit.",
-        "No provider-wide reach, attempted payment, claimed damages or unallocated campaign quantity is treated as demonstrated occurrence-specific loss."
+        "Prior outcomes were visible; same-model review is not independent inter-rater validation.",
+        "Source and interpretation limits and any pending decisive evidence are set out in the linked packet.",
+        "HIM and independent external assessments were preserved, not re-adjudicated."
       ],
-      "review_outcome": "HIM 1.0.1 S2 → working HIM 1.1.0 S2. Controlling dimensions: property-asset-damage."
+      "review_outcome": "Re-tested attribution and the full bounded withdrawal/quarantine sequence with separate condition and exclusion evidence; retained both roles and the executable-integrity gap."
     }
   },
   "harm_impact_assessment": {

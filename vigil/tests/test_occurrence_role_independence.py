@@ -1,5 +1,6 @@
 """Occurrence polarity does not require textbook exemplar admission."""
 import importlib.util
+import json
 import unittest
 from pathlib import Path
 from unittest.mock import patch
@@ -11,11 +12,16 @@ spec.loader.exec_module(validator)
 
 class OccurrenceRoleIndependenceTests(unittest.TestCase):
     def test_partial_incident_can_have_local_success_or_ambiguity(self):
-        for role in ('successful-invariant', 'ambiguous-boundary'):
+        for role in ('failure-occurrence', 'successful-invariant', 'ambiguous-boundary'):
             mapping = {'family_id': 'VIGIL-FF-9999', 'class_id': 'VIGIL-FC-999999',
-                       'classification_role': role, 'classification_confidence': 'high',
+                       'classification_role': role,
                        'classification_basis': 'The cited occurrence establishes this bounded local relationship.'}
-            record = {'id': 'VIGIL-INC-999999', 'taxonomy_classification': {
+            if role == 'ambiguous-boundary':
+                mapping['boundary_adjudication'] = json.loads(
+                    (Path(__file__).parent / 'fixtures/boundary-adjudication-synthetic.json').read_text(encoding='utf-8'))
+            else:
+                mapping['classification_confidence'] = 'high'
+            record = {'source_records': [{}], 'id': 'VIGIL-INC-999999', 'taxonomy_classification': {
                 'classification_status': 'provisionally-classified', 'taxonomy_version': 'fixture',
                 'classification_basis': 'One local boundary is assessed; another remains unresolved.',
                 'primary_classification': mapping, 'secondary_classifications': [],
@@ -23,7 +29,7 @@ class OccurrenceRoleIndependenceTests(unittest.TestCase):
                                                      'review_status': 'provisional'},
                 'adjudication_coverage': {'status': 'partial'}},
                 'vigil_assessment': {'source_clause_analysis': {'clauses': [
-                    {'adjudication_status': 'mapped', 'taxonomy_relationships': [
+                    {'episode_id': 'E001', 'adjudication_status': 'mapped', 'taxonomy_relationships': [
                         {'class_id': mapping['class_id'], 'canonical_taxonomy_mapping': True, 'relationship': role}]},
                     {'adjudication_status': 'unresolved', 'taxonomy_relationships': [
                         {'class_id': mapping['class_id'], 'canonical_taxonomy_mapping': False,

@@ -414,6 +414,56 @@ def retired_taxonomy_class_successors() -> dict[str, str]:
     }
 
 
+def validate_boundary_adjudication(path, mapping, label, errors, record=None):
+    """Check the approved canonical Boundary explanation contract, not its truth."""
+    if mapping.get("classification_role") != "ambiguous-boundary":
+        return
+    label = f"{label}.boundary_adjudication"
+    value = mapping.get("boundary_adjudication")
+    if not isinstance(value, dict):
+        errors.append(f"{path}: {label} must be a completed object")
+        return
+    contract = incident_contract()["boundary_adjudication_contract"]
+    for field in ("taxonomy_version", "material_engagement", "decisive_blocker", "resolution_requirements"):
+        if not non_empty(value.get(field)):
+            errors.append(f"{path}: {label}.{field} must be non-empty")
+    reasons = value.get("diagnostic_reasons")
+    if (not isinstance(reasons, list) or not reasons
+            or any(not isinstance(x, str) or x not in contract["diagnostic_reason_values"] for x in reasons)):
+        errors.append(f"{path}: {label}.diagnostic_reasons must contain only completed evidence/criteria diagnoses")
+    elif len(reasons) != len(set(reasons)):
+        errors.append(f"{path}: {label}.diagnostic_reasons must not contain duplicates")
+    conditions = value.get("unresolved_conditions")
+    if not isinstance(conditions, list) or not conditions:
+        errors.append(f"{path}: {label}.unresolved_conditions must be a non-empty array")
+        return
+    clauses = ((record or {}).get("vigil_assessment") or {}).get("source_clause_analysis", {}).get("clauses", [])
+    episode_ids = {c.get("episode_id") for c in clauses if isinstance(c, dict)}
+    for index, condition in enumerate(conditions):
+        item_label = f"{label}.unresolved_conditions[{index}]"
+        if not isinstance(condition, dict):
+            errors.append(f"{path}: {item_label} must be an object")
+            continue
+        for field in ("condition", "assessment"):
+            if not non_empty(condition.get(field)):
+                errors.append(f"{path}: {item_label}.{field} must be non-empty")
+        if condition.get("polarity") not in contract["condition_polarity_values"]:
+            errors.append(f"{path}: {item_label}.polarity must identify failure-occurrence or successful-invariant criteria")
+        refs = condition.get("source_record_refs")
+        # Without a record, still check reference syntax and non-emptiness.
+        if record is not None:
+            validate_source_refs(path, item_label, refs, record.get("source_records"), errors)
+        elif not isinstance(refs, list) or not refs or any(not isinstance(x, str) or re.fullmatch(r"source_records\[\d+\]", x) is None for x in refs):
+            errors.append(f"{path}: {item_label}.source_record_refs must contain source_records[N] references")
+        eps = condition.get("episode_refs")
+        if not isinstance(eps, list) or not eps or any(not non_empty(x) for x in eps):
+            errors.append(f"{path}: {item_label}.episode_refs must be non-empty references")
+        elif len(eps) != len(set(eps)):
+            errors.append(f"{path}: {item_label}.episode_refs must not contain duplicates")
+        elif record is not None and any(x not in episode_ids for x in eps):
+            errors.append(f"{path}: {item_label}.episode_refs must resolve in this Incident")
+
+
 def validate_taxonomy_mapping(
     path: Path,
     mapping: Any,
@@ -422,11 +472,12 @@ def validate_taxonomy_mapping(
     classes: dict[str, dict[str, Any]],
     retired: dict[str, str],
     errors: list[str],
+    record: dict[str, Any] | None = None,
 ) -> str | None:
     if not isinstance(mapping, dict):
         errors.append(f"{path}: {label} must be an object")
         return None
-    required = {"family_id", "class_id", "classification_role", "classification_basis", "classification_confidence"}
+    required = {"family_id", "class_id", "classification_role", "classification_basis"}
     missing = sorted(required - set(mapping))
     if missing:
         errors.append(f"{path}: {label} missing {', '.join(missing)}")
@@ -447,13 +498,20 @@ def validate_taxonomy_mapping(
             f"{path}: {label}.classification_basis must describe the occurrence directly "
             "and must not use an Incident ID as a narrative referent"
         )
-    if mapping.get("classification_confidence") not in {"low", "medium", "high"}:
-        errors.append(f"{path}: {label}.classification_confidence must be low, medium, or high")
     role = mapping.get("classification_role")
+    if role == "ambiguous-boundary":
+        if "classification_confidence" in mapping:
+            errors.append(f"{path}: {label}.classification_confidence is forbidden for ambiguous-boundary; preserve historical values in review history")
+    elif role in {"failure-occurrence", "successful-invariant"}:
+        if mapping.get("classification_confidence") not in {"low", "medium", "high"}:
+            errors.append(f"{path}: {label}.classification_confidence must be low, medium, or high for a decisive finding")
+        if "boundary_adjudication" in mapping:
+            errors.append(f"{path}: {label}.boundary_adjudication is forbidden for a decisive finding; preserve superseded details in review history")
     if role not in {"failure-occurrence", "successful-invariant", "ambiguous-boundary"}:
         errors.append(
             f"{path}: {label}.classification_role must be failure-occurrence, successful-invariant or ambiguous-boundary"
         )
+    validate_boundary_adjudication(path, mapping, label, errors, record)
     return class_id if isinstance(class_id, str) else None
 
 
@@ -585,12 +643,12 @@ def validate_incident_taxonomy(path: Path, record: dict[str, Any], errors: list[
         return
     families, classes = taxonomy_catalogue()
     retired = retired_taxonomy_class_successors()
-    primary_id = validate_taxonomy_mapping(path, primary, "primary_classification", families, classes, retired, errors)
+    primary_id = validate_taxonomy_mapping(path, primary, "primary_classification", families, classes, retired, errors, record)
     mappings: list[tuple[str | None, Any, str]] = [(primary_id, primary, "primary_classification")]
     seen = {primary_id} if primary_id else set()
     for index, mapping in enumerate(secondary):
         class_id = validate_taxonomy_mapping(
-            path, mapping, f"secondary_classifications[{index}]", families, classes, retired, errors
+            path, mapping, f"secondary_classifications[{index}]", families, classes, retired, errors, record
         )
         if class_id in seen:
             errors.append(f"{path}: taxonomy class {class_id} is duplicated")

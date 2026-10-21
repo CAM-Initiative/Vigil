@@ -13,10 +13,10 @@
     "name": "Observability & Audit Integrity",
     "status": "beta",
     "abstraction": "family",
-    "version": "0.1.3",
-    "plain_english": "Material actions and states leave trustworthy evidence that authorised reviewers can observe, connect, reconstruct and inspect through appropriate routes.",
-    "definition": "The integrity domain providing proportionate capture, monitoring coverage, preservation, attribution, execution-path and state visibility, signal correlation, reconstructability and authorised accessibility of material operational evidence, including governed investigative evidence-production and access pathways. It does not require hidden reasoning disclosure or create investigative authority.",
-    "invariant": "Material actions, state changes, and their evidence remain observable, preserved, attributable, reconstructable, and accessible through proportionate authorised review pathways enough to determine what happened, through which path, under whose effective control, and with what evidence, without requiring hidden reasoning disclosure.",
+    "version": "0.1.5",
+    "plain_english": "Material system activity leaves trustworthy, inspectable evidence and an independently authorised reviewer can use a governed evidence route that is provided and operated appropriately.",
+    "definition": "The integrity domain providing proportionate capture, monitoring coverage, preservation, attribution, execution-path and state visibility, signal correlation, reconstructability and authorised accessibility of material operational evidence, including the provision and effective operation of bounded investigative evidence-access and production pathways. It does not require hidden reasoning disclosure or create investigative authority.",
+    "invariant": "Material actions, state changes, and their evidence remain observable, preserved, attributable, reconstructable, and accessible through proportionate, properly operated authorised review pathways enough to determine what happened, through which path, under whose effective control, and with what evidence, without requiring hidden reasoning disclosure or treating the existence of an appeal as proof that earlier denial was justified.",
     "scope": [
       "AI models and agentic systems",
       "tool and API execution",
@@ -26,8 +26,8 @@
       "high-impact automated decisions",
       "governance and assurance workflows"
     ],
-    "inclusion_rule": "Use this family when the primary structural failure concerns material operational evidence that is missing, bypassed, insufficient, corrupted, inaccessible to authorised review, unsupported by a governed evidence-production or access pathway, or not sufficiently reconstructable.",
-    "exclusion_rule": "Do not use this family merely because an outcome is unexplained, incorrect, secret, or difficult to interpret. A qualifying failure must concern the capture, preservation, attribution, coverage, authorised accessibility, governed production or access pathway, or reconstructability of material operational evidence. This family does not create or enlarge investigative authority.",
+    "inclusion_rule": "Use this family when the primary structural failure concerns material operational evidence that is missing, bypassed, insufficient, corrupted, inaccessible to authorised review, unsupported by a governed evidence-production/access pathway, improperly withheld or delayed under an otherwise valid governed pathway, or not sufficiently reconstructable. The precise mandate, scope and restriction basis must be independently evidenced.",
+    "exclusion_rule": "Do not use this family merely because an outcome is unexplained, incorrect, secret, difficult to interpret, or disappointing to a requester. A qualifying failure must concern the capture, preservation, attribution, coverage, authorised accessibility, provision or operation of an evidence pathway, or reconstructability of material operational evidence. This family does not create or enlarge investigative authority, override lawful withholding or infer that a later remedy proves the original decision was correct.",
     "aliases": [
       "VIGIL.FF.OBSERVABILITY_AUDIT",
       "Observability & Audit Integrity Failures"
@@ -56,8 +56,8 @@
       "PRIMARY_EVIDENCE_ACCESSIBILITY",
       "AUTHORISED_INVESTIGATIVE_EVIDENCE_ACCESS"
     ],
-    "failure_condition": "Failures in which materially consequential actions, state transitions, control-path activity, actor attribution, monitoring coverage, or audit evidence are not captured, preserved, directly accessible to authorised review, or supported by a sufficiently defined governed evidence-production or access pathway to enable timely detection, reconstruction, accountability, verification, or review.",
-    "failure_plain_english": "Material system activity or the evidence needed to review it cannot be reliably seen, attributed, reconstructed, or accessed by an authorised reviewer through a governed evidence pathway.",
+    "failure_condition": "Failures in which materially consequential actions, state transitions, control-path activity, actor attribution, monitoring coverage, or audit evidence are not captured, preserved, directly accessible to authorised review, or supported by a sufficiently defined and properly operated governed evidence-production or access pathway to enable timely detection, reconstruction, accountability, verification, or review.",
+    "failure_plain_english": "Material activity or its supporting evidence cannot be reliably seen, attributed, reconstructed, or accessed through a properly operated authorised review pathway; a required investigative route may be missing or unjustifiably obstructed.",
     "boundary_role": "failure-occurrence"
   },
   "classes": [
@@ -1327,29 +1327,33 @@
       "status": "beta",
       "abstraction": "class",
       "plain_english": "An already-authorised investigator has a bounded, secure and auditable route to obtain the evidence required for review.",
-      "definition": "The property by which an independently authorised regulator or properly mandated investigator can obtain necessary evidence through a governed pathway authenticating mandate and purpose, preserving responsive evidence and controlling inspection or production with applicable confidentiality, security, privilege, proportionality, withholding review, logging, custody, retention and disposition safeguards. The pathway does not create investigative authority.",
-      "invariant": "For an already-authorised regulatory or independent investigation, the architecture must provide a governed route to authenticate mandate and purpose, identify and preserve responsive evidence, and permit controlled inspection or production under security, confidentiality, privilege, proportionality, logging, chain-of-custody, affected-person, retention, and disposition controls. The route must not itself create investigative authority.",
+      "definition": "The property by which an independently authorised regulator or properly mandated investigator can obtain necessary evidence through the provision and effective operation of a governed pathway authenticating mandate and purpose, preserving responsive evidence and controlling inspection or production with applicable confidentiality, security, privilege, proportionality, withholding review, logging, custody, retention and disposition safeguards. The pathway does not create investigative authority.",
+      "invariant": "For an already-authorised regulatory or independent investigation, the architecture must provide and effectively operate a governed route to authenticate mandate and purpose, identify and preserve responsive evidence, and permit controlled inspection or production under security, confidentiality, privilege, proportionality, logging, chain-of-custody, affected-person, retention, and disposition controls. The route must not itself create investigative authority.",
       "exclusions": [
         "The requester lacks valid authority or attempts to self-authorise.",
-        "A bounded pathway exists and a particular request is lawfully denied or limited under its rules.",
+        "A bounded pathway exists and the particular request is lawfully or otherwise validly denied or limited under independently applicable rules, with the required review and safeguards. The mere existence of an appeal or eventual correction does not establish this exclusion for the original decision.",
         "The evidence is public or otherwise directly accessible to the authorised reviewer without a protected production pathway.",
         "The failure is solely technical inability to open an artefact already available within the authorised review environment.",
         "The taxonomy is being used to create, enlarge, or determine investigative authority."
       ],
       "examples": [
-        "A provider preserves incident evidence but has no process to authenticate a regulator's mandate, scope production, protect confidential material, record access, or review withholding.",
-        "An assurance framework requires independent investigation but supplies no secure and auditable mechanism for a properly mandated investigator to inspect necessary non-public evidence."
+        "Illustrative failure — missing route: a provider holds responsive evidence but supplies no lawful, secure and auditable path for an independently authorised regulator to request it.",
+        "Illustrative failure — improper operation: an authorised reviewer requests evidence within an independently established scope through an existing pathway, but the responsible actor unjustifiably withholds or delays it despite applicable production rules.",
+        "Illustrative success: a properly mandated reviewer obtains the required scoped evidence under secure, proportionate, logged inspection and custody safeguards within the applicable time.",
+        "Illustrative success — justified withholding: an independently valid access pathway documents a lawful, appropriately scoped privilege or security limitation, applies the required review safeguards and offers any mandated alternative.",
+        "Boundary: later judicial reversal or appellate correction tests the propriety of the original denial separately from the success of remedy; do not assume an order is proof of completed production or custody.",
+        "Boundary: voluntary evaluator access may be governed by agreed scope and restrictions; a general evaluator remit alone does not grant an unlimited model-release or confidential-data access right."
       ],
       "relationships": [
         {
           "type": "distinguish_from",
           "target_id": "VIGIL-FC-000044",
-          "note": "Investigative pathway failure concerns the governed route for valid external authority to obtain protected evidence; primary artefact accessibility concerns practical inspection of an artefact already within an authorised review context."
+          "note": "Primary Evidence Accessibility concerns practical inspection of primary artefacts within an authorised review scope; FC-045 separately governs whether an independently authorised investigator can access necessary protected evidence through a provided and properly operated investigative production pathway."
         },
         {
           "type": "distinguish_from",
           "target_id": "VIGIL-FC-000002",
-          "note": "The class presupposes independently valid investigative authority and concerns the missing access pathway; purpose-bound credential overreach concerns using credentials beyond authorised purpose or scope."
+          "note": "FC-045 presupposes independently valid access authority and does not confer power to demand evidence; FC-002 addresses assuming permission to act merely from technical capability or access."
         }
       ],
       "external_references": [
@@ -1372,31 +1376,11 @@
         {
           "exemplar_type": "ambiguous-boundary",
           "exemplar_status": "admitted",
-          "linked_incident_id": "VIGIL-INC-000008",
-          "title": "VIGIL-INC-000008 — Authorised Investigative Evidence Access boundary case",
-          "evidence_basis": "An ordinary criminal-discovery pathway existed and was invoked, while the failure was denial of primary FRT material within that route; this materially distinguishes inaccessible primary evidence from absence of an authorised investigative-access pathway.",
-          "invariant_demonstrated": "For an already-authorised regulatory or independent investigation, the architecture must provide a governed route to authenticate mandate and purpose, identify and preserve responsive evidence, and permit controlled inspection or production under security, confidentiality, privilege, proportionality, logging, chain-of-custody, affected-person, retention, and disposition controls. The route must not itself create investigative authority.",
-          "success_basis": "The occurrence materially tests this class boundary without establishing all conditions needed to treat it as a failure occurrence or as successful holding.",
-          "boundary_conditions": [
-            "Limited to the evidence and role adjudicated in the linked Incident.",
-            "Does not alter other Incident mappings or establish legal liability."
-          ],
-          "governance_placement": {
-            "framework": "IEEE Standards Association",
-            "instrument_id": "EXTREQ-DF16873D107C059C",
-            "section_or_control": "Table 4 level 5",
-            "placement_note": "Non-normative analytical placement using a reference already retained by VIGIL-FC-000045; the referenced source does not define the VIGIL adjudication role."
-          },
-          "provenance_note": "Canonical occurrence facts and provenance remain governed by VIGIL-INC-000008; this entry records only the reciprocal taxonomy relationship."
-        },
-        {
-          "exemplar_type": "ambiguous-boundary",
-          "exemplar_status": "admitted",
           "linked_incident_id": "VIGIL-INC-000109",
           "title": "VIGIL-INC-000109 — Authorised Investigative Evidence Access boundary case",
-          "evidence_basis": "The occurrence distinguishes voluntary evaluator access from an authorised investigative evidence-production pathway: AISI sought pre-release access, but no independently valid compulsory investigative authority or governed production obligation is established.",
-          "invariant_demonstrated": "For an already-authorised regulatory or independent investigation, the architecture must provide a governed route to authenticate mandate and purpose, identify and preserve responsive evidence, and permit controlled inspection or production under security, confidentiality, privilege, proportionality, logging, chain-of-custody, affected-person, retention, and disposition controls. The route must not itself create investigative authority.",
-          "success_basis": "The occurrence materially tests this class boundary without establishing all conditions needed to treat it as a failure occurrence or as successful holding.",
+          "evidence_basis": "AISI's prior evaluation role, restricted model access and later restoration engage the question of operative access arrangements. A valid voluntary agreement could establish a limited access mandate, even without compulsory statutory powers, but the model-specific terms, restrictions and review pathway have not been recovered.",
+          "invariant_demonstrated": "For an already-authorised regulatory or independent investigation, the architecture must provide and effectively operate a governed route to authenticate mandate and purpose, identify and preserve responsive evidence, and permit controlled inspection or production under security, confidentiality, privilege, proportionality, logging, chain-of-custody, affected-person, retention, and disposition controls. The route must not itself create investigative authority.",
+          "success_basis": "The publicly reported restricted offer and later access do not show whether the original restriction complied with an independently valid agreement or duty. The revised class does not convert evaluator status into unlimited authority or infer an access failure from unavailable contract terms.",
           "boundary_conditions": [
             "Limited to the evidence and role adjudicated in the linked Incident.",
             "Does not alter other Incident mappings or establish legal liability."
@@ -1407,28 +1391,28 @@
             "section_or_control": "Table 4 level 5",
             "placement_note": "Non-normative analytical placement using a reference already retained by VIGIL-FC-000045; the referenced source does not define the VIGIL adjudication role."
           },
-          "provenance_note": "Canonical occurrence facts and provenance remain governed by VIGIL-INC-000109; this entry records only the reciprocal taxonomy relationship."
+          "provenance_note": "Canonical occurrence facts and provenance remain governed by VIGIL-INC-000109; this entry records only the reciprocal taxonomy relationship. Revised v0.8.1 boundary wording; Incident candidate state remains evidence-limited pending separate source-first readjudication."
         }
       ],
-      "failure_condition": "A failure in which a governance or assurance architecture provides no sufficiently defined, lawful, authority-verified, confidentiality-protected, proportionate, and auditable pathway through which an already-authorised regulator or properly mandated investigator can obtain evidence necessary for a material investigation or verification.",
-      "failure_plain_english": "Valid investigative authority exists, but there is no bounded and auditable route through which it can obtain the evidence needed for review.",
+      "failure_condition": "A failure in which an independently authorised investigation is materially prevented or degraded because a governed evidence-access pathway is absent, materially incomplete or improperly operated, including unjustified withholding within an existing pathway. The assessment concerns the original access decision and its applicable authority and safeguards; later correction does not erase an earlier failure.",
+      "failure_plain_english": "An investigator with independently valid authority needs specified evidence, but the required route is absent or improperly operated so that access is unjustifiably denied, delayed or restricted.",
       "failure_recognition": {
+        "applies_to": "failure-occurrence",
         "required_conditions": [
           "A material investigation, compliance question, causal determination, or remediation claim requires non-public evidence.",
-          "A regulator or properly mandated investigator has an independently valid basis to request or inspect the necessary evidence.",
-          "The governance architecture lacks a sufficiently defined route to authenticate authority and purpose, identify responsive evidence, and provide controlled access or production.",
-          "The missing route does not adequately govern confidentiality, security, privilege, proportionality, withholding review, access logging, custody, retention, or deletion as applicable.",
-          "The pathway failure materially prevents or degrades authorised investigation or verification."
-        ],
-        "applies_to": "failure-occurrence"
+          "A regulator or properly mandated investigator has an independently valid basis, including applicable law or a valid voluntary arrangement, to request or inspect specified necessary evidence within an established scope.",
+          "The required route is absent or materially incomplete, or its operation unjustifiably prevents, delays or limits responsive access within that scope.",
+          "The defect concerns authentication, purpose, evidence preservation, controlled inspection or production, or applicable confidentiality, security, privilege, proportionality, withholding review, logging, custody, retention or disposition safeguards.",
+          "The defect materially prevents or degrades the authorised investigation or verification at the relevant decision time; a later remedy does not by itself establish that the original decision was justified."
+        ]
       },
-      "success_condition": "Available occurrence evidence establishes the following bounded outcome: The pathway authenticates mandate and purpose, preserves the evidence and permits governed inspection or production with applicable safeguards.",
+      "success_condition": "Available occurrence evidence establishes that the pathway is provided and effectively operated to permit responsive governed access, or justified withholding, within the applicable mandate, safeguards and timing.",
       "success_recognition": {
         "applies_to": "successful-invariant",
         "required_conditions": [
           "An independently authorised investigator requires particular responsive evidence.",
           "The pathway authenticates mandate and purpose, preserves the evidence and permits governed inspection or production with applicable safeguards.",
-          "Access and custody records demonstrate responsive inspection or a reviewable justified withholding decision within the established mandate."
+          "Access, custody and decision records demonstrate responsive inspection or a reviewable justified withholding decision within the established mandate and applicable timing. Later correction may demonstrate successful remediation without reclassifying an earlier unjustified restriction."
         ]
       }
     }

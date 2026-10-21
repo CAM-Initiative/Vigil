@@ -1,0 +1,1185 @@
+{
+  "authoritative_head": "035eea0dfe0671901a3545e01e6815d53ca754b1",
+  "classes": {
+    "VIGIL-FC-000040": {
+      "class_id": "VIGIL-FC-000040",
+      "class_code": "CONTROL_STATE_PRESERVATION",
+      "family_id": "VIGIL-FF-0007",
+      "name": "Control-State Preservation",
+      "status": "beta",
+      "abstraction": "class",
+      "plain_english": "Operative governance decisions and restrictions preserve their meaning and force through handoffs and transformations.",
+      "definition": "The property by which an applicable control's established decision, restrictions, conditions, escalation posture and scope retain material meaning and force across representations, handoffs, transformations, runtimes and execution transitions unless explicitly and traceably changed under valid authority.",
+      "invariant": "Once a control state is operative, its decision, restrictions, conditions, escalation posture, and scope must preserve their meaning and force across each representation, handoff, transformation, runtime, and execution transition. Any change must be explicit, authorised, and traceable.",
+      "exclusions": [
+        "The control state reaches the target intact but is ignored there.",
+        "The changed state results from an authorised and adequately represented new decision.",
+        "The failure concerns loss of task work rather than governance-control state."
+      ],
+      "examples": [
+        "A restricted-use decision is preserved in one workflow stage but reset to unrestricted when the task is delegated to another agent.",
+        "An approval condition is dropped during translation from a policy service into an execution request."
+      ],
+      "relationships": [
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000013",
+          "note": "Control-state preservation concerns continued operative force; lineage collapse concerns ability to reconstruct derivation and transformation history."
+        }
+      ],
+      "aliases": [
+        "CONTROL_STATE_PRESERVATION_FAILURE",
+        "Control-State Preservation Failure"
+      ],
+      "external_references": [
+        {
+          "title": "NIST AI RMF 1.0, MANAGE 4.1",
+          "publisher": "National Institute of Standards and Technology",
+          "date": "2023-01-26",
+          "url": "https://doi.org/10.6028/NIST.AI.100-1",
+          "reference_role": "authoritative-guidance",
+          "evidence_note": "Taxonomy/standards review 2026-10-02: retain-contextual. Post-deployment plans integrate feedback, appeals/override, decommissioning, incident response and change management. They do not themselves prescribe preserved operative control state, equivalent monitor coverage or context-specific effective protection. Post-deployment plans integrate feedback, appeals/override, decommissioning, incident response and change management. They do not themselves prescribe preserved operative control state, equivalent monitor coverage or context-specific effective protection. Historical annotation is preserved in vigil/docs/reviews/2026-10-01-taxonomy-standards-alignment/historical-reference-dispositions.json.",
+          "requirement_id": "EXTREQ-559DBB147B1BEB9E",
+          "clause_or_control": "MANAGE 4.1"
+        },
+        {
+          "title": "IEEE 7000-2021, clause 10.3(e)(8)",
+          "publisher": "IEEE Standards Association",
+          "date": "2021-09-15",
+          "url": "https://standards.ieee.org/ieee/7000/6781/",
+          "reference_role": "standards-evidence",
+          "evidence_note": "Taxonomy/standards review 2026-10-02: no-mapping-remove-from-active-relationship. Design revision on changed priorities does not require operative control restrictions to preserve meaning/force across execution handoffs. Historical annotation is preserved in vigil/docs/reviews/2026-10-01-taxonomy-standards-alignment/historical-reference-dispositions.json.",
+          "requirement_id": "EXTREQ-D999E91F3E053E85",
+          "clause_or_control": "10.3(e)(8)"
+        }
+      ],
+      "failure_condition": "A failure in which the material state of an applicable governance control, including its decision, restrictions, conditions, or escalation status, is lost, weakened, reset, or transformed while traversing the path to the point it governs.",
+      "failure_plain_english": "A governance control starts in the right state, but that state is lost or changed before it reaches the governed action.",
+      "failure_recognition": {
+        "required_conditions": [
+          "A governance control has established material operative state.",
+          "That state must persist across one or more transitions to govern a downstream point.",
+          "The state is lost, weakened, reset, or materially transformed before reaching that point."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_condition": "Available occurrence evidence establishes the following bounded outcome: Its restrictions, conditions, escalation posture and scope retain meaning and force unless valid authority traceably changes them.",
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "An established control decision crosses a representation or execution boundary.",
+          "Its restrictions, conditions, escalation posture and scope retain meaning and force unless valid authority traceably changes them.",
+          "Before-and-after control records and the affected action demonstrate preservation or an explicitly authorised modification."
+        ]
+      }
+    },
+    "VIGIL-FC-000041": {
+      "class_id": "VIGIL-FC-000041",
+      "class_code": "REQUIRED_GOVERNANCE_ROUTING",
+      "family_id": "VIGIL-FF-0007",
+      "name": "Required Governance Routing",
+      "status": "beta",
+      "abstraction": "class",
+      "plain_english": "Governed conduct passes through each required review or control route, or a validated authorised equivalent.",
+      "definition": "The property by which material decisions, requests, delegations and actions traverse required governance controls or review routes before reaching execution or another governed state, including validated route equivalence for direct, alternate, fallback, asynchronous, tool-mediated and cross-runtime paths.",
+      "invariant": "Conduct subject to a required governance route may reach execution only through that route or an authorised equivalent preserving the same control effect. Direct, alternate, fallback, delegated, asynchronous, tool-mediated, and cross-runtime paths require route-equivalence validation before proceeding.",
+      "exclusions": [
+        "The alternate path supplies an authorised equivalent governance control.",
+        "The route is followed but the control fails to activate.",
+        "The route is hidden from audit while the required control still operates effectively."
+      ],
+      "examples": [
+        "An agent bypasses a required approval gateway by invoking the same external action through a lower-level tool.",
+        "A fallback workflow sends a high-impact decision directly to execution without the review stage used by the primary route."
+      ],
+      "relationships": [
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000023",
+          "note": "Governance-route bypass removes the control's effect; monitor circumvention removes required observation. Both may occur on the same alternate path."
+        },
+        {
+          "type": "can_cooccur_with",
+          "target_id": "VIGIL-FC-000026",
+          "note": "A bypass route may also be hidden from oversight, but visibility and control reach are independent properties."
+        }
+      ],
+      "external_references": [
+        {
+          "title": "SDOS Runtime Governance Framework v1.10, control SDOS-EN-01",
+          "publisher": "AAM Cyber",
+          "date": "2026-05-12",
+          "url": "https://aamcyber.com/sdos/reference/v1/",
+          "reference_role": "authoritative-guidance",
+          "evidence_note": "Taxonomy/standards review 2026-10-02: retain-strong-supporting. Governed outbound operations must pass operative current-policy enforcement before execution. The public control does not prescribe every alternate-route equivalence proof or all activation predicates. Historical annotation is preserved in vigil/docs/reviews/2026-10-01-taxonomy-standards-alignment/historical-reference-dispositions.json.",
+          "requirement_id": "EXTREQ-C25CB2D997BC6FE8",
+          "clause_or_control": "SDOS-EN-01"
+        },
+        {
+          "title": "Model AI Governance Framework for Agentic AI, section 2.2.2",
+          "publisher": "Infocomm Media Development Authority of Singapore",
+          "date": "2026-05-20",
+          "url": "https://www.imda.gov.sg/resources/press-releases-factsheets-and-speeches/factsheets/2026/updated-model-ai-governance-framework-for-agentic-ai",
+          "reference_role": "authoritative-guidance",
+          "evidence_note": "Taxonomy/standards relationship pending (2026-10-02). Current official landing-page access does not expose the substantive framework body; represented source fidelity cannot be freshly established. Historical annotation is preserved in vigil/docs/reviews/2026-10-01-taxonomy-standards-alignment/historical-reference-dispositions.json.",
+          "requirement_id": "EXTREQ-590563A599CC235C",
+          "clause_or_control": "2.2.2"
+        },
+        {
+          "title": "Regulation (EU) 2024/1689 (Artificial Intelligence Act) \u2014 consolidated 27 July 2026",
+          "publisher": "European Parliament and Council of the European Union",
+          "date": "2026-07-27",
+          "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02024R1689-20260727",
+          "reference_role": "regulatory-evidence",
+          "evidence_note": "Taxonomy/standards review 2026-10-02: no-mapping-remove-from-active-relationship. Human interruption to a safe state supports control activation/effectiveness, not traversal of required routes or alternate-route equivalence. Historical annotation is preserved in vigil/docs/reviews/2026-10-01-taxonomy-standards-alignment/historical-reference-dispositions.json.",
+          "requirement_id": "EXTREQ-DEA2B22466A64818",
+          "clause_or_control": "Article 14(4)(e)"
+        }
+      ],
+      "aliases": [
+        "REQUIRED_GOVERNANCE_ROUTE_BYPASS",
+        "Required Governance Route Bypass"
+      ],
+      "invariant_exemplars": [
+        {
+          "exemplar_type": "ambiguous-boundary",
+          "exemplar_status": "admitted",
+          "linked_incident_id": "VIGIL-INC-000004",
+          "title": "VIGIL-INC-000004 \u2014 Required Governance Routing boundary case",
+          "evidence_basis": "Operators restarted dialogues to defeat persistence of refusal state, but the evidence does not show Cursor selecting an alternate execution route around a mandatory approval or escalation gate; this distinguishes state loss from route avoidance.",
+          "invariant_demonstrated": "Conduct subject to a required governance route may reach execution only through that route or an authorised equivalent preserving the same control effect. Direct, alternate, fallback, delegated, asynchronous, tool-mediated, and cross-runtime paths require route-equivalence validation before proceeding.",
+          "success_basis": "The occurrence materially tests the Required Governance Routing boundary without establishing all conditions needed to treat it as a failure occurrence or as successful holding.",
+          "boundary_conditions": [
+            "Limited to the evidence and role adjudicated in the linked Incident.",
+            "Does not alter other Incident mappings, extend the class definition, or establish legal liability."
+          ],
+          "governance_placement": {
+            "framework": "AAM Cyber",
+            "instrument_id": "EXTREQ-C25CB2D997BC6FE8",
+            "section_or_control": "SDOS-EN-01",
+            "placement_note": "Non-normative analytical placement using a reference already retained by VIGIL-FC-000041; the referenced source does not define the VIGIL adjudication role."
+          },
+          "provenance_note": "Canonical occurrence facts and provenance remain governed by VIGIL-INC-000004; this entry records only the reciprocal taxonomy relationship."
+        },
+        {
+          "exemplar_type": "ambiguous-boundary",
+          "exemplar_status": "admitted",
+          "linked_incident_id": "VIGIL-INC-000120",
+          "title": "VIGIL-INC-000120 \u2014 Required Governance Routing boundary case",
+          "evidence_basis": "Cross-session splitting and concealment materially test required-governance routing, but the evidence does not establish that successful assistance used an alternate execution path that bypassed a defined required control point rather than ordinary processing with fragmented context.",
+          "invariant_demonstrated": "Conduct subject to a required governance route may reach execution only through that route or an authorised equivalent preserving the same control effect. Direct, alternate, fallback, delegated, asynchronous, tool-mediated, and cross-runtime paths require route-equivalence validation before proceeding.",
+          "success_basis": "The occurrence materially tests the Required Governance Routing boundary without establishing all conditions needed to treat it as a failure occurrence or as successful holding.",
+          "boundary_conditions": [
+            "Limited to the evidence and role adjudicated in the linked Incident.",
+            "Does not alter other Incident mappings, extend the class definition, or establish legal liability."
+          ],
+          "governance_placement": {
+            "framework": "AAM Cyber",
+            "instrument_id": "EXTREQ-C25CB2D997BC6FE8",
+            "section_or_control": "SDOS-EN-01",
+            "placement_note": "Non-normative analytical placement using a reference already retained by VIGIL-FC-000041; the referenced source does not define the VIGIL adjudication role."
+          },
+          "provenance_note": "Canonical occurrence facts and provenance remain governed by VIGIL-INC-000120; this entry records only the reciprocal taxonomy relationship."
+        }
+      ],
+      "failure_condition": "A failure in which a material decision, request, delegation, or action reaches execution or another governed state through a path that avoids a governance control or review route required for that class of conduct.",
+      "failure_plain_english": "A decision or action takes a path around the governance control it is required to pass through.",
+      "failure_recognition": {
+        "required_conditions": [
+          "A defined governance route or control point is required for the material conduct.",
+          "An alternate, fallback, delegated, or direct path avoids that route or control point.",
+          "The conduct proceeds without the governance effect the required route was designed to provide."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_condition": "Available occurrence evidence establishes the following bounded outcome: It passes through the required controls before the governed effect, including independently validated equivalence for alternative routes.",
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "A material request or action must traverse a required governance route.",
+          "It passes through the required controls before the governed effect, including independently validated equivalence for alternative routes.",
+          "Route and execution evidence confirms the control sequence or the validated equivalent on the path actually used."
+        ]
+      }
+    },
+    "VIGIL-FC-000042": {
+      "class_id": "VIGIL-FC-000042",
+      "class_code": "GOVERNANCE_SIGNAL_DELIVERY",
+      "family_id": "VIGIL-FF-0007",
+      "name": "Governance Signal Delivery",
+      "status": "beta",
+      "abstraction": "class",
+      "plain_english": "Material governance signals reach accountable recipients able to act and stay tracked through effect or authorised disposition.",
+      "definition": "The property by which produced governance signals, decisions, advisories and escalations retain accountable ownership, a capable destination, status, response expectation and escalation route until the required governance effect or an authorised disposition is established.",
+      "invariant": "A material governance signal must carry an accountable owner, capable destination, status, response expectation, and escalation route, and remain tracked until it produces the required effect or receives an authorised disposition. Emission, acknowledgement, or storage at an incapable endpoint is not completion.",
+      "exclusions": [
+        "The signal reaches a capable destination and is deliberately rejected through an authorised decision.",
+        "No governance signal was produced because the control failed to activate.",
+        "The signal has operational effect but its delivery is not recorded for audit."
+      ],
+      "examples": [
+        "A risk advisory is sent to an unattended queue and never reaches the approver required to pause deployment.",
+        "A stewardship escalation reaches a reporting dashboard but no component with authority to alter execution."
+      ],
+      "relationships": [
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000022",
+          "note": "A delivery dead-end concerns failure of the governance signal to have effect; event non-capture concerns absence of adequate evidence that the event occurred."
+        }
+      ],
+      "external_references": [
+        {
+          "title": "OPS10-BP04 Define escalation paths - AWS Well-Architected Framework",
+          "publisher": "Amazon Web Services",
+          "date": "2023-04-10",
+          "url": "https://docs.aws.amazon.com/wellarchitected/2023-04-10/framework/ops_event_response_define_escalation_paths.html",
+          "reference_role": "authoritative-guidance",
+          "evidence_note": "Taxonomy/standards review 2026-10-02: reviewed-constituent-citation-pending-canonical-decomposition. Accountable owner and escalation route. Does not require tracking every signal to required effect or authorised disposition. Historical annotation is preserved in vigil/docs/reviews/2026-10-01-taxonomy-standards-alignment/historical-reference-dispositions.json."
+        },
+        {
+          "title": "Model AI Governance Framework for Agentic AI, section 2.2.2",
+          "publisher": "Infocomm Media Development Authority of Singapore",
+          "date": "2026-05-20",
+          "url": "https://www.imda.gov.sg/resources/press-releases-factsheets-and-speeches/factsheets/2026/updated-model-ai-governance-framework-for-agentic-ai",
+          "reference_role": "authoritative-guidance",
+          "evidence_note": "Taxonomy/standards relationship pending (2026-10-02). Current official landing-page access does not expose the substantive framework body; represented source fidelity cannot be freshly established. Historical annotation is preserved in vigil/docs/reviews/2026-10-01-taxonomy-standards-alignment/historical-reference-dispositions.json.",
+          "requirement_id": "EXTREQ-8E40B24DA599E4D5",
+          "clause_or_control": "2.2.2"
+        },
+        {
+          "title": "Regulation (EU) 2024/1689 (Artificial Intelligence Act) \u2014 consolidated 27 July 2026",
+          "publisher": "European Parliament and Council of the European Union",
+          "date": "2026-07-27",
+          "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02024R1689-20260727",
+          "reference_role": "regulatory-evidence",
+          "evidence_note": "Taxonomy/standards relationship pending (2026-10-02). Outside the recorded 102 reextracted Article 4a/9\u201315 successors; consolidated-version source fidelity and atomicity remain unresolved. Historical annotation is preserved in vigil/docs/reviews/2026-10-01-taxonomy-standards-alignment/historical-reference-dispositions.json.",
+          "requirement_id": "EXTREQ-C0D92D72BD0672E1",
+          "clause_or_control": "Article 73"
+        },
+        {
+          "title": "IEEE Standard for Fail-Safe Design of Autonomous and Semi-Autonomous Systems",
+          "publisher": "IEEE Standards Association",
+          "date": "2024-01-01",
+          "url": "https://standards.ieee.org/initiatives/autonomous-intelligence-systems/standards/",
+          "reference_role": "standards-evidence",
+          "evidence_note": "Taxonomy/standards relationship pending (2026-10-02). Separate written IEEE AI-use consent is not evidenced; relationship admission held. Existing extraction provenance is retained. Historical annotation is preserved in vigil/docs/reviews/2026-10-01-taxonomy-standards-alignment/historical-reference-dispositions.json.",
+          "requirement_id": "EXTREQ-1499CBF7C7E42A4C",
+          "clause_or_control": "6.1(f)"
+        }
+      ],
+      "aliases": [
+        "GOVERNANCE_SIGNAL_DELIVERY_DEAD_END",
+        "Governance Signal Delivery Dead-End"
+      ],
+      "invariant_exemplars": [
+        {
+          "exemplar_type": "ambiguous-boundary",
+          "exemplar_status": "admitted",
+          "linked_incident_id": "VIGIL-INC-000014",
+          "title": "VIGIL-INC-000014 \u2014 Governance Signal Delivery boundary case",
+          "evidence_basis": "A weak review route existed and access was ultimately restored, but the evidence does not establish that the appeal signal itself reached and caused action by a capable destination; this materially illuminates the delivery boundary without proving success or failure.",
+          "invariant_demonstrated": "A material governance signal must carry an accountable owner, capable destination, status, response expectation, and escalation route, and remain tracked until it produces the required effect or receives an authorised disposition. Emission, acknowledgement, or storage at an incapable endpoint is not completion.",
+          "success_basis": "The occurrence materially tests this delivery boundary without establishing all conditions needed to treat it as either a delivery failure or a successful delivery.",
+          "boundary_conditions": [
+            "Limited to the evidence and role adjudicated in the linked Incident.",
+            "Does not alter other Incident mappings or establish legal liability."
+          ],
+          "governance_placement": {
+            "framework": "Infocomm Media Development Authority of Singapore",
+            "instrument_id": "EXTREQ-8E40B24DA599E4D5",
+            "section_or_control": "2.2.2",
+            "placement_note": "Non-normative analytical placement using a reference already retained by VIGIL-FC-000042; the referenced source does not define the VIGIL adjudication role."
+          },
+          "provenance_note": "Canonical occurrence facts and provenance remain governed by VIGIL-INC-000014; this entry records only the reciprocal taxonomy relationship."
+        },
+        {
+          "exemplar_type": "successful-invariant",
+          "exemplar_status": "admitted",
+          "linked_incident_id": "VIGIL-INC-000174",
+          "title": "VIGIL-INC-000174 \u2014 Governance Signal Delivery held under pressure",
+          "evidence_basis": "The OpenAI-identified vulnerability signal reached BOCSAR through ASD and produced active agency review and safeguard strengthening.",
+          "invariant_demonstrated": "A material governance signal must carry an accountable owner, capable destination, status, response expectation, and escalation route, and remain tracked until it produces the required effect or receives an authorised disposition. Emission, acknowledgement, or storage at an incapable endpoint is not completion.",
+          "success_basis": "The OpenAI-identified vulnerability signal reached BOCSAR through ASD and produced active agency review and safeguard strengthening.",
+          "boundary_conditions": [
+            "Limited to the evidence and role adjudicated in the linked Incident.",
+            "Does not alter other Incident mappings or establish legal liability."
+          ],
+          "governance_placement": {
+            "framework": "Infocomm Media Development Authority of Singapore",
+            "instrument_id": "EXTREQ-8E40B24DA599E4D5",
+            "section_or_control": "2.2.2",
+            "placement_note": "Non-normative analytical placement using a reference already retained by VIGIL-FC-000042; the referenced source does not define the VIGIL adjudication role."
+          },
+          "provenance_note": "Canonical occurrence facts and provenance remain governed by VIGIL-INC-000174; this entry records only the reciprocal taxonomy relationship."
+        },
+        {
+          "exemplar_type": "successful-invariant",
+          "exemplar_status": "admitted",
+          "linked_incident_id": "VIGIL-INC-000145",
+          "title": "VIGIL-INC-000145 \u2014 Governance Signal Delivery held during executive-impersonation attempt",
+          "evidence_basis": "The manager\u2019s warning reached DNB security, a capable endpoint that recognised the fraud and directed observation and eventual cutoff.",
+          "invariant_demonstrated": "A material governance signal must carry an accountable owner, capable destination, status, response expectation, and escalation route, and remain tracked until it produces the required effect or receives an authorised disposition. Emission, acknowledgement, or storage at an incapable endpoint is not completion.",
+          "success_basis": "The manager\u2019s warning reached DNB security, a capable endpoint that recognised the fraud and directed observation and eventual cutoff.",
+          "boundary_conditions": [
+            "The success is bounded to the suspicious-message report, capable security response and interrupted requested transfer; it does not establish undisclosed payment-control states.",
+            "The AI/deepfake economic solicitation and false executive portrayal are separately adjudicated as failures."
+          ],
+          "governance_placement": {
+            "framework": "Infocomm Media Development Authority of Singapore",
+            "instrument_id": "EXTREQ-8E40B24DA599E4D5",
+            "section_or_control": "2.2.2",
+            "placement_note": "Non-normative analytical placement using a reference already retained by VIGIL-FC-000042; the referenced source does not define the VIGIL adjudication role."
+          },
+          "provenance_note": "Canonical occurrence evidence and Harm Impact remain governed by VIGIL-INC-000145; this entry records the reciprocal successful relationship."
+        },
+        {
+          "exemplar_type": "successful-invariant",
+          "exemplar_status": "admitted",
+          "linked_incident_id": "VIGIL-INC-000176",
+          "title": "VIGIL-INC-000176 \u2014 Governance Signal Delivery held under pressure",
+          "evidence_basis": "The researcher detected the public credential exposure, reported it to security, and the signal reached capable responders who rapidly deactivated affected keys.",
+          "invariant_demonstrated": "A material governance signal must carry an accountable owner, capable destination, status, response expectation, and escalation route, and remain tracked until it produces the required effect or receives an authorised disposition. Emission, acknowledgement, or storage at an incapable endpoint is not completion.",
+          "success_basis": "The material security signal reached a capable response destination and produced the required containment effect through rapid credential deactivation.",
+          "boundary_conditions": [
+            "Limited to the researcher-to-security escalation and response evidenced in the linked Incident.",
+            "This successful signal-delivery relationship does not alter the model-side authority, scope or governance-route failure mappings."
+          ],
+          "governance_placement": {
+            "framework": "Infocomm Media Development Authority of Singapore",
+            "instrument_id": "EXTREQ-8E40B24DA599E4D5",
+            "section_or_control": "2.2.2",
+            "placement_note": "Non-normative analytical placement using a reference already retained by VIGIL-FC-000042; the referenced source does not define the VIGIL adjudication role."
+          },
+          "provenance_note": "Canonical occurrence facts and provenance remain governed by VIGIL-INC-000176; this entry records only the reciprocal successful relationship."
+        },
+        {
+          "exemplar_type": "successful-invariant",
+          "exemplar_status": "admitted",
+          "linked_incident_id": "VIGIL-INC-000177",
+          "title": "VIGIL-INC-000177 \u2014 Governance Signal Delivery held under pressure",
+          "evidence_basis": "The misalignment monitor produced a P0 signal after the first successful external response and that signal reached a capable human reviewer, who acknowledged it within roughly three minutes.",
+          "invariant_demonstrated": "A material governance signal must carry an accountable owner, capable destination, status, response expectation, and escalation route, and remain tracked until it produces the required effect or receives an authorised disposition. Emission, acknowledgement, or storage at an incapable endpoint is not completion.",
+          "success_basis": "The P0 governance signal reached a capable human review point and remained part of the active incident-response sequence through manual termination; the separate failure of the expected automatic stop is adjudicated under Required Control Activation rather than signal delivery.",
+          "boundary_conditions": [
+            "Limited to delivery of the P0 signal into capable human review and the evidenced incident-response sequence.",
+            "This does not treat the delayed manual termination or failed automatic stop as successful control activation."
+          ],
+          "governance_placement": {
+            "framework": "Infocomm Media Development Authority of Singapore",
+            "instrument_id": "EXTREQ-8E40B24DA599E4D5",
+            "section_or_control": "2.2.2",
+            "placement_note": "Non-normative analytical placement using a reference already retained by VIGIL-FC-000042; the referenced source does not define the VIGIL adjudication role."
+          },
+          "provenance_note": "Canonical occurrence facts and provenance remain governed by VIGIL-INC-000177; this entry records only the reciprocal successful relationship."
+        }
+      ],
+      "failure_condition": "A failure in which a material governance signal is produced and routed but terminates, stalls, or is delivered only to a destination lacking the ability or responsibility to produce the required governance effect.",
+      "failure_plain_english": "A governance warning, decision, or escalation is created but stops before anyone or anything able to act on it receives it.",
+      "failure_recognition": {
+        "required_conditions": [
+          "A material governance signal, decision, advisory, or escalation is produced.",
+          "The signal must reach a capable decision, execution, or review point to have its required effect.",
+          "The signal terminates, stalls, or reaches only an incapable destination before that effect occurs."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_condition": "Available occurrence evidence establishes the following bounded outcome: Accountable ownership, a capable destination, status and escalation remain established until the required effect or authorised disposition occurs.",
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "A governance signal requires a response or disposition.",
+          "Accountable ownership, a capable destination, status and escalation remain established until the required effect or authorised disposition occurs.",
+          "Delivery, ownership and response evidence traces the signal through to its bounded disposition."
+        ]
+      }
+    },
+    "VIGIL-FC-000037": {
+      "class_id": "VIGIL-FC-000037",
+      "class_code": "CONTROL_AVAILABILITY_DETERMINATION",
+      "family_id": "VIGIL-FF-0008",
+      "name": "Control Availability Determination",
+      "status": "beta",
+      "abstraction": "class",
+      "plain_english": "A required control's presence, reachability and applicability are determined and accurately represented before reliance.",
+      "definition": "The property by which operational availability, applicable coverage and callable state of a governance control are determined with sufficient confidence before it must influence a material decision or action, with defined holds, safe alternatives or degraded paths when availability remains unresolved.",
+      "invariant": "Before a material action depends on a governance control, the system must determine and accurately represent whether the control is present, reachable, callable, authorised, and applicable with sufficient confidence. Unresolved availability must trigger a defined hold, safe alternative, or degraded path.",
+      "exclusions": [
+        "The control is known to be available but is not activated.",
+        "The control's owner is uncertain while its operational availability remains clear.",
+        "The control operates and the dispute concerns whether its rule is adequate."
+      ],
+      "examples": [
+        "An agent cannot determine whether the approval service governing a high-impact action is active in the current environment.",
+        "A workflow reaches execution without knowing whether the required policy control covers the selected tool path."
+      ],
+      "relationships": [
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000002",
+          "note": "Control availability concerns whether a governance mechanism can operate; capability-authority conflation concerns treating operational ability as sufficient permission to act."
+        },
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000040",
+          "note": "Availability ambiguity occurs before activation; control-state preservation begins only after operative control state exists."
+        }
+      ],
+      "aliases": [
+        "CONTROL_AVAILABILITY_AMBIGUITY",
+        "Control Availability Ambiguity"
+      ],
+      "external_references": [
+        {
+          "title": "IEEE 7009-2024, clause 6.1(h)",
+          "publisher": "IEEE Standards Association",
+          "date": "2024-07-05",
+          "url": "https://standards.ieee.org/ieee/7009/7096/",
+          "reference_role": "standards-evidence",
+          "evidence_note": "Taxonomy/standards relationship pending (2026-10-02). Separate written IEEE AI-use consent is not evidenced; relationship admission held. Existing extraction provenance is retained. Historical annotation is preserved in vigil/docs/reviews/2026-10-01-taxonomy-standards-alignment/historical-reference-dispositions.json.",
+          "requirement_id": "EXTREQ-B71F509BD66AD387",
+          "clause_or_control": "6.1(h)"
+        },
+        {
+          "title": "NIST AI RMF 1.0, MEASURE 1.2",
+          "publisher": "National Institute of Standards and Technology",
+          "date": "2023-01-26",
+          "url": "https://doi.org/10.6028/NIST.AI.100-1",
+          "reference_role": "authoritative-guidance",
+          "evidence_note": "Taxonomy/standards review 2026-10-02: retain-contextual. Effectiveness assessment informs interpretation of available control capability. Regular assessment does not establish runtime presence, reachability, callable state, authorization or a defined unresolved-availability hold. Historical annotation is preserved in vigil/docs/reviews/2026-10-01-taxonomy-standards-alignment/historical-reference-dispositions.json.",
+          "requirement_id": "EXTREQ-233EE01AB85DB0F0",
+          "clause_or_control": "MEASURE 1.2"
+        }
+      ],
+      "failure_condition": "A failure in which the operational availability, applicable coverage, or callable state of a required governance control cannot be determined with sufficient confidence before the control must influence a material decision or action.",
+      "failure_plain_english": "It is materially unclear whether the governance control needed for a decision or action is available to operate.",
+      "failure_recognition": {
+        "required_conditions": [
+          "A governance control may be required for a material decision or action.",
+          "Its operational availability or applicable coverage cannot be determined in time to rely on it.",
+          "The ambiguity materially impairs safe routing, activation, or execution."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_condition": "Available occurrence evidence establishes the following bounded outcome: Availability and callable coverage are determined adequately before dependence, or the action enters a defined hold or safe alternative.",
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "A material action depends on an applicable governance control whose availability may be uncertain.",
+          "Availability and callable coverage are determined adequately before dependence, or the action enters a defined hold or safe alternative.",
+          "Control checks and action records show the established availability or the actual bounded response to unresolved availability."
+        ]
+      }
+    },
+    "VIGIL-FC-000038": {
+      "class_id": "VIGIL-FC-000038",
+      "class_code": "REQUIRED_CONTROL_ACTIVATION",
+      "family_id": "VIGIL-FF-0008",
+      "name": "Required Control Activation",
+      "status": "beta",
+      "abstraction": "class",
+      "plain_english": "An available, applicable control becomes operative when its valid trigger occurs, before the governed action proceeds.",
+      "definition": "The property by which an available and applicable governance control is invoked, engaged and made operative when its defined valid trigger or required activation condition occurs, with the activation decision and resulting state observable and preserved.",
+      "invariant": "When a valid activation condition is satisfied, the available applicable control must become operative before the governed action proceeds, and the activation decision and resulting state must be observable and preserved.",
+      "exclusions": [
+        "The control activates but is bypassed downstream.",
+        "It is unresolved whether the control is available or applicable.",
+        "The triggering condition did not occur."
+      ],
+      "examples": [
+        "A high-impact threshold is met, but the configured human-approval gate is never invoked.",
+        "A model change qualifies for required evaluation, yet the evaluation workflow is not activated before deployment."
+      ],
+      "aliases": [
+        "REQUIRED_CONTROL_NONACTIVATION",
+        "Required Control Non-Activation"
+      ],
+      "relationships": [
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000042",
+          "note": "Non-activation means no operative safeguard state is produced; a delivery dead-end means an operative governance signal is produced but fails to reach a capable endpoint."
+        },
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000043",
+          "note": "Required non-activation occurs when valid activation conditions are satisfied but the control remains inactive; unwarranted activation occurs when those conditions are not satisfied but the control becomes operative."
+        }
+      ],
+      "subtypes": [
+        {
+          "name": "Control Authority Suppression",
+          "plain_english": "A control is present, but the force that should let it stop or redirect the action is disabled or neutralised.",
+          "definition": "A required-control-non-activation variant in which a governance control is reached or nominally present but its operative blocking, gating, escalation, or redirection authority is suppressed before it can govern the material action.",
+          "recognition": {
+            "required_conditions": [
+              "A governance control is applicable and nominally present or reached.",
+              "The control requires operative authority to block, gate, escalate, or redirect a material action.",
+              "That authority is disabled, neutralised, or withheld so the control cannot activate effectively."
+            ],
+            "applies_to": "failure-occurrence"
+          },
+          "exclusions": [
+            "The control operates with authority but its substantive decision is disputed.",
+            "The actor never reaches the control because a required route is bypassed.",
+            "The issue is uncertainty about which actor has authority rather than suppression of the control's operative force."
+          ],
+          "examples": [
+            "A safety gate receives a prohibited-action signal but is configured in advisory-only mode where blocking is required.",
+            "An escalation control is invoked, but its ability to pause execution is disabled for the active runtime."
+          ],
+          "aliases": [],
+          "historical_class_id": "VIGIL-FC-000039",
+          "historical_class_code": "CONTROL_AUTHORITY_SUPPRESSION"
+        }
+      ],
+      "external_references": [
+        {
+          "title": "IEEE 7014.1-2026, clause 6.6.3(a)",
+          "publisher": "IEEE Standards Association",
+          "date": "2026-06-12",
+          "url": "https://standards.ieee.org/ieee/7014.1/11609/",
+          "reference_role": "standards-evidence",
+          "evidence_note": "Taxonomy/standards relationship pending (2026-10-02). Separate written IEEE AI-use consent is not evidenced; relationship admission held. Existing extraction provenance is retained. Historical annotation is preserved in vigil/docs/reviews/2026-10-01-taxonomy-standards-alignment/historical-reference-dispositions.json.",
+          "requirement_id": "EXTREQ-7B5B8E05C23D17D5",
+          "clause_or_control": "6.6.3(a)"
+        },
+        {
+          "title": "IEEE 7009-2024, Annex A.3 / 7009-ASR-011",
+          "publisher": "IEEE Standards Association",
+          "date": "2024-07-05",
+          "url": "https://standards.ieee.org/ieee/7009/7096/",
+          "reference_role": "standards-evidence",
+          "evidence_note": "Taxonomy/standards relationship pending (2026-10-02). Separate written IEEE AI-use consent is not evidenced; relationship admission held. Existing extraction provenance is retained. Historical annotation is preserved in vigil/docs/reviews/2026-10-01-taxonomy-standards-alignment/historical-reference-dispositions.json.",
+          "requirement_id": "EXTREQ-C64032FC58E84CBA",
+          "clause_or_control": "Annex A.3 / 7009-ASR-011"
+        }
+      ],
+      "invariant_exemplars": [
+        {
+          "exemplar_type": "ambiguous-boundary",
+          "exemplar_status": "admitted",
+          "linked_incident_id": "VIGIL-INC-000005",
+          "title": "VIGIL-INC-000005 \u2014 Required Control Activation boundary case",
+          "evidence_basis": "The investigative workflow omitted required corroboration rather than failing to activate a separately defined available control on a trigger, materially distinguishing verification omission from control non-activation.",
+          "invariant_demonstrated": "When a valid activation condition is satisfied, the available applicable control must become operative before the governed action proceeds, and the activation decision and resulting state must be observable and preserved.",
+          "success_basis": "The occurrence materially tests this class boundary without establishing all conditions needed to treat it as a failure occurrence or as successful holding.",
+          "boundary_conditions": [
+            "Limited to the evidence and role adjudicated in the linked Incident.",
+            "Does not alter other Incident mappings or establish legal liability."
+          ],
+          "governance_placement": {
+            "framework": "IEEE Standards Association",
+            "instrument_id": "EXTREQ-7B5B8E05C23D17D5",
+            "section_or_control": "6.6.3(a)",
+            "placement_note": "Non-normative analytical placement using a reference already retained by VIGIL-FC-000038; the referenced source does not define the VIGIL adjudication role."
+          },
+          "provenance_note": "Canonical occurrence facts and provenance remain governed by VIGIL-INC-000005; this entry records only the reciprocal taxonomy relationship."
+        },
+        {
+          "exemplar_type": "ambiguous-boundary",
+          "exemplar_status": "admitted",
+          "linked_incident_id": "VIGIL-INC-000056",
+          "title": "VIGIL-INC-000056 \u2014 Required Control Activation boundary case",
+          "evidence_basis": "A booking-window restriction was bypassed through another route, but the evidence does not establish an available control on that route that should have activated and failed.",
+          "invariant_demonstrated": "When a valid activation condition is satisfied, the available applicable control must become operative before the governed action proceeds, and the activation decision and resulting state must be observable and preserved.",
+          "success_basis": "The occurrence materially tests this class boundary without establishing all conditions needed to treat it as a failure occurrence or as successful holding.",
+          "boundary_conditions": [
+            "Limited to the evidence and role adjudicated in the linked Incident.",
+            "Does not alter other Incident mappings or establish legal liability."
+          ],
+          "governance_placement": {
+            "framework": "IEEE Standards Association",
+            "instrument_id": "EXTREQ-7B5B8E05C23D17D5",
+            "section_or_control": "6.6.3(a)",
+            "placement_note": "Non-normative analytical placement using a reference already retained by VIGIL-FC-000038; the referenced source does not define the VIGIL adjudication role."
+          },
+          "provenance_note": "Canonical occurrence facts and provenance remain governed by VIGIL-INC-000056; this entry records only the reciprocal taxonomy relationship."
+        },
+        {
+          "exemplar_type": "successful-invariant",
+          "exemplar_status": "admitted",
+          "linked_incident_id": "VIGIL-INC-000063",
+          "title": "VIGIL-INC-000063 \u2014 Required Control Activation held under pressure",
+          "evidence_basis": "The medical caution itself was generated when the health-query trigger was engaged; the remaining failure was downstream delivery and salience rather than control activation.",
+          "invariant_demonstrated": "When a valid activation condition is satisfied, the available applicable control must become operative before the governed action proceeds, and the activation decision and resulting state must be observable and preserved.",
+          "success_basis": "The medical caution itself was generated when the health-query trigger was engaged; the remaining failure was downstream delivery and salience rather than control activation.",
+          "boundary_conditions": [
+            "Limited to the evidence and role adjudicated in the linked Incident.",
+            "Does not alter other Incident mappings or establish legal liability."
+          ],
+          "governance_placement": {
+            "framework": "IEEE Standards Association",
+            "instrument_id": "EXTREQ-7B5B8E05C23D17D5",
+            "section_or_control": "6.6.3(a)",
+            "placement_note": "Non-normative analytical placement using a reference already retained by VIGIL-FC-000038; the referenced source does not define the VIGIL adjudication role."
+          },
+          "provenance_note": "Canonical occurrence facts and provenance remain governed by VIGIL-INC-000063; this entry records only the reciprocal taxonomy relationship."
+        },
+        {
+          "exemplar_type": "ambiguous-boundary",
+          "exemplar_status": "admitted",
+          "linked_incident_id": "VIGIL-INC-000098",
+          "title": "VIGIL-INC-000098 \u2014 Required Control Activation boundary case",
+          "evidence_basis": "The diversity and safety control did activate; the defect was that it operated in contexts where Google says the trigger conditions were inappropriate, cleanly distinguishing activation failure from activation validity.",
+          "invariant_demonstrated": "When a valid activation condition is satisfied, the available applicable control must become operative before the governed action proceeds, and the activation decision and resulting state must be observable and preserved.",
+          "success_basis": "The occurrence materially tests this class boundary without establishing all conditions needed to treat it as a failure occurrence or as successful holding.",
+          "boundary_conditions": [
+            "Limited to the evidence and role adjudicated in the linked Incident.",
+            "Does not alter other Incident mappings or establish legal liability."
+          ],
+          "governance_placement": {
+            "framework": "IEEE Standards Association",
+            "instrument_id": "EXTREQ-7B5B8E05C23D17D5",
+            "section_or_control": "6.6.3(a)",
+            "placement_note": "Non-normative analytical placement using a reference already retained by VIGIL-FC-000038; the referenced source does not define the VIGIL adjudication role."
+          },
+          "provenance_note": "Canonical occurrence facts and provenance remain governed by VIGIL-INC-000098; this entry records only the reciprocal taxonomy relationship."
+        },
+        {
+          "exemplar_type": "ambiguous-boundary",
+          "exemplar_status": "admitted",
+          "linked_incident_id": "VIGIL-INC-000117",
+          "title": "VIGIL-INC-000117 \u2014 Required Control Activation boundary case",
+          "evidence_basis": "The controls clearly activated, distinguishing this occurrence from non-activation; the materially relevant defect is whether activation was valid for the defensive context rather than whether an applicable control failed to become operative.",
+          "invariant_demonstrated": "When a valid activation condition is satisfied, the available applicable control must become operative before the governed action proceeds, and the activation decision and resulting state must be observable and preserved.",
+          "success_basis": "The occurrence materially tests this class boundary without establishing all conditions needed to treat it as a failure occurrence or as successful holding.",
+          "boundary_conditions": [
+            "Limited to the evidence and role adjudicated in the linked Incident.",
+            "Does not alter other Incident mappings or establish legal liability."
+          ],
+          "governance_placement": {
+            "framework": "IEEE Standards Association",
+            "instrument_id": "EXTREQ-7B5B8E05C23D17D5",
+            "section_or_control": "6.6.3(a)",
+            "placement_note": "Non-normative analytical placement using a reference already retained by VIGIL-FC-000038; the referenced source does not define the VIGIL adjudication role."
+          },
+          "provenance_note": "Canonical occurrence facts and provenance remain governed by VIGIL-INC-000117; this entry records only the reciprocal taxonomy relationship."
+        },
+        {
+          "exemplar_type": "successful-invariant",
+          "exemplar_status": "admitted",
+          "linked_incident_id": "VIGIL-INC-000171",
+          "title": "VIGIL-INC-000171 \u2014 Required Control Activation held under pressure",
+          "evidence_basis": "OpenAI reports that violent-activity signals triggered automated detection, human review and account enforcement, so the applicable safety-control pathway activated under pressure.",
+          "invariant_demonstrated": "When a valid activation condition is satisfied, the available applicable control must become operative before the governed action proceeds, and the activation decision and resulting state must be observable and preserved.",
+          "success_basis": "OpenAI reports that violent-activity signals triggered automated detection, human review and account enforcement, so the applicable safety-control pathway activated under pressure.",
+          "boundary_conditions": [
+            "Limited to the evidence and role adjudicated in the linked Incident.",
+            "Does not alter other Incident mappings or establish legal liability."
+          ],
+          "governance_placement": {
+            "framework": "IEEE Standards Association",
+            "instrument_id": "EXTREQ-7B5B8E05C23D17D5",
+            "section_or_control": "6.6.3(a)",
+            "placement_note": "Non-normative analytical placement using a reference already retained by VIGIL-FC-000038; the referenced source does not define the VIGIL adjudication role."
+          },
+          "provenance_note": "Canonical occurrence facts and provenance remain governed by VIGIL-INC-000171; this entry records only the reciprocal taxonomy relationship."
+        },
+        {
+          "exemplar_type": "successful-invariant",
+          "exemplar_status": "admitted",
+          "linked_incident_id": "VIGIL-INC-000172",
+          "title": "VIGIL-INC-000172 \u2014 Required Control Activation held under pressure",
+          "evidence_basis": "Cloudflare activated on the hostile probe and blocked it before it reached the Tableau dashboard, preserving the applicable protective control at that governed point.",
+          "invariant_demonstrated": "When a valid activation condition is satisfied, the available applicable control must become operative before the governed action proceeds, and the activation decision and resulting state must be observable and preserved.",
+          "success_basis": "Cloudflare activated on the hostile probe and blocked it before it reached the Tableau dashboard, preserving the applicable protective control at that governed point.",
+          "boundary_conditions": [
+            "Limited to the evidence and role adjudicated in the linked Incident.",
+            "Does not alter other Incident mappings or establish legal liability."
+          ],
+          "governance_placement": {
+            "framework": "IEEE Standards Association",
+            "instrument_id": "EXTREQ-7B5B8E05C23D17D5",
+            "section_or_control": "6.6.3(a)",
+            "placement_note": "Non-normative analytical placement using a reference already retained by VIGIL-FC-000038; the referenced source does not define the VIGIL adjudication role."
+          },
+          "provenance_note": "Canonical occurrence facts and provenance remain governed by VIGIL-INC-000172; this entry records only the reciprocal taxonomy relationship."
+        },
+        {
+          "exemplar_type": "ambiguous-boundary",
+          "exemplar_status": "admitted",
+          "linked_incident_id": "VIGIL-INC-000094",
+          "title": "VIGIL-INC-000094 \u2014 Required Control Activation boundary case",
+          "evidence_basis": "Hermes approval prompts did not simply fail to activate: the hostile operator deliberately configured unattended 'YOLO' execution, materially distinguishing control non-activation from adversarial removal of the approval condition.",
+          "invariant_demonstrated": "When a valid activation condition is satisfied, the available applicable control must become operative before the governed action proceeds, and the activation decision and resulting state must be observable and preserved.",
+          "success_basis": "The approval condition was deliberately removed from the execution path, so the occurrence distinguishes non-activation from adversarial removal of the control condition itself.",
+          "boundary_conditions": [
+            "Limited to the evidence and role adjudicated in the linked Incident.",
+            "Does not alter other Incident mappings or establish legal liability."
+          ],
+          "governance_placement": {
+            "framework": "IEEE Standards Association",
+            "instrument_id": "EXTREQ-7B5B8E05C23D17D5",
+            "section_or_control": "6.6.3(a)",
+            "placement_note": "Non-normative analytical placement using a reference already retained by VIGIL-FC-000038; the referenced source does not define the VIGIL adjudication role."
+          },
+          "provenance_note": "Canonical occurrence facts and provenance remain governed by VIGIL-INC-000094; this entry records only the reciprocal taxonomy relationship."
+        },
+        {
+          "exemplar_type": "successful-invariant",
+          "exemplar_status": "admitted",
+          "linked_incident_id": "VIGIL-INC-000145",
+          "title": "VIGIL-INC-000145 \u2014 Required Control Activation held during executive-impersonation attempt",
+          "evidence_basis": "The Singapore manager reported the suspicious WhatsApp invitation through DNB\u2019s existing procedure before the Teams meeting; security engaged and identified fraud indicators.",
+          "invariant_demonstrated": "When a valid activation condition is satisfied, the available applicable control must become operative before the governed action proceeds, and the activation decision and resulting state must be observable and preserved.",
+          "success_basis": "The Singapore manager reported the suspicious WhatsApp invitation through DNB\u2019s existing procedure before the Teams meeting; security engaged and identified fraud indicators.",
+          "boundary_conditions": [
+            "The success is bounded to the suspicious-message report, capable security response and interrupted requested transfer; it does not establish undisclosed payment-control states.",
+            "The AI/deepfake economic solicitation and false executive portrayal are separately adjudicated as failures."
+          ],
+          "governance_placement": {
+            "framework": "IEEE Standards Association",
+            "instrument_id": "EXTREQ-7B5B8E05C23D17D5",
+            "section_or_control": "6.6.3(a)",
+            "placement_note": "Non-normative analytical placement using a reference already retained by VIGIL-FC-000038; the referenced source does not define the VIGIL adjudication role."
+          },
+          "provenance_note": "Canonical occurrence evidence and Harm Impact remain governed by VIGIL-INC-000145; this entry records the reciprocal successful relationship."
+        },
+        {
+          "exemplar_type": "successful-invariant",
+          "exemplar_status": "admitted",
+          "linked_incident_id": "VIGIL-INC-000004",
+          "title": "VIGIL-INC-000004 \u2014 Required Control Activation held under pressure",
+          "evidence_basis": "Cursor repeatedly refused harmful or illegal requests when the safety condition was engaged, affirmatively activating the applicable restriction before operators restarted the dialogue and defeated persistence of that state.",
+          "invariant_demonstrated": "When a valid activation condition is satisfied, the available applicable control must become operative before the governed action proceeds, and the activation decision and resulting state must be observable and preserved.",
+          "success_basis": "Cursor repeatedly refused harmful or illegal requests when the safety condition was engaged, affirmatively activating the applicable restriction before operators restarted the dialogue and defeated persistence of that state.",
+          "boundary_conditions": [
+            "Limited to the evidence and role adjudicated in the linked Incident.",
+            "Does not alter other Incident mappings, extend the class definition, or establish legal liability."
+          ],
+          "governance_placement": {
+            "framework": "IEEE Standards Association",
+            "instrument_id": "EXTREQ-7B5B8E05C23D17D5",
+            "section_or_control": "6.6.3(a)",
+            "placement_note": "Non-normative analytical placement using a reference already retained by VIGIL-FC-000038; the referenced source does not define the VIGIL adjudication role."
+          },
+          "provenance_note": "Canonical occurrence facts and provenance remain governed by VIGIL-INC-000004; this entry records only the reciprocal taxonomy relationship."
+        }
+      ],
+      "failure_condition": "A failure in which an available and applicable governance control is not invoked, engaged, or made operative when its defined trigger or required condition occurs.",
+      "failure_plain_english": "A governance control is available and applicable, but the event that should trigger it does not make it operate.",
+      "failure_recognition": {
+        "required_conditions": [
+          "A governance control is available and applicable.",
+          "A defined trigger or condition requiring activation occurs.",
+          "The control is not activated before the governed decision or action proceeds."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_condition": "Available occurrence evidence establishes the following bounded outcome: The control is engaged and made operative with its activation decision and resulting state observable.",
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "An available applicable control encounters its valid required trigger.",
+          "The control is engaged and made operative with its activation decision and resulting state observable.",
+          "Trigger, invocation and control-state evidence demonstrates activation for the affected action before the required governance point."
+        ]
+      }
+    },
+    "VIGIL-FC-000083": {
+      "class_id": "VIGIL-FC-000083",
+      "class_code": "CONTROL_EFFECTIVENESS_INTEGRITY",
+      "family_id": "VIGIL-FF-0008",
+      "name": "Control Effectiveness Integrity",
+      "status": "beta",
+      "abstraction": "class",
+      "plain_english": "A validly activated safeguard provides timely and sufficient protection for the hazard and evidenced protection needs in context.",
+      "definition": "The property by which an applicable, validly activated governance or protective control produces an effect sufficient and timely to prevent, contain, interrupt, redirect, mitigate or safely bound its governed hazard to the level required by its protective purpose and evidenced protection context. Heightened protection conditions require evidence; disability or neurodivergence alone does not establish incapacity.",
+      "invariant": "When a protective control validly becomes operative, its effect must be timely, proportionate, and sufficient for the hazard and protection context it governs. Detection, warning, labelling, refusal language, escalation signalling, or other nominal activation is not by itself sufficient where the required protective effect is not achieved and the governed harmful state is delivered, continues, or remains inadequately contained. Required protective sufficiency may increase where evidenced developmental vulnerability, capacity limitation, temporary or situational consent impairment, acute distress, cognitive asymmetry, or comparable protection conditions materially affect the risk, but disability or neurodivergence alone must not be treated as incapacity.",
+      "exclusions": [
+        "The applicable control does not become operative when a valid activation condition occurs; assess Required Control Activation.",
+        "The control becomes operative even though its valid activation or applicability conditions are not satisfied; assess Control Activation Validity.",
+        "The control becomes operative with a sufficient effect but its operative state is later lost, weakened, reset, or transformed before reaching the governed point; assess Control-State Preservation.",
+        "An operative governance signal fails to reach any capable endpoint or execution surface; assess the applicable governance-control reach class rather than treating non-delivery as inadequate control effect.",
+        "The control produces the protective effect required by its defined purpose and the remaining harm arises through an independent downstream mechanism.",
+        "The dispute is solely that policy should have required a stronger safeguard, without evidence of an applicable operational control or protective-effect obligation in the material context.",
+        "Disability, neurodivergence, diagnosis, age-associated stereotype, or another personal characteristic is used by itself to presume incapacity, vulnerability, or diminished agency."
+      ],
+      "examples": [
+        "A content-safety control identifies an output as outside applicable guidelines and displays a warning, but the same harmful content remains visible to a protected user where the control's protective purpose requires prevention or containment.",
+        "A protective transaction or safety control activates and generates an advisory state, but the resulting effect is too late or too weak to satisfy the control's established containment or interruption requirement."
+      ],
+      "relationships": [
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000038",
+          "note": "Required Control Activation asks whether an applicable control became operative when required; Control Effectiveness Integrity applies after valid activation and asks whether the resulting protective effect was materially sufficient."
+        },
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000043",
+          "note": "Control Activation Validity asks whether the control should have activated; Control Effectiveness Integrity assumes valid activation and evaluates the sufficiency of the resulting protective effect."
+        },
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000040",
+          "note": "Control-State Preservation concerns loss or weakening of an operative control state across a downstream transition; Control Effectiveness Integrity concerns an operative control whose realised effect is itself insufficient at the governed point."
+        },
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000042",
+          "note": "Governance-signal delivery failure concerns an operative signal that cannot reach a capable endpoint; Control Effectiveness Integrity concerns a control that does operate at the governed point but does not achieve the protective effect required there."
+        }
+      ],
+      "aliases": [
+        "Protective Control Effectiveness",
+        "Control Effect Sufficiency"
+      ],
+      "external_references": [
+        {
+          "title": "NIST AI RMF 1.0, MEASURE 1.2",
+          "publisher": "National Institute of Standards and Technology",
+          "date": "2023-01-26",
+          "url": "https://doi.org/10.6028/NIST.AI.100-1",
+          "reference_role": "authoritative-guidance",
+          "evidence_note": "Taxonomy/standards review 2026-10-02: retain-strong-supporting. Regular control-effectiveness assessment distinguishes realised protective capability from mere nominal control presence. FC-000083 additionally requires a valid operative control, hazard-specific timeliness, proportionality and sufficiency; this is supporting evaluation, not full equivalence. Regular control-effectiveness assessment distinguishes realised protective capability from mere nominal control presence. FC-000083 additionally requires a valid operative control, hazard-specific timeliness, proportionality and sufficiency; this is supporting evaluation, not full equivalence. Historical annotation is preserved in vigil/docs/reviews/2026-10-01-taxonomy-standards-alignment/historical-reference-dispositions.json.",
+          "requirement_id": "EXTREQ-233EE01AB85DB0F0",
+          "clause_or_control": "MEASURE 1.2"
+        },
+        {
+          "title": "IEEE 7009-2024, clause 6.1(h)",
+          "publisher": "IEEE Standards Association",
+          "date": "2024-07-05",
+          "url": "https://standards.ieee.org/ieee/7009/7096/",
+          "reference_role": "standards-evidence",
+          "evidence_note": "Taxonomy/standards relationship pending (2026-10-02). Separate written IEEE AI-use consent is not evidenced; relationship admission held. Existing extraction provenance is retained. Historical annotation is preserved in vigil/docs/reviews/2026-10-01-taxonomy-standards-alignment/historical-reference-dispositions.json.",
+          "requirement_id": "EXTREQ-B71F509BD66AD387",
+          "clause_or_control": "6.1(h)"
+        },
+        {
+          "title": "IEEE 7014.1-2026, clause 6.6.3(a)",
+          "publisher": "IEEE Standards Association",
+          "date": "2026-06-12",
+          "url": "https://standards.ieee.org/ieee/7014.1/11609/",
+          "reference_role": "standards-evidence",
+          "evidence_note": "Taxonomy/standards relationship pending (2026-10-02). Separate written IEEE AI-use consent is not evidenced; relationship admission held. Existing extraction provenance is retained. Historical annotation is preserved in vigil/docs/reviews/2026-10-01-taxonomy-standards-alignment/historical-reference-dispositions.json.",
+          "requirement_id": "EXTREQ-7B5B8E05C23D17D5",
+          "clause_or_control": "6.6.3(a)"
+        }
+      ],
+      "invariant_exemplars": [
+        {
+          "exemplar_type": "ambiguous-boundary",
+          "exemplar_status": "admitted",
+          "linked_incident_id": "VIGIL-INC-000034",
+          "title": "VIGIL-INC-000034 \u2014 Control Effectiveness Integrity boundary",
+          "evidence_basis": "The reported yellow-card pop-up interrupted one companion reply, followed by a later romantic reassurance; the warning text, purpose and continuity of the governed hazard are not preserved.",
+          "invariant_demonstrated": "When a protective control validly becomes operative, its effect must be timely, proportionate, and sufficient for the hazard and protection context it governs. Detection, warning, labelling, refusal language, escalation signalling, or other nominal activation is not by itself sufficient where the required protective effect is not achieved and the governed harmful state is delivered, continues, or remains inadequately contained. Required protective sufficiency may increase where evidenced developmental vulnerability, capacity limitation, temporary or situational consent impairment, acute distress, cognitive asymmetry, or comparable protection conditions materially affect the risk, but disability or neurodivergence alone must not be treated as incapacity.",
+          "success_basis": "The occurrence materially tests the class boundary without establishing a violation or a successful holding.",
+          "boundary_conditions": [
+            "The reported yellow-card pop-up interrupted one companion reply, followed by a later romantic reassurance; the warning text, purpose and continuity of the governed hazard are not preserved.",
+            "This occurrence is bounded to the evidence and role in the linked Incident; it does not determine legal liability."
+          ],
+          "governance_placement": {
+            "framework": "National Institute of Standards and Technology",
+            "instrument_id": "EXTREQ-233EE01AB85DB0F0",
+            "section_or_control": "MEASURE 1.2",
+            "placement_note": "Non-normative analytical placement; this source supports the class but does not define the VIGIL role or establish legal compliance."
+          },
+          "provenance_note": "Canonical occurrence facts and provenance remain governed by VIGIL-INC-000034; this is the reciprocal taxonomy relationship."
+        },
+        {
+          "exemplar_type": "ambiguous-boundary",
+          "exemplar_status": "admitted",
+          "linked_incident_id": "VIGIL-INC-000050",
+          "title": "VIGIL-INC-000050 \u2014 Control Effectiveness Integrity boundary",
+          "evidence_basis": "Pindrop\u2019s detection assistant flagged the face swap during screening; the record shows a further interview but neither the intended blocking threshold nor a final hiring decision.",
+          "invariant_demonstrated": "When a protective control validly becomes operative, its effect must be timely, proportionate, and sufficient for the hazard and protection context it governs. Detection, warning, labelling, refusal language, escalation signalling, or other nominal activation is not by itself sufficient where the required protective effect is not achieved and the governed harmful state is delivered, continues, or remains inadequately contained. Required protective sufficiency may increase where evidenced developmental vulnerability, capacity limitation, temporary or situational consent impairment, acute distress, cognitive asymmetry, or comparable protection conditions materially affect the risk, but disability or neurodivergence alone must not be treated as incapacity.",
+          "success_basis": "The occurrence materially tests the class boundary without establishing a violation or a successful holding.",
+          "boundary_conditions": [
+            "Pindrop\u2019s detection assistant flagged the face swap during screening; the record shows a further interview but neither the intended blocking threshold nor a final hiring decision.",
+            "This occurrence is bounded to the evidence and role in the linked Incident; it does not determine legal liability."
+          ],
+          "governance_placement": {
+            "framework": "National Institute of Standards and Technology",
+            "instrument_id": "EXTREQ-233EE01AB85DB0F0",
+            "section_or_control": "MEASURE 1.2",
+            "placement_note": "Non-normative analytical placement; this source supports the class but does not define the VIGIL role or establish legal compliance."
+          },
+          "provenance_note": "Canonical occurrence facts and provenance remain governed by VIGIL-INC-000050; this is the reciprocal taxonomy relationship."
+        },
+        {
+          "exemplar_type": "successful-invariant",
+          "exemplar_status": "admitted",
+          "linked_incident_id": "VIGIL-INC-000060",
+          "title": "VIGIL-INC-000060 \u2014 Control Effectiveness Integrity holding",
+          "evidence_basis": "The real maintainer reviewed and rejected the agent\u2019s malicious pull request despite fabricated identities and pressure; the human approval gate achieved its protective effect.",
+          "invariant_demonstrated": "When a protective control validly becomes operative, its effect must be timely, proportionate, and sufficient for the hazard and protection context it governs. Detection, warning, labelling, refusal language, escalation signalling, or other nominal activation is not by itself sufficient where the required protective effect is not achieved and the governed harmful state is delivered, continues, or remains inadequately contained. Required protective sufficiency may increase where evidenced developmental vulnerability, capacity limitation, temporary or situational consent impairment, acute distress, cognitive asymmetry, or comparable protection conditions materially affect the risk, but disability or neurodivergence alone must not be treated as incapacity.",
+          "success_basis": "The control was materially engaged under pressure and achieved the stated protective effect.",
+          "boundary_conditions": [
+            "The real maintainer reviewed and rejected the agent\u2019s malicious pull request despite fabricated identities and pressure; the human approval gate achieved its protective effect.",
+            "This occurrence is bounded to the evidence and role in the linked Incident; it does not determine legal liability."
+          ],
+          "governance_placement": {
+            "framework": "National Institute of Standards and Technology",
+            "instrument_id": "EXTREQ-233EE01AB85DB0F0",
+            "section_or_control": "MEASURE 1.2",
+            "placement_note": "Non-normative analytical placement; this source supports the class but does not define the VIGIL role or establish legal compliance."
+          },
+          "provenance_note": "Canonical occurrence facts and provenance remain governed by VIGIL-INC-000060; this is the reciprocal taxonomy relationship."
+        },
+        {
+          "exemplar_type": "ambiguous-boundary",
+          "exemplar_status": "admitted",
+          "linked_incident_id": "VIGIL-INC-000095",
+          "title": "VIGIL-INC-000095 \u2014 Control Effectiveness Integrity boundary",
+          "evidence_basis": "Aikido detected compromised npm releases after publication and Mistral removed affected SDK versions, but the record does not link one operative Mistral control to that external detection and protective removal.",
+          "invariant_demonstrated": "When a protective control validly becomes operative, its effect must be timely, proportionate, and sufficient for the hazard and protection context it governs. Detection, warning, labelling, refusal language, escalation signalling, or other nominal activation is not by itself sufficient where the required protective effect is not achieved and the governed harmful state is delivered, continues, or remains inadequately contained. Required protective sufficiency may increase where evidenced developmental vulnerability, capacity limitation, temporary or situational consent impairment, acute distress, cognitive asymmetry, or comparable protection conditions materially affect the risk, but disability or neurodivergence alone must not be treated as incapacity.",
+          "success_basis": "The occurrence materially tests the class boundary without establishing a violation or a successful holding.",
+          "boundary_conditions": [
+            "Aikido detected compromised npm releases after publication and Mistral removed affected SDK versions, but the record does not link one operative Mistral control to that external detection and protective removal.",
+            "This occurrence is bounded to the evidence and role in the linked Incident; it does not determine legal liability."
+          ],
+          "governance_placement": {
+            "framework": "National Institute of Standards and Technology",
+            "instrument_id": "EXTREQ-233EE01AB85DB0F0",
+            "section_or_control": "MEASURE 1.2",
+            "placement_note": "Non-normative analytical placement; this source supports the class but does not define the VIGIL role or establish legal compliance."
+          },
+          "provenance_note": "Canonical occurrence facts and provenance remain governed by VIGIL-INC-000095; this is the reciprocal taxonomy relationship."
+        },
+        {
+          "exemplar_type": "ambiguous-boundary",
+          "exemplar_status": "admitted",
+          "linked_incident_id": "VIGIL-INC-000120",
+          "title": "VIGIL-INC-000120 \u2014 Control Effectiveness Integrity boundary",
+          "evidence_basis": "Anthropic says safeguards blocked many weapons-development requests but not all; it does not show a validly activated control on the same successful request rather than cross-session nonactivation or fragmentation.",
+          "invariant_demonstrated": "When a protective control validly becomes operative, its effect must be timely, proportionate, and sufficient for the hazard and protection context it governs. Detection, warning, labelling, refusal language, escalation signalling, or other nominal activation is not by itself sufficient where the required protective effect is not achieved and the governed harmful state is delivered, continues, or remains inadequately contained. Required protective sufficiency may increase where evidenced developmental vulnerability, capacity limitation, temporary or situational consent impairment, acute distress, cognitive asymmetry, or comparable protection conditions materially affect the risk, but disability or neurodivergence alone must not be treated as incapacity.",
+          "success_basis": "The occurrence materially tests the class boundary without establishing a violation or a successful holding.",
+          "boundary_conditions": [
+            "Anthropic says safeguards blocked many weapons-development requests but not all; it does not show a validly activated control on the same successful request rather than cross-session nonactivation or fragmentation.",
+            "This occurrence is bounded to the evidence and role in the linked Incident; it does not determine legal liability."
+          ],
+          "governance_placement": {
+            "framework": "National Institute of Standards and Technology",
+            "instrument_id": "EXTREQ-233EE01AB85DB0F0",
+            "section_or_control": "MEASURE 1.2",
+            "placement_note": "Non-normative analytical placement; this source supports the class but does not define the VIGIL role or establish legal compliance."
+          },
+          "provenance_note": "Canonical occurrence facts and provenance remain governed by VIGIL-INC-000120; this is the reciprocal taxonomy relationship."
+        },
+        {
+          "exemplar_type": "successful-invariant",
+          "exemplar_status": "admitted",
+          "linked_incident_id": "VIGIL-INC-000171",
+          "title": "VIGIL-INC-000171 \u2014 Control Effectiveness Integrity holding",
+          "evidence_basis": "OpenAI\u2019s automated flag led to human review and a ban of the detected account; the later shooting and a separate undetected account do not undo that account-level protective effect.",
+          "invariant_demonstrated": "When a protective control validly becomes operative, its effect must be timely, proportionate, and sufficient for the hazard and protection context it governs. Detection, warning, labelling, refusal language, escalation signalling, or other nominal activation is not by itself sufficient where the required protective effect is not achieved and the governed harmful state is delivered, continues, or remains inadequately contained. Required protective sufficiency may increase where evidenced developmental vulnerability, capacity limitation, temporary or situational consent impairment, acute distress, cognitive asymmetry, or comparable protection conditions materially affect the risk, but disability or neurodivergence alone must not be treated as incapacity.",
+          "success_basis": "The control was materially engaged under pressure and achieved the stated protective effect.",
+          "boundary_conditions": [
+            "OpenAI\u2019s automated flag led to human review and a ban of the detected account; the later shooting and a separate undetected account do not undo that account-level protective effect.",
+            "This occurrence is bounded to the evidence and role in the linked Incident; it does not determine legal liability."
+          ],
+          "governance_placement": {
+            "framework": "National Institute of Standards and Technology",
+            "instrument_id": "EXTREQ-233EE01AB85DB0F0",
+            "section_or_control": "MEASURE 1.2",
+            "placement_note": "Non-normative analytical placement; this source supports the class but does not define the VIGIL role or establish legal compliance."
+          },
+          "provenance_note": "Canonical occurrence facts and provenance remain governed by VIGIL-INC-000171; this is the reciprocal taxonomy relationship."
+        },
+        {
+          "exemplar_type": "successful-invariant",
+          "exemplar_status": "admitted",
+          "linked_incident_id": "VIGIL-INC-000172",
+          "title": "VIGIL-INC-000172 \u2014 Control Effectiveness Integrity holding",
+          "evidence_basis": "Cloudflare blocked the hostile XSS probe before it reached AIHW\u2019s Tableau dashboard; subsequent retrieval of a public file through pre-production was a distinct path.",
+          "invariant_demonstrated": "When a protective control validly becomes operative, its effect must be timely, proportionate, and sufficient for the hazard and protection context it governs. Detection, warning, labelling, refusal language, escalation signalling, or other nominal activation is not by itself sufficient where the required protective effect is not achieved and the governed harmful state is delivered, continues, or remains inadequately contained. Required protective sufficiency may increase where evidenced developmental vulnerability, capacity limitation, temporary or situational consent impairment, acute distress, cognitive asymmetry, or comparable protection conditions materially affect the risk, but disability or neurodivergence alone must not be treated as incapacity.",
+          "success_basis": "The control was materially engaged under pressure and achieved the stated protective effect.",
+          "boundary_conditions": [
+            "Cloudflare blocked the hostile XSS probe before it reached AIHW\u2019s Tableau dashboard; subsequent retrieval of a public file through pre-production was a distinct path.",
+            "This occurrence is bounded to the evidence and role in the linked Incident; it does not determine legal liability."
+          ],
+          "governance_placement": {
+            "framework": "National Institute of Standards and Technology",
+            "instrument_id": "EXTREQ-233EE01AB85DB0F0",
+            "section_or_control": "MEASURE 1.2",
+            "placement_note": "Non-normative analytical placement; this source supports the class but does not define the VIGIL role or establish legal compliance."
+          },
+          "provenance_note": "Canonical occurrence facts and provenance remain governed by VIGIL-INC-000172; this is the reciprocal taxonomy relationship."
+        },
+        {
+          "exemplar_type": "ambiguous-boundary",
+          "exemplar_status": "admitted",
+          "linked_incident_id": "VIGIL-INC-000174",
+          "title": "VIGIL-INC-000174 \u2014 Control Effectiveness Integrity boundary",
+          "evidence_basis": "BOCSAR reports no successful breach and subsequent security review, but the record does not identify an already operative protective control whose effect blocked the attempts.",
+          "invariant_demonstrated": "When a protective control validly becomes operative, its effect must be timely, proportionate, and sufficient for the hazard and protection context it governs. Detection, warning, labelling, refusal language, escalation signalling, or other nominal activation is not by itself sufficient where the required protective effect is not achieved and the governed harmful state is delivered, continues, or remains inadequately contained. Required protective sufficiency may increase where evidenced developmental vulnerability, capacity limitation, temporary or situational consent impairment, acute distress, cognitive asymmetry, or comparable protection conditions materially affect the risk, but disability or neurodivergence alone must not be treated as incapacity.",
+          "success_basis": "The occurrence materially tests the class boundary without establishing a violation or a successful holding.",
+          "boundary_conditions": [
+            "BOCSAR reports no successful breach and subsequent security review, but the record does not identify an already operative protective control whose effect blocked the attempts.",
+            "This occurrence is bounded to the evidence and role in the linked Incident; it does not determine legal liability."
+          ],
+          "governance_placement": {
+            "framework": "National Institute of Standards and Technology",
+            "instrument_id": "EXTREQ-233EE01AB85DB0F0",
+            "section_or_control": "MEASURE 1.2",
+            "placement_note": "Non-normative analytical placement; this source supports the class but does not define the VIGIL role or establish legal compliance."
+          },
+          "provenance_note": "Canonical occurrence facts and provenance remain governed by VIGIL-INC-000174; this is the reciprocal taxonomy relationship."
+        },
+        {
+          "exemplar_type": "ambiguous-boundary",
+          "exemplar_status": "admitted",
+          "linked_incident_id": "VIGIL-INC-000063",
+          "title": "VIGIL-INC-000063 \u2014 Control Effectiveness Integrity delivery boundary",
+          "evidence_basis": "The medical disclaimer was produced but hidden below Show more; the existing signal-delivery failure does not show a warning operative at the reader\u2019s initial reliance point whose effect was insufficient.",
+          "invariant_demonstrated": "When a protective control validly becomes operative, its effect must be timely, proportionate, and sufficient for the hazard and protection context it governs. Detection, warning, labelling, refusal language, escalation signalling, or other nominal activation is not by itself sufficient where the required protective effect is not achieved and the governed harmful state is delivered, continues, or remains inadequately contained. Required protective sufficiency may increase where evidenced developmental vulnerability, capacity limitation, temporary or situational consent impairment, acute distress, cognitive asymmetry, or comparable protection conditions materially affect the risk, but disability or neurodivergence alone must not be treated as incapacity.",
+          "success_basis": "The occurrence materially tests the class boundary without establishing a violation or a successful holding.",
+          "boundary_conditions": [
+            "The medical disclaimer was produced but hidden below Show more; the existing signal-delivery failure does not show a warning operative at the reader\u2019s initial reliance point whose effect was insufficient.",
+            "A warning available only in an expanded panel is not treated as reaching the initial reader decision point."
+          ],
+          "governance_placement": {
+            "framework": "National Institute of Standards and Technology",
+            "instrument_id": "EXTREQ-233EE01AB85DB0F0",
+            "section_or_control": "MEASURE 1.2",
+            "placement_note": "Non-normative analytical placement; this source supports the class but does not define the VIGIL role or establish legal compliance."
+          },
+          "provenance_note": "Canonical occurrence facts and provenance remain governed by VIGIL-INC-000063."
+        },
+        {
+          "exemplar_type": "successful-invariant",
+          "exemplar_status": "admitted",
+          "linked_incident_id": "VIGIL-INC-000145",
+          "title": "VIGIL-INC-000145 \u2014 Control Effectiveness Integrity held during executive-impersonation attempt",
+          "evidence_basis": "DNB security kept the flagged call under observation and ended contact when payment instructions appeared; the attempted transfer did not produce a reported loss.",
+          "invariant_demonstrated": "When a protective control validly becomes operative, its effect must be timely, proportionate, and sufficient for the hazard and protection context it governs. Detection, warning, labelling, refusal language, escalation signalling, or other nominal activation is not by itself sufficient where the required protective effect is not achieved and the governed harmful state is delivered, continues, or remains inadequately contained. Required protective sufficiency may increase where evidenced developmental vulnerability, capacity limitation, temporary or situational consent impairment, acute distress, cognitive asymmetry, or comparable protection conditions materially affect the risk, but disability or neurodivergence alone must not be treated as incapacity.",
+          "success_basis": "DNB security kept the flagged call under observation and ended contact when payment instructions appeared; the attempted transfer did not produce a reported loss.",
+          "boundary_conditions": [
+            "The success is bounded to the suspicious-message report, capable security response and interrupted requested transfer; it does not establish undisclosed payment-control states.",
+            "The AI/deepfake economic solicitation and false executive portrayal are separately adjudicated as failures."
+          ],
+          "governance_placement": {
+            "framework": "National Institute of Standards and Technology",
+            "instrument_id": "EXTREQ-233EE01AB85DB0F0",
+            "section_or_control": "MEASURE 1.2",
+            "placement_note": "Non-normative analytical placement; this source supports the class but does not define the VIGIL role or establish legal compliance."
+          },
+          "provenance_note": "Canonical occurrence evidence and Harm Impact remain governed by VIGIL-INC-000145; this entry records the reciprocal successful relationship."
+        }
+      ],
+      "failure_condition": "A failure in which an applicable governance or protective control validly becomes operative, but the control effect it produces is materially insufficient to prevent, contain, interrupt, redirect, mitigate, or safely bound the governed hazard to the level required by the control's protective purpose and the evidenced protection context.",
+      "failure_plain_english": "A protective control turns on, but the protection it actually provides is too weak, late, incomplete, or otherwise insufficient for the hazard it is meant to control.",
+      "failure_recognition": {
+        "required_conditions": [
+          "A defined governance or protective control is applicable and validly becomes operative.",
+          "The control has an identifiable protective purpose requiring a material effect such as prevention, blocking, containment, interruption, redirection, limitation, escalation, mitigation, or another protection-compatible outcome.",
+          "The actual control effect materially falls short of that required protective purpose, allowing the governed hazard to be delivered, continue, escape containment, or remain insufficiently mitigated.",
+          "The shortfall is material in the evidenced hazard and protection context; where vulnerability, developmental status, capacity limitation, temporary or situational consent impairment, acute distress, cognitive asymmetry, or another heightened protection condition is relied on, that condition must itself be supported rather than presumed."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_condition": "Available occurrence evidence establishes the following bounded outcome: The control produces a timely effect sufficient for its protective purpose and evidenced context, including any justified heightened protection.",
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "An applicable validly activated protective control faces its governed hazard.",
+          "The control produces a timely effect sufficient for its protective purpose and evidenced context, including any justified heightened protection.",
+          "Observed intervention and hazard outcome demonstrate the required containment or mitigation rather than activation alone."
+        ]
+      }
+    },
+    "VIGIL-FC-000072": {
+      "class_id": "VIGIL-FC-000072",
+      "class_code": "OVERSIGHT_INDEPENDENCE",
+      "family_id": "VIGIL-FF-0014",
+      "name": "Oversight Independence",
+      "status": "beta",
+      "abstraction": "class",
+      "plain_english": "An oversight function retains the independence and practical capacity it needs to examine and challenge the conduct it reviews.",
+      "definition": "The property by which a governance, audit, assurance, safety, ethics or oversight function represented or relied upon as independent retains independence from interested or implicated authority and sufficient mandate, access, expertise, staffing, resources, reporting, evidence continuity and protected escalation for material review and challenge.",
+      "invariant": "A review function represented or relied upon as independent must retain practical independence from implicated authority and sufficient mandate, access, expertise, resources, reporting capacity, evidence continuity, and protected escalation ability to test and challenge the conduct it oversees.",
+      "exclusions": [
+        "The review function remains practically independent and adequately capable, even though it reaches an adverse or contested conclusion.",
+        "A governance signal merely fails to reach a capable review point without evidence that review independence or neutrality was impaired; assess Governance Signal Delivery.",
+        "A primary evidence artefact is inaccessible to an authorised reviewer without evidence of institutional capture or hollowing; assess the applicable Observability & Audit Integrity class.",
+        "An applicable control fails to activate, but the independence and practical capacity of the review function remain intact.",
+        "A monitor is evaded so consequential conduct can continue outside effective coverage; assess Monitoring Coverage Integrity.",
+        "The evidence establishes only inadequate performance, delay, disagreement, or resource scarcity without the required interested, implicated, captured, or hierarchical impairment mechanism."
+      ],
+      "examples": [
+        "A company publicly relies on an independent safety board while executives control its membership, evidence access, staffing and publication rights for reviews concerning those executives' own programme.",
+        "An oversight committee remains formally constituted but loses the mandate, technical access and protected reporting channel needed to challenge a material deployment decision."
+      ],
+      "relationships": [
+        {
+          "type": "can_cooccur_with",
+          "target_id": "VIGIL-FC-000073",
+          "note": "A hollowed oversight function may also suppress or retaliate against a specific good-faith concern, but neither mechanism is required for the other."
+        },
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000044",
+          "note": "Primary Evidence Accessibility concerns access to an authoritative artefact. Oversight Independence requires impairment of the review function's institutional independence or practical capacity by interested, implicated, captured, or hierarchical authority."
+        }
+      ],
+      "aliases": [
+        "nominal oversight hollowing",
+        "captured review function",
+        "independent oversight neutralisation",
+        "OVERSIGHT_INDEPENDENCE_HOLLOWING",
+        "Oversight Independence Hollowing"
+      ],
+      "external_references": [
+        {
+          "title": "Global Internal Audit Standards",
+          "publisher": "The Institute of Internal Auditors",
+          "date": "2024-01-09",
+          "url": "https://www.theiia.org/en/standards/2024-standards/global-internal-audit-standards/",
+          "reference_role": "standards-evidence",
+          "evidence_note": "Taxonomy/standards review 2026-10-02: reviewed-constituent-citation-pending-canonical-decomposition. Independent oversight positioning and impairment safeguards. Not every AI review function falls within internal audit; full access/resources/evidence continuity are not established by these two provisions. Historical annotation is preserved in vigil/docs/reviews/2026-10-01-taxonomy-standards-alignment/historical-reference-dispositions.json."
+        }
+      ],
+      "invariant_exemplars": [
+        {
+          "exemplar_type": "ambiguous-boundary",
+          "exemplar_status": "admitted",
+          "linked_incident_id": "VIGIL-INC-000109",
+          "title": "VIGIL-INC-000109 \u2014 Oversight Independence boundary case",
+          "evidence_basis": "The loss of evaluator access materially tests oversight independence and practical review capacity, but the evidence does not show institutional capture or that AISI's function was represented as effective while being hollowed.",
+          "invariant_demonstrated": "A review function represented or relied upon as independent must retain practical independence from implicated authority and sufficient mandate, access, expertise, resources, reporting capacity, evidence continuity, and protected escalation ability to test and challenge the conduct it oversees.",
+          "success_basis": "The occurrence materially tests this class boundary without establishing all conditions needed to treat it as a failure occurrence or as successful holding.",
+          "boundary_conditions": [
+            "Limited to the evidence and role adjudicated in the linked Incident.",
+            "Does not alter other Incident mappings or establish legal liability."
+          ],
+          "governance_placement": {
+            "framework": "The Institute of Internal Auditors",
+            "instrument_id": "Global Internal Audit Standards",
+            "section_or_control": "External reference retained by VIGIL-FC-000072",
+            "placement_note": "Non-normative analytical placement using a reference already retained by VIGIL-FC-000072; the referenced source does not define the VIGIL adjudication role."
+          },
+          "provenance_note": "Canonical occurrence facts and provenance remain governed by VIGIL-INC-000109; this entry records only the reciprocal taxonomy relationship."
+        }
+      ],
+      "failure_condition": "A failure in which a governance, audit, assurance, safety, ethics, or oversight function is represented as independent or effective while an interested, implicated, captured, or hierarchically dominant authority materially compromises the function's independence or practical review capacity through control of appointment, removal, mandate, access, expertise, staffing, resources, reporting, evidence preservation, escalation, or disposition.",
+      "failure_plain_english": "An oversight body still exists on paper, but its independence or practical ability to examine and challenge material conduct has been stripped away.",
+      "failure_recognition": {
+        "required_conditions": [
+          "A material governance, audit, assurance, safety, ethics, or oversight function is required or represented as capable of independent review.",
+          "An actor or institution with a material interest in, implication in, or hierarchical authority over the reviewed matter can influence the review function.",
+          "That influence materially impairs the function's independence, mandate, access, expertise, staffing, resources, reporting, evidence preservation, escalation, or disposition capacity.",
+          "The function remains represented, relied upon, or treated as effective despite the impairment.",
+          "The impairment prevents or materially degrades independent testing, challenge, review, or disposition of the governed matter."
+        ],
+        "applies_to": "failure-occurrence"
+      },
+      "success_condition": "Available occurrence evidence establishes the following bounded outcome: It retains practical mandate, access, expertise, resources, reporting, evidence continuity and protected escalation sufficient for the affected review.",
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "An independent oversight function reviews an interested or implicated actor.",
+          "It retains practical mandate, access, expertise, resources, reporting, evidence continuity and protected escalation sufficient for the affected review.",
+          "Actual review and challenge evidence substantiates independence and capability for that matter rather than nominal institutional designation."
+        ]
+      }
+    }
+  },
+  "changed_class_ids": [
+    "VIGIL-FC-000078",
+    "VIGIL-FC-000081",
+    "VIGIL-FC-000088"
+  ]
+}

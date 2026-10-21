@@ -63,6 +63,8 @@ def validate() -> tuple[list[str], list[str], dict]:
     req_by_id = {item.get("requirement_id"): item for item in req_entries}
 
     fidelity_entries = fidelity.get("entries", [])
+    from supporting_source_admission import fidelity_errors
+    errors.extend(fidelity_errors(req_entries, scope_entries, fidelity_entries))
     seen: set[tuple[str, str]] = set()
     fidelity_by_source: dict[tuple[str, str], dict] = {}
     policy = fidelity.get("policy", {})

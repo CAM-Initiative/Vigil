@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Claude Code-assisted DJI Romo project exposed cross-device home data",
     "created": "2026-10-16",
-    "updated": "2026-10-18",
-    "version": "0.1.3"
+    "updated": "2026-10-19",
+    "version": "0.1.4"
   },
   "incident_identity": {
     "historical_event_name": "Claude Code-assisted DJI Romo project exposed cross-device home data",
@@ -21,7 +21,7 @@
   "summary": "In February 2026, Sammy Azdoufal used Claude Code to help adapt his DJI Romo vacuum for gamepad control. His application received data from other owners' devices. Malwarebytes reports approximately 7,000 robots in 24 countries. The Verge witnessed another household's robot status and floor plan arriving remotely. Camera, microphone and movement access were also reported, but the journalist could not demonstrate those functions on the colleague's unit after DJI had restricted access. DJI acknowledged a backend permission-validation defect and said staged fixes closed it. The researcher's separate public project documents camera viewing and app-PIN bypass. No evidence establishes that every exposed device was watched or controlled.",
   "vigil_assessment": {
     "factual_basis": "The evidence combines an eyewitness journalistic demonstration, secondary technical reporting and the researcher's public project documentation. Access to another household's non-public device information was observed. Claimed camera access, own-device PIN bypass and observed third-party floor-plan retrieval are distinct propositions. The available sources identify Claude Code as a development aid but do not expose its complete prompts or execution trace. The researcher told The Verge that he extracted his own device token and received other devices' messages from the Message Queuing Telemetry Transport (MQTT) service. DJI acknowledged a backend permission-validation defect in that communication path. The researcher attributed the broad visibility to missing topic-level access controls. This supports a cross-device authorisation defect; the exact server-side rule configuration is not public. The reviewed sources do not document a fuzzing campaign or random input generation.\n\nDJI’s later public statement reports completed remediation and no identified evidence of misuse. Those are provider findings. It publishes no target-specific test results and does not resolve the separate PIN route.",
-    "governance_interpretation": "A valid device credential failed to remain confined to its owner's information. This is a platform access-separation issue encountered during AI-assisted software development. The evidence does not show that the coding assistant independently chose an unauthorised target, deliberately evaded a refusal or possessed authority to inspect other homes. Product-level exposure and model behaviour therefore remain separate questions. Authentication accepted the credential; authorisation did not confine the returned data to the permitted device. Transport encryption protects the connection but does not establish which devices an authenticated client may access. The separate app-PIN bypass concerns an additional access path and must not be treated as independent proof of third-party camera access.\n\nThe target-binding finding concerns the DJI service’s acceptance and use of the device credential. It is not a finding that Claude independently authorised third-party access. The app-PIN route and final restored permission checks remain unresolved, so the supported mapping is not a complete whole-Incident alignment judgement.",
+    "governance_interpretation": "A valid device credential failed to remain confined to its owner's information. This is a platform access-separation issue encountered during AI-assisted software development. The evidence does not show that the coding assistant independently chose an unauthorised target, deliberately evaded a refusal or possessed authority to inspect other homes. Product-level exposure and model behaviour therefore remain separate questions. Authentication accepted the credential; authorisation did not confine the returned data to the permitted device. Transport encryption protects the connection but does not establish which devices an authenticated client may access. The separate app-PIN bypass concerns an additional access path and must not be treated as independent proof of third-party camera access.\n\nThe target-binding finding concerns the DJI service’s acceptance and use of the device credential. It is not a finding that Claude independently authorised third-party access. The capability-authority finding remains Boundary about the service’s permission basis, not the assistant’s hidden intent. The app-PIN route and final restored permission checks remain unresolved, so the admitted mappings are not a complete whole-Incident alignment judgement.",
     "significance_to_cam": "AI-assisted development can connect a benign local task to a wider live control surface. Receiving cross-account data is a material consequence even where malicious use or physical damage is not established. The discovery and later remediation must remain distinct from the claim that a model autonomously caused the access. A development or evaluation task needs an explicit boundary for permitted targets, data and actions. A reachable service or accepted credential does not establish permission for every resource it exposes. Comparisons with agent evaluations concern this scope boundary; they do not establish that the same exploit or testing method occurred.",
     "assessment_boundaries": [
       "No complete Claude Code conversation, tool trace or underlying model build is available.",
@@ -44,8 +44,15 @@
           ],
           "source_paraphrase": "Sammy Azdoufal reported using Claude Code to reverse engineer communications for his own DJI Romo and build a gamepad controller. He told The Verge that he extracted his own device token. Malwarebytes also describes that development sequence. The complete assistant conversation and execution trace are not published.",
           "recovered_invariant_interpretation": "A request to work on one owned device does not establish authority over other devices. Naming a coding assistant identifies a development aid, not the actor responsible for every later request or authorisation decision.",
-          "adjudication_status": "resolved-no-mapping",
-          "taxonomy_relationships": []
+          "adjudication_status": "mapped",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000002",
+              "canonical_taxonomy_mapping": true,
+              "relationship": "ambiguous-boundary",
+              "rationale": "The device service accepted the researcher’s own token and returned other owners’ protected data, directly engaging a credential-based permission decision. The backend’s effective access decision is evidenced. The remaining question is its permission basis: capability/credential possession used as authority, versus target binding of a distinct permission. The assistant’s private reasoning is not required to assess the service decision."
+            }
+          ]
         },
         {
           "episode_id": "E002",
@@ -67,7 +74,7 @@
               "class_id": "VIGIL-FC-000002",
               "relationship": "ambiguous-boundary",
               "canonical_taxonomy_mapping": true,
-              "rationale": "The custom client could obtain non-public information beyond the researcher’s own vacuum. That demonstrates technical capability and an access-control defect. The available sources do not show the coding assistant’s prompts, decisions or tool trace, or a governance process treating that technical capability as permission. The capability-versus-authority boundary is therefore relevant, but neither the class’s permission-inference failure nor its independently checked authority outcome is established."
+              "rationale": "The device service accepted the researcher’s own token and returned other owners’ protected data, directly engaging a credential-based permission decision. The backend’s effective access decision is evidenced. The remaining question is its permission basis: capability/credential possession used as authority, versus target binding of a distinct permission. The assistant’s private reasoning is not required to assess the service decision."
             }
           ],
           "source_anchor": "a backend permission validation issue",
@@ -114,6 +121,12 @@
               "relationship": "unresolved candidate — successful-invariant after remediation",
               "canonical_taxonomy_mapping": false,
               "rationale": "The reported fix and later loss of scanner access are evidence of intervention. They do not show that authorised own-device access and refused third-party access were both correctly enforced across the remaining routes. That missing target-specific validation prevents a separate invariant-held finding for the repaired state."
+            },
+            {
+              "class_id": "VIGIL-FC-000002",
+              "canonical_taxonomy_mapping": true,
+              "relationship": "ambiguous-boundary",
+              "rationale": "The device service accepted the researcher’s own token and returned other owners’ protected data, directly engaging a credential-based permission decision. The backend’s effective access decision is evidenced. The remaining question is its permission basis: capability/credential possession used as authority, versus target binding of a distinct permission. The assistant’s private reasoning is not required to assess the service decision."
             }
           ]
         }
@@ -291,7 +304,7 @@
     "adjudication_coverage": {
       "status": "partial"
     },
-    "classification_basis": "The cross-device response supports a target-binding failure in the DJI backend. The capability-versus-authority relationship remains a Boundary finding because no assistant or governance permission-inference trace is published. The separate PIN route and final restored authorisation state retain unresolved candidate assessments.",
+    "classification_basis": "The DJI backend accepted a credential associated with the researcher’s own device and returned other households’ device information. Authority over the original vacuum did not cover those different owners or devices. The observed cross-device response and DJI’s acknowledged permission-validation defect support a failure to bind accepted access to its proper target. This finding concerns the service’s authorisation behaviour; it does not establish that Claude chose another household as a target or decided that access was permitted. The device service accepted the researcher’s own token and returned other owners’ protected data, directly engaging a credential-based permission decision. The backend’s effective access decision is evidenced. The remaining question is its permission basis: capability/credential possession used as authority, versus target binding of a distinct permission. The assistant’s private reasoning is not required to assess the service decision.",
     "primary_classification": {
       "family_id": "VIGIL-FF-0001",
       "class_id": "VIGIL-FC-000003",
@@ -304,15 +317,40 @@
         "family_id": "VIGIL-FF-0001",
         "class_id": "VIGIL-FC-000002",
         "classification_role": "ambiguous-boundary",
-        "classification_basis": "The custom client could obtain non-public information beyond the researcher’s own vacuum. That demonstrates technical capability and an access-control defect. The available sources do not show the coding assistant’s prompts, decisions or tool trace, or a governance process treating that technical capability as permission. The capability-versus-authority boundary is therefore relevant, but neither the class’s permission-inference failure nor its independently checked authority outcome is established.",
-        "classification_confidence": "medium"
+        "classification_basis": "The device service accepted the researcher’s own token and returned other owners’ protected data, directly engaging a credential-based permission decision. The backend’s effective access decision is evidenced. The remaining question is its permission basis: capability/credential possession used as authority, versus target binding of a distinct permission. The assistant’s private reasoning is not required to assess the service decision.",
+        "boundary_adjudication": {
+          "taxonomy_version": "0.7.0",
+          "material_engagement": "The device service accepted the researcher’s own token and returned other owners’ protected data, directly engaging a credential-based permission decision.",
+          "unresolved_conditions": [
+            {
+              "polarity": "failure-occurrence",
+              "condition": "The system uses that availability, reachability, access, or possession as a material basis for permission.",
+              "assessment": "The observed backend response and acknowledged permission defect do not settle whether token possession alone supplied permission or an independently asserted permission was misbound to targets.",
+              "source_record_refs": [
+                "source_records[0]",
+                "source_records[1]",
+                "source_records[3]"
+              ],
+              "episode_refs": [
+                "E001",
+                "E002",
+                "E004"
+              ]
+            }
+          ],
+          "diagnostic_reasons": [
+            "insufficient-evidence"
+          ],
+          "decisive_blocker": "The backend’s effective access decision is evidenced. The remaining question is its permission basis: capability/credential possession used as authority, versus target binding of a distinct permission. The assistant’s private reasoning is not required to assess the service decision.",
+          "resolution_requirements": "Obtain the operative token claims, subscription/ACL rules and matched response trace. Identify whether possession/reachability was the permission premise or the defect was solely scope binding. Do not require model intent or hidden code when service decision evidence suffices."
+        }
       }
     ],
     "classification_review_provenance": {
-      "review_date": "2026-10-18",
-      "reviewer": "OpenAI ChatGPT Work / Codex",
-      "review_status": "AI source-first evidence, taxonomy, twelve-dimensional HIM and independent external-requirement review; no independent human verification",
-      "review_reference": "vigil/docs/reviews/2026-10-18-inc-199-203-completion/VIGIL-INC-000199.json"
+      "review_date": "2026-10-19",
+      "reviewer": "OpenAI Codex — AI analytical reviewer",
+      "review_status": "Applied source/criterion-linked admission decisions; retained unresolved evidence and taxonomy-scope questions. Historical Boundary confidence preserved in the linked review.",
+      "review_reference": "vigil/docs/reviews/2026-10-19-boundary-diagnostic/corpus-repair/INC-000199-DECISION.json"
     }
   },
   "related_incidents": [
@@ -426,15 +464,36 @@
           "AI-assisted reverse engineering is reported. Formal fuzz testing, random input generation and autonomous model escalation are not established."
         ],
         "review_outcome": "Completed the bounded review. Evidentiary limits remain explicit; structural checks do not certify substantive completeness. External candidate decisions and no-retained outcomes are preserved in the dated review."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-19-CORPUS-BOUNDARY-000199",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "Exact runtime model identity not exposed",
+        "review_date": "2026-10-19",
+        "review_scope": "Taxonomy Boundary adjudication and role-field provenance repair.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "source_provenance_review": true,
+          "harm_impact_review": true,
+          "taxonomy_review": true,
+          "new_external_source_research": true
+        },
+        "known_limitations": [
+          "Prior outcomes were visible; no blinded independent second rater or inter-rater reliability is claimed.",
+          "Sources, HIM and independent external assessments were preserved; complete missing-source and criteria questions remain in the dated packet."
+        ],
+        "review_outcome": "Applied source/criterion-linked admission decisions; retained unresolved evidence and taxonomy-scope questions. Historical Boundary confidence preserved in the linked review."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-18-END-TO-END-000199",
+      "review_id": "VIGIL-REVIEW-2026-10-19-CORPUS-BOUNDARY-000199",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT Work / Codex",
-      "reviewer_model": "Exact runtime model identifier not exposed in this session",
-      "review_date": "2026-10-18",
-      "review_scope": "Source-first material-episode coverage, current taxonomy recognition and exclusions, all twelve HIM dimensions, independent external requirements and integrated conclusion.",
+      "reviewer_platform": "OpenAI Codex",
+      "reviewer_model": "Exact runtime model identity not exposed",
+      "review_date": "2026-10-19",
+      "review_scope": "Taxonomy Boundary adjudication and role-field provenance repair.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
@@ -444,16 +503,10 @@
         "new_external_source_research": true
       },
       "known_limitations": [
-        "No complete Claude Code conversation, tool trace or underlying model build is available.",
-        "Approximately 7,000 devices is not a count of people whose camera feeds were viewed.",
-        "The observed third-party floor-plan read is not equivalent to a verified third-party camera or microphone session.",
-        "DJI distinguished transport encryption from permission validation; plaintext visibility to an authenticated client does not establish unencrypted transport.",
-        "Researcher discovery, disclosure and vendor remediation dates are not independently reconstructed to exact days.",
-        "No confirmed physical injury, malicious stalking, credential theft or broad downstream misuse is established.",
-        "The backend target-binding finding is provisional. The separate app-PIN route and target-specific validation of the repaired service remain unresolved; no whole-Incident alignment conclusion is assigned.",
-        "AI-assisted reverse engineering is reported. Formal fuzz testing, random input generation and autonomous model escalation are not established."
+        "Prior outcomes were visible; no blinded independent second rater or inter-rater reliability is claimed.",
+        "Sources, HIM and independent external assessments were preserved; complete missing-source and criteria questions remain in the dated packet."
       ],
-      "review_outcome": "Completed the bounded review. Evidentiary limits remain explicit; structural checks do not certify substantive completeness. External candidate decisions and no-retained outcomes are preserved in the dated review."
+      "review_outcome": "Applied source/criterion-linked admission decisions; retained unresolved evidence and taxonomy-scope questions. Historical Boundary confidence preserved in the linked review."
     },
     "operating_model": "AI-authored, semi-autonomous production under human task instruction",
     "human_governance_editor": null,
