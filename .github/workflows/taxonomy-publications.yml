@@ -71,6 +71,41 @@ jobs:
         with:
           python-version: "3.x"
 
+      # Compare publication metadata to the PR base, not to mutable class content.
+      # Unmerged work can change criteria but cannot declare or increment a release.
+      - name: Reject taxonomy release bumps before merge
+        if: github.event_name == 'pull_request'
+        env:
+          VIGIL_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          git fetch --no-tags --depth=1 origin "$VIGIL_BASE_SHA"
+          python - <<'PY'
+          import json
+          import os
+          import subprocess
+          from pathlib import Path
+
+          base_sha = os.environ["VIGIL_BASE_SHA"]
+          base_path = "vigil/taxonomy/VIGIL.FailureTaxonomy.Index.json"
+          base_index = json.loads(
+              subprocess.check_output(["git", "show", f"{base_sha}:{base_path}"], text=True)
+          )
+          root = Path("vigil/taxonomy")
+          staged = json.loads((root / "VIGIL.FailureTaxonomy.Index.json").read_text(encoding="utf-8"))
+          fields = ("version", "publication_date")
+          for field in fields:
+              if staged["standard"].get(field) != base_index["standard"].get(field):
+                  raise SystemExit(f"Working PR changed published taxonomy {field}; release only on main.")
+          if staged.get("release_history") != base_index.get("release_history"):
+              raise SystemExit("Working PR changed the published taxonomy release history; release only on main.")
+          for path in sorted((root / "families").glob("*.json")):
+              standard = json.loads(path.read_text(encoding="utf-8")).get("standard", {})
+              for field in fields:
+                  if standard.get(field) != base_index["standard"].get(field):
+                      raise SystemExit(f"{path}: changed published taxonomy {field} before merge.")
+          print(f"PASS: working taxonomy keeps published {base_index['standard']['version']} stamps and ledger.")
+          PY
+
       # Working branches retain the last published taxonomy version while edits are
       # in review. Once those edits land on main, prepare exactly one dataset/book
       # release for the whole merged tranche before enforcing published alignment.
