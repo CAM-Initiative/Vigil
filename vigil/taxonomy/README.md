@@ -29,6 +29,8 @@ families/
   VIGIL-FF-0013-economic-influence-integrity.json
   VIGIL-FF-0014-governance-independence-neutrality-integrity.json
   VIGIL-FF-0015-identity-evaluative-integrity.json
+  VIGIL-FF-0016-human-dignity-standing-integrity.json
+  VIGIL-FF-0017-operational-service-resilience-integrity.json
 generated/
   VIGIL.FailureTaxonomy.CaseFileExamples.json
   VIGIL.Observatory.AlignmentTaxonomy.FullReference.pdf
@@ -155,6 +157,16 @@ Dataset releases follow these rules:
 - historical classification stamps remain unchanged unless the mappings are substantively re-adjudicated.
 
 The index `release_history` records the canonical family/class content digest, family-ID set, class count, change level, dataset version, and publication date. Taxonomy validation rejects changed canonical family/class content unless the release history, dataset version, and publication date have been advanced consistently. It also rejects a patch increment for a newly admitted family and a minor increment for an ordinary existing-record change.
+
+### One candidate version per unmerged working branch
+
+The latest published `main` version is the baseline. A working tranche selects **one** intended version at the highest required change level: patch (e.g. `0.7.11 → 0.7.12`), minor on family addition (e.g. `0.7.11 → 0.8.0`) or an explicitly approved major. A family admission includes subsequent patch-level changes: `0.8.0 → 0.8.1` within the same PR is **not** another allowed bump. If the scope rises from patch to minor before merge, replace the one candidate with the correctly calculated higher-level target relative to published main; do not append an intermediate release. Further edits hold that candidate fixed.
+
+The optional index `working_release` object identifies the **unpublished** target with `base_version`, `version`, `change_level` and `state: unpublished`. The index `standard.version`, `publication_date`, `release_history` and family `standard` metadata retain the last published version until publication. Thus PR #140 has published main `0.7.0` and one working target `0.8.0`. It does **not** publish `0.8.0` or `0.8.1` during review. PR validation rejects a candidate beyond the one required increment and a branch release-history entry not in `main`.
+
+An Incident substantively adjudicated against staged criteria may carry the intended next version as a provisional `taxonomy_classification.taxonomy_version`, but the decision packet must identify the exact working revision and distinguish it from the published dataset. Preserve earlier review history and genuine historical version stamps.
+
+When the branch is authorised and merged, the `main` publication workflow checks the candidate against the published baseline, uses **that same version once**, sets a real publication date and final content digest, removes `working_release`, stamps all families and publishes the PDF. Running the preparer again without additional post-publication content changes must not bump the version.
 
 ## Relationships
 

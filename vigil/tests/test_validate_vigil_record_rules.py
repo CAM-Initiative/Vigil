@@ -23,6 +23,18 @@ class IncidentRuleTests(unittest.TestCase):
             (VIGIL / "tests" / "fixtures" / "VIGIL-INC-000001-HIM-1.0.1.json").read_text(encoding="utf-8")
         )
 
+        # Keep the historical HIM payload and fixture file unchanged. These rule
+        # tests need structurally valid taxonomy context, not a new adjudication
+        # of the historical Incident. The substituted explanation is synthetic.
+        boundary = json.loads(
+            (VIGIL / "tests" / "fixtures" / "boundary-adjudication-synthetic.json").read_text(encoding="utf-8")
+        )
+        taxonomy = cls.record["taxonomy_classification"]
+        for mapping in [taxonomy["primary_classification"], *taxonomy["secondary_classifications"]]:
+            if mapping["classification_role"] == "ambiguous-boundary":
+                mapping.pop("classification_confidence", None)
+                mapping["boundary_adjudication"] = copy.deepcopy(boundary)
+
     def errors(self, mutate=lambda record: None):
         record = copy.deepcopy(self.record)
         mutate(record)

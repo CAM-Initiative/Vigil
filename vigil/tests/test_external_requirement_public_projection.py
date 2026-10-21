@@ -26,6 +26,17 @@ class ExternalRequirementProjectionTests(unittest.TestCase):
         self.assertEqual(entry["external_requirement_assessment_count"], 0)
         self.assertNotIn("external_requirement_assessments", entry)
 
+    def test_registered_source_and_taxonomy_context_do_not_create_assessments(self):
+        record = self.record()
+        record["standards_and_regulatory_references"] = [{
+            "title": "Registered supporting source without extraction",
+            "vigil_source_id": "EXT-000000000001",
+        }]
+        record["taxonomy_classification"]["primary_class_id"] = "VIGIL-FC-000002"
+        entry = BUILDER.incident_entry(Path("vigil/records/incidents/VIGIL-INC-000001.json"), record)
+        self.assertEqual(entry["external_requirement_assessment_count"], 0)
+        self.assertNotIn("external_requirement_assessments", entry)
+
     def test_requirement_is_searchable_without_duplicating_assessment(self):
         assessment = {
             "requirement_id": "EXTREQ-0123456789ABCDEF",

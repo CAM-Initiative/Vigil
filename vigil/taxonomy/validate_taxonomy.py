@@ -238,6 +238,51 @@ def validate_release_history(
         if status in {"beta", "active"} and has_draft_suffix:
             errors.append(f"{INDEX_PATH}: {status} taxonomy releases must not use the -draft version suffix")
 
+    # Branch candidates are distinct from dated, published release_history entries.
+    # All refinements in an unmerged tranche keep the same intended next version.
+    working_release = index.get("working_release")
+    if working_release is not None:
+        if not isinstance(working_release, dict):
+            errors.append(f"{INDEX_PATH}: working_release must be an object")
+        else:
+            if set(working_release) != {"base_version", "version", "change_level", "state"}:
+                errors.append(f"{INDEX_PATH}: working_release has missing or unsupported keys")
+            if working_release.get("state") != "unpublished":
+                errors.append(f"{INDEX_PATH}: working_release.state must be 'unpublished'")
+            if working_release.get("base_version") != current.get("version"):
+                errors.append(f"{INDEX_PATH}: working_release.base_version must match the last published release")
+            published_parsed = parse_version(current.get("version"))
+            baseline_families = set(current.get("family_ids", []))
+            catalogue_digest = catalogue_content_digest(loaded)
+            changed_content = (
+                catalogue_digest != current.get("content_digest")
+                or baseline_families != family_ids
+            )
+            if not changed_content:
+                errors.append(f"{INDEX_PATH}: working_release cannot claim a new release without unpublished taxonomy changes")
+            if published_parsed is not None:
+                major, minor, patch, draft = published_parsed
+                if not baseline_families.issubset(family_ids):
+                    expected_level = "major"
+                    expected_parts = (major + 1, 0, 0)
+                elif baseline_families != family_ids:
+                    expected_level = "minor"
+                    expected_parts = (major, minor + 1, 0)
+                else:
+                    expected_level = "patch"
+                    expected_parts = (major, minor, patch + 1)
+                suffix = "" if (draft and status in {"beta", "active"}) else "-draft" if draft else ""
+                expected_working_version = ".".join(map(str, expected_parts)) + suffix
+                if working_release.get("version") != expected_working_version:
+                    errors.append(
+                        f"{INDEX_PATH}: working_release.version must equal the single next version "
+                        f"{expected_working_version}, not an additional increment"
+                    )
+                if working_release.get("change_level") != expected_level:
+                    errors.append(f"{INDEX_PATH}: working_release.change_level must be {expected_level!r}")
+        if enforce_current_release:
+            errors.append(f"{INDEX_PATH}: published releases must finalise and remove working_release")
+
     if enforce_current_release:
         digest = catalogue_content_digest(loaded)
         if current.get("content_digest") != digest:

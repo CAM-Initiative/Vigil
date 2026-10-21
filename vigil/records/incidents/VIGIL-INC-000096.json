@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "DeepSeek exposed an unauthenticated database containing chat histories and secrets",
     "created": "2026-09-08",
-    "updated": "2026-10-10",
-    "version": "0.1.18"
+    "updated": "2026-10-19",
+    "version": "0.1.19"
   },
   "incident_identity": {
     "historical_event_name": "DeepSeek exposed ClickHouse database",
@@ -37,7 +37,14 @@
           ],
           "source_paraphrase": "During external security reconnaissance, Wiz found publicly reachable DeepSeek ClickHouse endpoints without authentication.",
           "recovered_invariant_interpretation": "Security discovery establishes an exposed route; it does not establish prior malicious use.",
-          "taxonomy_relationships": [],
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000002",
+              "canonical_taxonomy_mapping": false,
+              "relationship": "rejected candidate",
+              "rationale": "The occurrence establishes an unauthenticated database exposure and researcher enumeration, not a capability-to-authority conversion by an AI or governance process. The explicit vulnerability-without-authority-conversion exclusion applies. Data exposure at an AI provider is not itself evidence of this class mechanism."
+            }
+          ],
           "adjudication_status": "resolved-no-mapping"
         },
         {
@@ -50,12 +57,12 @@
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000002",
-              "relationship": "ambiguous-boundary",
-              "canonical_taxonomy_mapping": true,
-              "rationale": "The unauthenticated ClickHouse endpoints made powerful capability directly reachable, but the occurrence does not show an AI or governance process treating that reachability as permission; it therefore marks the capability-versus-authority boundary."
+              "relationship": "rejected candidate",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "The occurrence establishes an unauthenticated database exposure and researcher enumeration, not a capability-to-authority conversion by an AI or governance process. The explicit vulnerability-without-authority-conversion exclusion applies. Data exposure at an AI provider is not itself evidence of this class mechanism."
             }
           ],
-          "adjudication_status": "mapped"
+          "adjudication_status": "resolved-no-mapping"
         },
         {
           "episode_id": "E003",
@@ -65,7 +72,14 @@
           ],
           "source_paraphrase": "Wiz notified DeepSeek, which promptly secured the exposure. Public evidence does not establish whether others had accessed the data before discovery.",
           "recovered_invariant_interpretation": "Closure of an exposed access state is distinct from recovery of any previously accessed information.",
-          "taxonomy_relationships": [],
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000002",
+              "canonical_taxonomy_mapping": false,
+              "relationship": "rejected candidate",
+              "rationale": "The occurrence establishes an unauthenticated database exposure and researcher enumeration, not a capability-to-authority conversion by an AI or governance process. The explicit vulnerability-without-authority-conversion exclusion applies. Data exposure at an AI provider is not itself evidence of this class mechanism."
+            }
+          ],
           "adjudication_status": "resolved-no-mapping"
         }
       ],
@@ -227,22 +241,16 @@
   },
   "taxonomy_classification": {
     "taxonomy_version": "0.6.11",
-    "classification_status": "classified",
-    "classification_basis": "The unauthenticated ClickHouse endpoints made powerful capability directly reachable, but the occurrence does not show an AI or governance process treating that reachability as permission; it therefore marks the capability-versus-authority boundary.",
-    "primary_classification": {
-      "family_id": "VIGIL-FF-0001",
-      "class_id": "VIGIL-FC-000002",
-      "classification_role": "ambiguous-boundary",
-      "classification_basis": "The unauthenticated ClickHouse endpoints made powerful capability directly reachable, but the occurrence does not show an AI or governance process treating that reachability as permission; it therefore marks the capability-versus-authority boundary.",
-      "classification_confidence": "medium"
-    },
+    "classification_status": "unclassified",
+    "classification_basis": "The occurrence evidence and material consequences are preserved. No selectable class is admitted on the available recognition and exclusion evidence.",
+    "primary_classification": null,
     "secondary_classifications": [],
     "classification_review_provenance": {
-      "review_date": "2026-10-10",
-      "reviewer": "OpenAI ChatGPT Work — GPT-6",
-      "review_status": "Evidence-first HIM and relational/protection fidelity review; prior roles accounted for."
+      "review_date": "2026-10-19",
+      "reviewer": "OpenAI Codex — AI analytical reviewer",
+      "review_status": "Applied source/criterion-linked admission decisions; retained unresolved evidence and taxonomy-scope questions. Historical Boundary confidence preserved in the linked review.",
+      "review_reference": "vigil/docs/reviews/2026-10-19-boundary-diagnostic/corpus-repair/INC-000096-DECISION.json"
     },
-    "classification_role": "ambiguous-boundary",
     "adjudication_coverage": {
       "status": "complete"
     }
@@ -571,15 +579,36 @@
           "Later policy versions and unrelated plaintiffs/campaigns do not establish the original occurrence."
         ],
         "review_outcome": "All twelve dimensions source-reviewed. The originating researchers directly accessed an unauthenticated database containing chat text, secrets and backend metadata. Retained S4 rests on real extensive sensitive exposure, not hypothetical privilege escalation or a million distinct victims. Securing the database does not erase exposure, while unverified third-party access or intrusive file extraction is not asserted. Relational-role and heightened-protection tests independently completed."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-19-CORPUS-BOUNDARY-000096",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "Exact runtime model identity not exposed",
+        "review_date": "2026-10-19",
+        "review_scope": "Taxonomy Boundary adjudication and role-field provenance repair.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_research": true,
+          "harm_impact_review": true,
+          "taxonomy_review": true,
+          "external_requirement_review": true
+        },
+        "known_limitations": [
+          "Prior outcomes were visible; no blinded independent second rater or inter-rater reliability is claimed.",
+          "Sources, HIM and independent external assessments were preserved; complete missing-source and criteria questions remain in the dated packet."
+        ],
+        "review_outcome": "Applied source/criterion-linked admission decisions; retained unresolved evidence and taxonomy-scope questions. Historical Boundary confidence preserved in the linked review."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-10-COMBINED-TRANCHE-12-000096",
+      "review_id": "VIGIL-REVIEW-2026-10-19-CORPUS-BOUNDARY-000096",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT Work",
-      "reviewer_model": "GPT-6",
-      "review_date": "2026-10-10",
-      "review_scope": "Source-first all-dimension HIM 1.1.0 and independent FC-086/087 reconciliation.",
+      "reviewer_platform": "OpenAI Codex",
+      "reviewer_model": "Exact runtime model identity not exposed",
+      "review_date": "2026-10-19",
+      "review_scope": "Taxonomy Boundary adjudication and role-field provenance repair.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
@@ -589,10 +618,10 @@
         "external_requirement_review": true
       },
       "known_limitations": [
-        "Actual data objects, permission history and later consequences remain source-bounded; no inferred harmful reuse or irreversible loss.",
-        "Later policy versions and unrelated plaintiffs/campaigns do not establish the original occurrence."
+        "Prior outcomes were visible; no blinded independent second rater or inter-rater reliability is claimed.",
+        "Sources, HIM and independent external assessments were preserved; complete missing-source and criteria questions remain in the dated packet."
       ],
-      "review_outcome": "All twelve dimensions source-reviewed. The originating researchers directly accessed an unauthenticated database containing chat text, secrets and backend metadata. Retained S4 rests on real extensive sensitive exposure, not hypothetical privilege escalation or a million distinct victims. Securing the database does not erase exposure, while unverified third-party access or intrusive file extraction is not asserted. Relational-role and heightened-protection tests independently completed."
+      "review_outcome": "Applied source/criterion-linked admission decisions; retained unresolved evidence and taxonomy-scope questions. Historical Boundary confidence preserved in the linked review."
     }
   },
   "harm_impact_assessment": {

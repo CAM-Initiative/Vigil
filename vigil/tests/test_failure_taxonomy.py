@@ -38,6 +38,7 @@ EXPECTED_CLASS_SUFFIXES_BY_FAMILY = {
     "VIGIL-FF-0014": "000072 000073 000076".split(),
     "VIGIL-FF-0015": "000074 000075 000077".split(),
     "VIGIL-FF-0016": "000088".split(),
+    "VIGIL-FF-0017": "000084".split(),
 }
 
 
@@ -219,6 +220,27 @@ class AlignmentTaxonomyValidationTests(unittest.TestCase):
         pathway_boundaries = " ".join(pathway["exclusions"]).lower()
         self.assertIn("lacks valid authority", pathway_boundaries)
         self.assertIn("self-authorise", pathway_boundaries)
+
+    def test_fc045_evidence_pathway_operation_is_distinct_from_pathway_existence(self):
+        documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
+        observability = next(item for item in documents if item["family"]["family_id"] == "VIGIL-FF-0004")
+        cls = next(item for item in observability["classes"] if item["class_id"] == "VIGIL-FC-000045")
+        self.assertIn("improperly operated", cls["failure_condition"])
+        self.assertIn("unjustifiably prevents, delays or limits", " ".join(cls["failure_recognition"]["required_conditions"]))
+        self.assertIn("independently valid basis", " ".join(cls["failure_recognition"]["required_conditions"]))
+        self.assertIn("later remedy", " ".join(cls["failure_recognition"]["required_conditions"]))
+        self.assertIn("lawfully or otherwise validly denied", " ".join(cls["exclusions"]))
+        self.assertIn("effectively operated", cls["success_condition"])
+
+    def test_fc045_real_incident_exemplars_do_not_claim_production_from_remedy(self):
+        documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
+        observability = next(item for item in documents if item["family"]["family_id"] == "VIGIL-FF-0004")
+        cls = next(item for item in observability["classes"] if item["class_id"] == "VIGIL-FC-000045")
+        exemplars = {e["linked_incident_id"]: e for e in cls["invariant_exemplars"]}
+        # The INC-008 Boundary exemplar was withdrawn after the original withholding was adjudicated as a Failure; a later appellate remedy is not proof of completed production.
+        self.assertNotIn("VIGIL-INC-000008", exemplars)
+        self.assertIn("do not show whether the original restriction complied", exemplars["VIGIL-INC-000109"]["success_basis"])
+        self.assertEqual({e["exemplar_type"] for e in exemplars.values()}, {"ambiguous-boundary"})
 
     def test_secondary_purpose_class_has_portable_class_invariant(self):
         documents = [json.loads(path.read_text(encoding="utf-8")) for path in self.paths()]
@@ -692,6 +714,31 @@ class AlignmentTaxonomyValidationTests(unittest.TestCase):
         self.assertEqual(exemplars["VIGIL-INC-000136"]["exemplar_type"], "successful-invariant")
         self.assertNotIn("VIGIL-INC-000129", exemplars)
         self.assertIn("BREACH ALERT", exemplars["VIGIL-INC-000136"]["title"])
+
+
+    def test_fc084_successful_recovery_not_excluded_as_a_failure(self):
+        """Effective governed recovery can be a success, not an exclusion of all roles."""
+        family_path = next(path for path in self.paths() if "VIGIL-FF-0017" in path.name)
+        family = json.loads(family_path.read_text(encoding="utf-8"))
+        fidelity_class = next(
+            item for item in family["classes"]
+            if item["class_id"] == "VIGIL-FC-000084"
+        )
+        self.assertEqual(fidelity_class["success_recognition"]["applies_to"], "successful-invariant")
+        self.assertEqual(fidelity_class["failure_recognition"]["applies_to"], "failure-occurrence")
+        self.assertEqual(len(fidelity_class["success_recognition"]["required_conditions"]), 3)
+        self.assertEqual(len(fidelity_class["failure_recognition"]["required_conditions"]), 5)
+        self.assertEqual(len(fidelity_class["exclusions"]), 9)
+        for index in (2, 3):
+            with self.subTest(exclusion=index + 1):
+                exclusion = fidelity_class["exclusions"][index]
+                self.assertTrue(exclusion.startswith("For failure-occurrence admission:"))
+                self.assertIn(
+                    "This exclusion does not defeat a successful-invariant mapping "
+                    "supported by all success recognition conditions.",
+                    exclusion,
+                )
+        self.assertEqual(self.errors(), [])
 
 
 if __name__ == "__main__":

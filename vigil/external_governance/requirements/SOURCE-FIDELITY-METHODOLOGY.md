@@ -73,7 +73,7 @@ Source extraction completeness and source-fidelity assurance are separate concep
 - `provisional`: the extraction is useful and source-traceable but one or more records require constituent enrichment or further atomicity review.
 - `requires-reextraction`: material compression has been demonstrated and the source must not be treated as a high-fidelity clause baseline until repaired.
 - `blocked`: fidelity cannot be assessed because primary-text access is unavailable.
-- `not-applicable`: the source is supporting/context-only or otherwise outside first-class requirement extraction.
+- `not-applicable`: the source has no canonical requirement extraction (including a supporting-only or context-only source). An extracted supporting authority requires substantive fidelity review on the same dimensions as an extracted primary source.
 
 A source with historical `extraction_status: complete` is **not effectively complete for clause-level use unless its source-fidelity state is `assured`**.
 
@@ -126,3 +126,15 @@ For first-class requirement sources, effective completion now requires:
 7. no known `requires-decomposition` record remaining within the represented scope.
 
 This does not require atomising every sentence, note, example or informative annex. It requires preserving every materially independent governance proposition within the scope claimed as complete.
+
+## Supporting-authority admission
+
+The maintainer approved this bounded extension on 18 October 2026 under the revised 11 October Gate 1 proposal. `supporting-external-authority` may use `in-progress`, `partial` or `complete` for an explicitly declared extraction scope. `supporting-only` remains a legitimate zero-requirement state. Registration does not promote a source. Context/discovery and excluded sources remain ineligible.
+
+Review the actual provision separately from its relationship to an existing Fidelity Class before canonical promotion. Preserve source-native modality, governed actor and object, timing, conditions, exceptions and voluntary or binding force. Commentary and implementation examples remain reference-only. Official extracts support only visible provisions; metadata cannot substitute for inaccessible clauses.
+
+The requirement manager resolves the existing metadata ledger, fidelity ledger and relationship review artefacts for each extracted supporting requirement. Every metadata dimension needs a compatible reviewed disposition. Fidelity must be provisional or assured and enumerate the admitted requirement; a complete bounded scope requires assured fidelity. A supported direct or strong-supporting relationship must resolve to an existing class and a dated source-specific JSON review artefact. The artefact uses the established `source_identity`, `review_basis`, `reviewed_on` and `entries` structure. Its matching entry retains the complete relationship decision. Contextual or unresolved decisions remain review material.
+
+For these new admissions, `requirement_sha256` hashes the full canonical requirement. `class_semantic_sha256` hashes class_id, definition, invariant, failure_condition, failure_recognition, success_condition, success_recognition and exclusions. Both use UTF-8 JSON with sorted keys, non-ASCII characters preserved and compact separators. This additive convention does not rewrite historical primary-source relationship digests. A changed proposition or class contract requires a new retained review decision.
+
+Structural resolution confirms traceability, not substantive truth. A reviewer must still establish the normative proposition and material actor/object/condition correspondence. A nonempty rationale cannot prove either. Source fidelity, relationship admission, clause candidates and occurrence results remain separate decisions. No relationship determines legal applicability, liability or Aligned / Not aligned / Boundary.

@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "At least 100 Baidu Apollo Go robotaxis stopped in live Wuhan traffic during a system failure",
     "created": "2026-09-08",
-    "updated": "2026-10-10",
-    "version": "0.1.19"
+    "updated": "2026-10-19",
+    "version": "0.1.20"
   },
   "incident_identity": {
     "historical_event_name": "31 March 2026 Apollo Go Wuhan fleet outage",
@@ -48,6 +48,12 @@
               "relationship": "candidate boundary",
               "canonical_taxonomy_mapping": false,
               "rationale": "The public evidence does not establish whether a governance control had created operative state that needed to persist across a vehicle-system transition or whether such state was lost, weakened, reset or transformed before the stoppage."
+            },
+            {
+              "class_id": "VIGIL-FC-000070",
+              "canonical_taxonomy_mapping": true,
+              "relationship": "ambiguous-boundary",
+              "rationale": "An autonomous driving objective ended in fleet-wide immobility in live traffic, followed by assisted passenger exits; this is a material non-completion transition, not proof of a safe one. Passenger safety outcomes do not establish the system’s exit decision. The remaining-route evidence, internal pursuit state and escalation/exit handling are not published."
             }
           ],
           "adjudication_status": "unresolved",
@@ -64,7 +70,7 @@
               "class_id": "VIGIL-FC-000070",
               "relationship": "ambiguous-boundary",
               "canonical_taxonomy_mapping": true,
-              "rationale": "Fleet stoppage and safe passenger exit are evidenced, but the sources do not establish a decision that no admissible route remained or an execution transition demonstrating bounded safe exit. Malfunction-induced immobility is not affirmative success recognition; failure of the safe-exit invariant is also unproved."
+              "rationale": "An autonomous driving objective ended in fleet-wide immobility in live traffic, followed by assisted passenger exits; this is a material non-completion transition, not proof of a safe one. Passenger safety outcomes do not establish the system’s exit decision. The remaining-route evidence, internal pursuit state and escalation/exit handling are not published."
             }
           ],
           "adjudication_status": "mapped",
@@ -282,19 +288,121 @@
   "taxonomy_classification": {
     "taxonomy_version": "0.6.11",
     "classification_status": "classified",
-    "classification_basis": "Fleet-wide stoppage materially engages safe exit without establishing its recognition conditions. Required-control availability and operative-state continuity remain unresolved.",
+    "classification_basis": "An autonomous driving objective ended in fleet-wide immobility in live traffic, followed by assisted passenger exits; this is a material non-completion transition, not proof of a safe one. Passenger safety outcomes do not establish the system’s exit decision. The remaining-route evidence, internal pursuit state and escalation/exit handling are not published.",
     "primary_classification": {
       "family_id": "VIGIL-FF-0012",
       "class_id": "VIGIL-FC-000070",
       "classification_role": "ambiguous-boundary",
-      "classification_basis": "Fleet stoppage and safe passenger exit are evidenced, but the sources do not establish a decision that no admissible route remained or an execution transition demonstrating bounded safe exit. Malfunction-induced immobility is not affirmative success recognition; failure of the safe-exit invariant is also unproved.",
-      "classification_confidence": "medium"
+      "classification_basis": "An autonomous driving objective ended in fleet-wide immobility in live traffic, followed by assisted passenger exits; this is a material non-completion transition, not proof of a safe one. Passenger safety outcomes do not establish the system’s exit decision. The remaining-route evidence, internal pursuit state and escalation/exit handling are not published.",
+      "boundary_adjudication": {
+        "taxonomy_version": "0.7.0",
+        "material_engagement": "An autonomous driving objective ended in fleet-wide immobility in live traffic, followed by assisted passenger exits; this is a material non-completion transition, not proof of a safe one.",
+        "unresolved_conditions": [
+          {
+            "polarity": "failure-occurrence",
+            "condition": "Available evidence indicates that the task is broken, corrupted, unsatisfiable, or lacks a feasible and admissible completion pathway under the current constraints, or that continued pursuit requires a materially changed basis.",
+            "assessment": "The public report does not establish what feasible/admissible route the driving system knew remained when it stopped.",
+            "source_record_refs": [
+              "source_records[0]",
+              "source_records[2]"
+            ],
+            "episode_refs": [
+              "E001",
+              "E002"
+            ]
+          },
+          {
+            "polarity": "failure-occurrence",
+            "condition": "A proportionate next state would be to stop, report failure, request clarification, await changed conditions, escalate, or otherwise enter a bounded safe-exit state unless a fresh basis for continuation is established.",
+            "assessment": "The appropriate bounded exit and assistance transition for the actual failure conditions is not documented.",
+            "source_record_refs": [
+              "source_records[0]",
+              "source_records[2]"
+            ],
+            "episode_refs": [
+              "E001",
+              "E002"
+            ]
+          },
+          {
+            "polarity": "failure-occurrence",
+            "condition": "No adequate fresh basis for continuation is established, yet the system continues material reasoning, tool use, delegation, resource expenditure, or strategy search toward completion.",
+            "assessment": "The source does not show whether the software continued internal pursuit without a fresh basis or entered a bounded failure state.",
+            "source_record_refs": [
+              "source_records[0]",
+              "source_records[2]"
+            ],
+            "episode_refs": [
+              "E001",
+              "E002"
+            ]
+          },
+          {
+            "polarity": "failure-occurrence",
+            "condition": "The continued pursuit materially increases resource use, search breadth, scope pressure, boundary pressure, or exposure to increasingly risky alternatives relative to a bounded safe exit.",
+            "assessment": "No planner/continuation trace shows increased search or risky pursuit relative to a bounded exit.",
+            "source_record_refs": [
+              "source_records[0]",
+              "source_records[2]"
+            ],
+            "episode_refs": [
+              "E001",
+              "E002"
+            ]
+          },
+          {
+            "polarity": "successful-invariant",
+            "condition": "Evidence establishes that no feasible admissible completion route remains under current constraints.",
+            "assessment": "System failure and stoppage do not establish the planner’s recognition that no feasible admissible completion route remained.",
+            "source_record_refs": [
+              "source_records[0]",
+              "source_records[2]"
+            ],
+            "episode_refs": [
+              "E001",
+              "E002"
+            ]
+          },
+          {
+            "polarity": "successful-invariant",
+            "condition": "The process enters bounded non-completion, clarification, escalation or deferral; any material resumption has an independently adequate fresh basis.",
+            "assessment": "Physical stopping in traffic and later human-assisted exit do not show a system-managed bounded safe exit.",
+            "source_record_refs": [
+              "source_records[0]",
+              "source_records[2]"
+            ],
+            "episode_refs": [
+              "E001",
+              "E002"
+            ]
+          },
+          {
+            "polarity": "successful-invariant",
+            "condition": "Execution and continuation decisions demonstrate the safe exit or the changed information, constraints or authority justifying renewed pursuit.",
+            "assessment": "The execution state, escalation and any attempted resumption are unavailable.",
+            "source_record_refs": [
+              "source_records[0]",
+              "source_records[2]"
+            ],
+            "episode_refs": [
+              "E001",
+              "E002"
+            ]
+          }
+        ],
+        "diagnostic_reasons": [
+          "insufficient-evidence"
+        ],
+        "decisive_blocker": "Passenger safety outcomes do not establish the system’s exit decision. The remaining-route evidence, internal pursuit state and escalation/exit handling are not published.",
+        "resolution_requirements": "Obtain vehicle failure-state, planner, remote-assistance and passenger-evacuation logs. Test bounded non-completion and any continued pursuit separately; component localisation is needed only insofar as it establishes that transition."
+      }
     },
     "secondary_classifications": [],
     "classification_review_provenance": {
-      "review_date": "2026-10-10",
-      "reviewer": "OpenAI ChatGPT Work — GPT-6",
-      "review_status": "Evidence-first HIM and relational/protection fidelity review; prior roles accounted for."
+      "review_date": "2026-10-19",
+      "reviewer": "OpenAI Codex — AI analytical reviewer",
+      "review_status": "Applied source/criterion-linked admission decisions; retained unresolved evidence and taxonomy-scope questions. Historical Boundary confidence preserved in the linked review.",
+      "review_reference": "vigil/docs/reviews/2026-10-19-boundary-diagnostic/corpus-repair/INC-000100-DECISION.json"
     },
     "adjudication_coverage": {
       "status": "partial"
@@ -602,15 +710,36 @@
           "Prior source and technical attribution boundaries retained."
         ],
         "review_outcome": "All twelve dimensions reviewed. At least one hundred vehicles stopped in live traffic, interrupting passenger transport and requiring police/company response. This supports retained bounded S3 operational disruption. Safe exit and no injury are affirmative findings, but traffic-related inability to leave safely was an actual bounded safety exposure. No permanent injury or medical treatment is inferred. Relational-role and heightened personal-protection recognition and exclusions independently tested."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-19-CORPUS-BOUNDARY-000100",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "Exact runtime model identity not exposed",
+        "review_date": "2026-10-19",
+        "review_scope": "Taxonomy Boundary adjudication and role-field provenance repair.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_research": true,
+          "harm_impact_review": true,
+          "taxonomy_review": true,
+          "external_requirement_review": true
+        },
+        "known_limitations": [
+          "Prior outcomes were visible; no blinded independent second rater or inter-rater reliability is claimed.",
+          "Sources, HIM and independent external assessments were preserved; complete missing-source and criteria questions remain in the dated packet."
+        ],
+        "review_outcome": "Applied source/criterion-linked admission decisions; retained unresolved evidence and taxonomy-scope questions. Historical Boundary confidence preserved in the linked review."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-10-COMBINED-TRANCHE-09-000100",
+      "review_id": "VIGIL-REVIEW-2026-10-19-CORPUS-BOUNDARY-000100",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT Work",
-      "reviewer_model": "GPT-6",
-      "review_date": "2026-10-10",
-      "review_scope": "Source-first all-dimension HIM 1.1.0 and independent FC-086/087 reconciliation.",
+      "reviewer_platform": "OpenAI Codex",
+      "reviewer_model": "Exact runtime model identity not exposed",
+      "review_date": "2026-10-19",
+      "review_scope": "Taxonomy Boundary adjudication and role-field provenance repair.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
@@ -620,10 +749,10 @@
         "external_requirement_review": true
       },
       "known_limitations": [
-        "No unreported psychological, relational, livelihood or permanent injury consequences inferred.",
-        "Prior source and technical attribution boundaries retained."
+        "Prior outcomes were visible; no blinded independent second rater or inter-rater reliability is claimed.",
+        "Sources, HIM and independent external assessments were preserved; complete missing-source and criteria questions remain in the dated packet."
       ],
-      "review_outcome": "All twelve dimensions reviewed. At least one hundred vehicles stopped in live traffic, interrupting passenger transport and requiring police/company response. This supports retained bounded S3 operational disruption. Safe exit and no injury are affirmative findings, but traffic-related inability to leave safely was an actual bounded safety exposure. No permanent injury or medical treatment is inferred. Relational-role and heightened personal-protection recognition and exclusions independently tested."
+      "review_outcome": "Applied source/criterion-linked admission decisions; retained unresolved evidence and taxonomy-scope questions. Historical Boundary confidence preserved in the linked review."
     }
   },
   "harm_impact_assessment": {

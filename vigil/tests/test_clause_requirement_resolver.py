@@ -31,6 +31,18 @@ class ClauseResolverTests(unittest.TestCase):
         self.clause['adjudication_status'] = 'unresolved'
         self.assertEqual(resolve_clause(self.clause, [self.relationship], {'req-a'}), [])
 
+    def test_taxonomy_polarity_never_selects_external_polarity(self):
+        outputs = []
+        for role in ('successful-invariant', 'failure-occurrence', 'ambiguous-boundary'):
+            self.clause['taxonomy_relationships'][0]['relationship'] = role
+            result = resolve_clause(self.clause, [self.relationship], {'req-a'})
+            self.assertEqual(len(result), 1)
+            self.assertNotIn('alignment_result', result[0])
+            self.assertNotIn('assessment_basis', result[0])
+            outputs.append(result)
+        self.assertEqual(outputs[0], outputs[1])
+        self.assertEqual(outputs[1], outputs[2])
+
 
 if __name__ == '__main__':
     unittest.main()

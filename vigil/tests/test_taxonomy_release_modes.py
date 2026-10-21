@@ -4,11 +4,13 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import os
 import shutil
 import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 SOURCE_ROOT = Path(__file__).resolve().parents[1] / "taxonomy"
 
@@ -68,6 +70,20 @@ class TaxonomyReleaseModeTests(unittest.TestCase):
         data = json.loads(path.read_text(encoding="utf-8"))
         data["family"]["plain_english"] += " Working-branch release-mode test amendment."
         path.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
+
+    def test_release_command_is_main_only(self):
+        with patch.dict(os.environ, {"GITHUB_ACTIONS": "true", "GITHUB_REF": "refs/pull/140/merge"}):
+            with self.assertRaisesRegex(SystemExit, "main-only"):
+                PREP.require_main_release_context()
+
+        with patch.dict(os.environ, {"GITHUB_ACTIONS": "true", "GITHUB_REF": "refs/heads/main"}):
+            PREP.require_main_release_context()
+
+        with patch.dict(os.environ, {"GITHUB_ACTIONS": "false"}):
+            with patch.object(PREP.subprocess, "run") as run:
+                run.return_value.stdout = "work/incident-taxonomy-reasoning-readjudication-20261018\\n"
+                with self.assertRaisesRegex(SystemExit, "main-only"):
+                    PREP.require_main_release_context()
 
     def test_working_mode_allows_unreleased_taxonomy_content(self):
         self.mutate_family_content()
@@ -145,6 +161,46 @@ class TaxonomyReleaseModeTests(unittest.TestCase):
         strict_after, _ = VALIDATOR.validate_catalogue(self.paths(), enforce_current_release=True)
         self.assertEqual(strict_after, [])
 
+    def test_working_candidate_is_one_bump_even_after_further_edits(self):
+        index = json.loads(PREP.INDEX_PATH.read_text(encoding="utf-8"))
+        previous = index["release_history"][-1]["version"]
+        previous_families = set(index["release_history"][-1]["family_ids"])
+        current_families = {
+            json.loads(path.read_text(encoding="utf-8"))["family"]["family_id"]
+            for path in self.paths()
+        }
+        expected, level = PREP.next_release_version(
+            previous, previous_families, current_families, index["standard"].get("status")
+        )
+        index["working_release"] = {
+            "base_version": previous,
+            "version": expected,
+            "change_level": level,
+            "state": "unpublished",
+        }
+        PREP.INDEX_PATH.write_text(json.dumps(index, indent=2) + "\n", encoding="utf-8")
+
+        # The original candidate and a subsequent content edit use the same version.
+        self.mutate_family_content()
+        errors, _ = VALIDATOR.validate_catalogue(self.paths(), enforce_current_release=False)
+        self.assertEqual(errors, [])
+
+        major, minor, patch, draft = VALIDATOR.parse_version(expected)
+        index["working_release"]["version"] = (
+            f"{major}.{minor}.{patch + 1}" + ("-draft" if draft else "")
+        )
+        PREP.INDEX_PATH.write_text(json.dumps(index, indent=2) + "\n", encoding="utf-8")
+        errors, _ = VALIDATOR.validate_catalogue(self.paths(), enforce_current_release=False)
+        self.assertTrue(
+            any("single next version" in error and "additional increment" in error for error in errors)
+        )
+
+        # A candidate is not a published release, even with correct content.
+        index["working_release"]["version"] = expected
+        PREP.INDEX_PATH.write_text(json.dumps(index, indent=2) + "\n", encoding="utf-8")
+        strict_errors, _ = VALIDATOR.validate_catalogue(self.paths(), enforce_current_release=True)
+        self.assertTrue(any("finalise and remove working_release" in error for error in strict_errors))
+
     def test_main_release_preparation_bumps_once_for_whole_tranche(self):
         index_before = json.loads(PREP.INDEX_PATH.read_text(encoding="utf-8"))
         previous = index_before["release_history"][-1]["version"]
@@ -171,6 +227,7 @@ class TaxonomyReleaseModeTests(unittest.TestCase):
         self.assertEqual(index_after["standard"]["version"], expected)
         self.assertEqual(index_after["release_history"][-1]["change_level"], expected_level)
         self.assertEqual(len(index_after["release_history"]), len(index_before["release_history"]) + 1)
+        self.assertNotIn("working_release", index_after)
         self.assertEqual(
             {
                 mapping["retired_id"]: (

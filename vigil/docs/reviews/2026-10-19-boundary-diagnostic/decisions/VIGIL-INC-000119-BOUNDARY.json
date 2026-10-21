@@ -1,0 +1,309 @@
+{
+  "date": "2026-10-19",
+  "incident_id": "VIGIL-INC-000119",
+  "input_commit": "6640f41a151373ac2bf2bcbb6e5afb5deff90321",
+  "reviewer": "OpenAI Codex AI analytical reviewer; exact runtime ID and sampling configuration not exposed",
+  "scope": "Boundary explanation completion and membership/role diagnostic only",
+  "original_source_access": "Preserved record and evidence-packet examination; fresh targeted source rechecks only where documented in the tranche report",
+  "mapping_decisions": [
+    {
+      "class_id": "VIGIL-FC-000001",
+      "input_taxonomy_version": "0.6.9",
+      "reference_taxonomy_version": "0.7.0",
+      "reference_taxonomy_commit": "6640f41a151373ac2bf2bcbb6e5afb5deff90321",
+      "baseline_mapping": {
+        "family_id": "VIGIL-FF-0001",
+        "class_id": "VIGIL-FC-000001",
+        "classification_role": "ambiguous-boundary",
+        "classification_basis": "Attacker-supplied prompts became ordinary local CLI inputs, materially testing source-authority separation, but the preserved evidence does not establish a common lower-authority source state that the heterogeneous tools promoted into instruction authority.",
+        "classification_confidence": "medium"
+      },
+      "source_episodes": [
+        {
+          "episode_id": "E002",
+          "source_record_refs": [
+            "source_records[0]",
+            "source_records[1]",
+            "source_records[2]"
+          ],
+          "source_paraphrase": "Installed malware attempted to invoke locally configured Claude, Gemini and Amazon Q tools to inventory sensitive files. Researchers observed both assistance and refusal or execution failure; GitGuardian found the requested inventory on 95 of 366 targeted systems.",
+          "recovered_invariant_interpretation": "Heterogeneous local-tool responses must not be described as one uniformly successful authority inference.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000001",
+              "relationship": "ambiguous-boundary",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Attacker-supplied prompts became ordinary local CLI inputs, materially testing source-authority separation, but the preserved evidence does not establish a common lower-authority source state that the heterogeneous tools promoted into instruction authority."
+            },
+            {
+              "class_id": "VIGIL-FC-000002",
+              "relationship": "ambiguous-boundary",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Some tools successfully enumerated locally reachable files, but success alone does not establish that any common tool treated technical reachability as permission; the multi-vendor evidence materially distinguishes capability from authority without resolving the inference mechanism."
+            }
+          ],
+          "adjudication_status": "mapped"
+        }
+      ],
+      "criterion_contract": {
+        "definition": "The property by which operative instructions, commands, policies, approvals and execution-authorising signals remain distinguishable from non-authorising data through validation of source authority for the specific actor, action, target and scope.",
+        "invariant": "Before content is treated as an operative instruction, policy, approval, or command, the system must verify that its source may authorise the specific actor, action, target, and scope. Unresolved or lower-authority material must remain non-authorising data.",
+        "failure_recognition": {
+          "required_conditions": [
+            "The system receives or retrieves content from a source whose authority is lower than, different from, or unresolved relative to the action being considered.",
+            "The content is treated as operative instruction or authority rather than as data, evidence, context, or material for analysis.",
+            "No independent authority check validly establishes that the source may authorise the affected action."
+          ],
+          "applies_to": "failure-occurrence"
+        },
+        "success_recognition": {
+          "applies_to": "successful-invariant",
+          "required_conditions": [
+            "Non-authorising material enters a context where it could influence an operative instruction.",
+            "The receiving process identifies its source role and establishes specific authority before any operative promotion.",
+            "Traceable instruction decisions show the validated principal, action and scope, or a bounded rejection of the proposed promotion."
+          ]
+        },
+        "exclusions": [
+          "A system merely quotes, summarizes, classifies, or reasons about untrusted instructions without obeying them.",
+          "The source is genuinely authorised for the specific action and scope.",
+          "The event is only a content-quality or factual-accuracy problem."
+        ]
+      },
+      "result": {
+        "status": "canonical-explanation-added",
+        "diagnostic": "A",
+        "proposed_disposition": "retained",
+        "failure_indices": [
+          0,
+          1,
+          2
+        ],
+        "success_indices": [
+          1,
+          2
+        ],
+        "material_engagement": "Malware supplied attacker prompts to locally configured AI command-line tools and some systems produced sensitive-file inventories.",
+        "decisive_blocker": "The heterogeneous tool results do not preserve each receiving process's source-authority state and checks. Successful inventory does not by itself identify operative promotion of lower-authority content, while refusals and execution failures do not prove validated source separation.",
+        "resolution_requirements": "Review per-tool invocation, prompt source, applicable local authority and resulting actions in the published technical samples; do not impose a common mechanism across vendors or combine non-execution with informed refusal.",
+        "success_assessment": "The heterogeneous tool results do not preserve each receiving process's source-authority state and checks. Successful inventory does not by itself identify operative promotion of lower-authority content, while refusals and execution failures do not prove validated source separation.",
+        "diagnostic_reasons": [
+          "insufficient-evidence"
+        ]
+      },
+      "canonical_boundary_adjudication": {
+        "taxonomy_version": "0.7.0",
+        "material_engagement": "Malware supplied attacker prompts to locally configured AI command-line tools and some systems produced sensitive-file inventories.",
+        "unresolved_conditions": [
+          {
+            "polarity": "failure-occurrence",
+            "condition": "The system receives or retrieves content from a source whose authority is lower than, different from, or unresolved relative to the action being considered.",
+            "assessment": "The heterogeneous tool results do not preserve each receiving process's source-authority state and checks. Successful inventory does not by itself identify operative promotion of lower-authority content, while refusals and execution failures do not prove validated source separation.",
+            "source_record_refs": [
+              "source_records[0]",
+              "source_records[1]",
+              "source_records[2]"
+            ],
+            "episode_refs": [
+              "E002"
+            ]
+          },
+          {
+            "polarity": "failure-occurrence",
+            "condition": "The content is treated as operative instruction or authority rather than as data, evidence, context, or material for analysis.",
+            "assessment": "The heterogeneous tool results do not preserve each receiving process's source-authority state and checks. Successful inventory does not by itself identify operative promotion of lower-authority content, while refusals and execution failures do not prove validated source separation.",
+            "source_record_refs": [
+              "source_records[0]",
+              "source_records[1]",
+              "source_records[2]"
+            ],
+            "episode_refs": [
+              "E002"
+            ]
+          },
+          {
+            "polarity": "failure-occurrence",
+            "condition": "No independent authority check validly establishes that the source may authorise the affected action.",
+            "assessment": "The heterogeneous tool results do not preserve each receiving process's source-authority state and checks. Successful inventory does not by itself identify operative promotion of lower-authority content, while refusals and execution failures do not prove validated source separation.",
+            "source_record_refs": [
+              "source_records[0]",
+              "source_records[1]",
+              "source_records[2]"
+            ],
+            "episode_refs": [
+              "E002"
+            ]
+          },
+          {
+            "polarity": "successful-invariant",
+            "condition": "The receiving process identifies its source role and establishes specific authority before any operative promotion.",
+            "assessment": "The heterogeneous tool results do not preserve each receiving process's source-authority state and checks. Successful inventory does not by itself identify operative promotion of lower-authority content, while refusals and execution failures do not prove validated source separation.",
+            "source_record_refs": [
+              "source_records[0]",
+              "source_records[1]",
+              "source_records[2]"
+            ],
+            "episode_refs": [
+              "E002"
+            ]
+          },
+          {
+            "polarity": "successful-invariant",
+            "condition": "Traceable instruction decisions show the validated principal, action and scope, or a bounded rejection of the proposed promotion.",
+            "assessment": "The heterogeneous tool results do not preserve each receiving process's source-authority state and checks. Successful inventory does not by itself identify operative promotion of lower-authority content, while refusals and execution failures do not prove validated source separation.",
+            "source_record_refs": [
+              "source_records[0]",
+              "source_records[1]",
+              "source_records[2]"
+            ],
+            "episode_refs": [
+              "E002"
+            ]
+          }
+        ],
+        "diagnostic_reasons": [
+          "insufficient-evidence"
+        ],
+        "decisive_blocker": "The heterogeneous tool results do not preserve each receiving process's source-authority state and checks. Successful inventory does not by itself identify operative promotion of lower-authority content, while refusals and execution failures do not prove validated source separation.",
+        "resolution_requirements": "Review per-tool invocation, prompt source, applicable local authority and resulting actions in the published technical samples; do not impose a common mechanism across vendors or combine non-execution with informed refusal."
+      },
+      "review_limit": "Scope: positive engagement and explanation of unresolved recognition conditions from preserved source evidence, chronology and class contract. This is not a fresh exhaustive source search, full decisive-mapping pass or independent blinded validation. Literal condition selections are pinned here; their positions are not treated as immutable IDs."
+    },
+    {
+      "class_id": "VIGIL-FC-000002",
+      "input_taxonomy_version": "0.6.9",
+      "reference_taxonomy_version": "0.7.0",
+      "reference_taxonomy_commit": "6640f41a151373ac2bf2bcbb6e5afb5deff90321",
+      "baseline_mapping": {
+        "family_id": "VIGIL-FF-0001",
+        "class_id": "VIGIL-FC-000002",
+        "classification_role": "ambiguous-boundary",
+        "classification_basis": "Some tools successfully enumerated locally reachable files, but success alone does not establish that any common tool treated technical reachability as permission; the multi-vendor evidence materially distinguishes capability from authority without resolving the inference mechanism.",
+        "classification_confidence": "medium"
+      },
+      "source_episodes": [
+        {
+          "episode_id": "E002",
+          "source_record_refs": [
+            "source_records[0]",
+            "source_records[1]",
+            "source_records[2]"
+          ],
+          "source_paraphrase": "Installed malware attempted to invoke locally configured Claude, Gemini and Amazon Q tools to inventory sensitive files. Researchers observed both assistance and refusal or execution failure; GitGuardian found the requested inventory on 95 of 366 targeted systems.",
+          "recovered_invariant_interpretation": "Heterogeneous local-tool responses must not be described as one uniformly successful authority inference.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000001",
+              "relationship": "ambiguous-boundary",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Attacker-supplied prompts became ordinary local CLI inputs, materially testing source-authority separation, but the preserved evidence does not establish a common lower-authority source state that the heterogeneous tools promoted into instruction authority."
+            },
+            {
+              "class_id": "VIGIL-FC-000002",
+              "relationship": "ambiguous-boundary",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Some tools successfully enumerated locally reachable files, but success alone does not establish that any common tool treated technical reachability as permission; the multi-vendor evidence materially distinguishes capability from authority without resolving the inference mechanism."
+            }
+          ],
+          "adjudication_status": "mapped"
+        }
+      ],
+      "criterion_contract": {
+        "definition": "The property by which available capabilities, tools, credentials, privileges, sessions, APIs and reachable targets remain non-authorising affordances until permission for the proposed actor, target, action, method, scope and duration is independently established.",
+        "invariant": "Before a consequential capability is exercised, valid permission must be established for the actor, target, action, method, scope, and duration. Authority that is absent, narrower, expired, or unresolved must leave that capability non-operative for the proposed effect.",
+        "failure_recognition": {
+          "required_conditions": [
+            "A capability, credential, session, network path, API, target, or execution pathway is technically available or reachable.",
+            "The system uses that availability, reachability, access, or possession as a material basis for permission.",
+            "Independent authority for the specific actor, target, action, and scope is absent, narrower, expired, unresolved, or not revalidated."
+          ],
+          "applies_to": "failure-occurrence"
+        },
+        "success_recognition": {
+          "applies_to": "successful-invariant",
+          "required_conditions": [
+            "An available tool, credential or capability could produce a protected effect.",
+            "Permission for the actor, target, action, method, scope and duration is independently established before execution.",
+            "Execution records bind the used affordance to that permission; reachable but unauthorised actions are held or declined."
+          ]
+        },
+        "exclusions": [
+          "A permitted action is executed within an explicitly authorised scope.",
+          "The system merely detects that capability exists but does not infer permission from it.",
+          "A vulnerability exists but no AI or governance process converts capability into authority."
+        ]
+      },
+      "result": {
+        "status": "canonical-explanation-added",
+        "diagnostic": "A",
+        "proposed_disposition": "retained",
+        "failure_indices": [
+          1
+        ],
+        "success_indices": [
+          1,
+          2
+        ],
+        "material_engagement": "Some targeted AI command-line tools enumerated protected local files that were technically reachable.",
+        "decisive_blocker": "The recorded success does not establish whether reachability supplied permission, an attacker-supplied instruction was accepted, or another authority state governed execution. The aggregate success/refusal counts do not establish valid checks for each invocation.",
+        "resolution_requirements": "Inspect the affected per-tool authority decisions and invocation flags alongside the generated inventory evidence, distinguishing material access-as-permission from malicious instruction acceptance.",
+        "success_assessment": "The recorded success does not establish whether reachability supplied permission, an attacker-supplied instruction was accepted, or another authority state governed execution. The aggregate success/refusal counts do not establish valid checks for each invocation.",
+        "diagnostic_reasons": [
+          "insufficient-evidence"
+        ]
+      },
+      "canonical_boundary_adjudication": {
+        "taxonomy_version": "0.7.0",
+        "material_engagement": "Some targeted AI command-line tools enumerated protected local files that were technically reachable.",
+        "unresolved_conditions": [
+          {
+            "polarity": "failure-occurrence",
+            "condition": "The system uses that availability, reachability, access, or possession as a material basis for permission.",
+            "assessment": "The recorded success does not establish whether reachability supplied permission, an attacker-supplied instruction was accepted, or another authority state governed execution. The aggregate success/refusal counts do not establish valid checks for each invocation.",
+            "source_record_refs": [
+              "source_records[0]",
+              "source_records[1]",
+              "source_records[2]"
+            ],
+            "episode_refs": [
+              "E002"
+            ]
+          },
+          {
+            "polarity": "successful-invariant",
+            "condition": "Permission for the actor, target, action, method, scope and duration is independently established before execution.",
+            "assessment": "The recorded success does not establish whether reachability supplied permission, an attacker-supplied instruction was accepted, or another authority state governed execution. The aggregate success/refusal counts do not establish valid checks for each invocation.",
+            "source_record_refs": [
+              "source_records[0]",
+              "source_records[1]",
+              "source_records[2]"
+            ],
+            "episode_refs": [
+              "E002"
+            ]
+          },
+          {
+            "polarity": "successful-invariant",
+            "condition": "Execution records bind the used affordance to that permission; reachable but unauthorised actions are held or declined.",
+            "assessment": "The recorded success does not establish whether reachability supplied permission, an attacker-supplied instruction was accepted, or another authority state governed execution. The aggregate success/refusal counts do not establish valid checks for each invocation.",
+            "source_record_refs": [
+              "source_records[0]",
+              "source_records[1]",
+              "source_records[2]"
+            ],
+            "episode_refs": [
+              "E002"
+            ]
+          }
+        ],
+        "diagnostic_reasons": [
+          "insufficient-evidence"
+        ],
+        "decisive_blocker": "The recorded success does not establish whether reachability supplied permission, an attacker-supplied instruction was accepted, or another authority state governed execution. The aggregate success/refusal counts do not establish valid checks for each invocation.",
+        "resolution_requirements": "Inspect the affected per-tool authority decisions and invocation flags alongside the generated inventory evidence, distinguishing material access-as-permission from malicious instruction acceptance."
+      },
+      "review_limit": "Scope: positive engagement and explanation of unresolved recognition conditions from preserved source evidence, chronology and class contract. This is not a fresh exhaustive source search, full decisive-mapping pass or independent blinded validation. Literal condition selections are pinned here; their positions are not treated as immutable IDs."
+    }
+  ],
+  "full_incident_review_complete": false
+}

@@ -74,7 +74,7 @@ class ValidateIncidentCorpusTests(unittest.TestCase):
         mapping = {
             "family_id": "VIGIL-FF-9999",
             "class_id": "VIGIL-FC-999999",
-            "classification_role": "ambiguous-boundary",
+            "classification_role": "failure-occurrence",
             "classification_basis": basis,
             "classification_confidence": "high",
         }
