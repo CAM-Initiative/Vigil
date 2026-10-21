@@ -4,11 +4,13 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import os
 import shutil
 import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 SOURCE_ROOT = Path(__file__).resolve().parents[1] / "taxonomy"
 
@@ -68,6 +70,20 @@ class TaxonomyReleaseModeTests(unittest.TestCase):
         data = json.loads(path.read_text(encoding="utf-8"))
         data["family"]["plain_english"] += " Working-branch release-mode test amendment."
         path.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
+
+    def test_release_command_is_main_only(self):
+        with patch.dict(os.environ, {"GITHUB_ACTIONS": "true", "GITHUB_REF": "refs/pull/140/merge"}):
+            with self.assertRaisesRegex(SystemExit, "main-only"):
+                PREP.require_main_release_context()
+
+        with patch.dict(os.environ, {"GITHUB_ACTIONS": "true", "GITHUB_REF": "refs/heads/main"}):
+            PREP.require_main_release_context()
+
+        with patch.dict(os.environ, {"GITHUB_ACTIONS": "false"}):
+            with patch.object(PREP.subprocess, "run") as run:
+                run.return_value.stdout = "work/incident-taxonomy-reasoning-readjudication-20261018\\n"
+                with self.assertRaisesRegex(SystemExit, "main-only"):
+                    PREP.require_main_release_context()
 
     def test_working_mode_allows_unreleased_taxonomy_content(self):
         self.mutate_family_content()
