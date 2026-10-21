@@ -5,6 +5,8 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
+import subprocess
 from datetime import date
 from pathlib import Path
 
@@ -114,6 +116,33 @@ def prepare_release(publication_date: str) -> bool:
     return True
 
 
+def require_main_release_context() -> None:
+    """Fail closed when a release is requested outside the main branch."""
+    if os.environ.get("GITHUB_ACTIONS") == "true":
+        if os.environ.get("GITHUB_REF") != "refs/heads/main":
+            raise SystemExit(
+                "Taxonomy release preparation is main-only; pull requests retain the published version."
+            )
+        return
+
+    try:
+        branch = subprocess.run(
+            ["git", "symbolic-ref", "--quiet", "--short", "HEAD"],
+            cwd=ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+    except (OSError, subprocess.CalledProcessError) as exc:
+        raise SystemExit(
+            "Taxonomy release preparation requires a checked-out main branch."
+        ) from exc
+    if branch != "main":
+        raise SystemExit(
+            f"Taxonomy release preparation is main-only (current branch: {branch})."
+        )
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -122,6 +151,7 @@ def main() -> None:
         help="fixed publication date for the main-branch release (default: current UTC runner date)",
     )
     args = parser.parse_args()
+    require_main_release_context()
     prepare_release(args.publication_date)
 
 
