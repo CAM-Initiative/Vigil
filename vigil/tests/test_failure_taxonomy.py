@@ -237,7 +237,8 @@ class AlignmentTaxonomyValidationTests(unittest.TestCase):
         observability = next(item for item in documents if item["family"]["family_id"] == "VIGIL-FF-0004")
         cls = next(item for item in observability["classes"] if item["class_id"] == "VIGIL-FC-000045")
         exemplars = {e["linked_incident_id"]: e for e in cls["invariant_exemplars"]}
-        self.assertIn("does not itself demonstrate completed governed production", exemplars["VIGIL-INC-000008"]["success_basis"])
+        # The INC-008 Boundary exemplar was withdrawn after the original withholding was adjudicated as a Failure; a later appellate remedy is not proof of completed production.
+        self.assertNotIn("VIGIL-INC-000008", exemplars)
         self.assertIn("do not show whether the original restriction complied", exemplars["VIGIL-INC-000109"]["success_basis"])
         self.assertEqual({e["exemplar_type"] for e in exemplars.values()}, {"ambiguous-boundary"})
 
