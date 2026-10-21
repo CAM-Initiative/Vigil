@@ -1,6 +1,8 @@
-# FC-089 migration readiness
+# FC-084 migration readiness
 
-The bounded migration is complete for review: 194 Incidents screened, 34 FC-089 candidates adjudicated, one new secondary failure in INC-156, and obsolete transition-gap findings corrected in INC-044. Thirty-one reviews end at explicit evidence limits and two at scope-limited non-admission. None of those conclusions proves the historical mechanism absent. The other 192 canonical Incident files are byte-identical to the adjudication baseline.
+> **21 October 2026 identifier update:** This document originated under provisional, unmerged FC-089. The maintainer reassigned the identical Service Availability and Degradation Integrity class to the unused FC-084 slot before publication. The earlier FC-084 Verification Laundering proposal was never a selectable class and its broken Incident references were resolved separately. See the [identifier crosswalk](../2026-10-21-fc084-prepublication-renumber/FC-089-TO-FC-084-IDENTITY-CROSSWALK.json). The dated baseline and underlying findings are unchanged.
+
+The bounded migration is complete for review: 194 Incidents screened, 34 FC-084 candidates adjudicated, one new secondary failure in INC-156, and obsolete transition-gap findings corrected in INC-044. Thirty-one reviews end at explicit evidence limits and two at scope-limited non-admission. None of those conclusions proves the historical mechanism absent. The other 192 canonical Incident files are byte-identical to the adjudication baseline.
 
 ## Verification
 
@@ -11,7 +13,7 @@ The bounded migration is complete for review: 194 Incidents screened, 34 FC-089 
 * Builders and publication filtering were rerun after the full suite. A second rebuild/filter cycle produces identical hashes. The generated public index and case examples are included.
 * Semantic preservation assertions pass for original source metadata, primary mappings, original episode paraphrases and relationships, all HIM dimensions, independent assessments and historical review entries. See `SEMANTIC-PRESERVATION.json`.
 
-An additional referential-integrity validator reports two **pre-existing** unresolved FC-084 clause references in INC-060 and INC-189. Both records are byte-identical to the baseline. These are neither the historical six fixture failures nor an FC-089 migration regression. They remain a corpus validation defect to reconcile before claiming every repository validator passes; no unrelated record was rewritten to conceal them.
+**Resolved on 20 October 2026:** the two noncanonical Verification Laundering proposal references in INC-060 and INC-189 were removed after a finite evidence-limited candidate review. This is historical review evidence, not an outstanding validator hold or a current FC-084 service-availability mapping.
 
 ## Authority and remaining decisions
 
