@@ -158,6 +158,12 @@ Dataset releases follow these rules:
 
 The index `release_history` records the canonical family/class content digest, family-ID set, class count, change level, dataset version, and publication date. Taxonomy validation rejects changed canonical family/class content unless the release history, dataset version, and publication date have been advanced consistently. It also rejects a patch increment for a newly admitted family and a minor increment for an ordinary existing-record change.
 
+### One-release working-branch staging
+
+The index ledger and each family `standard.version`/`publication_date` retain the last published `main` release during a pull request. A branch may change several class invariants, recognition criteria, family versions, and Incident adjudications without publishing each intermediate snapshot. Do not add release-history entries on PR branches. Only after authorised merge does the existing `main` workflow compute one release from the last published dataset, such as the current `0.7.0 → 0.8.0` family-admission tranche. A later same-branch refinement does not automatically cause `0.8.1`.
+
+An Incident substantively adjudicated against the working taxonomy may carry the **intended next version** (`0.8.0`) in its current `taxonomy_classification.taxonomy_version` as a provisional target, but the decision packet must pin the exact working taxonomy revision and disclose that the target is not yet published. This must not erase earlier versioned Incident evidence, prior review history, or the actual published `0.7.0` release ledger. Publication occurs once on main, with the resulting version and digest only after the merged content is final.
+
 ## Relationships
 
 Supported peer-class relationship types are `peer_of`, `distinguish_from`, `can_cooccur_with`, `may_result_in`, and `may_be_result_of`. Targets use current selectable `VIGIL-FC-NNNNNN` identifiers, never a mutable compound semantic path or a retired subtype ID.
