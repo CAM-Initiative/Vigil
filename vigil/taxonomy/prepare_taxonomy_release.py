@@ -87,6 +87,19 @@ def prepare_release(publication_date: str) -> bool:
         index.get("standard", {}).get("status"),
     )
 
+    # Use the version selected once on the working branch; never derive a
+    # subsequent patch from its candidate identifier.
+    candidate = index.get("working_release")
+    if candidate is not None:
+        if (
+            candidate.get("version") != new_version
+            or candidate.get("change_level") != change_level
+            or candidate.get("base_version") != previous_version
+            or candidate.get("state") != "unpublished"
+        ):
+            raise ValueError("working_release does not match the single next release from published main")
+        del index["working_release"]
+
     release = {
         "version": new_version,
         "publication_date": publication_date,
