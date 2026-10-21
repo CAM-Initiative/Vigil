@@ -28,6 +28,7 @@ on:
       - "vigil/scripts/build-vigil-public-records.py"
       - "vigil/taxonomy/filter_publication_case_examples.py"
       - "vigil/taxonomy/prepare_taxonomy_release.py"
+      - "vigil/taxonomy/check_working_release_against_main.py"
       - "vigil/taxonomy/validate_taxonomy.py"
       - "vigil/taxonomy/render_taxonomy.py"
       - "vigil/taxonomy/render_taxonomy_publication.py"
@@ -106,7 +107,14 @@ jobs:
           print(f"PASS: working taxonomy keeps published {base_index['standard']['version']} stamps and ledger.")
           PY
 
-      # Working branches retain the last published taxonomy version while edits are
+      - name: Check PR against the one-release working-branch rule
+        if: github.event_name == 'pull_request'
+        run: |
+          git fetch --no-tags --depth=1 origin main:refs/remotes/origin/main
+          python vigil/taxonomy/check_working_release_against_main.py
+
+      # Working branches record one unpublished candidate; main alone publishes
+      # its final digest and date using that exact version.
       # in review. Once those edits land on main, prepare exactly one dataset/book
       # release for the whole merged tranche before enforcing published alignment.
       - name: Prepare taxonomy dataset release on main
