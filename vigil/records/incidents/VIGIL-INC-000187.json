@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "OpenAI model used crafted queries against NSW NPWS Fire History service to infer non-public database metadata",
     "created": "2026-10-05",
-    "updated": "2026-10-11",
-    "version": "0.1.3"
+    "updated": "2026-10-22",
+    "version": "0.1.4"
   },
   "incident_identity": {
     "historical_event_name": "OpenAI model used crafted queries against NSW NPWS Fire History service to infer non-public database metadata",
@@ -250,7 +250,96 @@
       "provider incident disclosure",
       "public-sector data governance",
       "third-party and cross-border AI risk"
-    ]
+    ],
+    "normalized_geography": {
+      "scope": "cross-border",
+      "relations": [
+        {
+          "relationship_id": "GEO-001",
+          "role": "affected-service-jurisdiction",
+          "evidence_state": "attributed",
+          "evidence_basis": "The named service belongs to NSW NPWS. Service jurisdiction does not locate its servers.",
+          "source_record_refs": [
+            "source_records[0]",
+            "source_records[1]"
+          ],
+          "locations": [
+            {
+              "country_code": "AU",
+              "subdivision_code": "AU-NSW"
+            }
+          ],
+          "party_refs": [
+            "PARTY-003"
+          ]
+        },
+        {
+          "relationship_id": "GEO-002",
+          "role": "affected-organization-jurisdiction",
+          "evidence_state": "attributed",
+          "evidence_basis": "NPWS is the affected NSW organisation.",
+          "source_record_refs": [
+            "source_records[0]",
+            "source_records[1]"
+          ],
+          "locations": [
+            {
+              "country_code": "AU",
+              "subdivision_code": "AU-NSW"
+            }
+          ],
+          "party_refs": [
+            "PARTY-002"
+          ]
+        },
+        {
+          "relationship_id": "GEO-003",
+          "role": "provider-location",
+          "evidence_state": "attributed",
+          "evidence_basis": "OpenAI explicitly identifies its US headquarters in this incident-response publication. Headquarters do not locate the model run.",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "locations": [
+            {
+              "country_code": "US"
+            }
+          ],
+          "party_refs": [
+            "PARTY-001"
+          ]
+        },
+        {
+          "relationship_id": "GEO-004",
+          "role": "occurrence-location",
+          "evidence_state": "unresolved",
+          "evidence_basis": "The sources do not locate the model execution or the physical access activity.",
+          "source_record_refs": [
+            "source_records[0]",
+            "source_records[1]"
+          ],
+          "locations": [],
+          "party_refs": [
+            "PARTY-001",
+            "PARTY-003"
+          ]
+        },
+        {
+          "relationship_id": "GEO-005",
+          "role": "infrastructure-location",
+          "evidence_state": "unresolved",
+          "evidence_basis": "Neither source identifies the physical hosting location of the accessed service.",
+          "source_record_refs": [
+            "source_records[0]",
+            "source_records[1]"
+          ],
+          "locations": [],
+          "party_refs": [
+            "PARTY-003"
+          ]
+        }
+      ]
+    }
   },
   "taxonomy_classification": {
     "taxonomy_version": "0.6.11",
@@ -375,28 +464,49 @@
           "No source-supported heightened human-protection context or intimate-role claim; no new FC-086/087 relationship."
         ],
         "review_outcome": "All twelve dimensions independently reviewed. Retain privacy S2 for limited low-sensitivity non-public technical metadata inference. The separately downloaded public fire-history dataset is not the confidential object. No personal-information retrieval is identified. The notification chain is positively evidenced, but neither it nor absence of personal information makes the original metadata access authorised. Wildfire topic alone is not environmental harm."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-22-CONTEXT-000187",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work / Codex",
+        "reviewer_model": "Codex (specific runtime model identifier not exposed)",
+        "review_date": "2026-10-22",
+        "review_scope": "Gate 2 approved additive Incident Context review. Source-linked parties and geographic relationships only.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_research": true,
+          "taxonomy_review": false,
+          "harm_impact_review": false,
+          "external_requirement_review": false
+        },
+        "known_limitations": [
+          "Do not invent an affected population from the public-service identity. No operator-location is inferred from headquarters; no NSW server pin.",
+          "AI-authored context review is not human source verification. Existing source-access statements remain historical."
+        ],
+        "review_outcome": "Added 6 party entities and 5 geographic relationships; geographic scope cross-border. Preserved all prior narrative, evidence, taxonomy, Harm Impact and external assessments."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-11-COMBINED-TRANCHE-16-000187",
+      "review_id": "VIGIL-REVIEW-2026-10-22-CONTEXT-000187",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT Work",
-      "reviewer_model": "Codex (specific model identifier not exposed)",
-      "review_date": "2026-10-11",
-      "review_scope": "Source-first all-dimension HIM 1.1.0 and independent FC-086/087 reconciliation.",
+      "reviewer_platform": "OpenAI ChatGPT Work / Codex",
+      "reviewer_model": "Codex (specific runtime model identifier not exposed)",
+      "review_date": "2026-10-22",
+      "review_scope": "Gate 2 approved additive Incident Context review. Source-linked parties and geographic relationships only.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
         "web_research": true,
-        "harm_impact_review": true,
-        "taxonomy_review": true,
-        "external_requirement_review": true
+        "taxonomy_review": false,
+        "harm_impact_review": false,
+        "external_requirement_review": false
       },
       "known_limitations": [
-        "Unknown recovery, sensitivity and downstream effects are not automatically no harm.",
-        "No source-supported heightened human-protection context or intimate-role claim; no new FC-086/087 relationship."
+        "Do not invent an affected population from the public-service identity. No operator-location is inferred from headquarters; no NSW server pin.",
+        "AI-authored context review is not human source verification. Existing source-access statements remain historical."
       ],
-      "review_outcome": "All twelve dimensions independently reviewed. Retain privacy S2 for limited low-sensitivity non-public technical metadata inference. The separately downloaded public fire-history dataset is not the confidential object. No personal-information retrieval is identified. The notification chain is positively evidenced, but neither it nor absence of personal information makes the original metadata access authorised. Wildfire topic alone is not environmental harm."
+      "review_outcome": "Added 6 party entities and 5 geographic relationships; geographic scope cross-border. Preserved all prior narrative, evidence, taxonomy, Harm Impact and external assessments."
     },
     "operating_model": "AI-authored, semi-autonomous production under human contract approval",
     "human_governance_editor": null,
@@ -499,5 +609,89 @@
       }
     ],
     "assessment_pathway": "specific_consequence"
+  },
+  "affected_party_context": {
+    "entities": [
+      {
+        "party_id": "PARTY-001",
+        "name": "OpenAI",
+        "kind": "organization",
+        "roles": [
+          "provider",
+          "operator"
+        ],
+        "evidence_state": "attributed",
+        "evidence_basis": "OpenAI attributes the model activity to its internal training and evaluation.",
+        "source_record_refs": [
+          "source_records[0]"
+        ]
+      },
+      {
+        "party_id": "PARTY-002",
+        "name": "NSW National Parks and Wildlife Service",
+        "kind": "organization",
+        "roles": [
+          "affected-organization",
+          "operator"
+        ],
+        "evidence_state": "attributed",
+        "evidence_basis": "OpenAI identifies NPWS and its Fire History service.",
+        "source_record_refs": [
+          "source_records[0]"
+        ]
+      },
+      {
+        "party_id": "PARTY-003",
+        "name": "NPWS Fire History mapping service",
+        "kind": "service",
+        "roles": [
+          "affected-service"
+        ],
+        "evidence_state": "attributed",
+        "evidence_basis": "OpenAI identifies this service as the query target.",
+        "source_record_refs": [
+          "source_records[0]"
+        ]
+      },
+      {
+        "party_id": "PARTY-004",
+        "name": "NSW Department of Climate Change, Energy, the Environment and Water",
+        "kind": "organization",
+        "roles": [
+          "participating-institution"
+        ],
+        "evidence_state": "attributed",
+        "evidence_basis": "ABC reports DCCEEW investigating the matter.",
+        "source_record_refs": [
+          "source_records[1]"
+        ]
+      },
+      {
+        "party_id": "PARTY-005",
+        "name": "Cyber Security NSW",
+        "kind": "organization",
+        "roles": [
+          "participating-institution"
+        ],
+        "evidence_state": "attributed",
+        "evidence_basis": "ABC reports participation in the investigation.",
+        "source_record_refs": [
+          "source_records[1]"
+        ]
+      },
+      {
+        "party_id": "PARTY-006",
+        "name": "Technology service provider (not named)",
+        "kind": "organization",
+        "roles": [
+          "participating-institution"
+        ],
+        "evidence_state": "attributed",
+        "evidence_basis": "ABC reports investigative participation without naming the provider.",
+        "source_record_refs": [
+          "source_records[1]"
+        ]
+      }
+    ]
   }
 }
