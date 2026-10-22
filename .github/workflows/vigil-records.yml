@@ -53,6 +53,12 @@ jobs:
       - name: Refresh Incident-only public VIGIL indexes for validation
         run: python vigil/scripts/build-vigil-public-records.py
 
+      - name: Build canonical-field jurisdiction projection
+        run: python vigil/scripts/build-vigil-jurisdiction-index.py
+
+      - name: Verify jurisdiction projection is deterministic
+        run: python vigil/scripts/build-vigil-jurisdiction-index.py --check
+
       - name: Test source provenance classification
         run: python vigil/tests/test_vigil_source_provenance.py
 
@@ -118,9 +124,19 @@ jobs:
           if ! git diff --exit-code -- \
             vigil/VIGIL.Incidents.Index.json \
             vigil/VIGIL.Registry.Index.json \
+            vigil/VIGIL.Incidents.Jurisdictions.Index.json \
             vigil/taxonomy/generated/VIGIL.FailureTaxonomy.CaseFileExamples.json; then
             echo "::error::Generated public indexes differ from committed files. Rebuild and commit before review."
             exit 1
+          fi
+          # The dedicated Incident-ingestion branch must retain canonical
+          # authoring continuity; this *new derived geography index only* is
+          # maintained by the reproducible CI build, not a manual batch rewrite.
+          if [ "$GITHUB_EVENT_NAME" = 'pull_request' ] || [ "$GITHUB_REF_NAME" != 'agent/incident-ecosystem-ingestion' ]; then
+            if [ -n "$(git status --porcelain -- vigil/VIGIL.Incidents.Jurisdictions.Index.json)" ]; then
+              echo "::error::Jurisdiction projection differs from canonical records; rebuild and commit."
+              exit 1
+            fi
           fi
 
       - name: Commit generated VIGIL outputs on main only
@@ -141,6 +157,20 @@ jobs:
             if ! git push; then
               echo "Branch advanced while this run was building generated files; a newer workflow run owns generated-output refresh."
               exit 0
+            fi
+          fi
+
+      - name: Commit geography projection on the dedicated ingestion branch
+        if: github.event_name == 'push' && github.ref == 'refs/heads/agent/incident-ecosystem-ingestion'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add vigil/VIGIL.Incidents.Jurisdictions.Index.json
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: refresh canonical-field jurisdiction projection [skip ci]"
+            if ! git push; then
+              echo "::error::Ingestion branch advanced. Rebuild from current HEAD instead of overwriting concurrent work."
+              exit 1
             fi
           fi
 
