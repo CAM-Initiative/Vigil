@@ -41,3 +41,7 @@ The `VIGIL records` workflow builds and tests the projection with the rest of th
 ## Next phase: source-level relationship adjudication (separate Gate 1)
 
 The current projection standardizes text without asserting why each jurisdiction is relevant. For robust institutional analytics, a future additive canonical schema proposal should separate **event location**, **affected institution**, **affected population**, **provider/operator location**, **data infrastructure**, and **regulatory applicability**, each with role, evidence/source references, uncertainty and review provenance. That migration must independently review ambiguous cases and shall not automatically transform source-field mentions into confirmed facts. The dashboard can use the current projection immediately for conservative jurisdiction filtering without waiting for the full semantic migration.
+
+## Subsequent Gate 1 relationship model
+
+The 22 October opt-in canonical schema now permits `affected_party_context.entities[]` and `jurisdictional_context.normalized_geography.relations[]` with source-linked geographic roles. This **does not** upgrade the existing deterministic *text-derived* geo index to an independently reviewed set of event locations. Continue conservative filtering until a separately approved Gate 2 record-by-record evidence review, new canonical relationship projection and catalogue renderer update. See `vigil/docs/maintenance/INCIDENT-CONTEXT-GATE1.md`.
