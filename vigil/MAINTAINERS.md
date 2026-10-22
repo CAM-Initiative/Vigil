@@ -647,6 +647,17 @@ A validator reports that a rule has been breached. It does not itself authorise 
 
 For prose in particular, the smallest possible fix is preferred only **after** the governing rule and field semantics are already approved and unambiguous. If the required repair is not obvious from the canonical contract, stop rather than infer the desired rewrite.
 
+## Incident Context — Gate 1 canonical metadata contract (approved 22 October 2026)
+
+**Approval scope:** The maintainer approved new opt-in `affected_party_context.entities[]` and `jurisdictional_context.normalized_geography`, supporting structural validator checks and a proposed Stage 01 display grouping. Gate 1 **does not** approve a corpus-wide backfill; see [INCIDENT-CONTEXT-GATE1.md](docs/maintenance/INCIDENT-CONTEXT-GATE1.md) for precise contract and Gate 2 work handoff.
+
+- Canonical `system_context` remains as-is for Systems & Technology and Operational Environment. Keep existing source evidence, taxonomy and HIM decisions unchanged.
+- Stage 01 display design: **Incident Context** replacing *Affected systems*, with five subsections: Systems & Technology; Operational Environment; Affected Parties & Institutions; Geographic & Jurisdictional Context; Regulatory Context. This is proposed website work; do not misreport as already deployed.
+- A geographic `role` is distinct from geographic `scope`: a service located in NSW, a provider in the USA, and event execution in an unknown location can all coexist. No single pin may conflate them.
+- `regulatory-context` is a candidate relationship, not a Section 04 regulatory applicability/compliance conclusion.
+- Structural validation is opt-in. After the agreed Gate 1 code, stop and obtain explicit **Gate 2** approval before applying the new metadata across existing Incidents; do not mass-update records on the strength of passing structural CI.
+- Only migrate relationship claims with source-local evidence bases and correctly resolved `source_records[N]`. Ambiguous/undisclosed roles remain unresolved. Keep canonical raw jurisdiction text verbatim.
+
 ## Maintenance and validation
 
 Executable tests belong under `vigil/tests/`; current builders and validators belong under `vigil/scripts/`. Delete completed one-off migration, routing, reconciliation and seeding machinery when no retained subsystem depends on it.
