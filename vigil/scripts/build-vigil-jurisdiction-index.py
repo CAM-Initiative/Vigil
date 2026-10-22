@@ -23,7 +23,7 @@ VERSION = "1.0.0"
 NAMES = {
     "AU": ("australia", "australian"),
     "US": ("united states", "united states of america", "u.s.a.", "usa"),
-    "GB": ("united kingdom", "great britain", "england", "scotland", "wales"),
+    "GB": ("united kingdom", "great britain", "england", "scotland"),
     "CA": ("canada", "canadian"),
     "FR": ("france",),
     "DE": ("germany",),
@@ -74,7 +74,6 @@ NAMES = {
     "TH": ("thailand",),
     "BD": ("bangladesh",),
     "CO": ("colombia",),
-    "PK": ("pakistan",),
 }
 # Subdivision matches require a same-country parent; ambiguous names such as
 # Georgia are never accepted without an explicitly named country.
@@ -102,7 +101,7 @@ SUBDIVISIONS = {
         "US-MI": ("michigan",),
     },
     "CA": {"CA-BC": ("british columbia",)},
-    "GB": {"GB-WLS": ("wales",)},
+    "GB": {"GB-WLS": ("wales",)},  # Subdivision only after explicit GB country.
 }
 UNKNOWN = re.compile(r"^(not established|unknown|unspecified|jurisdiction not established|not specified)\b", re.I)
 GLOBAL = re.compile(r"^(global|international|worldwide)\b", re.I)
