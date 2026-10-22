@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Google Maps propagation of U.S. 'Lake America' designation",
     "created": "2026-08-31",
-    "updated": "2026-10-11",
-    "version": "0.1.22"
+    "updated": "2026-10-22",
+    "version": "0.1.23"
   },
   "incident_identity": {
     "historical_event_name": "Google Maps jurisdiction-dependent Lake Ontario / Lake America naming rollout",
@@ -440,7 +440,47 @@
     ],
     "secondary_jurisdictions": [
       "global users and downstream services receiving jurisdiction-dependent or dual labels"
-    ]
+    ],
+    "normalized_geography": {
+      "scope": "cross-border",
+      "relations": [
+        {
+          "role": "affected-service-jurisdiction",
+          "locations": [
+            {
+              "country_code": "CA"
+            }
+          ],
+          "source_record_refs": [
+            "source_records[4]",
+            "source_records[6]"
+          ],
+          "evidence_basis": "The affected embedded websites include Canadian public agencies and utilities.",
+          "evidence_state": "attributed",
+          "party_refs": [
+            "PARTY-002"
+          ],
+          "relationship_id": "GEO-001"
+        },
+        {
+          "role": "regulatory-context",
+          "locations": [
+            {
+              "country_code": "US"
+            }
+          ],
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "evidence_basis": "The executive order governs US federal naming; it does not rename the feature for Canada.",
+          "evidence_state": "attributed",
+          "party_refs": [
+            "PARTY-003"
+          ],
+          "relationship_id": "GEO-002"
+        }
+      ]
+    }
   },
   "taxonomy_classification": {
     "taxonomy_version": "0.6.9",
@@ -805,25 +845,49 @@
           "No undisclosed impact or unpublished affected-site telemetry inspected."
         ],
         "review_outcome": "Supported bounded S2 public-information effect, preserving earlier classification and sources."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-22-CONTEXT-000080",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work / Codex",
+        "reviewer_model": "Codex (specific runtime model identifier not exposed)",
+        "review_date": "2026-10-22",
+        "review_scope": "Gate 2 approved additive Incident Context review. Source-linked parties and geographic relationships only.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_research": false,
+          "taxonomy_review": false,
+          "harm_impact_review": false,
+          "external_requirement_review": false
+        },
+        "known_limitations": [
+          "Country markers describe website service and naming-authority relationships, not an event at the lake centroid.",
+          "AI-authored context review is not human source verification. Existing source-access statements remain historical."
+        ],
+        "review_outcome": "Added 3 party entities and 2 geographic relationships; geographic scope cross-border. Preserved all prior narrative, evidence, taxonomy, Harm Impact and external assessments."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-11-COMBINED-TRANCHE-20-000080",
+      "review_id": "VIGIL-REVIEW-2026-10-22-CONTEXT-000080",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT",
-      "reviewer_model": "GPT-6",
-      "review_date": "2026-10-11",
-      "review_scope": "Source-first 12-dimension HIM 1.1.0 and separate FC-086/087 recognition review.",
+      "reviewer_platform": "OpenAI ChatGPT Work / Codex",
+      "reviewer_model": "Codex (specific runtime model identifier not exposed)",
+      "review_date": "2026-10-22",
+      "review_scope": "Gate 2 approved additive Incident Context review. Source-linked parties and geographic relationships only.",
       "capability_profile": {
         "direct_repository_analysis": true,
-        "web_research": true,
-        "harm_impact_review": true,
-        "taxonomy_review": true
+        "direct_text_analysis": true,
+        "web_research": false,
+        "taxonomy_review": false,
+        "harm_impact_review": false,
+        "external_requirement_review": false
       },
       "known_limitations": [
-        "No undisclosed impact or unpublished affected-site telemetry inspected."
+        "Country markers describe website service and naming-authority relationships, not an event at the lake centroid.",
+        "AI-authored context review is not human source verification. Existing source-access statements remain historical."
       ],
-      "review_outcome": "Supported bounded S2 public-information effect, preserving earlier classification and sources."
+      "review_outcome": "Added 3 party entities and 2 geographic relationships; geographic scope cross-border. Preserved all prior narrative, evidence, taxonomy, Harm Impact and external assessments."
     }
   },
   "harm_impact_assessment": {
@@ -931,5 +995,50 @@
     }
   },
   "related_incidents": [],
-  "external_requirement_assessments": []
+  "external_requirement_assessments": [],
+  "affected_party_context": {
+    "entities": [
+      {
+        "name": "Google",
+        "kind": "organization",
+        "roles": [
+          "provider"
+        ],
+        "source_record_refs": [
+          "source_records[1]",
+          "source_records[5]"
+        ],
+        "evidence_basis": "Google supplies Maps and region-dependent naming.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-001"
+      },
+      {
+        "name": "Canadian government, transit, utility and retail websites",
+        "kind": "service",
+        "roles": [
+          "affected-service"
+        ],
+        "source_record_refs": [
+          "source_records[4]",
+          "source_records[6]"
+        ],
+        "evidence_basis": "Reporting checked named embedded maps with the US label.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-002"
+      },
+      {
+        "name": "US federal naming authorities",
+        "kind": "organization",
+        "roles": [
+          "participating-institution"
+        ],
+        "source_record_refs": [
+          "source_records[0]"
+        ],
+        "evidence_basis": "The executive order directed US federal naming changes.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-003"
+      }
+    ]
+  }
 }

@@ -1,9 +1,21 @@
-# Incident Context migration — in progress
+# Incident Context migration — canonical review complete
 
-Gate 2 approved by the maintainer on 22 October 2026: “Thats perfect. Please proceed with the rest of the full record set.” The five pilot proposals were accepted after clarification that codes carry structured geography while evidence explanations and original text remain.
+The maintainer approved Gate 2 on 22 October 2026: “Thats perfect. Please proceed with the rest of the full record set.” Country and subdivision codes carry structured geography; evidence explanations and all original text remain.
 
-This checkpoint applies 64 reviewed records. The remaining 136 are explicitly not yet reviewed in inventory.json. Per-ID audits record sources, limits, preservation hashes and crosswalks. Unknown geography is not an unreviewed record. AI review is not independent human authentication.
+All 200 current Incidents have individual source-bounded context reviews: **98 reviewed-and-recorded, 87 reviewed-unresolved, 15 reviewed-non-geographic; zero not-yet-reviewed**. Of these, **93 have coded country relationships**. Five further reviewed multi-country or global records have no individually established country codes. Unknown is an evidence outcome, not skipped work.
 
-Canonical validation passes for all 200 records. Full unittest discovery is run after each batch. The first two runs failed to import one test module because the runtime lacked jsonschema; dependency installed and complete suite rerun: 328 tests pass. This was an environment repair, not a change to repository validation. The official builder resolves the pre-existing two-entry Case File example drift documented in the pilot packet without altering taxonomy findings.
+`inventory.json` and `inventory.csv` contain the complete crosswalk inventory. Per-ID audits identify the sources used, evidence limits, versions and preservation hashes. `batches.json` records the five pilots and ten bounded batches (maximum 20 records each). `preservation.json` verifies all 200 against baseline e06710c; existing prose, sources, legacy geography, taxonomy, harm, external assessments and prior review history are unchanged. New reviews are AI-authored, not human authentication. Record-local source evidence was reviewed throughout; fresh public retrieval was selective and is stated per record.
 
-Projection and website integration remain pending stable corpus completion. PR #155 remains draft. canonical_change_sha is populated in a subsequent audit checkpoint after the containing commit exists.
+The first 64 reviews are published in 0ede86c6a2f22d538ffe51a60d3bbe54f1b61b97. Remaining commit references are filled after the containing commit exists. No new canonical records were admitted during this pass. The current branch was re-enumerated at the checkpoint.
+
+## Evidence holds
+
+See each audit’s `evidence_limitations` and canonical unresolved relationships. These include undisclosed users or infrastructure, unverified operator attribution, redacted evaluation targets, and incompletely enumerated multi-country populations. No provider headquarters, public-internet reach, language, currency, press-conference venue or contextual country mention substitutes for occurrence evidence. New sources can refine these completed evidence-limited reviews; no schema gap was found.
+
+## Validation and projection
+
+All canonical, public-record, source, interpretive, component and authorship checks pass. The final suite has 332 passing tests, including 11 projection tests. Early batch runs exposed a missing runtime jsonschema dependency; it was installed and the complete suite rerun. See validation.json for the exact final result.
+
+The official builder regenerated public outputs and corrected the previously documented two-entry taxonomy-example drift without changing classifications. Geography projection v2 publishes reviewed roles, scope, source refs and distinct-Incident country counts, retaining explicitly labelled lexical compatibility data. Unresolved geography never falls back to legacy text.
+
+Website integration and its visual/accessibility checks follow on the existing catalogue branch. PR #155 remains draft. No merge is authorised.

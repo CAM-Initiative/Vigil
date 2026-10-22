@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Claude-assisted GTG-50029 campaign breached European political and media targets and exfiltrated sensitive data",
     "created": "2026-09-13",
-    "updated": "2026-10-19",
-    "version": "0.1.18"
+    "updated": "2026-10-22",
+    "version": "0.1.19"
   },
   "incident_identity": {
     "historical_event_name": "Anthropic GTG-50029 European political-target cyber campaign",
@@ -257,7 +257,56 @@
       "special-category political-opinion data",
       "data breach notification",
       "AI service misuse controls"
-    ]
+    ],
+    "normalized_geography": {
+      "scope": "multi-jurisdiction",
+      "relations": [
+        {
+          "role": "affected-organization-jurisdiction",
+          "locations": [
+            {
+              "country_code": "FR"
+            }
+          ],
+          "source_record_refs": [
+            "source_records[1]"
+          ],
+          "evidence_basis": "Reporting identifies French political organisations among the targets.",
+          "evidence_state": "attributed",
+          "party_refs": [
+            "PARTY-002"
+          ],
+          "relationship_id": "GEO-001"
+        },
+        {
+          "role": "affected-organization-jurisdiction",
+          "locations": [],
+          "source_record_refs": [
+            "source_records[0]",
+            "source_records[2]"
+          ],
+          "evidence_basis": "The campaign spans European entities without a complete country enumeration.",
+          "evidence_state": "unresolved",
+          "party_refs": [
+            "PARTY-002"
+          ],
+          "relationship_id": "GEO-002"
+        },
+        {
+          "role": "operator-location",
+          "locations": [],
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "evidence_basis": "French language does not establish the actor’s physical country.",
+          "evidence_state": "unresolved",
+          "party_refs": [
+            "PARTY-001"
+          ],
+          "relationship_id": "GEO-003"
+        }
+      ]
+    }
   },
   "taxonomy_classification": {
     "taxonomy_version": "0.6.11",
@@ -846,27 +895,49 @@
           "No substantive evidence, criteria or mapping-outcome review performed in this confidence-only operation."
         ],
         "review_outcome": "Moved historical Boundary confidence into dated provenance; current mapping outcomes and adjudication text unchanged."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-22-CONTEXT-000118",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work / Codex",
+        "reviewer_model": "Codex (specific runtime model identifier not exposed)",
+        "review_date": "2026-10-22",
+        "review_scope": "Gate 2 approved additive Incident Context review. Source-linked parties and geographic relationships only.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_research": false,
+          "taxonomy_review": false,
+          "harm_impact_review": false,
+          "external_requirement_review": false
+        },
+        "known_limitations": [
+          "Do not map every EU country or equate language with nationality; named country coverage is incomplete.",
+          "AI-authored context review is not human source verification. Existing source-access statements remain historical."
+        ],
+        "review_outcome": "Added 4 party entities and 3 geographic relationships; geographic scope multi-jurisdiction. Preserved all prior narrative, evidence, taxonomy, Harm Impact and external assessments."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-19-CORPUS-BOUNDARY-000118",
+      "review_id": "VIGIL-REVIEW-2026-10-22-CONTEXT-000118",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI Codex",
-      "reviewer_model": "Exact runtime model identity not exposed",
-      "review_date": "2026-10-19",
-      "review_scope": "Role-field provenance relocation only; not substantive adjudication.",
+      "reviewer_platform": "OpenAI ChatGPT Work / Codex",
+      "reviewer_model": "Codex (specific runtime model identifier not exposed)",
+      "review_date": "2026-10-22",
+      "review_scope": "Gate 2 approved additive Incident Context review. Source-linked parties and geographic relationships only.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "taxonomy_review": true,
         "web_research": false,
+        "taxonomy_review": false,
         "harm_impact_review": false,
         "external_requirement_review": false
       },
       "known_limitations": [
-        "No substantive evidence, criteria or mapping-outcome review performed in this confidence-only operation."
+        "Do not map every EU country or equate language with nationality; named country coverage is incomplete.",
+        "AI-authored context review is not human source verification. Existing source-access statements remain historical."
       ],
-      "review_outcome": "Moved historical Boundary confidence into dated provenance; current mapping outcomes and adjudication text unchanged."
+      "review_outcome": "Added 4 party entities and 3 geographic relationships; geographic scope multi-jurisdiction. Preserved all prior narrative, evidence, taxonomy, Harm Impact and external assessments."
     }
   },
   "harm_impact_assessment": {
@@ -1117,5 +1188,62 @@
       ],
       "identification_basis": "The provider identifies harmful cyber use of generative AI responses in the intrusion campaign."
     }
-  ]
+  ],
+  "affected_party_context": {
+    "entities": [
+      {
+        "name": "French-speaking threat actor",
+        "kind": "person",
+        "roles": [
+          "operator"
+        ],
+        "source_record_refs": [
+          "source_records[0]"
+        ],
+        "evidence_basis": "Anthropic attributes the campaign to one actor with an agent workflow.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-001"
+      },
+      {
+        "name": "European political, media and SaaS organisations",
+        "kind": "organization",
+        "roles": [
+          "affected-organization"
+        ],
+        "source_record_refs": [
+          "source_records[0]",
+          "source_records[2]"
+        ],
+        "evidence_basis": "The report describes targeting and internal compromise of multiple entities.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-002"
+      },
+      {
+        "name": "People in exposed political and other records",
+        "kind": "population",
+        "roles": [
+          "subject"
+        ],
+        "source_record_refs": [
+          "source_records[0]"
+        ],
+        "evidence_basis": "The report identifies political-opinion and other personal data.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-003"
+      },
+      {
+        "name": "Anthropic",
+        "kind": "organization",
+        "roles": [
+          "provider"
+        ],
+        "source_record_refs": [
+          "source_records[0]"
+        ],
+        "evidence_basis": "Claude was used in the reported workflow.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-004"
+      }
+    ]
+  }
 }

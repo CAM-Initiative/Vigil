@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Moltbook database exposure revealed private communications and API authentication tokens",
     "created": "2026-09-19",
-    "updated": "2026-10-10",
-    "version": "0.3.5"
+    "updated": "2026-10-22",
+    "version": "0.3.6"
   },
   "incident_identity": {
     "historical_event_name": "Moltbook database exposure revealed private communications and API authentication tokens",
@@ -283,7 +283,23 @@
     "regulatory_surface": [
       "data protection and credential security",
       "platform security"
-    ]
+    ],
+    "normalized_geography": {
+      "scope": "not-established",
+      "relations": [
+        {
+          "role": "occurrence-location",
+          "locations": [],
+          "source_record_refs": [
+            "source_records[2]"
+          ],
+          "evidence_basis": "The researcher account does not establish database or affected-user countries.",
+          "evidence_state": "unresolved",
+          "party_refs": [],
+          "relationship_id": "GEO-001"
+        }
+      ]
+    }
   },
   "taxonomy_classification": {
     "taxonomy_version": "0.6.11",
@@ -514,28 +530,49 @@
           "Later policy versions and unrelated plaintiffs/campaigns do not establish the original occurrence."
         ],
         "review_outcome": "All twelve dimensions source-reviewed. Researchers accessed extensive private communications, email data and agent credentials and demonstrated a live post change. Retained privacy S4 and property S2 recognise actual consequences. Token counts are not human-victim counts. Initial fixes did not block all writes; subsequent repair/deletion is evidenced but does not restore unknown copies. Possible impersonation is not asserted as an actual attack. Relational-role and heightened-protection tests independently completed."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-22-CONTEXT-000158",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work / Codex",
+        "reviewer_model": "Codex (specific runtime model identifier not exposed)",
+        "review_date": "2026-10-22",
+        "review_scope": "Gate 2 approved additive Incident Context review. Source-linked parties and geographic relationships only.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_research": false,
+          "taxonomy_review": false,
+          "harm_impact_review": false,
+          "external_requirement_review": false
+        },
+        "known_limitations": [
+          "Credential exposure is not proof of subsequent impersonation; UTC timestamps do not locate the database.",
+          "AI-authored context review is not human source verification. Existing source-access statements remain historical."
+        ],
+        "review_outcome": "Added 3 party entities and 1 geographic relationships; geographic scope not-established. Preserved all prior narrative, evidence, taxonomy, Harm Impact and external assessments."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-10-COMBINED-TRANCHE-12-000158",
+      "review_id": "VIGIL-REVIEW-2026-10-22-CONTEXT-000158",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT Work",
-      "reviewer_model": "GPT-6",
-      "review_date": "2026-10-10",
-      "review_scope": "Source-first all-dimension HIM 1.1.0 and independent FC-086/087 reconciliation.",
+      "reviewer_platform": "OpenAI ChatGPT Work / Codex",
+      "reviewer_model": "Codex (specific runtime model identifier not exposed)",
+      "review_date": "2026-10-22",
+      "review_scope": "Gate 2 approved additive Incident Context review. Source-linked parties and geographic relationships only.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "web_research": true,
-        "harm_impact_review": true,
-        "taxonomy_review": true,
-        "external_requirement_review": true
+        "web_research": false,
+        "taxonomy_review": false,
+        "harm_impact_review": false,
+        "external_requirement_review": false
       },
       "known_limitations": [
-        "Actual data objects, permission history and later consequences remain source-bounded; no inferred harmful reuse or irreversible loss.",
-        "Later policy versions and unrelated plaintiffs/campaigns do not establish the original occurrence."
+        "Credential exposure is not proof of subsequent impersonation; UTC timestamps do not locate the database.",
+        "AI-authored context review is not human source verification. Existing source-access statements remain historical."
       ],
-      "review_outcome": "All twelve dimensions source-reviewed. Researchers accessed extensive private communications, email data and agent credentials and demonstrated a live post change. Retained privacy S4 and property S2 recognise actual consequences. Token counts are not human-victim counts. Initial fixes did not block all writes; subsequent repair/deletion is evidenced but does not restore unknown copies. Possible impersonation is not asserted as an actual attack. Relational-role and heightened-protection tests independently completed."
+      "review_outcome": "Added 3 party entities and 1 geographic relationships; geographic scope not-established. Preserved all prior narrative, evidence, taxonomy, Harm Impact and external assessments."
     },
     "operating_model": "AI-authored, semi-autonomous production under human contract approval",
     "human_governance_editor": null,
@@ -674,5 +711,49 @@
       ],
       "identification_basis": "The exposed backend held authentication material and private communications for the AI-agent platform."
     }
-  ]
+  ],
+  "affected_party_context": {
+    "entities": [
+      {
+        "name": "Moltbook",
+        "kind": "organization",
+        "roles": [
+          "operator",
+          "affected-organization"
+        ],
+        "source_record_refs": [
+          "source_records[2]"
+        ],
+        "evidence_basis": "The platform’s database and live posts were exposed.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-001"
+      },
+      {
+        "name": "Users and agents represented in exposed data",
+        "kind": "population",
+        "roles": [
+          "subject"
+        ],
+        "source_record_refs": [
+          "source_records[2]"
+        ],
+        "evidence_basis": "Researchers found emails, private conversations and authentication tokens.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-002"
+      },
+      {
+        "name": "Wiz Research",
+        "kind": "organization",
+        "roles": [
+          "operator"
+        ],
+        "source_record_refs": [
+          "source_records[2]"
+        ],
+        "evidence_basis": "Wiz tested access, disclosed the defect and verified fixes.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-003"
+      }
+    ]
+  }
 }

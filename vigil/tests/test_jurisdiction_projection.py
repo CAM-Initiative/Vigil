@@ -24,6 +24,57 @@ def record(primary="", secondary=None, incident_id="VIGIL-INC-000001"):
 
 
 class JurisdictionProjectionTest(unittest.TestCase):
+    def reviewed(self):
+        r = record("United States")
+        r["source_records"] = [{"source_title": "Controlled source fixture"}]
+        def relation(i, role, code, state="attributed"):
+            return {"relationship_id": f"GEO-{i:03}", "role": role,
+                    "evidence_state": state, "evidence_basis": "Fixture-specific source basis.",
+                    "source_record_refs": ["source_records[0]"],
+                    "locations": [{"country_code": code}] if code else []}
+        r["jurisdictional_context"]["normalized_geography"] = {
+            "scope": "cross-border", "relations": [
+                relation(1, "provider-location", "US"),
+                relation(2, "affected-service-jurisdiction", "AU", "disputed"),
+                relation(3, "affected-organization-jurisdiction", "AU"),
+                relation(4, "occurrence-location", None, "unresolved")]}
+        return r
+
+    def test_reviewed_relationships_keep_roles_states_and_no_legacy_anchor(self):
+        r = self.reviewed()
+        p = geo.project(r)
+        self.assertEqual(p["projection_status"], "reviewed-canonical")
+        self.assertEqual(p["scope"], "cross-border")
+        self.assertEqual(p["relations"], r["jurisdictional_context"]["normalized_geography"]["relations"])
+        self.assertEqual(p["reviewed_country_codes"], ["AU", "US"])
+        self.assertIsNone(p["anchor_country_code"])
+        self.assertEqual(p["legacy_text_projection"]["anchor_country_code"], "US")
+        self.assertEqual(p["record_version"], "1.2.3")
+        p["relations"][0]["locations"].clear()
+        self.assertTrue(r["jurisdictional_context"]["normalized_geography"]["relations"][0]["locations"])
+
+    def test_country_counts_deduplicate_incident_and_country(self):
+        p = geo.build_projection([self.reviewed()])
+        self.assertEqual(p["reviewed_country_incident_counts"], {"AU": 1, "US": 1})
+        self.assertEqual(p["reviewed_mapped_record_count"], 1)
+
+    def test_explicit_unknown_never_falls_back_to_legacy_country(self):
+        r = self.reviewed()
+        r["jurisdictional_context"]["normalized_geography"] = {
+            "scope": "not-established", "relations": [r["jurisdictional_context"]["normalized_geography"]["relations"][-1]]}
+        p = geo.project(r)
+        self.assertFalse(p["map_eligible"])
+        self.assertEqual(p["reviewed_country_codes"], [])
+        self.assertEqual(p["scope"], "not-established")
+
+    def test_invalid_canonical_source_reference_and_duplicate_ids_rejected(self):
+        r = self.reviewed()
+        r["jurisdictional_context"]["normalized_geography"]["relations"][0]["source_record_refs"] = ["source_records[5]"]
+        with self.assertRaises(ValueError):
+            geo.project(r)
+        with self.assertRaises(ValueError):
+            geo.build_projection([record(), record()])
+
     def test_single_country_anchor_is_explicit_and_not_a_point_location(self):
         p = geo.project(record("Perth, Western Australia, Australia"))
         self.assertEqual(p["scope"], "single-country")

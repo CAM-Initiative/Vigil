@@ -8,6 +8,7 @@ located, or which law applies. No NLP inference from titles/vendors/search terms
 from __future__ import annotations
 
 import json
+import copy
 import re
 import sys
 from pathlib import Path
@@ -16,7 +17,10 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[2]
 INCIDENTS = ROOT / "vigil" / "records" / "incidents"
 OUTPUT = ROOT / "vigil" / "VIGIL.Incidents.Jurisdictions.Index.json"
-VERSION = "1.0.0"
+VERSION = "2.0.0"
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from incident_context_validation import validate as validate_context
+CONTEXT_RULES = json.loads((ROOT / "vigil/VIGIL.Schema.json").read_text())["incident_context_rules"]
 
 # Stable ISO 3166-1 alpha-2 identifiers. Synonyms are explicit and conservative;
 # avoid geopolitical / local abbreviations that could create false positives.
@@ -117,7 +121,7 @@ def country_codes(text: str) -> list[str]:
 def subdivision_codes(text: str, parent_code: str) -> list[str]:
     return sorted(code for code, names in SUBDIVISIONS.get(parent_code, {}).items() if mentioned(text, names))
 
-def project(record: dict[str, Any]) -> dict[str, Any]:
+def project_legacy(record: dict[str, Any]) -> dict[str, Any]:
     details = record.get("jurisdictional_context")
     details = details if isinstance(details, dict) else {}
     primary = details.get("primary_jurisdiction")
@@ -176,7 +180,47 @@ def project(record: dict[str, Any]) -> dict[str, Any]:
         "requires_review": not mapped,
     }
 
+def project(record: dict[str, Any]) -> dict[str, Any]:
+    legacy = project_legacy(record)
+    geography = record.get("jurisdictional_context", {}).get("normalized_geography")
+    result = dict(legacy)
+    result["legacy_text_projection"] = copy.deepcopy(legacy)
+    result["projection_status"] = "legacy-text-derived"
+    result["relations"] = []
+    result["parties"] = []
+    result["reviewed_country_codes"] = []
+    if geography is None:
+        return result
+    errors = validate_context(record, CONTEXT_RULES)
+    if errors:
+        raise ValueError(f"{record['id']}: invalid canonical context: {errors}")
+    relations = copy.deepcopy(geography["relations"])
+    codes = sorted({location["country_code"] for relation in relations
+                    if relation["evidence_state"] != "unresolved"
+                    for location in relation["locations"]})
+    result.update({
+        "projection_status": "reviewed-canonical",
+        "scope": geography["scope"],
+        "relations": relations,
+        "parties": [{key: copy.deepcopy(p[key]) for key in
+                     ("party_id", "name", "kind", "roles", "evidence_state", "source_record_refs")}
+                    for p in record.get("affected_party_context", {}).get("entities", [])],
+        "reviewed_country_codes": codes,
+        "map_eligible": bool(codes),
+        # A v1 consumer must not accidentally use its old lexical anchor.
+        "anchor_country_code": None,
+        "anchor_semantics": "country-centroid-relationship-not-incident-coordinates" if codes else None,
+        "evidence_review_status": "canonical-source-linked-not-human-certified",
+        "requires_review": False,
+        "source_fields": ["jurisdictional_context.normalized_geography", "affected_party_context.entities"],
+    })
+    return result
+
+
 def build_projection(records: list[dict[str, Any]]) -> dict[str, Any]:
+    ids = [record["id"] for record in records]
+    if len(ids) != len(set(ids)):
+        raise ValueError("Duplicate canonical Incident IDs")
     entries = [project(record) for record in sorted(records, key=lambda r: r["id"])]
     counts: dict[str, int] = {}
     for item in entries:
@@ -186,9 +230,9 @@ def build_projection(records: list[dict[str, Any]]) -> dict[str, Any]:
         "schema_version": VERSION,
         "generated_from": "vigil/records/incidents/",
         "generated_notice": (
-            "Deterministic source-field projection from canonical VIGIL Incidents. "
-            "Country references describe recorded jurisdictional context; they are not "
-            "incident coordinates, legal-applicability findings or verified event locations."
+            "Deterministic canonical relationship projection. Legacy lexical fields are separately labelled. "
+            "Country anchors represent jurisdiction relationships, not incident coordinates or legal applicability. "
+            "Attributed and disputed evidence remains labelled; unresolved relationships have no country anchor."
         ),
         "authorship_provenance": {
             "content_origin": "deterministically-generated",
@@ -201,6 +245,12 @@ def build_projection(records: list[dict[str, Any]]) -> dict[str, Any]:
         "record_count": len(entries),
         "scope_counts": dict(sorted(counts.items())),
         "map_eligible_count": sum(bool(e["map_eligible"]) for e in entries),
+        "reviewed_record_count": sum(e["projection_status"] == "reviewed-canonical" for e in entries),
+        "reviewed_mapped_record_count": sum(bool(e["reviewed_country_codes"]) for e in entries),
+        "reviewed_country_incident_counts": {
+            code: sum(code in e["reviewed_country_codes"] for e in entries)
+            for code in sorted({c for e in entries for c in e["reviewed_country_codes"]})
+        },
         "records": entries,
     }
 
@@ -216,7 +266,7 @@ def main() -> int:
         return 0
     OUTPUT.write_text(out, encoding="utf-8")
     print(f"Wrote {result['record_count']} jurisdiction projections; "
-          f"{result['map_eligible_count']} single-country associations; "
+          f"{result['reviewed_record_count']} reviewed; {result['reviewed_mapped_record_count']} with coded relationships; "
           f"{result['scope_counts']}.")
     return 0
 

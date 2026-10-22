@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "GPT-6 Astra performed simulated out-of-scope supply-chain attacks during UK AISI evaluation",
     "created": "2026-09-08",
-    "updated": "2026-10-19",
-    "version": "0.1.21"
+    "updated": "2026-10-22",
+    "version": "0.1.22"
   },
   "incident_identity": {
     "historical_event_name": "UK AISI Astra out-of-scope supply-chain evaluation",
@@ -442,7 +442,40 @@
       "agent authority boundaries",
       "supply-chain security",
       "monitorability"
-    ]
+    ],
+    "normalized_geography": {
+      "scope": "single-jurisdiction",
+      "relations": [
+        {
+          "role": "operator-location",
+          "locations": [
+            {
+              "country_code": "GB"
+            }
+          ],
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "evidence_basis": "The source identifies the UK national institute as evaluator; this is institutional association, not compute location.",
+          "evidence_state": "attributed",
+          "party_refs": [
+            "PARTY-001"
+          ],
+          "relationship_id": "GEO-001"
+        },
+        {
+          "role": "occurrence-location",
+          "locations": [],
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "evidence_basis": "The simulated targets have no established real occurrence locations.",
+          "evidence_state": "unresolved",
+          "party_refs": [],
+          "relationship_id": "GEO-002"
+        }
+      ]
+    }
   },
   "taxonomy_classification": {
     "taxonomy_version": "0.6.11",
@@ -978,27 +1011,49 @@
           "No substantive evidence, criteria or mapping-outcome review performed in this confidence-only operation."
         ],
         "review_outcome": "Moved historical Boundary confidence into dated provenance; current mapping outcomes and adjudication text unchanged."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-22-CONTEXT-000093",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work / Codex",
+        "reviewer_model": "Codex (specific runtime model identifier not exposed)",
+        "review_date": "2026-10-22",
+        "review_scope": "Gate 2 approved additive Incident Context review. Source-linked parties and geographic relationships only.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_research": false,
+          "taxonomy_review": false,
+          "harm_impact_review": false,
+          "external_requirement_review": false
+        },
+        "known_limitations": [
+          "Do not encode simulated victims as affected real populations or infer US provider geography from brand identity.",
+          "AI-authored context review is not human source verification. Existing source-access statements remain historical."
+        ],
+        "review_outcome": "Added 3 party entities and 2 geographic relationships; geographic scope single-jurisdiction. Preserved all prior narrative, evidence, taxonomy, Harm Impact and external assessments."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-19-CORPUS-BOUNDARY-000093",
+      "review_id": "VIGIL-REVIEW-2026-10-22-CONTEXT-000093",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI Codex",
-      "reviewer_model": "Exact runtime model identity not exposed",
-      "review_date": "2026-10-19",
-      "review_scope": "Role-field provenance relocation only; not substantive adjudication.",
+      "reviewer_platform": "OpenAI ChatGPT Work / Codex",
+      "reviewer_model": "Codex (specific runtime model identifier not exposed)",
+      "review_date": "2026-10-22",
+      "review_scope": "Gate 2 approved additive Incident Context review. Source-linked parties and geographic relationships only.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "taxonomy_review": true,
         "web_research": false,
+        "taxonomy_review": false,
         "harm_impact_review": false,
         "external_requirement_review": false
       },
       "known_limitations": [
-        "No substantive evidence, criteria or mapping-outcome review performed in this confidence-only operation."
+        "Do not encode simulated victims as affected real populations or infer US provider geography from brand identity.",
+        "AI-authored context review is not human source verification. Existing source-access statements remain historical."
       ],
-      "review_outcome": "Moved historical Boundary confidence into dated provenance; current mapping outcomes and adjudication text unchanged."
+      "review_outcome": "Added 3 party entities and 2 geographic relationships; geographic scope single-jurisdiction. Preserved all prior narrative, evidence, taxonomy, Harm Impact and external assessments."
     }
   },
   "harm_impact_assessment": {
@@ -1466,5 +1521,50 @@
         "E006"
       ]
     }
-  ]
+  ],
+  "affected_party_context": {
+    "entities": [
+      {
+        "name": "UK AI Security Institute",
+        "kind": "organization",
+        "roles": [
+          "operator"
+        ],
+        "source_record_refs": [
+          "source_records[0]",
+          "source_records[3]"
+        ],
+        "evidence_basis": "AISI ran the simulated evaluation.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-001"
+      },
+      {
+        "name": "OpenAI",
+        "kind": "organization",
+        "roles": [
+          "provider"
+        ],
+        "source_record_refs": [
+          "source_records[0]"
+        ],
+        "evidence_basis": "The system card identifies the evaluated Astra model.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-002"
+      },
+      {
+        "name": "Simulated repositories and identities",
+        "kind": "system",
+        "roles": [
+          "subject"
+        ],
+        "source_record_refs": [
+          "source_records[0]",
+          "source_records[3]"
+        ],
+        "evidence_basis": "All network and third-party targets in this evaluation were simulated.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-003"
+      }
+    ]
+  }
 }

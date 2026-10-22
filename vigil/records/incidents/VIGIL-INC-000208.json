@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Human-directed Cairn agents performed a large-scale website intrusion campaign",
     "created": "2026-10-21",
-    "updated": "2026-10-21",
-    "version": "0.1.0"
+    "updated": "2026-10-22",
+    "version": "0.1.1"
   },
   "incident_identity": {
     "historical_event_name": "Cairn AIA0001 website intrusion campaign, late September–October 2026",
@@ -194,7 +194,51 @@
   },
   "jurisdictional_context": {
     "primary_jurisdiction": "United States / Japan / Australia / Canada",
-    "notes": "Bounded factual jurisdiction context, not a legal finding."
+    "notes": "Bounded factual jurisdiction context, not a legal finding.",
+    "normalized_geography": {
+      "scope": "multi-jurisdiction",
+      "relations": [
+        {
+          "role": "other",
+          "locations": [
+            {
+              "country_code": "US"
+            },
+            {
+              "country_code": "CA"
+            },
+            {
+              "country_code": "JP"
+            },
+            {
+              "country_code": "AU"
+            }
+          ],
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "evidence_basis": "The observed tasking explicitly lists commercial targets in these four countries; this does not prove every target was compromised.",
+          "evidence_state": "attributed",
+          "party_refs": [
+            "PARTY-002"
+          ],
+          "relationship_id": "GEO-001"
+        },
+        {
+          "role": "operator-location",
+          "locations": [],
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "evidence_basis": "Chinese-language tasking does not establish the operators’ countries.",
+          "evidence_state": "unresolved",
+          "party_refs": [
+            "PARTY-001"
+          ],
+          "relationship_id": "GEO-002"
+        }
+      ]
+    }
   },
   "taxonomy_classification": {
     "taxonomy_version": "0.7.0",
@@ -239,32 +283,49 @@
           "AI authorship does not establish human verification."
         ],
         "review_outcome": "Human-selected malicious objectives were executed by agents with substantial task-level autonomy. This is instrumental task optimisation in service of the operator's criminal instructions; it does not show agent-invented misconduct or reward hacking. An unauthorised external web shell demonstrates actual compromise. However, no documented model mechanism shows a valid authorised objective being used by the model to override a separately binding authority condition. The event is recorded as unclassified under the present Alignment Taxonomy rather than assigning an unsupported autonomous authority-confusion finding."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-22-CONTEXT-000208",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work / Codex",
+        "reviewer_model": "Codex (specific runtime model identifier not exposed)",
+        "review_date": "2026-10-22",
+        "review_scope": "Gate 2 approved additive Incident Context review. Source-linked parties and geographic relationships only.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_research": true,
+          "taxonomy_review": false,
+          "harm_impact_review": false,
+          "external_requirement_review": false
+        },
+        "known_limitations": [
+          "Target-country association is not a confirmed country-by-country compromise count. AS hosting attribution alone is not physical geography.",
+          "AI-authored context review is not human source verification. Existing source-access statements remain historical."
+        ],
+        "review_outcome": "Added 4 party entities and 2 geographic relationships; geographic scope multi-jurisdiction. Preserved all prior narrative, evidence, taxonomy, Harm Impact and external assessments."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-21-INC-208",
+      "review_id": "VIGIL-REVIEW-2026-10-22-CONTEXT-000208",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT (web and GitHub)",
-      "reviewer_model": "GPT-6",
-      "review_date": "2026-10-21",
-      "review_scope": "Full new-entry evidence, scope/duplicate, episodes, taxonomy, twelve-dimensional Harm Impact and independent external requirements.",
+      "reviewer_platform": "OpenAI ChatGPT Work / Codex",
+      "reviewer_model": "Codex (specific runtime model identifier not exposed)",
+      "review_date": "2026-10-22",
+      "review_scope": "Gate 2 approved additive Incident Context review. Source-linked parties and geographic relationships only.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "source_provenance_review": true,
-        "new_external_source_research": true,
-        "taxonomy_review": true,
-        "harm_impact_review": true,
-        "external_requirement_review": true
+        "web_research": true,
+        "taxonomy_review": false,
+        "harm_impact_review": false,
+        "external_requirement_review": false
       },
       "known_limitations": [
-        "Human-directed crime is not evidence of the AI independently generating the illicit goal.",
-        "Site-by-site affected population, financial loss and actual credential leakage not consistently published.",
-        "The 11% valid-secret metric spans examined panels and is not specifically attributed to the AIA0001 cluster; do not score this incident from that total.",
-        "No unredacted private telemetry or full primary forensic records.",
-        "AI authorship does not establish human verification."
+        "Target-country association is not a confirmed country-by-country compromise count. AS hosting attribution alone is not physical geography.",
+        "AI-authored context review is not human source verification. Existing source-access statements remain historical."
       ],
-      "review_outcome": "Human-selected malicious objectives were executed by agents with substantial task-level autonomy. This is instrumental task optimisation in service of the operator's criminal instructions; it does not show agent-invented misconduct or reward hacking. An unauthorised external web shell demonstrates actual compromise. However, no documented model mechanism shows a valid authorised objective being used by the model to override a separately binding authority condition. The event is recorded as unclassified under the present Alignment Taxonomy rather than assigning an unsupported autonomous authority-confusion finding."
+      "review_outcome": "Added 4 party entities and 2 geographic relationships; geographic scope multi-jurisdiction. Preserved all prior narrative, evidence, taxonomy, Harm Impact and external assessments."
     }
   },
   "harm_impact_assessment": {
@@ -361,5 +422,62 @@
       }
     ],
     "assessment_gap": "The investigator verified one live vendor web shell and the campaign involved many attacked sites, but the affected vendor's service disruption duration, actual protected data accessed, victim loss and direct consequential harms are not verified in sources attributable to this cluster."
+  },
+  "affected_party_context": {
+    "entities": [
+      {
+        "name": "AIA0001 human operators",
+        "kind": "population",
+        "roles": [
+          "operator"
+        ],
+        "source_record_refs": [
+          "source_records[0]"
+        ],
+        "evidence_basis": "NorForge identifies Chinese-language tasking across 14 linked dashboards.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-001"
+      },
+      {
+        "name": "Targeted commercial websites",
+        "kind": "organization",
+        "roles": [
+          "subject"
+        ],
+        "source_record_refs": [
+          "source_records[0]",
+          "source_records[1]"
+        ],
+        "evidence_basis": "The records show targets and some verified or reported compromises; consequences vary.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-002"
+      },
+      {
+        "name": "NorForge",
+        "kind": "organization",
+        "roles": [
+          "other"
+        ],
+        "source_record_refs": [
+          "source_records[0]"
+        ],
+        "evidence_basis": "The investigator inspected panels and verified one live uploader shell.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-003"
+      },
+      {
+        "name": "Cairn orchestration system",
+        "kind": "system",
+        "roles": [
+          "subject"
+        ],
+        "source_record_refs": [
+          "source_records[0]"
+        ],
+        "evidence_basis": "Human operators used Cairn to assign targets and objectives.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-004"
+      }
+    ]
   }
 }

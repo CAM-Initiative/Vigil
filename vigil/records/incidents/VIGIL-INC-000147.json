@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Waymo robotaxi diverted passenger into parking garage and temporarily stranded him",
     "created": "2026-09-19",
-    "updated": "2026-10-10",
-    "version": "0.1.11"
+    "updated": "2026-10-22",
+    "version": "0.1.12"
   },
   "incident_identity": {
     "historical_event_name": "Waymo parking-garage passenger stranding",
@@ -236,7 +236,32 @@
     "regulatory_surface": [
       "AI incident evidence",
       "system governance and accountability"
-    ]
+    ],
+    "normalized_geography": {
+      "scope": "single-jurisdiction",
+      "relations": [
+        {
+          "role": "occurrence-location",
+          "locations": [
+            {
+              "country_code": "US",
+              "subdivision_code": "US-CA",
+              "locality": "San Francisco"
+            }
+          ],
+          "source_record_refs": [
+            "source_records[2]"
+          ],
+          "evidence_basis": "The passenger interview concerns the San Francisco garage detour.",
+          "evidence_state": "attributed",
+          "party_refs": [
+            "PARTY-001",
+            "PARTY-002"
+          ],
+          "relationship_id": "GEO-001"
+        }
+      ]
+    }
   },
   "taxonomy_classification": {
     "taxonomy_version": "0.6.11",
@@ -461,29 +486,49 @@
           "Human support override does not establish the autonomous vehicle’s recognition of an infeasible route or a heightened AI support duty."
         ],
         "review_outcome": "Overall S2 retained. Temporary confusion remains psychological S2; the routine support-corrected passenger workflow also supports service S2. No injury, coercive confinement or heightened AI support failure is inferred."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-22-CONTEXT-000147",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work / Codex",
+        "reviewer_model": "Codex (specific runtime model identifier not exposed)",
+        "review_date": "2026-10-22",
+        "review_scope": "Gate 2 approved additive Incident Context review. Source-linked parties and geographic relationships only.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_research": false,
+          "taxonomy_review": false,
+          "harm_impact_review": false,
+          "external_requirement_review": false
+        },
+        "known_limitations": [
+          "The separate missed-flight story is not used to add geography or harm to this occurrence.",
+          "AI-authored context review is not human source verification. Existing source-access statements remain historical."
+        ],
+        "review_outcome": "Added 2 party entities and 1 geographic relationships; geographic scope single-jurisdiction. Preserved all prior narrative, evidence, taxonomy, Harm Impact and external assessments."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-10-COMBINED-TRANCHE-06-000147",
+      "review_id": "VIGIL-REVIEW-2026-10-22-CONTEXT-000147",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT Work",
-      "reviewer_model": "GPT-6",
-      "review_date": "2026-10-10",
-      "review_scope": "Source-first all-dimension HIM 1.1.0 and independent FC-086/087 reconciliation.",
+      "reviewer_platform": "OpenAI ChatGPT Work / Codex",
+      "reviewer_model": "Codex (specific runtime model identifier not exposed)",
+      "review_date": "2026-10-22",
+      "review_scope": "Gate 2 approved additive Incident Context review. Source-linked parties and geographic relationships only.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "web_research": true,
-        "harm_impact_review": true,
-        "taxonomy_review": true,
-        "external_requirement_review": true
+        "web_research": false,
+        "taxonomy_review": false,
+        "harm_impact_review": false,
+        "external_requirement_review": false
       },
       "known_limitations": [
-        "The passenger’s exact delay and vehicle telemetry are not published.",
-        "No inability to leave the vehicle, bodily injury or missed-conference loss is established.",
-        "Human support override does not establish the autonomous vehicle’s recognition of an infeasible route or a heightened AI support duty."
+        "The separate missed-flight story is not used to add geography or harm to this occurrence.",
+        "AI-authored context review is not human source verification. Existing source-access statements remain historical."
       ],
-      "review_outcome": "Overall S2 retained. Temporary confusion remains psychological S2; the routine support-corrected passenger workflow also supports service S2. No injury, coercive confinement or heightened AI support failure is inferred."
+      "review_outcome": "Added 2 party entities and 1 geographic relationships; geographic scope single-jurisdiction. Preserved all prior narrative, evidence, taxonomy, Harm Impact and external assessments."
     }
   },
   "harm_impact_assessment": {
@@ -607,5 +652,36 @@
       ],
       "identification_basis": "A documented deployment malfunction affected a passenger during normal autonomous transport."
     }
-  ]
+  ],
+  "affected_party_context": {
+    "entities": [
+      {
+        "name": "Darren Findling",
+        "kind": "person",
+        "roles": [
+          "subject"
+        ],
+        "source_record_refs": [
+          "source_records[2]"
+        ],
+        "evidence_basis": "The passenger interview describes the garage detour.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-001"
+      },
+      {
+        "name": "Waymo",
+        "kind": "organization",
+        "roles": [
+          "provider",
+          "operator"
+        ],
+        "source_record_refs": [
+          "source_records[2]"
+        ],
+        "evidence_basis": "Waymo operated the vehicle and support intervened.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-002"
+      }
+    ]
+  }
 }

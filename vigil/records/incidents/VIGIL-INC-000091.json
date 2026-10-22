@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Concurrent ChatGPT, Claude and Grok service outages on 3 September 2026",
     "created": "2026-09-06",
-    "updated": "2026-10-10",
-    "version": "0.1.16"
+    "updated": "2026-10-22",
+    "version": "0.1.17"
   },
   "incident_identity": {
     "historical_event_name": "3 September 2026 concurrent ChatGPT, Claude and Grok service outages",
@@ -508,7 +508,46 @@
       "dependency management",
       "provider concentration",
       "correlated failure"
-    ]
+    ],
+    "normalized_geography": {
+      "scope": "single-jurisdiction",
+      "relations": [
+        {
+          "role": "infrastructure-location",
+          "locations": [
+            {
+              "country_code": "US",
+              "subdivision_code": "US-TN",
+              "locality": "Memphis"
+            }
+          ],
+          "source_record_refs": [
+            "source_records[1]"
+          ],
+          "evidence_basis": "The report explicitly identifies xAI’s Memphis compute-centre outage.",
+          "evidence_state": "attributed",
+          "party_refs": [
+            "PARTY-003"
+          ],
+          "relationship_id": "GEO-001"
+        },
+        {
+          "role": "affected-service-jurisdiction",
+          "locations": [],
+          "source_record_refs": [
+            "source_records[0]",
+            "source_records[1]",
+            "source_records[2]"
+          ],
+          "evidence_basis": "The status reports do not enumerate countries of affected service users.",
+          "evidence_state": "unresolved",
+          "party_refs": [
+            "PARTY-002"
+          ],
+          "relationship_id": "GEO-002"
+        }
+      ]
+    }
   },
   "taxonomy_classification": {
     "taxonomy_version": "0.6.11",
@@ -825,28 +864,49 @@
           "No unreported financial, psychological, relational or irreversible consequences inferred."
         ],
         "review_outcome": "All twelve dimensions source-reviewed. The separate provider branches evidence multi-hour actual service interruption and bounded recovery, retaining S3. Temporal overlap does not prove a common dependency or material disruption in multiple customer organisations. OpenAI broad rollback mitigation and later final resolution are distinct; neither every registered user nor the full period is counted as continuous complete downtime. No S4 is inferred from three provider names. Relational-role and heightened-protection conditions independently tested."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-22-CONTEXT-000091",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work / Codex",
+        "reviewer_model": "Codex (specific runtime model identifier not exposed)",
+        "review_date": "2026-10-22",
+        "review_scope": "Gate 2 approved additive Incident Context review. Source-linked parties and geographic relationships only.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_research": false,
+          "taxonomy_review": false,
+          "harm_impact_review": false,
+          "external_requirement_review": false
+        },
+        "known_limitations": [
+          "One supported infrastructure location does not mean only US users were affected; the three causes remain separate.",
+          "AI-authored context review is not human source verification. Existing source-access statements remain historical."
+        ],
+        "review_outcome": "Added 3 party entities and 2 geographic relationships; geographic scope single-jurisdiction. Preserved all prior narrative, evidence, taxonomy, Harm Impact and external assessments."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-10-COMBINED-TRANCHE-11-000091",
+      "review_id": "VIGIL-REVIEW-2026-10-22-CONTEXT-000091",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT Work",
-      "reviewer_model": "GPT-6",
-      "review_date": "2026-10-10",
-      "review_scope": "Source-first all-dimension HIM 1.1.0 and independent FC-086/087 reconciliation.",
+      "reviewer_platform": "OpenAI ChatGPT Work / Codex",
+      "reviewer_model": "Codex (specific runtime model identifier not exposed)",
+      "review_date": "2026-10-22",
+      "review_scope": "Gate 2 approved additive Incident Context review. Source-linked parties and geographic relationships only.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "web_research": true,
-        "harm_impact_review": true,
-        "taxonomy_review": true,
-        "external_requirement_review": true
+        "web_research": false,
+        "taxonomy_review": false,
+        "harm_impact_review": false,
+        "external_requirement_review": false
       },
       "known_limitations": [
-        "Function-level and customer-level effects not established beyond each preserved source.",
-        "No unreported financial, psychological, relational or irreversible consequences inferred."
+        "One supported infrastructure location does not mean only US users were affected; the three causes remain separate.",
+        "AI-authored context review is not human source verification. Existing source-access statements remain historical."
       ],
-      "review_outcome": "All twelve dimensions source-reviewed. The separate provider branches evidence multi-hour actual service interruption and bounded recovery, retaining S3. Temporal overlap does not prove a common dependency or material disruption in multiple customer organisations. OpenAI broad rollback mitigation and later final resolution are distinct; neither every registered user nor the full period is counted as continuous complete downtime. No S4 is inferred from three provider names. Relational-role and heightened-protection conditions independently tested."
+      "review_outcome": "Added 3 party entities and 2 geographic relationships; geographic scope single-jurisdiction. Preserved all prior narrative, evidence, taxonomy, Harm Impact and external assessments."
     }
   },
   "harm_impact_assessment": {
@@ -962,5 +1022,53 @@
       ],
       "identification_basis": "The providers’ reported recovery from unwanted service outages directly identifies repair mechanisms for these AI services."
     }
-  ]
+  ],
+  "affected_party_context": {
+    "entities": [
+      {
+        "name": "OpenAI, Anthropic and xAI",
+        "kind": "organization",
+        "roles": [
+          "provider",
+          "operator"
+        ],
+        "source_record_refs": [
+          "source_records[0]",
+          "source_records[1]",
+          "source_records[2]"
+        ],
+        "evidence_basis": "Separate provider accounts identify overlapping outages, without a common cause.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-001"
+      },
+      {
+        "name": "ChatGPT, Codex, Claude and Grok services",
+        "kind": "service",
+        "roles": [
+          "affected-service"
+        ],
+        "source_record_refs": [
+          "source_records[0]",
+          "source_records[1]",
+          "source_records[2]"
+        ],
+        "evidence_basis": "The reports identify affected service surfaces.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-002"
+      },
+      {
+        "name": "xAI compute centre",
+        "kind": "infrastructure",
+        "roles": [
+          "subject"
+        ],
+        "source_record_refs": [
+          "source_records[1]"
+        ],
+        "evidence_basis": "xAI attributed its disruption to the Memphis compute centre.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-003"
+      }
+    ]
+  }
 }

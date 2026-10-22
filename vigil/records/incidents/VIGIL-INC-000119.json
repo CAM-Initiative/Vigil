@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Nx s1ngularity malware weaponized local AI coding CLIs during credential-harvesting supply-chain attack",
     "created": "2026-09-14",
-    "updated": "2026-10-19",
-    "version": "0.1.18"
+    "updated": "2026-10-22",
+    "version": "0.1.19"
   },
   "incident_identity": {
     "historical_event_name": "2025 Nx s1ngularity supply-chain attack",
@@ -357,7 +357,24 @@
       "credential and secret exposure",
       "unauthorised access and data exfiltration",
       "AI-agent tool invocation and permission boundaries"
-    ]
+    ],
+    "normalized_geography": {
+      "scope": "not-established",
+      "relations": [
+        {
+          "role": "occurrence-location",
+          "locations": [],
+          "source_record_refs": [
+            "source_records[1]",
+            "source_records[2]"
+          ],
+          "evidence_basis": "The technical accounts do not establish countries of all affected installations or repository owners.",
+          "evidence_state": "unresolved",
+          "party_refs": [],
+          "relationship_id": "GEO-001"
+        }
+      ]
+    }
   },
   "taxonomy_classification": {
     "taxonomy_version": "0.6.9",
@@ -880,27 +897,49 @@
           "No substantive evidence, criteria or mapping-outcome review performed in this confidence-only operation."
         ],
         "review_outcome": "Moved historical Boundary confidence into dated provenance; current mapping outcomes and adjudication text unchanged."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-22-CONTEXT-000119",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work / Codex",
+        "reviewer_model": "Codex (specific runtime model identifier not exposed)",
+        "review_date": "2026-10-22",
+        "review_scope": "Gate 2 approved additive Incident Context review. Source-linked parties and geographic relationships only.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_research": false,
+          "taxonomy_review": false,
+          "harm_impact_review": false,
+          "external_requirement_review": false
+        },
+        "known_limitations": [
+          "A secondary registry’s Japan heading does not locate the entire campaign; AI invocation is only one exfiltration component.",
+          "AI-authored context review is not human source verification. Existing source-access statements remain historical."
+        ],
+        "review_outcome": "Added 4 party entities and 1 geographic relationships; geographic scope not-established. Preserved all prior narrative, evidence, taxonomy, Harm Impact and external assessments."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-19-CORPUS-BOUNDARY-000119",
+      "review_id": "VIGIL-REVIEW-2026-10-22-CONTEXT-000119",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI Codex",
-      "reviewer_model": "Exact runtime model identity not exposed",
-      "review_date": "2026-10-19",
-      "review_scope": "Role-field provenance relocation only; not substantive adjudication.",
+      "reviewer_platform": "OpenAI ChatGPT Work / Codex",
+      "reviewer_model": "Codex (specific runtime model identifier not exposed)",
+      "review_date": "2026-10-22",
+      "review_scope": "Gate 2 approved additive Incident Context review. Source-linked parties and geographic relationships only.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "taxonomy_review": true,
         "web_research": false,
+        "taxonomy_review": false,
         "harm_impact_review": false,
         "external_requirement_review": false
       },
       "known_limitations": [
-        "No substantive evidence, criteria or mapping-outcome review performed in this confidence-only operation."
+        "A secondary registry’s Japan heading does not locate the entire campaign; AI invocation is only one exfiltration component.",
+        "AI-authored context review is not human source verification. Existing source-access statements remain historical."
       ],
-      "review_outcome": "Moved historical Boundary confidence into dated provenance; current mapping outcomes and adjudication text unchanged."
+      "review_outcome": "Added 4 party entities and 1 geographic relationships; geographic scope not-established. Preserved all prior narrative, evidence, taxonomy, Harm Impact and external assessments."
     }
   },
   "harm_impact_assessment": {
@@ -1087,5 +1126,63 @@
       ],
       "identification_basis": "Researchers measured the response of locally invoked AI tools to malicious file-discovery requests."
     }
-  ]
+  ],
+  "affected_party_context": {
+    "entities": [
+      {
+        "name": "Nx project",
+        "kind": "organization",
+        "roles": [
+          "affected-organization"
+        ],
+        "source_record_refs": [
+          "source_records[0]"
+        ],
+        "evidence_basis": "The project reports publishing-token theft and malicious releases.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-001"
+      },
+      {
+        "name": "Developers and repository owners",
+        "kind": "population",
+        "roles": [
+          "subject"
+        ],
+        "source_record_refs": [
+          "source_records[1]",
+          "source_records[2]"
+        ],
+        "evidence_basis": "The analyses document credential exposure and repository publication.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-002"
+      },
+      {
+        "name": "Unidentified attackers",
+        "kind": "population",
+        "roles": [
+          "operator"
+        ],
+        "source_record_refs": [
+          "source_records[0]",
+          "source_records[2]"
+        ],
+        "evidence_basis": "The attackers published malware and invoked available local AI CLIs.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-003"
+      },
+      {
+        "name": "Claude, Gemini and Amazon Q CLI providers",
+        "kind": "organization",
+        "roles": [
+          "provider"
+        ],
+        "source_record_refs": [
+          "source_records[2]"
+        ],
+        "evidence_basis": "The analysis identifies tools the malware attempted to invoke, with many failures.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-004"
+      }
+    ]
+  }
 }

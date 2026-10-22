@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Google AI Overviews surfaced confidently inaccurate and potentially harmful search answers after broad rollout",
     "created": "2026-09-08",
-    "updated": "2026-10-18",
-    "version": "0.1.20"
+    "updated": "2026-10-22",
+    "version": "0.1.21"
   },
   "incident_identity": {
     "historical_event_name": "May 2024 Google AI Overviews inaccurate-answer rollout",
@@ -236,7 +236,29 @@
       "consumer reliance",
       "health and safety information",
       "source quality"
-    ]
+    ],
+    "normalized_geography": {
+      "scope": "single-jurisdiction",
+      "relations": [
+        {
+          "role": "affected-service-jurisdiction",
+          "locations": [
+            {
+              "country_code": "US"
+            }
+          ],
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "evidence_basis": "The occurrence concerns the US Search rollout described by the provider.",
+          "evidence_state": "attributed",
+          "party_refs": [
+            "PARTY-002"
+          ],
+          "relationship_id": "GEO-001"
+        }
+      ]
+    }
   },
   "taxonomy_classification": {
     "taxonomy_version": "0.6.9",
@@ -602,27 +624,49 @@
           "No provider-wide reach, attempted payment, claimed damages or unallocated campaign quantity is treated as demonstrated occurrence-specific loss."
         ],
         "review_outcome": "HIM 1.0.1 S3 → working HIM 1.1.0 SU. Completed evidence-limited review, not a finding of no harm. Feature-specific eligible cohort, representative deployed encounters and credible consequential collective impact; no specific injury is established."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-22-CONTEXT-000099",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work / Codex",
+        "reviewer_model": "Codex (specific runtime model identifier not exposed)",
+        "review_date": "2026-10-22",
+        "review_scope": "Gate 2 approved additive Incident Context review. Source-linked parties and geographic relationships only.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_research": false,
+          "taxonomy_review": false,
+          "harm_impact_review": false,
+          "external_requirement_review": false
+        },
+        "known_limitations": [
+          "Do not expand US rollout evidence to a global affected population or treat all viral screenshots as genuine.",
+          "AI-authored context review is not human source verification. Existing source-access statements remain historical."
+        ],
+        "review_outcome": "Added 3 party entities and 1 geographic relationships; geographic scope single-jurisdiction. Preserved all prior narrative, evidence, taxonomy, Harm Impact and external assessments."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-18-ISSUE126-HIM-000099",
+      "review_id": "VIGIL-REVIEW-2026-10-22-CONTEXT-000099",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT Work — Codex",
-      "reviewer_model": "GPT-6",
-      "review_date": "2026-10-18",
-      "review_scope": "Source-first twelve-dimensional HIM reassessment, exclusive pathway selection and public consequence reconciliation; taxonomy and external-requirement adjudications preserved.",
+      "reviewer_platform": "OpenAI ChatGPT Work / Codex",
+      "reviewer_model": "Codex (specific runtime model identifier not exposed)",
+      "review_date": "2026-10-22",
+      "review_scope": "Gate 2 approved additive Incident Context review. Source-linked parties and geographic relationships only.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "web_research": true,
-        "harm_impact_review": true,
-        "taxonomy_review": false
+        "web_research": false,
+        "taxonomy_review": false,
+        "harm_impact_review": false,
+        "external_requirement_review": false
       },
       "known_limitations": [
-        "AI-authored review is not human source verification. Source access and claim-relative limits are retained in the dated audit.",
-        "No provider-wide reach, attempted payment, claimed damages or unallocated campaign quantity is treated as demonstrated occurrence-specific loss."
+        "Do not expand US rollout evidence to a global affected population or treat all viral screenshots as genuine.",
+        "AI-authored context review is not human source verification. Existing source-access statements remain historical."
       ],
-      "review_outcome": "HIM 1.0.1 S3 → working HIM 1.1.0 SU. Completed evidence-limited review, not a finding of no harm. Feature-specific eligible cohort, representative deployed encounters and credible consequential collective impact; no specific injury is established."
+      "review_outcome": "Added 3 party entities and 1 geographic relationships; geographic scope single-jurisdiction. Preserved all prior narrative, evidence, taxonomy, Harm Impact and external assessments."
     }
   },
   "harm_impact_assessment": {
@@ -937,5 +981,50 @@
         "E002"
       ]
     }
-  ]
+  ],
+  "affected_party_context": {
+    "entities": [
+      {
+        "name": "Google",
+        "kind": "organization",
+        "roles": [
+          "provider",
+          "operator"
+        ],
+        "source_record_refs": [
+          "source_records[0]"
+        ],
+        "evidence_basis": "Google describes failures and changes to AI Overviews.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-001"
+      },
+      {
+        "name": "US Search AI Overviews",
+        "kind": "service",
+        "roles": [
+          "affected-service"
+        ],
+        "source_record_refs": [
+          "source_records[0]"
+        ],
+        "evidence_basis": "The provider account concerns the broad US rollout and reported answer failures.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-002"
+      },
+      {
+        "name": "Reporting Search users",
+        "kind": "population",
+        "roles": [
+          "subject"
+        ],
+        "source_record_refs": [
+          "source_records[0]",
+          "source_records[2]"
+        ],
+        "evidence_basis": "Users surfaced inaccurate answers; the provider distinguishes real examples from fake screenshots.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-003"
+      }
+    ]
+  }
 }

@@ -45,3 +45,15 @@ The current projection standardizes text without asserting why each jurisdiction
 ## Subsequent Gate 1 relationship model
 
 The 22 October opt-in canonical schema now permits `affected_party_context.entities[]` and `jurisdictional_context.normalized_geography.relations[]` with source-linked geographic roles. This **does not** upgrade the existing deterministic *text-derived* geo index to an independently reviewed set of event locations. Continue conservative filtering until a separately approved Gate 2 record-by-record evidence review, new canonical relationship projection and catalogue renderer update. See `vigil/docs/maintenance/INCIDENT-CONTEXT-GATE1.md`.
+
+## Version 2 — source-linked canonical relationships
+
+Following Gate 2 approval on 22 October 2026, the same deterministic builder publishes `schema_version: 2.0.0`. Each entry retains its Incident ID and current record version. `projection_status: reviewed-canonical` means the optional canonical context was reviewed and recorded; it does not mean independent human verification or that every location is known.
+
+`scope`, `relations`, `parties` and `reviewed_country_codes` come from canonical structured context. Relations preserve roles, locations, evidence states, bases and source/party references. The builder checks the existing Incident Context contract, including source references, and rejects duplicate Incident IDs. `--check` rejects stale outputs. Country totals count distinct Incidents, not relations, sources or affected people.
+
+The complete v1 lexical result is retained under `legacy_text_projection`. Original jurisdiction text and lexical mention fields remain for compatibility, but are not reviewed geography. A reviewed entry has no v1 `anchor_country_code`: consumers must use role-filtered relations. An explicit unknown never falls back to legacy text. Entries without structured context remain `legacy-text-derived` and must not be shown as reviewed pins.
+
+Supported, attributed and disputed relationships may receive representative country-centroid anchors with their evidence label. Unresolved relations have no locations. A country anchor is not a physical event coordinate. Country counts can sum above the distinct matching Incident total. Scope and role are independent filters; provider location never substitutes for occurrence location. Regulatory context is not a legal applicability finding.
+
+Consumers must join ID and record version from the same source branch. A mismatch is unavailable/unsynchronised geography, not zero incidence. Canonical records remain the source for full evidence and assessment text.
