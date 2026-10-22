@@ -66,6 +66,15 @@ The maintainer approved the **additive canonical metadata architecture** and an 
 
 **Known validation limit:** the validator tests subdivision-code syntax and country prefix, not membership in a complete authoritative ISO 3166-2 subdivision registry. Do not advertise full ISO 3166-2 verification until such a registry and its version are maintained.
 
+## Detailed design and Work execution handoff
+
+The earlier Gate 2 checklist is an overview, **not the complete design specification**. These two documents are required reading before any substantive migration or renderer work:
+
+1. [Gate 2 all-Incident transformation Work handoff](INCIDENT-CONTEXT-GATE2-WORK-HANDOFF-20261022.md) — exact read-only inventory, five pilot cases, Gate 2 stop, source-first migration, CI, per-record audit and cross-repository sequence.
+2. [Case Files Incident Context and 3D globe UI/interaction design](https://github.com/CAM-Initiative/cam-governance-catalogue/blob/feat/vigil-case-files-dashboard-20261022/docs-internal/VIGIL-INCIDENT-CONTEXT-DASHBOARD-DESIGN-20261022.md) — five Stage 01 subsection layouts, independent relationship/scope chips, many-to-many counts, provenance/uncertainty display, cross-filter rules, source sync and detailed acceptance tests.
+
+Both documents are implementation plans. The schema/validator are committed, but the full 200-record backfill and new website role chips are **not** yet implemented. Gate 2 approval must follow a source-first pilot before broad canonical edits.
+
 ## Gate 2 Work-thread contract (not yet executed)
 
 1. Freeze/sync `agent/incident-ecosystem-ingestion` with the latest evidence and preserve any concurrent intake work and existing PR #155.
