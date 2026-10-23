@@ -85,14 +85,43 @@ def build() -> dict:
             row["current_080_screen_date"] = decision["screening_date"]
             row["screening_decision_packet"] = str(review_path.relative_to(ROOT))
             row["screening_assurance"] = "AI-assessed; no independent human verification implied"
+    # Separate genuinely restamped current-edition adjudications from screening
+    # only. Never accept a packet merely because a version string happens to match.
+    by_id = {r["incident_id"]: r for r in rows}
+    for number in (201, 202):
+        packet_path = (ROOT / "vigil/docs/reviews/2026-10-23-taxonomy-080-reconciliation"
+                       / f"INC-{number:03d}-CURRENT-080-DECISION.json")
+        packet = json.loads(packet_path.read_text(encoding="utf-8"))
+        rid = f"VIGIL-INC-{number:06d}"
+        row = by_id[rid]
+        canonical = json.loads((ROOT / row["canonical_path"]).read_text(encoding="utf-8"))
+        rev = canonical.get("taxonomy_classification") or {}
+        source_mappings = [rev.get("primary_classification"), *(rev.get("secondary_classifications") or [])]
+        recorded_ids = [x["class_id"] for x in source_mappings if isinstance(x, dict)]
+        audited_ids = [x["class_id"] for x in packet["baseline_mapping_dispositions"]]
+        if (packet.get("incident_id") != rid or packet["adjudicated_taxonomy"]["published_version"] != "0.8.0"
+            or row["recorded_taxonomy_version"] != "0.8.0"
+            or row["record_version"] != "0.1.4"
+            or packet["baseline"]["record_version"] != "0.1.3"
+            or packet["current_decision"]["classification_status"] != row["classification_status"]
+            or audited_ids != recorded_ids
+            or rev.get("classification_review_provenance", {}).get("review_reference")
+               != str(packet_path.relative_to(ROOT))):
+            raise SystemExit(f"Substantive current-taxonomy decision stale or unverified for {rid}")
+        if row["current_080_screen_result"] != "NOT-REVIEWED":
+            raise SystemExit(f"Duplicate case review overlay for {rid}")
+        row["current_080_screen_result"] = "CANONICAL-080-RECONCILED-PROVISIONAL-RETAINED"
+        row["current_080_screen_date"] = packet["review_date"]
+        row["screening_decision_packet"] = str(packet_path.relative_to(ROOT))
+        row["screening_assurance"] = "AI source/criterion review; research source evidence limits preserved"
     rows.sort(key=lambda x: (x["priority"], x["incident_id"]))
     return {
         "worklist_schema": "vigil-taxonomy-080-reconciliation/1",
         "project": "VIGIL Observatory",
         "branch_scientific_commit": commit,
         "current_published_taxonomy": "0.8.0",
-        "state": "QUEUE-ONLY--NO-REVIEW-COMPLETED",
-        "roles": "No automated interpretation, version rewrite, or status changes",
+        "state": "RECONCILIATION-IN-PROGRESS--NO-INDEPENDENT-HUMAN-ASSURANCE-CERTIFIED",
+        "roles": "Dated decision packet overlays only; approved canonical edits must independently pass rebuild and derived-output validation",
         "counts": {
             "incidents": len(rows),
             "priority": dict(sorted(Counter(str(x["priority"]) for x in rows).items())),
