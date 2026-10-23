@@ -87,11 +87,10 @@ jobs:
           python vigil/scripts/validate-vigil-interpretive-provenance.py
           python vigil/scripts/validate-authorship-provenance.py
           python vigil/scripts/validate-vigil-system-components.py
-      - name: Validate external requirements and CAM assessments
+      - name: Validate external governance requirements
         run: |
           python vigil/scripts/validate-external-requirement-fidelity.py
           python vigil/scripts/validate-external-requirement-metadata.py
-          python vigil/scripts/validate-cam-assessments.py
       - name: Run complete regression suite
         run: python -m unittest discover -s vigil/tests -p 'test_*.py'
       - name: Apply committed textbook case-study publication eligibility
@@ -102,4 +101,4 @@ jobs:
         run: python vigil/scripts/build-vigil-jurisdiction-index.py --check
       - name: Assert validators did not change governed sources
         run: |
-          git diff --exit-code -- vigil/records vigil/taxonomy vigil/methodologies vigil/external_governance vigil/cam_assessment vigil/references vigil/templates vigil/VIGIL.Schema.json
+          git diff --exit-code -- vigil/records vigil/taxonomy vigil/methodologies vigil/external_governance vigil/references vigil/templates vigil/VIGIL.Schema.json

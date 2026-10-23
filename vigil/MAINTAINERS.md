@@ -57,7 +57,6 @@ Do not falsify historical review dates or rewrite historical audits and reviews 
 - `vigil/taxonomy/` — canonical VIGIL Observatory alignment taxonomy and generated publications.
 - `vigil/external_governance/sources/` — external-source registry.
 - `vigil/external_governance/requirements/` — external-governance requirements and projections.
-- `vigil/cam_assessment/` — CAM applicability and coverage assessment.
 - `vigil/docs/reviews/` — selected dated decision packets and adopted-control provenance relevant to the retained corpus. Superseded audits are recoverable at the pinned pre-cleanup Git commit; they are not current verification.
 
 The taxonomy migration assurance ledger at `vigil/taxonomy/migration/Caelestis.LegacyFailure.MigrationLedger.json` remains live taxonomy validation evidence. It does not reactivate FM as a VIGIL record class.
@@ -689,7 +688,7 @@ python vigil/scripts/validate-authorship-provenance.py
 python vigil/taxonomy/validate_taxonomy.py
 ```
 
-Also run the validators owned by external governance or CAM assessment when those subsystems are touched.
+Also run the validators owned by external governance whenever that subsystem is touched. VIGIL does not maintain a separate institutional CAM applicability/coverage assessment dataset.
 
 Before closure, classify each touched supporting artefact as LIVE, GENERATED, REVIEW, AUDIT or RETIRE. Historical machinery must not masquerade as current authority. Do not reset, rebase, merge, cherry-pick, force-push or rewrite shared history as cleanup. The bounded pre-PR ingestion-branch synchronization exception above is the only permitted rebase/lease-protected force-update under this guide.
 

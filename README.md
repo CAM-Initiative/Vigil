@@ -21,7 +21,7 @@ Legacy record classes and migration artefacts remain recoverable through Git his
 ```text
 Evidence sources ──> Incident ──> Fidelity Class ──> Fidelity Family
                          │
-                         └──> separate CAM applicability assessment
+                         └──> incident-level external-requirement interpretation
 ```
 
 An Incident may remain unclassified. Severity is occurrence-level harm analysis and remains independent of taxonomy classification, source prestige, workflow priority and hypothetical worst-case harm.
@@ -34,7 +34,6 @@ The following are separate from the Incident record corpus and remain active:
 
 - `vigil/taxonomy/` — VIGIL Observatory alignment taxonomy and generated publications.
 - `vigil/external_governance/` — external source registry and requirement corpus.
-- `vigil/cam_assessment/` — CAM applicability and coverage assessment.
 
 External requirement inclusion does not establish that CAM is bound by, has adopted or conforms to an instrument.
 
@@ -75,7 +74,7 @@ python vigil/scripts/validate-vigil-system-components.py
 python vigil/scripts/validate-authorship-provenance.py
 ```
 
-Taxonomy, external-governance and CAM-assessment changes require their own subsystem validators.
+Taxonomy and external-governance changes require their own subsystem validators. CAM institutional applicability or coverage assessments are not maintained in VIGIL.
 
 ## Repository organisation
 
@@ -84,7 +83,6 @@ vigil/
   records/incidents/       canonical Incident corpus
   taxonomy/                alignment taxonomy
   external_governance/     external sources and requirements
-  cam_assessment/          CAM applicability assessment
   templates/               Incident authoring template
   scripts/                 live builders and validators
   tests/                   executable tests

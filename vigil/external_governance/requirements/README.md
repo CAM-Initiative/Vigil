@@ -28,9 +28,9 @@ Each shard is a JSON array containing only the records for the source/version na
 
 The governance flow is:
 
-`external source -> external requirement -> CAM applicability/coverage assessment -> VIGIL routing/repair`
+`external source -> external requirement -> incident-level applicability/coverage interpretation (when evidence supports it)`
 
-External requirements MUST NOT contain CAM instrument mappings, CAM coverage states or CAM conformance findings. Those judgements belong in `../../cam_assessment/` and must be assessed against a specific CAM corpus commit.
+External requirements MUST NOT contain CAM instrument mappings, CAM coverage states or CAM conformance findings. VIGIL does not maintain organisational CAM applicability/coverage assessments; such judgements require a separately governed institutional review against an identified corpus commit, not inference from source registration.
 
 ## Source provenance: metadata fingerprint versus reviewed artefact
 
@@ -126,4 +126,4 @@ Recommended metadata-remediation sequence:
 6. rerun the report and reduce the unresolved queue;
 7. use `--strict` only for a source/slice that is intended to be metadata-complete.
 
-CAM applicability and coverage are validated separately under `../../cam_assessment/`.
+CAM institutional applicability and coverage are outside this VIGIL requirement registry; no CAM conformity or coverage finding is implied.
