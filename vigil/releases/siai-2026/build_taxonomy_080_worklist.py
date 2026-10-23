@@ -29,6 +29,15 @@ def priority(rec: dict) -> tuple[int, str]:
 
 def build() -> dict:
     commit = subprocess.check_output(["git","rev-parse","HEAD^{commit}"], cwd=ROOT, text=True).strip()
+    taxonomy_classes = {
+        c["class_id"]: c
+        for path in sorted((ROOT / "vigil/taxonomy/families").glob("*.json"))
+        for c in json.loads(path.read_text(encoding="utf-8"))["classes"]
+    }
+    class_fingerprints = {
+        cid: hashlib.sha256(json.dumps(c, sort_keys=True, ensure_ascii=False).encode()).hexdigest()
+        for cid, c in sorted(taxonomy_classes.items())
+    }
     rows = []
     for path in sorted(INCIDENTS.glob("VIGIL-INC-*.json")):
         raw = path.read_bytes()
@@ -53,6 +62,29 @@ def build() -> dict:
         rank, reason = priority(record)
         record["priority"] = rank
         record["priority_reason"] = reason
+        # Discovery inputs are evidence pointers, never inferred adjudications.
+        # Preserve all source episodes and pre-existing candidates for the next
+        # semantic reviewer; a candidate's presence confers no screening credit.
+        clauses = (data.get("vigil_assessment", {}).get("source_clause_analysis") or {}).get("clauses", [])
+        candidates = sorted({
+            rel["class_id"] for clause in clauses
+            for rel in clause.get("taxonomy_relationships", []) if rel.get("class_id")
+        } | {cid for cid in [record["primary_fidelity_class"], *record["secondary_class_ids"]] if cid})
+        record["review_inputs"] = {
+            "discovery_state": "EXISTING-RECORD-LEADS-NOT-ADJUDICATION",
+            "candidate_class_ids_from_record": candidates,
+            "candidate_class_sha256": {cid: class_fingerprints.get(cid) for cid in candidates},
+            "additional_current_classes_require_semantic_discovery": True,
+            "sources": [{"ref": f"source_records[{i}]", "url": source.get("source_url")}
+                        for i, source in enumerate(data.get("source_records", []))],
+            "episodes": [{"episode_id": c.get("episode_id"),
+                          "source_record_refs": c.get("source_record_refs", []),
+                          "source_paraphrase": c.get("source_paraphrase"),
+                          "adjudication_status": c.get("adjudication_status"),
+                          "taxonomy_relationships": c.get("taxonomy_relationships", [])}
+                         for c in clauses],
+            "prior_taxonomy_review": cl.get("classification_review_provenance"),
+        }
         rows.append(record)
     if len(rows) != 200:
         raise SystemExit(f"Unexpected corpus size {len(rows)}; update count only through governed intake")
@@ -245,6 +277,7 @@ def build() -> dict:
         "project": "VIGIL Observatory",
         "branch_scientific_commit": commit,
         "current_published_taxonomy": "0.8.0",
+        "current_class_sha256": class_fingerprints,
         "state": "RECONCILIATION-IN-PROGRESS--NO-INDEPENDENT-HUMAN-ASSURANCE-CERTIFIED",
         "roles": "Dated decision packet overlays only; approved canonical edits must independently pass rebuild and derived-output validation",
         "counts": {

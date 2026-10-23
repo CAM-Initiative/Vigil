@@ -3,6 +3,16 @@
 **Campaign branch:** chore/siai-2026-release-readiness-20261023  
 **This is a working-branch candidate**, not an approved merged source, final SIAI release manifest, human validation certificate or v1.0.0 tag.
 
+## Service-availability batch — six current-edition rebuilds
+
+Current candidate: **28/200 screened; 172 not screened; 33 canonical v0.8.0 records; 19 older-edition records upgraded in this branch**. INC-019, 020, 026, 027, 038 and 091 now have explicit v0.8.0 availability, access-state and verification-dependency tests. All retain unclassified status. INC-027's unresolved access-state clause remains unresolved; completion of an evidence-bounded screen does not mean its missing facts were recovered.
+
+The records now explain why observed service degradation and reported recovery do not themselves establish FC-084 failure or success against an independently applicable continuity requirement. Existing OECD repair findings are preserved and explicitly distinguished from availability thresholds. Scale Tier's published uptime promise was checked, but the affected customers/tier/model traffic and historical applicability are not established by these occurrence sources. No contract absence, universal noncompliance or universal success is inferred. Stale taxonomy wording was corrected and the new candidate disposition added to the source clauses without rewriting source evidence or HIM/EXTREQ.
+
+All six rebuild guards and the 326-test regression suite passed. The deterministic 200-record ledger now includes source/episode pointers, existing candidate relationships, prior review provenance and current class fingerprints for every record. These are discovery inputs, not machine classifications or extra screening credits. Remote checks must be verified on the published commit.
+
+The preceding focal/five-case commit `e2359c12347e02e4123ef611bebde15f9d77903e` passed all four GitHub workflows. INC-003/G01 remains isolated and unchanged; no merge or release performed.
+
 ## Accelerated execution — focal updates and five-case batch
 
 Current candidate: **22/200 screened; 178 not screened; 27 canonical v0.8.0 stamps; 13 older-edition records upgraded in this branch**. INC-117/129 were already screened and are not counted twice. Newly screened: INC-130, 138, 189, 190, 191. All seven canonical revisions preserve mapping roles/confidence, provisional/disputed state, original evidence, HIM and external assessments. INC-129 now has literal current-edition Boundary conditions and condition-specific reasoning.

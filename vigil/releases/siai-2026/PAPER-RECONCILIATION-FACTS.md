@@ -17,3 +17,7 @@ Primary sources re-read: [Hugging Face technical timeline](https://huggingface.c
 The paper must identify this as a partial reconciliation if used before completion. The final dataset tag and checksum must be generated from actual main after authorised merge; this note does not authorise either step.
 
 **After the five-case batch:** 22/200 screened, 178 not screened; 27 canonical v0.8.0 stamps. INC-130/138/189/190/191 retain provisional findings and source limits. The focal-tranche counts above are historical, not the current campaign total.
+
+## Subsequent service-availability batch
+
+Six additional incidents (019, 020, 026, 027, 038, 091) received current-edition full rebuilds retaining evidence-bounded unclassified results. Candidate totals are now **28/200 screened, 172 unscreened**, with **33 canonical v0.8.0 records** and **19 older-edition upgrades on this branch**. This does not change the focal-case factual conclusions above. Source-reported restoration and independent OECD repair findings are preserved; they do not alone establish the separate scoped availability requirement used by FC-084. The exact candidate commit is the Git commit containing this update, available in the file history; no final-main snapshot is asserted.
