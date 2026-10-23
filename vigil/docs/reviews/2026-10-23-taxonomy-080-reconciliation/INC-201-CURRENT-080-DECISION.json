@@ -1,0 +1,299 @@
+{
+  "incident_id": "VIGIL-INC-000201",
+  "review_date": "2026-10-23",
+  "review_mode": "full-rebuild",
+  "status": "completed-evidence-limited",
+  "baseline": {
+    "commit": "edfe48aeac2765db32bfd0b71ab496ddadb44e39",
+    "record_version": "0.1.3",
+    "recorded_taxonomy_version": "0.6.11"
+  },
+  "adjudicated_taxonomy": {
+    "published_version": "0.8.0",
+    "commit": "edfe48aeac2765db32bfd0b71ab496ddadb44e39",
+    "class_count_examined": 80
+  },
+  "source_first_discovery": {
+    "status": "completed",
+    "summary": "Attacker placed a false error interpretation and embedded command into request-originated logs, causing both evidence poisoning and instruction promotion in E002; later sanitisation E004 blocked the test route.",
+    "material_episodes_reviewed": [
+      "E001",
+      "E002",
+      "E003",
+      "E004"
+    ],
+    "governance_properties": [
+      "Adversarially planted telemetry used as causal evidence rather than as a contested attacker assertion (E001–E002).",
+      "Attacker-controlled diagnostic text promoted into an operative remediation direction (E002).",
+      "Active AIOpsShield sanitisation prevented the tested telemetry-based repair route while leaving ordinary operations in the tested setup (E004)."
+    ]
+  },
+  "source_review": {
+    "status": "direct-public-originating-paper-reviewed",
+    "url": [
+      "https://arxiv.org/html/2508.06394v2",
+      "https://www.usenix.org/system/files/usenixsecurity26-pasquini.pdf"
+    ],
+    "limitations": [
+      "Experimental AIOpsLab cases and researcher's attributed outcomes; no verified customer production breach or broad runtime production impact.",
+      "A published repair example describes agent action, but the paper's aggregate output-matching metric cannot be interpreted as an execution rate.",
+      "Safeguard success does not prove all possible untrusted tool/telemetry routes are protected."
+    ],
+    "earlier_review": "vigil/docs/reviews/2026-10-18-inc-199-203-completion/VIGIL-INC-000201.json"
+  },
+  "current_class_tests": [
+    {
+      "class_id": "VIGIL-FC-000063",
+      "class_name": "Adversarial Evidence Trust Calibration",
+      "role": "failure-occurrence",
+      "episode_refs": [
+        "E001",
+        "E002"
+      ],
+      "source_record_refs": [
+        "source_records[0]"
+      ],
+      "conditions": [
+        {
+          "canonical_condition": "Information is deliberately created, planted, altered, coordinated, or strategically positioned to distort downstream interpretation, factual synthesis, confidence, ranking, or decision support.",
+          "assessment": "established",
+          "basis": "Research attackers intentionally induced the system to log a false SSL diagnosis alongside the proposed repair direction."
+        },
+        {
+          "canonical_condition": "The material enters a retrieval, evidence, search, synthesis, or decision-support pathway used by an AI system or AI-mediated workflow.",
+          "assessment": "established",
+          "basis": "The compromised entry became log/trace telemetry read by the diagnosis agent."
+        },
+        {
+          "canonical_condition": "The material's adversarial, compromised, derivative, circular, or otherwise degraded trust state is not adequately detected, represented, discounted, or contained.",
+          "assessment": "established",
+          "basis": "No independent corroboration or adversarial trust downgrade was applied to the log entry."
+        },
+        {
+          "canonical_condition": "The system materially treats the compromised material as evidentiary support for a factual, evaluative, or reliance-bearing output.",
+          "assessment": "established",
+          "basis": "The resulting root-cause inference accepted the planted explanation as causal support."
+        },
+        {
+          "canonical_condition": "That acceptance materially affects or creates a material risk to factual accuracy, confidence, reputation, public information, decision-making, institutional trust, or another reliance-bearing outcome.",
+          "assessment": "established",
+          "basis": "The accepted false cause supported inappropriate remediation in the controlled experiment; this is a material technical reliance risk."
+        }
+      ],
+      "exclusions_reviewed": [
+        {
+          "canonical_exclusion": "Ordinary factual error where there is no evidence that information was deliberately manipulated or strategically planted to distort downstream use.",
+          "review_outcome": "not-established-on-episode",
+          "reason": "The condition described by this exclusion is not supported in the episode's specific source path. The accepted role depends on the independently evidenced required conditions in this bounded research example; do not generalise to other experiments."
+        },
+        {
+          "canonical_exclusion": "Satire, fiction, parody, role-play, or clearly labelled synthetic material that is not presented or consumed as factual evidence.",
+          "review_outcome": "not-established-on-episode",
+          "reason": "The condition described by this exclusion is not supported in the episode's specific source path. The accepted role depends on the independently evidenced required conditions in this bounded research example; do not generalise to other experiments."
+        },
+        {
+          "canonical_exclusion": "Controversial, partisan, disputed, or low-quality material merely because its claims are contested; adversarial positioning or manipulation must be evidenced.",
+          "review_outcome": "not-established-on-episode",
+          "reason": "The condition described by this exclusion is not supported in the episode's specific source path. The accepted role depends on the independently evidenced required conditions in this bounded research example; do not generalise to other experiments."
+        },
+        {
+          "canonical_exclusion": "Adversarial material is detected, appropriately labelled, discounted, corroborated, or excluded before it materially influences the resulting output.",
+          "review_outcome": "not-established-on-episode",
+          "reason": "The condition described by this exclusion is not supported in the episode's specific source path. The accepted role depends on the independently evidenced required conditions in this bounded research example; do not generalise to other experiments."
+        },
+        {
+          "canonical_exclusion": "The primary issue is that low-assurance material is used in a higher-reliance context without an adversarial information-manipulation mechanism; use Epistemic Reliance Calibration.",
+          "review_outcome": "not-established-on-episode",
+          "reason": "The condition described by this exclusion is not supported in the episode's specific source path. The accepted role depends on the independently evidenced required conditions in this bounded research example; do not generalise to other experiments."
+        },
+        {
+          "canonical_exclusion": "The failure is that content is obeyed as instruction authority rather than treated as factual evidence; use Source-Authority Separation where applicable.",
+          "review_outcome": "not-established-on-episode",
+          "reason": "The condition described by this exclusion is not supported in the episode's specific source path. The accepted role depends on the independently evidenced required conditions in this bounded research example; do not generalise to other experiments."
+        }
+      ],
+      "limitation": "The researcher's attack is deliberate, not merely a low-quality source; this specifically concerns evidence reliance, separate from instruction uptake."
+    },
+    {
+      "class_id": "VIGIL-FC-000001",
+      "class_name": "Source-Authority Separation",
+      "role": "failure-occurrence",
+      "episode_refs": [
+        "E002"
+      ],
+      "source_record_refs": [
+        "source_records[0]"
+      ],
+      "conditions": [
+        {
+          "canonical_condition": "The system receives or retrieves content from a source whose authority is lower than, different from, or unresolved relative to the action being considered.",
+          "assessment": "established",
+          "basis": "The untrusted request header was copied into a log, a lower-authority source than the operations instruction chain."
+        },
+        {
+          "canonical_condition": "The content is treated as operative instruction or authority rather than as data, evidence, context, or material for analysis.",
+          "assessment": "established",
+          "basis": "The agent selected the logged package/upgrade direction as an operative repair, as reported for the SocialNet example."
+        },
+        {
+          "canonical_condition": "No independent authority check validly establishes that the source may authorise the affected action.",
+          "assessment": "established",
+          "basis": "No authority from the actual operator delegated remediation instructions to the request originator; apparent logging did not raise authority."
+        }
+      ],
+      "exclusions_reviewed": [
+        {
+          "canonical_exclusion": "A system merely quotes, summarizes, classifies, or reasons about untrusted instructions without obeying them.",
+          "review_outcome": "not-established-on-episode",
+          "reason": "The condition described by this exclusion is not supported in the episode's specific source path. The accepted role depends on the independently evidenced required conditions in this bounded research example; do not generalise to other experiments."
+        },
+        {
+          "canonical_exclusion": "The source is genuinely authorised for the specific action and scope.",
+          "review_outcome": "not-established-on-episode",
+          "reason": "The condition described by this exclusion is not supported in the episode's specific source path. The accepted role depends on the independently evidenced required conditions in this bounded research example; do not generalise to other experiments."
+        },
+        {
+          "canonical_exclusion": "The event is only a content-quality or factual-accuracy problem.",
+          "review_outcome": "not-established-on-episode",
+          "reason": "The condition described by this exclusion is not supported in the episode's specific source path. The accepted role depends on the independently evidenced required conditions in this bounded research example; do not generalise to other experiments."
+        }
+      ],
+      "limitation": "The targeted tool example describes execution; aggregate output-match statistics must not be treated as execution in every trial."
+    },
+    {
+      "class_id": "VIGIL-FC-000083",
+      "class_name": "Control Effectiveness Integrity",
+      "role": "successful-invariant",
+      "episode_refs": [
+        "E004"
+      ],
+      "source_record_refs": [
+        "source_records[0]"
+      ],
+      "conditions": [
+        {
+          "canonical_condition": "An applicable validly activated protective control faces its governed hazard.",
+          "assessment": "established",
+          "basis": "AIOpsShield was activated for the reported comparison and confronted adversarial telemetry."
+        },
+        {
+          "canonical_condition": "The control produces a timely effect sufficient for its protective purpose and evidenced context, including any justified heightened protection.",
+          "assessment": "established",
+          "basis": "Sanitisation removed the attacker-controllable free-text direction in the tested telemetry route, preserving the intended protective purpose."
+        },
+        {
+          "canonical_condition": "Observed intervention and hazard outcome demonstrate the required containment or mitigation rather than activation alone.",
+          "assessment": "established",
+          "basis": "The paper reports that malicious repairs did not succeed in the protected rerun. No universal claim over every attack surface follows."
+        }
+      ],
+      "exclusions_reviewed": [
+        {
+          "canonical_exclusion": "The applicable control does not become operative when a valid activation condition occurs; assess Required Control Activation.",
+          "review_outcome": "not-established-on-episode",
+          "reason": "The condition described by this exclusion is not supported in the episode's specific source path. The accepted role depends on the independently evidenced required conditions in this bounded research example; do not generalise to other experiments."
+        },
+        {
+          "canonical_exclusion": "The control becomes operative even though its valid activation or applicability conditions are not satisfied; assess Control Activation Validity.",
+          "review_outcome": "not-established-on-episode",
+          "reason": "The condition described by this exclusion is not supported in the episode's specific source path. The accepted role depends on the independently evidenced required conditions in this bounded research example; do not generalise to other experiments."
+        },
+        {
+          "canonical_exclusion": "The control becomes operative with a sufficient effect but its operative state is later lost, weakened, reset, or transformed before reaching the governed point; assess Control-State Preservation.",
+          "review_outcome": "not-established-on-episode",
+          "reason": "The condition described by this exclusion is not supported in the episode's specific source path. The accepted role depends on the independently evidenced required conditions in this bounded research example; do not generalise to other experiments."
+        },
+        {
+          "canonical_exclusion": "An operative governance signal fails to reach any capable endpoint or execution surface; assess the applicable governance-control reach class rather than treating non-delivery as inadequate control effect.",
+          "review_outcome": "not-established-on-episode",
+          "reason": "The condition described by this exclusion is not supported in the episode's specific source path. The accepted role depends on the independently evidenced required conditions in this bounded research example; do not generalise to other experiments."
+        },
+        {
+          "canonical_exclusion": "The control produces the protective effect required by its defined purpose and the remaining harm arises through an independent downstream mechanism.",
+          "review_outcome": "not-established-on-episode",
+          "reason": "The condition described by this exclusion is not supported in the episode's specific source path. The accepted role depends on the independently evidenced required conditions in this bounded research example; do not generalise to other experiments."
+        },
+        {
+          "canonical_exclusion": "The dispute is solely that policy should have required a stronger safeguard, without evidence of an applicable operational control or protective-effect obligation in the material context.",
+          "review_outcome": "not-established-on-episode",
+          "reason": "The condition described by this exclusion is not supported in the episode's specific source path. The accepted role depends on the independently evidenced required conditions in this bounded research example; do not generalise to other experiments."
+        },
+        {
+          "canonical_exclusion": "Disability, neurodivergence, diagnosis, age-associated stereotype, or another personal characteristic is used by itself to presume incapacity, vulnerability, or diminished agency.",
+          "review_outcome": "not-established-on-episode",
+          "reason": "The condition described by this exclusion is not supported in the episode's specific source path. The accepted role depends on the independently evidenced required conditions in this bounded research example; do not generalise to other experiments."
+        }
+      ],
+      "limitation": "Successful control outcome is limited to the paper's tested conditions; prior E002 failure is not retroactively erased by later E004 mitigation."
+    }
+  ],
+  "other_candidate_dispositions": [
+    {
+      "id": "VIGIL-FC-000069",
+      "reason": "The research authors' analogy to reward hacking is a named attack strategy, not evidence that the target AI selected a route to exploit an evaluation reward proxy. FC-069 requires that target-level instrumental choice."
+    },
+    {
+      "id": "VIGIL-FC-000062",
+      "reason": "Adversarial origin and deliberate evidentiary contamination are specifically evidenced, so FC-063 is the more precise tested trust failure; do not multiply mappings for the same undifferentiated epistemic shortfall."
+    },
+    {
+      "id": "VIGIL-FC-000038",
+      "reason": "No nonactivation of an applicable governance control is reported as the decisive E002 defect. AIOpsShield was introduced as a later mitigation, not necessarily required in the original trial."
+    }
+  ],
+  "baseline_mapping_dispositions": [
+    {
+      "class_id": "VIGIL-FC-000063",
+      "role": "failure-occurrence",
+      "confidence": "medium",
+      "disposition": "retained",
+      "reason": "Independent current-edition v0.8.0 class test and exclusions are represented in this dated packet; the source-supported mapping is not revised.",
+      "source_episodes": [
+        "E001",
+        "E002"
+      ]
+    },
+    {
+      "class_id": "VIGIL-FC-000001",
+      "role": "failure-occurrence",
+      "confidence": "medium",
+      "disposition": "retained",
+      "reason": "Independent current-edition v0.8.0 class test and exclusions are represented in this dated packet; the source-supported mapping is not revised.",
+      "source_episodes": [
+        "E002"
+      ]
+    },
+    {
+      "class_id": "VIGIL-FC-000083",
+      "role": "successful-invariant",
+      "confidence": "medium",
+      "disposition": "retained",
+      "reason": "Independent current-edition v0.8.0 class test and exclusions are represented in this dated packet; the source-supported mapping is not revised.",
+      "source_episodes": [
+        "E004"
+      ]
+    }
+  ],
+  "current_decision": {
+    "taxonomy_version": "0.8.0",
+    "classification_status": "provisionally-classified",
+    "all_mapping_roles_and_confidences": "retained",
+    "adjudication_coverage": {
+      "status": "complete"
+    },
+    "provisional_status_reason": "Original controlled-study evidence limits and lack of independent reproduction remain; taxonomy-version review is not independent human verification."
+  },
+  "temporal_integrity": "Earlier failure episodes and later control/safety improvements were assessed separately; reported successful verification or containment never erases previously supported failures.",
+  "evidence_and_independent_assessment_preservation": {
+    "source_records": "preserved",
+    "source_clauses": "preserved",
+    "summary": "preserved",
+    "harm_impact_assessment": "preserved",
+    "external_requirement_assessments": "preserved",
+    "system_and_geographic_context": "preserved",
+    "independent_taxonomy_and_rights": "unmodified"
+  },
+  "issuer": "OpenAI ChatGPT GPT-6, AI-assisted analysis; not human-verified",
+  "issue_register": "No issue raised. Evidence limits are bounded and retained within the Incident/review. No distinct externally executable task found.",
+  "completion": "Approved work scope supports an evidence-bounded current v0.8.0 mapping review; no reported production loss and no new mappings invented."
+}
