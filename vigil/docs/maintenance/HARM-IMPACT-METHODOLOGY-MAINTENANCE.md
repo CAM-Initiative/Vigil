@@ -139,6 +139,42 @@ Formerly `assessment_pathway_selection.screening_contract`. The public methodolo
 
 For every new or substantively reopened HIM 1.1.0 assessment, perform the deployment / potentially generalisable mechanism / bounded actual harmed-case screen before choosing assessment_pathway, and record aggregate_harm_screening with deployment, mechanism, bounded-case, candidate dimension(s), source_record_refs and rationale. The validator checks consistent routing where the screen is present; historical already accepted records without the screen remain valid pending separately approved review. Screen true/true/false requires generic_deployed_evaluation even when its severity is SU. True bounded actual harm requires specific_consequence. A generic pathway with an absent deployed mechanism is invalid once screened.
 
+## Former public JSON implementation fields (relocated 23 October 2026)
+
+The following entries were not part of the harm thresholds. They are preserved here rather than continuing as embedded internal instructions or incident-specific working examples in the downloaded methodology.
+
+### Prior machine-oriented derivation narration
+
+First perform mandatory deployment/potentially-generalisable-mechanism/actual bounded-harm screening, independently of whether evidence came from one user or a formal evaluation. An actual bounded harmed case uses specific_consequence; a deployed potentially generalisable mechanism without one uses generic_deployed_evaluation for Aggregate Harm assessment even where banding evidence is insufficient (SU). Then apply the correct S1–S5 dimensional evidence gates; take the highest independently supported dimension. Explicitly qualify any scored generic band as Aggregate Harm — modelled from deployed evaluation. Never import provider reach into specific-consequence scores or treat eligible users as injured victims.
+
+### Aggregate Harm internal routing key
+
+`aggregate_harm_assessment.internal_basis`: `generic_deployed_aggregate_harm`.
+
+### Aggregate Harm working case note
+
+`aggregate_harm_assessment.INC_000192`: The ChatGPT for Teens watchdog finding is a generic deployed-model evaluation, eligible in principle for Aggregate Harm, but the alert-activation dispute, crisis-response contextual criteria and relevant active cohort prevent a supported S1–S5 Aggregate Harm band today. No named user injury is inferred; the earlier S2 presumption remains withdrawn.
+
+### Aggregate Harm implementation field checklist
+
+Formerly `aggregate_harm_assessment.evidence_fields`:
+
+- `incident_assessment_pathway`
+- `tested_deployed_model_and_version`
+- `tested_product_surface`
+- `deployment_and_evaluation_window`
+- `test_protocol_and_trace_refs`
+- `test_repeatability_and_limiting_conditions`
+- `relevant_feature_eligible_population_or_decisions`
+- `denominator_source_and_period`
+- `actual_or_modelled_population_count`
+- `population_uncertainty`
+- `credible_domain_consequence`
+- `applicable_aggregate_harm_threshold`
+- `scored_aggregate_harm_band`
+- `positive_safeguards_and_contesting_evidence`
+- `source_refs`
+
 ## Change management
 
 When the VIGIL-HIM methodology is revised, document the evidence, decision authority, relevant effective date, affected criteria and necessary review boundaries here or in a dated review. Do not insert branch-state notes, version-working labels, migration work items, validator tasking or maintainer instructions into the public methodology JSON. The website must also avoid rendering machine-readable field names or internal handoff instructions directly.
