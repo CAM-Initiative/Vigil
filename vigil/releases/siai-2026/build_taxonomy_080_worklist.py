@@ -142,6 +142,56 @@ def build() -> dict:
         row["current_080_screen_date"] = packet["review_date"]
         row["screening_decision_packet"] = str(packet_path.relative_to(ROOT))
         row["screening_assurance"] = "AI source/criterion review; original evidence limits preserved"
+    # Reuse the completed source-first 23 October intake adjudications without
+    # inventing another canonical revision or treating an edition stamp as review.
+    # Every counted case must still have EXACTLY the evidence-bounded mappings,
+    # provenance, current edition and review completion recorded in its packet.
+    prior_intake_dir = ROOT / "vigil/docs/reviews/2026-10-23-intake-readjudication"
+    for incident_number in range(204, 210):
+        rid = f"VIGIL-INC-{incident_number:06d}"
+        packet_path = prior_intake_dir / f"{rid}-adjudication.json"
+        if not packet_path.is_file():
+            raise SystemExit(f"Missing required v0.8.0 intake adjudication: {packet_path}")
+        packet = json.loads(packet_path.read_text(encoding="utf-8"))
+        row = by_id[rid]
+        canonical = json.loads((ROOT / row["canonical_path"]).read_text(encoding="utf-8"))
+        cl = canonical.get("taxonomy_classification") or {}
+        provenance = cl.get("classification_review_provenance") or {}
+        taxonomy_review = packet.get("taxonomy_review") or {}
+        completion = packet.get("decision_completion") or {}
+        prior_mappings = [
+            cl.get("primary_classification"), *(cl.get("secondary_classifications") or [])
+        ]
+        prior_mappings = [x for x in prior_mappings if isinstance(x, dict)]
+        reviewed_mappings = [
+            decision.get("proposed_mapping")
+            for decision in (packet.get("independent_adjudication") or {}).get("mapping_decisions", [])
+        ]
+        # Compare complete mapping objects, including basis, role, confidence
+        # and Boundary conditions; never only the class ID or version string.
+        if (
+            packet.get("incident_id") != rid
+            or row["current_080_screen_result"] != "NOT-REVIEWED"
+            or row["recorded_taxonomy_version"] != "0.8.0"
+            or provenance.get("review_reference") != str(packet_path.relative_to(ROOT))
+            or provenance.get("review_date") != packet.get("reviewed_on")
+            or taxonomy_review.get("taxonomy_version") != "0.8.0"
+            or taxonomy_review.get("complete_class_set_review") is not True
+            or not taxonomy_review.get("candidate_classes_tested")
+            or not (packet.get("source_first_discovery") or {}).get("episode_inventory")
+            or completion.get("status") != "reviewed-evidence-limited"
+            or completion.get("recognition_and_exclusion_tests") != "reviewed"
+            or (packet.get("validation") or {}).get("status") != "passed"
+            or prior_mappings != reviewed_mappings
+        ):
+            raise SystemExit(f"Stale/incomplete prior 0.8.0 review for {rid}; rescreen explicitly")
+        row["current_080_screen_result"] = "PRIOR-080-INTAKE-REVIEW-CROSSCHECKED"
+        row["current_080_screen_date"] = packet["reviewed_on"]
+        row["screening_decision_packet"] = str(packet_path.relative_to(ROOT))
+        row["screening_assurance"] = (
+            "Prior dated AI source/criterion full-rebuild crosschecked against "
+            "current canonical mapping; no new independent source or human assurance"
+        )
     rows.sort(key=lambda x: (x["priority"], x["incident_id"]))
     return {
         "worklist_schema": "vigil-taxonomy-080-reconciliation/1",
