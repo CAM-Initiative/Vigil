@@ -49,11 +49,17 @@ jobs:
           print("SHA-256:", d["inventory"]["canonical_entry_stream_sha256"])
           print("State:", d["state"])
           PY
+      - name: Inventory curation dependencies and Incident classification statuses
+        run: |
+          python -m py_compile vigil/releases/siai-2026/audit_repository_retention.py
+          python vigil/releases/siai-2026/audit_repository_retention.py
       - name: Upload manifest (preflight only; not a release)
         uses: actions/upload-artifact@v4
         with:
           name: siai-2026-research-snapshot-preflight
-          path: vigil/releases/siai-2026/RESEARCH-SNAPSHOT.preflight.json
+          path: |
+            vigil/releases/siai-2026/RESEARCH-SNAPSHOT.preflight.json
+            vigil/releases/siai-2026/REPOSITORY-RETENTION-AUDIT.json
           if-no-files-found: error
           retention-days: 30
 
