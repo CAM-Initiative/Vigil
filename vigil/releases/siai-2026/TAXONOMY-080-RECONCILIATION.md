@@ -34,7 +34,7 @@ Each row in the generated machine-readable worklist is **queued for screening**,
 ## Execution and merge checkpoints
 
 1. Regenerate the list: python vigil/releases/siai-2026/build_taxonomy_080_worklist.py --write. Confirm by running --check. It is a workflow artifact and not automatic adjudication.
-2. Review priority cases and append dated decision packets under vigil/docs/reviews/2026-10-23-taxonomy-080-reconciliation/. Begin with INC-117 and INC-129 (SIAI) and the 24 non-final cases. Search existing decisions and issues before new work.
+2. Review priority cases and append dated decision packets under vigil/docs/reviews/2026-10-23-taxonomy-080-reconciliation/. Begin with INC-117 and INC-129 (SIAI) and the 24 non-final cases. Search existing decisions and prior reviews; check GitHub Issues only if a **separate practical task** passes the maintainer four-part issue-admission test. Inaccessible vendor internals and contested recognition evidence remain Incident/review-level limits, not issue-register tasks.
 3. For each changed canonical record, validate full-rebuild manifest, run record/context/source/interpretive/rights/taxonomy/EXTREQ validators and regenerate public indexes. Commit the complete before/after evidence packet and all downstream projections. Any new class requires a separately governed taxonomy release, not a silent 0.8.0 mutation.
 4. Maintain a campaign ledger with one explicit screened/needs-rebuild/blocked/not-yet-reviewed disposition for **all 200 IDs**. A reproducible worklist alone does not satisfy this human-adjudication checkpoint.
 5. Do not merge merely because CI is green: reconcile every changed mapping, sign off unresolved evidence holds and confirm SIAI paper-focal conclusions. Recheck website/public schema consumers.
