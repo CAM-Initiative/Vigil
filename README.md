@@ -97,7 +97,7 @@ See [`vigil/MAINTAINERS.md`](vigil/MAINTAINERS.md) for authority boundaries and 
 
 The live repository keeps only selected recent decision records and adopted-control histories alongside the canonical research. Earlier automated audit campaigns, draft proposals and operational handoffs are deliberately absent from the working tree and remain recoverable at pre-cleanup commit `290b8d82c5e238e8ccdea82aa018e491e6d229fb`. They must not be presented as independent verification of the present corpus.
 
-See [Zenodo release readiness](ZENODO-RELEASE-READINESS.md) for the frozen-snapshot, citation, provenance, evidence-audit and **proprietary licensing** checks required before archiving a release. The current taxonomy readjudication (draft PR #140) is incomplete, so current `main` must not be described as its fully adjudicated final research corpus.
+See [Zenodo release readiness](ZENODO-RELEASE-READINESS.md) for frozen-snapshot, citation, provenance, evidence-audit and **proprietary licensing** checks. As of 23 October 2026, merged PRs #140 and #155 established **200 admitted canonical Incidents** and published **Alignment Taxonomy v0.8.0** (17 families; 80 selectable Fidelity Classes). These structural milestones do not certify independent human verification. The SIAI 2026 dataset v1.0.0 preflight is described in [the release-gates document](vigil/releases/siai-2026/RELEASE-GATES.md). No dataset v1.0.0 tag, GitHub Release or Zenodo deposit has been approved or created.
 
 ## Authorship and relationship to CAM
 
