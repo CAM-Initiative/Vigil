@@ -104,6 +104,13 @@ def build() -> dict:
         recorded_pairs = [(x.get("class_id"), x.get("classification_role")) for x in source_mappings]
         audited_pairs = [(x.get("class_id"), x.get("previous_role") or x.get("role"))
                          for x in decisions]
+        new_mappings = packet.get("new_taxonomy_mappings") or []
+        for added in new_mappings:
+            if added.get("disposition") != "new-admission":
+                raise SystemExit(f"Non-admitted new mapping listed in {packet_path}")
+            audited_pairs.append((added.get("class_id"), added.get("classification_role")))
+        if len(set(audited_pairs)) != len(audited_pairs):
+            raise SystemExit(f"Duplicate adjudicated mapping in {packet_path}")
         criteria = packet.get("adjudicated_taxonomy") or packet.get("current_criteria") or {}
         candidate_version = criteria.get("published_version") or criteria.get("version")
         outcome = packet.get("current_decision") or packet.get("adjudicated_outcome") or {}
@@ -126,7 +133,12 @@ def build() -> dict:
             raise SystemExit(f"Substantive current-taxonomy decision stale or invalid for {rid}")
         if row["current_080_screen_result"] != "NOT-REVIEWED":
             raise SystemExit(f"Duplicate case review overlay for {rid}")
-        row["current_080_screen_result"] = "CANONICAL-080-RECONCILED-PROVISIONAL-RETAINED"
+        row["current_080_screen_result"] = (
+            "CANONICAL-080-RECONCILED-DISPUTED-RETAINED"
+            if row["classification_status"] == "classification-disputed"
+            else "CANONICAL-080-RECONCILED-PROVISIONAL-NEW-SUCCESS"
+            if new_mappings else "CANONICAL-080-RECONCILED-PROVISIONAL-RETAINED"
+        )
         row["current_080_screen_date"] = packet["review_date"]
         row["screening_decision_packet"] = str(packet_path.relative_to(ROOT))
         row["screening_assurance"] = "AI source/criterion review; original evidence limits preserved"
