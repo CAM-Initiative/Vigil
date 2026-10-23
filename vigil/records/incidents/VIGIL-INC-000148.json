@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "McDonald's ended IBM automated drive-through ordering pilot after recurring order errors",
     "created": "2026-09-19",
-    "updated": "2026-10-18",
-    "version": "0.1.15"
+    "updated": "2026-10-22",
+    "version": "0.1.16"
   },
   "incident_identity": {
     "historical_event_name": "McDonald's IBM automated ordering errors",
@@ -285,7 +285,31 @@
     "regulatory_surface": [
       "AI incident evidence",
       "system governance and accountability"
-    ]
+    ],
+    "normalized_geography": {
+      "scope": "single-jurisdiction",
+      "relations": [
+        {
+          "role": "affected-service-jurisdiction",
+          "locations": [
+            {
+              "country_code": "US"
+            }
+          ],
+          "source_record_refs": [
+            "source_records[1]",
+            "source_records[2]"
+          ],
+          "evidence_basis": "The live pilot operated at more than 100 US restaurants.",
+          "evidence_state": "attributed",
+          "party_refs": [
+            "PARTY-001",
+            "PARTY-003"
+          ],
+          "relationship_id": "GEO-001"
+        }
+      ]
+    }
   },
   "taxonomy_classification": {
     "taxonomy_version": "0.6.9",
@@ -605,27 +629,49 @@
           "No provider-wide reach, attempted payment, claimed damages or unallocated campaign quantity is treated as demonstrated occurrence-specific loss."
         ],
         "review_outcome": "HIM 1.0.1 S3 → working HIM 1.1.0 S2. Controlling dimensions: service-operational-infrastructure."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-22-CONTEXT-000148",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work / Codex",
+        "reviewer_model": "Codex (specific runtime model identifier not exposed)",
+        "review_date": "2026-10-22",
+        "review_scope": "Gate 2 approved additive Incident Context review. Source-linked parties and geographic relationships only.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_research": false,
+          "taxonomy_review": false,
+          "harm_impact_review": false,
+          "external_requirement_review": false
+        },
+        "known_limitations": [
+          "No store coordinates or claim that every pilot customer was affected is inferred.",
+          "AI-authored context review is not human source verification. Existing source-access statements remain historical."
+        ],
+        "review_outcome": "Added 3 party entities and 1 geographic relationships; geographic scope single-jurisdiction. Preserved all prior narrative, evidence, taxonomy, Harm Impact and external assessments."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-18-ISSUE126-HIM-000148",
+      "review_id": "VIGIL-REVIEW-2026-10-22-CONTEXT-000148",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT Work — Codex",
-      "reviewer_model": "GPT-6",
-      "review_date": "2026-10-18",
-      "review_scope": "Source-first twelve-dimensional HIM reassessment, exclusive pathway selection and public consequence reconciliation; taxonomy and external-requirement adjudications preserved.",
+      "reviewer_platform": "OpenAI ChatGPT Work / Codex",
+      "reviewer_model": "Codex (specific runtime model identifier not exposed)",
+      "review_date": "2026-10-22",
+      "review_scope": "Gate 2 approved additive Incident Context review. Source-linked parties and geographic relationships only.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "web_research": true,
-        "harm_impact_review": true,
-        "taxonomy_review": false
+        "web_research": false,
+        "taxonomy_review": false,
+        "harm_impact_review": false,
+        "external_requirement_review": false
       },
       "known_limitations": [
-        "AI-authored review is not human source verification. Source access and claim-relative limits are retained in the dated audit.",
-        "No provider-wide reach, attempted payment, claimed damages or unallocated campaign quantity is treated as demonstrated occurrence-specific loss."
+        "No store coordinates or claim that every pilot customer was affected is inferred.",
+        "AI-authored context review is not human source verification. Existing source-access statements remain historical."
       ],
-      "review_outcome": "HIM 1.0.1 S3 → working HIM 1.1.0 S2. Controlling dimensions: service-operational-infrastructure."
+      "review_outcome": "Added 3 party entities and 1 geographic relationships; geographic scope single-jurisdiction. Preserved all prior narrative, evidence, taxonomy, Harm Impact and external assessments."
     }
   },
   "harm_impact_assessment": {
@@ -917,5 +963,51 @@
         "E002"
       ]
     }
-  ]
+  ],
+  "affected_party_context": {
+    "entities": [
+      {
+        "name": "McDonald’s",
+        "kind": "organization",
+        "roles": [
+          "operator"
+        ],
+        "source_record_refs": [
+          "source_records[1]",
+          "source_records[3]"
+        ],
+        "evidence_basis": "The company ran and ended the voice-ordering pilot.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-001"
+      },
+      {
+        "name": "IBM",
+        "kind": "organization",
+        "roles": [
+          "provider"
+        ],
+        "source_record_refs": [
+          "source_records[1]",
+          "source_records[3]"
+        ],
+        "evidence_basis": "IBM supplied the pilot technology.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-002"
+      },
+      {
+        "name": "Drive-through customers",
+        "kind": "population",
+        "roles": [
+          "subject"
+        ],
+        "source_record_refs": [
+          "source_records[0]",
+          "source_records[2]"
+        ],
+        "evidence_basis": "Reports describe inaccurate orders and correction difficulties.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-003"
+      }
+    ]
+  }
 }

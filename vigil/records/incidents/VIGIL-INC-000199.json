@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Claude Code-assisted DJI Romo project exposed cross-device home data",
     "created": "2026-10-16",
-    "updated": "2026-10-19",
-    "version": "0.1.4"
+    "updated": "2026-10-22",
+    "version": "0.1.5"
   },
   "incident_identity": {
     "historical_event_name": "Claude Code-assisted DJI Romo project exposed cross-device home data",
@@ -296,7 +296,39 @@
   },
   "jurisdictional_context": {
     "primary_jurisdiction": "Cross-border",
-    "notes": "The developer was reported to operate from Spain; affected devices were reported across 24 countries. No country-specific legal applicability finding is made."
+    "notes": "The developer was reported to operate from Spain; affected devices were reported across 24 countries. No country-specific legal applicability finding is made.",
+    "normalized_geography": {
+      "scope": "cross-border",
+      "relations": [
+        {
+          "role": "affected-population-jurisdiction",
+          "locations": [],
+          "source_record_refs": [
+            "source_records[1]"
+          ],
+          "evidence_basis": "The report identifies devices across 24 countries but does not enumerate their country codes.",
+          "evidence_state": "unresolved",
+          "party_refs": [
+            "PARTY-003"
+          ],
+          "relationship_id": "GEO-001"
+        },
+        {
+          "role": "operator-location",
+          "locations": [],
+          "source_record_refs": [
+            "source_records[0]",
+            "source_records[1]"
+          ],
+          "evidence_basis": "The reopened reporting does not substantiate the legacy Spain location for the developer.",
+          "evidence_state": "unresolved",
+          "party_refs": [
+            "PARTY-001"
+          ],
+          "relationship_id": "GEO-002"
+        }
+      ]
+    }
   },
   "taxonomy_classification": {
     "taxonomy_version": "0.6.11",
@@ -485,28 +517,49 @@
           "Sources, HIM and independent external assessments were preserved; complete missing-source and criteria questions remain in the dated packet."
         ],
         "review_outcome": "Applied source/criterion-linked admission decisions; retained unresolved evidence and taxonomy-scope questions. Historical Boundary confidence preserved in the linked review."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-22-CONTEXT-000199",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work / Codex",
+        "reviewer_model": "Codex (specific runtime model identifier not exposed)",
+        "review_date": "2026-10-22",
+        "review_scope": "Gate 2 approved additive Incident Context review. Source-linked parties and geographic relationships only.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_research": true,
+          "taxonomy_review": false,
+          "harm_impact_review": false,
+          "external_requirement_review": false
+        },
+        "known_limitations": [
+          "Cross-border follows the explicit multi-country and remote-household demonstration, not DJI domicile. Camera/control capabilities were not demonstrated on every device.",
+          "AI-authored context review is not human source verification. Existing source-access statements remain historical."
+        ],
+        "review_outcome": "Added 4 party entities and 2 geographic relationships; geographic scope cross-border. Preserved all prior narrative, evidence, taxonomy, Harm Impact and external assessments."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-19-CORPUS-BOUNDARY-000199",
+      "review_id": "VIGIL-REVIEW-2026-10-22-CONTEXT-000199",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI Codex",
-      "reviewer_model": "Exact runtime model identity not exposed",
-      "review_date": "2026-10-19",
-      "review_scope": "Taxonomy Boundary adjudication and role-field provenance repair.",
+      "reviewer_platform": "OpenAI ChatGPT Work / Codex",
+      "reviewer_model": "Codex (specific runtime model identifier not exposed)",
+      "review_date": "2026-10-22",
+      "review_scope": "Gate 2 approved additive Incident Context review. Source-linked parties and geographic relationships only.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "source_provenance_review": true,
-        "harm_impact_review": true,
-        "taxonomy_review": true,
-        "new_external_source_research": true
+        "web_research": true,
+        "taxonomy_review": false,
+        "harm_impact_review": false,
+        "external_requirement_review": false
       },
       "known_limitations": [
-        "Prior outcomes were visible; no blinded independent second rater or inter-rater reliability is claimed.",
-        "Sources, HIM and independent external assessments were preserved; complete missing-source and criteria questions remain in the dated packet."
+        "Cross-border follows the explicit multi-country and remote-household demonstration, not DJI domicile. Camera/control capabilities were not demonstrated on every device.",
+        "AI-authored context review is not human source verification. Existing source-access statements remain historical."
       ],
-      "review_outcome": "Applied source/criterion-linked admission decisions; retained unresolved evidence and taxonomy-scope questions. Historical Boundary confidence preserved in the linked review."
+      "review_outcome": "Added 4 party entities and 2 geographic relationships; geographic scope cross-border. Preserved all prior narrative, evidence, taxonomy, Harm Impact and external assessments."
     },
     "operating_model": "AI-authored, semi-autonomous production under human task instruction",
     "human_governance_editor": null,
@@ -612,6 +665,65 @@
         "assessment_status": "unreported",
         "assessment_basis": "The available occurrence evidence does not establish a materialised adverse consequence in this dimension. Unreported is not a finding of no harm.",
         "evidence_confidence": "not-assessed"
+      }
+    ]
+  },
+  "affected_party_context": {
+    "entities": [
+      {
+        "name": "Sammy Azdoufal",
+        "kind": "person",
+        "roles": [
+          "operator"
+        ],
+        "source_record_refs": [
+          "source_records[0]",
+          "source_records[2]"
+        ],
+        "evidence_basis": "The developer built a custom Romo client and disclosed access.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-001"
+      },
+      {
+        "name": "DJI",
+        "kind": "organization",
+        "roles": [
+          "provider",
+          "operator"
+        ],
+        "source_record_refs": [
+          "source_records[3]"
+        ],
+        "evidence_basis": "DJI acknowledges backend permission validation and remediation.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-002"
+      },
+      {
+        "name": "Romo owners and household devices",
+        "kind": "population",
+        "roles": [
+          "subject"
+        ],
+        "source_record_refs": [
+          "source_records[0]",
+          "source_records[1]"
+        ],
+        "evidence_basis": "Reporting describes thousands of devices in 24 countries and a witnessed household example.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-003"
+      },
+      {
+        "name": "Anthropic",
+        "kind": "organization",
+        "roles": [
+          "provider"
+        ],
+        "source_record_refs": [
+          "source_records[1]"
+        ],
+        "evidence_basis": "Claude Code assisted the adaptation.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-004"
       }
     ]
   }

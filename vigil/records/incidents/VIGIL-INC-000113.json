@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Anthropic reported Moonshot and DeepSeek routed customer conversations through Claude for distillation",
     "created": "2026-09-11",
-    "updated": "2026-10-19",
-    "version": "0.2.9"
+    "updated": "2026-10-22",
+    "version": "0.2.10"
   },
   "incident_identity": {
     "historical_event_name": "2026 Moonshot and DeepSeek customer-conversation routing and distillation campaigns",
@@ -407,7 +407,60 @@
       "AI training transparency",
       "model-routing provenance",
       "contractual model-access restrictions"
-    ]
+    ],
+    "normalized_geography": {
+      "scope": "multi-jurisdiction",
+      "relations": [
+        {
+          "role": "other",
+          "locations": [
+            {
+              "country_code": "CN"
+            }
+          ],
+          "source_record_refs": [
+            "source_records[1]",
+            "source_records[2]"
+          ],
+          "evidence_basis": "The reporting identifies the implicated companies as Chinese; this is institutional affiliation, not customer location.",
+          "evidence_state": "attributed",
+          "party_refs": [
+            "PARTY-002"
+          ],
+          "relationship_id": "GEO-001"
+        },
+        {
+          "role": "other",
+          "locations": [
+            {
+              "country_code": "US"
+            }
+          ],
+          "source_record_refs": [
+            "source_records[2]"
+          ],
+          "evidence_basis": "The reporting identifies the source-model companies as US firms; no physical model execution is inferred.",
+          "evidence_state": "attributed",
+          "party_refs": [
+            "PARTY-001"
+          ],
+          "relationship_id": "GEO-002"
+        },
+        {
+          "role": "affected-population-jurisdiction",
+          "locations": [],
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "evidence_basis": "The provider report does not comprehensively establish affected-user countries.",
+          "evidence_state": "unresolved",
+          "party_refs": [
+            "PARTY-003"
+          ],
+          "relationship_id": "GEO-003"
+        }
+      ]
+    }
   },
   "taxonomy_classification": {
     "taxonomy_version": "0.6.11",
@@ -972,27 +1025,49 @@
           "No substantive evidence, criteria or mapping-outcome review performed in this confidence-only operation."
         ],
         "review_outcome": "Moved historical Boundary confidence into dated provenance; current mapping outcomes and adjudication text unchanged."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-22-CONTEXT-000113",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work / Codex",
+        "reviewer_model": "Codex (specific runtime model identifier not exposed)",
+        "review_date": "2026-10-22",
+        "review_scope": "Gate 2 approved additive Incident Context review. Source-linked parties and geographic relationships only.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_research": false,
+          "taxonomy_review": false,
+          "harm_impact_review": false,
+          "external_requirement_review": false
+        },
+        "known_limitations": [
+          "Institutional affiliations do not establish the transfer path, user residency or legal liability; other labs’ campaigns remain separate.",
+          "AI-authored context review is not human source verification. Existing source-access statements remain historical."
+        ],
+        "review_outcome": "Added 3 party entities and 3 geographic relationships; geographic scope multi-jurisdiction. Preserved all prior narrative, evidence, taxonomy, Harm Impact and external assessments."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-19-CORPUS-BOUNDARY-000113",
+      "review_id": "VIGIL-REVIEW-2026-10-22-CONTEXT-000113",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI Codex",
-      "reviewer_model": "Exact runtime model identity not exposed",
-      "review_date": "2026-10-19",
-      "review_scope": "Role-field provenance relocation only; not substantive adjudication.",
+      "reviewer_platform": "OpenAI ChatGPT Work / Codex",
+      "reviewer_model": "Codex (specific runtime model identifier not exposed)",
+      "review_date": "2026-10-22",
+      "review_scope": "Gate 2 approved additive Incident Context review. Source-linked parties and geographic relationships only.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "taxonomy_review": true,
         "web_research": false,
+        "taxonomy_review": false,
         "harm_impact_review": false,
         "external_requirement_review": false
       },
       "known_limitations": [
-        "No substantive evidence, criteria or mapping-outcome review performed in this confidence-only operation."
+        "Institutional affiliations do not establish the transfer path, user residency or legal liability; other labs’ campaigns remain separate.",
+        "AI-authored context review is not human source verification. Existing source-access statements remain historical."
       ],
-      "review_outcome": "Moved historical Boundary confidence into dated provenance; current mapping outcomes and adjudication text unchanged."
+      "review_outcome": "Added 3 party entities and 3 geographic relationships; geographic scope multi-jurisdiction. Preserved all prior narrative, evidence, taxonomy, Harm Impact and external assessments."
     }
   },
   "cam_internal": {
@@ -1092,5 +1167,51 @@
       ],
       "identification_basis": "The provider-reported use of extracted traces for training directly identifies development-data provenance verification."
     }
-  ]
+  ],
+  "affected_party_context": {
+    "entities": [
+      {
+        "name": "Anthropic",
+        "kind": "organization",
+        "roles": [
+          "provider",
+          "subject"
+        ],
+        "source_record_refs": [
+          "source_records[0]"
+        ],
+        "evidence_basis": "Anthropic reports Claude requests and claimed distillation.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-001"
+      },
+      {
+        "name": "Moonshot AI and DeepSeek",
+        "kind": "organization",
+        "roles": [
+          "operator",
+          "subject"
+        ],
+        "source_record_refs": [
+          "source_records[0]",
+          "source_records[1]"
+        ],
+        "evidence_basis": "Anthropic attributes customer-traffic routing and training workflows to these labs.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-002"
+      },
+      {
+        "name": "Customers and organisations in routed requests",
+        "kind": "population",
+        "roles": [
+          "subject"
+        ],
+        "source_record_refs": [
+          "source_records[0]"
+        ],
+        "evidence_basis": "The report describes real customer material, including sensitive information.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-003"
+      }
+    ]
+  }
 }

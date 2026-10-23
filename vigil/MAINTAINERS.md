@@ -651,6 +651,17 @@ A validator reports that a rule has been breached. It does not itself authorise 
 
 For prose in particular, the smallest possible fix is preferred only **after** the governing rule and field semantics are already approved and unambiguous. If the required repair is not obvious from the canonical contract, stop rather than infer the desired rewrite.
 
+## Incident Context — Gate 1 canonical metadata contract (approved 22 October 2026)
+
+**Approval scope:** The maintainer approved new opt-in `affected_party_context.entities[]` and `jurisdictional_context.normalized_geography`, supporting structural validator checks and a proposed Stage 01 display grouping. Gate 1 **does not** approve a corpus-wide backfill; see [INCIDENT-CONTEXT-GATE1.md](docs/maintenance/INCIDENT-CONTEXT-GATE1.md) for precise contract and Gate 2 work handoff.
+
+- Canonical `system_context` remains as-is for Systems & Technology and Operational Environment. Keep existing source evidence, taxonomy and HIM decisions unchanged.
+- Stage 01 display design: **Incident Context** replacing *Affected systems*, with five subsections: Systems & Technology; Operational Environment; Affected Parties & Institutions; Geographic & Jurisdictional Context; Regulatory Context. This is proposed website work; do not misreport as already deployed.
+- A geographic `role` is distinct from geographic `scope`: a service located in NSW, a provider in the USA, and event execution in an unknown location can all coexist. No single pin may conflate them.
+- `regulatory-context` is a candidate relationship, not a Section 04 regulatory applicability/compliance conclusion.
+- Structural validation is opt-in. After the agreed Gate 1 code, stop and obtain explicit **Gate 2** approval before applying the new metadata across existing Incidents; do not mass-update records on the strength of passing structural CI.
+- Only migrate relationship claims with source-local evidence bases and correctly resolved `source_records[N]`. Ambiguous/undisclosed roles remain unresolved. Keep canonical raw jurisdiction text verbatim.
+
 ## Maintenance and validation
 
 Executable tests belong under `vigil/tests/`; current builders and validators belong under `vigil/scripts/`. Delete completed one-off migration, routing, reconciliation and seeding machinery when no retained subsystem depends on it.
@@ -727,3 +738,9 @@ Permitted diagnostic reasons are `insufficient-evidence`, `conflicting-evidence`
 The validator rejects absent/incomplete objects, invalid reasons and unresolved source/episode references. It cannot certify that prose is substantively correct or that all relevant criteria have been examined. Boundary mappings require completed boundary_adjudication and must omit classification_confidence. Failure-occurrence and successful-invariant mappings require classification_confidence (low, medium or high) and must omit boundary_adjudication. On a role change, preserve the previous mapping and superseded values in dated review history before removing role-inapplicable fields from the current mapping. Historical confidence is provenance, never a current Boundary rating. Keep complete criterion matrices, rejected candidates and review process history in audit packets. The canonical object contains accepted occurrence-specific reasoning only.
 
 Approval covers this control, documentation, templates and isolated tests. After implementation run the corpus read-only and report exact failures. Do not mechanically fill objects, reclassify findings, change recognition conditions or amend independent assessments. Substantive corpus repair remains subject to explicit maintainer authorisation. This requirement supersedes earlier audit-only placement of Boundary diagnostic reasons. Website display is separate renderer work; no presentation or builder change is authorised here.
+
+### Incident Context Gate 2 implementation (22 October 2026)
+
+The maintainer approved the five-case pilot and continuation across the current corpus. The dated `docs/reviews/2026-10-22-incident-context-migration/` inventory distinguishes reviewed coded relationships, reviewed unknowns and non-geographic scenarios. Original prose, legacy jurisdiction text, sources, taxonomy, HIM and external assessments are preserved. Each additive record review increments the record patch version and appends interpretive provenance.
+
+The jurisdiction projection v2 publishes canonical relationship roles and scope with source references. Its `legacy_text_projection` is explicitly lexical compatibility data, not substitute evidence. See `docs/maintenance/JURISDICTION-GEOGRAPHY-PROJECTION.md`. Stage 01 continues to render the five Incident Context subsections specified in Gate 1; country and subdivision codes are displayed with readable labels, source-linked explanations and uncertainty. Country centroids do not represent physical occurrence coordinates, and Section 04 remains authoritative for admitted external assessments.

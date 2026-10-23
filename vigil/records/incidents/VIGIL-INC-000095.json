@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Compromised Mistral SDK package executed credential-harvesting payload on import",
     "created": "2026-09-08",
-    "updated": "2026-10-19",
-    "version": "0.1.21"
+    "updated": "2026-10-22",
+    "version": "0.1.22"
   },
   "incident_identity": {
     "historical_event_name": "Mini Shai-Hulud / TanStack compromise affecting Mistral SDK releases",
@@ -297,7 +297,26 @@
       "credential protection",
       "package provenance",
       "incident response"
-    ]
+    ],
+    "normalized_geography": {
+      "scope": "not-established",
+      "relations": [
+        {
+          "role": "affected-population-jurisdiction",
+          "locations": [],
+          "source_record_refs": [
+            "source_records[0]",
+            "source_records[3]"
+          ],
+          "evidence_basis": "Public package distribution does not enumerate countries of actual affected installations.",
+          "evidence_state": "unresolved",
+          "party_refs": [
+            "PARTY-002"
+          ],
+          "relationship_id": "GEO-001"
+        }
+      ]
+    }
   },
   "taxonomy_classification": {
     "taxonomy_version": "0.7.0",
@@ -718,29 +737,49 @@
           "HIM and independent external assessments were preserved, not re-adjudicated."
         ],
         "review_outcome": "Re-tested attribution and the full bounded withdrawal/quarantine sequence with separate condition and exclusion evidence; retained both roles and the executable-integrity gap."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-22-CONTEXT-000095",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work / Codex",
+        "reviewer_model": "Codex (specific runtime model identifier not exposed)",
+        "review_date": "2026-10-22",
+        "review_scope": "Gate 2 approved additive Incident Context review. Source-linked parties and geographic relationships only.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_research": false,
+          "taxonomy_review": false,
+          "harm_impact_review": false,
+          "external_requirement_review": false
+        },
+        "known_limitations": [
+          "No global infrastructure breach is inferred; non-executing npm and working Linux-specific PyPI paths remain distinct.",
+          "AI-authored context review is not human source verification. Existing source-access statements remain historical."
+        ],
+        "review_outcome": "Added 4 party entities and 1 geographic relationships; geographic scope not-established. Preserved all prior narrative, evidence, taxonomy, Harm Impact and external assessments."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-19-CONTRACT-REASSESSMENT-000095",
+      "review_id": "VIGIL-REVIEW-2026-10-22-CONTEXT-000095",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI Codex",
-      "reviewer_model": "GPT-6",
-      "review_date": "2026-10-19",
-      "review_scope": "Reassessment of the whole affected record under the revised exclusion-precedence, condition-specific-proof and completion-reconciliation contract.",
+      "reviewer_platform": "OpenAI ChatGPT Work / Codex",
+      "reviewer_model": "Codex (specific runtime model identifier not exposed)",
+      "review_date": "2026-10-22",
+      "review_scope": "Gate 2 approved additive Incident Context review. Source-linked parties and geographic relationships only.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "web_research": true,
-        "taxonomy_review": true,
+        "web_research": false,
+        "taxonomy_review": false,
         "harm_impact_review": false,
         "external_requirement_review": false
       },
       "known_limitations": [
-        "Prior outcomes were visible; same-model review is not independent inter-rater validation.",
-        "Source and interpretation limits and any pending decisive evidence are set out in the linked packet.",
-        "HIM and independent external assessments were preserved, not re-adjudicated."
+        "No global infrastructure breach is inferred; non-executing npm and working Linux-specific PyPI paths remain distinct.",
+        "AI-authored context review is not human source verification. Existing source-access statements remain historical."
       ],
-      "review_outcome": "Re-tested attribution and the full bounded withdrawal/quarantine sequence with separate condition and exclusion evidence; retained both roles and the executable-integrity gap."
+      "review_outcome": "Added 4 party entities and 1 geographic relationships; geographic scope not-established. Preserved all prior narrative, evidence, taxonomy, Harm Impact and external assessments."
     }
   },
   "harm_impact_assessment": {
@@ -1037,5 +1076,64 @@
         "E006"
       ]
     }
-  ]
+  ],
+  "affected_party_context": {
+    "entities": [
+      {
+        "name": "Mistral",
+        "kind": "organization",
+        "roles": [
+          "provider",
+          "affected-organization"
+        ],
+        "source_record_refs": [
+          "source_records[0]"
+        ],
+        "evidence_basis": "The provider reports compromised SDK releases and removes them.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-001"
+      },
+      {
+        "name": "Mistral SDK consumers",
+        "kind": "population",
+        "roles": [
+          "subject"
+        ],
+        "source_record_refs": [
+          "source_records[0]",
+          "source_records[3]"
+        ],
+        "evidence_basis": "The malicious PyPI release could harvest credentials when affected Linux client modules were imported.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-002"
+      },
+      {
+        "name": "npm and PyPI registries",
+        "kind": "infrastructure",
+        "roles": [
+          "subject"
+        ],
+        "source_record_refs": [
+          "source_records[0]",
+          "source_records[3]"
+        ],
+        "evidence_basis": "The attack published compromised package versions to these registries.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-003"
+      },
+      {
+        "name": "Unidentified supply-chain attackers",
+        "kind": "population",
+        "roles": [
+          "operator"
+        ],
+        "source_record_refs": [
+          "source_records[2]"
+        ],
+        "evidence_basis": "The investigation describes the Mini Shai-Hulud attack.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-004"
+      }
+    ]
+  }
 }

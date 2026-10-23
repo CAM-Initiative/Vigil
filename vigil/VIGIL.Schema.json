@@ -380,7 +380,10 @@
         "content_rule": "taxonomy_version identifies the exact criteria applied, independently of historical taxonomy_classification.taxonomy_version. material_engagement states positive class engagement. unresolved_conditions quotes exact necessary recognition conditions and explains their unavailable, conflicting or insufficiently distinguishing state, with resolvable source and episode references. diagnostic_reasons permits multiple supported causes. decisive_blocker explains why neither polarity can be established. resolution_requirements identifies the missing fact and potential source, conflict and reconciliation needed, or specific criteria deficiency and separate taxonomy review. Do not invent required hidden telemetry or change recognition conditions.",
         "confidence_rule": "Boundary mappings require completed boundary_adjudication and must omit classification_confidence. Failure-occurrence and successful-invariant mappings require classification_confidence (low, medium or high) and must omit boundary_adjudication. On a role change, preserve the previous mapping and superseded values in dated review history before removing role-inapplicable fields from the current mapping. Historical confidence is provenance, never a current Boundary rating.",
         "scope_rule": "Required for admitted mapping-local ambiguous-boundary roles only. Existing source-clause relationships remain linked evidence, not duplicate mandatory adjudication objects. No change to decisive findings, independent assessments or website presentation."
-      }
+      },
+      "optional_top_level_fields": [
+        "affected_party_context"
+      ]
     }
   },
   "$defs": {
@@ -900,5 +903,99 @@
       "review_outcome"
     ],
     "human_editor_rule": "The legacy human_governance_editor field preserves historical authority context and may be null where no human governance editor is established. It is not an authorship-provenance override and must not imply human authorship, substantive review, source verification, or line-by-line inspection. New records use contract-approver semantics only where contemporaneous evidence establishes that role."
+  },
+  "incident_context_rules": {
+    "description": "Gate 1 additive Incident Context contract. Existing system_context remains canonical for technology and operational environment. The optional affected_party_context and jurisdictional_context.normalized_geography add evidence-linked, occurrence-scoped relationships. No geographic association implies confirmed physical event location, harmed party, deployed status, or applicable law. Legacy Incident records remain valid without backfill.",
+    "presentation_subsections": [
+      "Systems & Technology",
+      "Operational Environment",
+      "Affected Parties & Institutions",
+      "Geographic & Jurisdictional Context",
+      "Regulatory Context"
+    ],
+    "party_kinds": [
+      "organization",
+      "service",
+      "population",
+      "person",
+      "infrastructure",
+      "system",
+      "other"
+    ],
+    "party_roles": [
+      "provider",
+      "operator",
+      "affected-organization",
+      "affected-service",
+      "affected-population",
+      "subject",
+      "participating-institution",
+      "other"
+    ],
+    "geographic_scopes": [
+      "single-jurisdiction",
+      "multi-jurisdiction",
+      "cross-border",
+      "global",
+      "mixed-global",
+      "not-established",
+      "non-geographic",
+      "unresolved"
+    ],
+    "geographic_roles": [
+      "occurrence-location",
+      "affected-service-jurisdiction",
+      "affected-organization-jurisdiction",
+      "affected-population-jurisdiction",
+      "provider-location",
+      "operator-location",
+      "infrastructure-location",
+      "regulatory-context",
+      "other"
+    ],
+    "evidence_states": [
+      "supported",
+      "attributed",
+      "disputed",
+      "unresolved"
+    ],
+    "party_contract": {
+      "field": "affected_party_context.entities[]",
+      "required_when_present": [
+        "party_id",
+        "name",
+        "kind",
+        "roles",
+        "evidence_state",
+        "evidence_basis",
+        "source_record_refs"
+      ],
+      "rule": "An entity/role may be identified without an assertion of materialised harm. Distinguish impacted parties from providers/operators; no private identifying information should be included unless independently source-supported and fit for public publication. Every affirmative relationship requires a non-empty source_record_refs array."
+    },
+    "jurisdiction_contract": {
+      "field": "jurisdictional_context.normalized_geography",
+      "required_when_present": [
+        "scope",
+        "relations"
+      ],
+      "relation_required_fields": [
+        "relationship_id",
+        "role",
+        "evidence_state",
+        "evidence_basis",
+        "source_record_refs",
+        "locations"
+      ],
+      "location_fields": [
+        "country_code",
+        "subdivision_code",
+        "locality"
+      ],
+      "rule": "Each relation specifies why a location is relevant. Supported/attributed/disputed relations require existing source_records[N] evidence and at least one structurally valid country. Unresolved relations have no location coordinate or country assertion. An opt-in relationship cannot establish physical event coordinates or applicable law by geographic coincidence. ISO 3166-1 alpha-2 country codes must be recognized; ISO 3166-2 subdivision codes must match the country prefix. Human review determines semantic validity.",
+      "relationship_to_party": "Optional party_refs contain local PARTY-NNN references to affected_party_context.entities[].party_id. Do not infer a party relationship because a country is named in the jurisdiction string."
+    },
+    "legacy_rule": "Existing jurisdictional_context.primary_jurisdiction, secondary_jurisdictions, cross_border_relevance, sector and regulatory_surface remain unchanged. A normalized relation is additive; no canonical Incident backfill is authorised under Gate 1.",
+    "staged_enforcement": "Opt-in on the 200-record corpus. Gate 2 requires a read-only failure inventory and separate maintainer approval before broad semantic backfill. Once migration is separately approved, candidate required-coverage checks may be proposed without rewriting evidence or taxonomy.",
+    "dashboard_projection": "Globe filter chips correspond to geographic_roles, with a separate unlocated/unknown facet. Country centroids are visual anchors and are not verified event coordinates. Stage 01 incident context is presentation, while Section 04 remains the authority for external-requirement adjudication."
   }
 }

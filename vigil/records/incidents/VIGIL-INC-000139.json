@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Spanish regulator received breach notification alleging AI-agent modification of personal data and invoice access",
     "created": "2026-09-19",
-    "updated": "2026-10-11",
-    "version": "0.1.12"
+    "updated": "2026-10-22",
+    "version": "0.1.13"
   },
   "incident_identity": {
     "historical_event_name": "AEPD first notified AI-agent-linked personal-data breach",
@@ -354,7 +354,40 @@
       "cybersecurity",
       "AI agent governance",
       "data protection"
-    ]
+    ],
+    "normalized_geography": {
+      "scope": "single-jurisdiction",
+      "relations": [
+        {
+          "role": "regulatory-context",
+          "locations": [
+            {
+              "country_code": "ES"
+            }
+          ],
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "evidence_basis": "AEPD’s Spanish breach-notification review is established.",
+          "evidence_state": "attributed",
+          "party_refs": [
+            "PARTY-003"
+          ],
+          "relationship_id": "GEO-001"
+        },
+        {
+          "role": "occurrence-location",
+          "locations": [],
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "evidence_basis": "The regulator does not identify the affected organisation’s physical systems or data subjects’ countries.",
+          "evidence_state": "unresolved",
+          "party_refs": [],
+          "relationship_id": "GEO-002"
+        }
+      ]
+    }
   },
   "taxonomy_classification": {
     "taxonomy_version": "0.6.11",
@@ -602,29 +635,49 @@
           "Receipt of a report is not a completed regulator finding or proof of Article 34 high-risk notification."
         ],
         "review_outcome": "Added directly read EFE case reporting and direct AEPD-source attribution; personal-data modification and invoice access remain regulator-reported allegations pending adjudication, not a verified customer count or completed finding. Retain SU."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-22-CONTEXT-000139",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work / Codex",
+        "reviewer_model": "Codex (specific runtime model identifier not exposed)",
+        "review_date": "2026-10-22",
+        "review_scope": "Gate 2 approved additive Incident Context review. Source-linked parties and geographic relationships only.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_research": false,
+          "taxonomy_review": false,
+          "harm_impact_review": false,
+          "external_requirement_review": false
+        },
+        "known_limitations": [
+          "A Spanish regulator relationship does not automatically locate the attacker, system or every affected person.",
+          "AI-authored context review is not human source verification. Existing source-access statements remain historical."
+        ],
+        "review_outcome": "Added 4 party entities and 2 geographic relationships; geographic scope single-jurisdiction. Preserved all prior narrative, evidence, taxonomy, Harm Impact and external assessments."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-11-INDEPENDENT-SOURCES-000139",
+      "review_id": "VIGIL-REVIEW-2026-10-22-CONTEXT-000139",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT",
-      "reviewer_model": "GPT-6",
-      "review_date": "2026-10-11",
-      "review_scope": "Additional third-party incident source discovery and bounded harm-dimension examination under HIM 1.1.0.",
+      "reviewer_platform": "OpenAI ChatGPT Work / Codex",
+      "reviewer_model": "Codex (specific runtime model identifier not exposed)",
+      "review_date": "2026-10-22",
+      "review_scope": "Gate 2 approved additive Incident Context review. Source-linked parties and geographic relationships only.",
       "capability_profile": {
-        "web_research": true,
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "harm_impact_review": true,
+        "web_research": false,
         "taxonomy_review": false,
+        "harm_impact_review": false,
         "external_requirement_review": false
       },
       "known_limitations": [
-        "Agency independently contacted the regulator, but did not obtain a separate affected-company forensic statement or verify changed data.",
-        "Company, model provider, affected-person count, actual sensitivity, recovery, customer response and reputational effects remain undisclosed.",
-        "Receipt of a report is not a completed regulator finding or proof of Article 34 high-risk notification."
+        "A Spanish regulator relationship does not automatically locate the attacker, system or every affected person.",
+        "AI-authored context review is not human source verification. Existing source-access statements remain historical."
       ],
-      "review_outcome": "Added directly read EFE case reporting and direct AEPD-source attribution; personal-data modification and invoice access remain regulator-reported allegations pending adjudication, not a verified customer count or completed finding. Retain SU."
+      "review_outcome": "Added 4 party entities and 2 geographic relationships; geographic scope single-jurisdiction. Preserved all prior narrative, evidence, taxonomy, Harm Impact and external assessments."
     }
   },
   "harm_impact_assessment": {
@@ -759,5 +812,61 @@
         "E007"
       ]
     }
-  ]
+  ],
+  "affected_party_context": {
+    "entities": [
+      {
+        "name": "Unnamed notifying organisation",
+        "kind": "organization",
+        "roles": [
+          "affected-organization"
+        ],
+        "source_record_refs": [
+          "source_records[0]"
+        ],
+        "evidence_basis": "AEPD summarises the organisation’s submitted breach account.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-001"
+      },
+      {
+        "name": "Unidentified attacker",
+        "kind": "person",
+        "roles": [
+          "operator"
+        ],
+        "source_record_refs": [
+          "source_records[0]"
+        ],
+        "evidence_basis": "The notification alleges a third-party agent-led intrusion.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-002"
+      },
+      {
+        "name": "AEPD",
+        "kind": "organization",
+        "roles": [
+          "participating-institution"
+        ],
+        "source_record_refs": [
+          "source_records[0]"
+        ],
+        "evidence_basis": "Spain’s data authority received and is reviewing the notification.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-003"
+      },
+      {
+        "name": "People represented in modified data",
+        "kind": "population",
+        "roles": [
+          "subject"
+        ],
+        "source_record_refs": [
+          "source_records[0]"
+        ],
+        "evidence_basis": "The notification alleges personal-data alteration without identifying the population.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-004"
+      }
+    ]
+  }
 }

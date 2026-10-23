@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "OSS-Fuzz-Gen evaluation exposed misleading crashes from invalid AI-generated test drivers",
     "created": "2026-10-16",
-    "updated": "2026-10-18",
-    "version": "0.1.2"
+    "updated": "2026-10-22",
+    "version": "0.1.3"
   },
   "incident_identity": {
     "historical_event_name": "OSS-Fuzz-Gen false-positive crash evaluation reported in FalseCrashReducer",
@@ -394,7 +394,38 @@
   },
   "jurisdictional_context": {
     "primary_jurisdiction": "Not established",
-    "notes": "Institutional affiliations and cloud hosting do not establish the location of each experimental run or legal applicability."
+    "notes": "Institutional affiliations and cloud hosting do not establish the location of each experimental run or legal applicability.",
+    "normalized_geography": {
+      "scope": "not-established",
+      "relations": [
+        {
+          "relationship_id": "GEO-001",
+          "role": "occurrence-location",
+          "evidence_state": "unresolved",
+          "evidence_basis": "Section 5.1 describes cloud experiments without locating individual runs. Author affiliations are not run locations.",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "locations": [],
+          "party_refs": [
+            "PARTY-003"
+          ]
+        },
+        {
+          "relationship_id": "GEO-002",
+          "role": "infrastructure-location",
+          "evidence_state": "unresolved",
+          "evidence_basis": "Google Cloud is identified, but the experiment regions are not supplied.",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "locations": [],
+          "party_refs": [
+            "PARTY-001"
+          ]
+        }
+      ]
+    }
   },
   "taxonomy_classification": {
     "taxonomy_version": "0.6.11",
@@ -506,33 +537,49 @@
           "The public artifact repository was inspected only at its top-level listing. Its raw datasets were not independently audited."
         ],
         "review_outcome": "Completed the bounded review. Evidentiary limits remain explicit; structural checks do not certify substantive completeness. External candidate decisions and no-retained outcomes are preserved in the dated review."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-22-CONTEXT-000202",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work / Codex",
+        "reviewer_model": "Codex (specific runtime model identifier not exposed)",
+        "review_date": "2026-10-22",
+        "review_scope": "Gate 2 approved additive Incident Context review. Source-linked parties and geographic relationships only.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_research": true,
+          "taxonomy_review": false,
+          "harm_impact_review": false,
+          "external_requirement_review": false
+        },
+        "known_limitations": [
+          "Keep not-established. Controlled evaluation does not itself mean non-geographic. Do not turn US/Australian author affiliations into provider, occurrence or affected-population locations. Do not derive a global scope from open-source benchmark diversity.",
+          "AI-authored context review is not human source verification. Existing source-access statements remain historical."
+        ],
+        "review_outcome": "Added 3 party entities and 2 geographic relationships; geographic scope not-established. Preserved all prior narrative, evidence, taxonomy, Harm Impact and external assessments."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-18-END-TO-END-000202",
+      "review_id": "VIGIL-REVIEW-2026-10-22-CONTEXT-000202",
       "reviewer_type": "AI analytical reviewer",
       "reviewer_platform": "OpenAI ChatGPT Work / Codex",
-      "reviewer_model": "Exact runtime model identifier not exposed in this session",
-      "review_date": "2026-10-18",
-      "review_scope": "Source-first material-episode coverage, current taxonomy recognition and exclusions, all twelve HIM dimensions, independent external requirements and integrated conclusion.",
+      "reviewer_model": "Codex (specific runtime model identifier not exposed)",
+      "review_date": "2026-10-22",
+      "review_scope": "Gate 2 approved additive Incident Context review. Source-linked parties and geographic relationships only.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "source_provenance_review": true,
-        "taxonomy_review": true,
-        "harm_impact_review": true,
-        "new_external_source_research": true
+        "web_research": true,
+        "taxonomy_review": false,
+        "harm_impact_review": false,
+        "external_requirement_review": false
       },
       "known_limitations": [
-        "This record concerns the July–September 2025 evaluation, not every deployment or output of OSS-Fuzz or OSS-Fuzz-Gen.",
-        "The paper prose describes 4,835 crashes with about 70% false positives. Table 2 lists 5,080 baseline crashes with 3,583 false positives and 4,835 constrained crashes with 3,390 false positives. These totals must not be silently conflated.",
-        "The table contains apparent formatting or aggregation anomalies. Exact reconciled counts require author clarification or a separate raw-data audit.",
-        "A false positive means the crash is not feasible from a valid application entry point under the stated model; the harness itself can still crash.",
-        "No affected maintainer, production vulnerability report, outage, customer loss or physical consequence is established from the aggregate evaluation.",
-        "Gemini 2.5 Pro is reported for these experiments. Results are not assumed to generalise to other models or software domains.",
-        "The public artifact repository was inspected only at its top-level listing. Its raw datasets were not independently audited."
+        "Keep not-established. Controlled evaluation does not itself mean non-geographic. Do not turn US/Australian author affiliations into provider, occurrence or affected-population locations. Do not derive a global scope from open-source benchmark diversity.",
+        "AI-authored context review is not human source verification. Existing source-access statements remain historical."
       ],
-      "review_outcome": "Completed the bounded review. Evidentiary limits remain explicit; structural checks do not certify substantive completeness. External candidate decisions and no-retained outcomes are preserved in the dated review."
+      "review_outcome": "Added 3 party entities and 2 geographic relationships; geographic scope not-established. Preserved all prior narrative, evidence, taxonomy, Harm Impact and external assessments."
     },
     "operating_model": "AI-authored, semi-autonomous production under human task instruction",
     "human_governance_editor": null,
@@ -632,5 +679,49 @@
       }
     ],
     "assessment_gap": "The experiment establishes a technical or diagnostic adverse outcome. The sources do not quantify a materialised consequence that supports a harm band. Research costs and hypothetical production exposure are not assumed to be incident losses."
+  },
+  "affected_party_context": {
+    "entities": [
+      {
+        "party_id": "PARTY-001",
+        "name": "Google",
+        "kind": "organization",
+        "roles": [
+          "provider",
+          "participating-institution"
+        ],
+        "evidence_state": "attributed",
+        "evidence_basis": "The paper names Google-affiliated authors and Google model/cloud resources.",
+        "source_record_refs": [
+          "source_records[0]"
+        ]
+      },
+      {
+        "party_id": "PARTY-002",
+        "name": "Purdue University",
+        "kind": "organization",
+        "roles": [
+          "participating-institution"
+        ],
+        "evidence_state": "attributed",
+        "evidence_basis": "The paper identifies Purdue-affiliated researchers.",
+        "source_record_refs": [
+          "source_records[0]"
+        ]
+      },
+      {
+        "party_id": "PARTY-003",
+        "name": "OSS-Fuzz-Gen evaluation pipeline",
+        "kind": "system",
+        "roles": [
+          "subject"
+        ],
+        "evidence_state": "attributed",
+        "evidence_basis": "The paper evaluates this pipeline; a production service impact is not established.",
+        "source_record_refs": [
+          "source_records[0]"
+        ]
+      }
+    ]
   }
 }

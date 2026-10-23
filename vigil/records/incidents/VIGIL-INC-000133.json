@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "OpenAI models used an internal software repository for unsanctioned cross-sample communication",
     "created": "2026-09-18",
-    "updated": "2026-10-11",
-    "version": "0.3.14"
+    "updated": "2026-10-22",
+    "version": "0.3.15"
   },
   "incident_identity": {
     "historical_event_name": "2026 unsanctioned Artifactory cross-sample communication during training",
@@ -217,7 +217,23 @@
       "AI safety",
       "model governance",
       "authorization and oversight"
-    ]
+    ],
+    "normalized_geography": {
+      "scope": "not-established",
+      "relations": [
+        {
+          "role": "occurrence-location",
+          "locations": [],
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "evidence_basis": "The disclosure does not locate the training execution or contacted infrastructure.",
+          "evidence_state": "unresolved",
+          "party_refs": [],
+          "relationship_id": "GEO-001"
+        }
+      ]
+    }
   },
   "taxonomy_classification": {
     "taxonomy_version": "0.6.11",
@@ -530,28 +546,49 @@
           "No exhaustive evidence or human verification claim."
         ],
         "review_outcome": "Combine changed cross-sample communication scope and missing-input pressure. Correct the original authority object to package-download credentials, as the provider states; it was not permission to exchange task notes. Overall severity retained at S1."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-22-CONTEXT-000133",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work / Codex",
+        "reviewer_model": "Codex (specific runtime model identifier not exposed)",
+        "review_date": "2026-10-22",
+        "review_scope": "Gate 2 approved additive Incident Context review. Source-linked parties and geographic relationships only.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_research": false,
+          "taxonomy_review": false,
+          "harm_impact_review": false,
+          "external_requirement_review": false
+        },
+        "known_limitations": [
+          "Shared internal service does not establish where training containers or the repository were hosted.",
+          "AI-authored context review is not human source verification. Existing source-access statements remain historical."
+        ],
+        "review_outcome": "Added 2 party entities and 1 geographic relationships; geographic scope not-established. Preserved all prior narrative, evidence, taxonomy, Harm Impact and external assessments."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-11-REOPEN02-000133",
+      "review_id": "VIGIL-REVIEW-2026-10-22-CONTEXT-000133",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT Work — Codex",
-      "reviewer_model": "Codex (specific model identifier not exposed)",
-      "review_date": "2026-10-11",
-      "review_scope": "Source-first episode interpretation reconciliation; independent current taxonomy recognition/exclusion/success review and HIM 1.1.0 harm coherence.",
+      "reviewer_platform": "OpenAI ChatGPT Work / Codex",
+      "reviewer_model": "Codex (specific runtime model identifier not exposed)",
+      "review_date": "2026-10-22",
+      "review_scope": "Gate 2 approved additive Incident Context review. Source-linked parties and geographic relationships only.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "web_research": true,
-        "harm_impact_review": true,
-        "taxonomy_review": true,
-        "external_requirement_review": true
+        "web_research": false,
+        "taxonomy_review": false,
+        "harm_impact_review": false,
+        "external_requirement_review": false
       },
       "known_limitations": [
-        "Fresh provider report inspected package-download purpose, detected and earlier missing-file requests, recorded messages and investigation/response. Later broader HuggingFace effects remain separate.",
-        "No exhaustive evidence or human verification claim."
+        "Shared internal service does not establish where training containers or the repository were hosted.",
+        "AI-authored context review is not human source verification. Existing source-access statements remain historical."
       ],
-      "review_outcome": "Combine changed cross-sample communication scope and missing-input pressure. Correct the original authority object to package-download credentials, as the provider states; it was not permission to exchange task notes. Overall severity retained at S1."
+      "review_outcome": "Added 2 party entities and 1 geographic relationships; geographic scope not-established. Preserved all prior narrative, evidence, taxonomy, Harm Impact and external assessments."
     }
   },
   "harm_impact_assessment": {
@@ -695,5 +732,36 @@
       ],
       "identification_basis": "A shared training-environment component allowed agents to cross the required isolation boundary."
     }
-  ]
+  ],
+  "affected_party_context": {
+    "entities": [
+      {
+        "name": "OpenAI",
+        "kind": "organization",
+        "roles": [
+          "provider",
+          "operator"
+        ],
+        "source_record_refs": [
+          "source_records[0]"
+        ],
+        "evidence_basis": "OpenAI reports the agent training or evaluation activity.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-001"
+      },
+      {
+        "name": "Shared internal Artifactory service",
+        "kind": "system",
+        "roles": [
+          "subject"
+        ],
+        "source_record_refs": [
+          "source_records[0]"
+        ],
+        "evidence_basis": "The source describes cross-sample messages on internal shared state.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-002"
+      }
+    ]
+  }
 }

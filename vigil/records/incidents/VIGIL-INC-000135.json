@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Hacktron researchers used Claude-assisted exploit development to compromise OpenAI accounts and demonstrate internal repository access",
     "created": "2026-09-18",
-    "updated": "2026-10-11",
-    "version": "0.1.12"
+    "updated": "2026-10-22",
+    "version": "0.1.13"
   },
   "incident_identity": {
     "historical_event_name": "July 2026 Hacktron OpenAI bug-bounty compromise",
@@ -306,7 +306,24 @@
       "identity and access management",
       "security research authorization",
       "connected-service authority"
-    ]
+    ],
+    "normalized_geography": {
+      "scope": "not-established",
+      "relations": [
+        {
+          "role": "occurrence-location",
+          "locations": [],
+          "source_record_refs": [
+            "source_records[0]",
+            "source_records[3]"
+          ],
+          "evidence_basis": "The technical sequence does not enumerate affected-user or infrastructure jurisdictions.",
+          "evidence_state": "unresolved",
+          "party_refs": [],
+          "relationship_id": "GEO-001"
+        }
+      ]
+    }
   },
   "taxonomy_classification": {
     "taxonomy_version": "0.6.9",
@@ -549,25 +566,49 @@
           "Original public accounts do not provide every internal trace or unreported consequence."
         ],
         "review_outcome": "Authorized security researchers demonstrated a bounded private-account and repository-access consequence, reported and remediated; no unauthorized onward exploitation is evidenced."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-22-CONTEXT-000135",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work / Codex",
+        "reviewer_model": "Codex (specific runtime model identifier not exposed)",
+        "review_date": "2026-10-22",
+        "review_scope": "Gate 2 approved additive Incident Context review. Source-linked parties and geographic relationships only.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_research": false,
+          "taxonomy_review": false,
+          "harm_impact_review": false,
+          "external_requirement_review": false
+        },
+        "known_limitations": [
+          "Cross-service access is not proof of a geographic border crossing; researchers avoided reading internal code.",
+          "AI-authored context review is not human source verification. Existing source-access statements remain historical."
+        ],
+        "review_outcome": "Added 5 party entities and 1 geographic relationships; geographic scope not-established. Preserved all prior narrative, evidence, taxonomy, Harm Impact and external assessments."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-11-COMBINED-TRANCHE-20-000135",
+      "review_id": "VIGIL-REVIEW-2026-10-22-CONTEXT-000135",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT",
-      "reviewer_model": "GPT-6",
-      "review_date": "2026-10-11",
-      "review_scope": "Source-first all twelve HIM dimensions, Aggregate Harm gate and FC-086/087 exclusion, success and failure review.",
+      "reviewer_platform": "OpenAI ChatGPT Work / Codex",
+      "reviewer_model": "Codex (specific runtime model identifier not exposed)",
+      "review_date": "2026-10-22",
+      "review_scope": "Gate 2 approved additive Incident Context review. Source-linked parties and geographic relationships only.",
       "capability_profile": {
         "direct_repository_analysis": true,
-        "web_research": true,
-        "harm_impact_review": true,
-        "taxonomy_review": true
+        "direct_text_analysis": true,
+        "web_research": false,
+        "taxonomy_review": false,
+        "harm_impact_review": false,
+        "external_requirement_review": false
       },
       "known_limitations": [
-        "Original public accounts do not provide every internal trace or unreported consequence."
+        "Cross-service access is not proof of a geographic border crossing; researchers avoided reading internal code.",
+        "AI-authored context review is not human source verification. Existing source-access statements remain historical."
       ],
-      "review_outcome": "Authorized security researchers demonstrated a bounded private-account and repository-access consequence, reported and remediated; no unauthorized onward exploitation is evidenced."
+      "review_outcome": "Added 5 party entities and 1 geographic relationships; geographic scope not-established. Preserved all prior narrative, evidence, taxonomy, Harm Impact and external assessments."
     }
   },
   "harm_impact_assessment": {
@@ -705,5 +746,76 @@
       ],
       "identification_basis": "The demonstrated exploit affected access control for AI service accounts and connected capabilities."
     }
-  ]
+  ],
+  "affected_party_context": {
+    "entities": [
+      {
+        "name": "Hacktron AI researchers",
+        "kind": "population",
+        "roles": [
+          "operator"
+        ],
+        "source_record_refs": [
+          "source_records[3]"
+        ],
+        "evidence_basis": "Researchers developed and disclosed the exploit chain.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-001"
+      },
+      {
+        "name": "OpenAI",
+        "kind": "organization",
+        "roles": [
+          "affected-organization"
+        ],
+        "source_record_refs": [
+          "source_records[0]",
+          "source_records[3]"
+        ],
+        "evidence_basis": "The demonstration reached accounts and the private repository.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-002"
+      },
+      {
+        "name": "Discourse",
+        "kind": "organization",
+        "roles": [
+          "provider",
+          "participating-institution"
+        ],
+        "source_record_refs": [
+          "source_records[3]"
+        ],
+        "evidence_basis": "The forum platform was involved and remediated a finding.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-003"
+      },
+      {
+        "name": "Anthropic",
+        "kind": "organization",
+        "roles": [
+          "provider"
+        ],
+        "source_record_refs": [
+          "source_records[0]"
+        ],
+        "evidence_basis": "Researchers used Claude to assist analysis.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-004"
+      },
+      {
+        "name": "Account holders whose authentication material was exposed",
+        "kind": "population",
+        "roles": [
+          "subject"
+        ],
+        "source_record_refs": [
+          "source_records[0]"
+        ],
+        "evidence_basis": "The account includes employees and unaffiliated users.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-005"
+      }
+    ]
+  }
 }

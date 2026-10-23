@@ -1366,6 +1366,20 @@ def validate_record(
         if system.get("product_or_service") not in allowed_products:
             errors.append(f"{path}: non-canonical product_or_service")
         validate_agent_and_environment_context(path, record, system, errors, schema_path)
+    # Approved opt-in Incident Context (Gate 1): do not require a legacy
+    # corpus backfill, and never infer event location or legal applicability.
+    context_helper_path = Path(__file__).with_name("incident_context_validation.py")
+    context_spec = importlib.util.spec_from_file_location("vigil_incident_context_validation", context_helper_path)
+    if context_spec is None or context_spec.loader is None:
+        raise RuntimeError(f"Cannot load Incident Context validator: {context_helper_path}")
+    context_module = importlib.util.module_from_spec(context_spec)
+    context_spec.loader.exec_module(context_module)
+    errors.extend(
+        f"{path}: {issue}"
+        for issue in context_module.validate(
+            record, schema(schema_path)["incident_context_rules"]
+        )
+    )
     validate_harm_impact(path, record, errors)
     validate_source_records(path, record, errors)
     validate_external_assessments(path, record, known_assessment_ids, errors)

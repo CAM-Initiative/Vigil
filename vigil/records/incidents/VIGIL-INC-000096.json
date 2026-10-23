@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "DeepSeek exposed an unauthenticated database containing chat histories and secrets",
     "created": "2026-09-08",
-    "updated": "2026-10-19",
-    "version": "0.1.19"
+    "updated": "2026-10-22",
+    "version": "0.1.20"
   },
   "incident_identity": {
     "historical_event_name": "DeepSeek exposed ClickHouse database",
@@ -237,7 +237,38 @@
       "credential protection",
       "access control",
       "AI service infrastructure"
-    ]
+    ],
+    "normalized_geography": {
+      "scope": "not-established",
+      "relations": [
+        {
+          "role": "infrastructure-location",
+          "locations": [],
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "evidence_basis": "Internet reachability does not establish database location or affected users’ countries.",
+          "evidence_state": "unresolved",
+          "party_refs": [
+            "PARTY-004"
+          ],
+          "relationship_id": "GEO-001"
+        },
+        {
+          "role": "affected-population-jurisdiction",
+          "locations": [],
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "evidence_basis": "The log exposure does not enumerate affected user countries.",
+          "evidence_state": "unresolved",
+          "party_refs": [
+            "PARTY-002"
+          ],
+          "relationship_id": "GEO-002"
+        }
+      ]
+    }
   },
   "taxonomy_classification": {
     "taxonomy_version": "0.6.11",
@@ -600,28 +631,49 @@
           "Sources, HIM and independent external assessments were preserved; complete missing-source and criteria questions remain in the dated packet."
         ],
         "review_outcome": "Applied source/criterion-linked admission decisions; retained unresolved evidence and taxonomy-scope questions. Historical Boundary confidence preserved in the linked review."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-22-CONTEXT-000096",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work / Codex",
+        "reviewer_model": "Codex (specific runtime model identifier not exposed)",
+        "review_date": "2026-10-22",
+        "review_scope": "Gate 2 approved additive Incident Context review. Source-linked parties and geographic relationships only.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_research": false,
+          "taxonomy_review": false,
+          "harm_impact_review": false,
+          "external_requirement_review": false
+        },
+        "known_limitations": [
+          "DeepSeek identity is not evidence the exposed database was physically in China; prior third-party access is unknown.",
+          "AI-authored context review is not human source verification. Existing source-access statements remain historical."
+        ],
+        "review_outcome": "Added 4 party entities and 2 geographic relationships; geographic scope not-established. Preserved all prior narrative, evidence, taxonomy, Harm Impact and external assessments."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-19-CORPUS-BOUNDARY-000096",
+      "review_id": "VIGIL-REVIEW-2026-10-22-CONTEXT-000096",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI Codex",
-      "reviewer_model": "Exact runtime model identity not exposed",
-      "review_date": "2026-10-19",
-      "review_scope": "Taxonomy Boundary adjudication and role-field provenance repair.",
+      "reviewer_platform": "OpenAI ChatGPT Work / Codex",
+      "reviewer_model": "Codex (specific runtime model identifier not exposed)",
+      "review_date": "2026-10-22",
+      "review_scope": "Gate 2 approved additive Incident Context review. Source-linked parties and geographic relationships only.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "web_research": true,
-        "harm_impact_review": true,
-        "taxonomy_review": true,
-        "external_requirement_review": true
+        "web_research": false,
+        "taxonomy_review": false,
+        "harm_impact_review": false,
+        "external_requirement_review": false
       },
       "known_limitations": [
-        "Prior outcomes were visible; no blinded independent second rater or inter-rater reliability is claimed.",
-        "Sources, HIM and independent external assessments were preserved; complete missing-source and criteria questions remain in the dated packet."
+        "DeepSeek identity is not evidence the exposed database was physically in China; prior third-party access is unknown.",
+        "AI-authored context review is not human source verification. Existing source-access statements remain historical."
       ],
-      "review_outcome": "Applied source/criterion-linked admission decisions; retained unresolved evidence and taxonomy-scope questions. Historical Boundary confidence preserved in the linked review."
+      "review_outcome": "Added 4 party entities and 2 geographic relationships; geographic scope not-established. Preserved all prior narrative, evidence, taxonomy, Harm Impact and external assessments."
     }
   },
   "harm_impact_assessment": {
@@ -777,5 +829,62 @@
       ],
       "identification_basis": "Unauthenticated database-operation access directly engages security of the AI service and its operational infrastructure."
     }
-  ]
+  ],
+  "affected_party_context": {
+    "entities": [
+      {
+        "name": "DeepSeek",
+        "kind": "organization",
+        "roles": [
+          "operator",
+          "affected-organization"
+        ],
+        "source_record_refs": [
+          "source_records[0]"
+        ],
+        "evidence_basis": "The exposed database belonged to DeepSeek and was secured after notice.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-001"
+      },
+      {
+        "name": "Users represented in exposed logs",
+        "kind": "population",
+        "roles": [
+          "subject"
+        ],
+        "source_record_refs": [
+          "source_records[0]"
+        ],
+        "evidence_basis": "Wiz identifies chat histories and secrets in exposed log data.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-002"
+      },
+      {
+        "name": "Wiz Research",
+        "kind": "organization",
+        "roles": [
+          "other"
+        ],
+        "source_record_refs": [
+          "source_records[0]"
+        ],
+        "evidence_basis": "Wiz discovered and reported the exposure.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-003"
+      },
+      {
+        "name": "Exposed ClickHouse database",
+        "kind": "infrastructure",
+        "roles": [
+          "subject"
+        ],
+        "source_record_refs": [
+          "source_records[0]"
+        ],
+        "evidence_basis": "The service allowed unauthenticated database operations.",
+        "evidence_state": "attributed",
+        "party_id": "PARTY-004"
+      }
+    ]
+  }
 }
