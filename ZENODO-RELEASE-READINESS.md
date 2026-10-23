@@ -31,10 +31,10 @@ The preflight generator under vigil/releases/siai-2026/ builds a deterministic p
 
 ## Gate 2 — freeze and reproducibility checks
 
-- [ ] Generate and inspect the CI-exported preflight manifest for the exact pinned source commit. It records all in-scope file sizes, Git blob identifiers and SHA-256 digests, plus a deterministic aggregate inventory SHA-256.
-- [ ] Confirm 200 incident records, 17 taxonomy families, 80 classes and taxonomy version 0.8.0 at the frozen source commit.
-- [ ] Run the complete record/test/rights/provenance/taxonomy/external-requirement checks and record actual pass/fail/skipped outcomes for the branch.
-- [ ] Verify generated indexes and publication projections are consistent with canonical source.
+- [x] Generate and inspect the CI-exported preflight manifest for the exact pinned source commit. It records all in-scope file sizes, Git blob identifiers and SHA-256 digests, plus a deterministic aggregate inventory SHA-256.
+- [x] Confirm 200 incident records, 17 taxonomy families, 80 classes and taxonomy version 0.8.0 at the frozen source commit.
+- [x] Run the complete record/test/rights/provenance/taxonomy/external-requirement checks and record actual pass/fail/skipped outcomes for the branch.
+- [x] Verify generated indexes and publication projections are consistent with canonical source.
 - [ ] Confirm release files, source access, third-party material rights and any unverified evidence limitations are accurately described.
 
 ## Gate 3 — intentionally withheld
@@ -44,3 +44,7 @@ After explicit maintainer release sign-off: reconcile CITATION.cff, approve prop
 ## Limitations for SIAI
 
 The corpus is principally AI-assisted and human-governed, not demonstrably double-blind independently coded. Different Incident records may preserve different adjudication-era taxonomy versions. This release will be a traceable snapshot with bounded source evidence, not proof of universal taxonomy completeness, absence of all classification errors, legal compliance, or deployed runtime-control effectiveness.
+
+## Gate 2 validation checkpoint (23 October 2026)
+
+All technical preflight checks passed: 200 canonical records, 1,185 individually SHA-256-hashed source files, 735 source-record entries, 333 regression tests and full validation. Aggregate checksum: 7da6b83b0f1e049c8b2e688a523f38190674c8dd8b938794e336f70eeded9d7f. See https://github.com/CAM-Initiative/Vigil/actions/runs/39965642552 and the dedicated release-gates record. This does not clear independent-review, rights-holder or Zenodo publication gates.
