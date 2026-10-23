@@ -140,9 +140,22 @@ class IncidentRuleTests(unittest.TestCase):
         self.assertIn("referral", psych["thresholds"]["S2"]["criterion"])
         self.assertIn("reinforcement", psych["thresholds"]["S3"]["criterion"])
         self.assertIn("contribution", psych["thresholds"]["S5"]["criterion"])
-        self.assertIn("pre-interaction psychological baseline is not required", matrix["adjudication_guidance"]["psychological_attribution"])
+        self.assertIn("pre-interaction psychological baseline is not required", self.him_maintenance_guide())
         self.assertNotIn("baseline_course_and_competing_contributors", psych["quantitative_indicators"])
-        self.assertIn("governance", matrix["adjudication_guidance"]["psychological_attribution"])
+        self.assertIn("governance", self.him_maintenance_guide())
+
+    def him_maintenance_guide(self):
+        return (VIGIL / "docs" / "maintenance" / "HARM-IMPACT-METHODOLOGY-MAINTENANCE.md").read_text(encoding="utf-8")
+
+    def test_him_110_maintainer_guidance_is_not_in_public_json(self):
+        matrix = VALIDATOR.harm_matrix("1.1.0")
+        maintainer = self.him_maintenance_guide()
+        for field in ("working_amendments", "adjudication_guidance", "dimension_quantification_policy"):
+            self.assertNotIn(field, matrix)
+        self.assertNotIn("screening_contract", matrix["assessment_pathway_selection"])
+        self.assertIn("Working amendments and decision provenance", maintainer)
+        self.assertIn("screening_contract", maintainer)
+        self.assertIn("minimum supported band", maintainer)
 
     def test_him_110_in_place_minimum_cyber_consequence_thresholds(self):
         matrix = VALIDATOR.harm_matrix("1.1.0")
@@ -160,7 +173,7 @@ class IncidentRuleTests(unittest.TestCase):
         self.assertIn("recovery burden are unknown", assets["criterion"])
         self.assertIn("waitlist position", operations["criterion"])
         self.assertIn("later restoration or duration", operations["criterion"])
-        self.assertIn("minimum supported band", matrix["adjudication_guidance"]["uncertainty"])
+        self.assertIn("minimum supported band", self.him_maintenance_guide())
 
     def test_him_110_minimum_cyber_impact_incidents_and_uncertainty(self):
         cases = [
@@ -631,11 +644,11 @@ class IncidentRuleTests(unittest.TestCase):
         self.assertIn("fiduciary duty", relational["interpretive_note"].lower())
         self.assertIn("vulnerability is context-specific", relational["interpretive_note"].lower())
         self.assertIn("vulnerability by itself does not establish", relational["interpretive_note"].lower())
-        self.assertIn("vulnerability warrants proportionate safeguards", matrix["adjudication_guidance"]["relational_integrity"].lower())
-        self.assertIn("not a scored harm", matrix["dimension_quantification_policy"]["relational_vulnerability_boundary"].lower())
+        self.assertIn("vulnerability warrants proportionate safeguards", self.him_maintenance_guide().lower())
+        self.assertIn("not a scored harm", self.him_maintenance_guide().lower())
         self.assertIn(
             "relationship",
-            matrix["adjudication_guidance"]["relational_integrity"].lower(),
+            self.him_maintenance_guide().lower(),
         )
 
     def test_harm_matrix_preserves_digital_asset_effective_destruction_note(self):
