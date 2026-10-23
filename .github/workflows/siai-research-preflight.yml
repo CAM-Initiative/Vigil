@@ -88,6 +88,10 @@ jobs:
           python vigil/scripts/validate-cam-assessments.py
       - name: Run complete regression suite
         run: python -m unittest discover -s vigil/tests -p 'test_*.py'
+      - name: Apply committed textbook case-study publication eligibility
+        run: |
+          python vigil/taxonomy/filter_publication_case_examples.py
+          python vigil/taxonomy/filter_publication_case_examples.py --check
       - name: Confirm deterministic jurisdiction projection
         run: python vigil/scripts/build-vigil-jurisdiction-index.py --check
       - name: Assert validators did not change governed sources
