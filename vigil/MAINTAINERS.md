@@ -72,6 +72,10 @@ The taxonomy migration assurance ledger at `vigil/taxonomy/migration/Caelestis.L
 
 `external_requirement_assessments` is an optional, separate occurrence-level assessment surface. Candidates may be resolved from a material source clause through reviewed FC/EXTREQ relationships or independently identified from occurrence evidence. The field contains only materially relevant occurrence assessments with independent `alignment_result` (`aligned`, `not-aligned`, `boundary`) and `assessment_basis`. Normative force remains canonical requirement metadata; voluntary adoption is not an assessment gate. Candidate exclusions remain audit-only. The field does not duplicate central requirement metadata, taxonomy roles, or external assessments, and does not assert organisation-wide compliance. Follow `vigil/docs/maintenance/EXTERNAL-REQUIREMENT-ADJUDICATION.md`; do not backfill the corpus mechanically. Candidate generation preserves the meaning of `standards_and_regulatory_references` and does not use it to create candidates.
 
+## Harm Impact methodology maintenance boundary
+
+The public `vigil/methodologies/VIGIL.HarmImpactMatrix.v1.1.0.json` contains assessable methodology, not working handoffs. The retained operational adjudication and measurement instructions, version 1.1.0 amendment provenance, calibration work and schema/validator screening implementation contract are in `vigil/docs/maintenance/HARM-IMPACT-METHODOLOGY-MAINTENANCE.md`. Preserve this separation when revising methodology or syncing the website. Do not move controls into public fields merely to make a renderer display them.
+
 ## Public-language contract
 
 All VIGIL-authored public prose MUST follow `vigil/docs/maintenance/PUBLIC-OUTPUT-STYLE.md`.
