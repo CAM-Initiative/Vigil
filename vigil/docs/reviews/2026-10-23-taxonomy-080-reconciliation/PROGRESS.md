@@ -3,6 +3,15 @@
 **Campaign branch:** chore/siai-2026-release-readiness-20261023  
 **This is a working-branch candidate**, not an approved merged source, final SIAI release manifest, human validation certificate or v1.0.0 tag.
 
+## Current campaign extension — intake prior-review crosscheck
+
+- **17/200** incidents have evidenced v0.8.0 reconciliation disposition packets or a validated dated full-rebuild intake adjudication: the existing 11 campaign packets **plus six** current-edition 23 October intake decisions (INC-204–209). **183/200** are not screened by the campaign. These are **not** 17 independently re-researched cases; six reuse already source-adjudicated v0.8.0 intake decisions under explicit stale-packet guards.
+- Still **20/200 canonical incidents name 0.8.0** and **six** historic-edition canonical records have been upgraded during this branch (INC-073, 199–203). The intake six already recorded v0.8.0; no version or mapping is changed by this crosscheck.
+- **INC-204** stays a contested **FC-058 Boundary**; **205** retains FC-064/040/003 failures; **206** retains FC-064/040/009/017 failures; **207 and 208** retain bounded FC-064 failures; **209 remains unclassified**, without discounting its cyber harm and external-governance assessments. All six retain their original source limits and non-final/disputed clause nuances.
+- New explicit [intake crosscheck](INTAKE-204-209-CURRENT-EDITION-CROSSCHECK.md) links each existing source-first adjudication. The deterministic worklist now credits them **only** if its current canonical revision still matches the exact dated primary packet, reviewed edition, mapping objects, provenance, and completed source/criteria checks.
+- Current additions change only the campaign review-tracking script and audit/progress documentation. **Do not misrepresent the 11-screen count below as the current total**: that section is retained as a previous validated checkpoint.
+- All work remains on PR #162, draft and unmerged. This extension's CI still requires confirmation before claiming a fresh green checkpoint; no main-based SIAI tag/manifest has been created.
+
 ## Actual progress at validated substantive commit `771ccba82f0a0cdd5c632ca388c88306029c4310`
 
 - **200 canonical Incident records**; **20** with canonical `taxonomy_classification.taxonomy_version = "0.8.0"` (baseline 14). Six newly brought forward from `0.6.11`: INC-073, INC-199, INC-200, INC-201, INC-202 and INC-203.
