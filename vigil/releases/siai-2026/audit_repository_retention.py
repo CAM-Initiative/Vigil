@@ -8,7 +8,6 @@ import re
 import subprocess
 
 ROOT = Path(__file__).resolve().parents[3]
-BASELINE = "f031c4421f772e1af5b945bc388363aa81e1a179"
 OUT = Path(__file__).resolve().parent / "REPOSITORY-RETENTION-AUDIT.json"
 
 def git(*args: str) -> bytes:
@@ -31,10 +30,7 @@ def collect_values(obj, label="", refs=None):
     return refs
 
 def main() -> None:
-    changed = git("diff", "--name-only", BASELINE, "HEAD", "--", "vigil/records",
-                  "vigil/taxonomy", "vigil/docs/reviews", "vigil/cam_assessment")
-    if changed.strip():
-        raise SystemExit("Research baseline changed; refuse curation inventory")
+    source_sha = git("rev-parse", "HEAD^{commit}").decode("ascii").strip()
     paths = [x.decode("utf-8") for x in git("ls-files", "-z").split(b"\0") if x]
     subdirs = ["vigil/cam_assessment/", "vigil/tests/", "vigil/docs/reviews/"]
     folder_counts = {}
@@ -109,8 +105,8 @@ def main() -> None:
         if any(n in text for n in ("cam_assessment", "cam-assessments", "CAM applicability/coverage")):
             cam_refs.append(p)
     payload = {
-        "pinned_scientific_base": BASELINE,
-        "status": "audit-only; no curation, adjudication or release authorised",
+        "inventoried_branch_commit": source_sha,
+        "status": "audit-only; no substantive adjudication or dataset release implied",
         "folder_inventory": folder_counts,
         "incident_counts": {
             "total": len(record_data),

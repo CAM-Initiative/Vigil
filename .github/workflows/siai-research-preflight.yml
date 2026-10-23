@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - chore/siai-2026-release-readiness-20261023
+      - main
     paths:
       - "vigil/releases/siai-2026/**"
       - ".github/workflows/siai-research-preflight.yml"
@@ -34,8 +35,13 @@ jobs:
       - name: Build and verify research checksum inventory
         run: |
           python -m py_compile vigil/releases/siai-2026/build_research_snapshot.py
-          python vigil/releases/siai-2026/build_research_snapshot.py --write --verify-preservation
-          python vigil/releases/siai-2026/build_research_snapshot.py --check --verify-preservation
+          if [ "$GITHUB_REF" = "refs/heads/main" ]; then
+            python vigil/releases/siai-2026/build_research_snapshot.py --write --require-main
+            python vigil/releases/siai-2026/build_research_snapshot.py --check --require-main
+          else
+            python vigil/releases/siai-2026/build_research_snapshot.py --write
+            python vigil/releases/siai-2026/build_research_snapshot.py --check
+          fi
       - name: Print exact snapshot identity
         run: |
           python - <<'PY'

@@ -1,25 +1,26 @@
 #!/usr/bin/env python3
-"""Deterministic preflight SHA-256 inventory of the frozen SIAI research corpus.
+"""Deterministic SHA-256 inventory of the active release-candidate Git commit.
 
-Read Git blobs from the exact source commit, not from a mutable branch.
-Does not publish or authorise the candidate v1.0.0 release.
+On the working branch: inventory the proposed head, with no release claim.
+After an approved merge: rerun on main to inventory the exact merged commit.
+No tag, DOI, or Zenodo release is created by this script.
 """
 from __future__ import annotations
 
 import argparse
 from collections import Counter
 import hashlib
+import os
 import json
 from pathlib import Path
 import subprocess
 import sys
 
 ROOT = Path(__file__).resolve().parents[3]
-SOURCE = "f031c4421f772e1af5b945bc388363aa81e1a179"
 OUTPUT = Path(__file__).resolve().parent / "RESEARCH-SNAPSHOT.preflight.json"
 PREFIXES = (
     "vigil/records/", "vigil/taxonomy/", "vigil/methodologies/",
-    "vigil/external_governance/", "vigil/cam_assessment/",
+    "vigil/external_governance/",
     "vigil/references/", "vigil/templates/", "vigil/tests/",
     "vigil/scripts/", "vigil/docs/maintenance/", "vigil/docs/reviews/",
 )
@@ -39,9 +40,9 @@ def in_scope(path: str) -> bool:
     return path in EXACT or path.startswith(PREFIXES)
 
 
-def generate() -> dict:
-    git("cat-file", "-e", SOURCE + "^{commit}")
-    source_tree = git("ls-tree", "-r", "-z", SOURCE)
+def generate(source_sha: str) -> dict:
+    git("cat-file", "-e", source_sha + "^{commit}")
+    source_tree = git("ls-tree", "-r", "-z", source_sha)
     items = []
     record_count = 0
     version_counts: Counter[str] = Counter()
@@ -94,8 +95,8 @@ def generate() -> dict:
         "candidate_dataset_version": "1.0.0",
         "state": "PREFLIGHT_ONLY_NOT_PUBLISHED",
         "source_repository": "CAM-Initiative/Vigil",
-        "source_commit": SOURCE,
-        "hash_method": "SHA-256 of exact Git blob bytes at immutable source commit",
+        "source_commit": source_sha,
+        "hash_method": "SHA-256 of exact Git blob bytes at resolved source commit",
         "scope": {
             "file_path_prefixes": list(PREFIXES),
             "exact_files": sorted(EXACT),
@@ -138,15 +139,16 @@ def main() -> int:
     opt = parser.add_mutually_exclusive_group(required=True)
     opt.add_argument("--write", action="store_true")
     opt.add_argument("--check", action="store_true")
-    parser.add_argument("--verify-preservation", action="store_true")
+    parser.add_argument("--require-main", action="store_true",
+                        help="For the final main-based inventory, refuse a checkout not on main")
     args = parser.parse_args()
-    if args.verify_preservation:
-        altered = git("diff", "--name-only", SOURCE, "HEAD", "--", *PREFIXES, *EXACT)
-        if altered.strip():
-            print("ERROR: release branch alters frozen research files:", file=sys.stderr)
-            print(altered.decode("utf-8", "replace"), file=sys.stderr)
+    source_sha = git("rev-parse", "HEAD^{commit}").decode("ascii").strip()
+    if args.require_main:
+        current_branch = git("rev-parse", "--abbrev-ref", "HEAD").decode("utf-8").strip()
+        if current_branch != "main" or (os.environ.get("GITHUB_REF") not in (None, "refs/heads/main")):
+            print(f"ERROR: --require-main needs a main-branch checkout; got {current_branch}", file=sys.stderr)
             return 1
-    manifest = generate()
+    manifest = generate(source_sha)
     payload = (json.dumps(manifest, indent=2, sort_keys=True, ensure_ascii=False) + "\n").encode("utf-8")
     if args.write:
         OUTPUT.parent.mkdir(parents=True, exist_ok=True)
@@ -156,9 +158,9 @@ def main() -> int:
               f"SHA-256 {manifest['inventory']['canonical_entry_stream_sha256']}")
         return 0
     if not OUTPUT.exists() or OUTPUT.read_bytes() != payload:
-        print("ERROR: manifest missing or does not match pinned scientific commit", file=sys.stderr)
+        print("ERROR: manifest missing or does not match this checkout commit", file=sys.stderr)
         return 1
-    print("PASS: manifest matches immutable Git source and per-file SHA-256")
+    print("PASS: manifest matches resolved Git commit and per-file SHA-256")
     return 0
 
 

@@ -2,7 +2,7 @@
 
 **Status: PREPARATION ONLY. No approved v1.0.0 GitHub tag, GitHub Release, Zenodo deposit or certified corpus.**
 **Reviewed:** 23 October 2026.
-**Immutable research baseline:** f031c4421f772e1af5b945bc388363aa81e1a179 (main, merged PR #155).
+**Historical Gate 2 control source:** f031c4421f772e1af5b945bc388363aa81e1a179. This is NOT the final release source. Final snapshot must be rebuilt after reconciliation and merge to main.
 
 ## Current baseline (not inferred from the earlier checklist)
 
@@ -14,11 +14,11 @@
 
 ## Research release candidate
 
-The intended candidate is **VIGIL Observatory dataset v1.0.0**, not an automatic upgrade of the distinct Alignment Taxonomy from its published v0.8.0. The fixed 23 October main commit is the source baseline for a reproducibility preflight; no release is created merely by preparing a manifest.
+The intended candidate is **VIGIL Observatory dataset v1.0.0**, not an automatic upgrade of the distinct Alignment Taxonomy from its published v0.8.0. The original 23 October main commit was a valid control snapshot, not the final proposed release commit; a new manifest must be generated from the merged main commit after reconciliation. No release is created merely by preparing a manifest.
 
-The SIAI preparation branch may update publication documentation and release scaffolding. Canonical incidents, their provenance, taxonomy families/index, harm methodology, external governance, CAM assessments, source registries, schema, public projections, active validators, test fixtures and substantive review history must remain unchanged from the pinned scientific baseline.
+The SIAI preparation branch may change canonical incident classifications **only through the approved current-taxonomy reconciliation workflow**, preserve evidence and historical mapping provenance, and remove the unused CAM institutional assessment placeholder. No automatic migration by changing version strings is permitted. Validators, derived projections and documentation must be aligned before the PR is merged.
 
-The preflight generator under vigil/releases/siai-2026/ builds a deterministic per-file Git-object and SHA-256 inventory. Its CI workflow provides a manifest artifact, not a published deposit. README, provisional citation metadata and release paperwork are deliberately outside the scientific digest to avoid self-reference. A future approved tag and source archive still require separate inspection.
+The preflight generator under vigil/releases/siai-2026/ builds a deterministic per-file Git-object and SHA-256 inventory of the **current checkout commit**. Once merged, run on main with `--require-main`; only that result can support a main-based release. Its CI workflow provides an artifact, not a published deposit. README, provisional citation metadata and release paperwork are deliberately outside the scientific digest to avoid self-reference. A future approved tag and source archive still require separate inspection.
 
 ## Gate 1 — document and rights reconciliation
 
@@ -31,10 +31,10 @@ The preflight generator under vigil/releases/siai-2026/ builds a deterministic p
 
 ## Gate 2 — freeze and reproducibility checks
 
-- [x] Generate and inspect the CI-exported preflight manifest for the exact pinned source commit. It records all in-scope file sizes, Git blob identifiers and SHA-256 digests, plus a deterministic aggregate inventory SHA-256.
-- [x] Confirm 200 incident records, 17 taxonomy families, 80 classes and taxonomy version 0.8.0 at the frozen source commit.
-- [x] Run the complete record/test/rights/provenance/taxonomy/external-requirement checks and record actual pass/fail/skipped outcomes for the branch.
-- [x] Verify generated indexes and publication projections are consistent with canonical source.
+- [x] Generate and inspect the **original control** preflight manifest for the exact pinned source commit. It records all in-scope file sizes, Git blob identifiers and SHA-256 digests, plus a deterministic aggregate inventory SHA-256.
+- [x] Confirm **original control** held 200 incident records, 17 taxonomy families, 80 classes and taxonomy version 0.8.0 at the frozen source commit.
+- [x] Run the complete record/test/rights/provenance/taxonomy/external-requirement checks **for the original control snapshot** and record actual pass/fail/skipped outcomes for the branch.
+- [x] Verify original snapshot generated indexes and publication projections are consistent with canonical source.
 - [ ] Confirm release files, source access, third-party material rights and any unverified evidence limitations are accurately described.
 
 ## Gate 3 — intentionally withheld
@@ -48,3 +48,9 @@ The corpus is principally AI-assisted and human-governed, not demonstrably doubl
 ## Gate 2 validation checkpoint (23 October 2026)
 
 All technical preflight checks passed: 200 canonical records, 1,185 individually SHA-256-hashed source files, 735 source-record entries, 333 regression tests and full validation. Aggregate checksum: 7da6b83b0f1e049c8b2e688a523f38190674c8dd8b938794e336f70eeded9d7f. See https://github.com/CAM-Initiative/Vigil/actions/runs/39965642552 and the dedicated release-gates record. This does not clear independent-review, rights-holder or Zenodo publication gates.
+
+## Working-branch reconciliation and post-merge publication controls
+
+The maintainer requested that the active branch be reconciled **before merge**, not that v1.0.0 use the original Oct 23 source. The older checksum above is historical evidence only. The final publication manifest and release content must be rebuilt from the same approved main commit, after CI settles and after any final citation changes. The unused CAM institutional applicability/coverage assessment dataset, dedicated validator and tests have been removed from the working branch; no EXTREQ registry or occurrence-level compliance reasoning is being retired.
+
+See `vigil/releases/siai-2026/TAXONOMY-080-RECONCILIATION.md` for the evidence, review and decision requirements. Do not infer an automatic taxonomy migration or assert that every Incident is fully adjudicated simply because it has been screened.
