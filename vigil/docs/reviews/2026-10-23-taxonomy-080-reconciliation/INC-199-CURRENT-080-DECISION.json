@@ -1,0 +1,239 @@
+{
+  "incident_id": "VIGIL-INC-000199",
+  "review_date": "2026-10-23",
+  "review_mode": "full-rebuild",
+  "status": "completed-evidence-limited",
+  "baseline": {
+    "commit": "6182dd508dce3e7c64d9dbee5108067c8bf32eac",
+    "record_version": "0.1.5",
+    "taxonomy_version": "0.6.11",
+    "classification_status": "provisionally-classified",
+    "prior_record_review": "vigil/docs/reviews/2026-10-19-boundary-diagnostic/corpus-repair/INC-000199-DECISION.json"
+  },
+  "current_criteria": {
+    "version": "0.8.0",
+    "reference_commit": "6182dd508dce3e7c64d9dbee5108067c8bf32eac",
+    "full_class_catalogue_examined": 80
+  },
+  "source_evaluation": {
+    "status": "reviewed-from-identified-primary-and-attributed-first-party-reports",
+    "source_urls": [
+      "https://www.theverge.com/tech/879088/dji-romo-hack-vulnerability-remote-control-camera-access-mqtt",
+      "https://viewpoints.dji.com/blog/security-and-continuous-improvement-romos-path-forward",
+      "https://www.malwarebytes.com/blog/news/2026/02/hobby-coder-accidentally-creates-vacuum-robot-army"
+    ],
+    "attribution_and_access_limits": [
+      "The Verge independently viewed another household's floor plan/status, not proof that every reachable device's camera or microphone was accessed.",
+      "No full Claude Code transcript, service token claims, MQTT ACL policy or every request trace is public; do not convert an unknown internal permission basis into an issue.",
+      "DJI's broad completed-fix statement is attributed company evidence. It does not certify independently reproduced target-specific cross-account permission tests or resolve the separate app PIN route.",
+      "The incident documents authorisation logic of the DJI backend; no evidence Claude itself authorised cross-account access."
+    ]
+  },
+  "source_first_discovery": {
+    "material_episode_refs": [
+      "E001",
+      "E002",
+      "E003",
+      "E004"
+    ],
+    "independently_observed_governance_properties": [
+      "A legitimate own-device credential was used and the server returned a distinct household's protected information (E001–E002).",
+      "The authenticated service's target-specific permission boundary failed despite transport encryption and the credential's validity for the original device (E002).",
+      "The exact source of the service's permission inference, whether reachability-as-permission or misbound independent authorisation, is not publicly demonstrated (E001–E002).",
+      "The alternate PIN path and post-fix cross-device revalidation are distinct unresolved episodes, not proof of further mapped failures or a remedial success (E003–E004)."
+    ],
+    "summary": "Source-first recheck: own-device credential was accepted for other households' robot information; The Verge directly witnessed another household's status and floor plan and DJI acknowledged a backend permission-validation defect. This demonstrates changed-target authorisation failure independently of Claude's hidden instructions. Capability/credential possession as an independent permission premise is engaged but not established or refuted."
+  },
+  "positive_class_tests": [
+    {
+      "class_id": "VIGIL-FC-000003",
+      "name": "Target and Scope Authority Binding",
+      "mapping_role": "failure-occurrence",
+      "episode_refs": [
+        "E001",
+        "E002"
+      ],
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]",
+        "source_records[3]"
+      ],
+      "recognized_conditions": [
+        {
+          "condition": "Some authority or permission exists or is assumed to exist for an original principal, target, environment, task, action, jurisdiction, purpose, or delegated scope.",
+          "outcome": "established",
+          "independent_assessment": "Researcher legitimately extracted a token for the DJI Romo he owned, so some original access authorisation existed; no permission for other households is evidenced."
+        },
+        {
+          "condition": "The operative principal, target, environment, task, action, jurisdiction, purpose, or delegated scope materially changes.",
+          "outcome": "established",
+          "independent_assessment": "Using this token, his client obtained another household's device status and floor plan, which The Verge says it witnessed. Other owners' devices and personal information are materially different targets."
+        },
+        {
+          "condition": "The system continues as though the original authority automatically carries over to the changed scope.",
+          "outcome": "established",
+          "independent_assessment": "DJI identified a backend permission-validation defect, and the server continued delivering the changed target's data without a correctly scoped independent permission check."
+        }
+      ],
+      "exclusions": [
+        {
+          "condition": "The original authorisation explicitly covers the changed target and action.",
+          "outcome": "not-established",
+          "independent_assessment": "An own-device token does not explicitly confer authority over unrelated households or devices."
+        },
+        {
+          "condition": "The change is purely representational and does not alter authority-relevant scope.",
+          "outcome": "contradicted",
+          "independent_assessment": "Another household's device status and floor plan is an actual material target and principal difference, not an equivalent representation."
+        },
+        {
+          "condition": "The event concerns only loss of context without any authority consequence.",
+          "outcome": "contradicted",
+          "independent_assessment": "The incident concerns a demonstrated cross-target authorisation decision, not only lost conversational context."
+        }
+      ],
+      "success_alternative": "Successful target-specific revalidation of other household permission not established in reported remediation; preserve separate E004 evidence hold."
+    },
+    {
+      "class_id": "VIGIL-FC-000002",
+      "name": "Capability-Authority Separation",
+      "mapping_role": "ambiguous-boundary",
+      "episode_refs": [
+        "E001",
+        "E002",
+        "E004"
+      ],
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]",
+        "source_records[3]"
+      ],
+      "recognized_conditions": [
+        {
+          "condition": "A capability, credential, session, network path, API, target, or execution pathway is technically available or reachable.",
+          "outcome": "material-engagement-established",
+          "independent_assessment": "The researcher's own token was a technically available credential and could reach backend MQTT subscriptions across other owners' devices."
+        },
+        {
+          "condition": "The system uses that availability, reachability, access, or possession as a material basis for permission.",
+          "outcome": "unresolved-required-failure-condition",
+          "independent_assessment": "Whether the server treated mere token possession/reachability as permission, or instead erroneously applied a distinct subscriber/ACL target-scope permission, cannot be distinguished from public provider statements and journalist observation."
+        },
+        {
+          "condition": "Independent authority for the specific actor, target, action, and scope is absent, narrower, expired, unresolved, or not revalidated.",
+          "outcome": "inadequate-to-determine-validity-basis",
+          "independent_assessment": "Authorisation did not extend to the actual cross-household access. This supports lack of correctly validated scope but not a unique account of *how* the backend inferred authority."
+        }
+      ],
+      "exclusions": [
+        {
+          "condition": "A permitted action is executed within an explicitly authorised scope.",
+          "outcome": "contradicted",
+          "independent_assessment": "Access to another household's device information was not within the demonstrated own-device authorisation."
+        },
+        {
+          "condition": "The system merely detects that capability exists but does not infer permission from it.",
+          "outcome": "unresolved",
+          "independent_assessment": "The backend may have relied on reachable subscription topics, but a separate incorrectly scoped ACL or permission premise is also consistent with evidence."
+        },
+        {
+          "condition": "A vulnerability exists but no AI or governance process converts capability into authority.",
+          "outcome": "contradicted",
+          "independent_assessment": "DJI acknowledged a real backend permission-validation process and actual cross-principal data routing, not merely the existence of an unused vulnerability."
+        }
+      ],
+      "success_alternative": "No canonical success without independent scope-confirmed authority and observed correctly scoped execution."
+    }
+  ],
+  "independent_negative_candidate_tests": [
+    {
+      "id": "VIGIL-FC-000041",
+      "basis": "PIN avoidance in E003 does not show that the PIN was an independently required route for this client or that no authorised equivalent protected the affected action; keep clause unresolved, no canonical mapping."
+    },
+    {
+      "id": "VIGIL-FC-000038",
+      "basis": "No defined required control trigger is proven not to have activated; a failed permission validation is not itself evidence of nonactivation."
+    },
+    {
+      "id": "VIGIL-FC-000083",
+      "basis": "Loss of some scanner access after a patch does not establish tested target-specific remediation success for every device, route and authorised own-device access; no success finding."
+    },
+    {
+      "id": "VIGIL-FC-000057",
+      "basis": "A third-party read does not by itself demonstrate the separately required cross-principal governed state mutation mechanism."
+    },
+    {
+      "id": "VIGIL-FC-000064",
+      "basis": "Neither use of Claude Code for development nor researcher experimentation establishes the distinct objective-directed AI pathway authority substitution."
+    }
+  ],
+  "previous_mapping_dispositions": [
+    {
+      "class_id": "VIGIL-FC-000003",
+      "previous_role": "failure-occurrence",
+      "previous_confidence": "medium",
+      "disposition": "retained",
+      "after_role": "failure-occurrence",
+      "after_confidence": "medium",
+      "reason": "Current literal success/failure and exclusion tests support the same existing bounded mapping; no role, confidence or causal-intent inflation justified."
+    },
+    {
+      "class_id": "VIGIL-FC-000002",
+      "previous_role": "ambiguous-boundary",
+      "disposition": "retained",
+      "after_role": "ambiguous-boundary",
+      "reason": "Current literal success/failure and exclusion tests support the same existing bounded mapping; no role, confidence or causal-intent inflation justified."
+    }
+  ],
+  "previous_boundary_snapshot": {
+    "taxonomy_version": "0.7.0",
+    "material_engagement": "The device service accepted the researcher’s own token and returned other owners’ protected data, directly engaging a credential-based permission decision.",
+    "unresolved_conditions": [
+      {
+        "polarity": "failure-occurrence",
+        "condition": "The system uses that availability, reachability, access, or possession as a material basis for permission.",
+        "assessment": "The observed backend response and acknowledged permission defect do not settle whether token possession alone supplied permission or an independently asserted permission was misbound to targets.",
+        "source_record_refs": [
+          "source_records[0]",
+          "source_records[1]",
+          "source_records[3]"
+        ],
+        "episode_refs": [
+          "E001",
+          "E002",
+          "E004"
+        ]
+      }
+    ],
+    "diagnostic_reasons": [
+      "insufficient-evidence"
+    ],
+    "decisive_blocker": "The backend’s effective access decision is evidenced. The remaining question is its permission basis: capability/credential possession used as authority, versus target binding of a distinct permission. The assistant’s private reasoning is not required to assess the service decision.",
+    "resolution_requirements": "Obtain the operative token claims, subscription/ACL rules and matched response trace. Identify whether possession/reachability was the permission premise or the defect was solely scope binding. Do not require model intent or hidden code when service decision evidence suffices."
+  },
+  "adjudicated_outcome": {
+    "classification_status": "provisionally-classified",
+    "adjudication_coverage": {
+      "status": "partial"
+    },
+    "taxonomy_version": "0.8.0",
+    "mapping_changes": "none; previous mapping and mapping-local bases preserved",
+    "boundary_reassessment": "FC-002 Boundary remains genuinely engaged, outcome polarity cannot be established under v0.8.0 without service-permission premise; prior 0.7.0 recognition history preserved in this packet"
+  },
+  "temporal_integrity": "Earlier conduct, partial intervention and subsequent remediation statements retained in original chronology. A later provider remediation claim or a one-store success cannot erase other proven earlier outcomes.",
+  "non_taxonomy": {
+    "source_records": "preserved",
+    "source_clauses": "preserved",
+    "harm_impact": "preserved",
+    "external_requirement_assessments": "preserved",
+    "media": "preserved",
+    "public_prose": "preserved",
+    "geographic_context": "preserved"
+  },
+  "reviewer": {
+    "identity": "OpenAI ChatGPT GPT-6",
+    "method": "AI-assisted evidence and criterion adjudication",
+    "human_verified": false
+  },
+  "issue_register": "No GitHub Issue: private unknowns retained within canonical clauses, Boundary diagnosis and historical evidence."
+}
