@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "OpenCode Console compromise exposed AI provider API keys and led to reported unauthorised usage",
     "created": "2026-10-21",
-    "updated": "2026-10-22",
-    "version": "0.1.1"
+    "updated": "2026-10-23",
+    "version": "0.1.2"
   },
   "incident_identity": {
     "historical_event_name": "OpenCode Console credential compromise, 16–17 October 2026",
@@ -20,9 +20,9 @@
   },
   "summary": "On 17 October 2026 the maintainers of OpenCode said an older system connected to its hosted Console service had been breached overnight. They reported notifying the 1.4% of Console users affected by the attack. Some Console workspaces held API keys for OpenAI, Anthropic and Google AI services. Developers reported unexpected API usage and charges, and providers moved to block exposed keys or refund affected usage. OpenCode characterised the intrusion as related to large-scale model distillation, but did not publish technical proof of that purpose in the sources reviewed. Its open-source command-line client was not the compromised service. During subsequent defensive investigation, the company also reported that some AI models refused to analyse malicious code once safety filters were triggered. The refusal dialogue and the original intrusion mechanism remain unpublished.",
   "vigil_assessment": {
-    "factual_basis": "TechCrunch reproduced OpenCode's statement on 19 October, quoted developers' spending reports, and separately attributed provider and founder comments; the original X statement is linked but was not itself directly reviewed here. The 1.4% statistic lacks a user denominator and cannot justify an assumed number of exposed people. Axios on 21 October discussed the defensive refusal issue; no original agent instruction/response trace was available. Intrusion motivation and access route are therefore unattributed hypotheses.",
-    "governance_interpretation": "A conventional hosted credential service was compromised and affected users reported real unwanted API consumption. Its relationship to AI lies in the credentials being stolen, not an established autonomous model decision causing the breach. The post-breach defensive-model refusals are a distinct possible governance phenomenon, but the full prompts, risk policy and observed resulting harm are unavailable. The main event remains unclassified under the AI Alignment Taxonomy, while the confidentiality impact is assessed independently.",
-    "significance_to_cam": "The case tests provider-to-provider credential custody and the boundary between attacks on AI infrastructure and mistakes made by autonomous AI systems. It also marks a separately evidentiary-limited defence-tool issue without turning it into a fabricated incident mechanism.",
+    "factual_basis": "TechCrunch reproduced OpenCode's statement on 19 October, quoted developers' spending reports, and separately attributed provider and founder comments; the original X statement is linked but was not itself directly reviewed here. The 1.4% statistic lacks a user denominator and cannot justify an assumed number of exposed people. Axios on 21 October discussed the defensive refusal issue; no original agent instruction/response trace was available. The distillation purpose remains an attributed explanation, while the technical access route is undisclosed.",
+    "governance_interpretation": "The credential compromise and reported unwanted usage are material service-governance outcomes regardless of the attacker’s use of AI. They do not alone identify the mechanism required by a Fidelity Class. Defensive refusals remain a separate unresolved control-activation candidate. Independent cybersecurity requirements and confidentiality harm can be assessed without inventing an autonomous attacker or treating missing technical detail as proof that governance was adequate.",
+    "significance_to_cam": "Hosted AI-service credential custody and defensive access need separate governance assessment. A taxonomy evidence limit does not exempt the service from independent security analysis.",
     "assessment_boundaries": [
       "No original OpenCode security disclosure or victim-by-victim forensic report independently reviewed.",
       "No established proof of attacker distillation purpose or use of an agent to breach the service.",
@@ -37,7 +37,7 @@
         {
           "episode_id": "E001",
           "source_paraphrase": "OpenCode reported a breach of a legacy hosted Console system affecting 1.4 percent of Console users.",
-          "recovered_invariant_interpretation": "A breach of a service associated with AI is not evidence an AI model was the attacker.",
+          "recovered_invariant_interpretation": "Hosted credential custody must be assessed independently of the attacker’s technology.",
           "source_record_refs": [
             "source_records[0]"
           ],
@@ -67,7 +67,25 @@
         {
           "episode_id": "E004",
           "source_paraphrase": "Reporting described AI defence tools refusing to analyse some malicious code while OpenCode investigated.",
-          "recovered_invariant_interpretation": "A safety refusal cannot be classified without the exact prompts, context, authorised options and model output.",
+          "recovered_invariant_interpretation": "A defensive refusal requires comparison of the actual request with the safeguard’s valid activation conditions.",
+          "source_record_refs": [
+            "source_records[0]",
+            "source_records[1]"
+          ],
+          "adjudication_status": "unresolved",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000043",
+              "relationship": "candidate boundary",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "A refusal was reported during defensive work. The exact request, trigger rule and model response are unavailable, so neither valid activation nor activation on an invalid basis is established."
+            }
+          ]
+        },
+        {
+          "episode_id": "E005",
+          "source_paraphrase": "Providers and OpenCode reported key revocation, customer notification and work on refunds.",
+          "recovered_invariant_interpretation": "Containment and compensation activity do not erase the earlier exposure or prove complete recovery.",
           "source_record_refs": [
             "source_records[0]",
             "source_records[1]"
@@ -153,7 +171,79 @@
   },
   "external_incident_references": [],
   "external_assessments": [],
-  "external_requirement_assessments": [],
+  "external_requirement_assessments": [
+    {
+      "requirement_id": "EXTREQ-9BFEC90D284F0A9C",
+      "alignment_result": "not-aligned",
+      "assessment_basis": "The hosted Console environment suffered unauthorised access involving entrusted credentials. The observed environment did not preserve the registered protection outcome. The access route remains unknown; that limit does not negate the established unauthorised access.",
+      "assessed_on": "2026-10-23",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ],
+      "source_episode_refs": [
+        "E001",
+        "E002"
+      ],
+      "source_clause_indices": [
+        0,
+        1
+      ],
+      "identification_basis": "Independent review of the registered proposition against the evidenced actor, system, activity and lifecycle. Voluntary alignment is separate from adoption, certification and legal applicability."
+    },
+    {
+      "requirement_id": "EXTREQ-186266B5896332A7",
+      "alignment_result": "boundary",
+      "assessment_basis": "Credential custody makes access-permission management relevant. The published accounts do not expose the permission policy, privilege allocation or enforcement design, so the specific least-privilege and separation-of-duties proposition cannot be resolved from the breach alone.",
+      "assessed_on": "2026-10-23",
+      "source_record_refs": [
+        "source_records[0]"
+      ],
+      "source_episode_refs": [
+        "E001",
+        "E002"
+      ],
+      "source_clause_indices": [
+        0,
+        1
+      ],
+      "identification_basis": "Independent review of the registered proposition against the evidenced actor, system, activity and lifecycle. Voluntary alignment is separate from adoption, certification and legal applicability."
+    },
+    {
+      "requirement_id": "EXTREQ-0124DD1D36A2BEBB",
+      "alignment_result": "boundary",
+      "assessment_basis": "OpenCode and providers undertook incident response involving the hosted AI-service credentials. The full documented tracking, response and recovery process is not public. Reported containment activity does not establish completion of every process element.",
+      "assessed_on": "2026-10-23",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ],
+      "source_episode_refs": [
+        "E005"
+      ],
+      "source_clause_indices": [
+        4
+      ],
+      "identification_basis": "Independent review of the registered proposition against the evidenced actor, system, activity and lifecycle. Voluntary alignment is separate from adoption, certification and legal applicability."
+    },
+    {
+      "requirement_id": "EXTREQ-47465BB08333009C",
+      "alignment_result": "aligned",
+      "assessment_basis": "The attributed provider account reports notification of affected users and public communication of the incident. This supports communication for the bounded occurrence, without verifying every recipient, the attack’s asserted purpose or final remediation.",
+      "assessed_on": "2026-10-23",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ],
+      "source_episode_refs": [
+        "E005"
+      ],
+      "source_clause_indices": [
+        4
+      ],
+      "identification_basis": "Independent review of the registered proposition against the evidenced actor, system, activity and lifecycle. Voluntary alignment is separate from adoption, certification and legal applicability."
+    }
+  ],
   "system_context": {
     "platform_or_vendor": "Other",
     "product_or_service": "Other",
@@ -205,19 +295,19 @@
     }
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.7.0",
+    "taxonomy_version": "0.8.0",
     "classification_status": "unclassified",
     "adjudication_coverage": {
-      "status": "complete"
+      "status": "partial"
     },
-    "classification_basis": "Current records show credential theft from a service, not a model choosing or authorising an unauthorised pathway. the relevant Fidelity Class, the relevant Fidelity Class and the relevant Fidelity Class recognition cannot be inferred from the incident's AI branding. Defensive agent refusals are evidence-limited and do not justify a separate canonical class.",
+    "classification_basis": "Credential custody failed in the hosted service. The available account does not establish a particular authority-conversion or activated-control mechanism for the intrusion. The reported defensive refusals engage a separate activation question, but the valid trigger and request context remain unavailable.",
     "primary_classification": null,
     "secondary_classifications": [],
     "classification_review_provenance": {
-      "review_date": "2026-10-21",
-      "reviewer": "OpenAI ChatGPT — GPT-6",
-      "review_status": "AI source-first full Incident review; no human verification",
-      "review_reference": "vigil/docs/reviews/2026-10-21-new-incident-tranche/VIGIL-INC-000209-completion.json"
+      "review_date": "2026-10-23",
+      "reviewer": "OpenAI Codex — AI analytical reviewer",
+      "review_status": "Source-first reassessment; evidence limits retained; not human verified",
+      "review_reference": "vigil/docs/reviews/2026-10-23-intake-readjudication/VIGIL-INC-000209-adjudication.json"
     }
   },
   "related_incidents": [],
@@ -269,28 +359,49 @@
           "AI-authored context review is not human source verification. Existing source-access statements remain historical."
         ],
         "review_outcome": "Added 4 party entities and 1 geographic relationships; geographic scope not-established. Preserved all prior narrative, evidence, taxonomy, Harm Impact and external assessments."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-23-READJUDICATE-000209",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work / Codex",
+        "reviewer_model": "Codex",
+        "review_date": "2026-10-23",
+        "review_scope": "Authorised full reassessment of this new intake record: sources, material episodes, current taxonomy, independent external requirements and all twelve harm dimensions.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "new_external_source_research": true,
+          "taxonomy_review": true,
+          "harm_impact_review": true,
+          "external_requirement_review": true
+        },
+        "known_limitations": [
+          "Public source review, not human verification. Private logs and unpublished authority records remain unavailable.",
+          "Earlier review history is preserved; its completion claims are corrected by the dated reassessment."
+        ],
+        "review_outcome": "The credential compromise and reported unwanted usage are material service-governance outcomes regardless of the attacker’s use of AI. They do not alone identify the mechanism required by a Fidelity Class. Defensive refusals remain a separate unresolved control-activation candidate. Independent cybersecurity requirements and confidentiality harm can be assessed without inventing an autonomous attacker or treating missing technical detail as proof that governance was adequate."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-22-CONTEXT-000209",
+      "review_id": "VIGIL-REVIEW-2026-10-23-READJUDICATE-000209",
       "reviewer_type": "AI analytical reviewer",
       "reviewer_platform": "OpenAI ChatGPT Work / Codex",
-      "reviewer_model": "Codex (specific runtime model identifier not exposed)",
-      "review_date": "2026-10-22",
-      "review_scope": "Gate 2 approved additive Incident Context review. Source-linked parties and geographic relationships only.",
+      "reviewer_model": "Codex",
+      "review_date": "2026-10-23",
+      "review_scope": "Authorised full reassessment of this new intake record: sources, material episodes, current taxonomy, independent external requirements and all twelve harm dimensions.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "web_research": false,
-        "taxonomy_review": false,
-        "harm_impact_review": false,
-        "external_requirement_review": false
+        "new_external_source_research": true,
+        "taxonomy_review": true,
+        "harm_impact_review": true,
+        "external_requirement_review": true
       },
       "known_limitations": [
-        "The open-source client was not compromised; model-distillation purpose and exact refusal dialogue remain unverified.",
-        "AI-authored context review is not human source verification. Existing source-access statements remain historical."
+        "Public source review, not human verification. Private logs and unpublished authority records remain unavailable.",
+        "Earlier review history is preserved; its completion claims are corrected by the dated reassessment."
       ],
-      "review_outcome": "Added 4 party entities and 1 geographic relationships; geographic scope not-established. Preserved all prior narrative, evidence, taxonomy, Harm Impact and external assessments."
+      "review_outcome": "The credential compromise and reported unwanted usage are material service-governance outcomes regardless of the attacker’s use of AI. They do not alone identify the mechanism required by a Fidelity Class. Defensive refusals remain a separate unresolved control-activation candidate. Independent cybersecurity requirements and confidentiality harm can be assessed without inventing an autonomous attacker or treating missing technical detail as proof that governance was adequate."
     }
   },
   "harm_impact_assessment": {
@@ -308,12 +419,12 @@
       ],
       "rationale": "A bounded event with individually attributed evidence, not a deployed-model generic evaluation. No hypothetical exposed population is converted into proved harm."
     },
-    "assessed_on": "2026-10-21",
+    "assessed_on": "2026-10-23",
     "overall_severity": "S3",
     "controlling_dimensions": [
       "privacy-confidentiality"
     ],
-    "coverage_note": "All twelve HIM 1.1.0 dimensions screened. A reported material credential exposure supports the bounded confidentiality threshold; no other severity dimension has an evidenced band. Unknown is not zero or S1, and speculative campaign-wide injuries are not imported.",
+    "coverage_note": "All twelve dimensions reviewed. Credential exposure with reported misuse retains S3 confidentiality. Financial impact is reported but insufficiently bounded for a band. Refund activity does not erase previously incurred charges.",
     "dimensions": [
       {
         "dimension_id": "physical-health-safety",
@@ -358,8 +469,8 @@
       },
       {
         "dimension_id": "financial-economic",
-        "assessment_status": "unreported",
-        "assessment_basis": "The source set does not substantiate incident-attributable materialised harm meeting this dimension's defined band. Attempts, industry risk or generalised assumptions are not scored.",
+        "assessment_status": "insufficient-evidence",
+        "assessment_basis": "Unauthorised charges were reported. The aggregate realised loss and completed refunds are not established, so the financial thresholds cannot be applied. Financial harm must not be labelled unreported or inferred to be zero.",
         "evidence_confidence": "not-assessed"
       },
       {
