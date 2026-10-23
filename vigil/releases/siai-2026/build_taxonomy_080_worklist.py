@@ -58,6 +58,17 @@ def build() -> dict:
         raise SystemExit(f"Unexpected corpus size {len(rows)}; update count only through governed intake")
     if len({r["incident_id"] for r in rows}) != len(rows):
         raise SystemExit("Duplicate canonical incident IDs")
+    # Explicit replacement packets preserve the earlier audit and bind the complete
+    # canonical record plus exact reviewed class content. This is a campaign
+    # credit check, not a new canonical validity or classification rule.
+    packet_dir = ROOT / "vigil/docs/reviews/2026-10-23-taxonomy-080-reconciliation"
+    current_packets = {}
+    for packet_path in sorted([*packet_dir.glob("FOCAL-*-080.json"), *packet_dir.glob("BATCH-*-080.json")]):
+        packet = json.loads(packet_path.read_text(encoding="utf-8"))
+        rid = packet.get("incident_id")
+        if rid in current_packets:
+            raise SystemExit(f"Duplicate replacement packet: {rid}")
+        current_packets[rid] = (packet_path, packet)
     # Overlay only a dated, explicitly reviewed decision packet, not AI-inferred
     # completion from a matching taxonomy version or changed status label.
     review_path = ROOT / "vigil/docs/reviews/2026-10-23-taxonomy-080-reconciliation/TRANCHE-01-DECISIONS.json"
@@ -73,6 +84,12 @@ def build() -> dict:
                 raise SystemExit(f"Unknown or duplicate screened Incident: {rid}")
             seen.add(rid)
             row = index[rid]
+            if rid in current_packets:
+                replacement = current_packets[rid][1]
+                if (replacement.get("supersedes_screen_packet") != str(review_path.relative_to(ROOT))
+                    or replacement["baseline"]["record_version"] != decision["baseline_record_revision"]):
+                    raise SystemExit(f"Unaccounted screen supersession: {rid}")
+                continue
             if row["record_version"] != decision.get("baseline_record_revision"):
                 raise SystemExit(f"Review stale for {rid}: record version changed; update substantive disposition")
             if row["recorded_taxonomy_version"] != decision.get("baseline_taxonomy_edition"):
@@ -192,6 +209,36 @@ def build() -> dict:
             "Prior dated AI source/criterion full-rebuild crosschecked against "
             "current canonical mapping; no new independent source or human assurance"
         )
+    taxonomy_classes = {
+        c["class_id"]: c
+        for path in (ROOT / "vigil/taxonomy/families").glob("*.json")
+        for c in json.loads(path.read_text(encoding="utf-8"))["classes"]
+    }
+    for rid, (packet_path, packet) in current_packets.items():
+        if rid not in by_id:
+            raise SystemExit(f"Unknown reviewed Incident: {rid}")
+        row = by_id[rid]
+        canonical = json.loads((ROOT / row["canonical_path"]).read_text(encoding="utf-8"))
+        if (row["current_080_screen_result"] != "NOT-REVIEWED"
+            or row["canonical_sha256"] != packet.get("canonical_sha256")
+            or packet.get("status") != "completed-evidence-limited"
+            or packet.get("validation", {}).get("status") != "passed"
+            or packet.get("taxonomy_review", {}).get("taxonomy_version") != "0.8.0"
+            or canonical["taxonomy_classification"] != packet.get("after_taxonomy")
+            or not packet.get("mapping_tests")):
+            raise SystemExit(f"Stale or incomplete replacement packet: {rid}")
+        for test in packet["mapping_tests"]:
+            current = taxonomy_classes[test["class_id"]]
+            for key in ("failure_recognition", "success_recognition", "exclusions"):
+                literal = current[key] if key == "exclusions" else current[key]["required_conditions"]
+                if [x["condition"] for x in test[key]] != literal:
+                    raise SystemExit(f"Changed criteria require rescreen: {rid} {test['class_id']} {key}")
+                if any(not x.get("assessment") or not x.get("source_record_refs") for x in test[key]):
+                    raise SystemExit(f"Missing criterion reasoning: {rid}")
+        row["current_080_screen_result"] = packet["screen_outcome"]
+        row["current_080_screen_date"] = packet["review_date"]
+        row["screening_decision_packet"] = str(packet_path.relative_to(ROOT))
+        row["screening_assurance"] = "AI source/criterion review; complete-record fingerprint checked; no human assurance"
     rows.sort(key=lambda x: (x["priority"], x["incident_id"]))
     return {
         "worklist_schema": "vigil-taxonomy-080-reconciliation/1",

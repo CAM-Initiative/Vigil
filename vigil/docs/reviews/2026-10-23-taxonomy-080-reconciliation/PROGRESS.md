@@ -3,7 +3,15 @@
 **Campaign branch:** chore/siai-2026-release-readiness-20261023  
 **This is a working-branch candidate**, not an approved merged source, final SIAI release manifest, human validation certificate or v1.0.0 tag.
 
-## Current campaign extension — intake prior-review crosscheck
+## Accelerated execution — focal updates and five-case batch
+
+Current candidate: **22/200 screened; 178 not screened; 27 canonical v0.8.0 stamps; 13 older-edition records upgraded in this branch**. INC-117/129 were already screened and are not counted twice. Newly screened: INC-130, 138, 189, 190, 191. All seven canonical revisions preserve mapping roles/confidence, provisional/disputed state, original evidence, HIM and external assessments. INC-129 now has literal current-edition Boundary conditions and condition-specific reasoning.
+
+All seven rebuild guards passed. Canonical and interpretive validators passed; full suite passed 326 tests. Generated Incident/geography/textbook outputs rebuilt with publication filtering. Initial local testing lacked the CI-pinned jsonschema dependency; it was installed and the full suite rerun successfully. Remote CI is pending push.
+
+[Paper-ready focal facts](../../../releases/siai-2026/PAPER-RECONCILIATION-FACTS.md) are available now. INC-003 is deliberately **not** counted as completed: [G01](GOVERNANCE-DECISIONS.md) documents the conflict between universal exclusion precedence and positive recognition. Its mappings remain unchanged. No taxonomy/schema/validator rule or final release was changed.
+
+## Historical checkpoint — intake prior-review crosscheck
 
 - **17/200** incidents have evidenced v0.8.0 reconciliation disposition packets or a validated dated full-rebuild intake adjudication: the existing 11 campaign packets **plus six** current-edition 23 October intake decisions (INC-204–209). **183/200** are not screened by the campaign. These are **not** 17 independently re-researched cases; six reuse already source-adjudicated v0.8.0 intake decisions under explicit stale-packet guards.
 - Still **20/200 canonical incidents name 0.8.0** and **six** historic-edition canonical records have been upgraded during this branch (INC-073, 199–203). The intake six already recorded v0.8.0; no version or mapping is changed by this crosscheck.
