@@ -59,6 +59,11 @@ jobs:
         run: |
           python -m py_compile vigil/releases/siai-2026/audit_repository_retention.py
           python vigil/releases/siai-2026/audit_repository_retention.py
+      - name: Generate 200-record current-taxonomy reconciliation queue
+        run: |
+          python -m py_compile vigil/releases/siai-2026/build_taxonomy_080_worklist.py
+          python vigil/releases/siai-2026/build_taxonomy_080_worklist.py --write
+          python vigil/releases/siai-2026/build_taxonomy_080_worklist.py --check
       - name: Upload manifest (preflight only; not a release)
         uses: actions/upload-artifact@v4
         with:
@@ -66,6 +71,7 @@ jobs:
           path: |
             vigil/releases/siai-2026/RESEARCH-SNAPSHOT.preflight.json
             vigil/releases/siai-2026/REPOSITORY-RETENTION-AUDIT.json
+            vigil/releases/siai-2026/TAXONOMY-080-WORKLIST.json
           if-no-files-found: error
           retention-days: 30
 
