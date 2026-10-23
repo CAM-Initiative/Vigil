@@ -5,6 +5,8 @@ occurrence. It is not a likelihood estimate, a Alignment Taxonomy classification
 classification confidence, source prestige, operational priority, or a statement
 of hypothetical worst-case capability.
 
+The maintainer-only amendment history, adjudication instructions, calibration tasks and implementation contracts are in `vigil/docs/maintenance/HARM-IMPACT-METHODOLOGY-MAINTENANCE.md`. They must not be published inside the versioned methodology JSON.
+
 The canonical machine-readable methodology is
 `vigil/methodologies/VIGIL.HarmImpactMatrix.v1.1.0.json`. External sources resolve
 through the separate `vigil/references/VIGIL.ObservatoryReferenceRegistry.json`.
