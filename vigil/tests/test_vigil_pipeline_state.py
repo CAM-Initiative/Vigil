@@ -53,6 +53,20 @@ def main() -> None:
     for name in RETIRED:
         assert not (RECORDS / name).exists()
     assert not (VIGIL / "migrations" / "incident-registry").exists()
+
+    # CAM organisational applicability/coverage was never populated. Keep the
+    # retired placeholder out of the active research record and CI contracts.
+    for retired in (
+        "vigil/cam_assessment",
+        "vigil/scripts/validate-cam-assessments.py",
+        "vigil/tests/test_cam_assessments.py",
+    ):
+        assert not (ROOT / retired).exists(), f"retired CAM assessment artefact restored: {retired}"
+    for workflow in (
+        ROOT / ".github/workflows/external-governance.yml",
+        ROOT / ".github/workflows/siai-research-preflight.yml",
+    ):
+        assert "validate-cam-assessments.py" not in workflow.read_text(encoding="utf-8"), workflow
     print("VIGIL Incident-only pipeline-state tests passed.")
 
 
