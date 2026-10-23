@@ -88,32 +88,48 @@ def build() -> dict:
     # Separate genuinely restamped current-edition adjudications from screening
     # only. Never accept a packet merely because a version string happens to match.
     by_id = {r["incident_id"]: r for r in rows}
-    for number in (201, 202):
-        packet_path = (ROOT / "vigil/docs/reviews/2026-10-23-taxonomy-080-reconciliation"
-                       / f"INC-{number:03d}-CURRENT-080-DECISION.json")
+    packet_dir = ROOT / "vigil/docs/reviews/2026-10-23-taxonomy-080-reconciliation"
+    for packet_path in sorted(packet_dir.glob("INC-*-CURRENT-080-DECISION.json")):
         packet = json.loads(packet_path.read_text(encoding="utf-8"))
-        rid = f"VIGIL-INC-{number:06d}"
+        rid = packet.get("incident_id")
+        if rid not in by_id:
+            raise SystemExit(f"Unknown Incident in reviewed packet {packet_path}")
         row = by_id[rid]
         canonical = json.loads((ROOT / row["canonical_path"]).read_text(encoding="utf-8"))
         rev = canonical.get("taxonomy_classification") or {}
         source_mappings = [rev.get("primary_classification"), *(rev.get("secondary_classifications") or [])]
-        recorded_ids = [x["class_id"] for x in source_mappings if isinstance(x, dict)]
-        audited_ids = [x["class_id"] for x in packet["baseline_mapping_dispositions"]]
-        if (packet.get("incident_id") != rid or packet["adjudicated_taxonomy"]["published_version"] != "0.8.0"
+        source_mappings = [x for x in source_mappings if isinstance(x, dict)]
+        decisions = (packet.get("baseline_mapping_dispositions")
+                     or packet.get("previous_mapping_dispositions") or [])
+        recorded_pairs = [(x.get("class_id"), x.get("classification_role")) for x in source_mappings]
+        audited_pairs = [(x.get("class_id"), x.get("previous_role") or x.get("role"))
+                         for x in decisions]
+        criteria = packet.get("adjudicated_taxonomy") or packet.get("current_criteria") or {}
+        candidate_version = criteria.get("published_version") or criteria.get("version")
+        outcome = packet.get("current_decision") or packet.get("adjudicated_outcome") or {}
+        previous_version = packet["baseline"]["record_version"]
+        current_version = row["record_version"]
+        oldparts, newparts = previous_version.split("."), current_version.split(".")
+        expected_revision = (oldparts[:-1] == newparts[:-1]
+                             and int(newparts[-1]) == int(oldparts[-1]) + 1)
+        if (candidate_version != "0.8.0"
             or row["recorded_taxonomy_version"] != "0.8.0"
-            or row["record_version"] != "0.1.4"
-            or packet["baseline"]["record_version"] != "0.1.3"
-            or packet["current_decision"]["classification_status"] != row["classification_status"]
-            or audited_ids != recorded_ids
+            or packet.get("status") != "completed-evidence-limited"
+               and packet.get("adjudicated_taxonomy") is None
+            or packet.get("incident_id") != rid
+            or not expected_revision
+            or packet["baseline"].get("taxonomy_version") not in (None, "0.6.11")
+            or outcome.get("classification_status") != row["classification_status"]
+            or audited_pairs != recorded_pairs
             or rev.get("classification_review_provenance", {}).get("review_reference")
                != str(packet_path.relative_to(ROOT))):
-            raise SystemExit(f"Substantive current-taxonomy decision stale or unverified for {rid}")
+            raise SystemExit(f"Substantive current-taxonomy decision stale or invalid for {rid}")
         if row["current_080_screen_result"] != "NOT-REVIEWED":
             raise SystemExit(f"Duplicate case review overlay for {rid}")
         row["current_080_screen_result"] = "CANONICAL-080-RECONCILED-PROVISIONAL-RETAINED"
         row["current_080_screen_date"] = packet["review_date"]
         row["screening_decision_packet"] = str(packet_path.relative_to(ROOT))
-        row["screening_assurance"] = "AI source/criterion review; research source evidence limits preserved"
+        row["screening_assurance"] = "AI source/criterion review; original evidence limits preserved"
     rows.sort(key=lambda x: (x["priority"], x["incident_id"]))
     return {
         "worklist_schema": "vigil-taxonomy-080-reconciliation/1",
