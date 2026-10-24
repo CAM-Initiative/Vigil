@@ -57,3 +57,7 @@ The candidate now has **77 of 200 records screened, with 123 remaining**. Eight 
 ## 24 October continuation: distinguish screening from resolution
 
 **95 of 200 incidents have completed dated current-edition screens; 105 remain unscreened.** Ten completed screens explicitly preserve historical findings under current-edition evidence holds. Thus 95 is not a count of fully reconciled or independently verified classifications. These include unresolved voice-interaction setup, decision-authority pathways, refusal trigger provenance and causal attribution. The focal-case caveats remain operative. Canonical v0.8.0 stamps remain 60.
+
+## 24 October continuation: 109 screened
+
+**109/200 incidents have completed dated current-edition screens; 91 remain unscreened.** Twelve screens explicitly hold current-edition resolution on evidence, and one holds it on taxonomy governance. Three public-upload cases now include an independently evidenced objective/pathway finding after fresh source review and full rebuild checks. Canonical v0.8.0 stamps total 63, including 49 upgrades. Screening, canonical edition and final reconciliation remain distinct counts.

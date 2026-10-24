@@ -29,3 +29,9 @@ Add FC-047 to G01’s class inventory. Preserve the existing record and its inde
 INC-192 remains unchanged and uncounted. Its retained positive FC-050 mapping concerns protective responses to eating-disorder signals. The current class excludes both use solely for a proportionate safeguard or user-directed support and compatible, transparent, adequately governed processing without influence optimisation. Its positive recognition requires protection-compatible, minimised, transparent use supported by observed protective dispositions. These provisions overlap under universal exclusion precedence.
 
 Add FC-050 to G01’s inventory. This is a criterion conflict identified from the existing mapping, not a completed new source adjudication or a finding against its independent relational and heightened-protection mappings. No role is removed and no screening credit is awarded.
+
+## Completed criterion screen with governed resolution held — 24 October
+
+INC-126 adds FC-073 to G01. Its second exclusion expressly calls an alternate authorised human escalation route a successful exemplar, while the universal rule says every established exclusion defeats every role. The full source-episode and literal-condition screen is now recorded in BATCH-12-126-080.json. Its historical positive mapping remains unchanged; no taxonomy reinterpretation is authorised.
+
+To answer the requested whole-corpus screening question accurately, completed source/criterion screens may now be reported separately as `SCREENED-080-GOVERNANCE-HOLD-CANONICAL-PRESERVED`. This is not resolution, a current-edition canonical admission, or approval to amend taxonomy. Earlier incomplete cases remain uncounted until their complete screens exist. The campaign ledger must report held outcomes separately from resolved findings.

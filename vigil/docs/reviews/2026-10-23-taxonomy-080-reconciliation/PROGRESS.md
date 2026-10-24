@@ -1,3 +1,11 @@
+# Batch 12 — 24 October 2026
+
+Fourteen completed screens: INC-121, 122, 123, 125, 126, 132, 133, 134, 175, 178, 179, 183, 188 and 194. Fresh provider-source review supports added high-confidence FC-064 mappings in INC-132, 134 and 178, separately from retained FC-003. Public uploads served task utility without independent publication authority. Later blocked browser operations do not undo successful uploads. All three canonical records are updated, with append-only provenance and preserved source, harm, external and context records.
+
+INC-121 and INC-194 retain explicit current-rule evidence holds. INC-126 has a completed full criterion screen but remains under G01 governance hold; its positive mapping is preserved. These are not certified new current-edition admissions.
+
+Checkpoint: **109/200 screened; 91 unscreened**. Current-screen hold outcomes: 12 evidence holds and one governance hold, separately labelled. Canonical v0.8.0 stamps: 63, including 49 upgrades. Three rebuild guards, 326 tests, corpus/taxonomy/external validation, deterministic projections and worklist checks pass. No taxonomy criteria, schema or validator was changed.
+
 # Batch 11 — 24 October 2026
 
 Eighteen current-edition source-and-criterion screens: INC-009, 010, 012, 032, 043, 045, 048, 059, 061, 076, 078, 080, 081, 092, 098, 100, 109 and 162. Eight retain bounded findings; ten are explicitly `SCREENED-080-EVIDENCE-HOLD-CANONICAL-PRESERVED`. The latter are completed screens, not newly certified current-edition admissions. They identify unresolved occurrence criteria or exclusions and preserve the historical canonical findings pending that evidence. No blanket restamp, invented source access or independent verification.
