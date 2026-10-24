@@ -6,7 +6,7 @@ The bounded migration is complete for review: 194 Incidents screened, 34 FC-084 
 
 ## Verification
 
-* **307 tests pass** after installing CI's pinned `jsonschema==4.26.0`. The initial attempt failed to import that dependency; its output is preserved in `VALIDATION.json`, not reported as a substantive regression.
+* **307 tests pass** after installing CI's pinned `jsonschema==4.26.0`. The initial attempt failed to import that dependency; its output is preserved in [the pinned historical validation receipt](https://github.com/CAM-Initiative/Vigil/blob/2519291962d1da0b01a1ae28caf38275496efdf2/vigil/docs/reviews/2026-10-20-fc089-corpus-migration/VALIDATION.json), not reported as a substantive regression.
 * Canonical/public-record, source and interpretive provenance, authorship, system-component, and occurrence-to-requirement validators pass.
 * Both full-rebuild guards pass against the exact `be4bf1c784f956ff32c27377ff9e48c94a6fcb77` baseline.
 * Taxonomy validation passes for 17 families and 80 classes. Taxonomy, schema, validators and tests are unchanged.
@@ -21,6 +21,6 @@ The grouped proposal in `TAXONOMY-AMENDMENT.md` awaits maintainer approval. It c
 
 Issue #154's external-standard admission remains independently held for authoritative source access and applicability review. No ISO requirement, universal uptime obligation or independent requirement assessment has been manufactured.
 
-Concurrent commits through `51f807171c013fcce54e4046e7b72c9a98b97fb4` add only disjoint FC-045/079 review documents; those contents are preserved. `CONCURRENCY.json` records the comparison. Publication is to the existing working branch and PR #140 only, with a non-force expected-head update. No merge is performed.
+Concurrent commits through `51f807171c013fcce54e4046e7b72c9a98b97fb4` add only disjoint FC-045/079 review documents; those contents are preserved. [the pinned concurrency receipt](https://github.com/CAM-Initiative/Vigil/blob/2519291962d1da0b01a1ae28caf38275496efdf2/vigil/docs/reviews/2026-10-20-fc089-corpus-migration/CONCURRENCY.json) records the comparison. Publication is to the existing working branch and PR #140 only, with a non-force expected-head update. No merge is performed.
 
 This report certifies the bounded migration's completion and recorded validation, not a new all-class source adjudication or paper freeze. The existing PR's broader maintainer merge gates still require reconciliation. Remote workflow status and the exact published commit are reported in the PR comment after publication; they must not be inferred from local test results.

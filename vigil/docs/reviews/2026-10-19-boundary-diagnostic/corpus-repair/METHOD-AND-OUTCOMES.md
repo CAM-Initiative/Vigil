@@ -54,7 +54,7 @@ This is not a new corpus-wide independent adjudication. The census identifies ea
 
 ## Validation, provenance and academic use
 
-`VALIDATION.json` records actual commands, results, bounded reruns and deterministic generation checks. All 53 rebuild manifests pass; canonical and publication/provenance checks pass across 194 records. Existing full-suite fixture failures are reported and tracked in [#149](https://github.com/CAM-Initiative/Vigil/issues/149); no permanent Incident answer-key test was added and no validator was weakened. Passing structure is not substantive adjudication proof.
+[the pinned validation receipt](https://github.com/CAM-Initiative/Vigil/blob/2519291962d1da0b01a1ae28caf38275496efdf2/vigil/docs/reviews/2026-10-19-boundary-diagnostic/corpus-repair/VALIDATION.json) records actual commands, results, bounded reruns and deterministic generation checks. All 53 rebuild manifests pass; canonical and publication/provenance checks pass across 194 records. Existing full-suite fixture failures are reported and tracked in [#149](https://github.com/CAM-Initiative/Vigil/issues/149); no permanent Incident answer-key test was added and no validator was weakened. Passing structure is not substantive adjudication proof.
 
 `PRESERVATION-AND-PROVENANCE.json` records baseline/candidate SHA-256 values and field-preservation checks. The output commit is the Git commit containing this final audit; its complete SHA is reported on publication. Historical initial/population/pilot packets remain provenance and are superseded only for explicitly reviewed decisions. The deleted `POPULATION-REPORT.md` is not restored.
 

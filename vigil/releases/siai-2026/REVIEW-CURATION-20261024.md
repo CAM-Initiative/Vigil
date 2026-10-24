@@ -106,3 +106,18 @@ These are execution receipts, not unique Incident mapping dispositions, evidence
 ## Tranche 9 — exact duplicate INC-003/SOCI notice-board copies (24 October 2026)
 
 **Pre-deletion recovery Git commit:** `6aa2e54f41927390f3f7ae8f3f17d384514e09a0`. Retired **3** files (10609 bytes) after verifying equal Git blob SHA against the retained original for each of the three paths: follow-through INC-003 disposition and source-access records are identical to the SOCI issue #132 packet; baseline validation results are identical to the final receipt. The retained follow-through `README.md` now links to the two canonical notice-board locations for the duplicated review artefacts. Retained `adjudication-manifest.json`, all current Incident evidence, independent adjudication methods and the active v0.8.0 review. No substantive conclusions have been rewritten.
+
+
+## Tranche 10 — dated historical validation/publication receipts (24 October 2026)
+
+**Recovery parent:** `2519291962d1da0b01a1ae28caf38275496efdf2`. Retired **10 files (161116 bytes)** consisting solely of dated execution, CI, branch-diff, or publication receipts. A record of actual commands and previous success/failure remains recoverable at each Git blob URL under the pinned recovery commit, while the existing historical summary now links to that immutable provenance instead of stale relative paths.
+
+| Historical campaign | Retired receipts | Substantive content retained |
+| --- | ---: | --- |
+| `2026-10-19-outstanding-candidates/` | 3 | Fourteen detailed candidate adjudications, source/research ledger, bounded non-admission reasoning, amendments and method summaries; archived issue-comment receipt and initial/final validation JSON |
+| `2026-10-20-fc089-corpus-migration/` | 2 | All FC-084/089 transition class-criterion decision packets, final method report, baseline/screening/crosswalk, preservation manifest and code; archived concurrent-branch note and test results |
+| `2026-10-19-boundary-diagnostic/` | 2 | Every Boundary and contract-reassessment per-incident adjudication, role-control inventory, before/after change register, confidence provenance, source-limited decisions, final method outcomes and old census code; archived two dated `VALIDATION.json` files |
+| `2026-10-18-infrastructure-governance-expansion/` | 2 | Legislative/source research, primary carrier hashes, source and EXTREQ extractions, field-level candidates, branch work and integrated summaries; archived a Git-branch changed-path list and final command receipt |
+| `2026-10-18-dignity-and-ecological-values/` | 1 | Exact bounded Incident and class screening, new dignity / ecology criterion reasoning and 194-incident candidate review; archived the dated test-command receipt |
+
+No canonical Incident, taxonomy, HIM, registered requirement, schema, validator, current v0.8.0 packet, approved policy or maintained executable was deleted or changed. These are not substantive resolution of the still-held current-edition evidence/governance findings. The new source text cites prior execution only as historic outcome, not current evidence of independent human verification. **The GitHub CI and release-retention checks on the new commit are required before calling this tranche validated.**

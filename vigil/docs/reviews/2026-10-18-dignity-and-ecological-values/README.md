@@ -26,7 +26,7 @@ Per-record before/after decisions and mapping/source dispositions are in the two
 
 ## Checks and remaining work
 
-Record/public, source/interpretive/authorship/component provenance, occurrence-requirement, working taxonomy and both rebuild guards pass. Full suite: **275 of 276 pass**. `validation.json` records the command and baseline comparison.
+Record/public, source/interpretive/authorship/component provenance, occurrence-requirement, working taxonomy and both rebuild guards pass. Full suite: **275 of 276 pass**. [the pinned validation receipt](https://github.com/CAM-Initiative/Vigil/blob/2519291962d1da0b01a1ae28caf38275496efdf2/vigil/docs/reviews/2026-10-18-dignity-and-ecological-values/validation.json) records the command and baseline comparison.
 
 The remaining allocation test fails identically on untouched baseline a395865 because its expected family map lacks the newly admitted Human Dignity family. No permanent test was edited: MAINTAINERS Gate 1 requires a concrete proposed change and approval before changing a permanent corpus pass/fail test. This is a test-maintenance decision, not evidence that the Incident review was skipped.
 
