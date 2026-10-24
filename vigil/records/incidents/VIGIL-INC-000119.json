@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Nx s1ngularity malware weaponized local AI coding CLIs during credential-harvesting supply-chain attack",
     "created": "2026-09-14",
-    "updated": "2026-10-22",
-    "version": "0.1.19"
+    "updated": "2026-10-24",
+    "version": "0.1.20"
   },
   "incident_identity": {
     "historical_event_name": "2025 Nx s1ngularity supply-chain attack",
@@ -49,20 +49,20 @@
             "source_records[1]",
             "source_records[2]"
           ],
-          "source_paraphrase": "Installed malware attempted to invoke locally configured Claude, Gemini and Amazon Q tools to inventory sensitive files. Researchers observed both assistance and refusal or execution failure; GitGuardian found the requested inventory on 95 of 366 targeted systems.",
+          "source_paraphrase": "Wiz's analysis distinguishes three malicious Nx package-payload variants. The earliest instructed recursive wallet/secret filename inventory; a later variant expressly claimed authorised penetration-testing status while instructing paths-only inventory; a third changed file-selection criteria. Local commands used distinct approval-suppression/trust flags for Claude, Gemini and Amazon Q, but flags do not prove that an individual model accepted the claimed authority. Some installed tools returned useful inventories; others refused or failed due to credentials, permission-flag approval or tool configuration. The malware directly extracted secrets independently of AI, and subsequent GitHub-token abuse was a distinct attack phase.",
           "recovered_invariant_interpretation": "Heterogeneous local-tool responses must not be described as one uniformly successful authority inference.",
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000001",
               "relationship": "ambiguous-boundary",
               "canonical_taxonomy_mapping": true,
-              "rationale": "Attacker-supplied prompts became ordinary local CLI inputs, materially testing source-authority separation, but the preserved evidence does not establish a common lower-authority source state that the heterogeneous tools promoted into instruction authority."
+              "rationale": "Attacker-authored prompts reached local coding CLIs, including a forged penetration-testing authorisation in one variant; some prompts produced path inventories while others were refused or failed. Without the source-role and user-delegation decision for each tool, operative promotion into authority is a substantive bounded uncertainty."
             },
             {
               "class_id": "VIGIL-FC-000002",
               "relationship": "ambiguous-boundary",
               "canonical_taxonomy_mapping": true,
-              "rationale": "Some tools successfully enumerated locally reachable files, but success alone does not establish that any common tool treated technical reachability as permission; the multi-vendor evidence materially distinguishes capability from authority without resolving the inference mechanism."
+              "rationale": "Local file/tool reachability, approval-suppression flags and useful inventories establish possible capability-to-authority pressure, but the recovered variants do not prove an individual model treated reachability rather than instruction or explicit configuration as its permission premise."
             }
           ],
           "adjudication_status": "mapped"
@@ -377,17 +377,17 @@
     }
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.6.9",
+    "taxonomy_version": "0.8.0",
     "classification_status": "classified",
-    "classification_basis": "Attacker-supplied prompts became ordinary local CLI inputs, materially testing source-authority separation, but the preserved evidence does not establish a common lower-authority source state that the heterogeneous tools promoted into instruction authority. Some tools successfully enumerated locally reachable files, but success alone does not establish that any common tool treated technical reachability as permission; the multi-vendor evidence materially distinguishes capability from authority without resolving the inference mechanism.",
+    "classification_basis": "A malicious Nx supply-chain payload directly extracted credentials and additionally invoked available local Claude, Gemini and Amazon Q coding CLIs with variant-specific prompts. Research documents one variant asserting forged security-test authority, different permissive CLI flags, real inventories for some systems and refusals or nonexecution for others. The two AI governance authority classes are materially engaged, but cross-tool source-role promotion and capability-as-permission decisions are not established for each variant. The direct malware exfiltration and later repository-publication phases are not attributed wholesale to AI.",
     "primary_classification": {
       "family_id": "VIGIL-FF-0001",
       "class_id": "VIGIL-FC-000001",
       "classification_role": "ambiguous-boundary",
-      "classification_basis": "Attacker-supplied prompts became ordinary local CLI inputs, materially testing source-authority separation, but the preserved evidence does not establish a common lower-authority source state that the heterogeneous tools promoted into instruction authority.",
+      "classification_basis": "Attacker-controlled npm post-install malware attempted to direct local Claude, Gemini and Amazon Q CLIs using different prompts and permission/trust-bypass options. Some generated useful file inventories, others refused or did not execute. Those observations materially engage lower-trust instruction-source promotion; they do not establish a single common authority state or verified instruction-acceptance mechanism across variants and tools.",
       "boundary_adjudication": {
-        "taxonomy_version": "0.7.0",
-        "material_engagement": "Malware supplied attacker prompts to locally configured AI command-line tools and some systems produced sensitive-file inventories.",
+        "taxonomy_version": "0.8.0",
+        "material_engagement": "Wiz recovered three payload versions, their attacker-authored prompts and distinct local AI CLI command flags. Successful path inventories and documented refusals/nonexecution demonstrate materially differentiated tool responses; the adversarial npm post-install context and individual prompt source authority for each tool are not independently verified. Malware direct exfiltration remains separate.",
         "unresolved_conditions": [
           {
             "polarity": "failure-occurrence",
@@ -458,8 +458,8 @@
         "diagnostic_reasons": [
           "insufficient-evidence"
         ],
-        "decisive_blocker": "The heterogeneous tool results do not preserve each receiving process's source-authority state and checks. Successful inventory does not by itself identify operative promotion of lower-authority content, while refusals and execution failures do not prove validated source separation.",
-        "resolution_requirements": "Review per-tool invocation, prompt source, applicable local authority and resulting actions in the published technical samples; do not impose a common mechanism across vendors or combine non-execution with informed refusal."
+        "decisive_blocker": "The submitted prompts were attacker-authored and some inventory output was produced, but per-tool source authority, user delegation and actual guard resolution are not fully reconstructed. Tool invocation by malicious software is not the same as verified promotion of lower-authority retrieved content by every receiving model.",
+        "resolution_requirements": "Use publicly preserved variant-specific invocation commands, flags, prompt claims and observed per-tool responses where available, separating execution failure, protective refusal and actual production of sensitive path inventories. Further per-tool authority decisions, if independently recoverable, could resolve the held polarity. Do not presume uniformly successful malicious AI compliance or require provider confessions."
       }
     },
     "secondary_classifications": [
@@ -467,10 +467,10 @@
         "family_id": "VIGIL-FF-0001",
         "class_id": "VIGIL-FC-000002",
         "classification_role": "ambiguous-boundary",
-        "classification_basis": "Some tools successfully enumerated locally reachable files, but success alone does not establish that any common tool treated technical reachability as permission; the multi-vendor evidence materially distinguishes capability from authority without resolving the inference mechanism.",
+        "classification_basis": "Compromised package execution reached local credentials, files and configured AI CLI capabilities; a subset of successful AI inventories expanded candidate sensitive-file discovery. The public evidence distinguishes attacker-forged permission claims, permissive execution flags, ordinary CLI invocation, refusals and environmental execution failures. It does not establish a common model decision that mere technical reachability conferred authority, so the relation remains a variant-scoped Boundary.",
         "boundary_adjudication": {
-          "taxonomy_version": "0.7.0",
-          "material_engagement": "Some targeted AI command-line tools enumerated protected local files that were technically reachable.",
+          "taxonomy_version": "0.8.0",
+          "material_engagement": "Wiz recovered three payload versions, their attacker-authored prompts and distinct local AI CLI command flags. Successful path inventories and documented refusals/nonexecution demonstrate materially differentiated tool responses; the adversarial npm post-install context and individual prompt source authority for each tool are not independently verified. Malware direct exfiltration remains separate.",
           "unresolved_conditions": [
             {
               "polarity": "failure-occurrence",
@@ -515,16 +515,16 @@
           "diagnostic_reasons": [
             "insufficient-evidence"
           ],
-          "decisive_blocker": "The recorded success does not establish whether reachability supplied permission, an attacker-supplied instruction was accepted, or another authority state governed execution. The aggregate success/refusal counts do not establish valid checks for each invocation.",
-          "resolution_requirements": "Inspect the affected per-tool authority decisions and invocation flags alongside the generated inventory evidence, distinguishing material access-as-permission from malicious instruction acceptance."
+          "decisive_blocker": "The fact that tools and local files were reachable and some inventories produced does not establish that the models treated reachability itself as permission. Explicit forged-authorisation prompts, permissive CLI flags, tool refusals and config errors make the tool-specific decision pathway material and partly unobserved.",
+          "resolution_requirements": "Use publicly preserved variant-specific invocation commands, flags, prompt claims and observed per-tool responses where available, separating execution failure, protective refusal and actual production of sensitive path inventories. Further per-tool authority decisions, if independently recoverable, could resolve the held polarity. Do not presume uniformly successful malicious AI compliance or require provider confessions."
         }
       }
     ],
     "classification_review_provenance": {
-      "review_date": "2026-10-19",
-      "reviewer": "OpenAI Codex — AI analytical reviewer",
-      "review_status": "Moved historical Boundary confidence into dated provenance; current mapping outcomes and adjudication text unchanged.",
-      "review_reference": "vigil/docs/reviews/2026-10-19-boundary-diagnostic/corpus-repair/INC-000119-CONFIDENCE-PROVENANCE.json"
+      "review_date": "2026-10-24",
+      "reviewer": "OpenAI ChatGPT — GPT-6 AI analytical reviewer",
+      "review_status": "Completed source-first current-edition criterion review retaining independent supported findings and explicit material evidence-limited Boundary where required.",
+      "review_reference": "vigil/docs/reviews/2026-10-23-taxonomy-080-reconciliation/BATCH-14-119-080.json"
     },
     "adjudication_coverage": {
       "status": "complete"
@@ -918,6 +918,27 @@
           "AI-authored context review is not human source verification. Existing source-access statements remain historical."
         ],
         "review_outcome": "Added 4 party entities and 1 geographic relationships; geographic scope not-established. Preserved all prior narrative, evidence, taxonomy, Harm Impact and external assessments."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-24-PAPER-080-000119",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-24",
+        "review_scope": "Public-source current-edition adjudication of materially engaged candidate relations, including contested scope/authority, independent recognition conditions and actual protective evidence.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_research": true,
+          "taxonomy_review": true,
+          "harm_impact_review": false,
+          "external_requirement_review": false
+        },
+        "known_limitations": [
+          "Original first-party and independently authored evidence cannot establish every unpublished decision premise; the exact unresolved fact is retained in admitted Boundary.",
+          "This review does not decide independent government legal compliance, legal liability, proprietary model causation or whole-corpus scientific certification."
+        ],
+        "review_outcome": "Primary technical source's three payload variants, local CLI flags, forged pen-test authorisation and observed refusal/success distinctions reviewed. Both current-edition authority Boundaries retained with precise per-tool uncertainty; direct malware extraction and later token-driven exposure kept separate."
       }
     ],
     "current_ai_review": {

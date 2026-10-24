@@ -1,0 +1,227 @@
+{
+  "incident_id": "VIGIL-INC-000202",
+  "review_date": "2026-10-23",
+  "review_mode": "full-rebuild",
+  "status": "completed-evidence-limited",
+  "baseline": {
+    "commit": "edfe48aeac2765db32bfd0b71ab496ddadb44e39",
+    "record_version": "0.1.3",
+    "recorded_taxonomy_version": "0.6.11"
+  },
+  "adjudicated_taxonomy": {
+    "published_version": "0.8.0",
+    "commit": "edfe48aeac2765db32bfd0b71ab496ddadb44e39",
+    "class_count_examined": 80
+  },
+  "source_first_discovery": {
+    "status": "completed",
+    "summary": "Research examples distinguish invalid fuzz-driver calling contexts from application entry-point bugs; a later context validator establishes one narrow code-supported successful rejection while other agent judgements remain unreliable.",
+    "material_episodes_reviewed": [
+      "E001",
+      "E002",
+      "E003"
+    ],
+    "governance_properties": [
+      "AI-generated fuzz drivers caused actual crashes using invalid internal function preconditions; a crash in the driver is not a justified inference of a reachable application vulnerability (E001).",
+      "Context-based validator checked concrete application call paths and rejected an infeasible crash after source-code analysis (E002).",
+      "The added validator itself produced errors; independent assurance cannot be assumed for its aggregate filter output (E003)."
+    ]
+  },
+  "source_review": {
+    "status": "direct-public-originating-paper-reviewed",
+    "url": [
+      "https://arxiv.org/html/2510.02185v1",
+      "https://arxiv.org/abs/2510.02185"
+    ],
+    "limitations": [
+      "The authors' aggregate prose and Table 2 differ in totals; figures are attributed and not silently reconciled.",
+      "The reviewed benchmark is controlled. No specific maintainer response, production outage, loss or exploitation is proved.",
+      "The manually reviewed validator sample shows inaccurate analyses alongside the demonstrated positive verification example; E002 success is bounded and does not certify all rejects."
+    ],
+    "earlier_review": "vigil/docs/reviews/2026-10-18-inc-199-203-completion/VIGIL-INC-000202.json"
+  },
+  "current_class_tests": [
+    {
+      "class_id": "VIGIL-FC-000062",
+      "class_name": "Epistemic Reliance Calibration",
+      "role": "failure-occurrence",
+      "episode_refs": [
+        "E001",
+        "E003"
+      ],
+      "source_record_refs": [
+        "source_records[0]"
+      ],
+      "conditions": [
+        {
+          "canonical_condition": "A factual claim, citation, technical statement, calculation, interpretation, source representation, or comparable epistemic artefact is generated, retrieved, transformed, inferred, or synthesised.",
+          "assessment": "established",
+          "basis": "Generated fuzz drivers and crash/defect claims are epistemic artefacts of an AI-assisted testing process."
+        },
+        {
+          "canonical_condition": "The downstream task has a material reliance requirement such that factual accuracy, evidentiary fidelity, technical correctness, source integrity, traceability, uncertainty handling, or equivalent epistemic assurance is consequential to the task.",
+          "assessment": "established",
+          "basis": "Defect triage requires evidence that a crash is feasible through valid application entry points, not just an invalid internal function call."
+        },
+        {
+          "canonical_condition": "The epistemic posture or assurance applied to the artefact is materially lower than the level required by that downstream reliance condition.",
+          "assessment": "established",
+          "basis": "Crashes caused by precondition-violating drivers and unreliable validation explanations lacked the necessary calling-context assurance."
+        },
+        {
+          "canonical_condition": "The artefact is represented, propagated, incorporated, submitted, or accepted as fit for the reliance-bearing task without the required epistemic threshold being satisfied.",
+          "assessment": "established",
+          "basis": "Initial driver crash outcomes were treated as program-error results before the later contextual verification identified invalid drivers."
+        },
+        {
+          "canonical_condition": "The mismatch materially affects or creates a material risk to decision-making, evidentiary use, professional work, institutional process, public reliance, technical correctness, or another reliance-bearing outcome.",
+          "assessment": "established",
+          "basis": "This miscalibration generated spurious vulnerability signals and could misdirect developer triage; the paper does not demonstrate specific production loss."
+        }
+      ],
+      "exclusions_reviewed": [
+        {
+          "canonical_exclusion": "Purely fictional, creative, symbolic, role-play, expressive, or contemplative generation where empirical truth is not a task condition.",
+          "review_outcome": "not-established-on-episode",
+          "reason": "The condition described by this exclusion is not supported in the episode's specific source path. The accepted role depends on the independently evidenced required conditions in this bounded research example; do not generalise to other experiments."
+        },
+        {
+          "canonical_exclusion": "Exploratory brainstorming, hypothesis generation, or modelling that is clearly represented as provisional and is not subsequently relied upon as verified or decision-ready.",
+          "review_outcome": "not-established-on-episode",
+          "reason": "The condition described by this exclusion is not supported in the episode's specific source path. The accepted role depends on the independently evidenced required conditions in this bounded research example; do not generalise to other experiments."
+        },
+        {
+          "canonical_exclusion": "Approximation where approximation is explicitly compatible with the task and reliance condition.",
+          "review_outcome": "not-established-on-episode",
+          "reason": "The condition described by this exclusion is not supported in the episode's specific source path. The accepted role depends on the independently evidenced required conditions in this bounded research example; do not generalise to other experiments."
+        },
+        {
+          "canonical_exclusion": "Material is clearly marked unverified or low-confidence and is not subsequently promoted into a higher-reliance state.",
+          "review_outcome": "not-established-on-episode",
+          "reason": "The condition described by this exclusion is not supported in the episode's specific source path. The accepted role depends on the independently evidenced required conditions in this bounded research example; do not generalise to other experiments."
+        },
+        {
+          "canonical_exclusion": "A required verification step is simply omitted and the material is presented as verified; use Required Verification Completion where that mechanism is sufficient.",
+          "review_outcome": "not-established-on-episode",
+          "reason": "The condition described by this exclusion is not supported in the episode's specific source path. The accepted role depends on the independently evidenced required conditions in this bounded research example; do not generalise to other experiments."
+        },
+        {
+          "canonical_exclusion": "Verification was valid when performed but later became stale or the artefact materially changed; use Verification Applicability Continuity or Post-Verification State Integrity as applicable.",
+          "review_outcome": "not-established-on-episode",
+          "reason": "The condition described by this exclusion is not supported in the episode's specific source path. The accepted role depends on the independently evidenced required conditions in this bounded research example; do not generalise to other experiments."
+        },
+        {
+          "canonical_exclusion": "The issue is only source provenance, authorship, or lineage while the epistemic assurance of the content is otherwise adequate for the task.",
+          "review_outcome": "not-established-on-episode",
+          "reason": "The condition described by this exclusion is not supported in the episode's specific source path. The accepted role depends on the independently evidenced required conditions in this bounded research example; do not generalise to other experiments."
+        }
+      ],
+      "limitation": "Only the bounded episodes in the originating research are admitted."
+    },
+    {
+      "class_id": "VIGIL-FC-000016",
+      "class_name": "Required Verification Completion",
+      "role": "successful-invariant",
+      "episode_refs": [
+        "E002"
+      ],
+      "source_record_refs": [
+        "source_records[0]"
+      ],
+      "conditions": [
+        {
+          "canonical_condition": "A task or reliance claim requires material verification.",
+          "assessment": "established",
+          "basis": "A candidate application-defect claim requires verification of feasibility from legitimate entry points."
+        },
+        {
+          "canonical_condition": "The required checks are completed with interpretable evidence before the result receives the corresponding assurance; inconclusive checks retain provisional status.",
+          "assessment": "established",
+          "basis": "The context validator examined the caller/entry-point source code and found the reported crashing path gated by an input-length check."
+        },
+        {
+          "canonical_condition": "The checks, their results and the subsequent assurance claim are available and agree for the stated scope.",
+          "assessment": "established",
+          "basis": "The supported decision rejected that specific infeasible crash using identifiable code-path evidence, not merely an unsupported AI assertion."
+        }
+      ],
+      "exclusions_reviewed": [
+        {
+          "canonical_exclusion": "Verification was not required for the level of claim being made.",
+          "review_outcome": "not-established-on-episode",
+          "reason": "The condition described by this exclusion is not supported in the episode's specific source path. The accepted role depends on the independently evidenced required conditions in this bounded research example; do not generalise to other experiments."
+        },
+        {
+          "canonical_exclusion": "The system clearly marks the result as unverified or provisional.",
+          "review_outcome": "not-established-on-episode",
+          "reason": "The condition described by this exclusion is not supported in the episode's specific source path. The accepted role depends on the independently evidenced required conditions in this bounded research example; do not generalise to other experiments."
+        },
+        {
+          "canonical_exclusion": "The verification was performed and the issue is only that the underlying method was poor.",
+          "review_outcome": "not-established-on-episode",
+          "reason": "The condition described by this exclusion is not supported in the episode's specific source path. The accepted role depends on the independently evidenced required conditions in this bounded research example; do not generalise to other experiments."
+        }
+      ],
+      "limitation": "Only the bounded episodes in the originating research are admitted."
+    }
+  ],
+  "other_candidate_dispositions": [
+    {
+      "id": "VIGIL-FC-000063",
+      "reason": "There is no evidence the crash data were deliberately manipulated or strategically planted as adversarial evidence; ordinary invalid generated drivers are covered by FC-062."
+    },
+    {
+      "id": "VIGIL-FC-000069",
+      "reason": "No evidence the target AI was exploiting a scoring proxy in place of intended test validity; a research analogy to reward hacking does not suffice."
+    },
+    {
+      "id": "VIGIL-FC-000018",
+      "reason": "No separately evidenced representation of a subordinate success condition as proof of overall task completion; the issue is inaccurate vulnerability inference."
+    }
+  ],
+  "baseline_mapping_dispositions": [
+    {
+      "class_id": "VIGIL-FC-000062",
+      "role": "failure-occurrence",
+      "confidence": "medium",
+      "disposition": "retained",
+      "reason": "Independent current-edition v0.8.0 class test and exclusions are represented in this dated packet; the source-supported mapping is not revised.",
+      "source_episodes": [
+        "E001",
+        "E003"
+      ]
+    },
+    {
+      "class_id": "VIGIL-FC-000016",
+      "role": "successful-invariant",
+      "confidence": "medium",
+      "disposition": "retained",
+      "reason": "Independent current-edition v0.8.0 class test and exclusions are represented in this dated packet; the source-supported mapping is not revised.",
+      "source_episodes": [
+        "E002"
+      ]
+    }
+  ],
+  "current_decision": {
+    "taxonomy_version": "0.8.0",
+    "classification_status": "provisionally-classified",
+    "all_mapping_roles_and_confidences": "retained",
+    "adjudication_coverage": {
+      "status": "complete"
+    },
+    "provisional_status_reason": "Original controlled-study evidence limits and lack of independent reproduction remain; taxonomy-version review is not independent human verification."
+  },
+  "temporal_integrity": "Earlier failure episodes and later control/safety improvements were assessed separately; reported successful verification or containment never erases previously supported failures.",
+  "evidence_and_independent_assessment_preservation": {
+    "source_records": "preserved",
+    "source_clauses": "preserved",
+    "summary": "preserved",
+    "harm_impact_assessment": "preserved",
+    "external_requirement_assessments": "preserved",
+    "system_and_geographic_context": "preserved",
+    "independent_taxonomy_and_rights": "unmodified"
+  },
+  "issuer": "OpenAI ChatGPT GPT-6, AI-assisted analysis; not human-verified",
+  "issue_register": "No issue raised. Evidence limits are bounded and retained within the Incident/review. No distinct externally executable task found.",
+  "completion": "Approved work scope supports an evidence-bounded current v0.8.0 mapping review; no reported production loss and no new mappings invented."
+}

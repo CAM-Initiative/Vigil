@@ -8,15 +8,15 @@
     "record_type": "incident",
     "title": "Spanish regulator received breach notification alleging AI-agent modification of personal data and invoice access",
     "created": "2026-09-19",
-    "updated": "2026-10-22",
-    "version": "0.1.13"
+    "updated": "2026-10-24",
+    "version": "0.1.15"
   },
   "incident_identity": {
     "historical_event_name": "AEPD first notified AI-agent-linked personal-data breach",
     "occurred_from": null,
     "occurred_to": null,
     "date_precision": "unknown",
-    "date_basis": "The AEPD publicly described the notification on 14 September 2026 but did not disclose the date of the underlying intrusion."
+    "date_basis": "AEPD publicly announced the notification on 14 September 2026. The reviewed regulator metadata and preserved reporting do not date the intrusion itself. An occurrence before that announcement is an upper bound, not evidence of a unique occurrence year."
   },
   "summary": "Spain's data protection authority, the AEPD, publicly described a breach notification from an unnamed organization alleging that a third party used an AI agent powered by a known but unnamed language model to conduct a multi-stage intrusion with limited human intervention. According to the notification as summarized by the regulator, the agent authenticated to the target system, searched for application vulnerabilities, exploited a weakness, modified personal data and accessed invoices. The AEPD stated that the information remained under review and did not identify the organization, attacker, model, provider, affected population or attack date. The article places an initial search in generic files before the successful login, followed by an autonomous search within the application. It says the found weakness permitted both data modification and invoice access, without specifying which occurred first. It also urges organisations to review risk analysis, identity controls and rapid detection and response.",
   "vigil_assessment": {
@@ -27,7 +27,7 @@
       "The AEPD states that the notified information remains under review, so the attack sequence is preserved as regulator-reported rather than independently verified fact.",
       "The affected organization, attacker, language model, model provider, agent framework, attack date, affected-person count and data sensitivity are not publicly identified.",
       "Use of a particular language model would not establish compromise of the model or provider infrastructure or show that the technology was developed for malicious purposes.",
-      "The public evidence does not establish a sufficiently specific reusable internal mechanism without inference.",
+      "The public evidence does not establish a sufficiently specific action-linked authority or constraint-substitution mechanism without inference.",
       "Occurrence severity is left SU because personal-data modification and invoice access are reported, but the scale, sensitivity, duration, containment and downstream misuse needed for a defensible harm band are not available."
     ],
     "source_clause_analysis": {
@@ -59,7 +59,7 @@
               "class_id": "VIGIL-FC-000064",
               "relationship": "candidate boundary",
               "canonical_taxonomy_mapping": false,
-              "rationale": "The alleged intrusion may involve objective utility displacing target or data-custody constraints, but the agent’s assigned objective, constraint recognition and pathway-selection reasoning are not disclosed."
+              "rationale": "The notification reports autonomous vulnerability search and consequential access. It does not disclose an action-linked record showing task utility displacing independent validation of the pathway. The assigned objective and operator–agent division of pathway selection remain unpublished. A private reasoning transcript is not required to establish this mechanism."
             }
           ],
           "adjudication_status": "unresolved",
@@ -82,7 +82,7 @@
               "class_id": "VIGIL-FC-000064",
               "relationship": "candidate boundary",
               "canonical_taxonomy_mapping": false,
-              "rationale": "The alleged intrusion may involve objective utility displacing target or data-custody constraints, but the agent’s assigned objective, constraint recognition and pathway-selection reasoning are not disclosed."
+              "rationale": "The notification reports autonomous vulnerability search and consequential access. It does not disclose an action-linked record showing task utility displacing independent validation of the pathway. The assigned objective and operator–agent division of pathway selection remain unpublished. A private reasoning transcript is not required to establish this mechanism."
             }
           ],
           "adjudication_status": "unresolved",
@@ -390,15 +390,16 @@
     }
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.6.11",
+    "taxonomy_version": "0.8.0",
     "classification_status": "unclassified",
     "classification_basis": "The received notification alleges chained access and data interference. Under current recognition criteria the agent’s objective, authority treatment and division of action with the operator remain unknown. No system-side capability-to-permission or constraint-displacement mechanism is inferred from alleged effects alone.",
     "primary_classification": null,
     "secondary_classifications": [],
     "classification_review_provenance": {
-      "review_date": "2026-10-11",
-      "reviewer": "OpenAI ChatGPT Work — Codex",
-      "review_status": "Evidence-first HIM and relational/protection fidelity review; prior roles accounted for."
+      "review_date": "2026-10-24",
+      "reviewer": "OpenAI Codex — AI analytical reviewer",
+      "review_status": "Current-edition source-first review; unclassified outcome retained with explicit recognition limits.",
+      "review_reference": "vigil/docs/reviews/2026-10-23-taxonomy-080-reconciliation/BATCH-05-139-080.json"
     },
     "adjudication_coverage": {
       "status": "partial"
@@ -656,28 +657,64 @@
           "AI-authored context review is not human source verification. Existing source-access statements remain historical."
         ],
         "review_outcome": "Added 4 party entities and 2 geographic relationships; geographic scope single-jurisdiction. Preserved all prior narrative, evidence, taxonomy, Harm Impact and external assessments."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-24-080-B05-000139",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "Codex (specific runtime model identifier not exposed)",
+        "review_date": "2026-10-24",
+        "review_scope": "Source-first taxonomy v0.8.0 reconciliation; independent assessments preserved.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_research": true,
+          "taxonomy_review": true,
+          "harm_impact_review": false,
+          "external_requirement_review": false
+        },
+        "known_limitations": [
+          "The full Spanish AEPD article was recovered by direct HTTPS and read after the web retriever returned navigation only. It confirms receipt of a notification and explicitly reserves conclusions pending analysis. No company forensic trace, assigned prompt or operative authority decision was recovered. A private reasoning transcript is not required; an attributable action-linked pathway can suffice, but is missing here.",
+          "No independent human verification."
+        ],
+        "review_outcome": "Retained unclassified outcome, existing clause coverage and all source evidence. No positive finding inferred from missing evidence of an actual failure."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-24-EVENT-DATE-000139",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI ChatGPT Work / Codex",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-24",
+        "review_scope": "Bounded event-date reconciliation against public sources and preserved occurrence evidence.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "web_research": true,
+          "taxonomy_review": false,
+          "harm_impact_review": false
+        },
+        "known_limitations": [
+          "No private run timestamps reviewed. Discovery and publication dates are not automatically occurrence dates. No human verification asserted."
+        ],
+        "review_outcome": "Completed date research; retained unknown occurrence year with an explicit temporal limit."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-22-CONTEXT-000139",
+      "review_id": "VIGIL-REVIEW-2026-10-24-EVENT-DATE-000139",
       "reviewer_type": "AI analytical reviewer",
       "reviewer_platform": "OpenAI ChatGPT Work / Codex",
-      "reviewer_model": "Codex (specific runtime model identifier not exposed)",
-      "review_date": "2026-10-22",
-      "review_scope": "Gate 2 approved additive Incident Context review. Source-linked parties and geographic relationships only.",
+      "reviewer_model": "GPT-6",
+      "review_date": "2026-10-24",
+      "review_scope": "Bounded event-date reconciliation against public sources and preserved occurrence evidence.",
       "capability_profile": {
         "direct_repository_analysis": true,
-        "direct_text_analysis": true,
-        "web_research": false,
+        "web_research": true,
         "taxonomy_review": false,
-        "harm_impact_review": false,
-        "external_requirement_review": false
+        "harm_impact_review": false
       },
       "known_limitations": [
-        "A Spanish regulator relationship does not automatically locate the attacker, system or every affected person.",
-        "AI-authored context review is not human source verification. Existing source-access statements remain historical."
+        "No private run timestamps reviewed. Discovery and publication dates are not automatically occurrence dates. No human verification asserted."
       ],
-      "review_outcome": "Added 4 party entities and 2 geographic relationships; geographic scope single-jurisdiction. Preserved all prior narrative, evidence, taxonomy, Harm Impact and external assessments."
+      "review_outcome": "Completed date research; retained unknown occurrence year with an explicit temporal limit."
     }
   },
   "harm_impact_assessment": {

@@ -1,0 +1,120 @@
+name: SIAI research snapshot preflight
+
+on:
+  push:
+    branches:
+      - chore/siai-2026-release-readiness-20261023
+      - main
+    paths:
+      - "vigil/releases/siai-2026/**"
+      - "vigil/docs/reviews/**"
+      - "vigil/docs/maintenance/**"
+      - ".github/workflows/siai-research-preflight.yml"
+      - "README.md"
+      - "ZENODO-RELEASE-READINESS.md"
+  pull_request:
+    paths:
+      - "vigil/releases/siai-2026/**"
+      - "vigil/docs/reviews/**"
+      - "vigil/docs/maintenance/**"
+      - ".github/workflows/siai-research-preflight.yml"
+      - "README.md"
+      - "ZENODO-RELEASE-READINESS.md"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  immutable-snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.x"
+      - name: Build and verify research checksum inventory
+        run: |
+          python -m py_compile vigil/releases/siai-2026/build_research_snapshot.py
+          if [ "$GITHUB_REF" = "refs/heads/main" ]; then
+            python vigil/releases/siai-2026/build_research_snapshot.py --write --require-main
+            python vigil/releases/siai-2026/build_research_snapshot.py --check --require-main
+          else
+            python vigil/releases/siai-2026/build_research_snapshot.py --write
+            python vigil/releases/siai-2026/build_research_snapshot.py --check
+          fi
+      - name: Print exact snapshot identity
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path("vigil/releases/siai-2026/RESEARCH-SNAPSHOT.preflight.json")
+          d = json.loads(p.read_text(encoding="utf-8"))
+          print("Frozen source:", d["source_commit"])
+          print("Incidents:", d["corpus"]["incident_json_count"])
+          print("Files:", d["inventory"]["file_count"])
+          print("SHA-256:", d["inventory"]["canonical_entry_stream_sha256"])
+          print("State:", d["state"])
+          PY
+      - name: Inventory curation dependencies and Incident classification statuses
+        run: |
+          python -m py_compile vigil/releases/siai-2026/audit_repository_retention.py
+          python vigil/releases/siai-2026/audit_repository_retention.py
+      - name: Generate 200-record current-taxonomy reconciliation queue
+        run: |
+          python -m py_compile vigil/releases/siai-2026/build_taxonomy_080_worklist.py
+          python vigil/releases/siai-2026/build_taxonomy_080_worklist.py --write
+          python vigil/releases/siai-2026/build_taxonomy_080_worklist.py --check
+      - name: Upload manifest (preflight only; not a release)
+        uses: actions/upload-artifact@v4
+        with:
+          name: siai-2026-research-snapshot-preflight
+          path: |
+            vigil/releases/siai-2026/RESEARCH-SNAPSHOT.preflight.json
+            vigil/releases/siai-2026/REPOSITORY-RETENTION-AUDIT.json
+            vigil/releases/siai-2026/TAXONOMY-080-WORKLIST.json
+          if-no-files-found: error
+          retention-days: 30
+
+  release-validation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.x"
+      - name: Install test dependency
+        run: python -m pip install "jsonschema==4.26.0"
+      - name: Validate taxonomy and rights
+        run: |
+          python vigil/taxonomy/validate_taxonomy.py
+          python vigil/scripts/validate-vigil-rights.py
+      - name: Validate records and provenance
+        run: |
+          python vigil/scripts/validate-vigil-records.py
+          python vigil/scripts/validate-vigil-public-records.py
+          python vigil/scripts/validate-vigil-source-provenance.py
+          python vigil/scripts/validate-vigil-interpretive-provenance.py
+          python vigil/scripts/validate-authorship-provenance.py
+          python vigil/scripts/validate-vigil-system-components.py
+      - name: Validate external governance requirements
+        run: |
+          python vigil/scripts/validate-external-requirement-fidelity.py
+          python vigil/scripts/validate-external-requirement-metadata.py
+      - name: Run complete regression suite
+        run: python -m unittest discover -s vigil/tests -p 'test_*.py'
+      - name: Apply committed textbook case-study publication eligibility
+        run: |
+          python vigil/taxonomy/filter_publication_case_examples.py
+          python vigil/taxonomy/filter_publication_case_examples.py --check
+      - name: Confirm deterministic jurisdiction projection
+        run: python vigil/scripts/build-vigil-jurisdiction-index.py --check
+      - name: Assert validators did not change governed sources
+        run: |
+          git diff --exit-code -- vigil/records vigil/taxonomy vigil/methodologies vigil/external_governance vigil/references vigil/templates vigil/VIGIL.Schema.json

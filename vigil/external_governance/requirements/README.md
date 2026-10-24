@@ -28,9 +28,9 @@ Each shard is a JSON array containing only the records for the source/version na
 
 The governance flow is:
 
-`external source -> external requirement -> CAM applicability/coverage assessment -> VIGIL routing/repair`
+`external source -> external requirement -> incident-level applicability/coverage interpretation (when evidence supports it)`
 
-External requirements MUST NOT contain CAM instrument mappings, CAM coverage states or CAM conformance findings. Those judgements belong in `../../cam_assessment/` and must be assessed against a specific CAM corpus commit.
+External requirements MUST NOT contain CAM instrument mappings, CAM coverage states or CAM conformance findings. VIGIL does not maintain organisational CAM applicability/coverage assessments; such judgements require a separately governed institutional review against an identified corpus commit, not inference from source registration.
 
 ## Source provenance: metadata fingerprint versus reviewed artefact
 
@@ -126,4 +126,9 @@ Recommended metadata-remediation sequence:
 6. rerun the report and reduce the unresolved queue;
 7. use `--strict` only for a source/slice that is intended to be metadata-complete.
 
-CAM applicability and coverage are validated separately under `../../cam_assessment/`.
+CAM institutional applicability and coverage are outside this VIGIL requirement registry; no CAM conformity or coverage finding is implied.
+
+
+## Reviewed supporting-relationship evidence
+
+Supporting-source external requirements can depend on exact source-and-class review proof, not just registered source metadata or a positive relationship entry. The maintained `taxonomy-relationships.json` may contain `review_artifact` paths to evidence used by `vigil/scripts/supporting_source_admission.py` to verify source identity, reviewed basis, requirement/class digests and complete accepted relationship objects. Approved review evidence for the Australian SOCI Act compilation C2026C00213 is stored at `review-evidence/AU-SOCI-ACT-C2026C00213.json`. It is a reviewed AI-authored evidence packet, **not** independent human legal verification or a substitute for the current source, requirement and relationship registries. Its historically unmodified source copy remains recoverable from the Git pre-relocation commit. For future moves, update both copies of each exact relationship's `review_artifact` location and revalidate; the current live source-review file must remain resolvable.
