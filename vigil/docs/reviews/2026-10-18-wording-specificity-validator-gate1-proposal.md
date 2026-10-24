@@ -1,6 +1,6 @@
 # Wording-specific evidence checks — Gate 1 proposal
 
-Status: approved by the human maintainer on 18 October 2026: “blocking validation is approved as a validation update.” Implemented as recorded in `2026-10-18-wording-validation-implementation.json`. The proposal below preserves the approved scope.
+Status: approved by the human maintainer on 18 October 2026: “blocking validation is approved as a validation update.” Implemented as recorded in [the pinned historical implementation report](https://github.com/CAM-Initiative/Vigil/blob/035b81e88368c92a88088ae1bec8b7d30f81376c/vigil/docs/reviews/2026-10-18-wording-validation-implementation.json). The proposal below preserves the approved scope.
 
 ## Current behaviour
 
@@ -35,3 +35,8 @@ No mandatory migration, prose rewrite, reclassification, source replacement, fie
 Relationship indices and a deliberately declared evidence basis have machine-checkable invariants shared by all consumers; documentation alone cannot prevent broken bindings or an empty quotation disclosure. Interpretation remains in authoring/review, and readability remains in the renderer. These checks deliberately do not substitute a keyword or minimum-length heuristic for adjudication.
 
 Under MAINTAINERS.md Gate 1, stop before implementing this proposal and obtain approval for precisely this pass/fail behaviour. If approved, implement the checks and run a read-only corpus audit. Report every newly failing record and stop again under Gate 2 before any multi-record repair. Preserve full record content while resolving failures; never automatically drop relationships or rewrite wording to pass.
+
+
+### Implementation verification archived — 24 October 2026
+
+The completed 18 October Gate 1 receipt ([original JSON](https://github.com/CAM-Initiative/Vigil/blob/035b81e88368c92a88088ae1bec8b7d30f81376c/vigil/docs/reviews/2026-10-18-wording-validation-implementation.json)) recorded **12 passing isolated wording-evidence fixtures**, **258 passing tests**, 194 at-time valid canonical records, no validator-induced repair, and independently approved INC-199/200 rebuild guards. It did **not** establish authenticity, quotation fidelity, adequate chronological context, or a semantic classifier: unmarked historical clauses remained admissible. The structural validator and maintained fixture suite, original approved control specification above, and canonical Incident records continue to own the implementation. That snapshot's taxonomy 0.6.11 and 15-family/78-class test counts are historical rather than claims about the present taxonomy.

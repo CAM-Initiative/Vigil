@@ -45,7 +45,7 @@ Canonical evidence reference: `source_records[0]` (Reuters), reviewed anew at it
 
 The exact baseline INC-090 JSON is untouched. Existing assessments are an empty array. No HIM, severity, clauses, taxonomy mappings, source records, chronology or provenance changes are made. Retention is the maintainer's resolved admission decision.
 
-No new Section 04 row exists to project. Resolver/projection tests and a direct read-only projection check will be recorded in `VALIDATION.md`. A deployed catalogue rendering/preview is not verified by this repository-only package. Missing rows record the current coverage/contract hold, not a conclusion that no governance instruments exist. No renderer or publication guard is changed to force a row.
+No new Section 04 row exists to project. Resolver/projection tests and a direct read-only projection check will be recorded in [the Git-pinned historical validation report](https://github.com/CAM-Initiative/Vigil/blob/035b81e88368c92a88088ae1bec8b7d30f81376c/vigil/docs/reviews/2026-10-11-infrastructure-governance-registration/VALIDATION.md). A deployed catalogue rendering/preview is not verified by this repository-only package. Missing rows record the current coverage/contract hold, not a conclusion that no governance instruments exist. No renderer or publication guard is changed to force a row.
 
 ## Later handoff clarification preserved
 
