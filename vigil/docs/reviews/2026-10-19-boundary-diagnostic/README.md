@@ -83,3 +83,12 @@ Executed locally against the pinned branch:
 - Existing public builder: succeeds; generated outputs are byte-identical to tracked files (`git status` shows only the new audit directory).
 
 No validator, schema, taxonomy definition, independent assessment, canonical Incident or generated output changed. No permanent test added. No full test-suite or substantive corpus-certification claim. No independent inter-rater reliability claim. Exact reviewer runtime/configuration is not exposed. These are initial provenance and structural results; the final academic report and approved corpus freeze remain outstanding.
+
+
+## Preliminary Boundary packet retirement — 24 October 2026
+
+The original 56 `decisions/VIGIL-INC-*-BOUNDARY.json` files were **preliminary structural/criterion diagnostics**, each explicitly marked `full_incident_review_complete: false`. A subsequent authorised source-first `corpus-repair/` case-specific outcome or confidence-provenance packet exists for 53 of those cases. Separate `contract-reassessment/` final packets cover the other three.
+
+The **53 retired** preliminaries passed individual comparisons against their later retained case packets: every earlier class ID, original `baseline_mapping.classification_basis` and `result.decisive_blocker` was found there verbatim where present. Current canonical Incidents for all 53 were separately checked and **none referred to the preliminary `decisions/` path**. Following the concurrent SIAI reconciliation advance to `dfad3b20a70f1ec38ab350f13d5148f7f8131157`, the changed INC-048 and INC-098 references were rechecked; neither acquired such a dependency.
+
+**Retained for further scrutiny:** INC-005, INC-018 and INC-095 preliminary packets. Their later `contract-reassessment/` packets did not meet the equivalent exact-basis preservation test, so these three are not retired. The deleted preliminary bytes are available in the [pinned pre-retirement Git tree](https://github.com/CAM-Initiative/Vigil/tree/dfad3b20a70f1ec38ab350f13d5148f7f8131157/vigil/docs/reviews/2026-10-19-boundary-diagnostic/decisions). The complete 53 revised case packets, class/source evidence, current Incident review history and current-edition taxonomy reconciliation packets (now 197 due to concurrent campaign work) remain untouched. Nothing here certifies full independent human review or resolves 0.8.0 evidence holds.
