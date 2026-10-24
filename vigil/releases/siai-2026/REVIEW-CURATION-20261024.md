@@ -23,3 +23,9 @@
 ## Before release
 
 Check live path references with the existing retention auditor, re-run VIGIL CI, complete the still-active v0.8.0 campaign, and regenerate the scientific checksum from the actual approved main commit after merge. A passing test does not authenticate sources or mean independent adjudication is complete. New working outputs follow vigil/docs/maintenance/REVIEW-RECORD-RETENTION.md.
+
+## Tranche 2 — completed geography notice-board retirement (24 October 2026)
+
+**Recoverable exact pre-cull parent:** `6eef70deabfcca007ab3fdd88d0dc98bb7c041dd`. Retired 206 dated working artefacts, including 200 per-Incident geography audit packets and the campaign's intermediate inventories (total 915036 tracked bytes). At the historical campaign checkpoint, all 200 unique inventory rows had `canonical_applied: true`; all 200 preservation rows stated `original_fields_preserved` and `history_append_only`. Outcomes were 98 reviewed-and-recorded, 87 reviewed-unresolved and 15 reviewed-non-geographic. This is a check of the campaign's own recorded preservation results, **not independent human reauthentication**.
+
+Canonical Incident JSON, source-linked geography, the schema, and current jurisdiction projection were not changed by the archive. The substantive reusable guidance lives in `vigil/docs/maintenance/`, and the retired packet bytes remain in Git history. Gate 1/Gate 2 planning documents and Maintainers instructions were marked historical where needed. The **active v0.8.0 taxonomy reconciliation notice board was not touched**. No final dataset tag, main merge, Zenodo publication or semantic recoding is part of this cull.
