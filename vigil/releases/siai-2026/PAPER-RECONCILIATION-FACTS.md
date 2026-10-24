@@ -1,5 +1,11 @@
 # Screening completion — 24 October 2026
 
+## INC-172 canonical current-edition resolution — 24 October 2026
+
+Following primary-source review of the AIHW public-data retrieval incident, the historically admitted safe-exit failure is now a documented **non-admission** under the literal v0.8.0 conditions: blocked retrieval and unauthorised continuation establish route escalation but do not prove that no admissible completion route remained for the task. The existing objective/pathway, control-bypass and target-scope failures and the bounded Cloudflare protective-control successes are retained. Source records, Harm Impact and external assessments were preserved, and the prior role remains in the dated audit packet.
+
+**Current campaign categories: 57 canonical rebuilds; 78 retained historical screens; 25 evidence-held screens; 31 governance-held screens; 3 human-review cases; 6 prior-intake crosschecks = 200 screened.** Current taxonomy edition recorded by 71 canonical records. No independent human certification, taxonomy criteria change, main merge, release or deposit follows from this checkpoint. Earlier 26-hold/70-stamp counters below are historical.
+
 ## 24 October public-evidence follow-up
 
 All 200 remain screened. Two evidence holds are closed through canonical corrections (098, 131); 26 remain evidence-limited and 31 remain governance-held. Current categories: 56 canonical campaign rebuilds, 78 retained historical screens, 26 evidence-held screens, 31 governance-held screens, 3 retained human-review cases and 6 prior-intake crosschecks. Seventy records carry the current taxonomy edition. Bounded source/method updates also cover 035 and 048. The earlier checkpoints below retain their historical counts.
