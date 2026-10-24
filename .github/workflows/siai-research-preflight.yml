@@ -109,6 +109,15 @@ jobs:
           python vigil/scripts/validate-external-requirement-metadata.py
       - name: Run complete regression suite
         run: python -m unittest discover -s vigil/tests -p 'test_*.py'
+      - name: Verify paper-case v0.8.1 non-destructive canonical promotions
+        run: |
+          # Exact pre-promotion source; no moving-branch baseline.
+          for id in 000117 000129 000003; do
+            python vigil/scripts/validate-vigil-incident-rebuild.py \
+              --baseline-ref bf58646d22c90a86c8333ac9bc7fe83ac856589c \
+              --candidate-file "vigil/records/incidents/VIGIL-INC-${id}.json" \
+              --manifest "vigil/docs/reviews/2026-10-24-siai-paper-v081/INC-${id}-081-REVIEW.json"
+          done
       - name: Apply committed textbook case-study publication eligibility
         run: |
           python vigil/taxonomy/filter_publication_case_examples.py
