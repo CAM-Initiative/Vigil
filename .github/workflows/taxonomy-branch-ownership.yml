@@ -1,0 +1,33 @@
+name: Taxonomy branch ownership
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  taxonomy-branch-ownership:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.x"
+      - name: Verify taxonomy source changes originate on dedicated branch
+        env:
+          TAXONOMY_BASE: ${{ github.event.pull_request.base.sha }}
+          TAXONOMY_HEAD: ${{ github.event.pull_request.head.sha }}
+          TAXONOMY_BRANCH: ${{ github.event.pull_request.head.ref }}
+        run: |
+          python vigil/scripts/check-taxonomy-branch-ownership.py \
+            --base "$TAXONOMY_BASE" \
+            --head "$TAXONOMY_HEAD" \
+            --head-branch "$TAXONOMY_BRANCH"
+      - name: Case-neutral branch governance regression tests
+        run: python -m unittest discover -s vigil/tests -p 'test_taxonomy_branch_ownership.py'

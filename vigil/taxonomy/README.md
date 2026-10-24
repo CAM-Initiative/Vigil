@@ -59,7 +59,7 @@ A family is admissible only when every child can coherently complete:
 
 > Every class in this family is a way in which **the same bounded structural invariant** fails.
 
-Broad organisational containers such as governance, UX, safety, security, or AI-system failure are not families merely because failures can appear there. A candidate family normally requires a bounded invariant, meaningful inclusion and exclusion rules, at least two distinct mechanisms absent a compelling singleton case, and independence from vendor, framework, locus, governor, harm, and severity.
+This diagnostic coherence test groups the same bounded property; it does not require every mapped occurrence to be Not aligned. Broad organisational containers such as governance, UX, safety, security, or AI-system failure are not families merely because failures can appear there. A candidate family normally requires a bounded invariant, meaningful inclusion and exclusion rules, at least two distinct mechanisms absent a compelling singleton case, and independence from vendor, framework, locus, governor, harm, and severity.
 
 The hierarchy is:
 
@@ -115,6 +115,16 @@ Every selectable class defines its immutable ID, semantic code, current family I
 Family documents use schema version `0.3.0` and `semantic_model = invariant-with-occurrence-polarity`. The taxonomy index has its own contract and does not inherit this family-document schema version. Occurrence adjudication is stored in canonical Incident clauses and mapping records; no parallel global class-by-Incident decision dataset is required. Historical FF/FC identities, codes, names and aliases remain resolvable. Consumers needing the old technical failure definition must read `failure_condition`; they must not interpret the revised primary `definition` as a failure statement.
 
 `failure_recognition.required_conditions` and `success_recognition.required_conditions` are separately scoped by `applies_to`. All conditions require affirmative occurrence evidence. `success_condition` states the bounded observed outcome rather than restating the normative invariant. Absence of either polarity's evidence does not establish the other. An exclusion from failure is not success. Failure to meet a success criterion is not failure. Ambiguous-boundary remains available for material engagement where neither polarity is established or competing interpretations remain plausible. Families retain their diagnostic failure boundaries; class-specific positive recognition governs admission of successful occurrences without duplicating a family-level success test.
+
+### Explicit exclusion scope
+
+Each selectable class states the scope in its existing `exclusions` strings. `Not aligned exclusion:` applies only to adverse recognition. `Class scope exclusion (all results):` excludes the assessed property from Aligned, Not aligned and Boundary. The service-availability class retains its already explicit `For failure-occurrence admission:` wording with the same adverse-only effect. These labels use the existing string-list contract; they introduce no schema field, classifier or automated verdict.
+
+An adverse-only exclusion never establishes Aligned. Every positive condition still requires affirmative evidence. Boundary requires material engagement and a genuinely unresolved result, with no operative class scope exclusion. Exclusions are tested for the particular property and episode. A different defect elsewhere in the Incident does not erase independently evidenced protection. A reference to another class excludes the assessed property only when the stated sufficiency or scope is established.
+
+Family `inclusion_rule` and `exclusion_rule` remain diagnostic routing for Not aligned mechanisms, as the existing family schema specifies. Their explicit wording now distinguishes that role from the family definition and invariant, which bound every result. They cannot require a failure before a protective occurrence is admitted. Historical editions and their adjudications retain their version-pinned rules; the working proposal is not retroactive authority.
+
+Primary Evidence Accessibility and Authorised Investigative Evidence Access may coexist only for distinct independently evidenced direct-inspection and protected-production properties or episodes. Ordered or attempted production does not demonstrate completed production, correct matching or practical access.
 
 The effective constraint set is therefore:
 
