@@ -60,3 +60,12 @@ The current canonical INC-199, INC-200, INC-201, INC-202 and INC-203 records wer
 Prior tranche CI at `e0d58e4a14cd9e87b32dc43edcc434b618f019f3` passed the VIGIL records, taxonomy publications, external-governance and SIAI preflight workflows. The same checks must pass for this commit. Historic review bytes remain accessible through the exact pinned recovery commit. No merge to main or scientific tag was made.
 
 **Cumulative additional review-notice-board cull on 24 October, tranches 3–4:** 62 files; earlier tranches 1–2 separately retired 306, giving 368 retired files in this curation sequence. All active 0.8.0 screen packets remain protected until canonical promotion and completion of the live campaign.
+
+
+## Tranche 5 — obsolete 0.7.0 baseline inventories (24 October 2026)
+
+**Exact recoverable parent:** `f46fcf30cf9e20e4726fd7e48fff2dc93c284ff8`. Removed **14** dated baseline inventory artefacts (1567910 bytes) from `vigil/docs/reviews/2026-10-18-incident-taxonomy-reasoning-readjudication/`: all 13 `inventory/` JSON files and the one-off `audit-reasoning-inventory.py`. The source inventory states explicitly that it is a **read-only 194-record, 465-mapping 0.7.0 census, not semantic adjudication**. The original temporary campaign was explicitly paused; these large repeat copies of historical canonical source/mapping inventories are not current scientific evidence or runtime inputs.
+
+**Preserved:** `README.md`, all nine mapping/decision/comparator documents and historical Gate/maintainer decisions in this same directory; canonical Incidents and review histories; current 200-Incident 0.8.0 campaign worklist and all 196 active current-edition review artefacts. No individual current/rejected class decision or canonical record has been removed. Historic inventory bytes and its exact baseline context remain in the pinned parent and earlier commit ancestry. The live reproducible SIAI worklist has superseded the old census for current screening; this removal does not recast 0.7.0 as 0.8.0.
+
+**Exit checks:** no 0.7.0 inventory blob appeared as a direct canonical or maintained-code dependency in the earlier repository retention reference inventory; current CI still must confirm no dangling paths and preserved publication/research validation. No release, tag, merge or taxonomic recognition change is included. Other 0.7.0 decision-bearing files remain held for review.
