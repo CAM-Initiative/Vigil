@@ -159,3 +159,10 @@ Canonical SOCI law/source/requirement admission artefacts, original legislation 
 ## Tranche 15 — completed INC-003 process/checksum receipts (24 October 2026)
 
 **Recoverable pre-deletion SHA:** `adf13e1e6802c5d2c046a16ea3b7fb6c46f7e4e3`. Retired two dated `2026-10-18-inc003-soci-followthrough/` result JSON receipts (1246 bytes): `preservation-results.json` (checksum/unchanged-field assertions) and `validation/results.json` (seven command exit statuses). The canonical INC-003 review reference resolves to **retained** `adjudication-manifest.json`, not either retired receipt; its existing class mappings, E019/E021 episode evidence, HIM and other requirements are unchanged. The adjacent `README.md` now links to both historical bytes at the recovery commit, and substantive source-first negative candidate analysis remains in its retained files. No canonical Incident or current v0.8.0 worklist touched.
+
+
+## Tranche 16 — mechanical pre-repair Boundary schema-error enumeration (24 October 2026)
+
+**Exact recovery commit:** `9eebf38326c5bc66d72d04fe10ddfb9400d69143`. Removed `2026-10-19-boundary-diagnostic/CONTROL-FAILURES.json` (36365 bytes). The JSON contained exactly 96 enumerated missing-`boundary_adjudication` field errors over 56 affected Incidents. Every entry's only error was `required completed object absent`; no differing recognition test, source-grounded decision, exclusion result or observed harm was represented. The still-retained `CONTROL-IMPLEMENTATION.md` records the original counts and now links to the Git-pinned full enumeration.
+
+**Protected:** role-field control in maintained schema/validation; later substantive corpus-repair and contract-reassessment adjudication packets, their decision/provenance and remaining-failure analyses; canonical Incident history, current 0.8.0 screens, taxonomy/EXTREQ/HIM and release gates. The schema missing-field enumeration is a historical test receipt only; removal does not relabel unaddressed Boundary evidence as resolved. No merge/tag.

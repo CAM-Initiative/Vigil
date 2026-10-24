@@ -16,7 +16,7 @@ Updated: root/vigil AGENTS, MAINTAINERS, schema-rules contract, adjudication wor
 
 - Before: 194 canonical Incidents passed canonical validation.
 - After: exactly 96 missing adjudication objects across 56 Incidents; zero additional errors in the canonical validation run.
-- Exact fields and class IDs are enumerated in `CONTROL-FAILURES.json`.
+- Exact fields and class IDs are enumerated in [the Git-pinned historical structural-failure inventory](https://github.com/CAM-Initiative/Vigil/blob/9eebf38326c5bc66d72d04fe10ddfb9400d69143/vigil/docs/reviews/2026-10-19-boundary-diagnostic/CONTROL-FAILURES.json).
 - Canonical and generated files have no diff.
 - New isolated control suite: 12 tests passed. Covers missing/empty fields, supported diagnoses, multiple diagnoses, malformed conditions, dangling/duplicate references, both mapping positions, decisive-role scope and preservation of historical confidence.
 - Existing basis-only unit fixture now uses a decisive synthetic role so its assertions remain about public basis wording rather than the separate Boundary requirement.
@@ -33,3 +33,6 @@ Illustrative proposed addition for INC-003 / FC-002, NOT applied to the Incident
 - Preservation risk: copying this into every Boundary would manufacture the same evidentiary deficit, hide criteria insufficiency or retain unsupported engagement. It is an occurrence-specific proposal only. No confidence is added to the new object; historical medium remains untouched.
 
 MAINTAINERS Gate 2 requires: “STOP again for human-maintainer approval before broad, multi-record or corpus-wide edits.” No canonical population performed. Existing audit-only E/pending inventory entries remain audit holds and do not satisfy this canonical control.
+
+
+**Historical receipt retirement (24 October 2026).** The original 96/56 enumeration was mechanically generated: all 96 entries had the identical error `required completed object absent` and identical status `pending substantive evidence/criteria adjudication; no automatic repair`, with only Incident ID, class ID, field position and role. It was not a source review, admission, resolved outcome or still-pending worklist. It is now Git-pinned at the original commit above; the substantive [Boundary corpus-repair decisions](corpus-repair/METHOD-AND-OUTCOMES.md), [control diagnostics](REMAINING-FAILURES.json) and per-Incident files remain. This check does not itself assert all current Boundary uncertainties resolved.
