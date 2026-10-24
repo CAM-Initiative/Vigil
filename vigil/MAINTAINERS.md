@@ -146,6 +146,8 @@ The rebuild guard is intentionally generic. `VIGIL-INC-000129` informed its desi
 
 ### VIGIL independent adjudication authority — source interpretation boundary
 
+**Root-cause learning requirement:** See `vigil/docs/maintenance/ADJUDICATION-ROOT-CAUSE-CORRECTIONS.md`. When an adjudication is materially corrected, diagnose whether the error was in evidence, criterion interpretation, exclusion, chronology, uncertainty or process. A repeatable fault becomes a **generalisable** method correction and counterexample-based regression, not a persistent list of required answers. Previous case conclusions, historical review packets and external verdicts may be examined **only after** the current source-and-criterion evaluation has been provisionally formed. Individual factual disagreements need no artificial normative rule.
+
 VIGIL's current versioned Alignment Taxonomy is the authority for **VIGIL's own classification criteria**, not a claim of legal, regulatory, technical or factual supremacy over source institutions. First-party, investigative and other external publications are evidence and attributable interpretations. Their prestige, vocabulary, silence on a mechanism, or external classification is neither a positive nor a negative VIGIL recognition test.
 
 For each proposed change, keep four distinct layers:

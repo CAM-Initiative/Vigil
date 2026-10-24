@@ -22,7 +22,7 @@ PREFIXES = (
     "vigil/records/", "vigil/taxonomy/", "vigil/methodologies/",
     "vigil/external_governance/",
     "vigil/references/", "vigil/templates/", "vigil/tests/",
-    "vigil/scripts/", "vigil/docs/maintenance/", "vigil/docs/reviews/",
+    "vigil/scripts/", "vigil/docs/maintenance/",
 )
 EXACT = (
     "vigil/VIGIL.Schema.json", "vigil/VIGIL.Incidents.Index.json",
@@ -104,6 +104,7 @@ def generate(source_sha: str) -> dict:
                 "this manifest and release-preparation scaffolding",
                 "mutable README and provisional citation metadata",
                 "GitHub Actions metadata and agent operating notes",
+                "vigil/docs/reviews/ temporary notice-board and unreconciled process packets (Git history, not scientific payload)",
             ],
         },
         "taxonomy": {

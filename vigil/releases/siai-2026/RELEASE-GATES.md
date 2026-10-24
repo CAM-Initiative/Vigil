@@ -19,7 +19,7 @@ The manuscript's central records must retain their exact identity and version li
 
 **Verify:** python vigil/releases/siai-2026/build_research_snapshot.py --check
 
-The preflight CI exports a per-file SHA-256 manifest from **the checkout HEAD** as a workflow artifact. After reconciliation and merge, rerun on `main` with `--require-main` and use **that new SHA and checksum** for the v1.0.0 tag and citation. It does not modify the scientific payload or commit an automatically generated PR head. A checksum of the release manifest cannot include the manifest itself; the eventual signed-off Git tag/archive is a separate Gate 3 verification.
+The preflight CI exports a per-file SHA-256 manifest from **the checkout HEAD** as a workflow artifact. The hashed scientific scope **excludes** `vigil/docs/reviews/`: active notice-board files remain available to the ongoing adjudicator but are not automatically scientific dataset artefacts. The snapshot **does include** `vigil/docs/maintenance/` and all existing governed corpus/subsystem prefixes. After reconciliation and merge, rerun on `main` with `--require-main` and use **that new SHA and checksum** for the v1.0.0 tag and citation. It does not modify the scientific payload or commit an automatically generated PR head. A checksum of the release manifest cannot include the manifest itself; the eventual signed-off Git tag/archive is a separate Gate 3 verification.
 
 ## Approval boundary
 
