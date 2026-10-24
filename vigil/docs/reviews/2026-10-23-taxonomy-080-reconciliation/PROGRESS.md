@@ -1,3 +1,13 @@
+## INC-078 bounded turn-coordination reconciliation — 24 October 2026
+
+**Campaign checkpoint: 76 canonical v0.8.0 rebuilds, 78 retained historical screens, 6 evidence holds, 31 governance holds, 3 human-review cases and 6 crosschecks = 200 screened; 90 canonical v0.8.0 stamps.** These counts do not imply independent human certification.
+
+- **INC-078:** Explicitly superseded the historical medium-confidence failure with current-edition Boundary after separate review of the three-session report, general provider context and practical video-access episode. Intended allocation and complete sequence remain unresolved; the original human testimony is not discarded. Source records, S2 HIM and external assessments preserved. Prior mapping and confidence retained in SHA-256-linked history. No cross-device feature promise, private component defect or extra access incident inferred.
+- 332 tests, rebuild guard and canonical/public/provenance validators passed. Deterministic worklist and official projections rebuilt. Paper-focal versions and SHA-256 values rechecked without changing the cases.
+- Previous substantive commit `abf63d5692aaa976d98c79bd82e528328dc654cc` passed all four GitHub workflows. This tranche requires its own remote checks.
+
+Remaining evidence holds: INC-004, INC-012, INC-081, INC-103, INC-118 and INC-194. G01/G02 remain unapproved; PR #162 stays draft.
+
 ## INC-010 bounded turn-coordination reconciliation — 24 October 2026
 
 **Campaign checkpoint: 75 canonical v0.8.0 rebuilds, 78 retained historical screens, 7 evidence holds, 31 governance holds, 3 human-review cases and 6 crosschecks = 200 screened; 89 canonical v0.8.0 stamps.** Screening is not independent human certification.

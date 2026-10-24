@@ -1,3 +1,23 @@
+# Current factual checkpoint — 24 October 2026
+
+This checkpoint supersedes the historical campaign counts below. Canonical focal files were checked against baseline `abf63d5692aaa976d98c79bd82e528328dc654cc`; this tranche does not modify them.
+
+**200/200 screened: 76 canonical campaign rebuilds, 78 retained historical screens, 6 evidence holds, 31 governance holds, 3 human-review cases and 6 prior-intake crosschecks. Ninety canonical records explicitly stamp v0.8.0.** Screening is not 200 independently certified adjudications. The candidate is unmerged and is not the final main-based scientific snapshot.
+
+| Case | Canonical record version | Taxonomy edition | Canonical file SHA-256 |
+| --- | --- | --- | --- |
+| INC-003 | 0.8.13 | 0.8.0 | `e6291556f60493a32541f16897ce09cda6cef66c2dcbdb152a98e7fbb3a78964` |
+| INC-117 | 0.1.22 | 0.8.0 | `418d7e8b266bd74dd97c41030be06cae1f531f8100ebbe52d40f3fd3b07b14f7` |
+| INC-129 | 0.3.20 | 0.8.0 | `3ae5ab78ef1a8a83e36ea7b4e6bf55ef8b8eb81eebac05ec4de7fdb0aa5b9f13` |
+
+- **INC-003:** Preserve all 17 historical mappings and 21 source episodes. Observed adverse conduct, bounded capture/reconstruction/oversight findings and G01 constraints remain distinct. A current-edition stamp does not resolve G01.
+- **INC-117:** FC-043 Not aligned remains at high confidence. Access, allowlisting and internal classifier implementation limits remain explicit. The public account supports the bounded control-activation finding without private telemetry.
+- **INC-129:** Disputed FC-075 and FC-078 Boundary outcomes remain. Preserve verbatim compaction text, temporal order, unknown predecessor state and limits on any claim of successful successor revalidation.
+
+The paper-facing focal table below remains substantively consistent with these canonical versions. Older release snapshots and dated counts are historical; use this current checkpoint and the deterministic worklist for camera-ready values. This check concerns the repository factual record, not an uploaded or separately held manuscript.
+
+---
+
 # Screening completion — 24 October 2026
 
 ## Three additional bounded current-edition closures — 24 October 2026
