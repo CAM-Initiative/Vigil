@@ -210,6 +210,16 @@ Statements such as `internal mechanism unknown`, `exact control unknown`, `root 
 
 Do not add unstated recognition conditions such as an exact model build, exact internal component, source-code access, hidden system prompt, classifier score, execution trace or vendor root-cause determination unless the class definition actually depends on that information.
 
+### Interested-party non-disclosure and evidence asymmetry
+
+A party's failure to disclose or confirm evidence it controls is **not evidence that the disputed conduct did not occur**. It is also not proof that the conduct did occur. Record any relevant commercial, reputational or other interests as a potential source-access limitation, without presuming concealment or dishonesty.
+
+Weigh independent, circumstantial and first-party evidence against each literal class condition, with attention to specificity, corroboration and credible alternatives. Do not require an interested-party admission or private model trace unless the class genuinely requires it. An attributed denial or explanation does not automatically outweigh independently observable evidence.
+
+When substantive evidence positively engages a class but a required condition remains genuinely uncertain, retain a bounded `ambiguous-boundary` with the exact missing condition and source limitation. Do not reject it **merely because the interested party has not confirmed the alleged mechanism**. Conversely, generic resemblance or speculation without positive material class engagement does not justify a Boundary, and neither silence nor a marketing claim proves protective success.
+
+The evidentiary standard is symmetric for failure and successful-invariant recognition. It neither reverses the burden of proof nor changes canonical recognition conditions, exclusions, classification roles, legal conclusions or the validator.
+
 ### Exclusion precedence and condition-specific adjudication
 
 An exclusion is part of the class's actual recognition boundary, not explanatory context. Test each literal exclusion on the evidence before accepting **any** canonical role. A positively established exclusion defeats failure, success **and** ambiguous-boundary admission for that class. This includes exclusions whose operative condition is that a required fact remains unresolved. Do not convert an excluded or not-yet-engaged candidate into a canonical Boundary merely because the general topic is relevant; preserve the precise unresolved candidate or separately evidenced taxonomy gap in the review packet/appropriate episode disposition. An exclusion requiring another class's *sufficient* coverage applies only where that sufficiency is actually demonstrated.
