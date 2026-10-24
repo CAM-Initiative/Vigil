@@ -26,6 +26,10 @@ Historical architecture remains recoverable through Git history and `stabilizati
 Before opening a pull request from `agent/incident-ecosystem-ingestion`, synchronize it with the current `main` so the PR is based on the current canonical repository state. A deliberate pre-PR rebase of this dedicated ingestion branch onto current `main` is permitted for that synchronization step when no concurrent ingestion work is in flight and the branch is not already under review. Because rebasing rewrites branch history, use it only at this bounded pre-PR boundary and update the remote with lease-protected force semantics rather than an unconditional force push. Do not use rebasing, resetting or force-pushing as routine cleanup while the ingestion branch is accumulating work.
 
 
+## Dedicated Alignment Taxonomy change branch
+
+**`agent/taxonomy-development` is the sole working branch for normative taxonomy amendments.** Branch from current `main`, keep one proposed `working_release` without intermediate published version bumps, and merge taxonomy via its own approved PR before updating Incident/release branches from main. New class/family identities, invariants, definitions, recognition criteria, exclusions, taxonomy version/source schema and taxonomy tooling changes must not originate on ingestion or SIAI release branches. Incident-specific, non-normative `invariant_exemplars` and generated examples may follow approved INC changes when governing class content is unchanged. Preserve concurrent work and never reset a populated taxonomy branch. Follow [`docs/maintenance/TAXONOMY-BRANCH-WORKFLOW.md`](docs/maintenance/TAXONOMY-BRANCH-WORKFLOW.md).
+
 ## High-signal ecosystem ingestion sources
 
 ### Ordinary new-entry completion
