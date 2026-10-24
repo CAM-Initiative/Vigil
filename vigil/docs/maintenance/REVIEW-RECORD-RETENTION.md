@@ -33,6 +33,12 @@
 - **No blanket purge of currently referenced historical packets.** References are *migration blockers*, not proof of permanent value. Check the canonical decision before retiring them. Preservation by Git history is not proof that the canonical Incident now contains all required information.
 - An audit log or working packet may be committed to permit handoff and distributed review, but its presence in the Git tree is not permanent status or an obligation to publish it. Do not open GitHub Issues simply to store process notes or unknown vendor internals.
 
+## Live evidence dependency boundary
+
+A `review_artifact` referenced by a maintained external-governance `taxonomy-relationships.json` entry is **resolving reviewed relationship evidence**, not a disposable notice-board worksheet. Supporting-source admission checks may require the complete evidence object, source identity, exact requirement/class digests, and relationship-local dispositions. Before retiring a dated source-review path, either retain it as a live exception or move its reviewed evidence to a governed location under `vigil/external_governance/requirements/`; update **both** the relationship's `review_artifact` field and the exact embedded reviewed relationship counterpart to the new location. Preserve the unmodified historical bytes by a pinned Git commit, retain authorship/verification limits, and run the external-requirement builder, validator, relevant regression suite and entire CI. A source registry entry or a requirement ID alone is not proof that dependent reviewed relationship evidence can be deleted.
+
+A fixture consumed by maintained tests or scripts belongs under `vigil/tests/fixtures/` (or its actual maintained subsystem), not permanently under `docs/reviews/`. When promoting a historical frozen audit, preserve its original Git blob content where the test explicitly checks historical observations, change the test's fixture path, and verify unchanged assertion semantics. Culling must not be achieved by deleting or weakening a dependent test.
+
 ## Mechanical audit and closeout evidence
 
 `vigil/releases/siai-2026/audit_repository_retention.py` inventories tracked paths, canonical review references, links and prospective candidates. Treat its buckets as **discovery and migration worklists**, never retention orders or automated permission to remove substantive evidence. It does not replace checking content, relative Markdown links or uniqueness of source-first decisions.

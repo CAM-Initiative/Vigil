@@ -127,3 +127,8 @@ Recommended metadata-remediation sequence:
 7. use `--strict` only for a source/slice that is intended to be metadata-complete.
 
 CAM institutional applicability and coverage are outside this VIGIL requirement registry; no CAM conformity or coverage finding is implied.
+
+
+## Reviewed supporting-relationship evidence
+
+Supporting-source external requirements can depend on exact source-and-class review proof, not just registered source metadata or a positive relationship entry. The maintained `taxonomy-relationships.json` may contain `review_artifact` paths to evidence used by `vigil/scripts/supporting_source_admission.py` to verify source identity, reviewed basis, requirement/class digests and complete accepted relationship objects. Approved review evidence for the Australian SOCI Act compilation C2026C00213 is stored at `review-evidence/AU-SOCI-ACT-C2026C00213.json`. It is a reviewed AI-authored evidence packet, **not** independent human legal verification or a substitute for the current source, requirement and relationship registries. Its historically unmodified source copy remains recoverable from the Git pre-relocation commit. For future moves, update both copies of each exact relationship's `review_artifact` location and revalidate; the current live source-review file must remain resolvable.
