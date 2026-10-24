@@ -1,5 +1,9 @@
 # Evidence and governance resolution recommendations — 24 October 2026
 
+## INC-055 dependent external-assessment lineage repair — 24 October 2026
+
+The canonical current-edition amendment exposed four requirement-to-class references to the superseded historical Boundary. Two governance-admission Boundaries now point to the independently supported real-target authority-transfer episode; the minimum-network-privilege finding points to the operative test-isolation failure; the model-weight/configuration inventory Boundary is retained as an independent external assessment without an unjustified class derivation. **All nine external alignment results, substantive bases and primary source references remain unchanged.** The case version and audit SHA were updated. No new compliance or certification claim is made.
+
 ## INC-055 current-edition closure — 24 October 2026
 
 The original Meta and evaluator disclosures were directly read and the distinct capability-as-permission candidate closed as unsupported. The separate real-target authority-transfer and test-isolation failures remain. **Current counts: 23 evidence holds; 31 governance holds; 59 canonical rebuilds; 78 historical screens; 3 human-review cases; 6 intake crosschecks = 200.** Earlier counts in this research report are historical snapshots.

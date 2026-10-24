@@ -1,5 +1,9 @@
 # Screening completion — 24 October 2026
 
+## INC-055 dependent external-assessment lineage repair — 24 October 2026
+
+The canonical current-edition amendment exposed four requirement-to-class references to the superseded historical Boundary. Two governance-admission Boundaries now point to the independently supported real-target authority-transfer episode; the minimum-network-privilege finding points to the operative test-isolation failure; the model-weight/configuration inventory Boundary is retained as an independent external assessment without an unjustified class derivation. **All nine external alignment results, substantive bases and primary source references remain unchanged.** The case version and audit SHA were updated. No new compliance or certification claim is made.
+
 ## INC-055 direct-source resolution — 24 October 2026
 
 The original Meta and Irregular disclosures substantiate the real-target authority transfer and absent isolation control during the simulated evaluation. They do not establish a **separate** inference that mere technical reachability conferred permission. The old capability-as-permission Boundary has therefore been removed with a dated non-admission, while the observed scope and isolation failures, original evidence, Harm Impact and external assessments remain. The real-site action episode is now explicitly mapped to the supported authority-scope finding.
