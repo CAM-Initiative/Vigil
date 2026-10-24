@@ -1,3 +1,9 @@
+# Batch 11 — 24 October 2026
+
+Eighteen current-edition source-and-criterion screens: INC-009, 010, 012, 032, 043, 045, 048, 059, 061, 076, 078, 080, 081, 092, 098, 100, 109 and 162. Eight retain bounded findings; ten are explicitly `SCREENED-080-EVIDENCE-HOLD-CANONICAL-PRESERVED`. The latter are completed screens, not newly certified current-edition admissions. They identify unresolved occurrence criteria or exclusions and preserve the historical canonical findings pending that evidence. No blanket restamp, invented source access or independent verification.
+
+Checkpoint: **95/200 screened; 105 unscreened**. Ten completed screens explicitly hold current-edition resolution. Canonical v0.8.0 stamps remain 60, including 46 upgrades. Fingerprint, complete mapping disposition, source/episode references, literal criteria and repeatable worklist checks pass. No canonical bytes changed in this batch. Prior batch a509fab passed all four GitHub workflows.
+
 # Batch 10 — 24 October 2026
 
 Eight completed current-edition screens: INC-089, 099, 111, 114, 115, 140, 148 and 155. All canonical bytes, historical edition stamps, roles, confidence, harm and independent external assessments remain unchanged. Source-attributed episode inventories were reviewed; packets contain literal current criteria, opposite-polarity and exclusion tests, neighbouring candidates and every existing mapping disposition. This batch does not claim fresh access to every original source.

@@ -53,3 +53,7 @@ The June appellate stage in INC-065 is now included, and INC-094 separates ackno
 ## 24 October continuation: eight reliance and attribution screens
 
 The candidate now has **77 of 200 records screened, with 123 remaining**. Eight additional cases retain their canonical records with dated current-edition criterion review. This is screening coverage, not 77 new canonical v0.8.0 stamps or independent verification of originating reports. The focal-case qualifications above remain operative.
+
+## 24 October continuation: distinguish screening from resolution
+
+**95 of 200 incidents have completed dated current-edition screens; 105 remain unscreened.** Ten completed screens explicitly preserve historical findings under current-edition evidence holds. Thus 95 is not a count of fully reconciled or independently verified classifications. These include unresolved voice-interaction setup, decision-authority pathways, refusal trigger provenance and causal attribution. The focal-case caveats remain operative. Canonical v0.8.0 stamps remain 60.
