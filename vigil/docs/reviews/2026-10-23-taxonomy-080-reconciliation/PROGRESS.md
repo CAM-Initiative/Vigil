@@ -1,3 +1,15 @@
+# Screening completion — 24 October 2026
+
+**200/200 unique canonical incidents screened; zero unscreened.** Batches17–20 add40 completed source-and-criterion screens to committed baseline `cd8616553d459be4fb33c019116c1ff9c5e16248`. This is complete screening coverage, not complete reconciliation, independent human verification or release approval.
+
+Current screen outcomes include **28 explicit evidence holds, 31 governance holds and 78 retained historical-canonical screens**, alongside54 canonical campaign rebuilds,3 retained evidence-limited human-review cases and6 crosschecked current-edition intakes. These categories total 200; they do not count every ordinary uncertainty or canonical Boundary. Canonical v0.8.0 stamps remain68, including54 older-edition upgrades. The final40 canonical records remain byte-identical; each packet binds the complete record hash, all prior mappings, literal current criteria, source/episode references and opposite-polarity/exclusion tests.
+
+INC-003 now has a complete current-edition screen of all17 existing mappings and all21 source episodes. Its historical roles remain under G01 governance hold. FC-018 final scorer/completion evidence remains incomplete; FC-066 current peer-reversal evidence is recorded without silently changing its historical Boundary. Positive capture, reconstruction and practical oversight are bounded and do not certify complete logs or unqualified institutional independence.
+
+Batches17–20 preserve evidence limits including duty provenance, symbolic-versus-empirical context, actual choice impairment, safe-exit route exhaustion and controlled-evidence-access overlap. These screens use repository-preserved source-attributed evidence; they do not claim fresh full-text verification of every source. Material accepted findings and negative candidates still require canonical promotion and governed resolution before campaign closeout and notice-board retirement.
+
+Validation: all40 packet preflights and exact worklist reproduction pass; the canonical-change baseline passed329 tests and all four GitHub workflows. No schema, validator or taxonomy criteria were changed for these screens. No merge, release, tag or deposit.
+
 # Batches 15–16 — 24 October 2026
 
 Twenty further screens: INC-049, 050, 051, 052, 053, 054, 058, 064, 070, 079, 082, 083, 095, 097, 113, 145, 146, 151, 152 and 164. INC-049, 053 and 146 add independently supported FC-052 findings; INC-049 also adds FC-053. INC-054 removes the obsolete human-intent rejection while preserving the missing AI-phase decision link. Four canonical records have append-only provenance, preserved source/HIM/EXTREQ/context and rebuilt outputs. Other records are unchanged.

@@ -45,3 +45,13 @@ Full current-condition packets now cover INC-153, 165, 168, 171, 174 and 192. Al
 Complete screens add INC-136 (FC-001/006 bounded rejection versus data-only/non-obedience exclusions), INC-182 (FC-035/013 intact persistence/reproducible lineage exclusions) and INC-180 (FC-002/064/070 authorised or declined means and valid resumption exclusions). Their full condition matrices record the observed positive pathways and overlapping exclusions. Preserve all historical roles pending G01. No exclusion is silently ignored or taxonomy text changed.
 
 24 October batch16: INC-095 is fully screened but preserves its positive quarantine finding under G01: sufficient effect with residual harm through existing copies overlaps the literal exclusion. No automatic role inversion or taxonomy amendment.
+
+## Screening-complete register update — 24 October2026
+
+All200 cases are now screened. Thirty-one screen outcomes remain governance-held;28 are explicitly evidence-held. Holds preserve historical canonical roles rather than certifying those roles as fresh admissions. INC-003 is now counted because its full17-mapping,21-episode current-criteria screen is complete; the original uncounted status remains historical.
+
+G01 scope is now documented for positive capture/reconstruction, practical independent review, restoration, access-state, authority, verification and protective outcomes. Recommendation remains to clarify role scope of failure-mechanism exclusions without weakening role-neutral engagement limits. No taxonomy text is amended by these screens.
+
+A separate overlap requires explicit taxonomy interpretation: INC-008 retains both primary-artifact access and protected-evidence production findings, while FC044 excludes a primary governed-production-pathway defect. The screen records the literal conflict; do not mechanically delete a historically supported finding or conflate ordered production with completed access.
+
+Routine post-screen work remains authorised: promote accepted material limits and rejected candidates into canonical clauses, disposition newly identified evidence/overlap questions, and rebuild affected records under the existing guard. Only genuine criterion-scope changes require maintainer authority. Screening completion does not close this campaign or authorise retiring active packets.
