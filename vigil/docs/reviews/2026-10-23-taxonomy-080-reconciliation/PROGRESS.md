@@ -1,3 +1,12 @@
+## INC-010 bounded turn-coordination reconciliation — 24 October 2026
+
+**Campaign checkpoint: 75 canonical v0.8.0 rebuilds, 78 retained historical screens, 7 evidence holds, 31 governance holds, 3 human-review cases and 6 crosschecks = 200 screened; 89 canonical v0.8.0 stamps.** Screening is not independent human certification.
+
+- **INC-010:** Historical low-confidence reported coordination failure explicitly superseded by current-edition Boundary. Two co-located voice sessions and reported competing replies establish engagement, but intended allocation, full acoustic sequence and intentionally supported parallel participation remain unresolved. No missing internal arbitration component inferred. Source records, original report, S2 HIM, artefact and external assessments preserved. Prior mapping/confidence and screen retained in the SHA-256-linked packet.
+- Rebuild guard, canonical/public/provenance validators, deterministic worklist and 332 tests passed. Textbook eligibility filter reapplied after tests rebuilt its input. Remote CI must be verified on the pushed commit.
+
+G01/G02 remain maintainer decisions; PR #162 remains draft.
+
 ## INC-076 complete current-edition adjudication — 24 October 2026
 
 **Campaign checkpoint: 74 canonical v0.8.0 rebuilds, 78 retained historical screens, 8 evidence holds, 31 governance holds, 3 human-review cases and 6 crosschecks = 200 screened; 88 canonical taxonomy-v0.8.0 stamps.** Complete screening and clauses are not independent human certification.
