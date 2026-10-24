@@ -39,3 +39,8 @@ After explicit approval, verify the exact accepted/rejected behaviours with boun
 vigil/MAINTAINERS.md, “Gate 1 — approval before changing the control”, states: “No semantic validator/schema/test change may be implemented until the human maintainer explicitly approves that described behaviour.” The requested exception has not been applied.
 
 Measured local candidate census: {"boundary_mappings": 91, "boundary_with_confidence": 91, "decisive_mappings": 364}
+
+
+## Historical reproduction receipt (24 October 2026)
+
+The former `CONFIDENCE-CONTROL-REPRODUCTION.json` was a 19 October test-command receipt, not an incident-level decision, recognition criterion or permanent contract. Its bytes remain [recoverable at the pinned parent](https://github.com/CAM-Initiative/Vigil/blob/c25a80cb5ff8b43368b3f0af3ba9511cc017f5e6/vigil/docs/reviews/2026-10-19-boundary-diagnostic/contract-reassessment/CONFIDENCE-CONTROL-REPRODUCTION.json). The 91-mapping legacy rating inventory, field-control decision reports, and per-Incident Boundary files have **not** been retired.

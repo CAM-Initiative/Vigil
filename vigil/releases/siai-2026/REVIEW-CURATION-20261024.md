@@ -121,3 +121,14 @@ These are execution receipts, not unique Incident mapping dispositions, evidence
 | `2026-10-18-dignity-and-ecological-values/` | 1 | Exact bounded Incident and class screening, new dignity / ecology criterion reasoning and 194-incident candidate review; archived the dated test-command receipt |
 
 No canonical Incident, taxonomy, HIM, registered requirement, schema, validator, current v0.8.0 packet, approved policy or maintained executable was deleted or changed. These are not substantive resolution of the still-held current-edition evidence/governance findings. The new source text cites prior execution only as historic outcome, not current evidence of independent human verification. **The GitHub CI and release-retention checks on the new commit are required before calling this tranche validated.**
+
+
+## Tranche 11 — governed taxonomy-census copies and test receipts (24 October 2026)
+
+**Exact recovery SHA:** `c25a80cb5ff8b43368b3f0af3ba9511cc017f5e6`. Retired **4 historical working files (124863 bytes)**:
+- `2026-10-18-soci-issue-132/current-taxonomy-comparison.json`, a mechanical extract of seven historical taxonomy class definitions at the explicitly recorded prior Git head, with FC-078/081/088 delta IDs. It was not a new approved taxonomy change or canonical authority.
+- `2026-10-18-soci-issue-132/inventory.json`, a historical cross-branch inventory of source/requirement counts and SOCI absence prior to the completed gated extraction.
+- `2026-10-18-issue-126-him-reassessments/rebuild-guards.json`, the dated 24-command success receipts; **all 24 substantive per-Incident HIM audits, its adopted method amendment, final validation result, preservation analysis and remaining hold register are retained**.
+- `2026-10-19-boundary-diagnostic/contract-reassessment/CONFIDENCE-CONTROL-REPRODUCTION.json`, a 442-byte test-command receipt; its role-scope/legacy-confidence inventory and actual decisions remain.
+
+The parent SHA above now anchors Git-backed links in the historical reports, ensuring no false impression that these are current active-tree paths. The canonical taxonomy 0.8.0, Incident evidence, source/EXTREQ registries, Harm Impact framework, 196 still-active current-edition packets, and all maintained validators remain unchanged. No release or merge. CI on this commit is required before marking it validated.
