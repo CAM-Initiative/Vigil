@@ -1,3 +1,7 @@
+## Snapshot configuration follows published main — 24 October 2026
+
+The SIAI snapshot builder's explicit expected published edition is updated from v0.8.0 to v0.8.1 to match main `175d87740658b11b4a72346f2a6ea45123e232b7`. Its exact 200-Incident, 17-family and 80-class checks remain unchanged. The manifest still reports the actual mixed historical adjudication editions and explicitly denies independent human validation; this configuration update is not re-adjudication. The old v0.8.0 criterion packet guard remains intact and still requires substantive reconciliation. No canonical Incident, taxonomy source, external result or pass/fail criterion was changed by this edition-configuration update.
+
 ## Settled main synchronization — published taxonomy v0.8.1 (24 October 2026)
 
 Main's publication workflow advanced during the first synchronization. Incorporated actual publication commit `175d87740658b11b4a72346f2a6ea45123e232b7` as well as merged taxonomy PR #164. Published taxonomy is now v0.8.1 dated 24 October 2026; its published ledger and PDF come from main. This supersedes the preceding synchronization note's then-current unpublished metadata statement. Rebuilt the official projections against the published edition, preserving the branch's non-normative case exemplars and every canonical Incident byte.

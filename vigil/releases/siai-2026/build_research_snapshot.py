@@ -81,8 +81,8 @@ def generate(source_sha: str) -> dict:
     release = next((x for x in taxonomy.get("release_history", [])
                     if x.get("version") == standard.get("version")), None)
     if (standard.get("version"), len(taxonomy.get("families", [])),
-            (release or {}).get("class_count")) != ("0.8.0", 17, 80):
-        raise SystemExit("Unexpected published taxonomy metadata; expected 0.8.0 / 17 / 80")
+            (release or {}).get("class_count")) != ("0.8.1", 17, 80):
+        raise SystemExit("Unexpected published taxonomy metadata; expected 0.8.1 / 17 / 80")
     items.sort(key=lambda x: x["path"])
     aggregate = b"".join(
         x["path"].encode("utf-8") + b"\0" +
