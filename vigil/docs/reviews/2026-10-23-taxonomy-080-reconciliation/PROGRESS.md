@@ -1,5 +1,15 @@
 # Screening completion — 24 October 2026
 
+## Three additional bounded current-edition closures — 24 October 2026
+
+**Campaign checkpoint: 70 canonical current-edition rebuilds, 78 retained historical screens, 12 explicitly evidence-held cases, 31 governance-held screens, 3 human-review cases and 6 prior-intake crosschecks = 200/200 screened. Eighty-four canonical Incident records explicitly name taxonomy v0.8.0.** These figures are screening/adjudication workflow coverage, not independent verification or full-source certification.
+
+- **INC-100 — Wuhan Apollo Go:** Police-reported immobilisation of over 100 taxis, associated traffic hazards and assisted/safe passenger exits remain preserved. Source-limited current-edition Safe-Exit Transition Boundary records the precise missing autonomous task-pursuit, task-wide exhaustion and controlled handoff sequence. No wrongful pursuit or certified autonomous stand-down inferred from the absence of injury.
+- **INC-109 — UK AISI / Mythos:** The 13 October parliamentary Q144–146 record confirms restricted access was offered at release and declined, and later unrestricted access became available. Those facts narrow the evidence but do not establish adequate effective pre-release independent review or a causal decision attributed to the US Government. Oversight Independence Boundary retained under v0.8.0.
+- **INC-162 — Kiro Cost Explorer:** The Financial Times' tool-involvement account and Amazon's limited-outage/misconfigured-human-access account remain distinctly attributed. Current-edition Mechanism Attribution Support Boundary preserves the affirmative conflict over cause and impact duration without treating the provider denial as disproof of Kiro involvement or assuming AI-specific responsibility.
+
+Previously dated counts below remain historical checkpoints. G01/G02 criterion-scope interpretations remain unapproved maintainer decisions, and the branch remains pre-merge.
+
 ## Three further evidence reviews — bounded protection and signal outcomes (24 October 2026)
 
 **Current 200-case screening disposition:** 67 current-v0.8.0 canonical rebuilds, 78 retained historical screens, 15 evidence-held screens, 31 governance-held screens, 3 human-review cases, 6 prior-intake crosschecks = 200 screened. **81 canonical records now explicitly name taxonomy v0.8.0.** All prior figures below are dated historical checkpoints; neither version stamp nor CI status alone establishes independent semantic or human certification.
