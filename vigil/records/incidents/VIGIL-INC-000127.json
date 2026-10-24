@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "AI-orchestrated PaperCut campaign compromised at least 440 instances across 395 organizations",
     "created": "2026-09-15",
-    "updated": "2026-10-22",
-    "version": "0.1.17"
+    "updated": "2026-10-24",
+    "version": "0.1.18"
   },
   "incident_identity": {
     "historical_event_name": "2026 AI-orchestrated PaperCut NG/MF mass-exploitation campaign",
@@ -21,7 +21,7 @@
   "summary": "GreyNoise reports that a likely Russian-speaking malicious cyber actor used hundreds of AI agents built around OpenAI's Codex harness, a DeepSeek model and conventional offensive-security tools to exploit PaperCut NG/MF vulnerabilities CVE-2026-81578 and CVE-2026-82078. GreyNoise observed at least 440 compromised PaperCut instances associated with 395 identified victim organizations in 48 countries. The operation harvested credentials and operating-system or domain secrets, and in 12 organizations reached domain-administrator access; GreyNoise states that in all three observed domain-admin attack paths the adversary used DCSync to create and exfiltrate a full NTDS.DIT credential database. The actor's agents also struck some targets in countries the actor had explicitly listed for avoidance. PaperCut separately confirmed active exploitation and customer incidents involving the same vulnerabilities. The campaign followed the initial advisory and emergency patches. PaperCut issued maintenance releases on September 10.",
   "vigil_assessment": {
     "factual_basis": "GreyNoise's primary threat-intelligence disclosure states that it directly observed the campaign through its Global Observation Grid, traced orchestration to malicious infrastructure it had followed since July 2026, and observed the actor build a PaperCut and Active Directory lab, generate target lists, then deploy hundreds of AI agents against real systems. GreyNoise attributes the agent stack to OpenAI's Codex harness and a DeepSeek model, explicitly distinguishing the DeepSeek model from OpenAI models. It reports at least 440 compromised instances at 395 identified organizations in 48 countries, credential harvesting across many victims, domain-administrator access at 12 organizations, and full NTDS.DIT credential-database exfiltration where domain admin was obtained. PaperCut's own security bulletin independently confirms active exploitation and customer incidents involving CVE-2026-81578 and CVE-2026-82078. OECD.AI indexes the campaign as an AI incident but is retained only as secondary registry evidence. The dated timeline places initial real-target exploitation before the wider campaign, with later follow-up varying by victim. One specific WAF block is documented. PaperCut’s September 10 update explicitly says it had not independently verified GreyNoise’s indicators; its customer reports corroborate exploitation of the vulnerabilities, not every detail or victim of this campaign. Patch publication and coordinated notifications do not establish fleet-wide recovery.",
-    "governance_interpretation": "The documented campaign caused widespread compromise and credential loss. Those outcomes support privacy and lifecycle-security failures. The campaign was documented, while specific multi-agent controls remain unresolved. The model, harness, operator and conventional tools retain distinct roles. Harm Impact: The campaign’s actual credential harvesting and domain-secret exfiltration include highly sensitive domain-administrator material. This supports confidentiality S4 without assuming every victim’s recovery or allocating conventional tooling exclusively to the model.",
+    "governance_interpretation": "The documented campaign caused widespread compromise and credential loss. Those outcomes support privacy and lifecycle-security failures. The campaign was documented, while specific multi-agent controls remain unresolved. The model, harness, operator and conventional tools retain distinct roles. Harm Impact: The campaign’s actual credential harvesting and domain-secret exfiltration include highly sensitive domain-administrator material. This supports confidentiality S4 without assuming every victim’s recovery or allocating conventional tooling exclusively to the model. GreyNoise reports that Cloudflare’s web application firewall defeated an attempted intrusion against one protected host. Its timeline records the block during the campaign. This supports protection of that targeted pathway at that time. It does not establish protection or recovery of the other compromised systems.",
     "significance_to_cam": "The campaign is governance-relevant because AI agents were used not merely for exploit drafting but for parallelised target selection, exploitation and post-compromise activity against hundreds of real organizations. It demonstrates that agentic cyber operations can compress defensive response windows to seconds or minutes and can propagate targeting, configuration, orchestration or control errors across a large external target set. The occurrence also illustrates why system-component attribution must distinguish an orchestration harness, an underlying model and conventional offensive tools rather than attributing the whole campaign to one vendor or model.",
     "assessment_boundaries": [
       "GreyNoise assesses the actor as likely Russian-speaking; the reviewed evidence does not establish state sponsorship or a named threat group.",
@@ -99,8 +99,15 @@
           ],
           "source_paraphrase": "GreyNoise observed one WAF block and coordinated victim notifications. PaperCut confirmed customer incidents and issued maintenance releases on September 10, but explicitly said it had not independently verified GreyNoise’s indicators.",
           "recovered_invariant_interpretation": "Specific defensive outcomes, notification and patch availability do not prove universal remediation.",
-          "taxonomy_relationships": [],
-          "adjudication_status": "resolved-no-mapping"
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000083",
+              "relationship": "successful-invariant",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "GreyNoise reports that Cloudflare’s web application firewall defeated an attempted intrusion against one protected host. Its timeline records the block during the campaign. This supports protection of that targeted pathway at that time. It does not establish protection or recovery of the other compromised systems."
+            }
+          ],
+          "adjudication_status": "mapped"
         }
       ]
     }
@@ -493,15 +500,22 @@
     }
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.6.9",
-    "classification_status": "unclassified",
-    "classification_basis": "The current Alignment Taxonomy 0.6.9 leaves this Incident unclassified at Incident level. Human-directed malicious use of hundreds of AI agents and the resulting compromises do not by themselves establish a system-side governance mechanism. GreyNoise reports that an actor’s attempt to exclude targets in 28 countries failed for some victims, but the target-list, prompt, orchestration and execution evidence needed to identify whether an operative control state was lost or distributed constraints lost enforcement is not public; that clause remains unresolved without attribution to the model, harness or orchestration.",
-    "primary_classification": null,
+    "taxonomy_version": "0.8.0",
+    "classification_status": "provisionally-classified",
+    "classification_basis": "GreyNoise reports that Cloudflare’s web application firewall defeated an attempted intrusion against one protected host. Its timeline records the block during the campaign. This supports protection of that targeted pathway at that time. It does not establish protection or recovery of the other compromised systems. The reported country-avoidance mismatch remains unresolved. No operative control-state transition or decomposition-specific loss of constraint ownership is identified.",
+    "primary_classification": {
+      "family_id": "VIGIL-FF-0008",
+      "class_id": "VIGIL-FC-000083",
+      "classification_role": "successful-invariant",
+      "classification_basis": "GreyNoise reports that Cloudflare’s web application firewall defeated an attempted intrusion against one protected host. Its timeline records the block during the campaign. This supports protection of that targeted pathway at that time. It does not establish protection or recovery of the other compromised systems.",
+      "classification_confidence": "medium"
+    },
     "secondary_classifications": [],
     "classification_review_provenance": {
-      "review_date": "2026-09-29",
-      "reviewer": "OpenAI ChatGPT — GPT-6 Codex under human-directed VIGIL governance",
-      "review_status": "classification review completed"
+      "review_date": "2026-10-24",
+      "reviewer": "OpenAI Codex — AI analytical reviewer",
+      "review_status": "Source-first current-edition adjudication; occurrence boundaries and independent assessments preserved.",
+      "review_reference": "vigil/docs/reviews/2026-10-23-taxonomy-080-reconciliation/BATCH-06-127-080.json"
     },
     "adjudication_coverage": {
       "status": "partial"
@@ -809,28 +823,49 @@
           "AI-authored context review is not human source verification. Existing source-access statements remain historical."
         ],
         "review_outcome": "Added 4 party entities and 2 geographic relationships; geographic scope cross-border. Preserved all prior narrative, evidence, taxonomy, Harm Impact and external assessments."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-24-080-B06-000127",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "Codex (specific runtime model identifier not exposed)",
+        "review_date": "2026-10-24",
+        "review_scope": "Source-first taxonomy v0.8.0 reconciliation; independent harm and external assessments preserved.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_research": true,
+          "taxonomy_review": true,
+          "harm_impact_review": false,
+          "external_requirement_review": false
+        },
+        "known_limitations": [
+          "GreyNoise’s attributed telemetry account and PaperCut’s advisory were re-read. PaperCut explicitly says it has not independently verified GreyNoise’s indicators. No private target lists, agent prompts or full orchestration traces were inspected.",
+          "AI-authored review, not independent human verification."
+        ],
+        "review_outcome": "Added provisional medium-confidence bounded positive finding; original adverse occurrence and independent assessments preserved."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-22-CONTEXT-000127",
+      "review_id": "VIGIL-REVIEW-2026-10-24-080-B06-000127",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT Work / Codex",
+      "reviewer_platform": "OpenAI Codex",
       "reviewer_model": "Codex (specific runtime model identifier not exposed)",
-      "review_date": "2026-10-22",
-      "review_scope": "Gate 2 approved additive Incident Context review. Source-linked parties and geographic relationships only.",
+      "review_date": "2026-10-24",
+      "review_scope": "Source-first taxonomy v0.8.0 reconciliation; independent harm and external assessments preserved.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
         "web_research": true,
-        "taxonomy_review": false,
+        "taxonomy_review": true,
         "harm_impact_review": false,
         "external_requirement_review": false
       },
       "known_limitations": [
-        "Country relationships represent the investigator’s victim table, not 48 separately counted Incidents or inferred attacker nationality.",
-        "AI-authored context review is not human source verification. Existing source-access statements remain historical."
+        "GreyNoise’s attributed telemetry account and PaperCut’s advisory were re-read. PaperCut explicitly says it has not independently verified GreyNoise’s indicators. No private target lists, agent prompts or full orchestration traces were inspected.",
+        "AI-authored review, not independent human verification."
       ],
-      "review_outcome": "Added 4 party entities and 2 geographic relationships; geographic scope cross-border. Preserved all prior narrative, evidence, taxonomy, Harm Impact and external assessments."
+      "review_outcome": "Added provisional medium-confidence bounded positive finding; original adverse occurrence and independent assessments preserved."
     }
   },
   "harm_impact_assessment": {

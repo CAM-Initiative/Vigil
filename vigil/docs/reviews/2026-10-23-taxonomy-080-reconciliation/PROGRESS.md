@@ -1,5 +1,17 @@
 # VIGIL taxonomy 0.8.0 — reconciliation status, 23 October 2026
 
+## Current candidate — eight further rebuilds, 24 October 2026
+
+Baseline `3a7bf158183eb066419ca37c18fe31b93564b746`. Batches 06 and 07 cover **INC-015, 016, 018, 021, 096, 120, 127 and 135**. Candidate totals: **41/200 screened, 159 unscreened**, **46 canonical v0.8.0 records**, and **32 older-edition upgrades on this branch**. Canonical version stamps remain separate from dated screen credit.
+
+- INC-096 and INC-135 add provisional medium-confidence signal-delivery findings for researcher disclosures traced to provider responses and corrective dispositions. No independent test of every repaired service is implied.
+- INC-127 adds a provisional medium-confidence protective-effect finding for the specific reported Cloudflare WAF block. Other compromises and the unresolved country-avoidance mechanism remain separate.
+- INC-120 stays unclassified with partial clause coverage. Geographic circumvention, coding assistance and bans do not reveal the particular monitoring/control transitions or measured post-ban effect needed for the tested classes. Evidence about another actor is not transferred.
+- INC-015, 016 and 021 retain their bounded positive access-state findings; INC-018 retains its access-state scope failure. Existing roles and confidence remain unchanged. INC-015’s explanation now explicitly covers the later distinction between restored access and remaining entitlement repair, without endorsing the earlier broad recovery notice.
+- INC-021 corrects source attribution: one community author reported browser failure, failed Google sign-in and retained smartphone access. Both adverse and retained access outcomes remain; no individual testimony is converted into cohort-wide fallback assurance.
+
+All eight full-rebuild guards, the 326-test suite, canonical/public/provenance/component/authorship/rights/taxonomy/external validators and deterministic worklist checks pass. Derived Incident, jurisdiction and taxonomy-example outputs are rebuilt. Independent HIM and external assessments are unchanged. Status totals: **139 classified, 32 unclassified, 24 provisional, 3 requires-human-review, 2 disputed**. G01 remains unresolved; affected cases remain uncounted. No merge or release.
+
 ## Current candidate — cyber batch, 24 October 2026
 
 Baseline `a473f4f2ccf6bcba588c691a23b85c67e55360f2`. Three additional full rebuilds: **INC-033, INC-139 and INC-158**. Candidate coverage: **33/200 screened, 167 unscreened**; **38 canonical v0.8.0 stamps**, including **24 older-edition upgrades on this branch**. The dated packets and deterministic canonical/criteria fingerprints govern credit; stamps alone do not.
