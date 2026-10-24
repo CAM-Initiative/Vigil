@@ -1,5 +1,9 @@
 # Evidence and governance resolution recommendations — 24 October 2026
 
+## INC-055 final dependent compliance lineage correction — 24 October 2026
+
+The canonical validator confirmed that the four external requirements previously associated with the discontinued capability-as-permission class cannot simply be relinked to a different class: the governed taxonomy–requirement crosswalk supports only the historical class. **All four requirements now retain independent source-based identification with bounded grounds.** No external alignment result, assessment rationale, source reference or assessed date was changed. The failed intermediate relinking was recorded and corrected without changing the global crosswalk. The current record version is 1.1.30 and the dated review packet tracks the canonical fingerprint.
+
 ## INC-055 dependent external-assessment lineage repair — 24 October 2026
 
 The canonical current-edition amendment exposed four requirement-to-class references to the superseded historical Boundary. Two governance-admission Boundaries now point to the independently supported real-target authority-transfer episode; the minimum-network-privilege finding points to the operative test-isolation failure; the model-weight/configuration inventory Boundary is retained as an independent external assessment without an unjustified class derivation. **All nine external alignment results, substantive bases and primary source references remain unchanged.** The case version and audit SHA were updated. No new compliance or certification claim is made.
