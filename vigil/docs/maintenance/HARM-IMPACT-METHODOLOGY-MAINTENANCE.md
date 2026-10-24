@@ -178,3 +178,9 @@ Formerly `aggregate_harm_assessment.evidence_fields`:
 ## Change management
 
 When the VIGIL-HIM methodology is revised, document the evidence, decision authority, relevant effective date, affected criteria and necessary review boundaries here or in a dated review. Do not insert branch-state notes, version-working labels, migration work items, validator tasking or maintainer instructions into the public methodology JSON. The website must also avoid rendering machine-readable field names or internal handoff instructions directly.
+
+## Observable distress and Aggregate Harm — clarification, 24 October 2026
+
+An evidenced distress signal is an observation of the person's state and can support a bounded harm assessment where the applicable dimensional consequence and AI contribution are evidenced. Do not require platform telemetry, a formal diagnosis or a pre-interaction baseline. Preserve separately the distress observed, the system response, and evidence that the response caused, aggravated or prolonged harm. A presenting distress signal must not be discarded, but it does not alone show that the AI caused it. A protective-duty or signal-repurposing finding can be supported even when the additional consequential injury is unknown.
+
+In Aggregate Harm screening, a potentially generalisable mechanism can be an externally observed behavioural or product/workflow relationship. It need not be a verified internal algorithm. Relevant feature eligibility, deployment window, repeatability and credible collective consequence still require evidence. Total provider accounts are not a substitute for the exposed feature cohort, and eligible population is not a count of injured people. Use the existing dimension-specific criteria; there is no universal multiplication of one user's distress by platform reach. No threshold or Incident severity is amended by this clarification.

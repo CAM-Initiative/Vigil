@@ -1,5 +1,11 @@
 # Screening completion — 24 October 2026
 
+## 24 October public-evidence follow-up
+
+All 200 remain screened. Two evidence holds are closed through canonical corrections (098, 131); 26 remain evidence-limited and 31 remain governance-held. Current categories: 56 canonical campaign rebuilds, 78 retained historical screens, 26 evidence-held screens, 31 governance-held screens, 3 retained human-review cases and 6 prior-intake crosschecks. Seventy records carry the current taxonomy edition. Bounded source/method updates also cover 035 and 048. The earlier checkpoints below retain their historical counts.
+
+See [public-evidence follow-up](https://github.com/CAM-Initiative/Vigil/blob/chore/siai-2026-release-readiness-20261023/vigil/docs/reviews/2026-10-23-taxonomy-080-reconciliation/EVIDENCE-HOLD-FOLLOWUP-20261024.md) for all 28 researched cases and exact residual propositions. Classification concerns observable governance properties; it does not claim knowledge of private platform mechanisms. Aggregate Harm is modelled from qualifying deployed evaluation and is distinct from confirmed victim counts.
+
 **200/200 unique canonical incidents screened; zero unscreened.** Batches17–20 add40 completed source-and-criterion screens to committed baseline `cd8616553d459be4fb33c019116c1ff9c5e16248`. This is complete screening coverage, not complete reconciliation, independent human verification or release approval.
 
 Current screen outcomes include **28 explicit evidence holds, 31 governance holds and 78 retained historical-canonical screens**, alongside54 canonical campaign rebuilds,3 retained evidence-limited human-review cases and6 crosschecked current-edition intakes. These categories total 200; they do not count every ordinary uncertainty or canonical Boundary. Canonical v0.8.0 stamps remain68, including54 older-edition upgrades. The final40 canonical records remain byte-identical; each packet binds the complete record hash, all prior mappings, literal current criteria, source/episode references and opposite-polarity/exclusion tests.

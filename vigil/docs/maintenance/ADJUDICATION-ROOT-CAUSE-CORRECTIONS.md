@@ -44,3 +44,7 @@ A correction that is genuinely a one-off transcription or factual fix can be cor
 ## Release and notice-board boundary
 
 Complete ongoing v0.8.0 source-first adjudication using its current *temporary* packets; do not delete active worksheets, change canonical outcomes by fiat, or restamp old decisions just because this method was refined. When the campaign closes, the published corpus must stand on Incident records plus governed taxonomy/methods, not on a review-folder answer store. See `REVIEW-RECORD-RETENTION.md` for promotion, reference reconciliation and routine retirement.
+
+## Correction: implementation uncertainty used as an admission barrier
+
+The reasoning defect is substituting a demand for exact platform causation for the class's observable recognition conditions, or treating every hypothetical implementation alternative as an operative exclusion. Correct the abstraction and test the actual evidence. Retain real competing explanations and literal missing criteria. Do not replace over-caution with automatic admission from an adverse outcome. The workflow's observable-findings and effective-human-authority sections give the general method. Recheck a supported observable breach and a materially different case where the decision relationship remains genuinely unresolved; no case label is mandated by this instruction.
