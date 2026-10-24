@@ -53,8 +53,17 @@ jobs:
       - name: Refresh Incident-only public VIGIL indexes for validation
         run: python vigil/scripts/build-vigil-public-records.py
 
+      - name: Build sparse HIM sidecar alongside Incident registry
+        run: python vigil/scripts/build-vigil-public-records.py
+
       - name: Build canonical-field jurisdiction projection
         run: python vigil/scripts/build-vigil-jurisdiction-index.py
+
+      - name: Verify sparse HIM sidecar is identical after a second build
+        run: |
+          cp vigil/VIGIL.Harm.Dimensions.Index.json /tmp/vigil-harm-sidecar.json
+          python vigil/scripts/build-vigil-public-records.py
+          cmp /tmp/vigil-harm-sidecar.json vigil/VIGIL.Harm.Dimensions.Index.json
 
       - name: Verify jurisdiction projection is deterministic
         run: python vigil/scripts/build-vigil-jurisdiction-index.py --check
@@ -123,6 +132,7 @@ jobs:
         run: |
           if ! git diff --exit-code -- \
             vigil/VIGIL.Incidents.Index.json \
+            vigil/VIGIL.Harm.Dimensions.Index.json \
             vigil/VIGIL.Registry.Index.json \
             vigil/VIGIL.Incidents.Jurisdictions.Index.json \
             vigil/taxonomy/generated/VIGIL.FailureTaxonomy.CaseFileExamples.json; then
@@ -148,6 +158,7 @@ jobs:
           find vigil -type f \( -name '*.pyc' -o -name '*.pyo' \) -delete
           git add \
             vigil/VIGIL.Incidents.Index.json \
+            vigil/VIGIL.Harm.Dimensions.Index.json \
             vigil/VIGIL.Registry.Index.json \
             vigil/taxonomy/generated/VIGIL.FailureTaxonomy.CaseFileExamples.json
           if git diff --cached --quiet; then
