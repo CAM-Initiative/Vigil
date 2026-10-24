@@ -1,5 +1,16 @@
 # VIGIL taxonomy 0.8.0 — reconciliation status, 23 October 2026
 
+## Current candidate — 22 unclassified-case screens, 24 October 2026
+
+Baseline `408d2740504fe051a0446b894e2fa30d8f1a4b6f`. Batch 09 covers **INC-013, 028, 037, 040, 042, 044, 065, 067, 068, 069, 072, 074, 090, 094, 106, 144, 147, 149, 163, 166, 167 and 169**. Coverage is **69/200 screened, 131 unscreened**. **60 canonical records** name v0.8.0; **46 older-edition upgrades** have been made on this branch.
+
+Eight canonical rebuilds correct source chronology or reasoning. INC-065 adds the June appellate restriction on reporting the video allegation while retaining the May ruling as historical and separating photos, videos, distribution and production. INC-094 adds acknowledged disclosure to national response bodies without inferring remediation. INC-013 removes a private-reasoning prerequisite; INC-166 applies the current human-directed influence scope. INC-042, 106, 144 and 149 remove stale current-edition language. All remain unclassified on the available mechanism evidence.
+
+Fourteen other cases retain their canonical records byte-for-byte after current-edition screening. Their historical taxonomy stamps remain historical; dated decision packets, not restamps, supply screen credit. These screens use the preserved source-attributed occurrence evidence, with targeted fresh searches where recorded; they do not claim fresh full-text verification of every source. Ordinary missing facts remain evidence limits rather than GitHub Issues.
+
+The 326-test suite, eight full-rebuild guards, all corpus/taxonomy/external validators, output reproduction and evidence-reference checks passed. Independent harm and external assessments are unchanged. Status totals remain 139 classified, 32 unclassified, 24 provisional, 3 requires-human-review and 2 disputed. G01 remains open. The remaining 131 cases are still in progress; no merge or release.
+
+
 ## Current candidate — six access-state rebuilds, 24 October 2026
 
 Baseline `486e1f96ee3557a287cd9996f71dd903359f0d6d`. Batch 08 covers **INC-022, 023, 024, 025, 031 and 039**. Totals: **47/200 screened, 153 unscreened**, **52 canonical v0.8.0 records**, and **38 older-edition upgrades on this branch**. Version stamps and dated screening credit remain separate.

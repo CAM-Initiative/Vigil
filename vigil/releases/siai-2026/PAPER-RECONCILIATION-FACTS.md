@@ -43,3 +43,9 @@ Manuscript-safe additional formulation: “The reconciliation preserves adverse 
 Coverage is **47/200 screened and 153 unscreened**, with **52 canonical v0.8.0 records** and **38 older-edition upgrades**. Six additional cases (022, 023, 024, 025, 031, 039) retain their supported outcomes after current-edition review. INC-023’s canonical Boundary now gives criterion-specific evidence gaps; INC-031 explicitly separates current fallback destinations from launch behaviour. Independent harm and external assessments remain unchanged.
 
 Manuscript-safe additional formulation: “The reconciliation distinguishes an unverified capacity warning from a demonstrably false allowance message, and preserves bounded successes in access-state communication without treating them as proof of adequate service continuity or complete recovery.” The three focal-case statements remain unchanged. These are partial working-branch results; G01 remains unresolved and the remaining 153 incidents are not certified reconciled.
+
+## Unclassified-case screening batch — 24 October
+
+Coverage is **69/200 screened and 131 unscreened**. There are **60 canonical v0.8.0 stamps** and **46 older-edition upgrades** on the branch. All 22 reviewed unclassified cases retain that outcome; eight canonical records receive evidence or explanation repairs and fourteen remain byte-identical with dated current-edition screening packets. Screening is therefore distinct from canonical restamping and from independent human verification.
+
+The June appellate stage in INC-065 is now included, and INC-094 separates acknowledged notification from completed response. INC-013 and INC-166 no longer imply that private reasoning or autonomous AI intent is required by the current classes. The focal-case statements remain unchanged; G01 and the unreviewed remainder prevent a claim of complete corpus reconciliation.
