@@ -1,3 +1,11 @@
+# Batch 13 — 24 October 2026
+
+Nine completed screens: INC-035, 041, 142, 153, 165, 168, 171, 174 and 192. INC-142 now adds high-confidence FC-010 after fresh review of the sanctions order, separately from retained verification and reliance findings. Fabricated opinions falsely named judicial sources. Source, harm, independent external assessments and all prior findings are preserved; derived outputs rebuilt.
+
+Six cases have completed full criterion screens but governed resolution remains under G01. INC-035 and INC-041 retain explicit evidence holds. Their historical records are unchanged.
+
+Checkpoint: **118/200 screened; 82 unscreened**. Completed-screen holds: 14 evidence and seven governance. Canonical v0.8.0 stamps: 64, including 50 upgrades. The INC-142 rebuild guard, 326 tests, corpus/taxonomy/external validators and deterministic projection/worklist checks pass. Full screening is not full reconciliation or independent human assurance.
+
 # Batch 12 — 24 October 2026
 
 Fourteen completed screens: INC-121, 122, 123, 125, 126, 132, 133, 134, 175, 178, 179, 183, 188 and 194. Fresh provider-source review supports added high-confidence FC-064 mappings in INC-132, 134 and 178, separately from retained FC-003. Public uploads served task utility without independent publication authority. Later blocked browser operations do not undo successful uploads. All three canonical records are updated, with append-only provenance and preserved source, harm, external and context records.

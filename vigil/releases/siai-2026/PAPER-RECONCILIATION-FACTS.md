@@ -61,3 +61,7 @@ The candidate now has **77 of 200 records screened, with 123 remaining**. Eight 
 ## 24 October continuation: 109 screened
 
 **109/200 incidents have completed dated current-edition screens; 91 remain unscreened.** Twelve screens explicitly hold current-edition resolution on evidence, and one holds it on taxonomy governance. Three public-upload cases now include an independently evidenced objective/pathway finding after fresh source review and full rebuild checks. Canonical v0.8.0 stamps total 63, including 49 upgrades. Screening, canonical edition and final reconciliation remain distinct counts.
+
+## 24 October continuation: 118 screened
+
+**118/200 records have completed dated current-edition screens; 82 remain unscreened.** Fourteen completed screens retain evidence holds and seven retain taxonomy-governance holds. INC-142 now separately records false judicial-source attribution after fresh review of the sanctions order. There are 64 canonical v0.8.0 stamps, including 50 upgrades. The unresolved focal INC-003 limitation remains.
