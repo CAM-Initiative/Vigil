@@ -1,5 +1,15 @@
 # Screening completion — 24 October 2026
 
+## Three further evidence reviews — bounded protection and signal outcomes (24 October 2026)
+
+**Current 200-case screening disposition:** 67 current-v0.8.0 canonical rebuilds, 78 retained historical screens, 15 evidence-held screens, 31 governance-held screens, 3 human-review cases, 6 prior-intake crosschecks = 200 screened. **81 canonical records now explicitly name taxonomy v0.8.0.** All prior figures below are dated historical checkpoints; neither version stamp nor CI status alone establishes independent semantic or human certification.
+
+- **INC-050 (Pindrop):** First face-swap signal was actually detected; the later repeat interview was **knowingly allowed** for investigation, not an unrecognised guard failure. The original attempted economic/social deception remains failure-classified. The operational control-effect candidate remains current-edition Boundary because the exact mandated intervention and final employment/access result are not known; neither fraudulent hire nor failed alert is asserted.
+- **INC-187 (NSW NPWS):** The original unauthorised non-public metadata access remains independently classified adverse. The government technical-notification delivery, receipt and agency investigation are positively observed, but the specific class requires following an accountable governance signal to an authorised disposition. That final state is not published; the previous unqualified signal-success role is superseded by an explicit current-edition Boundary.
+- **INC-193 (Philadelphia):** Original fabricated homicidal eyewitness tip, real-world form submission and misattribution remain four separate adverse mechanisms. Philadelphia Police's own dated statement independently confirms receipt of Anthropic's notice, meeting, retrieval of the exact submission and verification it remained in the *police's* spam system. This completes a **bounded postdiscovery notice-to-recipient-response success**; it neither credits Claude with the police protection nor excuses reporting delay or certifies whole-system remediation.
+
+Outstanding governance G01/G02 interpretations remain reserved for the maintainer and are not silently enacted. Draft PR remains a pre-merge working candidate, not the final SIAI release snapshot.
+
 ## Paper reconciliation checkpoint — three current-edition adjudications (24 October 2026)
 
 Full public-source recognition review and canonical promotions are complete for INC-035, INC-041 and INC-119. **Current state: 64 canonical campaign rebuilds, 78 retained historical screens, 18 evidence-held screens, 31 governance-held screens, 3 human-review cases and 6 prior-intake crosschecks = 200/200 screened.** Seventy-eight canonical records explicitly name taxonomy v0.8.0. These are distinct from final certification and do not imply that an evidence-limited canonical Boundary has become a confirmed adverse or protective finding.
