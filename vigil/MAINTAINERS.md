@@ -748,3 +748,18 @@ Approval covers this control, documentation, templates and isolated tests. After
 The maintainer approved the five-case pilot and continuation across the current corpus. The dated `docs/reviews/2026-10-22-incident-context-migration/` inventory distinguishes reviewed coded relationships, reviewed unknowns and non-geographic scenarios. Original prose, legacy jurisdiction text, sources, taxonomy, HIM and external assessments are preserved. Each additive record review increments the record patch version and appends interpretive provenance.
 
 The jurisdiction projection v2 publishes canonical relationship roles and scope with source references. Its `legacy_text_projection` is explicitly lexical compatibility data, not substitute evidence. See `docs/maintenance/JURISDICTION-GEOGRAPHY-PROJECTION.md`. Stage 01 continues to render the five Incident Context subsections specified in Gate 1; country and subdivision codes are displayed with readable labels, source-linked explanations and uncertainty. Country centroids do not represent physical occurrence coordinates, and Section 04 remains authoritative for admitted external assessments.
+
+
+### Sparse Harm Impact dimension index
+
+`vigil/VIGIL.Harm.Dimensions.Index.json` is a deterministic **additive**
+sidecar from `vigil/scripts/build-vigil-public-records.py` and canonical
+Incident records. It joins to the Incident list by canonical `id` and
+`record_identity.version` (short key `v`). Only explicitly `assessed`
+dimension rows with S1–S5 bands are copied as `d: [[dimension_id,band]]`.
+The explicit assessment pathway is included as `p`. Unreported, insufficient
+and not-applicable dimensions are omitted, **not interpreted as no harm**.
+S1 is a positive minimal/no-harm assessment; harm-frequency charts count
+S2–S5 only. Modelled Aggregate Harm must remain distinguishable from
+specific evidenced consequences, and multi-dimension incident counts are
+non-additive. This presentation projection involves no LLM adjudication.

@@ -11,6 +11,7 @@ ROOT = Path(__file__).resolve().parents[2]
 VIGIL = ROOT / "vigil"
 INCIDENTS = VIGIL / "records" / "incidents"
 INCIDENT_INDEX = VIGIL / "VIGIL.Incidents.Index.json"
+HARM_DIMENSIONS_INDEX = VIGIL / "VIGIL.Harm.Dimensions.Index.json"
 MASTER_INDEX = VIGIL / "VIGIL.Registry.Index.json"
 TAXONOMY_EXAMPLES = VIGIL / "taxonomy" / "generated" / "VIGIL.FailureTaxonomy.CaseFileExamples.json"
 TAXONOMY_INDEX = VIGIL / "taxonomy" / "VIGIL.FailureTaxonomy.Index.json"
@@ -354,6 +355,50 @@ def taxonomy_examples(records: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
+
+def harm_dimension_sidecar(records: list[dict[str, Any]]) -> dict[str, Any]:
+    """Sparse, typed HIM evidence projection. S1 is retained but is not positive harm."""
+    entries: list[dict[str, Any]] = []
+    for record in records:
+        assessment = record.get("harm_impact_assessment") or {}
+        dimensions = []
+        seen: set[str] = set()
+        for item in assessment.get("dimensions") or []:
+            if item.get("assessment_status") != "assessed":
+                continue
+            dimension_id, band = item.get("dimension_id"), item.get("severity")
+            if not isinstance(dimension_id, str) or not dimension_id or band not in {"S1", "S2", "S3", "S4", "S5"}:
+                raise ValueError(f"{record.get('id')}: assessed HIM dimensions require valid IDs and S1-S5 bands")
+            if dimension_id in seen:
+                raise ValueError(f"{record.get('id')}: duplicate assessed HIM dimension {dimension_id}")
+            seen.add(dimension_id)
+            dimensions.append([dimension_id, band])
+        if dimensions:
+            entries.append({
+                "id": record["id"],
+                "v": (record.get("record_identity") or {}).get("version"),
+                "p": assessment.get("assessment_pathway"),
+                "d": dimensions,
+            })
+    return {
+        "registry_type": "vigil_harm_dimensions",
+        "version": 1,
+        "generated_notice": (
+            "Deterministically projected from canonical VIGIL Harm Impact assessments. "
+            "Only assessment_status=assessed dimensions are included. "
+            "Omitted dimensions are not findings of no harm."
+        ),
+        "source": "vigil/records/incidents/",
+        "provenance": {
+            **GENERATED_PROVENANCE,
+            "upstream_provenance": ["vigil/records/incidents/"],
+        },
+        "record_count": len(records),
+        "assessed_record_count": len(entries),
+        "entries": entries,
+    }
+
+
 def build() -> None:
     paths = sorted(INCIDENTS.glob("VIGIL-INC-*.json"), key=lambda item: item.name)
     records = [load(path) for path in paths]
@@ -376,6 +421,7 @@ def build() -> None:
         }},
     }
     write(INCIDENT_INDEX, incident_index)
+    write(HARM_DIMENSIONS_INDEX, harm_dimension_sidecar(records))
     write(MASTER_INDEX, master)
     write(TAXONOMY_EXAMPLES, taxonomy_examples(records))
     print(
