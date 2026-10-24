@@ -110,9 +110,9 @@ def main() -> None:
         relative = path[len(review_prefix):]
         name = relative.rsplit("/", 1)[-1]
         if path in referenced:
-            return "retain-canonical-reference"
+            return "migration-blocker-canonical-reference"
         if path in code_ref:
-            return "retain-live-code-or-doc-dependency"
+            return "migration-blocker-live-dependency"
         if relative.startswith("2026-10-23-taxonomy-080-reconciliation/"):
             return "hold-active-taxonomy-campaign"
         if name.endswith(".log"):
@@ -149,7 +149,7 @@ def main() -> None:
         "missing_review_reference_paths": sorted(missing),
         "review_files_referenced_from_other_code": code_ref,
         "review_retention_triage": {
-            "status": "discovery-only; never authorises automatic deletion",
+            "status": "temporary-noticeboard migration inventory; references are exit blockers, not permanent-retention rules; no automatic deletion authority",
             "buckets": {k: v for k, v in sorted(by_review_bucket.items())},
             "counts": review_bucket_counts,
         },
