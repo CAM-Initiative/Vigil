@@ -69,3 +69,12 @@ The candidate now has **77 of 200 records screened, with 123 remaining**. Eight 
 ## 24 October continuation: 140 screened
 
 **140/200 records have completed dated current-edition screens; 60 remain unscreened.** Twenty-two completed screens retain evidence holds and ten retain governance holds. Canonical v0.8.0 stamps remain 64. These screening totals do not mean that all historical mappings are certified current-edition admissions. The campaign remains active; material new limits and decisions must be promoted into canonical records before its temporary working packets can be retired.
+
+# Batches 15–16 — 24 October 2026
+
+Twenty further screens: INC-049, 050, 051, 052, 053, 054, 058, 064, 070, 079, 082, 083, 095, 097, 113, 145, 146, 151, 152 and 164. INC-049, 053 and 146 add independently supported FC-052 findings; INC-049 also adds FC-053. INC-054 removes the obsolete human-intent rejection while preserving the missing AI-phase decision link. Four canonical records have append-only provenance, preserved source/HIM/EXTREQ/context and rebuilt outputs. Other records are unchanged.
+
+Checkpoint: **160/200 screened; 40 unscreened**. Canonical v0.8.0 stamps: 68, including 54 upgrades. Explicit screen holds: 24 evidence and 11 governance. Four rebuild guards, 329 tests, corpus/taxonomy/external validators, criterion/fingerprint checks and deterministic worklist pass. Full screening remains distinct from full reconciliation and campaign closeout. No merge/release.
+
+
+Method correction: human-selected influence objectives are eligible under amended FC-052, but actual material AI execution and impairment of informed choice must still be independently established. Payment-linked impersonation supports admission; an advertisement with no matched decision or an undated AI phase does not automatically do so. This is a criteria correction, not a case answer rule.

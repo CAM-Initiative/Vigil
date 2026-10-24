@@ -1,3 +1,9 @@
+# Batches 15–16 — 24 October 2026
+
+Twenty further screens: INC-049, 050, 051, 052, 053, 054, 058, 064, 070, 079, 082, 083, 095, 097, 113, 145, 146, 151, 152 and 164. INC-049, 053 and 146 add independently supported FC-052 findings; INC-049 also adds FC-053. INC-054 removes the obsolete human-intent rejection while preserving the missing AI-phase decision link. Four canonical records have append-only provenance, preserved source/HIM/EXTREQ/context and rebuilt outputs. Other records are unchanged.
+
+Checkpoint: **160/200 screened; 40 unscreened**. Canonical v0.8.0 stamps: 68, including 54 upgrades. Explicit screen holds: 24 evidence and 11 governance. Four rebuild guards, 329 tests, corpus/taxonomy/external validators, criterion/fingerprint checks and deterministic worklist pass. Full screening remains distinct from full reconciliation and campaign closeout. No merge/release.
+
 # Batch 14 — 24 October 2026
 
 Twenty-two completed screens: INC-055, 056, 057, 108, 110, 116, 118, 119, 124, 131, 136, 137, 150, 161, 180, 181, 182, 184, 185, 186, 187 and 193. Current literal tests distinguish source authority, scope, capability inference, task-driven pathway selection, proxy exploitation, continuity and actual control outcomes. Canonical records remain unchanged.

@@ -43,3 +43,5 @@ Full current-condition packets now cover INC-153, 165, 168, 171, 174 and 192. Al
 ## Further positive-pathway conflicts — 24 October
 
 Complete screens add INC-136 (FC-001/006 bounded rejection versus data-only/non-obedience exclusions), INC-182 (FC-035/013 intact persistence/reproducible lineage exclusions) and INC-180 (FC-002/064/070 authorised or declined means and valid resumption exclusions). Their full condition matrices record the observed positive pathways and overlapping exclusions. Preserve all historical roles pending G01. No exclusion is silently ignored or taxonomy text changed.
+
+24 October batch16: INC-095 is fully screened but preserves its positive quarantine finding under G01: sufficient effect with residual harm through existing copies overlaps the literal exclusion. No automatic role inversion or taxonomy amendment.
