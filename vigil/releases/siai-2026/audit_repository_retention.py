@@ -104,6 +104,31 @@ def main() -> None:
             continue
         if any(n in text for n in ("cam_assessment", "cam-assessments", "CAM applicability/coverage")):
             cam_refs.append(p)
+    # Discovery aid, not permission for deletion. Source-first decisions require manual
+    # uniqueness checks even when no canonical path points at their old review packet.
+    def bucket(path: str) -> str:
+        relative = path[len(review_prefix):]
+        name = relative.rsplit("/", 1)[-1]
+        if path in referenced:
+            return "retain-canonical-reference"
+        if path in code_ref:
+            return "retain-live-code-or-doc-dependency"
+        if relative.startswith("2026-10-23-taxonomy-080-reconciliation/"):
+            return "hold-active-taxonomy-campaign"
+        if name.endswith(".log"):
+            return "reject-execution-log"
+        if (name.startswith(("VIGIL-INC-", "INC-")) or "/decisions/" in relative
+                or "decision" in name.lower() or "adjudication" in name.lower()):
+            return "hold-possible-unique-decision"
+        if re.search(r"(inventory|census|baseline|snapshot|population|screening|register)", name, re.I):
+            return "review-reproducibility-and-uniqueness"
+        return "review-other-nonauthoritative-or-undetermined"
+
+    by_review_bucket = {}
+    for path in sorted(review_files):
+        disposition = bucket(path)
+        by_review_bucket.setdefault(disposition, []).append(path)
+    review_bucket_counts = {k: len(v) for k, v in sorted(by_review_bucket.items())}
     payload = {
         "inventoried_branch_commit": source_sha,
         "status": "audit-only; no substantive adjudication or dataset release implied",
@@ -123,6 +148,11 @@ def main() -> None:
         "referenced_review_files_from_incidents": sorted(referenced),
         "missing_review_reference_paths": sorted(missing),
         "review_files_referenced_from_other_code": code_ref,
+        "review_retention_triage": {
+            "status": "discovery-only; never authorises automatic deletion",
+            "buckets": {k: v for k, v in sorted(by_review_bucket.items())},
+            "counts": review_bucket_counts,
+        },
     }
     if len(record_data) != 200:
         raise SystemExit(f"Expected 200 incidents, found {len(record_data)}")
@@ -137,6 +167,7 @@ def main() -> None:
         "resolved_files":len(referenced),"missing_paths":len(missing),
         "test_or_code_referenced_files":len(code_ref)}))
     print("CAM_DEPENDENCIES " + json.dumps(cam_refs))
+    print("REVIEW_RETENTION_TRIAGE " + json.dumps(review_bucket_counts))
     # Release curation gate: no broken canonical review paths or retained shell logs.
     transient_logs = sorted(p for p in review_files if p.endswith(".log"))
     print("REVIEW_CURATION_GATE " + json.dumps({
