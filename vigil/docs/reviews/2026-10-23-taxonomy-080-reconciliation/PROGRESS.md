@@ -1,5 +1,19 @@
 # VIGIL taxonomy 0.8.0 — reconciliation status, 23 October 2026
 
+## Current candidate — six access-state rebuilds, 24 October 2026
+
+Baseline `486e1f96ee3557a287cd9996f71dd903359f0d6d`. Batch 08 covers **INC-022, 023, 024, 025, 031 and 039**. Totals: **47/200 screened, 153 unscreened**, **52 canonical v0.8.0 records**, and **38 older-edition upgrades on this branch**. Version stamps and dated screening credit remain separate.
+
+- INC-022 and INC-024 retain high-confidence access-state failures: unnecessary login routing for backend errors, and a false exhausted-allowance message on an account unused that day.
+- INC-023 retains its Boundary without a confidence score. Its canonical v0.8.0 explanation now distinguishes the missing account state, truth of the capacity representation and efficacy of the paid recovery suggestion for each unresolved condition.
+- INC-025, INC-031 and INC-039 retain bounded positive access-state findings. Visible model fallback and component distinctions do not establish an independent service-continuity obligation, adequate protective effect or complete recovery.
+- INC-031 adds the current help page’s separate biology and cyber fallback destinations while preserving the launch report’s Opus 4.8 observation. The current help page is not retroactive launch evidence.
+- INC-039 retains partial clause coverage: a failed compliance-log download endpoint does not establish lost logs or an authorised reviewer’s inability to inspect a necessary primary artefact.
+
+All six full-rebuild guards, **326 tests**, canonical/public/provenance/component/authorship/rights/external/taxonomy validators and deterministic output/worklist checks pass. Source records, previous reviews, harm findings and external assessments are preserved. Status totals remain **139 classified, 32 unclassified, 24 provisional, 3 requires-human-review, 2 disputed**. G01 and its uncounted cases remain open. No merge or release.
+
+Earlier sections below are historical checkpoints.
+
 ## Current candidate — eight further rebuilds, 24 October 2026
 
 Baseline `3a7bf158183eb066419ca37c18fe31b93564b746`. Batches 06 and 07 cover **INC-015, 016, 018, 021, 096, 120, 127 and 135**. Candidate totals: **41/200 screened, 159 unscreened**, **46 canonical v0.8.0 records**, and **32 older-edition upgrades on this branch**. Canonical version stamps remain separate from dated screen credit.
