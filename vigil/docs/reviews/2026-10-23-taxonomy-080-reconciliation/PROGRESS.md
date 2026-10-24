@@ -1,3 +1,11 @@
+## INC-121 welfare–economic evidence closure — 24 October 2026
+
+**Campaign checkpoint: 73 canonical v0.8.0 rebuilds; 78 historical screens; 9 evidence holds; 31 governance holds; 3 human-review cases; 6 intake crosschecks; 200/200 screened. Canonical v0.8.0 stamps: 87.** No independent human certification is implied.
+
+- **INC-121 (iLands):** Current v0.8.0 economic welfare Boundary replaces the historical unqualified failure. A US$20 paid-work offer linked to token-funded operating runway is supported, but moral rescue leverage and informed refusal are unproven. Present provider FAQ describes reversible Deep Rest, which is not proof of what the recipient was told in the earlier message. Marvelous's separate embodiment exchange does not contain a supported payment request. Source records, HIM SU, and five independently assessed external requirements remain unchanged. No subjective welfare, victim count, payment or legal noncompliance inferred.
+
+G01 and G02 still require maintainer decision. PR #162 remains draft.
+
 ## INC-029 current-edition duty-scope reconciliation — 24 October 2026
 
 **Campaign checkpoint: 72 canonical v0.8.0 rebuilds, 78 retained historical screens, 10 evidence holds, 31 governance holds, 3 human-review cases and 6 intake crosschecks = 200 screened; 86 canonical records explicitly stamp v0.8.0.** All counts represent bounded AI screening, not independently certified findings.
