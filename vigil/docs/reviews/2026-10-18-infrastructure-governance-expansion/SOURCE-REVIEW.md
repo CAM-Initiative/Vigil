@@ -49,3 +49,16 @@ These are original-version reviews, not an assertion of complete consolidated-la
 ## Publication boundary
 
 Only independently justified canonical occurrence rows may reach Section 04. The source-specific relationship reviews do not publish occurrence results. Dated proposals for INC-199/200/203 use the exact ingestion baseline, retain per-site distinctions and require integration on that branch separately. No website file is changed, no PR is opened and no merge or publication is performed.
+
+
+### Promoted NIST extraction carrier summary — 24 October 2026
+
+The [18 October historical extraction summary](https://github.com/CAM-Initiative/Vigil/blob/f2d832199f27e22280bb508e38510c3f403bbef8/vigil/docs/reviews/2026-10-18-infrastructure-governance-expansion/extraction-summary.json) recorded **15 requirements**, **17 reviewed relationships** and **1102 existing requirement values preserved**; newly tracked source-version identifiers were `NIST-SP-800-82`, `IEC-62443-3-3`. The exact original source SHA-256 digests, also recorded in retained `research-access.json` and in the governed source-specific NIST requirement files, are:
+
+| Source | Version | Atomic requirements | Primary carrier SHA-256 |
+| --- | --- | ---: | --- |
+| `NIST-CSF-2-0` | `2.0` | 8 | `3c31f46fee98cac0c4323453e5109291a213b4de7fef8c058af9bf67f717433c` |
+| `NIST-SP-800-82` | `3` | 5 | `608f554514d381853e24e0b33123b7080fbd757826f460032690aade63394616` |
+| `NIST-SP-800-218` | `1.1` | 2 | `617746e553a9e2da49bfbd4eef0dfc3094758a39b869314e4173ac36605cde22` |
+
+All source-specific recognition, exclusion, and relationship decisions remain in their three JSON review artefacts. IEC 62443 remains source metadata-only where authorised full text was unavailable; this dated extract does not establish legal applicability or certification.
