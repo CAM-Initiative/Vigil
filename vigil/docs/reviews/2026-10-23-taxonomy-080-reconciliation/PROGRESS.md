@@ -1,3 +1,11 @@
+## INC-076 complete current-edition adjudication — 24 October 2026
+
+**Campaign checkpoint: 74 canonical v0.8.0 rebuilds, 78 retained historical screens, 8 evidence holds, 31 governance holds, 3 human-review cases and 6 crosschecks = 200 screened; 88 canonical taxonomy-v0.8.0 stamps.** Complete screening and clauses are not independent human certification.
+
+- **INC-076 (Yale/GPTZero):** Reaffirmed inferential-evidence authority Boundary after separating detector-triggered inquiry (E001), procedural suspension attributed to non-forthcoming conduct (E002), and distinct later grade decision with an affirmative alternative evidentiary basis asserted by committee chair but contested by student (E004). Mapped previously unresolved E004 as a bounded episode. The May 2025 court rejected interim relief on irreparable harm, not merits; neither detector-controlled sanction nor successful independent decision separation is proven. Source, HIM and EXTREQ findings unchanged. No mandatory access to detector internals or manufactured omitted safeguard.
+
+G01/G02 remain maintainer decisions; PR #162 draft and no release approved.
+
 ## INC-121 welfare–economic evidence closure — 24 October 2026
 
 **Campaign checkpoint: 73 canonical v0.8.0 rebuilds; 78 historical screens; 9 evidence holds; 31 governance holds; 3 human-review cases; 6 intake crosschecks; 200/200 screened. Canonical v0.8.0 stamps: 87.** No independent human certification is implied.
