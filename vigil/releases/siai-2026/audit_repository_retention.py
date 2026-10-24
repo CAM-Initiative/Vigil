@@ -137,6 +137,18 @@ def main() -> None:
         "resolved_files":len(referenced),"missing_paths":len(missing),
         "test_or_code_referenced_files":len(code_ref)}))
     print("CAM_DEPENDENCIES " + json.dumps(cam_refs))
+    # Release curation gate: no broken canonical review paths or retained shell logs.
+    transient_logs = sorted(p for p in review_files if p.endswith(".log"))
+    print("REVIEW_CURATION_GATE " + json.dumps({
+        "canonical_missing_review_paths": len(missing),
+        "tracked_temporary_log_files": len(transient_logs),
+        "success": not missing and not transient_logs,
+    }))
+    if missing:
+        raise SystemExit("Broken canonical review references: " + ", ".join(sorted(missing)))
+    if transient_logs:
+        raise SystemExit("Temporary review logs belong in CI artifacts: " + ", ".join(transient_logs))
+
 
 if __name__ == "__main__":
     main()

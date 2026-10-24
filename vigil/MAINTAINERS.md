@@ -57,7 +57,7 @@ Do not falsify historical review dates or rewrite historical audits and reviews 
 - `vigil/taxonomy/` — canonical VIGIL Observatory alignment taxonomy and generated publications.
 - `vigil/external_governance/sources/` — external-source registry.
 - `vigil/external_governance/requirements/` — external-governance requirements and projections.
-- `vigil/docs/reviews/` — selected dated decision packets and adopted-control provenance relevant to the retained corpus. Superseded audits are recoverable at the pinned pre-cleanup Git commit; they are not current verification.
+- `vigil/docs/reviews/` — selected dated decision packets and adopted-control provenance relevant to the retained corpus. Superseded audits are recoverable at the pinned pre-cleanup Git commit; they are not current verification. Follow `vigil/docs/maintenance/REVIEW-RECORD-RETENTION.md` for the retention and deletion gate; ordinary generated logs and completed pilots do not belong in the scientific release tree.
 
 The taxonomy migration assurance ledger at `vigil/taxonomy/migration/Caelestis.LegacyFailure.MigrationLedger.json` remains live taxonomy validation evidence. It does not reactivate FM as a VIGIL record class.
 
