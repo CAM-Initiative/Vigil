@@ -14,6 +14,51 @@ INCIDENTS = ROOT / "vigil" / "records" / "incidents"
 DEST = Path(__file__).resolve().parent / "TAXONOMY-080-WORKLIST.json"
 FOCAL = {"VIGIL-INC-000003", "VIGIL-INC-000117", "VIGIL-INC-000129"}
 NONFINAL = {"provisionally-classified", "requires-human-review", "classification-disputed"}
+# The published v0.8.0 criteria are immutable and remain the scientific basis
+# of the dated 080 campaign. This SHA is an ancestor of the release branch,
+# not an arbitrary current-branch ref that can silently advance to v0.8.1.
+PUBLISHED_080_REF = "6aff1c4d6ff85a94e0892d558a3bfa651d0b557d"
+CRITERION_FIELDS = ("failure_recognition", "success_recognition", "exclusions")
+
+
+def published_080_classes() -> dict[str, dict]:
+    """Load exact published v0.8.0 class criteria from pinned Git history.
+
+    Fail closed if the baseline is unavailable, off-history or not v0.8.0.
+    A historical review packet never acquires v0.8.1 screening credit.
+    """
+    subprocess.run(
+        ["git", "merge-base", "--is-ancestor", PUBLISHED_080_REF, "HEAD"],
+        cwd=ROOT, check=True,
+    )
+
+    def git_json(path: str) -> dict:
+        raw = subprocess.check_output(
+            ["git", "show", f"{PUBLISHED_080_REF}:{path}"], cwd=ROOT, text=True,
+        )
+        return json.loads(raw)
+
+    index = git_json("vigil/taxonomy/VIGIL.FailureTaxonomy.Index.json")
+    if index.get("standard", {}).get("version") != "0.8.0":
+        raise SystemExit("Pinned taxonomy baseline is not published v0.8.0")
+    paths = subprocess.check_output(
+        ["git", "ls-tree", "-r", "--name-only", PUBLISHED_080_REF,
+         "--", "vigil/taxonomy/families"],
+        cwd=ROOT, text=True,
+    ).splitlines()
+    if len(paths) != 17 or any(not p.endswith(".json") for p in paths):
+        raise SystemExit("Unexpected historical v0.8.0 taxonomy family inventory")
+    classes = {}
+    for path in paths:
+        for klass in git_json(path)["classes"]:
+            cid = klass["class_id"]
+            if cid in classes:
+                raise SystemExit(f"Duplicate class in v0.8.0 baseline: {cid}")
+            classes[cid] = klass
+    if len(classes) != 80:
+        raise SystemExit("Expected 80 classes in the pinned v0.8.0 baseline")
+    return classes
+
 
 def priority(rec: dict) -> tuple[int, str]:
     rid, status, version = rec["incident_id"], rec["classification_status"], rec["recorded_taxonomy_version"]
@@ -29,11 +74,28 @@ def priority(rec: dict) -> tuple[int, str]:
 
 def build() -> dict:
     commit = subprocess.check_output(["git","rev-parse","HEAD^{commit}"], cwd=ROOT, text=True).strip()
+    baseline_080 = published_080_classes()
+    current_index = json.loads(
+        (ROOT / "vigil/taxonomy/VIGIL.FailureTaxonomy.Index.json").read_text(encoding="utf-8")
+    )
+    if current_index.get("standard", {}).get("version") != "0.8.1":
+        raise SystemExit("Expected v0.8.1 as the presently published taxonomy")
     taxonomy_classes = {
         c["class_id"]: c
         for path in sorted((ROOT / "vigil/taxonomy/families").glob("*.json"))
         for c in json.loads(path.read_text(encoding="utf-8"))["classes"]
     }
+    if len(taxonomy_classes) != 80 or set(taxonomy_classes) != set(baseline_080):
+        raise SystemExit("Unexpected v0.8.1 class count or identity change")
+    # A criteria change is an impact signal, never evidence that a historical
+    # source/criterion review was re-executed. Non-criterion class changes
+    # do not mechanically invalidate existing clause-level reasoning.
+    changed_081 = {
+        cid: [key for key in CRITERION_FIELDS
+              if taxonomy_classes[cid][key] != baseline_080[cid][key]]
+        for cid in sorted(taxonomy_classes)
+    }
+    changed_081 = {cid: keys for cid, keys in changed_081.items() if keys}
     class_fingerprints = {
         cid: hashlib.sha256(json.dumps(c, sort_keys=True, ensure_ascii=False).encode()).hexdigest()
         for cid, c in sorted(taxonomy_classes.items())
@@ -241,11 +303,9 @@ def build() -> dict:
             "Prior dated AI source/criterion full-rebuild crosschecked against "
             "current canonical mapping; no new independent source or human assurance"
         )
-    taxonomy_classes = {
-        c["class_id"]: c
-        for path in (ROOT / "vigil/taxonomy/families").glob("*.json")
-        for c in json.loads(path.read_text(encoding="utf-8"))["classes"]
-    }
+    # Replacement packets are dated v0.8.0 work. Validate their literal
+    # conditions against the pinned v0.8.0 publication rather than conflating
+    # this integrity check with a new v0.8.1 assessment.
     for rid, (packet_path, packet) in current_packets.items():
         if rid not in by_id:
             raise SystemExit(f"Unknown reviewed Incident: {rid}")
@@ -260,9 +320,13 @@ def build() -> dict:
             or not packet.get("mapping_tests")):
             raise SystemExit(f"Stale or incomplete replacement packet: {rid}")
         for test in packet["mapping_tests"]:
-            current = taxonomy_classes[test["class_id"]]
-            for key in ("failure_recognition", "success_recognition", "exclusions"):
-                literal = current[key] if key == "exclusions" else current[key]["required_conditions"]
+            cid = test["class_id"]
+            if cid not in baseline_080:
+                raise SystemExit(f"Unknown historical v0.8.0 class: {rid} {cid}")
+            historical = baseline_080[cid]
+            for key in CRITERION_FIELDS:
+                literal = (historical[key] if key == "exclusions"
+                           else historical[key]["required_conditions"])
                 if [x["condition"] for x in test[key]] != literal:
                     raise SystemExit(f"Changed criteria require rescreen: {rid} {test['class_id']} {key}")
                 if any(not x.get("assessment") or not x.get("source_record_refs") for x in test[key]):
@@ -271,14 +335,30 @@ def build() -> dict:
         row["current_080_screen_date"] = packet["review_date"]
         row["screening_decision_packet"] = str(packet_path.relative_to(ROOT))
         row["screening_assurance"] = "AI source/criterion review; complete-record fingerprint checked; no human assurance"
+    # The 080 worklist stays an 080 worklist. A new edition requires a
+    # separate source-first review; candidate IDs only rank its work.
+    for row in rows:
+        candidate_ids = row["review_inputs"]["candidate_class_ids_from_record"]
+        row["v081_changed_candidate_class_criteria"] = {
+            cid: changed_081[cid] for cid in candidate_ids if cid in changed_081
+        }
+        row["v081_screen_status"] = "NOT-ASSESSED-UNDER-081"
+        row["v081_review_note"] = (
+            "Recorded candidates are discovery leads, not a complete 0.8.1 "
+            "semantic re-screen. Previous 0.8.0 review does not certify 0.8.1."
+        )
     rows.sort(key=lambda x: (x["priority"], x["incident_id"]))
     return {
         "worklist_schema": "vigil-taxonomy-080-reconciliation/1",
         "project": "VIGIL Observatory",
         "branch_scientific_commit": commit,
-        "current_published_taxonomy": "0.8.0",
+        "current_published_taxonomy": "0.8.1",
+        "historical_screening_campaign_taxonomy": "0.8.0",
+        "historical_criteria_git_commit": PUBLISHED_080_REF,
+        "historical_screening_not_081_certification": True,
+        "changed_081_criterion_fields_by_class": changed_081,
         "current_class_sha256": class_fingerprints,
-        "state": "RECONCILIATION-IN-PROGRESS--NO-INDEPENDENT-HUMAN-ASSURANCE-CERTIFIED",
+        "state": "HISTORICAL-080-SCREENING-VALIDATION--081-REVIEW-OUTSTANDING",
         "roles": "Dated decision packet overlays only; approved canonical edits must independently pass rebuild and derived-output validation",
         "counts": {
             "incidents": len(rows),
@@ -288,6 +368,11 @@ def build() -> dict:
             "screened_with_dated_packet": sum(r["current_080_screen_result"] != "NOT-REVIEWED" for r in rows),
             "not_screened": sum(r["current_080_screen_result"] == "NOT-REVIEWED" for r in rows),
             "screen_outcomes": dict(sorted(Counter(r["current_080_screen_result"] for r in rows).items())),
+            "v081_criterion_changed_class_count": len(changed_081),
+            "v081_rows_with_changed_recorded_candidates": sum(
+                bool(r["v081_changed_candidate_class_criteria"]) for r in rows
+            ),
+            "v081_independently_readjudicated": 0,
         },
         "incident_worklist": rows,
     }
