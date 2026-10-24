@@ -14,7 +14,7 @@ Do not change an assessed Incident, band, threshold ID, adjudication pathway or 
 - Adopted: 2026-10-18
 - Scope: Environmental and animal welfare; twelve existing dimension IDs retained.
 - Decision authority: `vigil/docs/reviews/2026-10-18-issue-126-maintainer-decisions.md`
-- Implementation audit: `vigil/docs/reviews/2026-10-18-issue-126-him-reassessments/METHOD-AMENDMENT.md`
+- Implementation audit: [Git-pinned implementation audit](https://github.com/CAM-Initiative/Vigil/blob/aa675a6fbd94de3b616b8742616efacab8365191/vigil/docs/reviews/2026-10-18-issue-126-him-reassessments/METHOD-AMENDMENT.md)
 - Historical boundary: Working 1.1.0 amendment, as with the recorded 11 October minimum-harm amendment. No automatic reinterpretation or migration of previously assessed Incidents; new animal criteria apply only on substantive review.
 
 ## Adjudication instructions

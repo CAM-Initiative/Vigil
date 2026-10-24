@@ -27,4 +27,4 @@ The accepted 18 October source identities from the [original implementation rece
 | `AU-SOCI-APPLICATION-RULES` | `F2025C00404` | `EXT-8BD698AC427D` |
 | `AU-SOCI-DEFINITIONS-RULES` | `F2023C00097` | `EXT-0441D5D5053F` |
 
-**Four requirement IDs:** `EXTREQ-61EB42B6FA0D95A3`, `EXTREQ-C9EB00EB18293DBF`, `EXTREQ-AF8E862790CB4724`, `EXTREQ-9C2A361D86035F6A`. **6 reviewed component relationships** and **1117 previously existing requirements preserved** in that historical publication. The substantive per-relationship review survives in `SOCI-C2026C00213-ADMISSION.json` and the governed current relationships.
+**Four requirement IDs:** `EXTREQ-61EB42B6FA0D95A3`, `EXTREQ-C9EB00EB18293DBF`, `EXTREQ-AF8E862790CB4724`, `EXTREQ-9C2A361D86035F6A`. **6 reviewed component relationships** and **1117 previously existing requirements preserved** in that historical publication. The substantive per-relationship review survives in [pinned historical SOCI-C2026C00213-ADMISSION.json](https://github.com/CAM-Initiative/Vigil/blob/aa675a6fbd94de3b616b8742616efacab8365191/vigil/docs/reviews/2026-10-18-soci-issue-132/SOCI-C2026C00213-ADMISSION.json) and the governed current relationships.
