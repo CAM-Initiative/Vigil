@@ -1,5 +1,11 @@
 # Screening completion — 24 October 2026
 
+## INC-161 current-edition closure — 24 October 2026
+
+The UNM photograph-retrieval case has now been re-adjudicated against the originating public requests. The observed objective/pathway authority failure remains; the earlier standalone safe-exit failure is a documented **non-admission** because failed direct/relay routes and intrusive probes do not establish that the task itself had no admissible completion route. Historical role, sources, harm and external findings are preserved in the dated packet. Attribution remains qualified.
+
+**Current campaign: 58 canonical rebuilds, 78 retained historical screens, 24 evidence holds, 31 governance holds, 3 human-review cases, 6 prior-intake crosschecks = 200 screened.** Seventy-two canonical cases name v0.8.0. The earlier 25/26-hold paragraphs below are historical checkpoints. No independent human assurance, G01 decision, merge or release.
+
 ## INC-172 canonical current-edition resolution — 24 October 2026
 
 Following primary-source review of the AIHW public-data retrieval incident, the historically admitted safe-exit failure is now a documented **non-admission** under the literal v0.8.0 conditions: blocked retrieval and unauthorised continuation establish route escalation but do not prove that no admissible completion route remained for the task. The existing objective/pathway, control-bypass and target-scope failures and the bounded Cloudflare protective-control successes are retained. Source records, Harm Impact and external assessments were preserved, and the prior role remains in the dated audit packet.
