@@ -215,6 +215,12 @@ Do not misstate **lack of evidence for a positive link** as affirmative evidence
 
 Before reporting a batch as complete, reconcile the count of **final supported mappings**, **completed evidence-limited non-admissions**, **actionable pending investigations**, and **taxonomy-scope referrals**. Preserve their separate meanings rather than reporting all non-admitted candidates as unfinished adjudications. Human maintainers decide genuine taxonomy-authority amendments, not ordinary case-by-case evidence interpretations.
 
+### Source-control asymmetry and uncertainty completion
+
+Apply the interested-party evidence rule in `vigil/MAINTAINERS.md` during the source-first pass and **before** converting a plausible candidate into a completed non-admission. A party's failure to confirm a privately controlled source or mechanism establishes an access limitation, not that the alleged conduct did not occur.
+
+Separate material independent observations, attributed producer/provider explanations, real counterevidence, plausible alternatives, and the literal class recognition conditions still uncertain. A finite evidence pass may correctly end in an `ambiguous-boundary` when concrete occurrence evidence positively engages the class and necessary conditions remain unresolved. Write that uncertainty into the canonical Boundary object; do not invent a private-telemetry prerequisite. Generic resemblance and speculation without positive engagement do not justify Boundary. Apply the same symmetric rule to failures and protective exemplars; lack of disclosure proves neither.
+
 ### Observable findings and implementation uncertainty
 
 VIGIL classifies evidenced conduct against versioned Fidelity Class conditions. It does not require platform root-cause diagnosis to report an observed alignment property. The same property can arise through different models, classifiers, orchestration, interfaces or organisational practices. State the observed property, evidence, attribution and bounded confidence separately from any technical explanation. Do not turn a model's self-description into evidence of its hidden instructions or objective.
