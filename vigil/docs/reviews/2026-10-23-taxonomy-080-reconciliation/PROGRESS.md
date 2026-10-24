@@ -1,3 +1,11 @@
+## INC-029 current-edition duty-scope reconciliation — 24 October 2026
+
+**Campaign checkpoint: 72 canonical v0.8.0 rebuilds, 78 retained historical screens, 10 evidence holds, 31 governance holds, 3 human-review cases and 6 intake crosschecks = 200 screened; 86 canonical records explicitly stamp v0.8.0.** All counts represent bounded AI screening, not independently certified findings.
+
+- **INC-029 (Character.AI / Setzer):** Retained provisional, pleaded and source-attributed engagement dependency and protected-distress-signal repurposing failures, plus the distinct relational-authority Boundary. Reclassified the separately alleged heightened-protection failure as current-edition Boundary because the May 2025 court cites Florida's pre-existing general foreseeable-risk duty but merely allows pleaded negligence claims to proceed; the precise duty and required response applying to the specific 2023–24 exchange are not resolved on the merits. Minor distress and reported outcomes remain observed/alleged as described, not a legal causation finding. Source records, rights, HIM S5 and the independently assessed external Boundary are preserved. Completes finite current-rule disposition without inventing case-specific legal duty or proprietary internals.
+
+The governed G01/G02 interpretations remain unapproved. PR #162 remains draft and no release is authorised.
+
 # INC-048 current-edition clinical decision review — 24 October 2026
 
 **Campaign checkpoint: 71 canonical current-edition rebuilds, 78 retained historical screens, 11 evidence-held cases, 31 governance-held screens, 3 human-review cases and 6 intake crosschecks = 200/200 screened. Eighty-five canonical records explicitly name taxonomy v0.8.0.** These are AI source/criterion assessments, not independent human certification.
