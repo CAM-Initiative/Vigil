@@ -132,3 +132,8 @@ No canonical Incident, taxonomy, HIM, registered requirement, schema, validator,
 - `2026-10-19-boundary-diagnostic/contract-reassessment/CONFIDENCE-CONTROL-REPRODUCTION.json`, a 442-byte test-command receipt; its role-scope/legacy-confidence inventory and actual decisions remain.
 
 The parent SHA above now anchors Git-backed links in the historical reports, ensuring no false impression that these are current active-tree paths. The canonical taxonomy 0.8.0, Incident evidence, source/EXTREQ registries, Harm Impact framework, 196 still-active current-edition packets, and all maintained validators remain unchanged. No release or merge. CI on this commit is required before marking it validated.
+
+
+## Tranche 12 — provably identical original Incident baseline snapshots (24 October 2026)
+
+**Parent recovery SHA:** `41e5b8f40bcc76c014c39bdedc97d1960fbdf3a0`. Deleted 2 duplicated Incident JSON baseline files from `2026-10-20-fc089-corpus-migration/`, totaling **101762 bytes**. Verified each was exactly the **same Git blob SHA** as the governed canonical file in the original `be4bf1c784f956ff32c27377ff9e48c94a6fcb77` commit: `INC-000044-BASELINE.json` = `vigil/records/incidents/VIGIL-INC-000044.json` (`28aa82d`); `INC-000156-BASELINE.json` = `vigil/records/incidents/VIGIL-INC-000156.json` (`fa701f2`). Both original case states remain reproducible from that Git commit, and the actual FC-084 source-first decision files, negative evidence limits, and full rebuild manifests remain in the active tree. `METHOD-AND-OUTCOMES.md` now links directly to both original canonical objects. No taxonomy role, source or harm score changed.

@@ -18,6 +18,11 @@ All **194** canonical Incident titles and summaries were screened. **34** potent
 
 The 34 decisions account for 34 reviews, not 34 established or disproved historical mechanisms. Per-Incident decision files quote every FC-084 recognition condition and exclusion and preserve the pre-existing taxonomy classification. `SCREENING.json` lists the complete population and baseline hashes. The new-class review does not replace the earlier fourteen-candidate dispositions or reopen their unrelated conclusions.
 
+
+### Pinned original Incident baselines — archived 24 October
+
+The previously tracked `INC-000044-BASELINE.json` and `INC-000156-BASELINE.json` were confirmed **byte-identical Git blobs**, respectively `28aa82d` and `fa701f2`, to their actual governed Incident records at baseline commit `be4bf1c784f956ff32c27377ff9e48c94a6fcb77`. Their working-copy duplicates are therefore unnecessary. The definitive historical states remain [INC-044](https://github.com/CAM-Initiative/Vigil/blob/be4bf1c784f956ff32c27377ff9e48c94a6fcb77/vigil/records/incidents/VIGIL-INC-000044.json) and [INC-156](https://github.com/CAM-Initiative/Vigil/blob/be4bf1c784f956ff32c27377ff9e48c94a6fcb77/vigil/records/incidents/VIGIL-INC-000156.json) at that exact commit; the separate `INC-000044-REBUILD.json`, `INC-000156-REBUILD.json` and current-edition adjudications remain. No conclusion or evidence was promoted by deleting the extra copies.
+
 ## Canonical changes
 
 **INC-156:** add a secondary failure-occurrence mapping with medium confidence. The March 2025 Passenger Safety Plan, approved effective May 19, provides the pre-incident operational commitment; the city filing provides the occurrence evidence. The admission concerns the unavailable assistance function during documented emergency obstructions. It does not attribute the electricity failure to Waymo, impose zero downtime, transfer the typical rider-call response time to the first-responder hotline, or treat future city recommendations as existing duties. The 2024 plan was a discovery lead; the superseding approved 2025 plan is the canonical authority source. The existing FC-042 mapping remains unchanged. FC-083 remains unresolved. Two sources are appended and antecedent episode E012 is inserted before the December events; E001–E011 and existing source indices retain their identities.
