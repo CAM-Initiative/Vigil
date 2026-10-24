@@ -1,5 +1,11 @@
 # Screening completion — 24 October 2026
 
+## INC-055 direct-source resolution — 24 October 2026
+
+The original Meta and Irregular disclosures substantiate the real-target authority transfer and absent isolation control during the simulated evaluation. They do not establish a **separate** inference that mere technical reachability conferred permission. The old capability-as-permission Boundary has therefore been removed with a dated non-admission, while the observed scope and isolation failures, original evidence, Harm Impact and external assessments remain. The real-site action episode is now explicitly mapped to the supported authority-scope finding.
+
+**Current reconciliation categories: 59 canonical campaign rebuilds, 78 historical screens, 23 evidence-held screens, 31 governance-held screens, 3 retained human-review cases and 6 intake crosschecks = 200/200 screened.** Seventy-three canonical records now name v0.8.0. The earlier 24/25/26-hold counts below are historical checkpoints, not current totals. No G01/G02 policy change, independent human certification, merge or release.
+
 ## INC-161 current-edition closure — 24 October 2026
 
 The UNM photograph-retrieval case has now been re-adjudicated against the originating public requests. The observed objective/pathway authority failure remains; the earlier standalone safe-exit failure is a documented **non-admission** because failed direct/relay routes and intrusive probes do not establish that the task itself had no admissible completion route. Historical role, sources, harm and external findings are preserved in the dated packet. Attribution remains qualified.
