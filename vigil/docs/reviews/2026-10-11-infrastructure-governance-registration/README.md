@@ -6,7 +6,7 @@ Branch: `work/infrastructure-governance-instruments`; PR base: `agent/incident-e
 
 The implementation handoff authorises source registration and exact requirement extraction, while explicitly withholding approval for semantic control changes. Registration is complete for 13 supporting source versions. Canonical extraction is held because the existing manager forbids supporting-source requirements. This package does not relabel treaties as AI standards to pass the guard.
 
-Read [Gate 1 proposal](GATE-1-PROPOSAL.md), [source and occurrence screening](RELATIONSHIP-AND-INC-090-SCREENING.md), [inventory](inventory.json), the individual source notes and [validation evidence](VALIDATION.md).
+Read [Gate 1 proposal](GATE-1-PROPOSAL.md), [source and occurrence screening](RELATIONSHIP-AND-INC-090-SCREENING.md), the [historical Git-pinned 13-source inventory](https://github.com/CAM-Initiative/Vigil/blob/e2a49427fce5236266174939633c970778c7a3a7/vigil/docs/reviews/2026-10-11-infrastructure-governance-registration/inventory.json), the canonical `vigil/external_governance/sources/source-registry.json`, `requirements/source-scope.json`, `requirements/source-review-assurance.json`, and [validation evidence](VALIDATION.md). The single still-live source fiche is [ICRC-SPACE-CIVILIAN-SERVICES.md](ICRC-SPACE-CIVILIAN-SERVICES.md), pending full durable carrier-hash reconciliation.
 
 ## Inventory by external authority and time
 
@@ -28,7 +28,7 @@ Exact retrieved-carrier hashes are recorded without committing copied institutio
 
 - LIVE: source matrix, registry, source scope and reviewed-source assurance sidecar entries.
 - GENERATED: source catalogue/queue and requirement coverage/index/report outputs produced by the existing managers.
-- REVIEW: this directory, individual source/version notes, screening, inventory, Gate 1 proposal and validation evidence.
+- REVIEW: this directory's source-first screening and Gate 1 material; dated bulk inventory and 12 redundant source fiches are archived at parent `e2a49427fce5236266174939633c970778c7a3a7`, while the exception with missing verified assurance digest remains live.
 - AUDIT / RETIRE: no existing artefact is rewritten or retired by this package.
 
 The 1,102 existing requirements, taxonomy relationship ledger, Incident records, schema, validator, tests and publication guards are preserved. No whole-corpus repair or release-complete assertion is made. Canonical extraction, FC relationships and Section 04 work resume only after the bounded Gate 1 decision.

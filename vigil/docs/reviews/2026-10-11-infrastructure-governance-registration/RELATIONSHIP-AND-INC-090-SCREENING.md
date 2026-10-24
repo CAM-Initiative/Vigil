@@ -3,7 +3,7 @@
 Classification: REVIEW. Date: 11 October 2026. Baseline: `6192d5d4b66c6d8bb9fbf9e86347e8f0b56e7866`.
 Status: **source-level screening only; canonical requirement and relationship admission held at Gate 1**.
 
-No EXTREQ IDs are allocated here. Each source clause must later become a valid, source-faithful requirement before a reviewed relationship can be added to `taxonomy-relationships.json`. Candidate screening does not assert alignment, liability or a class occurrence. The source carriers, access limits and versions are recorded in `inventory.json` and individual source notes.
+No EXTREQ IDs are allocated here. Each source clause must later become a valid, source-faithful requirement before a reviewed relationship can be added to `taxonomy-relationships.json`. Candidate screening does not assert alignment, liability or a class occurrence. The registered sources' access/carrier details, scope and digests reside in governed source registry/scope/source-assurance records; the historical [review inventory](https://github.com/CAM-Initiative/Vigil/blob/e2a49427fce5236266174939633c970778c7a3a7/vigil/docs/reviews/2026-10-11-infrastructure-governance-registration/inventory.json) and old individual notes remain in pinned Git history. The ICRC space-services abstract-only hash is retained in its [source note](ICRC-SPACE-CIVILIAN-SERVICES.md) pending assurance reconciliation.
 
 ## Source propositions and actor exclusions
 
