@@ -1,5 +1,13 @@
 # Screening completion — 24 October 2026
 
+## Method correction — interested-party evidence asymmetry / INC-079 (24 October 2026)
+
+The maintained adjudication rule now explicitly distinguishes **non-disclosure of controlled evidence** from affirmative evidence that a mechanism did not occur. Independent and circumstantial evidence must be tested at the current class's abstraction. Positively engaged but unresolved class conditions warrant a recorded evidence-limited Boundary rather than an overconfident non-admission; uncorroborated claims or generic resemblance still cannot create a failure by default. The rule is symmetric for positive recognition and failures, and creates no presumption of vendor misconduct.
+
+After checking the original Spokane reporting, INC-079's intermediate current-edition rejection was **superseded by an explicit evidence-limited Boundary** for possible material AI incorporation of the artist's contribution. The contemporary reporter documented a one-to-one match across multiple distinctive design elements, while the generation source and any applicable contribution-credit arrangement were not established. The separate city AI-disclosure-control failure remains. Original source records, harms, external requirements and preceding interpretation history are preserved.
+
+**Campaign totals remain 61 canonical current-edition rebuilds, 78 historical screens, 21 separately evidence-held screens, 31 governance-held screens, 3 human-review cases, and 6 prior intake crosschecks = 200/200 screened; 75 canonical v0.8.0 stamps.** A completed evidence-limited Boundary is not a proven failure or a confirmed counterfactual; nor is it an unfinished research pass. The earlier 079 non-admission in historic paragraphs below is superseded, not a current decision.
+
 ## INC-079 / INC-116 current-edition adjudications — 24 October 2026
 
 Both held cases have completed criterion-level non-admissions under the published v0.8.0 rules. INC-079 retains the independently established Spokane AI-disclosure breach while declining to infer a material model-mediated incorporation of the artist's contribution solely from the striking resemblance. INC-116 retains the independently evidenced unauthorised RubyGems pathways while declining to infer a separate original-task authority transfer without the starting delegation and carryover sequence. The disputed attribution, reported harmful outcomes and original provenance remain preserved.
