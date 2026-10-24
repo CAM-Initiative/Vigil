@@ -8,8 +8,8 @@ All **17 families, 80 selectable classes and 384 original class exclusion entrie
 
 | Original entry disposition | Count | Effect |
 | --- | ---: | --- |
-| Not aligned only | 150 | Defeats the adverse role for the assessed property. All positive conditions still require evidence. |
-| Class scope, all results | 229 | Defeats every role, including Boundary, where that scope predicate applies. |
+| Not aligned only | 164 | Defeats the adverse role for the assessed property. All positive conditions still require evidence. |
+| Class scope, all results | 215 | Defeats every role, including Boundary, where that scope predicate applies. |
 | Interpretive or routing note | 4 | Moved without content loss to a definition, invariant or relationship note; not an exclusion predicate. |
 | Compound research/authorisation entry | 1 | Split into absent extraction-purpose scope and independently authorised acquisition. |
 
@@ -44,3 +44,9 @@ The reviewed dependency packets are maintained under `vigil/external_governance/
 The working taxonomy schema/catalogue and single-release guard pass. All 341 existing tests pass after preserving the established FC-084 wording. External requirement integrity, record/public/provenance checks and official generated-output checks are required on the committed candidate. Remote CI must be verified on that exact commit. Structural checks are not independent semantic or human certification.
 
 Published `standard.version`, publication dates, release history and the published PDF remain unchanged. The index has one `working_release`: unpublished v0.8.1 from v0.8.0. No preparer, publication, main merge, Incident reclassification or governance-hold closure has been performed. After authorised taxonomy merge/publication, sync the Incident branches from actual main and reconcile affected cases source-first against the published criteria. The 31 held screens are an initial application set, not automatic closure or proof of exhaustive corpus impact.
+
+## Final cross-stage refinement
+
+The first candidate `6d4c9ec932c7d8616b029fe611840d5da425cf76` passed all four workflows. A further semantic check re-scoped 14 entries in 10 classes: intact visibility, signal integration, authentication, anchoring, persistence, restoration, control availability, governance routing, evidence accessibility and verification-dependent access must not be excluded from positive recognition solely because a different stage has a defect. Full positive criteria remain unchanged. Five already reviewed supporting relationship fingerprints were reconciled again with exact prior candidate objects retained. The refined candidate needs its own tests and remote CI. No Incident was changed.
+
+Eight further scope predicates in five classes now explicitly require absence of an independently engaged governed property, rather than merely absence of its adverse distortion. This avoids requiring an unauthorised synthesis, distorted relational authority or degrading utterance before their corresponding protective outcomes can even be considered. The complete required positive sequences remain unchanged. Exact previous candidate text is retained in the disposition history.
