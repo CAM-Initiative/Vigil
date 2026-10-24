@@ -49,3 +49,14 @@ Canonical Incident JSON, source-linked geography, the schema, and current jurisd
 **Still held:** the active taxonomy 0.8.0 reconciliation (196 files), legacy Boundary and HIM decision records with live canonical references, potentially unique FC migration negative decisions, source-admission decisions and other historical worksheets pending content-by-content canonical promotion. No claim that 200 completed screens means 200 canonically reconciled or independently human-verified. Do not retire further packets without the established owner/uniqueness/dependency check.
 
 **Post-change checks:** GitHub branch CI and retention/reference validation to be recorded in PR #162. The scientific main-based snapshot, final dataset checksum and any release/tag remain separate maintainer-controlled steps.
+
+
+## Tranche 4 — completed INC-199–203 intake review (24 October 2026)
+
+**Exact recovery parent:** `e0d58e4a14cd9e87b32dc43edcc434b618f019f3`. Retired all **8** files (680883 bytes) under `vigil/docs/reviews/2026-10-18-inc-199-203-completion/`. Its 18 October `README.md`, five Incident completion/adjudication snapshots and supporting checklists/validation are dated transitional worksheets, not a current canonical or runtime input.
+
+The current canonical INC-199, INC-200, INC-201, INC-202 and INC-203 records were each checked individually before deletion: all five now carry taxonomy 0.8.0 and reference their **retained** dated current-edition full-rebuild decisions under `vigil/docs/reviews/2026-10-23-taxonomy-080-reconciliation/`; none references the retired 18 October folder. The original source evidence, harm, external assessment and mapping history remain in canonical Incident records. The permanent new-entry workflow and schema remain untouched. This cull does not assume all original vendor evidence has been independently authenticated or that the active current-edition reconciliation can be closed.
+
+Prior tranche CI at `e0d58e4a14cd9e87b32dc43edcc434b618f019f3` passed the VIGIL records, taxonomy publications, external-governance and SIAI preflight workflows. The same checks must pass for this commit. Historic review bytes remain accessible through the exact pinned recovery commit. No merge to main or scientific tag was made.
+
+**Cumulative additional review-notice-board cull on 24 October, tranches 3–4:** 62 files; earlier tranches 1–2 separately retired 306, giving 368 retired files in this curation sequence. All active 0.8.0 screen packets remain protected until canonical promotion and completion of the live campaign.
