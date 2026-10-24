@@ -39,3 +39,7 @@ To answer the requested whole-corpus screening question accurately, completed so
 ## Further completed screens — 24 October
 
 Full current-condition packets now cover INC-153, 165, 168, 171, 174 and 192. All remain canonically unchanged with explicit governance-hold outcomes. FC-047 affects the three publication/legal attribution cases and INC-174. FC-083 adds the sufficient-protection-followed-by-independent-mechanism conflict in INC-171. FC-086 adds the bounded consensual/friendly-role exclusion versus positive role-boundary recognition in INC-192, alongside its existing FC-050 conflict. These are completed screens, not resolved current-edition admissions. INC-003 still requires its complete multi-mapping screen and remains uncounted. No exclusion, recognition condition or canonical role has been changed.
+
+## Further positive-pathway conflicts — 24 October
+
+Complete screens add INC-136 (FC-001/006 bounded rejection versus data-only/non-obedience exclusions), INC-182 (FC-035/013 intact persistence/reproducible lineage exclusions) and INC-180 (FC-002/064/070 authorised or declined means and valid resumption exclusions). Their full condition matrices record the observed positive pathways and overlapping exclusions. Preserve all historical roles pending G01. No exclusion is silently ignored or taxonomy text changed.

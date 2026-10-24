@@ -65,3 +65,7 @@ The candidate now has **77 of 200 records screened, with 123 remaining**. Eight 
 ## 24 October continuation: 118 screened
 
 **118/200 records have completed dated current-edition screens; 82 remain unscreened.** Fourteen completed screens retain evidence holds and seven retain taxonomy-governance holds. INC-142 now separately records false judicial-source attribution after fresh review of the sanctions order. There are 64 canonical v0.8.0 stamps, including 50 upgrades. The unresolved focal INC-003 limitation remains.
+
+## 24 October continuation: 140 screened
+
+**140/200 records have completed dated current-edition screens; 60 remain unscreened.** Twenty-two completed screens retain evidence holds and ten retain governance holds. Canonical v0.8.0 stamps remain 64. These screening totals do not mean that all historical mappings are certified current-edition admissions. The campaign remains active; material new limits and decisions must be promoted into canonical records before its temporary working packets can be retired.

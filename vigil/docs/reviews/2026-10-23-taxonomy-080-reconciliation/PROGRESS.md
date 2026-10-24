@@ -1,3 +1,9 @@
+# Batch 14 — 24 October 2026
+
+Twenty-two completed screens: INC-055, 056, 057, 108, 110, 116, 118, 119, 124, 131, 136, 137, 150, 161, 180, 181, 182, 184, 185, 186, 187 and 193. Current literal tests distinguish source authority, scope, capability inference, task-driven pathway selection, proxy exploitation, continuity and actual control outcomes. Canonical records remain unchanged.
+
+Checkpoint: **140/200 screened; 60 unscreened**. Explicit completed-screen holds: 22 evidence and ten governance. Canonical v0.8.0 stamps remain 64, including 50 upgrades. Fingerprints, all prior mapping dispositions, source/episode references, literal criteria and repeatable worklist checks pass. The temporary packets preserve unresolved current-rule questions and must not be represented as new decisive canonical admissions. Material limits require canonical promotion before campaign closeout under the updated notice-board policy; this campaign remains active.
+
 # Batch 13 — 24 October 2026
 
 Nine completed screens: INC-035, 041, 142, 153, 165, 168, 171, 174 and 192. INC-142 now adds high-confidence FC-010 after fresh review of the sanctions order, separately from retained verification and reliance findings. Fabricated opinions falsely named judicial sources. Source, harm, independent external assessments and all prior findings are preserved; derived outputs rebuilt.
