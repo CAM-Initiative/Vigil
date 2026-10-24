@@ -1,5 +1,16 @@
 # VIGIL taxonomy 0.8.0 — reconciliation status, 23 October 2026
 
+## Current candidate — cyber batch, 24 October 2026
+
+Baseline `a473f4f2ccf6bcba588c691a23b85c67e55360f2`. Three additional full rebuilds: **INC-033, INC-139 and INC-158**. Candidate coverage: **33/200 screened, 167 unscreened**; **38 canonical v0.8.0 stamps**, including **24 older-edition upgrades on this branch**. The dated packets and deterministic canonical/criteria fingerprints govern credit; stamps alone do not.
+
+- INC-158 adds provisional medium-confidence FC-083 and FC-042 positive findings for the tested write restriction and renewed disclosure reaching a capable maintainer. Earlier exposure, read/write distinctions, later discoveries, harm and independent external assessments remain preserved. Reciprocal exemplars accompany the new mappings.
+- INC-033 retains an unclassified result. Attacker intent and a separate related model demonstration do not establish a scanner activation on this spyware.
+- INC-139 retains an unclassified result and partial clause coverage. The full Spanish regulator article was re-read. It reports a notification awaiting analysis; action-linked authority substitution is not established. Private reasoning access is not a prerequisite.
+- INC-192 remains unchanged and uncounted; FC-050 joins G01’s existing success/exclusion conflict inventory. No taxonomy criteria or governance rule were changed.
+
+Status totals: 139 classified, 35 unclassified, 21 provisional, 3 requires-human-review, 2 disputed. Validation and commit identity are recorded in the candidate’s Git history and associated PR checks. No merge or final release.
+
 **Campaign branch:** chore/siai-2026-release-readiness-20261023  
 **This is a working-branch candidate**, not an approved merged source, final SIAI release manifest, human validation certificate or v1.0.0 tag.
 

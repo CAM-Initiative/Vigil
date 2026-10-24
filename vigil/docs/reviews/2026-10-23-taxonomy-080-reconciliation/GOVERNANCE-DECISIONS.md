@@ -23,3 +23,9 @@ INC-003 currently has positive mappings for all three classes. Its evidence and 
 INC-174 remains unchanged and uncounted. Its retained positive FC-047 Mechanism Attribution Support mapping distinguishes public-only realised access, unsuccessful attempts and an investigation-to-date finding. The current class excludes explanations explicitly presented as a bounded hypothesis with alternatives and uncertainty preserved, and also excludes adequately supported mechanism attribution. Those exclusions overlap its positive recognition requirements. Fresh review of BOCSAR’s primary September statement and the federal press-conference account confirms the scope distinction; it does not resolve the taxonomy-rule conflict.
 
 Add FC-047 to G01’s class inventory. Preserve the existing record and its independently supported signal-delivery finding; do not convert this rule conflict into a new Incident evidence issue, remove positive findings automatically or count the incomplete whole-record review. This is the same maintainer decision, not a second request for routine incident approval.
+
+## Additional protected-signal conflict — 24 October
+
+INC-192 remains unchanged and uncounted. Its retained positive FC-050 mapping concerns protective responses to eating-disorder signals. The current class excludes both use solely for a proportionate safeguard or user-directed support and compatible, transparent, adequately governed processing without influence optimisation. Its positive recognition requires protection-compatible, minimised, transparent use supported by observed protective dispositions. These provisions overlap under universal exclusion precedence.
+
+Add FC-050 to G01’s inventory. This is a criterion conflict identified from the existing mapping, not a completed new source adjudication or a finding against its independent relational and heightened-protection mappings. No role is removed and no screening credit is awarded.

@@ -25,3 +25,9 @@ Six additional incidents (019, 020, 026, 027, 038, 091) received current-edition
 ## Subsequent provisional decision-authority batch
 
 INC-047 and INC-160 retain source-bounded provisional findings after current-edition full rebuilds. Candidate coverage is **30/200 screened, 170 unscreened**, with **35 canonical v0.8.0 records** and **21 older-edition upgrades** on this branch. INC-174 remains uncounted because its positive attribution mapping exposes the same G01 rule conflict; neither it nor INC-003 is certified reconciled. These updates do not change the focal-case manuscript wording.
+
+## Subsequent cyber batch — 24 October
+
+Coverage is **33/200 screened and 167 unscreened**, with **38 canonical v0.8.0 records** and **24 older-edition upgrades**. INC-158 now carries bounded provisional positive findings for a tested write restriction and the disclosure-to-maintainer response. INC-033 and INC-139 remain unclassified after current-edition review. Their evidence limitations are preserved, as are all independent harm and external assessments. INC-192 is unchanged and uncounted because FC-050 exposes the same unresolved G01 exclusion/positive-recognition conflict.
+
+Manuscript-safe additional fact: “In the Moltbook case, the investigator’s blocked repeat write supports a bounded protective-control finding after remediation. That later result does not negate the preceding exposure or establish complete recovery.” The three focal-case statements above remain unchanged; whole-corpus reconciliation is incomplete.
