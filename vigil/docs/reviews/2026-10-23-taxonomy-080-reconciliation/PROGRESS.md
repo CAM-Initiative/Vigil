@@ -1,5 +1,11 @@
 # Screening completion — 24 October 2026
 
+## INC-079 / INC-116 current-edition adjudications — 24 October 2026
+
+Both held cases have completed criterion-level non-admissions under the published v0.8.0 rules. INC-079 retains the independently established Spokane AI-disclosure breach while declining to infer a material model-mediated incorporation of the artist's contribution solely from the striking resemblance. INC-116 retains the independently evidenced unauthorised RubyGems pathways while declining to infer a separate original-task authority transfer without the starting delegation and carryover sequence. The disputed attribution, reported harmful outcomes and original provenance remain preserved.
+
+**Current 200-case campaign: 61 canonical rebuilds; 78 retained historical screens; 21 evidence holds; 31 governance holds; 3 human-review cases; 6 intake crosschecks.** Seventy-five canonical records name taxonomy v0.8.0. Prior counts below remain historical checkpoints, not current values. No G01/G02 governance amendment, main merge, release or independent human verification is implied.
+
 ## INC-055 final dependent compliance lineage correction — 24 October 2026
 
 The canonical validator confirmed that the four external requirements previously associated with the discontinued capability-as-permission class cannot simply be relinked to a different class: the governed taxonomy–requirement crosswalk supports only the historical class. **All four requirements now retain independent source-based identification with bounded grounds.** No external alignment result, assessment rationale, source reference or assessed date was changed. The failed intermediate relinking was recorded and corrected without changing the global crosswalk. The current record version is 1.1.30 and the dated review packet tracks the canonical fingerprint.
