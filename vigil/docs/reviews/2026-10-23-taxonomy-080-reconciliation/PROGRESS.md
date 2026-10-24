@@ -1,3 +1,11 @@
+## Main synchronization after taxonomy PR #164 — 24 October 2026
+
+Merged main `daff9499095fda1e0d2c3180218e75726272f414` into this existing SIAI branch. All 200 canonical Incident files and all existing campaign decision packets remain unchanged. Normative taxonomy criteria come from main; the branch's non-normative Incident exemplars are preserved. The adjudication workflow combines explicit exclusion scope with the branch's safeguards against demanding proprietary internals and its requirement to record material unresolved facts canonically. Supporting relationships use main's newly reviewed exact dependency packets; historical review evidence remains retained.
+
+**This is synchronization, not re-adjudication.** The prior 200/200 v0.8.0 screening counts are historical campaign coverage. The deterministic worklist correctly refuses to certify unchanged packets against changed criteria, first reporting `Changed criteria require rescreen: VIGIL-INC-000130 VIGIL-FC-000064 exclusions`. No packet was mechanically restamped and no guard weakened. Governance holds have not been closed. At the fetched main commit, published metadata still identifies v0.8.0 and one unpublished v0.8.1 working candidate; do not claim final taxonomy publication from the merge alone.
+
+Local full-suite, record/public, source/interpretive/component/authorship, external-requirement and taxonomy checks pass after using the CI-pinned jsonschema dependency. Retention audit has zero missing canonical review paths and zero tracked temporary logs. The SIAI preflight is expected to remain blocked at the criterion re-screen guard until its campaign is reconciled. Remote workflow results must be checked on the actual pushed merge SHA. PR remains draft; no SIAI release or merge to main is authorised.
+
 ## INC-081 informed-choice reconciliation — 24 October 2026
 
 **Campaign checkpoint: 77 canonical v0.8.0 rebuilds, 78 retained historical screens, 5 evidence holds, 31 governance holds, 3 human-review cases and 6 crosschecks = 200 screened; 91 canonical v0.8.0 stamps.** No independent human certification implied.

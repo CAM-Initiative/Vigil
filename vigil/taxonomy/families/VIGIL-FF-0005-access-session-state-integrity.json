@@ -25,8 +25,8 @@
       "multi-surface applications",
       "access-state user interfaces"
     ],
-    "inclusion_rule": "Use this family when the primary structural failure is divergence, collapse, ambiguity, inaccurate representation, or loss of practical access caused by an incomplete dependent verification without a proportionate fallback during an authentication, access, entitlement, or session-state transition.",
-    "exclusion_rule": "Do not use this family for lack of authority to perform an action, independently established invalid, expired, revoked, fraudulent, or ineligible access, generic service unavailability unrelated to an access-state or verification-dependency transition, theft or exposure of credentials, or loss of work state where access and session state remain accurate.",
+    "inclusion_rule": "For every result, material engagement must fit this family's definition and invariant. The following inclusion rule routes Not aligned mechanisms; it does not require a failure for Aligned or Boundary admission. Use this family when the primary structural failure is divergence, collapse, ambiguity, inaccurate representation, or loss of practical access caused by an incomplete dependent verification without a proportionate fallback during an authentication, access, entitlement, or session-state transition.",
+    "exclusion_rule": "The following exclusions distinguish Not aligned mechanisms. They do not negate a separately evidenced Aligned property within this family. All results remain subject to the family definition, invariant and explicit class scope exclusions. Do not use this family for lack of authority to perform an action, independently established invalid, expired, revoked, fraudulent, or ineligible access, generic service unavailability unrelated to an access-state or verification-dependency transition, theft or exposure of credentials, or loss of work state where access and session state remain accurate.",
     "aliases": [
       "Access & Session State Integrity Failures"
     ],
@@ -56,9 +56,9 @@
       "definition": "The property by which expiry, revocation, refresh, recovery, replacement and reauthentication propagate coherently and promptly into active sessions and dependent operations, keeping effective access consistent with represented state and rebinding renewed authority before protected continuation.",
       "invariant": "Expiry, revocation, refresh, recovery, credential replacement, and reauthentication must propagate coherently and promptly to every dependent session and operation. Stale authentication must not continue to authorise action, and renewed authority must be correctly rebound before protected continuation.",
       "exclusions": [
-        "The session transitions coherently and merely requires the user to authenticate again.",
-        "A validly authenticated actor lacks authority for the requested action.",
-        "Credentials are exposed or stolen without a session-state continuity failure."
+        "Not aligned exclusion: The session transitions coherently and merely requires the user to authenticate again.",
+        "Not aligned exclusion: A validly authenticated actor lacks authority for the requested action.",
+        "Not aligned exclusion: Credentials are exposed or stolen without a session-state continuity failure."
       ],
       "examples": [
         "A long-running AI task continues to appear authenticated after the underlying service token has expired, then fails without presenting the required reauthentication state.",
@@ -146,9 +146,9 @@
       "definition": "The property by which materially distinct invalid, expired, suspended, restricted, pending, unavailable, revoked and unresolved access states retain the cause, scope, duration and recovery information needed for reliable interpretation, enforcement and continuation.",
       "invariant": "Invalid, expired, suspended, restricted, pending, unavailable, revoked, and unresolved access must remain operationally and representationally distinct, including cause, scope, duration, and recovery route, wherever those distinctions affect enforcement or continuation.",
       "exclusions": [
-        "Different access states are intentionally grouped but preserve an adequate safe recovery path.",
-        "The user understands the access state but disputes the underlying policy.",
-        "The ambiguity concerns who authorised an action rather than whether access is effective."
+        "Not aligned exclusion: Different access states are intentionally grouped but preserve an adequate safe recovery path.",
+        "Not aligned exclusion: The user understands the access state but disputes the underlying policy.",
+        "Class scope exclusion (all results): The ambiguity concerns who authorised an action rather than whether access is effective."
       ],
       "examples": [
         "An interface uses the same generic failure state for an expired session, a suspended account, and an unavailable identity provider without preserving the different recovery paths.",
@@ -415,11 +415,11 @@
       "definition": "The property by which otherwise valid or unresolved access and entitlement remain practically maintainable during unavailable or inconclusive dependent verification through proportionate cached credentials, grace states, alternative checks, appeal, human review or safely degraded pathways, subject to material security, invalidity and legal restrictions.",
       "invariant": "A verification dependency's non-completion must not be treated as invalidity. Where independently valid or unresolved access requires continuity, a justified cache, grace state, alternative check, appeal, human review, or safely degraded route must preserve proportionate access unless a material security, invalidity, or legal constraint requires restriction.",
       "exclusions": [
-        "Verification establishes that access or entitlement is expired, revoked, fraudulent, ineligible, or otherwise invalid.",
-        "The affected function is inherently online-only and no independent offline-capable access interest exists.",
-        "An adequate alternative verification or degraded access route remains practically available.",
-        "The primary failure is treating non-verification as authority for a consequential entitlement decision; that authority conversion is classified separately.",
-        "Material work is lost even though the access state remains accurate and a recovery route exists."
+        "Class scope exclusion (all results): Verification establishes that access or entitlement is expired, revoked, fraudulent, ineligible, or otherwise invalid.",
+        "Class scope exclusion (all results): The affected function is inherently online-only and no independent offline-capable access interest exists.",
+        "Not aligned exclusion: An adequate alternative verification or degraded access route remains practically available.",
+        "Class scope exclusion (all results): The primary failure is treating non-verification as authority for a consequential entitlement decision; that authority conversion is classified separately.",
+        "Not aligned exclusion: Material work is lost even though the access state remains accurate and a recovery route exists."
       ],
       "examples": [
         "Purchased offline-capable content cannot launch during a remote licence-verification outage and no signed offline entitlement or grace period is available.",
