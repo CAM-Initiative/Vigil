@@ -18,6 +18,9 @@ NONFINAL = {"provisionally-classified", "requires-human-review", "classification
 # of the dated 080 campaign. This SHA is an ancestor of the release branch,
 # not an arbitrary current-branch ref that can silently advance to v0.8.1.
 PUBLISHED_080_REF = "6aff1c4d6ff85a94e0892d558a3bfa651d0b557d"
+PAPER_081_BASELINE_REF = "bf58646d22c90a86c8333ac9bc7fe83ac856589c"
+PAPER_081_DIR = ROOT / "vigil/docs/reviews/2026-10-24-siai-paper-v081"
+PAPER_FOCALS = {"VIGIL-INC-000003", "VIGIL-INC-000117", "VIGIL-INC-000129"}
 CRITERION_FIELDS = ("failure_recognition", "success_recognition", "exclusions")
 
 
@@ -152,6 +155,29 @@ def build() -> dict:
         raise SystemExit(f"Unexpected corpus size {len(rows)}; update count only through governed intake")
     if len({r["incident_id"] for r in rows}) != len(rows):
         raise SystemExit("Duplicate canonical incident IDs")
+    # Three named paper cases received separately governed 0.8.1 promotions.
+    # Their 0.8.0 review is verified against the exact pre-promotion commit.
+    promoted_081 = {}
+    for rid in sorted(PAPER_FOCALS):
+        case_number = rid.rsplit("-", 1)[-1]
+        path = PAPER_081_DIR / f"INC-{case_number}-081-REVIEW.json"
+        packet = json.loads(path.read_text(encoding="utf-8"))
+        row = next((r for r in rows if r["incident_id"] == rid), None)
+        if row is None or packet.get("incident_id") != rid:
+            raise SystemExit(f"Missing focal Incident or v0.8.1 packet: {rid}")
+        if (packet.get("published_taxonomy_version") != "0.8.1"
+            or packet.get("baseline", {}).get("ref") != PAPER_081_BASELINE_REF
+            or packet.get("canonical_promotion", {}).get("status") != "approved-bounded-canonical-update"
+            or row["record_version"] != packet["canonical_promotion"].get("target_record_version")
+            or row["recorded_taxonomy_version"] != "0.8.1"):
+            raise SystemExit(f"Invalid promoted focal packet or current version: {rid}")
+        current = json.loads((ROOT / row["canonical_path"]).read_text(encoding="utf-8"))
+        if (current["taxonomy_classification"]["classification_review_provenance"].get("review_reference")
+            != str(path.relative_to(ROOT))):
+            raise SystemExit(f"Focal review provenance does not point to packet: {rid}")
+        promoted_081[rid] = (path, packet)
+    # Historical v0.8.0 screening results remain valid only against their
+    # original canonical fingerprint and original criteria.
     # Explicit replacement packets preserve the earlier audit and bind the complete
     # canonical record plus exact reviewed class content. This is a campaign
     # credit check, not a new canonical validity or classification rule.
@@ -310,9 +336,20 @@ def build() -> dict:
         if rid not in by_id:
             raise SystemExit(f"Unknown reviewed Incident: {rid}")
         row = by_id[rid]
-        canonical = json.loads((ROOT / row["canonical_path"]).read_text(encoding="utf-8"))
+        if rid in promoted_081:
+            raw = subprocess.check_output(
+                ["git", "show", f"{PAPER_081_BASELINE_REF}:{row['canonical_path']}"],
+                cwd=ROOT,
+            )
+            canonical = json.loads(raw)
+            historical_sha = hashlib.sha256(raw).hexdigest()
+            if canonical["record_identity"]["version"] != promoted_081[rid][1]["baseline"]["record_version"]:
+                raise SystemExit(f"Incorrect v0.8.0 canonical version before promotion: {rid}")
+        else:
+            canonical = json.loads((ROOT / row["canonical_path"]).read_text(encoding="utf-8"))
+            historical_sha = row["canonical_sha256"]
         if (row["current_080_screen_result"] != "NOT-REVIEWED"
-            or row["canonical_sha256"] != packet.get("canonical_sha256")
+            or historical_sha != packet.get("canonical_sha256")
             or packet.get("status") != "completed-evidence-limited"
             or packet.get("validation", {}).get("status") != "passed"
             or packet.get("taxonomy_review", {}).get("taxonomy_version") != "0.8.0"
@@ -334,7 +371,7 @@ def build() -> dict:
         row["current_080_screen_result"] = packet["screen_outcome"]
         row["current_080_screen_date"] = packet["review_date"]
         row["screening_decision_packet"] = str(packet_path.relative_to(ROOT))
-        row["screening_assurance"] = "AI source/criterion review; complete-record fingerprint checked; no human assurance"
+        row["screening_assurance"] = "AI source/criterion review; complete historical-record fingerprint checked; no human assurance"
     # The 080 worklist stays an 080 worklist. A new edition requires a
     # separate source-first review; candidate IDs only rank its work.
     for row in rows:
@@ -342,11 +379,21 @@ def build() -> dict:
         row["v081_changed_candidate_class_criteria"] = {
             cid: changed_081[cid] for cid in candidate_ids if cid in changed_081
         }
-        row["v081_screen_status"] = "NOT-ASSESSED-UNDER-081"
-        row["v081_review_note"] = (
-            "Recorded candidates are discovery leads, not a complete 0.8.1 "
-            "semantic re-screen. Previous 0.8.0 review does not certify 0.8.1."
-        )
+        rid = row["incident_id"]
+        if rid in promoted_081:
+            row["v081_screen_status"] = "PAPER-FOCAL-081-REVIEW-PROMOTED-NOT-HUMAN-CERTIFIED"
+            row["v081_review_packet"] = str(promoted_081[rid][0].relative_to(ROOT))
+            row["v081_review_note"] = (
+                "Focused v0.8.1 adjudication promoted to canonical record with prior "
+                "mapping roles and evidence limitations preserved. 0.8.0 packet "
+                "above remains a historically verified screening receipt."
+            )
+        else:
+            row["v081_screen_status"] = "NOT-ASSESSED-UNDER-081"
+            row["v081_review_note"] = (
+                "Recorded candidates are discovery leads, not a complete 0.8.1 "
+                "semantic re-screen. Previous 0.8.0 review does not certify 0.8.1."
+            )
     rows.sort(key=lambda x: (x["priority"], x["incident_id"]))
     return {
         "worklist_schema": "vigil-taxonomy-080-reconciliation/1",
@@ -372,6 +419,8 @@ def build() -> dict:
             "v081_rows_with_changed_recorded_candidates": sum(
                 bool(r["v081_changed_candidate_class_criteria"]) for r in rows
             ),
+            "v081_focal_reviews_promoted": len(promoted_081),
+            "v081_unreviewed_records": len(rows) - len(promoted_081),
             "v081_independently_readjudicated": 0,
         },
         "incident_worklist": rows,
