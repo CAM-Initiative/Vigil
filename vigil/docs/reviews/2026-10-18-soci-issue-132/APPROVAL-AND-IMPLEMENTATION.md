@@ -28,3 +28,8 @@ The accepted 18 October source identities from the [original implementation rece
 | `AU-SOCI-DEFINITIONS-RULES` | `F2023C00097` | `EXT-0441D5D5053F` |
 
 **Four requirement IDs:** `EXTREQ-61EB42B6FA0D95A3`, `EXTREQ-C9EB00EB18293DBF`, `EXTREQ-AF8E862790CB4724`, `EXTREQ-9C2A361D86035F6A`. **6 reviewed component relationships** and **1117 previously existing requirements preserved** in that historical publication. The substantive per-relationship review survives in [pinned historical SOCI-C2026C00213-ADMISSION.json](https://github.com/CAM-Initiative/Vigil/blob/aa675a6fbd94de3b616b8742616efacab8365191/vigil/docs/reviews/2026-10-18-soci-issue-132/SOCI-C2026C00213-ADMISSION.json) and the governed current relationships.
+
+
+### Durable resolving evidence relocation — 24 October 2026
+
+The six accepted SOCI `FCEXTREL-*` rows now point to `vigil/external_governance/requirements/review-evidence/AU-SOCI-ACT-C2026C00213.json` as their review evidence. The complete evidence bytes are **unchanged**, copied by immutable blob identity from `vigil/docs/reviews/2026-10-18-soci-issue-132/SOCI-C2026C00213-ADMISSION.json` at parent `cef92d3280f89ed85f7ba11a739792c774c66fb3`. This preserves source anchors, scope/exclusion dispositions, class semantic digests, source-limited provenance and the no-human-verification statement without making this approval note the relationship's live data dependency. This is evidence-location maintenance, not fresh source admission or a changed relation.
