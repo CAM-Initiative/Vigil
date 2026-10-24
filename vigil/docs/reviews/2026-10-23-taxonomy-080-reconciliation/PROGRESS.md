@@ -1,3 +1,9 @@
+# Batch 10 — 24 October 2026
+
+Eight completed current-edition screens: INC-089, 099, 111, 114, 115, 140, 148 and 155. All canonical bytes, historical edition stamps, roles, confidence, harm and independent external assessments remain unchanged. Source-attributed episode inventories were reviewed; packets contain literal current criteria, opposite-polarity and exclusion tests, neighbouring candidates and every existing mapping disposition. This batch does not claim fresh access to every original source.
+
+Checkpoint: **77/200 screened; 123 unscreened**. Canonical v0.8.0 stamps remain 60, including 46 older-edition upgrades. Exact record fingerprints, criterion text, mapping coverage and source/episode references pass; worklist write/check is repeatable. Prior canonical batch f0b5d2c passed all four GitHub workflows. No new corpus-rule change or independent human assurance.
+
 # VIGIL taxonomy 0.8.0 — reconciliation status, 23 October 2026
 
 ## Current candidate — 22 unclassified-case screens, 24 October 2026

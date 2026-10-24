@@ -49,3 +49,7 @@ Manuscript-safe additional formulation: “The reconciliation distinguishes an u
 Coverage is **69/200 screened and 131 unscreened**. There are **60 canonical v0.8.0 stamps** and **46 older-edition upgrades** on the branch. All 22 reviewed unclassified cases retain that outcome; eight canonical records receive evidence or explanation repairs and fourteen remain byte-identical with dated current-edition screening packets. Screening is therefore distinct from canonical restamping and from independent human verification.
 
 The June appellate stage in INC-065 is now included, and INC-094 separates acknowledged notification from completed response. INC-013 and INC-166 no longer imply that private reasoning or autonomous AI intent is required by the current classes. The focal-case statements remain unchanged; G01 and the unreviewed remainder prevent a claim of complete corpus reconciliation.
+
+## 24 October continuation: eight reliance and attribution screens
+
+The candidate now has **77 of 200 records screened, with 123 remaining**. Eight additional cases retain their canonical records with dated current-edition criterion review. This is screening coverage, not 77 new canonical v0.8.0 stamps or independent verification of originating reports. The focal-case qualifications above remain operative.
