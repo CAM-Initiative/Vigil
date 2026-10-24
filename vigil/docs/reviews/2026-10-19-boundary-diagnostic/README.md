@@ -6,7 +6,7 @@ Date: 19 October 2026. Artefact classification: AUDIT. Input commit: `032f8a2087
 
 ## Reconciled census
 
-`census.py` reads pinned Git objects rather than mutable working files. Reproduce from repository root with `python vigil/docs/reviews/2026-10-19-boundary-diagnostic/census.py`.
+[the pinned historical `census.py`](https://github.com/CAM-Initiative/Vigil/blob/e30f6f1f8c5da4662805ddafcd38d6018f155706/vigil/docs/reviews/2026-10-19-boundary-diagnostic/census.py) reads pinned Git objects rather than mutable working files. Reproduce this **dated** checkpoint only by checking out its [pinned original script](https://github.com/CAM-Initiative/Vigil/blob/e30f6f1f8c5da4662805ddafcd38d6018f155706/vigil/docs/reviews/2026-10-19-boundary-diagnostic/census.py) and baseline commit; the script is not installed as a current-branch tool.
 
 | Inventory | Count |
 | --- | ---: |

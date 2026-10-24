@@ -16,7 +16,7 @@ All **194** canonical Incident titles and summaries were screened. **34** potent
 | New success or Boundary mapping | 0 | Neither a recovery endpoint nor uncertainty is sufficient for admission |
 | Canonical records corrected | 2 | INC-044 and INC-156 |
 
-The 34 decisions account for 34 reviews, not 34 established or disproved historical mechanisms. Per-Incident decision files quote every FC-084 recognition condition and exclusion and preserve the pre-existing taxonomy classification. `SCREENING.json` lists the complete population and baseline hashes. The new-class review does not replace the earlier fourteen-candidate dispositions or reopen their unrelated conclusions.
+The 34 decisions account for 34 reviews, not 34 established or disproved historical mechanisms. Per-Incident decision files quote every FC-084 recognition condition and exclusion and preserve the pre-existing taxonomy classification. [the Git-pinned 194-record relevance screen](https://github.com/CAM-Initiative/Vigil/blob/e30f6f1f8c5da4662805ddafcd38d6018f155706/vigil/docs/reviews/2026-10-20-fc089-corpus-migration/SCREENING.json) lists the complete population and baseline hashes. The new-class review does not replace the earlier fourteen-candidate dispositions or reopen their unrelated conclusions.
 
 
 ### Pinned original Incident baselines — archived 24 October
