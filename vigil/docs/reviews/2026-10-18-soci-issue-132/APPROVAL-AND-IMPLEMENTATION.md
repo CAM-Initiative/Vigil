@@ -33,3 +33,6 @@ The accepted 18 October source identities from the [original implementation rece
 ### Durable resolving evidence relocation — 24 October 2026
 
 The six accepted SOCI `FCEXTREL-*` rows now point to `vigil/external_governance/requirements/review-evidence/AU-SOCI-ACT-C2026C00213.json` as their review evidence. The complete evidence bytes are **unchanged**, copied by immutable blob identity from `vigil/docs/reviews/2026-10-18-soci-issue-132/SOCI-C2026C00213-ADMISSION.json` at parent `cef92d3280f89ed85f7ba11a739792c774c66fb3`. This preserves source anchors, scope/exclusion dispositions, class semantic digests, source-limited provenance and the no-human-verification statement without making this approval note the relationship's live data dependency. This is evidence-location maintenance, not fresh source admission or a changed relation.
+
+
+**Reference-normalisation detail:** Source-review validation compares each SOCI live relationship against a complete relationship object embedded within its source-review evidence. Relocation therefore required changing the six embedded `review_artifact` path strings to match the new permanent external-governance location. No semantic/criterion/status/digest text changed. The original bytes are pinned in Git at `cef92d3280f89ed85f7ba11a739792c774c66fb3`; current operative evidence is the reference-normalised copy.
