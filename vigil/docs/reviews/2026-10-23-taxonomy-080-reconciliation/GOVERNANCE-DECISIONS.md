@@ -1,3 +1,18 @@
+# Approval-ready decisions — 24 October 2026
+
+**Status: proposed; not approved or enacted.** Current governance scope is 30 G01 cases and INC-008 under G02. The dated conflict inventory and affected-case recommendations in EVIDENCE-HOLD-FOLLOWUP-20261024.md are the application list. Historical counts below are retained as history.
+
+| Decision | Present rule and proposed interpretation | Required implementation after approval |
+| --- | --- | --- |
+| G01 | Present universal precedence excludes every role, including protective outcomes described by exclusions. Approve distinguishing failure-mechanism exclusions, which defeat failure recognition, from genuine role-neutral engagement/scope exclusions, which defeat every role. No blanket success exemption. | Inventory and explicitly annotate each affected exclusion before use. Preserve affirmative success criteria and all failure conditions. Re-adjudicate the 30 cases individually, preserving every prior mapping and distinct episode. A shared rule change alone closes no record. |
+| G02 | FC-044 excludes a primary governed protected-production-pathway defect. Approve FC-044 and FC-045 co-admission only when distinct independently evidenced access and protected-production properties or episodes satisfy each class. Otherwise retain the supported property and explicitly disposition the other. | Re-test INC-008 against both polarities and exclusions. Preserve both historic mappings in audit. A production order does not establish completed production, correct matching or practical access. |
+
+**Scope and safeguards:** These are taxonomy interpretation proposals, not new canonical fields or validation rules. The measured campaign application set is 31 screens; the complete taxonomy exclusion inventory may reveal other affected relations. Approval does not authorise automatic role changes, discarded evidence, bulk replacement of bases or a new validator. Any later change to schema or pass/fail controls must use the separate approval contract. Public result labels and website stages remain governed by the existing crosswalk.
+
+**Maintainer decision requested:** approve or decline G01 and G02 separately. If G01 is declined, apply the published universal rule consistently and preserve displaced protective findings in dated history. If G02 is declined, keep the published exclusion and perform explicit supported-role disposition; do not infer an access result from an order. No decision has been inferred from this handoff.
+
+---
+
 # Maintainer-only decision — role scope of exclusions
 
 Review date: 2026-10-23. Baseline: `6aff1c4d6ff85a94e0892d558a3bfa651d0b557d`.

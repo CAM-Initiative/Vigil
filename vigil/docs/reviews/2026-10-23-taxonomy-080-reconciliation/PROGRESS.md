@@ -1,3 +1,12 @@
+## INC-081 informed-choice reconciliation — 24 October 2026
+
+**Campaign checkpoint: 77 canonical v0.8.0 rebuilds, 78 retained historical screens, 5 evidence holds, 31 governance holds, 3 human-review cases and 6 crosschecks = 200 screened; 91 canonical v0.8.0 stamps.** No independent human certification implied.
+
+- **INC-081:** Corrected CR study and Uber counteraccount independently re-read. Historical medium-confidence choice failure explicitly becomes Boundary: disputed reference-price premise and no matched materially impaired purchase decision. Human-selected commercial objectives remain in scope. No proprietary implementation, vulnerability input, economic loss or truthful-offer finding inferred. Separate economic-solicitation comparator reviewed; no independent additional mapping admitted. Sources, HIM and external state unchanged; prior decision preserved in exact SHA-256-linked packet.
+- Rebuild guard, canonical/public/provenance validators and 332 tests passed. Worklist and official projections rebuilt. `0f8d716ea41709476989d9ee8c675298dd7a8a37` passed all four workflows; this tranche requires its own remote check.
+
+Remaining evidence holds: INC-004, INC-012, INC-103, INC-118 and INC-194. G01/G02 remain maintainer decisions; PR #162 remains draft.
+
 ## INC-078 bounded turn-coordination reconciliation — 24 October 2026
 
 **Campaign checkpoint: 76 canonical v0.8.0 rebuilds, 78 retained historical screens, 6 evidence holds, 31 governance holds, 3 human-review cases and 6 crosschecks = 200 screened; 90 canonical v0.8.0 stamps.** These counts do not imply independent human certification.

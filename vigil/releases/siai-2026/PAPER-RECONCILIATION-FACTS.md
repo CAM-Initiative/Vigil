@@ -2,7 +2,7 @@
 
 This checkpoint supersedes the historical campaign counts below. Canonical focal files were checked against baseline `abf63d5692aaa976d98c79bd82e528328dc654cc`; this tranche does not modify them.
 
-**200/200 screened: 76 canonical campaign rebuilds, 78 retained historical screens, 6 evidence holds, 31 governance holds, 3 human-review cases and 6 prior-intake crosschecks. Ninety canonical records explicitly stamp v0.8.0.** Screening is not 200 independently certified adjudications. The candidate is unmerged and is not the final main-based scientific snapshot.
+**200/200 screened: 77 canonical campaign rebuilds, 78 retained historical screens, 5 evidence holds, 31 governance holds, 3 human-review cases and 6 prior-intake crosschecks. Ninety-one canonical records explicitly stamp v0.8.0.** Screening is not 200 independently certified adjudications. The candidate is unmerged and is not the final main-based scientific snapshot.
 
 | Case | Canonical record version | Taxonomy edition | Canonical file SHA-256 |
 | --- | --- | --- | --- |
