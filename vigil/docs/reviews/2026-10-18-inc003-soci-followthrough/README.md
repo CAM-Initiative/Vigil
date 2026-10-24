@@ -9,3 +9,7 @@ The rebuild guard passes and accounts for all 17 baseline mappings. Baseline and
 Source-first research and the independently approved SOCI admission package are on the infrastructure branch. No SOCI requirement is applied here: this US-centred occurrence has no established Australian covered-asset/responsible-entity/Part 2B nexus. Current source counts and generated data on this branch are not silently replaced with the infrastructure branch's history. No merge, new PR or deployment.
 
 No Gmail completion email is required. Genuine website/operational-guidance integration actions are preserved in FOLLOW-UP-PAYLOAD.md because Gmail tools are unavailable, despite explicit user authorisation.
+
+## Exact duplicate retention adjustment — 24 October 2026
+
+The dated `INC-003-DISPOSITION.md` and `source-access-evidence.json` copies that previously lived beside this readme were byte-for-byte identical to the retained [SOCI disposition](../2026-10-18-soci-issue-132/INC-003-DISPOSITION.md) and [source-access record](../2026-10-18-soci-issue-132/source-access-evidence.json). Their duplicate copies were retired without modifying the substantive adjudication or the retained `adjudication-manifest.json`. The duplicate `validation/baseline/results.json` was also byte-identical to the retained `validation/results.json`; its equality was established by matching Git blob IDs. Recovery parent: `6aa2e54f41927390f3f7ae8f3f17d384514e09a0`. No historical result was reinterpreted.
