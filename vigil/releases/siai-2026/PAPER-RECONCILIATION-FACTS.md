@@ -21,3 +21,7 @@ The paper must identify this as a partial reconciliation if used before completi
 ## Subsequent service-availability batch
 
 Six additional incidents (019, 020, 026, 027, 038, 091) received current-edition full rebuilds retaining evidence-bounded unclassified results. Candidate totals are now **28/200 screened, 172 unscreened**, with **33 canonical v0.8.0 records** and **19 older-edition upgrades on this branch**. This does not change the focal-case factual conclusions above. Source-reported restoration and independent OECD repair findings are preserved; they do not alone establish the separate scoped availability requirement used by FC-084. The exact candidate commit is the Git commit containing this update, available in the file history; no final-main snapshot is asserted.
+
+## Subsequent provisional decision-authority batch
+
+INC-047 and INC-160 retain source-bounded provisional findings after current-edition full rebuilds. Candidate coverage is **30/200 screened, 170 unscreened**, with **35 canonical v0.8.0 records** and **21 older-edition upgrades** on this branch. INC-174 remains uncounted because its positive attribution mapping exposes the same G01 rule conflict; neither it nor INC-003 is certified reconciled. These updates do not change the focal-case manuscript wording.

@@ -17,3 +17,9 @@ INC-003 currently has positive mappings for all three classes. Its evidence and 
 **Recommendation:** explicitly scope failure-mechanism exclusions to failure recognition, while retaining genuinely role-neutral engagement/scope exclusions for every role. Inventory the affected classes before applying a governed taxonomy/documentation correction. Do not use an Incident edit to change the published taxonomy's meaning. This is a governance-rule decision requiring maintainer authority, not a request to approve routine case findings.
 
 **Interim treatment:** preserve existing positive mappings and their history; mark the current-edition screen incomplete for affected cases. Continue unaffected cases. Do not open a GitHub Issue for this in-PR decision. No released taxonomy version, class text, schema, permanent validator or canonical role has been changed.
+
+## Additional affected record found during continued execution
+
+INC-174 remains unchanged and uncounted. Its retained positive FC-047 Mechanism Attribution Support mapping distinguishes public-only realised access, unsuccessful attempts and an investigation-to-date finding. The current class excludes explanations explicitly presented as a bounded hypothesis with alternatives and uncertainty preserved, and also excludes adequately supported mechanism attribution. Those exclusions overlap its positive recognition requirements. Fresh review of BOCSAR’s primary September statement and the federal press-conference account confirms the scope distinction; it does not resolve the taxonomy-rule conflict.
+
+Add FC-047 to G01’s class inventory. Preserve the existing record and its independently supported signal-delivery finding; do not convert this rule conflict into a new Incident evidence issue, remove positive findings automatically or count the incomplete whole-record review. This is the same maintainer decision, not a second request for routine incident approval.

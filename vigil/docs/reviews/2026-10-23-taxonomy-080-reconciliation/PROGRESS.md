@@ -3,6 +3,12 @@
 **Campaign branch:** chore/siai-2026-release-readiness-20261023  
 **This is a working-branch candidate**, not an approved merged source, final SIAI release manifest, human validation certificate or v1.0.0 tag.
 
+## Provisional decision-authority batch — INC-047 and INC-160
+
+Current candidate: **30/200 screened; 170 not screened; 35 canonical v0.8.0 records; 21 older-edition records upgraded on this branch**. Both records retain their existing medium-confidence provisional failure mappings. INC-047 keeps the alleged predictive-coverage substitution and required clinical-route displacement separate from the court’s procedural rulings. INC-160 keeps reported inference-to-training assignment separate from DHS’s corrective account and denied unqualified field duties. Existing facts, harm, sources, clause relationships and external assessments are unchanged.
+
+The six-outage batch was published as `1a687a95f227e9e6d45f266ddfeb80354622a8c6` and passed all four GitHub workflows. Both new rebuild guards, the 326-test suite, canonical/public/source/interpretive/component/authorship validators and deterministic jurisdiction/textbook checks passed. The two decision-authority rebuilds have exact failure/success/exclusion matrices and baseline mapping dispositions. INC-174 is deliberately **not credited**: source review discovered that its positive FC-047 mapping is affected by G01’s exclusion/success conflict. Its canonical record is unchanged.
+
 ## Service-availability batch — six current-edition rebuilds
 
 Current candidate: **28/200 screened; 172 not screened; 33 canonical v0.8.0 records; 19 older-edition records upgraded in this branch**. INC-019, 020, 026, 027, 038 and 091 now have explicit v0.8.0 availability, access-state and verification-dependency tests. All retain unclassified status. INC-027's unresolved access-state clause remains unresolved; completion of an evidence-bounded screen does not mean its missing facts were recovered.
