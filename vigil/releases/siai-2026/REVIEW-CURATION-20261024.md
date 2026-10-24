@@ -221,3 +221,26 @@ Promoted: the original INC-003 E019/FC-042 structural flag and two-case baseline
 **Exact recovery parent:** `e614e2c096a4345770ae1c99a8fee21a1f42f7f8`. Retired **2 dated structural/control receipts** (`vigil/docs/reviews/2026-10-19-boundary-diagnostic/REMAINING-FAILURES.json`, `vigil/docs/reviews/2026-10-19-boundary-diagnostic/contract-reassessment/ROLE-CONTROL-VALIDATION.json`; Git blob sizes: 17,293 + 25,328 = **42,621 bytes**). The 42 earlier held-case reasons matched exactly by Incident, class and complete text against retained `POPULATION-REGISTER.json.held_proposals`. The 91 legacy Boundary confidences matched exactly by Incident, class and value against retained `corpus-repair/CONFIDENCE-RELOCATION-REGISTER.json.entries`. Earlier command/test/guard outcomes, including non-green historical fixture limits and original counts, are preserved in the Boundary README, source-specific Gate 1 method report and pinned Git originals. Existing test/controller code and current CI run unchanged. This is removal of *repeated structural snapshots*, not an evidentiary discharge or reopening of taxonomy semantics.
 
 **Cumulative: 513 retired, 455 remain** (197 protected active v0.8.0 + 258 older). No canonical Incident, registered source/EXTREQ, HIM, taxonomy criterion, maintained validator/schema, published dataset, historical case negative decision or scientific release touched. Validate exact new head before merge consideration; PR remains draft, no tag/deposit.
+
+
+## Tranche 24 — bulk Git-pinned historical campaign retirement (24 October 2026)
+
+**Exact recoverable pre-deletion commit:** `f8d90273215326d4933c7d6847da905d2a35e16b`. **133 historical review files** (4,855,980 tracked bytes) were removed from the live branch under a revised retention rule explicitly requested by the maintainer: preserve current taxonomy v0.8.0 adjudication, live canonical review-reference targets and genuinely governing methods/unique authoritative supporting research; store superseded case-campaign worksheets, before/after dumps, duplicate decision runs, obsolete readiness reports and testing snapshots in immutable Git history rather than indefinitely in the current tree. All 200 canonical Incident JSON files were surveyed for structural review-path references before curating; paths still named by canonical records were excluded from this cull. Earlier 10 October HIM reopen manifests remain intact because canonical Incidents still refer to them. The 197 active current-edition 0.8.0 artefacts remain untouched, as do selected per-campaign methods, legal/source fidelity source reviews, taxonomy identity crosswalk, and approved maintainer decisions.
+
+| Historic collection | Archived files | Bytes |
+| --- | ---: | ---: |
+| `2026-10-20-fc089-corpus-migration` | 39 | 702,232 |
+| `2026-10-19-boundary-diagnostic` | 28 | 2,078,465 |
+| `2026-10-18-issue-126-him-reassessments` | 27 | 936,189 |
+| `2026-10-18-incident-taxonomy-reasoning-readjudication` | 15 | 423,720 |
+| `2026-10-18-soci-issue-132` | 8 | 77,061 |
+| `2026-10-18-infrastructure-governance-expansion` | 5 | 85,996 |
+| `2026-10-11-infrastructure-governance-registration` | 3 | 20,995 |
+| `2026-10-19-outstanding-candidates` | 3 | 61,074 |
+| `2026-10-18-dignity-and-ecological-values` | 2 | 308,348 |
+| `2026-10-23-intake-readjudication` | 2 | 65,623 |
+| `2026-09-27-environment-metadata-semantic-transmutation-audit.json` | 1 | 96,277 |
+
+Recovery: every archived blob remains available at the exact [pre-cull tree](https://github.com/CAM-Initiative/Vigil/tree/f8d90273215326d4933c7d6847da905d2a35e16b/vigil/docs/reviews) with the same relative path. The retained review campaign summaries now carry this fixed source recovery point; relative Markdown links to newly retired items in those summaries were redirected to the pinned Git source where found. Because full historical case workbooks are no longer in the active tree, previous report references to them must be resolved against this SHA; Git history, not the active review folder, is the historical audit trail. Deleted historical adjudication worksheets are **not equivalent to a claim that their uncertainties, conclusions or negative examples are resolved**. The current active 0.8.0 screen still has its independent evidence and governance holds, and the archived material must remain discoverable during research review.
+
+**Cumulative retired: 646 files of the original 968; active reviews remaining: 322 (197 current v0.8.0 plus 125 historical retained).** Retention is intentionally more focused, not deletion of historical scientific evidence. No canonical Incident, external source/requirement, taxonomy class, HIM band, schema, validator, maintained tests, dataset release, tag or main branch was amended by this housekeeping tranche. Validate the current head through all four CI checks and the retention audit before accepting; no PR merge, SIAI release freeze, DOI or manuscript deposit.

@@ -1,3 +1,5 @@
+> **Historical curation notice — 24 October 2026:** 8 superseded files from this campaign were moved out of the active branch, not erased from Git history. Their original version remains available in the [exact pre-cull Git tree](https://github.com/CAM-Initiative/Vigil/tree/f8d90273215326d4933c7d6847da905d2a35e16b/vigil/docs/reviews/2026-10-18-soci-issue-132). At-time statuses, source limits, rejected candidates and test claims remain historical, not present-day findings. The canonical Incident, governing rules and the protected v0.8.0 review remain the current scientific surfaces.
+
 > Update, 18 October 2026: approval received and canonical implementation validated. See [APPROVAL-AND-IMPLEMENTATION.md](APPROVAL-AND-IMPLEMENTATION.md). Earlier checkpoint text below is preserved as history.
 
 # Issue #132 — SOCI review package

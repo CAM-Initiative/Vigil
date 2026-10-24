@@ -1,3 +1,5 @@
+> **Historical curation notice — 24 October 2026:** 5 superseded files from this campaign were moved out of the active branch, not erased from Git history. Their original version remains available in the [exact pre-cull Git tree](https://github.com/CAM-Initiative/Vigil/tree/f8d90273215326d4933c7d6847da905d2a35e16b/vigil/docs/reviews/2026-10-18-infrastructure-governance-expansion). At-time statuses, source limits, rejected candidates and test claims remain historical, not present-day findings. The canonical Incident, governing rules and the protected v0.8.0 review remain the current scientific surfaces.
+
 # Bounded source and relationship review
 
 Date: 18 October 2026. Classification: REVIEW. AI-authored primary-text analysis under the maintainer handoff. Human review and verification remain not-reviewed / not-verified. This package does not certify any organisation or determine legal liability.

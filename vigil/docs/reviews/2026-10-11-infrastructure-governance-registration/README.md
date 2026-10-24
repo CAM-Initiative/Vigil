@@ -1,3 +1,5 @@
+> **Historical curation notice — 24 October 2026:** 3 superseded files from this campaign were moved out of the active branch, not erased from Git history. Their original version remains available in the [exact pre-cull Git tree](https://github.com/CAM-Initiative/Vigil/tree/f8d90273215326d4933c7d6847da905d2a35e16b/vigil/docs/reviews/2026-10-11-infrastructure-governance-registration). 2 relative links to archived files have been redirected to that pinned tree. At-time statuses, source limits, rejected candidates and test claims remain historical, not present-day findings. The canonical Incident, governing rules and the protected v0.8.0 review remain the current scientific surfaces.
+
 # International infrastructure governance source registration
 
 Classification: REVIEW. Date: 11 October 2026.
@@ -44,8 +46,8 @@ Deliverables:
 - A. [Amended Gate 1 proposal](GATE-1-PROPOSAL.md).
 - B. [FC-058 / FC-059 primary-source assessment matrix](FC-058-059-SOURCE-ASSESSMENT.md).
 - C. [Source registration gap report](SOURCE-REGISTRATION-GAPS.md).
-- D. [INC-090 applicability and evidence note](INC-090-APPLICABILITY.md).
-- E. [Atomic implementation and validation plan](IMPLEMENTATION-PLAN.md).
+- D. [INC-090 applicability and evidence note](https://github.com/CAM-Initiative/Vigil/blob/f8d90273215326d4933c7d6847da905d2a35e16b/vigil/docs/reviews/2026-10-11-infrastructure-governance-registration/INC-090-APPLICABILITY.md).
+- E. [Atomic implementation and validation plan](https://github.com/CAM-Initiative/Vigil/blob/f8d90273215326d4933c7d6847da905d2a35e16b/vigil/docs/reviews/2026-10-11-infrastructure-governance-registration/IMPLEMENTATION-PLAN.md).
 
 Amendment baseline: `f0baf24b3d05a972705995986c82e1b64770ae34`. Primary-source research includes the EU original OJ texts, dated GNI Principles/Guidelines, OECD 2023 Guidelines, UNGP, ITU Constitution/2012 ITRs and registered NIST texts. ISO review is metadata-only; no copyrighted clause reconstruction. The matrix is a queue of reviewed component relationships, not canonical admission or an occurrence finding.
 
