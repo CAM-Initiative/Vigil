@@ -301,3 +301,35 @@ The reusable retention lesson from the SOCI CI repair has been promoted to `vigi
 ## Tranche 29 — permanent NIST supporting-source evidence promotion (24 October 2026)
 
 **Exact pre-migration parent:** `3d3856004287ee729700e1719a2e921f5577ecc7`. Moved three bounded NIST source review artefacts from temporary `vigil/docs/reviews/2026-10-18-infrastructure-governance-expansion/` to `vigil/external_governance/requirements/review-evidence/`: `vigil/docs/reviews/2026-10-18-infrastructure-governance-expansion/NIST-CSF-2-0.json` → `vigil/external_governance/requirements/review-evidence/NIST-CSF-2-0-2.0.json` (9 relationships; historical blob `78c7fc780629c0d654af5be94c460f5b0bc5dc28`); `vigil/docs/reviews/2026-10-18-infrastructure-governance-expansion/NIST-SP-800-82.json` → `vigil/external_governance/requirements/review-evidence/NIST-SP-800-82-3.json` (6 relationships; historical blob `6a4318500cacd520b1b8b39e9765460c03a95290`); `vigil/docs/reviews/2026-10-18-infrastructure-governance-expansion/NIST-SP-800-218.json` → `vigil/external_governance/requirements/review-evidence/NIST-SP-800-218-1.1.json` (2 relationships; historical blob `75e43b98f32ebed21a682cf5369eb0f408df6f11`). Updated **17** supporting `taxonomy-relationships.json` `review_artifact` references and **17 exact embedded reviewed counterpart objects** to the new path, preserving requirement/class digest values, legal/source uncertainty and review/verification status. The reference-normalised current objects differ from original Git bytes only in `review_artifact`; original reviewed versions remain reproducible at pre-migration SHA above. This operation is *not* a new NIST admission, assurance certification, human review or taxonomy reinterpretation. Counts: **665 former review paths retired out of 968; 303 review files tracked (197 active v0.8.0 + 106 historic)**. Validate all current-head CI; PR remains draft and unmerged.
+
+
+## Tranche 30 — bounded bulk retirement of completed non-case historical notice boards (24 October 2026)
+
+**Immutable recovery parent: `b345331270dc3510e10ad7ecbaae629c40b87164`**. Removed **46 dated non-case review notices, draft amendments, human/AI handoff snapshots, administrative process reports, generated inventories, historical methodology companions and old candidate matrices**, 1,066,697 bytes, from `vigil/docs/reviews/`. No named per-Incident `INC-######` / `VIGIL-INC-######` historical decision/provenance packet was removed in this tranche, nor any of the active current `2026-10-23-taxonomy-080-reconciliation/` files. Three earlier live NIST source-review JSON files had already been promoted to `vigil/external_governance/requirements/review-evidence/`, with 17 exact embedded and live relationships updated, before this cull. Other governed source-review evidence and immutable test fixtures were preserved in their permanent homes.
+
+| Retired historical group | Files |
+| --- | ---: |
+| `2026-10-10-him-1.1.0-corpus-readjudication` | 1 |
+| `2026-10-10-incident-admission-constitutional-proposal.md` | 1 |
+| `2026-10-11-infrastructure-governance-registration` | 6 |
+| `2026-10-18-dignity-and-ecological-values` | 1 |
+| `2026-10-18-inc003-soci-followthrough` | 3 |
+| `2026-10-18-incident-taxonomy-reasoning-readjudication` | 4 |
+| `2026-10-18-infrastructure-governance-expansion` | 3 |
+| `2026-10-18-issue-126-maintainer-decisions.md` | 1 |
+| `2026-10-18-soci-issue-132` | 2 |
+| `2026-10-18-wording-specific-eight-record-repairs.json` | 1 |
+| `2026-10-19-boundary-diagnostic` | 9 |
+| `2026-10-19-outstanding-candidates` | 3 |
+| `2026-10-20-fc045-fc079-followup` | 2 |
+| `2026-10-20-fc084-candidate-closure` | 1 |
+| `2026-10-20-fc089-corpus-migration` | 2 |
+| `2026-10-21-fc018-fc052-fc078-implementation` | 1 |
+| `2026-10-21-fc018-fc052-fc078-scope-reconciliation.md` | 1 |
+| `2026-10-21-fc084-prepublication-renumber` | 1 |
+| `2026-10-21-taxonomy-single-release-control` | 1 |
+| `2026-10-23-intake-readjudication` | 2 |
+
+All deleted bytes remain recoverable through the full [pre-tranche Git tree](https://github.com/CAM-Initiative/Vigil/tree/b345331270dc3510e10ad7ecbaae629c40b87164/vigil/docs/reviews), with each original relative path and original evidence/maintainer comments intact. In particular, the historical Incident Admission constitutional proposal, FC-079 unapproved amendment, FC-018/052/078 questions, Boundary pressure scenarios, source access limitations and earlier 0.6/0.7/0.8 rollout decisions are **not** thereby approved, extinguished, authenticated or declared resolved. Accepted rules live in `vigil/docs/maintenance/`, taxonomy/HIM, the requirements/source registries and canonical Incidents. Unresolved recognition scope and evidence decisions still require their ordinary authorised adjudication. This cull may uncover additional test, document or Incident references; CI and the final reference sweep are required before accepting the tranche, and any retained dependency will be restored/promoted instead of suppressing the guard.
+
+**New count if CI passes: 711 retired from original 968; 257 reviews remain (197 current 0.8.0 + 60 historical case/provenance packets).** Draft PR, no main merge, SIAI freeze or release.
