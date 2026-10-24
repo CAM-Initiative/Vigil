@@ -1,5 +1,8 @@
 # SIAI corpus facts — 18 October 2026
 
+**Archive note (24 October 2026):** The dated reproduction script and historical metric JSON outputs were retired from the active notice board after this source-specific result was recorded. For exact original reproduction, retrieve [count-corpus.py](https://github.com/CAM-Initiative/Vigil/blob/82ee10e0be062a059fd893c5cff77f1f4ec0ebe5/vigil/docs/reviews/2026-10-18-issue-126-him-reassessments/count-corpus.py), [corpus-counts.json](https://github.com/CAM-Initiative/Vigil/blob/82ee10e0be062a059fd893c5cff77f1f4ec0ebe5/vigil/docs/reviews/2026-10-18-issue-126-him-reassessments/corpus-counts.json) and [baseline-counts.json](https://github.com/CAM-Initiative/Vigil/blob/82ee10e0be062a059fd893c5cff77f1f4ec0ebe5/vigil/docs/reviews/2026-10-18-issue-126-him-reassessments/baseline-counts.json) from the pinned pre-cull Git commit. The commands below reproduce the historical workflow when run from that commit; they are not current-branch commands.
+
+
 Artefact class: AUDIT. This report describes a reproducible repository snapshot; it is not a manuscript edit or a claim of empirical methodology validation.
 
 **Data commit: `cfeb57a996e29eb08a3d2a928a090ac5e0646fc1`.** Original handoff baseline: `adac7b35b5f8edd3a0f9d666666ff3b6a40dd123`. Publication parent: `cee60da57816ec40345135f1ac5193776b9234ab`, whose concurrent INC-003 change is preserved. The later report-only commit does not change the canonical counting inputs.
