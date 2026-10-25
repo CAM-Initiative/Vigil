@@ -113,14 +113,14 @@ jobs:
         run: |
           # Exact pre-promotion source; no moving-branch baseline.
           for id in 000001 000002 000003 000004 000005 000006 000007 000008 000009 000010 000012 000013 000014 000015 000016 000018 000019 000020 000117 000129; do
+            manifest="vigil/docs/reviews/2026-10-24-siai-paper-v081/INC-${id}-081-REVIEW.json"
+            if [ "$id" = "000008" ]; then
+              manifest="vigil/docs/reviews/2026-10-25-siai-inc008-targeted-v081/INC-000008-081-DECISION.json"
+            fi
             python vigil/scripts/validate-vigil-incident-rebuild.py \
               --baseline-ref bf58646d22c90a86c8333ac9bc7fe83ac856589c \
               --candidate-file "vigil/records/incidents/VIGIL-INC-${id}.json" \
-              --manifest "$(if [ "$id" = "000008" ]; then
-      printf '%s' 'vigil/docs/reviews/2026-10-25-siai-inc008-targeted-v081/INC-000008-081-DECISION.json'
-    else
-      printf 'vigil/docs/reviews/2026-10-24-siai-paper-v081/INC-%s-081-REVIEW.json' "$id"
-    fi)"
+              --manifest "$manifest"
           done
       - name: Apply committed textbook case-study publication eligibility
         run: |
