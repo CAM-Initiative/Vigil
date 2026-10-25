@@ -113,19 +113,38 @@ jobs:
           git fetch --no-tags --depth=1 origin main:refs/remotes/origin/main
           python vigil/taxonomy/check_working_release_against_main.py
 
-      # Working branches record one unpublished candidate; main alone publishes
-      # its final digest and date using that exact version.
-      # in review. Once those edits land on main, prepare exactly one dataset/book
-      # release for the whole merged tranche before enforcing published alignment.
-      - name: Prepare taxonomy dataset release on main
+      # Only a governed taxonomy PR may introduce working_release. Incidents
+      # can refresh non-normative exemplars without allocating a taxonomy version.
+      - name: Detect governed taxonomy release candidate
+        id: taxonomy_candidate
         if: github.event_name != 'pull_request'
+        shell: bash
+        run: |
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          from pathlib import Path
+          index = json.loads(Path("vigil/taxonomy/VIGIL.FailureTaxonomy.Index.json").read_text())
+          candidate = index.get("working_release")
+          if candidate is not None:
+              if not isinstance(candidate, dict) or candidate.get("state") != "unpublished":
+                  raise SystemExit("Invalid unpublished taxonomy release candidate")
+              if candidate.get("base_version") != index["standard"]["version"]:
+                  raise SystemExit("Taxonomy release candidate is not based on published main")
+          print("publish=" + ("true" if candidate is not None else "false"))
+          PY
+
+      - name: Prepare taxonomy dataset release on main
+        if: github.event_name != 'pull_request' && steps.taxonomy_candidate.outputs.publish == 'true'
         run: python vigil/taxonomy/prepare_taxonomy_release.py
 
       - name: Validate taxonomy contract and release ledger
         shell: bash
         run: |
           set +e
-          if [ "$GITHUB_EVENT_NAME" != "pull_request" ]; then
+          # Preserve the published release ledger after incident-exemplar edits.
+          # Strict digest validation runs only when an authorised taxonomy
+          # candidate is being published. Branch ownership is separately gated.
+          if [ "$GITHUB_EVENT_NAME" != "pull_request" ] && [ "${{ steps.taxonomy_candidate.outputs.publish }}" = "true" ]; then
             python vigil/taxonomy/validate_taxonomy.py --published-release
           else
             python vigil/taxonomy/validate_taxonomy.py
