@@ -1,11 +1,11 @@
 # SIAI 2026 dataset release preflight — Gates 1 and 2 (v1.0.0 candidate)
 
-**Branch:** chore/siai-2026-release-readiness-20261023
+**Status:** Post-merge v1.0.0 candidate on `main`; PR #162 merged 25 October 2026
 **Original Gate 2 control snapshot:** f031c4421f772e1af5b945bc388363aa81e1a179 (historical, superseded for release after reconciliation)
-**Publication source:** the exact future validated merged `main` commit, determined after PR integration; do not assign it in advance
+**Publication source:** the final validated `main` commit after metadata approval and CI completion; not yet frozen
 **Dataset candidate:** VIGIL Observatory v1.0.0 (not published)
 **Current published Alignment Taxonomy:** v0.8.1, 17 families, 80 classes
-**Current draft branch:** 200 canonical Incidents; 164/200 current-edition stamps; five approved promotions staged but not executed. Final counts must come from the validated main-commit manifest.
+**Documented post-merge checkpoint:** 200 canonical Incidents; 164/200 current-edition stamps; five additional promotions explicitly deferred to GitHub Issues and not release prerequisites. Final counts must come from the validated main-commit manifest.
 **Canonical Incident count:** 200
 
 The following record versions are **historical Gate 2 control examples from 23 October 2026**, not claims about the current PR #162 HEAD. Their identity and version lineage must be preserved:
@@ -30,13 +30,13 @@ The preflight CI exports a per-file SHA-256 manifest from **the checkout HEAD** 
 
 The source baseline may continue to contain recorded unknowns and versioned historical adjudications. These must remain visible and faithfully represented in the camera-ready paper rather than mechanically rewritten.
 
-## Pre-Zenodo readiness control — 25 October 2026
+## Current pre-Zenodo readiness control — 25 October 2026
 
-1. The five focused case promotions (INC-034/062/101/145/195) are **not yet canonical**. Run the approved one-time `apply_approved_five.py` on a clean branch and check its commit removes the script. Do not claim 169/200 before confirming records and public indexes; keep INC-118's original evidence hold.
-2. Complete exact-head PR CI after the last source change, check release notes against the final canonical records, and obtain maintainer/rights-holder authorisation before merging. No script, review packet or green CI substitutes for this approval.
-3. The [Zenodo deposit packet](ZENODO-DEPOSIT-PACKET.md) controls descriptive metadata, custom proprietary licence, GitHub-integration/automatic archiving risks, manual dataset-deposit preference, scientific-scope versus complete-archive distinction, third-party rights, and the final release receipt.
-4. On approved merged `main`: update `CITATION.cff` version and actual release date, finalise rights and licence, re-run the snapshot builder with `--require-main` on the **final** commit, confirm CI, create a tag for precisely that commit, inspect the archive, and publish only after inspecting the Zenodo draft.
-5. The current `CITATION.cff` still says 0.1.0 / 2026-06-01, and no dataset DOI has been assigned. Neither value is authority for the proposed dataset v1.0.0 deposit. Publicly readable VIGIL material is proprietary, not CC BY.
+1. **No new Incident promotions for v1.0.0.** The five focused candidates (INC-034/062/101/145/195) are deferred to GitHub Issues. The research corpus is eligible for a qualified release with historic taxonomy editions. Delete the obsolete one-use promotion operator script without executing it.
+2. **Repair CI without relaxing safeguards.** The 25 October post-merge preflight failed to load an older pinned baseline in its runner; the Incident file exists at that Git commit. Checkout the pinned historical baseline explicitly, rerun all non-destructive guards and complete exact-HEAD regression and rights/provenance checks.
+3. **Correct release metadata.** Candidate `CITATION.cff` is version 1.0.0 with a custom licence URL but no premature release date or DOI. Record the actual date only at authorised publication, then revalidate final HEAD.
+4. **Freeze on main.** Following approved release-preparation merge and any publisher commits, use `build_research_snapshot.py --write --require-main` and `--check --require-main` on the exact final commit. Verify the archive and manifest as different scopes.
+5. **Confirm rights-holder publication conditions.** Review third-party materials, proprietary custom Zenodo licence, file visibility and whether automatic GitHub–Zenodo archiving is enabled. Use manual dataset deposit unless the exact approved rights can be preserved. No tag, GitHub Release, Zenodo publication or DOI without explicit approval.
 
 
 ## Gate 2 verified results — 23 October 2026

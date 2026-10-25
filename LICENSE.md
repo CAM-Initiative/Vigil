@@ -43,6 +43,6 @@ In the absence of such written agreement, any third-party reliance on VIGIL Obse
 
 ## 7. Licence requests
 
-For permissions beyond public access, citation and reference, contact [research@cam-initiative.org](mailto:research@cam-initiative.org). VIGIL Observatory identity and attribution must be preserved in any licensed use.
+For permissions beyond public access, citation and reference, contact [research@cam-initiative.org](mailto:research@cam-initiative.org). VIGIL Observatory identity and attribution must be preserved.
 
 © 2026 Phoenix Covenant Pty Ltd trading as CAM Initiative (ABN 14 692 195 529). All rights reserved.
