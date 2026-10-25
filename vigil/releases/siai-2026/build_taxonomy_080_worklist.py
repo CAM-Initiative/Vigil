@@ -22,7 +22,10 @@ PAPER_081_BASELINE_REF = "bf58646d22c90a86c8333ac9bc7fe83ac856589c"
 PAPER_081_DIR = ROOT / "vigil/docs/reviews/2026-10-24-siai-paper-v081"
 PAPER_FOCALS = {"VIGIL-INC-000003", "VIGIL-INC-000117", "VIGIL-INC-000129"}
 PAPER_DELTA_CASES = {"VIGIL-INC-000001", "VIGIL-INC-000002", "VIGIL-INC-000004", "VIGIL-INC-000005", "VIGIL-INC-000006", "VIGIL-INC-000007", "VIGIL-INC-000009", "VIGIL-INC-000010", "VIGIL-INC-000012", "VIGIL-INC-000013", "VIGIL-INC-000014", "VIGIL-INC-000015", "VIGIL-INC-000016", "VIGIL-INC-000018", "VIGIL-INC-000019", "VIGIL-INC-000020"}
-PAPER_PROMOTED_081 = PAPER_FOCALS | PAPER_DELTA_CASES
+PAPER_TARGETED_CASES = {"VIGIL-INC-000008"}
+TARGETED_081_BASELINE_REF = "8bfb52fdbaa76b13e183bcdfdc06a656886585b0"
+TARGETED_081_DIR = ROOT / "vigil/docs/reviews/2026-10-25-siai-inc008-targeted-v081"
+PAPER_PROMOTED_081 = PAPER_FOCALS | PAPER_DELTA_CASES | PAPER_TARGETED_CASES
 CRITERION_FIELDS = ("failure_recognition", "success_recognition", "exclusions")
 
 
@@ -163,17 +166,41 @@ def build() -> dict:
     promoted_081 = {}
     for rid in sorted(PAPER_PROMOTED_081):
         case_number = rid.rsplit("-", 1)[-1]
-        path = PAPER_081_DIR / f"INC-{case_number}-081-REVIEW.json"
+        path = (
+            TARGETED_081_DIR / f"INC-{case_number}-081-DECISION.json"
+            if rid in PAPER_TARGETED_CASES
+            else PAPER_081_DIR / f"INC-{case_number}-081-REVIEW.json"
+        )
         packet = json.loads(path.read_text(encoding="utf-8"))
         row = next((r for r in rows if r["incident_id"] == rid), None)
         if row is None or packet.get("incident_id") != rid:
             raise SystemExit(f"Missing focal Incident or v0.8.1 packet: {rid}")
         if (packet.get("published_taxonomy_version") != "0.8.1"
-            or packet.get("baseline", {}).get("ref") != PAPER_081_BASELINE_REF
+            or packet.get("baseline", {}).get("ref") != (TARGETED_081_BASELINE_REF if rid in PAPER_TARGETED_CASES else PAPER_081_BASELINE_REF)
             or packet.get("canonical_promotion", {}).get("status") != "approved-bounded-canonical-update"
             or row["record_version"] != packet["canonical_promotion"].get("target_record_version")
             or row["recorded_taxonomy_version"] != "0.8.1"):
             raise SystemExit(f"Invalid v0.8.1 promotion packet or record edition: {rid}")
+        if rid in PAPER_TARGETED_CASES:
+            # Distinct-property reconciliation is a substantive change, not a
+            # role-preserving delta. Verify the exact supported final mapping
+            # and the prior decision/disposition without inventing a no-change claim.
+            expected = packet.get("expected_outcome", {})
+            disposition = packet.get("taxonomy_mapping_dispositions", [])
+            if (packet.get("schema") != "vigil-siai-paper-inc008-targeted-v081/1"
+                or packet.get("review_mode") != "bounded-edit"
+                or packet.get("previous_screening_packet") is None
+                or packet.get("baseline", {}).get("taxonomy_version") != "0.8.0"
+                or packet.get("new_taxonomy_mappings") != []
+                or packet.get("source_dispositions") != []
+                or expected.get("primary_class") != "VIGIL-FC-000045"
+                or expected.get("secondary_classes") != ["VIGIL-FC-000046"]
+                or [(x.get("class_id"), x.get("disposition")) for x in disposition] != [
+                    ("VIGIL-FC-000044", "removed-unsupported"),
+                    ("VIGIL-FC-000045", "retained"),
+                    ("VIGIL-FC-000046", "retained"),
+                ]):
+                raise SystemExit(f"Unresolved or mismatched targeted v0.8.1 decision: {rid}")
         if rid in PAPER_DELTA_CASES:
             if (packet.get("schema") != "vigil-siai-paper-fast-delta-v081/1"
                 or packet.get("historical_screening_taxonomy_version") != "0.8.0"
@@ -191,6 +218,16 @@ def build() -> dict:
         if (current["taxonomy_classification"]["classification_review_provenance"].get("review_reference")
             != str(path.relative_to(ROOT))):
             raise SystemExit(f"Current review provenance does not point to v0.8.1 packet: {rid}")
+        if rid in PAPER_TARGETED_CASES:
+            cl = current["taxonomy_classification"]
+            present = [x for x in [
+                cl.get("primary_classification"), *(cl.get("secondary_classifications") or [])
+            ] if isinstance(x, dict)]
+            if ([(x["class_id"], x["classification_role"]) for x in present]
+                != [("VIGIL-FC-000045", "failure-occurrence"),
+                    ("VIGIL-FC-000046", "ambiguous-boundary")]
+                or cl.get("adjudication_coverage", {}).get("status") != "complete"):
+                raise SystemExit(f"Targeted role change not in canonical result: {rid}")
         if rid in PAPER_DELTA_CASES:
             current_mappings = [
                 x for x in [current["taxonomy_classification"].get("primary_classification"),
@@ -419,13 +456,19 @@ def build() -> dict:
             row["v081_screen_status"] = (
                 "PAPER-FOCAL-081-REVIEW-PROMOTED-NOT-HUMAN-CERTIFIED"
                 if rid in PAPER_FOCALS
+                else "PAPER-TARGETED-081-RECONCILED-MAPPING-CHANGE"
+                if rid in PAPER_TARGETED_CASES
                 else "PAPER-DELTA-081-CANONICAL-PROMOTED-SOURCE-BOUNDED"
             )
             row["v081_review_packet"] = str(promoted_081[rid][0].relative_to(ROOT))
             row["v081_review_note"] = (
-                "Focused v0.8.1 adjudication promoted to canonical record with prior "
-                "mapping roles and evidence limitations preserved. 0.8.0 packet "
-                "above remains a historically verified screening receipt."
+                "Substantive targeted v0.8.1 role/exclusion decision: duplicate "
+                "FC-044 removed, independently supported FC-045 retained as primary; "
+                "FC-046 remains Boundary, original denial and appellate limits preserved."
+                if rid in PAPER_TARGETED_CASES
+                else "Focused v0.8.1 adjudication promoted to canonical record with prior "
+                     "mapping roles and evidence limitations preserved. 0.8.0 packet "
+                     "above remains a historically verified screening receipt."
             )
         else:
             row["v081_screen_status"] = "NOT-ASSESSED-UNDER-081"
@@ -460,6 +503,7 @@ def build() -> dict:
             ),
             "v081_focal_reviews_promoted": len(PAPER_FOCALS),
             "v081_bounded_delta_reviews_promoted": len(PAPER_DELTA_CASES),
+            "v081_targeted_substantive_reviews_promoted": len(PAPER_TARGETED_CASES),
             "v081_total_canonical_reviews_promoted": len(promoted_081),
             "v081_unreviewed_records": len(rows) - len(promoted_081),
             "v081_independently_readjudicated": 0,
