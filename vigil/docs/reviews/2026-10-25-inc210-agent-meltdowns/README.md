@@ -1,7 +1,7 @@
 # INC-210 — Cornell 404-recovery agent meltdown: source-first completion audit
 
 **Review date:** 2026-10-25  
-**Branch:** `feat/inc-210-agent-meltdowns-20261025` (from `main` commit `175d87740658b11b4a72346f2a6ea45123e232b7`)  
+**Current working branch:** `agent/incident-ecosystem-ingestion` (designated new-Incident allocation lane, restored 25 October 2026 at commit `b87809fab742caa7068e7205a9680f2b98c31afb`). Original authoring branch: `feat/inc-210-agent-meltdowns-20261025`, based on `main` commit `175d87740658b11b4a72346f2a6ea45123e232b7`.  
 **Record:** `vigil/records/incidents/VIGIL-INC-000210.json`  
 **Review authority:** OpenAI ChatGPT GPT-6, AI analytical reviewer; **not human-verified**  
 **Publication disposition:** **record_blocked** pending generated index rebuild, repository validators, and review of any CI findings. This audit is not a certification of completeness or release readiness.
@@ -66,7 +66,7 @@ The retained results assess voluntary governance propositions, **not legal non-c
 
 The article and paper provide authentic textual first-party evidence. No screenshot or separate image is admitted; there is no genuine distinct visual primary artefact that adds to the material sequence in the reviewed sources. No synthetic capture is produced. Sources retain claim-relative first-party status, independent VIGIL conclusions, known access limitations and explicit AI authorship.
 
-**No SIAI deliverables were changed.** Only the new branch may contain this new canonical record and its dated audit. No taxonomy, schema, validator, campaign branch or SIAI PR is amended.
+**No SIAI deliverables were changed.** The canonical record and audit are now carried on the designated incident-ingestion branch; the earlier feature-branch PR is superseded. No taxonomy, schema, validator, campaign branch or SIAI PR is amended.
 
 ## CI verification on the new branch (25 October 2026)
 
@@ -83,4 +83,4 @@ The follow-up GitHub Actions **VIGIL records** run `40167718745` completed the f
 - **Not performed:** local `build-vigil-public-records.py`, `validate-vigil-records.py`, public/source/interpretive/authorship validators, external assessment/resolver/projection tests or full suite. Connected GitHub tools permit commits and read-back but no repository shell, and the working container cannot reach GitHub.
 - **Therefore:** generated indexes are intentionally **not edited manually**. Branch must not merge until builder outputs, validators, and actual CI are checked. Any validation failure is an action on this same branch, not a new adjudication Incident or GitHub Issue.
 
-**Outstanding bounded action:** run generated-index builder and ordinary repository validation on this branch, inspect failures, and commit builder outputs if needed. The current absence of a local runner is a workflow blocker, not evidence that the new Incident itself is unsound.
+**Outstanding bounded action:** run the canonical generated-index builder and ordinary repository validation on `agent/incident-ecosystem-ingestion`, inspect failures, and commit genuine builder outputs. Do not manually edit generated files. The earlier feature branch is not the authorised ongoing intake lane. The current absence of a local runner is a workflow blocker, not evidence that the new Incident itself is unsound.
