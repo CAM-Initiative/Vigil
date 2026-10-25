@@ -1,5 +1,7 @@
 # VIGIL v0.8.0 — Incident classification reconciliation campaign
 
+> **Historical campaign notice — 25 October 2026.** This file documents the former v0.8.0 reconciliation workflow. The temporary `build_taxonomy_080_worklist.py` generator and its `TAXONOMY-080-WORKLIST.json` CI artifact have been retired by maintainer direction following the move to published taxonomy v0.8.1. Any commands or current-worklist references below are historical and must not be executed as current release gates. The former script is recoverable in [the pre-retirement Git commit](https://github.com/CAM-Initiative/Vigil/blob/02c4acb4c82265a04f8ed3cc029854532075a656/vigil/releases/siai-2026/build_taxonomy_080_worklist.py). Historical Incident adjudication packets and their evidence limits remain available; ordinary canonical and release validation is retained.
+
 **Authority:** maintainer-directed working-branch reconciliation, before merging the SIAI release-readiness branch.
 **Working branch:** chore/siai-2026-release-readiness-20261023.
 **Starting baseline:** main at f031c4421f772e1af5b945bc388363aa81e1a179; subsequent work recorded explicitly in the branch.

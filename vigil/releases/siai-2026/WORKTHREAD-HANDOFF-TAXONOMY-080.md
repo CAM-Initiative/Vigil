@@ -1,5 +1,7 @@
 # VIGIL — Work-thread execution handoff: accelerate Alignment Taxonomy v0.8.0 reconciliation
 
+> **Historical campaign notice — 25 October 2026.** This file documents the former v0.8.0 reconciliation workflow. The temporary `build_taxonomy_080_worklist.py` generator and its `TAXONOMY-080-WORKLIST.json` CI artifact have been retired by maintainer direction following the move to published taxonomy v0.8.1. Any commands or current-worklist references below are historical and must not be executed as current release gates. The former script is recoverable in [the pre-retirement Git commit](https://github.com/CAM-Initiative/Vigil/blob/02c4acb4c82265a04f8ed3cc029854532075a656/vigil/releases/siai-2026/build_taxonomy_080_worklist.py). Historical Incident adjudication packets and their evidence limits remain available; ordinary canonical and release validation is retained.
+
 **Prepared:** 2026-10-23 (Australia/Perth context). **Authority:** user requests practical autonomous implementation on the **existing** VIGIL working branch, not another review-only packet or plan.
 **Repository:** `CAM-Initiative/Vigil`
 **Branch:** `chore/siai-2026-release-readiness-20261023`
