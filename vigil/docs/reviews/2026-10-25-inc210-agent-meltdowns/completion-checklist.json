@@ -65,28 +65,32 @@
     "review_reference": "README.md#validation--next-required-operations",
     "commands_and_results": [
       {
-        "command": "GitHub connector JSON read-back",
-        "result": "Parsed record and structural counts checked."
+        "command": "GitHub Actions VIGIL records run 40167718745 on commit 11fbcfdc",
+        "result": "Full corpus tests (341 tests), canonical Incident/public validation, source, authorship, system-component, interpretive-provenance and other completed steps passed."
       },
       {
-        "command": "python vigil/scripts/build-vigil-public-records.py",
-        "result": "NOT RUN — no working repository checkout."
+        "command": "python vigil/scripts/build-vigil-public-records.py (GitHub Actions)",
+        "result": "Passed in CI checkout; generated public Incident index for 201 records but output not committed to branch."
       },
       {
-        "command": "python vigil/scripts/validate-vigil-records.py and mandatory provenance, public, requirement and test suites",
-        "result": "NOT RUN — no working repository checkout."
+        "command": "Require committed generated outputs on PR and working branches",
+        "result": "FAILED: deterministic generated index files differ from committed projections because INC-210 is newly added. These must be rebuilt and committed using canonical builders."
+      },
+      {
+        "command": "Local repository checkout validators",
+        "result": "Not performed; no local repository checkout/shell available in this environment."
       }
     ]
   },
   "outstanding_actions": [
     {
-      "action": "Run index builder and required validators; address any findings; keep PR draft until complete.",
-      "blocker": "Connected GitHub access is read/write API only, and container GitHub network name does not resolve.",
-      "resolution_condition": "Generated outputs committed, all required applicable checks and CI green, record reviewed for publication."
+      "action": "Run canonical generated-index and applicable projection builders in an authenticated repository checkout, commit their actual generated outputs to this PR branch, and confirm full CI green.",
+      "blocker": "GitHub Actions PR run regenerates files ephemerally and does not commit them. No generated-output artifact is available for retrieval.",
+      "resolution_condition": "Generated public files are built with their designated scripts, committed on the new branch, and the PR's full CI succeeds."
     }
   ],
   "linked_issue_urls": [],
   "issue_staging_status": "not-needed",
   "completion_disposition": "record_blocked",
-  "completion_report_reference": "README.md"
+  "completion_report_reference": "README.md#ci-verification-on-the-new-branch-25-october-2026"
 }
