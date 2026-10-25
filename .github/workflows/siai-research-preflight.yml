@@ -11,6 +11,9 @@ on:
       - "vigil/docs/maintenance/**"
       - ".github/workflows/siai-research-preflight.yml"
       - "README.md"
+      - "CITATION.cff"
+      - "LICENSE.md"
+      - "RIGHTS.json"
       - "ZENODO-RELEASE-READINESS.md"
   pull_request:
     paths:
@@ -19,6 +22,9 @@ on:
       - "vigil/docs/maintenance/**"
       - ".github/workflows/siai-research-preflight.yml"
       - "README.md"
+      - "CITATION.cff"
+      - "LICENSE.md"
+      - "RIGHTS.json"
       - "ZENODO-RELEASE-READINESS.md"
   workflow_dispatch:
 
@@ -91,6 +97,26 @@ jobs:
           path: pr166-source
           persist-credentials: false
           fetch-depth: 1
+      - name: Checkout pinned paper-case historical baseline
+        uses: actions/checkout@v6
+        with:
+          repository: CAM-Initiative/Vigil
+          ref: bf58646d22c90a86c8333ac9bc7fe83ac856589c
+          path: siai-paper-baseline
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Checkout pinned INC-100+ targeted historical baseline
+        uses: actions/checkout@v6
+        with:
+          repository: CAM-Initiative/Vigil
+          ref: abc976ee2a4457d7f3d7738cfeeefb52d54c0c55
+          path: siai-targeted-baseline
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Verify exact historical baseline checkout identities
+        run: |
+          test "$(git -C siai-paper-baseline rev-parse HEAD)" = "bf58646d22c90a86c8333ac9bc7fe83ac856589c"
+          test "$(git -C siai-targeted-baseline rev-parse HEAD)" = "abc976ee2a4457d7f3d7738cfeeefb52d54c0c55"
       - name: Verify all 81 INC-100+ canonical transfers from PR #166
         run: python vigil/releases/siai-2026/validate_inc100_transfer.py --source-root pr166-source
       - name: Install test dependency
@@ -122,7 +148,7 @@ jobs:
               manifest="vigil/docs/reviews/2026-10-25-siai-inc008-targeted-v081/INC-000008-081-DECISION.json"
             fi
             python vigil/scripts/validate-vigil-incident-rebuild.py \
-              --baseline-ref bf58646d22c90a86c8333ac9bc7fe83ac856589c \
+              --baseline-file "siai-paper-baseline/vigil/records/incidents/VIGIL-INC-${id}.json" \
               --candidate-file "vigil/records/incidents/VIGIL-INC-${id}.json" \
               --manifest "$manifest"
           done
@@ -130,7 +156,7 @@ jobs:
         run: |
           # Exact pre-promotion release-branch commit, not a moving baseline.
           for id in 000119 000121 000162 000187 000204; do
-            python vigil/scripts/validate-vigil-incident-rebuild.py --baseline-ref abc976ee2a4457d7f3d7738cfeeefb52d54c0c55 --candidate-file "vigil/records/incidents/VIGIL-INC-${id}.json" --manifest "vigil/docs/reviews/2026-10-25-siai-081-targeted-100-plus/INC-${id}-081-TARGETED-REVIEW.json"
+            python vigil/scripts/validate-vigil-incident-rebuild.py --baseline-file "siai-targeted-baseline/vigil/records/incidents/VIGIL-INC-${id}.json" --candidate-file "vigil/records/incidents/VIGIL-INC-${id}.json" --manifest "vigil/docs/reviews/2026-10-25-siai-081-targeted-100-plus/INC-${id}-081-TARGETED-REVIEW.json"
           done
       - name: Apply committed textbook case-study publication eligibility
         run: |
