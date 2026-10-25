@@ -116,6 +116,12 @@ jobs:
               --candidate-file "vigil/records/incidents/VIGIL-INC-${id}.json" \
               --manifest "$manifest"
           done
+      - name: Verify INC-100+ targeted v0.8.1 canonical promotions
+        run: |
+          # Exact pre-promotion release-branch commit, not a moving baseline.
+          for id in 000119 000121 000162 000187 000204; do
+            python vigil/scripts/validate-vigil-incident-rebuild.py --baseline-ref abc976ee2a4457d7f3d7738cfeeefb52d54c0c55 --candidate-file "vigil/records/incidents/VIGIL-INC-${id}.json" --manifest "vigil/docs/reviews/2026-10-25-siai-081-targeted-100-plus/INC-${id}-081-TARGETED-REVIEW.json"
+          done
       - name: Apply committed textbook case-study publication eligibility
         run: |
           python vigil/taxonomy/filter_publication_case_examples.py
