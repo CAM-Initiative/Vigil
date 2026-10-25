@@ -1,10 +1,10 @@
 # VIGIL Observatory — scholarly release readiness
 
 **Status: PREPARATION ONLY. No approved v1.0.0 GitHub tag, GitHub Release, Zenodo deposit or certified corpus.**
-**Reviewed:** 23 October 2026.
+**Reviewed:** 25 October 2026 (working-branch release-preparation checkpoint; not a publication approval).
 **Historical Gate 2 control source:** f031c4421f772e1af5b945bc388363aa81e1a179. This is NOT the final release source. Final snapshot must be rebuilt after reconciliation and merge to main.
 
-## Current baseline (not inferred from the earlier checklist)
+## Historical baseline — original 23 October Gate 2 control (not current release state)
 
 - PR #140 was merged 21 October 2026 and published the Alignment Taxonomy v0.8.0 with 17 families and 80 selectable Fidelity Classes.
 - PR #141 completed selective repository housekeeping, preserving retired audit history in Git.
@@ -14,19 +14,26 @@
 
 ## Research release candidate
 
-The intended candidate is **VIGIL Observatory dataset v1.0.0**, not an automatic upgrade of the distinct Alignment Taxonomy from its published v0.8.0. The original 23 October main commit was a valid control snapshot, not the final proposed release commit; a new manifest must be generated from the merged main commit after reconciliation. No release is created merely by preparing a manifest.
+The intended candidate is **VIGIL Observatory dataset v1.0.0**, distinct from the independently published **Alignment Taxonomy v0.8.1**. The original 23 October main commit was a valid control snapshot, not the final proposed release commit; a new manifest must be generated from the merged main commit after reconciliation. No release is created merely by preparing a manifest.
 
 The SIAI preparation branch may change canonical incident classifications **only through the approved current-taxonomy reconciliation workflow**, preserve evidence and historical mapping provenance, and remove the unused CAM institutional assessment placeholder. No automatic migration by changing version strings is permitted. Validators, derived projections and documentation must be aligned before the PR is merged.
 
 The preflight generator under vigil/releases/siai-2026/ builds a deterministic per-file Git-object and SHA-256 inventory of the **current checkout commit**. Once merged, run on main with `--require-main`; only that result can support a main-based release. Its CI workflow provides an artifact, not a published deposit. README, provisional citation metadata and release paperwork are deliberately outside the scientific digest to avoid self-reference. A future approved tag and source archive still require separate inspection.
+
+## Working-branch release position — 25 October 2026
+
+- Draft PR [#162](https://github.com/CAM-Initiative/Vigil/pull/162) currently has **200 canonical Incident records** and the published **Alignment Taxonomy v0.8.1** (17 families, 80 Fidelity Classes). The canonical index presently reports **164/200 Incident records stamped v0.8.1**, with **36** retaining earlier taxonomy editions; the stamps reflect bounded review, not complete fresh adjudication.
+- Five **approved but not yet applied** focused promotions (INC-034, 062, 101, 145, 195) are prepared in `vigil/releases/siai-2026/apply_approved_five.py`. This is an **execution prerequisite**, not a completed promotion. Successful execution should remove that one-time script, regenerate all affected projections, and move coverage to **169/200**; INC-118 must remain on its evidence hold.
+- [Zenodo deposit packet](vigil/releases/siai-2026/ZENODO-DEPOSIT-PACKET.md) provides candidate metadata, the proprietary-rights safeguard, the correct final-main / tag / manifest sequence, proposed GitHub Release notes, and the fields that must remain pending until maintainer approval.
+- **Deposit-route warning:** Zenodo may default to CC BY 4.0. For this proprietary corpus, a default or approximate open licence is not acceptable. The rights-holder must approve the exact custom licence and upload/visibility route before a release is created; verify whether GitHub–Zenodo integration is enabled to prevent accidental archiving.
 
 ## Gate 1 — document and rights reconciliation
 
 - [x] Reconcile stale 194-record and draft-PR-140 claims with the merged 200-Incident corpus and taxonomy v0.8.0.
 - [x] Preserve existing rights and licensing files without changing their proprietary permissions.
 - [x] Separate the dataset v1.0.0 candidate from the independently governed taxonomy edition.
-- [ ] Root CITATION.cff still identifies historical version 0.1.0 / released 2026-06-01. Update version/date only when an actual publication is approved. Do not fabricate a DOI.
-- [ ] Rights-holder to confirm Zenodo access and licence metadata. Public inspectability is not a CC BY / open-source licence.
+- [ ] Root CITATION.cff still identifies historical version 0.1.0 / released 2026-06-01. Update version/date only for the authorised final source release. Do not invent a DOI, and recheck the exact tagged-main snapshot after the change.
+- [ ] Rights-holder to confirm the **manual dataset deposit** (preferred unless custom terms are demonstrably preserved), file visibility and the custom VIGIL Observatory Proprietary Licence. Public inspectability is not CC BY or an open-source licence.
 - [ ] Verify publication pages, reviewer requests and Springer CCIS/LNCS template outside repository release scope.
 
 ## Gate 2 — freeze and reproducibility checks
@@ -39,7 +46,10 @@ The preflight generator under vigil/releases/siai-2026/ builds a deterministic p
 
 ## Gate 3 — intentionally withheld
 
-After explicit maintainer release sign-off: reconcile CITATION.cff, approve proprietary Zenodo configuration, create immutable dataset tag/GitHub Release, inspect actual downloadable archive, and verify the Zenodo deposit's licence, files, checksums and version DOI. If automatic GitHub–Zenodo integration cannot preserve the rights terms, do not use its default publication settings.
+After the final-HEAD validation and approved merge: update `CITATION.cff` on main using the actual release metadata, identify the final main source commit, run `build_research_snapshot.py --write --require-main` and `--check --require-main`, inspect the actual deposit archive and verify its **separate** checksum. Do not treat the workflow's temporary preflight artifact as a deposited dataset. The GitHub source archive may contain files outside the scientific manifest scope: disclose this distinction or deposit a rights-reviewed scientific-scope bundle.
+
+
+After explicit maintainer release sign-off: reconcile CITATION.cff, approve proprietary Zenodo configuration, create immutable dataset tag/GitHub Release, inspect the actual downloadable archive, and verify Zenodo's licence, file visibility, files, checksums and version DOI. If automatic GitHub–Zenodo integration cannot preserve the rights terms, do not use its default publication settings.
 
 ## Limitations for SIAI
 
