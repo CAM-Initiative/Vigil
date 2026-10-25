@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Hermes agent ran unattended during intrusion into Thailand’s Ministry of Finance",
     "created": "2026-09-08",
-    "updated": "2026-10-22",
-    "version": "0.1.20"
+    "updated": "2026-10-24",
+    "version": "0.1.22"
   },
   "incident_identity": {
     "historical_event_name": "Hermes AI-assisted Thailand Ministry of Finance intrusion",
@@ -20,7 +20,7 @@
   },
   "summary": "Hunt.io and researcher Bob Diachenko reported recovering live attack infrastructure and Hermes agent logs from an intrusion targeting Thailand's Ministry of Finance. The operator configured Hermes in unattended or 'YOLO' mode, bypassing approval prompts, while the agent enumerated ministry systems, assessed privilege-escalation paths and searched files and personnel-record directories. Hunt.io reported evidence of compromise across multiple ministry systems but did not establish the initial-access method or exfiltration of the enumerated office files.",
   "vigil_assessment": {
-    "factual_basis": "Hunt.io reports 585 files and 470 MB of attack tooling and stolen credentials across exposed directories, active session material, deployed webshells and internal-network evidence. Recovered Hermes logs show autonomous post-compromise enumeration and privilege-escalation assessment. The operator intentionally enabled unattended execution. The recovered archive also contains staged exploits and implants. Their presence does not prove that every tool executed or that listed mitigations were implemented. Logged document searches do not establish file exfiltration.",
+    "factual_basis": "Hunt.io reports 585 files and 470 MB of attack tooling and stolen credentials across exposed directories, active session material, deployed webshells and internal-network evidence. Recovered Hermes logs show autonomous post-compromise enumeration and privilege-escalation assessment. The operator intentionally enabled unattended execution. The recovered archive also contains staged exploits and implants. Their presence does not prove that every tool executed or that listed mitigations were implemented. Logged document searches do not establish file exfiltration. The investigator reports notifying Thailand’s CERT and NCSA on 15 July and receiving acknowledgement that day. Receipt does not establish remediation or final disposition.",
     "governance_interpretation": "This is a real-world deployment of an autonomous agent as offensive cyber tooling. Because a hostile operator deliberately disabled approval prompts and supplied the attack objective, the occurrence does not by itself establish an internal governance failure of Hermes; the material governance issue is the availability and operationalisation of unattended agentic capability in a live government intrusion. The hostile operator selected unattended mode; this is distinct from an applicable approval control failing to activate. Initial access and exfiltration remain unproved, and no named runtime governance undertaking is established. The human-approval checkpoint and safe-functioning outcomes are Not aligned for this deployment. The remaining stop, monitoring and outbound-policy assessments are Boundary where their operative records are unavailable.",
     "significance_to_cam": "The occurrence shows that open-source agents can be configured for unattended offensive operations against a live target. Effective governance therefore depends on target authorisation, tool and execution boundaries, misuse resistance, monitoring and whether an operator can disable approval controls that would otherwise constrain the agent.",
     "assessment_boundaries": [
@@ -84,6 +84,23 @@
           "recovered_invariant_interpretation": "Preparation, deployment, execution and verified containment require separate evidence.",
           "taxonomy_relationships": [],
           "adjudication_status": "resolved-no-mapping"
+        },
+        {
+          "episode_id": "E005",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "source_paraphrase": "Hunt.io reports that Thailand’s CERT and NCSA received the disclosure on 15 July and acknowledged it that day.",
+          "recovered_invariant_interpretation": "Acknowledged delivery is distinct from completed response or remediation.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000042",
+              "relationship": "unresolved candidate",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "Receipt at capable bodies is reported, but accountable continuation through a required effect or authorised disposition is not published."
+            }
+          ],
+          "adjudication_status": "unresolved"
         }
       ],
       "purpose": "Present source-backed material actions and later responses in supported relative order. Separate runs, source attributions and unknown ordering remain explicit."
@@ -249,19 +266,19 @@
     }
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.6.11",
+    "taxonomy_version": "0.8.1",
     "classification_status": "unclassified",
     "classification_basis": "The occurrence evidence and material consequences are preserved. No selectable class is admitted on the available recognition and exclusion evidence.",
     "primary_classification": null,
     "secondary_classifications": [],
     "classification_review_provenance": {
-      "review_date": "2026-10-19",
-      "reviewer": "OpenAI Codex — AI analytical reviewer",
-      "review_status": "Applied source/criterion-linked admission decisions; retained unresolved evidence and taxonomy-scope questions. Historical Boundary confidence preserved in the linked review.",
-      "review_reference": "vigil/docs/reviews/2026-10-19-boundary-diagnostic/corpus-repair/INC-000094-DECISION.json"
+      "review_date": "2026-10-25",
+      "reviewer": "OpenAI GPT-6 — AI analytical reviewer",
+      "review_status": "Bounded published taxonomy v0.8.1 role-scoped exclusion check of previously source-first-reviewed v0.8.0 findings; evidence gaps, roles and clause statuses retained.",
+      "review_reference": "vigil/docs/reviews/2026-10-25-siai-taxonomy-081-delta/BATCH-081-099-DELTA.json"
     },
     "adjudication_coverage": {
-      "status": "complete"
+      "status": "partial"
     }
   },
   "interpretive_provenance": {
@@ -630,28 +647,70 @@
           "AI-authored context review is not human source verification. Existing source-access statements remain historical."
         ],
         "review_outcome": "Added 3 party entities and 2 geographic relationships; geographic scope cross-border. Preserved all prior narrative, evidence, taxonomy, Harm Impact and external assessments."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-24-080-B09-000094",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "Codex (specific runtime model identifier not exposed)",
+        "review_date": "2026-10-24",
+        "review_scope": "Current-edition source-first taxonomy reconciliation and evidence-preserving explanation repair.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_research": true,
+          "taxonomy_review": true,
+          "harm_impact_review": false,
+          "external_requirement_review": false
+        },
+        "known_limitations": [
+          "Occurrence-specific evidentiary gaps remain as recorded in the source clauses and current decision packet.",
+          "No independent human verification."
+        ],
+        "review_outcome": "Added later disclosure acknowledgement as a separate evidence-limited episode; no remediation inferred."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-25-081-DELTA-000094",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-25",
+        "review_scope": "Taxonomy v0.8.0-to-v0.8.1 role-scoped exclusion delta on retained current-edition source-first review/episode clause decisions.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "web_research": false,
+          "harm_impact_review": false,
+          "external_requirement_review": false
+        },
+        "known_limitations": [
+          "Original source artefacts were not retrieved again; the preserved source-first current-edition packet defines the factual evidence boundary.",
+          "No independent human verification or novel taxonomy applicability search, severity readjudication or external-requirement ruling was performed."
+        ],
+        "review_outcome": "All 0 existing mapping roles were checked against current all-results and role-limited exclusions. Retained unclassified status, partial source-clause coverage, unmapped/resolved clause distinctions and prior evidence limits.",
+        "reviewer_platform": "OpenAI ChatGPT"
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-22-CONTEXT-000094",
+      "review_id": "VIGIL-REVIEW-2026-10-24-080-B09-000094",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT Work / Codex",
+      "reviewer_platform": "OpenAI Codex",
       "reviewer_model": "Codex (specific runtime model identifier not exposed)",
-      "review_date": "2026-10-22",
-      "review_scope": "Gate 2 approved additive Incident Context review. Source-linked parties and geographic relationships only.",
+      "review_date": "2026-10-24",
+      "review_scope": "Current-edition source-first taxonomy reconciliation and evidence-preserving explanation repair.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
         "web_research": true,
-        "taxonomy_review": false,
+        "taxonomy_review": true,
         "harm_impact_review": false,
         "external_requirement_review": false
       },
       "known_limitations": [
-        "Hunt.io source_records[0] was reopened for hosting evidence. Hong Kong infrastructure and the Thai target are distinct; certificate-linked Malaysian infrastructure alone is not promoted to a confirmed occurrence host.",
-        "AI-authored context review is not human source verification. Existing source-access statements remain historical."
+        "Occurrence-specific evidentiary gaps remain as recorded in the source clauses and current decision packet.",
+        "No independent human verification."
       ],
-      "review_outcome": "Added 3 party entities and 2 geographic relationships; geographic scope cross-border. Preserved all prior narrative, evidence, taxonomy, Harm Impact and external assessments."
+      "review_outcome": "Added later disclosure acknowledgement as a separate evidence-limited episode; no remediation inferred."
     }
   },
   "harm_impact_assessment": {

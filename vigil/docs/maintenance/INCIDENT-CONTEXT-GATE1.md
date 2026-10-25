@@ -1,5 +1,7 @@
 # Incident Context architecture — approved Gate 1 (22 October 2026)
 
+**Historical Gate 1 scope notice (24 October 2026):** Gate 1 initially approved the schema only. Gate 2 was subsequently approved and implemented across 200 canonical Incidents (98 reviewed-and-recorded, 87 reviewed-unresolved, 15 reviewed-non-geographic); its completed temporary per-Incident worksheets were retired into Git history at `6eef70deabfcca007ab3fdd88d0dc98bb7c041dd`. Below, 'not yet implemented' or 'not yet approved' reflects the 22 October **Gate 1** checkpoint, not the current canonical data. See `JURISDICTION-GEOGRAPHY-PROJECTION.md` for current maintenance guidance.
+
 ## Maintainer authorization and boundary
 
 The maintainer approved the **additive canonical metadata architecture** and an opt-in validator on the existing `agent/incident-ecosystem-ingestion` branch. Full backfill of the current 200 Incidents is a **separate Gate 2 Work-thread task**, not authorised by this change. Maintain Incident-ID allocation, incoming evidence ingestion and all existing classification/HIM/source provenance separately. No canonical existing Incident was rewritten in Gate 1.

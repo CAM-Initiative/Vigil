@@ -1,5 +1,5 @@
 # VIGIL — Gate 2 Work handoff: all-Incident context transformation and catalogue dashboard integration
-**Prepared:** 22 October 2026 · **Execution state:** NOT STARTED; source-first pilot and explicit Gate 2 approval remain required.
+**Prepared:** 22 October 2026 · **Historical preparation status:** initially not started. **Canonical Gate 2 migration completed later** across all 200 Incidents (98 reviewed-and-recorded, 87 reviewed-unresolved, 15 reviewed-non-geographic). Working audits archived at Git commit `6eef70deabfcca007ab3fdd88d0dc98bb7c041dd`. Website integration is a separate catalogue-branch task and is not certified by this historical handoff. Canonical Incidents and `JURISDICTION-GEOGRAPHY-PROJECTION.md` are current authority.
 **Approved Gate 1 branch:** `CAM-Initiative/Vigil` → `agent/incident-ecosystem-ingestion` (existing draft PR #155).
 **Existing website branch:** `CAM-Initiative/cam-governance-catalogue` → `feat/vigil-case-files-dashboard-20261022`.
 **Authoritative website design:** [VIGIL Case Files — Incident Context and relational globe design](https://github.com/CAM-Initiative/cam-governance-catalogue/blob/feat/vigil-case-files-dashboard-20261022/docs-internal/VIGIL-INCIDENT-CONTEXT-DASHBOARD-DESIGN-20261022.md). **Read it before designing UI.**

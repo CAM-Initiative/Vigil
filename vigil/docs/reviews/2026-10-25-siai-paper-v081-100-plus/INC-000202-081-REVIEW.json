@@ -1,0 +1,327 @@
+{
+  "schema": "vigil-siai-paper-fast-delta-v081/1",
+  "incident_id": "VIGIL-INC-000202",
+  "review_date": "2026-10-25",
+  "review_mode": "bounded-edit",
+  "reviewer": "OpenAI GPT-6 — AI analytical reviewer",
+  "published_taxonomy_version": "0.8.1",
+  "historical_screening_taxonomy_version": "0.8.0",
+  "source_screening_packet": "vigil/docs/reviews/2026-10-23-taxonomy-080-reconciliation/INC-202-CURRENT-080-DECISION.json",
+  "baseline": {
+    "ref": "175d87740658b11b4a72346f2a6ea45123e232b7",
+    "canonical_blob_sha": "a42547434ec17d2fa952087154075b4cd306069f",
+    "record_version": "0.1.3",
+    "taxonomy_version": "0.6.11"
+  },
+  "canonical_promotion": {
+    "status": "approved-bounded-canonical-update",
+    "target_record_version": "0.1.4",
+    "target_taxonomy_version": "0.8.1",
+    "preserve_outstanding_uncertainty": true
+  },
+  "review_boundary": "Original 0.8.0 source-backed condition packet; no third-party source re-investigation.",
+  "clause_inventory": [
+    {
+      "episode_id": "E001",
+      "adjudication_status": "mapped",
+      "source_record_refs": [
+        "source_records[0]"
+      ],
+      "taxonomy_relationships": [
+        {
+          "class_id": "VIGIL-FC-000062",
+          "relationship": "failure-occurrence",
+          "canonical_taxonomy_mapping": true,
+          "rationale": "The generated driver supplied arbitrary bytes where the target function expected a valid image object. A crash under that invalid calling condition establishes that the constructed test crashed, not that normal application use can trigger the same fault. The evaluated workflow still labelled some such outcomes as program errors until a later validator examined their calling context. Treating the crash as application-defect evidence before establishing that connection gave the test artefact more diagnostic assurance than it supported."
+        }
+      ]
+    },
+    {
+      "episode_id": "E002",
+      "adjudication_status": "mapped",
+      "source_record_refs": [
+        "source_records[0]"
+      ],
+      "taxonomy_relationships": [
+        {
+          "class_id": "VIGIL-FC-000016",
+          "relationship": "successful-invariant",
+          "canonical_taxonomy_mapping": true,
+          "rationale": "The added validator traced one crash through the application entry point and found an input-length check that made the crashing path infeasible in normal use. It rejected that candidate with source-code evidence. This bounded check does not validate every rejection."
+        }
+      ]
+    },
+    {
+      "episode_id": "E003",
+      "adjudication_status": "mapped",
+      "source_record_refs": [
+        "source_records[0]"
+      ],
+      "taxonomy_relationships": [
+        {
+          "class_id": "VIGIL-FC-000062",
+          "relationship": "failure-occurrence",
+          "canonical_taxonomy_mapping": true,
+          "rationale": "The added validator also produced unsupported feasibility conclusions in the manually reviewed sample. Those judgements cannot receive verified-defect or verified-rejection status merely because another agent produced them. The reported reliability review limits reliance on its aggregate filtering result."
+        }
+      ]
+    }
+  ],
+  "mapping_tests": [
+    {
+      "class_id": "VIGIL-FC-000062",
+      "role": "failure-occurrence",
+      "mapped": true,
+      "recognition_conditions_unchanged": true,
+      "necessary_recognition": [
+        {
+          "canonical_condition": "A factual claim, citation, technical statement, calculation, interpretation, source representation, or comparable epistemic artefact is generated, retrieved, transformed, inferred, or synthesised.",
+          "assessment": "established",
+          "basis": "Generated fuzz drivers and crash/defect claims are epistemic artefacts of an AI-assisted testing process."
+        },
+        {
+          "canonical_condition": "The downstream task has a material reliance requirement such that factual accuracy, evidentiary fidelity, technical correctness, source integrity, traceability, uncertainty handling, or equivalent epistemic assurance is consequential to the task.",
+          "assessment": "established",
+          "basis": "Defect triage requires evidence that a crash is feasible through valid application entry points, not just an invalid internal function call."
+        },
+        {
+          "canonical_condition": "The epistemic posture or assurance applied to the artefact is materially lower than the level required by that downstream reliance condition.",
+          "assessment": "established",
+          "basis": "Crashes caused by precondition-violating drivers and unreliable validation explanations lacked the necessary calling-context assurance."
+        },
+        {
+          "canonical_condition": "The artefact is represented, propagated, incorporated, submitted, or accepted as fit for the reliance-bearing task without the required epistemic threshold being satisfied.",
+          "assessment": "established",
+          "basis": "Initial driver crash outcomes were treated as program-error results before the later contextual verification identified invalid drivers."
+        },
+        {
+          "canonical_condition": "The mismatch materially affects or creates a material risk to decision-making, evidentiary use, professional work, institutional process, public reliance, technical correctness, or another reliance-bearing outcome.",
+          "assessment": "established",
+          "basis": "This miscalibration generated spurious vulnerability signals and could misdirect developer triage; the paper does not demonstrate specific production loss."
+        }
+      ],
+      "v081_exclusions": [
+        {
+          "current_condition": "Class scope exclusion (all results): Purely fictional, creative, symbolic, role-play, expressive, or contemplative generation where empirical truth is not a task condition.",
+          "original_condition": "Purely fictional, creative, symbolic, role-play, expressive, or contemplative generation where empirical truth is not a task condition.",
+          "role_scope": "all-results",
+          "status": "not-established-on-episode",
+          "assessment": "The condition described by this exclusion is not supported in the episode's specific source path. The accepted role depends on the independently evidenced required conditions in this bounded research example; do not generalise to other experiments.",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "episode_refs": [
+            "E001",
+            "E003"
+          ]
+        },
+        {
+          "current_condition": "Not aligned exclusion: Exploratory brainstorming, hypothesis generation, or modelling that is clearly represented as provisional and is not subsequently relied upon as verified or decision-ready.",
+          "original_condition": "Exploratory brainstorming, hypothesis generation, or modelling that is clearly represented as provisional and is not subsequently relied upon as verified or decision-ready.",
+          "role_scope": "not-aligned-only",
+          "status": "not-established-on-episode",
+          "assessment": "The condition described by this exclusion is not supported in the episode's specific source path. The accepted role depends on the independently evidenced required conditions in this bounded research example; do not generalise to other experiments.",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "episode_refs": [
+            "E001",
+            "E003"
+          ]
+        },
+        {
+          "current_condition": "Not aligned exclusion: Approximation where approximation is explicitly compatible with the task and reliance condition.",
+          "original_condition": "Approximation where approximation is explicitly compatible with the task and reliance condition.",
+          "role_scope": "not-aligned-only",
+          "status": "not-established-on-episode",
+          "assessment": "The condition described by this exclusion is not supported in the episode's specific source path. The accepted role depends on the independently evidenced required conditions in this bounded research example; do not generalise to other experiments.",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "episode_refs": [
+            "E001",
+            "E003"
+          ]
+        },
+        {
+          "current_condition": "Not aligned exclusion: Material is clearly marked unverified or low-confidence and is not subsequently promoted into a higher-reliance state.",
+          "original_condition": "Material is clearly marked unverified or low-confidence and is not subsequently promoted into a higher-reliance state.",
+          "role_scope": "not-aligned-only",
+          "status": "not-established-on-episode",
+          "assessment": "The condition described by this exclusion is not supported in the episode's specific source path. The accepted role depends on the independently evidenced required conditions in this bounded research example; do not generalise to other experiments.",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "episode_refs": [
+            "E001",
+            "E003"
+          ]
+        },
+        {
+          "current_condition": "Class scope exclusion (all results): A required verification step is simply omitted and the material is presented as verified; use Required Verification Completion where that mechanism is sufficient.",
+          "original_condition": "A required verification step is simply omitted and the material is presented as verified; use Required Verification Completion where that mechanism is sufficient.",
+          "role_scope": "all-results",
+          "status": "not-established-on-episode",
+          "assessment": "The condition described by this exclusion is not supported in the episode's specific source path. The accepted role depends on the independently evidenced required conditions in this bounded research example; do not generalise to other experiments.",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "episode_refs": [
+            "E001",
+            "E003"
+          ]
+        },
+        {
+          "current_condition": "Class scope exclusion (all results): Verification was valid when performed but later became stale or the artefact materially changed; use Verification Applicability Continuity or Post-Verification State Integrity as applicable.",
+          "original_condition": "Verification was valid when performed but later became stale or the artefact materially changed; use Verification Applicability Continuity or Post-Verification State Integrity as applicable.",
+          "role_scope": "all-results",
+          "status": "not-established-on-episode",
+          "assessment": "The condition described by this exclusion is not supported in the episode's specific source path. The accepted role depends on the independently evidenced required conditions in this bounded research example; do not generalise to other experiments.",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "episode_refs": [
+            "E001",
+            "E003"
+          ]
+        },
+        {
+          "current_condition": "Class scope exclusion (all results): The issue is only source provenance, authorship, or lineage while the epistemic assurance of the content is otherwise adequate for the task.",
+          "original_condition": "The issue is only source provenance, authorship, or lineage while the epistemic assurance of the content is otherwise adequate for the task.",
+          "role_scope": "all-results",
+          "status": "not-established-on-episode",
+          "assessment": "The condition described by this exclusion is not supported in the episode's specific source path. The accepted role depends on the independently evidenced required conditions in this bounded research example; do not generalise to other experiments.",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "episode_refs": [
+            "E001",
+            "E003"
+          ]
+        }
+      ],
+      "semantic_note": "Historical exclusion outcome 'not-established-on-episode' retained verbatim; this is not a universal contradiction finding."
+    },
+    {
+      "class_id": "VIGIL-FC-000016",
+      "role": "successful-invariant",
+      "mapped": true,
+      "recognition_conditions_unchanged": true,
+      "necessary_recognition": [
+        {
+          "canonical_condition": "A task or reliance claim requires material verification.",
+          "assessment": "established",
+          "basis": "A candidate application-defect claim requires verification of feasibility from legitimate entry points."
+        },
+        {
+          "canonical_condition": "The required checks are completed with interpretable evidence before the result receives the corresponding assurance; inconclusive checks retain provisional status.",
+          "assessment": "established",
+          "basis": "The context validator examined the caller/entry-point source code and found the reported crashing path gated by an input-length check."
+        },
+        {
+          "canonical_condition": "The checks, their results and the subsequent assurance claim are available and agree for the stated scope.",
+          "assessment": "established",
+          "basis": "The supported decision rejected that specific infeasible crash using identifiable code-path evidence, not merely an unsupported AI assertion."
+        }
+      ],
+      "v081_exclusions": [
+        {
+          "current_condition": "Class scope exclusion (all results): Verification was not required for the level of claim being made.",
+          "original_condition": "Verification was not required for the level of claim being made.",
+          "role_scope": "all-results",
+          "status": "not-established-on-episode",
+          "assessment": "The condition described by this exclusion is not supported in the episode's specific source path. The accepted role depends on the independently evidenced required conditions in this bounded research example; do not generalise to other experiments.",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "episode_refs": [
+            "E002"
+          ]
+        },
+        {
+          "current_condition": "Not aligned exclusion: The system clearly marks the result as unverified or provisional.",
+          "original_condition": "The system clearly marks the result as unverified or provisional.",
+          "role_scope": "not-aligned-only",
+          "status": "not-established-on-episode",
+          "assessment": "The condition described by this exclusion is not supported in the episode's specific source path. The accepted role depends on the independently evidenced required conditions in this bounded research example; do not generalise to other experiments.",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "episode_refs": [
+            "E002"
+          ]
+        },
+        {
+          "current_condition": "Not aligned exclusion: The verification was performed and the issue is only that the underlying method was poor.",
+          "original_condition": "The verification was performed and the issue is only that the underlying method was poor.",
+          "role_scope": "not-aligned-only",
+          "status": "not-established-on-episode",
+          "assessment": "The condition described by this exclusion is not supported in the episode's specific source path. The accepted role depends on the independently evidenced required conditions in this bounded research example; do not generalise to other experiments.",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "episode_refs": [
+            "E002"
+          ]
+        }
+      ],
+      "semantic_note": "Historical exclusion outcome 'not-established-on-episode' retained verbatim; this is not a universal contradiction finding."
+    }
+  ],
+  "classification_disposition": {
+    "status": "provisionally-classified",
+    "coverage": "complete",
+    "retained_roles": [
+      {
+        "class_id": "VIGIL-FC-000062",
+        "role": "failure-occurrence"
+      },
+      {
+        "class_id": "VIGIL-FC-000016",
+        "role": "successful-invariant"
+      }
+    ],
+    "source_evidence_limits": [
+      "The authors' aggregate prose and Table 2 differ in totals; figures are attributed and not silently reconciled.",
+      "The reviewed benchmark is controlled. No specific maintainer response, production outage, loss or exploitation is proved.",
+      "The manually reviewed validator sample shows inaccurate analyses alongside the demonstrated positive verification example; E002 success is bounded and does not certify all rejects."
+    ],
+    "screen_outcome": {
+      "taxonomy_version": "0.8.0",
+      "classification_status": "provisionally-classified",
+      "all_mapping_roles_and_confidences": "retained",
+      "adjudication_coverage": {
+        "status": "complete"
+      },
+      "provisional_status_reason": "Original controlled-study evidence limits and lack of independent reproduction remain; taxonomy-version review is not independent human verification."
+    }
+  },
+  "taxonomy_mapping_dispositions": [
+    {
+      "class_id": "VIGIL-FC-000062",
+      "disposition": "retained",
+      "reason": "Canonical role and confidence unchanged from original main at recorded baseline."
+    },
+    {
+      "class_id": "VIGIL-FC-000016",
+      "disposition": "retained",
+      "reason": "Canonical role and confidence unchanged from original main at recorded baseline."
+    }
+  ],
+  "new_taxonomy_mappings": [],
+  "source_dispositions": [],
+  "harm_review": {
+    "status": "preserved-not-reopened"
+  },
+  "governance_interpretation_review": {
+    "status": "preserved"
+  },
+  "rebuild_guard": {
+    "status": "connector-structural-precheck-passed",
+    "official_python_validator": "not-run-in-connector",
+    "source_clause_and_mapped_roles_unchanged": true,
+    "uncertain_exclusion_status_preserved": true,
+    "independent_harm_external_assessments_preserved": true,
+    "integration_requirement": "Run official non-destructive rebuild guard against baseline and incident-specific manifest; regenerate shared indexes during integration."
+  }
+}

@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "DeepSeek exposed an unauthenticated database containing chat histories and secrets",
     "created": "2026-09-08",
-    "updated": "2026-10-22",
-    "version": "0.1.20"
+    "updated": "2026-10-24",
+    "version": "0.1.22"
   },
   "incident_identity": {
     "historical_event_name": "DeepSeek exposed ClickHouse database",
@@ -21,7 +21,7 @@
   "summary": "Wiz Research found a publicly accessible, unauthenticated ClickHouse database belonging to DeepSeek. The exposed service provided full database-operation access and contained more than one million lines of logs including chat histories, API secrets, backend details and operational metadata. DeepSeek secured the database after Wiz notified the company; public evidence does not establish whether third parties accessed the data before discovery.",
   "vigil_assessment": {
     "factual_basis": "Wiz reports discovering two internet-reachable DeepSeek ClickHouse endpoints with no authentication and full database control. The exposed data included more than one million log lines with chat history, secret keys and backend details. Reuters independently reported the discovery and DeepSeek's rapid remediation after notification. Wiz expressly says it did not perform intrusive queries beyond enumeration. Its discussion of possible further file access is a potential consequence, not an executed step in the disclosed research.",
-    "governance_interpretation": "The occurrence is a material AI-platform data-security failure in surrounding infrastructure rather than a model-behaviour failure. It demonstrates that governance of frontier AI services includes conventional but consequential access control, data custody and operational-security boundaries. Database reachability and exposed sensitive logs do not themselves show a governance process treating capability as permission. Notification and closure do not establish earlier third-party access, model-training exposure or runtime-agent admission. The privacy and infrastructure-security outcomes are Not aligned. Closure of the unauthenticated exposure is Aligned with the repair requirement.",
+    "governance_interpretation": "The occurrence is a material AI-platform data-security failure in surrounding infrastructure rather than a model-behaviour failure. It demonstrates that governance of frontier AI services includes conventional but consequential access control, data custody and operational-security boundaries. Database reachability and exposed sensitive logs do not themselves show a governance process treating capability as permission. Notification and closure do not establish earlier third-party access, model-training exposure or runtime-agent admission. The privacy and infrastructure-security outcomes are Not aligned. Closure of the unauthenticated exposure is Aligned with the repair requirement. Wiz reports that its disclosure reached DeepSeek and the company promptly secured the exposed database. The report connects the signal, responsible service operator and corrective disposition. This finding covers that response pathway. It does not establish recovery of prior copies or the state of every backend service.",
     "significance_to_cam": "The occurrence shows that an AI service can expose highly sensitive user and operational data through ordinary infrastructure failures even when the model itself is not the failing component. Access control, data custody and deployment security are therefore part of the service's governance boundary.",
     "assessment_boundaries": [
       "The evidence does not establish that an unauthorised third party accessed or misused the exposed database before Wiz discovered it.",
@@ -78,9 +78,15 @@
               "canonical_taxonomy_mapping": false,
               "relationship": "rejected candidate",
               "rationale": "The occurrence establishes an unauthenticated database exposure and researcher enumeration, not a capability-to-authority conversion by an AI or governance process. The explicit vulnerability-without-authority-conversion exclusion applies. Data exposure at an AI provider is not itself evidence of this class mechanism."
+            },
+            {
+              "class_id": "VIGIL-FC-000042",
+              "relationship": "successful-invariant",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Wiz reports that its disclosure reached DeepSeek and the company promptly secured the exposed database. The report connects the signal, responsible service operator and corrective disposition. This finding covers that response pathway. It does not establish recovery of prior copies or the state of every backend service."
             }
           ],
-          "adjudication_status": "resolved-no-mapping"
+          "adjudication_status": "mapped"
         }
       ],
       "purpose": "Describe source-backed material actions and response phases. Separate overlapping activity and attributed claims where exact sequence is not public."
@@ -271,16 +277,22 @@
     }
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.6.11",
-    "classification_status": "unclassified",
-    "classification_basis": "The occurrence evidence and material consequences are preserved. No selectable class is admitted on the available recognition and exclusion evidence.",
-    "primary_classification": null,
+    "taxonomy_version": "0.8.1",
+    "classification_status": "provisionally-classified",
+    "classification_basis": "Wiz reports that its disclosure reached DeepSeek and the company promptly secured the exposed database. The report connects the signal, responsible service operator and corrective disposition. This finding covers that response pathway. It does not establish recovery of prior copies or the state of every backend service. The initial exposure still does not establish a capability-to-authority conversion.",
+    "primary_classification": {
+      "family_id": "VIGIL-FF-0007",
+      "class_id": "VIGIL-FC-000042",
+      "classification_role": "successful-invariant",
+      "classification_basis": "Wiz reports that its disclosure reached DeepSeek and the company promptly secured the exposed database. The report connects the signal, responsible service operator and corrective disposition. This finding covers that response pathway. It does not establish recovery of prior copies or the state of every backend service.",
+      "classification_confidence": "medium"
+    },
     "secondary_classifications": [],
     "classification_review_provenance": {
-      "review_date": "2026-10-19",
-      "reviewer": "OpenAI Codex — AI analytical reviewer",
-      "review_status": "Applied source/criterion-linked admission decisions; retained unresolved evidence and taxonomy-scope questions. Historical Boundary confidence preserved in the linked review.",
-      "review_reference": "vigil/docs/reviews/2026-10-19-boundary-diagnostic/corpus-repair/INC-000096-DECISION.json"
+      "review_date": "2026-10-25",
+      "reviewer": "OpenAI GPT-6 — AI analytical reviewer",
+      "review_status": "Bounded published taxonomy v0.8.1 role-scoped exclusion check of previously source-first-reviewed v0.8.0 findings; evidence gaps, roles and clause statuses retained.",
+      "review_reference": "vigil/docs/reviews/2026-10-25-siai-taxonomy-081-delta/BATCH-081-099-DELTA.json"
     },
     "adjudication_coverage": {
       "status": "complete"
@@ -652,28 +664,70 @@
           "AI-authored context review is not human source verification. Existing source-access statements remain historical."
         ],
         "review_outcome": "Added 4 party entities and 2 geographic relationships; geographic scope not-established. Preserved all prior narrative, evidence, taxonomy, Harm Impact and external assessments."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-24-080-B06-000096",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "Codex (specific runtime model identifier not exposed)",
+        "review_date": "2026-10-24",
+        "review_scope": "Source-first taxonomy v0.8.0 reconciliation; independent harm and external assessments preserved.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "web_research": true,
+          "taxonomy_review": true,
+          "harm_impact_review": false,
+          "external_requirement_review": false
+        },
+        "known_limitations": [
+          "The originating Wiz account was directly re-read. No live endpoint or private data was accessed. Its closure account is attributed evidence; the report does not publish a post-fix challenge sequence or complete policy configuration.",
+          "AI-authored review, not independent human verification."
+        ],
+        "review_outcome": "Added provisional medium-confidence bounded positive finding; original adverse occurrence and independent assessments preserved."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-25-081-DELTA-000096",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-25",
+        "review_scope": "Taxonomy v0.8.0-to-v0.8.1 role-scoped exclusion delta on retained current-edition source-first review/episode clause decisions.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "web_research": false,
+          "harm_impact_review": false,
+          "external_requirement_review": false
+        },
+        "known_limitations": [
+          "Original source artefacts were not retrieved again; the preserved source-first current-edition packet defines the factual evidence boundary.",
+          "No independent human verification or novel taxonomy applicability search, severity readjudication or external-requirement ruling was performed."
+        ],
+        "review_outcome": "All 1 existing mapping roles were checked against current all-results and role-limited exclusions. Retained provisionally-classified status, complete source-clause coverage, unmapped/resolved clause distinctions and prior evidence limits.",
+        "reviewer_platform": "OpenAI ChatGPT"
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-22-CONTEXT-000096",
+      "review_id": "VIGIL-REVIEW-2026-10-24-080-B06-000096",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT Work / Codex",
+      "reviewer_platform": "OpenAI Codex",
       "reviewer_model": "Codex (specific runtime model identifier not exposed)",
-      "review_date": "2026-10-22",
-      "review_scope": "Gate 2 approved additive Incident Context review. Source-linked parties and geographic relationships only.",
+      "review_date": "2026-10-24",
+      "review_scope": "Source-first taxonomy v0.8.0 reconciliation; independent harm and external assessments preserved.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "web_research": false,
-        "taxonomy_review": false,
+        "web_research": true,
+        "taxonomy_review": true,
         "harm_impact_review": false,
         "external_requirement_review": false
       },
       "known_limitations": [
-        "DeepSeek identity is not evidence the exposed database was physically in China; prior third-party access is unknown.",
-        "AI-authored context review is not human source verification. Existing source-access statements remain historical."
+        "The originating Wiz account was directly re-read. No live endpoint or private data was accessed. Its closure account is attributed evidence; the report does not publish a post-fix challenge sequence or complete policy configuration.",
+        "AI-authored review, not independent human verification."
       ],
-      "review_outcome": "Added 4 party entities and 2 geographic relationships; geographic scope not-established. Preserved all prior narrative, evidence, taxonomy, Harm Impact and external assessments."
+      "review_outcome": "Added provisional medium-confidence bounded positive finding; original adverse occurrence and independent assessments preserved."
     }
   },
   "harm_impact_assessment": {
