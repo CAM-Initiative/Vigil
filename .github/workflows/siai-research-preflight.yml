@@ -116,7 +116,11 @@ jobs:
             python vigil/scripts/validate-vigil-incident-rebuild.py \
               --baseline-ref bf58646d22c90a86c8333ac9bc7fe83ac856589c \
               --candidate-file "vigil/records/incidents/VIGIL-INC-${id}.json" \
-              --manifest "vigil/docs/reviews/2026-10-24-siai-paper-v081/INC-${id}-081-REVIEW.json"
+              --manifest "$(if [ "$id" = "000008" ]; then
+      printf '%s' 'vigil/docs/reviews/2026-10-25-siai-inc008-targeted-v081/INC-000008-081-DECISION.json'
+    else
+      printf 'vigil/docs/reviews/2026-10-24-siai-paper-v081/INC-%s-081-REVIEW.json' "$id"
+    fi)"
           done
       - name: Apply committed textbook case-study publication eligibility
         run: |
