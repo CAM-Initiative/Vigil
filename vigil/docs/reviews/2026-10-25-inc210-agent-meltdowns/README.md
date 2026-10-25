@@ -68,6 +68,14 @@ The article and paper provide authentic textual first-party evidence. No screens
 
 **No SIAI deliverables were changed.** Only the new branch may contain this new canonical record and its dated audit. No taxonomy, schema, validator, campaign branch or SIAI PR is amended.
 
+## CI verification on the new branch (25 October 2026)
+
+The first GitHub VIGIL records run failed on three canonical content validation issues (controlled vendor/product values and an empty contextual references list). The new record was corrected at commit `11fbcfdcddb75ccbc7091a4c6a91c97a9f191c21`, without taxonomy, schema or validator changes.
+
+The follow-up GitHub Actions **VIGIL records** run `40167718745` completed the full VIGIL corpus/maintenance test suite and source, authorship, system-component, interpretive-provenance and Incident/public validation successfully. The builder rebuilt a 201-record Incident index in the ephemeral runner.
+
+**Only the PR rule requiring generated public indexes committed to the branch failed.** The regenerated indexes differ from committed index files because INC-210 was added. The build output was not uploaded as an artifact, and the repository's instructed builder has not been run in a writable checkout. Do not hand-edit or approximate its generated output.
+
 ## Validation / next required operations
 
 - Performed: inspected the repo's current incident template, `AGENTS.md`, new-entry workflow, maintenance/public-prose contract, comparable INC-207/208, taxonomy v0.8.1, requirements index and two primary reports.
