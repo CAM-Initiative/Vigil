@@ -83,6 +83,16 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.x"
+      - name: Checkout pinned PR #166 transfer for preservation comparison
+        uses: actions/checkout@v6
+        with:
+          repository: CAM-Initiative/Vigil
+          ref: 99347d4ab5c153558c49eb888c31786b0e19214e
+          path: pr166-source
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Verify all 81 INC-100+ canonical transfers from PR #166
+        run: python vigil/releases/siai-2026/validate_inc100_transfer.py --source-root pr166-source
       - name: Install test dependency
         run: python -m pip install "jsonschema==4.26.0"
       - name: Validate taxonomy and rights
