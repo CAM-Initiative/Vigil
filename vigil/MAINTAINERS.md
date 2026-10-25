@@ -61,8 +61,7 @@ Do not falsify historical review dates or rewrite historical audits and reviews 
 - `vigil/taxonomy/` — canonical VIGIL Observatory alignment taxonomy and generated publications.
 - `vigil/external_governance/sources/` — external-source registry.
 - `vigil/external_governance/requirements/` — external-governance requirements and projections.
-- `vigil/cam_assessment/` — CAM applicability and coverage assessment.
-- `vigil/docs/reviews/` — selected dated decision packets and adopted-control provenance relevant to the retained corpus. Superseded audits are recoverable at the pinned pre-cleanup Git commit; they are not current verification.
+- `vigil/docs/reviews/` — **temporary notice board**, not a permanent research subsystem. Dated packets can support active source-first adjudication and PR handoffs; at closeout, promote substantive Incident outcomes to canonical records and adopted general controls to `vigil/docs/maintenance/`, then remove completed notice-board material from the active tree. Follow `vigil/docs/maintenance/REVIEW-RECORD-RETENTION.md`. Historical packets stay recoverable through pinned Git history.
 
 The taxonomy migration assurance ledger at `vigil/taxonomy/migration/Caelestis.LegacyFailure.MigrationLedger.json` remains live taxonomy validation evidence. It does not reactivate FM as a VIGIL record class.
 
@@ -151,6 +150,8 @@ The rebuild guard is intentionally generic. `VIGIL-INC-000129` informed its desi
 
 ### VIGIL independent adjudication authority — source interpretation boundary
 
+**Root-cause learning requirement:** See `vigil/docs/maintenance/ADJUDICATION-ROOT-CAUSE-CORRECTIONS.md`. When an adjudication is materially corrected, diagnose whether the error was in evidence, criterion interpretation, exclusion, chronology, uncertainty or process. A repeatable fault becomes a **generalisable** method correction and counterexample-based regression, not a persistent list of required answers. Previous case conclusions, historical review packets and external verdicts may be examined **only after** the current source-and-criterion evaluation has been provisionally formed. Individual factual disagreements need no artificial normative rule.
+
 VIGIL's current versioned Alignment Taxonomy is the authority for **VIGIL's own classification criteria**, not a claim of legal, regulatory, technical or factual supremacy over source institutions. First-party, investigative and other external publications are evidence and attributable interpretations. Their prestige, vocabulary, silence on a mechanism, or external classification is neither a positive nor a negative VIGIL recognition test.
 
 For each proposed change, keep four distinct layers:
@@ -162,7 +163,7 @@ For each proposed change, keep four distinct layers:
 
 An original VIGIL divergence from third-party interpretation is neither an error nor protected doctrine. Retain it if the current criterion/evidence test supports it; revise it when materially contradicted, disproved or unsupported. Never use external silence, the absence of private implementation telemetry, or pressure for agreement as an unrecorded reason for removal or polarity downgrade. Never protect an existing conclusion by ignoring evidence or adding recognition conditions not in the class.
 
-**Minimum traceable decision per materially reviewed mapping:** pinned Incident ref and taxonomy version/ref; class ID and original role/basis; exact class conditions and exclusions examined (quote the version-specific text, since individual conditions lack immutable IDs); episode/source references; condition-by-condition result and missing fact; neighbouring-class discrimination; external interpretation and any material VIGIL divergence; proposed role/basis/confidence and a disposition with substantive explanation. Negative candidates and full criterion matrices stay in **per-Incident dated review artefacts**, not canonical Incident fields or a global Incident × Class dataset.
+**Minimum traceable decision per materially reviewed mapping:** pinned Incident ref and taxonomy version/ref; class ID and original role/basis; exact class conditions and exclusions examined (quote the version-specific text, since individual conditions lack immutable IDs); episode/source references; condition-by-condition result and missing fact; neighbouring-class discrimination; external interpretation and any material VIGIL divergence; proposed role/basis/confidence and a disposition with substantive explanation. Negative-candidate criterion matrices are **temporary per-Incident working packets**, not a permanent dataset. Record material negative decisions, exact missing conditions and limits in canonical clause-level Incident dispositions before retiring the working packet; keep exhaustive process comparisons in Git history, not a global Incident × Class dataset.
 
 The current schema and rebuild guard establish structure and accounted-for change, **not** semantic truth. A passing guard cannot certify that a VIGIL divergence or bounded success survived a rewritten aggregate explanation. Audit the before/after mapping-local bases, distinct source-clause rationales, mixed episode roles, summary synthesis, unaffected external assessments, HIM and prior interpretive history before claiming a faithful adjudication. A single Fidelity Class may legitimately have failed in an earlier episode and succeeded later; do not force the episode relationships into its Incident-level mapping role or infer that the later success retroactively resolves the earlier failure. Apply **Temporal Integrity of Adjudication** in the Incident workflow: separate original conduct, later authoritative review, remedy ordered versus verified completion, and materialised harm. INC-008 is the bounded example: appellate reversal can substantiate the earlier access-denial finding but does not establish completed evidence production or erase the original failure.
 
@@ -212,6 +213,16 @@ A rejected candidate must name the specific canonical recognition condition that
 Statements such as `internal mechanism unknown`, `exact control unknown`, `root cause unavailable`, `vendor telemetry unavailable` or `implementation details unavailable` are not sufficient rejection reasons unless that missing information is itself required by the canonical class.
 
 Do not add unstated recognition conditions such as an exact model build, exact internal component, source-code access, hidden system prompt, classifier score, execution trace or vendor root-cause determination unless the class definition actually depends on that information.
+
+### Interested-party non-disclosure and evidence asymmetry
+
+A party's failure to disclose or confirm evidence it controls is **not evidence that the disputed conduct did not occur**. It is also not proof that the conduct did occur. Record any relevant commercial, reputational or other interests as a potential source-access limitation, without presuming concealment or dishonesty.
+
+Weigh independent, circumstantial and first-party evidence against each literal class condition, with attention to specificity, corroboration and credible alternatives. Do not require an interested-party admission or private model trace unless the class genuinely requires it. An attributed denial or explanation does not automatically outweigh independently observable evidence.
+
+When substantive evidence positively engages a class but a required condition remains genuinely uncertain, retain a bounded `ambiguous-boundary` with the exact missing condition and source limitation. Do not reject it **merely because the interested party has not confirmed the alleged mechanism**. Conversely, generic resemblance or speculation without positive material class engagement does not justify a Boundary, and neither silence nor a marketing claim proves protective success.
+
+The evidentiary standard is symmetric for failure and successful-invariant recognition. It neither reverses the burden of proof nor changes canonical recognition conditions, exclusions, classification roles, legal conclusions or the validator.
 
 ### Exclusion precedence and condition-specific adjudication
 
@@ -282,11 +293,21 @@ If an earlier adjudication used an unstated recognition condition, correct the r
 
 ### GitHub Issues as the durable action queue
 
-The authoritative location for new unresolved VIGIL follow-up tasks is GitHub Issues in `CAM-Initiative/Vigil`, not the former emailed queue. Issues are tracked actions, not new canonical evidence, approval, completion reporting or a substitute for an admitted Incident.
+The authoritative location for **independently actionable repository work** is GitHub Issues in `CAM-Initiative/Vigil`, not the former emailed queue. **Issues do not extend the Incident adjudication process.** The Incident records the finding and its evidentiary limits; its dated review records contested tests, holds and reasons. An Issue is neither new canonical evidence nor an approval, review-status surrogate, record-completion certificate, or mechanism for forcing a conclusion.
+
+**Issue admission requires all four tests:**
+1. **Distinct work:** a specific research-acquisition, taxonomy-design, repository maintenance or system-improvement action exists beyond simply reconsidering or recording the same Incident finding.
+2. **Practical execution:** a named or clearly identifiable responsible actor can reasonably execute it using available rights, information, tools and scope; private vendor internals with no realistic access path are not an actionable backlog item.
+3. **Objective closure:** completion is independently verifiable by a concrete public artefact, diff, controlled investigation result or test; "obtain unknown internal facts someday" is not a valid closure test.
+4. **Separate workstream:** the action is not already part of the authorised ordinary Incident assessment, bounded evidence search, current reconciliation PR or human review gate. If it is, keep it in that work's dated decision packet and PR checklist.
+
+**Non-triggers:** uncertain causal implementation, unknown classifier thresholds or vendor telemetry, unknown private allowlist membership, disputed class interpretation, a legitimate Boundary, unclassified/no-mapping/provisional state, held evidence, or a maintainer decision during normal adjudication. Capture these in the canonical Incident and its source/interpretive provenance, relevant `boundary_adjudication` when applicable, and dated review. A possible source becoming public someday does not turn private inaccessibility into a GitHub task.
+
+**Positive examples:** a reproducible broken validator with a specific failing test; a verified stale derived index requiring a scoped repair; an independently evidenced, reusable taxonomy design gap with a proposed separable comparison task; a known retrievable public official report that the current authorised review cannot process. A genuine PR blocker belongs on its PR; opening an Issue is not a substitute for resolving the blocked assessment.
 
 When an adjudication produces a concrete task that cannot safely be completed within its authorised scope, follow the issue protocol in `vigil/docs/maintenance/INCIDENT-ADJUDICATION-WORKFLOW.md`. Identify the Incident, episode and Fidelity Class or external requirement as appropriate. Search existing open and closed issues using these identities and the underlying mechanism. Update an existing relevant open issue instead of creating a duplicate. Otherwise create an actionable issue with source-grounded context, the exact missing fact or repair, branch/ref, dependencies and an objective closure condition. Use the template in `.github/ISSUE_TEMPLATE/vigil-follow-up.md`.
 
-Use categories: **taxonomy-gap**, **evidence-required**, **record-maintenance**, **system-improvement**. A defensible Boundary, no-mapping, partial or unresolved finding does not alone require an issue: the trigger is a distinct *actionable follow-up*. A blocked record stays blocked even if an issue is opened. Do not create issues for a clean pass or for progress reporting. Do not publish private evidence or sensitive correspondence in public issues.
+Use categories: **taxonomy-gap**, **evidence-required**, **record-maintenance**, **system-improvement**, but a category never overrides the four admission tests. A defensible Boundary, no-mapping, partial or unresolved finding does not alone require an issue: the trigger is a distinct *independently executable and verifiably closable action*. An ordinary uncertainty must not become an issue to close. A blocked record stays blocked even if an issue is opened. Do not create issues for a clean pass or for progress reporting. Do not publish private evidence or sensitive correspondence in public issues.
 
 Link the confirmed issue number and URL in the dated review manifest or Incident completion audit, never in a new global incident-by-class dataset. Issue creation is not automatic approval to change taxonomy, schema, validators, other Incidents or the website. If GitHub access is unavailable, preserve a ready-to-file issue payload in the dated audit and report that staging was not completed; do not revert to Gmail.
 
@@ -593,7 +614,7 @@ Approved 18 October 2026. `validate-vigil-records.py` checks `statement_analysis
 
 A clause or statement may declare `wording_evidence.basis` as `original-quotation`, `attributed-quotation` or `unavailable`. Quotation bases require a local `source_anchor`, local context in `source_paraphrase` and valid parent `source_record_refs`. An attributed quotation also requires nonempty `wording_evidence.attribution` and `wording_evidence.access_limitations`. An unavailable basis requires explicit access limitations and local context; its anchor must be absent or empty. Do not invent a quotation to satisfy the check.
 
-These checks enforce declared structure, not authenticity, chronology, completeness or interpretive quality. Unmarked historical clauses remain valid. Marker adoption is a separate evidence-review decision, not an automatic migration. Publication consumers preserve the optional structures; renderer fallback remains appropriate for legacy or externally supplied malformed content. Approval and the initial read-only corpus result are recorded in `vigil/docs/reviews/2026-10-18-wording-validation-implementation.json`.
+These checks enforce declared structure, not authenticity, chronology, completeness or interpretive quality. Unmarked historical clauses remain valid. Marker adoption is a separate evidence-review decision, not an automatic migration. Publication consumers preserve the optional structures; renderer fallback remains appropriate for legacy or externally supplied malformed content. Approval and the initial read-only corpus result are recorded in [the pinned 18 October validation and approval receipt](https://github.com/CAM-Initiative/Vigil/blob/51977810e31da0d0df0396ad2b619cd24f1f9aa4/vigil/docs/reviews/2026-10-18-wording-validation-implementation.json).
 
 ## Human-maintainer stop conditions for validators, schema rules and corpus-wide tests
 
@@ -693,7 +714,7 @@ python vigil/scripts/validate-authorship-provenance.py
 python vigil/taxonomy/validate_taxonomy.py
 ```
 
-Also run the validators owned by external governance or CAM assessment when those subsystems are touched.
+Also run the validators owned by external governance whenever that subsystem is touched. VIGIL does not maintain a separate institutional CAM applicability/coverage assessment dataset.
 
 Before closure, classify each touched supporting artefact as LIVE, GENERATED, REVIEW, AUDIT or RETIRE. Historical machinery must not masquerade as current authority. Do not reset, rebase, merge, cherry-pick, force-push or rewrite shared history as cleanup. The bounded pre-PR ingestion-branch synchronization exception above is the only permitted rebase/lease-protected force-update under this guide.
 
@@ -723,7 +744,7 @@ The VIGIL Incident record stores the structured `incident_artefacts[]` reference
 - `source_url` — URL for the **original** external social post, publisher page or supplied source, never replaced by Registry;
 - capture/caption/alt/provenance fields — explicitly identify whether the image is an original visible post, publisher image or separately identified archive rendering; never assert first-party authenticity without basis.
 
-The human-approved 2026-10-18 canonical media check blocks unsupported or MIME-incompatible display references, non-image screenshot declarations, empty image alt text and Registry permalink/render pairs that do not identify the same immutable commit and file. It applies to all optional `incident_artefacts[]`, not one Incident. It checks metadata offline; it does not inspect remote bytes or authenticate a capture. Ordinary source and archive document URLs remain outside this media-slot check. See `docs/reviews/2026-10-18-incident-media-validation-gate1.md` for the approved scope.
+The human-approved 2026-10-18 canonical media check blocks unsupported or MIME-incompatible display references, non-image screenshot declarations, empty image alt text and Registry permalink/render pairs that do not identify the same immutable commit and file. It applies to all optional `incident_artefacts[]`, not one Incident. It checks metadata offline; it does not inspect remote bytes or authenticate a capture. Ordinary source and archive document URLs remain outside this media-slot check. See [Git-pinned approved media validation scope](https://github.com/CAM-Initiative/Vigil/blob/f26280dd08ea83c7206f144a0c214b9abab8f5ad/vigil/docs/reviews/2026-10-18-incident-media-validation-gate1.md) for the approved scope.
 
 Commit and inspect the genuine Registry image or PDF first, and only then add its canonical VIGIL reference metadata. Do not use `main` or another moving branch for live reference links. Where multiple captures document materially distinct parts of **one bounded occurrence**, use the Incident ID filename plus `-02`, `-03` etc. (or an existing `-01`–`-02` sequence); do not combine separate affected users into one occurrence or one Harm Impact assessment. Archival preservation does not automatically confer permission to redistribute copyrighted content: record attribution, preserve the original URL, retain only necessary material and review privacy/rights concerns before public display.
 
@@ -745,7 +766,7 @@ Approval covers this control, documentation, templates and isolated tests. After
 
 ### Incident Context Gate 2 implementation (22 October 2026)
 
-The maintainer approved the five-case pilot and continuation across the current corpus. The dated `docs/reviews/2026-10-22-incident-context-migration/` inventory distinguishes reviewed coded relationships, reviewed unknowns and non-geographic scenarios. Original prose, legacy jurisdiction text, sources, taxonomy, HIM and external assessments are preserved. Each additive record review increments the record patch version and appends interpretive provenance.
+The maintainer approved the five-case pilot and continuation across the current corpus. The completed 200-Incident migration distinguished 98 reviewed-and-recorded, 87 reviewed-unresolved and 15 reviewed-non-geographic outcomes. Its temporary review inventory was retired from the working tree on 24 October 2026, recoverable from Git commit `6eef70deabfcca007ab3fdd88d0dc98bb7c041dd`; the canonical Incident contexts and `docs/maintenance/JURISDICTION-GEOGRAPHY-PROJECTION.md` remain authoritative. Original prose, legacy jurisdiction text, sources, taxonomy, HIM and external assessments are preserved. Each additive record review increments the record patch version and appends interpretive provenance.
 
 The jurisdiction projection v2 publishes canonical relationship roles and scope with source references. Its `legacy_text_projection` is explicitly lexical compatibility data, not substitute evidence. See `docs/maintenance/JURISDICTION-GEOGRAPHY-PROJECTION.md`. Stage 01 continues to render the five Incident Context subsections specified in Gate 1; country and subdivision codes are displayed with readable labels, source-linked explanations and uncertainty. Country centroids do not represent physical occurrence coordinates, and Section 04 remains authoritative for admitted external assessments.
 

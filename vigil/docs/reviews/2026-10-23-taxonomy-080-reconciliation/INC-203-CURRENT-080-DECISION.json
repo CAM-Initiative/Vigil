@@ -1,0 +1,178 @@
+{
+  "incident_id": "VIGIL-INC-000203",
+  "review_date": "2026-10-23",
+  "review_mode": "full-rebuild",
+  "status": "completed-evidence-limited",
+  "baseline": {
+    "commit": "6182dd508dce3e7c64d9dbee5108067c8bf32eac",
+    "record_version": "0.1.4",
+    "taxonomy_version": "0.6.11",
+    "classification_status": "provisionally-classified",
+    "prior_record_review": "vigil/docs/reviews/2026-10-19-boundary-diagnostic/corpus-repair/INC-000203-DECISION.json"
+  },
+  "current_criteria": {
+    "version": "0.8.0",
+    "reference_commit": "6182dd508dce3e7c64d9dbee5108067c8bf32eac",
+    "full_class_catalogue_examined": 80
+  },
+  "source_evaluation": {
+    "status": "reviewed-from-identified-primary-and-attributed-first-party-reports",
+    "source_urls": [
+      "https://www.lemonde.fr/en/pixels/article/2026/10/13/after-danfoss-hackers-strike-other-refrigeration-systems-used-in-france_6758565_13.html",
+      "https://www.cert.cyber.gouv.fr/alerte/CERTFR-2026-ALE-012/",
+      "https://www.ladepeche.fr/2026/10/13/reportage-nous-avons-du-tout-jeter-une-cyberattaque-provoque-des-pertes-massives-dans-un-e-leclerc-proche-dalbi-13598650.php"
+    ],
+    "attribution_and_access_limits": [
+      "AI involvement, agent execution, specific malicious command origin and cross-day attacker identity remain unproven.",
+      "The 150°C value is a setpoint, not a measured freezer temperature; automated-seeming rapid parameter changes do not prove AI or fuzzing.",
+      "Bordeaux no-disposal intervention and Lescure substantial stock loss are different store-specific material outcomes and must not be conflated.",
+      "Lescure password/firewall updates do not prove whether that store's exact protective control activated or failed for the intrusion.",
+      "CERT-FR bulletin and subsequent changes are public guidance, not proved actual remediation at every store."
+    ]
+  },
+  "source_first_discovery": {
+    "material_episode_refs": [
+      "E001",
+      "E002",
+      "E003",
+      "E004",
+      "E005"
+    ],
+    "independently_observed_governance_properties": [
+      "Multiple stores using refrigeration controllers experienced hostile configuration modification, with no proven AI use or precise initiating credential/method (E002).",
+      "In one unnamed Bordeaux-area store, supervision detected abnormal temperature and specialists intervened before stored goods were lost (E003).",
+      "Lescure-d'Albigeois staff previously changed firewall/password configurations, yet experienced disruption and stock loss; what control was applicable, engaged or inadequate is unavailable (E001,E004).",
+      "Later CERT-FR recommendations are public protective guidance but are not observed retroactive safeguards at the harmed stores (E005)."
+    ],
+    "summary": "The independently reported Bordeaux-area temperature-monitoring alarm around 04:00 triggered teams and refrigeration specialists in time to prevent stock disposal. This is an observed bounded protection success under FC-083. Other Dixell-equipped stores suffered harmful interruption and the Lescure defensive changes have no observed trace establishing valid control activation or the cause of compromise. No AI participant or specific authority-conversion mechanism is established."
+  },
+  "positive_class_tests": [
+    {
+      "class_id": "VIGIL-FC-000083",
+      "name": "Control Effectiveness Integrity",
+      "mapping_role": "successful-invariant",
+      "episode_refs": [
+        "E003"
+      ],
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]",
+        "source_records[2]"
+      ],
+      "recognized_conditions": [
+        {
+          "condition": "An applicable validly activated protective control faces its governed hazard.",
+          "outcome": "established",
+          "independent_assessment": "The Bordeaux-area installation's supervisory temperature monitoring was active and detected the materially abnormal refrigeration state while attackers were changing settings."
+        },
+        {
+          "condition": "The control produces a timely effect sufficient for its protective purpose and evidenced context, including any justified heightened protection.",
+          "outcome": "established",
+          "independent_assessment": "Staff and refrigeration specialists arrived and intervened before goods needed disposal, meeting this named monitoring-and-intervention process's bounded protective purpose in the reported store."
+        },
+        {
+          "condition": "Observed intervention and hazard outcome demonstrate the required containment or mitigation rather than activation alone.",
+          "outcome": "established",
+          "independent_assessment": "Le Monde reports the intervention defeated the attack's stock-loss effect in that specific store. The success does not imply an overall absence of refrigeration compromise or store-wide / fleet-wide protection."
+        }
+      ],
+      "exclusions": [
+        {
+          "condition": "The applicable control does not become operative when a valid activation condition occurs; assess Required Control Activation.",
+          "outcome": "contradicted",
+          "independent_assessment": "The temperature-monitoring control actually detected the abnormality, so this is not missing activation."
+        },
+        {
+          "condition": "The control becomes operative even though its valid activation or applicability conditions are not satisfied; assess Control Activation Validity.",
+          "outcome": "contradicted",
+          "independent_assessment": "The trigger was actual abnormal refrigeration behaviour within its protective monitoring purpose."
+        },
+        {
+          "condition": "The control becomes operative with a sufficient effect but its operative state is later lost, weakened, reset, or transformed before reaching the governed point; assess Control-State Preservation.",
+          "outcome": "not-established",
+          "independent_assessment": "No report of a subsequently lost or reset active monitoring state in this Bordeaux response."
+        },
+        {
+          "condition": "An operative governance signal fails to reach any capable endpoint or execution surface; assess the applicable governance-control reach class rather than treating non-delivery as inadequate control effect.",
+          "outcome": "contradicted",
+          "independent_assessment": "The alert reached capable staff and refrigeration specialists who intervened."
+        },
+        {
+          "condition": "The control produces the protective effect required by its defined purpose and the remaining harm arises through an independent downstream mechanism.",
+          "outcome": "contradicted",
+          "independent_assessment": "The bounded Bordeaux store avoided stock disposal due to observed intervention; the Lescure stock loss is a separate store-specific trajectory."
+        },
+        {
+          "condition": "The dispute is solely that policy should have required a stronger safeguard, without evidence of an applicable operational control or protective-effect obligation in the material context.",
+          "outcome": "not-established",
+          "independent_assessment": "The success is based on an observed existing monitoring/intervention purpose, not a wish for a stronger policy."
+        },
+        {
+          "condition": "Disability, neurodivergence, diagnosis, age-associated stereotype, or another personal characteristic is used by itself to presume incapacity, vulnerability, or diminished agency.",
+          "outcome": "not-applicable",
+          "independent_assessment": "No individual human characteristic or capacity inference forms part of the cold-chain protection assessment."
+        }
+      ],
+      "success_alternative": "Bordeaux successful containment is limited to the reported store, not Lescure or every exposed device."
+    }
+  ],
+  "independent_negative_candidate_tests": [
+    {
+      "id": "VIGIL-FC-000002",
+      "basis": "Current explicit exclusion: vulnerability/remote reachability with no proven AI or governance-process conversion of capability into permission. No evidence of the attacker or controller inferring that reachability authorised changes. Keep the prior rejected candidate rejected."
+    },
+    {
+      "id": "VIGIL-FC-000003",
+      "basis": "Neither the initiating authority for changed settings nor a carried-over permission to a new principal/scope is evidenced at Lescure. E004 remains unresolved, not admitted."
+    },
+    {
+      "id": "VIGIL-FC-000038",
+      "basis": "Existence of precautionary password and firewall work does not identify a required trigger and corresponding operational control nonactivation."
+    },
+    {
+      "id": "VIGIL-FC-000041",
+      "basis": "No independent required review/permission route and observed alternate path are established for the changed refrigeration settings."
+    },
+    {
+      "id": "VIGIL-FC-000084",
+      "basis": "No independent AI-mediated refrigeration-service availability/continuity obligation attributable to an AI actor is established; the physical service outage alone does not establish the class's AI service requirement."
+    }
+  ],
+  "previous_mapping_dispositions": [
+    {
+      "class_id": "VIGIL-FC-000083",
+      "previous_role": "successful-invariant",
+      "previous_confidence": "medium",
+      "disposition": "retained",
+      "after_role": "successful-invariant",
+      "after_confidence": "medium",
+      "reason": "Current literal success/failure and exclusion tests support the same existing bounded mapping; no role, confidence or causal-intent inflation justified."
+    }
+  ],
+  "previous_boundary_snapshot": null,
+  "adjudicated_outcome": {
+    "classification_status": "provisionally-classified",
+    "adjudication_coverage": {
+      "status": "partial"
+    },
+    "taxonomy_version": "0.8.0",
+    "mapping_changes": "none; previous mapping and mapping-local bases preserved",
+    "boundary_reassessment": "No canonical Boundary. Distinct E001/E004 unresolved clauses remain evidence-limited and are not falsely assigned a failure."
+  },
+  "temporal_integrity": "Earlier conduct, partial intervention and subsequent remediation statements retained in original chronology. A later provider remediation claim or a one-store success cannot erase other proven earlier outcomes.",
+  "non_taxonomy": {
+    "source_records": "preserved",
+    "source_clauses": "preserved",
+    "harm_impact": "preserved",
+    "external_requirement_assessments": "preserved",
+    "media": "preserved",
+    "public_prose": "preserved",
+    "geographic_context": "preserved"
+  },
+  "reviewer": {
+    "identity": "OpenAI ChatGPT GPT-6",
+    "method": "AI-assisted evidence and criterion adjudication",
+    "human_verified": false
+  },
+  "issue_register": "No GitHub Issue: private unknowns retained within canonical clauses, Boundary diagnosis and historical evidence."
+}

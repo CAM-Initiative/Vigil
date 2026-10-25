@@ -8,7 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 VIGIL = ROOT / "vigil"
 INCIDENTS = VIGIL / "records" / "incidents"
-AUDIT = VIGIL / "docs" / "reviews" / "2026-09-27-environment-metadata-semantic-transmutation-audit.json"
+AUDIT = VIGIL / "tests" / "fixtures" / "2026-09-27-environment-metadata-semantic-transmutation-audit.json"
 SCRIPT = VIGIL / "scripts" / "validate-vigil-records.py"
 SPEC = importlib.util.spec_from_file_location("validate_agent_environment_metadata", SCRIPT)
 VALIDATOR = importlib.util.module_from_spec(SPEC)

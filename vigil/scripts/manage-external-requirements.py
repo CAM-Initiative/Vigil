@@ -2,8 +2,8 @@
 """Validate and build VIGIL's canonical external governance requirements corpus.
 
 The maintained corpus records authoritative external-source abstractions and source
-review state. CAM applicability and coverage are assessed separately under
-`vigil/cam_assessment/`.
+review state. Organisational CAM applicability/coverage is not assessed
+or asserted by this VIGIL external-requirement registry.
 """
 
 from __future__ import annotations

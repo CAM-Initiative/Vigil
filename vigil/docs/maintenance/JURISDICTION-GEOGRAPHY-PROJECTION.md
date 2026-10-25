@@ -38,7 +38,7 @@ python vigil/tests/test_jurisdiction_projection.py
 
 The `VIGIL records` workflow builds and tests the projection with the rest of the canonical Incident pipeline. On the dedicated ongoing ingestion branch, the workflow commits *only this generated geography index* on successful push validation, leaving canonical and taxonomy/source records untouched. On `main`, it is included in the already-authorized generated-index commit step. PRs require the derived index to match the source.
 
-## Next phase: source-level relationship adjudication (separate Gate 1)
+## Historical proposed phase: source-level relationship adjudication (later approved and implemented)
 
 The current projection standardizes text without asserting why each jurisdiction is relevant. For robust institutional analytics, a future additive canonical schema proposal should separate **event location**, **affected institution**, **affected population**, **provider/operator location**, **data infrastructure**, and **regulatory applicability**, each with role, evidence/source references, uncertainty and review provenance. That migration must independently review ambiguous cases and shall not automatically transform source-field mentions into confirmed facts. The dashboard can use the current projection immediately for conservative jurisdiction filtering without waiting for the full semantic migration.
 

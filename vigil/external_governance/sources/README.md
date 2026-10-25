@@ -8,7 +8,7 @@ VIGIL's source identification, abstraction, classification and maintenance conte
 
 The governance flow is:
 
-`external source -> external requirement -> CAM applicability/coverage assessment -> VIGIL routing/repair`
+`external source -> external requirement -> evidence-grounded incident-level applicability analysis`
 
 Source registration records what an external instrument is, its bounded relevance to AI governance and whether it has changed. It MUST NOT determine whether the source applies to CAM, manufacture an external requirement, create a CAM coverage finding, or create a substantive VIGIL repair record automatically.
 
@@ -64,4 +64,4 @@ For normalized observations from an official-source adapter:
 python vigil/scripts/manage-external-sources.py ingest --source <source-id> --input /path/to/items.json
 ```
 
-Semantic external-requirement extraction belongs under `../requirements/`. CAM applicability and coverage assessment belongs under `../../cam_assessment/`.
+Semantic external-requirement extraction belongs under `../requirements/`. The retired CAM assessment placeholder is not a VIGIL source or requirement authority; CAM institutional coverage requires a separate governance process.
