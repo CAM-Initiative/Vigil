@@ -4,7 +4,7 @@ Canonical analytical catalogue derived from registered external governance sourc
 
 - Registered source versions: 109
 - Primary AI-governance source versions: 63
-- Requirement records: 1121
+- Requirement records: 1130
 
 ## SDOS Runtime Governance Framework — Control Catalog and Reference Document — 1.10
 
@@ -2154,12 +2154,15 @@ No requirement records are asserted. Retained for terminology, examples, strateg
 - Source: `EXT-8287D877DA56` / `NIST-IR-8587`
 - Role: `supporting-external-authority`
 - Access: `direct-public-primary`
-- Extraction: `supporting-only`
-- Requirements: 0
+- Extraction: `partial`
+- Requirements: 2
 - Review priority: `supporting-specialist-source`
-- Next action: Use only within signed-token and signing-key scope; promote staged propositions after approved class relationship review.
+- Next action: Preserve source-specific limits and extend extraction only after independent proposition and relationship review.
 
-No requirement records are asserted. Supplementary technical comparison only; two narrowly located conformance propositions staged for proposed custody class. No whole-report extraction or direct API-key coverage claimed.
+| Requirement | Clause/control | Summary | Posture / type | External authority | Relationship | Review / access |
+| --- | --- | --- | --- | --- | --- | --- |
+| `EXTREQ-79EC29449A54CBC9` | 5.1.1.3 — signing-key protection | Protect assertion- and token-signing keys during storage and cryptographic use. | `mandatory-normative` / `positive-duty` | `informative-technical-report` | `conformance` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-8091A41EC4985C34` | 5.1.1.2 — backup/archive distribution | When cryptographic keys are backed up or archived, preserve confidentiality and integrity during distribution at a level equivalent to operational use. | `mandatory-normative` / `positive-duty` | `informative-technical-report` | `conformance` | `reviewed-analytical-summary` / `direct-public-primary` |
 
 ## Towards a Standard for Identifying and Managing Bias in Artificial Intelligence — 2022
 
@@ -2296,12 +2299,20 @@ No requirement records are asserted. Supplementary technical comparison only; tw
 - Source: `EXT-9F0E4D3126B0` / `NIST-SP-800-53`
 - Role: `supporting-external-authority`
 - Access: `direct-public-primary`
-- Extraction: `in-progress`
-- Requirements: 0
+- Extraction: `partial`
+- Requirements: 7
 - Review priority: `supporting-specialist-source`
-- Next action: After class admission, promote reviewed requirement/class relationships in this same PR; retain partial source scope.
+- Next action: Preserve source-specific limits and extend extraction only after independent proposition and relationship review.
 
-No requirement records are asserted. Reviewed AC-3, AC-6, IA-5(a)–(i), SC-8 and SC-28 statements and parameters in exact-version OSCAL. Prepared 13 independent review-stage EXTREQ propositions, held from canonical promotion pending approved class relationships.
+| Requirement | Clause/control | Summary | Posture / type | External authority | Relationship | Review / access |
+| --- | --- | --- | --- | --- | --- | --- |
+| `EXTREQ-0B2833BFB579C5D4` | IA-5(h) | Require individuals to take specific authenticator-protection controls and require devices to implement such controls. | `mandatory-normative` / `positive-duty` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-3712B2961BED2533` | SC-8 | Protect the organisation-selected confidentiality, integrity, or both properties of information in transmission. | `mandatory-normative` / `positive-duty` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-59FB939E5243C7DF` | IA-5(a) | Verify the identity of the individual, group, role, service or device receiving an authenticator as part of its initial distribution. | `mandatory-normative` / `positive-duty` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-BF9889E246852D7C` | AC-6 | Limit users and processes acting for them to authorised accesses needed for their assigned organisational tasks. | `mandatory-normative` / `positive-duty` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-C5285311F6E76E8C` | SC-28 | Protect the organisation-selected confidentiality, integrity, or both properties of organisation-defined information at rest. | `mandatory-normative` / `positive-duty` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-F42FEC4FD1482D57` | IA-5(g) | Protect system authenticator content against unauthorised disclosure and modification. | `mandatory-normative` / `positive-duty` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-FA4D888041BED657` | AC-3 | Enforce approved logical-access authorisations for information and system resources under the applicable access-control policies. | `mandatory-normative` / `positive-duty` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 
 ## Guide to Operational Technology (OT) Security — 3
 

@@ -1,7 +1,9 @@
 # Protected information and authentication custody — admission review
 
-**27 October 2026 · REVIEW · approval pending**  
+**27 October 2026 · REVIEW · initial proposal, followed by approved implementation**
 Repository baseline: `8294c4f3eec1e5ad6f12ab7b75aabb7f69ddba9f`. Published Alignment Taxonomy: **v0.8.1**. Tracking: [issue #171](https://github.com/CAM-Initiative/Vigil/issues/171). Work lane: `agent/taxonomy-development`. One integrated PR contains this design and its supporting standards work.
+
+**Current state after maintainer approval:** The maintainer approved the concrete design and instructed proceeding on 27 October 2026. Family `VIGIL-FF-0018` and classes `VIGIL-FC-000089` / `VIGIL-FC-000090` are now materialised as the unpublished v0.9.0 proposal. Nine external requirements and eleven digest-bound relationships are canonical on this branch. Six contextual propositions remain review-only. Published authority remains v0.8.1; ISO control-text verification is still blocked. See [approval-and-admission.json](approval-and-admission.json) and [IMPLEMENTATION.md](IMPLEMENTATION.md). The sections below preserve the initial proposal and its then-pending gates; they are not the current admission status.
 
 ## Proposed decision
 

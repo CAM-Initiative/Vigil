@@ -1,9 +1,9 @@
 # External Requirement Metadata Review Report
 
-- Records assessed: 1121
-- Canonical records: 1121
+- Records assessed: 1130
+- Canonical records: 1130
 - Staged records: 0
-- Metadata-complete: 1048
+- Metadata-complete: 1057
 - Records requiring review: 73
 - Unresolved field decisions: 584
 - Records flagged for re-extraction: 0
@@ -14,14 +14,14 @@
 
 | Field | Populated, reviewed | Populated, unreviewed | Empty, unreviewed | Not specified by source | Not applicable |
 |---|---:|---:|---:|---:|---:|
-| `applicable_actor` | 1048 | 73 | 0 | 0 | 0 |
-| `governed_object` | 1048 | 73 | 0 | 0 | 0 |
-| `timing_or_frequency` | 241 | 4 | 69 | 807 | 0 |
-| `required_artefacts` | 436 | 23 | 50 | 612 | 0 |
-| `evidence_expectation` | 407 | 23 | 50 | 641 | 0 |
-| `verification_method` | 324 | 1 | 72 | 724 | 0 |
-| `applicability_conditions` | 948 | 18 | 55 | 100 | 0 |
-| `exceptions_or_qualifications` | 722 | 18 | 55 | 326 | 0 |
+| `applicable_actor` | 1057 | 73 | 0 | 0 | 0 |
+| `governed_object` | 1057 | 73 | 0 | 0 | 0 |
+| `timing_or_frequency` | 246 | 4 | 69 | 811 | 0 |
+| `required_artefacts` | 436 | 23 | 50 | 621 | 0 |
+| `evidence_expectation` | 407 | 23 | 50 | 650 | 0 |
+| `verification_method` | 324 | 1 | 72 | 733 | 0 |
+| `applicability_conditions` | 954 | 18 | 55 | 103 | 0 |
+| `exceptions_or_qualifications` | 731 | 18 | 55 | 326 | 0 |
 
 ## Source-level review backlog
 
@@ -45,10 +45,12 @@
 | `EXT-65F7658B8B04|2024` | `fully-metadata-reviewed` | 75 | 75 | 0 | 0 | 0 |
 | `EXT-71B4139453FA|3.0.1` | `fully-metadata-reviewed` | 4 | 4 | 0 | 0 | 0 |
 | `EXT-7E4B8ED73AA5|2021` | `fully-metadata-reviewed` | 10 | 10 | 0 | 0 | 0 |
+| `EXT-8287D877DA56|2026-09` | `fully-metadata-reviewed` | 2 | 2 | 0 | 0 | 0 |
 | `EXT-8D54F96680C4|2024` | `fully-metadata-reviewed` | 59 | 59 | 0 | 0 | 0 |
 | `EXT-8E377EF5CE66|2020` | `fully-metadata-reviewed` | 18 | 18 | 0 | 0 | 0 |
 | `EXT-8FEA9674D97A|1.10` | `fully-metadata-reviewed` | 24 | 24 | 0 | 0 | 0 |
 | `EXT-96F325C2A871|3` | `fully-metadata-reviewed` | 5 | 5 | 0 | 0 | 0 |
+| `EXT-9F0E4D3126B0|5.2.0` | `fully-metadata-reviewed` | 7 | 7 | 0 | 0 | 0 |
 | `EXT-A35C209A334B|2024-05-03` | `fully-metadata-reviewed` | 37 | 37 | 0 | 0 | 0 |
 | `EXT-C4E5D1E95363|C2026C00213` | `fully-metadata-reviewed` | 4 | 4 | 0 | 0 | 0 |
 | `EXT-DE4FDB52698E|2024` | `fully-metadata-reviewed` | 224 | 224 | 0 | 0 | 0 |

@@ -39,6 +39,7 @@ EXPECTED_CLASS_SUFFIXES_BY_FAMILY = {
     "VIGIL-FF-0015": "000074 000075 000077".split(),
     "VIGIL-FF-0016": "000088".split(),
     "VIGIL-FF-0017": "000084".split(),
+    "VIGIL-FF-0018": "000089 000090".split(),
 }
 
 

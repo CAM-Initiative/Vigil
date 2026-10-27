@@ -1634,7 +1634,7 @@ NIST IR 8587 provides technical guidance for protecting signed identity assertio
 - **Last substantive review:** 2026-10-27
 - **Next substantive review:** 2027-01-25
 - **Substantive reviewer:** OpenAI / Codex / GPT-6 (per session system identity)
-- **Review method:** direct-public-primary-review · supporting-only-review
+- **Review method:** direct-public-primary-review · partial-review
 - **Review freshness:** current
 - **Official source:** https://csrc.nist.gov/pubs/ir/8587/final
 
