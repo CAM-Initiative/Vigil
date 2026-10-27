@@ -18,25 +18,26 @@
   },
   "interpretive_provenance": {
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-25-081-FAST-000045",
+      "review_id": "VIGIL-REVIEW-2026-10-27-090-DELTA-000045",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT / GitHub connector",
+      "reviewer_platform": "OpenAI Codex",
       "reviewer_model": "GPT-6",
-      "review_date": "2026-10-25",
-      "review_scope": "Current-edition v0.8.1 recognition and exclusion scopes compared with preserved v0.8.0 source-first class screen; original material not re-investigated.",
+      "review_date": "2026-10-27",
+      "review_scope": "Targeted published v0.9.0 adjudication of Protected Information Access Integrity and Authentication Material Custody Integrity. Prior taxonomy, harm and external findings preserved; direct NIST propositions independently assessed where supported.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
         "taxonomy_review": true,
-        "web_research": false,
+        "external_requirement_review": true,
         "harm_impact_review": false,
-        "external_requirement_review": false
+        "web_research": true
       },
       "known_limitations": [
-        "Bounded AI-authored review, not independent human verification or originating-source reauthentication.",
-        "Test canaries are not real leaked customer secrets. Training use is not established by upload or a model-improvement toggle. FC-055 needs actual secondary-purpose use, not storage alone. FC-002 capability-as-permission is not independently established by the scope crossing. The later server-side disablement remains account-scoped; deletion is unverified."
+        "AI-authored analysis, not human verification. No live vulnerable system or private secret was accessed.",
+        "The taxonomy review is limited to the two new classes; existing classes were preserved, not freshly re-adjudicated.",
+        "Attributed occurrence reports retain their source-specific limits. No assurance about unobserved targets, copies or credential use is inferred."
       ],
-      "review_outcome": "Existing role/confidence and uncertainty preserved under v0.8.1; no new positive or negative mapped class."
+      "review_outcome": "The researcher’s no-file-read instruction independently restricted the tested operation. A captured repository bundle contained a file that was not to be opened, with its canary intact. This supports the tested information-access boundary finding, without claiming that fake credentials were real secrets or that all consumer repositories were confidential."
     },
     "review_history": [
       {
@@ -481,6 +482,28 @@
           "Test canaries are not real leaked customer secrets. Training use is not established by upload or a model-improvement toggle. FC-055 needs actual secondary-purpose use, not storage alone. FC-002 capability-as-permission is not independently established by the scope crossing. The later server-side disablement remains account-scoped; deletion is unverified."
         ],
         "review_outcome": "Existing role/confidence and uncertainty preserved under v0.8.1; no new positive or negative mapped class."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-27-090-DELTA-000045",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-27",
+        "review_scope": "Targeted published v0.9.0 adjudication of Protected Information Access Integrity and Authentication Material Custody Integrity. Prior taxonomy, harm and external findings preserved; direct NIST propositions independently assessed where supported.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "external_requirement_review": true,
+          "harm_impact_review": false,
+          "web_research": true
+        },
+        "known_limitations": [
+          "AI-authored analysis, not human verification. No live vulnerable system or private secret was accessed.",
+          "The taxonomy review is limited to the two new classes; existing classes were preserved, not freshly re-adjudicated.",
+          "Attributed occurrence reports retain their source-specific limits. No assurance about unobserved targets, copies or credential use is inferred."
+        ],
+        "review_outcome": "The researcher’s no-file-read instruction independently restricted the tested operation. A captured repository bundle contained a file that was not to be opened, with its canary intact. This supports the tested information-access boundary finding, without claiming that fake credentials were real secrets or that all consumer repositories were confidential."
       }
     ]
   },
@@ -516,8 +539,8 @@
     "record_id": "VIGIL-INC-000045",
     "record_type": "incident",
     "title": "Grok Build uploaded entire Git repositories to xAI storage",
-    "updated": "2026-10-25",
-    "version": "1.1.21"
+    "updated": "2026-10-27",
+    "version": "1.1.22"
   },
   "record_state": "active",
   "record_type": "incident",
@@ -696,12 +719,11 @@
     }
   },
   "taxonomy_classification": {
-    "classification_basis": "The controlled capture shows authority to work with task-relevant repository content expanding into transfer of all tracked files and Git history to separate xAI storage, including material the agent had been instructed not to read. The established boundary concerns the scope of data transferred, rather than a separate finding that technical capability itself supplied permission. The canary-based test does not establish real-customer confidentiality loss downstream.",
+    "classification_basis": "The controlled capture shows authority to work with task-relevant repository content expanding into transfer of all tracked files and Git history to separate xAI storage, including material the agent had been instructed not to read. The established boundary concerns the scope of data transferred, rather than a separate finding that technical capability itself supplied permission. The canary-based test does not establish real-customer confidentiality loss downstream. The researcher’s no-file-read instruction independently restricted the tested operation. A captured repository bundle contained a file that was not to be opened, with its canary intact. This supports the tested information-access boundary finding, without claiming that fake credentials were real secrets or that all consumer repositories were confidential.",
     "classification_review_provenance": {
-      "review_date": "2026-10-25",
-      "reviewer": "OpenAI ChatGPT GPT-6 — AI analytical reviewer",
-      "review_status": "Bounded v0.8.1 published exclusion-role delta against prior source-first v0.8.0 criterion review; original mapping and evidence limits unchanged.",
-      "review_reference": "vigil/docs/reviews/2026-10-25-siai-taxonomy-081-delta/BATCH-18-FAST-TRACK-028-099.json"
+      "review_date": "2026-10-27",
+      "reviewer": "OpenAI Codex — AI analytical reviewer",
+      "review_status": "Published v0.9.0 protected-information and authentication-custody delta adjudicated. Existing class findings retained without re-adjudication; episode limits remain explicit."
     },
     "classification_status": "classified",
     "primary_classification": {
@@ -711,8 +733,16 @@
       "classification_confidence": "high",
       "family_id": "VIGIL-FF-0001"
     },
-    "secondary_classifications": [],
-    "taxonomy_version": "0.8.1",
+    "secondary_classifications": [
+      {
+        "family_id": "VIGIL-FF-0018",
+        "class_id": "VIGIL-FC-000089",
+        "classification_role": "failure-occurrence",
+        "classification_basis": "The researcher’s no-file-read instruction independently restricted the tested operation. A captured repository bundle contained a file that was not to be opened, with its canary intact. This supports the tested information-access boundary finding, without claiming that fake credentials were real secrets or that all consumer repositories were confidential.",
+        "classification_confidence": "high"
+      }
+    ],
+    "taxonomy_version": "0.9.0",
     "adjudication_coverage": {
       "status": "complete"
     }
@@ -724,7 +754,7 @@
       "Incident admission does not determine legal liability or establish every disputed claim as final fact."
     ],
     "factual_basis": "The researcher’s original wire-level analysis provides captured request and bundle evidence for version 0.2.93: tracked repository content and history reached a storage endpoint separately from model-turn traffic even when the agent did not inspect those files. The researcher reported a later server-side disablement; the scope and permanence of that change across accounts are not independently established. The official changelog supports product-version context but not the upload finding. The controlled samples used fake credentials; no real secret exposure, training use or population-wide loss is proven here. Separate probes distinguish read-driven model traffic from repository snapshots, synthetic secrets from real credentials, and observed multi-GB transfer from a completed 12 GB run. The researcher corrected an earlier process-scoped measurement and distinguished retention preferences from transmission.",
-    "governance_interpretation": "The tested CLI expanded task-local repository access into a repository-wide external storage action. The controlled capture establishes a target-and-scope authority failure in that implementation; it does not by itself establish downstream misuse of the data or a quantified real-customer confidentiality harm. Later server-side disablement limits current generalisation, not the observed 0.2.93 behaviour. The retained target/scope failure is bounded to the captured implementation and task, without inferring real secret disclosure, training use or population-wide damage. Tested-account disablement is resolved recovery context rather than an affirmative fleet-wide success. Independent OECD assessment finds user-agency/scope safeguards Not aligned for the captured repository-wide transfer and repair Aligned only for the subsequently observed tested-account disablement. Model-development storage and human-subject data-consent requirements address different lifecycle/participation objects and remain audit-only. No real-secret exposure, training use or fleet-wide repair is inferred.",
+    "governance_interpretation": "The tested CLI expanded task-local repository access into a repository-wide external storage action. The controlled capture establishes a target-and-scope authority failure in that implementation; it does not by itself establish downstream misuse of the data or a quantified real-customer confidentiality harm. Later server-side disablement limits current generalisation, not the observed 0.2.93 behaviour. The retained target/scope failure is bounded to the captured implementation and task, without inferring real secret disclosure, training use or population-wide damage. Tested-account disablement is resolved recovery context rather than an affirmative fleet-wide success. Independent OECD assessment finds user-agency/scope safeguards Not aligned for the captured repository-wide transfer and repair Aligned only for the subsequently observed tested-account disablement. Model-development storage and human-subject data-consent requirements address different lifecycle/participation objects and remain audit-only. No real-secret exposure, training use or fleet-wide repair is inferred. The researcher’s no-file-read instruction independently restricted the tested operation. A captured repository bundle contained a file that was not to be opened, with its canary intact. This supports the tested information-access boundary finding, without claiming that fake credentials were real secrets or that all consumer repositories were confidential.",
     "significance_to_cam": "Permission to run a coding task in a repository does not itself cover bulk transmission of all tracked files and history. The upload path and retention setting need to be visible as distinct governed actions because an ordinary model-training opt-out did not stop the captured storage transfer in the test.",
     "source_clause_analysis": {
       "source_record_order": 1,
@@ -754,6 +784,12 @@
               "relationship": "failure-occurrence",
               "canonical_taxonomy_mapping": true,
               "rationale": "The CLI sent tracked files beyond those the bounded coding task needed or the agent read, so task-local permission was extended to repository-wide storage transfer in the observed implementation."
+            },
+            {
+              "class_id": "VIGIL-FC-000089",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "With an explicit instruction not to read files, the CLI nevertheless bundled tracked repository contents and history; the researcher recovered an unread canary from that bundle. The tested read restriction was crossed. Synthetic secrets do not establish real credential exposure."
             }
           ],
           "adjudication_status": "mapped"
@@ -911,6 +947,24 @@
         "source_records[1]"
       ],
       "identification_basis": "The wire-level capture of task-independent repository transfer directly identifies context-appropriate human-agency/scope safeguards independently of the FC candidate."
+    },
+    {
+      "requirement_id": "EXTREQ-FA4D888041BED657",
+      "alignment_result": "not-aligned",
+      "assessment_basis": "The access-enforcement proposition requires approved logical-access authorisations to be enforced for information and system resources. The observed information operation was outside the approved boundary. With an explicit instruction not to read files, the CLI nevertheless bundled tracked repository contents and history; the researcher recovered an unread canary from that bundle. The tested read restriction was crossed. Synthetic secrets do not establish real credential exposure. This is a bounded retrospective comparison with the selected control proposition, not a claim of certification or an independently binding historical duty.",
+      "assessed_on": "2026-10-27",
+      "source_record_refs": [
+        "source_records[0]"
+      ],
+      "derived_from_class_ids": [
+        "VIGIL-FC-000089"
+      ],
+      "source_clause_indices": [
+        1
+      ],
+      "source_episode_refs": [
+        "E002"
+      ]
     }
   ],
   "affected_party_context": {

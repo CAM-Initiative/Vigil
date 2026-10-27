@@ -1,0 +1,179 @@
+{
+  "incident_id": "VIGIL-INC-000045",
+  "review_mode": "bounded-edit",
+  "baseline": {
+    "ref": "08313f79319335245315680793d82558f233fc13",
+    "record_version": "1.1.21"
+  },
+  "taxonomy_mapping_dispositions": [
+    {
+      "class_id": "VIGIL-FC-000003",
+      "disposition": "retained",
+      "reason": "Outside this explicitly targeted two-class delta; mapping object preserved byte-for-byte in JSON values."
+    }
+  ],
+  "new_taxonomy_mappings": [
+    {
+      "class_id": "VIGIL-FC-000089",
+      "reason": "The researcher’s no-file-read instruction independently restricted the tested operation. A captured repository bundle contained a file that was not to be opened, with its canary intact. This supports the tested information-access boundary finding, without claiming that fake credentials were real secrets or that all consumer repositories were confidential."
+    }
+  ],
+  "source_dispositions": [],
+  "prose_changes": {
+    "summary_reduction_reason": null,
+    "factual_basis_reduction_reason": null
+  },
+  "harm_review": {
+    "status": "preserved-not-reopened"
+  },
+  "governance_interpretation_review": {
+    "status": "reviewed",
+    "notes": "Added accepted delta results; removed only superseded new-class coverage-gap assertions in priority cases."
+  },
+  "independent_adjudication": {
+    "incident_id": "VIGIL-INC-000045",
+    "title": "Grok Build uploaded entire Git repositories to xAI storage",
+    "baseline_ref": "08313f79319335245315680793d82558f233fc13",
+    "taxonomy_ref": "0fdabb940cef157609e3cd2a20efa213cdfca2ef",
+    "review_scope": "Published v0.9.0 two-class delta only; all other class findings preserved, not re-adjudicated.",
+    "source_clauses_inspected": [
+      "E001",
+      "E002",
+      "E003",
+      "E004",
+      "E005"
+    ],
+    "source_records_inspected": [
+      "https://gist.github.com/cereblab/dc9a40bc26120f4540e4e09b75ffb547",
+      "https://thehackernews.com/2026/07/grok-build-uploads-entire-git.html",
+      "https://x.ai/build/changelog",
+      "https://www.theverge.com/ai-artificial-intelligence/965600/spacexai-grok-build-repository-upload"
+    ],
+    "delta_decisions": [
+      {
+        "class_id": "VIGIL-FC-000089",
+        "outcome": "failure-occurrence",
+        "episode_refs": [
+          "E002"
+        ],
+        "basis": "The researcher’s no-file-read instruction independently restricted the tested operation. A captured repository bundle contained a file that was not to be opened, with its canary intact. This supports the tested information-access boundary finding, without claiming that fake credentials were real secrets or that all consumer repositories were confidential.",
+        "condition_tests": [
+          {
+            "polarity": "failure-occurrence",
+            "literal_condition": "Identifiable information is held or handled by an AI-mediated system or its dependent infrastructure.",
+            "status": "established",
+            "assessment": "The source episodes identify the unread tracked file and its canary in the captured repository bundle within the participating AI-mediated workflow or dependent infrastructure.",
+            "episode_refs": [
+              "E002"
+            ],
+            "source_record_refs": [
+              "source_records[0]"
+            ]
+          },
+          {
+            "polarity": "failure-occurrence",
+            "literal_condition": "An independently evidenced confidentiality or integrity boundary restricts access, acquisition, disclosure or modification of that information for the actor, operation and context.",
+            "status": "established",
+            "assessment": "The independently evidenced boundary is the explicit instruction not to read files in the tested operation.",
+            "episode_refs": [
+              "E002"
+            ],
+            "source_record_refs": [
+              "source_records[0]"
+            ]
+          },
+          {
+            "polarity": "failure-occurrence",
+            "literal_condition": "Occurrence evidence demonstrates that at least one such information operation crosses that boundary. A successful unauthorised retrieval or modification is sufficient; a theoretical route alone is not.",
+            "status": "established",
+            "assessment": "The realised operation is identified by the source-local decision: With an explicit instruction not to read files, the CLI nevertheless bundled tracked repository contents and history; the researcher recovered an unread canary from that bundle. The tested read restriction was crossed. Synthetic secrets do not establish real credential exposure.",
+            "episode_refs": [
+              "E002"
+            ],
+            "source_record_refs": [
+              "source_records[0]"
+            ]
+          },
+          {
+            "polarity": "successful-invariant",
+            "literal_condition": "Identifiable information and its independently evidenced confidentiality or integrity boundary are established for an AI-mediated system or dependent infrastructure.",
+            "status": "established",
+            "assessment": "This failure-occurrence decision does not assert successful-invariant for the same phase. The identified information and boundary are the unread tracked file and its canary in the captured repository bundle, governed by the explicit instruction not to read files in the tested operation.",
+            "episode_refs": [
+              "E002"
+            ],
+            "source_record_refs": [
+              "source_records[0]"
+            ]
+          },
+          {
+            "polarity": "successful-invariant",
+            "literal_condition": "A concrete access, acquisition, disclosure or modification attempt or operation materially tests that boundary.",
+            "status": "established",
+            "assessment": "This failure-occurrence decision does not assert successful-invariant for the same phase. The concrete test is: With an explicit instruction not to read files, the CLI nevertheless bundled tracked repository contents and history; the researcher recovered an unread canary from that bundle. The tested read restriction was crossed. Synthetic secrets do not establish real credential exposure.",
+            "episode_refs": [
+              "E002"
+            ],
+            "source_record_refs": [
+              "source_records[0]"
+            ]
+          },
+          {
+            "polarity": "successful-invariant",
+            "literal_condition": "Observed response or verification shows that the unauthorised information operation is prevented or that the operation remains within its authorised information boundary.",
+            "status": "contradicted",
+            "assessment": "The evidenced boundary crossing is not verified confinement.",
+            "episode_refs": [
+              "E002"
+            ],
+            "source_record_refs": [
+              "source_records[0]"
+            ]
+          },
+          {
+            "polarity": "successful-invariant",
+            "literal_condition": "The protective conclusion is restricted to the tested information, actor, operation and route; the evidence supports that result rather than only a configured policy or a claimed repair.",
+            "status": "not-established-for-this-episode",
+            "assessment": "The evidenced boundary crossing is not verified confinement.",
+            "episode_refs": [
+              "E002"
+            ],
+            "source_record_refs": [
+              "source_records[0]"
+            ]
+          }
+        ],
+        "exclusion_tests": [
+          {
+            "literal_exclusion": "Class scope exclusion (all results): The information is deliberately public for the assessed operation and no independent integrity or other access restriction governs that operation. Public readability does not authorise public modification.",
+            "role_scope": "all-results",
+            "assessment": "The relevant restriction is the explicit instruction not to read files in the tested operation; this is not an unrestricted public read. Publicly readable packages/posts retain separately evidenced write restrictions where assessed."
+          },
+          {
+            "literal_exclusion": "Class scope exclusion (all results): The only material property is custody of authentication material. Assess Authentication Material Custody Integrity; separate private content or other protected information can independently engage this class.",
+            "role_scope": "all-results",
+            "assessment": "The access finding concerns the unread tracked file and its canary in the captured repository bundle as protected information or a distinct record modification; any secret-only property is separately assigned to the custody class."
+          },
+          {
+            "literal_exclusion": "Not aligned exclusion: The observed information operation is validly authorised within the independently established boundary. An approved test does not by itself authorise public release of protected information.",
+            "role_scope": "failure-occurrence",
+            "assessment": "The assessed operation is tested against the explicit instruction not to read files in the tested operation. Technical access, research motivation or permission for another target does not authorise crossing this boundary."
+          },
+          {
+            "literal_exclusion": "Not aligned exclusion: Only a hypothetical vulnerability, exposed endpoint, unverified capability claim or unsuccessful attempt is established, without demonstrated protected-information access, acquisition, disclosure or modification.",
+            "role_scope": "failure-occurrence",
+            "assessment": "The decision relies on the documented operation or named unresolved occurrence fact, not hypothetical severity: The researcher’s no-file-read instruction independently restricted the tested operation. A captured repository bundle contained a file that was not to be opened, with its canary intact. This supports the tested information-access boundary finding, without claiming that fake credentials were real secrets or that all consumer repositories were confidential."
+          },
+          {
+            "literal_exclusion": "Class scope exclusion (all results): The issue is solely accuracy, availability, provenance, secondary-purpose permission or audit reconstruction, without an independently engaged information access or integrity boundary.",
+            "role_scope": "all-results",
+            "assessment": "The independently engaged property is the explicit instruction not to read files in the tested operation; a solely accuracy, availability, provenance or audit result would not suffice."
+          }
+        ]
+      }
+    ],
+    "no_additional_mapping_reason": null,
+    "external_candidate_scope": "Reviewed direct AC-3 and IA-5(g) against exact propositions. AC-6 assigned-task details, SC-28 selected information/properties and SC-8 transmission-specific conditions were not assumed. IA-5(a)/(h) initial-distribution/control obligations and IR 8587 signing-key scope are not established merely by exposure. ISO remains contextual only. Historical rows and seven-repair holds are preserved."
+  },
+  "preservation_checks": "Summary, factual basis, source records, all old mapping objects/relationships, HIM, context and all pre-existing external rows unchanged. Prior interpretive history appended only."
+}
