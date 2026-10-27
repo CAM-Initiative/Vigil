@@ -1421,9 +1421,9 @@ No requirement records are asserted. Primary AI-governance source is in scope, b
 - Extraction: `blocked-access`
 - Requirements: 0
 - Review priority: `supporting-specialist-source`
-- Next action: Obtain authorised text and permission before verifying normative controls and relationships.
+- Next action: Revisit provisional clause references when authorised primary ISO text is available. Do not use contextual entries for conformance assessment.
 
-No requirement records are asserted. No ISO normative extraction. Investigate 5.15, 5.17, 5.18 and 8.3 only after lawful access and applicable permission; verify Annex A locators separately for 27001.
+No requirement records are asserted. Maintainer-authorised limited-information control catalogue: 5.15, 5.17, 5.18, 8.3. Provisional contextual references only. Normative extraction remains blocked, with no ISO EXTREQs admitted.
 
 ## Information security, cybersecurity and privacy protection — Information security controls — 2022
 
@@ -1433,9 +1433,9 @@ No requirement records are asserted. No ISO normative extraction. Investigate 5.
 - Extraction: `blocked-access`
 - Requirements: 0
 - Review priority: `supporting-specialist-source`
-- Next action: Obtain authorised text and permission before verifying normative controls and relationships.
+- Next action: Revisit provisional clause references when authorised primary ISO text is available. Do not use contextual entries for conformance assessment.
 
-No requirement records are asserted. No ISO normative extraction. Investigate 5.15, 5.17, 5.18 and 8.3 only after lawful access and applicable permission; verify Annex A locators separately for 27001.
+No requirement records are asserted. Maintainer-authorised limited-information control catalogue: 5.15, 5.17, 5.18, 8.3. Provisional contextual references only. Normative extraction remains blocked, with no ISO EXTREQs admitted.
 
 ## Information technology — Governance of IT — Governance implications of the use of artificial intelligence by organizations — 2022
 

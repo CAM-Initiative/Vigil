@@ -40,3 +40,9 @@ The seven preserved-evidence design tests and two hypothetical calibration cases
 ## Authorised retirement of release-preparation CI
 
 The maintainer subsequently directed removal of the obsolete SIAI guard. The entire SIAI research preflight workflow has been removed, including its fixed-count snapshot job and historical release-validation job. No replacement pinned-snapshot workflow was added. The normal taxonomy, Incident, standards and provenance workflows remain active. The v1.0.0 tag and released files are unchanged. The old Gate 1 pinning proposal is superseded; ISO source access remains the programme blocker. Full regression after retirement: 337 tests passed.
+
+## Accepted limited-information ISO scope
+
+The maintainer subsequently confirmed that the original ISO documents are unavailable and authorised proceeding with the closest substantiated limited information. Eight source/version/control-specific provisional entries now cover 5.15, 5.17, 5.18 and 8.3 across the two registered standards. ISO 27001 descriptions are attributed paraphrases of publicly available third-party accounts; an official CSA crosswalk confirms its control titles and numbers. ISO 27002 entries remain topic/locator candidates: its wording is not inferred from 27001. The new classes have explicit clause-level contextual references. No verified ISO requirement, conformance claim or canonical ISO EXTREQ is invented.
+
+This accepted limited scope supersedes the earlier blanket hold on the whole PR. Normative ISO extraction and control-level source fidelity remain deferred and explicitly unverified. Verified NIST relationships continue to provide the substantive standards support for the classes. See ISO-LIMITED-INFORMATION.json.
