@@ -1,0 +1,204 @@
+{
+  "artefact_role": "AUDIT",
+  "reviewed_on": "2026-10-27",
+  "baseline_commit": "8294c4f3eec1e5ad6f12ab7b75aabb7f69ddba9f",
+  "authorship_provenance": {
+    "content_origin": "ai-authored",
+    "generation_mode": "semi-autonomous",
+    "human_role": "contract-approver",
+    "human_authorship": false,
+    "human_review_status": "not-reviewed",
+    "human_verification_status": "not-verified"
+  },
+  "checks": [
+    {
+      "command": "python vigil/scripts/build-vigil-public-records.py",
+      "exit_code": 0,
+      "seconds": 0.25
+    },
+    {
+      "command": "python vigil/scripts/manage-external-sources.py validate --check-generated",
+      "exit_code": 0,
+      "seconds": 0.05
+    },
+    {
+      "command": "python vigil/scripts/manage-external-requirements.py validate --check-generated",
+      "exit_code": 0,
+      "seconds": 0.31
+    },
+    {
+      "command": "python vigil/scripts/validate-external-requirement-fidelity.py",
+      "exit_code": 0,
+      "seconds": 0.08
+    },
+    {
+      "command": "python vigil/scripts/validate-external-requirement-metadata.py",
+      "exit_code": 0,
+      "seconds": 0.1
+    },
+    {
+      "command": "python vigil/taxonomy/validate_taxonomy.py",
+      "exit_code": 0,
+      "seconds": 0.08
+    },
+    {
+      "command": "python vigil/tests/test_external_sources.py",
+      "exit_code": 0,
+      "seconds": 0.08
+    },
+    {
+      "command": "python vigil/tests/test_external_requirements.py",
+      "exit_code": 0,
+      "seconds": 0.88
+    },
+    {
+      "command": "python vigil/tests/test_external_requirement_fidelity.py",
+      "exit_code": 0,
+      "seconds": 0.19
+    },
+    {
+      "command": "PYTHONPATH=vigil/scripts python vigil/tests/test_external_requirement_metadata.py",
+      "exit_code": 0,
+      "seconds": 0.19,
+      "rerun_note": "Passed with the environment specified by .github/workflows/external-governance.yml. Initial invocation omitted PYTHONPATH; no repository change required."
+    },
+    {
+      "command": "python vigil/tests/test_eu_ai_act_reextraction.py",
+      "exit_code": 0,
+      "seconds": 0.08
+    },
+    {
+      "command": "python vigil/tests/test_authorship_provenance.py",
+      "exit_code": 0,
+      "seconds": 0.19
+    },
+    {
+      "command": "python vigil/tests/test_failure_taxonomy.py",
+      "exit_code": 0,
+      "seconds": 1.09
+    },
+    {
+      "command": "python vigil/tests/test_taxonomy_invariant_semantics.py",
+      "exit_code": 0,
+      "seconds": 0.07
+    },
+    {
+      "command": "python vigil/tests/test_taxonomy_release_modes.py",
+      "exit_code": 0,
+      "seconds": 0.47
+    },
+    {
+      "command": "python vigil/tests/test_taxonomy_publication_references.py",
+      "exit_code": 0,
+      "seconds": 0.13
+    },
+    {
+      "command": "python vigil/tests/test_taxonomy_branch_ownership.py",
+      "exit_code": 0,
+      "seconds": 0.07
+    },
+    {
+      "command": "python vigil/tests/test_external_requirement_assessments.py",
+      "exit_code": 0,
+      "seconds": 0.05
+    },
+    {
+      "command": "python vigil/tests/test_clause_requirement_resolver.py",
+      "exit_code": 0,
+      "seconds": 0.07
+    },
+    {
+      "command": "python vigil/tests/test_external_requirement_public_projection.py",
+      "exit_code": 0,
+      "seconds": 0.1
+    },
+    {
+      "command": "python vigil/tests/test_build_vigil_records.py",
+      "exit_code": 0,
+      "seconds": 1.12
+    },
+    {
+      "command": "python vigil/tests/test_validate_vigil_records.py",
+      "exit_code": 0,
+      "seconds": 8.37
+    },
+    {
+      "command": "python vigil/tests/test_validate_vigil_public_records.py",
+      "exit_code": 0,
+      "seconds": 0.06
+    },
+    {
+      "command": "python vigil/tests/test_vigil_source_provenance.py",
+      "exit_code": 0,
+      "seconds": 0.04
+    },
+    {
+      "command": "python vigil/scripts/validate-vigil-records.py",
+      "exit_code": 0,
+      "seconds": 6.68
+    },
+    {
+      "command": "python vigil/scripts/validate-occurrence-requirement-assessments.py",
+      "exit_code": 0,
+      "seconds": 0.21
+    },
+    {
+      "command": "python vigil/scripts/validate-vigil-public-records.py",
+      "exit_code": 0,
+      "seconds": 0.14
+    },
+    {
+      "command": "python vigil/scripts/validate-vigil-source-provenance.py",
+      "exit_code": 0,
+      "seconds": 0.14
+    },
+    {
+      "command": "python vigil/scripts/validate-vigil-interpretive-provenance.py",
+      "exit_code": 0,
+      "seconds": 0.09
+    },
+    {
+      "command": "python vigil/scripts/validate-vigil-system-components.py",
+      "exit_code": 0,
+      "seconds": 0.11
+    },
+    {
+      "command": "python vigil/scripts/validate-authorship-provenance.py",
+      "exit_code": 0,
+      "seconds": 0.11
+    }
+  ],
+  "full_regression": {
+    "command": "PYTHONPATH=vigil/scripts python -m unittest discover -s vigil/tests -p 'test_*.py'",
+    "exit_code": 0,
+    "tests_run": 337,
+    "result": "OK"
+  },
+  "proposal_payload_check": {
+    "result": "passed",
+    "scope": "Non-identity taxonomy payloads checked using an in-memory copy of the existing schema with only unallocated identity requirements omitted. No IDs allocated and no schema file changed. Fifteen staged requirements checked with manager field/identity/source/assurance contracts and a simulated IR supporting-only to partial scope for review checking only. Canonical supporting-source admission is deliberately not asserted.",
+    "criterion_tests": "Seven preserved-evidence cases contain all necessary failure/success criteria and exclusions; source Incident hashes resolve. Two hypothetical vectors are labelled separately.",
+    "identity_and_reference_checks": "All 15 deterministic EXTREQ identities are unique and absent from canonical requirements. All proposed reference requirement IDs, source versions, locators and retained relationship requirement digests resolve inside the review packet."
+  },
+  "generated_output_checks": [
+    "Official source and requirement managers rebuilt outputs and validate --check-generated passed.",
+    "Full regressions regenerate raw case examples; the official filter_publication_case_examples.py restored the existing publication exclusions. Final case-example output matches baseline."
+  ],
+  "limits": [
+    "ISO normative control extraction and mappings remain blocked by source access and permission.",
+    "No final class admission, canonical supporting EXTREQ admission, taxonomy publication or Incident re-adjudication is claimed.",
+    "Canonical metadata validator reports the existing 73 review-required records / 584 fields; these were not changed or backfilled.",
+    "Four new source summaries meet mandatory length checks but remain below the preferred 80-word recommendation."
+  ],
+  "review_artifact_sha256": {
+    "README.md": "f2613f979e8d8ca45f16bfe737a539fcf3e9e443e62ebea8841895ecff05ae1e",
+    "abstraction-boundary-review.json": "5854be4f9b767c438166fd8f528586999cf5cc0c6f47ea4f7109129f6d082eda",
+    "metadata-review.proposed.json": "e22c0eed1aea723fdb504fdb9839dd13bfb0753cc1afc757b39a31b110bb7da4",
+    "nist-800-53-requirements.proposed.json": "ba5cc2cf9fc80bf82ecbce98d3b702da4556e1e3d63a0ed177305f4b10acc8d4",
+    "nist-8587-requirements.proposed.json": "b8a0f85cc2ae316d9576631c0f1836e2807539ccbc69234dd01ed548e954f5a4",
+    "recognition-tests.json": "c247e92022bc045f628c8b8464329f7dc75c6328831cc4cf5411f5ca35ae65f7",
+    "source-review.json": "647f94165726f03bbeecd67a2da48173eeaf3e2f786d4cd65c9df628f1c15f33",
+    "standards-relationships.proposed.json": "f33bd98a1e2fbcb6221ce7100247c212b981c1978e4f7f675d40f8ac47d1f96d",
+    "taxonomy.proposed.json": "ea9b6f80417a04c5294a22a42381bdb8726d45a9b9b519166364d4a52dd544a7"
+  }
+}
