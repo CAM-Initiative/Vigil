@@ -1,6 +1,8 @@
 # Gate 1 proposal: preserve the released SIAI snapshot during later taxonomy development
 
-**27 October 2026 · REVIEW · implementation not approved**
+**27 October 2026 · REVIEW · superseded by authorised retirement**
+
+The maintainer subsequently directed removal of the obsolete SIAI guard. The proposed pinned-snapshot job below was not implemented. `.github/workflows/siai-research-preflight.yml` has been removed, including its immutable-snapshot and historical release-validation jobs. The normal taxonomy, Incident, standards and provenance workflows remain active. The v1.0.0 tag, released files and historical snapshot scripts are unchanged and remain recoverable. The pipeline-state test no longer tries to read the deleted workflow; its retained assertions are unchanged.
 
 Observed at PR #172 commit `30d846b90eefe6ee85b85f5ce12ed3770d394463`: [SIAI immutable-snapshot failure](https://github.com/CAM-Initiative/Vigil/actions/runs/40507072077/job/122198978332). The current branch's taxonomy, external-governance, branch-ownership and VIGIL-record jobs passed. The SIAI workflow's separate current-branch `release-validation` job also passed, including the full regression suite.
 

@@ -36,3 +36,7 @@ The maintainer's design approval does not resolve the source-access/permission b
 The seven preserved-evidence design tests and two hypothetical calibration cases remain review evidence. No Incident adjudication, source clause, harm assessment, external requirement assessment or historical interpretation has changed. The canonical class and requirement additions are an unpublished proposal until the controlled release sequence completes.
 
 `validation-admission.json` records the final checks for this implementation. The original `validation.json` remains the audit of the earlier proposal-only state. The original proposed payloads are retained as review history, not a second governing taxonomy or duplicate active requirement corpus. Approval, allocations, admitted requirements and the six retained review-only propositions are recorded in `approval-and-admission.json`.
+
+## Authorised retirement of release-preparation CI
+
+The maintainer subsequently directed removal of the obsolete SIAI guard. The entire SIAI research preflight workflow has been removed, including its fixed-count snapshot job and historical release-validation job. No replacement pinned-snapshot workflow was added. The normal taxonomy, Incident, standards and provenance workflows remain active. The v1.0.0 tag and released files are unchanged. The old Gate 1 pinning proposal is superseded; ISO source access remains the programme blocker. Full regression after retirement: 337 tests passed.
