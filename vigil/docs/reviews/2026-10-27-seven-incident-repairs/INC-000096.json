@@ -1,0 +1,203 @@
+{
+  "incident_id": "VIGIL-INC-000096",
+  "date": "2026-10-27",
+  "baseline_commit": "d8c497501fe6eda8d3d101eb1b8d90d8990e1383",
+  "baseline_record_version": "0.1.22",
+  "taxonomy_version": "0.8.1",
+  "baseline_taxonomy": {
+    "taxonomy_version": "0.8.1",
+    "classification_status": "provisionally-classified",
+    "classification_basis": "Wiz reports that its disclosure reached DeepSeek and the company promptly secured the exposed database. The report connects the signal, responsible service operator and corrective disposition. This finding covers that response pathway. It does not establish recovery of prior copies or the state of every backend service. The initial exposure still does not establish a capability-to-authority conversion.",
+    "primary_classification": {
+      "family_id": "VIGIL-FF-0007",
+      "class_id": "VIGIL-FC-000042",
+      "classification_role": "successful-invariant",
+      "classification_basis": "Wiz reports that its disclosure reached DeepSeek and the company promptly secured the exposed database. The report connects the signal, responsible service operator and corrective disposition. This finding covers that response pathway. It does not establish recovery of prior copies or the state of every backend service.",
+      "classification_confidence": "medium"
+    },
+    "secondary_classifications": [],
+    "classification_review_provenance": {
+      "review_date": "2026-10-25",
+      "reviewer": "OpenAI GPT-6 — AI analytical reviewer",
+      "review_status": "Bounded published taxonomy v0.8.1 role-scoped exclusion check of previously source-first-reviewed v0.8.0 findings; evidence gaps, roles and clause statuses retained.",
+      "review_reference": "vigil/docs/reviews/2026-10-25-siai-taxonomy-081-delta/BATCH-081-099-DELTA.json"
+    },
+    "adjudication_coverage": {
+      "status": "complete"
+    }
+  },
+  "baseline_clauses": [
+    {
+      "episode_id": "E001",
+      "source_record_refs": [
+        "source_records[0]"
+      ],
+      "source_paraphrase": "During external security reconnaissance, Wiz found publicly reachable DeepSeek ClickHouse endpoints without authentication.",
+      "recovered_invariant_interpretation": "Security discovery establishes an exposed route; it does not establish prior malicious use.",
+      "taxonomy_relationships": [
+        {
+          "class_id": "VIGIL-FC-000002",
+          "canonical_taxonomy_mapping": false,
+          "relationship": "rejected candidate",
+          "rationale": "The occurrence establishes an unauthenticated database exposure and researcher enumeration, not a capability-to-authority conversion by an AI or governance process. The explicit vulnerability-without-authority-conversion exclusion applies. Data exposure at an AI provider is not itself evidence of this class mechanism."
+        }
+      ],
+      "adjudication_status": "resolved-no-mapping"
+    },
+    {
+      "episode_id": "E002",
+      "source_record_refs": [
+        "source_records[0]"
+      ],
+      "source_paraphrase": "Wiz used the database interface to enumerate tables and identified more than one million log entries, including chat text, API secrets and backend metadata. It reported full database-operation access but said it did not perform intrusive queries beyond enumeration.",
+      "recovered_invariant_interpretation": "Exposure, demonstrated access and potential further exploitation are distinct evidentiary propositions.",
+      "taxonomy_relationships": [
+        {
+          "class_id": "VIGIL-FC-000002",
+          "relationship": "rejected candidate",
+          "canonical_taxonomy_mapping": false,
+          "rationale": "The occurrence establishes an unauthenticated database exposure and researcher enumeration, not a capability-to-authority conversion by an AI or governance process. The explicit vulnerability-without-authority-conversion exclusion applies. Data exposure at an AI provider is not itself evidence of this class mechanism."
+        }
+      ],
+      "adjudication_status": "resolved-no-mapping"
+    },
+    {
+      "episode_id": "E003",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ],
+      "source_paraphrase": "Wiz notified DeepSeek, which promptly secured the exposure. Public evidence does not establish whether others had accessed the data before discovery.",
+      "recovered_invariant_interpretation": "Closure of an exposed access state is distinct from recovery of any previously accessed information.",
+      "taxonomy_relationships": [
+        {
+          "class_id": "VIGIL-FC-000002",
+          "canonical_taxonomy_mapping": false,
+          "relationship": "rejected candidate",
+          "rationale": "The occurrence establishes an unauthenticated database exposure and researcher enumeration, not a capability-to-authority conversion by an AI or governance process. The explicit vulnerability-without-authority-conversion exclusion applies. Data exposure at an AI provider is not itself evidence of this class mechanism."
+        },
+        {
+          "class_id": "VIGIL-FC-000042",
+          "relationship": "successful-invariant",
+          "canonical_taxonomy_mapping": true,
+          "rationale": "Wiz reports that its disclosure reached DeepSeek and the company promptly secured the exposed database. The report connects the signal, responsible service operator and corrective disposition. This finding covers that response pathway. It does not establish recovery of prior copies or the state of every backend service."
+        }
+      ],
+      "adjudication_status": "mapped"
+    }
+  ],
+  "baseline_external_assessments": [
+    {
+      "requirement_id": "EXTREQ-0314EBE2A0C9E0F7",
+      "alignment_result": "aligned",
+      "assessment_basis": "DeepSeek secured the exposed database after Wiz notified the company. That action repaired the reported public access state. The result covers closure of the exposure. It does not establish recovery of any data already accessed.",
+      "assessed_on": "2026-10-04",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ],
+      "identification_basis": "Closure of the exposed AI service database directly identifies repair of an unwanted security state."
+    },
+    {
+      "requirement_id": "EXTREQ-0BC109220262734C",
+      "alignment_result": "not-aligned",
+      "assessment_basis": "Wiz directly accessed unauthenticated chat histories and secrets in DeepSeek’s database. Personal AI interaction data was publicly accessible without an access gate. That exposure did not preserve privacy and data protection. Earlier access by other parties remains unproved.",
+      "assessed_on": "2026-10-04",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ],
+      "identification_basis": "The public exposure of personal chat histories directly engages privacy and data protection."
+    },
+    {
+      "requirement_id": "EXTREQ-7A5897A2F6C82407",
+      "alignment_result": "not-aligned",
+      "assessment_basis": "Wiz found internet-reachable endpoints with no authentication and full database control. The AI service’s surrounding infrastructure exposed chats, API secrets and operational data. This security outcome is Not aligned. It does not establish compromise of model weights or earlier third-party misuse.",
+      "assessed_on": "2026-10-04",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ],
+      "identification_basis": "Unauthenticated database-operation access directly engages security of the AI service and its operational infrastructure."
+    }
+  ],
+  "source_review": {
+    "method": "Direct retrieval and complete text inspection of originating Wiz disclosure on 27 October; no live endpoint queried.",
+    "url": "https://www.wiz.io/blog/wiz-research-uncovers-exposed-deepseek-database-leak"
+  },
+  "decisions": [
+    {
+      "class_id": "VIGIL-FC-000002",
+      "outcome": "not-admitted-for-exposure",
+      "condition": "The system uses that availability, reachability, access, or possession as a material basis for permission.",
+      "assessment": "Actual exposure is established; no distinct AI/governance permission inference is demonstrated. Vulnerability-only scope exclusion does not dispose of the custody/access property."
+    },
+    {
+      "class_id": "VIGIL-FC-000031",
+      "outcome": "not-admitted",
+      "condition": "An authentication-state transition occurs or is required.",
+      "assessment": "No expiry/revocation/recovery inconsistency is reported. Credential exposure without continuity failure is a failure-role exclusion."
+    },
+    {
+      "class_id": "VIGIL-FC-000038",
+      "outcome": "not-admitted-for-initial-exposure",
+      "condition": "A governance control is available and applicable.",
+      "assessment": "Missing authentication or RLS is evidenced, not a deployed applicable control with defined trigger that failed to activate."
+    },
+    {
+      "class_id": "VIGIL-FC-000083",
+      "outcome": "not-admitted-for-initial-exposure",
+      "condition": "A defined governance or protective control is applicable and validly becomes operative.",
+      "assessment": "The initially missing protection is not valid activation followed by inadequate effect."
+    },
+    {
+      "class_id": "VIGIL-FC-000055",
+      "outcome": "not-admitted",
+      "condition": "The system, provider, deployer, or governance process relies materially on the original collection, participation, public availability, account permission, or primary-use authority as the basis for the secondary use.",
+      "assessment": "Accidental exposure alone does not establish the secondary-purpose authority inference."
+    },
+    {
+      "class_id": "VIGIL-FC-000042",
+      "outcome": "retained-successful-invariant",
+      "success_tests": [
+        {
+          "condition": "A governance signal requires a response or disposition.",
+          "status": "established",
+          "assessment": "Wiz’s report required action by the service owner."
+        },
+        {
+          "condition": "Accountable ownership, a capable destination, status and escalation remain established until the required effect or authorised disposition occurs.",
+          "status": "established",
+          "assessment": "The report reached the named operator; direct researcher contact and follow-up trace ownership and status through the repair disposition."
+        },
+        {
+          "condition": "Delivery, ownership and response evidence traces the signal through to its bounded disposition.",
+          "status": "established",
+          "assessment": "The originating researcher account connects notification with the operator’s corrective response, rather than merely assuming delivery from eventual recovery."
+        }
+      ],
+      "exclusion_tests": [
+        {
+          "condition": "Not aligned exclusion: The signal reaches a capable destination and is deliberately rejected through an authorised decision.",
+          "status": "contradicted",
+          "assessment": "Report was acted on, not rejected."
+        },
+        {
+          "condition": "Class scope exclusion (all results): No governance signal was produced because the control failed to activate.",
+          "status": "contradicted",
+          "assessment": "Wiz produced an actual disclosure signal."
+        },
+        {
+          "condition": "Not aligned exclusion: The signal has operational effect but its delivery is not recorded for audit.",
+          "status": "contradicted",
+          "assessment": "Notification and response are recorded in Wiz’s account."
+        }
+      ]
+    },
+    {
+      "external_assessments": "hold all existing OECD rows",
+      "reason": "Reviewed registry has no supporting FC-042 relationship for these OECD propositions. Repair has contextual-only FC-083 correspondence, not direct/strong support. Existing adverse findings concern uncovered exposure. Preserve original rows here; do not borrow the remedial success."
+    }
+  ],
+  "preservation": "Source records, occurrence summary, factual evidence, HIM and append-only review history preserved. Historical external assessments retained in this review when held. No blocking control or normative class changed."
+}
