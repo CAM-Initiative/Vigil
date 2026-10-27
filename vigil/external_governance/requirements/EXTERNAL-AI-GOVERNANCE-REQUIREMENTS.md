@@ -2,7 +2,7 @@
 
 Canonical analytical catalogue derived from registered external governance sources. Inclusion does not establish CAM applicability, adoption, coverage, compliance, conformance or alignment.
 
-- Registered source versions: 105
+- Registered source versions: 109
 - Primary AI-governance source versions: 63
 - Requirement records: 1121
 
@@ -1413,6 +1413,30 @@ No requirement records are asserted. Primary AI-governance source is in scope, b
 
 No requirement records are asserted. Primary AI-governance source is in scope, but requirement extraction is blocked because only official metadata or an abstract was accessed.
 
+## Information security, cybersecurity and privacy protection — Information security management systems — Requirements — 2022
+
+- Source: `EXT-0502DA42C683` / `ISO-IEC-27001`
+- Role: `supporting-external-authority`
+- Access: `official-metadata-only`
+- Extraction: `blocked-access`
+- Requirements: 0
+- Review priority: `supporting-specialist-source`
+- Next action: Obtain authorised text and permission before verifying normative controls and relationships.
+
+No requirement records are asserted. No ISO normative extraction. Investigate 5.15, 5.17, 5.18 and 8.3 only after lawful access and applicable permission; verify Annex A locators separately for 27001.
+
+## Information security, cybersecurity and privacy protection — Information security controls — 2022
+
+- Source: `EXT-AE89AFAA0F6F` / `ISO-IEC-27002`
+- Role: `supporting-external-authority`
+- Access: `official-metadata-only`
+- Extraction: `blocked-access`
+- Requirements: 0
+- Review priority: `supporting-specialist-source`
+- Next action: Obtain authorised text and permission before verifying normative controls and relationships.
+
+No requirement records are asserted. No ISO normative extraction. Investigate 5.15, 5.17, 5.18 and 8.3 only after lawful access and applicable permission; verify Annex A locators separately for 27001.
+
 ## Information technology — Governance of IT — Governance implications of the use of artificial intelligence by organizations — 2022
 
 - Source: `EXT-6B4C6A420D7A` / `ISO-IEC-38507`
@@ -2125,6 +2149,18 @@ No requirement records are asserted. Retained for terminology, examples, strateg
 | `EXTREQ-B3C2C06EC24BD021` | RC.RP-03 | Verify the integrity of backups and other restoration assets before using them for restoration. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-CC9B3D4127206817` | DE.CM-01 | Monitor networks and network services to find potentially adverse events. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 
+## Protecting Tokens and Assertions from Forgery, Theft, and Misuse: Implementation Recommendations for Agencies and Cloud Service Providers — 2026-09
+
+- Source: `EXT-8287D877DA56` / `NIST-IR-8587`
+- Role: `supporting-external-authority`
+- Access: `direct-public-primary`
+- Extraction: `supporting-only`
+- Requirements: 0
+- Review priority: `supporting-specialist-source`
+- Next action: Use only within signed-token and signing-key scope; promote staged propositions after approved class relationship review.
+
+No requirement records are asserted. Supplementary technical comparison only; two narrowly located conformance propositions staged for proposed custody class. No whole-report extraction or direct API-key coverage claimed.
+
 ## Towards a Standard for Identifying and Managing Bias in Artificial Intelligence — 2022
 
 - Source: `EXT-1BE47AB84994` / `NIST-SP-1270`
@@ -2254,6 +2290,18 @@ No requirement records are asserted. Retained for terminology, examples, strateg
 | `EXTREQ-F0581975A66AED74` | PW.3.1 R1 | Verify the provenance (when known) and integrity of training, testing, fine-tuning, and aligning data before use. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-F1C5571B851A123F` | PW.8.2 R1 | Test all AI models for vulnerabilities in accordance with the organization’s code testing policies or guidelines. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-FC3775D684CD5F14` | PW.8.1 R1 | Include AI models in code testing policies and guidelines. Several forms of code testing can be used for AI models, including unit testing, integration testing, penetration testing, red teaming, use case testing, and adversarial testing. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+
+## Security and Privacy Controls for Information Systems and Organizations — 5.2.0
+
+- Source: `EXT-9F0E4D3126B0` / `NIST-SP-800-53`
+- Role: `supporting-external-authority`
+- Access: `direct-public-primary`
+- Extraction: `in-progress`
+- Requirements: 0
+- Review priority: `supporting-specialist-source`
+- Next action: After class admission, promote reviewed requirement/class relationships in this same PR; retain partial source scope.
+
+No requirement records are asserted. Reviewed AC-3, AC-6, IA-5(a)–(i), SC-8 and SC-28 statements and parameters in exact-version OSCAL. Prepared 13 independent review-stage EXTREQ propositions, held from canonical promotion pending approved class relationships.
 
 ## Guide to Operational Technology (OT) Security — 3
 
