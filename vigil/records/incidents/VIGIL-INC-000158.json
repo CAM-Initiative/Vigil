@@ -9,7 +9,7 @@
     "title": "Moltbook database exposure revealed private communications and API authentication tokens",
     "created": "2026-09-19",
     "updated": "2026-10-27",
-    "version": "0.3.9"
+    "version": "0.3.10"
   },
   "incident_identity": {
     "historical_event_name": "Moltbook database exposure revealed private communications and API authentication tokens",
@@ -21,7 +21,7 @@
   "summary": "Wiz researchers found that Moltbook’s public database connection lacked row-level security. They reported access to about 35,000 email addresses, 4,060 private conversations and approximately 1.5 million authentication tokens. Some messages held third-party credentials. The tokens could permit agent impersonation; that possible misuse was separate from the researchers’ database access. Wiz contacted the maintainer on 31 January 2026. Initial fixes restricted sensitive reads, but researchers could still change a live post. Further fixes blocked writes and secured newly discovered tables by 01:00 UTC on 1 February. Wiz said it could no longer revert its test post after write access was blocked; the team later deleted the post. Wiz also reported deleting the data accessed during research and verification.",
   "vigil_assessment": {
     "factual_basis": "The originating Wiz account identifies a public Supabase connection and missing row-level security, rather than treating an intentionally public connection key alone as the defect. Its queries reached agent credentials, private communications and email tables. Business Insider’s under-three-minute claim remains attributed reporting. Wiz distinguishes credential-enabled impersonation from its demonstrated unauthenticated modification of an existing public post. Its UTC timeline separates January 31 disclosure, partial read restrictions, a remaining write pathway, write restriction, discovery of additional tables and final reported remediation on February 1. The researcher could not undo the test edit after write restriction and reports later maintainer deletion and deletion of research copies. No inspected account establishes malicious token reuse, downstream prompt execution or all prior third-party access.",
-    "governance_interpretation": "Missing database restrictions exposed private information and credentials. Researchers also demonstrated a live integrity effect after the first repair. Iterative fixes and the blocked attempt to revert the post support bounded remediation verification. They do not prove that prior access was fully discovered or that all copied information was recovered. The record does not establish an AI or governance process using technical reachability as an authority basis. The renewed disclosure reached the maintainer and produced an observable restriction on the tested write pathway. That bounded control effect is distinct from the earlier exposure and from full-platform assurance. The original protected-access and authentication-material custody losses remain outside the published class coverage. The bounded response finding does not classify the whole occurrence as Aligned.",
+    "governance_interpretation": "Missing database restrictions exposed private information and credentials. Researchers also demonstrated a live integrity effect after the first repair. Iterative fixes and the blocked attempt to revert the post support bounded remediation verification. They do not prove that prior access was fully discovered or that all copied information was recovered. The record does not establish an AI or governance process using technical reachability as an authority basis. The renewed disclosure reached the maintainer and produced an observable restriction on the tested write pathway. That bounded control effect is distinct from the earlier exposure and from full-platform assurance. The bounded response finding does not classify the whole occurrence as Aligned. Moltbook exposed private communications and email records and permitted a demonstrated unauthenticated post edit. The public connection identifier is not the secret or defect. Distinct read and write operations crossed private-content and owner-edit boundaries; later repair does not erase those operations. Moltbook’s database returned agent authentication tokens and private messages containing third-party API secrets. These secret objects left authorised custody. The public Supabase connection identifier is excluded, and possible impersonation is not represented as an observed takeover. Wiz could no longer revert its live test edit after unauthenticated writes were restricted. This is a concrete test of the post-edit boundary. The Aligned result covers that route and time; it does not certify all tables or recover prior copies.",
     "significance_to_cam": "The case shows that AI-agent platforms remain dependent on conventional application-security controls for credentials, private communications and account integrity.",
     "assessment_boundaries": [
       "The disclosed start of researcher contact is known; the start and full duration of the exposure are not.",
@@ -43,39 +43,65 @@
               "relationship": "candidate boundary",
               "canonical_taxonomy_mapping": false,
               "rationale": "The public connection and tokens established capability. The account does not show an AI or governance process using that reachability as its permission basis. A vulnerability alone is excluded from this authority-inference class."
+            },
+            {
+              "class_id": "VIGIL-FC-000089",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The missing backend policies were tested through queries that returned private records and secret tokens, detailed in the following episodes. The connection identifier was intentionally public; the demonstrated private-record retrieval establishes the information boundary crossing."
             }
           ],
-          "adjudication_status": "taxonomy-gap",
+          "adjudication_status": "mapped",
           "source_record_refs": [
             "source_records[0]",
             "source_records[2]"
           ],
           "episode_id": "E001",
-          "adjudication_note": "Missing backend row-level policies permitted unauthenticated reads and writes. A public connection key alone is not the defect. The established missing protected-access boundary is not represented by a capability-to-permission inference or a validly activated control."
+          "adjudication_note": "The missing backend policies were tested through queries that returned private records and secret tokens, detailed in the following episodes. The connection identifier was intentionally public; the demonstrated private-record retrieval establishes the information boundary crossing."
         },
         {
           "source_paraphrase": "The accessible database contained about 35,000 email addresses and 4,060 private conversations, some with third-party credentials.",
           "recovered_invariant_interpretation": "Actual confidential-information exposure differs from subsequent use of that information.",
-          "taxonomy_relationships": [],
-          "adjudication_status": "taxonomy-gap",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000089",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Private messages and email records were returned outside their intended private audience. This is demonstrated confidential-content exposure, independently of later use."
+            },
+            {
+              "class_id": "VIGIL-FC-000090",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Some exposed private messages contained third-party API secrets. Their retrieval crossed the custody boundary even without a subsequent API call."
+            }
+          ],
+          "adjudication_status": "mapped",
           "source_record_refs": [
             "source_records[0]",
             "source_records[2]"
           ],
           "episode_id": "E002",
-          "adjudication_note": "Private messages and email addresses were actually exposed. That confidentiality loss is established independently of later use. No published class faithfully captures this protected-information access loss."
+          "adjudication_note": "Private messages and email records were returned outside their intended private audience. This is demonstrated confidential-content exposure, independently of later use."
         },
         {
           "source_paraphrase": "About 1.5 million agent authentication tokens were exposed, creating impersonation capability.",
           "recovered_invariant_interpretation": "Credential reachability does not establish realised account takeover.",
-          "taxonomy_relationships": [],
-          "adjudication_status": "taxonomy-gap",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000090",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Agent authentication tokens were returned through an unauthenticated database route. These were secret account credentials, unlike the intentionally public Supabase connection identifier."
+            }
+          ],
+          "adjudication_status": "mapped",
           "source_record_refs": [
             "source_records[0]",
             "source_records[2]"
           ],
           "episode_id": "E003",
-          "adjudication_note": "Authentication tokens were actually exposed. Their custody was lost even though subsequent impersonation is not demonstrated. Credential custody is not an authentication-state continuity failure and remains a coverage gap."
+          "adjudication_note": "Agent authentication tokens were returned through an unauthenticated database route. These were secret account credentials, unlike the intentionally public Supabase connection identifier."
         },
         {
           "source_paraphrase": "Wiz contacted the maintainer on January 31 at 21:48 UTC and reported the row-level security issue at 22:06.",
@@ -114,13 +140,20 @@
         {
           "source_paraphrase": "At 00:31 Wiz discovered remaining write access and demonstrated a change to a live post after sensitive reads had been restricted.",
           "recovered_invariant_interpretation": "A realised integrity test is distinct from hypothetical credential misuse and from read exposure.",
-          "taxonomy_relationships": [],
-          "adjudication_status": "taxonomy-gap",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000089",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Wiz changed an existing live post through an unauthenticated write route. Public readability did not authorise an unrelated caller to edit that post."
+            }
+          ],
+          "adjudication_status": "mapped",
           "source_record_refs": [
             "source_records[2]"
           ],
           "episode_id": "E006",
-          "adjudication_note": "Wiz modified an existing live post after read restrictions had been applied. This is an actual integrity consequence of missing write protection, not merely a hypothetical prompt injection. The source does not establish the distinct authority-promotion conditions of the existing authority classes; the missing write boundary remains a coverage gap."
+          "adjudication_note": "Wiz changed an existing live post through an unauthenticated write route. Public readability did not authorise an unrelated caller to edit that post."
         },
         {
           "source_paraphrase": "Wiz notified the team again; at 00:44 write access was blocked. The researcher could no longer revert the post.",
@@ -137,6 +170,12 @@
               "relationship": "successful-invariant",
               "canonical_taxonomy_mapping": true,
               "rationale": "After the maintainer restricted unauthenticated writes, Wiz could no longer revert the test post. The attempted write exercised the activated restriction and demonstrated its protective effect on that pathway. Other tables and prior copies remain outside this finding."
+            },
+            {
+              "class_id": "VIGIL-FC-000089",
+              "relationship": "successful-invariant",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "After write restrictions changed, Wiz’s attempted reversal of its post edit was blocked. That concrete write attempt demonstrated enforcement on the tested post route only."
             }
           ],
           "adjudication_status": "mapped",
@@ -148,13 +187,20 @@
         {
           "source_paraphrase": "At 00:50 researchers discovered further exposed tables; Wiz’s timeline records the final fix at 01:00.",
           "recovered_invariant_interpretation": "Successive discoveries show why earlier fixes must not be represented as complete remediation.",
-          "taxonomy_relationships": [],
-          "adjudication_status": "taxonomy-gap",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000089",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Further private tables remained exposed after the earlier limited repairs. Those later-discovered records were outside the protection achieved on the already restricted routes."
+            }
+          ],
+          "adjudication_status": "mapped",
           "source_record_refs": [
             "source_records[2]"
           ],
           "episode_id": "E008",
-          "adjudication_note": "Further private tables remained exposed after earlier limited fixes. The final fix is attributed to Wiz’s timeline. The new exposure remains a protected-access coverage gap and does not undo the separately tested write restriction."
+          "adjudication_note": "Further private tables remained exposed after the earlier limited repairs. Those later-discovered records were outside the protection achieved on the already restricted routes."
         },
         {
           "source_paraphrase": "The team deleted the test content hours later; Wiz reports deleting data accessed during research and fix verification.",
@@ -335,9 +381,9 @@
     }
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.8.1",
+    "taxonomy_version": "0.9.0",
     "classification_status": "provisionally-classified",
-    "classification_basis": "Wiz reports that the write restriction blocked its attempt to revert the test post. This demonstrates the protective effect on the tested write pathway after the renewed disclosure. It does not establish protection of every table, recovery of earlier copies or reversal of the initial exposure. Wiz reports renewed notification of the remaining write access, followed by the maintainer’s restriction and a blocked reversal attempt. This traces the signal to a capable owner and a bounded corrective effect. The earlier read repair and later discoveries remain separate stages. The earlier protected-information exposure and credential-custody loss remain taxonomy coverage gaps. Later remediation does not erase them.",
+    "classification_basis": "Wiz reports that the write restriction blocked its attempt to revert the test post. This demonstrates the protective effect on the tested write pathway after the renewed disclosure. It does not establish protection of every table, recovery of earlier copies or reversal of the initial exposure. Wiz reports renewed notification of the remaining write access, followed by the maintainer’s restriction and a blocked reversal attempt. This traces the signal to a capable owner and a bounded corrective effect. The earlier read repair and later discoveries remain separate stages. Moltbook exposed private communications and email records and permitted a demonstrated unauthenticated post edit. The public connection identifier is not the secret or defect. Distinct read and write operations crossed private-content and owner-edit boundaries; later repair does not erase those operations. Moltbook’s database returned agent authentication tokens and private messages containing third-party API secrets. These secret objects left authorised custody. The public Supabase connection identifier is excluded, and possible impersonation is not represented as an observed takeover. Wiz could no longer revert its live test edit after unauthenticated writes were restricted. This is a concrete test of the post-edit boundary. The Aligned result covers that route and time; it does not certify all tables or recover prior copies.",
     "primary_classification": {
       "family_id": "VIGIL-FF-0008",
       "class_id": "VIGIL-FC-000083",
@@ -352,16 +398,29 @@
         "classification_role": "successful-invariant",
         "classification_basis": "Wiz reports renewed notification of the remaining write access, followed by the maintainer’s restriction and a blocked reversal attempt. This traces the signal to a capable owner and a bounded corrective effect. The earlier read repair and later discoveries remain separate stages.",
         "classification_confidence": "medium"
+      },
+      {
+        "family_id": "VIGIL-FF-0018",
+        "class_id": "VIGIL-FC-000089",
+        "classification_role": "failure-occurrence",
+        "classification_basis": "Moltbook exposed private communications and email records and permitted a demonstrated unauthenticated post edit. The public connection identifier is not the secret or defect. Distinct read and write operations crossed private-content and owner-edit boundaries; later repair does not erase those operations. Separately, Wiz could no longer revert its live test edit after unauthenticated writes were restricted. This is a concrete test of the post-edit boundary. The Aligned result covers that route and time; it does not certify all tables or recover prior copies.",
+        "classification_confidence": "high"
+      },
+      {
+        "family_id": "VIGIL-FF-0018",
+        "class_id": "VIGIL-FC-000090",
+        "classification_role": "failure-occurrence",
+        "classification_basis": "Moltbook’s database returned agent authentication tokens and private messages containing third-party API secrets. These secret objects left authorised custody. The public Supabase connection identifier is excluded, and possible impersonation is not represented as an observed takeover.",
+        "classification_confidence": "high"
       }
     ],
     "classification_review_provenance": {
       "review_date": "2026-10-27",
-      "reviewer": "OpenAI GPT-6 — AI analytical reviewer",
-      "review_status": "Preserved bounded response mappings and reconciled supporting episodes. Initial access and custody losses are taxonomy-gap; coverage partial. Existing OECD rows held with full historical values because no admissible reviewed crosswalk supports them.",
-      "review_reference": "vigil/docs/reviews/2026-10-27-seven-incident-repairs/INC-000158.json"
+      "reviewer": "OpenAI Codex — AI analytical reviewer",
+      "review_status": "Published v0.9.0 protected-information and authentication-custody delta adjudicated. Existing class findings retained without re-adjudication; episode limits remain explicit."
     },
     "adjudication_coverage": {
-      "status": "partial"
+      "status": "complete"
     }
   },
   "related_incidents": [],
@@ -660,27 +719,51 @@
           "AI-authored, not human verified. No live service tests or private systems accessed. Existing HIM retained."
         ],
         "review_outcome": "Preserved bounded response mappings and reconciled supporting episodes. Initial access and custody losses are taxonomy-gap; coverage partial. Existing OECD rows held with full historical values because no admissible reviewed crosswalk supports them."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-27-090-DELTA-000158",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-27",
+        "review_scope": "Targeted published v0.9.0 adjudication of Protected Information Access Integrity and Authentication Material Custody Integrity. Prior taxonomy, harm and external findings preserved; direct NIST propositions independently assessed where supported.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "external_requirement_review": true,
+          "harm_impact_review": false,
+          "web_research": true
+        },
+        "known_limitations": [
+          "AI-authored analysis, not human verification. No live vulnerable system or private secret was accessed.",
+          "The taxonomy review is limited to the two new classes; existing classes were preserved, not freshly re-adjudicated.",
+          "Attributed occurrence reports retain their source-specific limits. No assurance about unobserved targets, copies or credential use is inferred."
+        ],
+        "review_outcome": "Moltbook exposed private communications and email records and permitted a demonstrated unauthenticated post edit. The public connection identifier is not the secret or defect. Distinct read and write operations crossed private-content and owner-edit boundaries; later repair does not erase those operations. Moltbook’s database returned agent authentication tokens and private messages containing third-party API secrets. These secret objects left authorised custody. The public Supabase connection identifier is excluded, and possible impersonation is not represented as an observed takeover. Wiz could no longer revert its live test edit after unauthenticated writes were restricted. This is a concrete test of the post-edit boundary. The Aligned result covers that route and time; it does not certify all tables or recover prior copies."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-27-SEVEN-REPAIR-000158",
+      "review_id": "VIGIL-REVIEW-2026-10-27-090-DELTA-000158",
       "reviewer_type": "AI analytical reviewer",
       "reviewer_platform": "OpenAI Codex",
       "reviewer_model": "GPT-6",
       "review_date": "2026-10-27",
-      "review_scope": "Authorised bounded source-first published v0.8.1 recognition, reciprocal episode and external crosswalk repair.",
+      "review_scope": "Targeted published v0.9.0 adjudication of Protected Information Access Integrity and Authentication Material Custody Integrity. Prior taxonomy, harm and external findings preserved; direct NIST propositions independently assessed where supported.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "web_research": true,
         "taxonomy_review": true,
         "external_requirement_review": true,
-        "harm_impact_review": false
+        "harm_impact_review": false,
+        "web_research": true
       },
       "known_limitations": [
-        "AI-authored, not human verified. No live service tests or private systems accessed. Existing HIM retained."
+        "AI-authored analysis, not human verification. No live vulnerable system or private secret was accessed.",
+        "The taxonomy review is limited to the two new classes; existing classes were preserved, not freshly re-adjudicated.",
+        "Attributed occurrence reports retain their source-specific limits. No assurance about unobserved targets, copies or credential use is inferred."
       ],
-      "review_outcome": "Preserved bounded response mappings and reconciled supporting episodes. Initial access and custody losses are taxonomy-gap; coverage partial. Existing OECD rows held with full historical values because no admissible reviewed crosswalk supports them."
+      "review_outcome": "Moltbook exposed private communications and email records and permitted a demonstrated unauthenticated post edit. The public connection identifier is not the secret or defect. Distinct read and write operations crossed private-content and owner-edit boundaries; later repair does not erase those operations. Moltbook’s database returned agent authentication tokens and private messages containing third-party API secrets. These secret objects left authorised custody. The public Supabase connection identifier is excluded, and possible impersonation is not represented as an observed takeover. Wiz could no longer revert its live test edit after unauthenticated writes were restricted. This is a concrete test of the post-edit boundary. The Aligned result covers that route and time; it does not certify all tables or recover prior copies."
     },
     "operating_model": "AI-authored, semi-autonomous production under human contract approval",
     "human_governance_editor": null,
@@ -785,7 +868,54 @@
     ],
     "assessment_pathway": "specific_consequence"
   },
-  "external_requirement_assessments": [],
+  "external_requirement_assessments": [
+    {
+      "requirement_id": "EXTREQ-FA4D888041BED657",
+      "alignment_result": "not-aligned",
+      "assessment_basis": "The access-enforcement proposition requires approved logical-access authorisations to be enforced for information and system resources. The observed information operation was outside the approved boundary. Private messages and email records were returned outside their intended private audience. This is demonstrated confidential-content exposure, independently of later use. Wiz changed an existing live post through an unauthenticated write route. Public readability did not authorise an unrelated caller to edit that post. Further private tables remained exposed after the earlier limited repairs. Those later-discovered records were outside the protection achieved on the already restricted routes. The missing backend policies were tested through queries that returned private records and secret tokens, detailed in the following episodes. The connection identifier was intentionally public; the demonstrated private-record retrieval establishes the information boundary crossing. This is a bounded retrospective comparison with the selected control proposition, not a claim of certification or an independently binding historical duty. A later tested restriction is assessed separately; this row concerns the earlier unauthorised operation.",
+      "assessed_on": "2026-10-27",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[2]"
+      ],
+      "derived_from_class_ids": [
+        "VIGIL-FC-000089"
+      ],
+      "source_clause_indices": [
+        0,
+        1,
+        5,
+        7
+      ],
+      "source_episode_refs": [
+        "E001",
+        "E002",
+        "E006",
+        "E008"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-F42FEC4FD1482D57",
+      "alignment_result": "not-aligned",
+      "assessment_basis": "The authenticator-protection proposition requires secret authenticator content to be protected against unauthorised disclosure and modification. The observed secret disclosure/acquisition or custody-changing modification was unauthorised. Some exposed private messages contained third-party API secrets. Their retrieval crossed the custody boundary even without a subsequent API call. Agent authentication tokens were returned through an unauthenticated database route. These were secret account credentials, unlike the intentionally public Supabase connection identifier. This is a bounded retrospective comparison with the selected control proposition, not a claim of certification or an independently binding historical duty.",
+      "assessed_on": "2026-10-27",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[2]"
+      ],
+      "derived_from_class_ids": [
+        "VIGIL-FC-000090"
+      ],
+      "source_clause_indices": [
+        1,
+        2
+      ],
+      "source_episode_refs": [
+        "E002",
+        "E003"
+      ]
+    }
+  ],
   "affected_party_context": {
     "entities": [
       {

@@ -9,7 +9,7 @@
     "title": "DeepSeek exposed an unauthenticated database containing chat histories and secrets",
     "created": "2026-09-08",
     "updated": "2026-10-27",
-    "version": "0.1.23"
+    "version": "0.1.24"
   },
   "incident_identity": {
     "historical_event_name": "DeepSeek exposed ClickHouse database",
@@ -21,7 +21,7 @@
   "summary": "Wiz Research found a publicly accessible, unauthenticated ClickHouse database belonging to DeepSeek. The exposed service provided full database-operation access and contained more than one million lines of logs including chat histories, API secrets, backend details and operational metadata. DeepSeek secured the database after Wiz notified the company; public evidence does not establish whether third parties accessed the data before discovery.",
   "vigil_assessment": {
     "factual_basis": "Wiz reports discovering two internet-reachable DeepSeek ClickHouse endpoints with no authentication and full database control. The exposed data included more than one million log lines with chat history, secret keys and backend details. Reuters independently reported the discovery and DeepSeek's rapid remediation after notification. Wiz expressly says it did not perform intrusive queries beyond enumeration. Its discussion of possible further file access is a potential consequence, not an executed step in the disclosed research.",
-    "governance_interpretation": "The occurrence is a material AI-platform data-security failure in surrounding infrastructure rather than a model-behaviour failure. It demonstrates that governance of frontier AI services includes conventional but consequential access control, data custody and operational-security boundaries. Database reachability and exposed sensitive logs do not themselves show a governance process treating capability as permission. Notification and closure do not establish earlier third-party access, model-training exposure or runtime-agent admission. The privacy and infrastructure-security outcomes are Not aligned. Closure of the unauthenticated exposure is Aligned with the repair requirement. Wiz reports that its disclosure reached DeepSeek and the company promptly secured the exposed database. The report connects the signal, responsible service operator and corrective disposition. This finding covers that response pathway. It does not establish recovery of prior copies or the state of every backend service. The original protected-access and authentication-material custody losses remain outside the published class coverage. The bounded response finding does not classify the whole occurrence as Aligned.",
+    "governance_interpretation": "The occurrence is a material AI-platform data-security failure in surrounding infrastructure rather than a model-behaviour failure. It demonstrates that governance of frontier AI services includes conventional but consequential access control, data custody and operational-security boundaries. Database reachability and exposed sensitive logs do not themselves show a governance process treating capability as permission. Notification and closure do not establish earlier third-party access, model-training exposure or runtime-agent admission. The privacy and infrastructure-security outcomes are Not aligned. Closure of the unauthenticated exposure is Aligned with the repair requirement. Wiz reports that its disclosure reached DeepSeek and the company promptly secured the exposed database. The report connects the signal, responsible service operator and corrective disposition. This finding covers that response pathway. It does not establish recovery of prior copies or the state of every backend service. The bounded response finding does not classify the whole occurrence as Aligned. Wiz’s database inspection reached private chat logs and backend records without authentication. This demonstrates disclosure outside the service’s protected-information boundary. Potential file-system queries and earlier third-party access are not asserted. The exposed DeepSeek logs included API secrets and secret keys. Their demonstrated retrievability through the unauthenticated database crossed the secret-custody boundary. No later impersonation or use by another party is inferred.",
     "significance_to_cam": "The occurrence shows that an AI service can expose highly sensitive user and operational data through ordinary infrastructure failures even when the model itself is not the failing component. Access control, data custody and deployment security are therefore part of the service's governance boundary.",
     "assessment_boundaries": [
       "The evidence does not establish that an unauthorised third party accessed or misused the exposed database before Wiz discovered it.",
@@ -43,10 +43,16 @@
               "canonical_taxonomy_mapping": false,
               "relationship": "rejected candidate",
               "rationale": "The occurrence establishes an unauthenticated database exposure and researcher enumeration, not a capability-to-authority conversion by an AI or governance process. The explicit vulnerability-without-authority-conversion exclusion applies. Data exposure at an AI provider is not itself evidence of this class mechanism."
+            },
+            {
+              "class_id": "VIGIL-FC-000089",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The discovered unauthenticated endpoint was the route through which Wiz inspected the private records described in the next episode. The demonstrated retrieval, not endpoint reachability alone, establishes the access-boundary crossing."
             }
           ],
-          "adjudication_status": "taxonomy-gap",
-          "adjudication_note": "Unauthenticated external access to the database demonstrates a missing protected-access boundary. Rejecting a capability-to-permission inference does not resolve this property. No session-state transition or identified applicable control activation is established; the access property remains outside published class coverage."
+          "adjudication_status": "mapped",
+          "adjudication_note": "The discovered unauthenticated endpoint was the route through which Wiz inspected the private records described in the next episode. The demonstrated retrieval, not endpoint reachability alone, establishes the access-boundary crossing."
         },
         {
           "episode_id": "E002",
@@ -61,10 +67,22 @@
               "relationship": "rejected candidate",
               "canonical_taxonomy_mapping": false,
               "rationale": "The occurrence establishes an unauthenticated database exposure and researcher enumeration, not a capability-to-authority conversion by an AI or governance process. The explicit vulnerability-without-authority-conversion exclusion applies. Data exposure at an AI provider is not itself evidence of this class mechanism."
+            },
+            {
+              "class_id": "VIGIL-FC-000089",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Unauthenticated queries reached private chat logs and backend records. Those records were not offered as public content; their return crossed the service’s confidentiality boundary."
+            },
+            {
+              "class_id": "VIGIL-FC-000090",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The returned log data included API secrets and secret keys. Their protected content was retrievable outside authorised custody; later use is not needed to establish that exposure."
             }
           ],
-          "adjudication_status": "taxonomy-gap",
-          "adjudication_note": "Researchers accessed chat logs, API secrets and backend metadata. Protected-information access and authentication-material custody were lost. Later third-party misuse is not required to establish that exposure. No secondary-purpose authority inference or session-state continuity defect is demonstrated; these properties remain taxonomy coverage gaps."
+          "adjudication_status": "mapped",
+          "adjudication_note": "Unauthenticated queries reached private chat logs and backend records. Those records were not offered as public content; their return crossed the service’s confidentiality boundary."
         },
         {
           "episode_id": "E003",
@@ -279,9 +297,9 @@
     }
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.8.1",
+    "taxonomy_version": "0.9.0",
     "classification_status": "provisionally-classified",
-    "classification_basis": "Wiz reports that its disclosure reached DeepSeek and the company promptly secured the exposed database. The report connects the signal, responsible service operator and corrective disposition. This finding covers that response pathway. It does not establish recovery of prior copies or the state of every backend service. The initial exposure still does not establish a capability-to-authority conversion. The earlier protected-information exposure and credential-custody loss remain taxonomy coverage gaps. Later remediation does not erase them.",
+    "classification_basis": "Wiz reports that its disclosure reached DeepSeek and the company promptly secured the exposed database. The report connects the signal, responsible service operator and corrective disposition. This finding covers that response pathway. It does not establish recovery of prior copies or the state of every backend service. Wiz’s database inspection reached private chat logs and backend records without authentication. This demonstrates disclosure outside the service’s protected-information boundary. Potential file-system queries and earlier third-party access are not asserted. The exposed DeepSeek logs included API secrets and secret keys. Their demonstrated retrievability through the unauthenticated database crossed the secret-custody boundary. No later impersonation or use by another party is inferred.",
     "primary_classification": {
       "family_id": "VIGIL-FF-0007",
       "class_id": "VIGIL-FC-000042",
@@ -289,15 +307,29 @@
       "classification_basis": "Wiz reports that its disclosure reached DeepSeek and the company promptly secured the exposed database. The report connects the signal, responsible service operator and corrective disposition. This finding covers that response pathway. It does not establish recovery of prior copies or the state of every backend service.",
       "classification_confidence": "medium"
     },
-    "secondary_classifications": [],
+    "secondary_classifications": [
+      {
+        "family_id": "VIGIL-FF-0018",
+        "class_id": "VIGIL-FC-000089",
+        "classification_role": "failure-occurrence",
+        "classification_basis": "Wiz’s database inspection reached private chat logs and backend records without authentication. This demonstrates disclosure outside the service’s protected-information boundary. Potential file-system queries and earlier third-party access are not asserted.",
+        "classification_confidence": "high"
+      },
+      {
+        "family_id": "VIGIL-FF-0018",
+        "class_id": "VIGIL-FC-000090",
+        "classification_role": "failure-occurrence",
+        "classification_basis": "The exposed DeepSeek logs included API secrets and secret keys. Their demonstrated retrievability through the unauthenticated database crossed the secret-custody boundary. No later impersonation or use by another party is inferred.",
+        "classification_confidence": "high"
+      }
+    ],
     "classification_review_provenance": {
       "review_date": "2026-10-27",
-      "reviewer": "OpenAI GPT-6 — AI analytical reviewer",
-      "review_status": "Preserved bounded response mappings and reconciled supporting episodes. Initial access and custody losses are taxonomy-gap; coverage partial. Existing OECD rows held with full historical values because no admissible reviewed crosswalk supports them.",
-      "review_reference": "vigil/docs/reviews/2026-10-27-seven-incident-repairs/INC-000096.json"
+      "reviewer": "OpenAI Codex — AI analytical reviewer",
+      "review_status": "Published v0.9.0 protected-information and authentication-custody delta adjudicated. Existing class findings retained without re-adjudication; episode limits remain explicit."
     },
     "adjudication_coverage": {
-      "status": "partial"
+      "status": "complete"
     }
   },
   "interpretive_provenance": {
@@ -728,27 +760,51 @@
           "AI-authored, not human verified. No live service tests or private systems accessed. Existing HIM retained."
         ],
         "review_outcome": "Preserved bounded response mappings and reconciled supporting episodes. Initial access and custody losses are taxonomy-gap; coverage partial. Existing OECD rows held with full historical values because no admissible reviewed crosswalk supports them."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-27-090-DELTA-000096",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-27",
+        "review_scope": "Targeted published v0.9.0 adjudication of Protected Information Access Integrity and Authentication Material Custody Integrity. Prior taxonomy, harm and external findings preserved; direct NIST propositions independently assessed where supported.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "external_requirement_review": true,
+          "harm_impact_review": false,
+          "web_research": true
+        },
+        "known_limitations": [
+          "AI-authored analysis, not human verification. No live vulnerable system or private secret was accessed.",
+          "The taxonomy review is limited to the two new classes; existing classes were preserved, not freshly re-adjudicated.",
+          "Attributed occurrence reports retain their source-specific limits. No assurance about unobserved targets, copies or credential use is inferred."
+        ],
+        "review_outcome": "Wiz’s database inspection reached private chat logs and backend records without authentication. This demonstrates disclosure outside the service’s protected-information boundary. Potential file-system queries and earlier third-party access are not asserted. The exposed DeepSeek logs included API secrets and secret keys. Their demonstrated retrievability through the unauthenticated database crossed the secret-custody boundary. No later impersonation or use by another party is inferred."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-27-SEVEN-REPAIR-000096",
+      "review_id": "VIGIL-REVIEW-2026-10-27-090-DELTA-000096",
       "reviewer_type": "AI analytical reviewer",
       "reviewer_platform": "OpenAI Codex",
       "reviewer_model": "GPT-6",
       "review_date": "2026-10-27",
-      "review_scope": "Authorised bounded source-first published v0.8.1 recognition, reciprocal episode and external crosswalk repair.",
+      "review_scope": "Targeted published v0.9.0 adjudication of Protected Information Access Integrity and Authentication Material Custody Integrity. Prior taxonomy, harm and external findings preserved; direct NIST propositions independently assessed where supported.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "web_research": true,
         "taxonomy_review": true,
         "external_requirement_review": true,
-        "harm_impact_review": false
+        "harm_impact_review": false,
+        "web_research": true
       },
       "known_limitations": [
-        "AI-authored, not human verified. No live service tests or private systems accessed. Existing HIM retained."
+        "AI-authored analysis, not human verification. No live vulnerable system or private secret was accessed.",
+        "The taxonomy review is limited to the two new classes; existing classes were preserved, not freshly re-adjudicated.",
+        "Attributed occurrence reports retain their source-specific limits. No assurance about unobserved targets, copies or credential use is inferred."
       ],
-      "review_outcome": "Preserved bounded response mappings and reconciled supporting episodes. Initial access and custody losses are taxonomy-gap; coverage partial. Existing OECD rows held with full historical values because no admissible reviewed crosswalk supports them."
+      "review_outcome": "Wiz’s database inspection reached private chat logs and backend records without authentication. This demonstrates disclosure outside the service’s protected-information boundary. Potential file-system queries and earlier third-party access are not asserted. The exposed DeepSeek logs included API secrets and secret keys. Their demonstrated retrievability through the unauthenticated database crossed the secret-custody boundary. No later impersonation or use by another party is inferred."
     }
   },
   "harm_impact_assessment": {
@@ -870,7 +926,46 @@
       "reviewed_on": "2026-09-20"
     }
   ],
-  "external_requirement_assessments": [],
+  "external_requirement_assessments": [
+    {
+      "requirement_id": "EXTREQ-FA4D888041BED657",
+      "alignment_result": "not-aligned",
+      "assessment_basis": "The access-enforcement proposition requires approved logical-access authorisations to be enforced for information and system resources. The observed information operation was outside the approved boundary. Unauthenticated queries reached private chat logs and backend records. Those records were not offered as public content; their return crossed the service’s confidentiality boundary. The discovered unauthenticated endpoint was the route through which Wiz inspected the private records described in the next episode. The demonstrated retrieval, not endpoint reachability alone, establishes the access-boundary crossing. This is a bounded retrospective comparison with the selected control proposition, not a claim of certification or an independently binding historical duty.",
+      "assessed_on": "2026-10-27",
+      "source_record_refs": [
+        "source_records[0]"
+      ],
+      "derived_from_class_ids": [
+        "VIGIL-FC-000089"
+      ],
+      "source_clause_indices": [
+        0,
+        1
+      ],
+      "source_episode_refs": [
+        "E001",
+        "E002"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-F42FEC4FD1482D57",
+      "alignment_result": "not-aligned",
+      "assessment_basis": "The authenticator-protection proposition requires secret authenticator content to be protected against unauthorised disclosure and modification. The observed secret disclosure/acquisition or custody-changing modification was unauthorised. The returned log data included API secrets and secret keys. Their protected content was retrievable outside authorised custody; later use is not needed to establish that exposure. This is a bounded retrospective comparison with the selected control proposition, not a claim of certification or an independently binding historical duty.",
+      "assessed_on": "2026-10-27",
+      "source_record_refs": [
+        "source_records[0]"
+      ],
+      "derived_from_class_ids": [
+        "VIGIL-FC-000090"
+      ],
+      "source_clause_indices": [
+        1
+      ],
+      "source_episode_refs": [
+        "E002"
+      ]
+    }
+  ],
   "affected_party_context": {
     "entities": [
       {

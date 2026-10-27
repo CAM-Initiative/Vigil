@@ -9,7 +9,7 @@
     "title": "Hacktron researchers used Claude-assisted exploit development to compromise OpenAI accounts and demonstrate internal repository access",
     "created": "2026-09-18",
     "updated": "2026-10-27",
-    "version": "0.1.16"
+    "version": "0.1.17"
   },
   "incident_identity": {
     "historical_event_name": "July 2026 Hacktron OpenAI bug-bounty compromise",
@@ -21,7 +21,7 @@
   "summary": "During security research in July 2026, Hacktron AI researchers used Anthropic Claude models to help analyze and develop an exploit chain against OpenAI-related systems. Reporting describes a vulnerability in the Discourse-hosted OpenAI community environment together with an OpenAI authorization or permission issue. The chain exposed authentication material associated with OpenAI employees and some unaffiliated users, enabled access to affected ChatGPT or Codex accounts and potentially connected services according to account configuration, and was demonstrated through access to OpenAI's private software repository and a proof-of-access pull request. The researchers reported the findings, OpenAI and Discourse remediated the issues, and OpenAI paid a bug bounty. The researchers’ original account says they reported the initial finding before demonstrating repository access and avoided reading internal code. OpenAI clarified that the bounty covered its own finding; the Discourse-hosted forum was excluded from its programme.",
   "vigil_assessment": {
     "factual_basis": "Independent reporting corroborates Hacktron's public disclosure that the researchers used Claude during researcher-led security testing, developed a working exploit against the community forum environment, obtained authentication material, demonstrated access to OpenAI account and repository surfaces, and responsibly disclosed the findings. OpenAI reportedly confirmed the issues were fixed and paid a $6,500 bounty. Public evidence does not establish malicious exploitation by the researchers or theft of model weights. The demonstrated access itself is a materialised confidentiality consequence even though the researchers avoided malicious exploitation and enabled remediation. The originating write-up distinguishes the initial disclosure from the later proof and identifies OpenAI’s exclusion of the forum from its bounty scope. It also describes disguising the researchers’ cloud test as a capture-the-flag target after a model refusal. The proof avoided reading internal code; actual access to every connected service is not established.",
-    "governance_interpretation": "AI-assisted security research demonstrated an account-security weakness affecting AI services. The affected providers repaired the reported issues. The finding concerns victim-service security, while the assisting model’s target selection and the researchers’ programme scope require separate authority assessment. The full testing scope and every connected-service exposure remain bounded by the sources. A proxy concealed the live nature of the researchers’ own cloud test after refusal. That context change does not itself prove the model exceeded an independently valid scope, and the bounty does not authorise every preceding action. The researchers’ disclosure timeline identifies reports to OpenAI and Discourse, responses from both providers and recorded fix dispositions. The OpenAI-side issue was later marked resolved. This traces the security signal to capable owners and a bounded response. It does not authorise the preceding testing or independently verify every connected service. The original loss of credential custody and protected account access remains a taxonomy coverage gap. Later disclosure and repair do not erase that loss. The available account does not resolve the changed refusal context or every downstream authority decision.",
+    "governance_interpretation": "AI-assisted security research demonstrated an account-security weakness affecting AI services. The affected providers repaired the reported issues. The finding concerns victim-service security, while the assisting model’s target selection and the researchers’ programme scope require separate authority assessment. The full testing scope and every connected-service exposure remain bounded by the sources. A proxy concealed the live nature of the researchers’ own cloud test after refusal. That context change does not itself prove the model exceeded an independently valid scope, and the bounty does not authorise every preceding action. The researchers’ disclosure timeline identifies reports to OpenAI and Discourse, responses from both providers and recorded fix dispositions. The OpenAI-side issue was later marked resolved. This traces the security signal to capable owners and a bounded response. It does not authorise the preceding testing or independently verify every connected service. The original loss of credential custody and protected account access remains a taxonomy coverage gap. Later disclosure and repair do not erase that loss. The available account does not resolve the changed refusal context or every downstream authority decision. Hacktron reports account takeover and creation of a proof-of-access pull request through an employee’s connected Codex. The private repository’s write boundary was crossed through that account route. The proof did not read internal code; access to every connected service is not established. Responsible disclosure and the later bounty do not erase the demonstrated access defect. Authentication-material custody is materially implicated by the reported account-compromise chain. The available originating account does not identify which protected credential, token or secret left custody. Its demonstrated SSO access is not itself proof of a secret transfer. Neither secret exposure nor verified secret confinement is established.",
     "significance_to_cam": "The occurrence demonstrates why AI cybersecurity capability governance cannot be separated from access and authority governance. A model can behave exactly as intended in an authorized red-team setting while materially lowering the effort required to develop real exploits. Governance therefore has to control capability access, target authority, credential and session propagation, connected-service authority, containment and human oversight rather than relying on the model to infer whether a technically possible exploit is institutionally authorized.",
     "assessment_boundaries": [
       "The researchers’ originating technical write-up was directly inspected. The complete provider forensic record and every authentication detail remain unavailable.",
@@ -74,15 +74,22 @@
         {
           "source_paraphrase": "Researchers applied the chain to OpenAI-related services, enabling account access through the reported identity weakness.",
           "recovered_invariant_interpretation": "Protected account access and authentication-material custody require their own assessment, independently of later misuse or repair.",
-          "taxonomy_relationships": [],
-          "adjudication_status": "taxonomy-gap",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000090",
+              "relationship": "ambiguous-boundary",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The preserved account describes authentication-material acquisition, while the originating write-up demonstrates an SSO account-takeover route without identifying the secret object or its transfer. Account access alone cannot establish secret exposure. The material’s identity and custody transition remain unresolved."
+            }
+          ],
+          "adjudication_status": "mapped",
           "source_record_refs": [
             "source_records[3]",
             "source_records[0]",
             "source_records[1]"
           ],
           "episode_id": "E003",
-          "adjudication_note": "The chain exposed authentication material and enabled access to other people’s AI-service accounts. The loss concerns protected access and credential custody, even without later malicious misuse. Available credentials alone do not establish a capability-based permission inference. No authentication-state transition inconsistency or identified activated control is demonstrated. The published classes do not faithfully represent the established exposure property. Separate downstream authority questions remain open."
+          "adjudication_note": "The preserved account describes authentication-material acquisition, while the originating write-up demonstrates an SSO account-takeover route without identifying the secret object or its transfer. Account access alone cannot establish secret exposure. The material’s identity and custody transition remain unresolved."
         },
         {
           "source_paraphrase": "The initial finding was reported before the later internal-repository proof.",
@@ -122,6 +129,12 @@
               "relationship": "unresolved candidate",
               "canonical_taxonomy_mapping": false,
               "rationale": "Using an employee’s Codex to create a private-repository pull request demonstrates a protected effect. Avoiding code reading limits the consequence but does not supply authority. The source does not establish the full research permission, the account-to-Codex authority decision or whether an intermediary’s authority was presumed to transfer. Those facts are needed to resolve the distinct authority candidates; the earlier access and custody loss remains separate."
+            },
+            {
+              "class_id": "VIGIL-FC-000089",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The researchers used an employee’s connected Codex account to create a pull request in a private repository. That is a demonstrated modification of protected repository state through another principal’s account. Avoiding internal-code reading limits the disclosure consequence; it does not turn the exploited account route into ordinary employee-authorised access."
             }
           ],
           "adjudication_status": "unresolved",
@@ -383,9 +396,9 @@
     }
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.8.1",
+    "taxonomy_version": "0.9.0",
     "classification_status": "provisionally-classified",
-    "classification_basis": "The researchers’ disclosure timeline identifies reports to OpenAI and Discourse, responses from both providers and recorded fix dispositions. The OpenAI-side issue was later marked resolved. This traces the security signal to capable owners and a bounded response. It does not authorise the preceding testing or independently verify every connected service. The original credential exposure and account-access loss remain outside the coverage of the published classes. Testing authority and the changed refusal context retain specific evidence limits.",
+    "classification_basis": "The researchers’ disclosure timeline identifies reports to OpenAI and Discourse, responses from both providers and recorded fix dispositions. The OpenAI-side issue was later marked resolved. This traces the security signal to capable owners and a bounded response. It does not authorise the preceding testing or independently verify every connected service. Hacktron reports account takeover and creation of a proof-of-access pull request through an employee’s connected Codex. The private repository’s write boundary was crossed through that account route. The proof did not read internal code; access to every connected service is not established. Responsible disclosure and the later bounty do not erase the demonstrated access defect. Authentication-material custody is materially implicated by the reported account-compromise chain. The available originating account does not identify which protected credential, token or secret left custody. Its demonstrated SSO access is not itself proof of a secret transfer. Neither secret exposure nor verified secret confinement is established.",
     "primary_classification": {
       "family_id": "VIGIL-FF-0007",
       "class_id": "VIGIL-FC-000042",
@@ -393,12 +406,62 @@
       "classification_basis": "The researchers’ disclosure timeline identifies reports to OpenAI and Discourse, responses from both providers and recorded fix dispositions. The OpenAI-side issue was later marked resolved. This traces the security signal to capable owners and a bounded response. It does not authorise the preceding testing or independently verify every connected service.",
       "classification_confidence": "medium"
     },
-    "secondary_classifications": [],
+    "secondary_classifications": [
+      {
+        "family_id": "VIGIL-FF-0018",
+        "class_id": "VIGIL-FC-000089",
+        "classification_role": "failure-occurrence",
+        "classification_basis": "Hacktron reports account takeover and creation of a proof-of-access pull request through an employee’s connected Codex. The private repository’s write boundary was crossed through that account route. The proof did not read internal code; access to every connected service is not established. Responsible disclosure and the later bounty do not erase the demonstrated access defect.",
+        "classification_confidence": "medium"
+      },
+      {
+        "family_id": "VIGIL-FF-0018",
+        "class_id": "VIGIL-FC-000090",
+        "classification_role": "ambiguous-boundary",
+        "classification_basis": "Authentication-material custody is materially implicated by the reported account-compromise chain. The available originating account does not identify which protected credential, token or secret left custody. Its demonstrated SSO access is not itself proof of a secret transfer. Neither secret exposure nor verified secret confinement is established.",
+        "boundary_adjudication": {
+          "taxonomy_version": "0.9.0",
+          "material_engagement": "Authentication-material custody is materially implicated by the reported account-compromise chain. The available originating account does not identify which protected credential, token or secret left custody. Its demonstrated SSO access is not itself proof of a secret transfer. Neither secret exposure nor verified secret confinement is established.",
+          "unresolved_conditions": [
+            {
+              "polarity": "failure-occurrence",
+              "condition": "Identifiable material serves an authentication or authorisation function, or contains the protected secret content needed to exercise that function, in an AI-mediated system or dependent infrastructure.",
+              "assessment": "The originating account must identify the authentication material and whether its secret content was exposed or acquired, rather than merely an identity-flow defect. A redacted technical explanation of the SSO chain or the scoped disclosure report could resolve this. No live credential is required.",
+              "source_record_refs": [
+                "source_records[0]",
+                "source_records[1]",
+                "source_records[3]"
+              ],
+              "episode_refs": [
+                "E003"
+              ]
+            },
+            {
+              "polarity": "successful-invariant",
+              "condition": "Observed handling or verification shows that the secret remains confined to authorised holders, recipients and pathways, with the applicable protection preserved through the tested operation.",
+              "assessment": "No observed verification establishes confinement to authorised recipients for the identified operation. The originating account must identify the authentication material and whether its secret content was exposed or acquired, rather than merely an identity-flow defect. A redacted technical explanation of the SSO chain or the scoped disclosure report could resolve this. No live credential is required.",
+              "source_record_refs": [
+                "source_records[0]",
+                "source_records[1]",
+                "source_records[3]"
+              ],
+              "episode_refs": [
+                "E003"
+              ]
+            }
+          ],
+          "diagnostic_reasons": [
+            "insufficient-evidence"
+          ],
+          "decisive_blocker": "Authentication-material custody is materially implicated by the reported account-compromise chain. The available originating account does not identify which protected credential, token or secret left custody. Its demonstrated SSO access is not itself proof of a secret transfer. Neither secret exposure nor verified secret confinement is established.",
+          "resolution_requirements": "The originating account must identify the authentication material and whether its secret content was exposed or acquired, rather than merely an identity-flow defect. A redacted technical explanation of the SSO chain or the scoped disclosure report could resolve this. No live credential is required."
+        }
+      }
+    ],
     "classification_review_provenance": {
       "review_date": "2026-10-27",
-      "reviewer": "OpenAI GPT-6 — AI analytical reviewer",
-      "review_status": "Bounded repair implemented; explicit gaps and existing-class evidence holds retained.",
-      "review_reference": "vigil/docs/reviews/2026-10-27-seven-incident-repairs/INC-000135.json"
+      "reviewer": "OpenAI Codex — AI analytical reviewer",
+      "review_status": "Published v0.9.0 protected-information and authentication-custody delta adjudicated. Existing class findings retained without re-adjudication; episode limits remain explicit."
     },
     "adjudication_coverage": {
       "status": "partial"
@@ -715,28 +778,51 @@
           "Existing HIM retained. New protected-access and credential-custody classes are not published authority."
         ],
         "review_outcome": "Retained bounded FC-042 and added canonical E004/E006/E007 relationships. E003 is taxonomy-gap; E002/E005 preserve precise authority/control evidence holds. Both unlinked OECD rows held with exact historical values in the dated repair review. Coverage partial."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-27-090-DELTA-000135",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-27",
+        "review_scope": "Targeted published v0.9.0 adjudication of Protected Information Access Integrity and Authentication Material Custody Integrity. Prior taxonomy, harm and external findings preserved; direct NIST propositions independently assessed where supported.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "external_requirement_review": true,
+          "harm_impact_review": false,
+          "web_research": true
+        },
+        "known_limitations": [
+          "AI-authored analysis, not human verification. No live vulnerable system or private secret was accessed.",
+          "The taxonomy review is limited to the two new classes; existing classes were preserved, not freshly re-adjudicated.",
+          "Attributed occurrence reports retain their source-specific limits. No assurance about unobserved targets, copies or credential use is inferred."
+        ],
+        "review_outcome": "Hacktron reports account takeover and creation of a proof-of-access pull request through an employee’s connected Codex. The private repository’s write boundary was crossed through that account route. The proof did not read internal code; access to every connected service is not established. Responsible disclosure and the later bounty do not erase the demonstrated access defect. Authentication-material custody is materially implicated by the reported account-compromise chain. The available originating account does not identify which protected credential, token or secret left custody. Its demonstrated SSO access is not itself proof of a secret transfer. Neither secret exposure nor verified secret confinement is established."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-27-SEVEN-REPAIR-000135",
+      "review_id": "VIGIL-REVIEW-2026-10-27-090-DELTA-000135",
       "reviewer_type": "AI analytical reviewer",
       "reviewer_platform": "OpenAI Codex",
       "reviewer_model": "GPT-6",
       "review_date": "2026-10-27",
-      "review_scope": "Authorised source-first episode reconciliation against published taxonomy v0.8.1 and mandatory external crosswalk.",
+      "review_scope": "Targeted published v0.9.0 adjudication of Protected Information Access Integrity and Authentication Material Custody Integrity. Prior taxonomy, harm and external findings preserved; direct NIST propositions independently assessed where supported.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "web_research": true,
         "taxonomy_review": true,
         "external_requirement_review": true,
-        "harm_impact_review": false
+        "harm_impact_review": false,
+        "web_research": true
       },
       "known_limitations": [
-        "AI-authored, not human verified. Primary disclosure reviewed; no private account or live exploit accessed.",
-        "Existing HIM retained. New protected-access and credential-custody classes are not published authority."
+        "AI-authored analysis, not human verification. No live vulnerable system or private secret was accessed.",
+        "The taxonomy review is limited to the two new classes; existing classes were preserved, not freshly re-adjudicated.",
+        "Attributed occurrence reports retain their source-specific limits. No assurance about unobserved targets, copies or credential use is inferred."
       ],
-      "review_outcome": "Retained bounded FC-042 and added canonical E004/E006/E007 relationships. E003 is taxonomy-gap; E002/E005 preserve precise authority/control evidence holds. Both unlinked OECD rows held with exact historical values in the dated repair review. Coverage partial."
+      "review_outcome": "Hacktron reports account takeover and creation of a proof-of-access pull request through an employee’s connected Codex. The private repository’s write boundary was crossed through that account route. The proof did not read internal code; access to every connected service is not established. Responsible disclosure and the later bounty do not erase the demonstrated access defect. Authentication-material custody is materially implicated by the reported account-compromise chain. The available originating account does not identify which protected credential, token or secret left custody. Its demonstrated SSO access is not itself proof of a secret transfer. Neither secret exposure nor verified secret confinement is established."
     }
   },
   "harm_impact_assessment": {
@@ -849,7 +935,47 @@
     }
   },
   "external_assessments": [],
-  "external_requirement_assessments": [],
+  "external_requirement_assessments": [
+    {
+      "requirement_id": "EXTREQ-FA4D888041BED657",
+      "alignment_result": "not-aligned",
+      "assessment_basis": "The access-enforcement proposition requires approved logical-access authorisations to be enforced for information and system resources. The observed information operation was outside the approved boundary. The researchers used an employee’s connected Codex account to create a pull request in a private repository. That is a demonstrated modification of protected repository state through another principal’s account. Avoiding internal-code reading limits the disclosure consequence; it does not turn the exploited account route into ordinary employee-authorised access. This is a bounded retrospective comparison with the selected control proposition, not a claim of certification or an independently binding historical duty.",
+      "assessed_on": "2026-10-27",
+      "source_record_refs": [
+        "source_records[2]",
+        "source_records[3]"
+      ],
+      "derived_from_class_ids": [
+        "VIGIL-FC-000089"
+      ],
+      "source_clause_indices": [
+        4
+      ],
+      "source_episode_refs": [
+        "E005"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-F42FEC4FD1482D57",
+      "alignment_result": "boundary",
+      "assessment_basis": "The authenticator-protection proposition requires secret authenticator content to be protected against unauthorised disclosure and modification. The exact unresolved access-authorisation or secret-content fact is: The originating account must identify the authentication material and whether its secret content was exposed or acquired, rather than merely an identity-flow defect. A redacted technical explanation of the SSO chain or the scoped disclosure report could resolve this. No live credential is required. This is a bounded retrospective comparison with the selected control proposition, not a claim of certification or an independently binding historical duty.",
+      "assessed_on": "2026-10-27",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]",
+        "source_records[3]"
+      ],
+      "derived_from_class_ids": [
+        "VIGIL-FC-000090"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "source_episode_refs": [
+        "E003"
+      ]
+    }
+  ],
   "affected_party_context": {
     "entities": [
       {
