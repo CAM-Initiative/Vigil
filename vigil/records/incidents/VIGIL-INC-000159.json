@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Cline prompt-injection and cache-poisoning chain enabled unauthorized npm package publication",
     "created": "2026-09-19",
-    "updated": "2026-10-25",
-    "version": "0.3.9"
+    "updated": "2026-10-27",
+    "version": "0.3.10"
   },
   "incident_identity": {
     "historical_event_name": "Cline prompt-injection and cache-poisoning chain enabled unauthorized npm package publication",
@@ -21,7 +21,7 @@
   "summary": "A Cline GitHub issue-triage workflow introduced in December 2025 allowed untrusted issue content to direct a Claude-powered tool and exposed shared workflow state used by a more privileged release pipeline. Security research reported the weakness in January 2026 and publicly disclosed it on 9 February. Cline removed the vulnerable workflows but mistakenly revoked a different npm credential, leaving the exposed token active. On 17 February, a third party used the active credential to publish an unauthorised Cline CLI release that caused unexpected installation of a legitimate third-party project. Cline deprecated the release, revoked the token and published a corrected version within about eight hours. Cline found no malicious code delivery or user-data access; the identity or continuity of the original researcher and the later publisher is not established.",
   "vigil_assessment": {
     "factual_basis": "The researcher's reconstruction shows that untrusted issue text could direct the triage agent to execute code, after which shared cache scope could bridge into privileged release workflows. Cline's postmortem states that an attacker used the chain to steal an npm token and publish version 2.3.0 with a postinstall script for OpenClaw. Cline deprecated the version, revoked credentials and reported no evidence that OpenClaw itself was malicious or that user data was exposed.",
-    "governance_interpretation": "The documented chain crossed from untrusted issue text through AI tool execution and shared infrastructure into release authority. Security failed. Bounded traceability, incident documentation and later repair are supported. The wrong-token revocation interval remains distinct, and full audit and monitoring arrangements remain unresolved.",
+    "governance_interpretation": "The documented chain crossed from untrusted issue text through AI tool execution and shared infrastructure into release authority. Security failed. Bounded traceability, incident documentation and later repair are supported. The wrong-token revocation interval remains distinct, and full audit and monitoring arrangements remain unresolved. Cline’s postmortem establishes an unauthorised package publication through a stolen publishing credential. The publication changed protected release content. Public readability of the package did not authorise that write, and an unchanged binary does not make the release authorised. Cline’s exposed npm publishing token remained usable after an incorrect revocation step. A third party then used it to publish a release. This establishes unauthorised custody independently of whether the published dependency was malicious. Later revocation is not evidence of earlier confinement.",
     "significance_to_cam": "The case demonstrates that AI issue-triage agents must be isolated from shared build state and publication credentials, because prompt injection can become supply-chain authority through ordinary CI/CD mechanisms.",
     "assessment_boundaries": [
       "The original researcher tested a mirror and states that a different actor weaponised the published technique against Cline.",
@@ -77,6 +77,12 @@
               "relationship": "failure-occurrence",
               "canonical_taxonomy_mapping": true,
               "rationale": "Cline states that recovery deleted the wrong npm token and used an organization-level view that did not surface the exposed token. The revocation action and clean-state signal were not bound to the actual compromised credential, which remained usable until the later publication."
+            },
+            {
+              "class_id": "VIGIL-FC-000090",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The exposed publishing token remained active after the wrong token was removed. Its custody loss was not repaired merely by a management screen showing zero tokens."
             }
           ]
         },
@@ -88,8 +94,21 @@
           ],
           "source_paraphrase": "On 17 February 2026 at 03:26 Pacific Time, an unauthorised party used the still-active npm publishing credential to release Cline CLI version 2.3.0 with an extra postinstallation dependency installation. Cline's forensic comparison says the CLI binary was unchanged and the installed third-party project was legitimate, not malicious. The release was unauthorised; its source does not establish malicious code delivery, user-data theft or compromise of the separately distributed IDE extensions.",
           "recovered_invariant_interpretation": "The unrevoked publication credential enabled an unauthorised package release after the underlying workflow had been removed; the evidence does not support describing the OpenClaw payload as malicious code.",
-          "adjudication_status": "resolved-no-mapping",
-          "taxonomy_relationships": []
+          "adjudication_status": "mapped",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000089",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "An unauthorised party published a new CLI release using the still-active stolen token. The protected release manifest changed even though the binary was unchanged and the added project was not shown malicious."
+            },
+            {
+              "class_id": "VIGIL-FC-000090",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The unauthorised publication confirmed that the compromised token remained usable. This corroborates the secret’s function and custody outside the authorised publisher."
+            }
+          ]
         },
         {
           "episode_id": "E004",
@@ -322,9 +341,9 @@
     }
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.8.1",
+    "taxonomy_version": "0.9.0",
     "classification_status": "classified",
-    "classification_basis": "Attacker-controlled issue text induced tool execution and crossed through shared cache state into a privileged release control plane. Authority propagated from a public issue-triage workflow through cache state and nightly release credentials to npm publication. Untrusted issue content was treated as operative instruction instead of remaining non-authorising data, allowing attacker-controlled text to direct consequential tool activity. The retained post-incident evidence captured the material instruction, tool and release-path events needed to preserve the occurrence record. The retained evidence supported reconstruction of the compromise chain while the public rationale remains bounded and does not restate unnecessary exploit mechanics. Cline states that recovery deleted the wrong npm token and used an organization-level view that did not surface the exposed token. The revocation action and clean-state signal were not bound to the actual compromised credential, which remained usable until the later publication.",
+    "classification_basis": "Attacker-controlled issue text induced tool execution and crossed through shared cache state into a privileged release control plane. Authority propagated from a public issue-triage workflow through cache state and nightly release credentials to npm publication. Untrusted issue content was treated as operative instruction instead of remaining non-authorising data, allowing attacker-controlled text to direct consequential tool activity. The retained post-incident evidence captured the material instruction, tool and release-path events needed to preserve the occurrence record. The retained evidence supported reconstruction of the compromise chain while the public rationale remains bounded and does not restate unnecessary exploit mechanics. Cline states that recovery deleted the wrong npm token and used an organization-level view that did not surface the exposed token. The revocation action and clean-state signal were not bound to the actual compromised credential, which remained usable until the later publication. Cline’s postmortem establishes an unauthorised package publication through a stolen publishing credential. The publication changed protected release content. Public readability of the package did not authorise that write, and an unchanged binary does not make the release authorised. Cline’s exposed npm publishing token remained usable after an incorrect revocation step. A third party then used it to publish a release. This establishes unauthorised custody independently of whether the published dependency was malicious. Later revocation is not evidence of earlier confinement.",
     "primary_classification": {
       "family_id": "VIGIL-FF-0001",
       "class_id": "VIGIL-FC-000006",
@@ -367,13 +386,26 @@
         "classification_role": "failure-occurrence",
         "classification_basis": "Cline states that recovery deleted the wrong npm token and used an organization-level view that did not surface the exposed token. The revocation action and clean-state signal were not bound to the actual compromised credential, which remained usable until the later publication.",
         "classification_confidence": "high"
+      },
+      {
+        "family_id": "VIGIL-FF-0018",
+        "class_id": "VIGIL-FC-000089",
+        "classification_role": "failure-occurrence",
+        "classification_basis": "Cline’s postmortem establishes an unauthorised package publication through a stolen publishing credential. The publication changed protected release content. Public readability of the package did not authorise that write, and an unchanged binary does not make the release authorised.",
+        "classification_confidence": "high"
+      },
+      {
+        "family_id": "VIGIL-FF-0018",
+        "class_id": "VIGIL-FC-000090",
+        "classification_role": "failure-occurrence",
+        "classification_basis": "Cline’s exposed npm publishing token remained usable after an incorrect revocation step. A third party then used it to publish a release. This establishes unauthorised custody independently of whether the published dependency was malicious. Later revocation is not evidence of earlier confinement.",
+        "classification_confidence": "high"
       }
     ],
     "classification_review_provenance": {
-      "review_date": "2026-10-25",
-      "reviewer": "OpenAI GPT-6 — AI analytical reviewer",
-      "review_status": "Resolved historical universal-exclusion G01 governance hold under published v0.8.1 role-specific scopes; failure and success distinctions/source boundaries unchanged.",
-      "review_reference": "vigil/docs/reviews/2026-10-25-siai-paper-v081-100-plus/INC-000159-081-REVIEW.json"
+      "review_date": "2026-10-27",
+      "reviewer": "OpenAI Codex — AI analytical reviewer",
+      "review_status": "Published v0.9.0 protected-information and authentication-custody delta adjudicated. Existing class findings retained without re-adjudication; episode limits remain explicit."
     },
     "adjudication_coverage": {
       "status": "complete"
@@ -656,28 +688,51 @@
           "G01 applies to capture/reconstruction. The wrong-token defect is independent of original injection. No data theft or IDE-extension compromise is inferred. Later completed token revocation does not erase the earlier active credential."
         ],
         "review_outcome": "Retained 6 mapped roles including 2 established successes; no new mechanism, harm or requirement conclusions."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-27-090-DELTA-000159",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-27",
+        "review_scope": "Targeted published v0.9.0 adjudication of Protected Information Access Integrity and Authentication Material Custody Integrity. Prior taxonomy, harm and external findings preserved; direct NIST propositions independently assessed where supported.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "external_requirement_review": true,
+          "harm_impact_review": false,
+          "web_research": false
+        },
+        "known_limitations": [
+          "AI-authored analysis, not human verification. No live vulnerable system or private secret was accessed.",
+          "The taxonomy review is limited to the two new classes; existing classes were preserved, not freshly re-adjudicated.",
+          "Attributed occurrence reports retain their source-specific limits. No assurance about unobserved targets, copies or credential use is inferred."
+        ],
+        "review_outcome": "Cline’s postmortem establishes an unauthorised package publication through a stolen publishing credential. The publication changed protected release content. Public readability of the package did not authorise that write, and an unchanged binary does not make the release authorised. Cline’s exposed npm publishing token remained usable after an incorrect revocation step. A third party then used it to publish a release. This establishes unauthorised custody independently of whether the published dependency was malicious. Later revocation is not evidence of earlier confinement."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-25-081-DELTA-000159",
+      "review_id": "VIGIL-REVIEW-2026-10-27-090-DELTA-000159",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT / GitHub connector",
+      "reviewer_platform": "OpenAI Codex",
       "reviewer_model": "GPT-6",
-      "review_date": "2026-10-25",
-      "review_scope": "Published 0.8.1 explicit role-scope exclusions compared with original source-linked 0.8.0 full recognition tests and G01 hold.",
+      "review_date": "2026-10-27",
+      "review_scope": "Targeted published v0.9.0 adjudication of Protected Information Access Integrity and Authentication Material Custody Integrity. Prior taxonomy, harm and external findings preserved; direct NIST propositions independently assessed where supported.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
         "taxonomy_review": true,
-        "web_research": false,
+        "external_requirement_review": true,
         "harm_impact_review": false,
-        "external_requirement_review": false
+        "web_research": false
       },
       "known_limitations": [
-        "Past universal-exclusion G01 screen remains retained as dated provenance; this change only resolves the scope interpretation.",
-        "G01 applies to capture/reconstruction. The wrong-token defect is independent of original injection. No data theft or IDE-extension compromise is inferred. Later completed token revocation does not erase the earlier active credential."
+        "AI-authored analysis, not human verification. No live vulnerable system or private secret was accessed.",
+        "The taxonomy review is limited to the two new classes; existing classes were preserved, not freshly re-adjudicated.",
+        "Attributed occurrence reports retain their source-specific limits. No assurance about unobserved targets, copies or credential use is inferred."
       ],
-      "review_outcome": "Retained 6 mapped roles including 2 established successes; no new mechanism, harm or requirement conclusions."
+      "review_outcome": "Cline’s postmortem establishes an unauthorised package publication through a stolen publishing credential. The publication changed protected release content. Public readability of the package did not authorise that write, and an unchanged binary does not make the release authorised. Cline’s exposed npm publishing token remained usable after an incorrect revocation step. A third party then used it to publish a release. This establishes unauthorised custody independently of whether the published dependency was malicious. Later revocation is not evidence of earlier confinement."
     },
     "operating_model": "AI-authored, semi-autonomous production under human contract approval",
     "human_governance_editor": null,
@@ -1110,6 +1165,47 @@
       ],
       "source_episode_refs": [
         "E005"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-FA4D888041BED657",
+      "alignment_result": "not-aligned",
+      "assessment_basis": "The access-enforcement proposition requires approved logical-access authorisations to be enforced for information and system resources. The observed information operation was outside the approved boundary. An unauthorised party published a new CLI release using the still-active stolen token. The protected release manifest changed even though the binary was unchanged and the added project was not shown malicious. This is a bounded retrospective comparison with the selected control proposition, not a claim of certification or an independently binding historical duty.",
+      "assessed_on": "2026-10-27",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[2]"
+      ],
+      "derived_from_class_ids": [
+        "VIGIL-FC-000089"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "source_episode_refs": [
+        "E003"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-F42FEC4FD1482D57",
+      "alignment_result": "not-aligned",
+      "assessment_basis": "The authenticator-protection proposition requires secret authenticator content to be protected against unauthorised disclosure and modification. The observed secret disclosure/acquisition or custody-changing modification was unauthorised. The exposed publishing token remained active after the wrong token was removed. Its custody loss was not repaired merely by a management screen showing zero tokens. The unauthorised publication confirmed that the compromised token remained usable. This corroborates the secret’s function and custody outside the authorised publisher. This is a bounded retrospective comparison with the selected control proposition, not a claim of certification or an independently binding historical duty.",
+      "assessed_on": "2026-10-27",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]",
+        "source_records[2]"
+      ],
+      "derived_from_class_ids": [
+        "VIGIL-FC-000090"
+      ],
+      "source_clause_indices": [
+        1,
+        2
+      ],
+      "source_episode_refs": [
+        "E002",
+        "E003"
       ]
     }
   ],
