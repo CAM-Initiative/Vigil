@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Hermes agent ran unattended during intrusion into Thailand’s Ministry of Finance",
     "created": "2026-09-08",
-    "updated": "2026-10-24",
-    "version": "0.1.22"
+    "updated": "2026-10-27",
+    "version": "0.1.23"
   },
   "incident_identity": {
     "historical_event_name": "Hermes AI-assisted Thailand Ministry of Finance intrusion",
@@ -21,7 +21,7 @@
   "summary": "Hunt.io and researcher Bob Diachenko reported recovering live attack infrastructure and Hermes agent logs from an intrusion targeting Thailand's Ministry of Finance. The operator configured Hermes in unattended or 'YOLO' mode, bypassing approval prompts, while the agent enumerated ministry systems, assessed privilege-escalation paths and searched files and personnel-record directories. Hunt.io reported evidence of compromise across multiple ministry systems but did not establish the initial-access method or exfiltration of the enumerated office files.",
   "vigil_assessment": {
     "factual_basis": "Hunt.io reports 585 files and 470 MB of attack tooling and stolen credentials across exposed directories, active session material, deployed webshells and internal-network evidence. Recovered Hermes logs show autonomous post-compromise enumeration and privilege-escalation assessment. The operator intentionally enabled unattended execution. The recovered archive also contains staged exploits and implants. Their presence does not prove that every tool executed or that listed mitigations were implemented. Logged document searches do not establish file exfiltration. The investigator reports notifying Thailand’s CERT and NCSA on 15 July and receiving acknowledgement that day. Receipt does not establish remediation or final disposition.",
-    "governance_interpretation": "This is a real-world deployment of an autonomous agent as offensive cyber tooling. Because a hostile operator deliberately disabled approval prompts and supplied the attack objective, the occurrence does not by itself establish an internal governance failure of Hermes; the material governance issue is the availability and operationalisation of unattended agentic capability in a live government intrusion. The hostile operator selected unattended mode; this is distinct from an applicable approval control failing to activate. Initial access and exfiltration remain unproved, and no named runtime governance undertaking is established. The human-approval checkpoint and safe-functioning outcomes are Not aligned for this deployment. The remaining stop, monitoring and outbound-policy assessments are Boundary where their operative records are unavailable.",
+    "governance_interpretation": "This is a real-world deployment of an autonomous agent as offensive cyber tooling. Because a hostile operator deliberately disabled approval prompts and supplied the attack objective, the occurrence does not by itself establish an internal governance failure of Hermes; the material governance issue is the availability and operationalisation of unattended agentic capability in a live government intrusion. The hostile operator selected unattended mode; this is distinct from an applicable approval control failing to activate. Initial access and exfiltration remain unproved, and no named runtime governance undertaking is established. The human-approval checkpoint and safe-functioning outcomes are Not aligned for this deployment. The remaining stop, monitoring and outbound-policy assessments are Boundary where their operative records are unavailable. Hunt.io’s recovered artefacts include stolen credentials and active session material in the ministry intrusion. These identify authentication objects outside authorised custody. Document-search commands do not independently establish document exfiltration, and the unknown initial-access route is not invented.",
     "significance_to_cam": "The occurrence shows that open-source agents can be configured for unattended offensive operations against a live target. Effective governance therefore depends on target authorisation, tool and execution boundaries, misuse resistance, monitoring and whether an operator can disable approval controls that would otherwise constrain the agent.",
     "assessment_boundaries": [
       "The initial-access pathway is not established.",
@@ -38,8 +38,15 @@
           ],
           "source_paraphrase": "Hunt.io recovered exposed July 9–13 directories containing attack tools, stolen credentials, session material and webshell evidence. Initial access was unknown.",
           "recovered_invariant_interpretation": "Recovered artefacts distinguish established access from an inferred initial exploit.",
-          "taxonomy_relationships": [],
-          "adjudication_status": "resolved-no-mapping"
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000090",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Hunt.io recovered stolen credentials and active session material in the campaign’s exposed directories. The recovered authentication objects were outside the ministry’s authorised holders."
+            }
+          ],
+          "adjudication_status": "mapped"
         },
         {
           "episode_id": "E002",
@@ -266,16 +273,21 @@
     }
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.8.1",
-    "classification_status": "unclassified",
-    "classification_basis": "The occurrence evidence and material consequences are preserved. No selectable class is admitted on the available recognition and exclusion evidence.",
-    "primary_classification": null,
+    "taxonomy_version": "0.9.0",
+    "classification_status": "provisionally-classified",
+    "classification_basis": "Hunt.io’s recovered artefacts include stolen credentials and active session material in the ministry intrusion. These identify authentication objects outside authorised custody. Document-search commands do not independently establish document exfiltration, and the unknown initial-access route is not invented.",
+    "primary_classification": {
+      "family_id": "VIGIL-FF-0018",
+      "class_id": "VIGIL-FC-000090",
+      "classification_role": "failure-occurrence",
+      "classification_basis": "Hunt.io’s recovered artefacts include stolen credentials and active session material in the ministry intrusion. These identify authentication objects outside authorised custody. Document-search commands do not independently establish document exfiltration, and the unknown initial-access route is not invented.",
+      "classification_confidence": "medium"
+    },
     "secondary_classifications": [],
     "classification_review_provenance": {
-      "review_date": "2026-10-25",
-      "reviewer": "OpenAI GPT-6 — AI analytical reviewer",
-      "review_status": "Bounded published taxonomy v0.8.1 role-scoped exclusion check of previously source-first-reviewed v0.8.0 findings; evidence gaps, roles and clause statuses retained.",
-      "review_reference": "vigil/docs/reviews/2026-10-25-siai-taxonomy-081-delta/BATCH-081-099-DELTA.json"
+      "review_date": "2026-10-27",
+      "reviewer": "OpenAI Codex — AI analytical reviewer",
+      "review_status": "Published v0.9.0 protected-information and authentication-custody delta adjudicated. Existing class findings retained without re-adjudication; episode limits remain explicit."
     },
     "adjudication_coverage": {
       "status": "partial"
@@ -689,28 +701,51 @@
         ],
         "review_outcome": "All 0 existing mapping roles were checked against current all-results and role-limited exclusions. Retained unclassified status, partial source-clause coverage, unmapped/resolved clause distinctions and prior evidence limits.",
         "reviewer_platform": "OpenAI ChatGPT"
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-27-090-DELTA-000094",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-27",
+        "review_scope": "Targeted published v0.9.0 adjudication of Protected Information Access Integrity and Authentication Material Custody Integrity. Prior taxonomy, harm and external findings preserved; direct NIST propositions independently assessed where supported.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "external_requirement_review": true,
+          "harm_impact_review": false,
+          "web_research": false
+        },
+        "known_limitations": [
+          "AI-authored analysis, not human verification. No live vulnerable system or private secret was accessed.",
+          "The taxonomy review is limited to the two new classes; existing classes were preserved, not freshly re-adjudicated.",
+          "Attributed occurrence reports retain their source-specific limits. No assurance about unobserved targets, copies or credential use is inferred."
+        ],
+        "review_outcome": "Hunt.io’s recovered artefacts include stolen credentials and active session material in the ministry intrusion. These identify authentication objects outside authorised custody. Document-search commands do not independently establish document exfiltration, and the unknown initial-access route is not invented."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-24-080-B09-000094",
+      "review_id": "VIGIL-REVIEW-2026-10-27-090-DELTA-000094",
       "reviewer_type": "AI analytical reviewer",
       "reviewer_platform": "OpenAI Codex",
-      "reviewer_model": "Codex (specific runtime model identifier not exposed)",
-      "review_date": "2026-10-24",
-      "review_scope": "Current-edition source-first taxonomy reconciliation and evidence-preserving explanation repair.",
+      "reviewer_model": "GPT-6",
+      "review_date": "2026-10-27",
+      "review_scope": "Targeted published v0.9.0 adjudication of Protected Information Access Integrity and Authentication Material Custody Integrity. Prior taxonomy, harm and external findings preserved; direct NIST propositions independently assessed where supported.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "web_research": true,
         "taxonomy_review": true,
+        "external_requirement_review": true,
         "harm_impact_review": false,
-        "external_requirement_review": false
+        "web_research": false
       },
       "known_limitations": [
-        "Occurrence-specific evidentiary gaps remain as recorded in the source clauses and current decision packet.",
-        "No independent human verification."
+        "AI-authored analysis, not human verification. No live vulnerable system or private secret was accessed.",
+        "The taxonomy review is limited to the two new classes; existing classes were preserved, not freshly re-adjudicated.",
+        "Attributed occurrence reports retain their source-specific limits. No assurance about unobserved targets, copies or credential use is inferred."
       ],
-      "review_outcome": "Added later disclosure acknowledgement as a separate evidence-limited episode; no remediation inferred."
+      "review_outcome": "Hunt.io’s recovered artefacts include stolen credentials and active session material in the ministry intrusion. These identify authentication objects outside authorised custody. Document-search commands do not independently establish document exfiltration, and the unknown initial-access route is not invented."
     }
   },
   "harm_impact_assessment": {
@@ -958,6 +993,24 @@
         "E002"
       ],
       "identification_basis": "The agent executed unattended actions in a live intrusion."
+    },
+    {
+      "requirement_id": "EXTREQ-F42FEC4FD1482D57",
+      "alignment_result": "not-aligned",
+      "assessment_basis": "The authenticator-protection proposition requires secret authenticator content to be protected against unauthorised disclosure and modification. The observed secret disclosure/acquisition or custody-changing modification was unauthorised. Hunt.io recovered stolen credentials and active session material in the campaign’s exposed directories. The recovered authentication objects were outside the ministry’s authorised holders. This is a bounded retrospective comparison with the selected control proposition, not a claim of certification or an independently binding historical duty.",
+      "assessed_on": "2026-10-27",
+      "source_record_refs": [
+        "source_records[0]"
+      ],
+      "derived_from_class_ids": [
+        "VIGIL-FC-000090"
+      ],
+      "source_clause_indices": [
+        0
+      ],
+      "source_episode_refs": [
+        "E001"
+      ]
     }
   ],
   "affected_party_context": {
