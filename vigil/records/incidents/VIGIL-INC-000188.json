@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "OpenAI reported a coordinated campaign to extract protected model reasoning at scale",
     "created": "2026-10-05",
-    "updated": "2026-10-25",
-    "version": "0.1.6"
+    "updated": "2026-10-27",
+    "version": "0.1.7"
   },
   "incident_identity": {
     "historical_event_name": "OpenAI coordinated protected-reasoning extraction and adversarial-distillation campaign",
@@ -21,7 +21,7 @@
   "summary": "OpenAI reported that from 1 July 2026 it observed a coordinated campaign designed to extract protected reasoning from its models for adversarial distillation. The activity began at low volume and peaked on 24–25 July with 16,000 requests using a relevant extraction pattern from more than 4,000 users; OpenAI later identified related prompt-pattern activity across a cluster of more than 15,000 users and says it fully disrupted that cluster by 28 July. One observed technique copied encrypted reasoning from one conversation and asked a model in another conversation to decrypt and transcribe it. OpenAI says the operators did not break encryption, compromise a database or directly access stored user conversations. It attributes a core cluster, but not all observed operators, to individuals associated with Moonshot AI, the developer of Kimi. OpenAI responded with account enforcement, signup and infrastructure controls, expanded monitoring, additional hidden-reasoning protections and information sharing with industry and government.",
   "vigil_assessment": {
     "factual_basis": "OpenAI's 30 September 2026 security report states that it identified and disrupted a coordinated campaign designed to extract protected reasoning from its models in a manner consistent with adversarial distillation. OpenAI defines the activity as systematic and unauthorised use of model outputs or reasoning to train, reproduce or improve another model. It reports activity beginning on 1 July, a 24–25 July spike of 16,000 requests using a relevant extraction pattern from more than 4,000 users, and a wider cluster of related prompt-pattern activity across more than 15,000 users that it says was fully disrupted by 28 July. It describes cross-conversation replay of encrypted reasoning as one observed extraction technique and states that the operators did not break encryption, compromise a database or directly access stored user conversations. OpenAI attributes a core cluster, but not all observed operators, to individuals associated with Moonshot AI. The Next Web independently reports the disclosure and preserves the same attribution limits and request volumes, but does not independently audit OpenAI's telemetry. The public evidence does not establish how many extraction attempts succeeded, the quantity of protected reasoning successfully recovered, whether recovered material was incorporated into a downstream model, or whether all activity in the wider cluster shared one operator. Independent researchers’ related cross-model and compaction disclosures helped the provider investigate and accelerate mitigations. The report describes closing a replay pathway and holding potentially reasoning-bearing streamed output, while partner-hosted deployments and tool-output defences remain continuing work. Those broader fixes are not proof that all July operators used one pathway.",
-    "governance_interpretation": "The occurrence fits Industrial-Scale Capability Extraction Authority at the level established by the current taxonomy. The campaign systematically targeted protected model reasoning, operated through coordinated high-volume and multi-account interaction, and was directed toward adversarial distillation rather than ordinary immediate use. OpenAI reports that the activity violated its access conditions and was designed to obtain reasoning that could help reproduce or improve another model. This supports the capability-extraction mechanism without converting OpenAI's attribution claim into a legal finding against Moonshot AI or assuming that every recorded request succeeded. The cross-conversation technique is treated as part of the extraction pathway rather than as proof of a separate cross-context lineage failure because the public report does not establish the necessary occurrence-specific ownership and receiving-context facts for every replay. OpenAI reports that its combined response fully disrupted the identified campaign cluster by 28 July, but the publication does not isolate a single defined protective control, its activation trigger and its realised effect well enough to assign a separate Control Effectiveness Integrity mapping.",
+    "governance_interpretation": "The occurrence fits Industrial-Scale Capability Extraction Authority at the level established by the current taxonomy. The campaign systematically targeted protected model reasoning, operated through coordinated high-volume and multi-account interaction, and was directed toward adversarial distillation rather than ordinary immediate use. OpenAI reports that the activity violated its access conditions and was designed to obtain reasoning that could help reproduce or improve another model. This supports the capability-extraction mechanism without converting OpenAI's attribution claim into a legal finding against Moonshot AI or assuming that every recorded request succeeded. The cross-conversation technique is treated as part of the extraction pathway rather than as proof of a separate cross-context lineage failure because the public report does not establish the necessary occurrence-specific ownership and receiving-context facts for every replay. OpenAI reports that its combined response fully disrupted the identified campaign cluster by 28 July, but the publication does not isolate a single defined protective control, its activation trigger and its realised effect well enough to assign a separate Control Effectiveness Integrity mapping. OpenAI confirms an attack pathway that reproduced protected reasoning through cross-conversation replay. The restriction concerned that reasoning content, not merely its later use for distillation. The confirmed disclosure supports a bounded finding even though the campaign’s total successful extractions remain unquantified. Encrypted reasoning blobs are not authentication credentials.",
     "significance_to_cam": "Ordinary access to a deployed model does not compound into authority to harvest its restricted reasoning or capabilities at campaign scale for reproduction or downstream training. The incident also demonstrates why extraction governance has to be evaluated cumulatively across accounts, conversations, infrastructure and time rather than one interaction at a time. Response analysis should remain separate: later disruption and strengthened controls are relevant evidence of containment without erasing the earlier extraction pathway or proving that every attempted extraction succeeded.",
     "assessment_boundaries": [
       "OpenAI's campaign telemetry and Moonshot-associated attribution are first-party findings and have not been independently audited in the preserved evidence.",
@@ -52,8 +52,15 @@
           ],
           "source_paraphrase": "One technique replayed encrypted reasoning from one conversation in another to request decryption and transcription. OpenAI denied encryption-breaking, database compromise or direct access to stored conversations.",
           "recovered_invariant_interpretation": "The model-interaction route must remain distinct from a database or cryptographic breach.",
-          "taxonomy_relationships": [],
-          "adjudication_status": "resolved-no-mapping"
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000089",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The provider confirms a replay pathway capable of recovering protected reasoning from another conversation. That disclosed information was withheld from the user-facing answer. The finding covers the confirmed recovery route, not a success count for every campaign request."
+            }
+          ],
+          "adjudication_status": "mapped"
         },
         {
           "episode_id": "E003",
@@ -185,7 +192,26 @@
       "assessment_id": "VIGIL-EXTASSESS-000081"
     }
   ],
-  "external_requirement_assessments": [],
+  "external_requirement_assessments": [
+    {
+      "requirement_id": "EXTREQ-FA4D888041BED657",
+      "alignment_result": "not-aligned",
+      "assessment_basis": "The access-enforcement proposition requires approved logical-access authorisations to be enforced for information and system resources. The observed information operation was outside the approved boundary. The provider confirms a replay pathway capable of recovering protected reasoning from another conversation. That disclosed information was withheld from the user-facing answer. The finding covers the confirmed recovery route, not a success count for every campaign request. This is a bounded retrospective comparison with the selected control proposition, not a claim of certification or an independently binding historical duty.",
+      "assessed_on": "2026-10-27",
+      "source_record_refs": [
+        "source_records[0]"
+      ],
+      "derived_from_class_ids": [
+        "VIGIL-FC-000089"
+      ],
+      "source_clause_indices": [
+        1
+      ],
+      "source_episode_refs": [
+        "E002"
+      ]
+    }
+  ],
   "system_context": {
     "platform_or_vendor": "OpenAI",
     "product_or_service": "Other",
@@ -265,12 +291,12 @@
     }
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.8.1",
+    "taxonomy_version": "0.9.0",
     "classification_status": "classified",
     "adjudication_coverage": {
       "status": "complete"
     },
-    "classification_basis": "OpenAI reports systematic acquisition of protected reasoning across thousands of accounts for adversarial distillation into another model, with an absent or adverse authority basis. That supports the campaign-scale extraction finding. Reported disruption of the identified cluster does not expose a defined control, trigger and attributable effect sufficient for an additional control-effectiveness finding. Cross-conversation replay remains an extraction technique; incomplete rights and receiving-context evidence do not establish a separate lineage-authority failure.",
+    "classification_basis": "OpenAI reports systematic acquisition of protected reasoning across thousands of accounts for adversarial distillation into another model, with an absent or adverse authority basis. That supports the campaign-scale extraction finding. Reported disruption of the identified cluster does not expose a defined control, trigger and attributable effect sufficient for an additional control-effectiveness finding. Cross-conversation replay remains an extraction technique; incomplete rights and receiving-context evidence do not establish a separate lineage-authority failure. OpenAI confirms an attack pathway that reproduced protected reasoning through cross-conversation replay. The restriction concerned that reasoning content, not merely its later use for distillation. The confirmed disclosure supports a bounded finding even though the campaign’s total successful extractions remain unquantified. Encrypted reasoning blobs are not authentication credentials.",
     "primary_classification": {
       "family_id": "VIGIL-FF-0001",
       "class_id": "VIGIL-FC-000068",
@@ -278,12 +304,19 @@
       "classification_basis": "The reported campaign systematically targeted protected model reasoning at coordinated multi-account scale for adversarial distillation, and OpenAI states that the activity was unauthorised and intended to support training, reproduction or improvement of another model.",
       "classification_confidence": "high"
     },
-    "secondary_classifications": [],
+    "secondary_classifications": [
+      {
+        "family_id": "VIGIL-FF-0018",
+        "class_id": "VIGIL-FC-000089",
+        "classification_role": "failure-occurrence",
+        "classification_basis": "OpenAI confirms an attack pathway that reproduced protected reasoning through cross-conversation replay. The restriction concerned that reasoning content, not merely its later use for distillation. The confirmed disclosure supports a bounded finding even though the campaign’s total successful extractions remain unquantified. Encrypted reasoning blobs are not authentication credentials.",
+        "classification_confidence": "medium"
+      }
+    ],
     "classification_review_provenance": {
-      "review_date": "2026-10-25",
-      "reviewer": "OpenAI GPT-6 — AI analytical reviewer",
-      "review_status": "Bounded published v0.8.1 delta; prior established failure criteria reverified and newly scoped exclusions separately adjudicated using dated source-linked evidence; original findings and limitations retained.",
-      "review_reference": "vigil/docs/reviews/2026-10-25-siai-paper-v081-100-plus/INC-000188-081-REVIEW.json"
+      "review_date": "2026-10-27",
+      "reviewer": "OpenAI Codex — AI analytical reviewer",
+      "review_status": "Published v0.9.0 protected-information and authentication-custody delta adjudicated. Existing class findings retained without re-adjudication; episode limits remain explicit."
     }
   },
   "related_incidents": [
@@ -435,28 +468,51 @@
           "Retain provider-attributed campaign finding without attributing all operators to Moonshot. Encrypted reasoning replay is not proof of broken encryption, database compromise or direct access to stored user chats. Reported cluster disruption does not prove no further actors or all protections effective. FC-083/042 would require bounded control-effect and disposition evidence; no generic success added from enforcement claims."
         ],
         "review_outcome": "Retained 1 previously established failure class(es) and all original harm, external, provenance and source data; separately contradicted 3 revised class-scope exclusions on the sourced episode(s)."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-27-090-DELTA-000188",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-27",
+        "review_scope": "Targeted published v0.9.0 adjudication of Protected Information Access Integrity and Authentication Material Custody Integrity. Prior taxonomy, harm and external findings preserved; direct NIST propositions independently assessed where supported.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "external_requirement_review": true,
+          "harm_impact_review": false,
+          "web_research": true
+        },
+        "known_limitations": [
+          "AI-authored analysis, not human verification. No live vulnerable system or private secret was accessed.",
+          "The taxonomy review is limited to the two new classes; existing classes were preserved, not freshly re-adjudicated.",
+          "Attributed occurrence reports retain their source-specific limits. No assurance about unobserved targets, copies or credential use is inferred."
+        ],
+        "review_outcome": "OpenAI confirms an attack pathway that reproduced protected reasoning through cross-conversation replay. The restriction concerned that reasoning content, not merely its later use for distillation. The confirmed disclosure supports a bounded finding even though the campaign’s total successful extractions remain unquantified. Encrypted reasoning blobs are not authentication credentials."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-25-081-DELTA-000188",
+      "review_id": "VIGIL-REVIEW-2026-10-27-090-DELTA-000188",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT / GitHub connector",
+      "reviewer_platform": "OpenAI Codex",
       "reviewer_model": "GPT-6",
-      "review_date": "2026-10-25",
-      "review_scope": "v0.8.1 necessary criteria and newly clarified class exclusions checked against dated v0.8.0 source clauses.",
+      "review_date": "2026-10-27",
+      "review_scope": "Targeted published v0.9.0 adjudication of Protected Information Access Integrity and Authentication Material Custody Integrity. Prior taxonomy, harm and external findings preserved; direct NIST propositions independently assessed where supported.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
         "taxonomy_review": true,
-        "web_research": false,
+        "external_requirement_review": true,
         "harm_impact_review": false,
-        "external_requirement_review": false
+        "web_research": true
       },
       "known_limitations": [
-        "No newly fetched third-party sources, hidden model-internal telemetry, or independent human verification.",
-        "Retain provider-attributed campaign finding without attributing all operators to Moonshot. Encrypted reasoning replay is not proof of broken encryption, database compromise or direct access to stored user chats. Reported cluster disruption does not prove no further actors or all protections effective. FC-083/042 would require bounded control-effect and disposition evidence; no generic success added from enforcement claims."
+        "AI-authored analysis, not human verification. No live vulnerable system or private secret was accessed.",
+        "The taxonomy review is limited to the two new classes; existing classes were preserved, not freshly re-adjudicated.",
+        "Attributed occurrence reports retain their source-specific limits. No assurance about unobserved targets, copies or credential use is inferred."
       ],
-      "review_outcome": "Retained 1 previously established failure class(es) and all original harm, external, provenance and source data; separately contradicted 3 revised class-scope exclusions on the sourced episode(s)."
+      "review_outcome": "OpenAI confirms an attack pathway that reproduced protected reasoning through cross-conversation replay. The restriction concerned that reasoning content, not merely its later use for distillation. The confirmed disclosure supports a bounded finding even though the campaign’s total successful extractions remain unquantified. Encrypted reasoning blobs are not authentication credentials."
     },
     "operating_model": "AI-authored, semi-autonomous production under human contract approval",
     "human_governance_editor": null,
