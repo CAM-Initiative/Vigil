@@ -1,0 +1,748 @@
+{
+  "artefact_role": "REVIEW",
+  "reviewed_on": "2026-10-27",
+  "method": "Design tests against preserved evidence and literal proposed criteria; no new external-source investigation or canonical Incident re-adjudication.",
+  "tests": [
+    {
+      "test": "Moltbook private-content access",
+      "incident_id": "VIGIL-INC-000158",
+      "incident_sha256": "0ce569be7f1c358e9be71bdf82de7e885bd828486e82e7a89895fdc794fc2533",
+      "episodes": [
+        {
+          "source_paraphrase": "Wiz found a public Supabase connection in client code and missing row-level security, enabling database reads and writes. Business Insider reported access in under three minutes.",
+          "recovered_invariant_interpretation": "A client-visible connection key is not itself the security defect; backend policy determines its permitted effects.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000002",
+              "relationship": "candidate boundary",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "The public connection and tokens established capability. The account does not show an AI or governance process using that reachability as its permission basis. A vulnerability alone is excluded from this authority-inference class."
+            }
+          ],
+          "adjudication_status": "resolved-no-mapping",
+          "source_record_refs": [
+            "source_records[0]",
+            "source_records[2]"
+          ],
+          "episode_id": "E001"
+        },
+        {
+          "source_paraphrase": "The accessible database contained about 35,000 email addresses and 4,060 private conversations, some with third-party credentials.",
+          "recovered_invariant_interpretation": "Actual confidential-information exposure differs from subsequent use of that information.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping",
+          "source_record_refs": [
+            "source_records[0]",
+            "source_records[2]"
+          ],
+          "episode_id": "E002"
+        }
+      ],
+      "candidate_key": "candidate-a",
+      "failure_condition_tests": [
+        {
+          "condition": "Identifiable information is held or handled by an AI-mediated system or its dependent infrastructure.",
+          "status": "supported",
+          "basis": "E002 identifies private conversations and email records in the AI-agent service database."
+        },
+        {
+          "condition": "An independently evidenced confidentiality or integrity boundary restricts access, acquisition, disclosure or modification of that information for the actor, operation and context.",
+          "status": "supported",
+          "basis": "The preserved account identifies the conversations as private and describes missing row-level security, rather than deliberate public publication."
+        },
+        {
+          "condition": "Occurrence evidence demonstrates that at least one such information operation crosses that boundary. A successful unauthorised retrieval or modification is sufficient; a theoretical route alone is not.",
+          "status": "supported",
+          "basis": "E001/E002 report researcher database access to the private data; no downstream exploitation needs to be inferred."
+        }
+      ],
+      "success_condition_tests": [
+        {
+          "condition": "Identifiable information and its independently evidenced confidentiality or integrity boundary are established for an AI-mediated system or dependent infrastructure.",
+          "status": "supported",
+          "basis": "Private content and backend access boundary are identified."
+        },
+        {
+          "condition": "A concrete access, acquisition, disclosure or modification attempt or operation materially tests that boundary.",
+          "status": "supported",
+          "basis": "The researcher’s data read tests that boundary."
+        },
+        {
+          "condition": "Observed response or verification shows that the unauthorised information operation is prevented or that the operation remains within its authorised information boundary.",
+          "status": "not-supported",
+          "basis": "Private content is accessible; protection is not shown for this read."
+        },
+        {
+          "condition": "The protective conclusion is restricted to the tested information, actor, operation and route; the evidence supports that result rather than only a configured policy or a claimed repair.",
+          "status": "not-supported",
+          "basis": "No protective outcome is established for this route and time."
+        }
+      ],
+      "exclusion_tests": [
+        {
+          "exclusion": "Class scope exclusion (all results): The information is deliberately public for the assessed operation and no independent integrity or other access restriction governs that operation. Public readability does not authorise public modification.",
+          "assessment": "Not operative: private conversations are not intended public content."
+        },
+        {
+          "exclusion": "Class scope exclusion (all results): The only material property is custody of authentication material. Assess Authentication Material Custody Integrity; separate private content or other protected information can independently engage this class.",
+          "assessment": "Not operative for private conversations; third-party secrets within them require separate B assessment."
+        },
+        {
+          "exclusion": "Not aligned exclusion: The observed information operation is validly authorised within the independently established boundary. An approved test does not by itself authorise public release of protected information.",
+          "assessment": "Testing permission does not make all service users authorised recipients of private DMs. This is a system protection test, not a finding about researcher wrongdoing."
+        },
+        {
+          "exclusion": "Not aligned exclusion: Only a hypothetical vulnerability, exposed endpoint, unverified capability claim or unsuccessful attempt is established, without demonstrated protected-information access, acquisition, disclosure or modification.",
+          "assessment": "Not operative: actual access is reported, beyond an endpoint-only claim."
+        },
+        {
+          "exclusion": "Class scope exclusion (all results): The issue is solely accuracy, availability, provenance, secondary-purpose permission or audit reconstruction, without an independently engaged information access or integrity boundary.",
+          "assessment": "Not operative: confidential data access is independently engaged."
+        }
+      ],
+      "design_result": "Candidate A adverse recognition supported on attributed preserved evidence.",
+      "limitations": [
+        "No live database access performed; source_records[2] is an originating report, not independent forensic verification.",
+        "No inference that every email address is independently confidential or that all private messages were read."
+      ],
+      "canonical_action": "none"
+    },
+    {
+      "test": "Moltbook token custody",
+      "incident_id": "VIGIL-INC-000158",
+      "incident_sha256": "0ce569be7f1c358e9be71bdf82de7e885bd828486e82e7a89895fdc794fc2533",
+      "episodes": [
+        {
+          "source_paraphrase": "About 1.5 million agent authentication tokens were exposed, creating impersonation capability.",
+          "recovered_invariant_interpretation": "Credential reachability does not establish realised account takeover.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping",
+          "source_record_refs": [
+            "source_records[0]",
+            "source_records[2]"
+          ],
+          "episode_id": "E003"
+        }
+      ],
+      "candidate_key": "candidate-b",
+      "failure_condition_tests": [
+        {
+          "condition": "Identifiable material serves an authentication or authorisation function, or contains the protected secret content needed to exercise that function, in an AI-mediated system or dependent infrastructure.",
+          "status": "supported",
+          "basis": "E003 identifies roughly 1.5 million agent authentication tokens, not merely a public connection identifier."
+        },
+        {
+          "condition": "An independently evidenced custody boundary governs who or what may hold, receive, disclose, modify or replace the material in the assessed lifecycle stage.",
+          "status": "supported",
+          "basis": "Authentication-token content is described as exposed from the private backend; its agent authentication function establishes the distinction from public client configuration."
+        },
+        {
+          "condition": "Occurrence evidence demonstrates exposure outside that boundary, unauthorised acquisition, or unauthorised custody-changing modification or replacement. Demonstrated retrievability of protected secret content is sufficient without proof of subsequent credential use.",
+          "status": "supported",
+          "basis": "E003 reports exposed token content; demonstrable availability outside custody is the event. No account takeover is required."
+        }
+      ],
+      "success_condition_tests": [
+        {
+          "condition": "Authentication material, its AI-mediated system or dependent infrastructure, and the applicable authorised custody boundary are identified.",
+          "status": "supported",
+          "basis": "Authentication material and its protected backend context are identified."
+        },
+        {
+          "condition": "A concrete handling operation, delegation, lifecycle transition or exposure attempt materially tests custody protection.",
+          "status": "supported",
+          "basis": "Database exposure tests the custody boundary."
+        },
+        {
+          "condition": "Observed handling or verification shows that the secret remains confined to authorised holders, recipients and pathways, with the applicable protection preserved through the tested operation.",
+          "status": "not-supported",
+          "basis": "Secret token content is reported available outside custody."
+        },
+        {
+          "condition": "The finding is limited to the tested material, operation and stage. Absence of reported misuse, ordinary credential availability, a missing key or an unverified rotation claim does not supply this evidence.",
+          "status": "not-supported",
+          "basis": "No observed protected handling is established for the exposed tokens."
+        }
+      ],
+      "exclusion_tests": [
+        {
+          "exclusion": "Class scope exclusion (all results): The material is only a non-secret identifier, public connection identifier, public verification key or public client configuration that is intended to be available in the assessed context. A separately exposed secret or unauthorised protected-information operation requires its own assessment.",
+          "assessment": "Not operative: E003 concerns agent authentication tokens, distinct from E001 public connection configuration."
+        },
+        {
+          "exclusion": "Class scope exclusion (all results): The issue concerns only coherent propagation of expiry, revocation, refresh or replacement into sessions and dependent operations. Assess Authentication-State Continuity unless a separate custody property is evidenced.",
+          "assessment": "Not operative: no stale-session transition is needed for this property."
+        },
+        {
+          "exclusion": "Not aligned exclusion: Credential handling or delegation is validly authorised and preserves the applicable custody boundary. Mere credential possession or ordinary authorised use is not a custody defect.",
+          "assessment": "Not operative: generic client availability of secret material is not authorised delegation."
+        },
+        {
+          "exclusion": "Not aligned exclusion: Only a theoretical vulnerability, unverified secret classification, unusable placeholder or unsuccessful attempt is shown; protected authentication material is not demonstrated outside custody.",
+          "assessment": "Not operative on attributed E003 evidence; no live token-use test is performed or required."
+        },
+        {
+          "exclusion": "Not aligned exclusion: Material is already invalid and no residual secret-protection or custody obligation is independently established. Do not assume every expired token remains a usable secret.",
+          "assessment": "Not established: the account describes authentication tokens and impersonation capability, not already invalid placeholders."
+        },
+        {
+          "exclusion": "Class scope exclusion (all results): The only property is the scope of an action performed using a credential, without a distinct custody issue. Assess the applicable authority or action class.",
+          "assessment": "Not operative: the assessed event is custody, not a later action using tokens."
+        }
+      ],
+      "design_result": "Candidate B adverse recognition supported without later impersonation.",
+      "limitations": [
+        "Reported count is approximate and attributed. Exact validity of every token is not independently verified.",
+        "Do not infer actual downstream credential misuse."
+      ],
+      "canonical_action": "none"
+    },
+    {
+      "test": "DeepSeek protected records",
+      "incident_id": "VIGIL-INC-000096",
+      "incident_sha256": "8d042e51ab3816edf91247f88a379cc16bef4ddd61f5a504a44aea456755fa2d",
+      "episodes": [
+        {
+          "episode_id": "E001",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "source_paraphrase": "During external security reconnaissance, Wiz found publicly reachable DeepSeek ClickHouse endpoints without authentication.",
+          "recovered_invariant_interpretation": "Security discovery establishes an exposed route; it does not establish prior malicious use.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000002",
+              "canonical_taxonomy_mapping": false,
+              "relationship": "rejected candidate",
+              "rationale": "The occurrence establishes an unauthenticated database exposure and researcher enumeration, not a capability-to-authority conversion by an AI or governance process. The explicit vulnerability-without-authority-conversion exclusion applies. Data exposure at an AI provider is not itself evidence of this class mechanism."
+            }
+          ],
+          "adjudication_status": "resolved-no-mapping"
+        },
+        {
+          "episode_id": "E002",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "source_paraphrase": "Wiz used the database interface to enumerate tables and identified more than one million log entries, including chat text, API secrets and backend metadata. It reported full database-operation access but said it did not perform intrusive queries beyond enumeration.",
+          "recovered_invariant_interpretation": "Exposure, demonstrated access and potential further exploitation are distinct evidentiary propositions.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000002",
+              "relationship": "rejected candidate",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "The occurrence establishes an unauthenticated database exposure and researcher enumeration, not a capability-to-authority conversion by an AI or governance process. The explicit vulnerability-without-authority-conversion exclusion applies. Data exposure at an AI provider is not itself evidence of this class mechanism."
+            }
+          ],
+          "adjudication_status": "resolved-no-mapping"
+        }
+      ],
+      "candidate_key": "candidate-a",
+      "failure_condition_tests": [
+        {
+          "condition": "Identifiable information is held or handled by an AI-mediated system or its dependent infrastructure.",
+          "status": "supported",
+          "basis": "E002 identifies chat text and backend records in DeepSeek infrastructure."
+        },
+        {
+          "condition": "An independently evidenced confidentiality or integrity boundary restricts access, acquisition, disclosure or modification of that information for the actor, operation and context.",
+          "status": "supported",
+          "basis": "Sensitive chats and backend records are not presented as intentionally public; the unauthenticated database is the reported exposure."
+        },
+        {
+          "condition": "Occurrence evidence demonstrates that at least one such information operation crosses that boundary. A successful unauthorised retrieval or modification is sufficient; a theoretical route alone is not.",
+          "status": "supported",
+          "basis": "Researchers enumerate and inspect the exposed database; access is demonstrated without intrusive server or file execution."
+        }
+      ],
+      "success_condition_tests": [
+        {
+          "condition": "Identifiable information and its independently evidenced confidentiality or integrity boundary are established for an AI-mediated system or dependent infrastructure.",
+          "status": "supported",
+          "basis": "Protected records and unauthenticated service context are identified."
+        },
+        {
+          "condition": "A concrete access, acquisition, disclosure or modification attempt or operation materially tests that boundary.",
+          "status": "supported",
+          "basis": "Actual database inspection tests access."
+        },
+        {
+          "condition": "Observed response or verification shows that the unauthorised information operation is prevented or that the operation remains within its authorised information boundary.",
+          "status": "not-supported",
+          "basis": "Access restriction does not prevent the reported read."
+        },
+        {
+          "condition": "The protective conclusion is restricted to the tested information, actor, operation and route; the evidence supports that result rather than only a configured policy or a claimed repair.",
+          "status": "not-supported",
+          "basis": "There is no protective read outcome in E001/E002."
+        }
+      ],
+      "exclusion_tests": [
+        {
+          "exclusion": "Class scope exclusion (all results): The information is deliberately public for the assessed operation and no independent integrity or other access restriction governs that operation. Public readability does not authorise public modification.",
+          "assessment": "Not operative for sensitive chats; do not assume all backend metadata is secret."
+        },
+        {
+          "exclusion": "Class scope exclusion (all results): The only material property is custody of authentication material. Assess Authentication Material Custody Integrity; separate private content or other protected information can independently engage this class.",
+          "assessment": "Not operative for chat records. API secrets receive separate B assessment."
+        },
+        {
+          "exclusion": "Not aligned exclusion: The observed information operation is validly authorised within the independently established boundary. An approved test does not by itself authorise public release of protected information.",
+          "assessment": "No general public release authorisation is evidenced by researcher enumeration."
+        },
+        {
+          "exclusion": "Not aligned exclusion: Only a hypothetical vulnerability, exposed endpoint, unverified capability claim or unsuccessful attempt is established, without demonstrated protected-information access, acquisition, disclosure or modification.",
+          "assessment": "Not operative for demonstrated reads. Full database control and OS modification are only reported capabilities, not executed writes."
+        },
+        {
+          "exclusion": "Class scope exclusion (all results): The issue is solely accuracy, availability, provenance, secondary-purpose permission or audit reconstruction, without an independently engaged information access or integrity boundary.",
+          "assessment": "Not operative: information access is independently evidenced."
+        }
+      ],
+      "design_result": "Candidate A adverse recognition supported for protected reads only.",
+      "limitations": [
+        "Preserved Wiz account reviewed; no original database inspected.",
+        "Do not infer executed server writes or earlier malicious access."
+      ],
+      "canonical_action": "none"
+    },
+    {
+      "test": "DeepSeek API-secret custody",
+      "incident_id": "VIGIL-INC-000096",
+      "incident_sha256": "8d042e51ab3816edf91247f88a379cc16bef4ddd61f5a504a44aea456755fa2d",
+      "episodes": [
+        {
+          "episode_id": "E002",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "source_paraphrase": "Wiz used the database interface to enumerate tables and identified more than one million log entries, including chat text, API secrets and backend metadata. It reported full database-operation access but said it did not perform intrusive queries beyond enumeration.",
+          "recovered_invariant_interpretation": "Exposure, demonstrated access and potential further exploitation are distinct evidentiary propositions.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000002",
+              "relationship": "rejected candidate",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "The occurrence establishes an unauthenticated database exposure and researcher enumeration, not a capability-to-authority conversion by an AI or governance process. The explicit vulnerability-without-authority-conversion exclusion applies. Data exposure at an AI provider is not itself evidence of this class mechanism."
+            }
+          ],
+          "adjudication_status": "resolved-no-mapping"
+        }
+      ],
+      "candidate_key": "candidate-b",
+      "failure_condition_tests": [
+        {
+          "condition": "Identifiable material serves an authentication or authorisation function, or contains the protected secret content needed to exercise that function, in an AI-mediated system or dependent infrastructure.",
+          "status": "supported",
+          "basis": "E002 identifies API secrets among returned database content."
+        },
+        {
+          "condition": "An independently evidenced custody boundary governs who or what may hold, receive, disclose, modify or replace the material in the assessed lifecycle stage.",
+          "status": "supported",
+          "basis": "API secrets are authority-bearing protected material, distinct from non-secret backend metadata."
+        },
+        {
+          "condition": "Occurrence evidence demonstrates exposure outside that boundary, unauthorised acquisition, or unauthorised custody-changing modification or replacement. Demonstrated retrievability of protected secret content is sufficient without proof of subsequent credential use.",
+          "status": "supported",
+          "basis": "E002 reports the secrets available through the unauthenticated database interface; use of those secrets is a separate unshown event."
+        }
+      ],
+      "success_condition_tests": [
+        {
+          "condition": "Authentication material, its AI-mediated system or dependent infrastructure, and the applicable authorised custody boundary are identified.",
+          "status": "supported",
+          "basis": "API secrets and backend custody context are identified."
+        },
+        {
+          "condition": "A concrete handling operation, delegation, lifecycle transition or exposure attempt materially tests custody protection.",
+          "status": "supported",
+          "basis": "Unauthenticated inspection tests custody."
+        },
+        {
+          "condition": "Observed handling or verification shows that the secret remains confined to authorised holders, recipients and pathways, with the applicable protection preserved through the tested operation.",
+          "status": "not-supported",
+          "basis": "Secrets are reported exposed rather than confined."
+        },
+        {
+          "condition": "The finding is limited to the tested material, operation and stage. Absence of reported misuse, ordinary credential availability, a missing key or an unverified rotation claim does not supply this evidence.",
+          "status": "not-supported",
+          "basis": "No protected handling outcome is demonstrated for E002."
+        }
+      ],
+      "exclusion_tests": [
+        {
+          "exclusion": "Class scope exclusion (all results): The material is only a non-secret identifier, public connection identifier, public verification key or public client configuration that is intended to be available in the assessed context. A separately exposed secret or unauthorised protected-information operation requires its own assessment.",
+          "assessment": "Not operative for API secrets; no claim that every backend identifier is secret."
+        },
+        {
+          "exclusion": "Class scope exclusion (all results): The issue concerns only coherent propagation of expiry, revocation, refresh or replacement into sessions and dependent operations. Assess Authentication-State Continuity unless a separate custody property is evidenced.",
+          "assessment": "Not operative: no session transition is required."
+        },
+        {
+          "exclusion": "Not aligned exclusion: Credential handling or delegation is validly authorised and preserves the applicable custody boundary. Mere credential possession or ordinary authorised use is not a custody defect.",
+          "assessment": "Not operative: public database access does not establish valid secret delegation."
+        },
+        {
+          "exclusion": "Not aligned exclusion: Only a theoretical vulnerability, unverified secret classification, unusable placeholder or unsuccessful attempt is shown; protected authentication material is not demonstrated outside custody.",
+          "assessment": "Not operative on attributed sensitive-content discovery; no credential-use test is asserted."
+        },
+        {
+          "exclusion": "Not aligned exclusion: Material is already invalid and no residual secret-protection or custody obligation is independently established. Do not assume every expired token remains a usable secret.",
+          "assessment": "Not established: no evidence all reported secrets are invalid with no residual duty."
+        },
+        {
+          "exclusion": "Class scope exclusion (all results): The only property is the scope of an action performed using a credential, without a distinct custody issue. Assess the applicable authority or action class.",
+          "assessment": "Not operative: custody is independently engaged."
+        }
+      ],
+      "design_result": "Candidate B adverse recognition supported on reported API-secret exposure.",
+      "limitations": [
+        "No proof of later credential use or exact validity of every secret.",
+        "NIST IR 8587 is contextual, not direct API-key control support."
+      ],
+      "canonical_action": "none"
+    },
+    {
+      "test": "Moltbook demonstrated write and later denied reversal",
+      "incident_id": "VIGIL-INC-000158",
+      "incident_sha256": "0ce569be7f1c358e9be71bdf82de7e885bd828486e82e7a89895fdc794fc2533",
+      "episodes": [
+        {
+          "source_paraphrase": "At 00:31 Wiz discovered remaining write access and demonstrated a change to a live post after sensitive reads had been restricted.",
+          "recovered_invariant_interpretation": "A realised integrity test is distinct from hypothetical credential misuse and from read exposure.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping",
+          "source_record_refs": [
+            "source_records[2]"
+          ],
+          "episode_id": "E006"
+        },
+        {
+          "source_paraphrase": "Wiz notified the team again; at 00:44 write access was blocked. The researcher could no longer revert the post.",
+          "recovered_invariant_interpretation": "The blocked reversal is direct reported verification of this write boundary, not proof that every endpoint was secured.",
+          "taxonomy_relationships": [],
+          "adjudication_status": "resolved-no-mapping",
+          "source_record_refs": [
+            "source_records[2]"
+          ],
+          "episode_id": "E007"
+        }
+      ],
+      "candidate_key": "candidate-a",
+      "failure_condition_tests": [
+        {
+          "condition": "Identifiable information is held or handled by an AI-mediated system or its dependent infrastructure.",
+          "status": "supported",
+          "basis": "E006 identifies a live service post."
+        },
+        {
+          "condition": "An independently evidenced confidentiality or integrity boundary restricts access, acquisition, disclosure or modification of that information for the actor, operation and context.",
+          "status": "supported",
+          "basis": "The independent boundary is modification reserved to authorised writers, even if reading the post is public."
+        },
+        {
+          "condition": "Occurrence evidence demonstrates that at least one such information operation crosses that boundary. A successful unauthorised retrieval or modification is sufficient; a theoretical route alone is not.",
+          "status": "supported",
+          "basis": "E006 reports an actual post change through remaining write access."
+        }
+      ],
+      "success_condition_tests": [
+        {
+          "condition": "Identifiable information and its independently evidenced confidentiality or integrity boundary are established for an AI-mediated system or dependent infrastructure.",
+          "status": "supported",
+          "basis": "The same post and writer restriction are identified."
+        },
+        {
+          "condition": "A concrete access, acquisition, disclosure or modification attempt or operation materially tests that boundary.",
+          "status": "supported",
+          "basis": "E007 reports a later attempted reversal after the write restriction."
+        },
+        {
+          "condition": "Observed response or verification shows that the unauthorised information operation is prevented or that the operation remains within its authorised information boundary.",
+          "status": "supported",
+          "basis": "The reversal cannot be completed because write access is blocked."
+        },
+        {
+          "condition": "The protective conclusion is restricted to the tested information, actor, operation and route; the evidence supports that result rather than only a configured policy or a claimed repair.",
+          "status": "supported",
+          "basis": "The protective result covers this later write route only; E008 shows why broader coverage cannot be assumed."
+        }
+      ],
+      "exclusion_tests": [
+        {
+          "exclusion": "Class scope exclusion (all results): The information is deliberately public for the assessed operation and no independent integrity or other access restriction governs that operation. Public readability does not authorise public modification.",
+          "assessment": "Not operative: public readability does not permit arbitrary modification."
+        },
+        {
+          "exclusion": "Class scope exclusion (all results): The only material property is custody of authentication material. Assess Authentication Material Custody Integrity; separate private content or other protected information can independently engage this class.",
+          "assessment": "Not operative: the object is post content."
+        },
+        {
+          "exclusion": "Not aligned exclusion: The observed information operation is validly authorised within the independently established boundary. An approved test does not by itself authorise public release of protected information.",
+          "assessment": "Research testing is not treated as general public edit authorisation; no legal finding about the tester is made."
+        },
+        {
+          "exclusion": "Not aligned exclusion: Only a hypothetical vulnerability, exposed endpoint, unverified capability claim or unsuccessful attempt is established, without demonstrated protected-information access, acquisition, disclosure or modification.",
+          "assessment": "Not operative: a write and later denial are actually reported."
+        },
+        {
+          "exclusion": "Class scope exclusion (all results): The issue is solely accuracy, availability, provenance, secondary-purpose permission or audit reconstruction, without an independently engaged information access or integrity boundary.",
+          "assessment": "Not operative: integrity restriction is the tested property."
+        }
+      ],
+      "design_result": "Earlier Candidate A adverse write and later bounded positive protection remain distinct.",
+      "limitations": [
+        "Cannot infer every write route secured, every table protected, or secret copies recovered."
+      ],
+      "canonical_action": "none"
+    },
+    {
+      "test": "Public Supabase connection identifier counterexample",
+      "incident_id": "VIGIL-INC-000158",
+      "incident_sha256": "0ce569be7f1c358e9be71bdf82de7e885bd828486e82e7a89895fdc794fc2533",
+      "episodes": [
+        {
+          "source_paraphrase": "Wiz found a public Supabase connection in client code and missing row-level security, enabling database reads and writes. Business Insider reported access in under three minutes.",
+          "recovered_invariant_interpretation": "A client-visible connection key is not itself the security defect; backend policy determines its permitted effects.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000002",
+              "relationship": "candidate boundary",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "The public connection and tokens established capability. The account does not show an AI or governance process using that reachability as its permission basis. A vulnerability alone is excluded from this authority-inference class."
+            }
+          ],
+          "adjudication_status": "resolved-no-mapping",
+          "source_record_refs": [
+            "source_records[0]",
+            "source_records[2]"
+          ],
+          "episode_id": "E001"
+        }
+      ],
+      "candidate_key": "candidate-b",
+      "failure_condition_tests": [
+        {
+          "condition": "Identifiable material serves an authentication or authorisation function, or contains the protected secret content needed to exercise that function, in an AI-mediated system or dependent infrastructure.",
+          "status": "not-established",
+          "basis": "E001 identifies a client-visible Supabase connection; it does not establish that this identifier is a secret authenticator."
+        },
+        {
+          "condition": "An independently evidenced custody boundary governs who or what may hold, receive, disclose, modify or replace the material in the assessed lifecycle stage.",
+          "status": "not-established",
+          "basis": "Intended-public client configuration has no demonstrated secret-custody boundary by availability alone."
+        },
+        {
+          "condition": "Occurrence evidence demonstrates exposure outside that boundary, unauthorised acquisition, or unauthorised custody-changing modification or replacement. Demonstrated retrievability of protected secret content is sufficient without proof of subsequent credential use.",
+          "status": "not-established",
+          "basis": "Public availability alone is not a protected secret disclosure."
+        }
+      ],
+      "success_condition_tests": [
+        {
+          "condition": "Authentication material, its AI-mediated system or dependent infrastructure, and the applicable authorised custody boundary are identified.",
+          "status": "not-established",
+          "basis": "No secret material is identified by the connection identifier alone."
+        },
+        {
+          "condition": "A concrete handling operation, delegation, lifecycle transition or exposure attempt materially tests custody protection.",
+          "status": "not-established",
+          "basis": "Identifier availability alone does not test secret custody."
+        },
+        {
+          "condition": "Observed handling or verification shows that the secret remains confined to authorised holders, recipients and pathways, with the applicable protection preserved through the tested operation.",
+          "status": "not-established",
+          "basis": "No protective secret-handling sequence is established."
+        },
+        {
+          "condition": "The finding is limited to the tested material, operation and stage. Absence of reported misuse, ordinary credential availability, a missing key or an unverified rotation claim does not supply this evidence.",
+          "status": "not-established",
+          "basis": "No positive result can be inferred merely because the identifier may be public."
+        }
+      ],
+      "exclusion_tests": [
+        {
+          "exclusion": "Class scope exclusion (all results): The material is only a non-secret identifier, public connection identifier, public verification key or public client configuration that is intended to be available in the assessed context. A separately exposed secret or unauthorised protected-information operation requires its own assessment.",
+          "assessment": "Operative if this is intended-public configuration. If its privilege/secret status is unverified, hold that fact rather than presume secrecy."
+        },
+        {
+          "exclusion": "Class scope exclusion (all results): The issue concerns only coherent propagation of expiry, revocation, refresh or replacement into sessions and dependent operations. Assess Authentication-State Continuity unless a separate custody property is evidenced.",
+          "assessment": "No session issue is needed to reject automatic custody mapping."
+        },
+        {
+          "exclusion": "Not aligned exclusion: Credential handling or delegation is validly authorised and preserves the applicable custody boundary. Mere credential possession or ordinary authorised use is not a custody defect.",
+          "assessment": "Identifier presence alone is not adverse credential handling."
+        },
+        {
+          "exclusion": "Not aligned exclusion: Only a theoretical vulnerability, unverified secret classification, unusable placeholder or unsuccessful attempt is shown; protected authentication material is not demonstrated outside custody.",
+          "assessment": "Secret classification is not established by E001 alone."
+        },
+        {
+          "exclusion": "Not aligned exclusion: Material is already invalid and no residual secret-protection or custody obligation is independently established. Do not assume every expired token remains a usable secret.",
+          "assessment": "Not relied on: expiry is not established."
+        },
+        {
+          "exclusion": "Class scope exclusion (all results): The only property is the scope of an action performed using a credential, without a distinct custody issue. Assess the applicable authority or action class.",
+          "assessment": "Wrong backend permissions are assessed separately through Candidate A."
+        }
+      ],
+      "design_result": "No Candidate B finding from public-identifier availability alone.",
+      "limitations": [
+        "Do not conflate this identifier with separately reported agent tokens in E003."
+      ],
+      "canonical_action": "none"
+    },
+    {
+      "test": "Authorised researcher key handoff counterexample",
+      "incident_id": "VIGIL-INC-000180",
+      "incident_sha256": "4862c439822112fcfb699753b17ae934ff83d4588fc3de19e27ed9a9a9054e62",
+      "episodes": [
+        {
+          "episode_id": "E003",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "source_paraphrase": "It saved handoff notes, inspected setup and found the required API key missing. It deferred migration pending researcher input and official instructions.",
+          "recovered_invariant_interpretation": "Missing required configuration supports bounded deferral rather than an unauthorised replacement route.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000070",
+              "relationship": "successful-invariant",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Inspection showed that the launcher could not run with the current missing-key configuration; the assistant deferred rather than expand its authority, resuming after the researcher changed that condition."
+            }
+          ],
+          "adjudication_status": "mapped"
+        },
+        {
+          "episode_id": "E005",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "source_paraphrase": "After the researcher supplied the key, it updated configuration and ran supported migration. A complete post-restart state comparison is not published.",
+          "recovered_invariant_interpretation": "Changed conditions can support resumption without proving durable restoration of every saved item.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000002",
+              "relationship": "successful-invariant",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The assistant considered available external persistence and credential routes, withheld unauthorised use, and used the researcher-supplied key for the supported migration."
+            }
+          ],
+          "adjudication_status": "mapped"
+        }
+      ],
+      "candidate_key": "candidate-b",
+      "failure_condition_tests": [
+        {
+          "condition": "Identifiable material serves an authentication or authorisation function, or contains the protected secret content needed to exercise that function, in an AI-mediated system or dependent infrastructure.",
+          "status": "supported",
+          "basis": "The launcher requires an API key and the researcher supplies it."
+        },
+        {
+          "condition": "An independently evidenced custody boundary governs who or what may hold, receive, disclose, modify or replace the material in the assessed lifecycle stage.",
+          "status": "supported",
+          "basis": "The researcher-controlled setup permits this key handoff for the supported migration."
+        },
+        {
+          "condition": "Occurrence evidence demonstrates exposure outside that boundary, unauthorised acquisition, or unauthorised custody-changing modification or replacement. Demonstrated retrievability of protected secret content is sufficient without proof of subsequent credential use.",
+          "status": "not-supported",
+          "basis": "No secret disclosure outside authorised recipients or routes is evidenced."
+        }
+      ],
+      "success_condition_tests": [
+        {
+          "condition": "Authentication material, its AI-mediated system or dependent infrastructure, and the applicable authorised custody boundary are identified.",
+          "status": "supported",
+          "basis": "Material and intended recipient are identified."
+        },
+        {
+          "condition": "A concrete handling operation, delegation, lifecycle transition or exposure attempt materially tests custody protection.",
+          "status": "supported",
+          "basis": "A concrete handoff and configuration operation occurs."
+        },
+        {
+          "condition": "Observed handling or verification shows that the secret remains confined to authorised holders, recipients and pathways, with the applicable protection preserved through the tested operation.",
+          "status": "not-established",
+          "basis": "The selected excerpts do not verify protected transport, storage or all handling of the supplied key."
+        },
+        {
+          "condition": "The finding is limited to the tested material, operation and stage. Absence of reported misuse, ordinary credential availability, a missing key or an unverified rotation claim does not supply this evidence.",
+          "status": "not-established",
+          "basis": "Ordinary authorised use is not enough for a positive custody test."
+        }
+      ],
+      "exclusion_tests": [
+        {
+          "exclusion": "Class scope exclusion (all results): The material is only a non-secret identifier, public connection identifier, public verification key or public client configuration that is intended to be available in the assessed context. A separately exposed secret or unauthorised protected-information operation requires its own assessment.",
+          "assessment": "Not operative: a key is identified, rather than a public identifier."
+        },
+        {
+          "exclusion": "Class scope exclusion (all results): The issue concerns only coherent propagation of expiry, revocation, refresh or replacement into sessions and dependent operations. Assess Authentication-State Continuity unless a separate custody property is evidenced.",
+          "assessment": "No authentication-state propagation conclusion is required."
+        },
+        {
+          "exclusion": "Not aligned exclusion: Credential handling or delegation is validly authorised and preserves the applicable custody boundary. Mere credential possession or ordinary authorised use is not a custody defect.",
+          "assessment": "Adverse exclusion applies: the evidenced use is authorised; no independent custody loss is established."
+        },
+        {
+          "exclusion": "Not aligned exclusion: Only a theoretical vulnerability, unverified secret classification, unusable placeholder or unsuccessful attempt is shown; protected authentication material is not demonstrated outside custody.",
+          "assessment": "No unsuccessful exposure attempt or verified secret leak is shown."
+        },
+        {
+          "exclusion": "Not aligned exclusion: Material is already invalid and no residual secret-protection or custody obligation is independently established. Do not assume every expired token remains a usable secret.",
+          "assessment": "Not relied on: expiry is not established."
+        },
+        {
+          "exclusion": "Class scope exclusion (all results): The only property is the scope of an action performed using a credential, without a distinct custody issue. Assess the applicable authority or action class.",
+          "assessment": "Action authority is separately assessed in the Incident; it does not manufacture a custody result."
+        }
+      ],
+      "design_result": "Retain as a counterexample to automatic adverse or positive custody classification.",
+      "limitations": [
+        "No hidden exposure is inferred. No new canonical mapping is proposed."
+      ],
+      "canonical_action": "none"
+    }
+  ],
+  "authorship_provenance": {
+    "content_origin": "ai-authored",
+    "generation_mode": "semi-autonomous",
+    "human_role": "contract-approver",
+    "human_authorship": false,
+    "human_review_status": "not-reviewed",
+    "human_verification_status": "not-verified"
+  },
+  "hypothetical_calibration": [
+    {
+      "scenario": "A scoped test attempts to export an active secret from a secret store. Observed denial and audit evidence show the secret stays inside authorised custody for this route.",
+      "candidate_key": "candidate-b",
+      "expected_result": "successful-invariant within the tested route",
+      "criterion_tests": [
+        {
+          "condition": "Authentication material, its AI-mediated system or dependent infrastructure, and the applicable authorised custody boundary are identified.",
+          "basis": "The scenario expressly identifies an active secret and an authorised secret store."
+        },
+        {
+          "condition": "A concrete handling operation, delegation, lifecycle transition or exposure attempt materially tests custody protection.",
+          "basis": "An actual scoped export test challenges custody."
+        },
+        {
+          "condition": "Observed handling or verification shows that the secret remains confined to authorised holders, recipients and pathways, with the applicable protection preserved through the tested operation.",
+          "basis": "Denial and retained handling evidence establish confinement rather than mere absence of misuse."
+        },
+        {
+          "condition": "The finding is limited to the tested material, operation and stage. Absence of reported misuse, ordinary credential availability, a missing key or an unverified rotation claim does not supply this evidence.",
+          "basis": "The result expressly covers only that secret and export route."
+        }
+      ],
+      "evidence_status": "hypothetical design illustration; not occurrence evidence"
+    },
+    {
+      "scenario": "A public endpoint is suspected to expose tokens, but a request returns no protected content and no valid secret is demonstrated.",
+      "candidate_key": "candidate-b",
+      "expected_result": "No adverse finding from the theoretical vulnerability alone; no positive finding without the required protection evidence.",
+      "evidence_status": "hypothetical design illustration; not occurrence evidence"
+    }
+  ]
+}

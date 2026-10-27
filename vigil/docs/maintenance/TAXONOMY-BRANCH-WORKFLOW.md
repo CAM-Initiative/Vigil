@@ -8,7 +8,7 @@
 - **`agent/incident-ecosystem-ingestion`** — only branch authorised to allocate new Incident IDs.
 - **Other working/release branches** — existing Incident adjudication, evidence, harm, external requirements and generated outputs. They consume *published* taxonomy from `main`, not unmerged taxonomy proposals.
 
-The taxonomy branch starts from `main`. A proposed change is reviewed through a **taxonomy-only pull request targeting main**. Do not bring unrelated Incident corpus or SIAI release work onto this branch. Do not copy unmerged taxonomy changes into other branches as an expedient.
+The taxonomy branch starts from `main`. A proposed change is normally reviewed through a **taxonomy-only pull request targeting main**, subject to an explicit maintainer-authorised integrated evidence scope below. Do not bring unrelated Incident corpus or SIAI release work onto this branch. Do not copy unmerged taxonomy changes into other branches as an expedient.
 
 ## Controlled taxonomy version
 
@@ -37,3 +37,13 @@ Taxonomy tools and the publication schema are also maintained in the taxonomy la
 `chore/siai-2026-release-readiness-20261023` continues its existing source-first taxonomy v0.8.0 Incident reconciliation against **published** criteria. Keep its working packets and Incident changes intact. Any new G01 or other normative-class amendment goes on the taxonomy branch, is reviewed there, and must merge into main *before* the release branch re-synchronizes and re-adjudicates affected records. No silent copy, premature version increase, broad reclassification or SIAI merge is authorised by this setup.
 
 **Order of authority:** taxonomy proposal branch → approved main taxonomy → Incident branch sync and source-first reconciliation → release branch validation → approved main dataset release.
+
+## Integrated standards and taxonomy programme — authorised 27 October 2026
+
+For [issue #171](https://github.com/CAM-Initiative/Vigil/issues/171), the maintainer explicitly requires protected-information and authentication-custody taxonomy development, ISO/NIST source-version registration, external requirement extraction and standards-to-class relationships on **the same `agent/taxonomy-development` branch and in one integrated PR to main**. Standards traceability is part of the taxonomy design. Do not create a separate standards branch or PR for this programme. This bounded exception supersedes the earlier separate-standards proposal and the taxonomy-only wording for this programme; it does not authorise unrelated Incident edits or standards work.
+
+Use the source registry, sharded EXTREQ architecture, source-scope, source-fidelity and existing `external_references` contracts. Keep source-native modality, voluntary normative force, internal conformance conditions and independent legal applicability separate. Metadata-only ISO registration is permitted; unseen licensed provisions and unverified control relationships are not.
+
+Candidate class and family payloads may be retained as REVIEW material without canonical identities while abstraction and boundary approval is pending. Do not add them to selectable family files or allocate their canonical IDs before that review. Supporting requirements whose only defensible relationship is to a proposed class remain review-stage extraction payloads until the approved identity and relationship can resolve through the existing supporting-source gate. Do not weaken the gate or invent an existing-class relationship to bypass this dependency. Promote the approved classes, requirements, metadata review, fidelity evidence and relationships together in this same PR.
+
+The canonical `working_release` is introduced only when approved canonical family/class content changes exist. The existing release validator rejects a candidate release with unchanged canonical content. Before admission, retain the conditional release proposal in the dated review packet; never add a fictitious canonical amendment just to activate a version. Once admission is approved, select at most one working release from published main at the highest required change level. Human approval and the established main-only publication workflow remain required. An ISO access blocker remains explicit until authorised control text and any needed permission are available.
