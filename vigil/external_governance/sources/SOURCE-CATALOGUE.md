@@ -2,9 +2,9 @@
 
 Public knowledge catalogue of external governance sources and their bounded relevance to AI governance. The summaries describe source subject matter; they do not provide legal advice or establish that a source applies to any particular system or organisation.
 
-- Source versions: 105
+- Source versions: 109
 - Review-due source versions: 0
-- Registry updated through: 2026-10-18T00:00:00Z
+- Registry updated through: 2026-10-27T00:00:00Z
 
 ## SDOS Runtime Governance Framework — Control Catalog and Reference Document
 
@@ -1077,6 +1077,40 @@ ISO/IEC 25059 defines a quality model for AI systems within the SQuaRE framework
 - **Review freshness:** current
 - **Official source:** https://www.iso.org/committee/6794475/x/catalogue/
 
+## Information security, cybersecurity and privacy protection — Information security management systems — Requirements
+
+ISO/IEC 27001:2022 specifies requirements for an information security management system. It supports risk-based protection of organisational information. It is a voluntary consensus standard. Conformance requirements are distinct from independently applicable law. Its relevance includes information handled by AI services and their supporting infrastructure. Certification concerns the management system within its assessed scope. Publication does not establish that a particular service is certified or that a particular control applies to an incident.
+
+- **Issuer:** ISO/IEC
+- **Version:** `2022`
+- **Lifecycle state:** `published`
+- **AI-governance relevance:** security, data-governance, risk-management
+- **Applicable lifecycle stages:** design, deployment, operation-use, change-management, retirement
+- **Relevance scope:** Information and authenticator protection in AI-mediated services and dependent infrastructure. No automatic organisational adoption or legal applicability is asserted.
+- **Last substantive review:** 2026-10-27
+- **Next substantive review:** 2027-01-25
+- **Substantive reviewer:** OpenAI / Codex / GPT-6 (per session system identity)
+- **Review method:** official-metadata-only-review · blocked-primary-text-review
+- **Review freshness:** current
+- **Official source:** https://www.iso.org/standard/82875.html
+
+## Information security, cybersecurity and privacy protection — Information security controls
+
+ISO/IEC 27002:2022 provides information security controls and implementation guidance. It supports information security management. It is a voluntary consensus standard and is distinct from the management-system requirements in ISO/IEC 27001. Its relevance includes information handled by AI services and their supporting infrastructure. Implementation guidance and management-system certification serve different purposes. Publication does not establish that a particular service has adopted a control or meets a particular protection requirement.
+
+- **Issuer:** ISO/IEC
+- **Version:** `2022`
+- **Lifecycle state:** `published`
+- **AI-governance relevance:** security, data-governance, risk-management
+- **Applicable lifecycle stages:** design, deployment, operation-use, change-management, retirement
+- **Relevance scope:** Information and authenticator protection in AI-mediated services and dependent infrastructure. No automatic organisational adoption or legal applicability is asserted.
+- **Last substantive review:** 2026-10-27
+- **Next substantive review:** 2027-01-25
+- **Substantive reviewer:** OpenAI / Codex / GPT-6 (per session system identity)
+- **Review method:** official-metadata-only-review · blocked-primary-text-review
+- **Review freshness:** current
+- **Official source:** https://www.iso.org/standard/75652.html
+
 ## Information technology — Governance of IT — Governance implications of the use of artificial intelligence by organizations
 
 ISO/IEC 38507 addresses the governance implications of organisational use of artificial intelligence within the governance-of-IT family. It is directed toward governing bodies and organisational decision-makers rather than only technical teams. For AI governance, it helps connect AI adoption and use to accountability, oversight, strategy, risk, responsibilities and organisational performance across the lifecycle. It complements operational management standards but does not replace sector-specific law, board duties or technical assurance. The available official information supports this high-level governance role; detailed principles, practices and normative language from the copyrighted text are not reconstructed.
@@ -1587,6 +1621,23 @@ The NIST Cybersecurity Framework 2.0 provides voluntary guidance for managing cy
 - **Review freshness:** current
 - **Official source:** https://doi.org/10.6028/NIST.CSWP.29
 
+## Protecting Tokens and Assertions from Forgery, Theft, and Misuse: Implementation Recommendations for Agencies and Cloud Service Providers
+
+NIST IR 8587 provides technical guidance for protecting signed identity assertions, access tokens and their cryptographic keys. It addresses federal environments and cloud service providers. Its controls concern asymmetric signed assertions and tokens. Ordinary API keys and symmetric schemes are outside that control scope. Conformance is voluntary unless applicable policy or agreement determines otherwise.
+
+- **Issuer:** National Institute of Standards and Technology
+- **Version:** `2026-09`
+- **Lifecycle state:** `final`
+- **AI-governance relevance:** security, data-governance, risk-management
+- **Applicable lifecycle stages:** design, deployment, operation-use, change-management, retirement
+- **Relevance scope:** Information and authenticator protection in AI-mediated services and dependent infrastructure. No automatic organisational adoption or legal applicability is asserted.
+- **Last substantive review:** 2026-10-27
+- **Next substantive review:** 2027-01-25
+- **Substantive reviewer:** OpenAI / Codex / GPT-6 (per session system identity)
+- **Review method:** direct-public-primary-review · partial-review
+- **Review freshness:** current
+- **Official source:** https://csrc.nist.gov/pubs/ir/8587/final
+
 ## Towards a Standard for Identifying and Managing Bias in Artificial Intelligence
 
 NIST Special Publication 1270 offers guidance toward identifying and managing bias in artificial intelligence. It treats bias as a socio-technical concern that can arise from data, models, institutional processes, human factors and deployment context. For AI governance, the publication supports broader bias analysis than metric-only approaches, including stakeholder impacts, lifecycle controls, testing and documentation. It is voluntary guidance rather than a legal definition of discrimination or a certification scheme. Organisations must connect its concepts to the specific decision context, affected populations, available evidence and applicable civil-rights or sectoral obligations.
@@ -1637,6 +1688,23 @@ NIST Special Publication 800-218A is an AI-focused community profile of the Secu
 - **Review method:** direct-public-primary-review · bounded-complete-review
 - **Review freshness:** current
 - **Official source:** https://doi.org/10.6028/NIST.SP.800-218A
+
+## Security and Privacy Controls for Information Systems and Organizations
+
+NIST SP 800-53 provides a catalogue of security and privacy controls for information systems and organisations. Revision 5, Release 5.2.0 supports risk-based control selection and tailoring. Its controls address access enforcement, authenticator management and protection of information. Nongovernmental use is voluntary. Independent policy, contract or law can determine applicable duties.
+
+- **Issuer:** National Institute of Standards and Technology
+- **Version:** `5.2.0`
+- **Lifecycle state:** `final`
+- **AI-governance relevance:** security, data-governance, risk-management
+- **Applicable lifecycle stages:** design, deployment, operation-use, change-management, retirement
+- **Relevance scope:** Information and authenticator protection in AI-mediated services and dependent infrastructure. No automatic organisational adoption or legal applicability is asserted.
+- **Last substantive review:** 2026-10-27
+- **Next substantive review:** 2027-01-25
+- **Substantive reviewer:** OpenAI / Codex / GPT-6 (per session system identity)
+- **Review method:** direct-public-primary-review · partial-review
+- **Review freshness:** current
+- **Official source:** https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final
 
 ## Guide to Operational Technology (OT) Security
 

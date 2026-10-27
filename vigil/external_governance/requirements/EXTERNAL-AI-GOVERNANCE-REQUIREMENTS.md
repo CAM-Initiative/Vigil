@@ -2,9 +2,9 @@
 
 Canonical analytical catalogue derived from registered external governance sources. Inclusion does not establish CAM applicability, adoption, coverage, compliance, conformance or alignment.
 
-- Registered source versions: 105
+- Registered source versions: 109
 - Primary AI-governance source versions: 63
-- Requirement records: 1121
+- Requirement records: 1130
 
 ## SDOS Runtime Governance Framework — Control Catalog and Reference Document — 1.10
 
@@ -1413,6 +1413,30 @@ No requirement records are asserted. Primary AI-governance source is in scope, b
 
 No requirement records are asserted. Primary AI-governance source is in scope, but requirement extraction is blocked because only official metadata or an abstract was accessed.
 
+## Information security, cybersecurity and privacy protection — Information security management systems — Requirements — 2022
+
+- Source: `EXT-0502DA42C683` / `ISO-IEC-27001`
+- Role: `supporting-external-authority`
+- Access: `official-metadata-only`
+- Extraction: `blocked-access`
+- Requirements: 0
+- Review priority: `supporting-specialist-source`
+- Next action: Revisit provisional clause references when authorised primary ISO text is available. Do not use contextual entries for conformance assessment.
+
+No requirement records are asserted. Maintainer-authorised limited-information control catalogue: 5.15, 5.17, 5.18, 8.3. Provisional contextual references only. Normative extraction remains blocked, with no ISO EXTREQs admitted.
+
+## Information security, cybersecurity and privacy protection — Information security controls — 2022
+
+- Source: `EXT-AE89AFAA0F6F` / `ISO-IEC-27002`
+- Role: `supporting-external-authority`
+- Access: `official-metadata-only`
+- Extraction: `blocked-access`
+- Requirements: 0
+- Review priority: `supporting-specialist-source`
+- Next action: Revisit provisional clause references when authorised primary ISO text is available. Do not use contextual entries for conformance assessment.
+
+No requirement records are asserted. Maintainer-authorised limited-information control catalogue: 5.15, 5.17, 5.18, 8.3. Provisional contextual references only. Normative extraction remains blocked, with no ISO EXTREQs admitted.
+
 ## Information technology — Governance of IT — Governance implications of the use of artificial intelligence by organizations — 2022
 
 - Source: `EXT-6B4C6A420D7A` / `ISO-IEC-38507`
@@ -2125,6 +2149,21 @@ No requirement records are asserted. Retained for terminology, examples, strateg
 | `EXTREQ-B3C2C06EC24BD021` | RC.RP-03 | Verify the integrity of backups and other restoration assets before using them for restoration. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-CC9B3D4127206817` | DE.CM-01 | Monitor networks and network services to find potentially adverse events. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 
+## Protecting Tokens and Assertions from Forgery, Theft, and Misuse: Implementation Recommendations for Agencies and Cloud Service Providers — 2026-09
+
+- Source: `EXT-8287D877DA56` / `NIST-IR-8587`
+- Role: `supporting-external-authority`
+- Access: `direct-public-primary`
+- Extraction: `partial`
+- Requirements: 2
+- Review priority: `supporting-specialist-source`
+- Next action: Preserve source-specific limits and extend extraction only after independent proposition and relationship review.
+
+| Requirement | Clause/control | Summary | Posture / type | External authority | Relationship | Review / access |
+| --- | --- | --- | --- | --- | --- | --- |
+| `EXTREQ-79EC29449A54CBC9` | 5.1.1.3 — signing-key protection | Protect assertion- and token-signing keys during storage and cryptographic use. | `mandatory-normative` / `positive-duty` | `informative-technical-report` | `conformance` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-8091A41EC4985C34` | 5.1.1.2 — backup/archive distribution | When cryptographic keys are backed up or archived, preserve confidentiality and integrity during distribution at a level equivalent to operational use. | `mandatory-normative` / `positive-duty` | `informative-technical-report` | `conformance` | `reviewed-analytical-summary` / `direct-public-primary` |
+
 ## Towards a Standard for Identifying and Managing Bias in Artificial Intelligence — 2022
 
 - Source: `EXT-1BE47AB84994` / `NIST-SP-1270`
@@ -2254,6 +2293,26 @@ No requirement records are asserted. Retained for terminology, examples, strateg
 | `EXTREQ-F0581975A66AED74` | PW.3.1 R1 | Verify the provenance (when known) and integrity of training, testing, fine-tuning, and aligning data before use. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-F1C5571B851A123F` | PW.8.2 R1 | Test all AI models for vulnerabilities in accordance with the organization’s code testing policies or guidelines. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-FC3775D684CD5F14` | PW.8.1 R1 | Include AI models in code testing policies and guidelines. Several forms of code testing can be used for AI models, including unit testing, integration testing, penetration testing, red teaming, use case testing, and adversarial testing. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+
+## Security and Privacy Controls for Information Systems and Organizations — 5.2.0
+
+- Source: `EXT-9F0E4D3126B0` / `NIST-SP-800-53`
+- Role: `supporting-external-authority`
+- Access: `direct-public-primary`
+- Extraction: `partial`
+- Requirements: 7
+- Review priority: `supporting-specialist-source`
+- Next action: Preserve source-specific limits and extend extraction only after independent proposition and relationship review.
+
+| Requirement | Clause/control | Summary | Posture / type | External authority | Relationship | Review / access |
+| --- | --- | --- | --- | --- | --- | --- |
+| `EXTREQ-0B2833BFB579C5D4` | IA-5(h) | Require individuals to take specific authenticator-protection controls and require devices to implement such controls. | `mandatory-normative` / `positive-duty` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-3712B2961BED2533` | SC-8 | Protect the organisation-selected confidentiality, integrity, or both properties of information in transmission. | `mandatory-normative` / `positive-duty` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-59FB939E5243C7DF` | IA-5(a) | Verify the identity of the individual, group, role, service or device receiving an authenticator as part of its initial distribution. | `mandatory-normative` / `positive-duty` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-BF9889E246852D7C` | AC-6 | Limit users and processes acting for them to authorised accesses needed for their assigned organisational tasks. | `mandatory-normative` / `positive-duty` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-C5285311F6E76E8C` | SC-28 | Protect the organisation-selected confidentiality, integrity, or both properties of organisation-defined information at rest. | `mandatory-normative` / `positive-duty` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-F42FEC4FD1482D57` | IA-5(g) | Protect system authenticator content against unauthorised disclosure and modification. | `mandatory-normative` / `positive-duty` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-FA4D888041BED657` | AC-3 | Enforce approved logical-access authorisations for information and system resources under the applicable access-control policies. | `mandatory-normative` / `positive-duty` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 
 ## Guide to Operational Technology (OT) Security — 3
 

@@ -1,0 +1,455 @@
+{
+  "schema_version": "0.4.0",
+  "standard": {
+    "name": "VIGIL Alignment Taxonomy",
+    "version": "0.9.0",
+    "publication_date": "2026-10-27",
+    "status": "beta",
+    "description": "Beta portable alignment standard for recurring AI governance invariants and their occurrence mappings."
+  },
+  "family": {
+    "family_code": "INFORMATION_PROTECTION_CUSTODY_INTEGRITY",
+    "name": "Information Protection and Custody Integrity",
+    "status": "beta",
+    "abstraction": "family",
+    "version": "0.1.0",
+    "plain_english": "Information and secret authentication material remain within their independently established access, integrity and custody boundaries.",
+    "definition": "The bounded integrity domain governing protection against unauthorised information operations and loss of authorised custody of authentication material in AI-mediated systems and their dependent infrastructure. It concerns the protected information boundary itself, rather than authority inference, authentication-state propagation or a particular safeguard lifecycle.",
+    "invariant": "Information and authentication material governed by an independently established protection boundary must remain protected against unauthorised access, acquisition, disclosure and modification throughout the assessed operation or custody transition.",
+    "scope": [
+      "Protected information held or handled by AI-mediated systems and dependent infrastructure",
+      "Confidentiality and operation-specific integrity boundaries",
+      "Secret authentication material and its authorised custody pathways"
+    ],
+    "inclusion_rule": "For Not aligned routing, include demonstrated crossing of an independently established information-protection or authentication-custody boundary. Each child governs the same bounded protection property through a different object and recognition test. Positive and unresolved results remain governed by each child recognition contract.",
+    "exclusion_rule": "Do not use this family for generic cybersecurity risk, harm alone, theoretical vulnerability alone, mere availability of public identifiers, ordinary authorised access, or purely session-state or authority-inference questions. Those exclusions do not erase a distinct evidenced protection event in the same occurrence.",
+    "allowed_class_codes": [
+      "PROTECTED_INFORMATION_ACCESS_INTEGRITY",
+      "AUTHENTICATION_MATERIAL_CUSTODY_INTEGRITY"
+    ],
+    "aliases": [],
+    "failure_condition": "An independently established protection boundary is crossed by an unauthorised information operation or loss of authorised custody of authentication material.",
+    "failure_plain_english": "Protected information can be retrieved or changed outside its allowed boundary, or secret authentication material leaves its authorised custody.",
+    "boundary_role": "failure-occurrence",
+    "family_id": "VIGIL-FF-0018",
+    "allowed_class_ids": [
+      "VIGIL-FC-000089",
+      "VIGIL-FC-000090"
+    ]
+  },
+  "classes": [
+    {
+      "class_code": "PROTECTED_INFORMATION_ACCESS_INTEGRITY",
+      "name": "Protected Information Access Integrity",
+      "status": "beta",
+      "abstraction": "class",
+      "plain_english": "Access to protected information stays within its authorised read, acquisition, disclosure and modification boundaries.",
+      "definition": "The property by which information held or handled by an AI-mediated system or its dependent infrastructure remains accessible, obtainable, disclosable and modifiable only within an independently established authorisation boundary. The property concerns realised information protection, without requiring a particular access-control implementation or an authority inference by the system.",
+      "invariant": "Protected information must remain within the independently established authorisation boundary for access, acquisition, disclosure and modification. Technical reachability, absent authentication or ineffective access restrictions must not permit an unauthorised information operation.",
+      "failure_condition": "Protected information is demonstrably accessed, obtained, disclosed or modified outside its established authorisation boundary through an AI-mediated system or dependent infrastructure.",
+      "failure_plain_english": "A person or process can retrieve, receive or change information that the service is required to protect from that operation.",
+      "failure_recognition": {
+        "applies_to": "failure-occurrence",
+        "required_conditions": [
+          "Identifiable information is held or handled by an AI-mediated system or its dependent infrastructure.",
+          "An independently evidenced confidentiality or integrity boundary restricts access, acquisition, disclosure or modification of that information for the actor, operation and context.",
+          "Occurrence evidence demonstrates that at least one such information operation crosses that boundary. A successful unauthorised retrieval or modification is sufficient; a theoretical route alone is not."
+        ]
+      },
+      "success_condition": "An observed attempt or relevant information operation encounters the protection boundary, and the required restriction is enforced for that information, actor, operation and context.",
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "Identifiable information and its independently evidenced confidentiality or integrity boundary are established for an AI-mediated system or dependent infrastructure.",
+          "A concrete access, acquisition, disclosure or modification attempt or operation materially tests that boundary.",
+          "Observed response or verification shows that the unauthorised information operation is prevented or that the operation remains within its authorised information boundary.",
+          "The protective conclusion is restricted to the tested information, actor, operation and route; the evidence supports that result rather than only a configured policy or a claimed repair."
+        ]
+      },
+      "exclusions": [
+        "Class scope exclusion (all results): The information is deliberately public for the assessed operation and no independent integrity or other access restriction governs that operation. Public readability does not authorise public modification.",
+        "Class scope exclusion (all results): The only material property is custody of authentication material. Assess Authentication Material Custody Integrity; separate private content or other protected information can independently engage this class.",
+        "Not aligned exclusion: The observed information operation is validly authorised within the independently established boundary. An approved test does not by itself authorise public release of protected information.",
+        "Not aligned exclusion: Only a hypothetical vulnerability, exposed endpoint, unverified capability claim or unsuccessful attempt is established, without demonstrated protected-information access, acquisition, disclosure or modification.",
+        "Class scope exclusion (all results): The issue is solely accuracy, availability, provenance, secondary-purpose permission or audit reconstruction, without an independently engaged information access or integrity boundary."
+      ],
+      "examples": [
+        "An unauthenticated database query returns private conversations from an AI service.",
+        "A public post is readable by everyone, but an unrelated caller changes it despite a rule reserving edits to its owner.",
+        "A scoped verification attempt is denied after an access rule is corrected. This can support a bounded Aligned finding for that route."
+      ],
+      "aliases": [],
+      "external_references": [
+        {
+          "title": "NIST SP 800-53 Rev. 5, Release 5.2.0 — AC-3",
+          "publisher": "National Institute of Standards and Technology",
+          "date": "2025-08-27",
+          "url": "https://raw.githubusercontent.com/usnistgov/oscal-content/5006f18c8047643eaa70e35dd0d20a58bcc41856/nist.gov/SP800-53/rev5/json/NIST_SP-800-53_rev5_catalog.json",
+          "reference_role": "standards-evidence",
+          "requirement_id": "EXTREQ-FA4D888041BED657",
+          "clause_or_control": "AC-3",
+          "evidence_note": "Direct support for enforcing approved logical-access boundaries. The VIGIL property also covers observed disclosure and modification; the source does not define VIGIL occurrence recognition. Source version 5.2.0. The registered external requirement supports only the stated component. It does not establish legal applicability or the VIGIL result."
+        },
+        {
+          "title": "NIST SP 800-53 Rev. 5, Release 5.2.0 — AC-6",
+          "publisher": "National Institute of Standards and Technology",
+          "date": "2025-08-27",
+          "url": "https://raw.githubusercontent.com/usnistgov/oscal-content/5006f18c8047643eaa70e35dd0d20a58bcc41856/nist.gov/SP800-53/rev5/json/NIST_SP-800-53_rev5_catalog.json",
+          "reference_role": "standards-evidence",
+          "requirement_id": "EXTREQ-BF9889E246852D7C",
+          "clause_or_control": "AC-6",
+          "evidence_note": "Partial coverage: necessary, task-limited access supports bounded information access. Least-privilege configuration alone does not demonstrate either occurrence result. Source version 5.2.0. The registered external requirement supports only the stated component. It does not establish legal applicability or the VIGIL result."
+        },
+        {
+          "title": "NIST SP 800-53 Rev. 5, Release 5.2.0 — SC-28",
+          "publisher": "National Institute of Standards and Technology",
+          "date": "2025-08-27",
+          "url": "https://raw.githubusercontent.com/usnistgov/oscal-content/5006f18c8047643eaa70e35dd0d20a58bcc41856/nist.gov/SP800-53/rev5/json/NIST_SP-800-53_rev5_catalog.json",
+          "reference_role": "standards-evidence",
+          "requirement_id": "EXTREQ-C5285311F6E76E8C",
+          "clause_or_control": "SC-28",
+          "evidence_note": "Partial coverage for information at rest. Preserve both organisation-defined protected information and the selected confidentiality, integrity, or both properties. Source version 5.2.0. The registered external requirement supports only the stated component. It does not establish legal applicability or the VIGIL result."
+        },
+        {
+          "title": "NIST SP 800-53 Rev. 5, Release 5.2.0 — SC-8",
+          "publisher": "National Institute of Standards and Technology",
+          "date": "2025-08-27",
+          "url": "https://raw.githubusercontent.com/usnistgov/oscal-content/5006f18c8047643eaa70e35dd0d20a58bcc41856/nist.gov/SP800-53/rev5/json/NIST_SP-800-53_rev5_catalog.json",
+          "reference_role": "standards-evidence",
+          "requirement_id": "EXTREQ-3712B2961BED2533",
+          "clause_or_control": "SC-8",
+          "evidence_note": "Partial coverage for transmission. The organisation selects confidentiality, integrity, or both; not every exposed database incident is a transmission-control finding. Source version 5.2.0. The registered external requirement supports only the stated component. It does not establish legal applicability or the VIGIL result."
+        },
+        {
+          "title": "ISO/IEC 27001:2022 — Annex A / 5.15 Access control (provisional)",
+          "publisher": "ISO/IEC",
+          "date": "2022-10-25",
+          "url": "https://www.iso.org/standard/82875.html",
+          "reference_role": "contextual-evidence",
+          "clause_or_control": "Annex A / 5.15",
+          "evidence_note": "Provisional contextual relationship, not verified normative support. Rules for physical and logical access are described in relation to organisational business and security needs. The access-rule topic is relevant to the independently established information-access boundary. It does not by itself establish an observed unauthorised information operation. Primary ISO wording, qualifications and source-native modality remain unverified. No canonical ISO EXTREQ or conformance finding is asserted."
+        },
+        {
+          "title": "ISO/IEC 27001:2022 — Annex A / 5.18 Access rights (provisional)",
+          "publisher": "ISO/IEC",
+          "date": "2022-10-25",
+          "url": "https://www.iso.org/standard/82875.html",
+          "reference_role": "contextual-evidence",
+          "clause_or_control": "Annex A / 5.18",
+          "evidence_note": "Provisional contextual relationship, not verified normative support. Access entitlements are described as requiring policy-based granting, review, adjustment and withdrawal. Entitlement administration is related context for permitted information operations. Rights administration is not equivalent to effective restriction or an observed protection outcome. Primary ISO wording, qualifications and source-native modality remain unverified. No canonical ISO EXTREQ or conformance finding is asserted."
+        },
+        {
+          "title": "ISO/IEC 27001:2022 — Annex A / 8.3 Information access restriction (provisional)",
+          "publisher": "ISO/IEC",
+          "date": "2022-10-25",
+          "url": "https://www.iso.org/standard/82875.html",
+          "reference_role": "contextual-evidence",
+          "clause_or_control": "Annex A / 8.3",
+          "evidence_note": "Provisional contextual relationship, not verified normative support. Access to information and associated assets is described as limited by an access-control policy. The information-access restriction topic corresponds to the governed boundary. Exact scope, qualifications and modality still require primary ISO verification. Primary ISO wording, qualifications and source-native modality remain unverified. No canonical ISO EXTREQ or conformance finding is asserted."
+        },
+        {
+          "title": "ISO/IEC 27002:2022 — 5.15 Access control (provisional)",
+          "publisher": "ISO/IEC",
+          "date": "2022-02-15",
+          "url": "https://www.iso.org/standard/75652.html",
+          "reference_role": "contextual-evidence",
+          "clause_or_control": "5.15",
+          "evidence_note": "Provisional contextual relationship, not verified normative support. Topic-level candidate only; original 27002 wording not reviewed. The access-rule topic is relevant to the independently established information-access boundary. It does not by itself establish an observed unauthorised information operation. Primary ISO wording, qualifications and source-native modality remain unverified. No canonical ISO EXTREQ or conformance finding is asserted."
+        },
+        {
+          "title": "ISO/IEC 27002:2022 — 5.18 Access rights (provisional)",
+          "publisher": "ISO/IEC",
+          "date": "2022-02-15",
+          "url": "https://www.iso.org/standard/75652.html",
+          "reference_role": "contextual-evidence",
+          "clause_or_control": "5.18",
+          "evidence_note": "Provisional contextual relationship, not verified normative support. Topic-level candidate only; original 27002 wording not reviewed. Entitlement administration is related context for permitted information operations. Rights administration is not equivalent to effective restriction or an observed protection outcome. Primary ISO wording, qualifications and source-native modality remain unverified. No canonical ISO EXTREQ or conformance finding is asserted."
+        },
+        {
+          "title": "ISO/IEC 27002:2022 — 8.3 Information access restriction (provisional)",
+          "publisher": "ISO/IEC",
+          "date": "2022-02-15",
+          "url": "https://www.iso.org/standard/75652.html",
+          "reference_role": "contextual-evidence",
+          "clause_or_control": "8.3",
+          "evidence_note": "Provisional contextual relationship, not verified normative support. Topic-level candidate only; original 27002 wording not reviewed. The information-access restriction topic corresponds to the governed boundary. Exact scope, qualifications and modality still require primary ISO verification. Primary ISO wording, qualifications and source-native modality remain unverified. No canonical ISO EXTREQ or conformance finding is asserted."
+        },
+        {
+          "title": "CSA Cross-mapping between Cyber Trust (2025) and ISO/IEC 27001:2022 — Annex II",
+          "publisher": "Cyber Security Agency of Singapore",
+          "date": "2025-04-15",
+          "url": "https://isomer-user-content.by.gov.sg/36/a0fde033-5d72-4e41-af84-2bc54777bedf/Cross-mapping-Cyber-Trust-2025-ISO27k-V202504.pdf",
+          "reference_role": "contextual-evidence",
+          "clause_or_control": "Annex II, printed pages 19 and 22",
+          "evidence_note": "Confirms displayed ISO/IEC 27001 control numbers and titles only. It does not verify ISO normative wording, establish equivalence with 27002, or define VIGIL recognition."
+        },
+        {
+          "title": "Control Stack account of ISO/IEC 27001:2022 Annex A / 5.15",
+          "publisher": "Control Stack",
+          "date": "2026-09-29",
+          "url": "https://controlstack.au/controls/iso27001-annex-a-5-15-access-control-policies-and-procedures/",
+          "reference_role": "contextual-evidence",
+          "clause_or_control": "Annex A / 5.15",
+          "evidence_note": "Public derivative account, consulted for a provisional attributed paraphrase only. This is primary evidence of the guide’s own published description, not verification of ISO normative wording. Its implementation advice is not promoted into ISO duties."
+        },
+        {
+          "title": "Control Stack account of ISO/IEC 27001:2022 Annex A / 5.18",
+          "publisher": "Control Stack",
+          "date": "2026-10-18",
+          "url": "https://controlstack.au/controls/iso27001-annex-a-5-18-managing-access-rights-to-information-assets/",
+          "reference_role": "contextual-evidence",
+          "clause_or_control": "Annex A / 5.18",
+          "evidence_note": "Public derivative account, consulted for a provisional attributed paraphrase only. This is primary evidence of the guide’s own published description, not verification of ISO normative wording. Its implementation advice is not promoted into ISO duties."
+        },
+        {
+          "title": "Control Stack account of ISO/IEC 27001:2022 Annex A / 8.3",
+          "publisher": "Control Stack",
+          "date": "2026-09-29",
+          "url": "https://controlstack.au/controls/iso27001-annex-a-8-3-restrict-access-to-information-and-assets/",
+          "reference_role": "contextual-evidence",
+          "clause_or_control": "Annex A / 8.3",
+          "evidence_note": "Public derivative account, consulted for a provisional attributed paraphrase only. This is primary evidence of the guide’s own published description, not verification of ISO normative wording. Its implementation advice is not promoted into ISO duties."
+        }
+      ],
+      "relationships": [
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000002",
+          "note": "Information protection does not require capability to be treated as permission."
+        },
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000003",
+          "note": "Information protection does not require authority to be carried into a changed scope."
+        },
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000031",
+          "note": "Secret custody and information access differ from propagation of authentication-state changes to sessions."
+        },
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000038",
+          "note": "Observed information protection is independent of proving a particular available control and activation trigger."
+        },
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000043",
+          "note": "Information protection differs from unwarranted activation of a safeguard."
+        },
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000083",
+          "note": "Actual information exposure does not alone establish valid activation followed by inadequate control effect."
+        },
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000090",
+          "note": "Protected information operations and custody of secret authentication material are independently assessed. A secret-only custody event uses the specialised custody class; other protected content or a distinct information operation can support co-occurrence."
+        }
+      ],
+      "class_id": "VIGIL-FC-000089",
+      "family_id": "VIGIL-FF-0018"
+    },
+    {
+      "class_code": "AUTHENTICATION_MATERIAL_CUSTODY_INTEGRITY",
+      "name": "Authentication Material Custody Integrity",
+      "status": "beta",
+      "abstraction": "class",
+      "plain_english": "Secret authentication material remains protected in the hands, systems and pathways authorised to hold or handle it.",
+      "definition": "The property by which credentials, bearer tokens, API secrets, private authentication keys and comparable secret material retain their independently established custody and protection boundary during storage, use, transmission, delegation, replacement and retirement. Exposure or acquisition outside that boundary is independently assessable before any later use to impersonate a principal or access a resource.",
+      "invariant": "Authentication material must remain under authorised custody throughout its lifecycle. Its secret content must not become available to an unauthorised recipient or route, or undergo unauthorised custody-changing modification or replacement. Valid delegation and lifecycle transitions must preserve the applicable protection boundary.",
+      "failure_condition": "Authentication material or its protected secret content demonstrably becomes available outside authorised custody, is acquired by an unauthorised recipient, or undergoes unauthorised custody-changing modification or replacement. Later impersonation, account takeover or credential use is not required.",
+      "failure_plain_english": "A credential or secret becomes available outside the people, systems or routes allowed to hold it, even if nobody is shown using it afterwards.",
+      "failure_recognition": {
+        "applies_to": "failure-occurrence",
+        "required_conditions": [
+          "Identifiable material serves an authentication or authorisation function, or contains the protected secret content needed to exercise that function, in an AI-mediated system or dependent infrastructure.",
+          "An independently evidenced custody boundary governs who or what may hold, receive, disclose, modify or replace the material in the assessed lifecycle stage.",
+          "Occurrence evidence demonstrates exposure outside that boundary, unauthorised acquisition, or unauthorised custody-changing modification or replacement. Demonstrated retrievability of protected secret content is sufficient without proof of subsequent credential use."
+        ]
+      },
+      "success_condition": "A relevant handling operation or attempted exposure tests the custody boundary, and observed handling keeps the authentication material within the authorised holders, recipients and pathways for that lifecycle stage.",
+      "success_recognition": {
+        "applies_to": "successful-invariant",
+        "required_conditions": [
+          "Authentication material, its AI-mediated system or dependent infrastructure, and the applicable authorised custody boundary are identified.",
+          "A concrete handling operation, delegation, lifecycle transition or exposure attempt materially tests custody protection.",
+          "Observed handling or verification shows that the secret remains confined to authorised holders, recipients and pathways, with the applicable protection preserved through the tested operation.",
+          "The finding is limited to the tested material, operation and stage. Absence of reported misuse, ordinary credential availability, a missing key or an unverified rotation claim does not supply this evidence."
+        ]
+      },
+      "exclusions": [
+        "Class scope exclusion (all results): The material is only a non-secret identifier, public connection identifier, public verification key or public client configuration that is intended to be available in the assessed context. A separately exposed secret or unauthorised protected-information operation requires its own assessment.",
+        "Class scope exclusion (all results): The issue concerns only coherent propagation of expiry, revocation, refresh or replacement into sessions and dependent operations. Assess Authentication-State Continuity unless a separate custody property is evidenced.",
+        "Not aligned exclusion: Credential handling or delegation is validly authorised and preserves the applicable custody boundary. Mere credential possession or ordinary authorised use is not a custody defect.",
+        "Not aligned exclusion: Only a theoretical vulnerability, unverified secret classification, unusable placeholder or unsuccessful attempt is shown; protected authentication material is not demonstrated outside custody.",
+        "Not aligned exclusion: Material is already invalid and no residual secret-protection or custody obligation is independently established. Do not assume every expired token remains a usable secret.",
+        "Class scope exclusion (all results): The only property is the scope of an action performed using a credential, without a distinct custody issue. Assess the applicable authority or action class."
+      ],
+      "examples": [
+        "An AI-service database returns agent bearer tokens to an unauthenticated caller. No later impersonation is needed to assess the custody event.",
+        "A credential is passed through an authorised secret-handling route to an authorised delegate under an observed protection test.",
+        "A client-visible public connection identifier supplies no private data access after correct backend restrictions. Identifier availability alone does not establish a secret-custody defect."
+      ],
+      "aliases": [],
+      "external_references": [
+        {
+          "title": "NIST SP 800-53 Rev. 5, Release 5.2.0 — IA-5(g)",
+          "publisher": "National Institute of Standards and Technology",
+          "date": "2025-08-27",
+          "url": "https://raw.githubusercontent.com/usnistgov/oscal-content/5006f18c8047643eaa70e35dd0d20a58bcc41856/nist.gov/SP800-53/rev5/json/NIST_SP-800-53_rev5_catalog.json",
+          "reference_role": "standards-evidence",
+          "requirement_id": "EXTREQ-F42FEC4FD1482D57",
+          "clause_or_control": "IA-5(g)",
+          "evidence_note": "Direct support: authenticator content is protected from unauthorised disclosure and modification. Neither the source proposition nor this class requires later impersonation. Source version 5.2.0. The registered external requirement supports only the stated component. It does not establish legal applicability or the VIGIL result."
+        },
+        {
+          "title": "NIST SP 800-53 Rev. 5, Release 5.2.0 — IA-5(a)",
+          "publisher": "National Institute of Standards and Technology",
+          "date": "2025-08-27",
+          "url": "https://raw.githubusercontent.com/usnistgov/oscal-content/5006f18c8047643eaa70e35dd0d20a58bcc41856/nist.gov/SP800-53/rev5/json/NIST_SP-800-53_rev5_catalog.json",
+          "reference_role": "standards-evidence",
+          "requirement_id": "EXTREQ-59FB939E5243C7DF",
+          "clause_or_control": "IA-5(a)",
+          "evidence_note": "Partial coverage: initial recipient identity verification supports authorised distribution. It does not establish all later custody stages. Source version 5.2.0. The registered external requirement supports only the stated component. It does not establish legal applicability or the VIGIL result."
+        },
+        {
+          "title": "NIST SP 800-53 Rev. 5, Release 5.2.0 — IA-5(d)",
+          "publisher": "National Institute of Standards and Technology",
+          "date": "2025-08-27",
+          "url": "https://raw.githubusercontent.com/usnistgov/oscal-content/5006f18c8047643eaa70e35dd0d20a58bcc41856/nist.gov/SP800-53/rev5/json/NIST_SP-800-53_rev5_catalog.json",
+          "reference_role": "standards-evidence",
+          "clause_or_control": "IA-5(d)",
+          "evidence_note": "Related lifecycle context only. The source discusses administrative authenticator procedures. This provision is not admitted as an external requirement or a direct custody relationship."
+        },
+        {
+          "title": "NIST SP 800-53 Rev. 5, Release 5.2.0 — IA-5(h)",
+          "publisher": "National Institute of Standards and Technology",
+          "date": "2025-08-27",
+          "url": "https://raw.githubusercontent.com/usnistgov/oscal-content/5006f18c8047643eaa70e35dd0d20a58bcc41856/nist.gov/SP800-53/rev5/json/NIST_SP-800-53_rev5_catalog.json",
+          "reference_role": "standards-evidence",
+          "requirement_id": "EXTREQ-0B2833BFB579C5D4",
+          "clause_or_control": "IA-5(h)",
+          "evidence_note": "Partial coverage: individuals and devices must apply specific authenticator-protection controls. The source leaves those controls to the implementation. Source version 5.2.0. The registered external requirement supports only the stated component. It does not establish legal applicability or the VIGIL result."
+        },
+        {
+          "title": "NIST SP 800-53 Rev. 5, Release 5.2.0 — SC-28",
+          "publisher": "National Institute of Standards and Technology",
+          "date": "2025-08-27",
+          "url": "https://raw.githubusercontent.com/usnistgov/oscal-content/5006f18c8047643eaa70e35dd0d20a58bcc41856/nist.gov/SP800-53/rev5/json/NIST_SP-800-53_rev5_catalog.json",
+          "reference_role": "standards-evidence",
+          "requirement_id": "EXTREQ-C5285311F6E76E8C",
+          "clause_or_control": "SC-28",
+          "evidence_note": "Partial coverage where authentication material is information at rest within the organisation-defined protected set. Source version 5.2.0. The registered external requirement supports only the stated component. It does not establish legal applicability or the VIGIL result."
+        },
+        {
+          "title": "NIST SP 800-53 Rev. 5, Release 5.2.0 — SC-8",
+          "publisher": "National Institute of Standards and Technology",
+          "date": "2025-08-27",
+          "url": "https://raw.githubusercontent.com/usnistgov/oscal-content/5006f18c8047643eaa70e35dd0d20a58bcc41856/nist.gov/SP800-53/rev5/json/NIST_SP-800-53_rev5_catalog.json",
+          "reference_role": "standards-evidence",
+          "requirement_id": "EXTREQ-3712B2961BED2533",
+          "clause_or_control": "SC-8",
+          "evidence_note": "Partial coverage for transmitted authentication material, subject to the organisation-selected protection property. Source version 5.2.0. The registered external requirement supports only the stated component. It does not establish legal applicability or the VIGIL result."
+        },
+        {
+          "title": "NIST IR 8587 (September 2026 final) — 5.1.1.3 — signing-key protection",
+          "publisher": "National Institute of Standards and Technology",
+          "date": "2026-09-15",
+          "url": "https://nvlpubs.nist.gov/nistpubs/ir/2026/NIST.IR.8587.pdf",
+          "reference_role": "authoritative-guidance",
+          "requirement_id": "EXTREQ-79EC29449A54CBC9",
+          "clause_or_control": "5.1.1.3 — signing-key protection",
+          "evidence_note": "Partial support for signing-key custody within the report’s asymmetric signed-token and federal-environment scope. This does not verify custody rules for ordinary API keys. MUST is a conformance condition under §1.2, not automatic law. The registered external requirement supports this bounded component only."
+        },
+        {
+          "title": "NIST IR 8587 (September 2026 final) — 5.1.1.2 — backup/archive distribution",
+          "publisher": "National Institute of Standards and Technology",
+          "date": "2026-09-15",
+          "url": "https://nvlpubs.nist.gov/nistpubs/ir/2026/NIST.IR.8587.pdf",
+          "reference_role": "authoritative-guidance",
+          "requirement_id": "EXTREQ-8091A41EC4985C34",
+          "clause_or_control": "5.1.1.2 — backup/archive distribution",
+          "evidence_note": "Partial support for signing-key custody within the report’s asymmetric signed-token and federal-environment scope. This does not verify custody rules for ordinary API keys. MUST is a conformance condition under §1.2, not automatic law. The registered external requirement supports this bounded component only."
+        },
+        {
+          "title": "ISO/IEC 27001:2022 — Annex A / 5.17 Authentication information (provisional)",
+          "publisher": "ISO/IEC",
+          "date": "2022-10-25",
+          "url": "https://www.iso.org/standard/82875.html",
+          "reference_role": "contextual-evidence",
+          "clause_or_control": "Annex A / 5.17",
+          "evidence_note": "Provisional contextual relationship, not verified normative support. Credential allocation and management are described as controlled processes that include staff guidance on handling authentication information. Authentication-material handling is relevant to custody. A general management process does not independently prove every VIGIL custody recognition condition or every lifecycle safeguard. Primary ISO wording, qualifications and source-native modality remain unverified. No canonical ISO EXTREQ or conformance finding is asserted."
+        },
+        {
+          "title": "ISO/IEC 27002:2022 — 5.17 Authentication information (provisional)",
+          "publisher": "ISO/IEC",
+          "date": "2022-02-15",
+          "url": "https://www.iso.org/standard/75652.html",
+          "reference_role": "contextual-evidence",
+          "clause_or_control": "5.17",
+          "evidence_note": "Provisional contextual relationship, not verified normative support. Topic-level candidate only; original 27002 wording not reviewed. Authentication-material handling is relevant to custody. A general management process does not independently prove every VIGIL custody recognition condition or every lifecycle safeguard. Primary ISO wording, qualifications and source-native modality remain unverified. No canonical ISO EXTREQ or conformance finding is asserted."
+        },
+        {
+          "title": "CSA Cross-mapping between Cyber Trust (2025) and ISO/IEC 27001:2022 — Annex II",
+          "publisher": "Cyber Security Agency of Singapore",
+          "date": "2025-04-15",
+          "url": "https://isomer-user-content.by.gov.sg/36/a0fde033-5d72-4e41-af84-2bc54777bedf/Cross-mapping-Cyber-Trust-2025-ISO27k-V202504.pdf",
+          "reference_role": "contextual-evidence",
+          "clause_or_control": "Annex II, printed pages 19 and 22",
+          "evidence_note": "Confirms displayed ISO/IEC 27001 control numbers and titles only. It does not verify ISO normative wording, establish equivalence with 27002, or define VIGIL recognition."
+        },
+        {
+          "title": "Control Stack account of ISO/IEC 27001:2022 Annex A / 5.17",
+          "publisher": "Control Stack",
+          "date": "2026-10-18",
+          "url": "https://controlstack.au/controls/iso27001-annex-a-5-17-management-of-authentication-information/",
+          "reference_role": "contextual-evidence",
+          "clause_or_control": "Annex A / 5.17",
+          "evidence_note": "Public derivative account, consulted for a provisional attributed paraphrase only. This is primary evidence of the guide’s own published description, not verification of ISO normative wording. Its implementation advice is not promoted into ISO duties."
+        }
+      ],
+      "relationships": [
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000002",
+          "note": "Information protection does not require capability to be treated as permission."
+        },
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000003",
+          "note": "Information protection does not require authority to be carried into a changed scope."
+        },
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000031",
+          "note": "Secret custody and information access differ from propagation of authentication-state changes to sessions."
+        },
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000038",
+          "note": "Observed information protection is independent of proving a particular available control and activation trigger."
+        },
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000043",
+          "note": "Information protection differs from unwarranted activation of a safeguard."
+        },
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000083",
+          "note": "Actual information exposure does not alone establish valid activation followed by inadequate control effect."
+        },
+        {
+          "type": "distinguish_from",
+          "target_id": "VIGIL-FC-000089",
+          "note": "Protected information operations and custody of secret authentication material are independently assessed. A secret-only custody event uses the specialised custody class; other protected content or a distinct information operation can support co-occurrence."
+        }
+      ],
+      "class_id": "VIGIL-FC-000090",
+      "family_id": "VIGIL-FF-0018"
+    }
+  ],
+  "semantic_model": "invariant-with-occurrence-polarity"
+}
