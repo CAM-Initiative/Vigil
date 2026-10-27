@@ -1,16 +1,16 @@
 # External Requirement Adjudication
 
-Status: occurrence-level alignment contract, 3 October 2026.
+Status: occurrence-level alignment contract; maintainer crosswalk correction approved 27 October 2026. Schema, blocking validation and retrospective multi-record repair require separate maintainer gates.
 
 ## Analytical sequence
 
-Source evidence → material clause → reviewed FC ↔ EXTREQ relationship or independent identification → candidate → genuine occurrence relevance → independent alignment assessment.
+Source evidence → material source clause → independently justified canonical Fidelity Class (FC) mapping → reviewed FC ↔ EXTREQ relationship → requirement candidate → genuine occurrence relevance → independently evidenced external alignment assessment. Independent discovery may propose candidates, but cannot admit a final assessment without a supported canonical FC and source-clause mapping.
 
 Taxonomy and external requirements share the same substantive alignment concept: a successful invariant is Aligned, a failure occurrence is Not aligned, and an unresolved evidentiary boundary is Boundary. Assess each external proposition independently. No taxonomy result selects an external result.
 
 ## Candidate resolution and relevance
 
-Use `python vigil/scripts/resolve_clause_external_requirements.py <canonical-incident.json> --clause-index <zero-based-index>`. The resolver reads supported direct and strong-supporting relationships from the reviewed registry. Its disposable output identifies candidates only. Do not restore the retired global candidate matrix or create a Cartesian product. Independently identified requirements remain permitted with a substantive identification basis.
+Use `python vigil/scripts/resolve_clause_external_requirements.py <canonical-incident.json> --clause-index <zero-based-index>`. The resolver reads supported direct and strong-supporting relationships from the reviewed registry. Its disposable output identifies candidates only. Do not restore the retired global candidate matrix or create a Cartesian product. Independent discovery remains permitted for **candidate discovery and review only**; it is not an alternative canonical admission route. An admitted `external_requirement_assessments[]` entry must trace to a real canonical FC mapping on a supporting source clause/episode, as well as an adequately reviewed FC ↔ EXTREQ relationship. Reject thematic or guessed links. Do not force a Fidelity Class to legitimise a requirement, or infer a requirement's Aligned/Not aligned/Boundary polarity from a mapping's role.
 
 Read the actual canonical requirement before deciding relevance. Wrong actor, system type, subject, lifecycle, occurrence date, commencement, jurisdiction, absent technical precondition, or overly broad correspondence can exclude a candidate. Preserve that decision in a dated audit; excluded candidates do not populate canonical assessments. A reviewed relationship alone establishes neither occurrence relevance nor alignment.
 
@@ -26,7 +26,9 @@ Formal adoption, certification, implementation claims and conformance undertakin
 - `assessed_on`: review date;
 - `source_record_refs`: resolving `source_records[N]` evidence references.
 
-Taxonomy derivation uses `derived_from_class_ids` and `source_clause_indices` identifying actual clause mappings and admitted relationships. Independent identification uses a substantive `identification_basis`. Neither route determines polarity.
+An admitted assessment must use `derived_from_class_ids` to identify the actually supported canonical Fidelity Class mapping(s), and `source_episode_refs` or appropriate legacy `source_clause_indices` to identify the matching material clause(s). Those mappings and an applicable reviewed FC ↔ EXTREQ relationship must be real and evidence-supported; source-record references remain required. `identification_basis` may record how a requirement candidate was discovered, but never substitutes for canonical FC evidence. External alignment polarity is decided independently against the exact external proposition; it is not inherited from taxonomy polarity.
+
+If the source establishes a material governance property for which the current taxonomy has no defensible mapping, classify the relevant source clause as `taxonomy-gap` (or preserve a genuinely unresolved existing-class recognition condition as `unresolved`). Preserve the potential external requirement, its source evidence and substantive analysis in a dated review/hold record rather than admitting an unlinked Aligned/Not aligned/Boundary claim to the canonical Section 04 assessment. A successful later repair does not supply the class mapping for an earlier loss. Pre-existing unlinked published rows require a measured read-only audit and Gate 2 human approval before any mass correction, deletion or movement. Do not erase adverse evidence or historical decisions.
 
 Aligned needs affirmative evidence that the requirement held. Not aligned needs evidence that its proposition did not hold. Boundary requires both material relevance and an unresolved decisive occurrence fact. Absence of reported failure is not success; missing success evidence is not failure. Voluntary status, unknown adoption, unknown certification, and a weak candidate are not Boundary reasons.
 
