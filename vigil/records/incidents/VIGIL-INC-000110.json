@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Meta AI-assisted Instagram recovery flaw enabled unauthorized account takeovers",
     "created": "2026-09-10",
-    "updated": "2026-10-25",
-    "version": "0.1.19"
+    "updated": "2026-10-27",
+    "version": "0.1.20"
   },
   "incident_identity": {
     "historical_event_name": "2026 Meta High Touch Support Instagram account-takeover incident",
@@ -21,7 +21,7 @@
   "summary": "Meta reported that an AI-assisted Instagram account-recovery service was involved in a vulnerability affecting 20,225 accounts. Requesters could submit email addresses not associated with the target account and obtain reset links because a separate verification path did not bind the address to the account. Some unauthorised parties then accessed accounts without additional authentication protection. Meta detected the issue on 31 May 2026 and disabled the affected process, invalidated links and secured accounts. The AI support tool was reported to have worked as designed; the account-binding failure was in a different code path.",
   "vigil_assessment": {
     "factual_basis": "BleepingComputer directly reports Meta's Maine breach-notification language, including Meta's statement that High Touch Support was an AI-assisted Instagram recovery system, that a separate verification code path failed to reject unassociated email addresses, and that unauthorized third parties consequently received password-reset links for accounts they did not own. The notification identified 20,225 potentially affected users and 30 Maine residents. TechCrunch independently documented the attack flow before the later breach-notification reporting, verified that an attacker-controlled public mailbox received a verification code during the demonstrated process, and reported multiple compromised accounts. Meta's own March product announcement establishes that its AI support assistant was being deployed for end-to-end account support and privileged recovery-related actions, but that announcement is used only for system context rather than proof of the later exploit.",
-    "governance_interpretation": "The occurrence is a cross-principal authority failure in an AI-assisted privileged support workflow. A person interacting with the recovery system had authority to make requests concerning their own account state, but the workflow allowed an attacker-supplied email address and recovery request to alter the separately governed authentication state of another identifiable account holder. The material failure is not that the AI support tool existed or that an attacker could converse with it; it is that the surrounding recovery pathway failed to preserve the account-holder boundary before issuing a credential-reset capability. Meta's statement that the support tool itself worked as intended is preserved: the evidenced defect was in a separate verification code path adjacent to the AI-assisted workflow. Account entitlement, recovery-signal binding and prior verification failures are retained. The separate code-path defect is not recast as an LLM jailbreak; potentially affected users are not all confirmed takeovers. The account-autonomy and secure-operation outcomes are Not aligned. Performance-assurance documentation remains Boundary. These results do not recast the separate verification defect as a model jailbreak.",
+    "governance_interpretation": "The occurrence is a cross-principal authority failure in an AI-assisted privileged support workflow. A person interacting with the recovery system had authority to make requests concerning their own account state, but the workflow allowed an attacker-supplied email address and recovery request to alter the separately governed authentication state of another identifiable account holder. The material failure is not that the AI support tool existed or that an attacker could converse with it; it is that the surrounding recovery pathway failed to preserve the account-holder boundary before issuing a credential-reset capability. Meta's statement that the support tool itself worked as intended is preserved: the evidenced defect was in a separate verification code path adjacent to the AI-assisted workflow. Account entitlement, recovery-signal binding and prior verification failures are retained. The separate code-path defect is not recast as an LLM jailbreak; potentially affected users are not all confirmed takeovers. The account-autonomy and secure-operation outcomes are Not aligned. Performance-assurance documentation remains Boundary. These results do not recast the separate verification defect as a model jailbreak. Meta’s breach notice describes working reset links delivered to unaffiliated email addresses. The links enabled recovery of accounts the recipients did not own. This is a demonstrated custody loss of authentication-recovery material; it does not require an assumption that private messages were read.",
     "significance_to_cam": "The incident demonstrates why an AI system's ability to take privileged support actions must remain principal-bound. Conversational acceptance, successful navigation of a support workflow, possession of an attacker-controlled email address, or technical ability to issue a reset link cannot substitute for independent authority over the target account. The case is particularly relevant to agentic and AI-mediated support systems because delegated tool authority can materially change authentication state even where the underlying model is not itself defective.",
     "assessment_boundaries": [
       "Meta states that the AI-assisted High Touch Support tool itself worked as intended and attributes the vulnerability to a separate code path that failed to verify the supplied email address against the targeted Instagram account; VIGIL does not recast that statement as an LLM jailbreak or model-behaviour failure.",
@@ -62,6 +62,12 @@
               "relationship": "failure-occurrence",
               "canonical_taxonomy_mapping": true,
               "rationale": "The account-ownership verification step did not complete before a reset link was issued."
+            },
+            {
+              "class_id": "VIGIL-FC-000090",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The recovery flow delivered working password-reset links to addresses not associated with the accounts. These links carried authentication-recovery authority and reached unauthorised recipients."
             }
           ]
         },
@@ -301,9 +307,9 @@
     }
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.8.1",
+    "taxonomy_version": "0.9.0",
     "classification_status": "classified",
-    "classification_basis": "A requester’s recovery request and supplied email address were accepted as grounds to change another account holder’s authentication state without binding that address to the account. The authority crossing occurred across the AI-assisted support workflow and the adjacent verification code path. The model itself need not have malfunctioned for that workflow to confer reset authority on the wrong principal.",
+    "classification_basis": "A requester’s recovery request and supplied email address were accepted as grounds to change another account holder’s authentication state without binding that address to the account. The authority crossing occurred across the AI-assisted support workflow and the adjacent verification code path. The model itself need not have malfunctioned for that workflow to confer reset authority on the wrong principal. Meta’s breach notice describes working reset links delivered to unaffiliated email addresses. The links enabled recovery of accounts the recipients did not own. This is a demonstrated custody loss of authentication-recovery material; it does not require an assumption that private messages were read.",
     "primary_classification": {
       "class_id": "VIGIL-FC-000057",
       "classification_role": "failure-occurrence",
@@ -325,13 +331,19 @@
         "classification_role": "failure-occurrence",
         "classification_basis": "The account-ownership verification step did not complete before a reset link was issued.",
         "classification_confidence": "high"
+      },
+      {
+        "family_id": "VIGIL-FF-0018",
+        "class_id": "VIGIL-FC-000090",
+        "classification_role": "failure-occurrence",
+        "classification_basis": "Meta’s breach notice describes working reset links delivered to unaffiliated email addresses. The links enabled recovery of accounts the recipients did not own. This is a demonstrated custody loss of authentication-recovery material; it does not require an assumption that private messages were read.",
+        "classification_confidence": "high"
       }
     ],
     "classification_review_provenance": {
-      "review_date": "2026-10-25",
-      "reviewer": "OpenAI GPT-6 — AI analytical reviewer",
-      "review_status": "Bounded v0.8.1 criterion and explicitly scoped exclusion review, prior mapping and uncertainty preserved.",
-      "review_reference": "vigil/docs/reviews/2026-10-25-siai-paper-v081-100-plus/INC-000110-081-REVIEW.json"
+      "review_date": "2026-10-27",
+      "reviewer": "OpenAI Codex — AI analytical reviewer",
+      "review_status": "Published v0.9.0 protected-information and authentication-custody delta adjudicated. Existing class findings retained without re-adjudication; episode limits remain explicit."
     },
     "adjudication_coverage": {
       "status": "complete"
@@ -704,28 +716,51 @@
           "Retain the three distinct findings in the recovery workflow. The AI support conversation reportedly worked as designed; the defective verification was elsewhere. Do not relabel every account as actual readout of all private messages. Provider containment and audit plans are separate from proof of completed repair."
         ],
         "review_outcome": "Promoted 3 role(s) unchanged to v0.8.1 with every current scoped exclusion checked and complete clause coverage preserved."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-27-090-DELTA-000110",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-27",
+        "review_scope": "Targeted published v0.9.0 adjudication of Protected Information Access Integrity and Authentication Material Custody Integrity. Prior taxonomy, harm and external findings preserved; direct NIST propositions independently assessed where supported.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "external_requirement_review": true,
+          "harm_impact_review": false,
+          "web_research": true
+        },
+        "known_limitations": [
+          "AI-authored analysis, not human verification. No live vulnerable system or private secret was accessed.",
+          "The taxonomy review is limited to the two new classes; existing classes were preserved, not freshly re-adjudicated.",
+          "Attributed occurrence reports retain their source-specific limits. No assurance about unobserved targets, copies or credential use is inferred."
+        ],
+        "review_outcome": "Meta’s breach notice describes working reset links delivered to unaffiliated email addresses. The links enabled recovery of accounts the recipients did not own. This is a demonstrated custody loss of authentication-recovery material; it does not require an assumption that private messages were read."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-25-081-DELTA-000110",
+      "review_id": "VIGIL-REVIEW-2026-10-27-090-DELTA-000110",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT via GitHub connector",
+      "reviewer_platform": "OpenAI Codex",
       "reviewer_model": "GPT-6",
-      "review_date": "2026-10-25",
-      "review_scope": "Published taxonomy v0.8.1 exclusion-scope/recognition delta of existing source-backed clause findings and completed v0.8.0 review packet.",
+      "review_date": "2026-10-27",
+      "review_scope": "Targeted published v0.9.0 adjudication of Protected Information Access Integrity and Authentication Material Custody Integrity. Prior taxonomy, harm and external findings preserved; direct NIST propositions independently assessed where supported.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
         "taxonomy_review": true,
-        "web_research": false,
+        "external_requirement_review": true,
         "harm_impact_review": false,
-        "external_requirement_review": false
+        "web_research": true
       },
       "known_limitations": [
-        "No newly fetched source material, platform telemetry, independent human certification or newly claimed causal mechanism.",
-        "Retain the three distinct findings in the recovery workflow. The AI support conversation reportedly worked as designed; the defective verification was elsewhere. Do not relabel every account as actual readout of all private messages. Provider containment and audit plans are separate from proof of completed repair."
+        "AI-authored analysis, not human verification. No live vulnerable system or private secret was accessed.",
+        "The taxonomy review is limited to the two new classes; existing classes were preserved, not freshly re-adjudicated.",
+        "Attributed occurrence reports retain their source-specific limits. No assurance about unobserved targets, copies or credential use is inferred."
       ],
-      "review_outcome": "Promoted 3 role(s) unchanged to v0.8.1 with every current scoped exclusion checked and complete clause coverage preserved."
+      "review_outcome": "Meta’s breach notice describes working reset links delivered to unaffiliated email addresses. The links enabled recovery of accounts the recipients did not own. This is a demonstrated custody loss of authentication-recovery material; it does not require an assumption that private messages were read."
     }
   },
   "harm_impact_assessment": {
@@ -873,6 +908,25 @@
       ],
       "derived_from_class_ids": [
         "VIGIL-FC-000016"
+      ],
+      "source_clause_indices": [
+        0
+      ],
+      "source_episode_refs": [
+        "E001"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-F42FEC4FD1482D57",
+      "alignment_result": "not-aligned",
+      "assessment_basis": "The authenticator-protection proposition requires secret authenticator content to be protected against unauthorised disclosure and modification. The observed secret disclosure/acquisition or custody-changing modification was unauthorised. The recovery flow delivered working password-reset links to addresses not associated with the accounts. These links carried authentication-recovery authority and reached unauthorised recipients. This is a bounded retrospective comparison with the selected control proposition, not a claim of certification or an independently binding historical duty.",
+      "assessed_on": "2026-10-27",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ],
+      "derived_from_class_ids": [
+        "VIGIL-FC-000090"
       ],
       "source_clause_indices": [
         0

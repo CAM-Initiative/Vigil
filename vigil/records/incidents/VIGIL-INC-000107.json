@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Mathspace breach exposed personal data of more than one million users in Australia and New Zealand",
     "created": "2026-09-09",
-    "updated": "2026-10-25",
-    "version": "0.1.20"
+    "updated": "2026-10-27",
+    "version": "0.1.21"
   },
   "incident_identity": {
     "historical_event_name": "2026 Mathspace Metabase data breach",
@@ -21,7 +21,7 @@
   "summary": "Mathspace disclosed that attackers exploited a vulnerability in its self-hosted Metabase reporting system, obtained administrator access without a legitimate login, and downloaded personal information from its Australian reporting database. Mathspace identified 1,079,819 affected people across Australia and New Zealand, including students, parents or guardians, teachers and Mathspace staff. Exposed fields included names, usernames, email addresses and account metadata. Mathspace states that academic records, assessment results, passwords, authentication tokens, SSO credentials and API credentials were not exposed. After reviewing logs, Mathspace confirmed the breach on 3 September and disabled the affected reporting access. It notified schools and regulators on 4 September and began individual notices on 6 September. Its 8 September update clarified that earlier communications had omitted some exposed account details; recovery checks and notifications were still continuing.",
   "vigil_assessment": {
     "factual_basis": "Mathspace's own breach notice states that Metabase published a critical security advisory and patched versions on 6 August 2026, but Mathspace's vulnerability-notification process did not identify and escalate the advisory. Unauthorised access was later traced to 10 August, data was downloaded on 27 August, the Metabase instance was updated on 29 August, and Mathspace confirmed the compromise on 3 September after reviewing historical logs. Mathspace also states that, when it updated the instance, it did not complete additional compromise checks recommended for potentially affected systems. ABC News independently reported the breach and affected population. The 8 September update corrects earlier disclosure of exposed fields. It reports no evidence of subsequent publication or misuse, rather than establishing none occurred. Taking Metabase offline and revoking its access are achieved containment steps; notification and recovery checks remained ongoing.",
-    "governance_interpretation": "The occurrence is a large-scale confidentiality breach involving an education platform's internal reporting environment and retained personal data. The evidence supports a chain involving delayed response to a critical vulnerability advisory and incomplete assurance after disclosure, but it does not isolate whether patch governance, monitoring, access control or data-retention practice was the decisive technical mechanism. The critical-advisory notification failure and the affirmative historical log/reconstruction successes are retained as distinct stages. Conventional reporting-database logs are not automatically evidence of model-input/output, GAI incident or agent governance controls. The preserved occurrence does not establish an affected AI lifecycle process or autonomous system. The reviewed AI-specific external requirements are therefore not relevant to this reporting-database breach.",
+    "governance_interpretation": "The occurrence is a large-scale confidentiality breach involving an education platform's internal reporting environment and retained personal data. The evidence supports a chain involving delayed response to a critical vulnerability advisory and incomplete assurance after disclosure, but it does not isolate whether patch governance, monitoring, access control or data-retention practice was the decisive technical mechanism. The critical-advisory notification failure and the affirmative historical log/reconstruction successes are retained as distinct stages. Conventional reporting-database logs are not automatically evidence of model-input/output, GAI incident or agent governance controls. The preserved occurrence does not establish an affected AI lifecycle process or autonomous system. The reviewed AI-specific external requirements are therefore not relevant to this reporting-database breach. Mathspace’s historical logs establish unauthorised access and download of personal records from its reporting database. This crosses the records’ confidentiality boundary independently of subsequent misuse. Credentials were expressly excluded from the corrected exposed-field list, so this does not support a secret-custody finding.",
     "significance_to_cam": "The incident is governance-significant because it affected more than one million people, including students, across Australian and New Zealand education contexts. It highlights the consequences of delayed security-advisory escalation, retained reporting access to large personal-data populations, and incomplete compromise checks following a critical vulnerability disclosure.",
     "assessment_boundaries": [
       "The identity and motive of the attacker remain unknown in the reviewed public evidence.",
@@ -69,8 +69,15 @@
           ],
           "source_paraphrase": "Information was downloaded from the Australian reporting database on 27 August.",
           "recovered_invariant_interpretation": "Initial access and the later download are separate material actions.",
-          "taxonomy_relationships": [],
-          "adjudication_status": "resolved-no-mapping"
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000089",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The attacker downloaded personal information from Mathspace’s reporting database. The affected records were restricted school-user information, not public statistics."
+            }
+          ],
+          "adjudication_status": "mapped"
         },
         {
           "episode_id": "E004",
@@ -361,9 +368,9 @@
     }
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.8.1",
+    "taxonomy_version": "0.9.0",
     "classification_status": "classified",
-    "classification_basis": "Current-taxonomy re-adjudication identifies Required Control Non-Activation as the primary structural mechanism. Mathspace's first-party disclosure states that a critical Metabase security advisory and patched versions were published, that Mathspace's vulnerability-notification process did not identify and escalate the advisory, and that the vulnerable instance remained exposed before unauthorised access and data download. The same disclosure separately states that recommended compromise checks were not completed when the instance was later updated. The classification is bounded to the missed applicable vulnerability-management control and does not treat the breach, attacker conduct, affected population or harm severity as taxonomy membership by themselves.",
+    "classification_basis": "Current-taxonomy re-adjudication identifies Required Control Non-Activation as the primary structural mechanism. Mathspace's first-party disclosure states that a critical Metabase security advisory and patched versions were published, that Mathspace's vulnerability-notification process did not identify and escalate the advisory, and that the vulnerable instance remained exposed before unauthorised access and data download. The same disclosure separately states that recommended compromise checks were not completed when the instance was later updated. The classification is bounded to the missed applicable vulnerability-management control and does not treat the breach, attacker conduct, affected population or harm severity as taxonomy membership by themselves. Mathspace’s historical logs establish unauthorised access and download of personal records from its reporting database. This crosses the records’ confidentiality boundary independently of subsequent misuse. Credentials were expressly excluded from the corrected exposed-field list, so this does not support a secret-custody finding.",
     "primary_classification": {
       "family_id": "VIGIL-FF-0008",
       "class_id": "VIGIL-FC-000038",
@@ -385,13 +392,19 @@
         "classification_role": "successful-invariant",
         "classification_basis": "The retained logs allowed the key access and download chronology to be reconstructed, including the sequence of unauthorised access and later data download.",
         "classification_confidence": "high"
+      },
+      {
+        "family_id": "VIGIL-FF-0018",
+        "class_id": "VIGIL-FC-000089",
+        "classification_role": "failure-occurrence",
+        "classification_basis": "Mathspace’s historical logs establish unauthorised access and download of personal records from its reporting database. This crosses the records’ confidentiality boundary independently of subsequent misuse. Credentials were expressly excluded from the corrected exposed-field list, so this does not support a secret-custody finding.",
+        "classification_confidence": "medium"
       }
     ],
     "classification_review_provenance": {
-      "review_date": "2026-10-25",
-      "reviewer": "OpenAI GPT-6 — AI analytical reviewer",
-      "review_status": "Current-edition G01 hold resolved by explicitly scoped 0.8.1 not-aligned-only versus all-results exclusions; existing successes, failure roles and uncertainties retained.",
-      "review_reference": "vigil/docs/reviews/2026-10-25-siai-paper-v081-100-plus/INC-000107-081-REVIEW.json"
+      "review_date": "2026-10-27",
+      "reviewer": "OpenAI Codex — AI analytical reviewer",
+      "review_status": "Published v0.9.0 protected-information and authentication-custody delta adjudicated. Existing class findings retained without re-adjudication; episode limits remain explicit."
     },
     "adjudication_coverage": {
       "status": "complete"
@@ -784,30 +797,51 @@
           "Independent harm, attribution and external assessments are unchanged. No private trace inspection or final legal finding is claimed."
         ],
         "review_outcome": "Retained 3 previously mapped roles, including 2 success(es), without applying failure-only exclusions to the successful finding or changing harm/external assessments."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-27-090-DELTA-000107",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-27",
+        "review_scope": "Targeted published v0.9.0 adjudication of Protected Information Access Integrity and Authentication Material Custody Integrity. Prior taxonomy, harm and external findings preserved; direct NIST propositions independently assessed where supported.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "external_requirement_review": true,
+          "harm_impact_review": false,
+          "web_research": false
+        },
+        "known_limitations": [
+          "AI-authored analysis, not human verification. No live vulnerable system or private secret was accessed.",
+          "The taxonomy review is limited to the two new classes; existing classes were preserved, not freshly re-adjudicated.",
+          "Attributed occurrence reports retain their source-specific limits. No assurance about unobserved targets, copies or credential use is inferred."
+        ],
+        "review_outcome": "Mathspace’s historical logs establish unauthorised access and download of personal records from its reporting database. This crosses the records’ confidentiality boundary independently of subsequent misuse. Credentials were expressly excluded from the corrected exposed-field list, so this does not support a secret-custody finding."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-25-081-DELTA-000107",
+      "review_id": "VIGIL-REVIEW-2026-10-27-090-DELTA-000107",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT / GitHub connector",
+      "reviewer_platform": "OpenAI Codex",
       "reviewer_model": "GPT-6",
-      "review_date": "2026-10-25",
-      "review_scope": "Resolve prior G01 all-polarity exclusion-precedence hold using published 0.8.1 role-scoped exclusions; exact recognition conditions and episode-anchored source packet retained.",
+      "review_date": "2026-10-27",
+      "review_scope": "Targeted published v0.9.0 adjudication of Protected Information Access Integrity and Authentication Material Custody Integrity. Prior taxonomy, harm and external findings preserved; direct NIST propositions independently assessed where supported.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
         "taxonomy_review": true,
-        "web_research": false,
+        "external_requirement_review": true,
         "harm_impact_review": false,
-        "external_requirement_review": false
+        "web_research": false
       },
       "known_limitations": [
-        "Published 0.8.1 role-scope clarification does not establish universal control or evidence sufficiency.",
-        "Original v0.8.0 G01 hold is retained as historical provenance; this review supersedes that specific scope ambiguity only.",
-        "G01: preserve bounded positive capture/reconstruction pending exclusion-scope resolution. Evidence capture is distinct from later reconstruction and neither proves all interventions effective.",
-        "Independent harm, attribution and external assessments are unchanged. No private trace inspection or final legal finding is claimed."
+        "AI-authored analysis, not human verification. No live vulnerable system or private secret was accessed.",
+        "The taxonomy review is limited to the two new classes; existing classes were preserved, not freshly re-adjudicated.",
+        "Attributed occurrence reports retain their source-specific limits. No assurance about unobserved targets, copies or credential use is inferred."
       ],
-      "review_outcome": "Retained 3 previously mapped roles, including 2 success(es), without applying failure-only exclusions to the successful finding or changing harm/external assessments."
+      "review_outcome": "Mathspace’s historical logs establish unauthorised access and download of personal records from its reporting database. This crosses the records’ confidentiality boundary independently of subsequent misuse. Credentials were expressly excluded from the corrected exposed-field list, so this does not support a secret-custody finding."
     }
   },
   "harm_impact_assessment": {
@@ -909,7 +943,26 @@
     "assessment_pathway": "specific_consequence"
   },
   "related_incidents": [],
-  "external_requirement_assessments": [],
+  "external_requirement_assessments": [
+    {
+      "requirement_id": "EXTREQ-FA4D888041BED657",
+      "alignment_result": "not-aligned",
+      "assessment_basis": "The access-enforcement proposition requires approved logical-access authorisations to be enforced for information and system resources. The observed information operation was outside the approved boundary. The attacker downloaded personal information from Mathspace’s reporting database. The affected records were restricted school-user information, not public statistics. This is a bounded retrospective comparison with the selected control proposition, not a claim of certification or an independently binding historical duty.",
+      "assessed_on": "2026-10-27",
+      "source_record_refs": [
+        "source_records[0]"
+      ],
+      "derived_from_class_ids": [
+        "VIGIL-FC-000089"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "source_episode_refs": [
+        "E003"
+      ]
+    }
+  ],
   "affected_party_context": {
     "entities": [
       {
