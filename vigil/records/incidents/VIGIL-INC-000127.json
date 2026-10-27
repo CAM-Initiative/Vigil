@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "AI-orchestrated PaperCut campaign compromised at least 440 instances across 395 organizations",
     "created": "2026-09-15",
-    "updated": "2026-10-25",
-    "version": "0.1.19"
+    "updated": "2026-10-27",
+    "version": "0.1.20"
   },
   "incident_identity": {
     "historical_event_name": "2026 AI-orchestrated PaperCut NG/MF mass-exploitation campaign",
@@ -21,7 +21,7 @@
   "summary": "GreyNoise reports that a likely Russian-speaking malicious cyber actor used hundreds of AI agents built around OpenAI's Codex harness, a DeepSeek model and conventional offensive-security tools to exploit PaperCut NG/MF vulnerabilities CVE-2026-81578 and CVE-2026-82078. GreyNoise observed at least 440 compromised PaperCut instances associated with 395 identified victim organizations in 48 countries. The operation harvested credentials and operating-system or domain secrets, and in 12 organizations reached domain-administrator access; GreyNoise states that in all three observed domain-admin attack paths the adversary used DCSync to create and exfiltrate a full NTDS.DIT credential database. The actor's agents also struck some targets in countries the actor had explicitly listed for avoidance. PaperCut separately confirmed active exploitation and customer incidents involving the same vulnerabilities. The campaign followed the initial advisory and emergency patches. PaperCut issued maintenance releases on September 10.",
   "vigil_assessment": {
     "factual_basis": "GreyNoise's primary threat-intelligence disclosure states that it directly observed the campaign through its Global Observation Grid, traced orchestration to malicious infrastructure it had followed since July 2026, and observed the actor build a PaperCut and Active Directory lab, generate target lists, then deploy hundreds of AI agents against real systems. GreyNoise attributes the agent stack to OpenAI's Codex harness and a DeepSeek model, explicitly distinguishing the DeepSeek model from OpenAI models. It reports at least 440 compromised instances at 395 identified organizations in 48 countries, credential harvesting across many victims, domain-administrator access at 12 organizations, and full NTDS.DIT credential-database exfiltration where domain admin was obtained. PaperCut's own security bulletin independently confirms active exploitation and customer incidents involving CVE-2026-81578 and CVE-2026-82078. OECD.AI indexes the campaign as an AI incident but is retained only as secondary registry evidence. The dated timeline places initial real-target exploitation before the wider campaign, with later follow-up varying by victim. One specific WAF block is documented. PaperCut’s September 10 update explicitly says it had not independently verified GreyNoise’s indicators; its customer reports corroborate exploitation of the vulnerabilities, not every detail or victim of this campaign. Patch publication and coordinated notifications do not establish fleet-wide recovery.",
-    "governance_interpretation": "The documented campaign caused widespread compromise and credential loss. Those outcomes support privacy and lifecycle-security failures. The campaign was documented, while specific multi-agent controls remain unresolved. The model, harness, operator and conventional tools retain distinct roles. Harm Impact: The campaign’s actual credential harvesting and domain-secret exfiltration include highly sensitive domain-administrator material. This supports confidentiality S4 without assuming every victim’s recovery or allocating conventional tooling exclusively to the model. GreyNoise reports that Cloudflare’s web application firewall defeated an attempted intrusion against one protected host. Its timeline records the block during the campaign. This supports protection of that targeted pathway at that time. It does not establish protection or recovery of the other compromised systems.",
+    "governance_interpretation": "The documented campaign caused widespread compromise and credential loss. Those outcomes support privacy and lifecycle-security failures. The campaign was documented, while specific multi-agent controls remain unresolved. The model, harness, operator and conventional tools retain distinct roles. Harm Impact: The campaign’s actual credential harvesting and domain-secret exfiltration include highly sensitive domain-administrator material. This supports confidentiality S4 without assuming every victim’s recovery or allocating conventional tooling exclusively to the model. GreyNoise reports that Cloudflare’s web application firewall defeated an attempted intrusion against one protected host. Its timeline records the block during the campaign. This supports protection of that targeted pathway at that time. It does not establish protection or recovery of the other compromised systems. GreyNoise’s recovered campaign evidence identifies credential harvesting and extraction of full domain credential databases. Secret authentication content crossed victim custody boundaries. Administrator counts are not converted into an assumption that every one of the 395 organisations suffered the same extraction.",
     "significance_to_cam": "The campaign is governance-relevant because AI agents were used not merely for exploit drafting but for parallelised target selection, exploitation and post-compromise activity against hundreds of real organizations. It demonstrates that agentic cyber operations can compress defensive response windows to seconds or minutes and can propagate targeting, configuration, orchestration or control errors across a large external target set. The occurrence also illustrates why system-component attribution must distinguish an orchestration harness, an underlying model and conventional offensive tools rather than attributing the whole campaign to one vendor or model.",
     "assessment_boundaries": [
       "GreyNoise assesses the actor as likely Russian-speaking; the reviewed evidence does not establish state sponsorship or a named threat group.",
@@ -88,8 +88,15 @@
           ],
           "source_paraphrase": "Credential harvesting affected many victims. Domain-admin access was observed at 12 organisations, with distinct escalation routes and full credential-database extraction. Follow-up delays differed across victims.",
           "recovered_invariant_interpretation": "Observed privilege escalation and extraction are distinct from initial compromise.",
-          "taxonomy_relationships": [],
-          "adjudication_status": "resolved-no-mapping"
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000090",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "GreyNoise reports credential harvesting and extraction of domain credential databases after administrator access at twelve organisations. These are protected authentication objects, not mere successful logins."
+            }
+          ],
+          "adjudication_status": "mapped"
         },
         {
           "episode_id": "E005",
@@ -493,9 +500,9 @@
     }
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.8.1",
+    "taxonomy_version": "0.9.0",
     "classification_status": "provisionally-classified",
-    "classification_basis": "GreyNoise reports that Cloudflare’s web application firewall defeated an attempted intrusion against one protected host. Its timeline records the block during the campaign. This supports protection of that targeted pathway at that time. It does not establish protection or recovery of the other compromised systems. The reported country-avoidance mismatch remains unresolved. No operative control-state transition or decomposition-specific loss of constraint ownership is identified.",
+    "classification_basis": "GreyNoise reports that Cloudflare’s web application firewall defeated an attempted intrusion against one protected host. Its timeline records the block during the campaign. This supports protection of that targeted pathway at that time. It does not establish protection or recovery of the other compromised systems. The reported country-avoidance mismatch remains unresolved. No operative control-state transition or decomposition-specific loss of constraint ownership is identified. GreyNoise’s recovered campaign evidence identifies credential harvesting and extraction of full domain credential databases. Secret authentication content crossed victim custody boundaries. Administrator counts are not converted into an assumption that every one of the 395 organisations suffered the same extraction.",
     "primary_classification": {
       "family_id": "VIGIL-FF-0008",
       "class_id": "VIGIL-FC-000083",
@@ -503,12 +510,19 @@
       "classification_basis": "GreyNoise reports that Cloudflare’s web application firewall defeated an attempted intrusion against one protected host. Its timeline records the block during the campaign. This supports protection of that targeted pathway at that time. It does not establish protection or recovery of the other compromised systems.",
       "classification_confidence": "medium"
     },
-    "secondary_classifications": [],
+    "secondary_classifications": [
+      {
+        "family_id": "VIGIL-FF-0018",
+        "class_id": "VIGIL-FC-000090",
+        "classification_role": "failure-occurrence",
+        "classification_basis": "GreyNoise’s recovered campaign evidence identifies credential harvesting and extraction of full domain credential databases. Secret authentication content crossed victim custody boundaries. Administrator counts are not converted into an assumption that every one of the 395 organisations suffered the same extraction.",
+        "classification_confidence": "medium"
+      }
+    ],
     "classification_review_provenance": {
-      "review_date": "2026-10-25",
-      "reviewer": "OpenAI GPT-6 — AI analytical reviewer",
-      "review_status": "Incorporated source-linked 2026-10-23 v0.8.0 new-admission decision after exact published v0.8.1 recognition and current role-scoped exclusion check; prior evidence limits preserved.",
-      "review_reference": "vigil/docs/reviews/2026-10-25-siai-paper-v081-100-plus/INC-000127-081-REVIEW.json"
+      "review_date": "2026-10-27",
+      "reviewer": "OpenAI Codex — AI analytical reviewer",
+      "review_status": "Published v0.9.0 protected-information and authentication-custody delta adjudicated. Existing class findings retained without re-adjudication; episode limits remain explicit."
     },
     "adjudication_coverage": {
       "status": "partial"
@@ -859,29 +873,51 @@
           "GreyNoise’s attributed telemetry account and PaperCut’s advisory were re-read. PaperCut explicitly says it has not independently verified GreyNoise’s indicators. No private target lists, agent prompts or full orchestration traces were inspected."
         ],
         "review_outcome": "Incorporated 1 prior source-admitted mapping(s), retained 1 current class role(s) with mapped source clauses; harm and external requirements unchanged."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-27-090-DELTA-000127",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-27",
+        "review_scope": "Targeted published v0.9.0 adjudication of Protected Information Access Integrity and Authentication Material Custody Integrity. Prior taxonomy, harm and external findings preserved; direct NIST propositions independently assessed where supported.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "external_requirement_review": true,
+          "harm_impact_review": false,
+          "web_research": false
+        },
+        "known_limitations": [
+          "AI-authored analysis, not human verification. No live vulnerable system or private secret was accessed.",
+          "The taxonomy review is limited to the two new classes; existing classes were preserved, not freshly re-adjudicated.",
+          "Attributed occurrence reports retain their source-specific limits. No assurance about unobserved targets, copies or credential use is inferred."
+        ],
+        "review_outcome": "GreyNoise’s recovered campaign evidence identifies credential harvesting and extraction of full domain credential databases. Secret authentication content crossed victim custody boundaries. Administrator counts are not converted into an assumption that every one of the 395 organisations suffered the same extraction."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-25-081-DELTA-000127",
+      "review_id": "VIGIL-REVIEW-2026-10-27-090-DELTA-000127",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT / GitHub connector",
+      "reviewer_platform": "OpenAI Codex",
       "reviewer_model": "GPT-6",
-      "review_date": "2026-10-25",
-      "review_scope": "Apply separately evidence-admitted prior v0.8.0 role changes with exact v0.8.1 class recognition and exclusions; no fresh public investigation.",
+      "review_date": "2026-10-27",
+      "review_scope": "Targeted published v0.9.0 adjudication of Protected Information Access Integrity and Authentication Material Custody Integrity. Prior taxonomy, harm and external findings preserved; direct NIST propositions independently assessed where supported.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
         "taxonomy_review": true,
-        "web_research": false,
+        "external_requirement_review": true,
         "harm_impact_review": false,
-        "external_requirement_review": false
+        "web_research": false
       },
       "known_limitations": [
-        "Past candidate mappings not established in original source screen remain unresolved and cannot be silently admitted.",
-        "The prior v0.8.0 packet is a source-linked bounded finding, not independent human source certification.",
-        "GreyNoise’s attributed telemetry account and PaperCut’s advisory were re-read. PaperCut explicitly says it has not independently verified GreyNoise’s indicators. No private target lists, agent prompts or full orchestration traces were inspected."
+        "AI-authored analysis, not human verification. No live vulnerable system or private secret was accessed.",
+        "The taxonomy review is limited to the two new classes; existing classes were preserved, not freshly re-adjudicated.",
+        "Attributed occurrence reports retain their source-specific limits. No assurance about unobserved targets, copies or credential use is inferred."
       ],
-      "review_outcome": "Incorporated 1 prior source-admitted mapping(s), retained 1 current class role(s) with mapped source clauses; harm and external requirements unchanged."
+      "review_outcome": "GreyNoise’s recovered campaign evidence identifies credential harvesting and extraction of full domain credential databases. Secret authentication content crossed victim custody boundaries. Administrator counts are not converted into an assumption that every one of the 395 organisations suffered the same extraction."
     }
   },
   "harm_impact_assessment": {
@@ -1060,6 +1096,24 @@
         "source_records[0]"
       ],
       "identification_basis": "The documented multi-agent architecture makes technical controls over distributed actions materially relevant."
+    },
+    {
+      "requirement_id": "EXTREQ-F42FEC4FD1482D57",
+      "alignment_result": "not-aligned",
+      "assessment_basis": "The authenticator-protection proposition requires secret authenticator content to be protected against unauthorised disclosure and modification. The observed secret disclosure/acquisition or custody-changing modification was unauthorised. GreyNoise reports credential harvesting and extraction of domain credential databases after administrator access at twelve organisations. These are protected authentication objects, not mere successful logins. This is a bounded retrospective comparison with the selected control proposition, not a claim of certification or an independently binding historical duty.",
+      "assessed_on": "2026-10-27",
+      "source_record_refs": [
+        "source_records[0]"
+      ],
+      "derived_from_class_ids": [
+        "VIGIL-FC-000090"
+      ],
+      "source_clause_indices": [
+        3
+      ],
+      "source_episode_refs": [
+        "E004"
+      ]
     }
   ],
   "affected_party_context": {
