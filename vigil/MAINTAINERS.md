@@ -560,7 +560,7 @@ The canonical Incident is the authority for occurrence-level class mappings and 
 Every material `vigil_assessment.source_clause_analysis.clauses[]` entry in an opted-in Incident has one `adjudication_status`:
 
 - `mapped` — at least one canonical mapping is supported by the bounded evidence;
-- `resolved-no-mapping` — no current class is supported for that material clause;
+- `resolved-no-mapping` — completed review supports no current class for that material clause and leaves no material unresolved taxonomy-coverage question; give an occurrence-specific reason;
 - `unresolved` — a required recognition fact for a specific existing-class candidate remains unavailable or indeterminate;
 - `taxonomy-gap` — a material governance property is established but no selectable class adequately covers it.
 
@@ -575,6 +575,8 @@ The three roles are mutually distinct, and neither absence of failure nor absenc
 Incident-level exemplar eligibility is distinct from mapping-local outcomes. It requires complete clause-level coverage, at least one `successful-invariant`, and no `failure-occurrence` or `ambiguous-boundary` mapping.
 
 For each adjudication, record specific supporting evidence and any missing recognition fact in the Incident and its review manifest. Exhaustive class consideration, negative candidate dispositions, historical changes and detailed process rationale belong in the dated review/audit artefact. Do not create a separate global pairwise adjudication dataset merely to demonstrate review breadth.
+
+Apply the [no-mapping decision gate](docs/maintenance/INCIDENT-ADJUDICATION-WORKFLOW.md#no-mapping-decision-gate--maintainer-clarification-27-october-2026) before closing a material clause. Rejection of one candidate, unknown implementation or unproven later misuse cannot alone close an independently evidenced property. Reconcile HIM/external findings as review signals, chronology, and canonical Incident/episode mappings in both directions. Preserve distinct episode roles; local remedial success is not an overall success verdict. This is non-normative review guidance, not a new blocking control or authority for historical backfill.
 
 ### Post-adjudication checks
 
