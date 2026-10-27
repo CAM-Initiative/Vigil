@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "ARTEX agents exploited stolen ConnectWise application access across Microsoft 365 tenants",
     "created": "2026-10-26",
-    "updated": "2026-10-26",
-    "version": "0.1.0"
+    "updated": "2026-10-27",
+    "version": "0.1.1"
   },
   "incident_identity": {
     "historical_event_name": "Storm-0940 ARTEX-assisted ConnectWise Cloud Backup OAuth compromise, October 2026",
@@ -21,7 +21,7 @@
   "summary": "In October 2026, Microsoft reported that attackers it identifies as Storm-0940 used ARTEX, a multi-agent AI penetration-testing framework, against organisations. From 10 to 14 October, a password-spray campaign produced more than 151,000 failed sign-ins across 327 accounts at eight organisations, with no successful authentication in that observed sample. After ConnectWise Cloud Backup application identities were compromised, ARTEX-assisted attackers attempted access to more than 2,250 Microsoft 365 tenants. Microsoft found successful sign-ins and some follow-on account, application credential and permission changes in affected environments. ConnectWise disclosed unauthorised access to application identities on 16–17 October, then revoked affected access and suspended Cloud Backup jobs, archive access and restores, with related security and management services also interrupted. Its recovery and testing continued through at least 25 October. Microsoft did not establish that every targeted tenant was breached or that each authentication resulted in data theft.",
   "vigil_assessment": {
     "factual_basis": "Microsoft's 21 October threat-intelligence account attributes operational ARTEX-assisted reconnaissance, spraying and stolen OAuth-application abuse to Storm-0940. The earlier 151,000+ failed logons were unsuccessful, and do not establish a compromise of those 327 accounts. Its later observation of compromised ConnectWise application identities involved more than 2,250 attempted target tenants and some successful sign-ins and Microsoft Graph activities, including credential changes, privileged role changes and persistence efforts. Microsoft explicitly warns that attempted targets or successful sign-ins do not prove data exfiltration. ConnectWise independently confirmed access to application identities, its revocation of seven application connections and protective suspension of backup and other services; it reported no evidence that encrypted stored backup archives were accessed. Because it lacked downstream customer-environment visibility, this vendor statement does not resolve Microsoft-observed actions in those tenants.",
-    "governance_interpretation": "AI agents acting on attacker instructions used compromised application credentials to exercise technical access across otherwise separately governed customer tenants. The observed capability-to-authority boundary was crossed at downstream account and identity operations, but no independent agent rebellion, jailbreak or objective drift is established. ConnectWise revoked affected credentials, and in its monitored environment no further successful attack activity was reported. That is a bounded protective outcome. The ensuing interruption of Cloud Backup and linked services was deliberate containment of the breach, not an attacker-commanded service shutdown. The record does not treat 2,250 attempted tenants as confirmed victims of data theft.",
+    "governance_interpretation": "AI agents acting on attacker instructions used compromised application credentials to exercise technical access across otherwise separately governed customer tenants. The observed capability-to-authority boundary was crossed at downstream account and identity operations, but no independent agent rebellion, jailbreak or objective drift is established. ConnectWise revoked affected credentials, and in its monitored environment no further successful attack activity was reported. That is a bounded protective outcome. The ensuing interruption of Cloud Backup and linked services was deliberate containment of the breach, not an attacker-commanded service shutdown. The record does not treat 2,250 attempted tenants as confirmed victims of data theft. Microsoft reports abuse of compromised application credentials and observed follow-on credential changes in affected environments. Those authentication objects and modifications crossed authorised custody. The separate unsuccessful password-spray sample and successful sign-ins alone do not prove customer-data theft. Microsoft reports follow-on changes involving identities, groups and privileged roles in affected customer environments. Those are protected directory-information modifications by the threat actor, separate from credential custody. The finding does not infer mailbox or file theft from sign-in events, and it does not apply to every targeted tenant.",
     "significance_to_cam": "The incident distinguishes multi-agent attacker-controlled automation, stolen integration credentials, tenant-granted application trust, actual downstream authorisation, monitoring, containment and service availability. It also demonstrates that credential-based access by an external AI agent can reach real customer state without valid authority from the customer, while the defensive recovery affects important operational services.",
     "assessment_boundaries": [
       "Storm-0940 state alignment and responsibility are Microsoft's attributed intelligence assessment, not an independently adjudicated identity finding.",
@@ -61,6 +61,12 @@
               "relationship": "failure-occurrence",
               "canonical_taxonomy_mapping": true,
               "rationale": "Agents used stolen ConnectWise application credentials to attempt external tenant operations without those tenants granting the attacker's access; available access was treated as operational permission."
+            },
+            {
+              "class_id": "VIGIL-FC-000090",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Compromised application credentials were used outside ConnectWise’s authorised application operation. Existing tenant grants did not authorise the threat actor to hold those credentials."
             }
           ]
         },
@@ -78,6 +84,18 @@
               "relationship": "failure-occurrence",
               "canonical_taxonomy_mapping": true,
               "rationale": "AI-assisted Graph actions used technical application privileges to make or attempt changes in tenants where the criminal operator lacked independent authority."
+            },
+            {
+              "class_id": "VIGIL-FC-000090",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Microsoft observed follow-on application credential changes in affected environments. These are distinct custody-changing modifications, not proof that every targeted tenant lost customer data."
+            },
+            {
+              "class_id": "VIGIL-FC-000089",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Microsoft separately reports changes involving identities, groups and privileged roles in some affected environments. These protected directory-state modifications are distinct from stolen or added authentication material and do not imply customer-content theft."
             }
           ]
         },
@@ -247,6 +265,45 @@
         5
       ],
       "identification_basis": "OECD AI Principles 2024 Section 1.4(a), voluntary security and foreseeable-misuse guidance."
+    },
+    {
+      "requirement_id": "EXTREQ-FA4D888041BED657",
+      "alignment_result": "not-aligned",
+      "assessment_basis": "The access-enforcement proposition requires approved logical-access authorisations to be enforced for information and system resources. The observed information operation was outside the approved boundary. Microsoft separately reports changes involving identities, groups and privileged roles in some affected environments. These protected directory-state modifications are distinct from stolen or added authentication material and do not imply customer-content theft. This is a bounded retrospective comparison with the selected control proposition, not a claim of certification or an independently binding historical duty.",
+      "assessed_on": "2026-10-27",
+      "source_record_refs": [
+        "source_records[0]"
+      ],
+      "derived_from_class_ids": [
+        "VIGIL-FC-000089"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "source_episode_refs": [
+        "E003"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-F42FEC4FD1482D57",
+      "alignment_result": "not-aligned",
+      "assessment_basis": "The authenticator-protection proposition requires secret authenticator content to be protected against unauthorised disclosure and modification. The observed secret disclosure/acquisition or custody-changing modification was unauthorised. Compromised application credentials were used outside ConnectWise’s authorised application operation. Existing tenant grants did not authorise the threat actor to hold those credentials. Microsoft observed follow-on application credential changes in affected environments. These are distinct custody-changing modifications, not proof that every targeted tenant lost customer data. This is a bounded retrospective comparison with the selected control proposition, not a claim of certification or an independently binding historical duty.",
+      "assessed_on": "2026-10-27",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ],
+      "derived_from_class_ids": [
+        "VIGIL-FC-000090"
+      ],
+      "source_clause_indices": [
+        1,
+        2
+      ],
+      "source_episode_refs": [
+        "E002",
+        "E003"
+      ]
     }
   ],
   "system_context": {
@@ -288,12 +345,12 @@
     "entities": []
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.8.1",
+    "taxonomy_version": "0.9.0",
     "classification_status": "classified",
     "adjudication_coverage": {
       "status": "complete"
     },
-    "classification_basis": "Stolen application credentials supplied a technical means for agents to access independently governed customer tenants. The observed absence of customer authority is distinct from whether the tool followed the attacker's instructions. The provider's later credential revocation gave a limited protective effect.",
+    "classification_basis": "Stolen application credentials supplied a technical means for agents to access independently governed customer tenants. The observed absence of customer authority is distinct from whether the tool followed the attacker's instructions. The provider's later credential revocation gave a limited protective effect. Microsoft reports abuse of compromised application credentials and observed follow-on credential changes in affected environments. Those authentication objects and modifications crossed authorised custody. The separate unsuccessful password-spray sample and successful sign-ins alone do not prove customer-data theft. Microsoft reports follow-on changes involving identities, groups and privileged roles in affected customer environments. Those are protected directory-information modifications by the threat actor, separate from credential custody. The finding does not infer mailbox or file theft from sign-in events, and it does not apply to every targeted tenant.",
     "primary_classification": {
       "family_id": "VIGIL-FF-0001",
       "class_id": "VIGIL-FC-000002",
@@ -308,13 +365,26 @@
         "classification_role": "successful-invariant",
         "classification_basis": "Affected app connections were revoked and ConnectWise reported no later successful threat activity within monitored environments; this bounded control effect does not cover unknown prior persistence.",
         "classification_confidence": "medium"
+      },
+      {
+        "family_id": "VIGIL-FF-0018",
+        "class_id": "VIGIL-FC-000090",
+        "classification_role": "failure-occurrence",
+        "classification_basis": "Microsoft reports abuse of compromised application credentials and observed follow-on credential changes in affected environments. Those authentication objects and modifications crossed authorised custody. The separate unsuccessful password-spray sample and successful sign-ins alone do not prove customer-data theft.",
+        "classification_confidence": "medium"
+      },
+      {
+        "family_id": "VIGIL-FF-0018",
+        "class_id": "VIGIL-FC-000089",
+        "classification_role": "failure-occurrence",
+        "classification_basis": "Microsoft reports follow-on changes involving identities, groups and privileged roles in affected customer environments. Those are protected directory-information modifications by the threat actor, separate from credential custody. The finding does not infer mailbox or file theft from sign-in events, and it does not apply to every targeted tenant.",
+        "classification_confidence": "medium"
       }
     ],
     "classification_review_provenance": {
-      "review_date": "2026-10-26",
-      "reviewer": "OpenAI ChatGPT — GPT-6, AI analytical reviewer",
-      "review_status": "Source-first public-evidence review; not human verified",
-      "review_reference": "vigil/docs/reviews/2026-10-26-inc213-214-new-ingestion/completion-audit.json"
+      "review_date": "2026-10-27",
+      "reviewer": "OpenAI Codex — AI analytical reviewer",
+      "review_status": "Published v0.9.0 protected-information and authentication-custody delta adjudicated. Existing class findings retained without re-adjudication; episode limits remain explicit."
     }
   },
   "related_incidents": [],
@@ -343,31 +413,51 @@
           "Generated indexes and full CI freshness remain separately pending."
         ],
         "review_outcome": "Bounded AI-assisted use of stolen application credentials supports FC-002 Not aligned; vendor revocation supports a separately scoped FC-083 Aligned. Confirmed service interruption meets S3."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-27-090-DELTA-000214",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-27",
+        "review_scope": "Targeted published v0.9.0 adjudication of Protected Information Access Integrity and Authentication Material Custody Integrity. Prior taxonomy, harm and external findings preserved; direct NIST propositions independently assessed where supported.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "external_requirement_review": true,
+          "harm_impact_review": false,
+          "web_research": true
+        },
+        "known_limitations": [
+          "AI-authored analysis, not human verification. No live vulnerable system or private secret was accessed.",
+          "The taxonomy review is limited to the two new classes; existing classes were preserved, not freshly re-adjudicated.",
+          "Attributed occurrence reports retain their source-specific limits. No assurance about unobserved targets, copies or credential use is inferred."
+        ],
+        "review_outcome": "Microsoft reports abuse of compromised application credentials and observed follow-on credential changes in affected environments. Those authentication objects and modifications crossed authorised custody. The separate unsuccessful password-spray sample and successful sign-ins alone do not prove customer-data theft. Microsoft reports follow-on changes involving identities, groups and privileged roles in affected customer environments. Those are protected directory-information modifications by the threat actor, separate from credential custody. The finding does not infer mailbox or file theft from sign-in events, and it does not apply to every targeted tenant."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-26-INC-214",
+      "review_id": "VIGIL-REVIEW-2026-10-27-090-DELTA-000214",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT (web and connected GitHub)",
+      "reviewer_platform": "OpenAI Codex",
       "reviewer_model": "GPT-6",
-      "review_date": "2026-10-26",
-      "review_scope": "Two originating sources, seven material clauses, v0.8.1 selectable taxonomy, two independently scoped OECD propositions, 12 HIM dimensions, duplicate check.",
+      "review_date": "2026-10-27",
+      "review_scope": "Targeted published v0.9.0 adjudication of Protected Information Access Integrity and Authentication Material Custody Integrity. Prior taxonomy, harm and external findings preserved; direct NIST propositions independently assessed where supported.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "new_external_source_research": true,
-        "source_provenance_review": true,
         "taxonomy_review": true,
-        "harm_impact_review": true,
-        "external_requirement_review": true
+        "external_requirement_review": true,
+        "harm_impact_review": false,
+        "web_research": true
       },
       "known_limitations": [
-        "Original tenant logs, exfiltration evidence and detailed agent prompts not available.",
-        "Microsoft attribution and vendor monitoring scoped to their observations.",
-        "AI review is not human verification.",
-        "Generated indexes and full CI freshness remain separately pending."
+        "AI-authored analysis, not human verification. No live vulnerable system or private secret was accessed.",
+        "The taxonomy review is limited to the two new classes; existing classes were preserved, not freshly re-adjudicated.",
+        "Attributed occurrence reports retain their source-specific limits. No assurance about unobserved targets, copies or credential use is inferred."
       ],
-      "review_outcome": "Bounded AI-assisted use of stolen application credentials supports FC-002 Not aligned; vendor revocation supports a separately scoped FC-083 Aligned. Confirmed service interruption meets S3."
+      "review_outcome": "Microsoft reports abuse of compromised application credentials and observed follow-on credential changes in affected environments. Those authentication objects and modifications crossed authorised custody. The separate unsuccessful password-spray sample and successful sign-ins alone do not prove customer-data theft. Microsoft reports follow-on changes involving identities, groups and privileged roles in affected customer environments. Those are protected directory-information modifications by the threat actor, separate from credential custody. The finding does not infer mailbox or file theft from sign-in events, and it does not apply to every targeted tenant."
     }
   },
   "harm_impact_assessment": {

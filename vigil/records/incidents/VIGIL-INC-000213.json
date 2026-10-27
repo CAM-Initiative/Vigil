@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "AI-generated bank voice recordings used in Dutch NFC-relay fraud",
     "created": "2026-10-26",
-    "updated": "2026-10-26",
-    "version": "0.1.0"
+    "updated": "2026-10-27",
+    "version": "0.1.1"
   },
   "incident_identity": {
     "historical_event_name": "Dutch AI-assisted bank-helpdesk impersonation and NFC relay fraud",
@@ -21,7 +21,7 @@
   "summary": "In September and early October 2026, scammers used AI-generated voice recordings purporting to be banks calling about suspicious activity. Recipients were asked to press 1 and connected to a human operator posing as a bank employee. The operator instructed them to install an application and tap a payment card against a phone to supposedly block it. Card data was relayed to accomplices withdrawing cash. Rotterdam police reported approximately 170 victims and €380,000 in losses during a three-week observation window. Two suspects were arrested on 6 October, and police disabled the servers. Public disclosure followed on 21 October.",
   "vigil_assessment": {
     "factual_basis": "The Dutch National Police reported dozens of AI-generated voice fragments used as false bank and company messages. The calls claimed suspect transactions and prompted a transfer to a human operator using a fixed urgent script. Victims installed an NFC relay application, enabling accomplices to withdraw money. Police observed roughly 170 victims and €380,000 losses over three weeks, arrested two suspected organisers on 6 October and disabled their infrastructure. Original audio, transaction-level attribution to each generated clip, the AI model and individual case outcomes were not published. Arrests do not establish criminal guilt.",
-    "governance_interpretation": "AI-generated bank-identity and urgency cues materially started a human-operated financial solicitation based on false authority. Human operators and separate NFC relay software performed subsequent fraud actions; the record does not attribute independent criminal planning or withdrawals to autonomous agents. Later police takedown does not undo realised losses.",
+    "governance_interpretation": "AI-generated bank-identity and urgency cues materially started a human-operated financial solicitation based on false authority. Human operators and separate NFC relay software performed subsequent fraud actions; the record does not attribute independent criminal planning or withdrawals to autonomous agents. Later police takedown does not undo realised losses. Dutch police report card-data relay through a malicious app to accomplices making withdrawals. The relayed NFC material served payment authentication outside the legitimate cardholder–bank route. This is an attributed custody transition, not a claim that static public card identifiers alone are secret authenticators.",
     "significance_to_cam": "The case distinguishes a synthetic trust cue, the consequential fraudulent financial request and impaired informed choice from technical fund-transfer execution. It demonstrates a human-directed AI-mediated deception mechanism with bounded realised financial harm.",
     "assessment_boundaries": [
       "Victim count and loss total come from police observations in a three-week window, not the entire campaign lifespan.",
@@ -98,6 +98,12 @@
               "relationship": "failure-occurrence",
               "canonical_taxonomy_mapping": true,
               "rationale": "The card-scanning request concealed the actual withdrawal purpose, completing the materially AI-mediated solicitation pathway."
+            },
+            {
+              "class_id": "VIGIL-FC-000090",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The malicious app relayed payment-card NFC authentication data to accomplices making withdrawals. The represented purpose was card blocking by a bank, not handing payment authority to a withdrawal operator."
             }
           ]
         },
@@ -249,12 +255,12 @@
     "entities": []
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.8.1",
+    "taxonomy_version": "0.9.0",
     "classification_status": "classified",
     "adjudication_coverage": {
       "status": "complete"
     },
-    "classification_basis": "Synthetic bank identity supplied false economic solicitation and engineered trust cues that produced actual victim actions. Human-directed AI voice abuse qualifies without inventing autonomous criminal agency.",
+    "classification_basis": "Synthetic bank identity supplied false economic solicitation and engineered trust cues that produced actual victim actions. Human-directed AI voice abuse qualifies without inventing autonomous criminal agency. Dutch police report card-data relay through a malicious app to accomplices making withdrawals. The relayed NFC material served payment authentication outside the legitimate cardholder–bank route. This is an attributed custody transition, not a claim that static public card identifiers alone are secret authenticators.",
     "primary_classification": {
       "family_id": "VIGIL-FF-0013",
       "class_id": "VIGIL-FC-000079",
@@ -276,13 +282,19 @@
         "classification_role": "failure-occurrence",
         "classification_basis": "False AI-origin bank urgency materially assisted scammers in eliciting actions victims did not choose on a truthful basis.",
         "classification_confidence": "medium"
+      },
+      {
+        "family_id": "VIGIL-FF-0018",
+        "class_id": "VIGIL-FC-000090",
+        "classification_role": "failure-occurrence",
+        "classification_basis": "Dutch police report card-data relay through a malicious app to accomplices making withdrawals. The relayed NFC material served payment authentication outside the legitimate cardholder–bank route. This is an attributed custody transition, not a claim that static public card identifiers alone are secret authenticators.",
+        "classification_confidence": "medium"
       }
     ],
     "classification_review_provenance": {
-      "review_date": "2026-10-26",
-      "reviewer": "OpenAI ChatGPT — GPT-6, AI analytical reviewer",
-      "review_status": "Source-first public evidence, no human verification",
-      "review_reference": "vigil/docs/reviews/2026-10-26-inc213-214-new-ingestion/completion-audit.json"
+      "review_date": "2026-10-27",
+      "reviewer": "OpenAI Codex — AI analytical reviewer",
+      "review_status": "Published v0.9.0 protected-information and authentication-custody delta adjudicated. Existing class findings retained without re-adjudication; episode limits remain explicit."
     }
   },
   "related_incidents": [],
@@ -310,30 +322,51 @@
           "Full CI and committed generated output freshness not yet verified."
         ],
         "review_outcome": "Classify economic solicitation, synthetic bank social engineering and impaired choice as distinct supported AI-mediated mechanisms; observed financial severity S2."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-27-090-DELTA-000213",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-27",
+        "review_scope": "Targeted published v0.9.0 adjudication of Protected Information Access Integrity and Authentication Material Custody Integrity. Prior taxonomy, harm and external findings preserved; direct NIST propositions independently assessed where supported.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "external_requirement_review": true,
+          "harm_impact_review": false,
+          "web_research": true
+        },
+        "known_limitations": [
+          "AI-authored analysis, not human verification. No live vulnerable system or private secret was accessed.",
+          "The taxonomy review is limited to the two new classes; existing classes were preserved, not freshly re-adjudicated.",
+          "Attributed occurrence reports retain their source-specific limits. No assurance about unobserved targets, copies or credential use is inferred."
+        ],
+        "review_outcome": "Dutch police report card-data relay through a malicious app to accomplices making withdrawals. The relayed NFC material served payment authentication outside the legitimate cardholder–bank route. This is an attributed custody transition, not a claim that static public card identifiers alone are secret authenticators."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-26-INC-213",
+      "review_id": "VIGIL-REVIEW-2026-10-27-090-DELTA-000213",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT (web and connected GitHub)",
+      "reviewer_platform": "OpenAI Codex",
       "reviewer_model": "GPT-6",
-      "review_date": "2026-10-26",
-      "review_scope": "Police primary source, six event clauses, 80 selectable taxonomy classes and targeted criteria, two registered external propositions, all 12 HIM dimensions and duplicate screen.",
+      "review_date": "2026-10-27",
+      "review_scope": "Targeted published v0.9.0 adjudication of Protected Information Access Integrity and Authentication Material Custody Integrity. Prior taxonomy, harm and external findings preserved; direct NIST propositions independently assessed where supported.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "new_external_source_research": true,
-        "source_provenance_review": true,
         "taxonomy_review": true,
-        "harm_impact_review": true,
-        "external_requirement_review": true
+        "external_requirement_review": true,
+        "harm_impact_review": false,
+        "web_research": true
       },
       "known_limitations": [
-        "No raw police evidentiary files or original synthetic audio.",
-        "No human verification.",
-        "Full CI and committed generated output freshness not yet verified."
+        "AI-authored analysis, not human verification. No live vulnerable system or private secret was accessed.",
+        "The taxonomy review is limited to the two new classes; existing classes were preserved, not freshly re-adjudicated.",
+        "Attributed occurrence reports retain their source-specific limits. No assurance about unobserved targets, copies or credential use is inferred."
       ],
-      "review_outcome": "Classify economic solicitation, synthetic bank social engineering and impaired choice as distinct supported AI-mediated mechanisms; observed financial severity S2."
+      "review_outcome": "Dutch police report card-data relay through a malicious app to accomplices making withdrawals. The relayed NFC material served payment authentication outside the legitimate cardholder–bank route. This is an attributed custody transition, not a claim that static public card identifiers alone are secret authenticators."
     }
   },
   "harm_impact_assessment": {

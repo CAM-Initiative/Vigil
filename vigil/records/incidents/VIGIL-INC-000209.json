@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "OpenCode Console compromise exposed AI provider API keys and led to reported unauthorised usage",
     "created": "2026-10-21",
-    "updated": "2026-10-23",
-    "version": "0.1.2"
+    "updated": "2026-10-27",
+    "version": "0.1.3"
   },
   "incident_identity": {
     "historical_event_name": "OpenCode Console credential compromise, 16–17 October 2026",
@@ -21,7 +21,7 @@
   "summary": "On 17 October 2026 the maintainers of OpenCode said an older system connected to its hosted Console service had been breached overnight. They reported notifying the 1.4% of Console users affected by the attack. Some Console workspaces held API keys for OpenAI, Anthropic and Google AI services. Developers reported unexpected API usage and charges, and providers moved to block exposed keys or refund affected usage. OpenCode characterised the intrusion as related to large-scale model distillation, but did not publish technical proof of that purpose in the sources reviewed. Its open-source command-line client was not the compromised service. During subsequent defensive investigation, the company also reported that some AI models refused to analyse malicious code once safety filters were triggered. The refusal dialogue and the original intrusion mechanism remain unpublished.",
   "vigil_assessment": {
     "factual_basis": "TechCrunch reproduced OpenCode's statement on 19 October, quoted developers' spending reports, and separately attributed provider and founder comments; the original X statement is linked but was not itself directly reviewed here. The 1.4% statistic lacks a user denominator and cannot justify an assumed number of exposed people. Axios on 21 October discussed the defensive refusal issue; no original agent instruction/response trace was available. The distillation purpose remains an attributed explanation, while the technical access route is undisclosed.",
-    "governance_interpretation": "The credential compromise and reported unwanted usage are material service-governance outcomes regardless of the attacker’s use of AI. They do not alone identify the mechanism required by a Fidelity Class. Defensive refusals remain a separate unresolved control-activation candidate. Independent cybersecurity requirements and confidentiality harm can be assessed without inventing an autonomous attacker or treating missing technical detail as proof that governance was adequate.",
+    "governance_interpretation": "The credential compromise and reported unwanted usage are material service-governance outcomes regardless of the attacker’s use of AI. They do not locate the original intrusion mechanism. The secret-custody result is independently assessed from the reported API-key exposure. Defensive refusals remain a separate unresolved control-activation candidate. Independent cybersecurity requirements and confidentiality harm can be assessed without inventing an autonomous attacker or treating missing technical detail as proof that governance was adequate. OpenCode’s reported hosted-service breach exposed stored AI-provider API keys. Developer reports of unauthorised consumption corroborate their authentication function. The custody event does not depend on the maintainer’s unverified theory about the attacker’s purpose or affect the separate open-source client by assumption.",
     "significance_to_cam": "Hosted AI-service credential custody and defensive access need separate governance assessment. A taxonomy evidence limit does not exempt the service from independent security analysis.",
     "assessment_boundaries": [
       "No original OpenCode security disclosure or victim-by-victim forensic report independently reviewed.",
@@ -51,8 +51,15 @@
           "source_record_refs": [
             "source_records[0]"
           ],
-          "adjudication_status": "resolved-no-mapping",
-          "taxonomy_relationships": []
+          "adjudication_status": "mapped",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000090",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Stored provider API keys were exposed in the hosted Console compromise, followed by reported unauthorised consumption. Their custody loss is distinct from the attack’s unverified distillation purpose."
+            }
+          ]
         },
         {
           "episode_id": "E003",
@@ -242,6 +249,24 @@
         4
       ],
       "identification_basis": "Independent review of the registered proposition against the evidenced actor, system, activity and lifecycle. Voluntary alignment is separate from adoption, certification and legal applicability."
+    },
+    {
+      "requirement_id": "EXTREQ-F42FEC4FD1482D57",
+      "alignment_result": "not-aligned",
+      "assessment_basis": "The authenticator-protection proposition requires secret authenticator content to be protected against unauthorised disclosure and modification. The observed secret disclosure/acquisition or custody-changing modification was unauthorised. Stored provider API keys were exposed in the hosted Console compromise, followed by reported unauthorised consumption. Their custody loss is distinct from the attack’s unverified distillation purpose. This is a bounded retrospective comparison with the selected control proposition, not a claim of certification or an independently binding historical duty.",
+      "assessed_on": "2026-10-27",
+      "source_record_refs": [
+        "source_records[0]"
+      ],
+      "derived_from_class_ids": [
+        "VIGIL-FC-000090"
+      ],
+      "source_clause_indices": [
+        1
+      ],
+      "source_episode_refs": [
+        "E002"
+      ]
     }
   ],
   "system_context": {
@@ -295,19 +320,24 @@
     }
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.8.0",
-    "classification_status": "unclassified",
+    "taxonomy_version": "0.9.0",
+    "classification_status": "provisionally-classified",
     "adjudication_coverage": {
       "status": "partial"
     },
-    "classification_basis": "Credential custody failed in the hosted service. The available account does not establish a particular authority-conversion or activated-control mechanism for the intrusion. The reported defensive refusals engage a separate activation question, but the valid trigger and request context remain unavailable.",
-    "primary_classification": null,
+    "classification_basis": "OpenCode’s reported hosted-service breach exposed stored AI-provider API keys. Developer reports of unauthorised consumption corroborate their authentication function. The custody event does not depend on the maintainer’s unverified theory about the attacker’s purpose or affect the separate open-source client by assumption.",
+    "primary_classification": {
+      "family_id": "VIGIL-FF-0018",
+      "class_id": "VIGIL-FC-000090",
+      "classification_role": "failure-occurrence",
+      "classification_basis": "OpenCode’s reported hosted-service breach exposed stored AI-provider API keys. Developer reports of unauthorised consumption corroborate their authentication function. The custody event does not depend on the maintainer’s unverified theory about the attacker’s purpose or affect the separate open-source client by assumption.",
+      "classification_confidence": "medium"
+    },
     "secondary_classifications": [],
     "classification_review_provenance": {
-      "review_date": "2026-10-23",
+      "review_date": "2026-10-27",
       "reviewer": "OpenAI Codex — AI analytical reviewer",
-      "review_status": "Source-first reassessment; evidence limits retained; not human verified",
-      "review_reference": "vigil/docs/reviews/2026-10-23-intake-readjudication/VIGIL-INC-000209-adjudication.json"
+      "review_status": "Published v0.9.0 protected-information and authentication-custody delta adjudicated. Existing class findings retained without re-adjudication; episode limits remain explicit."
     }
   },
   "related_incidents": [],
@@ -380,28 +410,51 @@
           "Earlier review history is preserved; its completion claims are corrected by the dated reassessment."
         ],
         "review_outcome": "The credential compromise and reported unwanted usage are material service-governance outcomes regardless of the attacker’s use of AI. They do not alone identify the mechanism required by a Fidelity Class. Defensive refusals remain a separate unresolved control-activation candidate. Independent cybersecurity requirements and confidentiality harm can be assessed without inventing an autonomous attacker or treating missing technical detail as proof that governance was adequate."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-27-090-DELTA-000209",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-27",
+        "review_scope": "Targeted published v0.9.0 adjudication of Protected Information Access Integrity and Authentication Material Custody Integrity. Prior taxonomy, harm and external findings preserved; direct NIST propositions independently assessed where supported.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "external_requirement_review": true,
+          "harm_impact_review": false,
+          "web_research": false
+        },
+        "known_limitations": [
+          "AI-authored analysis, not human verification. No live vulnerable system or private secret was accessed.",
+          "The taxonomy review is limited to the two new classes; existing classes were preserved, not freshly re-adjudicated.",
+          "Attributed occurrence reports retain their source-specific limits. No assurance about unobserved targets, copies or credential use is inferred."
+        ],
+        "review_outcome": "OpenCode’s reported hosted-service breach exposed stored AI-provider API keys. Developer reports of unauthorised consumption corroborate their authentication function. The custody event does not depend on the maintainer’s unverified theory about the attacker’s purpose or affect the separate open-source client by assumption."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-23-READJUDICATE-000209",
+      "review_id": "VIGIL-REVIEW-2026-10-27-090-DELTA-000209",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT Work / Codex",
-      "reviewer_model": "Codex",
-      "review_date": "2026-10-23",
-      "review_scope": "Authorised full reassessment of this new intake record: sources, material episodes, current taxonomy, independent external requirements and all twelve harm dimensions.",
+      "reviewer_platform": "OpenAI Codex",
+      "reviewer_model": "GPT-6",
+      "review_date": "2026-10-27",
+      "review_scope": "Targeted published v0.9.0 adjudication of Protected Information Access Integrity and Authentication Material Custody Integrity. Prior taxonomy, harm and external findings preserved; direct NIST propositions independently assessed where supported.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "new_external_source_research": true,
         "taxonomy_review": true,
-        "harm_impact_review": true,
-        "external_requirement_review": true
+        "external_requirement_review": true,
+        "harm_impact_review": false,
+        "web_research": false
       },
       "known_limitations": [
-        "Public source review, not human verification. Private logs and unpublished authority records remain unavailable.",
-        "Earlier review history is preserved; its completion claims are corrected by the dated reassessment."
+        "AI-authored analysis, not human verification. No live vulnerable system or private secret was accessed.",
+        "The taxonomy review is limited to the two new classes; existing classes were preserved, not freshly re-adjudicated.",
+        "Attributed occurrence reports retain their source-specific limits. No assurance about unobserved targets, copies or credential use is inferred."
       ],
-      "review_outcome": "The credential compromise and reported unwanted usage are material service-governance outcomes regardless of the attacker’s use of AI. They do not alone identify the mechanism required by a Fidelity Class. Defensive refusals remain a separate unresolved control-activation candidate. Independent cybersecurity requirements and confidentiality harm can be assessed without inventing an autonomous attacker or treating missing technical detail as proof that governance was adequate."
+      "review_outcome": "OpenCode’s reported hosted-service breach exposed stored AI-provider API keys. Developer reports of unauthorised consumption corroborate their authentication function. The custody event does not depend on the maintainer’s unverified theory about the attacker’s purpose or affect the separate open-source client by assumption."
     }
   },
   "harm_impact_assessment": {

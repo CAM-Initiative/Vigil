@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Human-directed Cairn agents performed a large-scale website intrusion campaign",
     "created": "2026-10-21",
-    "updated": "2026-10-25",
-    "version": "0.1.3"
+    "updated": "2026-10-27",
+    "version": "0.1.4"
   },
   "incident_identity": {
     "historical_event_name": "Cairn AIA0001 website intrusion campaign, late September–October 2026",
@@ -21,7 +21,7 @@
   "summary": "From late September into October 2026, a Chinese-language threat actor used the Cairn AI agent orchestration system to target ecommerce and other commercial websites. NorForge examined 14 exposed dashboards linked to this activity, covering more than 1,100 attack projects. Human operators assigned targets and objectives such as obtaining unauthorised access and installing web shells. Agents worked through vulnerability discovery and exploitation, sometimes for many hours. NorForge independently verified that an uploader web shell identified by one project was live on a hardware-parts vendor's server. Reuters separately reported apparent breaches affecting more than 100 sites, including some associated with large companies, whose confirmed consequences differed. NorForge reported that exposed agent consoles contained hundreds of secrets, with some verified as active. The human operators, rather than the agents, supplied the unlawful goals.",
   "vigil_assessment": {
     "factual_basis": "NorForge directly examined exposed Cairn panel records and an identified live uploader endpoint. Its AIA0001 cluster consists of 14 associated dashboards with more than 1,100 projects; project count does not equal successful compromise or unique victims. Reuters independently obtained affected-company responses with differing confirmed exposure scopes. NorForge's secrets-scan result concerned multiple exposed panels, including other activity clusters, not exclusively AIA0001. The study does not provide a verified confidential data-loss inventory for every target.",
-    "governance_interpretation": "The operator supplied the objective, while agents materially selected and executed intrusion pathways. The verified installation establishes more than speculative capability. The operator’s objective did not supply the affected website owner’s permission. This supports an authority finding without asserting that the agents invented the malicious purpose or manipulated a reward. The confirmed asset alteration supports a minimum harm band; wider loss remains unresolved.",
+    "governance_interpretation": "The operator supplied the objective, while agents materially selected and executed intrusion pathways. The verified installation establishes more than speculative capability. The operator’s objective did not supply the affected website owner’s permission. This supports an authority finding without asserting that the agents invented the malicious purpose or manipulated a reward. The confirmed asset alteration supports a minimum harm band; wider loss remains unresolved. NorForge verified that the reported web-shell uploader was live on a real vendor’s server. This establishes an unauthorised information-integrity operation on that host. It does not establish every dashboard objective or data theft at all apparent victims. The broader panel-secret sample is not attributed wholesale to this actor.",
     "significance_to_cam": "This case distinguishes human misuse, long-duration autonomous execution, independently verified intrusion and downstream confidentiality effects. It avoids conflating a campaign with a particular victim's complete damage.",
     "assessment_boundaries": [
       "Human-directed crime is not evidence of the AI independently generating the illicit goal.",
@@ -74,6 +74,12 @@
               "relationship": "failure-occurrence",
               "canonical_taxonomy_mapping": true,
               "rationale": "The agents pursued the operator’s intrusion objective through unauthorised installation on a real third-party site. Obtaining the requested access governed pathway selection without independent permission from the affected principal. Human selection of the goal does not authorise the means."
+            },
+            {
+              "class_id": "VIGIL-FC-000089",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "NorForge independently verified a web-shell uploader on a real vendor server. That is an unauthorised file modification on the target, distinct from an unverified dashboard claim or a public read."
             }
           ]
         },
@@ -213,6 +219,24 @@
         2
       ],
       "identification_basis": "Independent review of the registered proposition against the evidenced actor, system, activity and lifecycle. Voluntary alignment is separate from adoption, certification and legal applicability."
+    },
+    {
+      "requirement_id": "EXTREQ-FA4D888041BED657",
+      "alignment_result": "not-aligned",
+      "assessment_basis": "The access-enforcement proposition requires approved logical-access authorisations to be enforced for information and system resources. The observed information operation was outside the approved boundary. NorForge independently verified a web-shell uploader on a real vendor server. That is an unauthorised file modification on the target, distinct from an unverified dashboard claim or a public read. This is a bounded retrospective comparison with the selected control proposition, not a claim of certification or an independently binding historical duty.",
+      "assessed_on": "2026-10-27",
+      "source_record_refs": [
+        "source_records[0]"
+      ],
+      "derived_from_class_ids": [
+        "VIGIL-FC-000089"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "source_episode_refs": [
+        "E003"
+      ]
     }
   ],
   "system_context": {
@@ -294,12 +318,12 @@
     }
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.8.1",
+    "taxonomy_version": "0.9.0",
     "classification_status": "provisionally-classified",
     "adjudication_coverage": {
       "status": "complete"
     },
-    "classification_basis": "The agents pursued the operator’s intrusion objective through unauthorised installation on a real third-party site. Obtaining the requested access governed pathway selection without independent permission from the affected principal. Human selection of the goal does not authorise the means.",
+    "classification_basis": "The agents pursued the operator’s intrusion objective through unauthorised installation on a real third-party site. Obtaining the requested access governed pathway selection without independent permission from the affected principal. Human selection of the goal does not authorise the means. NorForge verified that the reported web-shell uploader was live on a real vendor’s server. This establishes an unauthorised information-integrity operation on that host. It does not establish every dashboard objective or data theft at all apparent victims. The broader panel-secret sample is not attributed wholesale to this actor.",
     "primary_classification": {
       "family_id": "VIGIL-FF-0001",
       "class_id": "VIGIL-FC-000064",
@@ -307,12 +331,19 @@
       "classification_basis": "The agents pursued the operator’s intrusion objective through unauthorised installation on a real third-party site. Obtaining the requested access governed pathway selection without independent permission from the affected principal. Human selection of the goal does not authorise the means.",
       "classification_confidence": "medium"
     },
-    "secondary_classifications": [],
+    "secondary_classifications": [
+      {
+        "family_id": "VIGIL-FF-0018",
+        "class_id": "VIGIL-FC-000089",
+        "classification_role": "failure-occurrence",
+        "classification_basis": "NorForge verified that the reported web-shell uploader was live on a real vendor’s server. This establishes an unauthorised information-integrity operation on that host. It does not establish every dashboard objective or data theft at all apparent victims. The broader panel-secret sample is not attributed wholesale to this actor.",
+        "classification_confidence": "medium"
+      }
+    ],
     "classification_review_provenance": {
-      "review_date": "2026-10-25",
-      "reviewer": "OpenAI GPT-6 — AI analytical reviewer",
-      "review_status": "Published v0.8.1 bounded recognition and scoped-exclusion review against completed v0.8.0 intake packet; evidence unchanged.",
-      "review_reference": "vigil/docs/reviews/2026-10-25-siai-paper-v081-100-plus/INC-000208-081-REVIEW.json"
+      "review_date": "2026-10-27",
+      "reviewer": "OpenAI Codex — AI analytical reviewer",
+      "review_status": "Published v0.9.0 protected-information and authentication-custody delta adjudicated. Existing class findings retained without re-adjudication; episode limits remain explicit."
     }
   },
   "related_incidents": [],
@@ -404,27 +435,51 @@
           "Original external evidence not newly fetched; no independent human certification or private system telemetry."
         ],
         "review_outcome": "Retained 1 supported mapped role(s) and existing clause/evidence limitations under published 0.8.1; no harm or requirement readjudication."
+      },
+      {
+        "review_id": "VIGIL-REVIEW-2026-10-27-090-DELTA-000208",
+        "reviewer_type": "AI analytical reviewer",
+        "reviewer_platform": "OpenAI Codex",
+        "reviewer_model": "GPT-6",
+        "review_date": "2026-10-27",
+        "review_scope": "Targeted published v0.9.0 adjudication of Protected Information Access Integrity and Authentication Material Custody Integrity. Prior taxonomy, harm and external findings preserved; direct NIST propositions independently assessed where supported.",
+        "capability_profile": {
+          "direct_repository_analysis": true,
+          "direct_text_analysis": true,
+          "taxonomy_review": true,
+          "external_requirement_review": true,
+          "harm_impact_review": false,
+          "web_research": true
+        },
+        "known_limitations": [
+          "AI-authored analysis, not human verification. No live vulnerable system or private secret was accessed.",
+          "The taxonomy review is limited to the two new classes; existing classes were preserved, not freshly re-adjudicated.",
+          "Attributed occurrence reports retain their source-specific limits. No assurance about unobserved targets, copies or credential use is inferred."
+        ],
+        "review_outcome": "NorForge verified that the reported web-shell uploader was live on a real vendor’s server. This establishes an unauthorised information-integrity operation on that host. It does not establish every dashboard objective or data theft at all apparent victims. The broader panel-secret sample is not attributed wholesale to this actor."
       }
     ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-25-081-DELTA-000208",
+      "review_id": "VIGIL-REVIEW-2026-10-27-090-DELTA-000208",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT / GitHub connector",
+      "reviewer_platform": "OpenAI Codex",
       "reviewer_model": "GPT-6",
-      "review_date": "2026-10-25",
-      "review_scope": "Edition delta from completed 2026-10-23 v0.8.0 full-rebuild intake review; class-specific literal recognition and exclusions rechecked.",
+      "review_date": "2026-10-27",
+      "review_scope": "Targeted published v0.9.0 adjudication of Protected Information Access Integrity and Authentication Material Custody Integrity. Prior taxonomy, harm and external findings preserved; direct NIST propositions independently assessed where supported.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
         "taxonomy_review": true,
-        "web_research": false,
+        "external_requirement_review": true,
         "harm_impact_review": false,
-        "external_requirement_review": false
+        "web_research": true
       },
       "known_limitations": [
-        "Original external evidence not newly fetched; no independent human certification or private system telemetry."
+        "AI-authored analysis, not human verification. No live vulnerable system or private secret was accessed.",
+        "The taxonomy review is limited to the two new classes; existing classes were preserved, not freshly re-adjudicated.",
+        "Attributed occurrence reports retain their source-specific limits. No assurance about unobserved targets, copies or credential use is inferred."
       ],
-      "review_outcome": "Retained 1 supported mapped role(s) and existing clause/evidence limitations under published 0.8.1; no harm or requirement readjudication."
+      "review_outcome": "NorForge verified that the reported web-shell uploader was live on a real vendor’s server. This establishes an unauthorised information-integrity operation on that host. It does not establish every dashboard objective or data theft at all apparent victims. The broader panel-secret sample is not attributed wholesale to this actor."
     }
   },
   "harm_impact_assessment": {
