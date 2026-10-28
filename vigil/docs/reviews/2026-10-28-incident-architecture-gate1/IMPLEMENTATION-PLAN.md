@@ -4,7 +4,7 @@
 
 **Branch:** `work/incident-architecture-gate1-20261028`; parent commit from `agent/incident-ecosystem-ingestion`: `0f008d983da72db962705fb9c732496e703cdb5e`.  
 **Authority:** `vigil/MAINTAINERS.md` Gate 1 semantic control, Gate 2 corpus repair; source-first Incident workflow and temporary review notice-board policy.  
-**Frozen evidence:** [SIZE-PILOT.json](SIZE-PILOT.json), [GATE1-DECISION.md](GATE1-DECISION.md), [full-corpus audit](../2026-10-28-full-corpus-taxonomy-gap-audit/README.md).
+**Frozen evidence:** [SIZE-PILOT.json](SIZE-PILOT.json), [GATE1-DECISION.md](GATE1-DECISION.md), [full-corpus audit](https://github.com/CAM-Initiative/Vigil/blob/work/full-corpus-taxonomy-gap-audit-20261028/vigil/docs/reviews/2026-10-28-full-corpus-taxonomy-gap-audit/README.md).
 
 ## Phase 0 — completed read-only discovery and checkpoint
 
