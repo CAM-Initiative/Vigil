@@ -112,12 +112,6 @@ jobs:
       - name: Test isolated Incident publication versioning and Git history
         run: python vigil/tests/test_incident_publication_versions.py
 
-      # TEMPORARY issue #168 proof. Remove this one-off script dependency after
-      # recording the five-case results; docs/reviews is not a runtime archive.
-      - name: Read-only five-Incident provenance Gate 1 pilot
-        if: github.event_name == 'pull_request' && github.base_ref == 'agent/incident-ecosystem-ingestion'
-        run: python vigil/docs/reviews/2026-10-28-incident-provenance-separation/simulate_read_only.py
-
       - name: Test full VIGIL corpus and maintenance contracts
         run: python -m unittest discover -s vigil/tests -p 'test_*.py'
 
