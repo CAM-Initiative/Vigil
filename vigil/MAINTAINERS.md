@@ -1,5 +1,11 @@
 # VIGIL Maintainer Guide
 
+## Pull-request creation requires explicit maintainer approval
+
+**Do not create or open any new GitHub pull request without the human maintainer's explicit prior approval for that PR.** Approval to continue a task, create a working branch, implement changes, commit in small batches, run CI, fix defects, or prepare a handoff **does not** imply permission to open a PR. Nor does approval to merge or review an existing PR authorise creating another PR.
+
+Prefer continuing work on the existing approved branch or PR. If a PR appears useful, state its proposed purpose and target branch and **ask the maintainer before creating it**. Never split one workstream into additional PRs merely for convenience without the maintainer's approval. This is an operational authorisation boundary and does not override more restrictive schema, migration or publication approval gates.
+
 ## Active architecture
 
 VIGIL's active public record corpus is Incident-only:
