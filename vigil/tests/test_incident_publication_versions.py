@@ -94,6 +94,13 @@ class ArithmeticContract(unittest.TestCase):
         with self.assertRaises(guard.ReleaseError):
             guard.parse_version("01.2.0")
 
+    def test_blob_hash_must_be_a_complete_git_object_id(self):
+        packet = {"records": [row("patch", "1.4.11", "a"*41)]}
+        with self.assertRaisesRegex(guard.ReleaseError, "invalid baseline blob"):
+            guard.declaration_from_body(
+                "~~~vigil-incident-release\\n"+json.dumps(packet)+"\\n~~~", True
+            )
+
     def test_duplicate_pr_declarations(self):
         packet = {"records": [row("patch", "1.4.11", "a"*40)]*2}
         with self.assertRaisesRegex(guard.ReleaseError, "duplicate"):
@@ -161,6 +168,13 @@ class SyntheticGitIntegration(unittest.TestCase):
         with self.assertRaisesRegex(guard.ReleaseError, "deletion"):
             guard.inspect(self.event(head, [row("minor", "1.4.11", self.blob)]), self.root)
 
+    def test_json_at_returns_none_only_for_an_absent_path(self):
+        self.assertIsNone(guard.json_at(self.base, "vigil/records/incidents/VIGIL-INC-000002.json", self.root))
+
+    def test_json_at_does_not_hide_git_reference_errors(self):
+        with self.assertRaisesRegex(guard.ReleaseError, "git ls-tree"):
+            guard.json_at("missing-reference", FILE, self.root)
+
     def test_nochange_docs_only(self):
         (self.root / "notes.txt").write_text("review", encoding="utf-8")
         self.run_git("add", "notes.txt")
@@ -207,6 +221,13 @@ class ManifestIntegration(SyntheticGitIntegration):
         entry = manifest.build(self.root)["records"][0]
         self.assertEqual(entry["version"], "1.5.0")
         self.assertEqual(entry["previous_version"], "1.4.11")
+
+    def test_manifest_rejects_empty_predecessor_version(self):
+        self.run_git("checkout", "main")
+        self.commit(record("", summary="invalid predecessor"))
+        self.commit(record("1.4.12", summary="Current version"))
+        with self.assertRaisesRegex(ValueError, "predecessor has invalid version"):
+            manifest.build(self.root)
 
 
 if __name__ == "__main__":
