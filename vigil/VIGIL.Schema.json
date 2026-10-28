@@ -883,13 +883,9 @@
   "interpretive_provenance_rules": {
     "required_for_all_records": true,
     "required_fields": [
-      "review_history",
-      "current_ai_review",
-      "operating_model",
-      "human_governance_editor",
-      "historical_reviewer_note"
+      "current_ai_review"
     ],
-    "review_history_rule": "Append reviews; do not overwrite or retroactively invent earlier reviewer model identities.",
+    "review_history_rule": "Legacy review_history is optional and is not required to grow. Existing nonempty arrays, when retained, must preserve their original IDs and current-review link. New canonical records should omit review_history; internal re-adjudication work belongs in temporary review packets or Git/PR history, not accumulated full in-record review objects.",
     "chronology_rule": "Every review_date must be a valid ISO YYYY-MM-DD date on or after the calendar-date component of record_identity.created (or date_recorded where created is unavailable). A review must never be backdated or attached to a record that did not yet exist.",
     "current_ai_review_required_fields": [
       "review_id",
@@ -902,7 +898,13 @@
       "known_limitations",
       "review_outcome"
     ],
-    "human_editor_rule": "The legacy human_governance_editor field preserves historical authority context and may be null where no human governance editor is established. It is not an authorship-provenance override and must not imply human authorship, substantive review, source verification, or line-by-line inspection. New records use contract-approver semantics only where contemporaneous evidence establishes that role."
+    "human_editor_rule": "The legacy human_governance_editor field preserves historical authority context and may be null where no human governance editor is established. It is not an authorship-provenance override and must not imply human authorship, substantive review, source verification, or line-by-line inspection. New records use contract-approver semantics only where contemporaneous evidence establishes that role.",
+    "retention_boundary_rule": "Retain the complete current AI review, correct reviewer attribution, any established human governance/editor authority, and the complete substantive current Incident findings. Superseded routine AI review-history/process objects need not be embedded. Release tags and Git commits preserve historical snapshots; this is not a claim of permanent archival immutability.",
+    "provenance_storage_modes": {
+      "current_only": "Preferred. Retain the complete current_ai_review; omit review_history. Preserve optional current authorship and human-authority fields.",
+      "legacy": "Existing nonempty review_history with current_ai_review included remains valid during a separately reviewed removal; do not append new routine process reviews.",
+      "exclusive": "review_history_index and review_archive_batches are not supported; no new archival ledger required."
+    }
   },
   "incident_context_rules": {
     "description": "Gate 1 additive Incident Context contract. Existing system_context remains canonical for technology and operational environment. The optional affected_party_context and jurisdictional_context.normalized_geography add evidence-linked, occurrence-scoped relationships. No geographic association implies confirmed physical event location, harmed party, deployed status, or applicable law. Legacy Incident records remain valid without backfill.",

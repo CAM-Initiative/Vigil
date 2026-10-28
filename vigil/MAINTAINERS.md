@@ -1,5 +1,11 @@
 # VIGIL Maintainer Guide
 
+## Pull-request creation requires explicit maintainer approval
+
+**Do not create or open any new GitHub pull request without the human maintainer's explicit prior approval for that PR.** Approval to continue a task, create a working branch, implement changes, commit in small batches, run CI, fix defects, or prepare a handoff **does not** imply permission to open a PR. Nor does approval to merge or review an existing PR authorise creating another PR.
+
+Prefer continuing work on the existing approved branch or PR. If a PR appears useful, state its proposed purpose and target branch and **ask the maintainer before creating it**. Never split one workstream into additional PRs merely for convenience without the maintainer's approval. This is an operational authorisation boundary and does not override more restrictive schema, migration or publication approval gates.
+
 ## Active architecture
 
 VIGIL's active public record corpus is Incident-only:
@@ -73,7 +79,7 @@ The taxonomy migration assurance ledger at `vigil/taxonomy/migration/Caelestis.L
 
 `related_incidents` is the sole active VIGIL-record relationship field. Current external research citations may be retained in `research_references`, and current standards or regulatory context in `standards_and_regulatory_references`; sources relied on as Incident evidence still belong in `source_records`.
 
-`external_requirement_assessments` is an optional, separate occurrence-level assessment surface. Candidates may be resolved from a material source clause through reviewed FC/EXTREQ relationships or independently identified from occurrence evidence. The field contains only materially relevant occurrence assessments with independent `alignment_result` (`aligned`, `not-aligned`, `boundary`) and `assessment_basis`. Normative force remains canonical requirement metadata; voluntary adoption is not an assessment gate. Candidate exclusions remain audit-only. The field does not duplicate central requirement metadata, taxonomy roles, or external assessments, and does not assert organisation-wide compliance. Follow `vigil/docs/maintenance/EXTERNAL-REQUIREMENT-ADJUDICATION.md`; do not backfill the corpus mechanically. Candidate generation preserves the meaning of `standards_and_regulatory_references` and does not use it to create candidates.
+`external_requirement_assessments` is an optional, separate occurrence-level assessment surface. **Every admitted assessment MUST trace to an evidence-supported canonical Fidelity Class mapping at the corresponding Incident source clause/episode and to a reviewed FC/EXTREQ relationship.** Independent discovery from occurrence evidence may identify a *candidate* external requirement, but may not admit a published Aligned/Not aligned/Boundary finding without that crosswalk. Use canonical `derived_from_class_ids` with matching source episodes or legacy clause indices; preserve source-record evidence and requirement applicability reasoning. Assess the external requirement's own `alignment_result` independently: neither FC mapping nor FC role predetermines the external conclusion. Where a material property has no current FC, record `taxonomy-gap`, hold the prospective external finding with provenance, and resolve class coverage rather than inventing a class, borrowing an unrelated positive repair, or silently publishing a detached assessment. Normative force remains canonical requirement metadata; voluntary adoption is not an assessment gate. Candidate exclusions remain audit-only. This does not assert organisation-wide compliance. Follow `vigil/docs/maintenance/EXTERNAL-REQUIREMENT-ADJUDICATION.md`; do not backfill the corpus mechanically. **The crosswalk rule was approved as methodology on 27 October 2026; schema/validator/builder/publication enforcement still requires separate Gate 1 approval and measured corpus repairs require Gate 2.**
 
 ## Harm Impact methodology maintenance boundary
 
@@ -560,7 +566,7 @@ The canonical Incident is the authority for occurrence-level class mappings and 
 Every material `vigil_assessment.source_clause_analysis.clauses[]` entry in an opted-in Incident has one `adjudication_status`:
 
 - `mapped` — at least one canonical mapping is supported by the bounded evidence;
-- `resolved-no-mapping` — no current class is supported for that material clause;
+- `resolved-no-mapping` — completed review supports no current class for that material clause and leaves no material unresolved taxonomy-coverage question; give an occurrence-specific reason;
 - `unresolved` — a required recognition fact for a specific existing-class candidate remains unavailable or indeterminate;
 - `taxonomy-gap` — a material governance property is established but no selectable class adequately covers it.
 
@@ -575,6 +581,8 @@ The three roles are mutually distinct, and neither absence of failure nor absenc
 Incident-level exemplar eligibility is distinct from mapping-local outcomes. It requires complete clause-level coverage, at least one `successful-invariant`, and no `failure-occurrence` or `ambiguous-boundary` mapping.
 
 For each adjudication, record specific supporting evidence and any missing recognition fact in the Incident and its review manifest. Exhaustive class consideration, negative candidate dispositions, historical changes and detailed process rationale belong in the dated review/audit artefact. Do not create a separate global pairwise adjudication dataset merely to demonstrate review breadth.
+
+Apply the [no-mapping decision gate](docs/maintenance/INCIDENT-ADJUDICATION-WORKFLOW.md#no-mapping-decision-gate--maintainer-clarification-27-october-2026) before closing a material clause. Rejection of one candidate, unknown implementation or unproven later misuse cannot alone close an independently evidenced property. Reconcile HIM/external findings as review signals, chronology, and canonical Incident/episode mappings in both directions. Preserve distinct episode roles; local remedial success is not an overall success verdict. This is non-normative review guidance, not a new blocking control or authority for historical backfill.
 
 ### Post-adjudication checks
 

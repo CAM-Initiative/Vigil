@@ -45,14 +45,60 @@ class IncidentTaxonomyClassificationTests(unittest.TestCase):
                 self.assertIsNone(block["primary_classification"], record["id"])
                 self.assertEqual(block["secondary_classifications"], [], record["id"])
 
-    def test_successful_invariant_is_classified_but_not_failure_evidence(self):
-        record = next(item for item in self.incidents if item["id"] == "VIGIL-INC-000126")
-        block = record["taxonomy_classification"]
+    def test_mixed_mapping_roles_can_remain_classified(self):
+        record_id = "VIGIL-INC-TEST-MIXED-ROLES"
+        families = {"VIGIL-FF-TEST": {"family_id": "VIGIL-FF-TEST"}}
+
+        def mapping(class_id, role):
+            return {
+                "family_id": "VIGIL-FF-TEST",
+                "class_id": class_id,
+                "classification_role": role,
+                "classification_basis": "Fixture-specific occurrence basis.",
+                "classification_confidence": "high",
+            }
+
+        success = mapping("VIGIL-FC-TEST-SUCCESS", "successful-invariant")
+        failure = mapping("VIGIL-FC-TEST-FAILURE", "failure-occurrence")
+        block = {
+            "taxonomy_version": "test",
+            "classification_status": "classified",
+            "classification_basis": "Mixed mapping roles remain independently represented.",
+            "adjudication_coverage": {"status": "complete"},
+            "primary_classification": success,
+            "secondary_classifications": [failure],
+            "classification_review_provenance": {
+                "review_date": "2026-09-27",
+                "reviewer": "test reviewer",
+                "review_status": "classification review completed",
+            },
+        }
+        record = {"id": record_id, "taxonomy_classification": block}
+        classes = {
+            class_id: {
+                "family_id": "VIGIL-FF-TEST",
+                "invariant_exemplars": [{
+                    "linked_incident_id": record_id,
+                    "exemplar_type": "successful-invariant",
+                    "exemplar_status": "admitted",
+                }],
+            }
+            for class_id in ("VIGIL-FC-TEST-SUCCESS", "VIGIL-FC-TEST-FAILURE")
+        }
+        errors = []
+        with patch.object(VALIDATOR, "taxonomy_catalogue", return_value=(families, classes)):
+            with patch.object(VALIDATOR, "retired_taxonomy_class_successors", return_value={}):
+                VALIDATOR.validate_incident_taxonomy(Path("mixed.json"), record, errors)
+
+        self.assertEqual(errors, [])
         self.assertEqual(block["classification_status"], "classified")
-        self.assertEqual(block["classification_role"], "successful-invariant")
-        self.assertEqual(block["primary_classification"]["class_id"], "VIGIL-FC-000073")
         self.assertEqual(block["primary_classification"]["classification_role"], "successful-invariant")
-        self.assertEqual(block["secondary_classifications"], [])
+        self.assertEqual(
+            [item["classification_role"] for item in block["secondary_classifications"]],
+            ["failure-occurrence"],
+        )
+        self.assertNotIn("classification_role", block)
+        self.assertEqual(block["adjudication_coverage"], {"status": "complete"})
     def test_generated_examples_preserve_primary_secondary_roles(self):
         subprocess.run(["python", str(VIGIL / "scripts" / "build-vigil-public-records.py")], cwd=ROOT, check=True)
         projection = json.loads(

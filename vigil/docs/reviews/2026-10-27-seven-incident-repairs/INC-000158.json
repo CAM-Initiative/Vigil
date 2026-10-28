@@ -1,0 +1,318 @@
+{
+  "incident_id": "VIGIL-INC-000158",
+  "date": "2026-10-27",
+  "baseline_commit": "d8c497501fe6eda8d3d101eb1b8d90d8990e1383",
+  "baseline_record_version": "0.3.8",
+  "taxonomy_version": "0.8.1",
+  "baseline_taxonomy": {
+    "taxonomy_version": "0.8.1",
+    "classification_status": "provisionally-classified",
+    "classification_basis": "Wiz reports that the write restriction blocked its attempt to revert the test post. This demonstrates the protective effect on the tested write pathway after the renewed disclosure. It does not establish protection of every table, recovery of earlier copies or reversal of the initial exposure. Wiz reports renewed notification of the remaining write access, followed by the maintainer’s restriction and a blocked reversal attempt. This traces the signal to a capable owner and a bounded corrective effect. The earlier read repair and later discoveries remain separate stages.",
+    "primary_classification": {
+      "family_id": "VIGIL-FF-0008",
+      "class_id": "VIGIL-FC-000083",
+      "classification_role": "successful-invariant",
+      "classification_basis": "Wiz reports that the write restriction blocked its attempt to revert the test post. This demonstrates the protective effect on the tested write pathway after the renewed disclosure. It does not establish protection of every table, recovery of earlier copies or reversal of the initial exposure.",
+      "classification_confidence": "medium"
+    },
+    "secondary_classifications": [
+      {
+        "family_id": "VIGIL-FF-0007",
+        "class_id": "VIGIL-FC-000042",
+        "classification_role": "successful-invariant",
+        "classification_basis": "Wiz reports renewed notification of the remaining write access, followed by the maintainer’s restriction and a blocked reversal attempt. This traces the signal to a capable owner and a bounded corrective effect. The earlier read repair and later discoveries remain separate stages.",
+        "classification_confidence": "medium"
+      }
+    ],
+    "classification_review_provenance": {
+      "review_date": "2026-10-25",
+      "reviewer": "OpenAI GPT-6 — AI analytical reviewer",
+      "review_status": "Prior source-linked v0.8.0 new class finding adopted after exact current v0.8.1 necessary recognition and polarity-scoped exclusions comparison; source limits retained.",
+      "review_reference": "vigil/docs/reviews/2026-10-25-siai-paper-v081-100-plus/INC-000158-081-REVIEW.json"
+    },
+    "adjudication_coverage": {
+      "status": "complete"
+    }
+  },
+  "baseline_clauses": [
+    {
+      "source_paraphrase": "Wiz found a public Supabase connection in client code and missing row-level security, enabling database reads and writes. Business Insider reported access in under three minutes.",
+      "recovered_invariant_interpretation": "A client-visible connection key is not itself the security defect; backend policy determines its permitted effects.",
+      "taxonomy_relationships": [
+        {
+          "class_id": "VIGIL-FC-000002",
+          "relationship": "candidate boundary",
+          "canonical_taxonomy_mapping": false,
+          "rationale": "The public connection and tokens established capability. The account does not show an AI or governance process using that reachability as its permission basis. A vulnerability alone is excluded from this authority-inference class."
+        }
+      ],
+      "adjudication_status": "resolved-no-mapping",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[2]"
+      ],
+      "episode_id": "E001"
+    },
+    {
+      "source_paraphrase": "The accessible database contained about 35,000 email addresses and 4,060 private conversations, some with third-party credentials.",
+      "recovered_invariant_interpretation": "Actual confidential-information exposure differs from subsequent use of that information.",
+      "taxonomy_relationships": [],
+      "adjudication_status": "resolved-no-mapping",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[2]"
+      ],
+      "episode_id": "E002"
+    },
+    {
+      "source_paraphrase": "About 1.5 million agent authentication tokens were exposed, creating impersonation capability.",
+      "recovered_invariant_interpretation": "Credential reachability does not establish realised account takeover.",
+      "taxonomy_relationships": [],
+      "adjudication_status": "resolved-no-mapping",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[2]"
+      ],
+      "episode_id": "E003"
+    },
+    {
+      "source_paraphrase": "Wiz contacted the maintainer on January 31 at 21:48 UTC and reported the row-level security issue at 22:06.",
+      "recovered_invariant_interpretation": "Research access and coordinated disclosure are separate actions.",
+      "taxonomy_relationships": [],
+      "adjudication_status": "resolved-no-mapping",
+      "source_record_refs": [
+        "source_records[2]"
+      ],
+      "episode_id": "E004"
+    },
+    {
+      "source_paraphrase": "At 23:29 UTC the first group of tables was secured; at 00:13 on February 1 further private tables were secured.",
+      "recovered_invariant_interpretation": "Partial remediation must retain its limited scope.",
+      "taxonomy_relationships": [],
+      "adjudication_status": "resolved-no-mapping",
+      "source_record_refs": [
+        "source_records[2]"
+      ],
+      "episode_id": "E005"
+    },
+    {
+      "source_paraphrase": "At 00:31 Wiz discovered remaining write access and demonstrated a change to a live post after sensitive reads had been restricted.",
+      "recovered_invariant_interpretation": "A realised integrity test is distinct from hypothetical credential misuse and from read exposure.",
+      "taxonomy_relationships": [],
+      "adjudication_status": "resolved-no-mapping",
+      "source_record_refs": [
+        "source_records[2]"
+      ],
+      "episode_id": "E006"
+    },
+    {
+      "source_paraphrase": "Wiz notified the team again; at 00:44 write access was blocked. The researcher could no longer revert the post.",
+      "recovered_invariant_interpretation": "The blocked reversal is direct reported verification of this write boundary, not proof that every endpoint was secured.",
+      "taxonomy_relationships": [],
+      "adjudication_status": "resolved-no-mapping",
+      "source_record_refs": [
+        "source_records[2]"
+      ],
+      "episode_id": "E007"
+    },
+    {
+      "source_paraphrase": "At 00:50 researchers discovered further exposed tables; Wiz’s timeline records the final fix at 01:00.",
+      "recovered_invariant_interpretation": "Successive discoveries show why earlier fixes must not be represented as complete remediation.",
+      "taxonomy_relationships": [],
+      "adjudication_status": "resolved-no-mapping",
+      "source_record_refs": [
+        "source_records[2]"
+      ],
+      "episode_id": "E008"
+    },
+    {
+      "source_paraphrase": "The team deleted the test content hours later; Wiz reports deleting data accessed during research and fix verification.",
+      "recovered_invariant_interpretation": "Later cleanup and reported research-data deletion differ from restricting future access. Their exact ordering relative to every fix is not established.",
+      "taxonomy_relationships": [],
+      "adjudication_status": "resolved-no-mapping",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[2]"
+      ],
+      "episode_id": "E009"
+    }
+  ],
+  "baseline_external_assessments": [
+    {
+      "requirement_id": "EXTREQ-0314EBE2A0C9E0F7",
+      "alignment_result": "aligned",
+      "assessment_basis": "Iterative restrictions culminated in Wiz’s reported final patch. Its blocked reversal attempt supports verification of the write restriction; the team later deleted test content. These are bounded corrective actions, not proof that all earlier access or copied data was discovered.",
+      "assessed_on": "2026-10-10",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[2]"
+      ],
+      "identification_basis": "The provider corrected the reported backend vulnerability affecting the agent platform."
+    },
+    {
+      "requirement_id": "EXTREQ-0BC109220262734C",
+      "alignment_result": "not-aligned",
+      "assessment_basis": "The unsecured backend exposed email addresses and private messages to researchers without authority. This failed to protect the privacy of affected platform participants.",
+      "assessed_on": "2026-10-10",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[2]"
+      ],
+      "identification_basis": "The AI-agent platform exposed private participant information and communications."
+    },
+    {
+      "requirement_id": "EXTREQ-7A5897A2F6C82407",
+      "alignment_result": "not-aligned",
+      "assessment_basis": "Missing backend restrictions exposed private communications and agent credentials. Wiz also demonstrated unauthenticated modification of a live post after the first repair. This establishes an integrity effect as well as data exposure. Credential-based impersonation or malicious downstream prompt execution is not established.",
+      "assessed_on": "2026-10-10",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[2]"
+      ],
+      "identification_basis": "The exposed backend held authentication material and private communications for the AI-agent platform."
+    }
+  ],
+  "source_review": {
+    "method": "Direct retrieval and complete text inspection of originating Wiz disclosure on 27 October; no live endpoint queried.",
+    "url": "https://www.wiz.io/blog/exposed-moltbook-database-reveals-millions-of-api-keys"
+  },
+  "decisions": [
+    {
+      "class_id": "VIGIL-FC-000002",
+      "outcome": "not-admitted-for-exposure",
+      "condition": "The system uses that availability, reachability, access, or possession as a material basis for permission.",
+      "assessment": "Actual exposure is established; no distinct AI/governance permission inference is demonstrated. Vulnerability-only scope exclusion does not dispose of the custody/access property."
+    },
+    {
+      "class_id": "VIGIL-FC-000031",
+      "outcome": "not-admitted",
+      "condition": "An authentication-state transition occurs or is required.",
+      "assessment": "No expiry/revocation/recovery inconsistency is reported. Credential exposure without continuity failure is a failure-role exclusion."
+    },
+    {
+      "class_id": "VIGIL-FC-000038",
+      "outcome": "not-admitted-for-initial-exposure",
+      "condition": "A governance control is available and applicable.",
+      "assessment": "Missing authentication or RLS is evidenced, not a deployed applicable control with defined trigger that failed to activate."
+    },
+    {
+      "class_id": "VIGIL-FC-000083",
+      "outcome": "not-admitted-for-initial-exposure",
+      "condition": "A defined governance or protective control is applicable and validly becomes operative.",
+      "assessment": "The initially missing protection is not valid activation followed by inadequate effect."
+    },
+    {
+      "class_id": "VIGIL-FC-000055",
+      "outcome": "not-admitted",
+      "condition": "The system, provider, deployer, or governance process relies materially on the original collection, participation, public availability, account permission, or primary-use authority as the basis for the secondary use.",
+      "assessment": "Accidental exposure alone does not establish the secondary-purpose authority inference."
+    },
+    {
+      "class_id": "VIGIL-FC-000057",
+      "outcome": "not-admitted; integrity property retained as gap",
+      "condition": "The initiating principal's authority is treated as sufficient to alter the affected principal's state without independently establishing the basis required to do so.",
+      "assessment": "A live post was changed through unauthenticated database writes. The source does not establish a particular initiating-principal authority being promoted over a distinct identified affected principal; do not infer the authority mechanism solely from a missing write restriction."
+    },
+    {
+      "class_id": "VIGIL-FC-000042",
+      "outcome": "retained-successful-invariant",
+      "success_tests": [
+        {
+          "condition": "A governance signal requires a response or disposition.",
+          "status": "established",
+          "assessment": "Wiz’s report required action by the service owner."
+        },
+        {
+          "condition": "Accountable ownership, a capable destination, status and escalation remain established until the required effect or authorised disposition occurs.",
+          "status": "established",
+          "assessment": "The report reached the named operator; direct researcher contact and follow-up trace ownership and status through the repair disposition."
+        },
+        {
+          "condition": "Delivery, ownership and response evidence traces the signal through to its bounded disposition.",
+          "status": "established",
+          "assessment": "The originating researcher account connects notification with the operator’s corrective response, rather than merely assuming delivery from eventual recovery."
+        }
+      ],
+      "exclusion_tests": [
+        {
+          "condition": "Not aligned exclusion: The signal reaches a capable destination and is deliberately rejected through an authorised decision.",
+          "status": "contradicted",
+          "assessment": "Report was acted on, not rejected."
+        },
+        {
+          "condition": "Class scope exclusion (all results): No governance signal was produced because the control failed to activate.",
+          "status": "contradicted",
+          "assessment": "Wiz produced an actual disclosure signal."
+        },
+        {
+          "condition": "Not aligned exclusion: The signal has operational effect but its delivery is not recorded for audit.",
+          "status": "contradicted",
+          "assessment": "Notification and response are recorded in Wiz’s account."
+        }
+      ]
+    },
+    {
+      "class_id": "VIGIL-FC-000083",
+      "outcome": "retained-successful-invariant",
+      "success_tests": [
+        {
+          "condition": "An applicable validly activated protective control faces its governed hazard.",
+          "status": "established",
+          "assessment": "The maintainer applied write restrictions after Wiz reported the still-open write route. The attempted reversal tested that operative restriction."
+        },
+        {
+          "condition": "The control produces a timely effect sufficient for its protective purpose and evidenced context, including any justified heightened protection.",
+          "status": "established",
+          "assessment": "The restriction prevented further modification on that tested pathway after notification; unrelated later table discoveries do not negate its bounded purpose."
+        },
+        {
+          "condition": "Observed intervention and hazard outcome demonstrate the required containment or mitigation rather than activation alone.",
+          "status": "established",
+          "assessment": "Wiz expressly reports being unable to revert the post because writes were blocked; this supplies observed effect, not activation alone."
+        }
+      ],
+      "exclusion_tests": [
+        {
+          "condition": "Class scope exclusion (all results): The applicable control does not become operative when a valid activation condition occurs; assess Required Control Activation.",
+          "status": "contradicted",
+          "assessment": "The write restriction became operative and blocked reversal."
+        },
+        {
+          "condition": "Class scope exclusion (all results): The control becomes operative even though its valid activation or applicability conditions are not satisfied; assess Control Activation Validity.",
+          "status": "contradicted",
+          "assessment": "The renewed disclosure identified the unauthenticated-write hazard requiring restriction."
+        },
+        {
+          "condition": "Not aligned exclusion: The control becomes operative with a sufficient effect but its operative state is later lost, weakened, reset, or transformed before reaching the governed point; assess Control-State Preservation.",
+          "status": "contradicted",
+          "assessment": "No loss of this tested restriction is reported; later exposure concerned other tables."
+        },
+        {
+          "condition": "Class scope exclusion (all results): An operative governance signal fails to reach any capable endpoint or execution surface; assess the applicable governance-control reach class rather than treating non-delivery as inadequate control effect.",
+          "status": "contradicted",
+          "assessment": "The maintainer received the report and acted."
+        },
+        {
+          "condition": "Not aligned exclusion: The control produces the protective effect required by its defined purpose and the remaining harm arises through an independent downstream mechanism.",
+          "status": "contradicted",
+          "assessment": "No separate downstream cause is substituted for the tested write effect."
+        },
+        {
+          "condition": "Class scope exclusion (all results): The dispute is solely that policy should have required a stronger safeguard, without evidence of an applicable operational control or protective-effect obligation in the material context.",
+          "status": "contradicted",
+          "assessment": "The restriction is operationally evidenced, not an abstract stronger-policy demand."
+        },
+        {
+          "condition": "Class scope exclusion (all results): Disability, neurodivergence, diagnosis, age-associated stereotype, or another personal characteristic is used by itself to presume incapacity, vulnerability, or diminished agency.",
+          "status": "contradicted",
+          "assessment": "No personal characteristic is used as evidence."
+        }
+      ]
+    },
+    {
+      "external_assessments": "hold all existing OECD rows",
+      "reason": "Reviewed registry has no supporting FC-042 relationship for these OECD propositions. Repair has contextual-only FC-083 correspondence, not direct/strong support. Existing adverse findings concern uncovered exposure. Preserve original rows here; do not borrow the remedial success."
+    }
+  ],
+  "preservation": "Source records, occurrence summary, factual evidence, HIM and append-only review history preserved. Historical external assessments retained in this review when held. No blocking control or normative class changed."
+}

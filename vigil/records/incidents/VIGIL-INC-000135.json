@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Hacktron researchers used Claude-assisted exploit development to compromise OpenAI accounts and demonstrate internal repository access",
     "created": "2026-09-18",
-    "updated": "2026-10-25",
-    "version": "0.1.15"
+    "updated": "2026-10-27",
+    "version": "0.2.0"
   },
   "incident_identity": {
     "historical_event_name": "July 2026 Hacktron OpenAI bug-bounty compromise",
@@ -21,7 +21,7 @@
   "summary": "During security research in July 2026, Hacktron AI researchers used Anthropic Claude models to help analyze and develop an exploit chain against OpenAI-related systems. Reporting describes a vulnerability in the Discourse-hosted OpenAI community environment together with an OpenAI authorization or permission issue. The chain exposed authentication material associated with OpenAI employees and some unaffiliated users, enabled access to affected ChatGPT or Codex accounts and potentially connected services according to account configuration, and was demonstrated through access to OpenAI's private software repository and a proof-of-access pull request. The researchers reported the findings, OpenAI and Discourse remediated the issues, and OpenAI paid a bug bounty. The researchers’ original account says they reported the initial finding before demonstrating repository access and avoided reading internal code. OpenAI clarified that the bounty covered its own finding; the Discourse-hosted forum was excluded from its programme.",
   "vigil_assessment": {
     "factual_basis": "Independent reporting corroborates Hacktron's public disclosure that the researchers used Claude during researcher-led security testing, developed a working exploit against the community forum environment, obtained authentication material, demonstrated access to OpenAI account and repository surfaces, and responsibly disclosed the findings. OpenAI reportedly confirmed the issues were fixed and paid a $6,500 bounty. Public evidence does not establish malicious exploitation by the researchers or theft of model weights. The demonstrated access itself is a materialised confidentiality consequence even though the researchers avoided malicious exploitation and enabled remediation. The originating write-up distinguishes the initial disclosure from the later proof and identifies OpenAI’s exclusion of the forum from its bounty scope. It also describes disguising the researchers’ cloud test as a capture-the-flag target after a model refusal. The proof avoided reading internal code; actual access to every connected service is not established.",
-    "governance_interpretation": "AI-assisted security research demonstrated an account-security weakness affecting AI services. The affected providers repaired the reported issues. The finding concerns victim-service security, while the assisting model’s target selection and the researchers’ programme scope require separate authority assessment. The full testing scope and every connected-service exposure remain bounded by the sources. A proxy concealed the live nature of the researchers’ own cloud test after refusal. That context change does not itself prove the model exceeded an independently valid scope, and the bounty does not authorise every preceding action. The researchers’ disclosure timeline identifies reports to OpenAI and Discourse, responses from both providers and recorded fix dispositions. The OpenAI-side issue was later marked resolved. This traces the security signal to capable owners and a bounded response. It does not authorise the preceding testing or independently verify every connected service.",
+    "governance_interpretation": "AI-assisted security research demonstrated an account-security weakness affecting AI services. The affected providers repaired the reported issues. The finding concerns victim-service security, while the assisting model’s target selection and the researchers’ programme scope require separate authority assessment. The full testing scope and every connected-service exposure remain bounded by the sources. A proxy concealed the live nature of the researchers’ own cloud test after refusal. That context change does not itself prove the model exceeded an independently valid scope, and the bounty does not authorise every preceding action. The researchers’ disclosure timeline identifies reports to OpenAI and Discourse, responses from both providers and recorded fix dispositions. The OpenAI-side issue was later marked resolved. This traces the security signal to capable owners and a bounded response. It does not authorise the preceding testing or independently verify every connected service. Later disclosure and repair do not erase that loss. The available account does not resolve the changed refusal context or every downstream authority decision. Hacktron reports account takeover and creation of a proof-of-access pull request through an employee’s connected Codex. The private repository’s write boundary was crossed through that account route. The proof did not read internal code; access to every connected service is not established. Responsible disclosure and the later bounty do not erase the demonstrated access defect. Authentication-material custody is materially implicated by the reported account-compromise chain. The available originating account does not identify which protected credential, token or secret left custody. Its demonstrated SSO access is not itself proof of a secret transfer. Neither secret exposure nor verified secret confinement is established.",
     "significance_to_cam": "The occurrence demonstrates why AI cybersecurity capability governance cannot be separated from access and authority governance. A model can behave exactly as intended in an authorized red-team setting while materially lowering the effort required to develop real exploits. Governance therefore has to control capability access, target authority, credential and session propagation, connected-service authority, containment and human oversight rather than relying on the model to infer whether a technically possible exploit is institutionally authorized.",
     "assessment_boundaries": [
       "The researchers’ originating technical write-up was directly inspected. The complete provider forensic record and every authentication detail remain unavailable.",
@@ -44,35 +44,65 @@
           "source_record_refs": [
             "source_records[3]"
           ],
-          "episode_id": "E001"
+          "episode_id": "E001",
+          "adjudication_note": "Claude-assisted exploit development is occurrence context. It does not by itself establish a permission inference, a missing applicable control or an unauthorised action by the assisting model."
         },
         {
           "source_paraphrase": "After refusal for a remote instance, researchers disguised their own cloud target as a capture-the-flag task; the agent demonstrated access there.",
           "recovered_invariant_interpretation": "Task framing does not itself determine the human’s target authority.",
-          "taxonomy_relationships": [],
-          "adjudication_status": "resolved-no-mapping",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000040",
+              "relationship": "unresolved candidate",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "The model refused remote exploit assistance before the researchers concealed their own cloud instance as a capture-the-flag target. The governing refusal conditions and continuity of that decision across the changed framing are not published. Invalid activation and loss of operative control state therefore remain unresolved candidates."
+            },
+            {
+              "class_id": "VIGIL-FC-000043",
+              "relationship": "unresolved candidate",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "The model refused remote exploit assistance before the researchers concealed their own cloud instance as a capture-the-flag target. The governing refusal conditions and continuity of that decision across the changed framing are not published. Invalid activation and loss of operative control state therefore remain unresolved candidates."
+            }
+          ],
+          "adjudication_status": "unresolved",
           "source_record_refs": [
             "source_records[3]"
           ],
-          "episode_id": "E002"
+          "episode_id": "E002",
+          "adjudication_note": "The model refused remote exploit assistance before the researchers concealed their own cloud instance as a capture-the-flag target. The governing refusal conditions and continuity of that decision across the changed framing are not published. Invalid activation and loss of operative control state therefore remain unresolved candidates."
         },
         {
           "source_paraphrase": "Researchers applied the chain to OpenAI-related services, enabling account access through the reported identity weakness.",
-          "recovered_invariant_interpretation": "A security-boundary crossing does not prove a valid source permission was transferred.",
-          "taxonomy_relationships": [],
-          "adjudication_status": "resolved-no-mapping",
+          "recovered_invariant_interpretation": "Protected account access and authentication-material custody require their own assessment, independently of later misuse or repair.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000090",
+              "relationship": "ambiguous-boundary",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The preserved account describes authentication-material acquisition, while the originating write-up demonstrates an SSO account-takeover route without identifying the secret object or its transfer. Account access alone cannot establish secret exposure. The material’s identity and custody transition remain unresolved."
+            }
+          ],
+          "adjudication_status": "mapped",
           "source_record_refs": [
             "source_records[3]",
             "source_records[0]",
             "source_records[1]"
           ],
-          "episode_id": "E003"
+          "episode_id": "E003",
+          "adjudication_note": "The preserved account describes authentication-material acquisition, while the originating write-up demonstrates an SSO account-takeover route without identifying the secret object or its transfer. Account access alone cannot establish secret exposure. The material’s identity and custody transition remain unresolved."
         },
         {
           "source_paraphrase": "The initial finding was reported before the later internal-repository proof.",
           "recovered_invariant_interpretation": "Early disclosure and expanded proof have distinct chronology.",
-          "taxonomy_relationships": [],
-          "adjudication_status": "resolved-no-mapping",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000042",
+              "relationship": "successful-invariant",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The initial report entered OpenAI’s security programme before the repository proof. The later provider reply and resolved disposition trace this report to a capable response owner. This finding concerns the disclosure pathway, not authority to perform every test."
+            }
+          ],
+          "adjudication_status": "mapped",
           "source_record_refs": [
             "source_records[3]"
           ],
@@ -81,19 +111,52 @@
         {
           "source_paraphrase": "A proof-of-access PR was created without reading internal code; further testing ceased.",
           "recovered_invariant_interpretation": "Cessation and minimal proof bound the demonstrated access.",
-          "taxonomy_relationships": [],
-          "adjudication_status": "resolved-no-mapping",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000002",
+              "relationship": "unresolved candidate",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "Using an employee’s Codex to create a private-repository pull request demonstrates a protected effect. Avoiding code reading limits the consequence but does not supply authority. The source does not establish the full research permission, the account-to-Codex authority decision or whether an intermediary’s authority was presumed to transfer. Those facts are needed to resolve the distinct authority candidates; the earlier access and custody loss remains separate."
+            },
+            {
+              "class_id": "VIGIL-FC-000003",
+              "relationship": "unresolved candidate",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "Using an employee’s Codex to create a private-repository pull request demonstrates a protected effect. Avoiding code reading limits the consequence but does not supply authority. The source does not establish the full research permission, the account-to-Codex authority decision or whether an intermediary’s authority was presumed to transfer. Those facts are needed to resolve the distinct authority candidates; the earlier access and custody loss remains separate."
+            },
+            {
+              "class_id": "VIGIL-FC-000009",
+              "relationship": "unresolved candidate",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "Using an employee’s Codex to create a private-repository pull request demonstrates a protected effect. Avoiding code reading limits the consequence but does not supply authority. The source does not establish the full research permission, the account-to-Codex authority decision or whether an intermediary’s authority was presumed to transfer. Those facts are needed to resolve the distinct authority candidates; the earlier access and custody loss remains separate."
+            },
+            {
+              "class_id": "VIGIL-FC-000089",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The researchers used an employee’s connected Codex account to create a pull request in a private repository. That is a demonstrated modification of protected repository state through another principal’s account. Avoiding internal-code reading limits the disclosure consequence; it does not turn the exploited account route into ordinary employee-authorised access."
+            }
+          ],
+          "adjudication_status": "unresolved",
           "source_record_refs": [
             "source_records[3]",
             "source_records[2]"
           ],
-          "episode_id": "E005"
+          "episode_id": "E005",
+          "adjudication_note": "Using an employee’s Codex to create a private-repository pull request demonstrates a protected effect. Avoiding code reading limits the consequence but does not supply authority. The source does not establish the full research permission, the account-to-Codex authority decision or whether an intermediary’s authority was presumed to transfer. Those facts are needed to resolve the distinct authority candidates; the earlier access and custody loss remains separate."
         },
         {
           "source_paraphrase": "OpenAI confirmed a fix; Discourse responded, prepared a fix and issued an advisory.",
           "recovered_invariant_interpretation": "Repair is distinct from initial prevention and from disclosure.",
-          "taxonomy_relationships": [],
-          "adjudication_status": "resolved-no-mapping",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000042",
+              "relationship": "successful-invariant",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "OpenAI replied with fix confirmation. Discourse received its own report, replied and prepared a fix and advisory. These recorded responses connect the disclosed security problem to capable service owners and bounded corrective dispositions."
+            }
+          ],
+          "adjudication_status": "mapped",
           "source_record_refs": [
             "source_records[3]",
             "source_records[2]"
@@ -103,8 +166,15 @@
         {
           "source_paraphrase": "OpenAI awarded the OpenAI-side finding while clarifying that the forum was outside its bounty scope.",
           "recovered_invariant_interpretation": "Payment does not retroactively supply authority for excluded testing.",
-          "taxonomy_relationships": [],
-          "adjudication_status": "resolved-no-mapping",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000042",
+              "relationship": "successful-invariant",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The OpenAI-side report was marked resolved after the earlier fix confirmation. The award-scope clarification preserves which finding was closed; payment does not authorise the excluded forum testing."
+            }
+          ],
+          "adjudication_status": "mapped",
           "source_record_refs": [
             "source_records[3]"
           ],
@@ -326,9 +396,9 @@
     }
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.8.1",
+    "taxonomy_version": "0.9.0",
     "classification_status": "provisionally-classified",
-    "classification_basis": "The researchers’ disclosure timeline identifies reports to OpenAI and Discourse, responses from both providers and recorded fix dispositions. The OpenAI-side issue was later marked resolved. This traces the security signal to capable owners and a bounded response. It does not authorise the preceding testing or independently verify every connected service. The exploit and human-directed testing still do not establish the assisting model automatically transferring a valid permission to an unauthorised target.",
+    "classification_basis": "The researchers’ disclosure timeline identifies reports to OpenAI and Discourse, responses from both providers and recorded fix dispositions. The OpenAI-side issue was later marked resolved. This traces the security signal to capable owners and a bounded response. It does not authorise the preceding testing or independently verify every connected service. Hacktron reports account takeover and creation of a proof-of-access pull request through an employee’s connected Codex. The private repository’s write boundary was crossed through that account route. The proof did not read internal code; access to every connected service is not established. Responsible disclosure and the later bounty do not erase the demonstrated access defect. Authentication-material custody is materially implicated by the reported account-compromise chain. The available originating account does not identify which protected credential, token or secret left custody. Its demonstrated SSO access is not itself proof of a secret transfer. Neither secret exposure nor verified secret confinement is established.",
     "primary_classification": {
       "family_id": "VIGIL-FF-0007",
       "class_id": "VIGIL-FC-000042",
@@ -336,330 +406,92 @@
       "classification_basis": "The researchers’ disclosure timeline identifies reports to OpenAI and Discourse, responses from both providers and recorded fix dispositions. The OpenAI-side issue was later marked resolved. This traces the security signal to capable owners and a bounded response. It does not authorise the preceding testing or independently verify every connected service.",
       "classification_confidence": "medium"
     },
-    "secondary_classifications": [],
+    "secondary_classifications": [
+      {
+        "family_id": "VIGIL-FF-0018",
+        "class_id": "VIGIL-FC-000089",
+        "classification_role": "failure-occurrence",
+        "classification_basis": "Hacktron reports account takeover and creation of a proof-of-access pull request through an employee’s connected Codex. The private repository’s write boundary was crossed through that account route. The proof did not read internal code; access to every connected service is not established. Responsible disclosure and the later bounty do not erase the demonstrated access defect.",
+        "classification_confidence": "medium"
+      },
+      {
+        "family_id": "VIGIL-FF-0018",
+        "class_id": "VIGIL-FC-000090",
+        "classification_role": "ambiguous-boundary",
+        "classification_basis": "Authentication-material custody is materially implicated by the reported account-compromise chain. The available originating account does not identify which protected credential, token or secret left custody. Its demonstrated SSO access is not itself proof of a secret transfer. Neither secret exposure nor verified secret confinement is established.",
+        "boundary_adjudication": {
+          "taxonomy_version": "0.9.0",
+          "material_engagement": "Authentication-material custody is materially implicated by the reported account-compromise chain. The available originating account does not identify which protected credential, token or secret left custody. Its demonstrated SSO access is not itself proof of a secret transfer. Neither secret exposure nor verified secret confinement is established.",
+          "unresolved_conditions": [
+            {
+              "polarity": "failure-occurrence",
+              "condition": "Identifiable material serves an authentication or authorisation function, or contains the protected secret content needed to exercise that function, in an AI-mediated system or dependent infrastructure.",
+              "assessment": "The originating account must identify the authentication material and whether its secret content was exposed or acquired, rather than merely an identity-flow defect. A redacted technical explanation of the SSO chain or the scoped disclosure report could resolve this. No live credential is required.",
+              "source_record_refs": [
+                "source_records[0]",
+                "source_records[1]",
+                "source_records[3]"
+              ],
+              "episode_refs": [
+                "E003"
+              ]
+            },
+            {
+              "polarity": "successful-invariant",
+              "condition": "Observed handling or verification shows that the secret remains confined to authorised holders, recipients and pathways, with the applicable protection preserved through the tested operation.",
+              "assessment": "No observed verification establishes confinement to authorised recipients for the identified operation. The originating account must identify the authentication material and whether its secret content was exposed or acquired, rather than merely an identity-flow defect. A redacted technical explanation of the SSO chain or the scoped disclosure report could resolve this. No live credential is required.",
+              "source_record_refs": [
+                "source_records[0]",
+                "source_records[1]",
+                "source_records[3]"
+              ],
+              "episode_refs": [
+                "E003"
+              ]
+            }
+          ],
+          "diagnostic_reasons": [
+            "insufficient-evidence"
+          ],
+          "decisive_blocker": "Authentication-material custody is materially implicated by the reported account-compromise chain. The available originating account does not identify which protected credential, token or secret left custody. Its demonstrated SSO access is not itself proof of a secret transfer. Neither secret exposure nor verified secret confinement is established.",
+          "resolution_requirements": "The originating account must identify the authentication material and whether its secret content was exposed or acquired, rather than merely an identity-flow defect. A redacted technical explanation of the SSO chain or the scoped disclosure report could resolve this. No live credential is required."
+        }
+      }
+    ],
     "classification_review_provenance": {
-      "review_date": "2026-10-25",
-      "reviewer": "OpenAI GPT-6 — AI analytical reviewer",
-      "review_status": "Incorporated source-linked 2026-10-23 v0.8.0 new-admission decision after exact published v0.8.1 recognition and current role-scoped exclusion check; prior evidence limits preserved.",
-      "review_reference": "vigil/docs/reviews/2026-10-25-siai-paper-v081-100-plus/INC-000135-081-REVIEW.json"
+      "review_date": "2026-10-27",
+      "reviewer": "OpenAI Codex — AI analytical reviewer",
+      "review_status": "Published v0.9.0 protected-information and authentication-custody delta adjudicated. Existing class findings retained without re-adjudication; episode limits remain explicit."
     },
     "adjudication_coverage": {
-      "status": "complete"
+      "status": "partial"
     }
   },
   "related_incidents": [
     "VIGIL-INC-000003"
   ],
   "interpretive_provenance": {
-    "review_history": [
-      {
-        "review_id": "VIGIL-REVIEW-2026-09-18-INC-000135-INTAKE",
-        "reviewer_type": "AI analytical reviewer",
-        "reviewer_platform": "OpenAI ChatGPT",
-        "reviewer_model": "GPT-5.6 Sol",
-        "review_date": "2026-09-18",
-        "review_scope": "Occurrence identity, AI capability role, cybersecurity/governance boundary, harm and taxonomy intake review.",
-        "capability_profile": {
-          "web_research": true,
-          "repository_review": true,
-          "taxonomy_review": true
-        },
-        "known_limitations": [
-          "The detailed Hacktron technical write-up was not directly retrieved in this pass.",
-          "OpenAI's complete forensic and authorization architecture is not public.",
-          "Model-version attribution is preserved only to the level supported by reviewed reporting."
-        ],
-        "review_outcome": "Accepted as a governance-relevant AI-assisted cybersecurity occurrence and retained unclassified pending stronger primary technical evidence."
-      },
-      {
-        "review_id": "VIGIL-REVIEW-2026-09-19-HARM-TRANSMUTATION-000135",
-        "reviewer_type": "AI analytical reviewer",
-        "reviewer_platform": "OpenAI Codex",
-        "reviewer_model": "GPT-5",
-        "review_date": "2026-09-19",
-        "review_scope": "Corpus-wide materialised-consequence reassessment under VIGIL-HIM 1.0.0, including later public, legal, regulatory, affected-party and operational evidence; Failure Taxonomy mappings were not reopened.",
-        "capability_profile": {
-          "direct_repository_analysis": true,
-          "direct_text_analysis": true,
-          "web_research": true,
-          "structured_threshold_comparison": true
-        },
-        "known_limitations": [
-          "The complete affected-account count and connected-service reach are not public.",
-          "No malicious downstream exploitation or theft of model weights is inferred."
-        ],
-        "review_outcome": "Actual credential, account and private-repository access supports S3 privacy and confidentiality harm; overall severity changes from S1 to S3."
-      },
-      {
-        "review_id": "VIGIL-REVIEW-2026-09-20-HIM-1.0.1-000135",
-        "reviewer_type": "AI analytical reviewer",
-        "reviewer_platform": "OpenAI Codex",
-        "reviewer_model": "GPT-5",
-        "review_date": "2026-09-20",
-        "review_scope": "Incident-specific re-review of all eleven materialised-harm dimensions against VIGIL-HIM 1.0.1, including the full canonical record, row-local source linkage and a fresh occurrence-focused external consequence search. Failure Taxonomy adjudications were not reopened.",
-        "capability_profile": {
-          "direct_repository_analysis": true,
-          "direct_text_analysis": true,
-          "web_link_and_metadata_review": true,
-          "structured_threshold_comparison": true
-        },
-        "known_limitations": [
-          "The fresh search did not make absence of discoverable reporting evidence of no harm; dimensions without support remain unreported or insufficient-evidence as recorded.",
-          "The review did not infer materialised harm from capability, notoriety, registry inclusion or hypothetical worst-case consequences."
-        ],
-        "review_outcome": "All eleven dimensions were re-reviewed under VIGIL-HIM 1.0.1. The evidence continues to support overall severity S3; the band is confirmed and the assessment is migrated to 1.0.1."
-      },
-      {
-        "review_id": "VIGIL-REVIEW-2026-09-20-HIM-1.0.1-EVIDENCE-000135",
-        "reviewer_type": "AI analytical reviewer",
-        "reviewer_platform": "OpenAI Codex",
-        "reviewer_model": "GPT-5",
-        "review_date": "2026-09-20",
-        "review_scope": "Incident-specific review of all eleven VIGIL-HIM 1.0.1 dimensions with a fresh occurrence-focused external search and append-only evidence ingestion. Failure Taxonomy adjudications were not reopened.",
-        "capability_profile": {
-          "direct_repository_analysis": true,
-          "direct_text_analysis": true,
-          "web_link_and_metadata_review": true,
-          "structured_threshold_comparison": true
-        },
-        "known_limitations": [
-          "Context-only or non-occurrence-specific sources were not used as row-local Harm Impact proof.",
-          "Absence of discoverable reporting was not treated as evidence of no harm; unresolved dimensions remain unreported or insufficient-evidence.",
-          "Materialised harm was not inferred from capability, notoriety, registry inclusion or hypothetical worst-case consequences."
-        ],
-        "review_outcome": "Independent reporting corroborates account and repository access while bounding code handling and remediation; S3 privacy remains unchanged."
-      },
-      {
-        "review_id": "VIGIL-REVIEW-2026-09-21-AGENT-ENV-000135",
-        "reviewer_type": "AI analytical reviewer",
-        "reviewer_platform": "OpenAI Codex",
-        "reviewer_model": "GPT-5",
-        "review_date": "2026-09-21",
-        "review_scope": "Occurrence-level agent configuration and occurrence-environment metadata migration using sources already preserved in the Incident.",
-        "capability_profile": {
-          "direct_repository_analysis": true,
-          "direct_text_analysis": true,
-          "structured_cross_record_reconciliation": true,
-          "new_external_source_research": false
-        },
-        "known_limitations": [
-          "The review is bounded to evidence already preserved in each Incident and does not infer agent count, swarm topology, deployment state or testing ownership from silence.",
-          "Unknown classifications require later human or evidence-led review if more specific architecture evidence becomes available."
-        ],
-        "review_outcome": "Added canonical agent_context and occurrence_environment metadata without changing factual, taxonomy or Harm Impact adjudications."
-      },
-      {
-        "review_id": "VIGIL-REVIEW-2026-09-21-TAXONOMY-READJUDICATION-000135",
-        "reviewer_type": "AI analytical reviewer",
-        "reviewer_platform": "OpenAI ChatGPT",
-        "reviewer_model": "GPT-5.6 Sol",
-        "review_date": "2026-09-21",
-        "review_scope": "Deterministic current-taxonomy re-adjudication against VIGIL Failure Taxonomy 0.6.5 using the complete active selectable class set and evidence already preserved in the canonical Incident. Existing external-assessment objects and qualifying attributable analytical positions in preserved source material were checked for structured external-assessment treatment. No new external source research was performed. Harm Impact, source roles, occurrence facts, agent/environment metadata, external-requirement mappings and CAM applicability were not reopened.",
-        "capability_profile": {
-          "direct_repository_analysis": true,
-          "direct_text_analysis": true,
-          "structured_cross_record_reconciliation": true,
-          "full_current_taxonomy_review": true,
-          "external_assessment_consistency_review": true,
-          "new_external_source_research": false
-        },
-        "known_limitations": [
-          "The review is bounded to evidence already preserved in the canonical Incident and does not infer internal mechanisms from title, harm, provider identity, notoriety, registry inclusion or plausible but undocumented system behaviour.",
-          "Candidate rejection does not establish that the mechanism was impossible; it means the preserved occurrence evidence does not satisfy the current selectable class boundary.",
-          "External assessments are preserved as attributable analytical positions and are not treated as automatic proof of VIGIL taxonomy membership."
-        ],
-        "review_outcome": "Retained unclassified under taxonomy 0.6.5; the occurrence remains a material authorised-security and identity/access Incident without a sufficiently evidenced reusable internal mechanism."
-      },
-      {
-        "review_id": "CLAUSE-RECONCILIATION-2026-09-30-INC-000135",
-        "reviewer_type": "AI analytical reviewer",
-        "reviewer_platform": "OpenAI Codex",
-        "reviewer_model": "GPT-6 Codex",
-        "review_date": "2026-09-30",
-        "review_scope": "Incident-by-incident functional decomposition review of the preserved occurrence evidence and source_clause_analysis, testing whether materially distinct mechanisms, authority boundaries, control states, and failure or recovery pathways are represented. No harm reassessment or taxonomy re-adjudication was performed.",
-        "capability_profile": {
-          "direct_repository_analysis": true,
-          "direct_text_analysis": true,
-          "web_link_and_metadata_review": true,
-          "structured_semantic_adjudication": true,
-          "full_current_taxonomy_review": false,
-          "new_external_source_research": true
-        },
-        "known_limitations": [
-          "The clause changes remain bounded to evidence already preserved in the canonical Incident.",
-          "The Hacktron first-party report was reviewed to identify a separate authorization-scope QA question but was not added to canonical source_records or used to expand the clause evidence in this pass.",
-          "Existing canonical taxonomy history and taxonomy version were preserved; absence of a new mapping in this pass is not a full-taxonomy no-mapping determination."
-        ],
-        "review_outcome": "Separated demonstrated account/repository access from subsequent cessation, disclosure and remediation while retaining the existing no-mapping outcomes. A separate question about the scope of authorization for the forum test was routed for QA; no harm reassessment, taxonomy re-adjudication, or taxonomy-version change was performed."
-      },
-      {
-        "review_id": "VIGIL-REVIEW-2026-10-02-STAGE4-000135",
-        "reviewer_type": "AI analytical reviewer",
-        "reviewer_platform": "OpenAI Codex",
-        "reviewer_model": "GPT-6",
-        "review_date": "2026-10-02",
-        "review_scope": "Preservation-led Stage 4 clause, polarity and local external-requirement reconciliation.",
-        "capability_profile": {
-          "direct_repository_analysis": true,
-          "direct_text_analysis": true,
-          "taxonomy_review": true,
-          "external_requirement_review": true,
-          "harm_impact_review": false,
-          "new_external_source_research": false
-        },
-        "known_limitations": [
-          "Preserved attributed evidence bounds the review; hidden control/permission traces unavailable.",
-          "No new IEEE extraction; admitted metadata and reviewed paths only.",
-          "Conclusion uses existing governance_interpretation; no discussion-field contract."
-        ],
-        "review_outcome": "Retained 3 clause decisions; Independently assessed 0 admitted local candidates; archived excluded historical assessments."
-      },
-      {
-        "review_id": "VIGIL-REVIEW-2026-10-04-EXTERNAL-ALIGNMENT-000135",
-        "reviewer_type": "AI analytical reviewer",
-        "reviewer_platform": "OpenAI ChatGPT Work",
-        "reviewer_model": "GPT-6",
-        "review_date": "2026-10-04",
-        "review_scope": "Independent occurrence relevance and alignment review of external requirements; normative force remains source metadata.",
-        "capability_profile": {
-          "direct_repository_analysis": true,
-          "direct_text_analysis": true,
-          "external_requirement_review": true,
-          "taxonomy_review": false,
-          "harm_impact_review": false,
-          "web_research": false
-        },
-        "known_limitations": [
-          "Assessment uses preserved occurrence evidence and canonical requirement propositions; internal implementation evidence remains unavailable where stated.",
-          "This review is AI-authored, not human verification or certification."
-        ],
-        "review_outcome": "Reviewed 2 recovered or independently identified requirements; retained 2 relevant independent assessments. Prior values and exclusions remain in the dated audit."
-      },
-      {
-        "review_id": "VIGIL-REVIEW-2026-10-09-PHASE3-TRANCHE16D-000135",
-        "reviewer_type": "AI analytical reviewer",
-        "reviewer_platform": "OpenAI ChatGPT Work",
-        "reviewer_model": "GPT-6",
-        "review_date": "2026-10-09",
-        "review_scope": "Source-first occurrence reconstruction, current taxonomy boundary review and semantic external-requirement linkage.",
-        "capability_profile": {
-          "direct_repository_analysis": true,
-          "direct_text_analysis": true,
-          "taxonomy_review": true,
-          "external_requirement_review": true,
-          "web_research": true,
-          "harm_impact_review": false
-        },
-        "known_limitations": [
-          "AI-authored, not human certified. Private sessions, checking traces and undisclosed decision paths remain unavailable.",
-          "Existing HIM retained; no full eleven-dimension re-adjudication."
-        ],
-        "review_outcome": "Add originating technical disclosure; correct blanket research-authority claim, initial disclosure before proof and no-code-reading limit. Restore concealed test context and separate provider fixes and award scope. Retain unclassified status, HIM and independently evidenced external outcomes."
-      },
-      {
-        "review_id": "VIGIL-REVIEW-2026-10-11-COMBINED-TRANCHE-20-000135",
-        "reviewer_type": "AI analytical reviewer",
-        "reviewer_platform": "OpenAI ChatGPT",
-        "reviewer_model": "GPT-6",
-        "review_date": "2026-10-11",
-        "review_scope": "Source-first all twelve HIM dimensions, Aggregate Harm gate and FC-086/087 exclusion, success and failure review.",
-        "capability_profile": {
-          "direct_repository_analysis": true,
-          "web_research": true,
-          "harm_impact_review": true,
-          "taxonomy_review": true
-        },
-        "known_limitations": [
-          "Original public accounts do not provide every internal trace or unreported consequence."
-        ],
-        "review_outcome": "Authorized security researchers demonstrated a bounded private-account and repository-access consequence, reported and remediated; no unauthorized onward exploitation is evidenced."
-      },
-      {
-        "review_id": "VIGIL-REVIEW-2026-10-22-CONTEXT-000135",
-        "reviewer_type": "AI analytical reviewer",
-        "reviewer_platform": "OpenAI ChatGPT Work / Codex",
-        "reviewer_model": "Codex (specific runtime model identifier not exposed)",
-        "review_date": "2026-10-22",
-        "review_scope": "Gate 2 approved additive Incident Context review. Source-linked parties and geographic relationships only.",
-        "capability_profile": {
-          "direct_repository_analysis": true,
-          "direct_text_analysis": true,
-          "web_research": false,
-          "taxonomy_review": false,
-          "harm_impact_review": false,
-          "external_requirement_review": false
-        },
-        "known_limitations": [
-          "Cross-service access is not proof of a geographic border crossing; researchers avoided reading internal code.",
-          "AI-authored context review is not human source verification. Existing source-access statements remain historical."
-        ],
-        "review_outcome": "Added 5 party entities and 1 geographic relationships; geographic scope not-established. Preserved all prior narrative, evidence, taxonomy, Harm Impact and external assessments."
-      },
-      {
-        "review_id": "VIGIL-REVIEW-2026-10-24-080-B06-000135",
-        "reviewer_type": "AI analytical reviewer",
-        "reviewer_platform": "OpenAI Codex",
-        "reviewer_model": "Codex (specific runtime model identifier not exposed)",
-        "review_date": "2026-10-24",
-        "review_scope": "Source-first taxonomy v0.8.0 reconciliation; independent harm and external assessments preserved.",
-        "capability_profile": {
-          "direct_repository_analysis": true,
-          "direct_text_analysis": true,
-          "web_research": true,
-          "taxonomy_review": true,
-          "harm_impact_review": false,
-          "external_requirement_review": false
-        },
-        "known_limitations": [
-          "The originating Hacktron disclosure was directly re-read. Its OpenAI-side fix confirmation and resolved status remain attributed. No private proof PR, employee account or internal repository was accessed; no inference of access to every connected service or model weights is made.",
-          "AI-authored review, not independent human verification."
-        ],
-        "review_outcome": "Added provisional medium-confidence bounded positive finding; original adverse occurrence and independent assessments preserved."
-      },
-      {
-        "review_id": "VIGIL-REVIEW-2026-10-25-081-DELTA-000135",
-        "reviewer_type": "AI analytical reviewer",
-        "reviewer_platform": "OpenAI ChatGPT / GitHub connector",
-        "reviewer_model": "GPT-6",
-        "review_date": "2026-10-25",
-        "review_scope": "Apply separately evidence-admitted prior v0.8.0 role changes with exact v0.8.1 class recognition and exclusions; no fresh public investigation.",
-        "capability_profile": {
-          "direct_repository_analysis": true,
-          "direct_text_analysis": true,
-          "taxonomy_review": true,
-          "web_research": false,
-          "harm_impact_review": false,
-          "external_requirement_review": false
-        },
-        "known_limitations": [
-          "Past candidate mappings not established in original source screen remain unresolved and cannot be silently admitted.",
-          "The prior v0.8.0 packet is a source-linked bounded finding, not independent human source certification.",
-          "The originating Hacktron disclosure was directly re-read. Its OpenAI-side fix confirmation and resolved status remain attributed. No private proof PR, employee account or internal repository was accessed; no inference of access to every connected service or model weights is made."
-        ],
-        "review_outcome": "Incorporated 1 prior source-admitted mapping(s), retained 1 current class role(s) with mapped source clauses; harm and external requirements unchanged."
-      }
-    ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-25-081-DELTA-000135",
+      "review_id": "VIGIL-REVIEW-2026-10-27-090-DELTA-000135",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT / GitHub connector",
+      "reviewer_platform": "OpenAI Codex",
       "reviewer_model": "GPT-6",
-      "review_date": "2026-10-25",
-      "review_scope": "Apply separately evidence-admitted prior v0.8.0 role changes with exact v0.8.1 class recognition and exclusions; no fresh public investigation.",
+      "review_date": "2026-10-27",
+      "review_scope": "Targeted published v0.9.0 adjudication of Protected Information Access Integrity and Authentication Material Custody Integrity. Prior taxonomy, harm and external findings preserved; direct NIST propositions independently assessed where supported.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
         "taxonomy_review": true,
-        "web_research": false,
+        "external_requirement_review": true,
         "harm_impact_review": false,
-        "external_requirement_review": false
+        "web_research": true
       },
       "known_limitations": [
-        "Past candidate mappings not established in original source screen remain unresolved and cannot be silently admitted.",
-        "The prior v0.8.0 packet is a source-linked bounded finding, not independent human source certification.",
-        "The originating Hacktron disclosure was directly re-read. Its OpenAI-side fix confirmation and resolved status remain attributed. No private proof PR, employee account or internal repository was accessed; no inference of access to every connected service or model weights is made."
+        "AI-authored analysis, not human verification. No live vulnerable system or private secret was accessed.",
+        "The taxonomy review is limited to the two new classes; existing classes were preserved, not freshly re-adjudicated.",
+        "Attributed occurrence reports retain their source-specific limits. No assurance about unobserved targets, copies or credential use is inferred."
       ],
-      "review_outcome": "Incorporated 1 prior source-admitted mapping(s), retained 1 current class role(s) with mapped source clauses; harm and external requirements unchanged."
+      "review_outcome": "Hacktron reports account takeover and creation of a proof-of-access pull request through an employee’s connected Codex. The private repository’s write boundary was crossed through that account route. The proof did not read internal code; access to every connected service is not established. Responsible disclosure and the later bounty do not erase the demonstrated access defect. Authentication-material custody is materially implicated by the reported account-compromise chain. The available originating account does not identify which protected credential, token or secret left custody. Its demonstrated SSO access is not itself proof of a secret transfer. Neither secret exposure nor verified secret confinement is established."
     }
   },
   "harm_impact_assessment": {
@@ -774,28 +606,43 @@
   "external_assessments": [],
   "external_requirement_assessments": [
     {
-      "requirement_id": "EXTREQ-0314EBE2A0C9E0F7",
-      "alignment_result": "aligned",
-      "assessment_basis": "OpenAI and Discourse remediated the reported issues after disclosure. This is a concrete repair of the access pathway affecting AI service accounts; it does not establish that every possible connected-service exposure was examined.",
-      "assessed_on": "2026-10-04",
+      "requirement_id": "EXTREQ-FA4D888041BED657",
+      "alignment_result": "not-aligned",
+      "assessment_basis": "The access-enforcement proposition requires approved logical-access authorisations to be enforced for information and system resources. The observed information operation was outside the approved boundary. The researchers used an employee’s connected Codex account to create a pull request in a private repository. That is a demonstrated modification of protected repository state through another principal’s account. Avoiding internal-code reading limits the disclosure consequence; it does not turn the exploited account route into ordinary employee-authorised access. This is a bounded retrospective comparison with the selected control proposition, not a claim of certification or an independently binding historical duty.",
+      "assessed_on": "2026-10-27",
       "source_record_refs": [
-        "source_records[0]",
-        "source_records[1]",
-        "source_records[2]"
+        "source_records[2]",
+        "source_records[3]"
       ],
-      "identification_basis": "The affected providers repaired the demonstrated vulnerability chain involving AI service access."
+      "derived_from_class_ids": [
+        "VIGIL-FC-000089"
+      ],
+      "source_clause_indices": [
+        4
+      ],
+      "source_episode_refs": [
+        "E005"
+      ]
     },
     {
-      "requirement_id": "EXTREQ-7A5897A2F6C82407",
-      "alignment_result": "not-aligned",
-      "assessment_basis": "Authorised researchers demonstrated that the exploit chain exposed authentication material and enabled access to affected ChatGPT or Codex accounts. The affected AI services did not preserve their account security boundary. This is distinct from misconduct by the assisting Claude models.",
-      "assessed_on": "2026-10-04",
+      "requirement_id": "EXTREQ-F42FEC4FD1482D57",
+      "alignment_result": "boundary",
+      "assessment_basis": "The authenticator-protection proposition requires secret authenticator content to be protected against unauthorised disclosure and modification. The exact unresolved access-authorisation or secret-content fact is: The originating account must identify the authentication material and whether its secret content was exposed or acquired, rather than merely an identity-flow defect. A redacted technical explanation of the SSO chain or the scoped disclosure report could resolve this. No live credential is required. This is a bounded retrospective comparison with the selected control proposition, not a claim of certification or an independently binding historical duty.",
+      "assessed_on": "2026-10-27",
       "source_record_refs": [
         "source_records[0]",
         "source_records[1]",
-        "source_records[2]"
+        "source_records[3]"
       ],
-      "identification_basis": "The demonstrated exploit affected access control for AI service accounts and connected capabilities."
+      "derived_from_class_ids": [
+        "VIGIL-FC-000090"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "source_episode_refs": [
+        "E003"
+      ]
     }
   ],
   "affected_party_context": {

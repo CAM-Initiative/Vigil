@@ -1,0 +1,524 @@
+{
+  "id": "VIGIL-INC-000214",
+  "record_type": "incident",
+  "record_state": "active",
+  "date_recorded": "2026-10-26",
+  "record_identity": {
+    "record_id": "VIGIL-INC-000214",
+    "record_type": "incident",
+    "title": "ARTEX agents exploited stolen ConnectWise application access across Microsoft 365 tenants",
+    "created": "2026-10-26",
+    "updated": "2026-10-27",
+    "version": "0.1.1"
+  },
+  "incident_identity": {
+    "historical_event_name": "Storm-0940 ARTEX-assisted ConnectWise Cloud Backup OAuth compromise, October 2026",
+    "occurred_from": "2026-10-10",
+    "occurred_to": "2026-10-25",
+    "date_precision": "date-range",
+    "date_basis": "Microsoft reports 10–14 October password spraying, followed by compromised-app authentication around 15–16 October. ConnectWise's latest observed restoration update is 25 October, an observation cutoff rather than final resolution."
+  },
+  "summary": "In October 2026, Microsoft reported that attackers it identifies as Storm-0940 used ARTEX, a multi-agent AI penetration-testing framework, against organisations. From 10 to 14 October, a password-spray campaign produced more than 151,000 failed sign-ins across 327 accounts at eight organisations, with no successful authentication in that observed sample. After ConnectWise Cloud Backup application identities were compromised, ARTEX-assisted attackers attempted access to more than 2,250 Microsoft 365 tenants. Microsoft found successful sign-ins and some follow-on account, application credential and permission changes in affected environments. ConnectWise disclosed unauthorised access to application identities on 16–17 October, then revoked affected access and suspended Cloud Backup jobs, archive access and restores, with related security and management services also interrupted. Its recovery and testing continued through at least 25 October. Microsoft did not establish that every targeted tenant was breached or that each authentication resulted in data theft.",
+  "vigil_assessment": {
+    "factual_basis": "Microsoft's 21 October threat-intelligence account attributes operational ARTEX-assisted reconnaissance, spraying and stolen OAuth-application abuse to Storm-0940. The earlier 151,000+ failed logons were unsuccessful, and do not establish a compromise of those 327 accounts. Its later observation of compromised ConnectWise application identities involved more than 2,250 attempted target tenants and some successful sign-ins and Microsoft Graph activities, including credential changes, privileged role changes and persistence efforts. Microsoft explicitly warns that attempted targets or successful sign-ins do not prove data exfiltration. ConnectWise independently confirmed access to application identities, its revocation of seven application connections and protective suspension of backup and other services; it reported no evidence that encrypted stored backup archives were accessed. Because it lacked downstream customer-environment visibility, this vendor statement does not resolve Microsoft-observed actions in those tenants.",
+    "governance_interpretation": "AI agents acting on attacker instructions used compromised application credentials to exercise technical access across otherwise separately governed customer tenants. The observed capability-to-authority boundary was crossed at downstream account and identity operations, but no independent agent rebellion, jailbreak or objective drift is established. ConnectWise revoked affected credentials, and in its monitored environment no further successful attack activity was reported. That is a bounded protective outcome. The ensuing interruption of Cloud Backup and linked services was deliberate containment of the breach, not an attacker-commanded service shutdown. The record does not treat 2,250 attempted tenants as confirmed victims of data theft. Microsoft reports abuse of compromised application credentials and observed follow-on credential changes in affected environments. Those authentication objects and modifications crossed authorised custody. The separate unsuccessful password-spray sample and successful sign-ins alone do not prove customer-data theft. Microsoft reports follow-on changes involving identities, groups and privileged roles in affected customer environments. Those are protected directory-information modifications by the threat actor, separate from credential custody. The finding does not infer mailbox or file theft from sign-in events, and it does not apply to every targeted tenant.",
+    "significance_to_cam": "The incident distinguishes multi-agent attacker-controlled automation, stolen integration credentials, tenant-granted application trust, actual downstream authorisation, monitoring, containment and service availability. It also demonstrates that credential-based access by an external AI agent can reach real customer state without valid authority from the customer, while the defensive recovery affects important operational services.",
+    "assessment_boundaries": [
+      "Storm-0940 state alignment and responsibility are Microsoft's attributed intelligence assessment, not an independently adjudicated identity finding.",
+      "The failed 10–14 October password-spray campaign and later successful stolen-app-credential use are distinct stages.",
+      "The 2,250-plus targeted tenants were not all established as compromised; individual data-exfiltration counts are unknown.",
+      "The ARTEX framework is multi-agent, but the exact count of agents operating in this incident and their prompts are unavailable.",
+      "No evidence that ConnectWise encrypted backup archives were accessed; downstream tenant evidence is independently limited.",
+      "The Cloud Backup, SaaS Security and Cloud Management interruptions were initiated as protective measures.",
+      "No evidence the ARTEX model chose its own malicious objective or violated an independently established model-side safety-control contract.",
+      "Vendor post-revocation monitoring does not establish eradication of all persistence established before the shutdown."
+    ],
+    "source_clause_analysis": {
+      "purpose": "Chronological observation of unsuccessful pre-compromise spraying, later stolen-app access, live Graph operations, vendor remediation and protective service outage.",
+      "clauses": [
+        {
+          "episode_id": "E001",
+          "source_paraphrase": "On 10–14 October, actors generated 151,000+ unsuccessful logons targeting 327 accounts at eight organisations. Microsoft observed no successful token or Graph event in that sample.",
+          "recovered_invariant_interpretation": "A blocked login is not a successful downstream attack and should not be combined with the later OAuth compromise.",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "adjudication_status": "resolved-no-mapping",
+          "taxonomy_relationships": []
+        },
+        {
+          "episode_id": "E002",
+          "source_paraphrase": "Compromised ConnectWise application credentials were used by ARTEX-assisted attackers for sign-in attempts reaching more than 2,250 Microsoft 365 tenants.",
+          "recovered_invariant_interpretation": "The existence of a usable third-party application credential is not an authorisation from each tenant for actions by its thief.",
+          "source_record_refs": [
+            "source_records[0]",
+            "source_records[1]"
+          ],
+          "adjudication_status": "mapped",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000002",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Agents used stolen ConnectWise application credentials to attempt external tenant operations without those tenants granting the attacker's access; available access was treated as operational permission."
+            },
+            {
+              "class_id": "VIGIL-FC-000090",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Compromised application credentials were used outside ConnectWise’s authorised application operation. Existing tenant grants did not authorise the threat actor to hold those credentials."
+            }
+          ]
+        },
+        {
+          "episode_id": "E003",
+          "source_paraphrase": "In some customer environments Microsoft observed successful authentication followed by Graph reconnaissance, application credential changes and privilege or persistence actions.",
+          "recovered_invariant_interpretation": "An accepted application sign-in is not authority for the attacker to alter another organisation's identity and permission state.",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "adjudication_status": "mapped",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000002",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "AI-assisted Graph actions used technical application privileges to make or attempt changes in tenants where the criminal operator lacked independent authority."
+            },
+            {
+              "class_id": "VIGIL-FC-000090",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Microsoft observed follow-on application credential changes in affected environments. These are distinct custody-changing modifications, not proof that every targeted tenant lost customer data."
+            },
+            {
+              "class_id": "VIGIL-FC-000089",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Microsoft separately reports changes involving identities, groups and privileged roles in some affected environments. These protected directory-state modifications are distinct from stolen or added authentication material and do not imply customer-content theft."
+            }
+          ]
+        },
+        {
+          "episode_id": "E004",
+          "source_paraphrase": "Microsoft cautions that a tenant being targeted or successfully authenticated does not automatically prove customer data was accessed or stolen.",
+          "recovered_invariant_interpretation": "Access, impact and attempted-target counts remain separate evidence claims.",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "adjudication_status": "resolved-no-mapping",
+          "taxonomy_relationships": []
+        },
+        {
+          "episode_id": "E005",
+          "source_paraphrase": "ConnectWise confirmed unauthorised application-identity access and disabled affected app connections, including certificate revocation, on 17 October.",
+          "recovered_invariant_interpretation": "The provider intentionally activated a defensive restriction on the compromised app identities.",
+          "source_record_refs": [
+            "source_records[1]"
+          ],
+          "adjudication_status": "resolved-no-mapping",
+          "taxonomy_relationships": []
+        },
+        {
+          "episode_id": "E006",
+          "source_paraphrase": "After containment, ConnectWise reported no further successful attack activity in its monitored environments; it warned that previously created independent persistence could remain.",
+          "recovered_invariant_interpretation": "A bounded effective protective change does not imply full tenant-wide remediation.",
+          "source_record_refs": [
+            "source_records[1]"
+          ],
+          "adjudication_status": "mapped",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000083",
+              "relationship": "successful-invariant",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The vendor disabled the affected application connections and saw no subsequent successful activity within its monitoring scope. This is a verified bounded containment result, not proof all earlier persistence paths were eliminated."
+            }
+          ]
+        },
+        {
+          "episode_id": "E007",
+          "source_paraphrase": "Cloud Backup scheduled jobs, archived backup access and restores remained unavailable for multiple days; SaaS Security and Cloud Management were also suspended as safeguards.",
+          "recovered_invariant_interpretation": "A necessary protective interruption can create independent realised service disruption despite being a valid response.",
+          "source_record_refs": [
+            "source_records[1]"
+          ],
+          "adjudication_status": "resolved-no-mapping",
+          "taxonomy_relationships": []
+        }
+      ]
+    }
+  },
+  "source_records": [
+    {
+      "source_title": "AI-driven, large-scale nation-state campaign using ARTEX enables supply chain compromise",
+      "author_or_publisher": "Microsoft Security Research and Microsoft Threat Intelligence",
+      "source_date": "2026-10-21",
+      "source_url": "https://www.microsoft.com/en-us/security/blog/2026/10/21/storm-0940-uses-artex-agentic-ai-connectwise-supply-chain-compromise/",
+      "source_url_status": "available",
+      "source_type": "technical analysis",
+      "source_platform": "Microsoft Security Research and Microsoft Threat Intelligence",
+      "source_residence": "external",
+      "source_role": "incident-evidence",
+      "evidence_modality": [
+        "text"
+      ],
+      "evidence_status": "first-party-reported",
+      "evidence_status_basis": "Source organisation reports its own telemetry or operational investigation; raw artefacts, full victim logs and per-agent traces are not published.",
+      "source_context": "Microsoft telemetry and actor attribution of Storm-0940's ARTEX-assisted spraying, OAuth application abuse, Graph operations and evidence limits.",
+      "interpretive_reliance": "Attributed originating evidence for the documented observation boundaries, not independent verification of every affected customer or actor.",
+      "relevance_note": "Originating evidence for this stage and its stated limitations.",
+      "retrieved_date": "2026-10-26",
+      "incident_source_order": 1,
+      "system_or_product": "See system_context",
+      "model_or_algorithm": "See system_context",
+      "primary_artefact_access": {
+        "access_status": "directly reviewed",
+        "reviewing_system": "OpenAI ChatGPT — GPT-6",
+        "access_method": "Direct review of first-party web report or dated vendor advisory; no original incident telemetry access.",
+        "direct_primary_artefact_review": true,
+        "limitations": [
+          "Full affected tenant telemetry and individual agent traces not publicly accessible."
+        ]
+      }
+    },
+    {
+      "source_title": "Cloud Backup service interruption and compromise advisories, 16–25 October 2026",
+      "author_or_publisher": "ConnectWise",
+      "source_date": "2026-10-25",
+      "source_url": "https://www.connectwise.com/company/trust/advisories",
+      "source_url_status": "available",
+      "source_type": "platform status report",
+      "source_platform": "ConnectWise",
+      "source_residence": "external",
+      "source_role": "incident-evidence",
+      "evidence_modality": [
+        "text"
+      ],
+      "evidence_status": "first-party-reported",
+      "evidence_status_basis": "Source organisation reports its own telemetry or operational investigation; raw artefacts, full victim logs and per-agent traces are not published.",
+      "source_context": "Continuously updated official vendor advisory on compromised application identities, revoked access, affected backup/security services and staged restoration.",
+      "interpretive_reliance": "Attributed originating evidence for the documented observation boundaries, not independent verification of every affected customer or actor.",
+      "relevance_note": "Originating evidence for this stage and its stated limitations.",
+      "retrieved_date": "2026-10-26",
+      "incident_source_order": 2,
+      "system_or_product": "See system_context",
+      "model_or_algorithm": "See system_context",
+      "primary_artefact_access": {
+        "access_status": "directly reviewed",
+        "reviewing_system": "OpenAI ChatGPT — GPT-6",
+        "access_method": "Direct review of first-party web report or dated vendor advisory; no original incident telemetry access.",
+        "direct_primary_artefact_review": true,
+        "limitations": [
+          "Full affected tenant telemetry and individual agent traces not publicly accessible."
+        ]
+      }
+    }
+  ],
+  "preferred_evidence": {
+    "source_url": "https://www.microsoft.com/en-us/security/blog/2026/10/21/storm-0940-uses-artex-agentic-ai-connectwise-supply-chain-compromise/",
+    "selection_basis": "Detailed originating Microsoft telemetry supports bounded AI participation; vendor-origin source independently supports containment, limitations and materialised service interruption.",
+    "selected_on": "2026-10-26"
+  },
+  "external_incident_references": [],
+  "external_assessments": [],
+  "external_requirement_assessments": [
+    {
+      "requirement_id": "EXTREQ-61C9EBE6C4DD32C7",
+      "alignment_result": "boundary",
+      "assessment_basis": "The OECD recommends context-appropriate oversight and safeguards for intentional AI misuse. Malicious ARTEX use is documented, but the provider's specific safeguards, the threat actor's AI-system role and any operative protective control inside the agentic tool are not reported. This nonbinding OECD proposition is not a finding of vendor or legal non-compliance.",
+      "assessed_on": "2026-10-26",
+      "source_record_refs": [
+        "source_records[0]"
+      ],
+      "source_episode_refs": [
+        "E002",
+        "E003",
+        "E004"
+      ],
+      "source_clause_indices": [
+        1,
+        2,
+        3
+      ],
+      "identification_basis": "OECD AI Principles 2024 Section 1.2(b), voluntary safeguards against intentional misuse."
+    },
+    {
+      "requirement_id": "EXTREQ-7A5897A2F6C82407",
+      "alignment_result": "boundary",
+      "assessment_basis": "The agents were used for hostile operations at scale. No direct evidence shows which security properties ARTEX's developer promised or failed to implement; a downstream SaaS identity compromise alone cannot prove an AI tool robustness defect. The OECD lifecycle robustness statement is assessed as context, not binding regulation.",
+      "assessed_on": "2026-10-26",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ],
+      "source_episode_refs": [
+        "E002",
+        "E003",
+        "E004",
+        "E006"
+      ],
+      "source_clause_indices": [
+        1,
+        2,
+        3,
+        5
+      ],
+      "identification_basis": "OECD AI Principles 2024 Section 1.4(a), voluntary security and foreseeable-misuse guidance."
+    },
+    {
+      "requirement_id": "EXTREQ-FA4D888041BED657",
+      "alignment_result": "not-aligned",
+      "assessment_basis": "The access-enforcement proposition requires approved logical-access authorisations to be enforced for information and system resources. The observed information operation was outside the approved boundary. Microsoft separately reports changes involving identities, groups and privileged roles in some affected environments. These protected directory-state modifications are distinct from stolen or added authentication material and do not imply customer-content theft. This is a bounded retrospective comparison with the selected control proposition, not a claim of certification or an independently binding historical duty.",
+      "assessed_on": "2026-10-27",
+      "source_record_refs": [
+        "source_records[0]"
+      ],
+      "derived_from_class_ids": [
+        "VIGIL-FC-000089"
+      ],
+      "source_clause_indices": [
+        2
+      ],
+      "source_episode_refs": [
+        "E003"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-F42FEC4FD1482D57",
+      "alignment_result": "not-aligned",
+      "assessment_basis": "The authenticator-protection proposition requires secret authenticator content to be protected against unauthorised disclosure and modification. The observed secret disclosure/acquisition or custody-changing modification was unauthorised. Compromised application credentials were used outside ConnectWise’s authorised application operation. Existing tenant grants did not authorise the threat actor to hold those credentials. Microsoft observed follow-on application credential changes in affected environments. These are distinct custody-changing modifications, not proof that every targeted tenant lost customer data. This is a bounded retrospective comparison with the selected control proposition, not a claim of certification or an independently binding historical duty.",
+      "assessed_on": "2026-10-27",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ],
+      "derived_from_class_ids": [
+        "VIGIL-FC-000090"
+      ],
+      "source_clause_indices": [
+        1,
+        2
+      ],
+      "source_episode_refs": [
+        "E002",
+        "E003"
+      ]
+    }
+  ],
+  "system_context": {
+    "platform_or_vendor": "Other",
+    "product_or_service": "Other",
+    "specific_model_or_runtime": "ARTEX multi-agent LLM offensive-security framework; underlying foundation model/version undisclosed",
+    "interface_surface": "Multi-agent reconnaissance, password spraying, compromised OAuth application access and Microsoft Graph directory operations",
+    "agent_context": {
+      "agentic_status": "multi-agent",
+      "agent_count": null,
+      "agent_count_min": 2,
+      "agent_count_max": null,
+      "count_basis": "minimum",
+      "evidence_basis": "Microsoft identifies ARTEX as a multi-agent architecture and describes plural AI agents working on the threat actor's behalf. Exact live number remains unknown.",
+      "source_record_refs": [
+        "source_records[0]"
+      ]
+    },
+    "occurrence_environment": {
+      "deployment_state": "deployed",
+      "activity_contexts": [
+        "operational-use"
+      ],
+      "external_reach": "live-external",
+      "activity_actor": "not-applicable",
+      "environment_detail": "Offensive agentic framework used by external attackers against live cloud tenants and service identities.",
+      "evidence_basis": "Microsoft describes real-world deployed use of ARTEX in authentication and account state operations, not a contained evaluation.",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    }
+  },
+  "jurisdictional_context": {
+    "primary_jurisdiction": "International",
+    "notes": "Multiple countries and Microsoft 365 customer tenants; provider location does not fix a single incident jurisdiction."
+  },
+  "affected_party_context": {
+    "entities": []
+  },
+  "taxonomy_classification": {
+    "taxonomy_version": "0.9.0",
+    "classification_status": "classified",
+    "adjudication_coverage": {
+      "status": "complete"
+    },
+    "classification_basis": "Stolen application credentials supplied a technical means for agents to access independently governed customer tenants. The observed absence of customer authority is distinct from whether the tool followed the attacker's instructions. The provider's later credential revocation gave a limited protective effect. Microsoft reports abuse of compromised application credentials and observed follow-on credential changes in affected environments. Those authentication objects and modifications crossed authorised custody. The separate unsuccessful password-spray sample and successful sign-ins alone do not prove customer-data theft. Microsoft reports follow-on changes involving identities, groups and privileged roles in affected customer environments. Those are protected directory-information modifications by the threat actor, separate from credential custody. The finding does not infer mailbox or file theft from sign-in events, and it does not apply to every targeted tenant.",
+    "primary_classification": {
+      "family_id": "VIGIL-FF-0001",
+      "class_id": "VIGIL-FC-000002",
+      "classification_role": "failure-occurrence",
+      "classification_basis": "AI-assisted use of compromised ConnectWise application identity turned credential capabilities into unauthorised downstream tenant authentication and Graph operations.",
+      "classification_confidence": "medium"
+    },
+    "secondary_classifications": [
+      {
+        "family_id": "VIGIL-FF-0008",
+        "class_id": "VIGIL-FC-000083",
+        "classification_role": "successful-invariant",
+        "classification_basis": "Affected app connections were revoked and ConnectWise reported no later successful threat activity within monitored environments; this bounded control effect does not cover unknown prior persistence.",
+        "classification_confidence": "medium"
+      },
+      {
+        "family_id": "VIGIL-FF-0018",
+        "class_id": "VIGIL-FC-000090",
+        "classification_role": "failure-occurrence",
+        "classification_basis": "Microsoft reports abuse of compromised application credentials and observed follow-on credential changes in affected environments. Those authentication objects and modifications crossed authorised custody. The separate unsuccessful password-spray sample and successful sign-ins alone do not prove customer-data theft.",
+        "classification_confidence": "medium"
+      },
+      {
+        "family_id": "VIGIL-FF-0018",
+        "class_id": "VIGIL-FC-000089",
+        "classification_role": "failure-occurrence",
+        "classification_basis": "Microsoft reports follow-on changes involving identities, groups and privileged roles in affected customer environments. Those are protected directory-information modifications by the threat actor, separate from credential custody. The finding does not infer mailbox or file theft from sign-in events, and it does not apply to every targeted tenant.",
+        "classification_confidence": "medium"
+      }
+    ],
+    "classification_review_provenance": {
+      "review_date": "2026-10-27",
+      "reviewer": "OpenAI Codex — AI analytical reviewer",
+      "review_status": "Published v0.9.0 protected-information and authentication-custody delta adjudicated. Existing class findings retained without re-adjudication; episode limits remain explicit."
+    }
+  },
+  "related_incidents": [],
+  "interpretive_provenance": {
+    "current_ai_review": {
+      "review_id": "VIGIL-REVIEW-2026-10-27-090-DELTA-000214",
+      "reviewer_type": "AI analytical reviewer",
+      "reviewer_platform": "OpenAI Codex",
+      "reviewer_model": "GPT-6",
+      "review_date": "2026-10-27",
+      "review_scope": "Targeted published v0.9.0 adjudication of Protected Information Access Integrity and Authentication Material Custody Integrity. Prior taxonomy, harm and external findings preserved; direct NIST propositions independently assessed where supported.",
+      "capability_profile": {
+        "direct_repository_analysis": true,
+        "direct_text_analysis": true,
+        "taxonomy_review": true,
+        "external_requirement_review": true,
+        "harm_impact_review": false,
+        "web_research": true
+      },
+      "known_limitations": [
+        "AI-authored analysis, not human verification. No live vulnerable system or private secret was accessed.",
+        "The taxonomy review is limited to the two new classes; existing classes were preserved, not freshly re-adjudicated.",
+        "Attributed occurrence reports retain their source-specific limits. No assurance about unobserved targets, copies or credential use is inferred."
+      ],
+      "review_outcome": "Microsoft reports abuse of compromised application credentials and observed follow-on credential changes in affected environments. Those authentication objects and modifications crossed authorised custody. The separate unsuccessful password-spray sample and successful sign-ins alone do not prove customer-data theft. Microsoft reports follow-on changes involving identities, groups and privileged roles in affected customer environments. Those are protected directory-information modifications by the threat actor, separate from credential custody. The finding does not infer mailbox or file theft from sign-in events, and it does not apply to every targeted tenant."
+    }
+  },
+  "harm_impact_assessment": {
+    "methodology_id": "VIGIL-HIM",
+    "methodology_version": "1.1.0",
+    "derivation_rule": "highest-supported-harm-on-exclusive-incident-assessment-pathway",
+    "assessment_pathway": "specific_consequence",
+    "aggregate_harm_screening": {
+      "deployed_configuration": true,
+      "potentially_generalisable_mechanism": true,
+      "bounded_materialised_consequence_case": true,
+      "candidate_dimensions": [],
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ],
+      "rationale": "The protective response caused actual bounded interruption of a named production service. No projection from attack attempts to population-scale victim counts is used."
+    },
+    "assessed_on": "2026-10-26",
+    "overall_severity": "S3",
+    "controlling_dimensions": [
+      "service-operational-infrastructure"
+    ],
+    "coverage_note": "All twelve harm domains screened. Confirmed backup and related service interruption supports an important-service disruption band; compromise attempts are not counted as materialised losses.",
+    "dimensions": [
+      {
+        "dimension_id": "physical-health-safety",
+        "assessment_status": "unreported",
+        "assessment_basis": "This domain has possible consequences but no separately threshold-bandable materialised harm in the public sources; absence of reporting is not S1.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "psychological-wellbeing",
+        "assessment_status": "unreported",
+        "assessment_basis": "This domain has possible consequences but no separately threshold-bandable materialised harm in the public sources; absence of reporting is not S1.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "rights-liberty",
+        "assessment_status": "unreported",
+        "assessment_basis": "This domain has possible consequences but no separately threshold-bandable materialised harm in the public sources; absence of reporting is not S1.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "equal-treatment",
+        "assessment_status": "unreported",
+        "assessment_basis": "This domain has possible consequences but no separately threshold-bandable materialised harm in the public sources; absence of reporting is not S1.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "privacy-confidentiality",
+        "assessment_status": "unreported",
+        "assessment_basis": "This domain has possible consequences but no separately threshold-bandable materialised harm in the public sources; absence of reporting is not S1.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "financial-economic",
+        "assessment_status": "unreported",
+        "assessment_basis": "This domain has possible consequences but no separately threshold-bandable materialised harm in the public sources; absence of reporting is not S1.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "property-asset-damage",
+        "assessment_status": "unreported",
+        "assessment_basis": "This domain has possible consequences but no separately threshold-bandable materialised harm in the public sources; absence of reporting is not S1.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "service-operational-infrastructure",
+        "assessment_status": "assessed",
+        "severity": "S3",
+        "threshold_id": "VIGIL-HIM-1.1.0-SOI-S3",
+        "assessment_basis": "Cloud Backup scheduled jobs, archive access and restores were unavailable for multiple days as a precaution after compromised identities were detected. Related security and management services were also suspended. This was a material interruption of important services for more than two hours. Evidence does not establish the more demanding S4 essential-service threshold.",
+        "evidence_confidence": "high",
+        "evidence_refs": [
+          "source_records[1]"
+        ],
+        "observed_values": [
+          {
+            "metric": "observed service outage, minimum",
+            "value": 8,
+            "unit": "days"
+          }
+        ]
+      },
+      {
+        "dimension_id": "reputation-dignity",
+        "assessment_status": "unreported",
+        "assessment_basis": "This domain has possible consequences but no separately threshold-bandable materialised harm in the public sources; absence of reporting is not S1.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "societal-democratic",
+        "assessment_status": "unreported",
+        "assessment_basis": "This domain has possible consequences but no separately threshold-bandable materialised harm in the public sources; absence of reporting is not S1.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "environmental",
+        "assessment_status": "unreported",
+        "assessment_basis": "This domain has possible consequences but no separately threshold-bandable materialised harm in the public sources; absence of reporting is not S1.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "relational-integrity-autonomy",
+        "assessment_status": "unreported",
+        "assessment_basis": "This domain has possible consequences but no separately threshold-bandable materialised harm in the public sources; absence of reporting is not S1.",
+        "evidence_confidence": "not-assessed"
+      }
+    ]
+  }
+}

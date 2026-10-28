@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Compromised Mistral SDK package executed credential-harvesting payload on import",
     "created": "2026-09-08",
-    "updated": "2026-10-22",
-    "version": "0.1.22"
+    "updated": "2026-10-27",
+    "version": "0.2.0"
   },
   "incident_identity": {
     "historical_event_name": "Mini Shai-Hulud / TanStack compromise affecting Mistral SDK releases",
@@ -21,7 +21,7 @@
   "summary": "Mistral reported that the Mini Shai-Hulud supply-chain attack on TanStack resulted in compromised Mistral npm and PyPI SDK versions being published. The compromised PyPI package `mistralai==2.4.6` executed malicious code when client modules were imported on Linux, downloading a background payload that harvested credentials from common locations. Mistral reported no impact to its global infrastructure and removed the affected releases. Its updated advisory says the compromised npm releases referenced a missing file, preventing their malicious path from running. The working PyPI payload was Linux-specific. Mistral later marked mitigation and closed its investigation. The repository advisory distinguishes client-module imports from a bare namespace import. It also records quarantine of the Python project.",
   "vigil_assessment": {
     "factual_basis": "Mistral's security advisory identifies affected npm and PyPI versions, publication windows and indicators of compromise. It states that the compromised PyPI release executed a malicious script on Linux at import time and launched a detached process designed to harvest credentials. Aikido Security separately reports that its malware team detected compromised npm package versions including @mistralai releases in the wider campaign. Its account documents external post-publication detection, not the exact Mistral internal monitoring control or the causal route to removal. The updated advisory distinguishes nonfunctional npm payload paths from the working Linux PyPI import path. Investigation closure on 14 May does not prove downstream customer cleanup or absence of credential exposure. The repository security advisory supplies additional direct evidence for the Python release. It reports no corresponding repository release lineage and an upload outside the normal release pipeline. It identifies the client-module import trigger and records quarantine. These facts support separate conclusions about attributed origin and containment without joining the external detection and provider response into one internal mechanism.",
-    "governance_interpretation": "The compromised Python release represented attacker content under the Mistral SDK identity without matching legitimate release lineage. Its source attribution is Not aligned. The release withdrawal and Python-project quarantine are Aligned for the bounded purpose of containing further distribution through the affected channel. The external detection and provider response remain causally distinct in the available accounts. No particular pre-publication safeguard is presumed to have failed. The malicious executable asset also presents a software-integrity property beyond the origin-attribution and response findings. The selectable taxonomy does not fully represent that property without additional evidence of an authority-conversion mechanism. The nonfunctional npm path remains distinct from the working Linux Python path. Customer cleanup and credential exposure remain unknown. The independent AI software-security and repair assessments are preserved. Harm Impact: The publisher confirms actual malicious SDK versions were released through its distribution channel. Those persisted releases changed the expected integrity of a real software asset, establishing the S2 integrity minimum. Customer restoration burden remains unknown.",
+    "governance_interpretation": "The compromised Python release represented attacker content under the Mistral SDK identity without matching legitimate release lineage. Its source attribution is Not aligned. The release withdrawal and Python-project quarantine are Aligned for the bounded purpose of containing further distribution through the affected channel. The external detection and provider response remain causally distinct in the available accounts. No particular pre-publication safeguard is presumed to have failed. The malicious executable asset also presents a software-integrity property beyond the origin-attribution and response findings. The selectable taxonomy does not fully represent that property without additional evidence of an authority-conversion mechanism. The nonfunctional npm path remains distinct from the working Linux Python path. Customer cleanup and credential exposure remain unknown. The independent AI software-security and repair assessments are preserved. Harm Impact: The publisher confirms actual malicious SDK versions were released through its distribution channel. Those persisted releases changed the expected integrity of a real software asset, establishing the S2 integrity minimum. Customer restoration burden remains unknown. The Mistral advisory identifies unauthorised compromised SDK releases and a Python upload outside the normal release lineage. Package contents were changed through the trusted distribution surface. Public package readability does not authorise an unrelated party to replace its release content. No unobserved victim-secret exfiltration is inferred.",
     "significance_to_cam": "AI-system governance includes the developer infrastructure surrounding a model. Compromised package provenance can expose credentials and downstream systems before the model is ever invoked, making third-party build dependencies, release integrity and incident response part of the assurance boundary.",
     "assessment_boundaries": [
       "Mistral reports no impact to its global infrastructure.",
@@ -54,6 +54,12 @@
               "relationship": "failure-occurrence",
               "canonical_taxonomy_mapping": true,
               "rationale": "The malicious Python release used the Mistral SDK package identity. The repository advisory identifies no matching release tag, commit or workflow and says the upload bypassed the normal publishing pipeline. The attributed package origin therefore differed materially from the supported contribution history. This affected developer trust and reuse. A genuine distribution endpoint does not make the attacker’s contribution an authorised Mistral release. This finding is bounded to that Python release; valid workflow provenance elsewhere in the campaign does not prove code safety or establish the same publishing route here."
+            },
+            {
+              "class_id": "VIGIL-FC-000089",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Compromised SDK versions were published through a trusted release identity outside the normal release lineage. Publication changed the protected package contents. This is distinct from whether a victim later executed credential harvesting."
             }
           ],
           "adjudication_status": "mapped"
@@ -319,9 +325,9 @@
     }
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.7.0",
+    "taxonomy_version": "0.9.0",
     "classification_status": "classified",
-    "classification_basis": "The malicious Python release used the Mistral SDK package identity. The repository advisory identifies no matching release tag, commit or workflow and says the upload bypassed the normal publishing pipeline. The attributed package origin therefore differed materially from the supported contribution history. This affected developer trust and reuse. A genuine distribution endpoint does not make the attacker’s contribution an authorised Mistral release. This finding is bounded to that Python release; valid workflow provenance elsewhere in the campaign does not prove code safety or establish the same publishing route here. Mistral withdrew the compromised SDK versions within hours. The Python project was also quarantined. These measures acted on the identified malicious distribution and limited further availability through the affected release channel. This establishes a bounded protective effect for release containment. It does not establish customer credential recovery, removal from private caches or the effectiveness of every earlier safeguard. Aikido’s detection need not be proved to have caused Mistral’s action to assess the withdrawal itself.",
+    "classification_basis": "The malicious Python release used the Mistral SDK package identity. The repository advisory identifies no matching release tag, commit or workflow and says the upload bypassed the normal publishing pipeline. The attributed package origin therefore differed materially from the supported contribution history. This affected developer trust and reuse. A genuine distribution endpoint does not make the attacker’s contribution an authorised Mistral release. This finding is bounded to that Python release; valid workflow provenance elsewhere in the campaign does not prove code safety or establish the same publishing route here. Mistral withdrew the compromised SDK versions within hours. The Python project was also quarantined. These measures acted on the identified malicious distribution and limited further availability through the affected release channel. This establishes a bounded protective effect for release containment. It does not establish customer credential recovery, removal from private caches or the effectiveness of every earlier safeguard. Aikido’s detection need not be proved to have caused Mistral’s action to assess the withdrawal itself. The Mistral advisory identifies unauthorised compromised SDK releases and a Python upload outside the normal release lineage. Package contents were changed through the trusted distribution surface. Public package readability does not authorise an unrelated party to replace its release content. No unobserved victim-secret exfiltration is inferred.",
     "primary_classification": {
       "family_id": "VIGIL-FF-0002",
       "class_id": "VIGIL-FC-000010",
@@ -336,450 +342,46 @@
         "classification_role": "successful-invariant",
         "classification_basis": "Mistral withdrew the compromised SDK versions within hours. The Python project was also quarantined. These measures acted on the identified malicious distribution and limited further availability through the affected release channel. This establishes a bounded protective effect for release containment. It does not establish customer credential recovery, removal from private caches or the effectiveness of every earlier safeguard. Aikido’s detection need not be proved to have caused Mistral’s action to assess the withdrawal itself.",
         "classification_confidence": "medium"
+      },
+      {
+        "family_id": "VIGIL-FF-0018",
+        "class_id": "VIGIL-FC-000089",
+        "classification_role": "failure-occurrence",
+        "classification_basis": "The Mistral advisory identifies unauthorised compromised SDK releases and a Python upload outside the normal release lineage. Package contents were changed through the trusted distribution surface. Public package readability does not authorise an unrelated party to replace its release content. No unobserved victim-secret exfiltration is inferred.",
+        "classification_confidence": "medium"
       }
     ],
     "classification_review_provenance": {
-      "review_date": "2026-10-19",
-      "reviewer": "OpenAI Codex — GPT-6; AI analytical review under human-directed VIGIL governance",
-      "review_status": "Re-tested attribution and the full bounded withdrawal/quarantine sequence with separate condition and exclusion evidence; retained both roles and the executable-integrity gap.",
-      "review_reference": "vigil/docs/reviews/2026-10-19-boundary-diagnostic/contract-reassessment/INC-000095-DECISION.json"
+      "review_date": "2026-10-27",
+      "reviewer": "OpenAI Codex — AI analytical reviewer",
+      "review_status": "Published v0.9.0 protected-information and authentication-custody delta adjudicated. Existing class findings retained without re-adjudication; episode limits remain explicit."
     },
     "adjudication_coverage": {
       "status": "partial"
     }
   },
   "interpretive_provenance": {
-    "review_history": [
-      {
-        "review_id": "VIGIL-REVIEW-2026-09-08-ECOSYSTEM-000095",
-        "reviewer_type": "AI analytical reviewer",
-        "reviewer_platform": "OpenAI ChatGPT",
-        "reviewer_model": "GPT-5.6 Sol",
-        "review_scope": "External ecosystem Incident admission, evidence reconciliation, affected-system bounding, occurrence-level severity assessment and current-taxonomy review.",
-        "capability_profile": {
-          "direct_repository_analysis": true,
-          "direct_text_analysis": true,
-          "web_link_and_metadata_review": true
-        },
-        "known_limitations": [
-          "Mistral reports no impact to its global infrastructure.",
-          "The npm packages were compromised but Mistral reports their malicious code path was non-functional; the PyPI package did execute a credential-harvesting payload.",
-          "The public advisory does not quantify how many customers installed or executed the affected PyPI release or whether credentials were successfully exfiltrated from customer systems."
-        ],
-        "review_date": "2026-09-08",
-        "review_outcome": "Admitted as an S3 Mistral SDK supply-chain Incident; left unclassified because the current taxonomy does not precisely encode malicious package-distribution compromise."
-      },
-      {
-        "review_id": "VIGIL-REVIEW-2026-09-16-SEVERITY-000095",
-        "reviewer_type": "AI analytical reviewer",
-        "reviewer_platform": "OpenAI Codex",
-        "reviewer_model": "GPT-5",
-        "review_date": "2026-09-16",
-        "review_scope": "Corpus-wide severity-direction alignment, occurrence-level criteria re-adjudication, and legacy operational-priority audit.",
-        "capability_profile": {
-          "direct_repository_analysis": true,
-          "direct_text_analysis": true,
-          "web_link_and_metadata_review": true
-        },
-        "known_limitations": [
-          "The review was bounded to evidence already preserved in the Incident and did not infer unreported harms or reopen taxonomy classifications.",
-          "SU records remain subject to the evidence gaps already stated in their canonical severity assessments."
-        ],
-        "review_outcome": "Severity S3 affirmed after applying the ascending S1-to-S5 criteria to the preserved occurrence evidence."
-      },
-      {
-        "review_id": "VIGIL-REVIEW-2026-09-16-HIM-000095",
-        "reviewer_type": "AI analytical reviewer",
-        "reviewer_platform": "OpenAI Codex",
-        "reviewer_model": "GPT-5",
-        "review_date": "2026-09-16",
-        "review_scope": "Controlled full-corpus Harm Impact Matrix derivation from preserved Incident evidence; Failure Taxonomy adjudications were not reopened.",
-        "capability_profile": {
-          "direct_repository_analysis": true,
-          "direct_text_analysis": true,
-          "web_link_and_metadata_review": true
-        },
-        "known_limitations": [
-          "The assessment is bounded to evidence already preserved in the Incident and does not infer unreported harms, losses, durations or affected populations.",
-          "Unreported dimensions remain explicitly unreported and do not represent supported absence of harm."
-        ],
-        "review_outcome": "Derived overall severity S3 using VIGIL-HIM 1.0.0. The controlling dimension is privacy-confidentiality; legacy severity was S3."
-      },
-      {
-        "review_id": "VIGIL-REVIEW-2026-09-16-HIM-EVIDENCE-000095",
-        "reviewer_type": "AI analytical reviewer",
-        "reviewer_platform": "OpenAI Codex",
-        "reviewer_model": "GPT-5",
-        "review_date": "2026-09-16",
-        "review_scope": "Full-corpus evidence-derived Harm Impact Matrix re-adjudication; legacy severity was comparison-only and Failure Taxonomy and source-role decisions were not reopened.",
-        "capability_profile": {
-          "direct_repository_analysis": true,
-          "direct_text_analysis": true,
-          "structured_threshold_comparison": true
-        },
-        "known_limitations": [
-          "The assessment is bounded to evidence already preserved in the Incident and does not infer unreported harms, losses, durations, conversions or affected populations.",
-          "Non-USD amounts remain unconverted unless a conversion source and rate date are explicitly recorded."
-        ],
-        "review_outcome": "Evidence-derived VIGIL-HIM 1.0.0 overall severity is S2; legacy narrative severity was S3 and the superseded initial matrix result was S3. Controlling dimensions: service-operational-infrastructure."
-      },
-      {
-        "review_id": "VIGIL-REVIEW-2026-09-20-HIM-1.0.1-000095",
-        "reviewer_type": "AI analytical reviewer",
-        "reviewer_platform": "OpenAI Codex",
-        "reviewer_model": "GPT-5",
-        "review_date": "2026-09-20",
-        "review_scope": "Incident-specific re-review of all eleven materialised-harm dimensions against VIGIL-HIM 1.0.1, including the full canonical record, row-local source linkage and a fresh occurrence-focused external consequence search. Failure Taxonomy adjudications were not reopened.",
-        "capability_profile": {
-          "direct_repository_analysis": true,
-          "direct_text_analysis": true,
-          "web_link_and_metadata_review": true,
-          "structured_threshold_comparison": true
-        },
-        "known_limitations": [
-          "The fresh search did not make absence of discoverable reporting evidence of no harm; dimensions without support remain unreported or insufficient-evidence as recorded.",
-          "The review did not infer materialised harm from capability, notoriety, registry inclusion or hypothetical worst-case consequences."
-        ],
-        "review_outcome": "All eleven dimensions were re-reviewed under VIGIL-HIM 1.0.1. The evidence continues to support overall severity S2; the band is confirmed and the assessment is migrated to 1.0.1."
-      },
-      {
-        "review_id": "VIGIL-REVIEW-2026-09-20-INC-000095-EXTERNAL-ASSESSMENT",
-        "reviewer_type": "AI analytical reviewer",
-        "reviewer_platform": "OpenAI Codex",
-        "reviewer_model": "GPT-5",
-        "review_date": "2026-09-20",
-        "review_scope": "Corpus-wide external-assessment admission review; occurrence facts, Harm Impact and Failure Taxonomy adjudications were not reopened.",
-        "capability_profile": {
-          "direct_repository_analysis": true,
-          "direct_text_analysis": true,
-          "structured_semantic_adjudication": true,
-          "web_link_and_metadata_review": true,
-          "cross_incident_consistency_review": true
-        },
-        "known_limitations": [
-          "Admission is bounded to sources already preserved in the canonical Incident; absence of an admitted assessment does not establish that none exists externally.",
-          "A source may serve both occurrence-evidence and assessment roles, but registry inclusion, ordinary reporting or provider acknowledgement alone is not treated as an assessment.",
-          "No taxonomy mapping or Harm Impact severity was changed to match external terminology."
-        ],
-        "review_outcome": "Admitted 1 attributable external assessment: Mistral AI — TanStack supply chain attack affecting Mistral SDK packages. Existing occurrence evidence and VIGIL adjudication remain unchanged."
-      },
-      {
-        "review_id": "VIGIL-REVIEW-2026-09-20-HIM-1.0.1-EVIDENCE-000095",
-        "reviewer_type": "AI analytical reviewer",
-        "reviewer_platform": "OpenAI Codex",
-        "reviewer_model": "GPT-5",
-        "review_date": "2026-09-20",
-        "review_scope": "Incident-specific review of all eleven VIGIL-HIM 1.0.1 dimensions with a fresh occurrence-focused external search and append-only evidence ingestion. Failure Taxonomy adjudications were not reopened.",
-        "capability_profile": {
-          "direct_repository_analysis": true,
-          "direct_text_analysis": true,
-          "web_link_and_metadata_review": true,
-          "structured_threshold_comparison": true
-        },
-        "known_limitations": [
-          "Context-only or non-occurrence-specific sources were not used as row-local Harm Impact proof.",
-          "Absence of discoverable reporting was not treated as evidence of no harm; unresolved dimensions remain unreported or insufficient-evidence.",
-          "Materialised harm was not inferred from capability, notoriety, registry inclusion or hypothetical worst-case consequences."
-        ],
-        "review_outcome": "Independent reporting corroborates malicious package publication, credential-harvesting behavior and prompt removal; S2 operational harm remains unchanged."
-      },
-      {
-        "review_id": "VIGIL-REVIEW-2026-09-21-AGENT-ENV-000095",
-        "reviewer_type": "AI analytical reviewer",
-        "reviewer_platform": "OpenAI Codex",
-        "reviewer_model": "GPT-5",
-        "review_date": "2026-09-21",
-        "review_scope": "Occurrence-level agent configuration and occurrence-environment metadata migration using sources already preserved in the Incident.",
-        "capability_profile": {
-          "direct_repository_analysis": true,
-          "direct_text_analysis": true,
-          "structured_cross_record_reconciliation": true,
-          "new_external_source_research": false
-        },
-        "known_limitations": [
-          "The review is bounded to evidence already preserved in each Incident and does not infer agent count, swarm topology, deployment state or testing ownership from silence.",
-          "Unknown classifications require later human or evidence-led review if more specific architecture evidence becomes available."
-        ],
-        "review_outcome": "Added canonical agent_context and occurrence_environment metadata without changing factual, taxonomy or Harm Impact adjudications."
-      },
-      {
-        "review_id": "VIGIL-REVIEW-2026-09-21-TAXONOMY-READJUDICATION-000095",
-        "reviewer_type": "AI analytical reviewer",
-        "reviewer_platform": "OpenAI ChatGPT",
-        "reviewer_model": "GPT-5.6 Sol",
-        "review_date": "2026-09-21",
-        "review_scope": "Deterministic current-taxonomy re-adjudication against VIGIL Failure Taxonomy 0.6.5 using the complete active selectable class set and evidence already preserved in the canonical Incident. Existing external-assessment objects and qualifying attributable analytical positions in preserved source material were checked for structured external-assessment treatment. No new external source research was performed. Harm Impact, source roles, occurrence facts, agent/environment metadata, external-requirement mappings and CAM applicability were not reopened.",
-        "capability_profile": {
-          "direct_repository_analysis": true,
-          "direct_text_analysis": true,
-          "structured_cross_record_reconciliation": true,
-          "full_current_taxonomy_review": true,
-          "external_assessment_consistency_review": true,
-          "new_external_source_research": false
-        },
-        "known_limitations": [
-          "The review is bounded to evidence already preserved in the canonical Incident and does not infer internal mechanisms from title, harm, provider identity, notoriety, registry inclusion or plausible but undocumented system behaviour.",
-          "Candidate rejection does not establish that the mechanism was impossible; it means the preserved occurrence evidence does not satisfy the current selectable class boundary.",
-          "External assessments are preserved as attributable analytical positions and are not treated as automatic proof of VIGIL taxonomy membership."
-        ],
-        "review_outcome": "Retained unclassified under taxonomy 0.6.5. Possible taxonomy gap: malicious package-distribution or software-supply-chain provenance substitution where trusted release identity carries attacker-supplied executable content."
-      },
-      {
-        "review_id": "CLAUSE-RECONCILIATION-2026-09-30-INC-000095",
-        "reviewer_type": "AI analytical reviewer",
-        "reviewer_platform": "OpenAI ChatGPT",
-        "reviewer_model": "GPT-5.6 Sol",
-        "review_date": "2026-09-30",
-        "review_scope": "Incident-by-incident functional decomposition review of the preserved occurrence evidence and source_clause_analysis, testing whether materially distinct mechanisms, authority boundaries, control states, and failure or recovery pathways are represented. No harm reassessment or taxonomy re-adjudication was performed.",
-        "capability_profile": {
-          "direct_repository_analysis": true,
-          "direct_text_analysis": true,
-          "structured_semantic_adjudication": true,
-          "full_current_taxonomy_review": false,
-          "new_external_source_research": false
-        },
-        "known_limitations": [
-          "The review is bounded to evidence already preserved in the canonical Incident.",
-          "Existing canonical taxonomy history and taxonomy version were preserved; absence of a new mapping in this pass is not a full-taxonomy no-mapping determination."
-        ],
-        "review_outcome": "Outcome metadata completed on 2026-10-01 from the immediately following preserved clause-level review: All three material clauses were re-tested against taxonomy 0.6.9. The direct malicious import/credential-harvesting component remains resolved-no-mapping rather than being forced into a model-governance class. FC-000010 remains an ambiguous boundary because trusted Mistral package identity carried attacker-supplied executable content but the precise attribution/provenance mechanism is not fully established. FC-000083 remains an ambiguous boundary because external detection and later removal are evidenced without one identified operative Mistral control whose effect can be adjudicated. Legacy boundary-role labels were normalised. Coverage remains complete."
-      },
-      {
-        "review_id": "VIGIL-REVIEW-2026-09-30-CLAUSE-TAXONOMY-ADJUDICATION-000095",
-        "reviewer_type": "AI analytical reviewer",
-        "reviewer_platform": "OpenAI ChatGPT",
-        "reviewer_model": "GPT-5.6 Sol",
-        "review_date": "2026-09-30",
-        "review_scope": "Clause-level adjudication of every material source clause against the canonical VIGIL Alignment Taxonomy 0.6.9, including recognition criteria, exclusions, mapping-local role and Incident coverage reconciliation.",
-        "capability_profile": {
-          "direct_repository_analysis": true,
-          "direct_text_analysis": true,
-          "taxonomy_review": true,
-          "structured_semantic_adjudication": true,
-          "new_external_source_research": false,
-          "external_requirement_review": false,
-          "harm_impact_review": false
-        },
-        "known_limitations": [
-          "The record does not link external Aikido detection to a specific operative Mistral protective control or establish the precise release-provenance substitution mechanism.",
-          "External-requirement applicability and Harm Impact were not reopened."
-        ],
-        "review_outcome": "All three material clauses were re-tested against taxonomy 0.6.9. The direct malicious import/credential-harvesting component remains resolved-no-mapping rather than being forced into a model-governance class. FC-000010 remains an ambiguous boundary because trusted Mistral package identity carried attacker-supplied executable content but the precise attribution/provenance mechanism is not fully established. FC-000083 remains an ambiguous boundary because external detection and later removal are evidenced without one identified operative Mistral control whose effect can be adjudicated. Legacy boundary-role labels were normalised. Coverage remains complete."
-      },
-      {
-        "review_id": "VIGIL-REVIEW-2026-10-01-EXTREQ-ADJUDICATION-000095",
-        "reviewer_type": "AI analytical reviewer",
-        "reviewer_platform": "OpenAI Codex",
-        "reviewer_model": "GPT-6",
-        "review_date": "2026-10-01",
-        "review_scope": "Independent external-requirement applicability review against current material source clauses, canonical mapped-class references, source_records and canonical EXTREQ conditions; review excludes both adjudication/candidate matrices.",
-        "capability_profile": {
-          "direct_repository_analysis": true,
-          "direct_text_analysis": true,
-          "web_research": true,
-          "external_requirement_review": true,
-          "taxonomy_review": true,
-          "harm_impact_review": false
-        },
-        "known_limitations": [
-          "The occurrence review remains bounded to preserved source_records and material clauses; some public URLs could not be freshly reopened or exposed only limited text. No missing internal control, framework adoption or legal nexus is inferred.",
-          "Licensed IEEE primary texts were unavailable in this session; the branch’s documented licensed primary-text fidelity reviews and canonical clause conditions were used alongside public publisher scope/version information. The IMDA primary PDF was blocked on re-access; canonical documented primary-text extraction was used. No fresh full-text review of these unavailable sources is claimed."
-        ],
-        "review_outcome": "Adjudicated 3 current requirement candidates independently. new EXTREQ-233EE01AB85DB0F0; new EXTREQ-7B5B8E05C23D17D5; new EXTREQ-B71F509BD66AD387; completed missing historical review_outcome for CLAUSE-RECONCILIATION-2026-09-30-INC-000095 without removing or replacing the historical entry. All non-applicable or insufficient-evidence entries omit finding and finding_basis; occurrence evidence and contextual references remain canonical in their original fields."
-      },
-      {
-        "review_id": "VIGIL-REVIEW-2026-10-02-STAGE4-000095",
-        "reviewer_type": "AI analytical reviewer",
-        "reviewer_platform": "OpenAI Codex",
-        "reviewer_model": "GPT-6",
-        "review_date": "2026-10-02",
-        "review_scope": "Preservation-led Stage 4 clause, polarity and local external-requirement reconciliation.",
-        "capability_profile": {
-          "direct_repository_analysis": true,
-          "direct_text_analysis": true,
-          "taxonomy_review": true,
-          "external_requirement_review": true,
-          "harm_impact_review": false,
-          "new_external_source_research": false
-        },
-        "known_limitations": [
-          "Preserved attributed evidence bounds the review; hidden control/permission traces unavailable.",
-          "No new IEEE extraction; admitted metadata and reviewed paths only.",
-          "Conclusion uses existing governance_interpretation; no discussion-field contract."
-        ],
-        "review_outcome": "Retained 3 clause decisions; Independently assessed 42 admitted local candidates; archived excluded historical assessments."
-      },
-      {
-        "review_id": "VIGIL-REVIEW-2026-10-04-EXTERNAL-ALIGNMENT-000095",
-        "reviewer_type": "AI analytical reviewer",
-        "reviewer_platform": "OpenAI ChatGPT Work",
-        "reviewer_model": "GPT-6",
-        "review_date": "2026-10-04",
-        "review_scope": "Independent occurrence relevance and alignment review of external requirements; normative force remains source metadata.",
-        "capability_profile": {
-          "direct_repository_analysis": true,
-          "direct_text_analysis": true,
-          "external_requirement_review": true,
-          "taxonomy_review": false,
-          "harm_impact_review": false,
-          "web_research": false
-        },
-        "known_limitations": [
-          "Assessment uses preserved occurrence evidence and canonical requirement propositions; internal implementation evidence remains unavailable where stated.",
-          "This review is AI-authored, not human verification or certification."
-        ],
-        "review_outcome": "Reviewed 46 recovered or independently identified requirements; retained 9 relevant independent assessments. Prior values and exclusions remain in the dated audit."
-      },
-      {
-        "review_id": "VIGIL-REVIEW-2026-10-09-PHASE3-BATCH08-000095",
-        "reviewer_type": "AI analytical reviewer",
-        "reviewer_platform": "OpenAI ChatGPT Work — Codex",
-        "reviewer_model": "GPT-6",
-        "review_date": "2026-10-09",
-        "review_scope": "Source-first occurrence, chronology and duplicate review; public narrative and external evidence-reference reconciliation.",
-        "capability_profile": {
-          "web_research": true,
-          "direct_primary_source_review": true,
-          "direct_repository_analysis": true,
-          "taxonomy_review": true,
-          "harm_impact_review": false,
-          "new_external_source_research": true
-        },
-        "known_limitations": [
-          "No customer-level stolen-credential count or complete Mistral internal control chain is public.",
-          "Advisory HTML truncates minute fields in publication/removal timestamps; no precise minute is reconstructed.",
-          "Aikido describes a wider campaign, not a proven identical payload execution in each Mistral package.",
-          "Bounded AI-authored review, not human verification or source-exhaustiveness certification."
-        ],
-        "review_outcome": "Reconciled 3 clauses into 6 episodes; canonical mappings, HIM, independent external decisions and existing gap status retained."
-      },
-      {
-        "review_id": "VIGIL-REVIEW-2026-10-18-PUBLIC-PROSE-73-000095",
-        "reviewer_type": "AI analytical reviewer",
-        "reviewer_platform": "OpenAI Codex",
-        "reviewer_model": "GPT-6",
-        "review_date": "2026-10-18",
-        "review_scope": "Human-approved repair of public taxonomy-number shorthand and review-process narration. Each affected explanation reviewed against the preserved occurrence and mapping basis. No new source research or substantive re-adjudication.",
-        "capability_profile": {
-          "direct_repository_analysis": true,
-          "direct_text_analysis": true,
-          "new_external_source_research": false,
-          "taxonomy_review": false,
-          "harm_impact_review": false,
-          "external_requirement_review": false
-        },
-        "known_limitations": [
-          "Review is bounded to evidence and adjudications already preserved in the Incident.",
-          "AI-authored review is not independent human verification."
-        ],
-        "review_outcome": "Replaced internal-number shorthand with occurrence-specific explanations. Preserved evidence, quotations, episode order and identity, source references, classification results, mapping roles and confidence, external requirements and Harm Impact. Prior public prose retained in the dated repair audit."
-      },
-      {
-        "review_id": "VIGIL-REVIEW-2026-10-18-ISSUE126-HIM-000095",
-        "reviewer_type": "AI analytical reviewer",
-        "reviewer_platform": "OpenAI ChatGPT Work — Codex",
-        "reviewer_model": "GPT-6",
-        "review_date": "2026-10-18",
-        "review_scope": "Source-first twelve-dimensional HIM reassessment, exclusive pathway selection and public consequence reconciliation; taxonomy and external-requirement adjudications preserved.",
-        "capability_profile": {
-          "direct_repository_analysis": true,
-          "direct_text_analysis": true,
-          "web_research": true,
-          "harm_impact_review": true,
-          "taxonomy_review": false
-        },
-        "known_limitations": [
-          "AI-authored review is not human source verification. Source access and claim-relative limits are retained in the dated audit.",
-          "No provider-wide reach, attempted payment, claimed damages or unallocated campaign quantity is treated as demonstrated occurrence-specific loss."
-        ],
-        "review_outcome": "HIM 1.0.1 S2 → working HIM 1.1.0 S2. Controlling dimensions: property-asset-damage."
-      },
-      {
-        "review_id": "VIGIL-REVIEW-2026-10-19-BOUNDARY-SOURCE-FIRST-000095",
-        "reviewer_type": "AI analytical reviewer",
-        "reviewer_platform": "OpenAI Codex",
-        "reviewer_model": "GPT-6",
-        "review_date": "2026-10-19",
-        "review_scope": "Whole-record source-first taxonomy review; provenance and distribution-containment adjudication.",
-        "capability_profile": {
-          "direct_repository_analysis": true,
-          "direct_text_analysis": true,
-          "web_research": true,
-          "taxonomy_review": true,
-          "harm_impact_review": false,
-          "external_requirement_review": false
-        },
-        "known_limitations": [
-          "Prior mapping outcomes were visible; this is not blinded independent validation.",
-          "Private release records and downstream customer forensics were not inspected.",
-          "No new HIM or independent external-assessment adjudication."
-        ],
-        "review_outcome": "Two Boundary mappings changed to distinct bounded negative attribution and positive containment outcomes. Historical confidence preserved. Unrepresented executable-asset integrity remains a taxonomy gap."
-      },
-      {
-        "review_id": "VIGIL-REVIEW-2026-10-19-CONTRACT-REASSESSMENT-000095",
-        "reviewer_type": "AI analytical reviewer",
-        "reviewer_platform": "OpenAI Codex",
-        "reviewer_model": "GPT-6",
-        "review_date": "2026-10-19",
-        "review_scope": "Reassessment of the whole affected record under the revised exclusion-precedence, condition-specific-proof and completion-reconciliation contract.",
-        "capability_profile": {
-          "direct_repository_analysis": true,
-          "direct_text_analysis": true,
-          "web_research": true,
-          "taxonomy_review": true,
-          "harm_impact_review": false,
-          "external_requirement_review": false
-        },
-        "known_limitations": [
-          "Prior outcomes were visible; same-model review is not independent inter-rater validation.",
-          "Source and interpretation limits and any pending decisive evidence are set out in the linked packet.",
-          "HIM and independent external assessments were preserved, not re-adjudicated."
-        ],
-        "review_outcome": "Re-tested attribution and the full bounded withdrawal/quarantine sequence with separate condition and exclusion evidence; retained both roles and the executable-integrity gap."
-      },
-      {
-        "review_id": "VIGIL-REVIEW-2026-10-22-CONTEXT-000095",
-        "reviewer_type": "AI analytical reviewer",
-        "reviewer_platform": "OpenAI ChatGPT Work / Codex",
-        "reviewer_model": "Codex (specific runtime model identifier not exposed)",
-        "review_date": "2026-10-22",
-        "review_scope": "Gate 2 approved additive Incident Context review. Source-linked parties and geographic relationships only.",
-        "capability_profile": {
-          "direct_repository_analysis": true,
-          "direct_text_analysis": true,
-          "web_research": false,
-          "taxonomy_review": false,
-          "harm_impact_review": false,
-          "external_requirement_review": false
-        },
-        "known_limitations": [
-          "No global infrastructure breach is inferred; non-executing npm and working Linux-specific PyPI paths remain distinct.",
-          "AI-authored context review is not human source verification. Existing source-access statements remain historical."
-        ],
-        "review_outcome": "Added 4 party entities and 1 geographic relationships; geographic scope not-established. Preserved all prior narrative, evidence, taxonomy, Harm Impact and external assessments."
-      }
-    ],
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-22-CONTEXT-000095",
+      "review_id": "VIGIL-REVIEW-2026-10-27-090-DELTA-000095",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT Work / Codex",
-      "reviewer_model": "Codex (specific runtime model identifier not exposed)",
-      "review_date": "2026-10-22",
-      "review_scope": "Gate 2 approved additive Incident Context review. Source-linked parties and geographic relationships only.",
+      "reviewer_platform": "OpenAI Codex",
+      "reviewer_model": "GPT-6",
+      "review_date": "2026-10-27",
+      "review_scope": "Targeted published v0.9.0 adjudication of Protected Information Access Integrity and Authentication Material Custody Integrity. Prior taxonomy, harm and external findings preserved; direct NIST propositions independently assessed where supported.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
-        "web_research": false,
-        "taxonomy_review": false,
+        "taxonomy_review": true,
+        "external_requirement_review": true,
         "harm_impact_review": false,
-        "external_requirement_review": false
+        "web_research": false
       },
       "known_limitations": [
-        "No global infrastructure breach is inferred; non-executing npm and working Linux-specific PyPI paths remain distinct.",
-        "AI-authored context review is not human source verification. Existing source-access statements remain historical."
+        "AI-authored analysis, not human verification. No live vulnerable system or private secret was accessed.",
+        "The taxonomy review is limited to the two new classes; existing classes were preserved, not freshly re-adjudicated.",
+        "Attributed occurrence reports retain their source-specific limits. No assurance about unobserved targets, copies or credential use is inferred."
       ],
-      "review_outcome": "Added 4 party entities and 1 geographic relationships; geographic scope not-established. Preserved all prior narrative, evidence, taxonomy, Harm Impact and external assessments."
+      "review_outcome": "The Mistral advisory identifies unauthorised compromised SDK releases and a Python upload outside the normal release lineage. Package contents were changed through the trusted distribution surface. Public package readability does not authorise an unrelated party to replace its release content. No unobserved victim-secret exfiltration is inferred."
     }
   },
   "harm_impact_assessment": {
@@ -1074,6 +676,25 @@
       "source_episode_refs": [
         "E005",
         "E006"
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-FA4D888041BED657",
+      "alignment_result": "not-aligned",
+      "assessment_basis": "The access-enforcement proposition requires approved logical-access authorisations to be enforced for information and system resources. The observed information operation was outside the approved boundary. Compromised SDK versions were published through a trusted release identity outside the normal release lineage. Publication changed the protected package contents. This is distinct from whether a victim later executed credential harvesting. This is a bounded retrospective comparison with the selected control proposition, not a claim of certification or an independently binding historical duty.",
+      "assessed_on": "2026-10-27",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[3]"
+      ],
+      "derived_from_class_ids": [
+        "VIGIL-FC-000089"
+      ],
+      "source_clause_indices": [
+        1
+      ],
+      "source_episode_refs": [
+        "E002"
       ]
     }
   ],
