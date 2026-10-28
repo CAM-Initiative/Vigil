@@ -1,3 +1,7 @@
 # Current audit progress
 
-All 681 dispositions have review packets (662 batched and19 original preliminary). Final reconciliation, consolidated register and semantic QA are in progress. Canonical records and taxonomy remain unchanged. Remote connector history is authoritative; local history must not overwrite it.
+**Audit complete:681/681 reviewed; zero pending or excluded.**
+
+446 retain;115 existing-class reconsiderations;115 explicit evidence findings;3 clarifications;2 consolidated candidate concepts. All19 preliminary packets reconciled. Final register:CLAUSE-REGISTER.json. Executive findings:README.md. QA:FINAL-QA.json. Human adjudication pending; no canonical/taxonomy/production changes.
+
+Historical batches/checkpoints retain their earlier progress counts. GitHub remote history is authoritative; do not overwrite it from the formerly stale local branch. This is a bounded review artifact, not a new normative database.
