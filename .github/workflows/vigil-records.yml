@@ -107,6 +107,11 @@ jobs:
           python vigil/tests/test_authorship_provenance.py
           python vigil/scripts/validate-authorship-provenance.py
 
+      # Keep the approval-gated publication checks independently observable,
+      # even when unrelated legacy corpus assertions fail during discovery.
+      - name: Test isolated Incident publication versioning and Git history
+        run: python vigil/tests/test_incident_publication_versions.py
+
       - name: Test full VIGIL corpus and maintenance contracts
         run: python -m unittest discover -s vigil/tests -p 'test_*.py'
 
