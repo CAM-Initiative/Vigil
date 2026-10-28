@@ -31,6 +31,16 @@ jobs:
       - name: Test publication guard and manifest
         run: python vigil/tests/test_incident_publication_versions.py
 
+      # Exercise the production manifest builder against current committed main
+      # records without writing an artifact or touching canonical records.
+      - name: Dry-run publication manifest against committed main records
+        run: |
+          git fetch --no-tags origin main
+          main_worktree="$RUNNER_TEMP/vigil-main-publication-snapshot"
+          git worktree add --detach "$main_worktree" refs/remotes/origin/main
+          python vigil/scripts/build-incident-publication-manifest.py \
+            --repo "$main_worktree" --dry-run
+
       # This check has no path filter: branch rulesets must receive a result on
       # every main PR, including documentation-only PRs with no Incident rows.
       - name: Validate Incident publication versions against fresh main
