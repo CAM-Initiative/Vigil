@@ -170,5 +170,44 @@ class SyntheticGitIntegration(unittest.TestCase):
                                                       "head": {"sha": head}, "body": "review only"}}, self.root), [])
 
 
+
+MANIFEST_SCRIPT = Path(__file__).resolve().parents[1] / "scripts" / "build-incident-publication-manifest.py"
+_manifest_spec = importlib.util.spec_from_file_location("vigil_incident_publication_manifest", MANIFEST_SCRIPT)
+manifest = importlib.util.module_from_spec(_manifest_spec)
+assert _manifest_spec and _manifest_spec.loader
+_manifest_spec.loader.exec_module(manifest)
+
+
+class ManifestIntegration(SyntheticGitIntegration):
+    def test_manifest_matches_committed_source(self):
+        document = manifest.build(self.root)
+        self.assertEqual(document["record_count"], 1)
+        entry = document["records"][0]
+        self.assertEqual(entry["incident_id"], ID)
+        self.assertEqual(entry["source_commit"], self.base)
+        self.assertEqual(entry["version"], "1.4.11")
+        self.assertEqual(entry["previous_version"], None)
+        self.assertEqual(entry["git_blob"], self.blob)
+
+    def test_manifest_stable_after_generated_only_commit(self):
+        original = manifest.build(self.root)
+        (self.root / "test-index.json").write_text('{"generated":true}\n', encoding="utf-8")
+        self.run_git("add", "test-index.json")
+        self.run_git("commit", "-m", "Generated output only")
+        self.assertEqual(original, manifest.build(self.root))
+
+    def test_manifest_detects_uncommitted_canonical_edit(self):
+        self.write_record(record("1.4.12", summary="uncommitted"))
+        with self.assertRaisesRegex(ValueError, "differs from committed"):
+            manifest.build(self.root)
+
+    def test_manifest_new_revision_has_predecessor(self):
+        self.run_git("checkout", "main")
+        self.commit(record("1.5.0", mapped=True))
+        entry = manifest.build(self.root)["records"][0]
+        self.assertEqual(entry["version"], "1.5.0")
+        self.assertEqual(entry["previous_version"], "1.4.11")
+
+
 if __name__ == "__main__":
     unittest.main()
