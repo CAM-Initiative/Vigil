@@ -121,6 +121,33 @@ class CompactReviewArchiveFixture(unittest.TestCase):
         d["interpretive_provenance"]["current_ai_review"]["review_outcome"] = "Changed without index"
         self.assert_bad(d, "current review digest mismatch")
 
+    def test_unknown_original_model_stays_null(self):
+        # Do not invent a vendor/model for an older reviewer with incomplete
+        # contemporaneous attribution. The original Git object is authority.
+        self.git("checkout", "archive")
+        self.old["reviewer_model"] = None
+        historical = {
+            "id": ID, "date_recorded": "2026-10-09",
+            "record_identity": {"created": "2026-10-09"},
+            "interpretive_provenance": {
+                "review_history": [self.old], "current_ai_review": self.old
+            },
+        }
+        self.put(historical)
+        self.git("add", RECORD)
+        self.git("commit", "-m", "Source recorded unknown model")
+        commit = self.git("rev-parse", "HEAD")
+        blob = self.git("rev-parse", "HEAD:"+RECORD)
+        self.git("checkout", "working")
+        doc = copy.deepcopy(self.record)
+        entry = doc["interpretive_provenance"]["review_history_index"][0]
+        entry["reviewer_model"] = None
+        entry["review_sha256"] = archive.review_digest(self.old)
+        batch = doc["interpretive_provenance"]["review_archive_batches"][0]
+        batch["source_commit"] = commit
+        batch["source_blob_sha"] = blob
+        self.assertEqual(self.errors(doc), [])
+
     def test_reject_forged_reviewer(self):
         d = copy.deepcopy(self.record)
         d["interpretive_provenance"]["review_history_index"][0]["reviewer_type"] = "human"
