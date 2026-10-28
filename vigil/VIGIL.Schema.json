@@ -883,13 +883,22 @@
   "interpretive_provenance_rules": {
     "required_for_all_records": true,
     "required_fields": [
-      "review_history",
       "current_ai_review",
       "operating_model",
       "human_governance_editor",
       "historical_reviewer_note"
     ],
-    "review_history_rule": "Append reviews; do not overwrite or retroactively invent earlier reviewer model identities.",
+    "provenance_storage_modes": {
+      "legacy": "Full nonempty review_history including current_ai_review; accepted without migration for every existing Incident.",
+      "compact": "Opt-in ONLY: full current_ai_review plus review_history_index and review_archive_batches; review_history must be absent. Every earlier review must resolve to an exact full object in a pinned Git blob. Unknown original reviewer identity must never be invented.",
+      "exclusive": "Exactly one mode per Incident. Compact mode is selected by either new compact field; both compact fields are mandatory. Contradictory mixed history is invalid.",
+      "current_integrity": "The final review_history_index entry must exactly match the complete current_ai_review identity, date and SHA-256 digest of canonical sorted-key full review JSON.",
+      "archive_integrity": "Every historical entry carries full-object SHA-256 and original reviewer identity/date. Named Git batch includes exact commit, canonical path, blob SHA, covered review IDs and current repository retention ref; validate reachability and full object reconstruction. Reaching a mutable ref today does not prove permanent archival retention; protected retention is a separate Gate 2 prerequisite.",
+      "future_reviews": "When the current review is superseded, its exact full object must first remain retrievable in a pinned committed snapshot; append its index entry and archive coverage without losing earlier pinned batches.",
+      "index_required_fields": ["review_id", "review_date", "reviewer_type", "reviewer_platform", "reviewer_model", "review_sha256", "archive_batch_id"],
+      "batch_required_fields": ["batch_id", "source_commit", "source_path", "source_blob_sha", "retention_ref", "review_ids"]
+    },
+    "review_history_rule": "Legacy full review_history is append-only. An opt-in compact review_history_index is append-only and its full historical objects remain independently recoverable from verified immutable Git sources.",
     "chronology_rule": "Every review_date must be a valid ISO YYYY-MM-DD date on or after the calendar-date component of record_identity.created (or date_recorded where created is unavailable). A review must never be backdated or attached to a record that did not yet exist.",
     "current_ai_review_required_fields": [
       "review_id",
