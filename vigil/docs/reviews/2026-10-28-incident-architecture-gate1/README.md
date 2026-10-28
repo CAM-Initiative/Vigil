@@ -12,7 +12,7 @@
 Prepare one integrated, source- and repository-grounded **Gate 1 decision** before many incident re-adjudication passes. Cover:
 
 1. **Lightweight canonical Incident records** while retaining full accepted evidence/chronology, classification reasoning, exclusions, meaningful uncertainty, HIM and external-governance determinations.
-2. **Independently versioned Incident publications**: stable `VIGIL-INC-NNNNNN` identity, one controlled revision per substantively changed record when an authorised PR merges, no revision for unaffected records, no bot/source-file race.
+2. **Independently versioned Incident publications**: stable `VIGIL-INC-NNNNNN` identity; one highest-applicable **major/minor/patch** revision per changed Incident on authorised `main` publication, and no revision for unaffected records. [The numbering specification](INCIDENT-VERSION-NUMBERING.md) defines every change level and the first-published version separately from the taxonomy numbering rules.
 3. **Challenged classification review posture**: report the independent audit's challenge without manufacturing a new taxonomy disposition or deleting a previously supported finding.
 
 ## Frozen inputs and measured pilot
@@ -33,6 +33,7 @@ The five already named storage-pilot records are `INC034`, `INC062`, `INC101`, `
 
 - [SIZE-PILOT.json](SIZE-PILOT.json): exact five-record size baselines and illustrative alternatives; metadata only; no complete records copied.
 - [GATE1-DECISION.md](GATE1-DECISION.md): integrated options, preferred design, rejection cases, current/proposed semantics and explicit approval questions.
+- [INCIDENT-VERSION-NUMBERING.md](INCIDENT-VERSION-NUMBERING.md): **explicit version meanings and worked examples**—new Incident `0.1.0`; major for exceptionally approved identity/scope change; minor for substantive evidence or classification/HIM/EXTREQ change; patch for record maintenance; no bump for unrelated changes. One highest increment from fresh main, never from the number of ingestion-branch edits.
 - [IMPLEMENTATION-PLAN.md](IMPLEMENTATION-PLAN.md): staged gates, fixture tests, dependencies, failure handling, review/retirement procedure and rollback.
 
 **No production schema, validator, builder, workflow, canonical Incident, classification, HIM, EXTREQ or taxonomy changes are authorised or included in this design branch.** The branch is a live review workspace; at closeout promote only accepted general methodology to `vigil/docs/maintenance/` and retire temporary packets with pinned recovery SHA under the existing retention rule.
