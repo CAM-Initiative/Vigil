@@ -23,7 +23,7 @@ RECORD_PATH = re.compile(r"^vigil/records/incidents/(VIGIL-INC-[0-9]{6})\.json$"
 VERSION = re.compile(r"^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$")
 LEVELS = {"major", "minor", "patch", "initial"}
 BLOCK = re.compile(r"(?ms)^~~~vigil-incident-release[ \t]*\n(.*?)\n~~~[ \t]*$")
-BLOB = re.compile(r"^[0-9a-f]{40,64}$")
+BLOB = re.compile(r"^(?:[0-9a-f]{40}|[0-9a-f]{64})$")
 
 class ReleaseError(ValueError):
     """A change cannot safely be published."""
@@ -150,10 +150,20 @@ def verify_record(*, ident: str, published: dict[str, Any] | None,
     return expected
 
 def json_at(ref: str, path: str, root: Path) -> dict[str, Any] | None:
-    try:
-        data = git("show", f"{ref}:{path}", root=root)
-    except ReleaseError:
+    # Distinguish an absent path (a genuinely new Incident) from Git/object
+    # errors. Treating every show failure as absence can bypass the published
+    # version baseline when a checkout is incomplete or corrupt.
+    entry = git("ls-tree", "-z", ref, "--", path, root=root)
+    if not entry:
         return None
+    rows = [row for row in entry.split("\\0") if row]
+    if len(rows) != 1 or "\\t" not in rows[0]:
+        raise ReleaseError(f"{ref}:{path}: unexpected Git tree entry")
+    metadata, found_path = rows[0].split("\\t", 1)
+    fields = metadata.split()
+    if found_path != path or len(fields) != 3 or fields[1] != "blob":
+        raise ReleaseError(f"{ref}:{path}: expected one canonical file blob")
+    data = git("show", f"{ref}:{path}", root=root)
     try:
         parsed = json.loads(data)
     except json.JSONDecodeError as exc:
