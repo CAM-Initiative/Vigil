@@ -9,11 +9,10 @@ any version enforcement or pipeline change is implemented.
 from __future__ import annotations
 
 import argparse
-import json
 import re
 import unittest
 
-VERSION = re.compile(r"^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$")
+VERSION = re.compile(r"^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$")
 LEVELS = {"major", "minor", "patch", "none"}
 RANK = {"none": 0, "patch": 1, "minor": 2, "major": 3}
 
