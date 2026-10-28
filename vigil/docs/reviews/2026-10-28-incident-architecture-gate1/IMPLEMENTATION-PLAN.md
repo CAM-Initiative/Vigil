@@ -22,7 +22,7 @@
 
 **Required before semantic controls change:**
 - Exact approved legacy/compact provenance shapes, archive source and recoverability requirements.
-- Exact changed-payload definition and conflict handling for per-Incident version bump; note the ingestion→main two-stage pipeline.
+- Explicit per-Incident **major/minor/patch/none** definitions, first published version `0.1.0`, published-main baseline, declaration and conflict handling (see [numbering contract](INCIDENT-VERSION-NUMBERING.md)); note the ingestion→main two-stage pipeline.
 - Exact review-challenge scope and public visibility/retirement requirement.
 - New passing/failing examples for all three.
 - Read-only impact inventory beyond five size-pilot records.
@@ -36,21 +36,26 @@
 
 ### A. Versioned publication contract test matrix
 
+The proposed [Incident numbering policy](INCIDENT-VERSION-NUMBERING.md) **replaces the earlier patch-only assumption**: select exactly one highest applicable change level per Incident at final main integration. Human source-first review determines whether a change is substantive; mechanical tools verify arithmetic and freshness.
+
 | Fixture | Proposed expected result |
 | --- | --- |
 | No canonical Incident content changed; only audit/review docs changed | No Incident version bump; PR valid |
-| One Incident `0.1.16` content changed, single final main PR | Candidate `0.1.17`; accepted only if main still publishes `0.1.16` and content baseline reconciles |
-| INC034 `1.1.23` and INC145 `0.1.16` both modified | Independent proposed `1.1.24` / `0.1.17`; no global corpus version |
-| Same source Incident changed in three commits or several work PRs merged only into ingestion | One next-patch *published* version at final main integration, not three |
+| One Incident on published main `0.1.16`, source URL/typo corrected without changing occurrence or findings | Candidate **patch** `0.1.17`, subject to reviewed no-semantic-change declaration |
+| One Incident on published main `0.1.16`, new supported Fidelity Class mapping | Candidate **minor** `0.2.0`; current record's other source/harm/EXTREQ evidence still needs preservation | 
+| INC034 published as `1.1.23` gets provenance-only compaction and INC145 published as `0.1.16` gets a substantive new mapping in one PR | Independent **patch** `1.1.24` and **minor** `0.2.0` (only if those are actually the published main baselines); no global corpus version | 
+| Existing published `1.4.11` Incident exceptionally changes fundamental assessed identity/boundary and is approved to retain its ID | **Major** `2.0.0`; ordinarily prefer new Incident ID | 
+| Brand-new approved Incident ID absent from main, using current template | First published version `0.1.0`; multiple prepublication edits do not create releases |
+| Same source Incident changed in three commits or several work PRs merged only into ingestion | One highest-level **published** revision computed from fresh main at final integration, not three |
 | Two final PRs prepared from same main baseline; first merges and changes same Incident | Second fails freshness and requires rebase/source-first reconciliation and version recomputation |
-| Unchanged Incident version incremented without substantive payload change | Reject gratuitous bump |
-| Changed Incident keeps old version | Reject missing published revision |
+| Unchanged canonical Incident version incremented without changed record payload | Reject gratuitous bump, including when audit worksheets or public indexes changed |
+| Changed published Incident source record keeps its published-main version | Reject missing version bump; source-first level declaration determines major/minor/patch |
 | Future taxonomy edition published with no Incident change | Do not patch untouched Incident; taxonomy authority remains independent |
 | Bot-generated public index/manifest update only | Do not edit canonical source or increment any Incident |
 | Merge source input commit already published but workflow reruns | Idempotent manifest/index build; no second revision |
 | Merge manifest includes own generated output SHA circularly | Reject design; use a stable canonical source snapshot/input commit |
 
-**CLI/workflow design requirements:** select exact target published `main` ref, identify changed canonical paths, compare semantic payload excluding explicitly publication-only stamp fields, parse each existing per-record version, require one candidate, report added/removed/changing IDs, and detect a changed-main conflict. Make computed candidate explicit for review. Final main-only generated manifest records actual content hash and stable source input commit. Tests must not have write access to existing canonical source records except an **explicit approved preparation command** run during final integration PR authoring.
+**CLI/workflow design requirements:** select exact target published `main` ref, identify changed canonical paths, compare changed payload excluding explicitly publication-only stamp fields, require a justified per-Incident change-level declaration, parse existing published version and compute exactly one candidate at the highest level, report added/removed/changing IDs, handle first publication separately, and detect changed-main conflicts. Make computed candidate explicit for review. Final main-only generated manifest records actual content hash and stable source input commit. Tests must not have write access to existing canonical source records except an **explicit approved preparation command** run during final integration PR authoring.
 
 ### B. Provenance storage tests
 
