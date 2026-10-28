@@ -1,0 +1,43 @@
+name: Incident publication gate
+
+on:
+  pull_request:
+    branches:
+      - main
+      - agent/incident-ecosystem-ingestion
+    # The release declaration is in the PR body, so body edits must rerun the check.
+    types: [opened, synchronize, reopened, edited, ready_for_review]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: incident-publication-gate-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  publication-check:
+    name: publication-check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.x"
+
+      - name: Test publication guard and manifest
+        run: python vigil/tests/test_incident_publication_versions.py
+
+      # This check has no path filter: branch rulesets must receive a result on
+      # every main PR, including documentation-only PRs with no Incident rows.
+      - name: Validate Incident publication versions against fresh main
+        if: github.base_ref == 'main'
+        env:
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          git fetch --no-tags origin main "$PR_HEAD_SHA"
+          python vigil/scripts/check-incident-publication-versions.py \
+            --event "$GITHUB_EVENT_PATH" --repo .
