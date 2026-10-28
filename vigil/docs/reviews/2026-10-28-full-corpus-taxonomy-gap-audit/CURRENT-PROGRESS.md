@@ -5,10 +5,10 @@ Status: **INCOMPLETE**.
 - Baseline: 0f008d983da72db962705fb9c732496e703cdb5e; taxonomy v0.9.0.
 - Population: 681 dispositions / 187 Incidents; 206 canonical Incidents.
 - Original preliminary packets: 19.
-- Completed batched packets: 619.
-- Total packets available: 638.
-- Still awaiting substantive packet: 43.
-- Latest batch: 44. Next: VIGIL-INC-000204:E002.
+- Completed batched packets: 632.
+- Total packets available: 651.
+- Still awaiting substantive packet: 30.
+- Latest batch: 45. Next: VIGIL-INC-000207:E001.
 
 The ledger and batch files are current. Initial checkpoint files and population status annotations are historical. Original packets remain preliminary; supplements preserve further assessments without duplicate completion counts. Consolidation, comparator work and semantic QA remain open.
 
