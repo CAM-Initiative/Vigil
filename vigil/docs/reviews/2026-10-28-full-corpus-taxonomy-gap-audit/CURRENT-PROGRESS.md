@@ -4,10 +4,10 @@ Status: **INCOMPLETE**. Baseline and taxonomy authority remain unchanged.
 
 - Population: 681 dispositions / 187 Incidents; 206 canonical Incidents.
 - Original preliminary source packets: 19.
-- Completed batched recommendation packets: 312.
-- Total packets available: 331.
-- Still awaiting substantive packet: 350.
-- Latest batch: 022, 5 rows.
+- Completed batched recommendation packets: 320.
+- Total packets available: 339.
+- Still awaiting substantive packet: 342.
+- Latest batch: 023, 8 rows.
 
 `completion-ledger.json` and `batches/` are current. `EXECUTION-CHECKPOINT.md`, `QA.json`, the initial population status annotations and the original 19 packets describe the earlier checkpoint; do not treat their counts as current. No earlier decisions have been deleted. All 206 canonical record hashes remain unchanged. No full-corpus completion claim is made.
 
