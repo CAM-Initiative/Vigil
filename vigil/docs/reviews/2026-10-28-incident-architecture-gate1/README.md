@@ -1,6 +1,11 @@
 # Incident architecture Gate 1 — coordinated design and pilot
 
-**28 October 2026 · Proposal, not approval.**
+## Gate 1 versioning implementation status — 28 October 2026
+
+**The maintainer has approved the independent Incident SemVer meanings and the narrowly scoped final-main publication control.** On this **draft, unmerged** architecture branch, `vigil/scripts/check-incident-publication-versions.py` and `vigil/scripts/build-incident-publication-manifest.py` are implemented, with an approved-scope change to `.github/workflows/vigil-records.yml` and isolated tests in `vigil/tests/test_incident_publication_versions.py`. **25 isolated GitHub Actions tests passed.** The repository-wide suite still has **two independently confirmed pre-existing failures**. See [versioning implementation checkpoint](VERSIONING-IMPLEMENTATION-CHECKPOINT.md). The control is **not active on published main**, and no canonical Incident or schema was edited. Separate #168/#176 architecture approvals and Gate 2 canonical migrations remain outstanding.
+
+
+**28 October 2026 · Versioning Gate 1 implementation approved and staged on draft branch; other Gate 1 areas still pending.**
 
 **Repository:** `CAM-Initiative/Vigil`  
 **Working branch:** `work/incident-architecture-gate1-20261028`, created **from the existing ingestion branch** `agent/incident-ecosystem-ingestion` at commit `0f008d983da72db962705fb9c732496e703cdb5e`, not from `main`.  
