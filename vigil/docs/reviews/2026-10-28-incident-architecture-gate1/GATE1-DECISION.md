@@ -1,6 +1,11 @@
 # Gate 1 decision paper: Incident storage, versioning and challenged review posture
 
-**28 October 2026 — proposal for human approval, no normative change.**
+## Versioning Gate 1 decision/update — 28 October 2026
+
+**Versioning control only:** The maintainer approved MAJOR/MINOR/PATCH semantics and separately approved the final-main-PR checker, reviewer-declared semantic change level, fresh-main comparison, initial staged version preservation and main-only deterministic manifest. The implementation is committed to draft PR #178, and 25 isolated tests passed in GitHub Actions. See [implementation checkpoint](VERSIONING-IMPLEMENTATION-CHECKPOINT.md) and [exact versioning-control disclosure](VERSIONING-GATE1-IMPLEMENTATION-REVIEW.md). **This does not approve storage-provenance schema (#168), review-challenge state (#176), record rewrites or Gate 2 migrations.** Existing paragraphs below are the historical Gate 1 design submitted before the versioning approval.
+
+
+**28 October 2026 — versioning Gate 1 approved and implemented only on unmerged branch; storage/challenge semantics remain proposals.**
 
 Related issues: [#168](https://github.com/CAM-Initiative/Vigil/issues/168), [#175](https://github.com/CAM-Initiative/Vigil/issues/175), [#176](https://github.com/CAM-Initiative/Vigil/issues/176), [#133](https://github.com/CAM-Initiative/Vigil/issues/133), [#173](https://github.com/CAM-Initiative/Vigil/issues/173). Source baseline is ingestion commit `0f008d983da72db962705fb9c732496e703cdb5e`, not `main`. All changes in this proposal are **hypothetical until explicitly approved** under `vigil/MAINTAINERS.md` Gate 1.
 
