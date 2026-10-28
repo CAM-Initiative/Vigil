@@ -152,7 +152,7 @@ def compact_provenance_errors(
                 errors.append(f"{label}: full current review digest mismatch")
         elif not isinstance(entry["archive_batch_id"], str):
             errors.append(f"{label}: historical review must name a recoverable archive batch")
-    if len(current_entries) != 1 or index[-1].get("review_id") != current_id:
+    if len(current_entries) != 1 or not isinstance(index[-1], dict) or index[-1].get("review_id") != current_id:
         errors.append("compact provenance: exactly one current review must be the final indexed review")
 
     batch_ids: set[str] = set()
@@ -200,9 +200,19 @@ def compact_provenance_errors(
             original = json.loads(_git(root, "show", f"{commit}:{source_path}"))
             if original.get("id") != ident:
                 raise ValueError("archived source Incident ID mismatch")
-            historic = (original.get("interpretive_provenance") or {}).get("review_history")
+            source_provenance = original.get("interpretive_provenance") or {}
+            historic = source_provenance.get("review_history")
             if not isinstance(historic, list):
-                raise ValueError("archived record lacks full historical review objects")
+                historic = []
+            # A later compact snapshot retains its full then-current review.
+            # Older reviews stay pinned by their original archive batches.
+            prior_current = source_provenance.get("current_ai_review")
+            if isinstance(prior_current, dict) and prior_current.get("review_id") not in [
+                r.get("review_id") for r in historic if isinstance(r, dict)
+            ]:
+                historic = [*historic, prior_current]
+            if not historic:
+                raise ValueError("archived source has no full review objects")
             recovered = {r.get("review_id"): r for r in historic
                          if isinstance(r, dict) and isinstance(r.get("review_id"), str)}
             if len(recovered) != len(historic):
