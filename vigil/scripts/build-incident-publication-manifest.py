@@ -42,7 +42,7 @@ def predecessor_text(root: Path, commit: str, path: str) -> str | None:
     if not entry:
         return None
     rows = [row for row in entry.split("\0") if row]
-    if len(rows) != 1 or "\\t" not in rows[0]:
+    if len(rows) != 1 or "\t" not in rows[0]:
         raise ValueError(f"{path}: unexpected predecessor tree entry")
     metadata, found_path = rows[0].split("\t", 1)
     fields = metadata.split()
