@@ -156,7 +156,7 @@ def json_at(ref: str, path: str, root: Path) -> dict[str, Any] | None:
     entry = git("ls-tree", "-z", ref, "--", path, root=root)
     if not entry:
         return None
-    rows = [row for row in entry.split("\\0") if row]
+    rows = [row for row in entry.split("\0") if row]
     if len(rows) != 1 or "\\t" not in rows[0]:
         raise ReleaseError(f"{ref}:{path}: unexpected Git tree entry")
     metadata, found_path = rows[0].split("\\t", 1)
