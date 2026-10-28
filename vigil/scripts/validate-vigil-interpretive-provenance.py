@@ -101,6 +101,11 @@ def main() -> int:
                 errors.append(f"{path}: current_ai_review missing {missing}")
             if current.get("reviewer_type") != "AI analytical reviewer":
                 errors.append(f"{path}: current reviewer must be identified as AI analytical reviewer")
+            current_date = parse_iso_date(current.get("review_date"))
+            if current_date is None:
+                errors.append(f"{path}: current_ai_review.review_date must be a valid ISO date")
+            elif created_date is not None and current_date < created_date:
+                errors.append(f"{path}: current_ai_review.review_date predates record creation")
             current_id = current.get("review_id")
             if "review_history" in provenance and isinstance(history, list) and not any(
                 isinstance(item, dict) and item.get("review_id") == current_id
