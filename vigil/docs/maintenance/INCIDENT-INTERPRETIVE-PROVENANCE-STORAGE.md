@@ -1,45 +1,31 @@
-# Interpretive provenance storage — Gate 1 opt-in contract
+# Incident interpretive provenance — current-state retention policy
 
-**Approved 28 October 2026, issue #168.** Initial implementation in draft PR #180. The approval authorises opt-in schema/validator support and lossless fixtures; **no canonical Incident migration or deletion is authorised**. Current VIGIL Incident evidence and adjudication, including every retained mixed-role taxonomy mapping and Boundary, are outside this storage change.
+**Maintainer decision:** 28 October 2026, revised issue #168 / PR #180. This replaces the superseded historical-review indexing/archive proposal. Implemented as a backward-compatible Gate 1 contract; **not an authorisation to bulk-edit canonical Incidents**.
 
-## Governing separation
+## Governing rule
 
-A canonical Incident must remain independently interpretable: retain its current complete `interpretive_provenance.current_ai_review`, existing `human_governance_editor` (where established), `operating_model`, `historical_reviewer_note`, source records, material findings and every necessary uncertainty. Superseded complete reviewer packets may move out of the *active JSON* only when all their full content remains independently verifiable and recoverable.
+**A canonical VIGIL Incident is a current evidence-and-assessment record, not a cumulative AI work diary.** Maintain the complete, attributable `interpretive_provenance.current_ai_review` in every Incident, with the original recorded reviewer platform/model, review date/scope, capability limitations and bounded review outcome. Preserve `human_governance_editor`, `operating_model`, `historical_reviewer_note` when present, accurately and without falsely implying human source verification or substantive approval.
 
-`vigil/docs/reviews/` remains a **temporary working notice board**, not a historical provenance archive. Do not treat an audit packet reference or unprotected feature branch as immutable storage. A Git source commit, path and blob SHA are source integrity anchors; a named retention ref establishes **present reachability** but **does not prove future permanence**.
+Keep all current substantive `source_records`, factual chronology, `vigil_assessment`, source-clause/episode dispositions, material negative findings and exclusions, supported taxonomy-class mappings with occurrence-specific reasons, unresolved Boundary reasoning, HIM assessments, EXTREQ assessments, uncertainty and external-relationship evidence. **No source, accepted finding, classification polarity, review authority or current limitation can be removed merely to reduce file size.**
 
-## Two supported representations
+**New canonical files must not create an accumulated full `review_history`.** Routine bulk taxonomy re-adjudications, unchanged-outcome confirmations, validator repairs, reviewer capability checklists, reconciliation worklists and temporary process notes belong in time-bounded working review artefacts, Git commits/PRs, and maintained methods where adopted, **not appended to canonical historical-review arrays**. Do not manufacture one new review-history object per mechanical maintenance action. Replace `current_ai_review` only when a new, genuine current review is completed, preserving original authorship claims and accuracy.
 
-- **Legacy (default, unchanged):** nonempty full `review_history[]` with the full current review represented in that history and separately as `current_ai_review`. All existing Incidents remain valid without backfill.
-- **Compact (strict opt-in):** full `current_ai_review`; nonempty `review_history_index[]` containing the original review ID, type, platform, model, date, SHA-256 of each **full source object**, and archive-batch ID for every *historical* review (null for the current one). `review_archive_batches[]` links each historical review to an original full JSON object inside an exact Git source commit/path/blob, with covered review IDs and a named retention ref. The old full `review_history` must be absent. A historical review can be covered by exactly one archive batch.
+## Accepted formats
 
-The index must retain all historical and current review identities in chronological order, with the current full review last. Never invent a reviewer model or human verification. Unknown original author/model values remain as recorded, including any existing limitations.
+- **Preferred:** full valid `current_ai_review`, with `review_history` absent.
+- **Legacy transition:** existing nonempty `review_history[]` is still accepted; every retained historical object must remain individually valid and the current review must resolve to it. Do not append new routine process history merely because the legacy field exists.
+- The abandoned `review_history_index` and `review_archive_batches` archive scheme is **not** part of this contract and is invalid.
 
-The verifier uses SHA-256 over UTF-8 JSON with sorted dictionary keys, compact separators and no lossy transformation, so fields such as scope, capabilities, limitations and outcome are all included in the full-object integrity check. It rejects wrong content, IDs, dates, batches, blobs, missing Git objects, inaccessible retention refs and contradictory simultaneous representations. A later review must preserve an archival batch pin of the previous `current_ai_review` before replacing it, while keeping all earlier batches discoverable.
+The canonical schema, main Incident validator, interpretive provenance validator and authoring template must agree. Failures of current reviewer identity, required full current review fields, date chronology, existing human-editor truthfulness or retained legacy history remain real failures; removing history never exempts a current review from provenance validation.
 
-### Archive verifier
+## Historic record availability and cleanup
 
-`vigil/scripts/incident_provenance_archive.py` is the common verifier for both canonical validation paths:
+Git history and the verified **`v1.0.0` release tag** retain a prior release snapshot of VIGIL. They are recovery aids, not a new shadow database and not proof of immutable long-term archival guarantees. A review after the tagged release may exist only in later Git commits; do not assume the tag alone preserves every subsequent review. No review-index ledger, protected archive branch, new GitHub App or permanent `docs/reviews` collection is needed for the approved *routine process-history cleanup*.
 
-- `vigil/scripts/validate-vigil-records.py`
-- `vigil/scripts/validate-vigil-interpretive-provenance.py`
+The active `vigil/docs/reviews/` tree remains a temporary notice board under `REVIEW-RECORD-RETENTION.md`. Retire completed duplicated material only after checking current live references and preserved substantive decisions. Do not delete still-active work packets or reviewed external requirement evidence needed by maintained controls.
 
-**Do not use `verify_git=False` for canonical acceptance**: that parameter is structural diagnostics only. Both governing validators call strict verification. Retention refs must be validated against an independent repository retention policy before a *live* compact Incident is accepted for publication. The code presently verifies current Git ancestry and object identity; it does **not** certify that a ref is protected from future deletion or rewriting. Do not claim it does.
+## Change authority and stop conditions
 
-## Read-only measured pilot, baseline
+Gate 1 approves the **schema/validator/authoring contract** and isolated regression tests only. No existing canonical Incident is edited under Gate 1. A separately approved Gate 2 cleanup may remove superseded **in-record historical AI review entries**, provided that a source-first or mechanically verifiable review of affected fields confirms every substantive current record field is untouched and no distinct human approval, current limitation or missing decisive fact is lost.
 
-Five Incidents `034`, `062`, `101`, `145`, `195`; versions `1.1.23`, `1.1.21`, `0.1.24`, `0.1.16`, `0.1.4`. Each complete full history remains in its original Git blob. Distinct review counts **24 + 21 + 22 + 15 + 6 = 88**. All five current full reviews are duplicated in their histories. The original SHA-1 Git blobs from the 28 October prior read-only pilot are still identical at the versioning PR #178 merge commit and on the new Gate 1 branch.
-
-The earlier in-memory 22.9% potential reduction is an estimate for one index+Git shape, not a prediction of the full verified storage contract or an authorisation to migrate records.
-
-## Exit conditions and independent Gate 2
-
-Before altering five actual canonical records, report and independently approve:
-
-1. Immutable, durable archival retention **beyond a moving branch ref**; prove original full review objects survive branch retirement, squash/rebase and non-shallow retrieval, or return for a governed immutable-ledger decision. Existing temporary notice boards are not an acceptable fallback.
-2. A five-case controlled in-memory migration where each of the **88 complete** review objects is reconstructed and hashed from pinned Git source, with a review-date/author/supersession ledger and positive/negative fixture tests for future reviews.
-3. Exact before/after diffs showing unchanged case facts, clauses, sources, every adjudicated FC outcome, Boundary, HIM, EXTREQ, current interpretation and remaining provenance, plus public authorship-render parity.
-4. Actual byte savings and versioning consequences, respecting `record_identity.version` and #175; no silent restamping of already staged historical versions.
-5. Explicit human-maintainer **Gate 2** approval for the five named Incidents, separate from the Gate 1 rule implementation. A larger population requires its own approval.
-
-Git migration must **fail closed** if any full review is not recoverable, chronology or reviewer identity differs, or a current accepted finding relies on content removed from the active Incident. No auto deletion and no coercion of reviewer types or identities.
+Before any broad rewrite: inventory exactly which Incidents would change and how much size they save; show representative before/after output and all semantic/provenance exceptions; run full CI, built-output and website checks; reconcile per-Incident version candidates against published `main` under #175. Then stop for maintainer approval. Repeated edits to unrelated evidence/taxonomy/HIM/EXTREQ fields or blanket version resets are not authorised.
