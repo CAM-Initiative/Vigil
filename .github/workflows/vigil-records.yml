@@ -44,6 +44,27 @@ jobs:
 
       # The complete unittest discovery imports jsonschema in tests that the
       # historical subset jobs never exercised. Install the pinned test dependency.
+      # One-off, maintainer-approved Gate 2 reconciliation (28 Oct 2026).
+      # Runs ONLY on the explicitly marked workflow-change commit, then is removed.
+      - name: Perform approved one-time Incident release-version reconciliation
+        if: >-
+          github.event_name == 'push' &&
+          github.ref == 'refs/heads/agent/incident-ecosystem-ingestion' &&
+          contains(github.event.head_commit.message, '[approved-gate2-reconcile]')
+        run: |
+          python vigil/docs/reviews/2026-10-28-incident-publication-reconciliation/reconcile-versions.py
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          mapfile -t changed < <(git diff --name-only -- vigil/records/incidents/)
+          echo "Canonical version-only edits: ${#changed[@]}"
+          for ((i=0; i<${#changed[@]}; i+=15)); do
+            git add "${changed[@]:i:15}"
+            git commit -m "chore(vigil): reconcile publication versions in bounded batch [skip ci]"
+          done
+          git add vigil/docs/reviews/2026-10-28-incident-publication-reconciliation/working-declarations.json
+          git commit -m "chore(vigil): record exact main-baseline release declarations [skip ci]"
+          git push origin HEAD:agent/incident-ecosystem-ingestion
+
       - name: Install full-suite validation dependency
         run: python -m pip install "jsonschema==4.26.0"
 
