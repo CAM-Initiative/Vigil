@@ -159,7 +159,7 @@ def json_at(ref: str, path: str, root: Path) -> dict[str, Any] | None:
     rows = [row for row in entry.split("\0") if row]
     if len(rows) != 1 or "\\t" not in rows[0]:
         raise ReleaseError(f"{ref}:{path}: unexpected Git tree entry")
-    metadata, found_path = rows[0].split("\\t", 1)
+    metadata, found_path = rows[0].split("\t", 1)
     fields = metadata.split()
     if found_path != path or len(fields) != 3 or fields[1] != "blob":
         raise ReleaseError(f"{ref}:{path}: expected one canonical file blob")
