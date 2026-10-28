@@ -1,6 +1,11 @@
 # Implementation and assurance plan — contingent on Gate 1 approval
 
-**28 October 2026.** This plan sequences work for issues [#168](https://github.com/CAM-Initiative/Vigil/issues/168), [#175](https://github.com/CAM-Initiative/Vigil/issues/175), [#176](https://github.com/CAM-Initiative/Vigil/issues/176) and master [#133](https://github.com/CAM-Initiative/Vigil/issues/133). It is a design specification, **not authorisation to implement** a schema, validator, builder or records migration.
+## Current execution status — 28 October 2026
+
+The **narrow versioning Gate 1** is now approved and implemented in code + CI on draft PR #178, not merged. Its 25 isolated tests pass; two unrelated corpus tests were already failing before this work. The production check is conditional on **final PRs to main** and was correctly skipped in the architecture PR to ingestion. The main-only manifest has been tested with synthetic Git histories but has not run against published main. See [checkpoint](VERSIONING-IMPLEMENTATION-CHECKPOINT.md). The remaining provenance-storage (#168), review-challenge (#176) controls and any canonical migration remain subject to their own approvals. All gates described below still apply to those unapproved areas; the implemented versioning gate has not granted Gate 2.
+
+
+**28 October 2026.** Versioning Gate 1 controls implemented on draft branch; all corpus migrations and other design gates remain outstanding. This plan sequences work for issues [#168](https://github.com/CAM-Initiative/Vigil/issues/168), [#175](https://github.com/CAM-Initiative/Vigil/issues/175), [#176](https://github.com/CAM-Initiative/Vigil/issues/176) and master [#133](https://github.com/CAM-Initiative/Vigil/issues/133). It is a design specification, **not authorisation to implement** a schema, validator, builder or records migration.
 
 **Branch:** `work/incident-architecture-gate1-20261028`; parent commit from `agent/incident-ecosystem-ingestion`: `0f008d983da72db962705fb9c732496e703cdb5e`.  
 **Authority:** `vigil/MAINTAINERS.md` Gate 1 semantic control, Gate 2 corpus repair; source-first Incident workflow and temporary review notice-board policy.  
