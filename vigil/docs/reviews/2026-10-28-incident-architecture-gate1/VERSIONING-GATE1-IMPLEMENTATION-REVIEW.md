@@ -1,6 +1,11 @@
 # Versioning implementation — exact Gate 1 decision and handoff
 
-**28 October 2026 · Working branch `work/incident-architecture-gate1-20261028` · Draft PR #178 into `agent/incident-ecosystem-ingestion`.**
+## Approval and implementation disposition — 28 October 2026
+
+**APPROVED:** Following the explicit Gate 1 disclosure in this paper, the human maintainer approved the final-main-PR-only version checker, declared semantic level, published-main arithmetic, staged-first-publication preservation, stale-main rejection and main-only deterministic manifest. This narrow approval was implemented on draft PR #178. Isolated synthetic Git tests **25 PASS**; the two full-suite failures predate this work. **Not implemented on main; not approved:** bulk source edits, version re-stamping of 53 changed records, schema changes for compact review history, challenged-status fields or website changes. Full evidence and run links: [implementation checkpoint](VERSIONING-IMPLEMENTATION-CHECKPOINT.md). The earlier 'request' below is retained as the historical decision proposal, not an unresolved request for the same implementation.
+
+
+**28 October 2026 · Narrow versioning Gate 1 approved and staged, not published · Working branch `work/incident-architecture-gate1-20261028` · Draft PR #178 into `agent/incident-ecosystem-ingestion`.**
 
 **Already approved, without source-code change:** Incident numbering means *MAJOR = exceptional identity/scope incompatibility; MINOR = material evidence/adjudication (including **every new or removed canonical taxonomy mapping**); PATCH = non-substantive record maintenance; NONE = unchanged*. Incident IDs and versions are independent of corpus/taxonomy versions; legacy numbers are grandfathered.
 
