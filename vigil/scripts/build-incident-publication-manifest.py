@@ -29,6 +29,28 @@ def git(root: Path, *args: str, allow_missing: bool = False) -> str | None:
         raise ValueError(f"git {' '.join(args)}: {run.stderr.strip()}")
     return run.stdout.strip()
 
+def predecessor_text(root: Path, commit: str, path: str) -> str | None:
+    """Read a first-parent predecessor, returning None only for a root/addition."""
+    metadata = git(root, "cat-file", "-p", commit)
+    parent = next((line.split(" ", 1)[1] for line in metadata.splitlines()
+                   if line.startswith("parent ")), None)
+    if parent is None:
+        return None
+    # A missing tree entry means the record is newly added. Git failures while
+    # resolving the parent/tree must propagate rather than hiding history loss.
+    entry = git(root, "ls-tree", "-z", parent, "--", path)
+    if not entry:
+        return None
+    rows = [row for row in entry.split("\\0") if row]
+    if len(rows) != 1 or "\\t" not in rows[0]:
+        raise ValueError(f"{path}: unexpected predecessor tree entry")
+    metadata, found_path = rows[0].split("\\t", 1)
+    fields = metadata.split()
+    if found_path != path or len(fields) != 3 or fields[1] != "blob":
+        raise ValueError(f"{path}: predecessor is not a canonical file blob")
+    return git(root, "show", f"{parent}:{path}")
+
+
 def build(root: Path) -> dict[str, Any]:
     if git(root, "rev-parse", "--is-inside-work-tree") != "true":
         raise ValueError("a Git checkout is required")
@@ -54,12 +76,19 @@ def build(root: Path) -> dict[str, Any]:
         disk_blob = git(root, "hash-object", str(file))
         if committed_blob != disk_blob:
             raise ValueError(f"{relative}: current file differs from committed canonical source")
-        predecessor = git(root, "show", f"{commit}^1:{relative}", allow_missing=True)
+        predecessor = predecessor_text(root, commit, relative)
         previous_version = None
-        if predecessor:
+        if predecessor is not None:
             prior_record = json.loads(predecessor)
-            previous_version = (prior_record.get("record_identity") or {}).get("version")
-            if previous_version and (not isinstance(previous_version, str) or not VERSION.fullmatch(previous_version)):
+            if not isinstance(prior_record, dict):
+                raise ValueError(f"{relative}: predecessor is not a JSON object")
+            prior_identity = prior_record.get("record_identity") or {}
+            if not isinstance(prior_identity, dict):
+                raise ValueError(f"{relative}: predecessor record_identity is not an object")
+            previous_version = prior_identity.get("version")
+            if previous_version is not None and (
+                not isinstance(previous_version, str) or not VERSION.fullmatch(previous_version)
+            ):
                 raise ValueError(f"{relative}: predecessor has invalid version")
         taxonomy = record.get("taxonomy_classification") or {}
         him = record.get("harm_impact_assessment") or {}
