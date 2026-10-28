@@ -44,7 +44,7 @@ def predecessor_text(root: Path, commit: str, path: str) -> str | None:
     rows = [row for row in entry.split("\0") if row]
     if len(rows) != 1 or "\\t" not in rows[0]:
         raise ValueError(f"{path}: unexpected predecessor tree entry")
-    metadata, found_path = rows[0].split("\\t", 1)
+    metadata, found_path = rows[0].split("\t", 1)
     fields = metadata.split()
     if found_path != path or len(fields) != 3 or fields[1] != "blob":
         raise ValueError(f"{path}: predecessor is not a canonical file blob")
