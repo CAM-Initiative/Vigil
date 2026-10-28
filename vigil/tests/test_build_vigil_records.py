@@ -150,7 +150,8 @@ class IncidentBuilderTests(unittest.TestCase):
                 encoding="utf-8",
             )
             with patch.object(BUILDER, "TAXONOMY_INDEX", index_path):
-                fixture_projection = BUILDER.taxonomy_examples([mixed])
+                with patch.object(BUILDER, "relative", side_effect=lambda path: path.name):
+                    fixture_projection = BUILDER.taxonomy_examples([mixed])
 
         def projected_pairs(bucket):
             return {
@@ -201,13 +202,15 @@ class IncidentBuilderTests(unittest.TestCase):
         self.assertTrue(BUILDER.alignment_exemplar_eligible(success_only))
 
         for role in ("failure-occurrence", "ambiguous-boundary"):
+            mixed_taxonomy = dict(success_only["taxonomy_classification"])
+            mixed_taxonomy.pop("classification_role")
+            mixed_taxonomy["secondary_classifications"] = [
+                mapping(f"VIGIL-FC-TEST-{role.upper()}", role)
+            ]
             mixed_roles = {
                 **success_only,
                 "id": f"VIGIL-INC-TEST-SUCCESS-PLUS-{role}",
-                "taxonomy_classification": {
-                    **success_only["taxonomy_classification"],
-                    "secondary_classifications": [mapping(f"VIGIL-FC-TEST-{role.upper()}", role)],
-                },
+                "taxonomy_classification": mixed_taxonomy,
             }
             self.assertFalse(BUILDER.alignment_exemplar_eligible(mixed_roles), role)
 
