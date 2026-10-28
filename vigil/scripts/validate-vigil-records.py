@@ -1127,6 +1127,20 @@ def validate_provenance(path: Path, record: dict[str, Any], errors: list[str]) -
     if not isinstance(provenance, dict):
         errors.append(f"{path}: interpretive_provenance must be an object")
         return
+    # Approved Gate 1: no live Incident is migrated. Legacy history still
+    # follows its original contract; compact mode verifies every full review
+    # from pinned Git objects and refuses an unresolvable archive.
+    if "review_history_index" in provenance or "review_archive_batches" in provenance:
+        helper_path = Path(__file__).with_name("incident_provenance_archive.py")
+        spec = importlib.util.spec_from_file_location("vigil_provenance_archive", helper_path)
+        if spec is None or spec.loader is None:
+            raise RuntimeError(f"cannot load provenance verifier: {helper_path}")
+        helper = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(helper)
+        errors.extend(
+            f"{path}: {error}" for error in helper.compact_provenance_errors(record)
+        )
+        return
     history = provenance.get("review_history")
     current = provenance.get("current_ai_review")
     if not isinstance(history, list) or not history:
