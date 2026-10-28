@@ -1,6 +1,6 @@
 # Proposed Incident version numbering — explicit Gate 1 contract
 
-**28 October 2026 — proposal, not an approved validator/release rule.**
+**28 October 2026 — maintainer accepted the MAJOR/MINOR/PATCH change-level meanings and chose independent per-Incident numbering over corpus-release-major synchronisation.** This is approval of the semantic numbering direction, **not** approval to modify validators, CI, canonical records, publication manifests, or the other Gate 1 architecture controls. Those still require their explicit implementation decisions and tests.
 
 **Issues:** [#175](https://github.com/CAM-Initiative/Vigil/issues/175) (primary), [#168](https://github.com/CAM-Initiative/Vigil/issues/168), [#176](https://github.com/CAM-Initiative/Vigil/issues/176); coordinated [#133](https://github.com/CAM-Initiative/Vigil/issues/133).  
 **Source baseline:** `main` at `0fdabb940cef157609e3cd2a20efa213cdfca2ef`; ingestion branch `agent/incident-ecosystem-ingestion` at `0f008d983da72db962705fb9c732496e703cdb5e`.  
@@ -96,9 +96,15 @@ At final integration:
 - Avoid a self-referential manifest: identify a stable canonical source-input commit/content digest rather than the generated bot commit itself; check idempotent regeneration.
 - The **exact** post-approval validator/programme/website enforcement design must disclose its cross-branch publication scope, pass/fail delta, impact and potential data loss before implementation; Gate 2 separately approves any corpus changes.
 
+## Maintainer decision and remaining implementation gates
+
+**Accepted on 28 October 2026:** Independent Incident MAJOR/MINOR/PATCH change levels, with a new canonical Fidelity Class mapping explicitly requiring MINOR; preserve prior version lineages (including INC032 `2.0.7`) without a dataset-release-wide major bump. MAJOR remains exceptional for incompatible Incident identity/scope change, with new Incident allocation preferred where appropriate. Apply the rule prospectively; do not retroactively interpret prior numbered versions as having adhered to this new policy.
+
+**Still to be independently decided or implemented:** exact CI/manifest source-diff algorithm, handling of staged and parallel branch versions, publishing a complete record revision history, storage/review challenge contracts, enforcement change details, read-only pass/fail analysis and subsequent Gate 2 migration. No files besides this decision note were modified by this approval.
+
 ## Explicit maintainer decisions
 
-1. **Approve change-level semantics?** Major = rare identity/boundary incompatibility; minor = substantive evidence/adjudication; patch = non-substantive record maintenance; none = no canonical modification.
+1. **APPROVED 28 October 2026 — change-level semantics.** Major = rare identity/boundary incompatibility; minor = substantive evidence/adjudication **including newly admitted taxonomy mappings**; patch = non-substantive record maintenance; none = no canonical modification.
 2. **Approve keeping `0.1.0` as the brand-new-file creation default, but retaining each already-staged new Incident's actual approved authoring version on first main publication (e.g. INC203 `0.1.6`)?** Preserve the established 200 existing main versions and all staged versions; do not reset or downgrade.
 3. **Approve one highest-level increment per Incident per final main publication, not per intermediate ingestion commit?**
 4. **Approve a per-Incident change-level declaration and deterministic numeric/main-freshness CI checks**, with source-first review required to validate the declaration's meaning?
