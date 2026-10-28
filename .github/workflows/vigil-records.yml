@@ -112,6 +112,45 @@ jobs:
       - name: Test isolated Incident publication versioning and Git history
         run: python vigil/tests/test_incident_publication_versions.py
 
+      # One-off read-only inventory for issue #168; REMOVE after capturing results.
+      - name: Read-only historical review accumulation inventory
+        if: github.event_name == 'pull_request' && github.base_ref == 'agent/incident-ecosystem-ingestion'
+        run: |
+          python - <<'PY'
+          import copy, json
+          from pathlib import Path
+          rows=[]
+          for p in sorted(Path("vigil/records/incidents").glob("VIGIL-INC-*.json")):
+              data=json.loads(p.read_text(encoding="utf-8"))
+              proven=data.get("interpretive_provenance") or {}
+              history=proven.get("review_history") or []
+              current=proven.get("current_ai_review") or {}
+              sample=copy.deepcopy(data)
+              sample["interpretive_provenance"].pop("review_history", None)
+              raw=len(p.read_bytes())
+              candidate=len((json.dumps(sample, indent=2, ensure_ascii=False)+"\n").encode("utf-8"))
+              human=sum(1 for item in history if "human" in str(item.get("reviewer_type", "")).lower())
+              ids=[item.get("review_id") for item in history]
+              rows.append({"id":data["id"],"reviews":len(history),"bytes":raw,
+                           "saved":raw-candidate,"human_reviews":human,
+                           "current_unlinked":current.get("review_id") not in ids,
+                           "duplicate_ids":len(ids)-len(set(ids))})
+          total=sum(x["bytes"] for x in rows)
+          saved=sum(x["saved"] for x in rows)
+          summary={"count":len(rows),
+                   "review_objects":sum(x["reviews"] for x in rows),
+                   "superseded_reviews":sum(max(0,x["reviews"]-1) for x in rows),
+                   "multiple_review_records":sum(x["reviews"]>1 for x in rows),
+                   "current_unlinked":sum(x["current_unlinked"] for x in rows),
+                   "duplicate_review_records":sum(x["duplicate_ids"]>0 for x in rows),
+                   "human_review_objects":sum(x["human_reviews"] for x in rows),
+                   "original_bytes":total,"hypothetical_cleaned_bytes":total-saved,
+                   "hypothetical_saved_bytes":saved,
+                   "hypothetical_saved_percent":round(saved*100/total,2),
+                   "top10":sorted(rows,key=lambda x:x["saved"],reverse=True)[:10]}
+          print("PROVENANCE_INVENTORY_JSON="+json.dumps(summary,sort_keys=True))
+          PY
+
       - name: Test full VIGIL corpus and maintenance contracts
         run: python -m unittest discover -s vigil/tests -p 'test_*.py'
 
