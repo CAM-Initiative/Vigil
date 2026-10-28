@@ -1,14 +1,15 @@
 # Current audit progress
 
-Status: **INCOMPLETE**. Baseline and taxonomy authority remain unchanged.
+Status: **INCOMPLETE**.
 
+- Baseline: 0f008d983da72db962705fb9c732496e703cdb5e; taxonomy v0.9.0.
 - Population: 681 dispositions / 187 Incidents; 206 canonical Incidents.
-- Original preliminary source packets: 19.
-- Completed batched recommendation packets: 350.
-- Total packets available: 369.
-- Still awaiting substantive packet: 312.
-- Latest batch: 026, 9 rows.
+- Original preliminary packets: 19.
+- Completed batched packets: 360.
+- Total packets available: 379.
+- Still awaiting substantive packet: 302.
+- Latest batch: 27. Next: VIGIL-INC-000131:E001.
 
-`completion-ledger.json` and `batches/` are current. `EXECUTION-CHECKPOINT.md`, `QA.json`, the initial population status annotations and the original 19 packets describe the earlier checkpoint; do not treat their counts as current. No earlier decisions have been deleted. All 206 canonical record hashes remain unchanged. No full-corpus completion claim is made.
+The ledger and batch files are current. Initial checkpoint files and population status annotations are historical. Original packets remain preliminary; supplements preserve further assessments without duplicate completion counts. Consolidation, comparator work and semantic QA remain open.
 
-The final register will join the original packets and all batch rows to the frozen inventory. Final cross-corpus consolidation and semantic QA remain outstanding.
+From batch027, work uses the GitHub connector directly because the execution environment is unavailable. The local checkout is stale. Each new commit inherits the parent tree and changes only audit-directory artifacts. Reconcile against remote before any later local publication.
