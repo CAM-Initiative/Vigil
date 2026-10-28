@@ -130,7 +130,7 @@ class IncidentBuilderTests(unittest.TestCase):
             "id": "VIGIL-INC-TEST-MIXED",
             "record_identity": {"title": "Mixed mapping-role fixture"},
             "taxonomy_classification": {
-                "classification_status": "classified",
+                "classification_status": "provisionally-classified",
                 "adjudication_coverage": {"status": "complete"},
                 "primary_classification": mapping(success_id, "successful-invariant"),
                 "secondary_classifications": [
@@ -177,7 +177,7 @@ class IncidentBuilderTests(unittest.TestCase):
         mixed_entry = BUILDER.incident_entry(
             BUILDER.INCIDENTS / "VIGIL-INC-TEST-MIXED.json", mixed
         )
-        self.assertEqual(mixed_entry["classification_status"], "classified")
+        self.assertEqual(mixed_entry["classification_status"], "provisionally-classified")
         self.assertNotIn("classification_role", mixed_entry)
         self.assertEqual(mixed_entry["adjudication_coverage"], {"status": "complete"})
         self.assertFalse(BUILDER.alignment_exemplar_eligible(mixed))
