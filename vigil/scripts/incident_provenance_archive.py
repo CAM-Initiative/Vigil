@@ -127,8 +127,9 @@ def compact_provenance_errors(
         if not isinstance(entry["review_sha256"], str) or HEX_HASH.fullmatch(entry["review_sha256"]) is None:
             errors.append(f"{label}: invalid review_sha256")
         for key in ("reviewer_type", "reviewer_platform", "reviewer_model"):
-            if not isinstance(entry[key], str):
-                errors.append(f"{label}: {key} must preserve original string")
+            # Unknown source attributes must remain null, not be invented.
+            if entry[key] is not None and not isinstance(entry[key], str):
+                errors.append(f"{label}: {key} must preserve original string or null")
         try:
             if not isinstance(entry["review_date"], str) or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", entry["review_date"]):
                 raise ValueError("invalid date")
