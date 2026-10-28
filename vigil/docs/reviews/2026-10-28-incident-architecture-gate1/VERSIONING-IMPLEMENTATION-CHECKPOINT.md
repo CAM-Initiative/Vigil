@@ -38,3 +38,12 @@ At the pinned comparison (main commit `0fdabb940cef157609e3cd2a20efa213cdfca2ef`
 - Confirm public website projections and publication manifest agree on the *actual* main source tree and that the generated-only bot commit does not create a false new Incident version.
 - Before broad initial rollout, add a reviewer-friendly read-only declaration/preflight generator for the 53+6 final integration candidates, with review-required placeholders that cannot be mistaken for approved classifications.
 - After this versioning Gate 1, separately seek storage/review-posture Gate 1 and subsequent Gate 2 approvals for #168 and #176. Do not let the version-control PR implicitly approve them.
+
+
+## Follow-up publication-gate verification — 28 October 2026
+
+A separate `.github/workflows/incident-publication-gate.yml` is now on the draft branch in commit `0afd18003deaa5bb3b232721b83d57176ef66000`. It runs the isolated versioning/manifest tests on PRs to the ingestion branch and, without path filters, runs the published-main version checker on every PR targeting `main`. This gives documentation-only PRs a successful check result without requiring the unrelated full corpus suite to pass.
+
+The dedicated check passed in [Actions run 40678150978](https://github.com/CAM-Initiative/Vigil/actions/runs/40678150978): **25 isolated tests passed**. The existing VIGIL records run [40678150968](https://github.com/CAM-Initiative/Vigil/actions/runs/40678150968) still fails only on the two known baseline assertions: INC126 taxonomy exemplar eligibility and the successful-invariant classification expectation.
+
+**Branch protection remains unapplied.** GitHub reports `main` as unprotected and the repository ruleset list is empty. In the settings UI, I confirmed the existing main records workflow commits generated outputs directly as `github-actions[bot]`. A require-PR ruleset would block that writer; the bypass actor list did not provide GitHub Actions as a narrow exception. No ruleset was saved. Before enforcing require-PR, either move generated-output publication to a reviewed PR flow or provide a narrowly scoped, supported bypass for that writer. The versioning PR remains open and draft against `agent/incident-ecosystem-ingestion`; no canonical Incident records were changed.
