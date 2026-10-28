@@ -98,7 +98,7 @@ class ArithmeticContract(unittest.TestCase):
         packet = {"records": [row("patch", "1.4.11", "a"*41)]}
         with self.assertRaisesRegex(guard.ReleaseError, "invalid baseline blob"):
             guard.declaration_from_body(
-                "~~~vigil-incident-release\\n"+json.dumps(packet)+"\\n~~~", True
+                "~~~vigil-incident-release\n"+json.dumps(packet)+"\n~~~", True
             )
 
     def test_duplicate_pr_declarations(self):
