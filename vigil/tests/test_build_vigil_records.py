@@ -1,8 +1,10 @@
 import importlib.util
 import json
 import subprocess
+import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[2]
 VIGIL = ROOT / "vigil"
@@ -110,14 +112,113 @@ class IncidentBuilderTests(unittest.TestCase):
         examples = [item for rows in projection["classes"].values() for item in rows]
         self.assertTrue(examples)
         self.assertTrue(all(item["incident_id"].startswith("VIGIL-INC-") for item in examples))
-        self.assertFalse(any(item["incident_id"] == "VIGIL-INC-000126" for item in examples))
-        successful = [item for rows in projection["successful_invariants"].values() for item in rows]
-        self.assertTrue(any(item["incident_id"] == "VIGIL-INC-000126" for item in successful))
-        self.assertTrue(any(item["incident_id"] == "VIGIL-INC-000015" for item in successful))
-        partial = BUILDER.load(BUILDER.INCIDENTS / "VIGIL-INC-000015.json")
-        complete = BUILDER.load(BUILDER.INCIDENTS / "VIGIL-INC-000126.json")
-        self.assertFalse(BUILDER.alignment_exemplar_eligible(partial))
-        self.assertTrue(BUILDER.alignment_exemplar_eligible(complete))
+
+        failure_id = "VIGIL-FC-TEST-FAILURE"
+        success_id = "VIGIL-FC-TEST-SUCCESS"
+        boundary_id = "VIGIL-FC-TEST-BOUNDARY"
+
+        def mapping(class_id, role):
+            return {
+                "family_id": "VIGIL-FF-TEST",
+                "class_id": class_id,
+                "classification_role": role,
+                "classification_basis": "Fixture mapping basis.",
+                **({"classification_confidence": "high"} if role != "ambiguous-boundary" else {}),
+            }
+
+        mixed = {
+            "id": "VIGIL-INC-TEST-MIXED",
+            "record_identity": {"title": "Mixed mapping-role fixture"},
+            "taxonomy_classification": {
+                "classification_status": "classified",
+                "adjudication_coverage": {"status": "complete"},
+                "primary_classification": mapping(success_id, "successful-invariant"),
+                "secondary_classifications": [
+                    mapping(failure_id, "failure-occurrence"),
+                    mapping(boundary_id, "ambiguous-boundary"),
+                ],
+            },
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            taxonomy_dir = Path(directory)
+            index_path = taxonomy_dir / "index.json"
+            family_path = taxonomy_dir / "family.json"
+            index_path.write_text(json.dumps({"families": [{"file": "family.json"}]}), encoding="utf-8")
+            family_path.write_text(
+                json.dumps({"classes": [{"class_id": class_id} for class_id in
+                                        (failure_id, success_id, boundary_id)]}),
+                encoding="utf-8",
+            )
+            with patch.object(BUILDER, "TAXONOMY_INDEX", index_path):
+                fixture_projection = BUILDER.taxonomy_examples([mixed])
+
+        def projected_pairs(bucket):
+            return {
+                (item["incident_id"], class_id, item["mapping_position"], item["classification_role"])
+                for class_id, rows in fixture_projection[bucket].items()
+                for item in rows
+            }
+
+        incident_id = mixed["id"]
+        self.assertEqual(
+            projected_pairs("classes"),
+            {(incident_id, failure_id, "secondary", "failure-occurrence")},
+        )
+        self.assertEqual(
+            projected_pairs("successful_invariants"),
+            {(incident_id, success_id, "primary", "successful-invariant")},
+        )
+        self.assertEqual(
+            projected_pairs("ambiguous_boundaries"),
+            {(incident_id, boundary_id, "secondary", "ambiguous-boundary")},
+        )
+
+        mixed_entry = BUILDER.incident_entry(
+            BUILDER.INCIDENTS / "VIGIL-INC-TEST-MIXED.json", mixed
+        )
+        self.assertEqual(mixed_entry["classification_status"], "classified")
+        self.assertNotIn("classification_role", mixed_entry)
+        self.assertEqual(mixed_entry["adjudication_coverage"], {"status": "complete"})
+        self.assertFalse(BUILDER.alignment_exemplar_eligible(mixed))
+
+        success_only = {
+            "id": "VIGIL-INC-TEST-SUCCESS-ONLY",
+            "record_identity": {"title": "Complete success-only fixture"},
+            "taxonomy_classification": {
+                "classification_status": "classified",
+                "classification_role": "successful-invariant",
+                "adjudication_coverage": {"status": "complete"},
+                "primary_classification": mapping(success_id, "successful-invariant"),
+                "secondary_classifications": [],
+            },
+        }
+        success_entry = BUILDER.incident_entry(
+            BUILDER.INCIDENTS / "VIGIL-INC-TEST-SUCCESS-ONLY.json", success_only
+        )
+        self.assertEqual(success_entry["classification_status"], "classified")
+        self.assertEqual(success_entry["classification_role"], "successful-invariant")
+        self.assertEqual(success_entry["adjudication_coverage"], {"status": "complete"})
+        self.assertTrue(BUILDER.alignment_exemplar_eligible(success_only))
+
+        for role in ("failure-occurrence", "ambiguous-boundary"):
+            mixed_roles = {
+                **success_only,
+                "id": f"VIGIL-INC-TEST-SUCCESS-PLUS-{role}",
+                "taxonomy_classification": {
+                    **success_only["taxonomy_classification"],
+                    "secondary_classifications": [mapping(f"VIGIL-FC-TEST-{role.upper()}", role)],
+                },
+            }
+            self.assertFalse(BUILDER.alignment_exemplar_eligible(mixed_roles), role)
+
+        partial_success = {
+            **success_only,
+            "taxonomy_classification": {
+                **success_only["taxonomy_classification"],
+                "adjudication_coverage": {"status": "partial"},
+            },
+        }
+        self.assertFalse(BUILDER.alignment_exemplar_eligible(partial_success))
 
     def test_failure_examples_and_repair_are_derived_per_mapping(self):
         def mapping(class_id, role):
