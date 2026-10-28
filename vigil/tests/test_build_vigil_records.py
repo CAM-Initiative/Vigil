@@ -207,6 +207,8 @@ class IncidentBuilderTests(unittest.TestCase):
             mixed_taxonomy["secondary_classifications"] = [
                 mapping(f"VIGIL-FC-TEST-{role.upper()}", role)
             ]
+            if role == "ambiguous-boundary":
+                mixed_taxonomy["classification_status"] = "provisionally-classified"
             mixed_roles = {
                 **success_only,
                 "id": f"VIGIL-INC-TEST-SUCCESS-PLUS-{role}",
