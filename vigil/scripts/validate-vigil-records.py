@@ -1123,29 +1123,35 @@ def validate_external_requirement_assessments(
 
 
 def validate_provenance(path: Path, record: dict[str, Any], errors: list[str]) -> None:
+    """Validate the current review without demanding cumulative AI worklogs.
+
+    Legacy records with review_history remain accepted and still have their
+    history and current linkage checked. New records may omit that array.
+    """
     provenance = record.get("interpretive_provenance")
     if not isinstance(provenance, dict):
         errors.append(f"{path}: interpretive_provenance must be an object")
         return
-    # Approved Gate 1: no live Incident is migrated. Legacy history still
-    # follows its original contract; compact mode verifies every full review
-    # from pinned Git objects and refuses an unresolvable archive.
-    if "review_history_index" in provenance or "review_archive_batches" in provenance:
-        helper_path = Path(__file__).with_name("incident_provenance_archive.py")
-        spec = importlib.util.spec_from_file_location("vigil_provenance_archive", helper_path)
-        if spec is None or spec.loader is None:
-            raise RuntimeError(f"cannot load provenance verifier: {helper_path}")
-        helper = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(helper)
-        errors.extend(
-            f"{path}: {error}" for error in helper.compact_provenance_errors(record)
-        )
-        return
-    history = provenance.get("review_history")
+    for retired in ("review_history_index", "review_archive_batches"):
+        if retired in provenance:
+            errors.append(f"{path}: {retired} is not part of the simplified provenance contract")
     current = provenance.get("current_ai_review")
+    if not isinstance(current, dict):
+        errors.append(f"{path}: current_ai_review must be an object")
+    else:
+        missing = sorted(REVIEW_REQUIRED - set(current))
+        if missing:
+            errors.append(f"{path}: current_ai_review missing {', '.join(missing)}")
+        if current.get("reviewer_type") != "AI analytical reviewer":
+            errors.append(f"{path}: current_ai_review reviewer_type must identify AI analytical reviewer")
+        if not non_empty(current.get("review_id")):
+            errors.append(f"{path}: current_ai_review must have nonempty review_id")
+    if "review_history" not in provenance:
+        return
+    history = provenance["review_history"]
     if not isinstance(history, list) or not history:
-        errors.append(f"{path}: review_history must be a non-empty array")
-        history = []
+        errors.append(f"{path}: retained legacy review_history must be a non-empty array")
+        return
     seen: set[str] = set()
     for index, review in enumerate(history):
         if not isinstance(review, dict):
@@ -1160,7 +1166,7 @@ def validate_provenance(path: Path, record: dict[str, Any], errors: list[str]) -
         else:
             seen.add(review_id)
     if not isinstance(current, dict) or current.get("review_id") not in seen:
-        errors.append(f"{path}: current_ai_review must resolve to review_history")
+        errors.append(f"{path}: current_ai_review must resolve to retained review_history")
 
 def validate_relationships_and_references(
     path: Path,
