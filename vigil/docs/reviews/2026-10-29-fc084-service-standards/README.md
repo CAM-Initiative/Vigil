@@ -2,7 +2,7 @@
 
 29 October 2026 · [tracker #154](https://github.com/CAM-Initiative/Vigil/issues/154) · related [#150](https://github.com/CAM-Initiative/Vigil/issues/150) and [#173](https://github.com/CAM-Initiative/Vigil/issues/173).
 
-**Status: research complete within the disclosed access limits; decisions proposed; maintainer approval pending.** AI-authored analysis, not human verification, certification or legal advice. This is an active REVIEW notice board under `REVIEW-RECORD-RETENTION.md`, with machine-measured AUDIT evidence. It is not canonical requirement or adjudication data. Retire working material after approved promotion, retaining pinned Git history. Owner: #154 / human maintainer.
+**Status: research complete within the disclosed access limits; six existing-requirement component crosswalks implemented following the maintainer's 29 October continuation. New source/requirement admission remains held.** See [implementation and remaining holds](IMPLEMENTATION.md). AI-authored analysis, not human verification, certification or legal advice. This is an active REVIEW notice board under `REVIEW-RECORD-RETENTION.md`, with machine-measured AUDIT evidence. It is not canonical requirement or adjudication data. Retire working material after approved promotion, retaining pinned Git history. Owner: #154 / human maintainer.
 
 Branch: `work/full-corpus-taxonomy-gap-audit-20261028`, shared with C01/C02. Research baseline: `de201bfb66faef81cca3c205c3d77a1134390fb0`. Published main checked: `b800676a1b8db630338c0eaa8dc96999a45da877`. Taxonomy, source registry, source-scope and FC–EXTREQ relationships agree between these baselines. Incident versions differ; the impact evidence measures both separately. No branch synchronisation or merge is implied.
 
@@ -40,4 +40,4 @@ All-result exclusions defeat admission where there is no independently applicabl
 
 ## Bounded conclusion
 
-This review delivers source identities, explicit access holds, existing-row analysis, candidate locators, proposed conditional relationships and a measured impact report. It does **not** claim completed ISO clause review or passing canonical admission validation. #154 should remain open pending the maintainer's decision and resolution or explicit acceptance of the source-access holds. No canonical files, Incidents, schema, validators, publications or website projections are changed.
+The initial review delivers source identities, explicit access holds, existing-row analysis, candidate locators, proposed conditional relationships and a measured impact report. Its baseline and proposal files describe the pre-implementation state. The subsequent continuation adds six conditional pair records, with separately retained live evidence; see `IMPLEMENTATION.md` for the exact current delta and checks. ISO clause review and new requirement admission remain held. #154 remains open. No Incident, taxonomy, schema, validator or website projection is changed.

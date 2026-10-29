@@ -1,5 +1,7 @@
 # Candidate extraction and crosswalk decisions
 
+**Initial review baseline.** Six recommended relationships to existing requirements were subsequently implemented following the maintainer's continuation. See [IMPLEMENTATION.md](IMPLEMENTATION.md). The table below preserves the original decision reasoning; new requirement candidates remain unadmitted.
+
 All entries are **proposals**, not admitted EXTREQs or supported canonical edges. `supported`, `contextual`, `rejected` and `held` below are research dispositions. For an accepted edge, use the existing schema's separate `review_status`, `strength`, scope, limitation and whole-invariant fields. A supported *component* never means that the complete FC invariant follows from the external requirement, or vice versa.
 
 ## Existing relationships and proposed FC-084 crosswalk

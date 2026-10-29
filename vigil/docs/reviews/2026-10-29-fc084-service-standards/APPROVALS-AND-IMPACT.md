@@ -1,5 +1,7 @@
 # Implementation recommendation, approvals and read-only impact
 
+**Initial review record.** The subsequent maintainer continuation implemented the six existing-requirement pairs only. Their current state and validation are recorded in [IMPLEMENTATION.md](IMPLEMENTATION.md); all other admission and corpus-repair holds remain in force.
+
 ## Prioritised decision request
 
 1. **Approve or amend the six proposed supported NIST component pairs** in `DECISIONS-AND-CROSSWALK.md`: CSF RC.RP-05 and RC.RP-01; RMF MEASURE 2.6, MANAGE 2.3, MANAGE 4.3 response/recovery, and GOVERN 1.7. Each is conditional, component-only and not an Incident finding. Retain the present class citation as context. No taxonomy wording change is recommended.
