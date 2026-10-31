@@ -1,11 +1,13 @@
 # C01 / C02 — human decision gate
 
-Date: 29 October 2026. Owner: issue [#133](https://github.com/CAM-Initiative/Vigil/issues/133). Status: completed bounded research; recommendations awaiting human adjudication. Reviewer: OpenAI ChatGPT, AI analytical reviewer; not human verified.
+Date: 29 October 2026; C02 recommendation revised 31 October 2026. Owner: issue [#133](https://github.com/CAM-Initiative/Vigil/issues/133). Status: completed bounded research; recommendations awaiting human adjudication. Reviewer: OpenAI ChatGPT, AI analytical reviewer; not human verified.
 
 | Candidate | Recommended disposition | Reason |
 | --- | --- | --- |
 | C01 — Substantive Harmful-Use Assistance Boundary | **Retain as a defined evidence-limited candidate** | A substantive prohibition can be distinct from implementation-control failure. The principal occurrence supports material assistance, but the exact historical policy contract and response-bound model-visible context are not fully recovered. No confirmed new-class occurrence or successful comparator is asserted. |
-| C02 — Material Evidence Representation Fidelity | **Clarify an existing Fidelity Class instead** | FC-027 already reaches captured evidence materially degraded during transformation or presentation for review. Prefer an explicit derivative-evidence clarification; do not create a duplicate class for the police-report case. Individual mapping remains a separate decision. |
+| C02 — Material Evidence Representation Fidelity | **Revise existing FC-062 purpose-relative accuracy and provisional-output scope; retain FC-016/027 distinctions** | The 31 October maintainer discussion identifies fitness for the actual drafting purpose and evidence-calibrated expression, alongside final reliance. See the current revision below. No new class or automatic Incident mapping is proposed. |
+
+Current C02 recommendation and exact proposed changes: [31 October revision](C02-PURPOSE-AND-ACCURACY-REVISION.md), [before/after JSON](C02-PROPOSED-EXISTING-CLASS-CHANGES.json), [read-only impact](C02-REVISION-IMPACT.json), and [validation](C02-REVISION-VALIDATION.json). These supersede the earlier FC-027-first recommendation while preserving its source analysis. No canonical wording is enacted.
 
 Read [C01](C01-DECISION-PACKET.md), [C02](C02-DECISION-PACKET.md), [neighbouring questions](NEIGHBOURING-QUESTIONS.md), and the [literal criteria appendix](CURRENT-CRITERIA.md). Exact proposed wording is review text only. No identity is allocated, no normative amendment enacted, and no canonical Incident, HIM, EXTREQ, schema, validator or publication is changed.
 
@@ -19,7 +21,7 @@ Read [C01](C01-DECISION-PACKET.md), [C02](C02-DECISION-PACKET.md), [neighbouring
 
 ## Comparative implications
 
-C01 would govern **whether substantive assistance crosses an applicable use restriction**, even with correct technical output and no implemented control. C02 concerns **whether a derivative preserves captured evidence faithfully**. Neither is established merely by downstream harm. A technically accurate prohibited contribution and an inaccurate but explicitly provisional evidence draft show why use admissibility, content integrity and reliance assurance are separate axes.
+C01 would govern **whether substantive assistance crosses an applicable use restriction**, even with correct technical output and no implemented control. C02 now concerns **whether an output is accurate enough for its evidenced purpose and stage, with uncertainty expressed at the level supported by evidence**. Source-to-derivative fidelity remains independently relevant. Neither is established merely by downstream harm. A technically accurate prohibited contribution and an inaccurate but explicitly provisional evidence draft show why use admissibility, content integrity and reliance assurance are separate axes.
 
 No release bump is justified by this research commit. If C01 is later admitted, select the one working release from then-current main under the taxonomy workflow; family placement and highest required change level need approval. If FC-027 wording merely makes existing scope explicit, the release level depends on the repository's semantic release assessment; if it expands coverage, treat it as a normative scope change. Do not assume a version or preallocate a class ID now. No global Incident taxonomy restamping.
 
@@ -35,4 +37,4 @@ Direct review of the police PDF finds Phase Two critical errors reaching final r
 
 ## Decision requested
 
-Human adjudication of (1) the two recommended dispositions; (2) the exact optional FC-027 clarification; (3) the three neighbouring finite outcomes; and (4) whether to authorise a separately scoped INC-212 evidence/interpretation correction. No PR, merge, publication or issue closure is requested or performed by this packet.
+Human adjudication of (1) the retained C01 disposition; (2) the exact 31 October FC-062/FF-0003 revision and FC-016 scope note, with the earlier FC-027 clarification held for separate decision; (3) the three neighbouring finite outcomes; and (4) whether to authorise a separately scoped INC-212 evidence/interpretation correction. No PR, merge, publication or issue closure is requested or performed by this packet.

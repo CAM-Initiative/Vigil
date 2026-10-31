@@ -1,5 +1,7 @@
 # C02 — Material Evidence Representation Fidelity
 
+**31 October update:** the [purpose-and-accuracy revision](C02-PURPOSE-AND-ACCURACY-REVISION.md) supersedes this packet's FC-027-first recommendation. The source findings and current-v0.9.0 criterion tests below remain historical research. Current recommendation: revise FC-062's purpose-relative accuracy and provisional-output boundary, retain FC-016 for verification and FC-027 for evidence integrity; no new class. The optional FC-027 wording below is not enacted and is held for separate decision.
+
 **Recommendation: clarify FC-027 instead of admitting a new class.** No Incident mapping is enacted. Authority and exact main baseline: [README](README.md). Literal published conditions/exclusions: [appendix](CURRENT-CRITERIA.md).
 
 ## Original evidence and access
