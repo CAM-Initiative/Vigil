@@ -4,7 +4,7 @@ Canonical analytical catalogue derived from registered external governance sourc
 
 - Registered source versions: 109
 - Primary AI-governance source versions: 63
-- Requirement records: 1130
+- Requirement records: 1134
 
 ## SDOS Runtime Governance Framework — Control Catalog and Reference Document — 1.10
 
@@ -2134,20 +2134,24 @@ No requirement records are asserted. Retained for terminology, examples, strateg
 - Role: `supporting-external-authority`
 - Access: `direct-public-primary`
 - Extraction: `partial`
-- Requirements: 8
+- Requirements: 12
 - Review priority: `supporting-specialist-source`
-- Next action: Retain the bounded reviewed selection. Expand only after a specific unsupported proposition is identified and independently reviewed.
+- Next action: Retain the twelve reviewed provisions. Do not convert contextual recovery initiation, declaration, documentation or communication candidates into admitted requirements without a separately supported relationship.
 
 | Requirement | Clause/control | Summary | Posture / type | External authority | Relationship | Review / access |
 | --- | --- | --- | --- | --- | --- | --- |
 | `EXTREQ-186266B5896332A7` | PR.AA-05 | Define access permissions, entitlements and authorisations in a policy. Manage, enforce and review them using least privilege and separation of duties. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-2D0252D6865FB9DF` | RC.RP-05 | Verify restored-asset integrity, restore systems and services, and confirm normal operating status. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-510142D12255806C` | PR.PS-01 | Establish and apply configuration management practices. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-73CD14677F9DEB8C` | RC.RP-04 | Consider critical mission functions and cybersecurity risk management when setting post-incident operational norms. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-8664EF5872201BF3` | RS.MI-01 | Contain cybersecurity incidents. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-8C67B5EEFB0AA897` | RC.RP-01 | Execute the recovery portion of the incident response plan once the incident response process initiates it. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-97D042E03280A4F1` | PR.IR-04 | Maintain resource capacity adequate to ensure availability. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-9BFEC90D284F0A9C` | PR.IR-01 | Protect networks and environments from unauthorised logical access and usage. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-B08F5AC7A04C1481` | PR.IR-03 | Implement mechanisms that meet resilience requirements during normal and adverse conditions. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-B3C2C06EC24BD021` | RC.RP-03 | Verify the integrity of backups and other restoration assets before using them for restoration. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-CC9B3D4127206817` | DE.CM-01 | Monitor networks and network services to find potentially adverse events. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-F1E1011BE4A1DCE7` | RC.RP-02 | Choose, scope and prioritise recovery actions, then carry them out. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 
 ## Protecting Tokens and Assertions from Forgery, Theft, and Misuse: Implementation Recommendations for Agencies and Cloud Service Providers — 2026-09
 

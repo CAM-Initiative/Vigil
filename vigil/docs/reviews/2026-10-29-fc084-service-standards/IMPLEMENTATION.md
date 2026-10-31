@@ -1,5 +1,17 @@
 # Approved continuation — existing NIST component crosswalks
 
+## 31 October update — four CSF requirements admitted
+
+The official PDF was retrieved successfully on 31 October. Its 1,518,858 bytes have SHA-256 `3c31f46fee98cac0c4323453e5109291a213b4de7fef8c058af9bf67f717433c`, exactly matching the registered source. The earlier source-file hold is resolved.
+
+PR.IR-03, PR.IR-04, RC.RP-02 and RC.RP-04 are now admitted as four requirements, each with a supported FC-084 component relationship. CSF coverage increases from eight to twelve provisions and remains partial. The full requirement dataset increases from 1,130 to 1,134 records; FC-084 now has ten supported component pairs. Source scope, metadata decisions, fidelity review, source-review provenance and generated external-governance outputs are updated. The exact source and relationship evidence is retained in `vigil/external_governance/requirements/review-evidence/NIST-CSF-2-0-service-availability-20261031.json`.
+
+RS.MA-05, the two RC.RP-06 propositions and RC.CO-03 remain unadmitted contextual candidates. Their source locators and dispositions remain in `DECISIONS-AND-CROSSWALK.md` and the current source-scope entry. ISO access and processing-rights holds remain unchanged. Issue #154 remains open; no closure, Incident repair, taxonomy amendment, PR or website deployment is included.
+
+The eight superseded draft proposal files have been retired from the active tree. Their exact pre-admission objects and isolated validation remain [recoverable at the 29 October commit](https://github.com/CAM-Initiative/Vigil/tree/615edea776e4ae83816d380a8baf9480672cc9bc/vigil/docs/reviews/2026-10-29-fc084-service-standards/proposals). No canonical dependency points to those drafts. The sections below describe the earlier 29 October stage, not the present requirement-admission state.
+
+Validation passed: source and requirement validators with generated-output checks, fidelity and authorship checks, 57 regression tests and the metadata-review contract regression. All four new records have complete eight-field metadata decisions. The prior eight CSF requirements and all 758 existing relationship objects are unchanged. Read-only resolution adds four disposable candidates each to INC-156 E005, E006 and E007. No Incident, taxonomy, code, schema, public Case File index or Harm Impact projection is changed. The full metadata report still identifies 73 previously outstanding records elsewhere; this bounded addition does not claim corpus-wide completion.
+
 29 October 2026. The maintainer responded “Beautiful. Please continue” after the complete standards review and six-pair recommendation. This continuation implements those six bounded relationships to **existing admitted requirements**. Contract approval is not substantive human source verification. The initial proposal documents remain dated research history; this file records the resulting current state.
 
 ## Canonical delta
@@ -39,7 +51,7 @@ Passed:
 - External requirement fidelity validation and authorship provenance validation.
 - 35 relevant regression tests: 20 external requirement, 11 supporting-source admission and 4 clause resolver tests.
 - Direct candidate validation using the existing source-scope and requirement validation functions: all eight draft objects pass the structural contract. Four correctly fail supporting admission because they have only contextual pairs. The isolated simulation uses an explicitly synthetic provisional fidelity list; no canonical fidelity approval is inferred.
-- Exact review-artifact/digest resolution for all 14 draft pairs; 14 altered-checksum copies are rejected. See `proposals/validation.json`.
+- Exact review-artifact/digest resolution for all 14 draft pairs; 14 altered-checksum copies are rejected. See the [historical candidate validation](https://github.com/CAM-Initiative/Vigil/blob/615edea776e4ae83816d380a8baf9480672cc9bc/vigil/docs/reviews/2026-10-29-fc084-service-standards/proposals/validation.json).
 
 No permanent test, schema or validator change was made. Full Incident semantic join validation and website deployment remain outside this bounded crosswalk implementation.
 

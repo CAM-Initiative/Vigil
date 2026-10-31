@@ -4,7 +4,7 @@ Public knowledge catalogue of external governance sources and their bounded rele
 
 - Source versions: 109
 - Review-due source versions: 0
-- Registry updated through: 2026-10-27T00:00:00Z
+- Registry updated through: 2026-10-31T00:00:00Z
 
 ## SDOS Runtime Governance Framework — Control Catalog and Reference Document
 
@@ -1614,9 +1614,9 @@ The NIST Cybersecurity Framework 2.0 provides voluntary guidance for managing cy
 - **AI-governance relevance:** accountability, incident-governance, inventory, monitoring, risk-management, robustness, security, supply-chain
 - **Applicable lifecycle stages:** governance, design, development, deployment, operation-use, monitoring, incident-response, change-management, supply-chain, cross-lifecycle
 - **Relevance scope:** A generally applicable NIST cybersecurity framework with material relevance to AI systems and infrastructure; it is voluntary and outcome-oriented.
-- **Last substantive review:** 2026-10-18
-- **Next substantive review:** 2027-01-16
-- **Substantive reviewer:** OpenAI / Codex / Exact runtime model identity not disclosed
+- **Last substantive review:** 2026-10-31
+- **Next substantive review:** 2027-01-29
+- **Substantive reviewer:** OpenAI / Codex / gpt-6.1-sol
 - **Review method:** direct-public-primary-review · partial-review
 - **Review freshness:** current
 - **Official source:** https://doi.org/10.6028/NIST.CSWP.29
