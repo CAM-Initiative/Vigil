@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Symantec honeypot captured Skynet-mode offensive agent instructions without tool execution",
     "created": "2026-10-27",
-    "updated": "2026-10-27",
-    "version": "0.1.0"
+    "updated": "2026-10-31",
+    "version": "0.2.0"
   },
   "incident_identity": {
     "historical_event_name": "Symantec Skynet-mode LLMjacking honeypot capture",
@@ -21,7 +21,7 @@
   "summary": "In summer 2026, Symantec's internet-facing AI honeypot captured a hostile Skynet-mode prompt intended to make a borrowed model execute an offensive agent's tools. The incoming request specified identity and safety overrides, approximately 74 tool definitions and up to 100,000 unattended steps. Three purported preceding tool results were carried by the attacker's request, not executed by the honeypot. The defender recorded the material and replied with a generic fallback instead of a structured tool call; it executed no offensive tools. The captured sequence supports positive material-event capture and bounded audit reconstruction. The lack of tool execution is a successful observed execution boundary but does not independently prove a specific authority-checking or model-safety control was activated. No successful real-world compromise by this Skynet configuration is confirmed.",
   "vigil_assessment": {
     "factual_basis": "Symantec operated an intentionally exposed decoy AI-service interface and captured the full Skynet-mode prompt and tool catalogue. The attacker supplied approximately 74 tool definitions, role/identity rewrites, a companion-persona refusal override and an unattended-loop instruction. Three apparent earlier tool calls against a legitimate programming-challenge platform appeared in the incoming payload and were not executed by the honeypot. The only observed defender reply was its generic fallback, not a tool call, and no attacker-supplied tool executed. Researchers subsequently saw an independently sourced obfuscated mining-script request and captured it without execution; the different source address prevents automatic attribution to the Skynet operator. An originating researcher told The Register that no subsequent production-server compromise by this Skynet kit was confirmed.",
-    "governance_interpretation": "The assessed AI-facing defender is Symantec's research honeypot, not the attacker's Skynet agent or an operational third-party model. The evidence supports positive capture and reconstruction invariants. A critical favourable architectural/operational boundary was also observed: attacker-authored requests did not acquire the ability to invoke offensive tools through this sensor. The design or mechanism of that boundary is not described, so no independent model refusal, source-authority verification, permitted-tool validation or control-activation claim is made. Source-Authority Separation is a material unresolved taxonomy candidate rather than a presumed success or failure.",
+    "governance_interpretation": "The assessed AI-facing defender is Symantec's research honeypot, not the attacker's Skynet agent or an operational third-party model. The evidence supports positive capture and reconstruction invariants. A critical favourable architectural/operational boundary was also observed: attacker-authored requests did not acquire the ability to invoke offensive tools through this sensor. The design or mechanism of that boundary is not described, so no independent model refusal, source-authority verification, permitted-tool validation or control-activation claim is made. Source-Authority Separation is a material unresolved taxonomy candidate rather than a presumed success or failure. Captured request and response evidence distinguishes the external sender’s instructions and supplied pseudo-history from the defender honeypot’s actual fallback and non-execution. The finding covers those operational roles in the observed session. It does not identify the sender’s legal identity, authenticate the claimed earlier tool calls or establish activity on production servers.",
     "significance_to_cam": "Positive alignment evidence can reside in defensive observation and a bounded nonexecution outcome. Distinguishing the sender's attempted authority claim from the defender's actual authority decision prevents classifying malicious prompts as model failures, and avoids counting an inert research trap as a verified commercial safety refusal.",
     "assessment_boundaries": [
       "Published source contains the sensor operator's account and selected excerpts, not complete private logs or honeypot implementation.",
@@ -66,6 +66,12 @@
               "relationship": "ambiguous-boundary",
               "canonical_taxonomy_mapping": true,
               "rationale": "Hostile non-authorising instructions arrived and were not executed, but the report does not demonstrate a source-role check, explicit authority decision or whether a deliberate instruction rejection (rather than an inert sensor fallback) occurred."
+            },
+            {
+              "class_id": "VIGIL-FC-000025",
+              "relationship": "successful-invariant",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The captured incoming request attributes the identity rewrite and false authorisation claims to the external sender. These instructions remain distinguishable from the defender’s actual behaviour."
             }
           ]
         },
@@ -89,6 +95,12 @@
               "relationship": "rejected candidate",
               "canonical_taxonomy_mapping": false,
               "rationale": "The supplied descriptions are not evidence that the honeypot possessed operational offensive tools, accessible authorisation, or an independent capability-permission decision; neither successful nor failed capability-authority mapping is supported."
+            },
+            {
+              "class_id": "VIGIL-FC-000025",
+              "relationship": "successful-invariant",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The tool definitions and unattended-loop instructions belong to the incoming configuration. The capture distinguishes that requested activity from tools actually executed by the defender."
             }
           ]
         },
@@ -106,6 +118,12 @@
               "relationship": "successful-invariant",
               "canonical_taxonomy_mapping": true,
               "rationale": "The preserved request ordering allows reviewers to reconstruct what context was received and to distinguish embedded attacker claims from observed defender actions."
+            },
+            {
+              "class_id": "VIGIL-FC-000025",
+              "relationship": "successful-invariant",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The three apparent earlier tool calls were supplied inside the incoming request. Their placement distinguishes sender-provided pseudo-history from observed defender actions; it does not authenticate the claimed calls."
             }
           ]
         },
@@ -135,6 +153,12 @@
               "relationship": "rejected candidate",
               "canonical_taxonomy_mapping": false,
               "rationale": "No identified governance control is documented as validly activated with a measured protective effect. Inert honeypot nonexecution alone does not prove effectiveness of a model safety control."
+            },
+            {
+              "class_id": "VIGIL-FC-000025",
+              "relationship": "successful-invariant",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The response record attributes the generic fallback to the honeypot and records no execution of the declared tools. This preserves the distinction between the sender’s requested actions and the defender’s actual response."
             }
           ]
         },
@@ -284,7 +308,7 @@
     "adjudication_coverage": {
       "status": "complete"
     },
-    "classification_basis": "The defender research sensor recorded a complete malicious incoming operating prompt and a bounded execution sequence, allowing researchers to reconstruct attacker-submitted pseudo-history versus actual sensor replies. Non-execution is an important observed defender boundary, but no model or policy authorization decision is demonstrated; source-authority separation remains a specific Boundary candidate, not an assumed model-safety success.",
+    "classification_basis": "The defender research sensor recorded a complete malicious incoming operating prompt and a bounded execution sequence, allowing researchers to reconstruct attacker-submitted pseudo-history versus actual sensor replies. Non-execution is an important observed defender boundary, but no model or policy authorization decision is demonstrated; source-authority separation remains a specific Boundary candidate, not an assumed model-safety success. Captured request and response evidence distinguishes the external sender’s instructions and supplied pseudo-history from the defender honeypot’s actual fallback and non-execution. The finding covers those operational roles in the observed session. It does not identify the sender’s legal identity, authenticate the claimed earlier tool calls or establish activity on production servers.",
     "primary_classification": {
       "family_id": "VIGIL-FF-0004",
       "class_id": "VIGIL-FC-000022",
@@ -351,41 +375,46 @@
           "decisive_blocker": "The report supports a real bounded non-executing defender outcome but does not identify the authority-separation decision or control architecture required for a positive source-authority classification. The absence of execution independently excludes the failure polarity.",
           "resolution_requirements": "Original honeypot design, response policy or instrumentation showing authority validation and an explicit rejected tool/instruction promotion could establish Source-Authority Separation success; alternatively a documented attack-induced operative promotion would warrant reassessment."
         }
+      },
+      {
+        "family_id": "VIGIL-FF-0004",
+        "class_id": "VIGIL-FC-000025",
+        "classification_role": "successful-invariant",
+        "classification_basis": "Captured request and response evidence distinguishes the external sender’s instructions and supplied pseudo-history from the defender honeypot’s actual fallback and non-execution. The finding covers those operational roles in the observed session. It does not identify the sender’s legal identity, authenticate the claimed earlier tool calls or establish activity on production servers.",
+        "classification_confidence": "high"
       }
     ],
     "classification_review_provenance": {
-      "review_date": "2026-10-27",
-      "reviewer": "OpenAI ChatGPT — GPT-6, AI analytical reviewer",
-      "review_status": "Full source-based review; human source verification not performed",
-      "review_reference": "vigil/docs/reviews/2026-10-27-inc215-defender-honeypot/completion-audit.json"
+      "review_date": "2026-10-31",
+      "reviewer": "OpenAI Codex — AI analytical reviewer",
+      "review_status": "Targeted Actor–Action Attribution adjudication against published v0.9.0 conditions. Existing findings and their historical taxonomy metadata retained."
     }
   },
   "related_incidents": [],
   "interpretive_provenance": {
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-27-INC-215",
+      "review_id": "VIGIL-REVIEW-2026-10-31-025-DELTA-000215",
       "reviewer_type": "AI analytical reviewer",
       "reviewer_platform": "OpenAI ChatGPT (web and GitHub connector)",
       "reviewer_model": "GPT-6",
-      "review_date": "2026-10-27",
-      "review_scope": "Defender-side honeypot source/duplicate and chronology, 0.8.1 recognition criteria for success and authority boundary, 12 HIM dimensions, candidate registered external requirements and full public prose/provenance.",
+      "review_date": "2026-10-31",
+      "review_scope": "Targeted Actor–Action Attribution review against published v0.9.0 recognition conditions. Existing taxonomy, harm and external requirement assessments preserved without fresh adjudication.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
         "new_external_source_research": true,
         "source_provenance_review": true,
         "taxonomy_review": true,
-        "harm_impact_review": true,
-        "external_requirement_review": true
+        "harm_impact_review": false,
+        "external_requirement_review": false,
+        "web_research": true
       },
       "known_limitations": [
-        "No complete raw honeypot telemetry or internal permission/control decisions were disclosed.",
-        "No independent verification of three embedded purported earlier tool calls.",
-        "The next-day miner request has no established same-actor attribution.",
-        "No human source verification.",
-        "Official repository-local builder and executable validators cannot be run through the available GitHub connector; generated indexes pending."
+        "AI-authored analysis, not human source verification.",
+        "This review covers operational attribution for the specified source episodes. Existing findings remain subject to their recorded evidence limits.",
+        "Captured request and response evidence distinguishes the external sender’s instructions and supplied pseudo-history from the defender honeypot’s actual fallback and non-execution. The finding covers those operational roles in the observed session. It does not identify the sender’s legal identity, authenticate the claimed earlier tool calls or establish activity on production servers."
       ],
-      "review_outcome": "Defender-centred record with successful capture/reconstructability, non-executing observable safeguard and bounded source-authority classification. No autonomous commercial-model refusal inferred; HIM SU."
+      "review_outcome": "Captured request and response evidence distinguishes the external sender’s instructions and supplied pseudo-history from the defender honeypot’s actual fallback and non-execution. The finding covers those operational roles in the observed session. It does not identify the sender’s legal identity, authenticate the claimed earlier tool calls or establish activity on production servers."
     }
   },
   "harm_impact_assessment": {
