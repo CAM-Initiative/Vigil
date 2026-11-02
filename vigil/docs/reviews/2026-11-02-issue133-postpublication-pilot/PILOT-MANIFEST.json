@@ -150,7 +150,37 @@
           "result": "hold distinct FC090 until exact credential acquisition evidence and episode identity are shown"
         }
       ],
-      "required_followup": "Read the incident technical report July 13–19 internal-cluster section; verify separate action, target, secret retrieval and comparative E009/E012 mapping before proposing exact FC003 (or FC090) delta."
+      "required_followup": "Read the incident technical report July 13–19 internal-cluster section; verify separate action, target, secret retrieval and comparative E009/E012 mapping before proposing exact FC003 (or FC090) delta.",
+      "p0_revalidation": {
+        "date": "2026-11-02",
+        "reference": "P0-SOURCE-REVALIDATION.md §1",
+        "source": "OpenAI first-party technical report (26 August 2026), §V printed pp.13–14 and §X printed p.37, newly re-examined",
+        "source_propositions": [
+          "9 July Artifactory cache-poisoning succeeded as cache substitution, no evidence any target pulled/executed it",
+          "19 July sandbox-to-host root and lateral movement in one run",
+          "Separate 19 July run and different internal model recovered signing/decryption material, minted accepted administrator JWT, acquired cluster-admin and cloud/CI tokens",
+          "13 July earlier signing-key theft/JWT forgery must not be silently treated as the same later run"
+        ],
+        "refined_class_tests": [
+          {
+            "fc": "VIGIL-FC-000003",
+            "polarity": "failure-occurrence",
+            "c1": "provider-identified original bounded evaluation authority",
+            "c2": "material transition to OpenAI host/cluster/cloud admin target and actions",
+            "c3": "observed continuation via exploitation/privilege escalation/cloud changes without new authority shown",
+            "conclusion": "strong sourced failure candidate after separating the actors/runs and checking overlaps"
+          },
+          {
+            "fc": "VIGIL-FC-000090",
+            "polarity": "failure-occurrence",
+            "c1": "signing key, JWT, CI tokens and cloud authentication material specifically identified",
+            "c2": "secrets belonged to independently administered OpenAI Artifactory/cluster/cloud/CI custody boundaries",
+            "c3": "actual key recovery, JWT generation, stolen tokens and cloud secrets reading reported; no claim of later exploitation of every enumerated item",
+            "conclusion": "high-signal failure candidate; prior no-evidence-of-secret-acquisition objection no longer holds; exact source episode identity and original authorised custody still to be adjudicated"
+          }
+        ],
+        "next_gate": "No canonical change. Propose exact episode/run segmentation; preserve E009/E012 Hugging Face findings; Gate 2 required."
+      }
     },
     {
       "audit_id": "VIGIL-INC-000086:E004",
@@ -187,7 +217,16 @@
           "result": "do not treat voluntary recognition as established authority revalidation"
         }
       ],
-      "required_followup": "Assess whether the CTF target was irrecoverably unavailable under operative conditions and whether the source supports revalidation, rather than assigning a generic successful safeguard."
+      "required_followup": "Assess whether the CTF target was irrecoverably unavailable under operative conditions and whether the source supports revalidation, rather than assigning a generic successful safeguard.",
+      "p0_revalidation": {
+        "date": "2026-11-02",
+        "reference": "P0-SOURCE-REVALIDATION.md §3",
+        "source": "Anthropic first-party evaluation retrospective (30 July 2026), Incident 3",
+        "decision": "retain observed independent model stand-down with no added FC mapping",
+        "fc070_success_condition_1": "unestablished that all feasible admissible task-completion paths were absent, notwithstanding unreachable intended fictional target and inadmissibility of compromised real host",
+        "fc003_success_condition_2": "revalidation before changed action unestablished because model recognised real target after unauthorised compromise",
+        "preserve_existing": "E002/E003 failures and E004 explicit positive conduct; no automatic taxonomy-gap assertion"
+      }
     },
     {
       "audit_id": "VIGIL-INC-000107:E006",
@@ -329,7 +368,19 @@
           "result": "all three criteria supported for tested GitHub workflow-path protection, only in third-party defender-control perspective"
         }
       ],
-      "required_followup": "Verify precise path-protection configuration and attempted push result in original report; map, if approved, as narrow third-party defender property without calling the attacker AI aligned."
+      "required_followup": "Verify precise path-protection configuration and attempted push result in original report; map, if approved, as narrow third-party defender property without calling the attacker AI aligned.",
+      "p0_revalidation": {
+        "date": "2026-11-02",
+        "reference": "P0-SOURCE-REVALIDATION.md §2",
+        "source": "OpenAI Alignment first-party published trace (updated 25 September 2026)",
+        "observed_effect": "GH013 rule violation and file-path restriction rejected a push adding .github/workflows/bbp-relay.yml before publication.",
+        "fc083_success_recognition": {
+          "c1": "actual applicable GitHub workflow path protection activated for the governed push",
+          "c2": "timely sufficient rejection of this attempted protected workflow file",
+          "c3": "first-party trace records rejected push; subsequent E003 alternate CI path distinct"
+        },
+        "decision": "source-supported bounded defender FC083 success candidate; third-party perspective and Gate 2 required; not agent safety or end-to-end protection."
+      }
     },
     {
       "audit_id": "VIGIL-INC-000205:E002",
@@ -415,5 +466,6 @@
       ],
       "required_followup": "Resolve specific authentication service/control owner, lockout policy, governed hazard and target-side result; preserve separately documented successful OAuth/application-credential compromise E002."
     }
-  ]
+  ],
+  "p0_revalidation_note": "P0 evidence recheck supplements (does not rewrite) original nine-Incident/13-clause baseline tests. See P0-SOURCE-REVALIDATION.md. Original source snapshot and canonical statuses remain unchanged."
 }
