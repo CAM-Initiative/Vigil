@@ -67,6 +67,14 @@ The original OpenAI Alignment incident trace independently shows that GitHub **G
 
 **Authority unchanged:** research-only supplement on the existing branch; not a PR, Gate 2, canonical write, newly admitted class, changed HIM/EXTREQ, or corpus-wide completion. The earliest narrow Gate 2 *proposal* would be INC003 and INC176 only after exact actor/episode reconciliation and independent defender perspective approval. The surviving 672 historical no-mapping clauses still require separate substantive review.
 
+## 2 November P1 supplement — all 13 pilot episodes now independently rechecked
+
+[Read the remaining ten source-first decisions and exact recognition limitations](P1-SOURCE-REVALIDATION.md). Together with [the three-episode P0 revalidation](P0-SOURCE-REVALIDATION.md), the **entire initial 13-episode / nine-Incident research sample** has a dated evidence recheck, linked current recognition question and explicit retain/hold/candidate reasoning. This means **research screening completed, not canonical classifications completed**, nor a current 209-Incident census. All original `resolved-no-mapping` dispositions, Incident release versions and canonical FC relationships stay as published.
+
+The P1 review supports **conditional, route-bounded external defender-control candidates** in INC003 E002/E016 and INC107 E006, while requiring assessor/actor perspective clarification before FC083 adoption. An additional nuance emerged in INC107 E007: the first-party disclosure reports schools seeking earlier individual notices and a 6 September commencement, so an actual *school feedback → changed notification schedule* pathway merits more precise FC042 assessment; this does not prove regulatory acknowledgement or completed individual delivery. The corrected content in INC107 E008 remains an FC062 evidence hold, not automatic prior misinformation. INC205 E002 (ordinary report-write stop) and INC213 E006 (human police intervention) serve as controls against over-attributing safeguard success to an AI. Other holds retain their specific missing recognition facts.
+
+**First proposed Gate 2 batch stays INC003 and INC176 only**, subject to source/run segregation, an explicitly defined defensive control perspective and the maintainer's separate approval. No PR was opened. Do not bulk-translate the historical 672 surviving no-mapping episodes from the audit, and do not interpret successful test examples as whole-Incident safety.
+
 ## Decision gates and next action
 
 **Gate 1 (only if later needed):** #176's orthogonal *review-challenge* contract remains a separate schema/validator/publication proposal. Do **not** mass convert the surviving 113 existing-class and 115 evidence recommendations into canonical `unresolved`, mapped or `taxonomy-gap` based solely on review flags. Taxonomy-definition changes must follow the dedicated `agent/taxonomy-development` branch and their own gate.
