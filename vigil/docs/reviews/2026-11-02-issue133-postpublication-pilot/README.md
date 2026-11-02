@@ -1,6 +1,14 @@
 # Issue #133 — post-publication source-first pilot decision packet
 2 November 2026 · **research-only checkpoint** · Branch `work/issue133-postpublication-source-first-pilot-20261102`
 
+## 2 November 2026 — Gate 2 authorised and canonical branch repairs committed (later checkpoint)
+
+Following the maintainer's explicit instruction to **proceed with the repairs for INC-003 and INC-176**, the two existing Incident files were amended on **this same working branch**, not on published `main`. The earlier “research-only/no canonical change” sections below describe the **pre-approval historical state** and remain preserved for traceability. **[Complete Gate 2 implementation and release/QA status](GATE2-IMPLEMENTATION.md)** is now the controlling latest branch checkpoint.
+
+- **INC-003**: version 0.10.0 → **authored 0.11.0**; E017 narrowed to one distinct cached-key run, E022–E025 added as independently dated OpenAI-internal propositions; admitted only source-supported existing **FC-003 and FC-090 failures** with exact episode links. Prior Hugging Face, HIM S4 and external requirement findings preserved. Commit [`c711d7a8`](https://github.com/CAM-Initiative/Vigil/commit/c711d7a896fc7b4a38db20b0580871352ca7adae).
+- **INC-176**: version 0.3.0 → **authored 0.4.0**; E002 now includes the **bounded third-party GitHub GH013 workflow-path FC-083 success**; later E003/E004 failures, HIM S3 and independent requirements retained. Commit [`11a34633`](https://github.com/CAM-Initiative/Vigil/commit/11a346334c974ba122a35f58ca32213a293fb9bb).
+- **Not yet release-ready:** no GitHub Actions run exists for this review branch's pushes because the VIGIL records workflow runs on `main`, the ingestion branch, PR events or explicit dispatch. Full Python validation and deterministic public index/taxonomy-case regeneration **have not run**; pre-PR generated projections are stale until rebuilt. No new PR or merge was authorised or made. The original manifest remains an immutable-style record of the **main publication baseline**, with a separately appended authoring-branch delta rather than silently reclassifying its historical 13 statuses.
+
 ## Authority and scope
 This is a **review noticeboard**, not the adjudicated Incident corpus. The human maintainer authorised a fresh research branch and the nine-Incident source-first review, **not canonical changes or a PR**. Working baseline: published `main` commit `5c7a779c1a5053637d2fe94f63ae30a3159146a0`, taxonomy **v0.9.1 (82 classes, 18 families)**, and [#133](https://github.com/CAM-Initiative/Vigil/issues/133). The records and their exact Git blobs are pinned in [PILOT-MANIFEST.json](PILOT-MANIFEST.json); every historical audited clause remains `resolved-no-mapping` at this checkpoint. Do not transform reviewed no-classification to mapped, unresolved or taxonomy-gap merely to match the October AI audit.
 
