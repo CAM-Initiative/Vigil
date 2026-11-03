@@ -40,6 +40,23 @@ The [OpenAI technical incident report](https://cdn.openai.com/pdf/67869394-cb91-
 
 All 12 HIM dimension entries remain byte-equivalent to baseline for both records. Reassessment date, coverage explanation and current AI review provenance were advanced to 2 November 2026 without claiming a human line-by-line source verification or treating incomplete private telemetry as an exclusion.
 
+## 3 November 2026 — generated projections reconciled on the same branch
+
+[Deterministic projection commit `feaeec6c`](https://github.com/CAM-Initiative/Vigil/commit/feaeec6c579d269b65014e98ebed7bcd2ff6d581) updates exactly these four derived files:
+
+| Derived artifact | New blob SHA | Independent comparison |
+| --- | --- | --- |
+| `VIGIL.Incidents.Index.json` | `d09e4004b649411857d8a751d7e9859d6175ccee` | 209 records retained; only INC-003 and INC-176 entries changed |
+| `VIGIL.Harm.Dimensions.Index.json` | `1d19265d6c1fec0a3ec1428ec3eb6924ddd0723a` | 140 assessed entries retained; only two `v` fields changed, dimension severities identical |
+| `VIGIL.Incidents.Jurisdictions.Index.json` | `9f46fe94b8496af474d116fac5547972f123c73c` | 209 entries retained; only the two record-version and legacy-projection versions changed, all relations unchanged |
+| `taxonomy/generated/VIGIL.FailureTaxonomy.CaseFileExamples.json` | `775bdbad30b3e465262bcf6fc3788ed70ce48f7e` | Only existing INC-003 FC-003 / FC-090 failure-basis updates and an INC-176 FC-083 successful-invariant example; no Boundary changes |
+
+Method: the original Python builder's published JSON serialization was reproduced **byte-for-byte** on three sorted-key projections and the unsorted geography projection, then modified only using the two canonical Incident inputs. The existing index rows and taxonomy examples were cross-checked against their published-main equivalents before writing; the four new projections were committed atomically through Git objects. A later independent old/new blob comparison confirmed the limited changes listed above. This is **deterministic data/projection reconciliation**, not execution of the Python builder.
+
+**Pre-CI checks performed:** both JSON records read successfully; original class identities/roles and unaffected clause statuses preserved; 25 unique INC-003 episodes and nine INC-176 episodes; all source references and external requirement episode/clause indices resolve; mapping to source is not orphaned; all 12 original HIM dimension assessments preserved; existing requirement identity and polarity counts maintained (42 and 33); published status/coverage consistency holds; public prose screens for embedded taxonomy codes, internal maintenance language and diagnostic summary scaffolding found no issues in the two records. The branch was **16 commits ahead, zero behind main** and the research branch had **zero GitHub Actions runs** at the checkpoint.
+
+**Still not equivalent to a green release:** the actual Python test suite, builders running in a checkout, format/provenance validators, taxonomy-case publication eligibility check, GitHub `publication-check` and `VIGIL records / validate-build` have **not run** on this branch. No PR has been opened and publication has not occurred. The generated projection alignment blocker is addressed, but actual execution of the governed CI gates remains necessary before considering merge.
+
 ## QA and release gates — what is complete and what is not
 
 **Completed in connector-authoring checks:**
@@ -52,8 +69,8 @@ All 12 HIM dimension entries remain byte-equivalent to baseline for both records
 **Outstanding and explicitly not represented as passing:**
 
 1. Run the repository's Python validators, `python -m unittest discover -s vigil/tests -p 'test_*.py'`, prose/provenance checks, taxonomy-case projection and deterministic builders using the actual branch checkout.
-2. Regenerate and commit `vigil/VIGIL.Incidents.Index.json`, `VIGIL.Registry.Index.json`, `VIGIL.Harm.Dimensions.Index.json`, `VIGIL.Incidents.Jurisdictions.Index.json` and `vigil/taxonomy/generated/VIGIL.FailureTaxonomy.CaseFileExamples.json`. The maintained publishers run on `main` or the dedicated ingestion branch; this review branch does **not** automatically receive a workflow run on push.
-3. Verify source–episode–taxonomy reciprocity and all provenance/reference invariants with the actual validators, not only in-memory checks.
+2. **Reconciled 3 November:** the four projections dependent on these two changed records have been deterministically updated and committed. `VIGIL.Registry.Index.json` remains unchanged because registry count and path are unchanged. Confirm reproducibility by running the actual Python builders and checking for zero diff in full CI.
+3. The targeted pre-CI source/episode and crosswalk checks have passed. **Still required:** run the actual repository validators and full source–episode–taxonomy reciprocity tests, not only connector-side checks.
 4. If preparing a final `main` PR, require explicit separate maintainer approval to open it; declare two MINOR Incident releases with exact current-main base versions/blobs, and satisfy `publication-check` plus `VIGIL records / validate-build` before any merge.
 5. Only after successful release, reconcile the 13-row historical pilot snapshot and remove/retire this temporary review noticeboard per retention policy. **Do not mark #133 closed**, as the remaining historical challenge population and newly unsegmented current source propositions are outside this narrow Gate 2.
 
@@ -63,4 +80,4 @@ All 12 HIM dimension entries remain byte-equivalent to baseline for both records
 {"records":[{"incident_id":"VIGIL-INC-000003","level":"minor","reason":"Separate overlooked OpenAI-internal research infrastructure episodes and admit source-backed existing FC-003 and FC-090 failure findings.","base_version":"0.10.0","base_blob":"1ddf7249096c8ea10c70acd0d4a26f61bec720d9"},{"incident_id":"VIGIL-INC-000176","level":"minor","reason":"Admit narrow observed GitHub workflow-path FC-083 successful-invariant without altering later model failures.","base_version":"0.3.0","base_blob":"bd8bd357b6b92a19f9d85d70773aba82da81d6d4"}]}
 ```
 
-**No PR, merge, website edit or published release was made at this checkpoint.** `main` remains unaffected.
+**No PR, merge, website edit or published release was made at this checkpoint.** `main` remains unaffected. The four source-derived projections are now committed on the working branch; full Python CI remains outstanding.
