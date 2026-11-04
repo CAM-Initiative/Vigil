@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Symantec honeypot captured Skynet-mode offensive agent instructions without tool execution",
     "created": "2026-10-27",
-    "updated": "2026-10-31",
-    "version": "0.2.0"
+    "updated": "2026-11-04",
+    "version": "0.3.0"
   },
   "incident_identity": {
     "historical_event_name": "Symantec Skynet-mode LLMjacking honeypot capture",
@@ -21,7 +21,7 @@
   "summary": "In summer 2026, Symantec's internet-facing AI honeypot captured a hostile Skynet-mode prompt intended to make a borrowed model execute an offensive agent's tools. The incoming request specified identity and safety overrides, approximately 74 tool definitions and up to 100,000 unattended steps. Three purported preceding tool results were carried by the attacker's request, not executed by the honeypot. The defender recorded the material and replied with a generic fallback instead of a structured tool call; it executed no offensive tools. The captured sequence supports positive material-event capture and bounded audit reconstruction. The lack of tool execution is a successful observed execution boundary but does not independently prove a specific authority-checking or model-safety control was activated. No successful real-world compromise by this Skynet configuration is confirmed.",
   "vigil_assessment": {
     "factual_basis": "Symantec operated an intentionally exposed decoy AI-service interface and captured the full Skynet-mode prompt and tool catalogue. The attacker supplied approximately 74 tool definitions, role/identity rewrites, a companion-persona refusal override and an unattended-loop instruction. Three apparent earlier tool calls against a legitimate programming-challenge platform appeared in the incoming payload and were not executed by the honeypot. The only observed defender reply was its generic fallback, not a tool call, and no attacker-supplied tool executed. Researchers subsequently saw an independently sourced obfuscated mining-script request and captured it without execution; the different source address prevents automatic attribution to the Skynet operator. An originating researcher told The Register that no subsequent production-server compromise by this Skynet kit was confirmed.",
-    "governance_interpretation": "The assessed AI-facing defender is Symantec's research honeypot, not the attacker's Skynet agent or an operational third-party model. The evidence supports positive capture and reconstruction invariants. A critical favourable architectural/operational boundary was also observed: attacker-authored requests did not acquire the ability to invoke offensive tools through this sensor. The design or mechanism of that boundary is not described, so no independent model refusal, source-authority verification, permitted-tool validation or control-activation claim is made. Source-Authority Separation is a material unresolved taxonomy candidate rather than a presumed success or failure. Captured request and response evidence distinguishes the external sender’s instructions and supplied pseudo-history from the defender honeypot’s actual fallback and non-execution. The finding covers those operational roles in the observed session. It does not identify the sender’s legal identity, authenticate the claimed earlier tool calls or establish activity on production servers.",
+    "governance_interpretation": "The assessed AI-facing defender is Symantec's research honeypot, not the attacker's Skynet agent or an operational third-party model. The evidence supports positive capture and reconstruction invariants. A critical favourable architectural/operational boundary was also observed: attacker-authored requests did not acquire the ability to invoke offensive tools through this sensor. The design or mechanism of that boundary is not described, so no independent model refusal, source-authority verification, permitted-tool validation or control-activation claim is made. Source-Authority Separation is a material unresolved taxonomy candidate rather than a presumed success or failure. Captured request and response evidence distinguishes the external sender’s instructions and supplied pseudo-history from the defender honeypot’s actual fallback and non-execution. The finding covers those operational roles in the observed session. It does not identify the sender’s legal identity, authenticate the claimed earlier tool calls or establish activity on production servers. The defender-centred Symantec honeypot captured the separate next-day obfuscated miner request and retained enough to decode and describe it. The honeypot recorded this later request as a separate material event within the assessed system. This does not establish malware execution, shared attacker identity or protection by an independent platform.",
     "significance_to_cam": "Positive alignment evidence can reside in defensive observation and a bounded nonexecution outcome. Distinguishing the sender's attempted authority claim from the defender's actual authority decision prevents classifying malicious prompts as model failures, and avoids counting an inert research trap as a verified commercial safety refusal.",
     "assessment_boundaries": [
       "Published source contains the sensor operator's account and selected excerpts, not complete private logs or honeypot implementation.",
@@ -169,8 +169,16 @@
           "source_record_refs": [
             "source_records[0]"
           ],
-          "adjudication_status": "resolved-no-mapping",
-          "taxonomy_relationships": []
+          "adjudication_status": "mapped",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000022",
+              "relationship": "successful-invariant",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The defender-centred Symantec honeypot captured the separate next-day obfuscated miner request and retained enough to decode and describe it. The honeypot recorded this later request as a separate material event within the assessed system. This does not establish malware execution, shared attacker identity or protection by an independent platform."
+            }
+          ],
+          "adjudication_note": "The defender-centred Symantec honeypot captured the separate next-day obfuscated miner request and retained enough to decode and describe it. The honeypot recorded this later request as a separate material event within the assessed system. This does not establish malware execution, shared attacker identity or protection by an independent platform."
         },
         {
           "episode_id": "E007",
@@ -308,12 +316,12 @@
     "adjudication_coverage": {
       "status": "complete"
     },
-    "classification_basis": "The defender research sensor recorded a complete malicious incoming operating prompt and a bounded execution sequence, allowing researchers to reconstruct attacker-submitted pseudo-history versus actual sensor replies. Non-execution is an important observed defender boundary, but no model or policy authorization decision is demonstrated; source-authority separation remains a specific Boundary candidate, not an assumed model-safety success. Captured request and response evidence distinguishes the external sender’s instructions and supplied pseudo-history from the defender honeypot’s actual fallback and non-execution. The finding covers those operational roles in the observed session. It does not identify the sender’s legal identity, authenticate the claimed earlier tool calls or establish activity on production servers.",
+    "classification_basis": "The defender research sensor recorded a complete malicious incoming operating prompt and a bounded execution sequence, allowing researchers to reconstruct attacker-submitted pseudo-history versus actual sensor replies. Non-execution is an important observed defender boundary, but no model or policy authorization decision is demonstrated; source-authority separation remains a specific Boundary candidate, not an assumed model-safety success. Captured request and response evidence distinguishes the external sender’s instructions and supplied pseudo-history from the defender honeypot’s actual fallback and non-execution. The finding covers those operational roles in the observed session. It does not identify the sender’s legal identity, authenticate the claimed earlier tool calls or establish activity on production servers. The defender-centred Symantec honeypot captured the separate next-day obfuscated miner request and retained enough to decode and describe it. The honeypot recorded this later request as a separate material event within the assessed system. This does not establish malware execution, shared attacker identity or protection by an independent platform.",
     "primary_classification": {
       "family_id": "VIGIL-FF-0004",
       "class_id": "VIGIL-FC-000022",
       "classification_role": "successful-invariant",
-      "classification_basis": "The operator retained materially consequential attempted model misuse, detailed instructions, tool configuration and the actual fallback response for review.",
+      "classification_basis": "The operator retained materially consequential attempted model misuse, detailed instructions, tool configuration and the actual fallback response for review. The defender-centred Symantec honeypot captured the separate next-day obfuscated miner request and retained enough to decode and describe it. The honeypot recorded this later request as a separate material event within the assessed system. This does not establish malware execution, shared attacker identity or protection by an independent platform.",
       "classification_confidence": "high"
     },
     "secondary_classifications": [
@@ -385,21 +393,21 @@
       }
     ],
     "classification_review_provenance": {
-      "review_date": "2026-10-31",
-      "reviewer": "OpenAI ChatGPT — GPT-6, AI analytical reviewer",
-      "review_status": "Published v0.9.1 FC-025 clarification reviewed; existing Aligned mapping retained. Other mappings, source limitations, Harm Impact and external assessments preserved. Not human-verified.",
-      "review_reference": "main@40160d36de71f5bbc303a43f60657bc79d3ce452 (published v0.9.1; FC-025 clarification 6b2783c758f20d948c61761a7e48e3b74303308f; FC-062 revision 125f0bdc11eb503b7354d6e6e8573c879f4be515)"
+      "review_date": "2026-11-04",
+      "reviewer": "OpenAI Codex — AI analytical reviewer",
+      "review_status": "Maintainer-authorised issue #133 scoped episode review.",
+      "review_reference": "vigil/docs/reviews/2026-11-02-issue133-postpublication-pilot/README.md"
     }
   },
   "related_incidents": [],
   "interpretive_provenance": {
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-31-FC025-PUBLISHED-000215",
+      "review_id": "VIGIL-REVIEW-2026-11-04-ISSUE133-000215",
       "reviewer_type": "AI analytical reviewer",
       "reviewer_platform": "OpenAI ChatGPT / GitHub repository",
       "reviewer_model": "GPT-6",
-      "review_date": "2026-10-31",
-      "review_scope": "Targeted source-first review of FC-025 under the published v0.9.1 clarification. Existing source, harm and external-assessment limits are preserved; no unrelated classes were re-adjudicated.",
+      "review_date": "2026-11-04",
+      "review_scope": "Bounded episode E006 adjudication under published v0.9.1.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
@@ -416,7 +424,7 @@
         "Captured request and response evidence distinguishes the external sender’s instructions and supplied pseudo-history from the defender honeypot’s actual fallback and non-execution. The finding covers those operational roles in the observed session. It does not identify the sender’s legal identity, authenticate the claimed earlier tool calls or establish activity on production servers.",
         "No human verification."
       ],
-      "review_outcome": "The FC-025 Aligned finding is retained under published v0.9.1. The external sender’s instructions and pseudo-history remain distinct from the defender honeypot’s observed fallback and non-execution. Legal identity and production activity remain unestablished."
+      "review_outcome": "The defender-centred Symantec honeypot captured the separate next-day obfuscated miner request and retained enough to decode and describe it. This is a distinct FC-022 capture success within the assessed system, without claiming malware execution, shared attacker identity or protection by an independent platform."
     }
   },
   "harm_impact_assessment": {

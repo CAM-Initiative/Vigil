@@ -20,6 +20,16 @@ Before proposing any taxonomy role, apply the Incident workflow's **decision-int
 
 For substantive re-adjudication, first create a claim/criterion/source-linked decision and before/after preservation record under the Incident workflow. Protect mixed episode outcomes and accepted negative or bounded interpretations; an aggregate explanation must not silently omit independently supported episode findings. Automated checks can detect structural anomalies, not settle substantive disagreements. The current documentation/template changes do not authorise validator, schema, website or mass-record changes.
 
+## Assessed-system attribution and independent defenders (mandatory)
+
+Before setting `system_context` or proposing any taxonomy mapping, establish the **bounded assessed AI system** and its evidenced operator/provider, separately from the reporting actor, human director, attacker, target platform and independent defender. Pin these roles to source-specific occurrence evidence in the pre-taxonomy proposition review. Do not assign the reporter's, target's or defender's platform/vendor identity to the assessed AI system by association; preserve `unknown` where the system or provider is not established.
+
+When the Incident assesses an originating or attacking AI agent, another platform's blocked access, security monitoring, protective controls, human intervention or remediation may be recorded as material **context and outcome evidence**, but **must not be adjudicated as the agent's own Fidelity Class behaviour or successful invariants**. Do not introduce defender-centred taxonomy relationships or success mappings into that agent's Incident, or combine their identities in `system_context`. Distinguish an attempted act, an observed defensive response, and any independently confirmed compromise or effect. Retain contextual defensive facts only to the extent material to the bounded occurrence and its evidentiary limits.
+
+A defender-centred Incident is different: defensive behaviour may be adjudicated **only where that defender is explicitly the assessed system**, the occurrence is in scope, and the current class recognition conditions and exclusions are independently met. INC-215 illustrates a defender-centred perspective, not an automatic success finding or a reason to create a second Incident. Do not split an occurrence into separate defender/attacker Incidents without independently applying the admission, duplication, scope and authorisation rules.
+
+For source-proposition coverage, use `context-only` for relevant external-actor or independent-defender facts that are not conduct of the assessed AI system. Follow **Pre-taxonomy source-proposition coverage** in `vigil/docs/maintenance/INCIDENT-ADJUDICATION-WORKFLOW.md` and the Incident authoring/website-rendering crosswalk in `vigil/MAINTAINERS.md`. This is an attribution and documentation clarification, not a new classification role, schema requirement, validator or authority for retroactive record changes.
+
 ## Incident authority and provenance
 
 - Preserve `source_records` as the only canonical source-evidence block.
