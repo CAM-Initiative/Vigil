@@ -179,3 +179,34 @@ Fourteen additional reconsideration episodes reviewed against published v0.9.1. 
 | INC-205 | E002 | Hold FC-083. The OpenAI Sol agent's surrounding harness actually stopped when it could not publish a flagged finding. The user received information and directed a new destination, which shows a human response. The record expressly distinguishes the stop from established P0 auto-pausing. The missing fact is whether this publication-error stop was an applicable protective mechanism with a defined fail-closed purpose, and whether the stop achieved that purpose. Preserve the later notification suppression and control-state failures separately. [Source](https://alignment.openai.com/misalignment-reports/suppressing-misalignment-monitoring-alerts-and-disabling-misalignment-monitoring/) |
 
 No canonical or generated changes in this checkpoint. The Grok proposal is bounded to the product-side control effect and would require its own approved, versioned repair. The four holds are existing-class questions. The separate 115 evidence-recovery findings remain to be worked through.
+
+
+## 4 November 2026 — approved canonical repairs and continued source review
+
+The maintainer authorised the four previously proposed canonical decisions. [Commit `b55acb27`](https://github.com/CAM-Initiative/Vigil/commit/b55acb27088ece722aec89c4af9de2958694cc08) applies them on this working branch.
+
+| Incident | Branch version | Applied decision |
+| --- | --- | --- |
+| INC-045 E005 | 1.3.0 | Add FC-083 success limited to the tested Grok Build whole-repository transmission path. |
+| INC-057 E005 | 1.3.0 | Remove FC-083 success from the assessed Flock deployment. Keep the independently operated Sheriff's audit and its findings as context. |
+| INC-126 E001 | 0.4.0 | Add FC-042 success for Atlas's completed internal signal pathway in the simulation. |
+| INC-176 E002 | 0.4.0 | Remove FC-083 success from the OpenAI model's Incident. Keep the GitHub rejection as context and preserve later agent-selected actions. |
+
+INC-057 and INC-176 keep their pending unpublished minor versions. Git retains their previous reasoning at the prior branch head. The guard calculates the next version from published main. Checked the four remote records after commit for stable episode IDs, one changed episode each, canonical mapping-to-class links, and preservation of source records, HIM, external assessments, system context and summary. Official generated projections must be rebuilt and full CI and publication checks remain outstanding. No generated projection was edited manually.
+
+### Further external-response attribution decisions
+
+Nine additional historical reconsideration episodes retain no-mapping on the tested proposition. Each preserves the independent response as evidence while excluding it from the assessed AI system's class adjudication.
+
+| Incident | Episode | Source-grounded disposition |
+| --- | --- | --- |
+| INC-055 | E003 | Meta's Muse Spark 1.1 is the assessed model. Irregular halted the evaluation and notified affected parties. Meta's team reviewed activity. These are evaluator and provider incident-response actions, with no observed protective effect performed by the assessed model. [Meta research account](https://research.meta.ai/blog/addressing-third-party-testing-misconfiguration-muse-spark-1-1) |
+| INC-064 | E007 | Ofcom's request, X's response and the opening of an investigation are regulator-to-company actions outside the assessed Grok image-generation pathway. Preserve both receipt and formal escalation. Opening the case did not establish final disposition of the underlying safety issue. [Ofcom chronology](https://www.ofcom.org.uk/online-safety/illegal-and-harmful-content/ofcom-launches-investigation-into-x-over-grok-sexualised-imagery) |
+| INC-076 | E003 | The assessed system is GPTZero. Rignol's appeal was to Yale's board, which could assess penalty severity on the assumption that the violation finding was correct. The appeal is a material human process with limited scope. No GPTZero-governed signal or evidence of detector correction follows from it. [Federal court order](https://law.justia.com/cases/federal/district-courts/connecticut/ctdce/3:2025cv00159/163407/89/) |
+| INC-142 | E005 | The court's sanctions order and directions to notify clients and named judges concern human responsibility after ChatGPT's output. Ordering letters is distinct from proving their receipt. Neither judicial action nor counsel's notification duty is conduct of the assessed model. [Federal sanctions order](https://law.justia.com/cases/federal/district-courts/new-york/nysdce/1:2022cv01461/575368/54/) |
+| INC-146 | E004/E005 | The assessed system is the unidentified synthetic-media tooling used for impersonation. The director and HSBC sent the fraud report, and Singapore and Hong Kong police traced, froze or seized funds. This is an observed independent signal and containment pathway. Preserve the distinction between withholding funds and their final return. [Singapore Police Force](https://www.police.gov.sg/media-hub/news/2025/04/20250407_singapore_and_hong_kong_police_force_recover_over_%24670000_in_a_scam) |
+| INC-152 | E002 | A member of the public reported the deepfake advertisement. Consumer Protection identified and contacted the domain holder. The reviewed account establishes the request, with takedown completion unconfirmed. Both the signal and response belong to independent actors. [ABC News](https://www.abc.net.au/news/2025-11-08/wa-premier-deepfake-ai-scam-prompts-warning-amid-cheaper-tech/105987626) |
+| INC-157 | E005 | The assessed OpenAI model reached a real site during Irregular's evaluation. Irregular paused tests and reported remediation and third-party notification. These actions belong to the evaluator and response owners. OpenAI's report also limits the findings to the known issues and states the audit was ongoing. [OpenAI report](https://openai.com/index/third-party-cyber-evaluations-involving-openai-models/) |
+| INC-213 | E006 | The assessed AI contribution is synthetic voice content. Dutch police report arrests and an actual takedown of fraud-enabling servers. The takedown belongs to police and infrastructure responders. The separate NFC relay and any continuing investigation remain distinct. [Dutch police](https://www.politie.nl/nieuws/2026/oktober/20/07-twee-verdachten-aangehouden-in-onderzoek-naar-nieuwe-vorm-van-bankhelpdeskfraude.html) |
+
+The three November 4 review checkpoints now cover 35 distinct historical episodes. The four approved canonical changes produce a net zero change in the reconsideration group's no-mapping count, which remains 107 alongside seven mapped and one unresolved. The separate 115-episode evidence-recovery group remains open.
