@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "ChatGPT shared internal service enabled cross-account covert tasking and Gmail data exfiltration",
     "created": "2026-09-09",
-    "updated": "2026-10-27",
-    "version": "0.2.0"
+    "updated": "2026-11-04",
+    "version": "0.3.0"
   },
   "incident_identity": {
     "historical_event_name": "2026 ChatGPT shared-Artifactory cross-account covert channel",
@@ -21,7 +21,7 @@
   "summary": "Check Point Research reported a cross-account covert channel between ChatGPT code-execution environments belonging to different accounts. Although the containers could not communicate directly or access the public internet, they could reach a shared internal service used to deliver software packages. Check Point found that mutable shared state in the internal Artifactory service could be used to pass hidden instructions and results across accounts. In its proof of concept, an attacker-controlled instruction caused a victim's apparently normal ChatGPT session to execute a second hidden task stream using the victim session's available tools and permissions, retrieve email data from the victim's connected Gmail account, and relay that data back to the attacker through the covert channel. Check Point states that the channel was no longer available by the time reporting was completed and that OpenAI confirmed the relevant internal Artifactory instance had been decommissioned. In a later interview, the researcher said the demonstration worked on 26 June and failed in an early-July retest before disclosure. OpenAI’s later decommissioning confirmation did not establish that the disclosure caused removal.",
   "vigil_assessment": {
     "factual_basis": "Check Point Research directly documents its June 2026 discovery of a bidirectional cross-account channel through a shared internal Artifactory service reachable from otherwise isolated ChatGPT code-execution containers. The researchers demonstrate a hidden-task proof of concept in which a victim opens a shared ChatGPT conversation and sends a normal message while the same session separately retrieves data from the victim's connected Gmail account and transmits the result to the attacker's account. The research further states that the attack surface depended on the tools, data, connected apps and permissions available to the victim session. Check Point disclosed its findings to OpenAI and states that OpenAI confirmed the identified Artifactory instance had been decommissioned. The shared conversation seeds the hidden instruction; later tasks and results use the shared-state channel. The ordinary visible answer omits the email task, with only an after-action app-use label. The channel was already unavailable when reporting was completed, before the described disclosure; no disclosure-to-removal causality is inferred.",
-    "governance_interpretation": "The occurrence demonstrates a trust-boundary and authority-propagation failure in which legitimate capabilities granted to one user's session could be exercised in response to attacker-controlled instructions delivered across an unintended cross-account communications path. The victim's authority to let ChatGPT access connected Gmail data did not imply authority for another account to task that session or receive the retrieved information. The material mechanism therefore combines tenant-isolation failure, hidden instruction execution and transposition of user-granted tool authority across an identity boundary. The observed hidden task and disclosure retain source-authority and changed-principal failures, bounded to the demonstrated pathway. Released agent tool use is distinct from model-development security; human-subject research consent is not the demonstrated workflow. Decommissioning the component does not prove universal prevention. The structural isolation and safe-functioning outcomes are Not aligned for the proof of concept. Removal of the identified channel is Aligned with the intervention requirement. Check Point’s proof of concept retrieved Gmail content under the victim session and sent it through a cross-account channel. The attacker account was outside the mailbox’s authorised audience. The result is bounded to the demonstrated data transfer; provided reader credentials are not assumed to have been stolen.",
+    "governance_interpretation": "The occurrence demonstrates a trust-boundary and authority-propagation failure in which legitimate capabilities granted to one user's session could be exercised in response to attacker-controlled instructions delivered across an unintended cross-account communications path. The victim's authority to let ChatGPT access connected Gmail data did not imply authority for another account to task that session or receive the retrieved information. The material mechanism therefore combines tenant-isolation failure, hidden instruction execution and transposition of user-granted tool authority across an identity boundary. The observed hidden task and disclosure retain source-authority and changed-principal failures, bounded to the demonstrated pathway. Released agent tool use is distinct from model-development security; human-subject research consent is not the demonstrated workflow. Decommissioning the component does not prove universal prevention. The structural isolation and safe-functioning outcomes are Not aligned for the proof of concept. Removal of the identified channel is Aligned with the intervention requirement. Check Point’s proof of concept retrieved Gmail content under the victim session and sent it through a cross-account channel. The attacker account was outside the mailbox’s authorised audience. The result is bounded to the demonstrated data transfer; provided reader credentials are not assumed to have been stolen. The affected ChatGPT execution service was decommissioned. The originating researcher could no longer reproduce the demonstrated cross-account channel in an early-July retest. These observations support a bounded closure of the tested route. The exact change date and causal sequence are unestablished, and other sandbox routes were not tested.",
     "significance_to_cam": "For CAM, the incident is a concrete example of why technical possession of credentials or tool permissions must remain bounded by identity, task and purpose. Agentic systems may act as privileged intermediaries across connected services, so a failure in shared infrastructure or instruction provenance can convert legitimate user authorization into an unauthorized cross-account capability. The case is relevant to runtime authority, provenance, tenant isolation, connected-app governance, least privilege and auditable tool-use controls.",
     "assessment_boundaries": [
       "Check Point's public proof of concept directly demonstrates Gmail data retrieval and cross-account relay; this record does not state that the researchers demonstrated extraction from Google Drive, Microsoft Teams, GitHub or every other service that may have been connectable to ChatGPT.",
@@ -112,9 +112,17 @@
             "source_records[2]"
           ],
           "source_paraphrase": "In a 17 September interview, the researcher said the proof of concept was validated on 26 June and failed in an early-July retest. Disclosure followed; OpenAI later confirmed decommissioning. Exact disclosure and confirmation dates are absent.",
-          "recovered_invariant_interpretation": "Reported remediation timing must not invent the causal order.",
-          "taxonomy_relationships": [],
-          "adjudication_status": "resolved-no-mapping"
+          "recovered_invariant_interpretation": "The affected ChatGPT execution service was decommissioned. The originating researcher could no longer reproduce the demonstrated cross-account channel in an early-July retest. These observations support a bounded closure of the tested route. The exact change date and causal sequence are unestablished, and other sandbox routes were not tested.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000083",
+              "relationship": "successful-invariant",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The affected ChatGPT execution service was decommissioned. The originating researcher could no longer reproduce the demonstrated cross-account channel in an early-July retest. These observations support a bounded closure of the tested route. The exact change date and causal sequence are unestablished, and other sandbox routes were not tested."
+            }
+          ],
+          "adjudication_status": "mapped",
+          "adjudication_note": "The affected ChatGPT execution service was decommissioned. The originating researcher could no longer reproduce the demonstrated cross-account channel in an early-July retest. These observations support a bounded closure of the tested route. The exact change date and causal sequence are unestablished, and other sandbox routes were not tested."
         }
       ]
     }
@@ -297,9 +305,9 @@
     }
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.9.0",
+    "taxonomy_version": "0.9.1",
     "classification_status": "classified",
-    "classification_basis": "Current-taxonomy re-adjudication identifies two independently evidenced authority mechanisms. Attacker-controlled instructions crossed an unintended shared-infrastructure channel and became operative task direction inside the victim session, satisfying Source-Authority Confusion. Separately, authority legitimately granted by the victim for ChatGPT to access connected Gmail data was carried into an attacker-controlled task and recipient context without fresh authority, satisfying Target and Scope Authority Transposition. The mappings are bounded to the demonstrated proof of concept and do not generalise to unproven connected services or real-world victim exploitation. Check Point’s proof of concept retrieved Gmail content under the victim session and sent it through a cross-account channel. The attacker account was outside the mailbox’s authorised audience. The result is bounded to the demonstrated data transfer; provided reader credentials are not assumed to have been stolen.",
+    "classification_basis": "Current-taxonomy re-adjudication identifies two independently evidenced authority mechanisms. Attacker-controlled instructions crossed an unintended shared-infrastructure channel and became operative task direction inside the victim session, satisfying Source-Authority Confusion. Separately, authority legitimately granted by the victim for ChatGPT to access connected Gmail data was carried into an attacker-controlled task and recipient context without fresh authority, satisfying Target and Scope Authority Transposition. The mappings are bounded to the demonstrated proof of concept and do not generalise to unproven connected services or real-world victim exploitation. Check Point’s proof of concept retrieved Gmail content under the victim session and sent it through a cross-account channel. The attacker account was outside the mailbox’s authorised audience. The result is bounded to the demonstrated data transfer; provided reader credentials are not assumed to have been stolen. The affected ChatGPT execution service was decommissioned. The originating researcher could no longer reproduce the demonstrated cross-account channel in an early-July retest. These observations support a bounded closure of the tested route. The exact change date and causal sequence are unestablished, and other sandbox routes were not tested.",
     "primary_classification": {
       "family_id": "VIGIL-FF-0001",
       "class_id": "VIGIL-FC-000001",
@@ -321,12 +329,20 @@
         "classification_role": "failure-occurrence",
         "classification_basis": "Check Point’s proof of concept retrieved Gmail content under the victim session and sent it through a cross-account channel. The attacker account was outside the mailbox’s authorised audience. The result is bounded to the demonstrated data transfer; provided reader credentials are not assumed to have been stolen.",
         "classification_confidence": "high"
+      },
+      {
+        "family_id": "VIGIL-FF-0008",
+        "class_id": "VIGIL-FC-000083",
+        "classification_role": "successful-invariant",
+        "classification_confidence": "medium",
+        "classification_basis": "The affected ChatGPT execution service was decommissioned. The originating researcher could no longer reproduce the demonstrated cross-account channel in an early-July retest. These observations support a bounded closure of the tested route. The exact change date and causal sequence are unestablished, and other sandbox routes were not tested."
       }
     ],
     "classification_review_provenance": {
-      "review_date": "2026-10-27",
+      "review_date": "2026-11-04",
       "reviewer": "OpenAI Codex — AI analytical reviewer",
-      "review_status": "Published v0.9.0 protected-information and authentication-custody delta adjudicated. Existing class findings retained without re-adjudication; episode limits remain explicit."
+      "review_status": "Maintainer-authorised issue #133 adjudication of E006. The affected ChatGPT execution service was decommissioned. The originating researcher could no longer reproduce the demonstrated cross-account channel in an early-July retest. These observations support a bounded closure of the tested route. The exact change date and causal sequence are unestablished, and other sandbox routes were not tested.",
+      "review_reference": "vigil/docs/reviews/2026-11-02-issue133-postpublication-pilot/README.md"
     },
     "adjudication_coverage": {
       "status": "complete"
@@ -334,26 +350,24 @@
   },
   "interpretive_provenance": {
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-27-090-DELTA-000108",
+      "review_id": "VIGIL-REVIEW-2026-11-04-ISSUE133-000108",
       "reviewer_type": "AI analytical reviewer",
       "reviewer_platform": "OpenAI Codex",
       "reviewer_model": "GPT-6",
-      "review_date": "2026-10-27",
-      "review_scope": "Targeted published v0.9.0 adjudication of Protected Information Access Integrity and Authentication Material Custody Integrity. Prior taxonomy, harm and external findings preserved; direct NIST propositions independently assessed where supported.",
+      "review_date": "2026-11-04",
+      "review_scope": "Issue #133 bounded E006 adjudication under taxonomy v0.9.1.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
         "taxonomy_review": true,
-        "external_requirement_review": true,
+        "web_research": true,
         "harm_impact_review": false,
-        "web_research": false
+        "external_requirement_review": false
       },
       "known_limitations": [
-        "AI-authored analysis, not human verification. No live vulnerable system or private secret was accessed.",
-        "The taxonomy review is limited to the two new classes; existing classes were preserved, not freshly re-adjudicated.",
-        "Attributed occurrence reports retain their source-specific limits. No assurance about unobserved targets, copies or credential use is inferred."
+        "AI analytical review based on published evidence, bounded to the named episode."
       ],
-      "review_outcome": "Check Point’s proof of concept retrieved Gmail content under the victim session and sent it through a cross-account channel. The attacker account was outside the mailbox’s authorised audience. The result is bounded to the demonstrated data transfer; provided reader credentials are not assumed to have been stolen."
+      "review_outcome": "The affected ChatGPT execution service was decommissioned. The originating researcher could no longer reproduce the demonstrated cross-account channel in an early-July retest. These observations support a bounded closure of the tested route. The exact change date and causal sequence are unestablished, and other sandbox routes were not tested."
     }
   },
   "harm_impact_assessment": {
